@@ -1,0 +1,10 @@
+.title {
+    color: #21f34f;
+    font-size: 50px;
+    text-align: center;
+}
+
+.MuiAppBar-colorPrimary {
+    color: #fff;
+    background-color: #17171a;
+}
