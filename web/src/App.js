@@ -1,9 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const Root = () => {
-  return (
-    <h3 className="title">Hello, React</h3>
-  );
-};
+  return <h3 className="title">Hello, React</h3>
+}
 
-export default Root;
+export default Root
