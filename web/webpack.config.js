@@ -1,36 +1,35 @@
-const path = require('path')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const path = require("path");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.resolve('./dist'),
-    index: 'index.html',
+    contentBase: path.resolve("./dist"),
+    index: "index.html",
     port: 9000,
-    disableHostCheck: true,
-    historyApiFallback: true // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
+    historyApiFallback: true        // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결 
   },
-  mode: 'none',
+  mode: "none",
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: '/node_modules',
-        use: ['babel-loader']
+        exclude: "/node_modules",
+        use: ['babel-loader'],
       },
       {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader',
-            options: {minimize: true}
+            loader: "html-loader",
+            options: { minimize: true }
           }
         ]
       },
@@ -40,7 +39,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       }
     ]
   },
@@ -54,6 +53,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'style.css'
-    })
+    }),
   ]
-}
+};

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Root = () => {
-  return <h3 className="title">Hel111lo, React</h3>
+  return <h3 className="title">Hello, React</h3>
 }
 
 export default Root
