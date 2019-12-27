@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server --hot --host 0.0.0.0"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -14,7 +14,12 @@ module.exports = {
     contentBase: path.resolve("./dist"),
     index: "index.html",
     port: 9000,
+<<<<<<< HEAD
     historyApiFallback: true        // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결 
+=======
+    historyApiFallback: true, // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
+    disableHostCheck: true
+>>>>>>> 9a4a64f561d9eecc421360bdc65fe6384a1e2b08
   },
   mode: "none",
   module: {
