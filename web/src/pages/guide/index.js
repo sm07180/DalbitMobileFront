@@ -1,4 +1,7 @@
-import React from 'react'
+/**
+ * @title 가이드페이지
+ */
+import React, {useEffect} from 'react'
 
 export default () => {
   return (
