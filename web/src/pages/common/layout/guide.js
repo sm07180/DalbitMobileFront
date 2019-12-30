@@ -7,7 +7,7 @@ import React, {useEffect, useContext} from 'react'
 const Guide = props => {
   //initalize
   const {children} = props
-  const store = useContext(Context)
+
   //---------------------------------------------------------------------
 
   //---------------------------------------------------------------------

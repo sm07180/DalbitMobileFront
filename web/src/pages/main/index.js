@@ -3,7 +3,7 @@
  */
 import React from 'react'
 
-export default () => {
+const Main = () => {
   return (
     <h1>
       <a href="/guide">메인페이지</a>
@@ -11,3 +11,4 @@ export default () => {
     </h1>
   )
 }
+export default Main
