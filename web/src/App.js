@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Root = () => {
-  return <h3 className="title">Hello, 333</h3>
+const App = () => {
+  return <h3 className="title">Hello, 4444</h3>
 }
 
-export default Root
+export default App
