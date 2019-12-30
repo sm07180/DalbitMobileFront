@@ -1,15 +1,266 @@
+/*
+  @date: 2019.12.30
+*/
+
+// mixin & variables
+@import './global.scss';
+
+// common styles
 * {
   margin: 0;
   padding: 0;
   border: 0;
-  
+  background: #e1e1e1;
 }
 html,
-/* prettier-ignore */
 body {
-  font-family: -apple-system, sans-serif;
+  font-family: sans-serif;
   -webkit-text-size-adjust: none;
   height: 100vh;
   font-size: 10px;
+  background: $GY5;
   overflow: hidden;
+}
+img,
+svg {
+  vertical-align: top;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+  &:active,
+  &:hover {
+    text-decoration: none;
+  }
+}
+.none {
+  display: none;
+}
+.inline-block {
+  display: inline-block;
+}
+.block {
+  display: block;
+  width: 100%;
+}
+.hide {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1%;
+  line-height: 1%;
+}
+.h100 {
+  min-height: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.flex1 {
+  flex: 1 1 auto;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/*---------------------------------------------------*/
+.colorGY1 {
+  color: $GY1;
+}
+.colorGY3 {
+  color: $GY3;
+}
+.colorGN1 {
+  color: $GN1;
+}
+.colorRD1 {
+  color: $RD1;
+}
+.colorBU2 {
+  color: $BU2;
+}
+.bold {
+  font-weight: bold;
+}
+.fs12 {
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+}
+.fs14 {
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+.fs18 {
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+}
+.fs20 {
+  font-size: 2rem;
+}
+.fs24 {
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+}
+.flex1 {
+  position: relative;
+  flex: 1;
+  flex-shrink: 1;
+}
+.rel {
+  position: relative;
+}
+//버튼눌렀을때 효과
+.ripple {
+  background-position: center;
+  transition: background 0.5s;
+
+  &:hover {
+    background: #ff0000 radial-gradient(circle, transparent 1%, #ff0000 1%) center/15000%;
+  }
+  &:active {
+    background-color: #ff0000;
+    background-size: 100%;
+    transition: background 0s;
+  }
+}
+.no-drag {
+  -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+  -webkit-user-select: none;
+  -ms-user-select: none; /* From IE10 only */
+  user-select: none; /* Not valid CSS yet, as of July 2012 */
+  -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+}
+.dummy {
+  display: block;
+  width: 100%;
+  height: 200px;
+  background: #fff;
+}
+.bottom-gap {
+  display: block;
+  margin-bottom: 10rem;
+  box-sizing: border-box;
+}
+.sticky {
+  position: sticky;
+  margin-top: auto;
+  z-index: 10;
+  display: block;
+  bottom: 0px;
+  width: 100%;
+  background: $WT;
+  box-sizing: border-box;
+  > div {
+    display: flow-root;
+  }
+  .col-2 {
+    display: flex;
+    > * {
+      flex: 1;
+    }
+  }
+}
+.abs {
+  position: absolute;
+}
+.pos-bottom {
+  display: block;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+.padding-top {
+  padding-top: 0.8rem;
+}
+.padding-right {
+  padding-right: 0.8rem;
+}
+.padding-bottom {
+  padding-bottom: 0.8rem;
+}
+.margin-bottom {
+  margin-bottom: 0.8rem;
+}
+.margin-top {
+  margin-top: 0.8rem;
+}
+.margin-right {
+  margin-right: 0.8rem;
+}
+.mgl1 {
+  margin-right: 1rem;
+}
+.mgt1 {
+  margin-top: -1px;
+}
+.mgt4 {
+  margin-top: 0.4rem;
+}
+.mgt8 {
+  margin-top: 0.8rem;
+}
+.mgt20 {
+  margin-top: 2rem;
+}
+.mgb4 {
+  margin-bottom: 0.4rem;
+}
+.mgb8 {
+  margin-bottom: 0.8rem;
+}
+.mgb10 {
+  margin-bottom: 1rem;
+}
+.mgb12 {
+  margin-bottom: 1.2rem;
+}
+.mgb14 {
+  margin-bottom: 1.4rem;
+}
+.mgb20 {
+  margin-bottom: 2rem;
+}
+.mgb40 {
+  margin-bottom: 4rem;
+}
+.mgr20 {
+  margin-right: 2rem;
+}
+.pdl10 {
+  padding-left: 1rem;
+}
+.pd20 {
+  padding: 2rem;
+}
+.pdb8 {
+  padding-bottom: 0.8rem;
+}
+//position
+.place-at-center {
+  @include place-at-center();
+}
+.place-at-bottom {
+  @include place-at-bottom();
+}
+.place-at-right {
+  @include place-at-right();
+}
+.place-at-right-fit {
+  @include place-at-right();
+  transform: translate(0, -50%);
+}
+/*---------------------------------------------------*/
+button {
+  display: inline-block;
+  box-sizing: border-box;
+  background: transparent;
+  font-family: sans-serif;
+  font-weight: 500;
+}
+input {
+  display: inline-block;
+  box-sizing: border-box;
+  &.txt {
+    padding: 1.1rem 1.3rem;
+    font-size: 1.4rem;
+    border-radius: 0.4rem;
+  }
 }
