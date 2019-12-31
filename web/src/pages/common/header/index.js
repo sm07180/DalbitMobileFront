@@ -6,9 +6,14 @@ import styled from 'styled-components'
 //pages
 
 export default () => {
-  return <header>header</header>
+  return <header>3333333333
+    <Wrap>
+      sdfdsfdsfsdsdfsd
+    </Wrap>
+    2
+  </header>
 }
 
 const Wrap = styled.div`
-  background: blue;
+  background: navy;
 `

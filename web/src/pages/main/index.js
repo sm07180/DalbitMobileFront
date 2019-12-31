@@ -10,8 +10,8 @@ import React from 'react'
 import Header from '../common/header'
 import Footer from '../common/footer'
  */
-import Header from '../common/header'
-import Footer from '../common/footer'
+import Header from 'Pages/common/header'
+import Footer from 'Pages/common/footer'
 
 const Main = () => {
   return (
