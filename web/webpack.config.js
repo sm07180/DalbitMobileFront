@@ -45,7 +45,14 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['*', '.js', '*.jsx']
+    extensions: ['*', '.js', '*.jsx'],
+    alias: {
+      Pages: path.resolve(__dirname, 'src/pages/'),
+      Contents: path.resolve(__dirname, 'src/contents/'),
+      Styles: path.resolve(__dirname, 'src/styles/'),
+      Components: path.resolve(__dirname, 'src/components/'),
+      '@': path.resolve(__dirname, 'src/')
+    }
   },
   plugins: [
     new HtmlWebPackPlugin({
