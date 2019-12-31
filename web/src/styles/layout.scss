@@ -5,24 +5,10 @@ body {
 #root {
   height: 100vh;
 }
-header {
-  height: 50px;
-  box-sizing: border-box;
-}
-footer {
-  box-sizing: border-box;
-  height: 50px;
-  width: 100%;
-  bottom: 0px;
-  left: 0px;
-  background: #cccccc;
-}
+
 main {
   display: block;
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 150px);
   background: #ccc;
-}
-footer {
-  background: #ff0000;
 }
