@@ -18,23 +18,20 @@ const Layout = props => {
   //---------------------------------------------------------------------
   return (
     <Container>
-       {/* 헤더설정 */}
-      <Header/>
-       <main>
+      {/* 헤더설정 */}
+      <Header />
+      <main>
         <article>{children}</article>
-        </main>
+      </main>
       {/* 푸터설정 */}
-      <Footer/>
+      <Footer />
     </Container>
   )
 }
 export default Layout
 //
-const Container =styled.div `
-  width:100%;
-  height:100%;
-  box-sizig:border-box;
-  main{
-    border:1px solid #111;
-  }
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 `
