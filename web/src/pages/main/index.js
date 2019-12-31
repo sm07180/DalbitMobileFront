@@ -2,27 +2,22 @@
  *
  */
 import React from 'react'
-
-//pages
-/**
- * 상대경로
- * 
-import Header from '../common/header'
-import Footer from '../common/footer'
- */
-import Header from 'Pages/common/header'
-import Footer from 'Pages/common/footer'
+//layout
+import Layout from '@/pages/common/layout' 
+//components
+import Header from '@/pages/common/header'
+import Footer from '@/pages/common/footer'
 
 const Main = () => {
   return (
-    <React.Fragment>
-      <Header></Header>
+    <Layout>
       <h1>
         <a href="/guide">메인페이지</a>
-        <span></span>
       </h1>
-      <Footer></Footer>
-    </React.Fragment>
+      <section>
+      메인페이지메인페이지메인페이지메인페이지메인페이지메인페이지메인페이지메인페이지메인페이지메인페이지
+      </section>
+    </Layout>
   )
 }
 export default Main

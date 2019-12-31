@@ -6,12 +6,14 @@ import App from './App'
 import './styles/common.scss'
 import './styles/layout.scss'
 //context
-
+import {GlobalProvider} from './context'
 //----------------------------------------------------------------
-
 ReactDOM.render(
   <BrowserRouter>
+  <GlobalProvider>
     <App />
+   </GlobalProvider>
+
   </BrowserRouter>,
   document.getElementById('root')
 )

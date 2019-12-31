@@ -6,14 +6,14 @@ import styled from 'styled-components'
 //pages
 
 export default () => {
-  return <header>3333333333
-    <Wrap>
-      sdfdsfdsfsdsdfsd
-    </Wrap>
-    2
-  </header>
+  return(
+    <Header>
+      CREAM Radio
+    </Header>
+  )
 }
 
-const Wrap = styled.div`
-  background: navy;
+const Header = styled.header`
+
+
 `
