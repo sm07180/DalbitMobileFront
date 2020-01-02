@@ -1,13 +1,14 @@
 /**
- *
+ * @brief 가이드페이지 레이아웃
+ * @author 손완휘
  */
-import React, {useEffect, useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 //context
 import {GuideProvider} from './store'
 //component
 import Menu from './layout-menu'
-
+//
 const Guide = props => {
   //initalize
   const {children} = props
@@ -17,6 +18,7 @@ const Guide = props => {
       <Contents>
         {/* 가이드에 관련된 메뉴들 */}
         <Menu />
+        {/* 컨텐츠영역 */}
         <article>{children}</article>
       </Contents>
     </GuideProvider>

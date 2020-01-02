@@ -6,7 +6,6 @@ import styled from 'styled-components'
 //components
 import {Context} from './store'
 //pages
-import Guide from './content/guide-ajax'
 import StyleButton from './content/style-button'
 import StyleTab from './content/style-tab'
 //

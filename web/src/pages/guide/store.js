@@ -1,16 +1,16 @@
-/*
-import React, {useContext, useState} from 'react'
-import {Context} from 'context'
-
-const store = useContext(Context)
-
+/**
+ * @file store.js
+ * @brief 가이드에서만 사용되는 context API
+ * @author 손완휘
+ * @code 
+  import React, {useContext, useState} from 'react'
+  import {Context} from './store'
+  const store = useContext(Context)
  */
-import React, {useEffect, useState, createContext} from 'react'
-
+import React, {useState, createContext} from 'react'
 //Context
 const Context = createContext()
 const {Provider} = Context
-
 //
 const GuideProvider = props => {
   //state
@@ -18,7 +18,12 @@ const GuideProvider = props => {
   const [menuCode, setMenuCode] = useState('')
   //---------------------------------------------------------------------
   const action = {
-    //updateCode
+    /**
+     * @brief 메뉴변경이 사용될 코드상태값을 업데이트
+     * @code store.updateCode('style-tab')
+     * @param string $str 코드값
+     * @return void
+     */
     updateCode: (str = 'default') => {
       setMenuCode(str)
     },
