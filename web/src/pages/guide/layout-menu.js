@@ -1,14 +1,17 @@
 /**
  * @title 가이드페이지-메뉴구성
  */
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
 //components
+import {Context} from './store'
 import useClick from '@/components/hooks/useClick'
 
 export default props => {
   //---------------------------------------------------------------------
-  const [state, setState] = useState(0)
+  //context
+  const store = useContext(Context)
+
   //hooks
   const hooks1 = useClick(update, {menu: 'menu1'})
   const hooks2 = useClick(update, {menu: 'menu2'})
@@ -16,8 +19,10 @@ export default props => {
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
-      case mode.menu !== undefined: //----------------메뉴변경
-        console.log(mode.menu)
+      case mode.menu !== undefined:
+        store.action.updateCode(mode.menu)
+        break
+      default:
         break
     }
   }
