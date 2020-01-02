@@ -1,7 +1,7 @@
 /**
  * @title 가이드페이지-메뉴구성
  */
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 //components
 import {Context} from './store'
@@ -17,9 +17,9 @@ export default props => {
   //makeContents
   const makeContents = () => {
     switch (store.menuCode) {
-      case 'menu1':
+      case 'style-button':
         return <StyleButton />
-      case 'menu2':
+      case 'style-tab':
         return <StyleTab />
       default:
         return <h1>없음</h1>
@@ -32,6 +32,5 @@ export default props => {
 const Contents = styled.section`
   display: block;
   padding: 10px;
-  border: 1px solid #111;
   box-sizing: border-box;
 `

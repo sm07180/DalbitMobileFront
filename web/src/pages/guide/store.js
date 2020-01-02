@@ -21,12 +21,17 @@ const GuideProvider = props => {
     /**
      * @brief 메뉴변경이 사용될 코드상태값을 업데이트
      * @code store.updateCode('style-tab')
-     * @param string $str 코드값
+     * @param string $str
      * @return void
      */
     updateCode: (str = 'default') => {
       setMenuCode(str)
     },
+    /**
+     * @brief Constructor
+     * @param object $obj
+     * @return void
+     */
     //updateState
     updateState: obj => {
       setState(state => ({...state, ...obj}))

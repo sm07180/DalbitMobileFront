@@ -2,6 +2,7 @@
  * @file layout-menu.js
  * @brief 가이드에서 사용되는 메뉴모음 context(store),hooks를 사용한다
  * @author 손완휘
+ * @todo 메뉴추가 및 페이지추가, 디자인에 맞게 스타일링 다듬기
  */
 import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
@@ -14,8 +15,8 @@ export default props => {
   //context
   const store = useContext(Context)
   //hooks
-  const hooks1 = useClick(update, {menu: 'menu1'})
-  const hooks2 = useClick(update, {menu: 'menu2'})
+  const styleButton = useClick(update, {menu: 'style-button'})
+  const styleTab = useClick(update, {menu: 'style-tab'})
   const hooks3 = useClick(update, {menu: 'menu3'})
   //---------------------------------------------------------------------
   function update(mode) {
@@ -31,11 +32,11 @@ export default props => {
   return (
     <Menus>
       <h1>UI</h1>
-      <button {...hooks1}>메뉴1</button>
+      <button {...styleButton}>메뉴1</button>
       <hr />
       <h1>스타일가이드</h1>
-      <button {...hooks1}>버튼</button>
-      <button {...hooks2}>탭</button>
+      <button {...styleButton}>버튼</button>
+      <button {...styleTab}>탭</button>
       <button {...hooks3}>기타</button>
       <hr />
       <h1>ajax</h1>

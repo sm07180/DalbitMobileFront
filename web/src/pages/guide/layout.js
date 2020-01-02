@@ -31,7 +31,7 @@ const Contents = styled.main`
   height: 100vh;
   box-sizing: border-box;
   article {
-    padding-left: 200px;
+    padding: 20px 20px 20px 200px;
     box-sizing: border-box;
   }
   nav {

@@ -12,4 +12,4 @@ export default () => {
   return <Content>스타일가이드-버튼</Content>
 }
 //---------------------------------------------------------------------
-const Content = styled.section``
+const Content = styled.div``

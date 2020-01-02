@@ -14,4 +14,4 @@ export default () => {
   return <Content>AJAX</Content>
 }
 //---------------------------------------------------------------------
-const Content = styled.section``
+const Content = styled.div``
