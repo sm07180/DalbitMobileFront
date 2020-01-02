@@ -3,25 +3,30 @@
  */
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
+//context
+import {GuideProvider} from './store'
 //component
-import Navi from '@/pages/guide/content/navi'
+import Menu from './layout-menu'
 
 const Guide = props => {
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
   return (
-    <Contents>
-      {/* 가이드에 관련된 메뉴들 */}
-      <Navi />
-      <article>{children}</article>
-    </Contents>
+    <GuideProvider>
+      <Contents>
+        {/* 가이드에 관련된 메뉴들 */}
+        <Menu />
+        <article>{children}</article>
+      </Contents>
+    </GuideProvider>
   )
 }
 export default Guide
 //---------------------------------------------------------------------
 const Contents = styled.main`
   width: 100%;
+  height: 100vh;
   box-sizing: border-box;
   article {
     padding-left: 200px;

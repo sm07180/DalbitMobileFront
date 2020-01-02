@@ -1,7 +1,7 @@
 /*
 
 //hooks
-import useClick from 'components/hooks/useClick'
+import useClick from '@/components/hooks/useClick'
 
   공통함수
   const update = obj => {

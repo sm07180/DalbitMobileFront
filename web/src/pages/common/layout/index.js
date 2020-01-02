@@ -12,7 +12,7 @@ import Footer from '@/pages/common/footer'
 const Layout = props => {
   //initalize
   const {children} = props
-  const store = useContext(Context)
+
   //---------------------------------------------------------------------
 
   //---------------------------------------------------------------------

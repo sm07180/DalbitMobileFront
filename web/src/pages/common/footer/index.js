@@ -19,7 +19,7 @@ export default () => {
       </Menu>
       <Info>
         <strong>대표이사: 박희천 </strong>사업자등록번호: 000-00-00000|통신판매업 신고번호: 제 2018-서울강남-00000호 <br></br>
-        주소: 서울특별시 강남구 강남대로 408|연락처: 1661-8726|제휴/이벤트: inforex@inforex.com
+        주소: 서울특별시 강남구 강남대로 408 연락처: 1661-8726 제휴/이벤트: inforex@inforex.com
       </Info>
     </Footer>
   )

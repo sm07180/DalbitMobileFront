@@ -10,10 +10,9 @@ import {GlobalProvider} from './context'
 //----------------------------------------------------------------
 ReactDOM.render(
   <BrowserRouter>
-  <GlobalProvider>
-    <App />
-   </GlobalProvider>
-
+    <GlobalProvider>
+      <App />
+    </GlobalProvider>
   </BrowserRouter>,
   document.getElementById('root')
 )
