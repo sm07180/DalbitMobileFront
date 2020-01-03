@@ -5,6 +5,12 @@
  */
 
 /**
+ * @brif 서버분기
+ */
+
+export const CDN_SERVER = '/'
+
+/**
  * @brif PC,Tablet,Moble 사이즈 분기
  * @code import {DEVICE_MOBILE} from 'Context/config'
  */

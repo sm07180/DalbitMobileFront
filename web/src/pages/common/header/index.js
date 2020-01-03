@@ -8,6 +8,7 @@ import styled from 'styled-components'
 //components
 import {COLOR_WHITE} from 'Context/color'
 import {DEVICE_MOBILE} from 'Context/config'
+import Profile from './profile'
 //
 export default () => {
   //---------------------------------------------------------------------
@@ -16,6 +17,8 @@ export default () => {
       <a href="#" className="logo">
         CREAM RADIO
       </a>
+      {/* 프로필 */}
+      <Profile />
     </Header>
   )
 }
