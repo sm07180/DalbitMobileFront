@@ -1,11 +1,16 @@
 /**
- * @title footer
+ * @file header/index.js
+ * @brief PC,Mobile 상단에 적용되는 Header영역
+ * @todo 반응형으로 처리되어야함
  */
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
-//pages
-
+//components
+import {COLOR_WHITE} from 'Context/color'
+import {DEVICE_MOBILE} from 'Context/config'
+//
 export default () => {
+  //---------------------------------------------------------------------
   return (
     <Header>
       <a href="#" className="logo">
@@ -14,13 +19,18 @@ export default () => {
     </Header>
   )
 }
-
+//---------------------------------------------------------------------
 const Header = styled.header`
-  background: #eee;
-  height: 50px;
-  box-sizing: border-box;
-  .logo {
-    display: inline-block;
-    padding: 10px 20px;
+  /* mobile media query */
+  @media (max-width: ${DEVICE_MOBILE}) {
+    background: #ff0000;
+    .logo {
+      display: inline-block;
+    }
   }
+  /* pc media query */
+  padding: 10px 20px;
+  height: 50px;
+  background: ${COLOR_WHITE};
+  box-sizing: border-box;
 `

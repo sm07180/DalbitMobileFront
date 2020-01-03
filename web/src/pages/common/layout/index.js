@@ -4,17 +4,14 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from '@/context'
+import {Context} from 'Context'
 //layout
-import Header from '@/pages/common/header'
-import Footer from '@/pages/common/footer'
+import Header from 'Pages/common/header'
+import Footer from 'Pages/common/footer'
 
 const Layout = props => {
   //initalize
   const {children} = props
-
-  //---------------------------------------------------------------------
-
   //---------------------------------------------------------------------
   return (
     <Container>
