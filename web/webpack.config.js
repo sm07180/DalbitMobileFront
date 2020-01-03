@@ -47,7 +47,9 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '*.jsx'],
     alias: {
+      Context: path.resolve(__dirname, 'src/context/'),
       Pages: path.resolve(__dirname, 'src/pages/'),
+      App: path.resolve(__dirname, 'src/pages/app/'),
       Contents: path.resolve(__dirname, 'src/contents/'),
       Styles: path.resolve(__dirname, 'src/styles/'),
       Components: path.resolve(__dirname, 'src/components/'),

@@ -1,12 +1,15 @@
 /**
- *
+ * @file main.js
+ * @brief 메인페이지
  */
 import React from 'react'
 //layout
-import Layout from '@/pages/common/layout'
+import Layout from 'Pages/common/layout'
 //components
 
 const Main = () => {
+  //---------------------------------------------------------------------
+  //---------------------------------------------------------------------
   return (
     <Layout>
       <h1>
