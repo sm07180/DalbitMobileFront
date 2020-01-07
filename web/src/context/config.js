@@ -11,6 +11,11 @@
 export const CDN_SERVER = '/'
 
 /**
+ * @brif 레이아웃
+ */
+export const HEADER_HEIGHT = '350px'
+
+/**
  * @brif PC,Tablet,Moble 사이즈 분기
  * @code import {DEVICE_MOBILE} from 'Context/config'
  */

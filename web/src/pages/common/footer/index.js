@@ -27,11 +27,11 @@ export default () => {
 
 //---------------------------------------------------------------------
 const Footer = styled.footer`
+  position: absolute;
+  bottom: 0;
   display: block;
-  width: 100%;
-  height: 100px;
   padding: 10px;
-  background: #fff;
+  background: #ccc;
   box-sizing: border-box;
 `
 const Info = styled.p`
