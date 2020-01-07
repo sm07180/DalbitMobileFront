@@ -17,8 +17,11 @@ export default () => {
       <a href="#" className="logo">
         달빛라디오
       </a>
-      {/* 프로필 */}
-      <Profile />
+      <div className="util">
+        <Login>로그인</Login>
+        {/* 프로필 */}
+        <Profile />
+      </div>
     </Header>
   )
 }
@@ -38,4 +41,12 @@ const Header = styled.header`
   height: 50px;
   background: ${COLOR_WHITE};
   box-sizing: border-box;
+  .util {
+    float: right;
+  }
+`
+const Login = styled.button`
+  display: inline-block;
+  padding: 10px;
+  vertical-align: middle;
 `

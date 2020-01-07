@@ -9,23 +9,6 @@ import styled from 'styled-components'
 
 export default () => {
   //---------------------------------------------------------------------
-  return (
-    <Profile>
-      <img src="/images/profile.jpg" />
-    </Profile>
-  )
+  return <h1>sdfsd</h1>
 }
 //---------------------------------------------------------------------
-const Profile = styled.span`
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-sizing: border-box;
-  img {
-    width: 100%;
-    height: auto;
-    vertical-align: top;
-  }
-`

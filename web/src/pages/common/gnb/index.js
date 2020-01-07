@@ -16,7 +16,7 @@ export default () => {
     <Gnb>
       <a href="/">홈</a>
       <a href="/">로그인</a>
-      <a href="#">실시간 LIVE</a>
+      <a href="#">마이페이지</a>
       <a href="#">인기 DJ</a>
       <a href="#">인기 캐스트</a>
     </Gnb>
