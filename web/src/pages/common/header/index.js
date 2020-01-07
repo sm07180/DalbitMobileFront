@@ -15,7 +15,7 @@ export default () => {
   return (
     <Header>
       <a href="#" className="logo">
-        CREAM RADIO
+        달빛라디오
       </a>
       {/* 프로필 */}
       <Profile />
