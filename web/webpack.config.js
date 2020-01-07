@@ -40,6 +40,29 @@ module.exports = {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         exclude: /node_modules/
+      },
+      // {
+      //   test: /\.(png|jpg)$/,
+      //   loader: 'url-loader',
+      //   options: {
+      //     name: '[name].[ext]?[hash]',
+      //     publicPath: './dist',
+      //     limit: 10000, // 10kb
+      //     fallback: 'file-loader' // 파일사이즈가 10k보다 큰 겨우, file-loader 이용하여 파일 복사
+      //   }
+      // },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i, // 이미지 로더
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              //publicPath: './dist/images',
+              name: 'images/[name].[ext]'
+              //name: '[name].[ext]?[hash]'
+            }
+          }
+        ]
       }
     ]
   },
