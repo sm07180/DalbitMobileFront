@@ -10,9 +10,9 @@ import {HEADER_HEIGHT} from 'Context/config'
 import Header from 'Pages/common/header'
 import Footer from 'Pages/common/footer'
 import Gnb from 'Pages/common/gnb'
-
+import Popup from 'Pages/common/popup'
+//
 const Layout = props => {
-  console.log(HEADER_HEIGHT)
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
@@ -27,6 +27,8 @@ const Layout = props => {
         {/* 푸터설정 */}
         <Footer />
       </main>
+      {/* 레이어팝업 */}
+      <Popup />
     </Container>
   )
 }

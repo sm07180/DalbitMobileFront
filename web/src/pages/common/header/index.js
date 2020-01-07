@@ -3,14 +3,17 @@
  * @brief PC,Mobile 상단에 적용되는 Header영역
  * @todo 반응형으로 처리되어야함
  */
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
+//context
+import {Context} from 'Context'
 //components
 import {COLOR_WHITE} from 'Context/color'
 import {DEVICE_MOBILE} from 'Context/config'
 import Profile from './profile'
 //
 export default () => {
+  const context = useContext(Context)
   //---------------------------------------------------------------------
   return (
     <Header>
@@ -18,7 +21,12 @@ export default () => {
         달빛라디오
       </a>
       <div className="util">
-        <Login>로그인</Login>
+        <Login
+          onClick={() => {
+            context.action.updatePopup('LOGIN')
+          }}>
+          로그인
+        </Login>
         {/* 프로필 */}
         <Profile />
       </div>
