@@ -14,7 +14,8 @@ export default () => {
   //---------------------------------------------------------------------
   return (
     <Gnb>
-      <a href="#">홈</a>
+      <a href="/">홈</a>
+      <a href="/">로그인</a>
       <a href="#">실시간 LIVE</a>
       <a href="#">인기 DJ</a>
       <a href="#">인기 캐스트</a>
@@ -32,7 +33,7 @@ const Gnb = styled.nav`
   left: 0;
   padding: 10px 20px;
   height: calc(100% - 50px);
-  background: #e1e1e1;
+  border-right: 1px solid #ccc;
   box-sizing: border-box;
   a {
     display: block;

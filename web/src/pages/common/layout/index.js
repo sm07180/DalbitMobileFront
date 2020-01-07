@@ -44,8 +44,10 @@ const Container = styled.div`
     height: calc(100% - 50px);
     padding-left: 200px;
     box-sizing: border-box;
+
     article {
       position: relative;
+      padding-bottom: 100px;
     }
   }
 `
