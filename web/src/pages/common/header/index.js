@@ -32,6 +32,8 @@ const Header = styled.header`
     }
   }
   /* pc media query */
+  display: block;
+  border-bottom: 1px solid #eee;
   padding: 10px 20px;
   height: 50px;
   background: ${COLOR_WHITE};

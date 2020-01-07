@@ -27,11 +27,9 @@ export default () => {
 
 //---------------------------------------------------------------------
 const Footer = styled.footer`
-  position: absolute;
-  bottom: 0;
   display: block;
+  border-top: 1px solid #ccc;
   padding: 10px;
-  background: #ccc;
   box-sizing: border-box;
 `
 const Info = styled.p`
@@ -44,6 +42,6 @@ const Menu = styled.div`
     margin-right: 10px;
     padding: 5px;
     color: #111;
-    fonts-size: 14px;
+    font-size: 14px;
   }
 `
