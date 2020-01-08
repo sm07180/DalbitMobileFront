@@ -7,7 +7,7 @@
 /**
  * @brif 서버분기
  */
-
+export const API_SERVER = 'https://devm-leejaeho1144.wawatoc.com:4431'
 export const CDN_SERVER = '/'
 
 /**

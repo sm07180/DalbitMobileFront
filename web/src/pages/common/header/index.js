@@ -38,11 +38,9 @@ const Header = styled.header`
   /* mobile media query */
   @media (max-width: ${DEVICE_MOBILE}) {
     background: #ff0000;
-    .logo {
-      display: inline-block;
-    }
   }
   /* pc media query */
+  position: relative;
   display: block;
   border-bottom: 1px solid #eee;
   padding: 10px 20px;
@@ -55,6 +53,8 @@ const Header = styled.header`
 `
 const Login = styled.button`
   display: inline-block;
-  padding: 10px;
-  vertical-align: middle;
+  position: absolute;
+  top: 50%;
+  right: 100px;
+  transform: translateY(-50%);
 `

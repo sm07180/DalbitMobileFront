@@ -1,7 +1,10 @@
 
 ###
-GET https://devapi.monpass.im/api/crm/sms/log/?start_date=2019.11.01&end_date=2019.11.30
-Content-Type: application/json
-token: d4c51ea4c51c8569eff087c637e338194a233085fc711b8ed76a288b2714375c
+POST https://devm-leejaeho1144.wawatoc.com:4431/login/authenticate
+content-type: application/json
 
+{
+    "id": "010-1234-7412",
+    "password": "1234"
+}
 ###

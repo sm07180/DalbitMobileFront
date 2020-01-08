@@ -20,16 +20,20 @@ useEffect(() => {
 
 import axios from 'axios'
 //component
-import Config from 'context/config'
-
+import {API_SERVER} from 'context/config'
 export default class API {
   //---------------------------------------------------------------------
 
   //---------------------------------------------------------------------공통
-  //로그인
-  static login = async obj => {
+  /**
+   * @brief 로그인 정보요청
+   * @param string $id
+   * @param string $password
+   * @method "POST"
+   */
+  static login_authenticate = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/auth/login/', method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || '/login/authenticate', method: method || 'POST', data: data})
   }
   //매장 안내 이미지
   static shop_introimg = async obj => {
@@ -46,9 +50,9 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
-  const token = localStorage.getItem('token')
   try {
-    let res = await axios({headers: {token: token}, method: method, url: Config.devServer + url, params: params, data: data})
+    //let res = await axios({headers: {token: token}, method: method, url: Config.devServer + url, params: params, data: data})
+    let res = await axios({method: method, url: API_SERVER + url, params: params, data: data})
     //console.table(res.data)
     return res.data
   } catch (error) {
