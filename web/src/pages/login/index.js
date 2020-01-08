@@ -1,6 +1,6 @@
 /**
- * @file /user/index.js
- * @brief 회원가입
+ * @file /login/index.js
+ * @brief 로그인
  */
 import React from 'react'
 //layout
@@ -14,10 +14,10 @@ const User = () => {
   return (
     <Layout>
       <h1>
-        <a href="/guide">회원가입</a>
+        <a href="/">로그인</a>
       </h1>
 
-      <section>회원가입</section>
+      <section>로그인</section>
     </Layout>
   )
 }

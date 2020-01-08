@@ -10,6 +10,7 @@ import {Route, Switch} from 'react-router-dom'
 /*-common-*/
 import Main from 'Pages/main' //메인
 import Guide from 'Pages/guide/' //가이드
+import Login from 'Pages/login/' //로그인
 import User from 'Pages/user' //유저 (회원가입,회원정보입력등)
 //
 export default () => {
@@ -17,6 +18,7 @@ export default () => {
     <Switch>
       <Route exact path="/" component={Main} />
       <Route exact path="/user" component={User} />
+      <Route exact path="/login" component={Login} />
       <Route exact path="/guide/" component={Guide} />
     </Switch>
   )
