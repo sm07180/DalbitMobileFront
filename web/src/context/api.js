@@ -33,9 +33,9 @@ export default class API {
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------공통
   //매장 안내 이미지
-  static login = async obj => {
+  static login_authenticate = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/login/', method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || '/login/authenticate', method: method || 'POST', data: data})
   }
   // //매장 안내 이미지
   // static shop_introimg = async obj => {
