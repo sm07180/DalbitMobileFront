@@ -40,13 +40,15 @@ const Header = styled.header`
     background: #ff0000;
   }
   /* pc media query */
-  position: relative;
+  position: fixed;
   display: block;
+  width: 100%;
   border-bottom: 1px solid #eee;
   padding: 10px 20px;
   height: 50px;
   background: ${COLOR_WHITE};
   box-sizing: border-box;
+  z-index: 10;
   .util {
     float: right;
   }

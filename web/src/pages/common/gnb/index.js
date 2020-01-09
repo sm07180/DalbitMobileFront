@@ -29,8 +29,9 @@ const Gnb = styled.nav`
   @media (max-width: ${DEVICE_MOBILE}) {
   }
   /* pc media query */
-  position: absolute;
+  position: fixed;
   width: 200px;
+  top: 50px;
   left: 0;
   padding: 10px 20px;
   height: calc(100% - 50px);

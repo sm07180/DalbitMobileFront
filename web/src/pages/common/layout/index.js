@@ -37,11 +37,9 @@ export default Layout
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  overflow: hidden;
   box-sizing: border-box;
-
+  /* 메인페이지 */
   main {
-    position: relative;
     display: block;
     width: 100%;
     height: calc(100% - 50px);
@@ -50,6 +48,7 @@ const Container = styled.div`
     z-index: 1;
     article {
       position: relative;
+      padding-top: 50px;
       padding-bottom: 100px;
     }
   }
