@@ -2,7 +2,7 @@
  * @title RESTFUL API
  * @example 사용법
  *
-import Api from 'context/api'
+import Api from 'Context/api'
 const [fetch, setFetch] = useState(null)
 
 //fetch
@@ -20,36 +20,42 @@ useEffect(() => {
 
 import axios from 'axios'
 //component
-import Config from 'context/config'
+import {API_SERVER} from 'Context/config'
+
+/**
+ * @brief 로그인 정보요청
+ * @param string $id
+ * @param string $password
+ * @method "POST"
+ */
 
 export default class API {
   //---------------------------------------------------------------------
-
   //---------------------------------------------------------------------공통
-  //로그인
+  //매장 안내 이미지
   static login = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/auth/login/', method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || '/login/', method: method || 'POST', data: data})
   }
-  //매장 안내 이미지
-  static shop_introimg = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || '/shop/introimg/', method: method || 'GET'})
-  }
-  //쿠폰(확인,생성)
-  static coupon = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/coupon', method: method || 'GET', data: data})
-  }
+  // //매장 안내 이미지
+  // static shop_introimg = async obj => {
+  //   const {url, method} = obj || {}
+  //   return await ajax({...obj, url: url || '/shop/introimg/', method: method || 'GET'})
+  // }
+  // //쿠폰(확인,생성)
+  // static coupon = async obj => {
+  //   const {url, method, data} = obj || {}
+  //   return await ajax({...obj, url: url || '/coupon', method: method || 'GET', data: data})
+  // }
 }
 //---------------------------------------------------------------------
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
-  const token = localStorage.getItem('token')
   try {
-    let res = await axios({headers: {token: token}, method: method, url: Config.devServer + url, params: params, data: data})
-    //console.table(res.data)
+    //let res = await axios({headers: {token: token}, method: method, url: Config.devServer + url, params: params, data: data})
+    let res = await axios({method: method, url: API_SERVER + url, params: params, data: data})
+    console.table(res.data)
     return res.data
   } catch (error) {
     errorMsg(error)

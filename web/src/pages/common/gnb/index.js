@@ -15,10 +15,11 @@ export default () => {
   return (
     <Gnb>
       <a href="/">홈</a>
-      <a href="/">로그인</a>
-      <a href="#">마이페이지</a>
-      <a href="#">인기 DJ</a>
-      <a href="#">인기 캐스트</a>
+      <a href="/login">로그인</a>
+      <a href="/user">회원가입</a>
+      <a href="#">* 마이페이지</a>
+      <a href="#">* 인기 DJ</a>
+      <a href="#">* 인기 캐스트</a>
     </Gnb>
   )
 }

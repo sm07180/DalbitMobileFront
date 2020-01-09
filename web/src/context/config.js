@@ -5,18 +5,19 @@
  */
 
 /**
- * @brif 서버분기
+ * @brief 서버분기
  */
 
+export const API_SERVER = 'https://devapi2.wawatoc.com'
 export const CDN_SERVER = '/'
 
 /**
- * @brif 레이아웃
+ * @brief 레이아웃
  */
 export const HEADER_HEIGHT = '350px'
 
 /**
- * @brif PC,Tablet,Moble 사이즈 분기
+ * @brief PC,Tablet,Moble 사이즈 분기
  * @code import {DEVICE_MOBILE} from 'Context/config'
  */
 export const DEVICE_PC = '1024px'
