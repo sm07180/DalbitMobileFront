@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-import Label from './style-label.js'
+import Label from './style-label'
+import Input from './style-input'
+import Button from './style-button'
 
 const JoinAuth = props => {
   return (
@@ -14,12 +16,7 @@ const JoinAuth = props => {
       <FormWrap>
         <Label>휴대전화</Label>
         <Input type="text" placeholder="휴대폰 번호를 입력해주세요" />
-        <Button
-          onClick={() => {
-            props.update(true)
-          }}>
-          인증번호 받기
-        </Button>
+        <Button text="인증번호 받기" joinState={props.joinState} update={props.update} />
       </FormWrap>
     </>
   )
@@ -34,28 +31,4 @@ const JoinText = styled.p`
 
 const FormWrap = styled.div`
   margin: 40px 0;
-`
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  border: 1px solid #dadada;
-  border-radius: 5px;
-  color: #555;
-  line-height: 48px;
-  text-indent: 10px;
-`
-
-const Button = styled.button`
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 5px;
-  background: #5a7eff;
-  color: #fff;
-  line-height: 50px;
-`
-
-const SubmitButton = styled(Button)`
-  margin-top: 10px;
 `

@@ -4,12 +4,12 @@ import styled from 'styled-components'
 export default props => {
   return (
     <>
-      <Input type={props.type} placeholder={props.placeholder}></Input>
+      <Input {...props} placeholder={props.placeholder || '값이 없습니다.'}></Input>
     </>
   )
 }
 
-const Input = styled.input.attrs(props => ({}))`
+const Input = styled.input`
   display: block;
   width: 100%;
   border: 1px solid #dadada;
@@ -20,5 +20,8 @@ const Input = styled.input.attrs(props => ({}))`
 
   & + label {
     margin-top: 20px;
+  }
+
+  & + & {
   }
 `

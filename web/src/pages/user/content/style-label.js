@@ -1,17 +1,18 @@
+/**
+ * @file
+ * @todo
+ */
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
 export default props => {
-  return (
-    <>
-      <Label before={props.before}>{props.text}</Label>
-    </>
-  )
+  return <Label before={props.before}>{props.text}</Label>
 }
 
 const Label = styled.label`
   display:block;
   position: relative;
+  margin-top:20px;
   padding: 10px 0 10px 5px;
   font-size: 14px;
   line-height: 1.2;
@@ -21,6 +22,7 @@ const Label = styled.label`
     left:-3px;
     top:11px;
     color:#ec0000;
+    
     content: '${props => (props.before ? '*' : '')}'; 
   }
 `

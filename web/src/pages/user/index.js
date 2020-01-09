@@ -5,6 +5,8 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+//context
+import {DEVICE_MOBILE} from 'Context/config'
 //layout
 import Layout from 'Pages/common/layout'
 //components
@@ -13,15 +15,19 @@ import JoinForm from './content/join-form'
 
 const User = () => {
   //---------------------------------------------------------------------
-  const [joinState, setJoinState] = useState(true)
-  //A
+  const [joinState, setJoinState] = useState(false)
+
+  let check
+  //
 
   function joinForm() {
+    check = joinState ? 'on' : ''
+    console.log(joinState)
     switch (true) {
       case joinState:
         return <JoinForm />
       default:
-        return <JoinAuth update={setJoinState} />
+        return <JoinAuth joinState={joinState} update={setJoinState} />
     }
   }
   //---------------------------------------------------------------------
@@ -31,22 +37,26 @@ const User = () => {
         <a href="/guide">회원가입</a>
       </h1>
 
-      <JoinWrap>
+      <Content>
         <JoinStep>
-          <p>휴대폰 인증</p>
-          <p>회원정보 입력</p>
+          <p className={check}>휴대폰 인증</p>
+          <p className={check}>회원정보 입력</p>
         </JoinStep>
 
         <div>{joinForm()}</div>
-      </JoinWrap>
+      </Content>
     </Layout>
   )
 }
 export default User
 
-const JoinWrap = styled.div`
+const Content = styled.div`
   width: 400px;
-  margin: 30px auto;
+  margin: 30px auto 100px auto;
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 90%;
+  }
 `
 const JoinStep = styled.div`
   margin-bottom: 30px;
@@ -57,6 +67,10 @@ const JoinStep = styled.div`
     box-sizing: border-box;
     font-size: 18px;
     text-align: center;
+  }
+  p.active {
+    color: #1a369a;
+    font-weight: 700;
   }
   p + p:before {
     position: absolute;
