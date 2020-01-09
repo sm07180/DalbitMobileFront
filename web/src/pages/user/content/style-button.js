@@ -6,9 +6,9 @@ export default props => {
     <>
       <Button
         onClick={() => {
-          props.update(true)
+          props.update('step-two')
         }}>
-        {props.text}
+        {props.text || '버튼'}
       </Button>
     </>
   )
@@ -22,8 +22,4 @@ const Button = styled.button`
   background: #5a7eff;
   color: #fff;
   line-height: 50px;
-`
-
-const SubmitButton = styled(Button)`
-  margin-top: 10px;
 `

@@ -47,12 +47,7 @@ const JoinForm = () => {
         <Input type="text" placeholder="이름을 입력해주세요." />
         <ValidateText>*10자 한글/영문을 포함할 수 있습니다.</ValidateText>
         <Label before={true} text="비밀번호" />
-        <Input
-          type="submit"
-          onClick={() => {
-            alert('test')
-          }}
-        />
+        <Input type="text" />
         <ValidateText>
           * 8~20자로 영문/숫자/특수문자 중 2가지 이상 조합으로 입력하세요.<br></br> (대소문자 구분)
         </ValidateText>

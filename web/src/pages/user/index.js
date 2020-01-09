@@ -15,19 +15,17 @@ import JoinForm from './content/join-form'
 
 const User = () => {
   //---------------------------------------------------------------------
-  const [joinState, setJoinState] = useState(false)
-
-  let check
+  const [joinState, setJoinState] = useState('step-one')
   //
 
   function joinForm() {
-    check = joinState ? 'on' : ''
-    console.log(joinState)
-    switch (true) {
-      case joinState:
-        return <JoinForm />
-      default:
+    switch (joinState) {
+      case 'step-one':
         return <JoinAuth joinState={joinState} update={setJoinState} />
+      case 'step-two':
+        return <JoinForm joinState={joinState} update={setJoinState} />
+      default:
+        return <p>없습니다</p>
     }
   }
   //---------------------------------------------------------------------
@@ -38,9 +36,9 @@ const User = () => {
       </h1>
 
       <Content>
-        <JoinStep>
-          <p className={check}>휴대폰 인증</p>
-          <p className={check}>회원정보 입력</p>
+        <JoinStep className={joinState}>
+          <p>휴대폰 인증</p>
+          <p>회원정보 입력</p>
         </JoinStep>
 
         <div>{joinForm()}</div>
@@ -68,13 +66,16 @@ const JoinStep = styled.div`
     font-size: 18px;
     text-align: center;
   }
-  p.active {
-    color: #1a369a;
-    font-weight: 700;
+  p.on {
   }
   p + p:before {
     position: absolute;
     left: -10px;
     content: '>';
+  }
+  &.step-one p:nth-child(1),
+  &.step-two p:nth-child(2) {
+    color: #1a369a;
+    font-weight: 700;
   }
 `

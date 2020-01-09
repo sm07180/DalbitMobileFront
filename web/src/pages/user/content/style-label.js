@@ -1,12 +1,13 @@
 /**
  * @file
- * @todo
+ * @todo 폼에 들어가는 라벨 태그
+ * @state before : true 일시 필수 값 표시 (*)
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
 export default props => {
-  return <Label before={props.before}>{props.text}</Label>
+  return <Label {...props}>{props.text || '라벨'}</Label>
 }
 
 const Label = styled.label`
