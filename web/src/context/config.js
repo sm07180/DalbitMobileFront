@@ -7,8 +7,8 @@
 /**
  * @brief 서버분기
  */
-
-export const API_SERVER = 'https://devapi2.wawatoc.com'
+export const SERVICE_SERVER = 'https://devwww2.wawatoc.com' //서비스서버
+export const API_SERVER = 'https://devapi2.wawatoc.com' //API서버
 export const CDN_SERVER = '/'
 
 /**

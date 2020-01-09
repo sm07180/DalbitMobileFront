@@ -11,21 +11,8 @@ import Api from 'Context/api'
 //
 const User = () => {
   //---------------------------------------------------------------------
-  const [fetch, setFetch] = useState(null)
-  //fetch
-  async function fetchData(obj) {
-    const res = await Api.login_authenticate({
-      params: {
-        id: '010-1234-7412',
-        password: '1234'
-      }
-    })
-    setFetch(res)
-    console.log(res)
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+
+  useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Layout>
@@ -34,7 +21,7 @@ const User = () => {
       </h1>
 
       <section>
-        <div>console확인</div>
+        <div>마이페이지</div>
         <p></p>
       </section>
     </Layout>
