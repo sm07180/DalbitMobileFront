@@ -1,6 +1,6 @@
 
 ###
-POST https://devapi2.wawatoc.com/login
+POST https://devapi2.wawatoc.com/login/authenticate
 content-type: application/json
 
 {

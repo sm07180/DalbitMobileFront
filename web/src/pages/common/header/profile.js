@@ -6,9 +6,6 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 //components
-import {GoogleLogin} from 'react-google-login'
-import KakaoLogin from 'react-kakao-login'
-
 export default () => {
   //---------------------------------------------------------------------
   return (
