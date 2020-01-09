@@ -5,11 +5,35 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
+import {DEVICE_MOBILE} from 'Context/config'
 export default props => {
   const [LiveInfo, setLiveInfo] = useState(props.Info)
   const params = {
-    slidesPerView: 5,
-    spaceBetween: 10,
+    breakpoints: {
+      //0~599
+      0: {
+        slidesPerView: 1,
+        spaceBetween: 0
+      },
+      //601~1024
+      601: {
+        slidesPerView: 2,
+        spaceBetween: 10
+      },
+      960: {
+        slidesPerView: 3,
+        spaceBetween: 10
+      },
+      1280: {
+        slidesPerView: 4,
+        spaceBetween: 10
+      },
+      1440: {
+        slidesPerView: 5,
+        spaceBetween: 10
+      }
+    },
+
     autoplay: {
       delay: 2000,
       disableOnInteraction: false
@@ -24,7 +48,7 @@ export default props => {
       <Slide key={item.id}>
         <Icon>{item.icon}</Icon>
         <Imgbox>
-          <Img src={item.url} />
+          <Img src={item.url} alt={item.name} title={item.name} />
         </Imgbox>
         <InfoBox>
           <InfoTitle>{item.title}</InfoTitle>
@@ -64,10 +88,8 @@ const SlideWrap = styled.div`
       width: 16px;
       height: 28px;
       margin-top: auto;
-      position: absolute;
       top: 0px;
       background-size: auto;
-      z-index: 99;
     }
   }
   & .swiper-button-prev {
@@ -76,11 +98,14 @@ const SlideWrap = styled.div`
   }
 `
 const Title = styled.div`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: bold;
   position: absolute;
   top: 0;
   left: 0;
+  @media (max-width: 420px) {
+    font-size: 2.8rem;
+  }
 `
 /**
  * @brief 라이브-슬라이더 내부컴포넌트 css
@@ -94,7 +119,7 @@ const Icon = styled.div`
   width: 40px;
   height: 40px;
   line-height: 40px;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -110,6 +135,9 @@ const Icon = styled.div`
 `
 const Imgbox = styled.div`
   height: 60%;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 70%;
+  }
 `
 const Img = styled.img`
   width: 100%;
@@ -120,58 +148,85 @@ const InfoBox = styled.div`
   position: relative;
   &:before {
     content: '소통방송';
-    width: 80px;
-    height: 20px;
+    width: 8rem;
+    height: 2rem;
     line-height: 20px;
     color: #fff;
     background-color: coral;
-    font-size: 14px;
+    font-size: 1.4rem;
     text-align: center;
     position: absolute;
     top: -30px;
     left: 0;
     border-radius: 20px;
     opacity: 0.8;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+    }
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 30%;
   }
 `
 const InfoTitle = styled.h2`
   height: 40%;
   padding: 10px 0;
-  font-size: 16px;
+  font-size: 1.6rem;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 2rem;
+    padding: 0;
+    height: 30%;
+    text-align: center;
+  }
+  @media (max-width: 420px) {
+    font-size: 2.4rem;
+  }
 `
 const InfoBj = styled.h2`
   height: 20%;
   color: gray;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: normal;
   padding-bottom: 6px;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    text-align: right;
+    font-size: 1.8rem;
+  }
 `
 const InfoDetail = styled.h2`
   height: 40%;
-  font-size: 16px;
+  font-size: 1.6rem;
   padding: 10px 0;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: ${DEVICE_MOBILE}) {
+  }
 `
 const InfoPeople = styled.div`
   width: 50%;
   height: 100%;
-  font-size: 14px;
+  font-size: 1.4rem;
   padding-left: 24px;
   display: inline-block;
   box-sizing: border-box;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 2rem;
+  }
   &:before {
     content: 'P';
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
     color: #fff;
     background-color: darkcyan;
     text-align: center;
@@ -179,20 +234,27 @@ const InfoPeople = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
   }
 `
 const InfoLike = styled.div`
   width: 50%;
   height: 100%;
-  font-size: 14px;
+  font-size: 1.4rem;
   padding-left: 24px;
   box-sizing: border-box;
   display: inline-block;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 2rem;
+  }
   &:before {
     content: '♥';
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
     color: white;
     background-color: red;
     text-align: center;
@@ -200,5 +262,9 @@ const InfoLike = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
   }
 `

@@ -5,6 +5,8 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
+import {DEVICE_MOBILE} from 'Context/config'
+
 export default props => {
   const [ChoiceInfo, setChoiceInfo] = useState(props.Info)
 
@@ -12,7 +14,7 @@ export default props => {
     return (
       <Slide key={item.id}>
         <ImgBox>
-          <Img src={item.url} />
+          <Img src={item.url} alt={item.name} title={item.name} />
         </ImgBox>
         <ImgInfo>
           <RecoBj>추천 BJ</RecoBj>
@@ -50,11 +52,18 @@ const SliderWrap = styled.div`
   width: 76%;
   height: 100%;
   background-color: white;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
   padding: 10px;
   float: left;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
+    height: 60%;
+  }
+  @media (max-width: 420px) {
+    padding: 10px 0;
+  }
   & .swiper-container {
     height: 100%;
   }
@@ -80,6 +89,12 @@ const ImgBox = styled.div`
   height: 100%;
   margin-right: 5%;
   float: left;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 50%;
+  }
+  @media (max-width: 420px) {
+    margin-right: 2%;
+  }
 `
 const Img = styled.img`
   width: 100%;
@@ -90,6 +105,13 @@ const ImgInfo = styled.div`
   width: 30%;
   margin-right: 5%;
   float: left;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 40%;
+  }
+  @media (max-width: 420px) {
+    width: 46%;
+    margin-right: 2%;
+  }
 `
 const RecoBj = styled.span`
   width: 80px;
@@ -97,41 +119,57 @@ const RecoBj = styled.span`
   line-height: 30px;
   color: white;
   background-color: lightcoral;
-  font-size: 14px;
+  font-size: 1.4rem;
   font-weight: normal;
   text-align: center;
   display: block;
   border-radius: 20px;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 60px;
+    height: 20px;
+    line-height: 20px;
+  }
 `
 const RecoTitle = styled.h2`
-  font-size: 18px;
+  font-size: 1.8rem;
   padding: 10px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    padding: 6px 0;
+  }
 `
 const RecoBjName = styled.h3`
   color: darkblue;
-  font-size: 15px;
+  font-size: 1.5rem;
   text-align: right;
   font-weight: bold;
   margin: 10px 0;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    margin: 6px 0;
+  }
 `
 const RecoDetail = styled.div`
   text-align: left;
-  margin: 20px 0;
+  margin: 2rem 0;
 `
 const RecoPeople = styled.span`
   width: 50%;
-  font-size: 14px;
+  font-size: 1.4rem;
   text-align: center;
   display: block;
   float: left;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    padding-left: 1.6rem;
+    box-sizing: border-box;
+  }
   &:before {
     content: 'P';
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
+    line-height: 20px;
     color: yellow;
     background-color: skyblue;
     text-align: center;
@@ -139,19 +177,30 @@ const RecoPeople = styled.span`
     position: absolute;
     left: 0px;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+    }
   }
 `
 const RecoLike = styled.span`
   width: 50%;
-  font-size: 14px;
+  font-size: 1.4rem;
   text-align: center;
   display: block;
   float: left;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    padding-left: 1.6rem;
+    box-sizing: border-box;
+  }
   &:before {
     content: '♥';
-    width: 20px;
-    height: 20px;
+    width: 2rem;
+    height: 2rem;
+    line-height: 20px;
     color: white;
     background-color: red;
     text-align: center;
@@ -159,5 +208,11 @@ const RecoLike = styled.span`
     position: absolute;
     left: 0px;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+    }
   }
 `
