@@ -41,12 +41,13 @@ const Container = styled.div`
   box-sizing: border-box;
 
   main {
+    position: relative;
     display: block;
     width: 100%;
     height: calc(100% - 50px);
     padding-left: 200px;
     box-sizing: border-box;
-
+    z-index: 1;
     article {
       position: relative;
       padding-bottom: 100px;
