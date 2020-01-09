@@ -63,7 +63,7 @@ const SliderWrap = styled.div`
     }
   }
 `
-const RankTitle = styled.h2`
+const RankTitle = styled.div`
   height: 14%;
   font-size: 14px;
   text-align: center;
