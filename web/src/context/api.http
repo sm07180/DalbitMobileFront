@@ -1,6 +1,6 @@
 
 ###
-POST https://devm-leejaeho1144.wawatoc.com:4431/login/authenticate
+POST https://devapi2.wawatoc.com/login
 content-type: application/json
 
 {
