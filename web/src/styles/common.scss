@@ -16,16 +16,6 @@ body {
   font-family: sans-serif;
   -webkit-text-size-adjust: none;
   height: 100vh;
-  font-size: 10px;
-  @media (max-width: 600px) {
-    font-size: 8px;
-  }
-  @media (max-width: 420px) {
-    font-size: 7px;
-  }
-  @media (max-width: 375px) {
-    font-size: 6.5px;
-  }
 }
 img,
 svg {

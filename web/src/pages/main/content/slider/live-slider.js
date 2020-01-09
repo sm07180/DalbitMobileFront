@@ -98,13 +98,13 @@ const SlideWrap = styled.div`
   }
 `
 const Title = styled.div`
-  font-size: 2.4rem;
+  font-size: 24px;
   font-weight: bold;
   position: absolute;
   top: 0;
   left: 0;
   @media (max-width: 420px) {
-    font-size: 2.8rem;
+    font-size: 16px;
   }
 `
 /**
@@ -119,7 +119,7 @@ const Icon = styled.div`
   width: 40px;
   height: 40px;
   line-height: 40px;
-  font-size: 1.2rem;
+  font-size: 12px;
   color: white;
   font-weight: bold;
   text-align: center;
@@ -148,12 +148,12 @@ const InfoBox = styled.div`
   position: relative;
   &:before {
     content: '소통방송';
-    width: 8rem;
-    height: 2rem;
+    width: 80px;
+    height: 20px;
     line-height: 20px;
     color: #fff;
     background-color: coral;
-    font-size: 1.4rem;
+    font-size: 14px;
     text-align: center;
     position: absolute;
     top: -30px;
@@ -174,36 +174,36 @@ const InfoBox = styled.div`
 const InfoTitle = styled.h2`
   height: 40%;
   padding: 10px 0;
-  font-size: 1.6rem;
+  font-size: 16px;
   box-sizing: border-box;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 2rem;
+    font-size: 16px;
     padding: 0;
     height: 30%;
     text-align: center;
   }
   @media (max-width: 420px) {
-    font-size: 2.4rem;
+    font-size: 14px;
   }
 `
 const InfoBj = styled.h2`
   height: 20%;
   color: gray;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: normal;
   padding-bottom: 6px;
   box-sizing: border-box;
   @media (max-width: ${DEVICE_MOBILE}) {
     text-align: right;
-    font-size: 1.8rem;
+    font-size: 16px;
   }
 `
 const InfoDetail = styled.h2`
   height: 40%;
-  font-size: 1.6rem;
+  font-size: 16px;
   padding: 10px 0;
   box-sizing: border-box;
   overflow: hidden;
@@ -215,18 +215,18 @@ const InfoDetail = styled.h2`
 const InfoPeople = styled.div`
   width: 50%;
   height: 100%;
-  font-size: 1.4rem;
+  font-size: 14px;
   padding-left: 24px;
   display: inline-block;
   box-sizing: border-box;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 2rem;
+    font-size: 14px;
   }
   &:before {
     content: 'P';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     color: #fff;
     background-color: darkcyan;
     text-align: center;
@@ -235,26 +235,26 @@ const InfoPeople = styled.div`
     left: 0;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      width: 2.6rem;
-      height: 2.6rem;
+      width: 18px;
+      height: 18px;
     }
   }
 `
 const InfoLike = styled.div`
   width: 50%;
   height: 100%;
-  font-size: 1.4rem;
+  font-size: 14px;
   padding-left: 24px;
   box-sizing: border-box;
   display: inline-block;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 2rem;
+    font-size: 10px;
   }
   &:before {
     content: '♥';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     color: white;
     background-color: red;
     text-align: center;
@@ -263,8 +263,8 @@ const InfoLike = styled.div`
     left: 0;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      width: 2.6rem;
-      height: 2.6rem;
+      width: 18px;
+      height: 18px;
     }
   }
 `

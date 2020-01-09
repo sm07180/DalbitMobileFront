@@ -102,9 +102,9 @@ const ContentTop = styled.section`
   width: 100%;
   height: 300px;
   background-color: #fff;
-  padding: 10px 2rem;
+  padding: 10px 20px;
   box-sizing: border-box;
   @media (max-width: 420px) {
-    padding: 10px 1rem;
+    padding: 10px 10px;
   }
 `

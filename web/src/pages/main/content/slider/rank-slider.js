@@ -60,7 +60,7 @@ const Wrap = styled.div`
   }
 `
 const SliderWrap = styled.div`
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: bold;
   width: 100%;
   height: 100%;
@@ -84,11 +84,11 @@ const SliderWrap = styled.div`
 `
 const RankTitle = styled.div`
   height: 14%;
-  font-size: 1.4rem;
+  font-size: 14px;
   text-align: center;
   @media (max-width: ${DEVICE_MOBILE}) {
     height: auto;
-    font-size: 2rem;
+    font-size: 12px;
   }
 `
 const StarRank = styled.h4`
@@ -101,14 +101,14 @@ const StarHole = styled.h4`
   position: relative;
   &:before {
     content: '+';
-    font-size: 1.4rem;
+    font-size: 14px;
     display: inline-block;
     position: absolute;
     top: 0;
     left: 10%;
     @media (max-width: ${DEVICE_MOBILE}) {
       left: 22%;
-      font-size: 2rem;
+      font-size: 10px;
     }
   }
 `
@@ -139,7 +139,7 @@ const ImgBox = styled.div`
     width: 60px;
     height: 20px;
     line-height: 20px;
-    font-size: 1.4rem;
+    font-size: 14px;
     color: blue;
     background-color: yellow;
     text-align: center;
@@ -181,12 +181,12 @@ const InfoTiteR = styled.h4`
   box-sizing: border-box;
   @media (max-width: ${DEVICE_MOBILE}) {
     padding: 0;
-    font-size: 1.5rem;
+    font-size: 12px;
   }
 `
 const RankBox = styled.div`
   width: 60%;
-  font-size: 1.4rem;
+  font-size: 14px;
   text-align: center;
   margin: 0 auto;
   padding: 10px 0px;
@@ -203,8 +203,8 @@ const RankGold = styled.span`
   position: relative;
   &:before {
     content: 'G';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     line-height: 20px;
     color: white;
     position: absolute;
@@ -232,8 +232,8 @@ const RankHeart = styled.span`
   box-sizing: border-box;
   &:before {
     content: '♥';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     line-height: 20px;
     color: white;
     background-color: red;

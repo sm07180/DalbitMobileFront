@@ -52,7 +52,7 @@ const SliderWrap = styled.div`
   width: 76%;
   height: 100%;
   background-color: white;
-  font-size: 2rem;
+  font-size: 20px;
   font-weight: bold;
   padding: 10px;
   float: left;
@@ -119,7 +119,7 @@ const RecoBj = styled.span`
   line-height: 30px;
   color: white;
   background-color: lightcoral;
-  font-size: 1.4rem;
+  font-size: 14px;
   font-weight: normal;
   text-align: center;
   display: block;
@@ -131,7 +131,7 @@ const RecoBj = styled.span`
   }
 `
 const RecoTitle = styled.h2`
-  font-size: 1.8rem;
+  font-size: 18px;
   padding: 10px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -142,7 +142,7 @@ const RecoTitle = styled.h2`
 `
 const RecoBjName = styled.h3`
   color: darkblue;
-  font-size: 1.5rem;
+  font-size: 15px;
   text-align: right;
   font-weight: bold;
   margin: 10px 0;
@@ -152,23 +152,23 @@ const RecoBjName = styled.h3`
 `
 const RecoDetail = styled.div`
   text-align: left;
-  margin: 2rem 0;
+  margin: 20px 0;
 `
 const RecoPeople = styled.span`
   width: 50%;
-  font-size: 1.4rem;
+  font-size: 14px;
   text-align: center;
   display: block;
   float: left;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    padding-left: 1.6rem;
+    padding-left: 12px;
     box-sizing: border-box;
   }
   &:before {
     content: 'P';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     line-height: 20px;
     color: yellow;
     background-color: skyblue;
@@ -187,19 +187,19 @@ const RecoPeople = styled.span`
 `
 const RecoLike = styled.span`
   width: 50%;
-  font-size: 1.4rem;
+  font-size: 14px;
   text-align: center;
   display: block;
   float: left;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    padding-left: 1.6rem;
+    padding-left: 14px;
     box-sizing: border-box;
   }
   &:before {
     content: '♥';
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
     line-height: 20px;
     color: white;
     background-color: red;
