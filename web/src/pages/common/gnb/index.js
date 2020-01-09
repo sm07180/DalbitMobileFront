@@ -27,6 +27,7 @@ export default () => {
 const Gnb = styled.nav`
   /* mobile media query */
   @media (max-width: ${DEVICE_MOBILE}) {
+    display: none;
   }
   /* pc media query */
   position: fixed;

@@ -4,6 +4,7 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {DEVICE_MOBILE} from 'Context/config'
 import {Context} from 'Context'
 import {HEADER_HEIGHT} from 'Context/config'
 //layout
@@ -46,10 +47,13 @@ const Container = styled.div`
     padding-left: 200px;
     box-sizing: border-box;
     z-index: 1;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      padding-left: 0;
+    }
+    /* 컨텐츠내용 */
     article {
       position: relative;
       padding-top: 50px;
-      padding-bottom: 100px;
     }
   }
 `
