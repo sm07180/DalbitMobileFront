@@ -16,7 +16,7 @@ const User = () => {
   async function fetchData(obj) {
     const res = await Api.login_authenticate({
       data: {
-        id: '010-1234-7412',
+        id1: '010-1234-7412',
         password: '1234'
       }
     })

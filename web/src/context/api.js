@@ -1,5 +1,7 @@
 /**
  * @title RESTFUL API
+ * @document https://docs.google.com/spreadsheets/d/1WiGM6RP2g4qvlKzkMnHMkrc8683Zy8Ka/edit#gid=248254560
+ * @notice API정의서_v2.xlsx 문서확인
  * @example 사용법
  *
 import Api from 'Context/api'
@@ -50,8 +52,10 @@ export const ajax = async obj => {
       params: qs.stringify(params),
       data: qs.stringify(data)
     })
-    // 로그출력
+    // table 모양 로그출력
     console.table(res.data)
+    // string 로그출력
+    //console.log(JSON.stringify(res.data, null, 1))
     return res.data
   } catch (error) {
     errorMsg(error)
