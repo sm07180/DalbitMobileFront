@@ -12,6 +12,7 @@ import Main from 'Pages/main' //메인
 import Guide from 'Pages/guide/' //가이드
 import Login from 'Pages/login/' //로그인
 import User from 'Pages/user' //유저 (회원가입,회원정보입력등)
+import Mypage from 'Pages/mypage' //마이페이지
 //
 export default () => {
   return (
@@ -20,6 +21,7 @@ export default () => {
       <Route exact path="/user" component={User} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/guide/" component={Guide} />
+      <Route exact path="/mypage/" component={Mypage} />
     </Switch>
   )
 }

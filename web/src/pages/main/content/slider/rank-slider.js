@@ -5,7 +5,7 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
-
+import {DEVICE_MOBILE} from 'Context/config'
 export default props => {
   const [RankInfo, setLiveInfo] = useState(props.Info)
   const params = {
@@ -18,7 +18,7 @@ export default props => {
     return (
       <Slide key={item.id}>
         <ImgBox>
-          <Img src={item.url} />
+          <Img src={item.url} alt={item.name} title={item.name} />
         </ImgBox>
         <InfoBox>
           <InfoTiteR>BJ {item.name}</InfoTiteR>
@@ -31,7 +31,7 @@ export default props => {
     )
   })
   return (
-    <>
+    <Wrap>
       <SliderWrap>
         <RankTitle>
           <StarRank>스타랭킹</StarRank>
@@ -39,27 +39,46 @@ export default props => {
         </RankTitle>
         <Swiper {...params}>{arraySlide}</Swiper>
       </SliderWrap>
-    </>
+    </Wrap>
   )
 }
 /**
  * @brief rank slider 컴포넌트 css
  * @code
  **/
-const SliderWrap = styled.div`
+const Wrap = styled.div`
   width: 24%;
   height: 100%;
-  font-size: 20px;
-  font-weight: bold;
   background-color: #fff;
   padding: 20px 30px;
   float: left;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
+    height: 40%;
+    padding: 10px 0;
+  }
+`
+const SliderWrap = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  width: 100%;
+  height: 100%;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 60%;
+    margin: 0 auto;
+  }
   & .swiper-container {
     height: 86%;
     & .swiper-button-prev,
     .swiper-button-next {
       top: 30%;
+      @media (max-width: ${DEVICE_MOBILE}) {
+        width: 20px;
+        height: 22px;
+        margin-top: auto;
+        background-size: auto;
+      }
     }
   }
 `
@@ -67,6 +86,10 @@ const RankTitle = styled.div`
   height: 14%;
   font-size: 14px;
   text-align: center;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: auto;
+    font-size: 12px;
+  }
 `
 const StarRank = styled.h4`
   width: 50%;
@@ -83,6 +106,10 @@ const StarHole = styled.h4`
     position: absolute;
     top: 0;
     left: 10%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      left: 22%;
+      font-size: 10px;
+    }
   }
 `
 /**
@@ -92,6 +119,15 @@ const StarHole = styled.h4`
 const Slide = styled.div`
   width: 100%;
   height: 100%;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    &:after {
+      content: '';
+      clear: both;
+      display: block;
+    }
+    padding: 2% 20%;
+    box-sizing: border-box;
+  }
 `
 const ImgBox = styled.div`
   width: 60%;
@@ -113,28 +149,51 @@ const ImgBox = styled.div`
     left: -20px;
     border-radius: 20px;
     z-index: 99;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      width: 40px;
+      height: 16px;
+      line-height: 16px;
+    }
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 50%;
+    height: 100%;
+    float: left;
   }
 `
 const Img = styled.img`
   width: 100%;
   height: 100%;
+  display: block;
 `
 const InfoBox = styled.div`
   height: 40%;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 50%;
+    height: 100%;
+    float: left;
+  }
 `
 const InfoTiteR = styled.h4`
   text-align: center;
   color: orangered;
   padding: 10px 0;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    padding: 0;
+    font-size: 12px;
+  }
 `
 const RankBox = styled.div`
   width: 60%;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   margin: 0 auto;
   padding: 10px 0px;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
+  }
 `
 const RankGold = styled.span`
   width: 50%;
@@ -153,6 +212,16 @@ const RankGold = styled.span`
     top: 0;
     background-color: gold;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+      left: 18%;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+    }
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
   }
 `
 const RankHeart = styled.span`
@@ -172,5 +241,17 @@ const RankHeart = styled.span`
     left: 0px;
     top: 0;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+      left: 18%;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+      left: 18%;
+    }
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
+    margin-top: 6px;
   }
 `

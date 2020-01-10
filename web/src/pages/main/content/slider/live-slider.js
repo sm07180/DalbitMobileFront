@@ -5,11 +5,35 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
+import {DEVICE_MOBILE} from 'Context/config'
 export default props => {
   const [LiveInfo, setLiveInfo] = useState(props.Info)
   const params = {
-    slidesPerView: 5,
-    spaceBetween: 10,
+    breakpoints: {
+      //0~599
+      0: {
+        slidesPerView: 1,
+        spaceBetween: 0
+      },
+      //601~1024
+      601: {
+        slidesPerView: 2,
+        spaceBetween: 10
+      },
+      960: {
+        slidesPerView: 3,
+        spaceBetween: 10
+      },
+      1280: {
+        slidesPerView: 4,
+        spaceBetween: 10
+      },
+      1440: {
+        slidesPerView: 5,
+        spaceBetween: 10
+      }
+    },
+
     autoplay: {
       delay: 2000,
       disableOnInteraction: false
@@ -24,7 +48,7 @@ export default props => {
       <Slide key={item.id}>
         <Icon>{item.icon}</Icon>
         <Imgbox>
-          <Img src={item.url} />
+          <Img src={item.url} alt={item.name} title={item.name} />
         </Imgbox>
         <InfoBox>
           <InfoTitle>{item.title}</InfoTitle>
@@ -64,10 +88,8 @@ const SlideWrap = styled.div`
       width: 16px;
       height: 28px;
       margin-top: auto;
-      position: absolute;
       top: 0px;
       background-size: auto;
-      z-index: 99;
     }
   }
   & .swiper-button-prev {
@@ -81,6 +103,9 @@ const Title = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  @media (max-width: 420px) {
+    font-size: 16px;
+  }
 `
 /**
  * @brief 라이브-슬라이더 내부컴포넌트 css
@@ -110,6 +135,9 @@ const Icon = styled.div`
 `
 const Imgbox = styled.div`
   height: 60%;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 70%;
+  }
 `
 const Img = styled.img`
   width: 100%;
@@ -132,6 +160,15 @@ const InfoBox = styled.div`
     left: 0;
     border-radius: 20px;
     opacity: 0.8;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      line-height: 16px;
+    }
+    @media (max-width: 420px) {
+      line-height: 12px;
+    }
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 30%;
   }
 `
 const InfoTitle = styled.h2`
@@ -142,6 +179,15 @@ const InfoTitle = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 16px;
+    padding: 0;
+    height: 30%;
+    text-align: center;
+  }
+  @media (max-width: 420px) {
+    font-size: 14px;
+  }
 `
 const InfoBj = styled.h2`
   height: 20%;
@@ -150,6 +196,10 @@ const InfoBj = styled.h2`
   font-weight: normal;
   padding-bottom: 6px;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    text-align: right;
+    font-size: 16px;
+  }
 `
 const InfoDetail = styled.h2`
   height: 40%;
@@ -159,6 +209,8 @@ const InfoDetail = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  @media (max-width: ${DEVICE_MOBILE}) {
+  }
 `
 const InfoPeople = styled.div`
   width: 50%;
@@ -168,6 +220,9 @@ const InfoPeople = styled.div`
   display: inline-block;
   box-sizing: border-box;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 14px;
+  }
   &:before {
     content: 'P';
     width: 20px;
@@ -179,6 +234,10 @@ const InfoPeople = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      width: 18px;
+      height: 18px;
+    }
   }
 `
 const InfoLike = styled.div`
@@ -189,6 +248,9 @@ const InfoLike = styled.div`
   box-sizing: border-box;
   display: inline-block;
   position: relative;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 10px;
+  }
   &:before {
     content: '♥';
     width: 20px;
@@ -200,5 +262,9 @@ const InfoLike = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
+    @media (max-width: ${DEVICE_MOBILE}) {
+      width: 18px;
+      height: 18px;
+    }
   }
 `

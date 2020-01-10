@@ -6,6 +6,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ChoiceSlider from './slider/choice-slider'
 import RankSlider from './slider/rank-slider'
+import {DEVICE_MOBILE} from 'Context/config'
 
 export default () => {
   const ChoiceInfo = [
@@ -60,7 +61,6 @@ export default () => {
     },
     {
       id: '2',
-
       url: 'https://kr-cdn.spooncast.net/casts/0/vOAG40SDdxmmr/a8c3331b-3421-45f5-8b01-7ab13f31fd2a-M.jpg',
       name: '베베베베',
       gold: '5,230',
@@ -68,7 +68,6 @@ export default () => {
     },
     {
       id: '3',
-
       url: 'https://kr-cdn.spooncast.net/casts/n/Ja2n4nTe4xXxJ/7685cd8c-1019-4906-9a00-a874a2e6aaa8-M.jpg',
       name: '메 린🌊',
       gold: '4,092',
@@ -76,7 +75,6 @@ export default () => {
     },
     {
       id: '4',
-
       url: 'https://kr-cdn.spooncast.net/casts/f/Gkn6JfnkDXE3/ad3a66c5-6079-4091-a15e-1cac6bee01aa-M.jpg',
       name: '∴ 한 아 연 ∵',
       gold: '3,013',
@@ -84,7 +82,6 @@ export default () => {
     },
     {
       id: '5',
-
       url: 'https://kr-cdn.spooncast.net/casts/5/m08QZ5c4wJAzb/d7174049-d79e-44de-823a-ff4530f492e9-M.jpg',
       name: '새 벽 ☆.ﾟ"',
       gold: '2,974',
@@ -107,4 +104,7 @@ const ContentTop = styled.section`
   background-color: #fff;
   padding: 10px 20px;
   box-sizing: border-box;
+  @media (max-width: 420px) {
+    padding: 10px 10px;
+  }
 `

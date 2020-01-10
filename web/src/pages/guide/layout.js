@@ -9,6 +9,7 @@ import {GuideProvider} from './store'
 //component
 import Menu from './layout-menu'
 //
+
 const Guide = props => {
   //initalize
   const {children} = props
@@ -30,6 +31,7 @@ const Contents = styled.main`
   width: 100%;
   height: 100vh;
   box-sizing: border-box;
+
   article {
     padding: 20px 20px 20px 200px;
     box-sizing: border-box;

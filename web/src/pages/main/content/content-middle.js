@@ -5,6 +5,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import LiveSlider from './slider/live-slider'
+import {DEVICE_MOBILE} from 'Context/config'
 
 export default () => {
   const LiveSliderInfo = [
@@ -114,4 +115,10 @@ const ContentMiddle = styled.section`
   background-color: #fff;
   padding: 10px 20px;
   box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 340px;
+  }
+  @media (max-width: 420px) {
+    padding: 10px 10px;
+  }
 `

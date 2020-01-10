@@ -8,6 +8,7 @@ import Layout from 'Pages/common/layout'
 import styled from 'styled-components'
 import CTOP from './content/content-top'
 import CMiddle from './content/content-middle'
+import {DEVICE_MOBILE} from 'Context/config'
 //components
 
 const Main = () => {
@@ -32,15 +33,15 @@ export default Main
 
 const Section = styled.section`
   width: 100%;
-  background-color: orange;
 `
 const Wrap = styled.div`
   width: 80%;
-  background-color: skyblue;
   margin: 0 auto;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 100%;
+  }
 `
 const CBottom = styled.div`
   width: 100%;
   height: 300px;
-  background-color: lightpink;
 `

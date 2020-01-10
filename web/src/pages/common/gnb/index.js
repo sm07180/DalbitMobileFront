@@ -3,32 +3,48 @@
  * @brief PC,Mobile 상단에 적용되는 Header영역
  * @todo 반응형으로 처리되어야함
  */
-import React, {useEffect} from 'react'
+import React, {useContext} from 'react'
+import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
+//context
+import {Context} from 'Context'
 //components
-import {COLOR_WHITE} from 'Context/color'
 import {DEVICE_MOBILE} from 'Context/config'
 
 //
 export default () => {
   //---------------------------------------------------------------------
+  //context
+  const context = new useContext(Context)
+  const info = [
+    {title: '홈', url: '/'},
+    {title: '로그인', url: '/login/'},
+    {title: '회원가입', url: '/user/'},
+    {title: '* 마이페이지', url: '/mypage'},
+    {title: '* 방송하기', url: '/'}
+  ]
+  //makeMenu
+  const makeNavigation = () => {
+    return info.map((list, idx) => {
+      const _title = info[idx].title
+      const _url = info[idx].url
+      return (
+        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
+          <span>{_title}</span>
+        </NavLink>
+      )
+    })
+  }
+  //---------------------------------------------------------------------
   return (
     <Gnb>
-      <a href="/">홈</a>
-      <a href="/login">로그인</a>
-      <a href="/user">회원가입</a>
-      <a href="#">* 마이페이지</a>
-      <a href="#">* 인기 DJ</a>
-      <a href="#">* 인기 캐스트</a>
+      {/* 네비게이션 동적으로생성 */}
+      {makeNavigation()}
     </Gnb>
   )
 }
 //---------------------------------------------------------------------
 const Gnb = styled.nav`
-  /* mobile media query */
-  @media (max-width: ${DEVICE_MOBILE}) {
-    display: none;
-  }
   /* pc media query */
   position: fixed;
   width: 200px;
@@ -41,5 +57,9 @@ const Gnb = styled.nav`
   a {
     display: block;
     padding: 10px 20px;
+  }
+  /* mobile media query */
+  @media (max-width: ${DEVICE_MOBILE}) {
+    display: none;
   }
 `
