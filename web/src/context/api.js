@@ -9,7 +9,6 @@ const [fetch, setFetch] = useState(null)
 async function fetchData(obj) {
   const res = await Api.rooms_now({...obj})
   setFetch(res)
-  setChanges(changes => ({...changes, ...res.data}))
   console.log(res)
 }
 
@@ -19,34 +18,23 @@ useEffect(() => {
  */
 
 import axios from 'axios'
+import qs from 'qs'
 //component
 import {API_SERVER} from 'Context/config'
 
-/**
- * @brief 로그인 정보요청
- * @param string $id
- * @param string $password
- * @method "POST"
- */
-
 export default class API {
   //---------------------------------------------------------------------
-  //---------------------------------------------------------------------공통
-  //매장 안내 이미지
+  /**
+   * @brief 로그인 정보요청
+   * @param string $id
+   * @param string $password
+   * @method "POST"
+   */
+
   static login_authenticate = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || '/login/authenticate', method: method || 'POST', data: data})
   }
-  // //매장 안내 이미지
-  // static shop_introimg = async obj => {
-  //   const {url, method} = obj || {}
-  //   return await ajax({...obj, url: url || '/shop/introimg/', method: method || 'GET'})
-  // }
-  // //쿠폰(확인,생성)
-  // static coupon = async obj => {
-  //   const {url, method, data} = obj || {}
-  //   return await ajax({...obj, url: url || '/coupon', method: method || 'GET', data: data})
-  // }
 }
 //---------------------------------------------------------------------
 //ajax
@@ -59,10 +47,11 @@ export const ajax = async obj => {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: API_SERVER + url,
-      params: params,
-      data: data
+      params: qs.stringify(params),
+      data: qs.stringify(data)
     })
-
+    // 로그출력
+    console.table(res.data)
     return res.data
   } catch (error) {
     errorMsg(error)
