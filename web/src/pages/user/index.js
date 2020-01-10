@@ -10,24 +10,13 @@ import {DEVICE_MOBILE} from 'Context/config'
 //layout
 import Layout from 'Pages/common/layout'
 //components
-import JoinAuth from './content/join-auth'
-import JoinForm from './content/join-form'
+import Input from './content/input-type'
 
 const User = () => {
   //---------------------------------------------------------------------
-  const [joinState, setJoinState] = useState('step-one')
+
   //
 
-  function joinForm() {
-    switch (joinState) {
-      case 'step-one':
-        return <JoinAuth joinState={joinState} update={setJoinState} />
-      case 'step-two':
-        return <JoinForm joinState={joinState} update={setJoinState} />
-      default:
-        return <p>없습니다</p>
-    }
-  }
   //---------------------------------------------------------------------
   return (
     <Layout>
@@ -36,12 +25,8 @@ const User = () => {
       </h1>
 
       <Content>
-        <JoinStep className={joinState}>
-          <p>휴대폰 인증</p>
-          <p>회원정보 입력</p>
-        </JoinStep>
-
-        <div>{joinForm()}</div>
+        <Input type="nickname" title="닉네임" placeholder="닉네임을 입력해주세요" required={true} />
+        <Input type="name" title="이름(실명)" placeholder="이름을 입력해주세요" />
       </Content>
     </Layout>
   )
