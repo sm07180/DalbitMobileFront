@@ -32,7 +32,7 @@ const makeInput = props => {
   }
 
   const validateName = nameEntered => {
-    if (nameEntered.length > 1 && nameEntered.length < 21) {
+    if (nameEntered.length > 1 && nameEntered.length < 11) {
       setNameState({
         isNameValid: true
       })
