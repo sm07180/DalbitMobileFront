@@ -24,16 +24,14 @@ const User = () => {
         <a href="/guide">회원가입</a>
       </h1>
       <Content>
-<<<<<<< HEAD
         <JoinStep className={joinState}>
           <p>휴대폰 인증</p>
           <p>회원정보 입력</p>
         </JoinStep>
         <div>{joinForm()}</div>
-=======
+
         <Input type="nickname" title="닉네임" placeholder="닉네임을 입력해주세요" required={true} />
         <Input type="name" title="이름(실명)" placeholder="이름을 입력해주세요" />
->>>>>>> 24fe21079526cb95d2ebe23b8d1bd84fb936c999
       </Content>
     </Layout>
   )
