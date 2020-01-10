@@ -17,7 +17,9 @@ export default props => {
   //hooks
   const styleButton = useClick(update, {menu: 'style-button'})
   const styleTab = useClick(update, {menu: 'style-tab'})
+  const styleChart = useClick(update, {menu: 'style-chart'})
   const hooks3 = useClick(update, {menu: 'menu3'})
+
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
@@ -38,6 +40,7 @@ export default props => {
       <button {...styleButton}>버튼</button>
       <button {...styleTab}>탭</button>
       <button {...hooks3}>기타</button>
+      <button {...styleChart}>차트</button>
       <hr />
       <h1>ajax</h1>
       <button>GET</button>

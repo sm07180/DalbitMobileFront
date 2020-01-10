@@ -8,6 +8,7 @@ import {Context} from './store'
 //pages
 import StyleButton from './content/style-button'
 import StyleTab from './content/style-tab'
+import StyleChart from './content/style-chart'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -21,6 +22,8 @@ export default props => {
         return <StyleButton />
       case 'style-tab':
         return <StyleTab />
+      case 'style-chart':
+        return <StyleChart />
       default:
         return <h1>없음</h1>
     }
