@@ -14,7 +14,7 @@ const JoinAuth = props => {
       </JoinText>
 
       <FormWrap>
-        <Label text="휴대전화" for="phone" />
+        <Label text="휴대전화" htmlfor="phone" />
         <Input type="text" placeholder="휴대폰 번호를 입력해주세요" id="phone" />
         <Button text="인증번호 받기" joinState={props.joinState} update={props.update} />
       </FormWrap>
