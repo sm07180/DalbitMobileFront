@@ -21,7 +21,7 @@ const User = () => {
       </h1>
 
       <section>
-        <div>마이페이지</div>
+        <div>test11112</div>
         <p></p>
       </section>
     </Layout>

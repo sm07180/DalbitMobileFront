@@ -34,13 +34,11 @@ const User = () => {
       <h1>
         <a href="/guide">회원가입</a>
       </h1>
-
       <Content>
         <JoinStep className={joinState}>
           <p>휴대폰 인증</p>
           <p>회원정보 입력</p>
         </JoinStep>
-
         <div>{joinForm()}</div>
       </Content>
     </Layout>
