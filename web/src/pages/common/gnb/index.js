@@ -18,8 +18,9 @@ export default () => {
   const context = new useContext(Context)
   const info = [
     {title: '홈', url: '/'},
-    {title: '로그인', url: '/login/'},
-    {title: '회원가입', url: '/user/'},
+    {title: '로그인', url: '/login'},
+    {title: '회원가입', url: '/user'},
+    {title: '라이브방송', url: '/live'},
     {title: '* 마이페이지', url: '/mypage'},
     {title: '* 방송하기', url: '/'}
   ]

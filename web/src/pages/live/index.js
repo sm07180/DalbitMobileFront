@@ -11,31 +11,14 @@ import Api from 'Context/api'
 //
 const User = () => {
   //---------------------------------------------------------------------
-  const [fetch, setFetch] = useState(null)
-  //fetch
-  async function fetchData(obj) {
-    const res = await Api.login_authenticate({
-      data: {
-        id: '010-1234-7412',
-        password: '1234'
-      }
-    })
-    setFetch(res)
-    console.log(res)
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+
+  useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Layout>
-      <h1>
-        <a href="/">로그인</a>
-      </h1>
-
       <section>
-        <div>console확인</div>
-        <p></p>
+        <div>라이브방송</div>
+        <p>WEBRTC</p>
       </section>
     </Layout>
   )

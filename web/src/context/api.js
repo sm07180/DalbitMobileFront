@@ -53,9 +53,16 @@ export default class API {
 export const ajax = async obj => {
   const {url, method, data, params} = obj
   try {
-    //let res = await axios({headers: {token: token}, method: method, url: Config.devServer + url, params: params, data: data})
-    let res = await axios({headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}, method: method, url: API_SERVER + url, params: params, data: data})
-    console.table(res.data)
+    let res = await axios({
+      method: method,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      url: API_SERVER + url,
+      params: params,
+      data: data
+    })
+
     return res.data
   } catch (error) {
     errorMsg(error)
