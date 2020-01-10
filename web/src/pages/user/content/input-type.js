@@ -1,26 +1,67 @@
 /**
  * @file
  * @todo
+ * @props
  * @state
  */
 
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-//정규식
-
 const makeInput = props => {
+  const [nickNameState, setNickNameState] = useState({
+    NicknameEntered: '',
+    isNameValid: false
+  })
+
+  const [nameState, setNameState] = useState({
+    nameEntered: '',
+    isNameValid: false
+  })
+
+  const validateNickName = nameEntered => {
+    if (nameEntered.length > 1 && nameEntered.length < 21) {
+      setNickNameState({
+        isNameValid: true
+      })
+    } else {
+      setNickNameState({
+        isNameValid: false
+      })
+    }
+  }
+
+  const validateName = nameEntered => {
+    if (nameEntered.length > 1 && nameEntered.length < 21) {
+      setNameState({
+        isNameValid: true
+      })
+    } else {
+      setNameState({
+        isNameValid: false
+      })
+    }
+  }
+
   const selectInputType = () => {
     switch (props.type) {
       case 'nickname':
         return {
           type: 'text',
-          text: '2~20자 한글/영문/숫자를 포함할 수 있습니다.'
+          text: '2~20자 한글/영문/숫자를 포함할 수 있습니다.',
+          validate: function(targetValue) {
+            validateNickName(targetValue)
+          },
+          isValied: nickNameState.isNameValid
         }
       case 'name':
         return {
           type: 'text',
-          text: '2~10자 한글만 사용이 가능 합니다.'
+          text: '2~10자 한글만 사용이 가능 합니다.',
+          validate: function(targetValue) {
+            validateName(targetValue)
+          },
+          isValied: nameState.isNameValid
         }
       default:
         break
@@ -32,8 +73,14 @@ const makeInput = props => {
       <Label htmlFor={props.type} className={props.required ? 'required' : ''}>
         {props.title}
       </Label>
-      <Input id={props.type} type={selectInputType().type}></Input>
+      <Input
+        id={props.type}
+        type={selectInputType().type}
+        onChange={e => {
+          selectInputType().validate(e.target.value)
+        }}></Input>
       <HelpText>{selectInputType().text}</HelpText>
+      <p>값 유효성 검사 결과 : {selectInputType().isValied ? '통과' : '실패'}</p>
     </Inputwrap>
   )
 }
