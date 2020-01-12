@@ -35,8 +35,14 @@ const Section = styled.section`
   width: 100%;
 `
 const Wrap = styled.div`
-  width: 80%;
+  width: 1280px;
   margin: 0 auto;
+  @media (max-width: 1440px) {
+    width: 100%;
+  }
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
   @media (max-width: ${DEVICE_MOBILE}) {
     width: 100%;
   }

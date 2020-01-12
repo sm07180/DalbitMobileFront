@@ -1,7 +1,10 @@
 /**
- * @file
+ * @file input component
+ * @brief 각 input에 type 값을 입력하여 매치하는 component
  * @todo
- * @props
+ * @props type 종류
+ *        nickname : 닉네임
+ *        name : 이름(실명)
  * @state
  */
 
@@ -11,22 +14,22 @@ import styled from 'styled-components'
 const makeInput = props => {
   const [nickNameState, setNickNameState] = useState({
     NicknameEntered: '',
-    isNameValid: false
+    isNameValid: 0 // 0: 기본, 1: 성공, 2 ~ : 실패
   })
 
   const [nameState, setNameState] = useState({
     nameEntered: '',
-    isNameValid: false
+    isNameValid: 0
   })
 
   const validateNickName = nameEntered => {
     if (nameEntered.length > 1 && nameEntered.length < 21) {
       setNickNameState({
-        isNameValid: true
+        isNameValid: 1
       })
     } else {
       setNickNameState({
-        isNameValid: false
+        isNameValid: 2
       })
     }
   }
@@ -34,12 +37,27 @@ const makeInput = props => {
   const validateName = nameEntered => {
     if (nameEntered.length > 1 && nameEntered.length < 11) {
       setNameState({
-        isNameValid: true
+        isNameValid: 1
+      })
+    } else if (nameEntered.length == 0) {
+      setNameState({
+        isNameValid: 0
       })
     } else {
       setNameState({
-        isNameValid: false
+        isNameValid: 2
       })
+    }
+  }
+
+  // input 아래 도움말 텍스트 컬러
+  const textColor = vaildState => {
+    if (vaildState > 1) {
+      return 'red'
+    } else if (vaildState === 1) {
+      return 'green'
+    } else {
+      return 'common'
     }
   }
 
@@ -47,17 +65,25 @@ const makeInput = props => {
     switch (props.type) {
       case 'nickname':
         return {
-          type: 'text',
-          text: '2~20자 한글/영문/숫자를 포함할 수 있습니다.',
+          type: 'text', // input 태그 type
+          title: '닉네임', // label 태그에 들어갈 text
+          required: true, // 폼에 필수 값인지 아닌지 여부
+          placeholder: '닉네임을 입력해주세요', // input 태그 placeholder
+          text: '2~20자 한글/영문/숫자를 포함할 수 있습니다.', // input 박스 아래에 표시될 안내 텍스트 초기값
           validate: function(targetValue) {
+            // 유효성 검사 function
             validateNickName(targetValue)
           },
-          isValied: nickNameState.isNameValid
+          isValied: nickNameState.isNameValid // 유효성 체크 결과 state
         }
       case 'name':
         return {
           type: 'text',
-          text: '2~10자 한글만 사용이 가능 합니다.',
+          title: '이름(실명)',
+          required: true,
+          placeholder: '이름을 입력해주세요',
+          // text: '2~10자 한글만 사용이 가능 합니다.',
+          text: ['기본', '성공', '실패1'],
           validate: function(targetValue) {
             validateName(targetValue)
           },
@@ -70,8 +96,8 @@ const makeInput = props => {
 
   return (
     <Inputwrap>
-      <Label htmlFor={props.type} className={props.required ? 'required' : ''}>
-        {props.title}
+      <Label htmlFor={props.type} className={selectInputType().required ? 'required' : ''}>
+        {selectInputType().title}
       </Label>
       <Input
         id={props.type}
@@ -79,8 +105,7 @@ const makeInput = props => {
         onChange={e => {
           selectInputType().validate(e.target.value)
         }}></Input>
-      <HelpText>{selectInputType().text}</HelpText>
-      <p>값 유효성 검사 결과 : {selectInputType().isValied ? '통과' : '실패'}</p>
+      <HelpText className={textColor(selectInputType().isValied)}>{selectInputType().text[nameState.isNameValid]}</HelpText>
     </Inputwrap>
   )
 }
@@ -109,5 +134,13 @@ const Input = styled.input`
 
 const HelpText = styled.p`
   font-size: 12px;
-  color: #666;
+  &.common {
+    color: #666;
+  }
+  &.red {
+    color: red;
+  }
+  &.green {
+    color: green;
+  }
 `
