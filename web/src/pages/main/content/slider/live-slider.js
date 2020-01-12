@@ -46,7 +46,7 @@ export default props => {
   const arraySlide = LiveInfo.map(item => {
     return (
       <Slide key={item.id}>
-        <Icon>{item.icon}</Icon>
+        {/* <Icon>{item.icon}</Icon>
         <Imgbox>
           <Img src={item.url} alt={item.name} title={item.name} />
         </Imgbox>
@@ -57,6 +57,20 @@ export default props => {
             <InfoPeople>{item.people}</InfoPeople>
             <InfoLike>{item.like}</InfoLike>
           </InfoDetail>
+        </InfoBox> */}
+        <Icon>{item.icon}</Icon>
+        <Imgbox>
+          <Img src={item.url} alt={item.name} title={item.name} />
+        </Imgbox>
+        <InfoBox>
+          <InfoTop>
+            <InfoTitle>{item.title}</InfoTitle>
+            <InfoBj>BJ {item.name}</InfoBj>
+          </InfoTop>
+          <InfoBottom>
+            <InfoPeople>{item.people}</InfoPeople>
+            <InfoLike>{item.like}</InfoLike>
+          </InfoBottom>
         </InfoBox>
       </Slide>
     )
@@ -76,6 +90,7 @@ export default props => {
  **/
 const SlideWrap = styled.div`
   height: 100%;
+  width: 100%;
   position: relative;
   & .swiper-container {
     height: 100%;
@@ -136,7 +151,7 @@ const Icon = styled.div`
 const Imgbox = styled.div`
   height: 60%;
   @media (max-width: ${DEVICE_MOBILE}) {
-    height: 70%;
+    /* height: 70%; */
   }
 `
 const Img = styled.img`
@@ -161,18 +176,19 @@ const InfoBox = styled.div`
     border-radius: 20px;
     opacity: 0.8;
     @media (max-width: ${DEVICE_MOBILE}) {
-      line-height: 16px;
-    }
-    @media (max-width: 420px) {
-      line-height: 12px;
+      /* line-height: 16px; */
     }
   }
   @media (max-width: ${DEVICE_MOBILE}) {
-    height: 30%;
+    /* height: 30%; */
   }
 `
+const InfoTop = styled.div`
+  width: 100%;
+  height: 60%;
+`
 const InfoTitle = styled.h2`
-  height: 40%;
+  height: 80%;
   padding: 10px 0;
   font-size: 16px;
   box-sizing: border-box;
@@ -180,13 +196,10 @@ const InfoTitle = styled.h2`
   text-overflow: ellipsis;
   white-space: nowrap;
   @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 16px;
+    /* font-size: 16px;
     padding: 0;
     height: 30%;
-    text-align: center;
-  }
-  @media (max-width: 420px) {
-    font-size: 14px;
+    text-align: center; */
   }
 `
 const InfoBj = styled.h2`
@@ -197,11 +210,11 @@ const InfoBj = styled.h2`
   padding-bottom: 6px;
   box-sizing: border-box;
   @media (max-width: ${DEVICE_MOBILE}) {
-    text-align: right;
-    font-size: 16px;
+    /* text-align: right;
+    font-size: 16px; */
   }
 `
-const InfoDetail = styled.h2`
+const InfoBottom = styled.h2`
   height: 40%;
   font-size: 16px;
   padding: 10px 0;
@@ -249,7 +262,7 @@ const InfoLike = styled.div`
   display: inline-block;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 10px;
+    /* font-size: 10px; */
   }
   &:before {
     content: '♥';
@@ -263,8 +276,8 @@ const InfoLike = styled.div`
     left: 0;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      width: 18px;
-      height: 18px;
+      /* width: 18px;
+      height: 18px; */
     }
   }
 `
