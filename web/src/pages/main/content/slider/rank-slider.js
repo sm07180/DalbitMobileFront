@@ -70,6 +70,9 @@ const SliderWrap = styled.div`
     height: 86%;
     & .swiper-button-prev,
     .swiper-button-next {
+      width: 1.5vw;
+      height: 3vh;
+      background-size: auto;
       top: 30%;
       @media (max-width: ${DEVICE_MOBILE}) {
         width: 20px;
@@ -220,6 +223,9 @@ const RankGold = styled.span`
       left: 18%; */
     }
   }
+  @media (max-width: 1440px) {
+    font-size: 14px;
+  }
   @media (max-width: ${DEVICE_MOBILE}) {
     display: block;
     margin: 0 auto;
@@ -247,6 +253,9 @@ const RankHeart = styled.span`
       /* line-height: 16px;
       left: 18%; */
     }
+  }
+  @media (max-width: 1440px) {
+    font-size: 14px;
   }
   @media (max-width: ${DEVICE_MOBILE}) {
     display: block;
