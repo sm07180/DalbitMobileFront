@@ -23,6 +23,24 @@ var Options = {
     labels: {
       fontColor: 'blue'
     }
+  },
+  layout: {
+    padding: {
+      //left: 250,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
+  },
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          fontColor: 'red',
+          fontSize: 50
+        }
+      }
+    ]
   }
 }
 

@@ -101,10 +101,10 @@ export default () => {
 const ContentTop = styled.section`
   width: 100%;
   height: 300px;
-  background-color: #fff;
   padding: 10px 20px;
   box-sizing: border-box;
-  @media (max-width: 420px) {
+  @media (max-width: ${DEVICE_MOBILE}) {
     padding: 10px 10px;
+    height: 400px;
   }
 `
