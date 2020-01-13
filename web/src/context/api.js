@@ -35,7 +35,7 @@ export default class API {
 
   static login_authenticate = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/login/authenticate', method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/login/authenticate?url=${url}`, method: method || 'POST', data: data})
   }
 }
 //---------------------------------------------------------------------

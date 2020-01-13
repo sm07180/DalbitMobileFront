@@ -3,14 +3,20 @@
  * @brief Header영역의 우측 프로필사진
  * @todo 반응형으로 처리되어야함
  */
+
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import {IMG_SERVER} from 'Context/config'
 //components
+//
 export default () => {
+  //const url = `${IMG_SERVER}/images/profile.jpg`
   //---------------------------------------------------------------------
   return (
     <Profile>
-      <img src="/images/profile.jpg" />
+      <img src={`${IMG_SERVER}/images/profile.jpg`} />
+
+      {/* <input value=`Foo &amp; Bar` /> */}
     </Profile>
   )
 }

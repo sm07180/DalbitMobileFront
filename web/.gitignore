@@ -23,6 +23,7 @@
 .env.production.local
 
 npm-debug.log*
+web/yarn.lock
 yarn.lock
 yarn-debug.log*
 yarn-error.log*

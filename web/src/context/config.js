@@ -9,7 +9,7 @@
  */
 export const SERVICE_SERVER = 'https://devwww2.wawatoc.com' //서비스서버
 export const API_SERVER = 'https://devapi2.wawatoc.com' //API서버
-export const CDN_SERVER = '/'
+export const IMG_SERVER = 'https://devphoto2.wawatoc.com' //이미지서버
 
 /**
  * @brief 레이아웃
