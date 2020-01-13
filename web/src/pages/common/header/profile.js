@@ -15,7 +15,6 @@ export default () => {
   return (
     <Profile>
       <img src={`${IMG_SERVER}/images/profile.jpg`} />
-
       {/* <input value=`Foo &amp; Bar` /> */}
     </Profile>
   )
