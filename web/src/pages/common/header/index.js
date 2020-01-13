@@ -17,7 +17,7 @@ export default () => {
   //---------------------------------------------------------------------
   return (
     <Header>
-      <a href="#" className="logo">
+      <a href="/" className="logo">
         달빛라디오
       </a>
       <div className="util">

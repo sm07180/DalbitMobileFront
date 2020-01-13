@@ -21,8 +21,10 @@ const JoinAuth = props => {
       </FormWrap> */}
 
       <Content>
-        <Input type="nickname" title="닉네임" placeholder="닉네임을 입력해주세요" required={true} />
-        <Input type="name" title="이름(실명)" placeholder="이름을 입력해주세요" />
+        <Input type="nickname" />
+        <Input type="name" />
+
+        {/* <Input type="password" /> */}
 
         <Button text="인증번호 받기" joinState={props.joinState} update={props.update} />
       </Content>

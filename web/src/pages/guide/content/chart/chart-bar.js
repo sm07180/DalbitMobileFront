@@ -18,11 +18,51 @@ const data = {
     }
   ]
 }
+
 var Options = {
+  responsive: {
+    'width < 1440': {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              fontColor: 'orange'
+            }
+          }
+        ]
+      }
+    }
+  },
   legend: {
     labels: {
       fontColor: 'blue'
     }
+  },
+  layout: {
+    padding: {
+      //left: 250,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
+  },
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          fontColor: 'red',
+          fontSize: 50
+        }
+      }
+    ],
+    xAxes: [
+      {
+        ticks: {
+          fontColor: 'blue',
+          fontSize: 30
+        }
+      }
+    ]
   }
 }
 
@@ -42,6 +82,6 @@ export default class LineDemo extends Component {
   }
 }
 const ChartWrap = styled.div`
-  width: 40%;
+  width: 80%;
   margin: 0 auto;
 `

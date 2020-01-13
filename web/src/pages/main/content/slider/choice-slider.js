@@ -13,7 +13,7 @@ export default props => {
   const arraySlide = ChoiceInfo.map(item => {
     return (
       <Slide key={item.id}>
-        <ImgBox>
+        {/* <ImgBox>
           <Img src={item.url} alt={item.name} title={item.name} />
         </ImgBox>
         <ImgInfo>
@@ -24,6 +24,20 @@ export default props => {
             <RecoPeople>{item.people}명 시청중</RecoPeople>
             <RecoLike>{item.like}명 좋아요</RecoLike>
           </RecoDetail>
+        </ImgInfo> */}
+        <ImgBox>
+          <Img src={item.url} alt={item.name} title={item.name} />
+        </ImgBox>
+        <ImgInfo>
+          <InfoTop>
+            <RecoBj>추천 BJ</RecoBj>
+            <RecoTitle>{item.title}</RecoTitle>
+            <RecoBjName>BJ {item.name}</RecoBjName>
+          </InfoTop>
+          <InfoBottom>
+            <RecoPeople>{item.people}명 시청중</RecoPeople>
+            <RecoLike>{item.like}명 좋아요</RecoLike>
+          </InfoBottom>
         </ImgInfo>
       </Slide>
     )
@@ -61,9 +75,6 @@ const SliderWrap = styled.div`
     width: 100%;
     height: 60%;
   }
-  @media (max-width: 420px) {
-    padding: 10px 0;
-  }
   & .swiper-container {
     height: 100%;
   }
@@ -87,13 +98,9 @@ const Slide = styled.div`
 const ImgBox = styled.div`
   width: 60%;
   height: 100%;
-  margin-right: 5%;
   float: left;
   @media (max-width: ${DEVICE_MOBILE}) {
-    width: 50%;
-  }
-  @media (max-width: 420px) {
-    margin-right: 2%;
+    width: 40%;
   }
 `
 const Img = styled.img`
@@ -102,15 +109,19 @@ const Img = styled.img`
   border-radius: 20px;
 `
 const ImgInfo = styled.div`
-  width: 30%;
-  margin-right: 5%;
+  width: 40%;
+  height: 100%;
   float: left;
   @media (max-width: ${DEVICE_MOBILE}) {
-    width: 40%;
+    width: 60%;
   }
-  @media (max-width: 420px) {
-    width: 46%;
-    margin-right: 2%;
+`
+const InfoTop = styled.div`
+  width: 100%;
+  height: 60%;
+  padding-left: 20px;
+  box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
   }
 `
 const RecoBj = styled.span`
@@ -125,9 +136,6 @@ const RecoBj = styled.span`
   display: block;
   border-radius: 20px;
   @media (max-width: ${DEVICE_MOBILE}) {
-    width: 60px;
-    height: 20px;
-    line-height: 20px;
   }
 `
 const RecoTitle = styled.h2`
@@ -137,33 +145,40 @@ const RecoTitle = styled.h2`
   text-overflow: ellipsis;
   white-space: nowrap;
   @media (max-width: ${DEVICE_MOBILE}) {
-    padding: 6px 0;
+    font-size: 16px;
   }
 `
 const RecoBjName = styled.h3`
+  width: 80%;
+  margin-left: 20%;
   color: darkblue;
   font-size: 15px;
-  text-align: right;
   font-weight: bold;
-  margin: 10px 0;
+  text-align: right;
+  padding: 10px 0;
+  box-sizing: border-box;
   @media (max-width: ${DEVICE_MOBILE}) {
-    margin: 6px 0;
+    font-size: 14px;
   }
 `
-const RecoDetail = styled.div`
-  text-align: left;
-  margin: 20px 0;
+const InfoBottom = styled.div`
+  width: 100%;
+  height: 40%;
+  padding-left: 20px;
+  box-sizing: border-box;
+  @media (max-width: ${DEVICE_MOBILE}) {
+  }
 `
 const RecoPeople = styled.span`
   width: 50%;
+  padding-left: 30px;
+  box-sizing: border-box;
   font-size: 14px;
-  text-align: center;
   display: block;
   float: left;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    padding-left: 12px;
-    box-sizing: border-box;
+    font-size: 12px;
   }
   &:before {
     content: 'P';
@@ -178,23 +193,19 @@ const RecoPeople = styled.span`
     left: 0px;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      line-height: 16px;
-    }
-    @media (max-width: 420px) {
-      line-height: 12px;
     }
   }
 `
 const RecoLike = styled.span`
   width: 50%;
+  padding-left: 30px;
+  box-sizing: border-box;
   font-size: 14px;
-  text-align: center;
   display: block;
   float: left;
   position: relative;
   @media (max-width: ${DEVICE_MOBILE}) {
-    padding-left: 14px;
-    box-sizing: border-box;
+    font-size: 12px;
   }
   &:before {
     content: '♥';
@@ -209,10 +220,6 @@ const RecoLike = styled.span`
     left: 0px;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      line-height: 16px;
-    }
-    @media (max-width: 420px) {
-      line-height: 12px;
     }
   }
 `

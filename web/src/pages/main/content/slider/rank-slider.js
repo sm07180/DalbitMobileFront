@@ -17,7 +17,7 @@ export default props => {
   const arraySlide = RankInfo.map(item => {
     return (
       <Slide key={item.id}>
-        <ImgBox>
+        {/* <ImgBox>
           <Img src={item.url} alt={item.name} title={item.name} />
         </ImgBox>
         <InfoBox>
@@ -26,27 +26,36 @@ export default props => {
             <RankGold>[{item.gold}]</RankGold>
             <RankHeart>[{item.like}]</RankHeart>
           </RankBox>
-        </InfoBox>
+        </InfoBox> */}
+        <ImgBox>
+          <Img src={item.url} alt={item.name} title={item.name} />
+        </ImgBox>
+        <ImgInfo>
+          <InfoTiteR>BJ {item.name}</InfoTiteR>
+          <RankBox>
+            <RankGold>[{item.gold}]</RankGold>
+            <RankHeart>[{item.like}]</RankHeart>
+          </RankBox>
+        </ImgInfo>
       </Slide>
     )
   })
   return (
-    <Wrap>
-      <SliderWrap>
-        <RankTitle>
-          <StarRank>스타랭킹</StarRank>
-          <StarHole href="#">전체보기</StarHole>
-        </RankTitle>
-        <Swiper {...params}>{arraySlide}</Swiper>
-      </SliderWrap>
-    </Wrap>
+    <SliderWrap>
+      <RankTitle>
+        <StarRank>스타랭킹</StarRank>
+        <StarHole href="#">전체보기</StarHole>
+      </RankTitle>
+      <Swiper {...params}>{arraySlide}</Swiper>
+    </SliderWrap>
   )
 }
 /**
  * @brief rank slider 컴포넌트 css
  * @code
  **/
-const Wrap = styled.div`
+
+const SliderWrap = styled.div`
   width: 24%;
   height: 100%;
   background-color: #fff;
@@ -56,22 +65,14 @@ const Wrap = styled.div`
   @media (max-width: ${DEVICE_MOBILE}) {
     width: 100%;
     height: 40%;
-    padding: 10px 0;
-  }
-`
-const SliderWrap = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 100%;
-  height: 100%;
-  @media (max-width: ${DEVICE_MOBILE}) {
-    width: 60%;
-    margin: 0 auto;
   }
   & .swiper-container {
     height: 86%;
     & .swiper-button-prev,
     .swiper-button-next {
+      width: 1.5vw;
+      height: 3vh;
+      background-size: auto;
       top: 30%;
       @media (max-width: ${DEVICE_MOBILE}) {
         width: 20px;
@@ -84,11 +85,12 @@ const SliderWrap = styled.div`
 `
 const RankTitle = styled.div`
   height: 14%;
+  width: 100%;
   font-size: 14px;
   text-align: center;
   @media (max-width: ${DEVICE_MOBILE}) {
-    height: auto;
-    font-size: 12px;
+    /* height: auto;
+    font-size: 12px; */
   }
 `
 const StarRank = styled.h4`
@@ -101,14 +103,15 @@ const StarHole = styled.h4`
   position: relative;
   &:before {
     content: '+';
+    width: 20px;
+    height: 20px;
     font-size: 14px;
-    display: inline-block;
+    display: block;
     position: absolute;
     top: 0;
     left: 10%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      left: 22%;
-      font-size: 10px;
+      display: none;
     }
   }
 `
@@ -117,15 +120,13 @@ const StarHole = styled.h4`
  * @code
  **/
 const Slide = styled.div`
-  width: 100%;
-  height: 100%;
   @media (max-width: ${DEVICE_MOBILE}) {
     &:after {
       content: '';
       clear: both;
       display: block;
     }
-    padding: 2% 20%;
+    padding: 1% 20% 0 20%;
     box-sizing: border-box;
   }
 `
@@ -140,19 +141,20 @@ const ImgBox = styled.div`
     height: 20px;
     line-height: 20px;
     font-size: 14px;
+    font-weight: bold;
     color: blue;
     background-color: yellow;
     text-align: center;
     display: block;
     position: absolute;
     top: 0px;
-    left: -20px;
+    left: -20%;
     border-radius: 20px;
     z-index: 99;
     @media (max-width: ${DEVICE_MOBILE}) {
-      width: 40px;
+      /* width: 40px;
       height: 16px;
-      line-height: 16px;
+      line-height: 16px; */
     }
   }
   @media (max-width: ${DEVICE_MOBILE}) {
@@ -166,7 +168,8 @@ const Img = styled.img`
   height: 100%;
   display: block;
 `
-const InfoBox = styled.div`
+const ImgInfo = styled.div`
+  width: 100%;
   height: 40%;
   @media (max-width: ${DEVICE_MOBILE}) {
     width: 50%;
@@ -179,13 +182,15 @@ const InfoTiteR = styled.h4`
   color: orangered;
   padding: 10px 0;
   box-sizing: border-box;
+  height: 40%;
   @media (max-width: ${DEVICE_MOBILE}) {
     padding: 0;
-    font-size: 12px;
+    font-size: 14px;
   }
 `
 const RankBox = styled.div`
   width: 60%;
+  height: 60%;
   font-size: 14px;
   text-align: center;
   margin: 0 auto;
@@ -199,6 +204,7 @@ const RankGold = styled.span`
   width: 50%;
   display: inline-block;
   padding-left: 20px;
+  font-weight: bold;
   box-sizing: border-box;
   position: relative;
   &:before {
@@ -213,20 +219,22 @@ const RankGold = styled.span`
     background-color: gold;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      line-height: 16px;
-      left: 18%;
-    }
-    @media (max-width: 420px) {
-      line-height: 12px;
+      /* line-height: 16px;
+      left: 18%; */
     }
   }
+  @media (max-width: 1440px) {
+    font-size: 14px;
+  }
   @media (max-width: ${DEVICE_MOBILE}) {
-    width: 100%;
+    display: block;
+    margin: 0 auto;
   }
 `
 const RankHeart = styled.span`
   width: 50%;
   padding-left: 20px;
+  font-weight: bold;
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -242,16 +250,15 @@ const RankHeart = styled.span`
     top: 0;
     border-radius: 50%;
     @media (max-width: ${DEVICE_MOBILE}) {
-      line-height: 16px;
-      left: 18%;
-    }
-    @media (max-width: 420px) {
-      line-height: 12px;
-      left: 18%;
+      /* line-height: 16px;
+      left: 18%; */
     }
   }
+  @media (max-width: 1440px) {
+    font-size: 14px;
+  }
   @media (max-width: ${DEVICE_MOBILE}) {
-    width: 100%;
-    margin-top: 6px;
+    display: block;
+    margin: 4px auto 0 auto;
   }
 `
