@@ -49,7 +49,7 @@ module.exports = {
           publicPath: './dist',
           name: 'images/[name].[ext]',
           limit: 10000, // 10kb
-          fallback: 'file-loader' // 파일사이즈가 10k보다 큰 겨우, file-loader 이용하여 파일 복사
+          fallback: 'file-loader' // 파일사이즈가 10k보다 큰 경우, file-loader 이용하여 파일 복사
         }
       },
       {
