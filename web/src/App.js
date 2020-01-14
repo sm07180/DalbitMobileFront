@@ -14,6 +14,8 @@ import Login from 'Pages/login/' //로그인
 import User from 'Pages/user' //유저 (회원가입,회원정보입력등)
 import Live from 'Pages/live' //라이브
 import Mypage from 'Pages/mypage' //마이페이지
+/*-app-*/
+import App from 'Pages/app' //라이브
 //
 export default () => {
   return (
@@ -24,6 +26,7 @@ export default () => {
       <Route exact path="/live" component={Live} />
       <Route exact path="/guide/" component={Guide} />
       <Route exact path="/mypage/" component={Mypage} />
+      <Route exact path="/app/" component={App} />
     </Switch>
   )
 }
