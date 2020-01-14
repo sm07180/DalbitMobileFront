@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const webpack = require('webpack')
+const fs = require('fs')
 
 module.exports = {
   entry: './src/index.js',
@@ -15,9 +16,13 @@ module.exports = {
     hot: true,
     contentBase: path.resolve('./dist'),
     index: 'index.html',
-    port: 9000,
+    port: 443,
     historyApiFallback: true, // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
-    disableHostCheck: true
+    disableHostCheck: true,
+    https: {
+      key: fs.readFileSync('D:/workspace/radio_front/web/key/privkey.pem'),
+      cert: fs.readFileSync('D:/workspace/radio_front/web/key/fullchain.pem')
+    }
   },
   mode: 'none',
   module: {
@@ -49,7 +54,7 @@ module.exports = {
           publicPath: './dist',
           name: 'images/[name].[ext]',
           limit: 10000, // 10kb
-          fallback: 'file-loader' // 파일사이즈가 10k보다 큰 겨우, file-loader 이용하여 파일 복사
+          fallback: 'file-loader' // 파일사이즈가 10k보다 큰 경우, file-loader 이용하여 파일 복사
         }
       },
       {
