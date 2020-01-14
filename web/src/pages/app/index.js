@@ -59,7 +59,7 @@ export default () => {
                     webkit.messageHandlers.RoomJoin.postMessage(changes)
                     break
                   case 'Android':
-                    window.android.RoomJoin.postMessage(changes)
+                    window.android.RoomJoin(changes)
                     break
                   default:
                     alert('OS 예외처리')
@@ -89,7 +89,7 @@ export default () => {
                     webkit.messageHandlers.RoomMake.postMessage(changes.room_id)
                     break
                   case 'Android':
-                    window.android.RoomMake.postMessage(changes.room_id)
+                    window.android.RoomMake(changes.room_id)
                     break
                   default:
                     alert('OS 예외처리')
