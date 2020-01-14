@@ -16,7 +16,7 @@ import Api from 'Context/api'
 export default () => {
   //---------------------------------------------------------------------
   //useState
-  const [changes, setChanges] = useState({})
+  const [changes, setChanges] = useState({roomId: 'roomID_TEST', roomType: 'play'})
 
   //eventHander
   const handleChange = event => {
@@ -59,7 +59,7 @@ export default () => {
                     webkit.messageHandlers.RoomJoin.postMessage(changes)
                     break
                   case 'Android':
-                    webkit.messageHandlers.RoomJoin.postMessage(changes)
+                    window.android.RoomJoin.postMessage(changes)
                     break
                   default:
                     alert('OS 예외처리')
@@ -89,7 +89,7 @@ export default () => {
                     webkit.messageHandlers.RoomMake.postMessage(changes.room_id)
                     break
                   case 'Android':
-                    webkit.messageHandlers.RoomMake.postMessage(changes.room_id)
+                    window.android.RoomMake.postMessage(changes.room_id)
                     break
                   default:
                     alert('OS 예외처리')
