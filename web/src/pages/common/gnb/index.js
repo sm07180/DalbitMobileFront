@@ -23,7 +23,7 @@ export default () => {
     {title: '회원가입', url: '/user'},
     {title: '라이브방송', url: '/live'},
     {title: '마이페이지', url: '/mypage'},
-    {title: '* 방송하기', url: '/'}
+    {title: '* APP', url: '/app'}
   ]
   //makeMenu
   const makeNavigation = () => {
