@@ -19,6 +19,7 @@ export default props => {
   const styleTab = useClick(update, {menu: 'style-tab'})
   const styleChart = useClick(update, {menu: 'style-chart'})
   const styleLottie = useClick(update, {menu: 'style-lottie'})
+  const styleWebrtc = useClick(update, {menu: 'style-webrtc'})
   const hooks3 = useClick(update, {menu: 'menu3'})
 
   //---------------------------------------------------------------------
@@ -43,6 +44,7 @@ export default props => {
       <button {...hooks3}>기타</button>
       <button {...styleChart}>차트</button>
       <button {...styleLottie}>로티</button>
+      <button {...styleWebrtc}>웹알티시</button>
       <hr />
       <h1>ajax</h1>
       <button>GET</button>
