@@ -10,7 +10,6 @@ import StyleButton from './content/style-button'
 import StyleTab from './content/style-tab'
 import StyleChart from './content/style-chart'
 import StyleLottie from './content/style-lottie'
-import StyleWebrtc from './content/style-webrtc'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -28,8 +27,6 @@ export default props => {
         return <StyleChart />
       case 'style-lottie':
         return <StyleLottie />
-      case 'style-webrtc':
-        return <StyleWebrtc />
       default:
         return <h1>없음</h1>
     }
