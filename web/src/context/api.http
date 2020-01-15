@@ -1,12 +1,180 @@
 
 ###
-//POST https://devapi2.wawatoc.com/member/login
+//API명 : 회원로그인
+#POST https://devapi2.wawatoc.com/member/login
 POST https://devm-leejaeho1144.wawatoc.com:4431/member/login
-content-type: application/json
+content-type: application/x-www-form-urlencoded
+
 {
     "s_mem":"p",
-    "i_os" : 0,
-    "s_id": "010-1234-7412",
-    "s_pwd": "1234"
+    "s_id": "010-1234-1324",
+    "s_pwd": "1234",
+    "i_os" : 1
+}
+###
+
+###
+//API명 : 회원가입
+//POST https://devapi2.wawatoc.com/member/signup
+POST https://devm-leejaeho1144.wawatoc.com:4431/member/signup
+content-type: application/x-www-form-urlencoded
+
+{
+    "s_mem":"p",
+    "s_id": "010-1234-1324",
+    "s_gender": "m",
+    "s_nickNm": "radiogaga",
+    "i_birthYY":"1980",
+    "i_birthMM":"11",
+    "i_birthDD":"23",
+    "s_term1":"y",
+    "s_term2":"y",
+    "s_term3":"y",
+    "s_name":"홍길동",
+    "i_os":1
+}
+###
+
+###
+//API명 :닉네임 중복체크 
+//GET https://devapi2.wawatoc.com/member/nick
+GET https://devm-leejaeho1144.wawatoc.com:4431/member/nick
+content-type: application/x-www-form-urlencoded
+
+{
+    "s_nickNm":"radiogaga",
+}
+###
+
+###
+//API명 :비밀번호 변경
+//POST https://devapi2.wawatoc.com/member/pwd
+POST https://devm-leejaeho1144.wawatoc.com:4431/member/pwd
+content-type: application/x-www-form-urlencoded
+
+{
+    "s_phoneNo":"010-1234-1324",
+    "s_pwd":"1234"
+}
+###
+
+###
+//API명 : 프로필편집
+//POST https://devapi2.wawatoc.com/mypage/profile
+POST https://devm-leejaeho1144.wawatoc.com:4431/mypage/profile
+content-type: application/x-www-form-urlencoded
+
+{
+    "s_gender":"m",
+    "s_nickNm":"radiogaga",
+    "s_name":"홍길동",
+    "i_birthYY":"1980",
+    "i_birthMM":"11",
+    "i_birthDD":"23"
+}
+###
+
+###
+//API명 : 팬 등록
+//POST https://devapi2.wawatoc.com/mypage/pan/{스타회원번호}
+POST https://devm-leejaeho1144.wawatoc.com:4431/mypage/pan
+content-type: application/x-www-form-urlencoded
+
+{
+
+}
+###
+
+###
+//API명 : 팬 해제
+//DELETE https://devapi2.wawatoc.com/mypage/pan/{스타회원번호}
+DELETE  https://devm-leejaeho1144.wawatoc.com:4431/mypage/pan
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+###
+//API명 : 정보조회
+//GET https://devapi2.wawatoc.com/profile/{조회회원번호}
+GET https://devm-leejaeho1144.wawatoc.com:4431/profile
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+###
+//API명 : 회원방송방 기본설정 조회하기 
+//GET https://devapi2.wawatoc.com/mypage/broad
+GET https://devm-leejaeho1144.wawatoc.com:4431/mypage/broad
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+###
+//API명 : 회원 정보 조회
+//GET https://devapi2.wawatoc.com/mypage
+GET https://devm-leejaeho1144.wawatoc.com:4431/mypage
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+###
+//API명 : 회원 방송방 기본설정 수정하기
+//POST https://devapi2.wawatoc.com/mypage/broad
+POST https://devm-leejaeho1144.wawatoc.com:4431/mypage/broad
+content-type: application/x-www-form-urlencoded
+
+{
+    "i_type":1,
+    "s_title":"title",
+    "s_welcome":"환영합니다",
+    "i_entry":0,
+    "i_age":0
+}
+###
+
+###
+//API명 : 회원 신고하기
+//POST https://devapi2.wawatoc.com/mypage/declar/{신고회원번호}
+POST https://devm-leejaeho1144.wawatoc.com:4431/mypage/declar
+content-type: application/x-www-form-urlencoded
+
+{
+    "i_reason":1,
+    "s_cont":"신고내용",
+}
+###
+
+###
+//API명 : 회원 차단하기
+//POST https://devapi2.wawatoc.com/mypage/block/{신고회원번호}
+POST https://devm-leejaeho1144.wawatoc.com:4431/mypage/block
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+
+###
+//API명 : 회원 해제하기
+//DELETE https://devapi2.wawatoc.com/mypage/block/{신고회원번호}
+DELETE  https://devm-leejaeho1144.wawatoc.com:4431/mypage/block
+content-type: application/x-www-form-urlencoded
+
+{
+    
 }
 ###
