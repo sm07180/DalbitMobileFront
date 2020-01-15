@@ -1,10 +1,12 @@
 
 ###
-POST https://devapi2.wawatoc.com/login/authenticate
+//POST https://devapi2.wawatoc.com/member/login
+POST https://devm-leejaeho1144.wawatoc.com:4431/member/login
 content-type: application/json
-
 {
-    "id": "010-1234-7412",
-    "password": "1234"
+    "s_mem":"p",
+    "i_os" : 0,
+    "s_id": "010-1234-7412",
+    "s_pwd": "1234"
 }
 ###
