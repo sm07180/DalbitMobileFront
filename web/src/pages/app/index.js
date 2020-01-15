@@ -35,17 +35,15 @@ export default () => {
           <span>OS: {osName}</span>
           <span>browserName : {browserName}</span>
         </section>
-        <h1>로그인</h1>
+        <h1>로그인1</h1>
         <dl>
           <dt>
-            <TextField name="id" label="아이디" placeholder="ID를 입력해주세요" onChange={handleChange} />
+            <TextField name="roomId" label="roomId" placeholder="roomId 를 입력해주세요" onChange={handleChange} />
           </dt>
           <dt>
-            <TextField name="password" label="비밀번호" placeholder="PASSWORD를 입력해주세요" onChange={handleChange} />
+            <TextField name="roomType" label="roomType" placeholder="roomType 를 입력해주세요" onChange={handleChange} />
           </dt>
-          <dt>
-            <TextField name="extra" label="dummy" placeholder="Dummy 필드" onChange={handleChange} />
-          </dt>
+
           <dd>
             <Button
               variant="contained"
