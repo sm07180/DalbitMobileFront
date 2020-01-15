@@ -222,17 +222,11 @@ export default makeInput
 const Input = styled(TextField)`
   display: block;
   width: 100%;
-  border: 1px solid #888;
-  line-height: 36px;
-  text-indent: 10px;
+  & * {
+    width: 100%;
+    line-height: 36px;
+  }
 `
-
-// const Input = styled(TextField)({
-//   width: '100%',
-//   border: '1px solid #888',
-//   lineHeight: '36px',
-//   textIndent: '10px'
-// })
 
 const Inputwrap = styled.div`
   margin: 20px 0;

@@ -1,5 +1,6 @@
 /**
- * @file /mypage/index.js
+
+* @file /mypage/index.js
  * @brief 마이페이지
  * @props index : 활성화 할 탭 선택
  *        0 : 팬보드
@@ -62,8 +63,7 @@ function a11yProps(index) {
 const User = props => {
   //---------------------------------------------------------------------
 
-  useEffect(() => {}, [])
-
+  // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
   const [value, setValue] = React.useState(props.index ? props.index : 0)
 
   const handleChange = (event, newValue) => {
@@ -128,12 +128,12 @@ const ContentHeader = styled.div`
 const MypageButton = styled.button``
 
 const Content = styled.section`
-  margin: 30px 0;
+  margin: 30px 0 100px 0;
 `
 
 const TabsBar = styled(AppBar)`
   margin-top: 30px;
-  background: #5676e8;
+  background: #8555f6;
 
   .MuiTabs-root {
     width: 600px;
@@ -144,7 +144,7 @@ const TabsBar = styled(AppBar)`
   }
   .MuiTabs-indicator {
     height: 3px;
-    background-color: #314eb5;
+    background-color: #5728c5;
   }
 
   @media (max-width: ${DEVICE_PC}) {

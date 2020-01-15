@@ -10,7 +10,14 @@ import styled from 'styled-components'
 import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
 
 const TabWallet = () => {
-  return <MyWallet>내지갑 component</MyWallet>
+  return (
+    <MyWallet>
+      <h3>루비 상세내역(최근 3개월)</h3>
+      <ul>
+        <li></li>
+      </ul>
+    </MyWallet>
+  )
 }
 
 export default TabWallet
