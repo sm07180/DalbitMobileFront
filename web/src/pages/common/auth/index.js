@@ -10,6 +10,9 @@ import {GoogleLogin} from 'react-google-login'
 import KakaoLogin from 'react-kakao-login'
 import NaverLogin from 'react-naver-login'
 import FacebookLogin from 'react-facebook-login'
+//context
+import Api from 'Context/api'
+
 import {setState} from 'expect/build/jestMatchersObject'
 
 // const StyledKakaoLogin = styled(KakaoLogin)`
@@ -28,13 +31,31 @@ import {setState} from 'expect/build/jestMatchersObject'
 
 export default () => {
   const [state, setState] = useState(false)
+  const [fetch, setFetch] = useState(null)
 
+  //---------------------------------------------------------------------
   const signup = (res, type) => {
     if (type == 'facebook') {
+      fetchData(res, 'f')
       console.log('facebook')
     } else if (type == 'google') {
+      fetchData(res, 'g')
       console.log('google')
     }
+  }
+
+  //fetch
+  async function fetchData(obj, ostype) {
+    console.log('googleID = ' + obj.googleId)
+    const res = await Api.member_login({
+      data: {
+        s_mem: ostype,
+        s_id: obj.googleId,
+        i_os: 3
+      }
+    })
+    console.log('data = ' + data)
+    setFetch(res)
   }
   // state = {
   //   isLoggedIn = false,
@@ -70,6 +91,9 @@ export default () => {
   const responseGoogle = response => {
     console.log('responseGoogleresult = ' + JSON.stringify(response))
     console.log(response)
+
+    //---------------------------------------------------------------------
+
     signup(response, 'google')
   }
   const responseGoogleFail = err => {

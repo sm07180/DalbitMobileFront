@@ -13,6 +13,7 @@ const User = () => {
   //---------------------------------------------------------------------
   const [fetch, setFetch] = useState(null)
   //fetch
+  //Get 방식일때 사용 가능한 가이드
   async function fetchData(obj) {
     const res = await Api.login_authenticate({
       data: {
