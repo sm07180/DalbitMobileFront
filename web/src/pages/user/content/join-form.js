@@ -1,12 +1,18 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
-import Label from './style-label'
-import Input from './style-input'
+//components
+import Input from './input-type'
 import Button from './style-button'
 
 const JoinForm = () => {
   const [boxState, setBoxState] = useState(false)
+
+  const [startState, setStartState] = useState(new Date())
+
+  const handleChange = date => {
+    setStartState(date)
+  }
 
   const makeContents = () => {
     return (
@@ -40,20 +46,15 @@ const JoinForm = () => {
       </JoinText>
 
       <FormWrap>
-        <Label before={true} text="닉네임" />
-        <Input type="text" placeholder="닉네임을 입력해주세요." />
-        <ValidateText>*2~20자 한글/영문/숫자를 포함할 수 있습니다.</ValidateText>
-        <Label before={true} text="이름(실명)" />
-        <Input type="text" placeholder="이름을 입력해주세요." />
-        <ValidateText>*10자 한글/영문을 포함할 수 있습니다.</ValidateText>
-        <Label before={true} text="비밀번호" />
-        <Input type="text" />
-        <ValidateText>
-          * 8~20자로 영문/숫자/특수문자 중 2가지 이상 조합으로 입력하세요.<br></br> (대소문자 구분)
-        </ValidateText>
-        <Input type="password" placeholder="비밀번호 확인" />
-        <Label before={true} text="생년월일" />
-        {/* 컨텐츠 */}
+        <Input type="nickname" />
+        <Input type="name" />
+        <Input type="password" />
+        {/* <DatePicker
+          selected={startState}
+          onChange={e => {
+            handleChange(e)
+          }}
+        /> */}
         {makeContents()}
         <Label before={true} text="성별" />
         <input type="radio" name="gender" value="남성" defaultChecked /> 남성
@@ -88,6 +89,8 @@ const JoinText = styled.p`
 const FormWrap = styled.div`
   margin: 40px 0;
 `
+
+const Label = styled.div``
 
 const ValidateText = styled.p`
   margin: 5px 0;
