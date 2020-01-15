@@ -35,7 +35,7 @@ export default () => {
           <span>OS: {osName}</span>
           <span>browserName : {browserName}</span>
         </section>
-        <h1>로그인</h1>
+        <h1>로그인1</h1>
         <dl>
           <dt>
             <TextField name="roomId" label="roomId" placeholder="roomId 를 입력해주세요" onChange={handleChange} />
