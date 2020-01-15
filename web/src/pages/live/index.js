@@ -945,7 +945,7 @@ const User = () => {
       }
 
       //
-      websocketURL = 'ws://v154.wawatoc.com:5080/WebRTCAppEE/websocket'
+      // websocketURL = 'ws://v154.wawatoc.com:5080/WebRTCAppEE/websocket'
       var webRTCAdaptor = new WebRTCAdaptor({
         websocket_url: websocketURL,
         mediaConstraints: mediaConstraints,
