@@ -27,7 +27,7 @@ import {API_SERVER} from 'Context/config'
 export default class API {
   //---------------------------------------------------------------------
   /**
-   * @brief 로그인 정보요청
+   * @brief 회원로그인
    * @param string $id
    * @param string $password
    * @method "POST"
@@ -35,7 +35,7 @@ export default class API {
 
   static login_authenticate = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/login?url=${url}`, method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/member/login`, method: method || 'POST', data: data})
   }
 }
 //---------------------------------------------------------------------
