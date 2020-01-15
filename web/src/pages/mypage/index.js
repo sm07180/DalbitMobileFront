@@ -1,16 +1,24 @@
 /**
- * @file /login/index.js
- * @brief 로그인
+ * @file /mypage/index.js
+ * @brief 마이페이지
+ * @props index : 활성화 할 탭 선택
+ *        0 : 팬보드
+ *        1 : 내지갑
+ *        2 : 리포트
+ *        3 : 팬/스타
+ *        4 : 설정
  */
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
+
 //layout
 import Layout from 'Pages/common/layout'
 import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
-//context
 
-//components
+//context
 import Api from 'Context/api'
+
+//material-ui
 import PropTypes from 'prop-types'
 import {StylesProvider} from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -18,6 +26,14 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+
+//components
+import MyProfile from './content/my-profile'
+import FanBoard from './content/fan-board'
+import MyWallet from './content/my-wallet'
+import Report from './content/report'
+import FanStar from './content/fan-star'
+import Setting from './content/setting'
 
 function TabContentWrap(props) {
   const {children, value, index, ...other} = props
@@ -43,12 +59,12 @@ function a11yProps(index) {
 }
 
 //
-const User = () => {
+const User = props => {
   //---------------------------------------------------------------------
 
   useEffect(() => {}, [])
 
-  const [value, setValue] = React.useState(0)
+  const [value, setValue] = React.useState(props.index ? props.index : 0)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -64,7 +80,7 @@ const User = () => {
         <MypageButton>방송국 관리</MypageButton>
       </ContentHeader>
       <Content>
-        <MyProfile>내 프로필 영역</MyProfile>
+        <MyProfile />
 
         <StylesProvider injectFirst>
           <TabsBar position="static">
@@ -77,19 +93,19 @@ const User = () => {
             </Tabs>
           </TabsBar>
           <TabContentWrap value={value} index={0}>
-            팬보드
+            <FanBoard />
           </TabContentWrap>
           <TabContentWrap value={value} index={1}>
-            내지갑
+            <MyWallet />
           </TabContentWrap>
           <TabContentWrap value={value} index={2}>
-            리포트
+            <Report />
           </TabContentWrap>
           <TabContentWrap value={value} index={3}>
-            팬/스타
+            <FanStar />
           </TabContentWrap>
           <TabContentWrap value={value} index={4}>
-            설정
+            <Setting />
           </TabContentWrap>
         </StylesProvider>
       </Content>
@@ -115,20 +131,6 @@ const Content = styled.section`
   margin: 30px 0;
 `
 
-const ContentLayout = styled.div`
-  width: 600px;
-  margin: 0 auto;
-  @media (max-width: ${DEVICE_PC}) {
-    width: 90%;
-  }
-`
-
-const MyProfile = styled(ContentLayout)`
-  padding: 30px;
-  min-height: 300px;
-  background: #eee;
-`
-
 const TabsBar = styled(AppBar)`
   margin-top: 30px;
   background: #5676e8;
@@ -136,9 +138,6 @@ const TabsBar = styled(AppBar)`
   .MuiTabs-root {
     width: 600px;
     margin: 0 auto;
-    @media (max-width: ${DEVICE_PC}) {
-      width: 90%;
-    }
   }
   .MuiTab-root {
     min-width: 20%;
@@ -147,12 +146,32 @@ const TabsBar = styled(AppBar)`
     height: 3px;
     background-color: #314eb5;
   }
+
+  @media (max-width: ${DEVICE_PC}) {
+    .MuiTabs-root {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    .MuiTabs-root {
+      width: 100%;
+      padding: 0;
+    }
+    .MuiTab-root {
+      padding: 0;
+    }
+  }
 `
 
 const TabContent = styled(Typography)`
   width: 600px;
-  margin: 0 auto;
+  margin: 30px auto;
   @media (max-width: ${DEVICE_PC}) {
     width: 90%;
+  }
+
+  .MuiBox-root {
+    padding: 0;
   }
 `
