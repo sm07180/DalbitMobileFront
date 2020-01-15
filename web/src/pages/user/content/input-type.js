@@ -13,6 +13,10 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 
+//material-ui
+import {StylesProvider} from '@material-ui/styles'
+import TextField from '@material-ui/core/TextField'
+
 const makeInput = props => {
   const [nickNameState, setNickNameState] = useState({
     NicknameEntered: '',
@@ -194,24 +198,41 @@ const makeInput = props => {
   }
 
   return (
-    <Inputwrap>
-      <Label htmlFor={props.type} className={selectInputType().required ? 'required' : ''}>
-        {selectInputType().title}
-      </Label>
-      <Input
-        id={props.type}
-        type={selectInputType().type}
-        placeholder={selectInputType().placeholder}
-        onChange={e => {
-          selectInputType().validate(e.target.value)
-        }}></Input>
-      <HelpText className={textColor(selectInputType().isValied)}>{selectInputType().text[selectInputType().isValied]}</HelpText>
-      {addPwdCheck()}
-    </Inputwrap>
+    <StylesProvider injectFirst>
+      <Inputwrap>
+        <Label htmlFor={props.type} className={selectInputType().required ? 'required' : ''}>
+          {selectInputType().title}
+        </Label>
+        <Input
+          id={props.type}
+          type={selectInputType().type}
+          placeholder={selectInputType().placeholder}
+          onChange={e => {
+            selectInputType().validate(e.target.value)
+          }}></Input>
+        <HelpText className={textColor(selectInputType().isValied)}>{selectInputType().text[selectInputType().isValied]}</HelpText>
+        {addPwdCheck()}
+      </Inputwrap>
+    </StylesProvider>
   )
 }
 
 export default makeInput
+
+const Input = styled(TextField)`
+  display: block;
+  width: 100%;
+  border: 1px solid #888;
+  line-height: 36px;
+  text-indent: 10px;
+`
+
+// const Input = styled(TextField)({
+//   width: '100%',
+//   border: '1px solid #888',
+//   lineHeight: '36px',
+//   textIndent: '10px'
+// })
 
 const Inputwrap = styled.div`
   margin: 20px 0;
@@ -223,14 +244,6 @@ const Label = styled.label`
   &.required:before {
     content: '*';
   }
-`
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  border: 1px solid #888;
-  line-height: 36px;
-  text-indent: 10px;
 `
 
 const HelpText = styled.p`
