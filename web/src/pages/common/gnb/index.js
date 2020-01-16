@@ -94,8 +94,9 @@ export default () => {
       <Wrap>
         {/* 네비게이션 동적으로생성 */}
         <TopMenu>
-          {makeNavigation(commonMenu)}
-          <div>
+          <div>{makeNavigation(commonMenu)}</div>
+
+          <span>
             <button
               onClick={() => {
                 context.action.updatePopup('LOGIN')
@@ -110,17 +111,18 @@ export default () => {
               }}>
               회원가입
             </NavLink>
-          </div>
+          </span>
         </TopMenu>
         <Search>
           <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" />
           <button>검색</button>
         </Search>
         <MenuList>
-          <ListWrap>{makeNavigation(tipMenu)}</ListWrap>
-          <ListWrap>{makeNavigation(myPage)}</ListWrap>
-          <ListWrap>{makeNavigation(customerCenter)}</ListWrap>
+          <div>{makeNavigation(tipMenu)}</div>
+          <div>{makeNavigation(myPage)}</div>
+          <div>{makeNavigation(customerCenter)}</div>
         </MenuList>
+        <LiveButton>방송하기</LiveButton>
       </Wrap>
     </Gnb>
   )
@@ -155,6 +157,7 @@ const Gnb = styled.nav`
 
 const Header = styled.header`
   display: flex;
+  position: relative;
   height: 80px;
   padding: 20px;
   align-items: center;
@@ -170,6 +173,7 @@ const Logo = styled.div``
 const Close = styled.button``
 
 const Wrap = styled.div`
+  position: relative;
   width: 800px;
   margin: 40px auto;
   * {
@@ -177,12 +181,77 @@ const Wrap = styled.div`
   }
 `
 
-const TopMenu = styled.div``
+const TopMenu = styled.div`
+  display: flex;
+  justify-content: space-between;
+  div {
+    a {
+      display: inline-block;
+      padding: 0;
+      margin: 0 20px;
+    }
+  }
+  span {
+    button {
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    a {
+      display: inline-block;
+    }
+  }
+`
 
-const Search = styled.div``
+const Search = styled.div`
+  position: relative;
+  margin: 40px 0;
+  input {
+    width: 100%;
+    border: 1px solid #fff;
+    background: none;
+    color: #fff;
+    line-height: 60px;
+    text-indent: 18px;
+  }
+  input::placeholder {
+    color: #fff;
+  }
+  button {
+    position: absolute;
+    top: 19px;
+    right: 24px;
+    font-size: 16px;
+  }
+`
 
-const MenuList = styled.div``
+const MenuList = styled.div`
+  div {
+    display: inline-block;
+    vertical-align: top;
 
-const ListWrap = styled.div`
-  display: inline-block;
+    a {
+      line-height: 30px;
+    }
+
+    a:first-child {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  }
+
+  div + div {
+    margin-left: 60px;
+  }
+`
+
+const LiveButton = styled.button`
+  position: absolute;
+  right: 0;
+  bottom: 28%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #fff;
+  color: #8555f6;
+  font-weight: bold;
 `
