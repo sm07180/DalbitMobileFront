@@ -1030,50 +1030,50 @@ const User = () => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout>
-      <Content>
-        {/* import library*/}
-        <Script
-          url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
-          onLoad={() => {
-            console.log('completed')
+    <>
+      <h1>달빛라디오 방송</h1>
+      {/* import library*/}
+      <Script
+        url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <Script
+        url="https://v154.wawatoc.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <Script
+        url="https://webrtc.github.io/adapter/adapter-latest.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <audio id="localVideo" autoPlay controls muted></audio>
+      <p>
+        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" />
+      </p>
+      <p>
+        <button
+          onClick={() => {
+            startPublishing()
           }}
-        />
-        <Script
-          url="https://v154.wawatoc.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
-          onLoad={() => {
-            console.log('completed')
+          disabled
+          id="start_publish_button">
+          Start Publishing
+        </button>
+        <button
+          onClick={() => {
+            stopPublishing()
           }}
-        />
-        <Script
-          url="https://webrtc.github.io/adapter/adapter-latest.js"
-          onLoad={() => {
-            console.log('completed')
-          }}
-        />
-        <audio id="localVideo" autoPlay controls muted></audio>
-        <p>
-          <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" />
-        </p>
-        <p>
-          <button
-            onClick={() => {
-              startPublishing()
-            }}
-            disabled
-            id="start_publish_button">
-            Start Publishing
-          </button>
-          <button
-            onClick={() => {
-              stopPublishing()
-            }}
-            disabled
-            id="stop_publish_button">
-            Stop Publishing
-          </button>
-        </p>
-        {/*          
+          disabled
+          id="stop_publish_button">
+          Stop Publishing
+        </button>
+      </p>
+      {/*          
         <div class="container">
           <div class="header clearfix">
             <nav>
@@ -1104,8 +1104,7 @@ const User = () => {
             </p>
           </footer>
         </div> */}
-      </Content>
-    </Layout>
+    </>
   )
 }
 export default User

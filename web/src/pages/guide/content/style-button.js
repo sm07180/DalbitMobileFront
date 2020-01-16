@@ -1,15 +1,17 @@
 /**
  * @title
  */
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 export default () => {
   //---------------------------------------------------------------------
-
-  //---------------------------------------------------------------------
-
-  return <Content>스타일가이드-버튼</Content>
+  return (
+    <>
+      <Content></Content>
+    </>
+  )
 }
 //---------------------------------------------------------------------
-const Content = styled.div``
+
+const Content = styled.section``

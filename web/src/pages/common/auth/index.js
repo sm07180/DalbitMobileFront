@@ -29,20 +29,9 @@ import {setState} from 'expect/build/jestMatchersObject'
 //   text-align: center;
 // `
 
-export default () => {
+export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
-
-  //---------------------------------------------------------------------
-  const signup = (res, type) => {
-    if (type == 'facebook') {
-      fetchData(res, 'f')
-      console.log('facebook')
-    } else if (type == 'google') {
-      fetchData(res, 'g')
-      console.log('google')
-    }
-  }
 
   //fetch
   async function fetchData(obj, ostype) {
@@ -54,17 +43,13 @@ export default () => {
         i_os: 3
       }
     })
-    console.log('data = ' + data)
+    console.log(res)
     setFetch(res)
+    console.log('2')
+    //if (props.history) props.history.push('/mypage')
+    console.log('3')
+    //window.location.href = '/' // 홈페이지로 새로고침
   }
-  // state = {
-  //   isLoggedIn = false,
-  //   userID : '',
-  //   name:'',
-  //   email:'',
-  //   picture:''
-  // }
-
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
   const responseFacebook = response => {
     if (response && response.name) console.log('RESTAPI POST!!!!')
@@ -90,11 +75,7 @@ export default () => {
   }
   const responseGoogle = response => {
     console.log('responseGoogleresult = ' + JSON.stringify(response))
-    console.log(response)
-
-    //---------------------------------------------------------------------
-
-    signup(response, 'google')
+    fetchData(response, 'g')
   }
   const responseGoogleFail = err => {
     console.log('responseGoogleresult = ' + JSON.stringify(err))
@@ -104,6 +85,13 @@ export default () => {
   //---------------------------------------------------------------------
   return (
     <Login>
+      <button
+        onClick={() => {
+          if (props.history !== undefined) props.history.push('/guide')
+        }}>
+        스타일가이드
+      </button>
+      <br></br>
       <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
@@ -125,7 +113,7 @@ export default () => {
         onFailure={responseGoogleFail}
         buttonText="LOGIN WITH GOOGLE"
         cookiePolicy={'single_host_origin'}
-        redirectUri="http://localhost:8000"
+        // redirectUri="http://localhost:9000"
       />
       <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
     </Login>

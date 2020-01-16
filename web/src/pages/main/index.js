@@ -11,11 +11,11 @@ import CMiddle from './content/content-middle'
 import {DEVICE_MOBILE} from 'Context/config'
 //components
 
-const Main = () => {
+const Main = props => {
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
   return (
-    <Layout>
+    <Layout {...props}>
       <h1>
         <a href="/guide">메인페이지</a>
       </h1>
