@@ -4,6 +4,7 @@
  * @todo 반응형으로 처리되어야함
  */
 import React, {useEffect, useContext} from 'react'
+import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import {Context} from 'Context'
@@ -14,13 +15,39 @@ import Profile from './profile'
 //
 export default () => {
   const context = useContext(Context)
+  const info = [
+    {title: '라이브', url: '/'},
+    {title: '캐스트', url: '/'},
+    {title: '랭킹', url: '/'},
+    {title: '스토어', url: '/'},
+    {title: '방송하기', url: '/'}
+  ]
+  //makeMenu
+  const makeNavigation = () => {
+    return info.map((list, idx) => {
+      const _title = info[idx].title
+      const _url = info[idx].url
+      return (
+        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
+          <span>{_title}</span>
+        </NavLink>
+      )
+    })
+  }
   //---------------------------------------------------------------------
   return (
     <Header>
-      <a href="/" className="logo">
-        달빛라디오
-      </a>
-      <div className="util">
+      <Logo>
+        <a href="/">달빛라디오</a>
+      </Logo>
+      <CommonMenu>{makeNavigation()}</CommonMenu>
+      <UtilMenu>
+        <Search
+          onClick={() => {
+            context.action.updateGnbVisible(true)
+          }}>
+          검색
+        </Search>
         <Login
           onClick={() => {
             context.action.updatePopup('LOGIN')
@@ -28,8 +55,14 @@ export default () => {
           로그인
         </Login>
         {/* 프로필 */}
-        <Profile />
-      </div>
+        {/* <Profile /> */}
+        <Menu
+          onClick={() => {
+            context.action.updateGnbVisible(true)
+          }}>
+          메뉴
+        </Menu>
+      </UtilMenu>
     </Header>
   )
 }
@@ -41,22 +74,42 @@ const Header = styled.header`
   }
   /* pc media query */
   position: fixed;
-  display: block;
+  display: flex;
   width: 100%;
+  height: 90px;
   border-bottom: 1px solid #eee;
   padding: 10px 20px;
-  height: 50px;
+  align-items: center;
   background: ${COLOR_WHITE};
-  box-sizing: border-box;
   z-index: 10;
-  .util {
-    float: right;
+`
+
+const Logo = styled.h1`
+  flex: 1;
+  font-size: 24px;
+`
+
+const CommonMenu = styled.div`
+  flex: 4;
+  text-align: center;
+  a {
+    margin: 0 20px;
   }
 `
-const Login = styled.button`
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  right: 100px;
-  transform: translateY(-50%);
+
+const UtilMenu = styled.div`
+  flex: 1;
+  text-align: right;
+
+  button {
+    font-size: 16px;
+  }
+
+  button + button {
+    margin-left: 10px;
+  }
 `
+
+const Search = styled.button``
+const Login = styled.button``
+const Menu = styled.button``

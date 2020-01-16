@@ -37,15 +37,12 @@ export default Layout
 //---------------------------------------------------------------------
 const Container = styled.div`
   width: 100%;
-  height: 100%;
-  box-sizing: border-box;
   /* 메인페이지 */
   main {
     display: block;
     width: 100%;
-    height: calc(100% - 50px);
-    padding-left: 200px;
-    box-sizing: border-box;
+    /* height: calc(100% - 50px); */
+    padding-top: 103px;
     z-index: 1;
     @media (max-width: ${DEVICE_MOBILE}) {
       padding-left: 0;
@@ -53,7 +50,6 @@ const Container = styled.div`
     /* 컨텐츠내용 */
     article {
       position: relative;
-      padding-top: 50px;
     }
   }
 `
