@@ -12,7 +12,7 @@ import {Context} from 'Context'
 //contents
 import Auth from 'Pages/common/auth'
 //
-export default () => {
+export default props => {
   //
   const context = useContext(Context)
   //   레이어팝업컨텐츠
@@ -20,7 +20,7 @@ export default () => {
     console.log(context.popup_code)
     switch (context.popup_code) {
       case 'LOGIN':
-        return <Auth />
+        return <Auth {...props} />
     }
   }
   //---------------------------------------------------------------------
