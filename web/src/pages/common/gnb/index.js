@@ -149,10 +149,6 @@ const Gnb = styled.nav`
   a {
     display: block;
   }
-  /* mobile media query */
-  @media (max-width: ${DEVICE_MOBILE}) {
-    display: none;
-  }
 `
 
 const Header = styled.header`
@@ -179,6 +175,10 @@ const Wrap = styled.div`
   * {
     color: #fff;
   }
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 95%;
+  }
 `
 
 const TopMenu = styled.div`
@@ -200,6 +200,11 @@ const TopMenu = styled.div`
       display: inline-block;
     }
   }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    div a {
+      margin: 0 16px;
+    }
+  }
 `
 
 const Search = styled.div`
@@ -208,6 +213,7 @@ const Search = styled.div`
   input {
     width: 100%;
     border: 1px solid #fff;
+    padding-right: 80px;
     background: none;
     color: #fff;
     line-height: 60px;
@@ -242,6 +248,12 @@ const MenuList = styled.div`
   div + div {
     margin-left: 60px;
   }
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    div + div {
+      margin-left: 20px;
+    }
+  }
 `
 
 const LiveButton = styled.button`
@@ -254,4 +266,8 @@ const LiveButton = styled.button`
   background: #fff;
   color: #8555f6;
   font-weight: bold;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    right: 10px;
+    bottom: -33%;
+  }
 `

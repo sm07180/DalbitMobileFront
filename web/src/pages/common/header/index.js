@@ -68,11 +68,6 @@ export default () => {
 }
 //---------------------------------------------------------------------
 const Header = styled.header`
-  /* mobile media query */
-  @media (max-width: ${DEVICE_MOBILE}) {
-    background: #ff0000;
-  }
-  /* pc media query */
   position: fixed;
   display: flex;
   width: 100%;
@@ -82,11 +77,17 @@ const Header = styled.header`
   align-items: center;
   background: ${COLOR_WHITE};
   z-index: 10;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    height: 60px;
+  }
 `
 
 const Logo = styled.h1`
   flex: 1;
   font-size: 24px;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    font-size: 20px;
+  }
 `
 
 const CommonMenu = styled.div`
@@ -94,6 +95,9 @@ const CommonMenu = styled.div`
   text-align: center;
   a {
     margin: 0 20px;
+  }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    display: none;
   }
 `
 
