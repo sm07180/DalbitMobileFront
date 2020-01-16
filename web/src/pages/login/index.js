@@ -15,7 +15,7 @@ const User = () => {
   //fetch
   //Get 방식일때 사용 가능한 가이드
   async function fetchData(obj) {
-    const res = await Api.login_authenticate({
+    const res = await Api.member_login({
       data: {
         id1: '010-1234-7412',
         password: '1234'

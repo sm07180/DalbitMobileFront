@@ -3,7 +3,7 @@
  * @brief 로그인영역
  * @todo 반응형으로 처리되어야함
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //components
 import {GoogleLogin} from 'react-google-login'
@@ -15,24 +15,13 @@ import Api from 'Context/api'
 
 import {setState} from 'expect/build/jestMatchersObject'
 
-// const StyledKakaoLogin = styled(KakaoLogin)`
-//   display: inline-block;
-//   padding: 0;
-//   width: 222px;
-//   height: 49px;
-//   line-height: 49px;
-//   color: #3c1e1e;
-//   background-color: #ffeb00;
-//   border: 1px solid transparent;
-//   border-radius: 3px;
-//   font-size: 16px;
-//   text-align: center;
-// `
+//context
+import {Context} from 'Context'
 
 export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
-
+  const context = useContext(Context)
   //fetch
   async function fetchData(obj, ostype) {
     console.log('googleID = ' + obj.googleId)
@@ -43,11 +32,16 @@ export default props => {
         i_os: 3
       }
     })
-    console.log(res)
+
     setFetch(res)
-    console.log('2')
-    //if (props.history) props.history.push('/mypage')
-    console.log('3')
+    console.log('res = ' + res)
+    if (res.code == -1) {
+      context.action.updatePopupVisible(false)
+      console.log('message = ' + res.message)
+      alert('회원가입을 해야돼 쨔샤')
+      if (props.history) props.history.push('/user')
+    }
+
     //window.location.href = '/' // 홈페이지로 새로고침
   }
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
@@ -85,13 +79,13 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Login>
-      <button
+      {/* <button
         onClick={() => {
           if (props.history !== undefined) props.history.push('/guide')
         }}>
         스타일가이드
       </button>
-      <br></br>
+      <br></br> */}
       <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
