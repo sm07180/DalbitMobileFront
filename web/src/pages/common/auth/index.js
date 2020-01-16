@@ -85,6 +85,13 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Login>
+      <button
+        onClick={() => {
+          if (props.history !== undefined) props.history.push('/guide')
+        }}>
+        스타일가이드
+      </button>
+      <br></br>
       <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸

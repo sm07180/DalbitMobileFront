@@ -18,6 +18,10 @@ const User = () => {
    *
    * @returns
    */
+  /**
+   *
+   * @returns
+   */
   function WebRTCAdaptor(initialValues) {
     var thiz = this
     thiz.peerconnection_config = null
@@ -231,7 +235,7 @@ const User = () => {
     }
 
     /**
-     * Closes stream, if you want to stop혻peer connection, call stop(streamId)
+     * Closes stream, if you want to stop peer connection, call stop(streamId)
      */
     this.closeStream = function() {
       thiz.localStream.getVideoTracks().forEach(function(track) {
@@ -892,14 +896,15 @@ const User = () => {
       }
     }
   }
+
   //import webRTC
   const [defaultValue, setStream] = useState('stream1')
   //스트림id를 받기위한 state 설정
   const loadScript = src => {
     $(document).ready(function() {
       //----
-      var start_publish_button = document.getElementById('start_publish_button')
-      var stop_publish_button = document.getElementById('stop_publish_button')
+      var start_play_button = document.getElementById('start_play_button')
+      var stop_play_button = document.getElementById('stop_play_button')
 
       var streamNameBox = document.getElementById('streamName')
 
@@ -917,38 +922,24 @@ const User = () => {
       //   streamId = streamNameBox.defaultValue
       //   webRTCAdaptor.stop(streamId)
       // }
-      $(start_publish_button).on('click', function(event) {
+      $(start_play_button).on('click', function(event) {
         streamId = streamNameBox.defaultValue
-        webRTCAdaptor.publish(streamId)
+        webRTCAdaptor.play(streamId)
       })
-      $(stop_publish_button).on('click', function(event) {
+      $(stop_play_button).on('click', function(event) {
         webRTCAdaptor.stop(streamId)
       })
-
-      function startAnimation() {
-        $('#broadcastingInfo').fadeIn(800, function() {
-          $('#broadcastingInfo').fadeOut(800, function() {
-            var state = webRTCAdaptor.signallingState(streamId)
-            if (state != null && state != 'closed') {
-              var iceState = webRTCAdaptor.iceConnectionState(streamId)
-              if (iceState != null && iceState != 'failed' && iceState != 'disconnected') {
-                startAnimation()
-              }
-            }
-          })
-        })
-      }
 
       var pc_config = null
 
       var sdpConstraints = {
-        OfferToReceiveAudio: false,
-        OfferToReceiveVideo: false
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
       }
 
       var mediaConstraints = {
         video: false,
-        audio: true
+        audio: false
       }
       //로컬호스트 네임은 우리 dev주소가 따지기 떄문에 방송주소로 호스트변경
       //var websocketURL = 'ws://' + location.hostname + ':5080/WebRTCAppEE/websocket'
@@ -965,24 +956,24 @@ const User = () => {
         mediaConstraints: mediaConstraints,
         peerconnection_config: pc_config,
         sdp_constraints: sdpConstraints,
-        localVideoId: 'localVideo',
+        remoteVideoId: 'remoteVideo',
+        isPlayMode: true,
         debug: true,
         callback: function(info, description) {
           if (info == 'initialized') {
             console.log('initialized')
-            start_publish_button.disabled = false
-            stop_publish_button.disabled = true
-          } else if (info == 'publish_started') {
-            //stream is being published
-            console.log('publish started')
-            start_publish_button.disabled = true
-            stop_publish_button.disabled = false
-            startAnimation()
-          } else if (info == 'publish_finished') {
-            //stream is being finished
-            console.log('publish finished')
-            start_publish_button.disabled = false
-            stop_publish_button.disabled = true
+            start_play_button.disabled = false
+            stop_play_button.disabled = true
+          } else if (info == 'play_started') {
+            //joined the stream
+            console.log('play started')
+            start_play_button.disabled = true
+            stop_play_button.disabled = false
+          } else if (info == 'play_finished') {
+            //leaved the stream
+            console.log('play finished')
+            start_play_button.disabled = false
+            stop_play_button.disabled = true
           } else if (info == 'closed') {
             //console.log("Connection closed");
             if (typeof description != 'undefined') {
@@ -990,32 +981,11 @@ const User = () => {
             }
           }
         },
-        callbackError: function(error, message) {
+        callbackError: function(error) {
           //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
 
           console.log('error callback: ' + JSON.stringify(error))
-          var errorMessage = JSON.stringify(error)
-          if (typeof message != 'undefined') {
-            errorMessage = message
-          }
-          var errorMessage = JSON.stringify(error)
-          if (error.indexOf('NotFoundError') != -1) {
-            errorMessage = 'Camera or Mic are not found or not allowed in your device.'
-          } else if (error.indexOf('NotReadableError') != -1 || error.indexOf('TrackStartError') != -1) {
-            errorMessage = 'Camera or Mic is being used by some other process that does not not allow these devices to be read.'
-          } else if (error.indexOf('OverconstrainedError') != -1 || error.indexOf('ConstraintNotSatisfiedError') != -1) {
-            errorMessage = 'There is no device found that fits your video and audio constraints. You may change video and audio constraints.'
-          } else if (error.indexOf('NotAllowedError') != -1 || error.indexOf('PermissionDeniedError') != -1) {
-            errorMessage = 'You are not allowed to access camera and mic.'
-          } else if (error.indexOf('TypeError') != -1) {
-            errorMessage = 'Video/Audio is required.'
-          } else if (error.indexOf('UnsecureContext') != -1) {
-            errorMessage = 'Fatal Error: Browser cannot access camera and mic because of unsecure context. Please install SSL and access via https'
-          } else if (error.indexOf('WebSocketNotSupported') != -1) {
-            errorMessage = 'Fatal Error: WebSocket not supported in this browser'
-          }
-
-          alert(errorMessage)
+          alert(JSON.stringify(error))
         }
       })
     })
@@ -1030,50 +1000,40 @@ const User = () => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout>
-      <Content>
-        {/* import library*/}
-        <Script
-          url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
-          onLoad={() => {
-            console.log('completed')
-          }}
-        />
-        <Script
-          url="https://v154.wawatoc.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
-          onLoad={() => {
-            console.log('completed')
-          }}
-        />
-        <Script
-          url="https://webrtc.github.io/adapter/adapter-latest.js"
-          onLoad={() => {
-            console.log('completed')
-          }}
-        />
-        <audio id="localVideo" autoPlay controls muted></audio>
-        <p>
-          <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" />
-        </p>
-        <p>
-          <button
-            onClick={() => {
-              startPublishing()
-            }}
-            disabled
-            id="start_publish_button">
-            Start Publishing
-          </button>
-          <button
-            onClick={() => {
-              stopPublishing()
-            }}
-            disabled
-            id="stop_publish_button">
-            Stop Publishing
-          </button>
-        </p>
-        {/*          
+    <>
+      <h1>달빛라디오 청취</h1>
+      {/* import library*/}
+      <Script
+        url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <Script
+        url="https://v154.wawatoc.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <Script
+        url="https://webrtc.github.io/adapter/adapter-latest.js"
+        onLoad={() => {
+          console.log('completed')
+        }}
+      />
+      <audio id="remoteVideo" autoPlay controls muted></audio>
+      <p>
+        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" className="form-control" />
+      </p>
+      <p>
+        <button id="start_play_button" className="btn btn-info">
+          Start Playing
+        </button>
+        <button id="stop_play_button" className="btn btn-info">
+          Stop Playing
+        </button>
+      </p>
+      {/*          
         <div class="container">
           <div class="header clearfix">
             <nav>
@@ -1104,8 +1064,7 @@ const User = () => {
             </p>
           </footer>
         </div> */}
-      </Content>
-    </Layout>
+    </>
   )
 }
 export default User

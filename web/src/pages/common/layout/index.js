@@ -29,7 +29,7 @@ const Layout = props => {
         <Footer />
       </main>
       {/* 레이어팝업 */}
-      <Popup />
+      <Popup {...props} />
     </Container>
   )
 }
