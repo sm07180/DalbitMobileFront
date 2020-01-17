@@ -9,7 +9,7 @@
  *        3 : 팬/스타
  *        4 : 설정
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 
 //layout
@@ -18,6 +18,7 @@ import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
 
 //context
 import Api from 'Context/api'
+import {Context} from 'Context'
 
 //material-ui
 import PropTypes from 'prop-types'
@@ -60,9 +61,21 @@ function a11yProps(index) {
 }
 
 //
-const User = props => {
+const Mypage = props => {
+  //Context
+  const context = new useContext(Context)
+  //useState
+  const [isLogin, setIsLogin] = useState(context.login_state)
+  console.log('로그인상태', isLogin)
+
+  const [fetch, setFetch] = useState(null)
+
+  async function fetchData(obj) {
+    const res = await Api.
+  }
+
+
   //---------------------------------------------------------------------
-  console.log(props.index)
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
   const [value, setValue] = React.useState(props.index ? props.index : 0)
 
@@ -74,9 +87,16 @@ const User = props => {
   return (
     <Layout>
       <ContentHeader>
-        <h1>
-          <a href="/">마이페이지</a>
-        </h1>
+        {!isLogin && (
+          <h1>
+            <a href="/">회원가입</a>
+          </h1>
+        )}
+        {isLogin && (
+          <h1>
+            <a href="/">마이페이지</a>
+          </h1>
+        )}
         <MypageButton>방송국 관리</MypageButton>
       </ContentHeader>
       <Content>
@@ -112,7 +132,7 @@ const User = props => {
     </Layout>
   )
 }
-export default User
+export default Mypage
 
 const ContentHeader = styled.div`
   display: flex;

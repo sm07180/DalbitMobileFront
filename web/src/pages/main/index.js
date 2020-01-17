@@ -12,12 +12,18 @@ import {DEVICE_MOBILE} from 'Context/config'
 //components
 
 const Main = props => {
+  console.log(props)
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
       <h1>
-        <a href="/guide">메인페이지</a>
+        <a
+          onClick={() => {
+            props.history.push('/guide', {title: 'test', ddd: 'ccc'})
+          }}>
+          메인페이지
+        </a>
       </h1>
       <Section>
         <Wrap>

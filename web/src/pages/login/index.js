@@ -21,6 +21,7 @@ const User = () => {
         password: '1234'
       }
     })
+    alert(JSON.stringify(res))
     setFetch(res)
     console.log(res)
   }
