@@ -10,13 +10,14 @@ import Layout from 'Pages/common/layout'
 //material-ui
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Select from '@material-ui/core/Select'
 //
 import Api from 'Context/api'
 //
 export default () => {
   //---------------------------------------------------------------------
   //useState
-  const [changes, setChanges] = useState({roomId: 'roomID_TEST', roomType: 'play'})
+  const [changes, setChanges] = useState({streamId: 'steam1', token: '', clientMode: 'play'})
 
   //eventHander
   const handleChange = event => {
@@ -38,12 +39,19 @@ export default () => {
         <h1>로그인_@</h1>
         <dl>
           <dt>
-            <TextField name="roomId" label="roomId" placeholder="roomId 를 입력해주세요" onChange={handleChange} />
+            <TextField name="streamId" label="streamId" placeholder="streamId 를 입력해주세요" onChange={handleChange} />
           </dt>
           <dt>
-            <TextField name="roomType" label="roomType" placeholder="roomType 를 입력해주세요" onChange={handleChange} />
+            <TextField name="token" label="token" placeholder="token 를 입력해주세요" onChange={handleChange} />
           </dt>
-
+          <dt>
+            <h2>clientMode</h2>
+            <select name="clientMode" label="clientMode" onChange={handleChange}>
+              <option value="play">play</option>
+              <option value="join">join</option>
+              <option value="publish">publish</option>
+            </select>
+          </dt>
           <dd>
             <Button
               variant="contained"
@@ -108,6 +116,12 @@ export default () => {
 const Content = styled.section`
   padding: 100px 20px;
   box-sizing: border-box;
+  select {
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: #e1e1e1;
+    font-size: 16px;
+  }
   section {
     padding: 10px;
     color: #111;

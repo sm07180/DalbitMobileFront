@@ -2,7 +2,7 @@
  * @file /login/index.js
  * @brief 로그인
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
 import Script from 'react-load-script'
@@ -14,6 +14,8 @@ import Api from 'Context/api'
 //
 const User = () => {
   //---------------------------------------------------------------------
+  //useRef
+  const [isReady, setIsReady] = useState(false)
   /**
    *
    * @returns
@@ -905,14 +907,14 @@ const User = () => {
 
       var streamId
 
-      console.log(defaultValue)
+      // console.log(defaultValue)
       // function startPublishing() {
       //   //streamId = streamNameBox.value
       //   streamId = streamNameBox.defaultValue
 
       //   webRTCAdaptor.publish(streamId)
       // }
-      //console.log(streamId)
+      // console.log(streamId)
       // function stopPublishing() {
       //   streamId = streamNameBox.defaultValue
       //   webRTCAdaptor.stop(streamId)
@@ -970,6 +972,7 @@ const User = () => {
         callback: function(info, description) {
           if (info == 'initialized') {
             console.log('initialized')
+            setIsReady(true)
             start_publish_button.disabled = false
             stop_publish_button.disabled = true
           } else if (info == 'publish_started') {
@@ -1029,6 +1032,104 @@ const User = () => {
   }, [])
 
   //---------------------------------------------------------------------
+  // const [Value, setValue] = useState('stream1')
+  // const [LocalName, setLocalName] = useState('localvideo')
+  // const inputRef = useRef(null)
+  // const startRef = useRef(null)
+  // const stopRef = useRef(null)
+
+  // setTimeout(() => {
+  //   console.log(startRef.current)
+  // }, 1000)
+
+  // const startPub = () => {
+  //   const streamId = inputRef.current.defaultValue
+
+  //   console.log(streamId)
+  //   //console.log(startRef.current)
+  //   webRTCAdaptor.publish(streamId)
+  // }
+  // const stopPub = () => {
+  //   const streamId = inputRef.current.defaultValue
+  //   webRTCAdaptor.stop(streamId)
+  // }
+  // var pc_config = null
+
+  // var sdpConstraints = {
+  //   OfferToReceiveAudio: false,
+  //   OfferToReceiveVideo: false
+  // }
+
+  // var mediaConstraints = {
+  //   video: false,
+  //   audio: true
+  // }
+  // var websocketURL = 'ws://' + 'v154.wawatoc.com' + ':5080/WebRTCAppEE/websocket'
+  // if (location.protocol.startsWith('https')) {
+  //   websocketURL = 'wss://' + 'v154.wawatoc.com' + ':5443/WebRTCAppEE/websocket'
+  // }
+  // var webRTCAdaptor = new WebRTCAdaptor({
+  //   websocket_url: websocketURL,
+  //   mediaConstraints: mediaConstraints,
+  //   peerconnection_config: pc_config,
+  //   sdp_constraints: sdpConstraints,
+  //   localVideoId: LocalName,
+  //   debug: true,
+  //   callback: function(info, description) {
+  //     if (info == 'initialized') {
+  //       console.log('--initialized')
+
+  //       //    startRef.current.disabled = false
+  //       //   stopRef.current.disabled = true
+  //     } else if (info == 'publish_started') {
+  //       //stream is being published
+  //       console.log('publish started')
+  //       startRef.current.disabled = true
+  //       stopRef.current.disabled = false
+  //       startAnimation()
+  //     } else if (info == 'publish_finished') {
+  //       //stream is being finished
+  //       console.log('publish finished')
+  //       startRef.current.disabled = false
+  //       stopRef.current.disabled = true
+  //     } else if (info == 'closed') {
+  //       //console.log("Connection closed");
+  //       if (typeof description != 'undefined') {
+  //         console.log('Connecton closed: ' + JSON.stringify(description))
+  //       }
+  //     }
+  //   },
+  //   callbackError: function(error, message) {
+  //     //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+
+  //     console.log('error callback: ' + JSON.stringify(error))
+  //     var errorMessage = JSON.stringify(error)
+  //     if (typeof message != 'undefined') {
+  //       errorMessage = message
+  //     }
+  //     var errorMessage = JSON.stringify(error)
+  //     if (error.indexOf('NotFoundError') != -1) {
+  //       errorMessage = 'Camera or Mic are not found or not allowed in your device.'
+  //     } else if (error.indexOf('NotReadableError') != -1 || error.indexOf('TrackStartError') != -1) {
+  //       errorMessage = 'Camera or Mic is being used by some other process that does not not allow these devices to be read.'
+  //     } else if (error.indexOf('OverconstrainedError') != -1 || error.indexOf('ConstraintNotSatisfiedError') != -1) {
+  //       errorMessage = 'There is no device found that fits your video and audio constraints. You may change video and audio constraints.'
+  //     } else if (error.indexOf('NotAllowedError') != -1 || error.indexOf('PermissionDeniedError') != -1) {
+  //       errorMessage = 'You are not allowed to access camera and mic.'
+  //     } else if (error.indexOf('TypeError') != -1) {
+  //       errorMessage = 'Video/Audio is required.'
+  //     } else if (error.indexOf('UnsecureContext') != -1) {
+  //       errorMessage = 'Fatal Error: Browser cannot access camera and mic because of unsecure context. Please install SSL and access via https'
+  //     } else if (error.indexOf('WebSocketNotSupported') != -1) {
+  //       errorMessage = 'Fatal Error: WebSocket not supported in this browser'
+  //     }
+
+  //     alert(errorMessage)
+  //   }
+  // })
+  useEffect(() => {
+    //
+  })
   return (
     <>
       <h1>달빛라디오 방송</h1>
@@ -1073,37 +1174,28 @@ const User = () => {
           Stop Publishing
         </button>
       </p>
-      {/*          
-        <div class="container">
-          <div class="header clearfix">
-            <nav>
-              <ul class="nav navbar-pills pull-right">
-                <li>
-                  <a href="http://antmedia.io">Contact</a>
-                </li>
-              </ul>
-            </nav>
-            <h3 class="text-muted">WebRTC Publish</h3>
-          </div>
+      {/* <Audio id="localVideo" autoPlay controls muted defaultValue={LocalName}></Audio>
+      <input ref={inputRef} type="text" defaultValue={Value} placeholder="Type stream name" />
+      {setIsReady && (
+        <button
+          ref={startRef}
+          className="start"
+          onClick={() => {
+            startPub()
+          }}>
+          Start Publish
+        </button>
+      )}
 
-          <div class="jumbotron">
-            <p>
-             
-            </p>
-
-           
-          
-
-            <span class="label label-success" id="broadcastingInfo" style="font-size:14px;display:none" style="display: none">
-              Publishing
-            </span>
-          </div>
-          <footer class="footer">
-            <p>
-              <a href="http://antmedia.io">Ant Media Server Enterprise Edition</a>
-            </p>
-          </footer>
-        </div> */}
+      <button
+        ref={stopRef}
+        className="stop"
+        disabled
+        onClick={() => {
+          stopPub()
+        }}>
+        Stop Publish
+      </button> */}
     </>
   )
 }
@@ -1112,4 +1204,27 @@ export default User
 const Content = styled.section`
   min-height: 300px;
   background: #e1e1e1;
+`
+const Audio = styled.audio``
+const BroadTittle = styled.input`
+  display: block;
+  width: 290px;
+  height: 30px;
+  color: #fff;
+  background: darkblue;
+`
+const StartBTN = styled.button`
+  width: 140px;
+  height: 60px;
+  color: #fff;
+  font-weight: bold;
+  background: coral;
+  margin-right: 10px;
+`
+const STopBTN = styled.button`
+  width: 140px;
+  height: 60px;
+  color: #fff;
+  font-weight: bold;
+  background: coral;
 `

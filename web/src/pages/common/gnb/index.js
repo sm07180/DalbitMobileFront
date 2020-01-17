@@ -16,16 +16,8 @@ export default () => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
-  // const info = [
-  //   {title: '홈', url: '/'},
-  //   {title: '스타일가이드', url: '/guide'},
-  //   {title: '로그인', url: '/login'},
-  //   {title: '회원가입', url: '/user'},
-  //   {title: '라이브방송', url: '/live'},
-  //   {title: '마이페이지', url: '/mypage'},
-  //   {title: '* APP', url: '/app'}
-  // ]
 
+  // GNB menu list
   const commonMenu = [
     {title: '라이브', url: '/live'},
     {title: '캐스트', url: '/'},
@@ -59,7 +51,34 @@ export default () => {
     {title: '1:1 문의', url: '/'}
   ]
 
-  //makeMenu
+  const allMenuList = [tipMenu, myPage, customerCenter]
+
+  // make GNB nav menu
+  const makeNavi = () => {
+    return allMenuList.map((list, idx) => {
+      const allMenu = () => {
+        return list.map((list, idx) => {
+          const {title, url} = list
+          return (
+            <NavLink
+              title={title}
+              key={idx}
+              to={url}
+              exact
+              activeClassName="on"
+              onClick={() => {
+                context.action.updateGnbVisible(false)
+              }}>
+              <span>{title}</span>
+            </NavLink>
+          )
+        })
+      }
+      return <div key={idx}>{allMenu()}</div>
+    })
+  }
+
+  // Gnb 상단 nav menu, 화면확정되면 수정/삭제 할 것
   const makeNavigation = menuList => {
     return menuList.map((list, idx) => {
       const {title, url} = list
@@ -117,11 +136,7 @@ export default () => {
           <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" />
           <button>검색</button>
         </Search>
-        <MenuList>
-          <div>{makeNavigation(tipMenu)}</div>
-          <div>{makeNavigation(myPage)}</div>
-          <div>{makeNavigation(customerCenter)}</div>
-        </MenuList>
+        <MenuList>{makeNavi()}</MenuList>
         <LiveButton>방송하기</LiveButton>
       </Wrap>
     </Gnb>
@@ -149,10 +164,6 @@ const Gnb = styled.nav`
   a {
     display: block;
   }
-  /* mobile media query */
-  @media (max-width: ${DEVICE_MOBILE}) {
-    display: none;
-  }
 `
 
 const Header = styled.header`
@@ -179,6 +190,10 @@ const Wrap = styled.div`
   * {
     color: #fff;
   }
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    width: 95%;
+  }
 `
 
 const TopMenu = styled.div`
@@ -200,6 +215,11 @@ const TopMenu = styled.div`
       display: inline-block;
     }
   }
+  @media (max-width: ${DEVICE_MOBILE}) {
+    div a {
+      margin: 0 16px;
+    }
+  }
 `
 
 const Search = styled.div`
@@ -208,6 +228,7 @@ const Search = styled.div`
   input {
     width: 100%;
     border: 1px solid #fff;
+    padding-right: 80px;
     background: none;
     color: #fff;
     line-height: 60px;
@@ -242,6 +263,12 @@ const MenuList = styled.div`
   div + div {
     margin-left: 60px;
   }
+
+  @media (max-width: ${DEVICE_MOBILE}) {
+    div + div {
+      margin-left: 20px;
+    }
+  }
 `
 
 const LiveButton = styled.button`
@@ -254,4 +281,8 @@ const LiveButton = styled.button`
   background: #fff;
   color: #8555f6;
   font-weight: bold;
+  @media (max-width: ${DEVICE_MOBILE}) {
+    right: 10px;
+    bottom: -33%;
+  }
 `
