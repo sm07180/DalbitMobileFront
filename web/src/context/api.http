@@ -1,12 +1,12 @@
 
 ###
 //API명 : 회원로그인
-POST https://devapi2.wawatoc.com/member/login
+POST https://devapi2.dalbitcast.com/member/login
 content-type: application/x-www-form-urlencoded
 
 {
     "s_mem":"p",
-    "s_id": "010-1234-1324",
+    "s_id": "010-1234-1234",
     "s_pwd": "1234",
     "i_os" : 1
 }
@@ -14,12 +14,12 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원가입
-POST https://devapi2.wawatoc.com/member/signup
+POST https://devapi2.dalbitcast.com/member/signup
 content-type: application/x-www-form-urlencoded
 
 {
     "s_mem":"p",
-    "s_id": "010-1234-1324",
+    "s_id": "010-1234-1234",
     "s_gender": "m",
     "s_nickNm": "radiogaga",
     "i_birthYY":1980,
@@ -35,7 +35,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 :닉네임 중복체크 
-GET https://devapi2.wawatoc.com/member/nick
+GET https://devapi2.dalbitcast.com/member/nick
 content-type: application/x-www-form-urlencoded
 
 {
@@ -45,18 +45,18 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 :비밀번호 변경
-POST https://devapi2.wawatoc.com/member/pwd
+POST https://devapi2.dalbitcast.com/member/pwd
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_phoneNo":"010-1234-1324",
+    "s_phoneNo":"010-1234-1234",
     "s_pwd":"1234"
 }
 ###
 
 ###
 //API명 : 프로필편집
-POST https://devapi2.wawatoc.com/mypage/profile
+POST https://devapi2.dalbitcast.com/mypage/profile
 content-type: application/x-www-form-urlencoded
 
 {
@@ -71,7 +71,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 팬 등록
-POST https://devapi2.wawatoc.com/mypage/pan
+POST https://devapi2.dalbitcast.com/mypage/pan
 content-type: application/x-www-form-urlencoded
 
 {
@@ -81,7 +81,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 팬 해제
-DELETE https://devapi2.wawatoc.com/mypage/pan
+DELETE https://devapi2.dalbitcast.com/mypage/pan
 content-type: application/x-www-form-urlencoded
 
 {
@@ -91,7 +91,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 정보조회
-GET https://devapi2.wawatoc.com/profile
+GET https://devapi2.dalbitcast.com/profile
 content-type: application/x-www-form-urlencoded
 
 {
@@ -101,7 +101,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원방송방 기본설정 조회하기 
-GET https://devapi2.wawatoc.com/mypage/broad
+GET https://devapi2.dalbitcast.com/mypage/broad
 content-type: application/x-www-form-urlencoded
 
 {
@@ -111,7 +111,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원 정보 조회
-GET https://devapi2.wawatoc.com/mypage
+GET https://devapi2.dalbitcast.com/mypage
 content-type: application/x-www-form-urlencoded
 
 {
@@ -121,7 +121,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원 방송방 기본설정 수정하기
-POST https://devapi2.wawatoc.com/mypage/broad
+POST https://devapi2.dalbitcast.com/mypage/broad
 content-type: application/x-www-form-urlencoded
 
 {
@@ -135,7 +135,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원 신고하기
-POST https://devapi2.wawatoc.com/mypage/declar
+POST https://devapi2.dalbitcast.com/mypage/declar
 content-type: application/x-www-form-urlencoded
 
 {
@@ -147,7 +147,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원 차단하기
-POST https://devapi2.wawatoc.com/mypage/block
+POST https://devapi2.dalbitcast.com/mypage/block
 content-type: application/x-www-form-urlencoded
 
 {
@@ -158,7 +158,7 @@ content-type: application/x-www-form-urlencoded
 
 ###
 //API명 : 회원 해제하기
-DELETE https://devapi2.wawatoc.com/mypage/block
+DELETE https://devapi2.dalbitcast.com/mypage/block
 content-type: application/x-www-form-urlencoded
 
 {

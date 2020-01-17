@@ -954,14 +954,14 @@ const User = () => {
       }
       //로컬호스트 네임은 우리 dev주소가 따지기 떄문에 방송주소로 호스트변경
       //var websocketURL = 'ws://' + location.hostname + ':5080/WebRTCAppEE/websocket'
-      var websocketURL = 'ws://' + 'v154.wawatoc.com' + ':5080/WebRTCAppEE/websocket'
+      var websocketURL = 'ws://' + 'v154.dalbitcast.com' + ':5080/WebRTCAppEE/websocket'
       if (location.protocol.startsWith('https')) {
         //websocketURL = 'wss://' + location.hostname + ':5443/WebRTCAppEE/websocket'
-        websocketURL = 'wss://' + 'v154.wawatoc.com' + ':5443/WebRTCAppEE/websocket'
+        websocketURL = 'wss://' + 'v154.dalbitcast.com' + ':5443/WebRTCAppEE/websocket'
       }
 
       //
-      // websocketURL = 'ws://v154.wawatoc.com:5080/WebRTCAppEE/websocket'
+      // websocketURL = 'ws://v154.dalbitcast.com:5080/WebRTCAppEE/websocket'
       var webRTCAdaptor = new WebRTCAdaptor({
         websocket_url: websocketURL,
         mediaConstraints: mediaConstraints,
@@ -1064,9 +1064,9 @@ const User = () => {
   //   video: false,
   //   audio: true
   // }
-  // var websocketURL = 'ws://' + 'v154.wawatoc.com' + ':5080/WebRTCAppEE/websocket'
+  // var websocketURL = 'ws://' + 'v154.dalbitcast.com' + ':5080/WebRTCAppEE/websocket'
   // if (location.protocol.startsWith('https')) {
-  //   websocketURL = 'wss://' + 'v154.wawatoc.com' + ':5443/WebRTCAppEE/websocket'
+  //   websocketURL = 'wss://' + 'v154.dalbitcast.com' + ':5443/WebRTCAppEE/websocket'
   // }
   // var webRTCAdaptor = new WebRTCAdaptor({
   //   websocket_url: websocketURL,
@@ -1141,7 +1141,7 @@ const User = () => {
         }}
       />
       <Script
-        url="https://v154.wawatoc.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
+        url="https://v154.dalbitcast.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
         onLoad={() => {
           console.log('completed')
         }}
