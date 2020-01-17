@@ -28,7 +28,7 @@ export default props => {
       case 'style-lottie':
         return <StyleLottie />
       default:
-        return <h1>없음</h1>
+        return <StyleTab />
     }
   }
   //---------------------------------------------------------------------
