@@ -21,6 +21,7 @@ const GlobalProvider = props => {
   const [popup_code, setPopup] = useState('')
   const [popup_visible, setVisible] = useState(false)
   const [gnb_visible, setGnbState] = useState(false)
+  const [login_state, setlogin] = useState(false)
 
   //---------------------------------------------------------------------
   const action = {
@@ -41,10 +42,14 @@ const GlobalProvider = props => {
     //GNB 열고 닫기
     updateGnbVisible: bool => {
       setGnbState(bool)
+    },
+    //login 상태
+    updateLogin: bool => {
+      setlogin(bool)
     }
   }
   //---------------------------------------------------------------------
-  const value = {state, popup_code, popup_visible, gnb_visible, action}
+  const value = {state, login_state, popup_code, popup_visible, gnb_visible, action}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {Context, GlobalProvider}
