@@ -10,6 +10,7 @@ import {GoogleLogin} from 'react-google-login'
 import KakaoLogin from 'react-kakao-login'
 import NaverLogin from 'react-naver-login'
 import FacebookLogin from 'react-facebook-login'
+import {osName, browserName} from 'react-device-detect'
 //context
 import Api from 'Context/api'
 
@@ -24,7 +25,7 @@ export default props => {
   const context = useContext(Context)
   //fetch
   async function fetchData(obj, ostype) {
-    console.log('googleID = ' + obj.googleId)
+    console.log(JSON.stringify(obj))
     const res = await Api.member_login({
       data: {
         s_mem: ostype,
@@ -32,14 +33,25 @@ export default props => {
         i_os: 3
       }
     })
+    // console.log('구글아이디 = ' + obj.googleId)
+    // console.log('이미지 = ' + obj.imageUrl)
+    // console.log('닉네임 = ' + obj.nickName)
 
     setFetch(res)
-    console.log('res = ' + res)
+
     if (res.code == -1) {
       context.action.updatePopupVisible(false)
-      console.log('message = ' + res.message)
       alert('회원가입을 해야돼 쨔샤')
-      if (props.history) props.history.push('/user')
+      if (props.history) props.history.push('/user', obj.profileObj)
+    } else if (res.code == 0) {
+      if (osName) {
+        if (osName === 'iOS') {
+          webkit.messageHandlers.Getlogintoken.postMessage(res.data)
+        } else if (osName === 'Android') {
+          window.android.Getlogintoken(res.data)
+        }
+      }
+      if (props.history) props.history.push('/')
     }
 
     //window.location.href = '/' // 홈페이지로 새로고침
@@ -68,11 +80,10 @@ export default props => {
     console.log(response)
   }
   const responseGoogle = response => {
-    console.log('responseGoogleresult = ' + JSON.stringify(response))
+    console.log(response)
     fetchData(response, 'g')
   }
   const responseGoogleFail = err => {
-    console.log('responseGoogleresult = ' + JSON.stringify(err))
     console.error(err)
   }
 
