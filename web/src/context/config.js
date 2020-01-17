@@ -7,10 +7,10 @@
 /**
  * @brief 서버분기
  */
-export const SERVICE_SERVER = 'https://devwww2.wawatoc.com' //서비스서버
-export const API_SERVER = 'https://devapi2.wawatoc.com' //API서버
-export const IMG_SERVER = 'https://devimage.wawatoc.com' //이미지 CDN
-export const PHOTO_SERVER = 'https://devphoto2.wawatoc.com' //이미지서버 (사용자가 올리는서버)
+export const SERVICE_SERVER = 'https://devwww2.dalbitcase.com' //서비스서버
+export const API_SERVER = 'https://devapi2.dalbitcase.com' //API서버
+export const IMG_SERVER = 'https://devimage.dalbitcase.com' //이미지 CDN
+export const PHOTO_SERVER = 'https://devphoto2.dalbitcase.com' //이미지서버 (사용자가 올리는서버)
 
 /**
  * @brief 레이아웃
