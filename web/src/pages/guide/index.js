@@ -9,10 +9,11 @@ import React from 'react'
 import Layout from './layout'
 import Contents from './layout-contents'
 //
-export default () => {
+export default props => {
+  console.log(props)
   //---------------------------------------------------------------------
   return (
-    <Layout>
+    <Layout {...props}>
       <Contents />
     </Layout>
   )
