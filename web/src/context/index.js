@@ -46,6 +46,8 @@ const GlobalProvider = props => {
     //login 상태
     updateLogin: bool => {
       setlogin(bool)
+      setGnbState(false)
+      //
     }
   }
   //---------------------------------------------------------------------

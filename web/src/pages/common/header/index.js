@@ -50,9 +50,17 @@ export default () => {
         </Search>
         <Login
           onClick={() => {
-            context.action.updatePopup('LOGIN')
+            if (!context.login_state) {
+              context.action.updatePopup('LOGIN')
+            } else {
+              const result = confirm('로그아웃 하시겠습니까?')
+              if (result) {
+                alert('정상적으로 로그아웃 되었습니다.')
+                context.action.updateLogin(false)
+              }
+            }
           }}>
-          로그인
+          {context.login_state ? '로그아웃' : '로그인'}
         </Login>
         {/* 프로필 */}
         {/* <Profile /> */}
@@ -68,6 +76,11 @@ export default () => {
 }
 //---------------------------------------------------------------------
 const Header = styled.header`
+  /* mobile media query */
+  @media (max-width: ${DEVICE_MOBILE}) {
+    background: #ff0000;
+  }
+  /* pc media query */
   position: fixed;
   display: flex;
   width: 100%;
@@ -77,17 +90,11 @@ const Header = styled.header`
   align-items: center;
   background: ${COLOR_WHITE};
   z-index: 10;
-  @media (max-width: ${DEVICE_MOBILE}) {
-    height: 60px;
-  }
 `
 
 const Logo = styled.h1`
   flex: 1;
   font-size: 24px;
-  @media (max-width: ${DEVICE_MOBILE}) {
-    font-size: 20px;
-  }
 `
 
 const CommonMenu = styled.div`
@@ -95,9 +102,6 @@ const CommonMenu = styled.div`
   text-align: center;
   a {
     margin: 0 20px;
-  }
-  @media (max-width: ${DEVICE_MOBILE}) {
-    display: none;
   }
 `
 

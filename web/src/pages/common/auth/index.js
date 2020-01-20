@@ -14,8 +14,6 @@ import {osName, browserName} from 'react-device-detect'
 //context
 import Api from 'Context/api'
 
-import {setState} from 'expect/build/jestMatchersObject'
-
 //context
 import {Context} from 'Context'
 
@@ -39,23 +37,34 @@ export default props => {
 
     setFetch(res)
 
-    if (res.code == -1) {
-      context.action.updatePopupVisible(false)
-      alert('회원가입을 해야돼 쨔샤')
-      if (props.history) props.history.push('/user', obj.profileObj)
-    } else if (res.code == 0) {
-      if (osName) {
-        if (osName === 'iOS') {
-          webkit.messageHandlers.Getlogintoken.postMessage(res.data)
-        } else if (osName === 'Android') {
-          window.android.Getlogintoken(res.data)
+    if (res && res.code) {
+      if (res.code == 0) {
+        if (osName) {
+          if (osName === 'iOS') {
+            webkit.messageHandlers.Getlogintoken.postMessage(res.data.authToken)
+          } else if (osName === 'Android') {
+            window.android.Getlogintoken(res.data.authToken)
+          }
         }
+        console.log('props.history = ' + props.history)
+        if (props.history) {
+          props.history.push('/')
+          context.action.updatePopupVisible(false)
+        }
+        context.action.updateLogin(true)
+        //window.location.href = '/' // 홈페이지로 새로고침
+      } else {
+        context.action.updatePopupVisible(false)
+        if (props.history) props.history.push('/user', obj.profileObj)
+        context.action.updateLogin(false)
       }
-      if (props.history) props.history.push('/')
+      alert(res.message)
+    } else {
+      console.error('서버에서 결과 코드가 안내려옴')
+      context.action.updateLogin(false)
     }
-
-    //window.location.href = '/' // 홈페이지로 새로고침
   }
+
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
   const responseFacebook = response => {
     if (response && response.name) console.log('RESTAPI POST!!!!')
@@ -90,13 +99,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Login>
-      {/* <button
-        onClick={() => {
-          if (props.history !== undefined) props.history.push('/guide')
-        }}>
-        스타일가이드
-      </button>
-      <br></br> */}
       <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
@@ -118,7 +120,7 @@ export default props => {
         onFailure={responseGoogleFail}
         buttonText="LOGIN WITH GOOGLE"
         cookiePolicy={'single_host_origin'}
-        // redirectUri="http://localhost:9000"
+        redirectUri="http://localhost:9000/live"
       />
       <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
     </Login>

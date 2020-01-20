@@ -17,6 +17,8 @@ export default () => {
   //context
   const context = new useContext(Context)
 
+  console.log(context.login_state)
+  // const loginstate = context.value
   // GNB menu list
   const commonMenu = [
     {title: '라이브', url: '/live'},
@@ -118,9 +120,17 @@ export default () => {
           <span>
             <button
               onClick={() => {
-                context.action.updatePopup('LOGIN')
+                if (!context.login_state) {
+                  context.action.updatePopup('LOGIN')
+                } else {
+                  const result = confirm('로그아웃 하시겠습니까?')
+                  if (result) {
+                    alert('정상적으로 로그아웃 되었습니다.')
+                    context.action.updateLogin(false)
+                  }
+                }
               }}>
-              로그인
+              {context.login_state ? '로그아웃' : '로그인'}
             </button>
             <NavLink
               title="회원가입"

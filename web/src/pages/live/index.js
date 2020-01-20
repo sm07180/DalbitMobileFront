@@ -12,7 +12,7 @@ import Layout from 'Pages/common/layout'
 //components
 import Api from 'Context/api'
 //
-const User = () => {
+const User = props => {
   //---------------------------------------------------------------------
   /**
    *
@@ -1030,7 +1030,7 @@ const User = () => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout>
+    <Layout {...props}>
       <Content>
         {/* import library*/}
         <Script

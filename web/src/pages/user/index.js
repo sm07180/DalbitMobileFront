@@ -13,17 +13,17 @@ import Layout from 'Pages/common/layout'
 import JoinAuth from './content/join-auth'
 import JoinForm from './content/join-form'
 
-const User = () => {
+const User = props => {
   //---------------------------------------------------------------------
   const [joinState, setJoinState] = useState('step-one')
   //
-
+  console.log(props)
   function joinForm() {
     switch (joinState) {
       case 'step-one':
         return <JoinAuth joinState={joinState} update={setJoinState} />
       case 'step-two':
-        return <JoinForm joinState={joinState} update={setJoinState} />
+        return <JoinForm joinState={joinState} update={setJoinState} data={props} />
       default:
         return <p>없습니다</p>
     }
