@@ -20,6 +20,7 @@ content-type: application/x-www-form-urlencoded
 {
     "s_mem":"p",
     "s_id": "010-1234-1234",
+    "s_pwd":"1234",
     "s_gender": "m",
     "s_nickNm": "radiogaga",
     "i_birthYY":1980,
@@ -29,7 +30,7 @@ content-type: application/x-www-form-urlencoded
     "s_term2":"y",
     "s_term3":"y",
     "s_name":"홍길동",
-    "i_os":1
+    "i_os":3
 }
 ###
 

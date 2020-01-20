@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import Input from './input-type'
 import Button from './style-button'
 
-const JoinForm = () => {
+const JoinForm = props => {
+  console.log(props.joinState)
   const [boxState, setBoxState] = useState(false)
 
   const [startState, setStartState] = useState(new Date())

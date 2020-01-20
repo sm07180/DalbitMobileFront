@@ -123,7 +123,7 @@ const makeInput = props => {
       return (
         <>
           <Input
-            id={props.type}
+            id="passwordCheck"
             type={selectInputType().type}
             placeholder="비밀번호 확인"
             onChange={e => {
