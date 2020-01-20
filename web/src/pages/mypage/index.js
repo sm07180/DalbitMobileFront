@@ -70,7 +70,20 @@ const Mypage = props => {
 
   const [fetch, setFetch] = useState(null)
 
-  async function fetchData(obj) {}
+  async function fetchData(obj) {
+    const res = await Api.member_login({
+      data: {
+        phoneNo: '010-1234-7412',
+        password: '1234'
+      }
+    })
+    setFetch(res)
+    console.log(res)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   //---------------------------------------------------------------------
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
