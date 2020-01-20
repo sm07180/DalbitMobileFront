@@ -16,7 +16,7 @@ export default props => {
   const store = useContext(Context)
   //hooks
   const styleButton = useClick(update, {menu: 'style-button'})
-  const styleTab = useClick(update, {menu: 'style-tab'})
+  const styleWebRtcTest = useClick(update, {menu: 'style-WebRtcTest'})
   const styleChart = useClick(update, {menu: 'style-chart'})
   const styleLottie = useClick(update, {menu: 'style-lottie'})
   const hooks3 = useClick(update, {menu: 'menu3'})
@@ -39,7 +39,7 @@ export default props => {
       <hr />
       <h1>스타일가이드</h1>
       <button {...styleButton}>버튼</button>
-      <button {...styleTab}>탭</button>
+      <button {...styleWebRtcTest}>WebRtc 테스트</button>
       <button {...hooks3}>기타</button>
       <button {...styleChart}>차트</button>
       <button {...styleLottie}>로티</button>

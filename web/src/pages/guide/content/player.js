@@ -899,6 +899,11 @@ const User = () => {
 
   //import webRTC
   const [defaultValue, setStream] = useState('stream1')
+  //온체이지로 defaultValue 값 변경해서 useId 값을 체인지 해준다.
+  const ValueChange = event => {
+    console.log(event.target.value)
+    setStream(event.target.value)
+  }
   //스트림id를 받기위한 state 설정
   const loadScript = src => {
     $(document).ready(function() {
@@ -1023,7 +1028,7 @@ const User = () => {
       />
       <audio id="remoteVideo" autoPlay controls muted></audio>
       <p>
-        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" className="form-control" />
+        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" className="form-control" onChange={ValueChange} />
       </p>
       <p>
         <button id="start_play_button" className="btn btn-info">

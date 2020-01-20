@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import {Context} from './store'
 //pages
 import StyleButton from './content/style-button'
-import StyleTab from './content/style-tab'
+import StyleWebRtcTest from './content/style-WebRtcTest'
 import StyleChart from './content/style-chart'
 import StyleLottie from './content/style-lottie'
 //
@@ -21,14 +21,14 @@ export default props => {
     switch (store.menuCode) {
       case 'style-button':
         return <StyleButton />
-      case 'style-tab':
-        return <StyleTab />
+      case 'style-WebRtcTest':
+        return <StyleWebRtcTest />
       case 'style-chart':
         return <StyleChart />
       case 'style-lottie':
         return <StyleLottie />
       default:
-        return <StyleTab />
+        return <StyleWebRtcTest />
     }
   }
   //---------------------------------------------------------------------
