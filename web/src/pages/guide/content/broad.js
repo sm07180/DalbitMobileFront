@@ -1,17 +1,10 @@
 /**
- * @file /login/index.js
- * @brief 로그인
+ * @file
+ * @brief
  */
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
-import Script from 'react-load-script'
-//layout
-import Layout from 'Pages/common/layout'
-//context
-//components
-import Api from 'Context/api'
-
 //
 /**
  * @webRTC.js
@@ -22,21 +15,30 @@ import Api from 'Context/api'
 
  webRTC.play()
 
-
  */
 const User = () => {
   //---------------------------------------------------------------------
   //useState
   /**
-   * @brief
+   * @brief : publishing able/disable =>서버커넥팅에대한 usestate 설정
    * @todo:
    */
   const [isReady, setIsReady] = useState(false)
+  /**
+   * @brief : #streamname 인풋의 value값을 state값 설정으로 정의/onChange로 사용자별 id값(value) 변경
+   * @todo:
+   */
+  const [defaultValue, setStream] = useState('stream1')
+  const ValueChange = event => {
+    setStream(event.target.value)
+  }
   //useEffect
-  //useRef
-
-  //useRef
-
+  /**
+   * @brief : 스크립트 로더
+   **/
+  useEffect(() => {
+    loadScript()
+  }, [])
   /**
    *
    * @returns
@@ -921,13 +923,6 @@ const User = () => {
    ** @brief [customized function]
    */
   //83~140줄 부분의 코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
-  const [defaultValue, setStream] = useState('stream1')
-  //스트림id를 받기위한 state 설정
-  //온체이지로 defaultValue 값 변경해서 useId 값을 체인지 해준다.
-  const ValueChange = event => {
-    console.log(event.target.value)
-    setStream(event.target.value)
-  }
   const loadScript = src => {
     $(document).ready(function() {
       //----
@@ -990,7 +985,6 @@ const User = () => {
             console.log('publish started')
             start_publish_button.disabled = true
             stop_publish_button.disabled = false
-            startAnimation()
           } else if (info == 'publish_finished') {
             //stream is being finished
             console.log('publish finished')
@@ -1034,40 +1028,10 @@ const User = () => {
       })
     })
   }
-  //fetch
-  async function fetchData(obj) {}
 
-  useEffect(() => {
-    //
-    loadScript()
-  }, [])
-  //---
-
-  useEffect(() => {
-    console.log(`%c ${defaultValue} `, 'background:orange;color:#fff;font-size:16px;')
-  }, [defaultValue])
   return (
     <>
       <h1>달빛라디오 방송</h1>
-      {/* import library*/}
-      <Script
-        url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
-      <Script
-        url="https://v154.dalbitcast.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
-      <Script
-        url="https://webrtc.github.io/adapter/adapter-latest.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
       <audio id="localVideo" autoPlay controls muted></audio>
       <p>
         <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" onChange={ValueChange} />
