@@ -898,6 +898,7 @@ const User = () => {
   //83~140줄 부분의 코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
   const [defaultValue, setStream] = useState('stream1')
   //스트림id를 받기위한 state 설정
+  //온체이지로 defaultValue 값 변경해서 useId 값을 체인지 해준다.
   const ValueChange = event => {
     console.log(event.target.value)
     setStream(event.target.value)
