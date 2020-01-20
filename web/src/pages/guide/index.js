@@ -9,11 +9,19 @@ import React from 'react'
 import Layout from './layout'
 import Contents from './layout-contents'
 //
+import {checkMic} from 'Components/lib/webRTC'
 export default props => {
-  console.log(props)
+  console.log(checkMic)
+
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
+      <button
+        onClick={() => {
+          checkMic()
+        }}>
+        버튼
+      </button>
       <Contents />
     </Layout>
   )

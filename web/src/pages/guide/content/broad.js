@@ -11,11 +11,32 @@ import Layout from 'Pages/common/layout'
 //context
 //components
 import Api from 'Context/api'
+
 //
+/**
+ * @webRTC.js
+
+ webRTC.checkMic();
+
+ webRTC.close();
+
+ webRTC.play()
+
+
+ */
 const User = () => {
   //---------------------------------------------------------------------
-  //useRef
+  //useState
+  /**
+   * @brief
+   * @todo:
+   */
   const [isReady, setIsReady] = useState(false)
+  //useEffect
+  //useRef
+
+  //useRef
+
   /**
    *
    * @returns
@@ -894,7 +915,11 @@ const User = () => {
       }
     }
   }
-  //import webRTC [customized function]
+
+  //import webRTC
+  /**
+   ** @brief [customized function]
+   */
   //83~140줄 부분의 코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
   const [defaultValue, setStream] = useState('stream1')
   //스트림id를 받기위한 state 설정
@@ -916,6 +941,7 @@ const User = () => {
         //인풋박스에서 매개 변수로 스트림 아이디를 가져옵니다(스테이트값으로 설정해두었음)
         streamId = streamNameBox.defaultValue
         //streamId = streamNameBox.setStream
+
         //webrtc 코어 355줄부분에서 토큰값,스트림id,객체명 등을 제어하는 함수입니다(publish)
         webRTCAdaptor.publish(streamId)
         console.log(streamId)
