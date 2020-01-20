@@ -16,6 +16,7 @@ import $ from 'jquery'
  webRTC.play()
 
  */
+export const checkMic = () => {}
 const User = () => {
   //---------------------------------------------------------------------
   //useState
@@ -1032,6 +1033,7 @@ const User = () => {
   return (
     <>
       <h1>달빛라디오 방송</h1>
+      <button>버튼</button>
       <audio id="localVideo" autoPlay controls muted></audio>
       <p>
         <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" onChange={ValueChange} />
