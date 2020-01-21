@@ -29,14 +29,14 @@ export default class API {
   /**
    * @brief 회원로그인
    * @method "POST"
-   * @param string $mem               //*회원구분
-   * @param string $id                //*아이디,소셜아이디
-   * @param string $pws               //비밀번호
-   * @param int    $os                //*OS구분
-   * @param string $deviceid          //디바이스 고유아이디
-   * @param string $deviceidToken     //디바이스 토큰
-   * @param string $appVer            //앱 버전
-   * @param string $appAdId           //광고 아이디
+   * @param string memType            //*회원구분
+   * @param string memId              //*아이디,소셜아이디
+   * @param string memPwd             //비밀번호
+   * @param int    os                 //*OS구분
+   * @param string deviceid           //디바이스 고유아이디
+   * @param string deviceToken        //디바이스 토큰
+   * @param string appVer             //앱 버전
+   * @param string appAdId            //광고 아이디
    * @create 김호겸 2020.01.15
    */
 
@@ -48,25 +48,25 @@ export default class API {
   /**
    * @brief 회원가입
    * @method "POST"
-   * @param string $mem               //*회원구분
-   * @param string $id                //*아이디,소셜아이디
-   * @param string $pwd               //비밀번호
-   * @param string $gender            //*성별
-   * @param string $nickNm            //*닉네임
-   * @param string $birthYY           //*생년
-   * @param string $birthMM           //*생월
-   * @param string $birthDD           //*생일
-   * @param string $term1           //*약관동의1
-   * @param string $term2           //*약관동의2
-   * @param string $term3           //*약관동의3
-   * @param string $name              //*이름
-   * @param string $profimg           //프로필이미지 패스
-   * @param int    $profRacy          //프로필이미지 구글선정성
-   * @param string $email             //이메일
-   * @param int    $os                //*OS구분
-   * @param string $deviceid          //디바이스 고유아이디
-   * @param string $deviceidToken     //디바이스 토큰
-   * @param string $appVer            //앱 버전
+   * @param string memType               //*회원구분
+   * @param string memId                //*아이디,소셜아이디
+   * @param string memPwd               //비밀번호
+   * @param string gender            //*성별
+   * @param string nickNm            //*닉네임
+   * @param string birthYY           //*생년
+   * @param string birthMM           //*생월
+   * @param string birthDD           //*생일
+   * @param string term1           //*약관동의1
+   * @param string term2           //*약관동의2
+   * @param string term3           //*약관동의3
+   * @param string name              //*이름
+   * @param string profImg           //프로필이미지 패스
+   * @param int    profImgRacy          //프로필이미지 구글선정성
+   * @param string email             //이메일
+   * @param int    os                //*OS구분
+   * @param string deviceid          //디바이스 고유아이디
+   * @param string deviceToken     //디바이스 토큰
+   * @param string appVer            //앱 버전
    * @create 김호겸 2020.01.15
    */
   static member_join = async obj => {
@@ -77,7 +77,7 @@ export default class API {
   /**
    * @brief 닉네임 중복체크
    * @method "GET"
-   * @param string $nickNm            //*닉네임
+   * @param string nickNm            //*닉네임
    * @create 김호겸 2020.01.15
    */
   static nickName_check = async obj => {
@@ -88,8 +88,8 @@ export default class API {
   /**
    * @brief 비밀번호 변경
    * @method "POST"
-   * @param string $phoneNo           //*핸드폰 번호
-   * @param string $pwd               //*비밀번호
+   * @param string memId           //*핸드폰 번호
+   * @param string memPwd               //*비밀번호
    * @create 김호겸 2020.01.15
    */
   static password_modify = async obj => {
@@ -100,19 +100,19 @@ export default class API {
   /**
    * @brief 프로필 편집
    * @method "POST"
-   * @param string $gender            //*성별
-   * @param string $nickNm            //*닉네임
-   * @param string $name              //*이름
-   * @param string $birthYY           //*생년
-   * @param string $birthMM           //*생월
-   * @param string $birthDD           //*생일
-   * @param string $profimg           //프로필이미지 패스
-   * @param string $profimgDel        //삭제할 프로필이미지 패스
-   * @param int    $profRacy          //프로필이미지 구글선정성
-   * @param string $bgImg             //배경이미지 패스
-   * @param string $bgImgDel          //삭제 할 배경이미지 패스
-   * @param int    $bgRacy            //배경이미지 구글 선정성
-   * @param string $message           //메세지
+   * @param string gender            //*성별
+   * @param string nickNm            //*닉네임
+   * @param string name              //*이름
+   * @param string birthYY           //*생년
+   * @param string birthMM           //*생월
+   * @param string birthDD           //*생일
+   * @param string profImg           //프로필이미지 패스
+   * @param string profImgDel        //삭제할 프로필이미지 패스
+   * @param int    profImgRacy          //프로필이미지 구글선정성
+   * @param string bgImg             //배경이미지 패스
+   * @param string bgImgDel          //삭제 할 배경이미지 패스
+   * @param int    bgImgRacy            //배경이미지 구글 선정성
+   * @param string message           //메세지
    * @create 김호겸 2020.01.15
    */
 
@@ -124,34 +124,34 @@ export default class API {
   /**
    * @brief 팬 등록
    * @method "POST"
-   * @param string    $mem_no             //*스타회원번호
+   * @param string    memNo             //*스타회원번호
    * @create 김호겸 2020.01.15
    */
   static pan_register = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/pan/${스타회원번호}}`, method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/mypage/pan/{스타회원번호}}`, method: method || 'POST', data: data})
   }
 
   /**
    * @brief 팬 해제
    * @method "DELETE"
-   * @param string    $mem_no             //*스타회원번호
+   * @param string    memNo             //*스타회원번호
    * @create 김호겸 2020.01.15
    */
   static pan_delete = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/pan/${스타회원번호}}`, method: method || 'DELETE', data: data})
+    return await ajax({...obj, url: url || `/mypage/pan/{스타회원번호}}`, method: method || 'DELETE', data: data})
   }
 
   /**
    * @brief 회원정보조회
    * @method "GET"
-   * @param string    $mem_no             //*스타회원번호
+   * @param string    memNo             //*스타회원번호
    * @create 김호겸 2020.01.15
    */
   static member_info = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/${조회회원번호}}`, method: method || 'GET', params: params})
+    return await ajax({...obj, url: url || `/profile/{조회회원번호}}`, method: method || 'GET', params: params})
   }
 
   /**
@@ -177,9 +177,9 @@ export default class API {
   /**
    * @brief 회원 신고하기
    * @method "POST"
-   * @param string    $mem_no             //*신고회원번호
-   * @param int       $reason             //*신고사유
-   * @param string    $cont               //*상세내용
+   * @param string    memNo             //*신고회원번호
+   * @param int       reason             //*신고사유
+   * @param string    cont               //*상세내용
    * @create 김호겸 2020.01.15
    */
   static member_declar = async obj => {
@@ -190,7 +190,7 @@ export default class API {
   /**
    * @brief 회원 차단하기
    * @method "POST"
-   * @param string    $mem_no             //*차단회원번호
+   * @param string    memNo             //*차단회원번호
    * @create 김호겸 2020.01.15
    */
   static member_block = async obj => {
@@ -201,7 +201,7 @@ export default class API {
   /**
    * @brief 회원 해제하기
    * @method "DELETE"
-   * @param string    $mem_no             //*차단회원번호
+   * @param string    memNo             //*차단회원번호
    * @create 김호겸 2020.01.15
    */
   static member_block_delete = async obj => {

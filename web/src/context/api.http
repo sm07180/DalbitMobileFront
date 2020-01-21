@@ -5,10 +5,10 @@ POST https://devapi2.dalbitcast.com/member/login
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem":"p",
-    "s_id": "010-1234-1234",
-    "s_pwd": "1234",
-    "i_os" : 1
+    "memType":"p",
+    "memId": "010-1234-1234",
+    "memPwd": "1234",
+    "os" : 1
 }
 ###
 
@@ -18,19 +18,19 @@ POST https://devapi2.dalbitcast.com/member/signup
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem":"p",
-    "s_id": "010-1234-1234",
-    "s_pwd":"1234",
-    "s_gender": "m",
-    "s_nickNm": "radiogaga",
-    "i_birthYY":1980,
-    "i_birthMM":11,
-    "i_birthDD":23,
-    "s_term1":"y",
-    "s_term2":"y",
-    "s_term3":"y",
-    "s_name":"홍길동",
-    "i_os":3
+    "memType":"p",
+    "memId": "010-1234-1234",
+    "memPwd":"1234",
+    "gender": "m",
+    "nickNm": "radiogaga",
+    "birthYY":1980,
+    "birthMM":11,
+    "birthDD":23,
+    "term1":"y",
+    "term2":"y",
+    "term3":"y",
+    "name":"홍길동",
+    "os":3
 }
 ###
 
@@ -40,7 +40,7 @@ GET https://devapi2.dalbitcast.com/member/nick
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_nickNm":"radiogaga",
+    "nickNm":"radiogaga",
 }
 ###
 
@@ -50,8 +50,8 @@ POST https://devapi2.dalbitcast.com/member/pwd
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_phoneNo":"010-1234-1234",
-    "s_pwd":"1234"
+    "memId":"010-1234-1234",
+    "memPwd":"1234"
 }
 ###
 
@@ -61,12 +61,12 @@ POST https://devapi2.dalbitcast.com/mypage/profile
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_gender":"m",
-    "s_nickNm":"radiogaga",
-    "s_name":"홍길동",
-    "i_birthYY":1980,
-    "i_birthMM":11,
-    "i_birthDD":23
+    "gender":"m",
+    "nickNm":"radiogaga",
+    "name":"홍길동",
+    "birthYY":1980,
+    "birthMM":11,
+    "birthDD":23
 }
 ###
 
@@ -76,7 +76,7 @@ POST https://devapi2.dalbitcast.com/mypage/pan
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280"
+    "memNo":"'11577931027280"
 }
 ###
 
@@ -86,7 +86,7 @@ DELETE https://devapi2.dalbitcast.com/mypage/pan
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280"
+    "memNo":"'11577931027280"
 }
 ###
 
@@ -96,7 +96,7 @@ GET https://devapi2.dalbitcast.com/profile
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280"
+    "memNo":"'11577931027280"
 }
 ###
 
@@ -126,11 +126,11 @@ POST https://devapi2.dalbitcast.com/mypage/broad
 content-type: application/x-www-form-urlencoded
 
 {
-    "i_type":1,
-    "s_title":"title",
-    "s_welcome":"환영합니다",
-    "i_entry":0,
-    "i_age":0
+    "roomType":1,
+    "title":"title",
+    "wecomMsg":"환영합니다",
+    "isEntry":0,
+    "isAge":0
 }
 ###
 
@@ -140,9 +140,9 @@ POST https://devapi2.dalbitcast.com/mypage/declar
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280",
-    "i_reason":1,
-    "s_cont":"신고내용",
+    "memNo":"'11577931027280",
+    "reason":1,
+    "cont":"신고내용",
 }
 ###
 
@@ -152,7 +152,7 @@ POST https://devapi2.dalbitcast.com/mypage/block
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280"
+    "memNo":"'11577931027280"
 }
 ###
 
@@ -163,6 +163,68 @@ DELETE https://devapi2.dalbitcast.com/mypage/block
 content-type: application/x-www-form-urlencoded
 
 {
-    "s_mem_no":"'11577931027280"
+    "memNo":"'11577931027280"
+}
+###
+
+###
+//API명 : 회원 알림설정 조회하기
+GET https://devapi2.dalbitcast.com/mypage/notify
+content-type: application/x-www-form-urlencoded
+
+{
+    
+}
+###
+
+###
+//API명 : 회원 알림설정 수정하기
+POST https://devapi2.dalbitcast.com/mypage/notify
+content-type: application/x-www-form-urlencoded
+
+{
+    "isAll":0,
+    "isFanReg":0,
+    "isBoard":0,
+    "isStarCast":1,
+    "isStarNoti":1,
+    "isEvtNoti":1,
+    "isSearch":1
+}
+###
+
+###
+//API명 : 회원 팬보드 댓글 달기
+POST https://devapi2.dalbitcast.com/profile/board
+content-type: application/x-www-form-urlencoded
+
+{
+    "memNo":"11577931027280",
+    "depth":1,
+    "boardNo":1,
+    "content":"댓글입니다."
+}
+###
+
+###
+//API명 : 회원 팬보드 목록조회
+GET https://devapi2.dalbitcast.com/profile/board
+content-type: application/x-www-form-urlencoded
+
+{
+    "memNo":"11577931027280",
+    "page":1,
+    "records":10
+}
+###
+
+###
+//API명 : 회원 팬보드 대댓글 조회하기
+GET https://devapi2.dalbitcast.com/profile/board/reply
+content-type: application/x-www-form-urlencoded
+
+{
+    "memNo":"11577931027280",
+    "boardNo":5
 }
 ###
