@@ -20,7 +20,7 @@ export default props => {
         onClick={() => {
           checkMic()
         }}>
-        버튼
+        마이크체크
       </button>
       <Contents />
     </Layout>

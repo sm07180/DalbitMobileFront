@@ -35,7 +35,3 @@ export const checkMic = () => {
     )
   }
 }
-
-/**
- * @brief  ; 마이크체크
- */

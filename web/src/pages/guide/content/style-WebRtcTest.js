@@ -1,10 +1,11 @@
 /**
- * @title
+ * @file style-WebRtcTest.js
+ * @brief 방송하기/청취하기
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import Player from './player'
-import Broad from './broad'
+import Player from './webRtc/player'
+import Broad from './webRtc/broad'
 export default () => {
   const [show, setShow] = useState(false)
   const [show2, setShow2] = useState(false)

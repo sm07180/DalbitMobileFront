@@ -1,13 +1,12 @@
 /**
- * @file
- * @brief
+ * @file broad.js
+ * @brief 방송하기
  */
 import React, {useEffect, useState} from 'react'
-import styled from 'styled-components'
 import $ from 'jquery'
 //
 /**
- * @webRTC.js
+ * @broad.js
 
  webRTC.checkMic();
 
@@ -16,15 +15,10 @@ import $ from 'jquery'
  webRTC.play()
 
  */
-export const checkMic = () => {}
 const User = () => {
   //---------------------------------------------------------------------
   //useState
-  /**
-   * @brief : publishing able/disable =>서버커넥팅에대한 usestate 설정
-   * @todo:
-   */
-  const [isReady, setIsReady] = useState(false)
+
   /**
    * @brief : #streamname 인풋의 value값을 state값 설정으로 정의/onChange로 사용자별 id값(value) 변경
    * @todo:
@@ -45,7 +39,7 @@ const User = () => {
   /**
    ** @brief [customized function]
    */
-  //83~140줄 부분의 코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
+  //코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
   const loadScript = src => {
     $(document).ready(function() {
       //----
@@ -59,8 +53,7 @@ const User = () => {
         //인풋박스에서 매개 변수로 스트림 아이디를 가져옵니다(스테이트값으로 설정해두었음)
         streamId = streamNameBox.defaultValue
         //streamId = streamNameBox.setStream
-
-        //webrtc 코어 355줄부분에서 토큰값,스트림id,객체명 등을 제어하는 함수입니다(publish)
+        //webrtc 코어 에서 토큰값,스트림id,객체명 등을 제어하는 함수입니다(publish)
         webRTCAdaptor.publish(streamId)
         console.log(streamId)
       })
@@ -100,7 +93,6 @@ const User = () => {
         callback: function(info, description) {
           if (info == 'initialized') {
             console.log('initialized')
-            setIsReady(true)
             start_publish_button.disabled = false
             stop_publish_button.disabled = true
           } else if (info == 'publish_started') {
@@ -123,7 +115,6 @@ const User = () => {
         //밑의 함수는 콜백에러에 따른 에러메시지 호출이며 webrtc기능구현과는 무관합니다.
         callbackError: function(error, message) {
           //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-
           console.log('error callback: ' + JSON.stringify(error))
           var errorMessage = JSON.stringify(error)
           if (typeof message != 'undefined') {
@@ -145,12 +136,12 @@ const User = () => {
           } else if (error.indexOf('WebSocketNotSupported') != -1) {
             errorMessage = 'Fatal Error: WebSocket not supported in this browser'
           }
-
           alert(errorMessage)
         }
       })
     })
   }
+
   /**
    * @brief 웹rtc Latest Core
    * @returns
@@ -1033,26 +1024,15 @@ const User = () => {
   return (
     <>
       <h1>달빛라디오 방송</h1>
-      <button>버튼</button>
       <audio id="localVideo" autoPlay controls muted></audio>
       <p>
-        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" onChange={ValueChange} />
+        <input type="text" defaultValue={defaultValue} id="streamName" onChange={ValueChange} />
       </p>
       <p>
-        <button
-          onClick={() => {
-            startPublishing()
-          }}
-          disabled
-          id="start_publish_button">
+        <button disabled id="start_publish_button">
           Start Publishing
         </button>
-        <button
-          onClick={() => {
-            stopPublishing()
-          }}
-          disabled
-          id="stop_publish_button">
+        <button disabled id="stop_publish_button">
           Stop Publishing
         </button>
       </p>

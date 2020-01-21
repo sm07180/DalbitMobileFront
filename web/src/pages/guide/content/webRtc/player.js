@@ -1,25 +1,120 @@
 /**
- * @file /login/index.js
- * @brief 로그인
+ * @file player.js
+ * @brief 방송듣기
  */
 import React, {useEffect, useState} from 'react'
-import styled from 'styled-components'
 import $ from 'jquery'
-import Script from 'react-load-script'
-//layout
-import Layout from 'Pages/common/layout'
-//context
-//components
-import Api from 'Context/api'
 //
+/**
+ * @player.js
+
+ webRTC.close();
+
+ webRTC.play()
+
+ */
 const User = () => {
   //---------------------------------------------------------------------
+  //useState
   /**
-   *
-   * @returns
+   * @brief : #streamname 인풋의 value값을 state값 설정으로 정의/onChange로 사용자별 id값(value) 변경
+   *   //온체이지로 defaultValue 값 변경해서 useId 값을 체인지 해준다.
+   * @todo:
    */
+  const [defaultValue, setStream] = useState('stream1')
+  const ValueChange = event => {
+    console.log(event.target.value)
+    setStream(event.target.value)
+  }
+  //useEffect
   /**
-   *
+   * @brief : 스크립트 로더
+   **/
+  useEffect(() => {
+    loadScript()
+  }, [])
+
+  //import webRTC:loadScript
+  /**
+   ** @brief [customized function]
+   */
+  //코어부분에서 WEBRTC초기 장치연결관련 함수가 있습니다.
+  const loadScript = src => {
+    $(document).ready(function() {
+      //----
+      var start_play_button = document.getElementById('start_play_button')
+      var stop_play_button = document.getElementById('stop_play_button')
+
+      var streamNameBox = document.getElementById('streamName')
+
+      var streamId
+      $(start_play_button).on('click', function(event) {
+        streamId = streamNameBox.defaultValue
+        webRTCAdaptor.play(streamId)
+      })
+      $(stop_play_button).on('click', function(event) {
+        webRTCAdaptor.stop(streamId)
+      })
+
+      var pc_config = null
+
+      var sdpConstraints = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
+      }
+
+      var mediaConstraints = {
+        video: false,
+        audio: false
+      }
+      //로컬호스트 네임은 우리 dev주소가 따지기 떄문에 방송주소로 호스트변경
+      //var websocketURL = 'ws://' + location.hostname + ':5080/WebRTCAppEE/websocket'
+      var websocketURL = 'ws://' + 'v154.dalbitcast.com' + ':5080/WebRTCAppEE/websocket'
+      if (location.protocol.startsWith('https')) {
+        //websocketURL = 'wss://' + location.hostname + ':5443/WebRTCAppEE/websocket'
+        websocketURL = 'wss://' + 'v154.dalbitcast.com' + ':5443/WebRTCAppEE/websocket'
+      }
+      // websocketURL = 'ws://v154.dalbitcast.com:5080/WebRTCAppEE/websocket'
+      var webRTCAdaptor = new WebRTCAdaptor({
+        websocket_url: websocketURL,
+        mediaConstraints: mediaConstraints,
+        peerconnection_config: pc_config,
+        sdp_constraints: sdpConstraints,
+        remoteVideoId: 'remoteVideo',
+        isPlayMode: true,
+        debug: true,
+        callback: function(info, description) {
+          if (info == 'initialized') {
+            console.log('initialized')
+            start_play_button.disabled = false
+            stop_play_button.disabled = true
+          } else if (info == 'play_started') {
+            //joined the stream
+            console.log('play started')
+            start_play_button.disabled = true
+            stop_play_button.disabled = false
+          } else if (info == 'play_finished') {
+            //leaved the stream
+            console.log('play finished')
+            start_play_button.disabled = false
+            stop_play_button.disabled = true
+          } else if (info == 'closed') {
+            //console.log("Connection closed");
+            if (typeof description != 'undefined') {
+              console.log('Connecton closed: ' + JSON.stringify(description))
+            }
+          }
+        },
+        callbackError: function(error) {
+          //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
+          console.log('error callback: ' + JSON.stringify(error))
+          alert(JSON.stringify(error))
+        }
+      })
+    })
+  }
+  /**
+   * @brief 웹rtc Latest Core
    * @returns
    */
   function WebRTCAdaptor(initialValues) {
@@ -896,139 +991,13 @@ const User = () => {
       }
     }
   }
-
-  //import webRTC
-  const [defaultValue, setStream] = useState('stream1')
-  //온체이지로 defaultValue 값 변경해서 useId 값을 체인지 해준다.
-  const ValueChange = event => {
-    console.log(event.target.value)
-    setStream(event.target.value)
-  }
-  //스트림id를 받기위한 state 설정
-  const loadScript = src => {
-    $(document).ready(function() {
-      //----
-      var start_play_button = document.getElementById('start_play_button')
-      var stop_play_button = document.getElementById('stop_play_button')
-
-      var streamNameBox = document.getElementById('streamName')
-
-      var streamId
-
-      console.log(defaultValue)
-      // function startPublishing() {
-      //   //streamId = streamNameBox.value
-      //   streamId = streamNameBox.defaultValue
-
-      //   webRTCAdaptor.publish(streamId)
-      // }
-      //console.log(streamId)
-      // function stopPublishing() {
-      //   streamId = streamNameBox.defaultValue
-      //   webRTCAdaptor.stop(streamId)
-      // }
-      $(start_play_button).on('click', function(event) {
-        streamId = streamNameBox.defaultValue
-        webRTCAdaptor.play(streamId)
-      })
-      $(stop_play_button).on('click', function(event) {
-        webRTCAdaptor.stop(streamId)
-      })
-
-      var pc_config = null
-
-      var sdpConstraints = {
-        OfferToReceiveAudio: true,
-        OfferToReceiveVideo: true
-      }
-
-      var mediaConstraints = {
-        video: false,
-        audio: false
-      }
-      //로컬호스트 네임은 우리 dev주소가 따지기 떄문에 방송주소로 호스트변경
-      //var websocketURL = 'ws://' + location.hostname + ':5080/WebRTCAppEE/websocket'
-      var websocketURL = 'ws://' + 'v154.dalbitcast.com' + ':5080/WebRTCAppEE/websocket'
-      if (location.protocol.startsWith('https')) {
-        //websocketURL = 'wss://' + location.hostname + ':5443/WebRTCAppEE/websocket'
-        websocketURL = 'wss://' + 'v154.dalbitcast.com' + ':5443/WebRTCAppEE/websocket'
-      }
-
-      //
-      // websocketURL = 'ws://v154.dalbitcast.com:5080/WebRTCAppEE/websocket'
-      var webRTCAdaptor = new WebRTCAdaptor({
-        websocket_url: websocketURL,
-        mediaConstraints: mediaConstraints,
-        peerconnection_config: pc_config,
-        sdp_constraints: sdpConstraints,
-        remoteVideoId: 'remoteVideo',
-        isPlayMode: true,
-        debug: true,
-        callback: function(info, description) {
-          if (info == 'initialized') {
-            console.log('initialized')
-            start_play_button.disabled = false
-            stop_play_button.disabled = true
-          } else if (info == 'play_started') {
-            //joined the stream
-            console.log('play started')
-            start_play_button.disabled = true
-            stop_play_button.disabled = false
-          } else if (info == 'play_finished') {
-            //leaved the stream
-            console.log('play finished')
-            start_play_button.disabled = false
-            stop_play_button.disabled = true
-          } else if (info == 'closed') {
-            //console.log("Connection closed");
-            if (typeof description != 'undefined') {
-              console.log('Connecton closed: ' + JSON.stringify(description))
-            }
-          }
-        },
-        callbackError: function(error) {
-          //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-
-          console.log('error callback: ' + JSON.stringify(error))
-          alert(JSON.stringify(error))
-        }
-      })
-    })
-  }
-  //fetch
-  async function fetchData(obj) {}
-
-  useEffect(() => {
-    //
-    loadScript()
-  }, [])
-
   //---------------------------------------------------------------------
   return (
     <>
       <h1>달빛라디오 청취</h1>
-      {/* import library*/}
-      <Script
-        url="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
-      <Script
-        url="https://v154.dalbitcast.com:5443/WebRTCAppEE/js/webrtc_adaptor.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
-      <Script
-        url="https://webrtc.github.io/adapter/adapter-latest.js"
-        onLoad={() => {
-          console.log('completed')
-        }}
-      />
       <audio id="remoteVideo" autoPlay controls muted></audio>
       <p>
-        <input type="text" defaultValue={defaultValue} id="streamName" placeholder="Type stream name" className="form-control" onChange={ValueChange} />
+        <input type="text" defaultValue={defaultValue} id="streamName" onChange={ValueChange} />
       </p>
       <p>
         <button id="start_play_button" className="btn btn-info">
@@ -1038,43 +1007,7 @@ const User = () => {
           Stop Playing
         </button>
       </p>
-      {/*          
-        <div class="container">
-          <div class="header clearfix">
-            <nav>
-              <ul class="nav navbar-pills pull-right">
-                <li>
-                  <a href="http://antmedia.io">Contact</a>
-                </li>
-              </ul>
-            </nav>
-            <h3 class="text-muted">WebRTC Publish</h3>
-          </div>
-
-          <div class="jumbotron">
-            <p>
-             
-            </p>
-
-           
-          
-
-            <span class="label label-success" id="broadcastingInfo" style="font-size:14px;display:none" style="display: none">
-              Publishing
-            </span>
-          </div>
-          <footer class="footer">
-            <p>
-              <a href="http://antmedia.io">Ant Media Server Enterprise Edition</a>
-            </p>
-          </footer>
-        </div> */}
     </>
   )
 }
 export default User
-
-const Content = styled.section`
-  min-height: 300px;
-  background: #e1e1e1;
-`
