@@ -3,42 +3,12 @@ import styled from 'styled-components'
 
 //components
 import Input from './input-type'
+import Datepicker from './style-datepicker'
 import Button from './style-button'
 
 const JoinForm = props => {
-  console.log(props.joinState)
   const [boxState, setBoxState] = useState(false)
 
-  const [startState, setStartState] = useState(new Date())
-
-  const handleChange = date => {
-    setStartState(date)
-  }
-
-  const makeContents = () => {
-    return (
-      <SelectWrap>
-        <Select>
-          <option>년도</option>
-          <option>2020</option>
-          <option>2019</option>
-          <option>2018</option>
-          <option>2017</option>
-        </Select>
-        <Select>
-          <option>월</option>
-          <option>1</option>
-          <option>2</option>
-        </Select>
-        <Select>
-          <option>일</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </Select>
-      </SelectWrap>
-    )
-  }
   return (
     <>
       <JoinText>
@@ -50,16 +20,10 @@ const JoinForm = props => {
         <Input type="nickname" />
         <Input type="name" />
         <Input type="password" />
-        {/* <DatePicker
-          selected={startState}
-          onChange={e => {
-            handleChange(e)
-          }}
-        /> */}
-        {makeContents()}
         <Label before={true} text="성별" />
         <input type="radio" name="gender" value="남성" defaultChecked /> 남성
         <input type="radio" name="gender" value="여성" /> 여성
+        <Datepicker text="생년월일"/>
         <CheckWrap>
           <input type="checkbox" /> <Label text="약관 전체 동의" />
           <button
