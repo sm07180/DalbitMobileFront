@@ -14,7 +14,7 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'Pages/common/layout'
-import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 
 //context
 import Api from 'Context/api'
@@ -147,13 +147,13 @@ const TabsBar = styled(AppBar)`
     background-color: #5728c5;
   }
 
-  @media (max-width: ${DEVICE_PC}) {
+  @media (max-width: ${WIDTH_PC}) {
     .MuiTabs-root {
       width: 90%;
     }
   }
 
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     .MuiTabs-root {
       width: 100%;
       padding: 0;
@@ -167,7 +167,7 @@ const TabsBar = styled(AppBar)`
 const TabContent = styled(Typography)`
   width: 600px;
   margin: 30px auto;
-  @media (max-width: ${DEVICE_PC}) {
+  @media (max-width: ${WIDTH_PC}) {
     width: 90%;
   }
 

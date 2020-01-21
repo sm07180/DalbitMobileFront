@@ -6,7 +6,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ChoiceSlider from './slider/choice-slider'
 import RankSlider from './slider/rank-slider'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 
 export default () => {
   const ChoiceInfo = [
@@ -103,7 +103,7 @@ const ContentTop = styled.section`
   height: 300px;
   padding: 10px 20px;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     padding: 10px 10px;
     height: 400px;
   }

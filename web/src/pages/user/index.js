@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 //layout
 import Layout from 'Pages/common/layout'
 //components
@@ -50,7 +50,7 @@ const Content = styled.div`
   width: 400px;
   margin: 30px auto 100px auto;
 
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 90%;
   }
 `

@@ -9,7 +9,7 @@ import styled from 'styled-components'
 //context
 import {Context} from 'Context'
 //components
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 
 //
 export default () => {
@@ -201,7 +201,7 @@ const Wrap = styled.div`
     color: #fff;
   }
 
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 95%;
   }
 `
@@ -225,7 +225,7 @@ const TopMenu = styled.div`
       display: inline-block;
     }
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     div a {
       margin: 0 16px;
     }
@@ -274,7 +274,7 @@ const MenuList = styled.div`
     margin-left: 60px;
   }
 
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     div + div {
       margin-left: 20px;
     }
@@ -291,7 +291,7 @@ const LiveButton = styled.button`
   background: #fff;
   color: #8555f6;
   font-weight: bold;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     right: 10px;
     bottom: -33%;
   }

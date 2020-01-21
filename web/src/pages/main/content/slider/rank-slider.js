@@ -5,7 +5,7 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 export default props => {
   const [RankInfo, setLiveInfo] = useState(props.Info)
   const params = {
@@ -62,7 +62,7 @@ const SliderWrap = styled.div`
   padding: 20px 30px;
   float: left;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
     height: 40%;
   }
@@ -74,7 +74,7 @@ const SliderWrap = styled.div`
       height: 3vh;
       background-size: auto;
       top: 30%;
-      @media (max-width: ${DEVICE_MOBILE}) {
+      @media (max-width: ${WIDTH_TABLET}) {
         width: 20px;
         height: 22px;
         margin-top: auto;
@@ -88,7 +88,7 @@ const RankTitle = styled.div`
   width: 100%;
   font-size: 14px;
   text-align: center;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* height: auto;
     font-size: 12px; */
   }
@@ -110,7 +110,7 @@ const StarHole = styled.h4`
     position: absolute;
     top: 0;
     left: 10%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       display: none;
     }
   }
@@ -120,7 +120,7 @@ const StarHole = styled.h4`
  * @code
  **/
 const Slide = styled.div`
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     &:after {
       content: '';
       clear: both;
@@ -151,13 +151,13 @@ const ImgBox = styled.div`
     left: -20%;
     border-radius: 20px;
     z-index: 99;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       /* width: 40px;
       height: 16px;
       line-height: 16px; */
     }
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 50%;
     height: 100%;
     float: left;
@@ -171,7 +171,7 @@ const Img = styled.img`
 const ImgInfo = styled.div`
   width: 100%;
   height: 40%;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 50%;
     height: 100%;
     float: left;
@@ -183,7 +183,7 @@ const InfoTiteR = styled.h4`
   padding: 10px 0;
   box-sizing: border-box;
   height: 40%;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     padding: 0;
     font-size: 14px;
   }
@@ -196,7 +196,7 @@ const RankBox = styled.div`
   margin: 0 auto;
   padding: 10px 0px;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
   }
 `
@@ -218,7 +218,7 @@ const RankGold = styled.span`
     top: 0;
     background-color: gold;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       /* line-height: 16px;
       left: 18%; */
     }
@@ -226,7 +226,7 @@ const RankGold = styled.span`
   @media (max-width: 1440px) {
     font-size: 14px;
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     display: block;
     margin: 0 auto;
   }
@@ -249,7 +249,7 @@ const RankHeart = styled.span`
     left: 0px;
     top: 0;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       /* line-height: 16px;
       left: 18%; */
     }
@@ -257,7 +257,7 @@ const RankHeart = styled.span`
   @media (max-width: 1440px) {
     font-size: 14px;
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     display: block;
     margin: 4px auto 0 auto;
   }

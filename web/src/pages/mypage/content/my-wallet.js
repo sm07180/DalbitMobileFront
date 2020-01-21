@@ -7,7 +7,7 @@ import React, {useEffect, useStet} from 'react'
 import styled from 'styled-components'
 
 //layout
-import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 
 const TabWallet = () => {
   return (

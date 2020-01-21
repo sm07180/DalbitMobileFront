@@ -5,7 +5,7 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 
 export default props => {
   const [ChoiceInfo, setChoiceInfo] = useState(props.Info)
@@ -71,7 +71,7 @@ const SliderWrap = styled.div`
   padding: 10px;
   float: left;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
     height: 60%;
   }
@@ -99,7 +99,7 @@ const ImgBox = styled.div`
   width: 60%;
   height: 100%;
   float: left;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 40%;
   }
 `
@@ -112,7 +112,7 @@ const ImgInfo = styled.div`
   width: 40%;
   height: 100%;
   float: left;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 60%;
   }
 `
@@ -121,7 +121,7 @@ const InfoTop = styled.div`
   height: 60%;
   padding-left: 20px;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
   }
 `
 const RecoBj = styled.span`
@@ -135,7 +135,7 @@ const RecoBj = styled.span`
   text-align: center;
   display: block;
   border-radius: 20px;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
   }
 `
 const RecoTitle = styled.h2`
@@ -144,7 +144,7 @@ const RecoTitle = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     font-size: 16px;
   }
 `
@@ -157,7 +157,7 @@ const RecoBjName = styled.h3`
   text-align: right;
   padding: 10px 0;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     font-size: 14px;
   }
 `
@@ -166,7 +166,7 @@ const InfoBottom = styled.div`
   height: 40%;
   padding-left: 20px;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
   }
 `
 const RecoPeople = styled.span`
@@ -177,7 +177,7 @@ const RecoPeople = styled.span`
   display: block;
   float: left;
   position: relative;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     font-size: 12px;
   }
   &:before {
@@ -192,7 +192,7 @@ const RecoPeople = styled.span`
     position: absolute;
     left: 0px;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
     }
   }
 `
@@ -204,7 +204,7 @@ const RecoLike = styled.span`
   display: block;
   float: left;
   position: relative;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     font-size: 12px;
   }
   &:before {
@@ -219,7 +219,7 @@ const RecoLike = styled.span`
     position: absolute;
     left: 0px;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
     }
   }
 `

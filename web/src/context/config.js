@@ -19,7 +19,8 @@ export const HEADER_HEIGHT = '350px'
 
 /**
  * @brief PC,Tablet,Moble 사이즈 분기
- * @code import {DEVICE_MOBILE} from 'Context/config'
+ * @code import {WIDTH_TABLET} from 'Context/config'
  */
-export const DEVICE_PC = '1024px'
-export const DEVICE_MOBILE = '600px'
+export const WIDTH_PC = '1280px'
+export const WIDTH_TABLET = '840px'
+export const WIDTH_MOBILE = '360px'

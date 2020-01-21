@@ -5,7 +5,7 @@
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 export default props => {
   const [LiveInfo, setLiveInfo] = useState(props.Info)
   const params = {
@@ -150,7 +150,7 @@ const Icon = styled.div`
 `
 const Imgbox = styled.div`
   height: 60%;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* height: 70%; */
   }
 `
@@ -175,11 +175,11 @@ const InfoBox = styled.div`
     left: 0;
     border-radius: 20px;
     opacity: 0.8;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       /* line-height: 16px; */
     }
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* height: 30%; */
   }
 `
@@ -195,7 +195,7 @@ const InfoTitle = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* font-size: 16px;
     padding: 0;
     height: 30%;
@@ -209,7 +209,7 @@ const InfoBj = styled.h2`
   font-weight: normal;
   padding-bottom: 6px;
   box-sizing: border-box;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* text-align: right;
     font-size: 16px; */
   }
@@ -222,7 +222,7 @@ const InfoBottom = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
   }
 `
 const InfoPeople = styled.div`
@@ -233,7 +233,7 @@ const InfoPeople = styled.div`
   display: inline-block;
   box-sizing: border-box;
   position: relative;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     font-size: 14px;
   }
   &:before {
@@ -247,7 +247,7 @@ const InfoPeople = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       width: 18px;
       height: 18px;
     }
@@ -261,7 +261,7 @@ const InfoLike = styled.div`
   box-sizing: border-box;
   display: inline-block;
   position: relative;
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     /* font-size: 10px; */
   }
   &:before {
@@ -275,7 +275,7 @@ const InfoLike = styled.div`
     top: 0;
     left: 0;
     border-radius: 50%;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       /* width: 18px;
       height: 18px; */
     }

@@ -7,7 +7,7 @@ import React, {useEffect, useStet} from 'react'
 import styled from 'styled-components'
 
 //layout
-import {DEVICE_PC, DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 
 const Profile = () => {
   return <MyProfile>내 프로필 영역 component</MyProfile>
@@ -22,7 +22,7 @@ const MyProfile = styled.div`
   min-height: 300px;
   background: #eee;
 
-  @media (max-width: ${DEVICE_PC}) {
+  @media (max-width: ${WIDTH_PC}) {
     width: 90%;
   }
 `

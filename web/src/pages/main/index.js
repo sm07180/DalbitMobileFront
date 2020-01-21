@@ -8,7 +8,7 @@ import Layout from 'Pages/common/layout'
 import styled from 'styled-components'
 import CTOP from './content/content-top'
 import CMiddle from './content/content-middle'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 //components
 
 const Main = props => {
@@ -49,7 +49,7 @@ const Wrap = styled.div`
   @media (max-width: 1000px) {
     width: 100%;
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
   }
 `

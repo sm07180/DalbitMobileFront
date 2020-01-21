@@ -4,7 +4,7 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 import {Context} from 'Context'
 import {HEADER_HEIGHT} from 'Context/config'
 //layout
@@ -44,7 +44,7 @@ const Container = styled.div`
     /* height: calc(100% - 50px); */
     padding-top: 103px;
     z-index: 1;
-    @media (max-width: ${DEVICE_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       padding-left: 0;
     }
     /* 컨텐츠내용 */

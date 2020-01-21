@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import {Context} from 'Context'
 //components
 import {COLOR_WHITE} from 'Context/color'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
 import Profile from './profile'
 //
 export default () => {
@@ -77,7 +77,7 @@ export default () => {
 //---------------------------------------------------------------------
 const Header = styled.header`
   /* mobile media query */
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_TABLET}) {
     background: #ff0000;
   }
   /* pc media query */

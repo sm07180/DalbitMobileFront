@@ -5,4 +5,4 @@
  */
 
 export const COLOR_WHITE = '#FFFFFF'
-export const DEVICE_MOBILE = '600px'
+export const WIDTH_TABLET = '600px'
