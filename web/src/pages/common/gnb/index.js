@@ -12,7 +12,7 @@ import {Context} from 'Context'
 import {WIDTH_TABLET} from 'Context/config'
 
 //
-export default () => {
+export default props => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)

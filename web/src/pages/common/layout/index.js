@@ -47,10 +47,10 @@ const Layout = props => {
   return (
     <Container>
       {/* 헤더설정 */}
-      <Header />
+      <Header {...props} />
       {/* global navigation */}
       <Gnb />
-      <main>
+      <main className={props.type == 'main' ? 'main' : 'sub'}>
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
@@ -76,5 +76,8 @@ const Container = styled.div`
     article {
       position: relative;
     }
+  }
+  main.sub {
+    padding-top: 80px;
   }
 `

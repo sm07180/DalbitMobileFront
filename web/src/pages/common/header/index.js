@@ -17,7 +17,7 @@ import Icon from '@/components/ui/icon'
 import Profile from './profile'
 
 //
-export default () => {
+export default props => {
   const context = useContext(Context)
   const info = [
     {title: '라이브', url: '/'},
@@ -42,7 +42,7 @@ export default () => {
   console.log('넓이는..', WIDTH_PC)
   //---------------------------------------------------------------------
   return (
-    <Header>
+    <Header className={props.type == 'main' ? 'main' : 'sub'}>
       <Logo>
         <a href="/">
           <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
@@ -97,6 +97,14 @@ const Header = styled.header`
   padding: 10px 20px;
   align-items: center;
   z-index: 10;
+
+  &.sub {
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  &.sub a {
+    color: #555;
+  }
 `
 
 const Logo = styled.h1`
