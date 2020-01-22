@@ -14,8 +14,35 @@ import Gnb from 'Pages/common/gnb'
 import Popup from 'Pages/common/popup'
 //
 const Layout = props => {
+  //context
+  const context = useContext(Context)
   //initalize
   const {children} = props
+  //---------------------------------------------------------------------
+  function update(event) {
+    switch (event.type) {
+      case 'react-gnb-open': //GNB 열기
+        context.action.updateGnbVisible(true)
+        break
+      case 'react-gnb-close': //GNB 닫기
+        context.action.updateGnbVisible(false)
+        break
+      default:
+        break
+    }
+    console.log(event.type)
+  }
+  useEffect(() => {
+    /**
+     * @code document.dispatchEvent(new Event('react-gnb-open'))
+     */
+    document.addEventListener('react-gnb-open', update)
+    document.addEventListener('react-gnb-close', update)
+    return () => {
+      document.removeEventListener('react-gnb-open', update)
+      document.removeEventListener('react-gnb-close', update)
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Container>

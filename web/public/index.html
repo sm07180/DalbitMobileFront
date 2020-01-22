@@ -4,6 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>INFOREX-FRONTEND</title>
+    <script type="text/javascript">
+      /**
+       *
+       */
+      function sendRectFunc() {
+        console.log('sendRectFunc')
+        document.dispatchEvent(new Event('REACT-callback'))
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
