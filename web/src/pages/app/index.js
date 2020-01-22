@@ -49,6 +49,7 @@ export default () => {
           alert(JSON.stringify())
           break
         case 'iOS':
+          console.log('PC -> IOS')
           webkit.messageHandlers.GetLoginToken.postMessage(res.data)
           break
         case 'Android':
