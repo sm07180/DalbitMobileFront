@@ -25,9 +25,9 @@ const Layout = props => {
       <Gnb />
       <main>
         <article>{children}</article>
-        {/* 푸터설정 */}
-        <Footer />
       </main>
+      {/* 푸터설정 */}
+      <Footer />
       {/* 레이어팝업 */}
       <Popup {...props} />
     </Container>

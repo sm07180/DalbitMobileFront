@@ -6,11 +6,12 @@
 import React, {useEffect, useContext} from 'react'
 import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
+
 //context
 import {Context} from 'Context'
 //components
 import {COLOR_WHITE} from 'Context/color'
-import {WIDTH_TABLET} from 'Context/config'
+import {IMG_SERVER, WIDTH_TABLET} from 'Context/config'
 import Profile from './profile'
 //
 export default () => {
@@ -38,7 +39,9 @@ export default () => {
   return (
     <Header>
       <Logo>
-        <a href="/">달빛라디오</a>
+        <a href="/">
+          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+        </a>
       </Logo>
       <CommonMenu>{makeNavigation()}</CommonMenu>
       <UtilMenu>
@@ -95,6 +98,9 @@ const Header = styled.header`
 const Logo = styled.h1`
   flex: 1;
   font-size: 24px;
+  img {
+    margin-top: -10px;
+  }
 `
 
 const CommonMenu = styled.div`

@@ -3,57 +3,53 @@
  * @brief 메인페이지
  */
 import React from 'react'
+import styled from 'styled-components'
+
+//context
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
+
 //layout
 import Layout from 'Pages/common/layout'
-import styled from 'styled-components'
-import CTOP from './content/content-top'
-import CMiddle from './content/content-middle'
-import {WIDTH_TABLET} from 'Context/config'
+import MainSlider from './content/main-slider'
+import StarRangking from './content/ranking'
+import PopularDJ from './content/popular'
+import ContentList from './content/live-cast'
+
 //components
 
 const Main = props => {
-  console.log(props)
   //---------------------------------------------------------------------
+  //context
+  //state
+
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <h1>
-        <a
-          onClick={() => {
-            props.history.push('/guide', {title: 'test', ddd: 'ccc'})
-          }}>
-          메인페이지
-        </a>
-      </h1>
-      <Section>
-        <Wrap>
-          <CTOP></CTOP>
-          <CMiddle></CMiddle>
-          <CBottom></CBottom>
-        </Wrap>
-      </Section>
+      {/* 메인 최상단 슬라이드 */}
+      <MainSlider />
+      {/* 스타 랭킹 영역 */}
+      <RangkingWrap>
+        <StarRangking />
+      </RangkingWrap>
+      {/* 인기 DJ 영역 */}
+      <PopularWrap>
+        <PopularDJ />
+      </PopularWrap>
+      {/* 라이브 list 영역, 캐스트 list 영역 */}
+      <ContentListWrap>
+        <ContentList type="live" />
+        <ContentList type="cast" />
+      </ContentListWrap>
     </Layout>
   )
 }
 export default Main
 
-const Section = styled.section`
-  width: 100%;
-`
-const Wrap = styled.div`
-  width: 1280px;
-  margin: 0 auto;
-  @media (max-width: 1440px) {
-    width: 100%;
-  }
-  @media (max-width: 1000px) {
-    width: 100%;
-  }
-  @media (max-width: ${WIDTH_TABLET}) {
-    width: 100%;
-  }
-`
-const CBottom = styled.div`
-  width: 100%;
-  height: 300px;
-`
+//---------------------------------------------------------------------
+// styled
+
+const RangkingWrap = styled.section``
+
+const PopularWrap = styled.section``
+
+const ContentListWrap = styled.section``
