@@ -150,12 +150,6 @@ export default () => {
 
         <h1>SNS 로그인</h1>
         <dl>
-          <dt>
-            <TextField name="streamId" label="streamId" placeholder="streamId 를 입력해주세요" onChange={handleChange} />
-          </dt>
-          <dt>
-            <TextField name="token" label="token" placeholder="token 를 입력해주세요" onChange={handleChange} />
-          </dt>
           <dd>
             <Button
               variant="contained"
