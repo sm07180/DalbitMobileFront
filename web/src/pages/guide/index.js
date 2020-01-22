@@ -4,21 +4,27 @@
  * @author 손완휘
  */
 
-import React from 'react'
+import React, {useEffect} from 'react'
 //layout
 import Layout from './layout'
 import Contents from './layout-contents'
 //
 import {checkMic} from 'Components/lib/webRTC'
+
 export default props => {
-  console.log(checkMic)
+  //---------------------------------------------------------------------
+  function test(evt) {
+    console.log('do submitting stuff')
+  }
+  document.addEventListener('REACT-callback', test)
 
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
       <button
         onClick={() => {
-          checkMic()
+          //checkMic()
+          window.callbackFunc()
         }}>
         마이크체크
       </button>
