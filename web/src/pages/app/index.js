@@ -42,7 +42,7 @@ export default () => {
         appAdId: 'asd123asdas1'
       }
     })
-
+    console.log(JSON.stringify(res.data))
     if (res) {
       switch (osName) {
         case 'Windows':
@@ -53,7 +53,7 @@ export default () => {
           webkit.messageHandlers.GetLoginToken.postMessage(res.data)
           break
         case 'Android':
-          window.android.GetLoginToken(res.data)
+          window.android.GetLoginToken(JSON.stringify(res.data))
           break
         default:
           alert('OS 예외처리')
@@ -104,7 +104,7 @@ export default () => {
                     webkit.messageHandlers.RoomJoin.postMessage(changes)
                     break
                   case 'Android':
-                    window.android.RoomJoin(changes)
+                    window.android.RoomJoin(JSON.stringify(changes))
                     break
                   default:
                     alert('OS 예외처리')
@@ -134,14 +134,14 @@ export default () => {
                     webkit.messageHandlers.RoomMake.postMessage(changes.room_id)
                     break
                   case 'Android':
-                    window.android.RoomMake(changes.room_id)
+                    window.android.RoomMake(JSON.stringify(changes.room_id))
                     break
                   default:
                     alert('OS 예외처리')
                     break
                 }
 
-                // console.log(changes)
+                console.log(changes)
               }}>
               방만들기
             </Button>
