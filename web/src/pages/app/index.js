@@ -42,8 +42,7 @@ export default () => {
         appAdId: 'asd123asdas1'
       }
     })
-    console.log(JSON.stringify(res))
-    return
+
     if (res) {
       switch (osName) {
         case 'Windows':
