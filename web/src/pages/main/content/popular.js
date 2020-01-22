@@ -89,11 +89,11 @@ const SwiperWrap = styled.div`
   }
   & .swiper-button-prev {
     left: calc(50% + 16px);
-    background-size: 12px;
+    background-size: 6.3px 11.5px;
   }
   & .swiper-button-next {
     left: calc(50% + 52px);
-    background-size: 12px;
+    background-size: 6.3px 11.5px;
   }
   @media (max-width: ${WIDTH_PC}) {
     width: 100%;
@@ -107,6 +107,7 @@ const SwiperWrap = styled.div`
 `
 const SlierTitle = styled.h1`
   width: 50%;
+  margin-bottom: 37px;
   font-size: 34px;
   line-height: 1.15;
   letter-spacing: -0.85px;
@@ -124,6 +125,15 @@ const Category = styled.span`
   color: #bdbdbd;
 `
 const Title = styled.h2`
+  max-height: 46px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   font-size: 18px;
   letter-spacing: -0.45px;
   margin: 20px 0 8px 0;

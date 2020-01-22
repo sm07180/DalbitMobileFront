@@ -26,7 +26,7 @@ const Main = props => {
       id: '1',
       category: '노래/연주',
       title: '이 밤을 신나게 보내요',
-      url: 'http://img.khan.co.kr/news/2017/07/11/l_2017071201001381500111321.jpg',
+      url: 'https://t1.daumcdn.net/cfile/tistory/99DC6A385CC11E5A26',
       name: '끝날 때까지 끝난게 아닌인연을 위해',
       people: '1,860',
       like: '5,200',
