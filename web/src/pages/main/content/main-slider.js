@@ -30,11 +30,13 @@ const MainSlider = styled.div`
   position: relative;
   width: 100%;
   height: 658px;
+  text-align: center;
 
   &::before {
-    position: absolute;
+    display: inline-block;
     width: 920px;
     height: 920px;
+    margin-top: -131px;
     background-color: ${COLOR_MAIN};
     border-radius: 50%;
     content: '';

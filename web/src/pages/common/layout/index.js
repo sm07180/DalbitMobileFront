@@ -68,8 +68,6 @@ const Container = styled.div`
   main {
     display: block;
     width: 100%;
-    /* height: calc(100% - 50px); */
-    padding-top: 103px;
     z-index: 1;
     @media (max-width: ${WIDTH_TABLET}) {
       padding-left: 0;

@@ -117,7 +117,6 @@ export default User
 const ContentHeader = styled.div`
   display: flex;
   padding: 20px;
-  border-bottom: 1px solid #eee;
   justify-content: space-between;
 
   h1 {
