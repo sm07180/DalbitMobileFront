@@ -20,11 +20,11 @@ import Profile from './profile'
 export default props => {
   const context = useContext(Context)
   const info = [
-    {title: '라이브', url: '/'},
-    {title: '캐스트', url: '/'},
+    {title: '라이브', url: '/live'},
+    {title: '캐스트', url: '/cast'},
     {title: '랭킹', url: '/'},
     {title: '스토어', url: '/'},
-    {title: '방송하기', url: '/'}
+    {title: '방송하기', url: '/login'}
   ]
   //makeMenu
   const makeNavigation = () => {
