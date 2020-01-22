@@ -16,8 +16,6 @@ import JoinForm from './content/join-form'
 const User = props => {
   //---------------------------------------------------------------------
   const [joinState, setJoinState] = useState('step-one')
-  //
-  console.log('여기는 회원가입 = ' + JSON.stringify(props))
   function joinForm() {
     switch (joinState) {
       case 'step-one':

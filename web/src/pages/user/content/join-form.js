@@ -39,7 +39,7 @@ const JoinForm = props => {
             <input type="checkbox" /> 마케팅 정보 제공 동의(선택)
           </CheckBox>
         </CheckWrap>
-        <Button text="회원가입 완료"></Button>
+        <Button text="회원가입 완료" {...props.location.state}></Button>
       </FormWrap>
     </>
   )

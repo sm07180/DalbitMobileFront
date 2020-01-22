@@ -17,7 +17,6 @@ export default () => {
   //context
   const context = new useContext(Context)
 
-  console.log(context.login_state)
   // const loginstate = context.value
   // GNB menu list
   const commonMenu = [

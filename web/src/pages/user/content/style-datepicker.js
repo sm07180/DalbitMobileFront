@@ -16,13 +16,11 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //useState
-  const [selectedDate,handleDateChange ] = useState(props.value !== undefined ? props.value : new Date())
+  const [selectedDate, handleDateChange] = useState(props.value !== undefined ? props.value : new Date())
   //---------------------------------------------------------------------
   //캘린더 한글화
   moment.locale('ko')
   //---------------------------------------------------------------------
-  console.log('달력 = ' + props.value)
-
   return (
     <StylesProvider injectFirst>
       <DatepickerWrap>

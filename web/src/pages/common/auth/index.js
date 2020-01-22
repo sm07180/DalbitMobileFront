@@ -60,12 +60,15 @@ export default props => {
     // console.log('닉네임 = ' + obj.nickName)
 
     setFetch(res)
+    ///----- memb
+    //ios
+
     const loginInfo = {
       loginID: obj.profileObj.googleId ? obj.profileObj.googleId : '',
       loginName: obj.profileObj.name ? obj.profileObj.name : '',
       loginNickNm: '',
       gender: obj.profileObj.gender ? obj.profileObj.gender : 'm',
-      birth: obj.profileObj.birth ? obj.profileObj.birth : '20200101',
+      birth: obj.profileObj.birth ? obj.profileObj.birth : '20201010',
       image: obj.profileObj.imageUrl ? obj.profileObj.imageUrl : ''
     }
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
