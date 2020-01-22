@@ -4,7 +4,12 @@
  */
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
+
+//components
+import {GoogleLogin} from 'react-google-login'
+
 import {osName, browserName} from 'react-device-detect'
+
 //layout
 import Layout from 'Pages/common/layout'
 //material-ui
@@ -17,12 +22,46 @@ import Api from 'Context/api'
 export default () => {
   //---------------------------------------------------------------------
   //useState
+
   const [changes, setChanges] = useState({streamId: 'steam1', token: '', clientMode: 'play'})
 
   //eventHander
   const handleChange = event => {
     setChanges({...changes, [event.target.name]: event.target.value})
   }
+  async function fetchData() {
+    const res = await Api.member_login({
+      data: {
+        memType: 'p',
+        memId: '010-1234-1234',
+        memPwd: '1234',
+        os: 1,
+        deviceId: '2200DDD1-77A',
+        deviceToken: '45E3156FDE20E7F11AF',
+        appVer: '1.0.0.1',
+        appAdId: 'asd123asdas1'
+      }
+    })
+    console.log(JSON.stringify(res))
+    return
+    if (res) {
+      switch (osName) {
+        case 'Windows':
+          alert(JSON.stringify())
+          break
+        case 'iOS':
+          webkit.messageHandlers.GetLoginToken.postMessage(res.data)
+          break
+        case 'Android':
+          window.android.GetLoginToken(res.data)
+          break
+        default:
+          alert('OS 예외처리')
+          break
+      }
+    }
+  }
+
   //useEffect
   useEffect(() => {
     console.table(changes)
@@ -105,6 +144,26 @@ export default () => {
                 // console.log(changes)
               }}>
               방만들기
+            </Button>
+          </dd>
+        </dl>
+
+        <h1>SNS 로그인</h1>
+        <dl>
+          <dt>
+            <TextField name="streamId" label="streamId" placeholder="streamId 를 입력해주세요" onChange={handleChange} />
+          </dt>
+          <dt>
+            <TextField name="token" label="token" placeholder="token 를 입력해주세요" onChange={handleChange} />
+          </dt>
+          <dd>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                fetchData()
+              }}>
+              로그인 (AuthToken)
             </Button>
           </dd>
         </dl>
