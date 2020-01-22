@@ -22,6 +22,7 @@ export default props => {
     breakpoints: {
       0: {
         slidesPerView: 1,
+        slidesPerGroup: 1,
         slidesPerColumn: 2,
         spaceBetween: 0
       },
