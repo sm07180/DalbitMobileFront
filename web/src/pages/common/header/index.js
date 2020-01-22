@@ -9,12 +9,15 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'Context'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+
 //components
-import {COLOR_WHITE} from 'Context/color'
-import {IMG_SERVER, WIDTH_TABLET} from 'Context/config'
+import Icon from '@/components/ui/icon'
 import Profile from './profile'
+
 //
-export default () => {
+export default props => {
   const context = useContext(Context)
   const info = [
     {title: '라이브', url: '/'},
@@ -35,9 +38,11 @@ export default () => {
       )
     })
   }
+
+  console.log('넓이는..', WIDTH_PC)
   //---------------------------------------------------------------------
   return (
-    <Header>
+    <Header className={props.type == 'main' ? 'main' : 'sub'}>
       <Logo>
         <a href="/">
           <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
@@ -49,7 +54,7 @@ export default () => {
           onClick={() => {
             context.action.updateGnbVisible(true)
           }}>
-          검색
+          <Icon type="search" fill={COLOR_MAIN} width={48} height={48} />
         </Search>
         <Login
           onClick={() => {
@@ -64,6 +69,7 @@ export default () => {
             }
           }}>
           {context.login_state ? '로그아웃' : '로그인'}
+          <Icon type="user" fill={COLOR_MAIN} width={48} height={48} />
         </Login>
         {/* 프로필 */}
         {/* <Profile /> */}
@@ -88,11 +94,18 @@ const Header = styled.header`
   display: flex;
   width: 100%;
   height: 90px;
-  border-bottom: 1px solid #eee;
   padding: 10px 20px;
   align-items: center;
-  background: ${COLOR_WHITE};
   z-index: 10;
+
+  &.sub {
+    background: #fff;
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  &.sub a {
+    color: #555;
+  }
 `
 
 const Logo = styled.h1`
@@ -107,7 +120,31 @@ const CommonMenu = styled.div`
   flex: 4;
   text-align: center;
   a {
+    position: relative;
     margin: 0 20px;
+    color: #fff;
+  }
+  a:after {
+    position: absolute;
+    bottom: -15px;
+    left: calc(50% - 4px);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: ${COLOR_POINT_Y};
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    content: '';
+  }
+
+  @media screen and (min-width: ${WIDTH_PC}) {
+    a:hover {
+      font-weight: bold;
+    }
+    a:hover:after {
+      bottom: -12px;
+      opacity: 1;
+    }
   }
 `
 
