@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 //
 import Api from 'Context/api'
+import {Hybrid} from 'Context/hybrid'
 //
 export default () => {
   //---------------------------------------------------------------------
@@ -125,6 +126,7 @@ export default () => {
               variant="contained"
               color="primary"
               onClick={() => {
+                Hybrid('RoomMake', changes)
                 //IOS
                 switch (osName) {
                   case 'Windows':
@@ -140,8 +142,6 @@ export default () => {
                     alert('OS 예외처리')
                     break
                 }
-
-                console.log(changes)
               }}>
               방만들기
             </Button>
@@ -161,6 +161,15 @@ export default () => {
             </Button>
           </dd>
         </dl>
+        <h1>Hybrid 테스트</h1>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            Hybrid('RoomMake', changes)
+          }}>
+          방만들기
+        </Button>
       </Content>
     </Layout>
   )
