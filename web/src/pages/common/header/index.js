@@ -99,6 +99,7 @@ const Header = styled.header`
   z-index: 10;
 
   &.sub {
+    background: #fff;
     border-bottom: 1px solid #e2e2e2;
   }
 
