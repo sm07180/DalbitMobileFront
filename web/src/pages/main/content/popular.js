@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import ContentBox from './contentBox'
-import {DEVICE_MOBILE} from 'Context/config'
+import {WIDTH_MOBILE} from 'Context/config'
 import {WIDTH_TABLET} from 'Context/config'
 import {WIDTH_PC} from 'Context/config'
 import {COLOR_WHITE} from 'Context/color'
@@ -18,10 +18,7 @@ export default props => {
     slidesPerGroup: 3,
     slidesPerColumn: 2,
     slidesPerColumnFill: 'row',
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    },
+
     breakpoints: {
       0: {
         slidesPerView: 1,
@@ -67,7 +64,7 @@ export default props => {
   return (
     <>
       <SwiperWrap>
-        <h1>인기 DJ</h1>
+        <SlierTitle>인기 DJ</SlierTitle>
         <Swiper {...params}>{arraySlide}</Swiper>
       </SwiperWrap>
     </>
@@ -76,15 +73,44 @@ export default props => {
 const SwiperWrap = styled.div`
   width: 1210px;
   margin: 0 auto;
+  position: relative;
+  & .swiper-container {
+    position: static;
+  }
+  & .swiper-button-prev,
+  .swiper-button-next {
+    top: 0;
+    margin-top: 0;
+    width: 36px;
+    height: 36px;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+  & .swiper-button-prev {
+    left: calc(50% + 16px);
+    background-size: 12px;
+  }
+  & .swiper-button-next {
+    left: calc(50% + 52px);
+    background-size: 12px;
+  }
   @media (max-width: ${WIDTH_PC}) {
     width: 100%;
   }
   @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
   }
-  @media (max-width: ${DEVICE_MOBILE}) {
+  @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
+`
+const SlierTitle = styled.h1`
+  width: 50%;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: -0.85px;
+  color: #8556f6;
+  text-align: right;
 `
 const Slide = styled.div`
   width: 32.56%;
