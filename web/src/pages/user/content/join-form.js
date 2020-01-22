@@ -9,6 +9,7 @@ import Button from './style-button'
 const JoinForm = props => {
   const [boxState, setBoxState] = useState(false)
 
+  const {loginID, loginNickNm, loginName, gender, birth, image} = props.location.state
   return (
     <>
       <JoinText>
@@ -17,13 +18,13 @@ const JoinForm = props => {
       </JoinText>
 
       <FormWrap>
-        <Input type="nickname" />
-        <Input type="name" />
+        <Input type="nickname" value={loginID} />
+        <Input type="name" value={loginName} />
         <Input type="password" />
         <Label before={true} text="성별" />
-        <input type="radio" name="gender" value="남성" defaultChecked /> 남성
-        <input type="radio" name="gender" value="여성" /> 여성
-        <Datepicker text="생년월일"/>
+        <input type="radio" name="gender" value="남성" defaultChecked={gender === 'm' ? true : false} /> 남성
+        <input type="radio" name="gender" value="여성" defaultChecked={gender === 'f' ? true : false} /> 여성
+        <Datepicker text="생년월일" value={birth} />
         <CheckWrap>
           <input type="checkbox" /> <Label text="약관 전체 동의" />
           <button

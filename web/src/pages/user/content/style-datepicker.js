@@ -2,7 +2,7 @@
  * @file /user/content/style-datepicker.js
  * @brief datepicker component
  * @props text : label 태그에 들어갈 텍스트
- *        value : YYYYMMDD, 빈 값일시 현재 날짜로 셋팅 
+ *        value : YYYYMMDD, 빈 값일시 현재 날짜로 셋팅
  */
 
 import React, {useState} from 'react'
@@ -16,16 +16,18 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //useState
-  const [selectedDate, handleDateChange] = useState(new Date())
+  const [selectedDate,handleDateChange ] = useState(props.value !== undefined ? props.value : new Date())
   //---------------------------------------------------------------------
   //캘린더 한글화
   moment.locale('ko')
   //---------------------------------------------------------------------
+  console.log('달력 = ' + props.value)
+
   return (
     <StylesProvider injectFirst>
       <DatepickerWrap>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker format="YYYY-MM-DD" margin="normal" id="date-picker-inline" label={props.text} value={props.value === undefined ? selectedDate : props.value} onChange={handleDateChange} />
+          <DatePicker format="YYYY-MM-DD" margin="normal" id="date-picker-inline" label={props.text} value={selectedDate} onChange={handleDateChange} />
         </MuiPickersUtilsProvider>
       </DatepickerWrap>
     </StylesProvider>
@@ -33,7 +35,7 @@ export default props => {
 }
 
 const DatepickerWrap = styled.div`
-  .MuiFormControl-root{
-    width:100%;
+  .MuiFormControl-root {
+    width: 100%;
   }
 `

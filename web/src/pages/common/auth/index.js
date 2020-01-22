@@ -16,19 +16,43 @@ import Api from 'Context/api'
 
 //context
 import {Context} from 'Context'
+import {switchCase} from '@babel/types'
 
 export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
   const context = useContext(Context)
+
   //fetch
   async function fetchData(obj, ostype) {
     console.log(JSON.stringify(obj))
+    let loginId = ''
+    let loginOs
+
+    if (osName == 'IOS') loginOs = 2
+    else if (osName == 'Android') loginOs = 1
+    else loginOs = 0
+
+    switch (ostype) {
+      case 'g':
+        loginId = obj.googleId
+        break
+      case 'f':
+        break
+      case 'k':
+        break
+      case 'n':
+        break
+      default:
+        loginId = obj.googleId
+        break
+    }
+    console.log('id = ' + loginId)
     const res = await Api.member_login({
       data: {
-        s_mem: ostype,
-        s_id: obj.googleId,
-        i_os: 3
+        memType: ostype,
+        memId: loginId,
+        os: loginOs
       }
     })
     // console.log('구글아이디 = ' + obj.googleId)
@@ -36,14 +60,22 @@ export default props => {
     // console.log('닉네임 = ' + obj.nickName)
 
     setFetch(res)
-
+    const loginInfo = {
+      loginID: obj.profileObj.googleId ? obj.profileObj.googleId : '',
+      loginName: obj.profileObj.name ? obj.profileObj.name : '',
+      loginNickNm: '',
+      gender: obj.profileObj.gender ? obj.profileObj.gender : 'm',
+      birth: obj.profileObj.birth ? obj.profileObj.birth : '20200101',
+      image: obj.profileObj.imageUrl ? obj.profileObj.imageUrl : ''
+    }
+    console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
       if (res.code == 0) {
         if (osName) {
           if (osName === 'iOS') {
-            webkit.messageHandlers.Getlogintoken.postMessage(res.data.authToken)
+            webkit.messageHandlers.GetLoginToken.postMessage(res.data)
           } else if (osName === 'Android') {
-            window.android.Getlogintoken(res.data.authToken)
+            window.android.GetLoginToken(res.data)
           }
         }
         console.log('props.history = ' + props.history)
@@ -55,8 +87,16 @@ export default props => {
         //window.location.href = '/' // 홈페이지로 새로고침
       } else {
         context.action.updatePopupVisible(false)
-        if (props.history) props.history.push('/user', obj.profileObj)
         context.action.updateLogin(false)
+        if (props.history) {
+          switch (ostype) {
+            case 'g':
+              //props.history.push('/user', obj.profileObj)
+              props.history.push('/user', loginInfo)
+              break
+            default:
+          }
+        }
       }
       alert(res.message)
     } else {

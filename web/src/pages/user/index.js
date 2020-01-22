@@ -17,13 +17,13 @@ const User = props => {
   //---------------------------------------------------------------------
   const [joinState, setJoinState] = useState('step-one')
   //
-  console.log(props)
+  console.log('여기는 회원가입 = ' + JSON.stringify(props))
   function joinForm() {
     switch (joinState) {
       case 'step-one':
         return <JoinAuth joinState={joinState} update={setJoinState} />
       case 'step-two':
-        return <JoinForm joinState={joinState} update={setJoinState} data={props} />
+        return <JoinForm joinState={joinState} update={setJoinState} {...props} />
       default:
         return <p>없습니다</p>
     }

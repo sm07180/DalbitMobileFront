@@ -148,7 +148,8 @@ const makeInput = props => {
             // 유효성 검사 function
             validateNickName(targetValue)
           },
-          isValied: nickNameState.isNameValid // 유효성 체크 결과 state
+          isValied: nickNameState.isNameValid, // 유효성 체크 결과 state,
+          value: props.value //로그인시 가져온 데이터 값
         }
       case 'name':
         return {
@@ -160,7 +161,8 @@ const makeInput = props => {
           validate: function(targetValue) {
             validateName(targetValue)
           },
-          isValied: nameState.isNameValid
+          isValied: nameState.isNameValid,
+          value: props.value //로그인시 가져온 데이터 값
         }
       case 'password':
         return {
@@ -209,7 +211,8 @@ const makeInput = props => {
           placeholder={selectInputType().placeholder}
           onChange={e => {
             selectInputType().validate(e.target.value)
-          }}></Input>
+          }}
+          value={selectInputType().value}></Input>
         <HelpText className={textColor(selectInputType().isValied)}>{selectInputType().text[selectInputType().isValied]}</HelpText>
         {addPwdCheck()}
       </Inputwrap>
