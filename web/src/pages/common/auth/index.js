@@ -13,7 +13,7 @@ import FacebookLogin from 'react-facebook-login'
 import {osName, browserName} from 'react-device-detect'
 //context
 import Api from 'Context/api'
-import Post from 'Context/hybrid'
+import {Hybrid} from 'Context/hybrid'
 
 //context
 import {Context} from 'Context'
@@ -76,7 +76,7 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-        Post.Hybrid('GetLoginToken', res.data)
+        Hybrid('GetLoginToken', res.data)
 
         console.log('props.history = ' + props.history)
         if (props.history) {

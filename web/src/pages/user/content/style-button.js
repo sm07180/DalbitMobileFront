@@ -23,8 +23,10 @@ export default props => {
       data: {
         memType: 'g',
         memId: props.loginID,
-        gender: props.gender,
-        nickNm: props.loginNickNm,
+        //gender: props.gender,
+        gender: 'm',
+        //nickNm: props.loginNickNm,
+        nickNm: '구렌나루',
         birthYY: 2020,
         birthMM: 10,
         birthDD: 10,
