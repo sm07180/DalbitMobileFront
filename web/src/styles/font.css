@@ -1,7 +1,0 @@
-@font-face {
-  font-family: NanumSquareWeb;
-  src: url(../style/fonts/NanumSquareR.eot); /* IE 호환성 보기 */
-  src: url(../style/fonts/NanumSquareR.eot#iefix) format('embedded-opentype'), /* IE 6 ~ 8 */ url(../style/fonts/NanumSquareR.woff2) format('woff2'),
-    /* WOFF2 지원 브라우저 */ url(../style/fonts/NanumSquareR.woff) format('woff'), /* 모던 브라우저 */ url(../style/fonts/NanumSquareR.ttf) format('truetype'),
-    url(../style/fonts/NanumSquareR.svg#NanumSquareR) format('svg'); /* 구 모바일 브라우저 */
-}

@@ -4,7 +4,6 @@
 
 // mixin & variables
 @import './global.scss';
-@import './font.css';
 
 // common styles
 * {
@@ -15,7 +14,7 @@
 }
 html,
 body {
-  font-family: NanumSquareWeb;
+  font-family: 'NanumSquare';
   -webkit-text-size-adjust: none;
   height: 100vh;
 }
