@@ -36,6 +36,7 @@ export default props => {
       }
     })
     setFetch(res)
+    console.log('회원가입 = ' + JSON.stringify(res))
     if (res && res.code) {
       if (res.code == 0) {
         alert(res.message)
