@@ -24,6 +24,8 @@ const Main = props => {
   const slideInfo = [
     {
       id: '1',
+      reco: '추천',
+      popu: '인기',
       category: '노래/연주',
       title: '이 밤을 신나게 보내요',
       url: 'https://t1.daumcdn.net/cfile/tistory/99DC6A385CC11E5A26',
@@ -40,7 +42,8 @@ const Main = props => {
       name: '누운별',
       people: '1,230',
       like: '4,110',
-      icon: 'HOT'
+      icon: 'HOT',
+      avata: 'https://yt3.ggpht.com/a/AGF-l7-xu02U-mAL2MHWKwpQ1S8ZObTyxbK7momrSw=s900-c-k-c0xffffffff-no-rj-mo'
     },
     {
       id: '3',
@@ -64,6 +67,7 @@ const Main = props => {
     },
     {
       id: '5',
+      popu: '인기',
       category: '책/스토리',
       title: '감성 재즈의 1인자',
       url: 'http://image.cine21.com/resize/cine21/person/2019/0311/15_07_55__5c85fb3b335df[W680-].jpg',
@@ -75,19 +79,23 @@ const Main = props => {
     {
       id: '6',
       title: '째즈와 함께 시간 여행을 떠나요',
+      reco: '추천',
+      popu: '인기',
       category: '건강/스포츠',
       url: 'https://mblogthumb-phinf.pstatic.net/20150707_79/icccaccc_1436274069809nV3TH_PNG/2015-07-07-21-49-13.png?type=w420',
       name: '감성 재즈의 1인자',
       people: '772',
       like: '1,212',
-      icon: 'HOT'
+      icon: 'HOT',
+      avata: 'http://www.nbnnews.co.kr/news/photo/201904/259849_311550_480.jpg'
     },
     {
       id: '7',
       category: '건강/스포츠',
+      popu: '인기',
       title: '기분좋은 아침, 달콤 신청곡 라디오',
-      url: 'http://iflv14.afreecatv.com/save/afreeca/station/2019/1230/11/thumb/1577672974671669_L_8.jpg',
-      name: '볼빵°.°',
+      url: 'http://www.namooactors.com/data/file/nm3001/2038834755_jNS8hmG4_ECB29CEC9AB0ED9DAC_370_2.jpg',
+      name: '천우희',
       people: '615',
       like: '5,409',
       icon: 'VIP'
@@ -95,9 +103,9 @@ const Main = props => {
     {
       id: '8',
       category: '건강/스포츠',
-      title: '가야금 , ㅎㅎㅎㅎㅎㅎㅎㅎ 💌',
-      url: 'http://admin.img.afreecatv.com/thema_group_vod/2020/01/05/24985e11c9b1a63ce.jpg',
-      name: '비익연리',
+      title: '라디오 롯데중계',
+      url: 'http://img.etnews.com/news/article/2018/03/24/cms_temp_article_24145812138686.jpg',
+      name: '이대호',
       people: '599',
       like: '5,111',
       icon: 'NEW'
@@ -105,9 +113,10 @@ const Main = props => {
     {
       id: '9',
       category: '건강/스포츠',
-      title: '존예보스 💿 Music Radio 📻',
-      url: 'http://admin.img.afreecatv.com/thema_group_vod/2020/01/07/23745e144e84e8f72.jpg',
-      name: '라온제나☆°',
+      title: '존예보스 Music Radio ',
+      reco: '추천',
+      url: 'http://img.asiatoday.co.kr/file/2019y/04m/09d/20190409010006347_1554792177_1.jpg',
+      name: '아이린',
       people: '329',
       like: '9,212',
       icon: 'BEST'
@@ -115,12 +124,36 @@ const Main = props => {
     {
       id: '10',
       category: '건강/스포츠',
+      title: '개과천선.',
+      url: 'https://t1.daumcdn.net/cfile/tistory/99068C4C5D607A1518',
+      name: '강형욱',
+      people: '222',
+      like: '3,212',
+      icon: 'NEW',
+      avata: 'https://yt3.ggpht.com/a/AGF-l787pD6U3KAytpFmBMo7bq-g0DP0IuNCtTd-Mg=s900-c-k-c0xffffffff-no-rj-mo'
+    },
+    {
+      id: '11',
+      category: '건강/스포츠',
       title: '제목없는 방입니다.',
-      url: 'http://admin.img.afreecatv.com/thema_group_vod/2020/01/02/94445e0dbacda8bec.jpg',
-      name: '공신:강성태',
+      reco: '추천',
+      popu: '인기',
+      url: 'http://image.xportsnews.com/contents/images/upload/article/2017/1016/mb_1508123227185716.jpg',
+      name: '신하균',
       people: '222',
       like: '3,212',
       icon: 'NEW'
+    },
+    {
+      id: '12',
+      category: '건강/스포츠',
+      title: '아융.',
+      url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+      name: '이지은',
+      people: '222',
+      like: '3,212',
+      icon: 'NEW',
+      avata: 'https://qtum.or.kr/files/attach/images/528597/268/657/001/9c1e6d44ba7c805cff09d3a0636254db.png'
     }
   ]
   //---------------------------------------------------------------------

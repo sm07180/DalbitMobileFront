@@ -10,7 +10,7 @@ import {osName, browserName} from 'react-device-detect'
 //---------------------------------------------------------------------
 /**
  *
- * @param string  func          //*function 이름 (Method)
+ * @param string  func          //*function 이름 (Method)55
  * @param any     info          //*data (string or object )
  *
  */

@@ -4,7 +4,9 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {WIDTH_MOBILE} from 'Context/config'
 import {WIDTH_TABLET} from 'Context/config'
+import {WIDTH_PC} from 'Context/config'
 import {Context} from 'Context'
 import {HEADER_HEIGHT} from 'Context/config'
 //layout
@@ -69,8 +71,15 @@ const Container = styled.div`
     display: block;
     width: 100%;
     z-index: 1;
-    @media (max-width: ${WIDTH_TABLET}) {
+    @media (max-width: ${WIDTH_PC}) {
+      width: 100%;
       padding-left: 0;
+    }
+    @media (max-width: ${WIDTH_TABLET}) {
+      width: 100%;
+    }
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
     }
     /* 컨텐츠내용 */
     article {
