@@ -16,9 +16,9 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 import Api from 'Context/api'
 //
 import {GoogleLogin} from 'react-google-login'
-import KakaoLogin from 'react-kakao-login'
-import NaverLogin from 'react-naver-login'
-import FacebookLogin from 'react-facebook-login'
+// import KakaoLogin from 'react-kakao-login'
+// import NaverLogin from 'react-naver-login'
+// import FacebookLogin from 'react-facebook-login'
 
 export default props => {
   //---------------------------------------------------------------------
