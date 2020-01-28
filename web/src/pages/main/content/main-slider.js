@@ -15,7 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
   //state
   const [slideInfo, setSlideInfo] = useState(props.Info)
-  const [swiper, updateSwiper] = useState(false)
+  let mainSlider = {}
 
   const params = {
     loop: true,
@@ -24,7 +24,8 @@ export default props => {
     on: {
       slideChange: function() {
         console.log('슬라이드 바뀌었을때')
-        console.log(swiper)
+        console.log(mainSlider)
+        console.log(mainSlider.params.init)
       }
     }
   }
@@ -42,7 +43,11 @@ export default props => {
       <MainSliderWrap>
         <Bg></Bg>
         <SliderItem>
-          <Swiper {...params} getSwiper={updateSwiper}>
+          <Swiper
+            {...params}
+            getSwiper={e => {
+              mainSlider = e
+            }}>
             {arraySlide}
           </Swiper>
         </SliderItem>
