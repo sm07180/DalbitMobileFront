@@ -160,7 +160,7 @@ const Main = props => {
   return (
     <Layout {...props} type="main">
       {/* 메인 최상단 슬라이드 */}
-      <MainSlider />
+      <MainSlider Info={slideInfo} />
       {/* 스타 랭킹 영역 */}
       <RangkingWrap>
         <StarRangking />

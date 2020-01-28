@@ -2,8 +2,9 @@
  * @file /content/context-list.js
  * @brief 메인 라이브, 캐스트 리스트 component
  */
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
+import Swiper from 'react-id-swiper'
 
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
@@ -11,11 +12,33 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
 //components
 
 export default props => {
+  //---------------------------------------------------------------------
+  //state
+  const [slideInfo, setSlideInfo] = useState(props.Info)
+
+  const params = {
+    loop: true,
+    spaceBetween: 14,
+    initialSlide: 6
+  }
+
+  const arraySlide = slideInfo.map((item, index) => {
+    const {id, title, url, name, reco, category, popu, avata} = item
+    return (
+      <Slide key={index}>
+        <img src={url}></img>
+      </Slide>
+    )
+  })
+
   return (
     <Content>
-      <MainSlider>
-        <h5>오후 잠을 깨워줄 상큼한 목소리 들어요</h5>
-      </MainSlider>
+      <MainSliderWrap>
+        <Bg></Bg>
+        <SliderItem>
+          <Swiper {...params}>{arraySlide}</Swiper>
+        </SliderItem>
+      </MainSliderWrap>
     </Content>
   )
 }
@@ -25,9 +48,15 @@ export default props => {
 
 const Content = styled.section``
 
-const MainSlider = styled.div`
+const MainSliderWrap = styled.div`
   overflow: hidden;
   position: relative;
+  height: 658px;
+`
+
+const Bg = styled.div`
+  position: absolute;
+  top: 0;
   width: 100%;
   height: 658px;
   text-align: center;
@@ -40,5 +69,29 @@ const MainSlider = styled.div`
     background-color: ${COLOR_MAIN};
     border-radius: 50%;
     content: '';
+  }
+`
+
+const SliderItem = styled.div`
+  margin: 234px 0;
+  .swiper-container {
+    overflow: visible;
+    width: 190px;
+    height: 190px;
+  }
+  .swiper-slide {
+    overflow: hidden;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+  }
+`
+
+const Slide = styled.div`
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
   }
 `
