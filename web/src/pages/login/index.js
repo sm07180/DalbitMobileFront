@@ -15,6 +15,11 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 //components
 import Api from 'Context/api'
 //
+import {GoogleLogin} from 'react-google-login'
+import KakaoLogin from 'react-kakao-login'
+import NaverLogin from 'react-naver-login'
+import FacebookLogin from 'react-facebook-login'
+
 export default props => {
   //---------------------------------------------------------------------
   const [fetch, setFetch] = useState(null)
@@ -27,13 +32,13 @@ export default props => {
         password: '1234'
       }
     })
-    alert(JSON.stringify(res))
+    //alert(JSON.stringify(res))
     setFetch(res)
     console.log(res)
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
+  // useEffect(() => {
+  //   fetchData()
+  // }, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
@@ -56,7 +61,15 @@ export default props => {
             </div>
           </ButtonArea>
           <SocialLogin>
-            <div></div>
+            <GoogleLogin
+              clientId="93062921102-3fmrfjf2915isd42tjl8m2f9vhpc9j31.apps.googleusercontent.com"
+              // onSuccess={responseGoogle}
+              // onFailure={responseGoogleFail}
+              buttonText="LOGIN WITH GOOGLE"
+              cookiePolicy={'single_host_origin'}
+              redirectUri="http://localhost:9000/live"
+            />
+
             <div></div>
             <div></div>
             <div></div>

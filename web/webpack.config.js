@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -12,6 +13,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     hot: true,
     contentBase: path.resolve('./dist'),
@@ -47,13 +49,17 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin, 'css-loader']
+      },
+      {
         test: /\.(jpe?g|png|gif|svg|ico)$/,
         loader: 'url-loader',
         options: {
           //name: '[name].[ext]?[hash]',
           publicPath: './dist',
           name: 'images/[name].[ext]',
-          //limit: 10000, // 10kb
+          limit: 10000, // 10kb
           fallback: 'file-loader' // 파일사이즈가 10k보다 큰 경우, file-loader 이용하여 파일 복사
         }
       },
@@ -94,5 +100,6 @@ module.exports = {
       filename: 'style.css'
     }),
     new webpack.HotModuleReplacementPlugin()
+    //new BundleAnalyzerPlugin()
   ]
 }
