@@ -1,5 +1,5 @@
 /**
- * @title 가이드페이지
+ * @title 404페이지
  */
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
@@ -8,5 +8,5 @@ import styled from 'styled-components'
 // import Guide from ' pages/common/layout/guide.js'
 
 export default () => {
-  return <h1>TEST</h1>
+  return <h1>404 PAGE</h1>
 }

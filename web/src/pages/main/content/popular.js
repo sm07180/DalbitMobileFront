@@ -1,6 +1,7 @@
 /**
  * @file /content/context-list.js
  * @brief 메인 라이브, 캐스트 리스트 component
+ *
  */
 import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
@@ -10,6 +11,7 @@ import {WIDTH_MOBILE} from 'Context/config'
 import {WIDTH_TABLET} from 'Context/config'
 import {WIDTH_PC} from 'Context/config'
 import {COLOR_WHITE} from 'Context/color'
+import creatIcon from 'Components/ui/icon'
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const params = {
@@ -18,7 +20,9 @@ export default props => {
     slidesPerGroup: 3,
     slidesPerColumn: 2,
     slidesPerColumnFill: 'row',
-
+    autoplay: {
+      delay: 2000
+    },
     breakpoints: {
       0: {
         slidesPerView: 1,
@@ -48,7 +52,7 @@ export default props => {
   }
   const arraySlide = slideInfo.map((item, index) => {
     // console.log(item)
-    const {id, title, url, name, reco, category, popu, avata} = item
+    const {id, title, url, name, reco, category, popu, avata, people, like} = item
 
     return (
       <Slide key={index}>
@@ -65,6 +69,12 @@ export default props => {
             <Category>{category}</Category>
             <Title>{title}</Title>
             <Name>{name}</Name>
+            <People>
+              {creatIcon('headphone', '#bdbdbd', 30, 30)}
+              <span>{people}</span>
+              {creatIcon('like', '#bdbdbd', 30, 30)}
+              <span>{like}</span>
+            </People>
           </Info>
         </ContentBox>
       </Slide>
@@ -106,7 +116,7 @@ const SwiperWrap = styled.div`
     left: calc(50% + 94px);
   }
   @media (max-width: ${WIDTH_PC}) {
-    width: 94.53%;
+    width: 63.02%;
   }
   @media (max-width: ${WIDTH_TABLET}) {
     width: 95.47%;
@@ -219,4 +229,25 @@ const Info = styled.div`
   padding: 8px 20px 11px 20px;
   box-sizing: border-box;
   float: left;
+`
+const People = styled.div`
+  width: 100%;
+  height: 30px;
+  margin-top: 55px;
+  & span {
+    font-size: 14px;
+    line-height: 30px;
+    padding-left: 9px;
+    box-sizing: border-box;
+    margin-right: 4px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    letter-spacing: -0.35px;
+    text-align: left;
+    color: #bdbdbd;
+  }
+  & span:last-child {
+    margin-right: 0;
+  }
 `
