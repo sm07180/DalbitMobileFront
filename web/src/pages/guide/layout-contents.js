@@ -10,6 +10,7 @@ import StyleButton from './content/style-button'
 import StyleWebRtcTest from './content/style-WebRtcTest'
 import StyleChart from './content/style-chart'
 import StyleLottie from './content/style-lottie'
+import GuideResponsive from './content/guide-responsive'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -19,6 +20,8 @@ export default props => {
   //makeContents
   const makeContents = () => {
     switch (store.menuCode) {
+      case 'guide-responsive':
+        return <GuideResponsive />
       case 'style-button':
         return <StyleButton />
       case 'style-WebRtcTest':

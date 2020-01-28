@@ -13,7 +13,7 @@ import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 
 //components
-import Icon from '@/components/ui/icon'
+import creatIcon from 'Components/ui/icon'
 import Profile from './profile'
 
 //
@@ -54,7 +54,7 @@ export default props => {
           onClick={() => {
             context.action.updateGnbVisible(true)
           }}>
-          <Icon type="search" fill={COLOR_MAIN} width={48} height={48} />
+          {creatIcon('search')}
         </Search>
         <Login
           onClick={() => {
@@ -68,8 +68,7 @@ export default props => {
               }
             }
           }}>
-          {context.login_state ? '로그아웃' : '로그인'}
-          <Icon type="user" fill={COLOR_MAIN} width={48} height={48} />
+          {context.login_state ? '로그아웃' : creatIcon('profile')}
         </Login>
         {/* 프로필 */}
         {/* <Profile /> */}
@@ -77,7 +76,7 @@ export default props => {
           onClick={() => {
             context.action.updateGnbVisible(true)
           }}>
-          메뉴
+          {creatIcon('menu')}
         </Menu>
       </UtilMenu>
     </Header>
@@ -94,7 +93,7 @@ const Header = styled.header`
   display: flex;
   width: 100%;
   height: 90px;
-  padding: 10px 20px;
+  padding: 0 20px;
   align-items: center;
   z-index: 10;
 

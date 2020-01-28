@@ -15,6 +15,7 @@ export default props => {
   //context
   const store = useContext(Context)
   //hooks
+  const guideResponsive = useClick(update, {menu: 'guide-responsive'})
   const styleButton = useClick(update, {menu: 'style-button'})
   const styleWebRtcTest = useClick(update, {menu: 'style-WebRtcTest'})
   const styleChart = useClick(update, {menu: 'style-chart'})
@@ -38,6 +39,7 @@ export default props => {
       <button {...styleButton}>메뉴1</button>
       <hr />
       <h1>스타일가이드</h1>
+      <button {...guideResponsive}>반응형 가이드!</button>
       <button {...styleButton}>버튼</button>
       <button {...styleWebRtcTest}>WebRtc 테스트</button>
       <button {...hooks3}>기타</button>
