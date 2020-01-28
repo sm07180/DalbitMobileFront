@@ -6,7 +6,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'Pages/common/layout/pure'
 
 //context
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
