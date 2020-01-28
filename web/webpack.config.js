@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -13,7 +13,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
+  //devtool: 'source-map',
   devServer: {
     hot: true,
     contentBase: path.resolve('./dist'),
@@ -47,10 +47,6 @@ module.exports = {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin, 'css-loader']
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/,
