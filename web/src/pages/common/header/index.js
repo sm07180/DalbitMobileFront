@@ -13,8 +13,7 @@ import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
 
 //components
-import {CommonIcon} from 'Components/ui/icon'
-import Icon from '@/components/ui/icon'
+import creatIcon from 'Components/ui/icon'
 import Profile from './profile'
 
 //
@@ -54,7 +53,9 @@ export default props => {
         <Search
           onClick={() => {
             context.action.updateGnbVisible(true)
-          }}>{Icon('search')}</Search>
+          }}>
+          {creatIcon('search')}
+        </Search>
         <Login
           onClick={() => {
             if (!context.login_state) {
@@ -67,8 +68,7 @@ export default props => {
               }
             }
           }}>
-          {context.login_state ? '로그아웃' : Icon('profile')}
-          
+          {context.login_state ? '로그아웃' : creatIcon('profile')}
         </Login>
         {/* 프로필 */}
         {/* <Profile /> */}
@@ -76,7 +76,7 @@ export default props => {
           onClick={() => {
             context.action.updateGnbVisible(true)
           }}>
-          {Icon('menu')}
+          {creatIcon('menu')}
         </Menu>
       </UtilMenu>
     </Header>
