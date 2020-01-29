@@ -25,7 +25,7 @@ export default (name, color, width, height) => {
       break
     case 'profile':
       return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="49.5" height="49.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width={width || '49.5'} height={height || '49.5'}>
           <path fill="none" fillRule="evenodd" stroke={color || '#8556F6'} strokeWidth="3" d="M24.015 8.998A9.016 9.016 0 1 1 15 18.014a9.014 9.014 0 0 1 9.015-9.016z" />
           <path
             fill="none"

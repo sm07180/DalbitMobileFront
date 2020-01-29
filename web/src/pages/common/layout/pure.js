@@ -4,13 +4,10 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {WIDTH_TABLET} from 'Context/config'
+import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'Context/config'
 import {Context} from 'Context'
 import {HEADER_HEIGHT} from 'Context/config'
 //layout
-import Header from 'Pages/common/header'
-import Footer from 'Pages/common/footer'
-import Gnb from 'Pages/common/gnb'
 import Popup from 'Pages/common/popup'
 //
 const Layout = props => {
@@ -19,24 +16,24 @@ const Layout = props => {
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
- 
-  useEffect(() => {
-   
-  }, [])
+
+  useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Container>
       {/* 헤더설정 */}
-      로고
+      <Logo>
+        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+      </Logo>
       {/* global navigation */}
-      
-      <main className={props.type == 'main' ? 'main' : 'sub'}>
+      <main>
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      <footer>
-      Copyrightⓒ2020 by (주)인포렉스. All rights reserved.
-        </footer>
+      <Footer>
+        <p>Copyrightⓒ2020 by (주)인포렉스. All rights reserved.</p>
+      </Footer>
+
       {/* 레이어팝업 */}
       <Popup {...props} />
     </Container>
@@ -44,8 +41,13 @@ const Layout = props => {
 }
 export default Layout
 //---------------------------------------------------------------------
+const Logo = styled.div`
+  margin: 60px 0 50px 0;
+  text-align: center;
+`
 const Container = styled.div`
-  width: 100%;
+  width: 400px;
+  margin: 0 auto;
   /* 메인페이지 */
   main {
     display: block;
@@ -59,7 +61,10 @@ const Container = styled.div`
       position: relative;
     }
   }
-  main.sub {
-    padding-top: 80px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
   }
+`
+const Footer = styled.footer`
+  text-align: center;
 `

@@ -8,70 +8,59 @@ import styled from 'styled-components'
 //context
 import {WIDTH_TABLET} from 'Context/config'
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'Pages/common/layout/pure'
 //components
-import JoinAuth from './content/join-auth'
-import JoinForm from './content/join-form'
+import Join from './content/join'
+import Password from './content/password'
 
 const User = props => {
   //---------------------------------------------------------------------
-  const [joinState, setJoinState] = useState('step-one')
-  function joinForm() {
-    switch (joinState) {
-      case 'step-one':
-        return <JoinAuth joinState={joinState} update={setJoinState} />
-      case 'step-two':
-        return <JoinForm joinState={joinState} update={setJoinState} {...props} />
+  //const
+  const {title} = props.match.params
+  //---------------------------------------------------------------------
+  function userRoute() {
+    switch (title) {
+      case 'join': //회원가입
+        return <Join {...props} />
+      case 'password': //비밀번호찾기
+        return <Password {...props} />
       default:
-        return <p>없습니다</p>
+        return (
+          <Common>
+            <p>/user 메뉴 </p>
+            <button
+              onClick={() => {
+                props.history.push('/user/join')
+              }}>
+              회원가입
+            </button>
+            <br></br>
+            <button
+              onClick={() => {
+                props.history.push('/user/password')
+              }}>
+              비밀번호찾기
+            </button>
+          </Common>
+        )
     }
   }
+
   //---------------------------------------------------------------------
-  return (
-    <Layout>
-      <h1>
-        <a href="/guide">회원가입</a>
-      </h1>
-      <Content>
-        <JoinStep className={joinState}>
-          <p>휴대폰 인증</p>
-          <p>회원정보 입력</p>
-        </JoinStep>
-        <div>{joinForm()}</div>
-      </Content>
-    </Layout>
-  )
+  return <Layout>{userRoute()}</Layout>
 }
 export default User
+//---------------------------------------------------------------------
 
-const Content = styled.div`
-  width: 400px;
-  margin: 30px auto 100px auto;
-
-  @media (max-width: ${WIDTH_TABLET}) {
-    width: 90%;
-  }
-`
-const JoinStep = styled.div`
-  margin-bottom: 30px;
-  p {
-    display: inline-block;
-    position: relative;
-    width: 50%;
-    box-sizing: border-box;
-    font-size: 18px;
-    text-align: center;
-  }
-  p.on {
-  }
-  p + p:before {
-    position: absolute;
-    left: -10px;
-    content: '>';
-  }
-  &.step-one p:nth-child(1),
-  &.step-two p:nth-child(2) {
-    color: #1a369a;
-    font-weight: 700;
+const Common = styled.div`
+  margin: 50px 0;
+  button {
+    margin-top: 20px;
+    width: 130px;
+    line-height: 60px;
+    border: 1px solid #eee;
+    font-size: 16px;
+    text-align: left;
+    text-indent: 10px;
   }
 `

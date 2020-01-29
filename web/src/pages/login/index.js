@@ -12,7 +12,7 @@ import SnsLogin from 'Pages/common/auth'
 export default props => {
   return (
     <Layout {...props}>
-      <SnsLogin></SnsLogin>
+      <SnsLogin {...props}></SnsLogin>
     </Layout>
   )
 }

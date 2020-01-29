@@ -41,12 +41,9 @@
     "url-loader": "^3.0.0"
   },
   "scripts": {
-    "test": "react-scripts start",
+    "dev": "webpack --mode development",              
     "prod": "webpack --mode production",
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev": "webpack-dev-server --hot --inline",
-    "start": "webpack-dev-server --hot --host 0.0.0.0"
+    "start": "webpack-dev-server --mode development"
   },
   "eslintConfig": {
     "extends": [
