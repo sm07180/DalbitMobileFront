@@ -6,7 +6,7 @@
 
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER} from 'Context/config'
+import {WIDTH_MOBILE, IMG_SERVER} from 'Context/config'
 //context
 import {Context} from 'Context'
 //hooks
@@ -51,6 +51,14 @@ const Profile = styled.div`
   top: 0;
   right: 0;
   box-sizing: border-box;
+  /* 모바일사이즈 */
+  @media screen and (max-width: ${WIDTH_MOBILE}) {
+    /* 스크롤 */
+    &.scroll {
+      background: #fff;
+    }
+  }
+
   /* 버튼영역 */
   button {
     display: inline-block;

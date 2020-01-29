@@ -29,25 +29,29 @@ export default props => {
       </BroadWrap>
     )
   })
-  return <>{arrayBroad}</>
+  return (
+    <>
+      <Flex>{arrayBroad}</Flex>
+    </>
+  )
 }
+const Flex = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`
 const BroadWrap = styled.div`
-  float: left;
-  width: 20.78%;
+  flex-basis: 20.78%;
   height: 360px;
   position: relative;
-  margin-right: 40px;
-  &:nth-child(4n-1) {
-    margin-right: 0;
-  }
   @media (max-width: ${WIDTH_PC2}) {
-    width: 25%;
-    &:nth-child(4n-1) {
-      margin-right: 40px;
-    }
-    &:nth-child(3n) {
-      margin-right: 0;
-    }
+    flex-basis: 28%;
+    height: 320px;
+  }
+  @media (max-width: ${WIDTH_TABLET}) {
+    flex-basis: 44%;
+    height: 280px;
   }
 `
 const ImgWrap = styled.div`

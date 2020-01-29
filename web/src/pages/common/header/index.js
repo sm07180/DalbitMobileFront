@@ -3,7 +3,7 @@
  * @brief PC,Mobile 상단에 적용되는 Header영역 ,100% x 80px
  * @todo 반응형으로 처리되어야함
  */
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
@@ -19,17 +19,40 @@ import Profile from './profile'
 export default props => {
   //context
   const context = useContext(Context)
+  //useState
+  const [scrollTop, setScrollTop] = useState(0)
+  //let
+  let timer
   //const
+  const scrollTime = 20
   const type = props.type || 'sub'
   //---------------------------------------------------------------------
+
+  //checkScroll
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      setScrollTop(document.body.scrollTop || document.documentElement.scrollTop)
+    }, scrollTime)
+  }
+  //useEffect
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [])
+
+  //---------------------------------------------------------------------
   return (
-    <Header className={type}>
+    <Header className={[type, scrollTop !== 0 ? 'scroll' : 'top']}>
       {/* 네비게이션 */}
-      <Navi type={type} />
+      <Navi type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
       {/* 상단로고 */}
-      <Logo />
+      <Logo type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
       {/* 프로필이미지&GNB */}
-      <Profile />
+      <Profile type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
     </Header>
   )
 }
@@ -44,4 +67,11 @@ const Header = styled.header`
   width: 100%;
   height: 80px;
   z-index: 10;
+  &.scroll {
+    background: #fff;
+    /* 모바일사이즈 */
+    @media screen and (max-width: ${WIDTH_MOBILE}) {
+      background: transparent;
+    }
+  }
 `
