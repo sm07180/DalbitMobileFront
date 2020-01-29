@@ -133,7 +133,7 @@ export default props => {
             </button>
             <NavLink
               title="회원가입"
-              to="/user"
+              to="/user/join"
               onClick={() => {
                 context.action.updateGnbVisible(false)
               }}>

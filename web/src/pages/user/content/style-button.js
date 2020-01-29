@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import {osName, browserName} from 'react-device-detect'
 //context
 import Api from 'Context/api'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
 
 //context
 import {Context} from 'Context'
@@ -69,8 +70,7 @@ const Button = styled.button`
   display: block;
   width: 100%;
   margin-top: 30px;
-  border-radius: 5px;
-  background: #5a7eff;
+  background: ${COLOR_MAIN};
   color: #fff;
   line-height: 50px;
 `
