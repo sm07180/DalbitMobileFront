@@ -16,12 +16,21 @@ import Api from 'Context/api'
 import {Hybrid} from 'Context/hybrid'
 
 //context
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+
+//context
 import {Context} from 'Context'
 //import {switchCase} from '@babel/types'
 
 export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
+  const [changes, setChanges] = useState({})
+
+  const [phoenNum, setPhoneNum] = useState('')
+  const [Password, setPassword] = useState('')
+
   const context = useContext(Context)
 
   //fetch
@@ -45,10 +54,10 @@ export default props => {
       case 'n':
         break
       default:
-        loginId = obj.googleId
+        loginId = obj.phone
         break
     }
-    console.log('id = ' + loginId)
+
     const res = await Api.member_login({
       data: {
         memType: ostype,
@@ -65,12 +74,12 @@ export default props => {
     //ios
 
     const loginInfo = {
-      loginID: obj.profileObj.googleId ? obj.profileObj.googleId : '',
-      loginName: obj.profileObj.name ? obj.profileObj.name : '',
+      loginID: loginId,
+      loginName: '',
       loginNickNm: '',
-      gender: obj.profileObj.gender ? obj.profileObj.gender : 'm',
-      birth: obj.profileObj.birth ? obj.profileObj.birth : '20201010',
-      image: obj.profileObj.imageUrl ? obj.profileObj.imageUrl : ''
+      gender: 'm',
+      birth: '20201010',
+      image: ''
     }
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
@@ -135,10 +144,49 @@ export default props => {
   const responseGoogleFail = err => {
     console.error(err)
   }
-
+  const PhoneNumChange = e => {
+    console.log(e.target.value)
+    setPhoneNum(e.target.value)
+  }
+  const PasswordChange = e => {
+    console.log(e.target.value)
+    setPassword(e.target.value)
+  }
+  const onLoginHandleChange = e => {
+    setChanges({...changes, [e.target.name]: e.target.value})
+    console.log(changes)
+  }
   //---------------------------------------------------------------------
   return (
-    <Login>
+    <LoginWrap>
+      <Logo>
+        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+      </Logo>
+      <LoginInput>
+        <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
+        <input type="password" name="password" placeholder="비밀번호" onChange={onLoginHandleChange} />
+      </LoginInput>
+      <LoginSubmit
+        onClick={() => {
+          fetchData({...changes}, 'p')
+          // console.log('setPassword = ' + e.target)
+          //fetchData()
+        }}>
+        로그인
+      </LoginSubmit>
+      <ButtonArea>
+        <input type="checkbox" id="keeplogin" />
+        <label htmlFor="keeplogin">로그인 유지</label>
+        <div>
+          <button>비밀번호 찾기</button>
+          <button
+            onClick={() => {
+              props.history.push('/user')
+            }}>
+            회원가입
+          </button>
+        </div>
+      </ButtonArea>
       <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
@@ -163,12 +211,86 @@ export default props => {
         redirectUri="http://localhost:9000/live"
       />
       <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
-    </Login>
+    </LoginWrap>
   )
 }
+
 //---------------------------------------------------------------------
 const Login = styled.div`
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   background: #fff;
+`
+
+const Logo = styled.div`
+  margin: 60px 0 50px 0;
+  text-align: center;
+`
+const LoginWrap = styled.div`
+  width: 394px;
+  margin: 40px auto;
+`
+
+const LoginInput = styled.div`
+  input {
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    font-size: 16px;
+    line-height: 56px;
+    text-indent: 18px;
+  }
+  input + input {
+    margin-top: 14px;
+  }
+`
+const LoginSubmit = styled.button`
+  width: 100%;
+  margin-top: 14px;
+  background: ${COLOR_MAIN};
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 64px;
+`
+
+const ButtonArea = styled.div`
+  margin-top: 20px;
+  label {
+    padding-left: 5px;
+    color: #555;
+  }
+  div {
+    float: right;
+    button {
+      color: ${COLOR_MAIN};
+    }
+    button + button::before {
+      display: inline-block;
+      width: 1px;
+      height: 12px;
+      margin: 0 10px -1px 10px;
+      background: ${COLOR_MAIN};
+      content: '';
+    }
+  }
+`
+
+const SocialLogin = styled.div`
+  margin: 80px 0 60px 0;
+  div {
+    float: left;
+    width: 48.5%;
+    height: 48px;
+    margin-left: 3%;
+    margin-bottom: 12px;
+    background: #f5f5f5;
+  }
+  div:nth-child(2n + 1) {
+    margin-left: 0;
+  }
+  &:after {
+    display: block;
+    clear: both;
+    content: '';
+  }
 `

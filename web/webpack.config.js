@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -13,7 +13,7 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'bundle.js'
   },
-  //devtool: 'source-map',
+  devtool: 'cheap-module-eval-source-map',
   devServer: {
     hot: true,
     contentBase: path.resolve('./dist'),
@@ -88,14 +88,14 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebPackPlugin({
       template: './public/index.html', // public/index.html 파일을 읽는다.
       filename: 'index.html' // output으로 출력할 파일은 index.html 이다.
     }),
     new MiniCssExtractPlugin({
       filename: 'style.css'
-    }),
-    new webpack.HotModuleReplacementPlugin()
+    })
     //new BundleAnalyzerPlugin()
   ]
 }
