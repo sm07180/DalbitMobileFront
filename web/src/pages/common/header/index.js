@@ -15,51 +15,21 @@ import Logo from './logo'
 import Navi from './navi'
 import creatIcon from 'Components/ui/icon'
 import Profile from './profile'
-
 //
 export default props => {
   //context
   const context = useContext(Context)
   //const
-  const type = props.type == 'main' ? 'main' : 'sub'
+  const type = props.type || 'sub'
   //---------------------------------------------------------------------
   return (
     <Header className={type}>
-      {/* 상단로고 */}
-      <Logo />
       {/* 네비게이션 */}
       <Navi type={type} />
-
-      <UtilMenu>
-        <Search
-          onClick={() => {
-            context.action.updateGnbVisible(true)
-          }}>
-          {creatIcon('search')}
-        </Search>
-        <Login
-          onClick={() => {
-            if (!context.login_state) {
-              context.action.updatePopup('LOGIN')
-            } else {
-              const result = confirm('로그아웃 하시겠습니까?')
-              if (result) {
-                alert('정상적으로 로그아웃 되었습니다.')
-                context.action.updateLogin(false)
-              }
-            }
-          }}>
-          {context.login_state ? '로그아웃' : creatIcon('profile')}
-        </Login>
-        {/* 프로필 */}
-        {/* <Profile /> */}
-        <Menu
-          onClick={() => {
-            context.action.updateGnbVisible(true)
-          }}>
-          {creatIcon('menu')}
-        </Menu>
-      </UtilMenu>
+      {/* 상단로고 */}
+      <Logo />
+      {/* 프로필이미지&GNB */}
+      <Profile />
     </Header>
   )
 }
@@ -67,38 +37,11 @@ export default props => {
 const Header = styled.header`
   /* mobile media query */
   @media (max-width: ${WIDTH_TABLET}) {
-    /* background: #ff0000; */
   }
   /* pc media query */
   position: fixed;
   display: block;
   width: 100%;
   height: 80px;
-  align-items: center;
   z-index: 10;
-
-  &.sub {
-    background: #fff;
-    border-bottom: 1px solid #e2e2e2;
-  }
-  &.sub a {
-    color: #555;
-  }
 `
-
-const UtilMenu = styled.div`
-  flex: 1;
-  text-align: right;
-
-  button {
-    font-size: 16px;
-  }
-
-  button + button {
-    margin-left: 10px;
-  }
-`
-
-const Search = styled.button``
-const Login = styled.button``
-const Menu = styled.button``
