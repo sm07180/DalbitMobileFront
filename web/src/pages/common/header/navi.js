@@ -47,8 +47,14 @@ const Content = styled.nav`
     padding: 0 13px;
     color: #fff;
   }
-  /* 서브페이지일때 */
+  /* 서브페이지 */
   &.sub {
+    a {
+      color: #111;
+    }
+  }
+  /* 메인페이지 & 스크롤 */
+  &.main.scroll {
     a {
       color: #111;
     }
@@ -56,6 +62,10 @@ const Content = styled.nav`
   /* 모바일사이즈 */
   @media screen and (max-width: ${WIDTH_MOBILE}) {
     padding-top: 88px;
+    /* 스크롤 */
+    &.scroll {
+      display: none;
+    }
   }
   @media screen and (min-width: ${WIDTH_PC}) {
     a:hover {
