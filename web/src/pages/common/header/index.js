@@ -20,7 +20,7 @@ export default props => {
   //context
   const context = useContext(Context)
   //const
-  const type = props.type == 'main' ? 'main' : 'sub'
+  const type = props.type || 'sub'
   //---------------------------------------------------------------------
   return (
     <Header className={type}>

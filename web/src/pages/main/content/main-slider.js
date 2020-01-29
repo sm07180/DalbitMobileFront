@@ -76,6 +76,9 @@ const Bg = styled.div`
 
   &::before {
     display: inline-block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     width: 920px;
     height: 920px;
     margin-top: -131px;
