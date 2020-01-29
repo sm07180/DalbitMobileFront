@@ -41,7 +41,7 @@
     "url-loader": "^3.0.0"
   },
   "scripts": {
-    "dev": "webpack --mode development",              //최초 실행시 한번은 실행시켜줘야 된다.
+    "dev": "webpack --mode development",              
     "prod": "webpack --mode production",
     "start": "webpack-dev-server --mode development"
   },
