@@ -112,7 +112,7 @@ const User = () => {
             }
           }
         },
-        //밑의 함수는 콜백에러에 따른 에러메시지 호출이며 webrtc기능구현과는 무관합니다.
+        //밑의 함수는 콜백에러에 따른 에러메시지 호출
         callbackError: function(error, message) {
           //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
           console.log('error callback: ' + JSON.stringify(error))
@@ -141,7 +141,7 @@ const User = () => {
       })
     })
   }
-
+  ///////////////////////////////////////
   /**
    * @brief 웹rtc Latest Core
    * @returns

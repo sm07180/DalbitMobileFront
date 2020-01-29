@@ -4,7 +4,10 @@
  */
 import React from 'react'
 import styled from 'styled-components'
-
+import {WIDTH_MOBILE} from 'Context/config'
+import {WIDTH_TABLET} from 'Context/config'
+import {WIDTH_PC} from 'Context/config'
+import {WIDTH_PC2} from 'Context/config'
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
 
@@ -186,4 +189,21 @@ const RangkingWrap = styled.section``
 
 const PopularWrap = styled.section``
 
-const ContentListWrap = styled.section``
+const ContentListWrap = styled.section`
+  width: 1467px;
+  margin: 0 auto;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+  & > div:first-child {
+    margin-right: 43px;
+  }
+  @media (max-width: ${WIDTH_PC2}) {
+    width: 94.53%;
+    & > div:first-child {
+      margin-right: 161px;
+    }
+  }
+`

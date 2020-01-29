@@ -22,6 +22,7 @@ export const HEADER_HEIGHT = '350px'
  * @code import {WIDTH_TABLET} from 'Context/config'
  */
 export const WIDTH_PC = '1920px'
+export const WIDTH_PC2 = '1280px'
 export const WIDTH_TABLET = '1024px'
 export const WIDTH_MOBILE = '600px'
 export const WIDTH_MOBILE_S = '320px'

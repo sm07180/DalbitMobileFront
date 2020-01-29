@@ -17,6 +17,11 @@ body {
   -webkit-text-size-adjust: none;
   height: 100vh;
 }
+input,
+select,
+option {
+  font-family: inherit;
+}
 img,
 svg {
   vertical-align: top;

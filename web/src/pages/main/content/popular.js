@@ -12,8 +12,20 @@ import {WIDTH_TABLET} from 'Context/config'
 import {WIDTH_PC} from 'Context/config'
 import {COLOR_WHITE} from 'Context/color'
 import creatIcon from 'Components/ui/icon'
+import {object} from 'prop-types'
+import {setState} from 'expect/build/jestMatchersObject'
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
+  const [sswiper, updateSwiper] = useState(true)
+
+  const stopToggle = () => {
+    if (sswiper.autoplay.paused == true) {
+      sswiper.autoplay.run()
+    } else if (sswiper.autoplay.running == true) {
+      sswiper.autoplay.pause()
+    }
+    console.log(sswiper)
+  }
   const params = {
     slidesPerView: 3,
     spaceBetween: 30,
@@ -23,6 +35,7 @@ export default props => {
     autoplay: {
       delay: 2000
     },
+
     breakpoints: {
       0: {
         slidesPerView: 1,
@@ -45,6 +58,7 @@ export default props => {
       }
       //1280까지
     },
+
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev'
@@ -53,7 +67,7 @@ export default props => {
   const arraySlide = slideInfo.map((item, index) => {
     // console.log(item)
     const {id, title, url, name, reco, category, popu, avata, people, like} = item
-
+    //-----------------------------------------------------------------------
     return (
       <Slide key={index}>
         <ContentBox {...item}>
@@ -83,13 +97,17 @@ export default props => {
   return (
     <>
       <SwiperWrap>
+        <ToggleBtn onClick={stopToggle}></ToggleBtn>
         <Stitle>인기 DJ</Stitle>
         <SliderControl></SliderControl>
-        <Swiper {...params}>{arraySlide}</Swiper>
+        <Swiper {...params} getSwiper={updateSwiper}>
+          {arraySlide}
+        </Swiper>
       </SwiperWrap>
     </>
   )
 }
+
 const SwiperWrap = styled.div`
   width: 1210px;
   margin: 0 auto;
@@ -125,6 +143,7 @@ const SwiperWrap = styled.div`
     width: 91.11%;
   }
 `
+
 const Stitle = styled.h2`
   display: block;
   width: 50%;
@@ -142,6 +161,16 @@ const SliderControl = styled.div`
   border: 1px solid #8556f6;
   border-radius: 18px;
   box-sizing: border-box;
+`
+const ToggleBtn = styled.div`
+  position: absolute;
+  top: 0;
+  z-index: 9999;
+  left: calc(50% + 60px);
+  width: 36px;
+  height: 36px;
+  background: url('https://s3.us-east-2.amazonaws.com/upload-icon/uploads/icons/png/205114891553239387-512.png') no-repeat center center / cover;
+  cursor: pointer;
 `
 const Slide = styled.div`
   width: 32.56%;
