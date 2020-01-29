@@ -159,9 +159,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
-      <Logo>
-        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-      </Logo>
       <LoginInput>
         <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
         <input type="password" name="password" placeholder="비밀번호" onChange={onLoginHandleChange} />
@@ -178,10 +175,15 @@ export default props => {
         <input type="checkbox" id="keeplogin" />
         <label htmlFor="keeplogin">로그인 유지</label>
         <div>
-          <button>비밀번호 찾기</button>
           <button
             onClick={() => {
-              props.history.push('/user')
+              props.history.push('/user/password')
+            }}>
+            비밀번호 찾기
+          </button>
+          <button
+            onClick={() => {
+              props.history.push('/user/join')
             }}>
             회원가입
           </button>
@@ -222,14 +224,7 @@ const Login = styled.div`
   background: #fff;
 `
 
-const Logo = styled.div`
-  margin: 60px 0 50px 0;
-  text-align: center;
-`
-const LoginWrap = styled.div`
-  width: 394px;
-  margin: 40px auto;
-`
+const LoginWrap = styled.div``
 
 const LoginInput = styled.div`
   input {

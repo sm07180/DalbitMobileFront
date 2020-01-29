@@ -21,12 +21,17 @@ import NotFoundPage from 'Pages/common/404' //404 페이지없을경우
 /*-app-*/
 import App from 'Pages/app' //라이브
 //
+/* :title  
+/user/join 회원가입 
+/user/password 비밀번호찾기
+*/
 export default () => {
   return (
     <Switch>
       <Route exact path="/" component={Main} />
       <Route exact path="/cast" component={Cast} />
       <Route exact path="/user" component={User} />
+      <Route exact path="/user/:title" component={User} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/live" component={Live} />
       <Route exact path="/store" component={Store} />
