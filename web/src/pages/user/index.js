@@ -25,7 +25,24 @@ const User = props => {
       case 'password': //비밀번호찾기
         return <Password {...props} />
       default:
-        return <p>기본페이지</p>
+        return (
+          <Common>
+            <p>/user 메뉴 </p>
+            <button
+              onClick={() => {
+                props.history.push('/user/join')
+              }}>
+              회원가입
+            </button>
+            <br></br>
+            <button
+              onClick={() => {
+                props.history.push('/user/password')
+              }}>
+              비밀번호찾기
+            </button>
+          </Common>
+        )
     }
   }
 
@@ -34,3 +51,16 @@ const User = props => {
 }
 export default User
 //---------------------------------------------------------------------
+
+const Common = styled.div`
+  margin: 50px 0;
+  button {
+    margin-top: 20px;
+    width: 130px;
+    line-height: 60px;
+    border: 1px solid #eee;
+    font-size: 16px;
+    text-align: left;
+    text-indent: 10px;
+  }
+`
