@@ -87,6 +87,6 @@ const Container = styled.div`
     }
   }
   main.sub {
-    padding-top: 90px;
+    padding-top: 80px;
   }
 `
