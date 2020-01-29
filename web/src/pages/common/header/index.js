@@ -1,54 +1,35 @@
 /**
  * @file header/index.js
- * @brief PC,Mobile 상단에 적용되는 Header영역
+ * @brief PC,Mobile 상단에 적용되는 Header영역 ,100% x 80px
  * @todo 반응형으로 처리되어야함
  */
 import React, {useEffect, useContext} from 'react'
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
-
 //context
 import {Context} from 'Context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
-
+import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_TABLET} from 'Context/config'
 //components
+import Logo from './logo'
+import Navi from './navi'
 import creatIcon from 'Components/ui/icon'
 import Profile from './profile'
 
 //
 export default props => {
+  //context
   const context = useContext(Context)
-  const info = [
-    {title: '라이브', url: '/live'},
-    {title: '캐스트', url: '/cast'},
-    {title: '랭킹', url: '/'},
-    {title: '스토어', url: '/'},
-    {title: '방송하기', url: '/login'}
-  ]
-  //makeMenu
-  const makeNavigation = () => {
-    return info.map((list, idx) => {
-      const _title = info[idx].title
-      const _url = info[idx].url
-      return (
-        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
-          <span>{_title}</span>
-        </NavLink>
-      )
-    })
-  }
-
-  console.log('넓이는..', WIDTH_PC)
+  //const
+  const type = props.type == 'main' ? 'main' : 'sub'
   //---------------------------------------------------------------------
   return (
-    <Header className={props.type == 'main' ? 'main' : 'sub'}>
-      <Logo>
-        <a href="/">
-          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-        </a>
-      </Logo>
-      <CommonMenu>{makeNavigation()}</CommonMenu>
+    <Header className={type}>
+      {/* 상단로고 */}
+      <Logo />
+      {/* 네비게이션 */}
+      <Navi type={type} />
+
       <UtilMenu>
         <Search
           onClick={() => {
@@ -86,14 +67,13 @@ export default props => {
 const Header = styled.header`
   /* mobile media query */
   @media (max-width: ${WIDTH_TABLET}) {
-    background: #ff0000;
+    /* background: #ff0000; */
   }
   /* pc media query */
   position: fixed;
-  display: flex;
+  display: block;
   width: 100%;
-  height: 90px;
-  padding: 0 20px;
+  height: 80px;
   align-items: center;
   z-index: 10;
 
@@ -101,49 +81,8 @@ const Header = styled.header`
     background: #fff;
     border-bottom: 1px solid #e2e2e2;
   }
-
   &.sub a {
     color: #555;
-  }
-`
-
-const Logo = styled.h1`
-  flex: 1;
-  font-size: 24px;
-  img {
-    margin-top: -10px;
-  }
-`
-
-const CommonMenu = styled.div`
-  flex: 4;
-  text-align: center;
-  a {
-    position: relative;
-    margin: 0 20px;
-    color: #fff;
-  }
-  a:after {
-    position: absolute;
-    bottom: -15px;
-    left: calc(50% - 4px);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: ${COLOR_POINT_Y};
-    opacity: 0;
-    transition: all 0.3s ease-in-out;
-    content: '';
-  }
-
-  @media screen and (min-width: ${WIDTH_PC}) {
-    a:hover {
-      font-weight: bold;
-    }
-    a:hover:after {
-      bottom: -12px;
-      opacity: 1;
-    }
   }
 `
 
