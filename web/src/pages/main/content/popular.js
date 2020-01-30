@@ -12,8 +12,6 @@ import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
 import {COLOR_WHITE} from 'context/color'
 import creatIcon from 'components/ui/icon'
-import {object} from 'prop-types'
-import {setState} from 'expect/build/jestMatchersObject'
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const [sswiper, updateSwiper] = useState(true)
@@ -26,15 +24,7 @@ export default props => {
     }
   }
   const params = {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    slidesPerGroup: 3,
-    slidesPerColumn: 2,
     slidesPerColumnFill: 'row',
-    // autoplay: {
-    //   delay: 2000
-    // },
-
     breakpoints: {
       0: {
         slidesPerView: 1,
@@ -46,14 +36,15 @@ export default props => {
       601: {
         slidesPerView: 2,
         slidesPerColumn: 2,
-        spaceBetween: 14
+        spaceBetween: 0
       },
 
       //601까지
-      1281: {
+      841: {
         slidesPerView: 3,
-        slidesPerColumn: 2,
-        spaceBetween: 14
+        spaceBetween: 14,
+        slidesPerGroup: 1,
+        slidesPerColumn: 2
       }
       //1280까지
     },
@@ -114,11 +105,8 @@ const SwiperWrap = styled.div`
   & .swiper-container {
     position: static;
     margin-top: 35px;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
   }
+
   & .swiper-button-prev,
   .swiper-button-next {
     top: 0;
@@ -128,15 +116,14 @@ const SwiperWrap = styled.div`
     box-sizing: border-box;
   }
   & .swiper-button-prev {
-    left: calc(50% + 20px);
+    left: calc(50% + 22px);
     background: url('https://devimage.dalbitcast.com/images/api/ico-prev.png') no-repeat center center / cover;
   }
   & .swiper-button-next {
-    left: calc(50% + 92px);
+    left: calc(50% + 94px);
     background: url('https://devimage.dalbitcast.com/images/api/ico-next.png') no-repeat center center / cover;
   }
 `
-
 const Stitle = styled.h2`
   font-size: 34px;
   font-weight: 800;
@@ -162,14 +149,14 @@ const ToggleBtn = styled.div`
   position: absolute;
   top: 0;
   z-index: 9999;
-  left: calc(50% + 56px);
+  left: calc(50% + 58px);
   width: 36px;
   height: 36px;
   background: url('https://devimage.dalbitcast.com/images/api/ico-stop.png') no-repeat center center / cover;
   cursor: pointer;
 `
 const Slide = styled.div`
-  flex-basis: 32%;
+  /* flex-basis: 32.4%; */
 `
 const Category = styled.span`
   display: block;

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC2} from 'context/config'
+import {WIDTH_PC_S} from 'context/config'
 import {Context} from 'context'
 import {HEADER_HEIGHT} from 'context/config'
 //layout
@@ -76,7 +76,7 @@ const Container = styled.div`
       width: 100%;
       padding-left: 0;
     }
-    @media (max-width: ${WIDTH_PC2}) {
+    @media (max-width: ${WIDTH_PC_S}) {
       width: 100%;
     }
     @media (max-width: ${WIDTH_TABLET}) {

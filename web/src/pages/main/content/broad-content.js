@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC2} from 'context/config'
+import {WIDTH_PC_S} from 'context/config'
 
 export default props => {
   const [BroadContentInfo, setBroadContentInfo] = useState(props.BroadInfo)
@@ -45,7 +45,7 @@ const BroadWrap = styled.div`
   flex-basis: 20.78%;
   height: 360px;
   position: relative;
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     flex-basis: 28%;
     height: 320px;
   }
