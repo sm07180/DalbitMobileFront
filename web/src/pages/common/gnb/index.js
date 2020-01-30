@@ -7,9 +7,9 @@ import React, {useContext} from 'react'
 import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 //components
-import {WIDTH_TABLET} from 'Context/config'
+import {WIDTH_TABLET} from 'context/config'
 
 //
 export default props => {

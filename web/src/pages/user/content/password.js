@@ -6,9 +6,9 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {WIDTH_TABLET} from 'Context/config'
+import {WIDTH_TABLET} from 'context/config'
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'pages/common/layout'
 //components
 import PasswordAuth from './join-auth'
 import PasswordForm from './password-form'

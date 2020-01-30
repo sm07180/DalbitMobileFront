@@ -1,7 +1,7 @@
 /**
  * @file components/ui/icon.js
  * @brief 아이콘 컴포넌트
- * @example import creatIcon from 'Components/ui/icon'
+ * @example import creatIcon from 'components/ui/icon'
  * @example creatIcon('like', '#000', 30, 30)
  */
 

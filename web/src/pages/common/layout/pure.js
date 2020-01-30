@@ -5,11 +5,11 @@ import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import Toggle from './toggle-footer'
 //context
-import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'Context/config'
-import {Context} from 'Context'
-import {HEADER_HEIGHT} from 'Context/config'
+import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
+import {Context} from 'context'
+import {HEADER_HEIGHT} from 'context/config'
 //layout
-import Popup from 'Pages/common/popup'
+import Popup from 'pages/common/popup'
 //
 const Layout = props => {
   //context

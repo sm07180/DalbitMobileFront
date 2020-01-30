@@ -4,14 +4,14 @@
  */
 import React from 'react'
 import styled from 'styled-components'
-import Select from '../../../components/ui/select'
+import Select from 'components/ui/select'
 import BroadContent from './broad-content'
 import LiveCastBig from './live-cast-big'
-import {WIDTH_MOBILE} from 'Context/config'
-import {WIDTH_TABLET} from 'Context/config'
-import {WIDTH_PC} from 'Context/config'
+import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC} from 'context/config'
 //context
-import {WIDTH_PC2} from 'Context/config'
+import {WIDTH_PC2} from 'context/config'
 const SelectInfo = {
   id: '1',
   selectUrl: 'https://devimage.dalbitcast.com/images/api/arrow-b.svg',

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 
 //context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 //components
 

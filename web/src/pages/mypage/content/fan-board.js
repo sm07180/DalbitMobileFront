@@ -7,7 +7,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 //material ui
 import TextField from '@material-ui/core/TextField'

@@ -5,9 +5,9 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'Pages/live/store'
+import {Context} from 'pages/live/store'
 //components
-import Api from 'Context/api'
+import Api from 'context/api'
 //
 export default props => {
   //---------------------------------------------------------------------

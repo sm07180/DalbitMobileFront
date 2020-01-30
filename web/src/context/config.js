@@ -19,7 +19,7 @@ export const HEADER_HEIGHT = '350px'
 
 /**
  * @brief PC,Tablet,Moble 사이즈 분기
- * @code import {WIDTH_TABLET} from 'Context/config'
+ * @code import {WIDTH_TABLET} from 'context/config'
  */
 export const WIDTH_PC = '1920px'
 export const WIDTH_PC2 = '1280px'

@@ -5,10 +5,10 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'pages/common/layout'
 //context
 //components
-import Api from 'Context/api'
+import Api from 'context/api'
 //
 export default props => {
   //---------------------------------------------------------------------

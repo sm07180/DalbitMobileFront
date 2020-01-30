@@ -8,7 +8,7 @@ import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
 //components
 import {Context} from './store'
-import useClick from '@/components/hooks/useClick'
+import useClick from 'components/hooks/useClick'
 //
 export default props => {
   //---------------------------------------------------------------------

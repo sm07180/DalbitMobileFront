@@ -5,15 +5,15 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'pages/common/layout'
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 import {LiveProvider} from './store'
 //components
-import Api from 'Context/api'
+import Api from 'context/api'
 //pages
-import Chat from 'Pages/live/content/chat'
-import BroadCast from 'Pages/live/content/broadcast'
+import Chat from 'pages/live/content/chat'
+import BroadCast from 'pages/live/content/broadcast'
 //
 export default props => {
   //---------------------------------------------------------------------

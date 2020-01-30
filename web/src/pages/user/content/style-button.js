@@ -3,11 +3,11 @@ import styled from 'styled-components'
 
 import {osName, browserName} from 'react-device-detect'
 //context
-import Api from 'Context/api'
-import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
+import Api from 'context/api'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 
 export default props => {
   //---------------------------------------------------------------------

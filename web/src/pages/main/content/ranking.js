@@ -6,7 +6,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 //context
-import {WIDTH_TABLET} from 'Context/config'
+import {WIDTH_TABLET} from 'context/config'
 
 //components
 

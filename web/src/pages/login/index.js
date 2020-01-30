@@ -6,8 +6,8 @@ import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 
 //layout
-import Layout from 'Pages/common/layout/pure'
-import SnsLogin from 'Pages/common/auth'
+import Layout from 'pages/common/layout/pure'
+import SnsLogin from 'pages/common/auth'
 
 export default props => {
   return (

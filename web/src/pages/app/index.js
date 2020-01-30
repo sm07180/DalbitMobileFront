@@ -11,14 +11,14 @@ import {GoogleLogin} from 'react-google-login'
 import {osName, browserName} from 'react-device-detect'
 
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'pages/common/layout'
 //material-ui
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 //
-import Api from 'Context/api'
-import {Hybrid} from 'Context/hybrid'
+import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 //
 export default () => {
   //---------------------------------------------------------------------

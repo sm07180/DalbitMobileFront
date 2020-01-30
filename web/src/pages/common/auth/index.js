@@ -12,15 +12,15 @@ import NaverLogin from 'react-naver-login'
 import FacebookLogin from 'react-facebook-login'
 import {osName, browserName} from 'react-device-detect'
 //context
-import Api from 'Context/api'
-import {Hybrid} from 'Context/hybrid'
+import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 
 //context
-import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 //import {switchCase} from '@babel/types'
 
 export default props => {

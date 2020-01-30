@@ -7,7 +7,7 @@ import React, {useEffect, useStet} from 'react'
 import styled from 'styled-components'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 const Profile = () => {
   return <MyProfile>내 프로필 영역 component</MyProfile>

@@ -13,11 +13,11 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 //layout
-import Layout from 'Pages/common/layout'
-import {WIDTH_PC, WIDTH_TABLET} from 'Context/config'
+import Layout from 'pages/common/layout'
+import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 //context
-import Api from 'Context/api'
+import Api from 'context/api'
 
 //material-ui
 import PropTypes from 'prop-types'

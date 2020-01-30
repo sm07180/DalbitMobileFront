@@ -9,7 +9,7 @@ import React, {useEffect} from 'react'
 import Layout from './layout'
 import Contents from './layout-contents'
 //
-import {checkMic} from 'Components/lib/webRTC'
+import {checkMic} from 'components/lib/webRTC'
 
 export default props => {
   //---------------------------------------------------------------------

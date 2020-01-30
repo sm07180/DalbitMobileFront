@@ -6,13 +6,13 @@
 
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE, IMG_SERVER} from 'Context/config'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 //hooks
-import useClick from 'Components/hooks/useClick'
+import useClick from 'components/hooks/useClick'
 //components
-import Gnb from 'Pages/common/gnb'
+import Gnb from 'pages/common/gnb'
 //
 export default props => {
   //context
