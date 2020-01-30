@@ -22,7 +22,8 @@ export const HEADER_HEIGHT = '350px'
  * @code import {WIDTH_TABLET} from 'context/config'
  */
 export const WIDTH_PC = '1920px'
-export const WIDTH_PC2 = '1280px'
-export const WIDTH_TABLET = '824px'
+export const WIDTH_PC_S = '1280px' //디자인 시안 사이즈
+export const WIDTH_TABLET = '1024px'
+export const WIDTH_TABLET_S = '840px' //디자인 시안 사이즈
 export const WIDTH_MOBILE = '600px'
-export const WIDTH_MOBILE_S = '320px'
+export const WIDTH_MOBILE_S = '360px' //디자인 시안 사이즈

@@ -11,7 +11,7 @@ import {WIDTH_MOBILE} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
 //context
-import {WIDTH_PC2} from 'context/config'
+import {WIDTH_PC_S} from 'context/config'
 const SelectInfo = {
   id: '1',
   selectUrl: 'https://devimage.dalbitcast.com/images/api/arrow-b.svg',
@@ -182,7 +182,7 @@ export default props => {
 const Content = styled.div`
   width: calc(50% - 21.5px);
   float: left;
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     width: 43.71%;
   }
   @media (max-width: ${WIDTH_TABLET}) {

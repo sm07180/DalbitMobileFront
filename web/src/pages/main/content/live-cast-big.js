@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC2} from 'context/config'
+import {WIDTH_PC_S} from 'context/config'
 
 export default props => {
   const [LiveBigInfo, setLiveBigInfo] = useState(props.ImgInfo[0])
@@ -39,7 +39,7 @@ const LiveBigWrap = styled.div`
     clear: both;
     display: block;
   }
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     height: 262px;
   }
   @media (max-width: ${WIDTH_TABLET}) {
@@ -79,7 +79,7 @@ const InfoTitle = styled.h2`
   text-align: center;
   color: #8556f6;
   margin-bottom: 18px;
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     font-size: 20px;
   }
   @media (max-width: ${WIDTH_TABLET}) {
@@ -95,7 +95,7 @@ const BjName = styled.h4`
   letter-spacing: -0.5px;
   text-align: center;
   color: #757575;
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     font-size: 18px;
   }
 `

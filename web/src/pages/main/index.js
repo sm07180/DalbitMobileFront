@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC2} from 'context/config'
+import {WIDTH_PC_S} from 'context/config'
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
@@ -187,7 +187,11 @@ export default Main
 
 const RangkingWrap = styled.section``
 
-const PopularWrap = styled.section``
+const PopularWrap = styled.section`
+  max-width: 1467px;
+  width: 94.53%;
+  margin: 0 auto;
+`
 
 const ContentListWrap = styled.section`
   max-width: 1467px;
@@ -202,7 +206,7 @@ const ContentListWrap = styled.section`
     margin-right: 43px;
   }
 
-  @media (max-width: ${WIDTH_PC2}) {
+  @media (max-width: ${WIDTH_PC_S}) {
     width: 94.53%;
     & > div:first-child {
       margin-right: 12.57%;
