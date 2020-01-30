@@ -24,7 +24,7 @@ export default props => {
   //let
   let timer
   //const
-  const scrollTime = 20
+  const scrollTime = 10
   const type = props.type || 'sub'
   //---------------------------------------------------------------------
 
@@ -48,11 +48,11 @@ export default props => {
   return (
     <Header className={[type, scrollTop !== 0 ? 'scroll' : 'top']}>
       {/* 네비게이션 */}
-      <Navi type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
+      <Navi type={scrollTop !== 0 ? 'scroll' : 'top'} />
       {/* 상단로고 */}
-      <Logo type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
+      <Logo />
       {/* 프로필이미지&GNB */}
-      <Profile type={[type, scrollTop !== 0 ? 'scroll' : 'top']} />
+      <Profile type={scrollTop !== 0 ? 'scroll' : 'top'} />
     </Header>
   )
 }
@@ -67,11 +67,17 @@ const Header = styled.header`
   width: 100%;
   height: 80px;
   z-index: 10;
+
   &.scroll {
     background: #fff;
     /* 모바일사이즈 */
     @media screen and (max-width: ${WIDTH_MOBILE}) {
       background: transparent;
+      /* 네비,로고 hide */
+      nav,
+      .logo {
+        display: none;
+      }
     }
   }
 `

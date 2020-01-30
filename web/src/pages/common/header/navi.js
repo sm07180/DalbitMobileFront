@@ -34,7 +34,7 @@ export default props => {
     })
   }
   //---------------------------------------------------------------------
-  return <Content className={props.type}>{makeNavi()}</Content>
+  return <Content className={`${props.type}`}>{makeNavi()}</Content>
 }
 //---------------------------------------------------------------------
 const Content = styled.nav`
@@ -54,7 +54,7 @@ const Content = styled.nav`
     }
   }
   /* 메인페이지 & 스크롤 */
-  &.main.scroll {
+  &.scroll {
     a {
       color: #111;
     }
