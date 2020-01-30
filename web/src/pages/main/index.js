@@ -187,7 +187,11 @@ export default Main
 
 const RangkingWrap = styled.section``
 
-const PopularWrap = styled.section``
+const PopularWrap = styled.section`
+  max-width: 1467px;
+  width: 94.53%;
+  margin: 0 auto;
+`
 
 const ContentListWrap = styled.section`
   max-width: 1467px;

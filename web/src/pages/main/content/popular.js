@@ -24,7 +24,6 @@ export default props => {
     } else if (sswiper.autoplay.running == true) {
       sswiper.autoplay.pause()
     }
-    console.log(sswiper)
   }
   const params = {
     slidesPerView: 3,
@@ -32,9 +31,9 @@ export default props => {
     slidesPerGroup: 3,
     slidesPerColumn: 2,
     slidesPerColumnFill: 'row',
-    autoplay: {
-      delay: 2000
-    },
+    // autoplay: {
+    //   delay: 2000
+    // },
 
     breakpoints: {
       0: {
@@ -98,7 +97,7 @@ export default props => {
     <>
       <SwiperWrap>
         <ToggleBtn onClick={stopToggle}></ToggleBtn>
-        <Stitle>인기 DJ</Stitle>
+        <Stitle>나의 스타 방송</Stitle>
         <SliderControl></SliderControl>
         <Swiper {...params} getSwiper={updateSwiper}>
           {arraySlide}
@@ -109,12 +108,16 @@ export default props => {
 }
 
 const SwiperWrap = styled.div`
-  width: 1210px;
+  width: 82.48%;
   margin: 0 auto;
   position: relative;
   & .swiper-container {
     position: static;
-    margin-top: 37px;
+    margin-top: 35px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
   & .swiper-button-prev,
   .swiper-button-next {
@@ -122,41 +125,34 @@ const SwiperWrap = styled.div`
     margin-top: 0;
     width: 36px;
     height: 36px;
-    /* padding: 12.5px 15px; */
     box-sizing: border-box;
-    background-position: center center;
-    background-size: 6.3px 11.5px;
   }
   & .swiper-button-prev {
-    left: calc(50% + 22px);
+    left: calc(50% + 20px);
+    background: url('https://devimage.dalbitcast.com/images/api/ico-prev.png') no-repeat center center / cover;
   }
   & .swiper-button-next {
-    left: calc(50% + 94px);
-  }
-  @media (max-width: ${WIDTH_PC}) {
-    width: 63.02%;
-  }
-  @media (max-width: ${WIDTH_TABLET}) {
-    width: 95.47%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 91.11%;
+    left: calc(50% + 92px);
+    background: url('https://devimage.dalbitcast.com/images/api/ico-next.png') no-repeat center center / cover;
   }
 `
 
 const Stitle = styled.h2`
-  display: block;
-  width: 50%;
-  text-align: right;
   font-size: 34px;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
   line-height: 1.15;
+  letter-spacing: -0.85px;
+  text-align: right;
   color: #8556f6;
+  width: 50%;
 `
 const SliderControl = styled.div`
   position: absolute;
   top: 0;
   left: calc(50% + 16px);
-  height: 38px;
+  height: 36px;
   width: 120px;
   border: 1px solid #8556f6;
   border-radius: 18px;
@@ -166,14 +162,14 @@ const ToggleBtn = styled.div`
   position: absolute;
   top: 0;
   z-index: 9999;
-  left: calc(50% + 60px);
+  left: calc(50% + 56px);
   width: 36px;
   height: 36px;
-  background: url('https://cdn.iconscout.com/icon/free/png-256/pause-38-204304.png') no-repeat center center / cover;
+  background: url('https://devimage.dalbitcast.com/images/api/ico-stop.png') no-repeat center center / cover;
   cursor: pointer;
 `
 const Slide = styled.div`
-  width: 32.56%;
+  flex-basis: 32%;
 `
 const Category = styled.span`
   display: block;

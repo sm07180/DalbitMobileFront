@@ -10,7 +10,6 @@ export default props => {
 }
 
 const Wrap = styled.div`
-  width: 100%;
   height: 190px;
   margin-bottom: 26px;
 `
