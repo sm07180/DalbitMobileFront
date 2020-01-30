@@ -6,11 +6,11 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'Context'
+import {Context} from 'context'
 //components
 
 //contents
-import Auth from 'Pages/common/auth'
+import Auth from 'pages/common/auth'
 //
 export default props => {
   //

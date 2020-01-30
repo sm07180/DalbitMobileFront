@@ -5,7 +5,7 @@ import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from '../store'
-import {WIDTH_PC, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'Context/config'
+import {WIDTH_PC, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default () => {
   //---------------------------------------------------------------------

@@ -3,7 +3,7 @@
  * @brief onClick={()=>{code...}} 를 {...hooks} 형태로 사용
  * @code
  
- import useClick from 'Components/hooks/useClick'
+ import useClick from 'components/hooks/useClick'
 
   //공통함수
   const update = obj => {

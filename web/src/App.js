@@ -8,18 +8,18 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 //pages
 
 /*-common-*/
-import Main from 'Pages/main' //메인
-import Guide from 'Pages/guide/' //가이드
-import Login from 'Pages/login/' //로그인
-import User from 'Pages/user' //유저 (회원가입,회원정보입력등)
-import Cast from 'Pages/cast' //로그인
-import Live from 'Pages/live' //라이브
-import Store from 'Pages/store' //스토어
-import Event from 'Pages/event' //이벤트
-import Mypage from 'Pages/mypage' //마이페이지
-import NotFoundPage from 'Pages/common/404' //404 페이지없을경우
+import Main from 'pages/main' //메인
+import Guide from 'pages/guide/' //가이드
+import Login from 'pages/login/' //로그인
+import User from 'pages/user' //유저 (회원가입,회원정보입력등)
+import Cast from 'pages/cast' //로그인
+import Live from 'pages/live' //라이브
+import Store from 'pages/store' //스토어
+import Event from 'pages/event' //이벤트
+import Mypage from 'pages/mypage' //마이페이지
+import NotFoundPage from 'pages/common/404' //404 페이지없을경우
 /*-app-*/
-import App from 'Pages/app' //라이브
+import App from 'pages/app' //라이브
 //
 /* :title  
 /user/join 회원가입 

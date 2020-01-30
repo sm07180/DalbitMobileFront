@@ -1,7 +1,7 @@
 /**
  * @file context/color.js
  * @brief 색상설정
- * @example import {COLOR_WHITE} from 'Context/color'
+ * @example import {COLOR_WHITE} from 'context/color'
  */
 
 export const COLOR_WHITE = '#FFFFFF'

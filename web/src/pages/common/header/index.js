@@ -7,13 +7,13 @@ import React, {useEffect, useState, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
-import {Context} from 'Context'
-import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'Context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_TABLET} from 'Context/config'
+import {Context} from 'context'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 //components
 import Logo from './logo'
 import Navi from './navi'
-import creatIcon from 'Components/ui/icon'
+import creatIcon from 'components/ui/icon'
 import Profile from './profile'
 //
 export default props => {

@@ -4,17 +4,17 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {WIDTH_MOBILE} from 'Context/config'
-import {WIDTH_TABLET} from 'Context/config'
-import {WIDTH_PC} from 'Context/config'
-import {WIDTH_PC2} from 'Context/config'
-import {Context} from 'Context'
-import {HEADER_HEIGHT} from 'Context/config'
+import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC} from 'context/config'
+import {WIDTH_PC2} from 'context/config'
+import {Context} from 'context'
+import {HEADER_HEIGHT} from 'context/config'
 //layout
-import Header from 'Pages/common/header'
-import Footer from 'Pages/common/footer'
-import Gnb from 'Pages/common/gnb'
-import Popup from 'Pages/common/popup'
+import Header from 'pages/common/header'
+import Footer from 'pages/common/footer'
+import Gnb from 'pages/common/gnb'
+import Popup from 'pages/common/popup'
 //
 const Layout = props => {
   //context

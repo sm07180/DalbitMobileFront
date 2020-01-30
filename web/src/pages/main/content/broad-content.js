@@ -3,10 +3,10 @@
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE} from 'Context/config'
-import {WIDTH_TABLET} from 'Context/config'
-import {WIDTH_PC} from 'Context/config'
-import {WIDTH_PC2} from 'Context/config'
+import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC} from 'context/config'
+import {WIDTH_PC2} from 'context/config'
 
 export default props => {
   const [BroadContentInfo, setBroadContentInfo] = useState(props.BroadInfo)

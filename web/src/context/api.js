@@ -4,7 +4,7 @@
  * @notice API정의서_v2.xlsx 문서확인
  * @example 사용법
  *
-import Api from 'Context/api'
+import Api from 'context/api'
 const [fetch, setFetch] = useState(null)
 
 //fetch
@@ -22,7 +22,7 @@ useEffect(() => {
 import axios from 'axios'
 import qs from 'qs'
 //component
-import {API_SERVER} from 'Context/config'
+import {API_SERVER} from 'context/config'
 
 export default class API {
   //---------------------------------------------------------------------

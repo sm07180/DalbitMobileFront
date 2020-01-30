@@ -7,7 +7,7 @@
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_TABLET} from 'Context/config'
+import {IMG_SERVER, WIDTH_TABLET} from 'context/config'
 //components
 //
 export default () => {

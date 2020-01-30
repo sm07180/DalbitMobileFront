@@ -4,15 +4,15 @@
  */
 import React from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE} from 'Context/config'
-import {WIDTH_TABLET} from 'Context/config'
-import {WIDTH_PC} from 'Context/config'
-import {WIDTH_PC2} from 'Context/config'
+import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC} from 'context/config'
+import {WIDTH_PC2} from 'context/config'
 //context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'Context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 //layout
-import Layout from 'Pages/common/layout'
+import Layout from 'pages/common/layout'
 import MainSlider from './content/main-slider'
 import StarRangking from './content/ranking'
 import PopularDJ from './content/popular'
