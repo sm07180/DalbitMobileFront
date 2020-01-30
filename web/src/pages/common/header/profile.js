@@ -53,8 +53,6 @@ const Profile = styled.div`
   box-sizing: border-box;
   /* 모바일사이즈 */
   @media screen and (max-width: ${WIDTH_MOBILE}) {
-    top: 0;
-    right: 12px;
     /* 스크롤 */
     &.scroll {
       background: #fff;
