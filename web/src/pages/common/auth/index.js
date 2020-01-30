@@ -28,24 +28,24 @@ export default props => {
   const [fetch, setFetch] = useState(null)
   const [changes, setChanges] = useState({})
 
-  const [phoenNum, setPhoneNum] = useState('')
-  const [Password, setPassword] = useState('')
-
   const context = useContext(Context)
 
   //fetch
   async function fetchData(obj, ostype) {
     console.log(JSON.stringify(obj))
     let loginId = ''
-    let loginOs
+    let loginOs = ''
+    let loginName = ''
 
     if (osName == 'IOS') loginOs = 2
     else if (osName == 'Android') loginOs = 1
     else loginOs = 0
 
+    console.log('obj ------------------- ' + JSON.stringify(obj))
     switch (ostype) {
       case 'g':
         loginId = obj.googleId
+        loginName = obj.profileObj.name
         break
       case 'f':
         break
@@ -75,7 +75,7 @@ export default props => {
 
     const loginInfo = {
       loginID: loginId,
-      loginName: '',
+      loginName: loginName,
       loginNickNm: '',
       gender: 'm',
       birth: '20201010',
@@ -101,7 +101,7 @@ export default props => {
           switch (ostype) {
             case 'g':
               //props.history.push('/user', obj.profileObj)
-              props.history.push('/user', loginInfo)
+              props.history.push('/user/join', loginInfo)
               break
             default:
           }
@@ -144,14 +144,6 @@ export default props => {
   const responseGoogleFail = err => {
     console.error(err)
   }
-  const PhoneNumChange = e => {
-    console.log(e.target.value)
-    setPhoneNum(e.target.value)
-  }
-  const PasswordChange = e => {
-    console.log(e.target.value)
-    setPassword(e.target.value)
-  }
   const onLoginHandleChange = e => {
     setChanges({...changes, [e.target.name]: e.target.value})
     console.log(changes)
@@ -184,6 +176,7 @@ export default props => {
           <button
             onClick={() => {
               props.history.push('/user/join')
+              context.action.updatePopupVisible(false)
             }}>
             회원가입
           </button>
@@ -205,12 +198,11 @@ export default props => {
         onFailure={responseNaver}
       />
       <GoogleLogin
-        clientId="93062921102-3fmrfjf2915isd42tjl8m2f9vhpc9j31.apps.googleusercontent.com"
+        clientId="76445230270-03g60q4kooi6qg0qvtjtnqqnn70juulc.apps.googleusercontent.com"
         onSuccess={responseGoogle}
         onFailure={responseGoogleFail}
         buttonText="LOGIN WITH GOOGLE"
         cookiePolicy={'single_host_origin'}
-        redirectUri="http://localhost:9000/live"
       />
       <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
     </LoginWrap>

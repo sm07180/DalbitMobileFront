@@ -10,6 +10,14 @@ const JoinForm = props => {
   const [boxState, setBoxState] = useState(false)
 
   const {loginID, loginNickNm, loginName, gender, birth, image} = props.location.state
+
+  const [changes, setChanges] = useState(props.location.state)
+  const onLoginHandleChange = e => {
+    setChanges({...changes, [e.target.name]: e.target.value})
+
+    console.log(changes)
+  }
+
   return (
     <>
       <JoinText>
@@ -18,8 +26,8 @@ const JoinForm = props => {
       </JoinText>
 
       <FormWrap>
-        <Input type="nickname" value={loginID} />
-        <Input type="name" value={loginName} />
+        <input type="text" name="loginID" defaultValue={changes.loginID} onChange={onLoginHandleChange} />
+        <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} />
         <Input type="password" />
         <Label before={true} text="성별" />
         <input type="radio" name="gender" value="남성" defaultChecked={gender === 'm' ? true : false} /> 남성
@@ -39,7 +47,7 @@ const JoinForm = props => {
             <input type="checkbox" /> 마케팅 정보 제공 동의(선택)
           </CheckBox>
         </CheckWrap>
-        <Button text="회원가입 완료" {...props.location.state}></Button>
+        <Button text="회원가입 완료" {...changes}></Button>
       </FormWrap>
     </>
   )
