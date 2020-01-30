@@ -38,10 +38,11 @@
     "simple-peer": "^9.6.2",
     "styled-components": "^4.4.1",
     "swiper": "^5.2.1",
-    "url-loader": "^3.0.0"
+    "url-loader": "^3.0.0",
+    "webrtc-adapter": "^7.5.0"
   },
   "scripts": {
-    "dev": "webpack --mode development",              
+    "dev": "webpack --mode development",
     "prod": "webpack --mode production",
     "start": "webpack-dev-server --mode development"
   },
