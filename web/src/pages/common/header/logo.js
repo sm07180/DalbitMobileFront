@@ -15,7 +15,7 @@ export default () => {
   const url = `${IMG_SERVER}/images/api/ic_logo_normal.png`
   //---------------------------------------------------------------------
   return (
-    <Content>
+    <Content className="logo">
       <Link to="/">
         <img src={url} />
       </Link>
