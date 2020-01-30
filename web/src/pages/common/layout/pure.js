@@ -3,6 +3,7 @@
  */
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import Toggle from './toggle-footer'
 //context
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'Context/config'
 import {Context} from 'Context'
@@ -31,7 +32,7 @@ const Layout = props => {
       </main>
       {/* 푸터설정 */}
       <Footer>
-        <p>Copyrightⓒ2020 by (주)인포렉스. All rights reserved.</p>
+        <Toggle />
       </Footer>
 
       {/* 레이어팝업 */}

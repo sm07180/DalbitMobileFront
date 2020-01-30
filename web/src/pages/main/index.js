@@ -190,7 +190,8 @@ const RangkingWrap = styled.section``
 const PopularWrap = styled.section``
 
 const ContentListWrap = styled.section`
-  width: 1467px;
+  max-width: 1467px;
+  width: 94.53%;
   margin: 0 auto;
   &:after {
     content: '';
@@ -200,9 +201,7 @@ const ContentListWrap = styled.section`
   & > div:first-child {
     margin-right: 43px;
   }
-  @media (max-width: 1466px) {
-    width: 94.53%;
-  }
+
   @media (max-width: ${WIDTH_PC2}) {
     width: 94.53%;
     & > div:first-child {
