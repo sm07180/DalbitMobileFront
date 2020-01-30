@@ -13,7 +13,6 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 //components
 import Logo from './logo'
 import Navi from './navi'
-import creatIcon from 'components/ui/icon'
 import Profile from './profile'
 //
 export default props => {
@@ -67,7 +66,11 @@ const Header = styled.header`
   width: 100%;
   height: 80px;
   z-index: 10;
-
+  &.sub {
+    nav a {
+      color: #111;
+    }
+  }
   &.scroll {
     background: #fff;
     /* 모바일사이즈 */
