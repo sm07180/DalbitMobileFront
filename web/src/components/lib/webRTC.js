@@ -35,6 +35,6 @@ export const checkMic = async () => {
     .then(stream => {
       mediaStream = stream
     })
-    .catch(e => {})
+    .catch(e => alert(e))
   return mediaStream
 }
