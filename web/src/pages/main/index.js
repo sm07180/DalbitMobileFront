@@ -200,13 +200,19 @@ const ContentListWrap = styled.section`
   & > div:first-child {
     margin-right: 43px;
   }
-  @media (max-width: 1468px) {
+  @media (max-width: 1466px) {
     width: 94.53%;
   }
   @media (max-width: ${WIDTH_PC2}) {
     width: 94.53%;
     & > div:first-child {
-      margin-right: 161px;
+      margin-right: 12.57%;
+    }
+  }
+  @media (max-width: ${WIDTH_TABLET}) {
+    width: 95.38%;
+    & > div:first-child {
+      margin-right: 14.92%;
     }
   }
 `

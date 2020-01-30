@@ -51,7 +51,7 @@ const BroadWrap = styled.div`
   }
   @media (max-width: ${WIDTH_TABLET}) {
     flex-basis: 44%;
-    height: 280px;
+    height: 358px;
   }
 `
 const ImgWrap = styled.div`

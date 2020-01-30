@@ -23,6 +23,6 @@ export const HEADER_HEIGHT = '350px'
  */
 export const WIDTH_PC = '1920px'
 export const WIDTH_PC2 = '1280px'
-export const WIDTH_TABLET = '1024px'
+export const WIDTH_TABLET = '824px'
 export const WIDTH_MOBILE = '600px'
 export const WIDTH_MOBILE_S = '320px'

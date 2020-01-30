@@ -183,6 +183,9 @@ const Content = styled.div`
   width: calc(50% - 21.5px);
   float: left;
   @media (max-width: ${WIDTH_PC2}) {
-    width: calc(50% - 80.5px);
+    width: 43.71%;
+  }
+  @media (max-width: ${WIDTH_TABLET}) {
+    width: 42.54%;
   }
 `

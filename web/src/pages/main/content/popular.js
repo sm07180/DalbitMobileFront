@@ -169,7 +169,7 @@ const ToggleBtn = styled.div`
   left: calc(50% + 60px);
   width: 36px;
   height: 36px;
-  background: url('https://s3.us-east-2.amazonaws.com/upload-icon/uploads/icons/png/205114891553239387-512.png') no-repeat center center / cover;
+  background: url('https://cdn.iconscout.com/icon/free/png-256/pause-38-204304.png') no-repeat center center / cover;
   cursor: pointer;
 `
 const Slide = styled.div`

@@ -42,6 +42,9 @@ const LiveBigWrap = styled.div`
   @media (max-width: ${WIDTH_PC2}) {
     height: 262px;
   }
+  @media (max-width: ${WIDTH_TABLET}) {
+    height: 168px;
+  }
 `
 const ImgWrap = styled.div`
   width: 47.05%;
@@ -78,6 +81,9 @@ const InfoTitle = styled.h2`
   margin-bottom: 18px;
   @media (max-width: ${WIDTH_PC2}) {
     font-size: 20px;
+  }
+  @media (max-width: ${WIDTH_TABLET}) {
+    font-size: 16px;
   }
 `
 const BjName = styled.h4`
