@@ -1,41 +1,34 @@
 /**
- * @file /live/index.js
- * @brief 라이브방송
+ * @file chat.js
+ * @brief 채팅
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
-//layout
-import Layout from 'pages/common/layout'
 //context
-import {Context} from 'context'
-import {LiveProvider} from './store'
+import {Context} from 'pages/live/store'
 //components
 import Api from 'context/api'
-//pages
-import Content from 'pages/live/content/'
-import BroadCast from 'pages/live/content/broadcast'
 //
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const context = useContext(Context)
-
+  const store = useContext(Context)
   /**
    *
    * @returns
    */
-
   useEffect(() => {
     //
   }, [])
-
   //---------------------------------------------------------------------
   return (
-    <LiveProvider>
-      <Layout {...props}>
-        <Content />
-      </Layout>
-    </LiveProvider>
+    <Content>
+      <h1>리스트</h1>
+    </Content>
   )
 }
 //---------------------------------------------------------------------
+const Content = styled.div`
+  min-height: 200px;
+  background: #e1e1e1;
+`

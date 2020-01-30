@@ -25,6 +25,20 @@ import qs from 'qs'
 import {API_SERVER} from 'context/config'
 
 export default class API {
+  //---------------------------------------------------------------------방송관련
+  /**
+   * @brief 방송방 리스트
+   * @method "GET"
+   * @todo 마지막페이지인줄 어떻게 알수있나? last?
+   * @param string roomType            //*회원구분
+   * @param string page               //*아이디,소셜아이디
+   * @param string records             //비밀번호
+   */
+  static broad_list = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/member/login`, method: method || 'POST', data: data})
+  }
+
   //---------------------------------------------------------------------
   /**
    * @brief 회원로그인
