@@ -9,11 +9,25 @@ import Layout from 'pages/common/layout'
 //context
 //components
 import Api from 'context/api'
-//
+import {checkMic} from 'components/lib/webRTC'
+
 export default props => {
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    let mediaStream = null
+    ;(async () => {
+      mediaStream = await checkMic()
+    })()
+
+    return () => {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => {
+          track.stop()
+        })
+      }
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
