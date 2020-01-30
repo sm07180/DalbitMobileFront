@@ -2,6 +2,15 @@
   @date: 2019.12.30
 */
 
+/*
+@font-weight 정책
+디자인 시안 기준 font-family = 실제 font-weight 
+NanumSquareL = 300
+NanumSquareR = 400 (기본 body)
+NanumSquareB = 700 
+NanumSquareEB = 800 
+*/
+
 // mixin & variables
 @import './global.scss';
 // common styles
@@ -14,6 +23,7 @@
 html,
 body {
   font-family: 'NanumSquare';
+  font-weight: 400;
   -webkit-text-size-adjust: none;
   height: 100vh;
 }
