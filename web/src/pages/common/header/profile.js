@@ -14,7 +14,7 @@ import useClick from 'Components/hooks/useClick'
 //components
 import Gnb from 'Pages/common/gnb'
 //
-export default () => {
+export default props => {
   //context
   const context = useContext(Context)
   //hooks
@@ -36,7 +36,7 @@ export default () => {
   }
   return (
     <React.Fragment>
-      <Profile>
+      <Profile className={props.type}>
         <button {...open}>
           <img src={url} />
         </button>
@@ -53,6 +53,8 @@ const Profile = styled.div`
   box-sizing: border-box;
   /* 모바일사이즈 */
   @media screen and (max-width: ${WIDTH_MOBILE}) {
+    top: 0;
+    right: 12px;
     /* 스크롤 */
     &.scroll {
       background: #fff;
@@ -63,6 +65,7 @@ const Profile = styled.div`
   button {
     display: inline-block;
     padding: 13px;
+    box-sizing: border-box;
     img {
       width: 100%;
       height: auto;
