@@ -7,31 +7,30 @@ export const checkMic = async () => {
   const constraint = {audio: true, video: false}
   let mediaStream = null
 
-  await navigator.mediaDevices
-    .getUserMedia(
-      constraint,
+  const streamHandler = () => {
+    ;() => {
+      // check if mic is provided
+      navigator.mediaDevices
+        .enumerateDevices()
+        .then(devices => {
+          devices.forEach(device => {
+            if (device.kind === 'audioinput') {
+              console.log('mic', device)
+            }
+          })
+        })
+        .catch(err => {
+          console.log(err.name + ': ' + error.message)
+        })
+    }
+  }
 
-      // success callback
-      async () => {
-        // check if mic is provided
-        await navigator.mediaDevices
-          .enumerateDevices()
-          .then(devices => {
-            devices.forEach(device => {
-              if (device.kind === 'audioinput') {
-                console.log('mic', device)
-              }
-            })
-          })
-          .catch(err => {
-            console.log(err.name + ': ' + error.message)
-          })
-      },
-      // error callback
-      () => {
-        alert('Mic is not connected.')
-      }
-    )
+  const errorHandler = () => {
+    alert('Mic is not connected.')
+  }
+
+  await navigator.mediaDevices
+    .getUserMedia(constraint, streamHandler, errorHandler)
     .then(stream => {
       mediaStream = stream
     })
