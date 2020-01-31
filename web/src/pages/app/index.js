@@ -66,7 +66,7 @@ export default () => {
   //useEffect
   useEffect(() => {
     console.table(changes)
-    var url = '< URL >'
+    var url = 'https://devwww2.dalbitcast.com/app'
 
     var req = new XMLHttpRequest()
     req.open('HEAD', url, false)
@@ -176,7 +176,7 @@ export default () => {
           onClick={() => {
             Hybrid('RoomMake', changes)
           }}>
-          방만들기
+          방만들기test
         </Button>
         <section>{info}</section>
       </Content>
