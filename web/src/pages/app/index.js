@@ -23,7 +23,7 @@ import {Hybrid} from 'context/hybrid'
 export default () => {
   //---------------------------------------------------------------------
   //useState
-  const [info, setInfo] = useState(null)
+  const [info, setInfo] = useState()
   const [changes, setChanges] = useState({streamId: 'steam1', token: '', clientMode: 'play'})
 
   //eventHander
@@ -71,7 +71,7 @@ export default () => {
     var req = new XMLHttpRequest()
     req.open('HEAD', url, false)
     req.send(null)
-    var headers = req.getAllResponseHeaders()
+    var headers = req.getResponseHeader('Content-Type')
     setInfo(headers)
     //Show alert with response headers.
   }, [changes])
