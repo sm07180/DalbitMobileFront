@@ -71,7 +71,7 @@ export default () => {
     var req = new XMLHttpRequest()
     req.open('HEAD', url, false)
     req.send(null)
-    var headers = req.getResponseHeader('Content-Type')
+    var headers = req.getResponseHeader('Custom-header')
     setInfo(headers)
     //Show alert with response headers.
   }, [changes])
