@@ -65,14 +65,33 @@ export default () => {
 
   //useEffect
   useEffect(() => {
-    console.table(changes)
     var url = 'https://devwww2.dalbitcast.com/app'
+    //새 요청 객체를 생성한다.
+    var request = new XMLHttpRequest()
+    //비동기로 요청하려고 셋째 인자를 false로 지정
+    request.open('GET', url, false)
+    //이제 요청을 전송한다.
+    request.send(null)
+    //요청이 200가 아닐때는 오류를 발생시킨다.
+    if (request.status !== 200) {
+      throw new Error(request.statusText)
+    }
+    //요청 본문이 텍스트 형태가 아니면 오류를 발생시킨다.
+    var type = request.getResponseHeader('Content-Type')
+    if (!type.match(/^text/)) {
+      throw new Error('응답은 텍스트 형태여야 합니다. 현재 형태 : ' + type)
+    }
+    alert(type)
+    console.log(type)
 
-    var req = new XMLHttpRequest()
-    req.open('HEAD', url, false)
-    req.send(null)
-    var headers = req.getResponseHeader('custom-header')
-    setInfo(headers)
+    // console.table(changes)
+    // var url = 'https://devwww2.dalbitcast.com/app'
+
+    // var req = new XMLHttpRequest()
+    // req.open('HEAD', url, false)
+    // req.send(null)
+    // var headers = req.getResponseHeader('custom-header')
+    // setInfo(headers)
     //Show alert with response headers.
   }, [changes])
   //---------------------------------------------------------------------
@@ -155,7 +174,6 @@ export default () => {
             </Button>
           </dd>
         </dl>
-
         <h1>SNS 로그인</h1>
         <dl>
           <dd>
@@ -176,8 +194,9 @@ export default () => {
           onClick={() => {
             Hybrid('RoomMake', changes)
           }}>
-          방만들기test
+          방만들기
         </Button>
+        11111
         <section>{info}</section>
       </Content>
     </Layout>
