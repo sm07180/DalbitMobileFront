@@ -65,32 +65,8 @@ export default () => {
 
   //useEffect
   useEffect(() => {
-    var url = 'https://devwww2.dalbitcast.com/app'
-    var headers = {
-      'x-custom-header': encodeURIComponent('')
-    }
-    axios
-      .get(url, {
-        headers: headers,
-        validateStatus: function(status) {
-          return status == 200
-        }
-      })
-      .then(function(response) {
-        alert(JSON.stringify(response, null, 1))
-        //callback(null, response.data)
-      })
-      .catch(function(error) {
-        //  callback(error)
-      })
-    // console.table(changes)
-    // var url = 'https://devwww2.dalbitcast.com/app'
-    // var req = new XMLHttpRequest()
-    // req.open('HEAD', url, false)
-    // req.send(null)
-    // var headers = req.getResponseHeader('custom-header')
-    // setInfo(headers)
-    //Show alert with response headers.
+    const value = document.getElementById('CUSTOMHEADER').value
+    alert(value)
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -194,7 +170,7 @@ export default () => {
           }}>
           방만들기
         </Button>
-        4444
+
         {/* <section>{info}</section> */}
       </Content>
     </Layout>
