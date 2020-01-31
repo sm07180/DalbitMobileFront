@@ -39,32 +39,29 @@ export default props => {
 }
 const Flex = styled.div`
   width: 100%;
-
   & > div {
     display: flex;
     flex-wrap: wrap;
-    /* flex-direction: row; */
-    /* justify-content: space-between; */
-    margin: -40px 0 0 -40px;
+    margin: 0 0 0 -2.27%;
   }
 `
 const BroadWrap = styled.div`
   display: inline-block;
-  width: calc(100% * (1 / 8) - 40px);
-  flex-grow: 1;
-  margin: 40px 0 0 40px;
+  width: calc(100% * (1 / 8) - 2.27%);
+  margin: 0 0 0 2.27%;
   height: 360px;
-  /* flex-basis:12.5%; */
   position: relative;
 
-  /* @media (max-width: ${WIDTH_PC_S}) {
-    flex-basis: 28%;
-    height: 320px;
+  @media (max-width: ${WIDTH_PC_S}) {
   }
   @media (max-width: ${WIDTH_TABLET}) {
-    flex-basis: 44%;
-    height: 358px;
-  } */
+    width: calc(100% * (1 / 4) - 2.27%);
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: calc(100% * (1 / 2) - 2.27%);
+    height: 324px;
+    margin-bottom: 32px;
+  }
 `
 
 const ImgWrap = styled.div`
@@ -80,6 +77,11 @@ const Avata = styled.div`
   width: 41.33%;
   height: 17.22%;
   background: url(${props => props.bg}) no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    left: 66%;
+    width: 34%;
+    height: 19.75%;
+  }
 `
 const InfoWrap = styled.div`
   width: 100%;
