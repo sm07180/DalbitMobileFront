@@ -4,7 +4,7 @@
  */
 import React from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_MOBILE, WIDTH_TABLET_S} from 'context/config'
 import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
 import {WIDTH_PC_S} from 'context/config'
@@ -32,7 +32,7 @@ const Main = props => {
       category: '노래/연주',
       title: '이 밤을 신나게 보내요',
       url: 'https://t1.daumcdn.net/cfile/tistory/99DC6A385CC11E5A26',
-      name: '끝날 때까지 끝난게 아닌인연을 위해',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
       people: '1,860',
       like: '5,200',
       icon: 'BEST'
@@ -170,12 +170,13 @@ const Main = props => {
       </RangkingWrap>
       {/* 인기 DJ 영역 */}
       <PopularWrap>
+        <Border />
         <PopularDJ Info={slideInfo} />
       </PopularWrap>
       {/* 라이브 list 영역, 캐스트 list 영역 */}
       <ContentListWrap>
         <ContentList type="live" />
-        <ContentList type="cast" />
+        {/* <ContentList type="cast" /> */}
       </ContentListWrap>
     </Layout>
   )
@@ -191,6 +192,31 @@ const PopularWrap = styled.section`
   max-width: 1467px;
   width: 94.53%;
   margin: 0 auto;
+
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: 100%;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+  }
+`
+const Border = styled.div`
+  width: 94.53%;
+  margin: 0 auto;
+  border-top: 1px solid #8556f6;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0px;
+    height: 40px;
+    width: 1px;
+    display: block;
+    background-color: #8556f6;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 95.47%;
+  }
 `
 
 const ContentListWrap = styled.section`
@@ -201,9 +227,6 @@ const ContentListWrap = styled.section`
     content: '';
     clear: both;
     display: block;
-  }
-  & > div:first-child {
-    margin-right: 43px;
   }
 
   @media (max-width: ${WIDTH_PC_S}) {

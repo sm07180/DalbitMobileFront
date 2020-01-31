@@ -18,7 +18,7 @@ export default props => {
 
     return (
       //////
-      <BroadWrap key={id} {...item} marginR={margin}>
+      <BroadWrap key={id} {...item}>
         <ImgWrap bg={url}></ImgWrap>
         <Avata bg={avata}></Avata>
         <InfoWrap>
@@ -39,21 +39,29 @@ const Flex = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  margin: -40px 0 0 -40px;
 `
 const BroadWrap = styled.div`
-  flex-basis: 20.78%;
+  display: inline-block;
+  width: calc(100% * (1 / 8) - 40px);
+  flex-grow: 1;
+  margin: 40px 0 0 40px;
   height: 360px;
+  /* flex-basis:12.5%; */
   position: relative;
-  @media (max-width: ${WIDTH_PC_S}) {
+
+  /* @media (max-width: ${WIDTH_PC_S}) {
     flex-basis: 28%;
     height: 320px;
   }
   @media (max-width: ${WIDTH_TABLET}) {
     flex-basis: 44%;
     height: 358px;
-  }
+  } */
 `
+
 const ImgWrap = styled.div`
   width: 100%;
   height: 150px;

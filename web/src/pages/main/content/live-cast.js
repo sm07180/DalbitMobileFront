@@ -162,6 +162,46 @@ const broadContentInfo = [
     people: '222',
     like: '3,212',
     icon: 'NEW'
+  },
+  {
+    id: '13',
+    category: '노래/댄스',
+    title: '아융.',
+    url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+    name: '이지은',
+    people: '222',
+    like: '3,212',
+    icon: 'NEW'
+  },
+  {
+    id: '14',
+    category: '노래/댄스',
+    title: '아융.',
+    url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+    name: '이지은',
+    people: '222',
+    like: '3,212',
+    icon: 'NEW'
+  },
+  {
+    id: '15',
+    category: '노래/댄스',
+    title: '아융.',
+    url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+    name: '이지은',
+    people: '222',
+    like: '3,212',
+    icon: 'NEW'
+  },
+  {
+    id: '16',
+    category: '노래/댄스',
+    title: '아융.',
+    url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+    name: '이지은',
+    people: '222',
+    like: '3,212',
+    icon: 'NEW'
   }
 ]
 
@@ -172,7 +212,8 @@ export default props => {
     <>
       <Content>
         <p>메인 라이브, 캐스트 리스트</p>
-        <Select Info={SelectInfo} />
+        {/* <Select Info={SelectInfo} /> */}
+        <LiveCastBig ImgInfo={LiveBigInfo} />
         <LiveCastBig ImgInfo={LiveBigInfo} />
         <BroadContent BroadInfo={broadContentInfo} className="brContent"></BroadContent>
       </Content>
@@ -180,8 +221,11 @@ export default props => {
   )
 }
 const Content = styled.div`
-  width: calc(50% - 21.5px);
-  float: left;
+  width: 100%;
+  & div:nth-of-type(2) {
+    margin-right: 0;
+  }
+
   @media (max-width: ${WIDTH_PC_S}) {
     width: 43.71%;
   }

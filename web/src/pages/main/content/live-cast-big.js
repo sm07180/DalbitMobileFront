@@ -32,6 +32,9 @@ export default props => {
 //큰거는 809 42.13% 1920기준의
 //714
 const LiveBigWrap = styled.div`
+  width: calc(50% - 21.5px);
+  float: left;
+  margin-right: 43px;
   margin-bottom: 60px;
   height: 336px;
   &:after {

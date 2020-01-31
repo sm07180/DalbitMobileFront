@@ -7,9 +7,7 @@ import React, {useState} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import ContentBox from './contentBox'
-import {WIDTH_MOBILE} from 'context/config'
-import {WIDTH_TABLET} from 'context/config'
-import {WIDTH_PC} from 'context/config'
+import {WIDTH_PC_S, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
 import {COLOR_WHITE} from 'context/color'
 import creatIcon from 'components/ui/icon'
 export default props => {
@@ -25,6 +23,7 @@ export default props => {
   }
   const params = {
     slidesPerColumnFill: 'row',
+    resistanceRatio: 0,
     breakpoints: {
       0: {
         slidesPerView: 1,
@@ -33,7 +32,7 @@ export default props => {
         spaceBetween: -9
       },
       //0까지
-      601: {
+      361: {
         slidesPerView: 2,
         slidesPerColumn: 2,
         spaceBetween: 0
@@ -73,13 +72,13 @@ export default props => {
             <Category>{category}</Category>
             <Title>{title}</Title>
             <Name>{name}</Name>
-            <People>
-              {creatIcon('headphone', '#bdbdbd', 30, 30)}
-              <span>{people}</span>
-              {creatIcon('like', '#bdbdbd', 30, 30)}
-              <span>{like}</span>
-            </People>
           </Info>
+          <People>
+            {creatIcon('headphone', '#bdbdbd', 30, 30)}
+            <span>{people}</span>
+            {creatIcon('like', '#bdbdbd', 30, 30)}
+            <span>{like}</span>
+          </People>
         </ContentBox>
       </Slide>
     )
@@ -100,8 +99,15 @@ export default props => {
 
 const SwiperWrap = styled.div`
   width: 82.48%;
-  margin: 0 auto;
+  margin: 79px auto 0 auto;
   position: relative;
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: 94.53%;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 97.73%;
+    margin: 76.5px 0 0 2.26%;
+  }
   & .swiper-container {
     position: static;
     margin-top: 35px;
@@ -114,6 +120,9 @@ const SwiperWrap = styled.div`
     width: 36px;
     height: 36px;
     box-sizing: border-box;
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      display: none;
+    }
   }
   & .swiper-button-prev {
     left: calc(50% + 22px);
@@ -134,6 +143,10 @@ const Stitle = styled.h2`
   text-align: right;
   color: #8556f6;
   width: 50%;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+    text-align: center;
+  }
 `
 const SliderControl = styled.div`
   position: absolute;
@@ -144,6 +157,9 @@ const SliderControl = styled.div`
   border: 1px solid #8556f6;
   border-radius: 18px;
   box-sizing: border-box;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
+  }
 `
 const ToggleBtn = styled.div`
   position: absolute;
@@ -154,16 +170,31 @@ const ToggleBtn = styled.div`
   height: 36px;
   background: url('https://devimage.dalbitcast.com/images/api/ico-stop.png') no-repeat center center / cover;
   cursor: pointer;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
+  }
 `
 const Slide = styled.div`
   /* flex-basis: 32.4%; */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-left: -1.6px;
+  }
+`
+const Info = styled.div`
+  width: 51.77%;
+  padding: 2px 4.8% 30px 4.8%;
+  box-sizing: border-box;
+  float: left;
 `
 const Category = styled.span`
   display: block;
   font-size: 14px;
-  font-weight: normal;
   letter-spacing: -0.35px;
   color: #bdbdbd;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.86;
 `
 const Title = styled.h2`
   max-height: 46px;
@@ -176,17 +207,20 @@ const Title = styled.h2`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   font-size: 18px;
+  font-weight: 700;
+  font-stretch: normal;
   letter-spacing: -0.45px;
-  margin: 20px 0 8px 0;
+  margin: 20px 0 9px 0;
   box-sizing: border-box;
 `
 
 const Name = styled.strong`
   display: block;
   font-size: 14px;
-  font-weight: normal;
+  font-weight: 400;
+  line-height: 1.43;
   letter-spacing: -0.35px;
-  padding-right: 22px;
+  padding-right: 5.58%;
   box-sizing: border-box;
   color: #8556f6;
 `
@@ -206,6 +240,7 @@ const Avata = styled.div`
   width: 42.1%;
   background: url(${props => props.bg}) no-repeat center center / cover;
 `
+
 const IconBox = styled.div`
   position: absolute;
   top: 6px;
@@ -219,6 +254,7 @@ const Reco = styled.span`
   width: 25.26%;
   height: 28px;
   line-height: 28px;
+  font-weight: 700;
   background-color: #fff;
   margin-left: 5px;
   text-align: center;
@@ -229,6 +265,7 @@ const Popu = styled.span`
   font-size: 14px;
   width: 25.26%;
   height: 28px;
+  font-weight: 700;
   line-height: 28px;
   text-align: center;
   margin-left: 5px;
@@ -236,28 +273,24 @@ const Popu = styled.span`
   color: #e84d6f;
 `
 
-const Info = styled.div`
-  width: 51.77%;
-  padding: 8px 20px 11px 20px;
-  box-sizing: border-box;
-  float: left;
-`
 const People = styled.div`
-  width: 100%;
+  position: absolute;
+  left: 53.29%;
+  width: 89.69%;
+  bottom: 30px;
   height: 30px;
-  margin-top: 55px;
   & span {
     font-size: 14px;
     line-height: 30px;
-    padding-left: 9px;
+    padding-left: 1%;
     box-sizing: border-box;
-    margin-right: 4px;
-    font-weight: normal;
+    margin-right: 1%;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: -0.35px;
     text-align: left;
-    color: #bdbdbd;
+    color: #9e9e9e;
+    transform: skew(-0.03deg);
   }
   & span:last-child {
     margin-right: 0;
