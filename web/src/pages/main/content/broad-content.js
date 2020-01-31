@@ -31,17 +31,22 @@ export default props => {
   })
   return (
     <>
-      <Flex>{arrayBroad}</Flex>
+      <Flex>
+        <div>{arrayBroad}</div>
+      </Flex>
     </>
   )
 }
 const Flex = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  /* flex-direction: row; */
-  /* justify-content: space-between; */
-  margin: -40px 0 0 -40px;
+
+  & > div {
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+    margin: -40px 0 0 -40px;
+  }
 `
 const BroadWrap = styled.div`
   display: inline-block;

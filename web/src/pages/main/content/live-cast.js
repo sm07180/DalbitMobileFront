@@ -213,18 +213,27 @@ export default props => {
       <Content>
         <p>메인 라이브, 캐스트 리스트</p>
         {/* <Select Info={SelectInfo} /> */}
-        <LiveCastBig ImgInfo={LiveBigInfo} />
-        <LiveCastBig ImgInfo={LiveBigInfo} />
+        <LiveCastBigWrap>
+          <LiveCastBig ImgInfo={LiveBigInfo} />
+          <LiveCastBig ImgInfo={LiveBigInfo} />
+        </LiveCastBigWrap>
         <BroadContent BroadInfo={broadContentInfo} className="brContent"></BroadContent>
       </Content>
     </>
   )
 }
-const Content = styled.div`
-  width: 100%;
+
+const LiveCastBigWrap = styled.div`
+  overflow: hidden;
   & div:nth-of-type(2) {
     margin-right: 0;
   }
+`
+const Content = styled.div`
+  width: 100%;
+  /* & div:nth-of-type(2) {
+    margin-right: 0;
+  } */
 
   @media (max-width: ${WIDTH_PC_S}) {
     width: 43.71%;
