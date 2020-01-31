@@ -65,28 +65,8 @@ export default () => {
 
   //useEffect
   useEffect(() => {
-    var url = 'https://devwww2.dalbitcast.com/app'
-    //새 요청 객체를 생성한다.
-    var request = new XMLHttpRequest()
-    //비동기로 요청하려고 셋째 인자를 false로 지정
-    request.open('GET', url, false)
-    //이제 요청을 전송한다.
-    request.send(null)
-    //요청이 200가 아닐때는 오류를 발생시킨다.
-    if (request.status !== 200) {
-      throw new Error(request.statusText)
-    }
-    //요청 본문이 텍스트 형태가 아니면 오류를 발생시킨다.
-    var type = request.getResponseHeader('custom-header')
-    if (!type.match(/^text/)) {
-      throw new Error('응답은 텍스트 형태여야 합니다. 현재 형태 : ' + type)
-    }
-    alert(type)
-    console.log(type)
-
     // console.table(changes)
     // var url = 'https://devwww2.dalbitcast.com/app'
-
     // var req = new XMLHttpRequest()
     // req.open('HEAD', url, false)
     // req.send(null)
