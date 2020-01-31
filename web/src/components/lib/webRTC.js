@@ -12,6 +12,6 @@ export const checkMic = async () => {
     .then(stream => {
       mediaStream = stream
     })
-    .catch(e => alert(e))
+    .catch(e => alert('Mic permission is denied.'))
   return mediaStream
 }
