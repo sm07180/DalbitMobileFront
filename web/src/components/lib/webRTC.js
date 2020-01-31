@@ -3,7 +3,7 @@ import $ from 'jquery'
 /**
  * @brief 마이크체크
  */
-export const checkMic = async () => {
+export const getMicStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
 
@@ -34,4 +34,11 @@ export const checkMic = async () => {
       }
     })
   return mediaStream
+}
+
+export const removeMicStream = stream => {
+  navigator.mediaDevices.ondevicechange = null
+  stream.getTracks().forEach(track => {
+    track.stop()
+  })
 }
