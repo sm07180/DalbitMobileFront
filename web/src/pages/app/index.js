@@ -4,7 +4,7 @@
  */
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-
+import axios from 'axios'
 //components
 import {GoogleLogin} from 'react-google-login'
 
@@ -65,6 +65,24 @@ export default () => {
 
   //useEffect
   useEffect(() => {
+    var url = 'https://devwww2.dalbitcast.com/app'
+    var headers = {
+      'x-custom-header': encodeURIComponent('')
+    }
+    axios
+      .get(url, {
+        headers: headers,
+        validateStatus: function(status) {
+          return status == 200
+        }
+      })
+      .then(function(response) {
+        alert(response)
+        //callback(null, response.data)
+      })
+      .catch(function(error) {
+        //  callback(error)
+      })
     // console.table(changes)
     // var url = 'https://devwww2.dalbitcast.com/app'
     // var req = new XMLHttpRequest()
@@ -176,7 +194,7 @@ export default () => {
           }}>
           방만들기
         </Button>
-        33333
+        4444
         {/* <section>{info}</section> */}
       </Content>
     </Layout>
