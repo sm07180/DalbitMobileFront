@@ -66,7 +66,6 @@ export default () => {
   //useEffect
   useEffect(() => {
     const value = document.getElementById('CUSTOMHEADER').value
-    alert(value)
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -171,7 +170,7 @@ export default () => {
           방만들기
         </Button>
 
-        {/* <section>{info}</section> */}
+        <section>{document.getElementById('CUSTOMHEADER').value}</section>
       </Content>
     </Layout>
   )
