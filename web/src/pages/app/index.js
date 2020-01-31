@@ -196,8 +196,8 @@ export default () => {
           }}>
           방만들기
         </Button>
-        2222
-        <section>{info}</section>
+        33333
+        {/* <section>{info}</section> */}
       </Content>
     </Layout>
   )
