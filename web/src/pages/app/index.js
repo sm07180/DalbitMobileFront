@@ -77,7 +77,7 @@ export default () => {
       throw new Error(request.statusText)
     }
     //요청 본문이 텍스트 형태가 아니면 오류를 발생시킨다.
-    var type = request.getResponseHeader('Content-Type')
+    var type = request.getResponseHeader('custom-header')
     if (!type.match(/^text/)) {
       throw new Error('응답은 텍스트 형태여야 합니다. 현재 형태 : ' + type)
     }
@@ -196,7 +196,7 @@ export default () => {
           }}>
           방만들기
         </Button>
-        11111
+        2222
         <section>{info}</section>
       </Content>
     </Layout>
