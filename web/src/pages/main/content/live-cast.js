@@ -211,7 +211,7 @@ export default props => {
   return (
     <>
       <Content>
-        <p>메인 라이브, 캐스트 리스트</p>
+        <Stitle>실시간 Live</Stitle>
         {/* <Select Info={SelectInfo} /> */}
         <LiveCastBigWrap>
           <LiveCastBig ImgInfo={LiveBigInfo} />
@@ -236,9 +236,25 @@ const Content = styled.div`
   } */
 
   @media (max-width: ${WIDTH_PC_S}) {
-    width: 43.71%;
+    width: 100%;
   }
   @media (max-width: ${WIDTH_TABLET}) {
-    width: 42.54%;
+    width: 100%;
   }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
+`
+const Stitle = styled.h2`
+  font-size: 34px;
+  font-weight: 800;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.15;
+  letter-spacing: -0.85px;
+  text-align: center;
+  color: #8556f6;
+  width: 100%;
+  margin-top: 38px;
+  margin-bottom: 37px;
 `
