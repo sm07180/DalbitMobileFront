@@ -9,7 +9,7 @@ import Layout from 'pages/common/layout'
 //context
 //components
 import Api from 'context/api'
-import {checkMic} from 'components/lib/webRTC'
+import {getMicStream, removeMicStream} from 'components/lib/webRTC'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -17,14 +17,12 @@ export default props => {
   useEffect(() => {
     let mediaStream = null
     ;(async () => {
-      mediaStream = await checkMic()
+      mediaStream = await getMicStream()
     })()
 
     return () => {
       if (mediaStream) {
-        mediaStream.getTracks().forEach(track => {
-          track.stop()
-        })
+        removeMicStream(mediaStream)
       }
     }
   }, [])
