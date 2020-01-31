@@ -22,6 +22,7 @@ export default props => {
 
     return () => {
       if (mediaStream) {
+        navigator.mediaDevices.ondevicechange = null
         mediaStream.getTracks().forEach(track => {
           track.stop()
         })
