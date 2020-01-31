@@ -32,7 +32,7 @@ export default props => {
         spaceBetween: -9
       },
       //0까지
-      361: {
+      601: {
         slidesPerView: 2,
         slidesPerColumn: 2,
         spaceBetween: 0
@@ -104,10 +104,11 @@ const SwiperWrap = styled.div`
   @media (max-width: ${WIDTH_PC_S}) {
     width: 94.53%;
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
+  @media (max-width: ${WIDTH_MOBILE}) {
     width: 97.73%;
-    margin: 76.5px 0 0 2.26%;
+    margin: 38px 0 0 2.26%;
   }
+
   & .swiper-container {
     position: static;
     margin-top: 35px;
@@ -185,6 +186,9 @@ const Info = styled.div`
   padding: 2px 4.8% 30px 4.8%;
   box-sizing: border-box;
   float: left;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 57.3%;
+  }
 `
 const Category = styled.span`
   display: block;
@@ -194,7 +198,6 @@ const Category = styled.span`
   font-weight: 400;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.86;
 `
 const Title = styled.h2`
   max-height: 46px;
@@ -231,6 +234,9 @@ const ImgBox = styled.div`
   height: 100%;
   background: url(${props => props.bg}) no-repeat center center / cover;
   position: relative;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 42.68%;
+  }
 `
 const Avata = styled.div`
   position: absolute;
@@ -259,6 +265,9 @@ const Reco = styled.span`
   margin-left: 5px;
   text-align: center;
   color: #8556f6;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-left: 7px;
+  }
 `
 const Popu = styled.span`
   display: inline-block;
@@ -271,6 +280,9 @@ const Popu = styled.span`
   margin-left: 5px;
   background-color: #fff;
   color: #e84d6f;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-left: 7px;
+  }
 `
 
 const People = styled.div`
@@ -279,6 +291,9 @@ const People = styled.div`
   width: 89.69%;
   bottom: 30px;
   height: 30px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    left: 47.29%;
+  }
   & span {
     font-size: 14px;
     line-height: 30px;

@@ -175,6 +175,7 @@ const Main = props => {
       </PopularWrap>
       {/* 라이브 list 영역, 캐스트 list 영역 */}
       <ContentListWrap>
+        <Border />
         <ContentList type="live" />
         {/* <ContentList type="cast" /> */}
       </ContentListWrap>
@@ -213,6 +214,9 @@ const Border = styled.div`
     width: 1px;
     display: block;
     background-color: #8556f6;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 20px;
+    }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 95.47%;

@@ -48,6 +48,11 @@ const LiveBigWrap = styled.div`
   @media (max-width: ${WIDTH_TABLET}) {
     height: 168px;
   }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 36px;
+  }
 `
 const ImgWrap = styled.div`
   width: 47.05%;
@@ -71,6 +76,9 @@ const InfoWrap = styled.div`
   height: 100%;
   padding: 7.97% 8.56% 0 8.75%;
   box-sizing: border-box;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding: 6.06% 4.87% 0 4.87%;
+  }
 `
 const InfoTitle = styled.h2`
   font-size: 24px;
@@ -88,6 +96,9 @@ const InfoTitle = styled.h2`
   @media (max-width: ${WIDTH_TABLET}) {
     font-size: 16px;
   }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-bottom: 12px;
+  }
 `
 const BjName = styled.h4`
   font-size: 20px;
@@ -100,5 +111,8 @@ const BjName = styled.h4`
   color: #757575;
   @media (max-width: ${WIDTH_PC_S}) {
     font-size: 18px;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    font-size: 14px;
   }
 `
