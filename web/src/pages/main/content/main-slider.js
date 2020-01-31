@@ -19,7 +19,7 @@ export default props => {
   let mainSlider = {}
 
   const params = {
-    loop: true,
+    loop: false,
     spaceBetween: 14,
     initialSlide: 12, //0 based
     simulateTouch: true,

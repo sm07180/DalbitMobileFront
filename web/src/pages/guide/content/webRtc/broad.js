@@ -486,7 +486,7 @@ const User = () => {
         video: thiz.localStream.getVideoTracks().length > 0 ? true : false,
         audio: thiz.localStream.getAudioTracks().length > 0 ? true : false
       }
-
+      console.log('js publish', jsCmd)
       thiz.webSocketAdaptor.send(JSON.stringify(jsCmd))
     }
 
