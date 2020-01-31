@@ -13,22 +13,51 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(Context)
+  //useState
+  const [fetch, setFetch] = useState(null)
+  //---------------------------------------------------------------------
+  //fetch
+  async function fetchData(obj) {
+    const res = await Api.broad_list({...obj})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+    }
+    setFetch(res)
+    console.log(res)
+  }
+  //update
+  function update(mode) {
+    switch (true) {
+      default:
+        break
+    }
+  }
   /**
    *
    * @returns
    */
   useEffect(() => {
-    //
+    //방송방 리스트
+    fetchData({params: {roomType: 0, page: 1, records: 0}})
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h1>리스트</h1>
+      <div className="wrap">
+        <h1>리스트</h1>
+      </div>
     </Content>
   )
 }
 //---------------------------------------------------------------------
 const Content = styled.div`
-  min-height: 200px;
-  background: #e1e1e1;
+  max-width: 1920px;
+  width: 100%;
+  padding: 0 50px;
+  box-sizing: border-box;
+  .wrap {
+    min-height: 200px;
+    background: #e1e1e1;
+  }
 `

@@ -23,7 +23,7 @@ import {Hybrid} from 'context/hybrid'
 export default () => {
   //---------------------------------------------------------------------
   //useState
-
+  const [info, setInfo] = useState(null)
   const [changes, setChanges] = useState({streamId: 'steam1', token: '', clientMode: 'play'})
 
   //eventHander
@@ -66,6 +66,14 @@ export default () => {
   //useEffect
   useEffect(() => {
     console.table(changes)
+    var url = '< URL >'
+
+    var req = new XMLHttpRequest()
+    req.open('HEAD', url, false)
+    req.send(null)
+    var headers = req.getAllResponseHeaders()
+    setInfo(headers)
+    //Show alert with response headers.
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -170,6 +178,7 @@ export default () => {
           }}>
           방만들기
         </Button>
+        <section>{info}</section>
       </Content>
     </Layout>
   )
