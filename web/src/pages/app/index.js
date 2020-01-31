@@ -77,7 +77,7 @@ export default () => {
         }
       })
       .then(function(response) {
-        alert(response)
+        alert(JSON.stringify(response, null, 1))
         //callback(null, response.data)
       })
       .catch(function(error) {
