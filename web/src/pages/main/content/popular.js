@@ -10,6 +10,7 @@ import ContentBox from './contentBox'
 import {WIDTH_PC_S, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
 import {COLOR_WHITE} from 'context/color'
 import creatIcon from 'components/ui/icon'
+
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const [sswiper, updateSwiper] = useState(true)
@@ -74,9 +75,9 @@ export default props => {
             <Name>{name}</Name>
           </Info>
           <People>
-            {creatIcon('headphone', '#bdbdbd', 30, 30)}
+            <Viewer></Viewer>
             <span>{people}</span>
-            {creatIcon('like', '#bdbdbd', 30, 30)}
+            <Lover></Lover>
             <span>{like}</span>
           </People>
         </ContentBox>
@@ -104,9 +105,13 @@ const SwiperWrap = styled.div`
   @media (max-width: ${WIDTH_PC_S}) {
     width: 94.53%;
   }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 97.73%;
+    margin: 76.5px 0 0 2.26%;
+  }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 97.73%;
-    margin: 38px 0 0 2.26%;
+    margin: 38.5px 0 0 2.26%;
   }
 
   & .swiper-container {
@@ -144,9 +149,18 @@ const Stitle = styled.h2`
   text-align: right;
   color: #8556f6;
   width: 50%;
+  @media (max-width: ${WIDTH_PC_S}) {
+    line-height: 0.82;
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
+    line-height: 1.15;
     text-align: center;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.7px;
   }
 `
 const SliderControl = styled.div`
@@ -176,9 +190,8 @@ const ToggleBtn = styled.div`
   }
 `
 const Slide = styled.div`
-  /* flex-basis: 32.4%; */
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-left: -1.6px;
+    margin-left: -1.2px;
   }
 `
 const Info = styled.div`
@@ -188,16 +201,18 @@ const Info = styled.div`
   float: left;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 57.3%;
+    padding: 2px 10% 30px 4.8%;
   }
 `
 const Category = styled.span`
   display: block;
   font-size: 14px;
   letter-spacing: -0.35px;
-  color: #bdbdbd;
+  color: #9e9e9e;
   font-weight: 400;
   font-stretch: normal;
   font-style: normal;
+  transform: skew(-0.03deg);
 `
 const Title = styled.h2`
   max-height: 46px;
@@ -212,9 +227,15 @@ const Title = styled.h2`
   font-size: 18px;
   font-weight: 700;
   font-stretch: normal;
+  line-height: 1.44;
   letter-spacing: -0.45px;
-  margin: 20px 0 9px 0;
+  margin: 21px 0 9px 0;
   box-sizing: border-box;
+  color: #424242;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    font-size: 16px;
+    margin: 9px 0 9px 0;
+  }
 `
 
 const Name = styled.strong`
@@ -226,6 +247,10 @@ const Name = styled.strong`
   padding-right: 5.58%;
   box-sizing: border-box;
   color: #8556f6;
+  transform: skew(-0.03deg);
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding-right: 12%;
+  }
 `
 
 const ImgBox = styled.div`
@@ -240,11 +265,15 @@ const ImgBox = styled.div`
 `
 const Avata = styled.div`
   position: absolute;
-  height: 42.1%;
+  height: 80px;
   right: 0;
   bottom: 0;
-  width: 42.1%;
+  width: 80px;
   background: url(${props => props.bg}) no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 64px;
+    height: 64px;
+  }
 `
 
 const IconBox = styled.div`
@@ -253,11 +282,14 @@ const IconBox = styled.div`
   left: 0;
   width: 100%;
   height: 28px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    left: 6px;
+  }
 `
 const Reco = styled.span`
   display: inline-block;
   font-size: 14px;
-  width: 25.26%;
+  width: 48px;
   height: 28px;
   line-height: 28px;
   font-weight: 700;
@@ -265,14 +297,15 @@ const Reco = styled.span`
   margin-left: 5px;
   text-align: center;
   color: #8556f6;
+  transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin-left: 7px;
+    margin-left: 2px;
   }
 `
 const Popu = styled.span`
   display: inline-block;
   font-size: 14px;
-  width: 25.26%;
+  width: 48px;
   height: 28px;
   font-weight: 700;
   line-height: 28px;
@@ -280,34 +313,61 @@ const Popu = styled.span`
   margin-left: 5px;
   background-color: #fff;
   color: #e84d6f;
+  transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin-left: 7px;
+    margin-left: 2px;
   }
 `
 
 const People = styled.div`
   position: absolute;
   left: 53.29%;
-  width: 89.69%;
-  bottom: 30px;
-  height: 30px;
+  width: 80%;
+  bottom: 24px;
+  height: 24px;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
   @media (max-width: ${WIDTH_MOBILE}) {
     left: 47.29%;
   }
   & span {
     font-size: 14px;
-    line-height: 30px;
-    padding-left: 1%;
+    padding-left: 6px;
     box-sizing: border-box;
-    margin-right: 1%;
+    margin-right: 14px;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: -0.35px;
     text-align: left;
     color: #9e9e9e;
     transform: skew(-0.03deg);
+    float: left;
+    height: 24px;
+    line-height: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding-left: 6px;
+      margin-right: 11px;
+    }
   }
   & span:last-child {
     margin-right: 0;
   }
+`
+const Viewer = styled.div`
+  float: left;
+  height: 24px;
+  width: 24px;
+  background: url('http://www.hwangsh.com/img/hit-g-s.png') no-repeat center center / cover;
+`
+const Lover = styled.div`
+  float: left;
+  height: 24px;
+  width: 24px;
+  background: url('http://www.hwangsh.com/img/ico-like-g-s.png') no-repeat center center / cover;
 `

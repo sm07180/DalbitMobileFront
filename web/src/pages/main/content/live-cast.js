@@ -12,14 +12,24 @@ import {WIDTH_TABLET} from 'context/config'
 import {WIDTH_PC} from 'context/config'
 //context
 import {WIDTH_PC_S} from 'context/config'
-const SelectInfo = {
-  id: '1',
-  selectUrl: 'https://devimage.dalbitcast.com/images/api/arrow-b.svg',
-  selectName: '셀렉트네임',
-  option1: '인기순',
-  option2: '좋아요수',
-  option3: '시청자수'
-}
+const SelectInfo = [
+  {
+    id: '1',
+    selectUrl: 'http://www.hwangsh.com/img/ic_arrow_down.png',
+    selectName: '셀렉트네임',
+    option1: '인기순',
+    option2: '좋아요수',
+    option3: '시청자수'
+  },
+  {
+    id: '2',
+    selectUrl: 'http://www.hwangsh.com/img/ic_arrow_down.png',
+    selectName: '셀렉트네임',
+    option1: '방송종류',
+    option2: '실시간',
+    option3: '부스트'
+  }
+]
 const LiveBigInfo = [
   {
     id: '1',
@@ -27,7 +37,8 @@ const LiveBigInfo = [
     url: 'https://www.sports-g.com/wp-content/uploads/2019/01/%EC%A0%84%EC%A7%80%ED%98%84-%EC%9D%B8%EC%8A%A4%ED%83%80%EA%B7%B8%EB%9E%A8.jpg',
     name: '★ 하늘하늘이에요',
     avata: 'http://static.news.zumst.com/images/53/2014/01/15/20140115163337743865.jpg',
-    margin: ''
+    people: '1231',
+    like: '8902'
   },
   {
     id: '2',
@@ -211,8 +222,14 @@ export default props => {
   return (
     <>
       <Content>
-        <Stitle>실시간 Live</Stitle>
-        {/* <Select Info={SelectInfo} /> */}
+        <Stitle>
+          <h2>실시간 LIVE</h2>
+          <span>plus</span>
+          <SelectWrap>
+            <Select Info={SelectInfo} />
+          </SelectWrap>
+        </Stitle>
+
         <LiveCastBigWrap>
           <LiveCastBig ImgInfo={LiveBigInfo} />
           <LiveCastBig ImgInfo={LiveBigInfo} />
@@ -223,18 +240,9 @@ export default props => {
   )
 }
 
-const LiveCastBigWrap = styled.div`
-  overflow: hidden;
-  & div:nth-of-type(2) {
-    margin-right: 0;
-  }
-`
 const Content = styled.div`
   width: 100%;
-  /* & div:nth-of-type(2) {
-    margin-right: 0;
-  } */
-
+  margin-top: 79px;
   @media (max-width: ${WIDTH_PC_S}) {
     width: 100%;
   }
@@ -243,18 +251,56 @@ const Content = styled.div`
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
+    margin-top: 44px;
   }
 `
-const Stitle = styled.h2`
-  font-size: 34px;
-  font-weight: 800;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.15;
-  letter-spacing: -0.85px;
-  text-align: center;
-  color: #8556f6;
+const LiveCastBigWrap = styled.div`
+  overflow: hidden;
+  & div:nth-of-type(2) {
+    margin-right: 0;
+  }
+`
+const Stitle = styled.div`
   width: 100%;
-  margin-top: 38px;
-  margin-bottom: 37px;
+  margin-bottom: 43px;
+  height: 36px;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+  & h2 {
+    float: left;
+    font-size: 34px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.15;
+    letter-spacing: -0.85px;
+    color: #8556f6;
+    margin-right: 16px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: calc(100% - 52px);
+    }
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: auto;
+  }
+  & span {
+    font-size: 0;
+    float: left;
+    width: 36px;
+    height: 36px;
+    background: url('http://www.hwangsh.com/img/ico-more-p.png') no-repeat center center / cover;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      float: right;
+    }
+  }
+`
+const SelectWrap = styled.div`
+  float: right;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+    float: none;
+  }
 `
