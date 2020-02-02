@@ -7,11 +7,9 @@
     <title>INFOREX-FRONTEND</title>
     <script type="text/javascript">
       /**
-       *
+       * @APP->REACT function처리가능하게
        */
-
       function sendRectFunc() {
-        console.log('sendRectFunc')
         document.dispatchEvent(new Event('REACT-callback'))
       }
     </script>
@@ -20,5 +18,9 @@
   <body>
     <div id="root"></div>
   </body>
-  <input type="hidden" id="CUSTOMHEADER" value="test1" />
+  <!-- 
+    APP->REACT로 초기 랜더링시 전달해주는값 
+    @todo router 가능하게
+  -->
+  <input type="hidden" id="CUSTOMHEADER" value="" />
 </html>
