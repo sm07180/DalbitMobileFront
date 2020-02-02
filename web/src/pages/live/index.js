@@ -28,7 +28,7 @@ export default props => {
   useEffect(() => {
     //
     const value = document.getElementById('CUSTOMHEADER').value
-    alert(value)
+    //alert(value)
   }, [])
 
   //---------------------------------------------------------------------
