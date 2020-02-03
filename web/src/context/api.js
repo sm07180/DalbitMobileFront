@@ -595,7 +595,7 @@ export const ajax = async obj => {
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: API_SERVER + url,
-      params: qs.stringify(params),
+      params: params,
       data: qs.stringify(data)
     })
     // table 모양 로그출력
