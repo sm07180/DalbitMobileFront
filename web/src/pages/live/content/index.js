@@ -31,13 +31,16 @@ export default props => {
   const makeContents = () => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
-      const {welcomMsg, bgImg, title} = list
-      console.log(list)
+      const {bjProfImg, welcomMsg, bgImg, title} = list
+      console.log(bjProfImg)
 
       return (
         <List key={idx} href="#" style={{backgroundImage: `url(${bgImg.thumb700x700})`}}>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
+          <Profile>
+            <img src={`${bjProfImg.url}`} alt="" />
+          </Profile>
           <span>{/* <img src={`${bgImg.thumb700x700}`} /> */}</span>
         </List>
       )
@@ -92,6 +95,17 @@ const List = styled.a`
     font-size: 12px;
     color: blue;
   }
+  img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+`
+const Profile = styled.span`
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+
   img {
     width: 100%;
     height: auto;
