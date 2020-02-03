@@ -22,6 +22,7 @@ const GlobalProvider = props => {
   const [popup_visible, setVisible] = useState(false)
   const [gnb_visible, setGnbState] = useState(false)
   const [login_state, setlogin] = useState(false)
+  const [audioSocket, setAudioSocket] = useState(null)
 
   //---------------------------------------------------------------------
   const action = {
