@@ -15,14 +15,15 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from
 export default props => {
   //---------------------------------------------------------------------
   //state
-  const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info).concat(props.Info))
+  const [slideInfo, setSlideInfo] = useState(props.Info)
   let mainSlider = {}
 
   const params = {
-    loop: false,
+    loop: true,
     spaceBetween: 14,
-    initialSlide: 12, //0 based
     simulateTouch: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
     on: {
       slideChange: function() {
         console.log('슬라이드 바뀌었을때')
