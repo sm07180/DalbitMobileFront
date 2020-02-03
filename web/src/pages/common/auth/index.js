@@ -101,10 +101,11 @@ export default props => {
           switch (ostype) {
             case 'g':
               //props.history.push('/user', obj.profileObj)
-              props.history.push('/user/join', loginInfo)
+              //props.history.push('/user/join', loginInfo)
               break
             default:
           }
+          props.history.push('/user/join', loginInfo)
         }
       }
       alert(res.message)
@@ -170,6 +171,7 @@ export default props => {
           <button
             onClick={() => {
               props.history.push('/user/password')
+              context.action.updatePopupVisible(false)
             }}>
             비밀번호 찾기
           </button>
