@@ -54,10 +54,10 @@ const GlobalProvider = props => {
       setGnbState(false)
     },
     // 마이크 오디오 스트림
-    updateMicStream = stream => {
+    updateMicStream: stream => {
       setMicStream(stream)
     },
-    updateAudioStream = stream => {
+    updateAudioStream: stream => {
       setAudioStream(stream)
     },
     // 오디오 웹소캣
