@@ -23,6 +23,8 @@ const GlobalProvider = props => {
   const [gnb_visible, setGnbState] = useState(false)
   const [login_state, setlogin] = useState(false)
   const [audioSocket, setAudioSocket] = useState(null)
+  const [rtcPeerConn, setRtcPeerConn] = useState(null)
+  const [rtcIceCandidate] = useState([])
 
   //---------------------------------------------------------------------
   const action = {
@@ -49,10 +51,28 @@ const GlobalProvider = props => {
       setlogin(bool)
       setGnbState(false)
       //
+    },
+    // 오디오 웹소캣
+    updateAudioSocket: ws => {
+      setAudioSocket(ws)
+    },
+    updateRtcPeerConn: conn => {
+      setRtcPeerConn(conn)
     }
   }
   //---------------------------------------------------------------------
-  const value = {state, login_state, popup_code, popup_visible, gnb_visible, action}
+  const value = {
+    state,
+    login_state,
+    popup_code,
+    popup_visible,
+    gnb_visible,
+    audioSocket,
+    rtcPeerConn,
+    rtcIceCandidate,
+
+    action
+  }
   return <Provider value={value}>{props.children}</Provider>
 }
 export {Context, GlobalProvider}

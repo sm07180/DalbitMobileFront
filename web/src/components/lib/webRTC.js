@@ -28,9 +28,9 @@ export const getMicStream = async () => {
     })
     .catch(e => {
       if (String(e).indexOf('Permission') !== -1) {
-        alert('Mic permission is denied')
+        // alert('Mic permission is denied')
       } else if (String(e).indexOf('not found') !== -1) {
-        alert('Mic is not found')
+        // alert('Mic is not found')
       }
     })
   return mediaStream
