@@ -45,9 +45,50 @@ export const removeMicStream = stream => {
 export const wSocketHandler = socketUrl => {
   const url = socketUrl
   const ws = new WebSocket(url)
+  let rtcPeerConn = null
+  let rtcDescription = false
+  let iceCandidate = null
 
   const msgToString = json => JSON.stringify(json)
   let retryIntervalId = null
+  let pingIntervalId = null
+
+  const takeCandidate = (streamId, label, candidate) => {}
+  const takeConfiguration = () => {}
+  const initPeerConnection = micStream => {
+    rtcPeerConn = new RTCPeerConnection()
+    iceCandidate = []
+    // rtcPeerConn.addStream(micStream)
+    rtcPeerConn.onicecandidate = e => {}
+    rtcPeerConn.ontrack = e => {}
+  }
+  const closePeerConnection = () => {
+    if (rtcPeerConn) {
+      rtcPeerConn.close()
+      rtcPeerConn = null
+    }
+  }
+  const addIceCandidate = candidate => {
+    rtcPeerConn.addIceCandidate(candidate).then(res => console.log(res))
+  }
+  const startPublishing = async streamId => {
+    const sdp_constraints = {
+      OfferToReceiveAudio: false,
+      OfferToReceiveVedio: false
+    }
+    if (rtcPeerConn) {
+      const config = await rtcPeerConn.createOffer(sdp_constraints)
+      await rtcPeerConn.setLocalDescription(config).then(() => {
+        const cmd = {
+          command: 'takeConfiguration',
+          streamId,
+          type: config.type,
+          sdp: config.sdp
+        }
+        ws.send(msgToString(cmd))
+      })
+    }
+  }
 
   ws.publish = (streamId, token) => {
     const cmd = {
@@ -77,14 +118,25 @@ export const wSocketHandler = socketUrl => {
       if (retryIntervalId) {
         clearInterval(retryIntervalId)
       }
+      const pingIntervalSec = 3000
+      pingIntervalId = setInterval(() => {
+        const cmd = {
+          command: 'ping'
+        }
+        ws.send(msgToString(cmd))
+      }, pingIntervalSec)
       resolve(ws)
     }
     ws.onclose = () => {
       ws.close()
-      retryIntervalId = setInterval(() => {})
+      if (pingIntervalId) {
+        clearInterval(pingIntervalId)
+      }
+      const retryIntervalSec = 3000
+      retryIntervalId = setInterval(() => {}, retryIntervalSec)
     }
     ws.onmessage = msg => {
-      const format = JSON.parsed(msg)
+      const format = JSON.parse(msg.data)
       const {command} = format
       switch (command) {
         case 'start': {

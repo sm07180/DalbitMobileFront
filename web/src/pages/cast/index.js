@@ -10,7 +10,7 @@ import Layout from 'pages/common/layout'
 import {Context, GlobalProvider} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
+import {getMicStream, wSocketHandler} from 'components/lib/webRTC'
 
 export default props => {
   const context = new useContext(Context)
@@ -24,11 +24,7 @@ export default props => {
       // console.log(audioStream.getAudioTracks())
     })()
 
-    return () => {
-      if (audioStream) {
-        removeMicStream(audioStream)
-      }
-    }
+    return () => {}
   }, [])
 
   return (
