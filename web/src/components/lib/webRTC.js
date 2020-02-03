@@ -58,7 +58,7 @@ export const wSocketHandler = socketUrl => {
   const initPeerConnection = micStream => {
     rtcPeerConn = new RTCPeerConnection()
     iceCandidate = []
-    // rtcPeerConn.addStream(micStream)
+    // rtcPeerConn.addTrack(micStream)
     rtcPeerConn.onicecandidate = e => {}
     rtcPeerConn.ontrack = e => {}
   }
@@ -90,6 +90,20 @@ export const wSocketHandler = socketUrl => {
     }
   }
 
+  const joinRoom = (streamId, roomName) => {
+    const cmd = {
+      command: 'joinRoom',
+      streamId: streamId,
+      room: roomName
+    }
+
+    ws.send(msgToString(cmd))
+  }
+
+  const leaveFromRoom = roomName => {}
+
+  const leave = streamId => {}
+
   ws.publish = (streamId, token) => {
     const cmd = {
       command: 'publish',
@@ -101,17 +115,14 @@ export const wSocketHandler = socketUrl => {
     ws.send(msgToString(cmd))
   }
 
-  ws.joinRoom = (streamId, roomName) => {
+  ws.stopPublish = streamId => {
     const cmd = {
-      command: 'joinRoom',
-      streamId: streamId,
-      room: roomName
+      command: 'stop',
+      streamId
     }
 
     ws.send(msgToString(cmd))
   }
-
-  ws.leaveRoom = roomName => {}
 
   return new Promise((resolve, reject) => {
     ws.onopen = () => {
