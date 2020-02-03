@@ -586,10 +586,12 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
   try {
     let res = await axios({
       method: method,
       headers: {
+        authToken: token,
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: API_SERVER + url,
