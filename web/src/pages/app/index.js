@@ -30,6 +30,7 @@ export default () => {
   const handleChange = event => {
     setChanges({...changes, [event.target.name]: event.target.value})
   }
+
   async function fetchData() {
     const res = await Api.member_login({
       data: {
@@ -66,6 +67,30 @@ export default () => {
   //useEffect
   useEffect(() => {
     const value = document.getElementById('CUSTOMHEADER').value
+
+    var client = new XMLHttpRequest()
+    client.open('GET', 'live', true)
+    client.send()
+
+    client.onreadystatechange = function() {
+      console.log('1')
+      if (this.readyState == this.HEADERS_RECEIVED) {
+        console.log('2')
+        var contentType = client.getResponseHeader('customHeader')
+        var contentType2 = client.getResponseHeader('authToken')
+        var contentType3 = client.getAllResponseHeaders()
+        var contentType4 = client.getResponseHeader('Content-Type')
+
+        console.log('contentType = ' + contentType)
+        console.log('contentType2 = ' + contentType2)
+        console.log('contentType3 = ' + contentType3)
+        console.log('contentType4 = ' + contentType4)
+        // if (contentType != my_expected_type) {
+        //   client.abort();
+        // }
+      }
+    }
+    setInfo(contentType3)
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -170,7 +195,7 @@ export default () => {
           방만들기
         </Button>
 
-        <section>{document.getElementById('CUSTOMHEADER').value}</section>
+        <section>{JSON.stringify(info)}</section>
       </Content>
     </Layout>
   )
