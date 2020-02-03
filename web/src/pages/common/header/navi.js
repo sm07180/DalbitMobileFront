@@ -19,7 +19,8 @@ export default props => {
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'},
     {title: '이벤트', url: '/event'},
-    {title: '방송하기', url: '/login'}
+    {title: '방송하기', url: '/broadcast'},
+    {title: '(로그인)', url: '/login'}
   ]
   //makeMenu
   const makeNavi = () => {

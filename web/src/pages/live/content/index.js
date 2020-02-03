@@ -23,26 +23,46 @@ export default props => {
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
+      return
     }
     setFetch(res.data)
   }
-
+  //makeRoom
+  const makeRoom = (roomNo, idx) => {
+    console.log(roomNo)
+    //fetch
+    async function fetchData(obj) {
+      const res = await Api.broad_join({data: {roomNo: roomNo}})
+      //Error발생시
+      if (res.result === 'fail') {
+        const {code, message} = res
+        alert(message)
+        console.log(message)
+        return
+      }
+      console.log(res)
+    }
+    fetchData()
+  }
   //makeContents
   const makeContents = () => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
       const {roomNo, bjProfImg, welcomMsg, bgImg, title} = list
-      console.log(list)
-
       return (
-        <List key={idx} href="#" style={{backgroundImage: `url(${bgImg.thumb700x700})`}}>
+        <List
+          key={idx}
+          href="#"
+          style={{backgroundImage: `url(${bgImg.thumb700x700})`}}
+          onClick={() => {
+            makeRoom(roomNo, idx)
+          }}>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
           <Profile>
             <img src={`${bjProfImg.url}`} alt="" />
           </Profile>
           <h3>{roomNo}</h3>
-          <span>{/* <img src={`${bgImg.thumb700x700}`} /> */}</span>
         </List>
       )
     })
@@ -53,8 +73,8 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {page: 1, records: 10}})
-    //fetchData({params: {roomType: 0, page: 1, records: 0}})
+    fetchData({params: {page: 1, records: 30}})
+    //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
   return (
