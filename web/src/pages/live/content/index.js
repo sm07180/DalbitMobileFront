@@ -37,9 +37,13 @@ export default props => {
       console.log('2')
       var contentType = client.getResponseHeader('customHeader')
       var contentType2 = client.getResponseHeader('authToken')
+      var contentType3 = client.getAllResponseHeaders()
+      var contentType4 = client.getResponseHeader('Content-Type')
 
       console.log('contentType = ' + contentType)
       console.log('contentType2 = ' + contentType2)
+      console.log('contentType3 = ' + contentType3)
+      console.log('contentType4 = ' + contentType4)
       // if (contentType != my_expected_type) {
       //   client.abort();
       // }
