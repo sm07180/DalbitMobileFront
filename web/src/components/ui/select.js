@@ -7,7 +7,7 @@ export default props => {
   const arraySelect = SelectInfo.map((item, index) => {
     const {id, selectUrl, option1, option2, option3} = item
     return (
-      <Select name="" bg={selectUrl}>
+      <Select name="" bg={selectUrl} key={index}>
         <Option value="">{option1}</Option>
         <Option value="">{option2}</Option>
         <Option value="">{option3}</Option>
