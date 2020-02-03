@@ -154,7 +154,7 @@ const Stitle = styled.div`
     width: 36px;
     height: 36px;
     font-size: 0;
-    background: url('http://www.hwangsh.com/img/ico-more-p.png') no-repeat center center / cover;
+    background: url('https://devimage.dalbitcast.com/images/api/ico-more-p.png') no-repeat center center / cover;
     vertical-align: top;
     @media (max-width: ${WIDTH_MOBILE}) {
       float: right;
@@ -270,27 +270,27 @@ const RankingItem = styled.div`
 
 const ImgBox = styled.div`
   overflow: hidden;
-  position:relative;
+  position: relative;
   width: 100%;
   height: 292px;
   padding: 4px;
-  background: url(${props => props.url}) no-repeat center center / cover; 
-  text-align:left;
-  z-index:-1;
-  span{
-    display:inline-block;
-    padding:0 11px;
-    background:#fff;
-    color:${COLOR_POINT_P}
-    font-size:14px;
+  background: url(${props => props.url}) no-repeat center center / cover;
+  text-align: left;
+  z-index: -1;
+  span {
+    display: inline-block;
+    padding: 0 11px;
+    background: #fff;
+    color: ${COLOR_POINT_P};
+    font-size: 14px;
     line-height: 28px;
   }
-  img{
-    position:absolute;
-    left:0;
-    top:0;
-    height:0;
-    z-index:-1;
+  img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 0;
+    z-index: -1;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: 230px;

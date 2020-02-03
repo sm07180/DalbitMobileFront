@@ -11,8 +11,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Layout from 'pages/common/layout'
 import MainSlider from './content/main-slider'
 import StarRangking from './content/ranking'
-import PopularDJ from './content/popular'
-import ContentList from './content/live-cast'
+import PopularDJ from './content/my-star'
+import ContentList from './content/live'
 //components
 const Main = props => {
   //---------------------------------------------------------------------
@@ -185,7 +185,6 @@ const PopularWrap = styled.section`
   max-width: 1467px;
   width: 94.53%;
   margin: 0 auto;
-
   @media (max-width: ${WIDTH_PC_S}) {
     width: 100%;
   }
@@ -193,18 +192,18 @@ const PopularWrap = styled.section`
   }
 `
 const Border = styled.div`
+  position: relative;
   width: 100%;
   margin: 0 auto;
   border-top: 1px solid ${COLOR_MAIN};
-  position: relative;
   &:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0px;
-    height: 40px;
-    width: 1px;
     display: block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 1px;
+    height: 40px;
+    content: '';
     background-color: ${COLOR_MAIN};
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 21px;
@@ -223,9 +222,9 @@ const ContentListWrap = styled.section`
   width: 94.53%;
   margin: 0 auto;
   &:after {
-    content: '';
-    clear: both;
     display: block;
+    clear: both;
+    content: '';
   }
 
   @media (max-width: ${WIDTH_PC_S}) {
@@ -236,19 +235,19 @@ const ContentListWrap = styled.section`
   }
 `
 const Border2 = styled.div`
+  position: relative;
   width: 100%;
   margin: 0 auto;
   border-top: 1px solid ${COLOR_MAIN};
-  position: relative;
   &:after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0px;
-    height: 40px;
-    width: 1px;
     display: block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 1px;
+    height: 40px;
     background-color: ${COLOR_MAIN};
+    content: '';
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 21px;
     }
