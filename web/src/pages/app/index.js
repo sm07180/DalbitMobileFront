@@ -68,23 +68,23 @@ export default () => {
   useEffect(() => {
     const value = document.getElementById('CUSTOMHEADER').value
 
-    var client = new XMLHttpRequest()
+    const client = new XMLHttpRequest()
     client.open('GET', 'live', true)
     client.send()
-
     client.onreadystatechange = function() {
       console.log('1')
       if (this.readyState == this.HEADERS_RECEIVED) {
         console.log('2')
-        var contentType = client.getResponseHeader('customHeader')
-        var contentType2 = client.getResponseHeader('authtoken')
-        var contentType3 = client.getAllResponseHeaders()
-        var contentType4 = client.getResponseHeader('Content-Type')
+        const contentType = client.getResponseHeader('customHeader')
+        const contentType2 = client.getResponseHeader('authtoken')
+        const contentType3 = client.getAllResponseHeaders()
+        const contentType4 = client.getResponseHeader('Content-Type')
 
         console.log('customHeader = ' + contentType)
         console.log('authtoken = ' + contentType2)
         console.log('All-context = ' + contentType3)
         console.log('contentType = ' + contentType4)
+
         // if (contentType != my_expected_type) {
         //   client.abort();
         // }
