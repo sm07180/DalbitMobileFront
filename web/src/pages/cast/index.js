@@ -13,7 +13,6 @@ import Api from 'context/api'
 import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
 
 export default props => {
-  const [wsocket, setWsocket] = useState(null)
   const context = new useContext(Context)
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <button onClick={() => wsocket.publish('stream1', null)}>test</button>
+        <button onClick={() => console.log('temp')}>test</button>
       </Content>
     </Layout>
   )

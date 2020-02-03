@@ -20,11 +20,12 @@ export const getMicStream = async () => {
     }
   }
 
+  navigator.mediaDevices.ondevicechange = detectAudioDevice
+
   await navigator.mediaDevices
     .getUserMedia(constraint)
     .then(async stream => {
       mediaStream = stream
-      navigator.mediaDevices.ondevicechange = detectAudioDevice
     })
     .catch(e => {
       if (String(e).indexOf('Permission') !== -1) {
