@@ -98,7 +98,6 @@ export default props => {
       )
     })
   }
-  console.log('엥', context.gnb_state)
   function makeGnbType() {
     switch (context.gnb_state) {
       case 'search':
@@ -176,18 +175,18 @@ const Gnb = styled.nav`
   /* pc media query */
   overflow: hidden;
   position: fixed;
-  width: 100%;
   top: 0;
-  left: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
   padding: 0;
-  height: 0;
   border-right: 1px solid #ccc;
   background: #8555f6;
-  transition: height 0.5s ease-in-out;
+  transition: right 0.5s ease-in-out;
   z-index: 11;
 
   &.on {
-    height: 750px;
+    right: 0;
   }
 
   a {
