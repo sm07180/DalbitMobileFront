@@ -88,9 +88,9 @@ export default () => {
         // if (contentType != my_expected_type) {
         //   client.abort();
         // }
+        setInfo(contentType3)
       }
     }
-    setInfo(contentType3)
   }, [changes])
   //---------------------------------------------------------------------
   return (
