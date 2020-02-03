@@ -142,7 +142,7 @@ let options = {
 //   $('#socketLabel').html(socketConfig.event.socket.CONNECT)
 // })
 
-const socket = SocketClusterClient.create(options)
+//const socket = SocketClusterClient.create(options)
 // ;(() => {
 //   socket.emit('init', {name: 'bella'})
 
