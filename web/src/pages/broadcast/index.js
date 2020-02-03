@@ -9,6 +9,7 @@ import Layout from 'pages/common/layout'
 //context
 //components
 import Api from 'context/api'
+import Content from './content'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -17,14 +18,8 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <Content>방송하기</Content>
+      <Content />
     </Layout>
   )
 }
-
 //---------------------------------------------------------------------
-
-const Content = styled.section`
-  min-height: 300px;
-  background: #e1e1e1;
-`
