@@ -7,6 +7,7 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
+import {Context, GlobalProvider} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
@@ -15,7 +16,6 @@ export default props => {
   const [wsocket, setWsocket] = useState(null)
 
   useEffect(() => {
-    console.log('use effect')
     let audioStream = null
     ;(async () => {
       audioStream = await getMicStream()
@@ -29,7 +29,7 @@ export default props => {
       }
     }
   }, [])
-  console.log('render', wsocket)
+
   return (
     <Layout {...props}>
       <Content>

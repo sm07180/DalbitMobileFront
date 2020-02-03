@@ -3,7 +3,7 @@
  * @brief 라이브방송
  */
 import React, {useEffect, useContext, useState} from 'react'
-import styled from 'styled-components'
+
 //layout
 import Layout from 'pages/common/layout'
 //context
@@ -13,7 +13,7 @@ import {LiveProvider} from './store'
 import Api from 'context/api'
 //pages
 import Content from 'pages/live/content/'
-import BroadCast from 'pages/live/content/broadcast'
+
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -27,15 +27,6 @@ export default props => {
 
   useEffect(() => {
     //
-    setTimeout(() => {
-      fetch(window.location.href).then(response => {
-        console.log(response)
-      })
-    }, 0)
-
-    console.log('-0---')
-
-    const value = document.getElementById('CUSTOMHEADER').value
     //alert(value)
   }, [])
 

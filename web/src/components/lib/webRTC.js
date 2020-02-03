@@ -44,7 +44,8 @@ export const removeMicStream = stream => {
 }
 
 export const wSocketHandler = socketUrl => {
-  const ws = new WebSocket(socketUrl)
+  const url = socketUrl
+  const ws = new WebSocket(url)
 
   const msgTostring = json => JSON.stringify(json)
 

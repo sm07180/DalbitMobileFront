@@ -74,11 +74,11 @@ export default () => {
     client.onreadystatechange = function() {
       console.log('1')
       if (this.readyState == this.HEADERS_RECEIVED) {
-        console.log('2')
-        const contentType = client.getResponseHeader('customHeader')
-        const contentType2 = client.getResponseHeader('authtoken')
-        const contentType3 = client.getAllResponseHeaders()
-        const contentType4 = client.getResponseHeader('Content-Type')
+        var contentType = client.getResponseHeader('customHeader')
+        var contentType2 = client.getResponseHeader('authtoken')
+        var contentType3 = client.getAllResponseHeaders()
+        alert(contentType3)
+        var contentType4 = client.getResponseHeader('Content-Type')
 
         console.log('customHeader = ' + contentType)
         console.log('authtoken = ' + contentType2)
@@ -185,7 +185,7 @@ export default () => {
             </Button>
           </dd>
         </dl>
-        <h1>Hybrid 테스트</h1>
+        <h1>Hybrid 테스트2222</h1>
         <Button
           variant="contained"
           color="primary"

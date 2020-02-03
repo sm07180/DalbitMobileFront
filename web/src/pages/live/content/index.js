@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import {Context} from 'pages/live/store'
 //components
 import Api from 'context/api'
+
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -23,38 +24,22 @@ export default props => {
     if (res.result === 'fail') {
       console.log(res.message)
     }
-    setFetch(res)
-    console.log(res)
-  }
-  //update
-  var client = new XMLHttpRequest()
-  client.open('GET', 'live', true)
-  client.send()
-
-  client.onreadystatechange = function() {
-    console.log('1')
-    if (this.readyState == this.HEADERS_RECEIVED) {
-      console.log('2')
-      var contentType = client.getResponseHeader('customHeader')
-      var contentType2 = client.getResponseHeader('authToken')
-      var contentType3 = client.getAllResponseHeaders()
-      var contentType4 = client.getResponseHeader('Content-Type')
-
-      console.log('contentType = ' + contentType)
-      console.log('contentType2 = ' + contentType2)
-      console.log('contentType3 = ' + contentType3)
-      console.log('contentType4 = ' + contentType4)
-      // if (contentType != my_expected_type) {
-      //   client.abort();
-      // }
-    }
+    setFetch(res.data)
   }
 
-  function update(mode) {
-    switch (true) {
-      default:
-        break
-    }
+  //makeContents
+  const makeContents = () => {
+    if (fetch === null) return
+    return fetch.list.map((list, idx) => {
+      const {bgImg, title} = list
+      console.log(list)
+      return (
+        <a key={idx} href="">
+          {title}
+          <img src={`${bgImg}`} />
+        </a>
+      )
+    })
   }
   /**
    *
@@ -62,13 +47,15 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {roomType: 0, page: 1, records: 0}})
+    fetchData({params: {page: 1, records: 10}})
+    //fetchData({params: {roomType: 0, page: 1, records: 0}})
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="wrap">
         <h1>리스트123123123</h1>
+        {makeContents()}
       </div>
     </Content>
   )
