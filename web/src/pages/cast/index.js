@@ -30,7 +30,12 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <button onClick={() => console.log('temp')}>test</button>
+        <button
+          onClick={() => {
+            ws.publish('stream1')
+          }}>
+          test
+        </button>
       </Content>
     </Layout>
   )
