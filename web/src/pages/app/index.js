@@ -66,7 +66,7 @@ export default () => {
 
   //useEffect
   useEffect(() => {
-    const value = document.getElementById('CUSTOMHEADER').value
+    //const value = document.getElementById('CUSTOMHEADER').value
 
     var client = new XMLHttpRequest()
     client.open('GET', 'live', true)

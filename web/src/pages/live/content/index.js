@@ -32,11 +32,19 @@ export default props => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
       const {bgImg, title} = list
-      console.log(list)
+      console.log(bgImg.thumb700x700)
+      let styles = {
+        root: {
+          backgroundImage: `url(${bgImg.thumb700x700})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center'
+        }
+      }
+
       return (
-        <a key={idx} href="">
-          {title}
-          <img src={`${bgImg}`} />
+        <a key={idx} href="#" style={styles}>
+          <h1>{title}</h1>
+          <span>{/* <img src={`${bgImg.thumb700x700}`} /> */}</span>
         </a>
       )
     })
@@ -55,7 +63,7 @@ export default props => {
     <Content>
       <div className="wrap">
         <h1>리스트123123123</h1>
-        {makeContents()}
+        <List>{makeContents()}</List>
       </div>
     </Content>
   )
@@ -69,5 +77,13 @@ const Content = styled.div`
   .wrap {
     min-height: 200px;
     background: #e1e1e1;
+  }
+`
+const List = styled.div`
+  a {
+    display: inline-block;
+    max-width: 100px;
+    width: 100px;
+    height: 100px;
   }
 `
