@@ -79,6 +79,7 @@ export default () => {
         var contentType = client.getResponseHeader('customHeader')
         var contentType2 = client.getResponseHeader('authtoken')
         var contentType3 = client.getAllResponseHeaders()
+        alert(contentType3)
         var contentType4 = client.getResponseHeader('Content-Type')
 
         console.log('customHeader = ' + contentType)
@@ -185,7 +186,7 @@ export default () => {
             </Button>
           </dd>
         </dl>
-        <h1>Hybrid 테스트</h1>
+        <h1>Hybrid 테스트2222</h1>
         <Button
           variant="contained"
           color="primary"
