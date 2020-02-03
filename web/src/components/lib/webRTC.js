@@ -47,6 +47,7 @@ export const wSocketHandler = socketUrl => {
   const ws = new WebSocket(url)
 
   const msgToString = json => JSON.stringify(json)
+  let retryIntervalId = null
 
   ws.publish = (streamId, token) => {
     const cmd = {
@@ -73,9 +74,15 @@ export const wSocketHandler = socketUrl => {
 
   return new Promise((resolve, reject) => {
     ws.onopen = () => {
+      if (retryIntervalId) {
+        clearInterval(retryIntervalId)
+      }
       resolve(ws)
     }
-    ws.onclose = () => ws.close()
+    ws.onclose = () => {
+      ws.close()
+      retryIntervalId = setInterval(() => {})
+    }
     ws.onmessage = msg => {
       const format = JSON.parsed(msg)
       const {command} = format
