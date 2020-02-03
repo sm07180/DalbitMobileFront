@@ -12,7 +12,7 @@ module.exports = (env, options) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/dist/',
-      filename: 'bundle.js'
+      filename: 'bundle.js' //2020-02-03 [kimhogyeom] 나중에 배포할때는 hash 적용해서 해야 할듯
     },
     module: {
       rules: [

@@ -1,5 +1,3 @@
-import {resolveComponents} from 'uri-js'
-
 /**
  * @brief 마이크체크
  */
@@ -20,17 +18,18 @@ export const getMicStream = async () => {
     }
   }
 
+  navigator.mediaDevices.ondevicechange = detectAudioDevice
+
   await navigator.mediaDevices
     .getUserMedia(constraint)
     .then(async stream => {
       mediaStream = stream
-      navigator.mediaDevices.ondevicechange = detectAudioDevice
     })
     .catch(e => {
       if (String(e).indexOf('Permission') !== -1) {
-        alert('Mic permission is denied')
+        // alert('Mic permission is denied')
       } else if (String(e).indexOf('not found') !== -1) {
-        alert('Mic is not found')
+        // alert('Mic is not found')
       }
     })
   return mediaStream
@@ -47,7 +46,8 @@ export const wSocketHandler = socketUrl => {
   const url = socketUrl
   const ws = new WebSocket(url)
 
-  const msgTostring = json => JSON.stringify(json)
+  const msgToString = json => JSON.stringify(json)
+  let retryIntervalId = null
 
   ws.publish = (streamId, token) => {
     const cmd = {
@@ -57,7 +57,7 @@ export const wSocketHandler = socketUrl => {
       audio: true ? true : false,
       video: true ? true : false
     }
-    ws.send(msgTostring(cmd))
+    ws.send(msgToString(cmd))
   }
 
   ws.joinRoom = (streamId, roomName) => {
@@ -67,16 +67,22 @@ export const wSocketHandler = socketUrl => {
       room: roomName
     }
 
-    ws.send(msgTostring(cmd))
+    ws.send(msgToString(cmd))
   }
 
   ws.leaveRoom = roomName => {}
 
   return new Promise((resolve, reject) => {
     ws.onopen = () => {
+      if (retryIntervalId) {
+        clearInterval(retryIntervalId)
+      }
       resolve(ws)
     }
-    ws.onclose = () => ws.close()
+    ws.onclose = () => {
+      ws.close()
+      retryIntervalId = setInterval(() => {})
+    }
     ws.onmessage = msg => {
       const format = JSON.parsed(msg)
       const {command} = format

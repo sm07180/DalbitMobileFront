@@ -2,7 +2,7 @@
  * @file /login/index.js
  * @brief 로그인
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
@@ -13,13 +13,14 @@ import Api from 'context/api'
 import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
 
 export default props => {
-  const [wsocket, setWsocket] = useState(null)
+  const context = new useContext(Context)
 
   useEffect(() => {
     let audioStream = null
     ;(async () => {
       audioStream = await getMicStream()
-      setWsocket(await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'))
+      const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
     })()
 
@@ -33,7 +34,7 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <button onClick={() => wsocket.publish('stream1', null)}>test</button>
+        <button onClick={() => console.log('temp')}>test</button>
       </Content>
     </Layout>
   )

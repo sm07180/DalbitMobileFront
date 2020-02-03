@@ -22,7 +22,11 @@ const GlobalProvider = props => {
   const [popup_visible, setVisible] = useState(false)
   const [gnb_visible, setGnbState] = useState(false)
   const [login_state, setlogin] = useState(false)
+  const [micStream, setMicStream] = useState(null)
+  const [audioStream, setAudioStream] = useState(null)
   const [audioSocket, setAudioSocket] = useState(null)
+  const [rtcPeerConn, setRtcPeerConn] = useState(null)
+  const [rtcIceCandidate] = useState([])
 
   //---------------------------------------------------------------------
   const action = {
@@ -48,11 +52,38 @@ const GlobalProvider = props => {
     updateLogin: bool => {
       setlogin(bool)
       setGnbState(false)
-      //
+    },
+    // 마이크 오디오 스트림
+    updateMicStream: stream => {
+      setMicStream(stream)
+    },
+    updateAudioStream: stream => {
+      setAudioStream(stream)
+    },
+    // 오디오 웹소캣
+    updateAudioSocket: ws => {
+      setAudioSocket(ws)
+    },
+    // webRtc 커넥션
+    updateRtcPeerConn: conn => {
+      setRtcPeerConn(conn)
     }
   }
   //---------------------------------------------------------------------
-  const value = {state, login_state, popup_code, popup_visible, gnb_visible, action}
+  const value = {
+    state,
+    login_state,
+    popup_code,
+    popup_visible,
+    gnb_visible,
+    micStream,
+    audioStream,
+    audioSocket,
+    rtcPeerConn,
+    rtcIceCandidate,
+
+    action
+  }
   return <Provider value={value}>{props.children}</Provider>
 }
 export {Context, GlobalProvider}
