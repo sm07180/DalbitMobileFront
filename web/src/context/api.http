@@ -1,5 +1,16 @@
 
 ###
+//API명 : 토큰조회
+GET https://devapi2.dalbitcast.com/token
+content-type: application/x-www-form-urlencoded
+
+{
+    "os":1,
+    "deviceId": "2200DDD1-77A"
+}
+###
+
+###
 //API명 : 회원로그인
 POST https://devapi2.dalbitcast.com/member/login
 content-type: application/x-www-form-urlencoded

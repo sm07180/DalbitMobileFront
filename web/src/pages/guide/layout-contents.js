@@ -10,6 +10,7 @@ import StyleButton from './content/style-button'
 import StyleWebRtcTest from './content/style-WebRtcTest'
 import StyleChart from './content/style-chart'
 import StyleLottie from './content/style-lottie'
+import StyleChat from './content/style-chatTest'
 import GuideResponsive from './content/guide-responsive'
 //
 export default props => {
@@ -30,6 +31,8 @@ export default props => {
         return <StyleChart />
       case 'style-lottie':
         return <StyleLottie />
+      case 'style-chatTest':
+        return <StyleChat />
       default:
         return <StyleWebRtcTest />
     }
