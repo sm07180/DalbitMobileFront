@@ -57,7 +57,7 @@ const Layout = props => {
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      <Footer />
+      <Footer Ftype="mainFooter" />
       {/* 레이어팝업 */}
       <Popup {...props} />
     </Container>

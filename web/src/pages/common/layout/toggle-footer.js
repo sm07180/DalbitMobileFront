@@ -1,18 +1,28 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Footer from '../footer'
-export default () => {
-  const [show, setShow] = useState(false)
+export default props => {
+  const [show, setShow] = useState(true)
   const ToggleBtn = () => {
     show ? setShow(false) : setShow(true)
-    console.log(show)
   }
+
+  const showings = () => {
+    if (props.Ftype === 'mainFooter') {
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  }
+  useEffect(() => {
+    showings()
+  }, [])
 
   return (
     <>
       <Wrap>
         <Logo></Logo>
-        <Button onClick={ToggleBtn}></Button>
+        <Button onClick={ToggleBtn} value={show}></Button>
       </Wrap>
       {show && <Child />}
       <CopyRight>Copyrightⓒ2020 by (주)인포렉스. All rights reserved.</CopyRight>
@@ -66,7 +76,8 @@ const Logo = styled.div`
 const Button = styled.button`
   flex-basis: 17.64%;
   height: 36px;
-  background: url('https://devimage.dalbitcast.com/images/api/arrow-top.png') no-repeat center center / cover;
+  background: url(${props => (props.value === true ? 'https://devimage.dalbitcast.com/images/api/arrow-top.png' : 'https://devimage.dalbitcast.com/images/api/ico-down.png')}) no-repeat center center /
+    cover;
 `
 const CopyRight = styled.p`
   margin-top: 40px;

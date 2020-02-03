@@ -7,11 +7,10 @@ import styled from 'styled-components'
 import Select from 'components/ui/select'
 import BroadContent from './broad-content'
 import LiveCastBig from './live-cast-big'
-import {WIDTH_MOBILE} from 'context/config'
-import {WIDTH_TABLET} from 'context/config'
-import {WIDTH_PC} from 'context/config'
+import {WIDTH_MOBILE, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_PC_S} from 'context/config'
+import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/color'
 //context
-import {WIDTH_PC_S} from 'context/config'
+
 const SelectInfo = [
   {
     id: '1',
@@ -243,15 +242,17 @@ export default props => {
 const Content = styled.div`
   width: 100%;
   margin-top: 79px;
+  margin-bottom: 93px;
   @media (max-width: ${WIDTH_PC_S}) {
     width: 100%;
   }
-  @media (max-width: ${WIDTH_TABLET}) {
+  @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
     margin-top: 44px;
+    margin-bottom: 72.5px;
   }
 `
 const LiveCastBigWrap = styled.div`
@@ -281,6 +282,7 @@ const Stitle = styled.div`
     margin-right: 16px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: calc(100% - 52px);
+      font-size: 28px;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -301,6 +303,5 @@ const SelectWrap = styled.div`
   float: right;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
-    float: none;
   }
 `

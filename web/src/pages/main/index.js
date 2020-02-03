@@ -4,26 +4,19 @@
  */
 import React from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE, WIDTH_TABLET_S} from 'context/config'
-import {WIDTH_TABLET} from 'context/config'
-import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC_S} from 'context/config'
+import {WIDTH_MOBILE, WIDTH_TABLET_S, WIDTH_TABLET, WIDTH_PC_S} from 'context/config'
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-
 //layout
 import Layout from 'pages/common/layout'
 import MainSlider from './content/main-slider'
 import StarRangking from './content/ranking'
 import PopularDJ from './content/popular'
 import ContentList from './content/live-cast'
-
 //components
-
 const Main = props => {
   //---------------------------------------------------------------------
-  //context
-  //state
+  //임시 데이터
   const slideInfo = [
     {
       id: '1',
@@ -200,9 +193,9 @@ const PopularWrap = styled.section`
   }
 `
 const Border = styled.div`
-  width: 94.53%;
+  width: 100%;
   margin: 0 auto;
-  border-top: 1px solid #8556f6;
+  border-top: 1px solid ${COLOR_MAIN};
   position: relative;
   &:after {
     content: '';
@@ -212,10 +205,13 @@ const Border = styled.div`
     height: 40px;
     width: 1px;
     display: block;
-    background-color: #8556f6;
+    background-color: ${COLOR_MAIN};
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 21px;
     }
+  }
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: 95.47%;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 95.47%;
@@ -233,16 +229,16 @@ const ContentListWrap = styled.section`
   }
 
   @media (max-width: ${WIDTH_PC_S}) {
-    width: 94.53%;
+    width: 95.47%;
   }
   @media (max-width: ${WIDTH_TABLET}) {
-    width: 95.38%;
+    width: 95.47%;
   }
 `
 const Border2 = styled.div`
   width: 100%;
   margin: 0 auto;
-  border-top: 1px solid #8556f6;
+  border-top: 1px solid ${COLOR_MAIN};
   position: relative;
   &:after {
     content: '';
@@ -252,12 +248,15 @@ const Border2 = styled.div`
     height: 40px;
     width: 1px;
     display: block;
-    background-color: #8556f6;
+    background-color: ${COLOR_MAIN};
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 21px;
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 95.47%;
+    width: 100%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
   }
 `

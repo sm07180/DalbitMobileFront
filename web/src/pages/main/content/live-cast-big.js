@@ -135,6 +135,7 @@ const InfoTitle = styled.h2`
     margin-bottom: 12px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
+    margin-bottom: 8px;
   }
 `
 const BjName = styled.h4`
@@ -171,11 +172,11 @@ const People = styled.div`
     bottom: 36px;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 82.8px;
+    width: 80px;
     bottom: 16px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    bottom: 8px;
+    bottom: 18px;
   }
   &:after {
     content: '';
@@ -201,12 +202,14 @@ const People = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
     }
     @media (max-width: ${WIDTH_TABLET_S}) {
-      width: 30px;
-      font-size: 13px;
+      width: 24px;
+      font-size: 12px;
       height: 16px;
-      margin-right: 18.8px;
+      margin-right: 32px;
+      text-align: left;
     }
   }
+
   & span:last-child {
     margin-right: 0;
   }
@@ -234,10 +237,11 @@ const Viewer = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: 24px;
     width: 24px;
+    margin-right: 32px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 25px;
-    width: 25px;
+    height: 24px;
+    width: 24px;
   }
 `
 const Lover = styled.div`
@@ -250,7 +254,7 @@ const Lover = styled.div`
     width: 24px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 25px;
-    width: 25px;
+    height: 24px;
+    width: 24px;
   }
 `

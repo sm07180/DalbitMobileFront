@@ -1,17 +1,19 @@
 /**
  *
  */
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import Toggle from './toggle-footer'
 //context
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
 import {HEADER_HEIGHT} from 'context/config'
+import Footer from 'pages/common/footer'
 //layout
 import Popup from 'pages/common/popup'
 //
 const Layout = props => {
+  const [show, setShow] = useState(false)
   //context
   const context = useContext(Context)
   //initalize
@@ -31,10 +33,7 @@ const Layout = props => {
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      <Footer>
-        <Toggle />
-      </Footer>
-
+      <Footer Ftype="loginFooter"></Footer>
       {/* 레이어팝업 */}
       <Popup {...props} />
     </Container>
@@ -47,12 +46,12 @@ const Logo = styled.div`
   text-align: center;
 `
 const Container = styled.div`
-  width: 400px;
-  margin: 0 auto;
   /* 메인페이지 */
   main {
     display: block;
-    width: 100%;
+
+    margin: 0 auto;
+    width: 400px;
     z-index: 1;
     @media (max-width: ${WIDTH_TABLET}) {
       padding-left: 0;
@@ -65,7 +64,4 @@ const Container = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
   }
-`
-const Footer = styled.footer`
-  text-align: center;
 `

@@ -1,6 +1,6 @@
 /**
  * @file /content/context-list.js
- * @brief 메인 라이브, 캐스트 리스트 component
+ * @brief 메인 라이브, 나의 스타 라이브component
  *
  */
 import React, {useState} from 'react'
@@ -8,8 +8,7 @@ import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import ContentBox from './contentBox'
 import {WIDTH_PC_S, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
-import {COLOR_WHITE} from 'context/color'
-import creatIcon from 'components/ui/icon'
+import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/color'
 
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
@@ -55,14 +54,12 @@ export default props => {
     }
   }
   const arraySlide = slideInfo.map((item, index) => {
-    // console.log(item)
     const {id, title, url, name, reco, category, popu, avata, people, like} = item
     //-----------------------------------------------------------------------
     return (
       <Slide key={index}>
         <ContentBox {...item}>
           <ImgBox bg={url}>
-            {/* {reco !== undefined ? <Reco>{reco}</Reco> : ''} */}
             <IconBox>
               {reco && <Reco>{reco}</Reco>}
               {popu && <Popu>{popu}</Popu>}
@@ -84,6 +81,7 @@ export default props => {
       </Slide>
     )
   })
+  //////////////////////////////////////////////////
   return (
     <>
       <SwiperWrap>
@@ -100,18 +98,18 @@ export default props => {
 
 const SwiperWrap = styled.div`
   width: 82.48%;
-  margin: 79px auto 0 auto;
+  margin: 79px auto 74px auto;
   position: relative;
   @media (max-width: ${WIDTH_PC_S}) {
     width: 94.53%;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 97.73%;
-    margin: 76.5px 0 0 2.26%;
+    margin: 76.5px 0 65.5px 2.26%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 97.73%;
-    margin: 38.5px 0 0 2.26%;
+    margin: 38.5px 0 34.5px 2.26%;
   }
 
   & .swiper-container {
@@ -147,10 +145,9 @@ const Stitle = styled.h2`
   line-height: 1.15;
   letter-spacing: -0.85px;
   text-align: right;
-  color: #8556f6;
+  color: ${COLOR_MAIN};
   width: 50%;
   @media (max-width: ${WIDTH_PC_S}) {
-    line-height: 0.82;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
@@ -169,7 +166,7 @@ const SliderControl = styled.div`
   left: calc(50% + 16px);
   height: 36px;
   width: 120px;
-  border: 1px solid #8556f6;
+  border: 1px solid ${COLOR_MAIN};
   border-radius: 18px;
   box-sizing: border-box;
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -208,7 +205,7 @@ const Category = styled.span`
   display: block;
   font-size: 14px;
   letter-spacing: -0.35px;
-  color: #9e9e9e;
+  color: ${COLOR_GRAY};
   font-weight: 400;
   font-stretch: normal;
   font-style: normal;
@@ -231,7 +228,7 @@ const Title = styled.h2`
   letter-spacing: -0.45px;
   margin: 21px 0 9px 0;
   box-sizing: border-box;
-  color: #424242;
+  color: ${COLOR_GREYISHBROWN};
   @media (max-width: ${WIDTH_MOBILE}) {
     font-size: 16px;
     margin: 9px 0 9px 0;
@@ -246,7 +243,7 @@ const Name = styled.strong`
   letter-spacing: -0.35px;
   padding-right: 5.58%;
   box-sizing: border-box;
-  color: #8556f6;
+  color: ${COLOR_MAIN};
   transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
     padding-right: 12%;
@@ -296,7 +293,7 @@ const Reco = styled.span`
   background-color: #fff;
   margin-left: 5px;
   text-align: center;
-  color: #8556f6;
+  color: ${COLOR_MAIN};
   transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
     margin-left: 2px;
@@ -312,7 +309,7 @@ const Popu = styled.span`
   text-align: center;
   margin-left: 5px;
   background-color: #fff;
-  color: #e84d6f;
+  color: ${COLOR_PINK};
   transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
     margin-left: 2px;
