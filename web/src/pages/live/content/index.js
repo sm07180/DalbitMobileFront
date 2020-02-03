@@ -8,8 +8,7 @@ import styled from 'styled-components'
 import {Context} from 'pages/live/store'
 //components
 import Api from 'context/api'
-import {url} from 'inspector'
-import img from 'pages/main/content/img'
+
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -27,36 +26,7 @@ export default props => {
     }
     setFetch(res.data)
   }
-  //update
-  var client = new XMLHttpRequest()
-  client.open('GET', 'live', true)
-  client.send()
 
-  client.onreadystatechange = function() {
-    console.log('1')
-    if (this.readyState == this.HEADERS_RECEIVED) {
-      console.log('2')
-      var contentType = client.getResponseHeader('customHeader')
-      var contentType2 = client.getResponseHeader('authToken')
-      var contentType3 = client.getAllResponseHeaders()
-      var contentType4 = client.getResponseHeader('Content-Type')
-
-      console.log('contentType = ' + contentType)
-      console.log('contentType2 = ' + contentType2)
-      console.log('contentType3 = ' + contentType3)
-      console.log('contentType4 = ' + contentType4)
-      // if (contentType != my_expected_type) {
-      //   client.abort();
-      // }
-    }
-  }
-  //update
-  function update(mode) {
-    switch (true) {
-      default:
-        break
-    }
-  }
   //makeContents
   const makeContents = () => {
     if (fetch === null) return
