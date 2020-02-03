@@ -77,7 +77,6 @@ export default () => {
         var contentType = client.getResponseHeader('customHeader')
         var contentType2 = client.getResponseHeader('authtoken')
         var contentType3 = client.getAllResponseHeaders()
-
         var contentType4 = client.getResponseHeader('Content-Type')
 
         console.log('customHeader = ' + contentType)

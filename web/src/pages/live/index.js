@@ -13,7 +13,6 @@ import {LiveProvider} from './store'
 import Api from 'context/api'
 //pages
 import Content from 'pages/live/content/'
-
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -27,7 +26,6 @@ export default props => {
 
   useEffect(() => {
     //
-    //alert(value)
   }, [])
 
   //---------------------------------------------------------------------
