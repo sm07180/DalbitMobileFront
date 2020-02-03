@@ -27,6 +27,25 @@ export default props => {
     console.log(res)
   }
   //update
+  var client = new XMLHttpRequest()
+  client.open('GET', 'live', true)
+  client.send()
+
+  client.onreadystatechange = function() {
+    console.log('1')
+    if (this.readyState == this.HEADERS_RECEIVED) {
+      console.log('2')
+      var contentType = client.getResponseHeader('customHeader')
+      var contentType2 = client.getResponseHeader('authToken')
+
+      console.log('contentType = ' + contentType)
+      console.log('contentType2 = ' + contentType2)
+      // if (contentType != my_expected_type) {
+      //   client.abort();
+      // }
+    }
+  }
+
   function update(mode) {
     switch (true) {
       default:
@@ -45,7 +64,7 @@ export default props => {
   return (
     <Content>
       <div className="wrap">
-        <h1>리스트</h1>
+        <h1>리스트123123123</h1>
       </div>
     </Content>
   )
