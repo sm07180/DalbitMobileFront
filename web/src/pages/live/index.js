@@ -27,6 +27,16 @@ export default props => {
 
   useEffect(() => {
     //
+    setTimeout(() => {
+      fetch(window.location.href).then(response => {
+        console.log(response)
+      })
+    }, 0)
+
+    console.log('-0---')
+
+    const value = document.getElementById('CUSTOMHEADER').value
+    //alert(value)
   }, [])
 
   //---------------------------------------------------------------------

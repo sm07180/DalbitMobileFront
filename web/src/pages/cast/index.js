@@ -9,27 +9,32 @@ import Layout from 'pages/common/layout'
 //context
 //components
 import Api from 'context/api'
-import {getMicStream, removeMicStream} from 'components/lib/webRTC'
+import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
 
 export default props => {
-  //---------------------------------------------------------------------
-  //useEffect
+  const [wsocket, setWsocket] = useState(null)
+
   useEffect(() => {
-    let mediaStream = null
+    console.log('use effect')
+    let audioStream = null
     ;(async () => {
-      mediaStream = await getMicStream()
+      audioStream = await getMicStream()
+      setWsocket(await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'))
+      // console.log(audioStream.getAudioTracks())
     })()
 
     return () => {
-      if (mediaStream) {
-        removeMicStream(mediaStream)
+      if (audioStream) {
+        removeMicStream(audioStream)
       }
     }
   }, [])
-  //---------------------------------------------------------------------
+  console.log('render', wsocket)
   return (
     <Layout {...props}>
-      <Content>CAST</Content>
+      <Content>
+        <button onClick={() => wsocket.publish('stream1', null)}>test</button>
+      </Content>
     </Layout>
   )
 }

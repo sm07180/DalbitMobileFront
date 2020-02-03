@@ -4,7 +4,7 @@
  */
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-
+import axios from 'axios'
 //components
 import {GoogleLogin} from 'react-google-login'
 
@@ -23,7 +23,7 @@ import {Hybrid} from 'context/hybrid'
 export default () => {
   //---------------------------------------------------------------------
   //useState
-
+  const [info, setInfo] = useState()
   const [changes, setChanges] = useState({streamId: 'steam1', token: '', clientMode: 'play'})
 
   //eventHander
@@ -65,7 +65,7 @@ export default () => {
 
   //useEffect
   useEffect(() => {
-    console.table(changes)
+    const value = document.getElementById('CUSTOMHEADER').value
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -147,7 +147,6 @@ export default () => {
             </Button>
           </dd>
         </dl>
-
         <h1>SNS 로그인</h1>
         <dl>
           <dd>
@@ -170,6 +169,8 @@ export default () => {
           }}>
           방만들기
         </Button>
+
+        <section>{document.getElementById('CUSTOMHEADER').value}</section>
       </Content>
     </Layout>
   )

@@ -3,20 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 나눔스퀘어폰트embed -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css" />
     <title>INFOREX-FRONTEND</title>
     <script type="text/javascript">
       /**
-       *
+       * @APP->REACT function처리가능하게
        */
       function sendRectFunc() {
-        console.log('sendRectFunc')
         document.dispatchEvent(new Event('REACT-callback'))
       }
     </script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   </head>
   <body>
     <div id="root"></div>
   </body>
+  <!-- 
+    APP->REACT로 초기 랜더링시 전달해주는값 
+    @todo router 가능하게
+    @param CUSTOMHEADER : string
+  -->
+  <input type="hidden" id="CUSTOMHEADER" value="" />
 </html>
