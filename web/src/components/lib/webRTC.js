@@ -1,5 +1,3 @@
-import {resolveComponents} from 'uri-js'
-
 /**
  * @brief 마이크체크
  */
@@ -48,7 +46,7 @@ export const wSocketHandler = socketUrl => {
   const url = socketUrl
   const ws = new WebSocket(url)
 
-  const msgTostring = json => JSON.stringify(json)
+  const msgToString = json => JSON.stringify(json)
 
   ws.publish = (streamId, token) => {
     const cmd = {
@@ -58,7 +56,7 @@ export const wSocketHandler = socketUrl => {
       audio: true ? true : false,
       video: true ? true : false
     }
-    ws.send(msgTostring(cmd))
+    ws.send(msgToString(cmd))
   }
 
   ws.joinRoom = (streamId, roomName) => {
@@ -68,7 +66,7 @@ export const wSocketHandler = socketUrl => {
       room: roomName
     }
 
-    ws.send(msgTostring(cmd))
+    ws.send(msgToString(cmd))
   }
 
   ws.leaveRoom = roomName => {}

@@ -22,6 +22,7 @@ const GlobalProvider = props => {
   const [popup_visible, setVisible] = useState(false)
   const [gnb_visible, setGnbState] = useState(false)
   const [login_state, setlogin] = useState(false)
+  const [micStream, setMicStream] = useState(null)
   const [audioSocket, setAudioSocket] = useState(null)
   const [rtcPeerConn, setRtcPeerConn] = useState(null)
   const [rtcIceCandidate] = useState([])
@@ -52,10 +53,15 @@ const GlobalProvider = props => {
       setGnbState(false)
       //
     },
+    // 마이크 오디오 스트림
+    updateMicStream = stream => {
+      setMicStream(stream)
+    },
     // 오디오 웹소캣
     updateAudioSocket: ws => {
       setAudioSocket(ws)
     },
+    // webRtc 커넥션
     updateRtcPeerConn: conn => {
       setRtcPeerConn(conn)
     }
@@ -67,6 +73,7 @@ const GlobalProvider = props => {
     popup_code,
     popup_visible,
     gnb_visible,
+    micStream,
     audioSocket,
     rtcPeerConn,
     rtcIceCandidate,
