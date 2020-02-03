@@ -8,6 +8,8 @@ import styled from 'styled-components'
 import {Context} from 'pages/live/store'
 //components
 import Api from 'context/api'
+import {url} from 'inspector'
+import img from 'pages/main/content/img'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -23,8 +25,7 @@ export default props => {
     if (res.result === 'fail') {
       console.log(res.message)
     }
-    setFetch(res)
-    console.log(res)
+    setFetch(res.data)
   }
   //update
   var client = new XMLHttpRequest()
@@ -49,12 +50,26 @@ export default props => {
       // }
     }
   }
-
+  //update
   function update(mode) {
     switch (true) {
       default:
         break
     }
+  }
+  //makeContents
+  const makeContents = () => {
+    if (fetch === null) return
+    return fetch.list.map((list, idx) => {
+      const {bgImg, title} = list
+      console.log(list)
+      return (
+        <a key={idx} href="">
+          {title}
+          <img src={`${bgImg}`} />
+        </a>
+      )
+    })
   }
   /**
    *
@@ -62,13 +77,15 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {roomType: 0, page: 1, records: 0}})
+    fetchData({params: {page: 1, records: 10}})
+    //fetchData({params: {roomType: 0, page: 1, records: 0}})
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="wrap">
         <h1>리스트123123123</h1>
+        {makeContents()}
       </div>
     </Content>
   )
