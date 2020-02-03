@@ -279,3 +279,8 @@ input {
     border-radius: 0.4rem;
   }
 }
+
+//2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
+input[type='password'] {
+  font-family: sans-serif;
+}
