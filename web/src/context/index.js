@@ -20,13 +20,10 @@ const GlobalProvider = props => {
   const [state, setState] = useState({title: '현재 이용현황', isSub: false})
   const [popup_code, setPopup] = useState('')
   const [popup_visible, setVisible] = useState(false)
-  const [gnb_visible, setGnbState] = useState(false)
+  const [gnb_visible, setGnbVisible] = useState(false)
+  const [gnb_state, setGnbState] = useState('')
   const [login_state, setlogin] = useState(false)
-  const [micStream, setMicStream] = useState(null)
-  const [audioStream, setAudioStream] = useState(null)
-  const [audioSocket, setAudioSocket] = useState(null)
-  const [rtcPeerConn, setRtcPeerConn] = useState(null)
-  const [rtcIceCandidate] = useState([])
+  const [mediaHandler, setMediaHandler] = useState(null)
 
   //---------------------------------------------------------------------
   const action = {
@@ -46,27 +43,21 @@ const GlobalProvider = props => {
     },
     //GNB 열고 닫기
     updateGnbVisible: bool => {
-      setGnbState(bool)
+      setGnbVisible(bool)
+    },
+    //GNB 열릴때 메뉴 타입 상태
+    updateGnbState: str => {
+      setGnbState(str)
+      setGnbVisible(!gnb_visible)
     },
     //login 상태
     updateLogin: bool => {
       setlogin(bool)
-      setGnbState(false)
-    },
-    // 마이크 오디오 스트림
-    updateMicStream: stream => {
-      setMicStream(stream)
-    },
-    updateAudioStream: stream => {
-      setAudioStream(stream)
+      setGnbVisible(false)
     },
     // 오디오 웹소캣
-    updateAudioSocket: ws => {
-      setAudioSocket(ws)
-    },
-    // webRtc 커넥션
-    updateRtcPeerConn: conn => {
-      setRtcPeerConn(conn)
+    updateMediaHandler: instance => {
+      setMediaHandler(instance)
     }
   }
   //---------------------------------------------------------------------
@@ -76,11 +67,8 @@ const GlobalProvider = props => {
     popup_code,
     popup_visible,
     gnb_visible,
-    micStream,
-    audioStream,
-    audioSocket,
-    rtcPeerConn,
-    rtcIceCandidate,
+    gnb_state,
+    mediaHandler,
 
     action
   }

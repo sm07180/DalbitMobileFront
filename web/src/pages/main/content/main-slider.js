@@ -8,21 +8,22 @@ import Swiper from 'react-id-swiper'
 
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
 
 //components
 
 export default props => {
   //---------------------------------------------------------------------
   //state
-  const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info).concat(props.Info))
+  const [slideInfo, setSlideInfo] = useState(props.Info)
   let mainSlider = {}
 
   const params = {
-    loop: false,
+    loop: true,
     spaceBetween: 14,
-    initialSlide: 12, //0 based
     simulateTouch: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
     on: {
       slideChange: function() {
         console.log('슬라이드 바뀌었을때')
@@ -154,6 +155,7 @@ const Slide = styled.div`
   p {
     overflow: hidden;
     margin-top: 15px;
+    padding: 0 12px;
     color: #bdbdbd;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -187,44 +189,44 @@ const Selecter = styled.div`
 
 const ActiveItem = styled.div`
   position: absolute;
-  bottom:65px;
+  bottom: 65px;
   width: 100%;
   text-align: center;
   z-index: 3;
-  & *{
-    display:block;
-    margin:0 auto;
+  & * {
+    display: block;
+    margin: 0 auto;
   }
   button {
-    position:relative;
-    width:48px;
-    height:48px;
-    border-radius:50%;
-    background:url(${IMG_SERVER}/images/api/ico-play.svg) no-repeat;
-    text-indent:-9999px;
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: url(${IMG_SERVER}/images/api/ico-play.svg) no-repeat;
+    text-indent: -9999px;
   }
   span {
-    display:inline-block;
-    margin:35px 0 0 0;
-    padding:0 15px;
-    color:${COLOR_POINT_Y}
-    border-radius:18px;
-    background:#fff;
-    font-weight:600;
+    display: inline-block;
+    margin: 35px 0 0 0;
+    padding: 0 15px;
+    color: ${COLOR_POINT_Y};
+    border-radius: 18px;
+    background: #fff;
+    font-weight: 600;
     font-size: 14px;
-    line-height:28px;
+    line-height: 28px;
   }
   b {
-    margin-top:18px;
-    color:#fff;
-    font-size:28px;
-    font-weight:600;
+    margin-top: 18px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
     letter-spacing: -0.7px;
   }
-  & > p{
-    margin-top:9px;
-    color:${COLOR_POINT_Y}
-    font-size:20px;
+  & > p {
+    margin-top: 9px;
+    color: ${COLOR_POINT_Y};
+    font-size: 20px;
     letter-spacing: -0.5px;
   }
 `

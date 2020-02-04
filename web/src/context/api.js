@@ -599,7 +599,7 @@ export const ajax = async obj => {
       data: qs.stringify(data)
     })
     // table 모양 로그출력
-    console.table(res.data)
+    //console.table(res.data)
     // string 로그출력
     //console.log(JSON.stringify(res.data, null, 1))
     return res.data
@@ -609,6 +609,6 @@ export const ajax = async obj => {
 }
 //error
 export const errorMsg = error => {
-  console.log('%c' + '## AJAX Error', 'width:100%;font-size:12px;padding:5px 10px;color:#fff;background:blue;')
-  console.log(error)
+  // console.log('%c' + '## AJAX Error', 'width:100%;font-size:12px;padding:5px 10px;color:#fff;background:blue;')
+  //console.log(error)
 }

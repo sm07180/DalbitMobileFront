@@ -38,12 +38,11 @@ export default props => {
 //큰거는 809 42.13% 1920기준의
 //714
 const LiveBigWrap = styled.div`
-  width: calc(50% - 21.5px);
   float: left;
+  width: calc(50% - 21.5px);
+  height: 336px;
   margin-right: 43px;
   margin-bottom: 60px;
-  height: 336px;
-
   &:after {
     content: '';
     clear: both;
@@ -62,18 +61,18 @@ const LiveBigWrap = styled.div`
   }
 `
 const ImgWrap = styled.div`
+  position: relative;
+  float: left;
   width: 47.05%;
   height: 100%;
-  float: left;
   background: url(${props => props.bg}) no-repeat center center / cover;
-  position: relative;
 `
 const Avata = styled.div`
   position: absolute;
-  height: 120px;
   right: 0;
   bottom: 0;
   width: 120px;
+  height: 120px;
   background: url(${props => props.bg}) no-repeat center center / cover;
   @media (max-width: ${WIDTH_PC_S}) {
     width: 80px;
@@ -87,13 +86,13 @@ const Avata = styled.div`
   }
 `
 const InfoWrap = styled.div`
-  width: 52.94%;
+  position: relative;
   float: left;
-  background-color: #f5f5f5;
+  width: 52.94%;
   height: 100%;
   padding: 10.95% 10% 0 10%;
   box-sizing: border-box;
-  position: relative;
+  background-color: #f5f5f5;
   @media (max-width: ${WIDTH_PC_S}) {
     padding: 11.2% 9.54% 0 9.54%;
   }
@@ -105,48 +104,42 @@ const InfoWrap = styled.div`
   }
 `
 const InfoTitle = styled.h2`
+  overflow: hidden;
+  max-height: 60px;
+  margin-bottom: 18px;
+  color: #8556f6;
   font-size: 24px;
+  text-align: center;
   font-weight: 700;
-  font-stretch: normal;
-  font-style: normal;
   line-height: 1.32;
   letter-spacing: -0.6px;
-  text-align: center;
-  color: #8556f6;
-  margin-bottom: 18px;
-  max-height: 60px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-
+  text-overflow: ellipsis;
+  word-wrap: break-word;
   @media (max-width: ${WIDTH_PC_S}) {
+    margin-bottom: 15px;
     font-size: 20px;
     letter-spacing: -0.5px;
     line-height: 1.4;
-    margin-bottom: 15px;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-bottom: 12px;
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.4px;
-    margin-bottom: 12px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     margin-bottom: 8px;
   }
 `
 const BjName = styled.h4`
+  color: #757575;
   font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
   line-height: 1.5;
   letter-spacing: -0.5px;
   text-align: center;
-  color: #757575;
   @media (max-width: ${WIDTH_PC_S}) {
     font-size: 18px;
     line-height: 1.11;
@@ -164,48 +157,46 @@ const BjName = styled.h4`
 const People = styled.div`
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
-  width: 124.8px;
   bottom: 58px;
+  width: 124.8px;
   height: auto;
+  transform: translateX(-50%);
+
   @media (max-width: ${WIDTH_PC_S}) {
     bottom: 36px;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 80px;
     bottom: 16px;
+    width: 80px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     bottom: 18px;
   }
   &:after {
-    content: '';
-    clear: both;
     display: block;
+    clear: both;
+    content: '';
   }
 
   & span {
     float: left;
     width: 48px;
     height: 18px;
-    text-align: center;
     margin-right: 28.8px;
-    text-align: center;
+    color: #8556f6;
     font-size: 16px;
+    text-align: center;
     font-weight: 700;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.63;
     letter-spacing: -0.4px;
-    color: #8556f6;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
     }
     @media (max-width: ${WIDTH_TABLET_S}) {
       width: 24px;
-      font-size: 12px;
       height: 16px;
       margin-right: 32px;
+      font-size: 12px;
       text-align: left;
     }
   }
@@ -215,14 +206,13 @@ const People = styled.div`
   }
 `
 const Viewer = styled.div`
+  position: relative;
   float: left;
   height: 48px;
   width: 48px;
-  background: url('http://www.hwangsh.com/img/ico-hit-w-l.png') no-repeat center center / cover;
   margin-right: 28.8px;
-  position: relative;
+  background: url('https://devimage.dalbitcast.com/images/api/ico-hit-w-l.png') no-repeat center center / cover;
   &:after {
-    content: '';
     display: block;
     position: absolute;
     top: 18px;
@@ -230,31 +220,32 @@ const Viewer = styled.div`
     width: 1px;
     height: 30px;
     background-color: lightgray;
+    content: '';
     @media (max-width: ${WIDTH_TABLET_S}) {
       display: none;
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 24px;
     width: 24px;
+    height: 24px;
     margin-right: 32px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 24px;
     width: 24px;
+    height: 24px;
   }
 `
 const Lover = styled.div`
   float: left;
-  height: 48px;
   width: 48px;
-  background: url('http://www.hwangsh.com/img/ico-like-p-l.png') no-repeat center center / cover;
+  height: 48px;
+  background: url('https://devimage.dalbitcast.com/images/api/ico-like-p-l.png') no-repeat center center / cover;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 24px;
     width: 24px;
+    height: 24px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 24px;
     width: 24px;
+    height: 24px;
   }
 `

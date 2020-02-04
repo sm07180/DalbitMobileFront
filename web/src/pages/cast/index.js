@@ -7,34 +7,41 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
-import {Context, GlobalProvider} from 'context'
+import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream, removeMicStream, wSocketHandler} from 'components/lib/webRTC'
+import {getMicStream} from 'components/lib/makeMicStream'
+// import {wSocketHandler} from 'components/lib/MediaHandler'
 
 export default props => {
+  const [micStream, setMicStream] = useState(null)
   const context = new useContext(Context)
 
+  // temp init
   useEffect(() => {
-    let audioStream = null
+    // initialize mic stream and audio socket.
     ;(async () => {
-      audioStream = await getMicStream()
-      const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
-      context.action.updateAudioSocket(ws)
+      const stream = await getMicStream()
+      setMicStream(stream)
+      // const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      // context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
     })()
 
-    return () => {
-      if (audioStream) {
-        removeMicStream(audioStream)
-      }
-    }
+    return () => {}
   }, [])
 
   return (
     <Layout {...props}>
       <Content>
-        <button onClick={() => console.log('temp')}>test</button>
+        <button
+          onClick={() => {
+            if (context.mediaHandler && micStream) {
+              // context.audioSocket.publish('stream1', micStream)
+            }
+          }}>
+          test
+        </button>
       </Content>
     </Layout>
   )

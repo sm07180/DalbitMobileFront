@@ -19,7 +19,8 @@ export default props => {
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'},
     {title: '이벤트', url: '/event'},
-    {title: '방송하기', url: '/login'}
+    {title: '방송하기', url: '/broadcast'},
+    {title: '(로그인)', url: '/login'}
   ]
   //makeMenu
   const makeNavi = () => {
@@ -45,18 +46,16 @@ const Content = styled.nav`
   a {
     display: inline-block;
     padding: 0 13px;
-    color: #fff;
+    color: #111;
   }
   /* 서브페이지 */
   &.sub {
     a {
-      color: #111;
     }
   }
   /* 메인페이지 & 스크롤 */
   &.scroll {
     a {
-      color: #111;
     }
   }
   /* 모바일사이즈 */

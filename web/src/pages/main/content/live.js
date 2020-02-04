@@ -5,8 +5,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Select from 'components/ui/select'
-import BroadContent from './broad-content'
-import LiveCastBig from './live-cast-big'
+import BroadContent from './live-broad-content'
+import LiveCastBig from './live-big'
 import {WIDTH_MOBILE, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_PC_S} from 'context/config'
 import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/color'
 //context
@@ -14,7 +14,7 @@ import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/co
 const SelectInfo = [
   {
     id: '1',
-    selectUrl: 'http://www.hwangsh.com/img/ic_arrow_down.png',
+    selectUrl: 'https://devimage.dalbitcast.com/images/api/ic_arrow_down.png',
     selectName: '셀렉트네임',
     option1: '인기순',
     option2: '좋아요수',
@@ -22,7 +22,7 @@ const SelectInfo = [
   },
   {
     id: '2',
-    selectUrl: 'http://www.hwangsh.com/img/ic_arrow_down.png',
+    selectUrl: 'https://devimage.dalbitcast.com/images/api/ic_arrow_down.png',
     selectName: '셀렉트네임',
     option1: '방송종류',
     option2: '실시간',
@@ -263,23 +263,21 @@ const LiveCastBigWrap = styled.div`
 `
 const Stitle = styled.div`
   width: 100%;
-  margin-bottom: 43px;
   height: 36px;
+  margin-bottom: 43px;
   &:after {
-    content: '';
-    clear: both;
     display: block;
+    clear: both;
+    content: '';
   }
   & h2 {
     float: left;
+    margin-right: 16px;
+    color: #8556f6;
     font-size: 34px;
     font-weight: 800;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.15;
     letter-spacing: -0.85px;
-    color: #8556f6;
-    margin-right: 16px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: calc(100% - 52px);
       font-size: 28px;
@@ -289,11 +287,11 @@ const Stitle = styled.div`
     height: auto;
   }
   & span {
-    font-size: 0;
     float: left;
     width: 36px;
     height: 36px;
-    background: url('http://www.hwangsh.com/img/ico-more-p.png') no-repeat center center / cover;
+    background: url('https://devimage.dalbitcast.com/images/api/ico-more-p.png') no-repeat center center / cover;
+    font-size: 0;
     @media (max-width: ${WIDTH_MOBILE}) {
       float: right;
     }

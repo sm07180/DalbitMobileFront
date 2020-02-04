@@ -23,29 +23,47 @@ export default props => {
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
+      return
     }
     setFetch(res.data)
   }
-
+  //makeRoom
+  const makeRoom = (roomNo, idx) => {
+    console.log(roomNo)
+    //fetch
+    async function fetchData(obj) {
+      const res = await Api.broad_join({data: {roomNo: roomNo}})
+      //Error발생시
+      if (res.result === 'fail') {
+        const {code, message} = res
+        alert(message)
+        console.log(message)
+        return
+      }
+      console.log(res)
+    }
+    fetchData()
+  }
   //makeContents
   const makeContents = () => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
-      const {bgImg, title} = list
-      console.log(bgImg.thumb700x700)
-      let styles = {
-        root: {
-          backgroundImage: `url(${bgImg.thumb700x700})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center'
-        }
-      }
-
+      const {roomNo, bjProfImg, welcomMsg, bgImg, title} = list
       return (
-        <a key={idx} href="#" style={styles}>
+        <List
+          key={idx}
+          href="#"
+          style={{backgroundImage: `url(${bgImg.thumb700x700})`}}
+          onClick={() => {
+            makeRoom(roomNo, idx)
+          }}>
           <h1>{title}</h1>
-          <span>{/* <img src={`${bgImg.thumb700x700}`} /> */}</span>
-        </a>
+          <h2>{welcomMsg}</h2>
+          <Profile>
+            <img src={`${bjProfImg.url}`} alt="" />
+          </Profile>
+          <h3>{roomNo}</h3>
+        </List>
       )
     })
   }
@@ -55,15 +73,15 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {page: 1, records: 10}})
-    //fetchData({params: {roomType: 0, page: 1, records: 0}})
+    fetchData({params: {page: 1, records: 30}})
+    //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="wrap">
-        <h1>리스트123123123</h1>
-        <List>{makeContents()}</List>
+        <h1>방송방 리스트</h1>
+        {makeContents()}
       </div>
     </Content>
   )
@@ -79,11 +97,45 @@ const Content = styled.div`
     background: #e1e1e1;
   }
 `
-const List = styled.div`
-  a {
-    display: inline-block;
-    max-width: 100px;
-    width: 100px;
-    height: 100px;
+const List = styled.a`
+  display: inline-block;
+  margin: 10px;
+  max-width: 150px;
+  width: 240px;
+  height: 100px;
+  padding: 10px;
+  vertical-align: top;
+  background-size: cover;
+  box-sizing: border-box;
+
+  h1 {
+    font-size: 14px;
+    color: #ff0000;
+  }
+  h2 {
+    font-size: 12px;
+    color: blue;
+  }
+  h3 {
+    display: block;
+    font-size: 12px;
+    color: #fff;
+    background: #000;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+`
+const Profile = styled.span`
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+
+  img {
+    width: 100%;
+    height: auto;
+    vertical-align: top;
   }
 `

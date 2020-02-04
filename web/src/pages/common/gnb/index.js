@@ -98,21 +98,40 @@ export default props => {
       )
     })
   }
+  function makeGnbType() {
+    switch (context.gnb_state) {
+      case 'search':
+        return <p>찾기메뉴</p>
+        break
+      case 'mypage':
+        return <p>마이페이지 메뉴</p>
+        break
+      case 'notice':
+        return <p>알람메뉴</p>
+        break
+      case 'menu':
+        return <p>기본메뉴</p>
+        break
+      default:
+        break
+    }
+  }
   //---------------------------------------------------------------------
   return (
     <Gnb className={context.gnb_visible ? 'on' : 'off'}>
-      <Header>
+      <Close
+        onClick={() => {
+          context.action.updateGnbVisible(false)
+        }}>
+        닫기
+      </Close>
+      {makeGnbType()}
+      {/* <Header>
         <Logo>달빛라디오</Logo>
-        <Close
-          onClick={() => {
-            context.action.updateGnbVisible(false)
-          }}>
-          닫기
-        </Close>
+        
       </Header>
 
       <Wrap>
-        {/* 네비게이션 동적으로생성 */}
         <TopMenu>
           <div>{makeNavigation(commonMenu)}</div>
 
@@ -147,7 +166,7 @@ export default props => {
         </Search>
         <MenuList>{makeNavi()}</MenuList>
         <LiveButton>방송하기</LiveButton>
-      </Wrap>
+      </Wrap> */}
     </Gnb>
   )
 }
@@ -156,18 +175,18 @@ const Gnb = styled.nav`
   /* pc media query */
   overflow: hidden;
   position: fixed;
-  width: 100%;
   top: 0;
-  left: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
   padding: 0;
-  height: 0;
   border-right: 1px solid #ccc;
   background: #8555f6;
-  transition: height 0.5s ease-in-out;
+  transition: right 0.5s ease-in-out;
   z-index: 11;
 
   &.on {
-    height: 750px;
+    right: 0;
   }
 
   a {
