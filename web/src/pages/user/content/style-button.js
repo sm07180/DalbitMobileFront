@@ -14,12 +14,12 @@ export default props => {
   const [fetch, setFetch] = useState(null)
 
   const context = useContext(Context)
-  console.log('회원가입시 받은 데이터 = ' + JSON.stringify(props))
   async function fetchData() {
     //console.log(JSON.stringify(obj))
     console.log('회원가입 버튼 클릭 = ' + JSON.stringify(props))
     console.log('----')
 
+    //if(props.loginNickNm)
     const res = await Api.member_join({
       data: {
         memType: 'g',
@@ -27,7 +27,7 @@ export default props => {
         //gender: props.gender,
         gender: 'm',
         //nickNm: props.loginNickNm,
-        nickNm: '구렌나루',
+        nickNm: props.loginNickNm,
         birthYY: 2020,
         birthMM: 10,
         birthDD: 10,
@@ -39,7 +39,6 @@ export default props => {
       }
     })
     setFetch(res)
-    console.log('회원가입 = ' + JSON.stringify(res))
     if (res && res.code) {
       if (res.code == 0) {
         alert(res.message)

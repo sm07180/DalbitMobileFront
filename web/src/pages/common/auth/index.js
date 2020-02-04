@@ -30,26 +30,25 @@ export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
   const [changes, setChanges] = useState({})
-  const [loginStatus, SetloginStatus] = useState(false)
 
   const context = useContext(Context)
 
   //fetch
   async function fetchData(obj, ostype) {
-    console.log('obj = ' + JSON.stringify(obj))
     let loginId = ''
     let loginOs = ''
     let loginName = ''
+    let loginImg = ''
 
     if (osName == 'IOS') loginOs = 2
     else if (osName == 'Android') loginOs = 1
     else loginOs = 0
 
-    console.log('obj ------------------- ' + JSON.stringify(obj))
     switch (ostype) {
       case 'g':
         loginId = obj.additionalUserInfo.profile.id
         loginName = obj.additionalUserInfo.profile.name
+        loginImg = obj.additionalUserInfo.profile.picture
         break
       case 'f':
         break
@@ -66,24 +65,22 @@ export default props => {
       data: {
         memType: ostype,
         memId: loginId,
-        os: loginOs
+        os: loginOs,
+        deviceId: '2200DDD1-77A'
       }
     })
-    // console.log('구글아이디 = ' + obj.googleId)
-    // console.log('이미지 = ' + obj.imageUrl)
-    // console.log('닉네임 = ' + obj.nickName)
 
     setFetch(res)
-    ///----- memb
-    //ios
 
     const loginInfo = {
       loginID: loginId,
       loginName: loginName,
       loginNickNm: '',
       gender: 'm',
-      birth: '20201010',
-      image: ''
+      birth: '',
+      image: loginImg,
+      memType: ostype,
+      osName: loginOs
     }
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
@@ -91,17 +88,16 @@ export default props => {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
         Hybrid('GetLoginToken', res.data)
 
-        console.log('props.history = ' + props.history)
         if (props.history) {
           props.history.push('/')
           context.action.updatePopupVisible(false)
         }
         context.action.updateLogin(true)
 
-        auth.onAuthStateChanged(user => {
-          console.log('user = ' + user)
-          // SetloginStatus({currentUser: user})
-        })
+        // auth.onAuthStateChanged(user => {
+        //   console.log('user = ' + user)
+        //   // SetloginStatus({currentUser: user})
+        // })
 
         //window.location.href = '/' // 홈페이지로 새로고침
       } else {
@@ -128,7 +124,6 @@ export default props => {
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
   const responseFacebook = response => {
     if (response && response.name) console.log('RESTAPI POST!!!!')
-    console.log(response)
     // signup(response, 'facebook')
 
     // setState({
@@ -140,34 +135,42 @@ export default props => {
     // })
   }
   const ComponentClicked = response => {
-    console.log(response)
+    //console.log(response)
   }
   const responseNaver = response => {
-    console.log(response)
+    //console.log(response)
   }
   const responseKakao = response => {
-    console.log(response)
+    //console.log(response)
   }
   const responseGoogle = response => {
-    console.log(response)
+    //console.log(response)
     fetchData(response, 'g')
   }
   const responseGoogleFail = err => {
-    console.error(err)
+    //console.error(err)
   }
   const onLoginHandleChange = e => {
     setChanges({...changes, [e.target.name]: e.target.value})
   }
   function responseGooglelogin() {
     signInWithGoogle().then(function(result) {
-      console.log(result)
+      //console.log(result)
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var token = result.credential.accessToken
       // The signed-in user info.
       var user = result.user
-      console.log('GoogleToken = ' + token)
-      console.log('user = ' + user)
+      // console.log('GoogleToken = ' + token)
+      // console.log('user = ' + user)
+      // auth.onAuthStateChanged(function(user) {
+      //   if (user) {
+      //     // User is signed in.
+      //     console.log('user2= ' + user)
+      //   }
+      // })
+
       fetchData(result, 'g')
+      // SetloginStatus(true)
     }),
       function(error) {
         // The provider's account email, can be used in case of
@@ -187,39 +190,8 @@ export default props => {
         }
       }
   }
-
-  // const signInWithGoogle = e => {
-  //   console.log('123123123')
-  // }
-  // auth.signInWithPopup(provider).then(
-  //   function(result) {
-  //     console.log('asdasdasdasdasdasda')
-  //     // The firebase.User instance:
-  //     var user = result.user
-  //     // The Facebook firebase.auth.AuthCredential containing the Facebook
-  //     // access token:
-  //     var credential = result.credential
-  //   },
-  //   function(error) {
-  //     // The provider's account email, can be used in case of
-  //     // auth/account-exists-with-different-credential to fetch the providers
-  //     // linked to the email:
-  //     var email = error.email
-  //     // The provider's credential:
-  //     var credential = error.credential
-  //     // In case of auth/account-exists-with-different-credential error,
-  //     // you can fetch the providers using this:
-  //     if (error.code === 'auth/account-exists-with-different-credential') {
-  //       auth.fetchSignInMethodsForEmail(email).then(function(providers) {
-  //         // The returned 'providers' is a list of the available providers
-  //         // linked to the email address. Please refer to the guide for a more
-  //         // complete explanation on how to recover from this error.
-  //       })
-  //     }
-  //   }
-  // )
   useEffect(() => {
-    console.log('changes = ' + JSON.stringify(changes))
+    //console.log('changes = ' + JSON.stringify(changes))
   }, [changes])
   //---------------------------------------------------------------------
   return (
@@ -227,7 +199,6 @@ export default props => {
       <Logo>
         <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
       </Logo>
-
       <LoginInput>
         <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
         <input type="password" name="password" placeholder="비밀번호" onChange={onLoginHandleChange} />
@@ -258,7 +229,7 @@ export default props => {
           </button>
         </div>
       </ButtonArea>
-      <FacebookLogin
+      {/* <FacebookLogin
         appId="2418533275143361"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
         fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
@@ -272,10 +243,12 @@ export default props => {
         render={props => <div onClick={props.onClick}>Naver Login</div>}
         onSuccess={responseNaver}
         onFailure={responseNaver}
-      />
-
+      /> */}
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
-      <button onClick={() => responseGooglelogin()}>SIGN IN WITH GOOGLE</button>
+
+      <SnsGoogleLogion tton onClick={() => responseGooglelogin()}>
+        SIGN IN WITH GOOGLE
+      </SnsGoogleLogion>
       {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}
       {/* {currentUser ? (
@@ -287,7 +260,7 @@ export default props => {
           SIGN IN
         </Link>
       )} */}
-      <GoogleLogin
+      {/* <GoogleLogin
         clientId="76445230270-03g60q4kooi6qg0qvtjtnqqnn70juulc.apps.googleusercontent.com"
         onSuccess={responseGoogle}
         onFailure={responseGoogleFail}
@@ -297,8 +270,8 @@ export default props => {
           </button>
         )}
         cookiePolicy={'single_host_origin'}
-      />
-      <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
+      /> */}
+      {/* <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} /> */}
     </LoginWrap>
   )
 }
@@ -378,4 +351,12 @@ const SocialLogin = styled.div`
     clear: both;
     content: '';
   }
+`
+const SnsGoogleLogion = styled.button`
+  padding: 10px 34px 10px 50px;
+  border: 1px solid #e5e5e5;
+  background: #fff url(https://devimage.dalbitcast.com/svg/ico-google.svg) no-repeat -1px -3px;
+  color: #757575;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 `
