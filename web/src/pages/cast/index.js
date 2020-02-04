@@ -15,6 +15,7 @@ import {HostSignalingHandler} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
+  const [handler, setHandler] = useState(null)
 
   // temp init
   useEffect(() => {
@@ -23,7 +24,9 @@ export default props => {
       const stream = await getMicStream()
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
       const sHandler = new HostSignalingHandler(audioSocketUrl, stream)
-
+      sHandler.setStreamId('stream1')
+      sHandler.setMicStream(stream)
+      setHandler(sHandler)
       // const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       // context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
@@ -37,9 +40,10 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            if (context.mediaHandler && micStream) {
-              // context.audioSocket.publish('stream1', micStream)
+            if (handler.ws) {
+              handler.publish()
             }
+            // context.audioSocket.publish('stream1', micStream)
           }}>
           test
         </button>

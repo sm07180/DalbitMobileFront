@@ -16,6 +16,7 @@ export class HostSignalingHandler {
     }
 
     this.intervalId = null
+    this.wSocketInit()
   }
 
   setMicStream(stream) {
@@ -100,7 +101,7 @@ export class HostSignalingHandler {
       this.rtcPeerConn = new RTCPeerConnection()
       this.rtcDescription = false
       this.iceCandidate = []
-      this.rtcPeerConn.add(this.micStream)
+      this.rtcPeerConn.addTrack(this.micStream.getAudioTracks()[0])
       this.rtcPeerConn.onicecandidate = e => {
         this.iceCandidateReceived(e)
       }
@@ -176,12 +177,14 @@ export class HostSignalingHandler {
   addIceCandidate(candidate) {
     this.rtcPeerConn.addIceCandidate(candidate)
   }
-  startPublishing(streamId) {
-    this.setStreamId(streamId)
+  startPublishing() {
     this.initPeerConnection()
     this.rtcPeerConn
       .createOffer(this.sdpConstraints)
-      .then(config => this.gotDescription(config))
+      .then(config => {
+        console.log('config', config)
+        this.gotDescription(config)
+      })
       .catch(err => console.log(err))
   }
 
@@ -218,8 +221,7 @@ export class HostSignalingHandler {
       const {command} = format
       switch (command) {
         case 'start': {
-          const {streamId} = format
-          this.startPublishing(streamId)
+          this.startPublishing()
           break
         }
         case 'stop': {

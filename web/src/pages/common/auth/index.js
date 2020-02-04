@@ -19,7 +19,7 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-import {signInWithGoogle} from 'components/lib/firebase.util'
+import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 
 //context
 import {Context} from 'context'
@@ -30,6 +30,7 @@ export default props => {
   const [state, setState] = useState(false)
   const [fetch, setFetch] = useState(null)
   const [changes, setChanges] = useState({})
+  const [loginStatus, SetloginStatus] = useState(false)
 
   const context = useContext(Context)
 
@@ -47,8 +48,8 @@ export default props => {
     console.log('obj ------------------- ' + JSON.stringify(obj))
     switch (ostype) {
       case 'g':
-        loginId = obj.googleId
-        loginName = obj.profileObj.name
+        loginId = obj.additionalUserInfo.profile.id
+        loginName = obj.additionalUserInfo.profile.name
         break
       case 'f':
         break
@@ -96,6 +97,12 @@ export default props => {
           context.action.updatePopupVisible(false)
         }
         context.action.updateLogin(true)
+
+        auth.onAuthStateChanged(user => {
+          console.log('user = ' + user)
+          // SetloginStatus({currentUser: user})
+        })
+
         //window.location.href = '/' // 홈페이지로 새로고침
       } else {
         context.action.updatePopupVisible(false)
@@ -151,11 +158,34 @@ export default props => {
   const onLoginHandleChange = e => {
     setChanges({...changes, [e.target.name]: e.target.value})
   }
-  function login() {
+  function responseGooglelogin() {
     signInWithGoogle().then(function(result) {
       console.log(result)
-      console.log('asdasdasd')
-    })
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken
+      // The signed-in user info.
+      var user = result.user
+      console.log('GoogleToken = ' + token)
+      console.log('user = ' + user)
+      fetchData(result, 'g')
+    }),
+      function(error) {
+        // The provider's account email, can be used in case of
+        // auth/account-exists-with-different-credential to fetch the providers
+        // linked to the email:
+        var email = error.email
+        // The provider's credential:
+        var credential = error.credential
+        // In case of auth/account-exists-with-different-credential error,
+        // you can fetch the providers using this:
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          auth.fetchSignInMethodsForEmail(email).then(function(providers) {
+            // The returned 'providers' is a list of the available providers
+            // linked to the email address. Please refer to the guide for a more
+            // complete explanation on how to recover from this error.
+          })
+        }
+      }
   }
 
   // const signInWithGoogle = e => {
@@ -245,9 +275,18 @@ export default props => {
       />
 
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
-      <button onClick={() => login()}>Sign in with Google</button>
+      <button onClick={() => responseGooglelogin()}>SIGN IN WITH GOOGLE</button>
+      {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}
-
+      {/* {currentUser ? (
+        <div className="option" onClick={() => auth.signOut()}>
+          SIGN OUT
+        </div>
+      ) : (
+        <Link className="option" to="/signin">
+          SIGN IN
+        </Link>
+      )} */}
       <GoogleLogin
         clientId="76445230270-03g60q4kooi6qg0qvtjtnqqnn70juulc.apps.googleusercontent.com"
         onSuccess={responseGoogle}
