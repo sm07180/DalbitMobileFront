@@ -1,4 +1,4 @@
-export class HostSignalingHandler {
+export class SignalingHandler {
   constructor(socketUrl, stream, debug) {
     this.url = socketUrl
     this.ws = null
@@ -110,7 +110,7 @@ export class HostSignalingHandler {
     }
   }
   closePeerConnection() {
-    if (!this.rtcPeerConn && this.rtcPeerConn.signalingState != 'closed') {
+    if (!this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
       this.rtcPeerConn.close()
       this.rtcPeerConn = null
     }
@@ -124,11 +124,6 @@ export class HostSignalingHandler {
           streamId: this.streamId,
           type: config.type,
           sdp: config.sdp
-        }
-
-        if (this.debug) {
-          console.log('local sdp: ')
-          // console.log(config.sdp)
         }
 
         this.socketSendMsg(cmd)
@@ -223,6 +218,8 @@ export class HostSignalingHandler {
           this.startPublishing()
           break
         }
+        case 'play': {
+        }
         case 'stop': {
           this.closePeerConnection()
           break
@@ -238,6 +235,13 @@ export class HostSignalingHandler {
           break
         }
         case 'notification': {
+          const {definition} = format
+          if (definition === 'play_started') {
+            console.log('Guest Play started')
+          } else if (definition === 'play_finished') {
+            console.log('Guest Play Stopped')
+          } else if (definition === 'publish_finished') {
+          }
           break
         }
         case 'streamInformation': {
@@ -255,5 +259,16 @@ export class HostSignalingHandler {
       }
     }
     this.ws.onerror = () => {}
+  }
+}
+
+export class Host extends SignalingHandler {
+  constructor(socketUrl, stream, debug) {
+    super(socketUrl, stream, debug)
+  }
+}
+export class Guest extends SignalingHandler {
+  constructor(socketUrl, stream, debug) {
+    super(socketUrl, stream, debug)
   }
 }

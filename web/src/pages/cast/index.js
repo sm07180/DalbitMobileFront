@@ -11,7 +11,7 @@ import {Context} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream} from 'components/lib/makeMicStream'
-import {HostSignalingHandler} from 'components/lib/SignalingHandler'
+import {Host} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
@@ -23,7 +23,7 @@ export default props => {
     ;(async () => {
       const stream = await getMicStream()
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const sHandler = new HostSignalingHandler(audioSocketUrl, stream, true)
+      const sHandler = new Host(audioSocketUrl, stream, true)
       sHandler.setStreamId('stream1')
       sHandler.setMicStream(stream)
       setHandler(sHandler)
@@ -38,15 +38,26 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <button
-          onClick={() => {
-            if (handler.ws) {
-              handler.publish()
-            }
-            // context.audioSocket.publish('stream1', micStream)
-          }}>
-          test
-        </button>
+        <div>
+          <button
+            onClick={() => {
+              if (handler.ws) {
+                handler.publish()
+              }
+            }}>
+            publish
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              if (handler.ws) {
+                handler.stop()
+              }
+            }}>
+            stop
+          </button>
+        </div>
       </Content>
     </Layout>
   )
