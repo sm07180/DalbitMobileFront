@@ -12,7 +12,8 @@ const JoinAuth = props => {
       <Content>
         <Input type="phone" />
 
-        <Button text="인증번호 받기" joinState={props.joinState} update={props.update} />
+        {/* <Button text="인증번호 받기" joinState={props.joinState} update={props.update} /> */}
+        <Button text="인증번호 받기" />
       </Content>
     </>
   )

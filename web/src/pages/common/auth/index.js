@@ -19,8 +19,11 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
+import {signInWithGoogle} from 'components/lib/firebase.util'
+
 //context
 import {Context} from 'context'
+import {arrayTypeAnnotation} from '@babel/types'
 //import {switchCase} from '@babel/types'
 
 export default props => {
@@ -32,7 +35,7 @@ export default props => {
 
   //fetch
   async function fetchData(obj, ostype) {
-    console.log(JSON.stringify(obj))
+    console.log('obj = ' + JSON.stringify(obj))
     let loginId = ''
     let loginOs = ''
     let loginName = ''
@@ -147,11 +150,54 @@ export default props => {
   }
   const onLoginHandleChange = e => {
     setChanges({...changes, [e.target.name]: e.target.value})
-    console.log(changes)
   }
+  function login() {
+    signInWithGoogle().then(function(result) {
+      console.log(result)
+      console.log('asdasdasd')
+    })
+  }
+
+  // const signInWithGoogle = e => {
+  //   console.log('123123123')
+  // }
+  // auth.signInWithPopup(provider).then(
+  //   function(result) {
+  //     console.log('asdasdasdasdasdasda')
+  //     // The firebase.User instance:
+  //     var user = result.user
+  //     // The Facebook firebase.auth.AuthCredential containing the Facebook
+  //     // access token:
+  //     var credential = result.credential
+  //   },
+  //   function(error) {
+  //     // The provider's account email, can be used in case of
+  //     // auth/account-exists-with-different-credential to fetch the providers
+  //     // linked to the email:
+  //     var email = error.email
+  //     // The provider's credential:
+  //     var credential = error.credential
+  //     // In case of auth/account-exists-with-different-credential error,
+  //     // you can fetch the providers using this:
+  //     if (error.code === 'auth/account-exists-with-different-credential') {
+  //       auth.fetchSignInMethodsForEmail(email).then(function(providers) {
+  //         // The returned 'providers' is a list of the available providers
+  //         // linked to the email address. Please refer to the guide for a more
+  //         // complete explanation on how to recover from this error.
+  //       })
+  //     }
+  //   }
+  // )
+  useEffect(() => {
+    console.log('changes = ' + JSON.stringify(changes))
+  }, [changes])
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
+      <Logo>
+        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+      </Logo>
+
       <LoginInput>
         <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
         <input type="password" name="password" placeholder="비밀번호" onChange={onLoginHandleChange} />
@@ -159,8 +205,6 @@ export default props => {
       <LoginSubmit
         onClick={() => {
           fetchData({...changes}, 'p')
-          // console.log('setPassword = ' + e.target)
-          //fetchData()
         }}>
         로그인
       </LoginSubmit>
@@ -199,11 +243,20 @@ export default props => {
         onSuccess={responseNaver}
         onFailure={responseNaver}
       />
+
+      {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
+      <button onClick={() => login()}>Sign in with Google</button>
+      {/* <button onClick={signOut}>Sign out</button> */}
+
       <GoogleLogin
         clientId="76445230270-03g60q4kooi6qg0qvtjtnqqnn70juulc.apps.googleusercontent.com"
         onSuccess={responseGoogle}
         onFailure={responseGoogleFail}
-        buttonText="LOGIN WITH GOOGLE"
+        render={renderProps => (
+          <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
+            LOGIN WITH GOOGLE
+          </button>
+        )}
         cookiePolicy={'single_host_origin'}
       />
       <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} />
@@ -218,6 +271,10 @@ const Login = styled.div`
   background: #fff;
 `
 
+const Logo = styled.div`
+  margin: 60px 0 50px 0;
+  text-align: center;
+`
 const LoginWrap = styled.div``
 
 const LoginInput = styled.div`

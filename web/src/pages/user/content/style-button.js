@@ -14,7 +14,7 @@ export default props => {
   const [fetch, setFetch] = useState(null)
 
   const context = useContext(Context)
-
+  console.log('회원가입시 받은 데이터 = ' + JSON.stringify(props))
   async function fetchData() {
     //console.log(JSON.stringify(obj))
     console.log('회원가입 버튼 클릭 = ' + JSON.stringify(props))
@@ -54,8 +54,9 @@ export default props => {
     <>
       <Button
         onClick={() => {
+          // 인증번호 요청
           if (props.text !== '회원가입 완료') {
-            props.update('step-two')
+            //props.update('step-two')
           } else {
             fetchData()
           }

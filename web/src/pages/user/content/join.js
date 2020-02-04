@@ -6,7 +6,7 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {WIDTH_TABLET} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 //layout
 import Layout from 'pages/common/layout'
 //components
@@ -16,26 +16,26 @@ import JoinForm from './join-form'
 const User = props => {
   //---------------------------------------------------------------------
   //useState
-  const [joinState, setJoinState] = useState('step-one')
+  //const [joinState, setJoinState] = useState('step-one')
 
-  function joinForm() {
-    switch (joinState) {
-      case 'step-one':
-        return <JoinAuth joinState={joinState} update={setJoinState} />
-      case 'step-two':
-        return <JoinForm joinState={joinState} update={setJoinState} {...props} />
-      default:
-        return <p>없습니다</p>
-    }
-  }
+  // function joinForm() {
+  //   switch (joinState) {
+  //     case 'step-one':
+  //       return <JoinAuth joinState={joinState} update={setJoinState} {...props} />
+  //     case 'step-two':
+  //       return <JoinForm joinState={joinState} update={setJoinState} {...props} />
+  //     default:
+  //       return <p>없습니다</p>
+  //   }
+  // }
   //---------------------------------------------------------------------
   return (
     <Content>
-      <JoinStep className={joinState}>
-        <p>휴대폰 인증</p>
-        <p>회원정보 입력</p>
-      </JoinStep>
-      <div>{joinForm()}</div>
+      <Logo>
+        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+      </Logo>
+      <JoinAuth {...props} />
+      <JoinForm {...props} />
     </Content>
   )
 }
@@ -64,4 +64,8 @@ const JoinStep = styled.div`
     color: #1a369a;
     font-weight: 700;
   }
+`
+const Logo = styled.div`
+  margin: 60px 0 50px 0;
+  text-align: center;
 `

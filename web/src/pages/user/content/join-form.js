@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 //components
@@ -8,15 +8,15 @@ import Button from './style-button'
 
 const JoinForm = props => {
   const [boxState, setBoxState] = useState(false)
-
   const {loginID, loginNickNm, loginName, gender, birth, image} = props.location.state
-
   const [changes, setChanges] = useState(props.location.state)
+
   const onLoginHandleChange = e => {
     setChanges({...changes, [e.target.name]: e.target.value})
-
-    console.log(changes)
   }
+  useEffect(() => {
+    console.log('changes = ' + JSON.stringify(changes))
+  }, [changes])
 
   return (
     <>
@@ -26,8 +26,10 @@ const JoinForm = props => {
       </JoinText>
 
       <FormWrap>
-        <input type="text" name="loginID" defaultValue={changes.loginID} onChange={onLoginHandleChange} />
-        <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} />
+        닉네임
+        <input type="text" name="loginID" onChange={onLoginHandleChange} />
+        실명
+        <input type="text" name="loginName" onChange={onLoginHandleChange} />
         <Input type="password" />
         <Label before={true} text="성별" />
         <input type="radio" name="gender" value="남성" defaultChecked={gender === 'm' ? true : false} /> 남성

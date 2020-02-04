@@ -25,9 +25,9 @@ const Layout = props => {
   return (
     <Container>
       {/* 헤더설정 */}
-      <Logo>
+      {/* <Logo>
         <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-      </Logo>
+      </Logo> */}
       {/* global navigation */}
       <main>
         <article>{children}</article>
