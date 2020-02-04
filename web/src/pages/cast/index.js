@@ -10,7 +10,8 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream, wSocketHandler} from 'components/lib/hostWebRTC'
+import {getMicStream} from 'components/lib/makeMicStream'
+import {wSocketHandler} from 'components/lib/hostWebRTC'
 
 export default props => {
   const [micStream, setMicStream] = useState(null)
@@ -18,6 +19,7 @@ export default props => {
 
   // temp init
   useEffect(() => {
+    // initialize mic stream and audio socket.
     ;(async () => {
       const stream = await getMicStream()
       setMicStream(stream)
@@ -34,8 +36,9 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            console.log(micStream, context.audioSocket)
-            // ws.publish('stream1', micStream)
+            if (context.audioSocket && micStream) {
+              context.audioSocket.publish('stream1', micStream)
+            }
           }}>
           test
         </button>
