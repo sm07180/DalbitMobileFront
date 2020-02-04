@@ -11,7 +11,7 @@ import {Context} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream} from 'components/lib/makeMicStream'
-import {wSocketHandler} from 'components/lib/hostWebRTC'
+// import {wSocketHandler} from 'components/lib/MediaHandler'
 
 export default props => {
   const [micStream, setMicStream] = useState(null)
@@ -23,8 +23,8 @@ export default props => {
     ;(async () => {
       const stream = await getMicStream()
       setMicStream(stream)
-      const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
-      context.action.updateAudioSocket(ws)
+      // const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      // context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
     })()
 
@@ -36,8 +36,8 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            if (context.audioSocket && micStream) {
-              context.audioSocket.publish('stream1', micStream)
+            if (context.mediaHandler && micStream) {
+              // context.audioSocket.publish('stream1', micStream)
             }
           }}>
           test
