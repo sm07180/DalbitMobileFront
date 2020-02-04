@@ -43,15 +43,6 @@ export class SignalingHandler {
     }
     this.socketSendMsg(cmd)
   }
-  joinRoom(roomName) {
-    this.room = roomName
-    const cmd = {
-      command: 'joinRoom',
-      streamId: this.streamId,
-      room: this.room
-    }
-    this.socketSendMsg(cmd)
-  }
   play() {
     const cmd = {
       command: 'play',
@@ -72,6 +63,38 @@ export class SignalingHandler {
   join() {
     const cmd = {
       command: 'join',
+      streamId: this.streamId
+    }
+    this.socketSendMsg(cmd)
+  }
+  joinRoom(roomName) {
+    this.room = roomName
+    const cmd = {
+      command: 'joinRoom',
+      streamId: this.streamId,
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+  }
+  leave() {
+    const cmd = {
+      command: 'leave',
+      streamId: this.streamId
+    }
+    this.socketSendMsg(cmd)
+    this.closePeerConnection()
+  }
+  leaveFromRoom() {
+    const cmd = {
+      command: 'leaveFromRoom',
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+    this.room = null
+  }
+  getStreamInfo() {
+    const cmd = {
+      command: 'getStreamInfo',
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)

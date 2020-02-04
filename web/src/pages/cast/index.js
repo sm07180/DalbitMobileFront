@@ -27,8 +27,6 @@ export default props => {
       sHandler.setStreamId('stream1')
       sHandler.setMicStream(stream)
       setHandler(sHandler)
-      // const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
-      // context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
     })()
 
