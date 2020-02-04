@@ -699,7 +699,7 @@ const User = () => {
         thiz.remoteDescriptionSet[streamId] = false
         thiz.iceCandidateList[streamId] = new Array()
         if (!thiz.playStreamId.includes(streamId)) {
-          thiz.remotePeerConnection[streamId].addStream(thiz.localStream)
+          thiz.remotePeerConnection[streamId].add(thiz.localStream)
         }
         thiz.remotePeerConnection[streamId].onicecandidate = function(event) {
           thiz.iceCandidateReceived(event, closedStreamId)

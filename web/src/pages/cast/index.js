@@ -11,10 +11,9 @@ import {Context} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream} from 'components/lib/makeMicStream'
-// import {wSocketHandler} from 'components/lib/MediaHandler'
+import {HostSignalingHandler} from 'components/lib/SignalingHandler'
 
 export default props => {
-  const [micStream, setMicStream] = useState(null)
   const context = new useContext(Context)
 
   // temp init
@@ -22,7 +21,9 @@ export default props => {
     // initialize mic stream and audio socket.
     ;(async () => {
       const stream = await getMicStream()
-      setMicStream(stream)
+      const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
+      const sHandler = new HostSignalingHandler(audioSocketUrl, stream)
+
       // const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       // context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
