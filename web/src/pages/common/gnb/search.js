@@ -61,6 +61,9 @@ const SearchWrap = styled.div`
     padding-left: 20px;
     border: 1px solid #fff;
     box-sizing: border-box;
+    color: white;
+    font-size: 16px;
+    letter-spacing: -0.4px;
     background-color: #8556f6;
     transform: skew(-0.03deg);
     position: relative;
@@ -71,11 +74,7 @@ const SearchWrap = styled.div`
     font-size: 16px;
     letter-spacing: -0.4px;
   }
-  & input:focus {
-    color: white;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-  }
+
   &:after {
     position: absolute;
     top: 50%;
