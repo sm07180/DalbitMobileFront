@@ -23,7 +23,7 @@ const GlobalProvider = props => {
   const [gnb_visible, setGnbVisible] = useState(false)
   const [gnb_state, setGnbState] = useState('')
   const [login_state, setlogin] = useState(false)
-  const [audioSocket, setAudioSocket] = useState(null)
+  const [mediaHandler, setMediaHandler] = useState(null)
 
   //---------------------------------------------------------------------
   const action = {
@@ -56,8 +56,8 @@ const GlobalProvider = props => {
       setGnbVisible(false)
     },
     // 오디오 웹소캣
-    updateAudioSocket: ws => {
-      setAudioSocket(ws)
+    updateMediaHandler: instance => {
+      setMediaHandler(instance)
     }
   }
   //---------------------------------------------------------------------
@@ -68,7 +68,7 @@ const GlobalProvider = props => {
     popup_visible,
     gnb_visible,
     gnb_state,
-    audioSocket,
+    mediaHandler,
 
     action
   }
