@@ -91,6 +91,7 @@ export class HostSignalingHandler {
         candidate: candidate.candidate
       }
       if (this.debug) {
+        console.log('sending ice candiate for stream Id ' + this.streamId)
         console.log(JSON.stringify(event.candidate))
       }
       this.socketSendMsg(cmd)
@@ -126,8 +127,8 @@ export class HostSignalingHandler {
         }
 
         if (this.debug) {
-          console.debug('local sdp: ')
-          console.debug(config.dsp)
+          console.log('local sdp: ')
+          // console.log(config.sdp)
         }
 
         this.socketSendMsg(cmd)
@@ -135,7 +136,6 @@ export class HostSignalingHandler {
       .catch(err => console.log('Cannot set local description ' + err))
   }
   takeConfiguration(_sdp, _type) {
-    this.initPeerConnection()
     this.rtcPeerConn
       .setRemoteDescription(
         new RTCSessionDescription({
@@ -149,11 +149,12 @@ export class HostSignalingHandler {
           this.addIceCandidate(candidate)
         })
         this.iceCandidate = []
+
         if (_type === 'offer') {
           this.rtcPeerConn
             .createAnswer(this.sdpConstraints)
             .then(config => this.gotDescription(config))
-            .catch(err => console.error('create answer eror'))
+            .catch(err => console.error('create answer error'))
         }
       })
       .catch(err => {
@@ -167,8 +168,7 @@ export class HostSignalingHandler {
       sdpMLineIndex: _label,
       candidate: _candidate
     })
-    this.initPeerConnection()
-    if (!this.rtcDescription) {
+    if (this.rtcDescription) {
       this.addIceCandidate(candidate)
     } else {
       this.iceCandidate.push(candidate)
@@ -182,7 +182,6 @@ export class HostSignalingHandler {
     this.rtcPeerConn
       .createOffer(this.sdpConstraints)
       .then(config => {
-        console.log('config', config)
         this.gotDescription(config)
       })
       .catch(err => console.log(err))
@@ -238,13 +237,13 @@ export class HostSignalingHandler {
           this.takeConfiguration(sdp, type)
           break
         }
-        case 'error': {
-          break
-        }
         case 'notification': {
           break
         }
         case 'streamInformation': {
+          break
+        }
+        case 'error': {
           break
         }
         case 'pong': {

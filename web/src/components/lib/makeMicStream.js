@@ -1,6 +1,8 @@
 /**
  * @brief 마이크체크
  */
+
+// https://howlerjs.com/
 export const getMicStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
@@ -39,5 +41,6 @@ export const removeMicStream = stream => {
   navigator.mediaDevices.ondevicechange = null
   stream.getTracks().forEach(track => {
     track.stop()
+    // stream.removeTrack(track)
   })
 }
