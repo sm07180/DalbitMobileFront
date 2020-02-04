@@ -45,14 +45,16 @@ export const removeMicStream = stream => {
 export const wSocketHandler = socketUrl => {
   const url = socketUrl
   const ws = new WebSocket(url)
+  let streamId = null
+  let micStream = null
   let rtcPeerConn = null
   let rtcDescription = false
   let iceCandidate = null
 
-  const msgToString = json => JSON.stringify(json)
   let retryIntervalId = null
   let pingIntervalId = null
 
+  const msgToString = json => JSON.stringify(json)
   const takeCandidate = (streamId, label, candidate) => {}
   const takeConfiguration = () => {}
   const initPeerConnection = micStream => {
@@ -99,29 +101,34 @@ export const wSocketHandler = socketUrl => {
 
     ws.send(msgToString(cmd))
   }
-
   const leaveFromRoom = roomName => {}
-
   const leave = streamId => {}
+  const setInitValueAsNull = () => {
+    streamId = null
+    micStream = null
+  }
 
-  ws.publish = (streamId, token) => {
+  ws.publish = (id, stream, token) => {
+    streamId = id
+    micStream = stream
     const cmd = {
       command: 'publish',
       streamId,
       token,
-      audio: true ? true : false,
-      video: true ? true : false
+      audio: micStream.getAudioTracks().length ? true : false,
+      video: micStream.getVideoTracks().length ? true : false
     }
     ws.send(msgToString(cmd))
   }
 
-  ws.stopPublish = streamId => {
+  ws.stopPublish = () => {
     const cmd = {
       command: 'stop',
       streamId
     }
 
     ws.send(msgToString(cmd))
+    setInitValueAsNull()
   }
 
   return new Promise((resolve, reject) => {

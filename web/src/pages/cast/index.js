@@ -7,18 +7,20 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
-import {Context, GlobalProvider} from 'context'
+import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream, wSocketHandler} from 'components/lib/webRTC'
+import {getMicStream, wSocketHandler} from 'components/lib/hostWebRTC'
 
 export default props => {
+  const [micStream, setMicStream] = useState(null)
   const context = new useContext(Context)
 
+  // temp init
   useEffect(() => {
-    let audioStream = null
     ;(async () => {
-      audioStream = await getMicStream()
+      const stream = await getMicStream()
+      setMicStream(stream)
       const ws = await wSocketHandler('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       context.action.updateAudioSocket(ws)
       // console.log(audioStream.getAudioTracks())
@@ -32,7 +34,8 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            ws.publish('stream1')
+            console.log(micStream, context.audioSocket)
+            // ws.publish('stream1', micStream)
           }}>
           test
         </button>

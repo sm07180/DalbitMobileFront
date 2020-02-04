@@ -9,7 +9,6 @@ import React, {useEffect} from 'react'
 import Layout from './layout'
 import Contents from './layout-contents'
 //
-import {checkMic} from 'components/lib/webRTC'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -23,7 +22,6 @@ export default props => {
     <Layout {...props}>
       <button
         onClick={() => {
-          //checkMic()
           window.callbackFunc()
         }}>
         마이크체크
