@@ -1,7 +1,7 @@
 ### 달빛라디오
 
 - 개발페이지 : <https://devwww2.dalbitcast.com/>
-- git :
+- gitrepo@devj.dalbitcast.com:radio_front.git
 
 # 공통
 
