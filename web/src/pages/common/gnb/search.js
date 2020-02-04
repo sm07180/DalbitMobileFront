@@ -4,7 +4,7 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-
+import {WIDTH_MOBILE, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S} from 'context/config'
 //component
 
 export default props => {
@@ -51,9 +51,16 @@ const SearchWrap = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 41.87%;
+  width: 802px;
   height: 64px;
   transform: translate(-50%, -50%);
+  @media (max-width: ${WIDTH_PC_S}) {
+    top: calc(50% + 28px);
+    width: 91.11%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    top: calc(50% + 20px);
+  }
   & input {
     display: block;
     width: 100%;
@@ -67,6 +74,9 @@ const SearchWrap = styled.div`
     background-color: #8556f6;
     transform: skew(-0.03deg);
     position: relative;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding-right: 48px;
+    }
   }
   & input::placeholder {
     opacity: 0.3;
@@ -85,6 +95,10 @@ const SearchWrap = styled.div`
     transform: translateY(-50%);
     content: '';
     cursor: pointer;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 36px;
+      height: 36px;
+    }
   }
 `
 const Close = styled.button`
@@ -94,4 +108,10 @@ const Close = styled.button`
   width: 48px;
   height: 48px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    top: 10px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+  }
 `
