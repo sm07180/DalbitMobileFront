@@ -24,6 +24,7 @@ export default props => {
           }}></Close>
         <SearchWrap>
           <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} />
+          <button></button>
         </SearchWrap>
       </Gnb>
     </>
@@ -85,15 +86,14 @@ const SearchWrap = styled.div`
     letter-spacing: -0.4px;
   }
 
-  &:after {
+  & button {
     position: absolute;
     top: 50%;
-    right: 0;
+    right: 8px;
     width: 48px;
     height: 48px;
     background: url('https://devimage.dalbitcast.com/images/api/search6.png') no-repeat center center / cover;
     transform: translateY(-50%);
-    content: '';
     cursor: pointer;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 36px;
