@@ -144,7 +144,7 @@ const LinkLi = styled.div`
   position: relative;
   width: 100%;
   height: 40px;
-  border-bottom: 1px solid #bdbdbd;
+  border-bottom: 1px solid #9168f5;
   & span {
     display: block;
     color: #fff;
