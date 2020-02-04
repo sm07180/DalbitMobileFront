@@ -55,7 +55,6 @@ const User = () => {
         //streamId = streamNameBox.setStream
         //webrtc 코어 에서 토큰값,스트림id,객체명 등을 제어하는 함수입니다(publish)
         webRTCAdaptor.publish(streamId)
-        console.log(streamId)
       })
       $(stop_publish_button).on('click', function(event) {
         webRTCAdaptor.stop(streamId)
@@ -77,9 +76,7 @@ const User = () => {
       //var websocketURL = 'ws://' + location.hostname + ':5080/WebRTCAppEE/websocket'
       var websocketURL = 'ws://' + 'v154.dalbitcast.com' + ':5080/WebRTCAppEE/websocket'
       if (location.protocol.startsWith('https')) {
-        // websocketURL = 'wss://' + location.hostname + ':5443/WebRTCAppEE/websocket'
-        console.log(websocketURL)
-        websocketURL = 'wss://' + 'v154.dalbitcast.com' + ':5443/WebRTCAppEE/websocket'
+        websocketURL = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
       }
       var webRTCAdaptor = new WebRTCAdaptor({
         websocket_url: websocketURL,
@@ -92,7 +89,6 @@ const User = () => {
         //아래의 콜백함수는 서버에 연결될시 publish/stop 버튼을 활성화 할수있는 옵션인데 전제조건이 서버와 이니셜라이즈되야만 활성화됩니다.
         callback: function(info, description) {
           if (info == 'initialized') {
-            console.log('initialized')
             start_publish_button.disabled = false
             stop_publish_button.disabled = true
           } else if (info == 'publish_started') {
@@ -234,6 +230,7 @@ const User = () => {
             navigator.mediaDevices
               .getUserMedia(media_audio_constraint)
               .then(function(audioStream) {
+                console.log('aaaaaaaaaaaaaaaaaaaaaudio streeeeeeemmmmmmmmmm')
                 if (thiz.mediaConstraints != 'undefined' && thiz.mediaConstraints.video == 'screen+camera') {
                   navigator.mediaDevices
                     .getUserMedia({video: true, audio: false})
@@ -407,6 +404,7 @@ const User = () => {
           navigator.mediaDevices
             .getUserMedia({audio: true, video: false})
             .then(function(micStream) {
+              console.log('mmmmmmiiiiiiiiiiicccccccccccccc stream')
               navigator.mediaDevices
                 .getUserMedia(thiz.mediaConstraints)
                 .then(function(stream) {
@@ -455,6 +453,7 @@ const User = () => {
         navigator.mediaDevices
           .getUserMedia(media_audio_constraint)
           .then(function(stream) {
+            console.log('333333333333333333333, 232323')
             thiz.gotStream(stream)
           })
           .catch(function(error) {
@@ -565,7 +564,7 @@ const User = () => {
 
     this.gotStream = function(stream) {
       thiz.localStream = stream
-      thiz.localVideo.srcObject = stream
+      // thiz.localVideo.srcObject = stream
       if (thiz.webSocketAdaptor == null || thiz.webSocketAdaptor.isConnected() == false) {
         thiz.webSocketAdaptor = new WebSocketAdaptor()
       }
@@ -686,7 +685,6 @@ const User = () => {
           console.log('sending ice candiate for stream Id ' + streamId)
           console.log(JSON.stringify(event.candidate))
         }
-
         thiz.webSocketAdaptor.send(JSON.stringify(jsCmd))
       }
     }
@@ -800,29 +798,25 @@ const User = () => {
       }
     }
 
-    this.takeConfiguration = function(idOfStream, configuration, typeOfConfiguration) {
+    this.takeConfiguration = function(idOfStream, _sdp, typeOfConfiguration) {
       var streamId = idOfStream
       var type = typeOfConfiguration
-      var conf = configuration
-
-      thiz.initPeerConnection(streamId)
 
       thiz.remotePeerConnection[streamId]
         .setRemoteDescription(
           new RTCSessionDescription({
-            sdp: conf,
+            sdp: _sdp,
             type: type
           })
         )
         .then(function(response) {
           if (thiz.debug) {
             console.debug('set remote description is succesfull with response: ' + response + ' for stream : ' + streamId + ' and type: ' + type)
-            console.debug(conf)
           }
 
           thiz.remoteDescriptionSet[streamId] = true
           var length = thiz.iceCandidateList[streamId].length
-          console.debug('Ice candidate list size to be added: ' + length)
+          console.log('Ice candidate list size to be added: ' + length)
           for (var i = 0; i < length; i++) {
             thiz.addIceCandidate(streamId, thiz.iceCandidateList[streamId][i])
           }
@@ -860,8 +854,6 @@ const User = () => {
         candidate: candidateSdp
       })
 
-      thiz.initPeerConnection(streamId)
-
       if (thiz.remoteDescriptionSet[streamId] == true) {
         thiz.addIceCandidate(streamId, candidate)
       } else {
@@ -871,17 +863,7 @@ const User = () => {
     }
 
     this.addIceCandidate = function(streamId, candidate) {
-      thiz.remotePeerConnection[streamId]
-        .addIceCandidate(candidate)
-        .then(function(response) {
-          if (thiz.debug) {
-            console.log('Candidate is added for stream ' + streamId)
-          }
-        })
-        .catch(function(error) {
-          console.error('ice candiate cannot be added for stream id: ' + streamId + ' error is: ' + error)
-          console.error(candidate)
-        })
+      thiz.remotePeerConnection[streamId].addIceCandidate(candidate)
     }
 
     this.startPublishing = function(idOfStream) {
@@ -941,10 +923,6 @@ const User = () => {
       }
 
       wsConn.onopen = function() {
-        if (thiz.debug) {
-          console.log('websocket connected')
-        }
-
         pingTimerId = setInterval(() => {
           sendPing()
         }, 3000)
