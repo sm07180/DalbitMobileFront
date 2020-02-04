@@ -17,9 +17,7 @@ export default props => {
         <Close
           onClick={() => {
             context.action.updateGnbVisible(false)
-          }}>
-          닫기
-        </Close>
+          }}></Close>
         <Wrap>{children}</Wrap>
       </Gnb>
     </>
@@ -52,6 +50,13 @@ const Gnb = styled.div`
   }
 `
 
-const Close = styled.button``
+const Close = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+`
 
 const Wrap = styled.div``

@@ -1,4 +1,4 @@
-export class HostSignalingHandler {
+export class SignalingHandler {
   constructor(socketUrl, stream, debug) {
     this.url = socketUrl
     this.ws = null
@@ -43,15 +43,6 @@ export class HostSignalingHandler {
     }
     this.socketSendMsg(cmd)
   }
-  joinRoom(roomName) {
-    this.room = roomName
-    const cmd = {
-      command: 'joinRoom',
-      streamId: this.streamId,
-      room: this.room
-    }
-    this.socketSendMsg(cmd)
-  }
   play() {
     const cmd = {
       command: 'play',
@@ -76,6 +67,38 @@ export class HostSignalingHandler {
     }
     this.socketSendMsg(cmd)
   }
+  joinRoom(roomName) {
+    this.room = roomName
+    const cmd = {
+      command: 'joinRoom',
+      streamId: this.streamId,
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+  }
+  leave() {
+    const cmd = {
+      command: 'leave',
+      streamId: this.streamId
+    }
+    this.socketSendMsg(cmd)
+    this.closePeerConnection()
+  }
+  leaveFromRoom() {
+    const cmd = {
+      command: 'leaveFromRoom',
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+    this.room = null
+  }
+  getStreamInfo() {
+    const cmd = {
+      command: 'getStreamInfo',
+      streamId: this.streamId
+    }
+    this.socketSendMsg(cmd)
+  }
 
   /**
    * about webrtc command method
@@ -91,6 +114,7 @@ export class HostSignalingHandler {
         candidate: candidate.candidate
       }
       if (this.debug) {
+        console.log('sending ice candiate for stream Id ' + this.streamId)
         console.log(JSON.stringify(event.candidate))
       }
       this.socketSendMsg(cmd)
@@ -109,7 +133,7 @@ export class HostSignalingHandler {
     }
   }
   closePeerConnection() {
-    if (!this.rtcPeerConn && this.rtcPeerConn.signalingState != 'closed') {
+    if (!this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
       this.rtcPeerConn.close()
       this.rtcPeerConn = null
     }
@@ -125,17 +149,11 @@ export class HostSignalingHandler {
           sdp: config.sdp
         }
 
-        if (this.debug) {
-          console.debug('local sdp: ')
-          console.debug(config.dsp)
-        }
-
         this.socketSendMsg(cmd)
       })
       .catch(err => console.log('Cannot set local description ' + err))
   }
   takeConfiguration(_sdp, _type) {
-    this.initPeerConnection()
     this.rtcPeerConn
       .setRemoteDescription(
         new RTCSessionDescription({
@@ -149,11 +167,12 @@ export class HostSignalingHandler {
           this.addIceCandidate(candidate)
         })
         this.iceCandidate = []
+
         if (_type === 'offer') {
           this.rtcPeerConn
             .createAnswer(this.sdpConstraints)
             .then(config => this.gotDescription(config))
-            .catch(err => console.error('create answer eror'))
+            .catch(err => console.error('create answer error'))
         }
       })
       .catch(err => {
@@ -167,8 +186,7 @@ export class HostSignalingHandler {
       sdpMLineIndex: _label,
       candidate: _candidate
     })
-    this.initPeerConnection()
-    if (!this.rtcDescription) {
+    if (this.rtcDescription) {
       this.addIceCandidate(candidate)
     } else {
       this.iceCandidate.push(candidate)
@@ -182,7 +200,6 @@ export class HostSignalingHandler {
     this.rtcPeerConn
       .createOffer(this.sdpConstraints)
       .then(config => {
-        console.log('config', config)
         this.gotDescription(config)
       })
       .catch(err => console.log(err))
@@ -224,6 +241,8 @@ export class HostSignalingHandler {
           this.startPublishing()
           break
         }
+        case 'play': {
+        }
         case 'stop': {
           this.closePeerConnection()
           break
@@ -238,13 +257,20 @@ export class HostSignalingHandler {
           this.takeConfiguration(sdp, type)
           break
         }
-        case 'error': {
-          break
-        }
         case 'notification': {
+          const {definition} = format
+          if (definition === 'play_started') {
+            console.log('Guest Play started')
+          } else if (definition === 'play_finished') {
+            console.log('Guest Play Stopped')
+          } else if (definition === 'publish_finished') {
+          }
           break
         }
         case 'streamInformation': {
+          break
+        }
+        case 'error': {
           break
         }
         case 'pong': {
@@ -256,5 +282,16 @@ export class HostSignalingHandler {
       }
     }
     this.ws.onerror = () => {}
+  }
+}
+
+export class Host extends SignalingHandler {
+  constructor(socketUrl, stream, debug) {
+    super(socketUrl, stream, debug)
+  }
+}
+export class Guest extends SignalingHandler {
+  constructor(socketUrl, stream, debug) {
+    super(socketUrl, stream, debug)
   }
 }

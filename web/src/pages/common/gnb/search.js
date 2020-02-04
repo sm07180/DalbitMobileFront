@@ -4,10 +4,14 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-
+import {WIDTH_MOBILE, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S} from 'context/config'
 //component
 
 export default props => {
+  const [search, setSearch] = useState('')
+  const handleChange = event => {
+    setSearch(event.target.value)
+  }
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
@@ -17,10 +21,11 @@ export default props => {
         <Close
           onClick={() => {
             context.action.updateGnbVisible(false)
-          }}>
-          닫기
-        </Close>
-        <p>나는 찾기입니다. 나는 레이아웃이 달라요 !!</p>
+          }}></Close>
+        <SearchWrap>
+          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} />
+          <button></button>
+        </SearchWrap>
       </Gnb>
     </>
   )
@@ -43,4 +48,70 @@ const Gnb = styled.div`
   }
 `
 
-const Close = styled.button``
+const SearchWrap = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 802px;
+  height: 64px;
+  transform: translate(-50%, -50%);
+  @media (max-width: ${WIDTH_PC_S}) {
+    top: calc(50% + 28px);
+    width: 91.11%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    top: calc(50% + 20px);
+  }
+  & input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-left: 20px;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+    color: white;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    background-color: #8556f6;
+    transform: skew(-0.03deg);
+    position: relative;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding-right: 48px;
+    }
+  }
+  & input::placeholder {
+    opacity: 0.3;
+    color: white;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+  }
+
+  & button {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    width: 48px;
+    height: 48px;
+    background: url('https://devimage.dalbitcast.com/images/api/search6.png') no-repeat center center / cover;
+    transform: translateY(-50%);
+    cursor: pointer;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 36px;
+      height: 36px;
+    }
+  }
+`
+const Close = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    top: 10px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+  }
+`
