@@ -48,7 +48,10 @@ const GlobalProvider = props => {
     //GNB 열릴때 메뉴 타입 상태
     updateGnbState: str => {
       setGnbState(str)
-      setGnbVisible(!gnb_visible)
+      //render 후 애니메이션 처리
+      setTimeout(() => {
+        setGnbVisible(!gnb_visible)
+      }, 10)
     },
     //login 상태
     updateLogin: bool => {

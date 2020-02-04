@@ -15,7 +15,7 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from
 export default props => {
   //---------------------------------------------------------------------
   //state
-  const [slideInfo, setSlideInfo] = useState(props.Info)
+  const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
   let mainSlider = {}
 
   const params = {

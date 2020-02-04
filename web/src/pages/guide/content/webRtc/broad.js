@@ -695,11 +695,11 @@ const User = () => {
       if (thiz.remotePeerConnection[streamId] == null) {
         var closedStreamId = streamId
         console.log('stream id in init peer connection: ' + streamId + ' close dstream id: ' + closedStreamId)
-        thiz.remotePeerConnection[streamId] = new RTCPeerConnection(thiz.peerconnection_config)
+        thiz.remotePeerConnection[streamId] = new RTCPeerConnection()
         thiz.remoteDescriptionSet[streamId] = false
         thiz.iceCandidateList[streamId] = new Array()
         if (!thiz.playStreamId.includes(streamId)) {
-          thiz.remotePeerConnection[streamId].addStream(thiz.localStream)
+          thiz.remotePeerConnection[streamId].addTrack(thiz.localStream.getAudioTracks()[0])
         }
         thiz.remotePeerConnection[streamId].onicecandidate = function(event) {
           thiz.iceCandidateReceived(event, closedStreamId)

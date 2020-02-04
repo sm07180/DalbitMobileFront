@@ -1,16 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-
-//component
 
 export default props => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
+  //initalize
+  const {children} = props
+
   return (
     <>
       <Gnb className={context.gnb_visible ? 'on' : 'off'}>
@@ -20,7 +20,7 @@ export default props => {
           }}>
           닫기
         </Close>
-        <p>나는 찾기입니다. 나는 레이아웃이 달라요 !!</p>
+        <Wrap>{children}</Wrap>
       </Gnb>
     </>
   )
@@ -30,17 +30,28 @@ export default props => {
 //styled
 
 const Gnb = styled.div`
+  /* pc media query */
   overflow: hidden;
   position: fixed;
-  top: -144px;
-  width: 100%;
-  height: 144px;
-  background: ${COLOR_MAIN};
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100%;
+  padding: 0;
+  border-right: 1px solid #ccc;
+  background: #8555f6;
+  transition: right 0.5s ease-in-out;
   z-index: 11;
-  transition: top 0.5s ease-in-out;
+
   &.on {
-    top: 0;
+    right: 0;
+  }
+
+  a {
+    display: block;
   }
 `
 
 const Close = styled.button``
+
+const Wrap = styled.div``
