@@ -9,11 +9,11 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
 import Logo from './logo'
 import Navi from './navi'
-import Profile from './profile'
+import Button from './button'
 //
 export default props => {
   //context
@@ -25,6 +25,7 @@ export default props => {
   //const
   const scrollTime = 10
   const type = props.type || 'sub'
+  const scrollClassName = scrollTop > 30 ? 'scroll' : 'top'
   //---------------------------------------------------------------------
 
   //checkScroll
@@ -42,98 +43,50 @@ export default props => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
   }, [])
-
   //---------------------------------------------------------------------
   return (
-    <Header className={[type, scrollTop !== 0 ? 'scroll' : 'top']}>
-      {/* 네비게이션 */}
-      <Navi type={scrollTop !== 0 ? 'scroll' : 'top'} />
+    <Header className={[type, scrollClassName]}>
       {/* 상단로고 */}
-      <Logo />
+      <Logo type={[type, scrollClassName]} />
+      {/* 네비게이션 */}
+      <Navi type={scrollClassName} />
       {/* 프로필이미지&GNB */}
       {/* <Profile type={scrollTop !== 0 ? 'scroll' : 'top'} /> */}
-      <ButtonWrap>
-        <button
-          onClick={() => {
-            context.action.updateGnbState('search')
-          }}>
-          검색
-        </button>
-        <button
-          onClick={() => {
-            context.action.updateGnbState('mypage')
-          }}>
-          >프로필
-        </button>
-        <button
-          onClick={() => {
-            context.action.updateGnbState('notice')
-          }}>
-          >알람
-        </button>
-        <button
-          onClick={() => {
-            context.action.updateGnbState('menu')
-          }}>
-          >메뉴
-        </button>
-      </ButtonWrap>
+      {/* 오른쪽 메뉴들 */}
+      <Button />
     </Header>
   )
 }
 //---------------------------------------------------------------------
 const Header = styled.header`
-  /* mobile media query */
-  @media (max-width: ${WIDTH_TABLET}) {
-  }
   /* pc media query */
   position: fixed;
   display: block;
   width: 100%;
   height: 80px;
+  border-bottom: 1px solid #eee;
+  background: #fff;
   z-index: 10;
-  &.sub {
-    nav a {
-      color: #111;
-    }
-  }
-  &.scroll {
-    background: #fff;
-    /* 모바일사이즈 */
-    @media screen and (max-width: ${WIDTH_MOBILE}) {
-      background: transparent;
-      /* 네비,로고 hide */
-      nav,
-      .logo {
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 64px;
+    border-bottom: 0;
+    background: ${COLOR_MAIN};
+    /* 모바일 헤더는 메인에서 스크롤 했을때와 서브페이지에서의 헤더가 같은 타입. */
+    &.scroll,
+    &.sub {
+      nav {
         display: none;
+      }
+      .mobilecast {
+        display: inline-block;
       }
     }
   }
+
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    height: 56px;
+  }
 `
 
-const ButtonWrap = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 18px;
-
-  button {
-    width: 48px;
-    height: 48px;
-    margin: 0 5px;
-    font-size: 16px;
-    text-indent: -9999px;
-  }
-
-  button:nth-child(1) {
-    background: url(${IMG_SERVER}/svg/ic_search_normal.svg) no-repeat center;
-  }
-  button:nth-child(2) {
-    background: url(${IMG_SERVER}/svg/ic_user_normal.svg) no-repeat center;
-  }
-  button:nth-child(3) {
-    background: url(${IMG_SERVER}/svg/ic_alarm.svg) no-repeat center;
-  }
-  button:nth-child(4) {
-    background: url(${IMG_SERVER}/svg/ic_menu_normal.svg) no-repeat center;
-  }
-`
+const ButtonWrap = styled.div``
