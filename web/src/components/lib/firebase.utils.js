@@ -26,8 +26,8 @@ const Googleprovider = new firebase.auth.GoogleAuthProvider()
 // // // GoogleAuthProvider 클래스를 authentication 라이브러리에서 사용할 수 있도록 불러오는 코드.
 Googleprovider.setCustomParameters({prompt: 'select_account'})
 // //Fbprovider.setCustomParameters({prompt: 'select_account'})
-// // // signIn이랑 authentication을 위해서 GoogleAuthProvider를 사용할 때마다 구글 팝업을 항상 띄우기를 원한다는 의미이다.
-export const signInWithGoogle = () => firebase.auth().signInWithRedirect(Googleprovider)
+// signIn이랑 authentication을 위해서 GoogleAuthProvider를 사용할 때마다 구글 팝업을 항상 띄우기를 원한다는 의미이다.
+export const signInWithGoogle = () => firebase.auth().signInWithPopup(Googleprovider)
 
 // export const signInWithFacebook = () => auth.signInWithPopup(Fbprovider)
 // // signInWithPopup 메소드는 여러 파라미터를 받을 수 있다. 트위터, 페이스북, 깃허브 등으로도 로그인이 필요할 수도 있으므로.
