@@ -19,7 +19,7 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-//import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
+import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 
 //context
 import {Context} from 'context'
