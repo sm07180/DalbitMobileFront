@@ -19,7 +19,7 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-//import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
+import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 
 //context
 import {Context} from 'context'
@@ -154,40 +154,41 @@ export default props => {
     setChanges({...changes, [e.target.name]: e.target.value})
   }
   function responseGooglelogin() {
-    // signInWithGoogle().then(function(result) {
-    //   //console.log(result)
-    //   // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-    //   var token = result.credential.accessToken
-    //   // The signed-in user info.
-    //   var user = result.user
-    //   // console.log('GoogleToken = ' + token)
-    //   // console.log('user = ' + user)
-    //   // auth.onAuthStateChanged(function(user) {
-    //   //   if (user) {
-    //   //     // User is signed in.
-    //   //     console.log('user2= ' + user)
-    //   //   }
-    //   // })
-    //   fetchData(result, 'g')
-    //   // SetloginStatus(true)
-    // }),
-    //   function(error) {
-    //     // The provider's account email, can be used in case of
-    //     // auth/account-exists-with-different-credential to fetch the providers
-    //     // linked to the email:
-    //     var email = error.email
-    //     // The provider's credential:
-    //     var credential = error.credential
-    //     // In case of auth/account-exists-with-different-credential error,
-    //     // you can fetch the providers using this:
-    //     if (error.code === 'auth/account-exists-with-different-credential') {
-    //       auth.fetchSignInMethodsForEmail(email).then(function(providers) {
-    //         // The returned 'providers' is a list of the available providers
-    //         // linked to the email address. Please refer to the guide for a more
-    //         // complete explanation on how to recover from this error.
-    //       })
-    //     }
-    //   }
+    signInWithGoogle().then(function(result) {
+      //console.log(result)
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+      var token = result.credential.accessToken
+      // The signed-in user info.
+      var user = result.user
+      // console.log('GoogleToken = ' + token)
+      // console.log('user = ' + user)
+      // auth.onAuthStateChanged(function(user) {
+      //   if (user) {
+      //     // User is signed in.
+      //     console.log('user2= ' + user)
+      //   }
+      // })
+
+      fetchData(result, 'g')
+      // SetloginStatus(true)
+    }),
+      function(error) {
+        // The provider's account email, can be used in case of
+        // auth/account-exists-with-different-credential to fetch the providers
+        // linked to the email:
+        var email = error.email
+        // The provider's credential:
+        var credential = error.credential
+        // In case of auth/account-exists-with-different-credential error,
+        // you can fetch the providers using this:
+        if (error.code === 'auth/account-exists-with-different-credential') {
+          auth.fetchSignInMethodsForEmail(email).then(function(providers) {
+            // The returned 'providers' is a list of the available providers
+            // linked to the email address. Please refer to the guide for a more
+            // complete explanation on how to recover from this error.
+          })
+        }
+      }
   }
   useEffect(() => {
     //console.log('changes = ' + JSON.stringify(changes))
