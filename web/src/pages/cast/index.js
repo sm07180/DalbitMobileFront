@@ -31,7 +31,7 @@ export default props => {
       // context.action.updateMediaHandler(hostHandler)
 
       const guestHandler = new Guest(audioSocketUrl, true)
-      // guestHandler.setAudioTag(audioReference.current)
+      guestHandler.setAudioTag(audioReference.current)
       guestHandler.setStreamId('stream1')
       setHandler(guestHandler)
       context.action.updateMediaHandler(guestHandler)

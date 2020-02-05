@@ -41,6 +41,6 @@ export const removeMicStream = stream => {
   navigator.mediaDevices.ondevicechange = null
   stream.getTracks().forEach(track => {
     track.stop()
-    // stream.removeTrack(track)
+    stream.removeTrack(track)
   })
 }
