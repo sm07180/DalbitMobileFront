@@ -32,6 +32,8 @@ export default props => {
       }
     }
   }
+
+  //슬라이더 안에 슬라이드 생성
   const arraySlide = slideInfo.map((item, index) => {
     const {id, title, url, name, reco, category, popu, avata} = item
     return (
@@ -89,12 +91,12 @@ const Content = styled.section``
 const MainSliderWrap = styled.div`
   overflow: hidden;
   position: relative;
-  height: 658px;
+  height: 580px;
 `
 
 const Bg = styled.div`
   position: absolute;
-  top: 0;
+  top: -78px;
   width: 100%;
   height: 658px;
   text-align: center;
@@ -111,10 +113,17 @@ const Bg = styled.div`
     border-radius: 50%;
     content: '';
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    &::before {
+      width: 145%;
+      margin-top: -215px;
+    }
+  }
 `
 
 const SliderItem = styled.div`
-  margin: 234px 0;
+  margin: 168px 0;
   .swiper-container {
     overflow: visible;
     width: 190px;
@@ -143,6 +152,17 @@ const SliderItem = styled.div`
     content: '';
     z-index: -1; */
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin: 180px 0;
+    .swiper-container {
+      width: 160px;
+      height: 160px;
+    }
+    .swiper-slide {
+      width: 160px;
+    }
+  }
 `
 
 const Slide = styled.div`
@@ -168,6 +188,9 @@ const ImgBox = styled.div`
   height: 190px;
   border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center / cover;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 160px;
+  }
 `
 
 const SwiperWrap = styled.div``
@@ -185,11 +208,20 @@ const Selecter = styled.div`
     border-radius: 50%;
     background-image: linear-gradient(to bottom, #feac2c 25%, rgba(254, 172, 44, 0) 91%, rgba(254, 172, 44, 0));
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 386px;
+    height: 386px;
+    div {
+      top: -271px;
+      height: 386px;
+    }
+  }
 `
 
 const ActiveItem = styled.div`
   position: absolute;
-  bottom: 65px;
+  bottom: 56px;
   width: 100%;
   text-align: center;
   z-index: 3;
@@ -233,10 +265,13 @@ const ActiveItem = styled.div`
 
 const ActiveState = styled.div`
   position: absolute;
-  top: 138px;
+  top: 70px;
   width: 100%;
   text-align: center;
   z-index: 3;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    top: 94px;
+  }
 `
 
 const ProfileLikeImg = `${IMG_SERVER}/images/api/ico-like-w-l.svg`
@@ -253,5 +288,9 @@ const ProfileState = styled.p`
 
   & + & {
     margin-left: 30px;
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    padding-top: 45px;
   }
 `

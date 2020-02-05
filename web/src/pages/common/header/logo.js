@@ -7,17 +7,21 @@
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_TABLET} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
 //
-export default () => {
+export default props => {
   //const
-  const url = `${IMG_SERVER}/images/api/ic_logo_normal.png`
+  const urlPc = `${IMG_SERVER}/images/api/ic_logo_normal.png`
+  const urlMobile = `${IMG_SERVER}/images/api/ic_logo_normal_w.png`
+  const urlMobileSub = `${IMG_SERVER}/images/api/ic_logo_mobile_w.png`
   //---------------------------------------------------------------------
   return (
-    <Content className="logo">
+    <Content className={['logo', ...props.type]}>
       <Link to="/">
-        <img src={url} />
+        <img src={urlPc} className="pc" />
+        <img src={urlMobile} className="mobile" />
+        <img src={urlMobileSub} className="mobilesub" />
       </Link>
     </Content>
   )
@@ -28,7 +32,7 @@ const Content = styled.div`
   top: 16px;
   left: 24px;
   width: 20%;
-  box-sizing: border-box;
+  z-index: 1;
   a {
     display: inline-block;
     max-width: 184px;
@@ -37,6 +41,51 @@ const Content = styled.div`
       width: 100%;
       height: auto;
       vertical-align: top;
+    }
+    img.mobile,
+    img.mobilesub {
+      display: none;
+    }
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    top: 10px;
+    left: 14px;
+    width: 38%;
+    a {
+      max-width: 160px;
+      min-width: 100px;
+      img.mobile {
+        display: block;
+      }
+      img.pc {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    &.scroll,
+    &.sub {
+      a {
+        img.mobile {
+          display: none;
+        }
+        img.mobilesub {
+          display: block;
+          width: 40px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    &.scroll,
+    &.sub {
+      a {
+        img.mobilesub {
+          width: 32px;
+        }
+      }
     }
   }
 `

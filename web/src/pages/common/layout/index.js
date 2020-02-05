@@ -4,12 +4,8 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {WIDTH_MOBILE} from 'context/config'
-import {WIDTH_TABLET} from 'context/config'
-import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC_S} from 'context/config'
 import {Context} from 'context'
-import {HEADER_HEIGHT} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //layout
 import Header from 'pages/common/header'
 import Footer from 'pages/common/footer'
@@ -71,6 +67,7 @@ const Container = styled.div`
   main {
     display: block;
     width: 100%;
+    padding-top: 80px;
     z-index: 1;
     @media (max-width: ${WIDTH_PC}) {
       width: 100%;
@@ -79,18 +76,19 @@ const Container = styled.div`
     @media (max-width: ${WIDTH_PC_S}) {
       width: 100%;
     }
-    @media (max-width: ${WIDTH_TABLET}) {
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      padding-top: 64px;
       width: 100%;
     }
-    @media (max-width: ${WIDTH_MOBILE}) {
-      width: 100%;
+    @media (max-width: ${WIDTH_MOBILE_S}) {
+      padding-top: 56px;
     }
     /* 컨텐츠내용 */
     article {
       position: relative;
     }
   }
-  main.sub {
-    padding-top: 80px;
-  }
+  /* main.sub {
+    
+  } */
 `
