@@ -37,6 +37,8 @@ export default props => {
     {id: 9, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
     {id: 10, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'}
   ]
+  const LoginInfo = {id: 1, name: '내 고유 ID', title: '떠오르는 아침 햇살', url: 'https://devimage.dalbitcast.com/images/api/profileLogin.png'}
+
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
@@ -48,7 +50,7 @@ export default props => {
         return <GnbSearch />
         break
       case 'mypage': //마이페이지
-        return <GnbMypage />
+        return <GnbMypage LoginInfo={LoginInfo} />
         break
       case 'notice': //알람
         return <GnbNotice NoticeInfo={NoticeInfo} />

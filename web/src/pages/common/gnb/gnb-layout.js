@@ -59,4 +59,6 @@ const Close = styled.button`
   background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
 `
 
-const Wrap = styled.div``
+const Wrap = styled.div`
+  height: 100%;
+`

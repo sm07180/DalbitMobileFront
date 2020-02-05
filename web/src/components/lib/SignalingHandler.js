@@ -1,15 +1,13 @@
 export class SignalingHandler {
-  constructor(socketUrl, stream, audioTag, debug) {
+  constructor(socketUrl, debug) {
     this.url = socketUrl
     this.ws = null
-    this.micStream = stream
     this.streamId = null
     this.token = null
     this.room = null
     this.rtcPeerConn = null
     this.rtcDescription = null
     this.iceCandidate = []
-    this.audioTag = audioTag
     this.debug = debug ? debug : false
     this.sdpConstraints = {
       OfferToReceiveAudio: false,
@@ -20,9 +18,6 @@ export class SignalingHandler {
     this.wSocketInit()
   }
 
-  setMicStream(stream) {
-    this.micStream = stream
-  }
   setStreamId(id) {
     this.streamId = id
   }
@@ -282,11 +277,20 @@ export class SignalingHandler {
 }
 
 export class Host extends SignalingHandler {
-  constructor(socketUrl, stream, debug) {
-    super(socketUrl, stream, debug)
+  constructor(socketUrl, debug) {
+    super(socketUrl, debug)
     this.type = 'host'
+    this.micStream = null
+  }
+
+  setMicStream(stream) {
+    this.micStream = stream
   }
   publish() {
+    if (!this.micStream) {
+      return alert('Need a mic stream')
+    }
+
     const cmd = {
       command: 'publish',
       streamId: this.streamId,
@@ -298,11 +302,19 @@ export class Host extends SignalingHandler {
   }
 }
 export class Guest extends SignalingHandler {
-  constructor(socketUrl, stream, debug) {
-    super(socketUrl, stream, debug)
+  constructor(socketUrl, debug) {
+    super(socketUrl, debug)
     this.type = 'guest'
+    this.audioTag = null
+  }
+
+  setAudioTag(audioTag) {
+    this.audioTag = audioTag
   }
   play() {
+    if (!this.audioTag) {
+      return alert('Need a audio tag')
+    }
     const cmd = {
       command: 'play',
       streamId: this.streamId,

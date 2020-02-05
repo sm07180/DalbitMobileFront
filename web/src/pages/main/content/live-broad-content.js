@@ -101,7 +101,7 @@ const InfoWrap = styled.div`
 `
 const Category = styled.span`
   display: block;
-  margin: 18px 0 18px 0;
+  margin: 20px 0 18px 0;
   color: #bdbdbd;
   font-size: 14px;
   text-align: left;
@@ -128,7 +128,7 @@ const BjName = styled.h4`
 `
 const People = styled.div`
   position: absolute;
-  bottom: 24px;
+  bottom: 30px;
   left: 0;
   width: 100%;
   height: 24px;
