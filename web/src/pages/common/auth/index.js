@@ -250,6 +250,7 @@ export default props => {
       {/* <SnsGoogleLogion tton onClick={() => responseGooglelogin()}>
         SIGN IN WITH GOOGLE
       </SnsGoogleLogion> */}
+
       {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}
       {/* {currentUser ? (
