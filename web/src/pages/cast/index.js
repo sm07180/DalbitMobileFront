@@ -24,11 +24,13 @@ export default props => {
     ;(async () => {
       // const stream = await getMicStream()
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      // const hostHandler = new Host(audioSocketUrl, stream, null, true)
-      const guestHandler = new Guest(audioSocketUrl, null, audioReference.current, true)
+      // const hostHandler = new Host(audioSocketUrl, true)
+      const guestHandler = new Guest(audioSocketUrl, true)
 
       // hostHandler.setMicStream(stream)
       // hostHandler.setStreamId('stream1')
+
+      guestHandler.setAudioTag(audioReference.current)
       guestHandler.setStreamId('stream1')
 
       // setHandler(hostHandler)
