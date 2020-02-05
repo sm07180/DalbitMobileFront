@@ -245,9 +245,9 @@ export default props => {
       /> */}
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
 
-      {/* <SnsGoogleLogion tton onClick={() => responseGooglelogin()}>
+      <SnsGoogleLogion tton onClick={() => responseGooglelogin()}>
         SIGN IN WITH GOOGLE
-      </SnsGoogleLogion> */}
+      </SnsGoogleLogion>
       {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}
       {/* {currentUser ? (
