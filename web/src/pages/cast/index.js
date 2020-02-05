@@ -2,7 +2,7 @@
  * @file /login/index.js
  * @brief 로그인
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
@@ -11,22 +11,30 @@ import {Context} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream} from 'components/lib/makeMicStream'
-import {Host} from 'components/lib/SignalingHandler'
+import {Host, Guest} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
   const [handler, setHandler] = useState(null)
+  const audioReference = useRef()
 
   // temp init
   useEffect(() => {
     // initialize mic stream and audio socket.
     ;(async () => {
-      const stream = await getMicStream()
+      // const stream = await getMicStream()
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const sHandler = new Host(audioSocketUrl, stream, true)
-      sHandler.setStreamId('stream1')
-      sHandler.setMicStream(stream)
-      setHandler(sHandler)
+      // const hostHandler = new Host(audioSocketUrl, stream, null, true)
+      const guestHandler = new Guest(audioSocketUrl, null, audioReference.current, true)
+
+      // hostHandler.setMicStream(stream)
+      // hostHandler.setStreamId('stream1')
+      guestHandler.setStreamId('stream1')
+
+      // setHandler(hostHandler)
+      setHandler(guestHandler)
+      context.action.updateMediaHandler(guestHandler)
+
       // console.log(audioStream.getAudioTracks())
     })()
 
@@ -39,7 +47,7 @@ export default props => {
         <div>
           <button
             onClick={() => {
-              if (handler.ws) {
+              if (handler.ws && handler.publish) {
                 handler.publish()
               }
             }}>
@@ -54,6 +62,20 @@ export default props => {
               }
             }}>
             stop
+          </button>
+        </div>
+
+        <div>
+          <audio ref={audioReference} id="test-audio" autoPlay controls></audio>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              if (handler.ws && handler.play) {
+                handler.play()
+              }
+            }}>
+            play
           </button>
         </div>
       </Content>

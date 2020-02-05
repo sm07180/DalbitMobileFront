@@ -17,26 +17,13 @@
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   </head>
   <body>
+    <!-- 
+    APP->REACT로 초기 랜더링시 전달해주는값 
+    @notice  <div id="root"></div> 앞에 전달되어야함
+    -->
+    <textarea name="customHeader" id="customHeader" style="display:none;">
+        { "locale" : "KR", "deviceId" : "5E5D8EE5-FC84-40BE-84D7-73598ABC9FEB", "os" : "2", "language" : "ko", "deviceToken" : "d6ZW5ZHyEUI9qVeLhXyItO:APA91bH4hFV0H4pWv6CIvT2LAUVwfiHKeVos0rbSZE8x4DTmkbxns9XwP6f3t_qXEkaHWxvJtpO6hTAaNzFtY59l5pG1Rv_Rt0zBD5C1paVnrgFavJOGBgeUJ2rDsElEPI9deFVsj2WV" }</textarea
+    >
     <div id="root"></div>
   </body>
-  <!-- 
-    APP->REACT로 초기 랜더링시 전달해주는값 
-    @todo router 가능하게
-    @param CUSTOMHEADER : string
-  -->
-  <input type="hidden" id="CUSTOMHEADER" value="" />
-  <!-- 
-    APP->REACT로 초기 랜더링시 전달해주는값 
-    @todo http://devapi2.dalbitcast.com/token
-    @code { "locale" : "KR", "deviceId" : "5E5D8EE5-FC84-40BE-84D7-73598ABC9FEB", 
-          "os" : "2", "language" : "ko", 
-          "deviceToken" : "d6ZW5ZHyEUI9qVeLhXyIt" }
-  -->
-  <textarea
-    name="customHeader"
-    id="customHeader"
-    style="display:none;"
-    value='
-  { "locale" : "KR", "deviceId" : "5E5D8EE5-FC84-40BE-84D7-73598ABC9FEB", "os" : "2", "language" : "ko", "deviceToken" : "d6ZW5ZHyEUI9qVeLhXyItO:APA91bH4hFV0H4pWv6CIvT2LAUVwfiHKeVos0rbSZE8x4DTmkbxns9XwP6f3t_qXEkaHWxvJtpO6hTAaNzFtY59l5pG1Rv_Rt0zBD5C1paVnrgFavJOGBgeUJ2rDsElEPI9deFVsj2WV" }'
-  ></textarea>
 </html>

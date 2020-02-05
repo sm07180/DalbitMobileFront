@@ -1,28 +1,41 @@
 /**
  * @file App.js
- * @brief React실행시토큰검증및 필수작업
+ * @brief React 최초실행시토큰검증및 필수작업
  * @notice
  */
-import React, {useContext} from 'react'
-
+import React, {useMemo, useState, useEffect, useContext} from 'react'
+//components
+import Api from 'context/api'
 //context
 import {Context} from 'context'
 /*-Route-*/
 import Route from './Route'
 
 export default () => {
+  //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  //useState
+  const [fetch, setFetch] = useState(null)
 
-  const obj = {
-    locale: 'KR',
-    deviceId: '5E5D8EE5-FC84-40BE-84D7-73598ABC9FEB',
-    os: '2',
-    language: 'ko',
-    deviceToken: 'd6ZW5ZHyEUI9qVeLhXyItO:APA91bH4hFV0H4pWv6CIvT2LAUVwfiHKeVos0rbSZE8x4DTmkbxns9XwP6f3t_qXEkaHWxvJtpO6hTAaNzFtY59l5pG1Rv_Rt0zBD5C1paVnrgFavJOGBgeUJ2rDsElEPI9deFVsj2WV'
+  //SERVER & APP -> REACT
+  const customHeader = useMemo(() => {
+    const element = document.getElementById('customHeader')
+    if (element === null) return
+    if (element.value === null || element.value === '') return
+    return typeof JSON.parse(element.value) === 'object' && JSON.parse(element.value)
+  })
+  //---------------------------------------------------------------------
+  //fetch
+  async function fetchData(obj) {
+    const res = await Api.getToken({...obj})
+    setFetch(res)
+    console.log(res)
   }
-  console.log(JSON.stringify(obj))
-  //---------------------------------------------------------------------방송관련
-
+  //useEffect
+  useEffect(() => {
+    fetchData({data: customHeader})
+  }, [])
+  //---------------------------------------------------------------------
   return <Route />
 }

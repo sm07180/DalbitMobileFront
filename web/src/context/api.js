@@ -268,7 +268,7 @@ export default class API {
    */
 
   static getToken = async obj => {
-    const {url, method, data} = obj || {}
+    const {url, method, params, data} = obj || {}
     return await ajax({...obj, url: url || `/token`, method: method || 'GET', data: data})
   }
 
@@ -596,7 +596,7 @@ export const ajax = async obj => {
       },
       url: API_SERVER + url,
       params: params,
-      data: qs.stringify(data)
+      data: data
     })
     // table 모양 로그출력
     //console.table(res.data)
