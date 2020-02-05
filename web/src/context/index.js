@@ -6,7 +6,7 @@ const store = useContext(Context)
 
  */
 import React, {useEffect, useState, createContext} from 'react'
-
+import API from 'context/api'
 //Context
 const Context = createContext()
 const {Provider} = Context
@@ -18,6 +18,8 @@ const GlobalProvider = props => {
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false})
+  const [customHeader, setCustomHeader] = useState(null)
+  const [token, setToken] = useState(null)
   const [popup_code, setPopup] = useState('')
   const [popup_visible, setVisible] = useState(false)
   const [gnb_visible, setGnbVisible] = useState(false)
@@ -30,6 +32,30 @@ const GlobalProvider = props => {
     //updateState
     updateState: obj => {
       setState(state => ({...state, ...obj}))
+    },
+    //updateCustomHeader
+    /**
+     * @brief customHeader, Server->React
+     * @param string locale                  // 국가코드
+     * @param string deviceId                // 디바이스 ID
+     * @param string os                      // OS
+     * @param string language                // 언어
+     * @param string deviceToken             // 디바이스토큰
+     */
+    updateCustomHeader: obj => {
+      setCustomHeader(obj)
+    },
+    /**
+     * @brief 토큰업데이트, authToken 및 login여부
+     * @param string authToken                  // authToken
+     * @param string memNo                      // 회원번호
+     * @param bool isLogin                      // 로그인 여부
+     */
+    updateToken: obj => {
+      const {authToken} = obj
+      console.log(authToken)
+      API.setAuthToken(authToken)
+      setToken(obj)
     },
     //팝업컨텐츠
     updatePopup: str => {
@@ -66,6 +92,7 @@ const GlobalProvider = props => {
   //---------------------------------------------------------------------
   const value = {
     state,
+    token,
     login_state,
     popup_code,
     popup_visible,

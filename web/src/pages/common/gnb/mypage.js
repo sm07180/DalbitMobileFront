@@ -283,6 +283,12 @@ const NavWrap = styled.div`
   padding: 20px 20px 0 20px;
   box-sizing: border-box;
   background-color: white;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: calc(100% - 340px);
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: calc(100% - 348px);
+  }
 `
 
 const LinkLi = styled.div`
