@@ -34,7 +34,7 @@ const LiveBigInfo = [
     id: '1',
     title: '오후의 잠을 깨워줄 상큼한 목소리 들어요',
     url: 'https://www.sports-g.com/wp-content/uploads/2019/01/%EC%A0%84%EC%A7%80%ED%98%84-%EC%9D%B8%EC%8A%A4%ED%83%80%EA%B7%B8%EB%9E%A8.jpg',
-    name: '★ 하늘하늘이에요',
+    name: '★ 하늘하늘이에요  test code',
     avata: 'http://static.news.zumst.com/images/53/2014/01/15/20140115163337743865.jpg',
     people: '1231',
     like: '8902'

@@ -171,7 +171,6 @@ const Main = props => {
         <Border2 />
         <ContentList type="live" />
       </ContentListWrap>
-      eddfsfsdf
     </Layout>
   )
 }

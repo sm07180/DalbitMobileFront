@@ -67,7 +67,7 @@ export default props => {
             <button>방송 바로가기</button>
             <span>신입 DJ</span>
             <b>오후 잠을 깨워줄 상큼한 목소리 들어요</b>
-            <p>★하늘하늘이에요</p>
+            <p>★하늘하늘이에요 test code </p>
           </ActiveItem>
           {/* 레코드 모양 선택 애니메이션 레이아웃 */}
           <Selecter>
