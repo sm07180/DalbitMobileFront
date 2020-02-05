@@ -17,10 +17,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 //firebase.analytics()
 
-// export const auth = firebase.auth()
-// export const firestore = firebase.firestore()
+export const auth = firebase.auth()
+export const firestore = firebase.firestore()
 
-// const Googleprovider = new firebase.auth.GoogleAuthProvider()
+const Googleprovider = new firebase.auth.GoogleAuthProvider()
+
 // const Fbprovider = new firebase.auth.FacebookAuthProvider()
 // // GoogleAuthProvider 클래스를 authentication 라이브러리에서 사용할 수 있도록 불러오는 코드.
 // Googleprovider.setCustomParameters({prompt: 'select_account'})
