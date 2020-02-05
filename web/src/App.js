@@ -16,7 +16,10 @@ export default () => {
 
   //SERVER & APP -> REACT
   const customHeader = useMemo(() => {
+    if (document.getElementById('customHeader') === null) return
     const ele = document.getElementById('customHeader').value
+    //예외처리
+    if (ele === null || ele === '') return
     console.log(ele)
   })
 
