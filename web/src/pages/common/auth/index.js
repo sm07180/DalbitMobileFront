@@ -114,7 +114,7 @@ export default props => {
           props.history.push('/user/join', loginInfo)
         }
       }
-      alert(res.message)
+      //alert(res.message)
     } else {
       console.error('서버에서 결과 코드가 안내려옴')
       context.action.updateLogin(false)
@@ -169,7 +169,7 @@ export default props => {
       //   }
       // })
       fetchData(result, 'g')
-      alert(JSON.stringify(result, null, 1))
+      //alert(JSON.stringify(result, null, 1))
       // SetloginStatus(true)
     }),
       function(error) {
