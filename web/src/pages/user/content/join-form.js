@@ -6,58 +6,74 @@ import Input from './input-type'
 import Datepicker from './style-datepicker'
 //import Button from './style-button'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
-
+import moment from 'moment'
 import Api from 'context/api'
 
 const JoinForm = props => {
+  const d = new Date()
+  const date = moment(d).format('YYYYMMDD')
+  console.log(date)
+  let leadingZeros = (n, digits) => {
+    var zero = ''
+    n = n.toString()
+    if (n.length < digits) {
+      for (var i = 0; i < digits - n.length; i++) zero += '0'
+    }
+    return zero + n
+  }
+  console.log(JSON.stringify(props), null, 1)
+  let birthFormat = d.getFullYear() + leadingZeros(d.getMonth() + 1, 2) + leadingZeros(d.getDate(), 2)
   const [boxState, setBoxState] = useState(false)
-  const {loginID, loginNickNm, loginName, gender, birth, image, memType, osName} = props.location.state
-  const [changes, setChanges] = useState({...props.location.state, birth: new Date()})
+  const [changes, setChanges] = useState({
+    loginID: '',
+    loginNickNm: '',
+    loginName: '',
+    birth: birthFormat,
+    gender: 'm',
+    image: '',
+    memType: 'p',
+    osName: 3,
+    ...props.location.state
+  })
+  const {loginID, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
   const [fetch, setFetch] = useState(null)
 
   // changes 의 변화의 따라 값을 넘기지 못한다. 20200204 제기랄
   const onLoginHandleChange = e => {
-    console.log('------')
     setChanges({...changes, [e.target.name]: e.target.value})
   }
 
   async function fetchData() {
     //console.log(JSON.stringify(obj))
-    console.log('회원가입 버튼 클릭 = ' + JSON.stringify(props))
+    console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(props))
+    console.log('changes = ' + JSON.stringify(changes))
     console.log('----')
     let birthYY = ''
     let birthMM = ''
     let birthDD = ''
 
-    console.log('birth = ' + birth)
+    console.log('birth = ' + changes.birth)
     if (changes.birth) {
-      birthYY = birth.substring(0, 4)
-      birthMM = birth.substring(5, 6)
-      birthDD = birth.substring(7, 8)
+      birthYY = changes.birth.substring(0, 4)
+      birthMM = changes.birth.substring(4, 6)
+      birthDD = changes.birth.substring(6, 8)
     }
-
-    console.log('birthYY = ' + birthYY)
-    console.log('birthMM = ' + birthMM)
-    console.log('birthDD = ' + birthDD)
-    //if(props.loginNickNm)
     const res = await Api.member_join({
       data: {
         memType: memType,
         memId: loginID,
         gender: 'm',
-        nickNm: loginNickNm,
-        birthYY: birthYY,
-        birthMM: birthMM,
-        birthDD: birthDD,
+        nickNm: changes.loginNickNm,
+        birth: changes.birth,
         term1: 'y',
         term2: 'y',
         term3: 'y',
-        name: props.loginName,
+        name: changes.loginName,
         os: osName
       }
     })
     setFetch(res)
-    console.log('회원가입 = ' + JSON.stringify(res))
+    console.log('회원가입 REST 결과값 = ' + JSON.stringify(res))
     if (res && res.code) {
       if (res.code == 0) {
         alert(res.message)
@@ -69,25 +85,30 @@ const JoinForm = props => {
   }
 
   useEffect(() => {
-    console.log('changes = ' + JSON.stringify(changes, null, 1))
+    console.clear()
+    console.log(JSON.stringify(changes, null, 1))
   }, [changes])
 
   return (
     <>
+      인증번호 입력
+      <input type="phone" name="loginID" defaultValue={changes.loginID} onChange={onLoginHandleChange} />
+      {/* <Input type="phone" name="loginID" onChange={onLoginHandleChange} /> */}
+      {/* <Button text="인증번호 받기" joinState={props.joinState} update={props.update} /> */}
+      <Button text="인증번호 받기">인증번호 받기</Button>
       <JoinText>
         입력하신 번호는 안전하게 보관됩니다. <br />
         휴대폰 번호 인증 후 새로운 비밀번호로 재등록 하셔야 합니다.
       </JoinText>
-
       <FormWrap>
         닉네임
-        <input type="text" name="loginNickNm" defaultValue={loginNickNm} onChange={onLoginHandleChange} />
+        <input type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} />
         실명
-        <input type="text" name="loginName" defaultValue={loginName} onChange={onLoginHandleChange} />
+        <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} />
         <Input type="password" />
         <Label before={true} text="성별" />
-        <input type="radio" name="gender" value="남성" defaultChecked={gender === 'm' ? true : false} /> 남성
-        <input type="radio" name="gender" value="여성" defaultChecked={gender === 'f' ? true : false} /> 여성
+        <input type="radio" name="gender" value="남성" defaultChecked={changes.gender === 'm' ? true : false} /> 남성
+        <input type="radio" name="gender" value="여성" defaultChecked={changes.gender === 'f' ? true : false} /> 여성
         <input type="text" name="birth" defaultValue={changes.birth} onChange={onLoginHandleChange} />
         {/* <Datepicker
           text="생년월일"

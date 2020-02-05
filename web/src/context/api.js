@@ -299,9 +299,7 @@ export default class API {
    * @param string memPwd               //비밀번호
    * @param string gender            //*성별
    * @param string nickNm            //*닉네임
-   * @param string birthYY           //*생년
-   * @param string birthMM           //*생월
-   * @param string birthDD           //*생일
+   * @param string birth           //*생년월일
    * @param string term1           //*약관동의1
    * @param string term2           //*약관동의2
    * @param string term3           //*약관동의3

@@ -32,18 +32,16 @@ export default props => {
   const [changes, setChanges] = useState({})
 
   const context = useContext(Context)
+  let loginId = ''
+  let loginOs = ''
+  let loginName = ''
+  let loginImg = ''
 
+  if (osName == 'IOS') loginOs = 2
+  else if (osName == 'Android') loginOs = 1
+  else loginOs = 3
   //fetch
   async function fetchData(obj, ostype) {
-    let loginId = ''
-    let loginOs = ''
-    let loginName = ''
-    let loginImg = ''
-
-    if (osName == 'IOS') loginOs = 2
-    else if (osName == 'Android') loginOs = 1
-    else loginOs = 3
-
     switch (ostype) {
       case 'g':
         loginId = obj.additionalUserInfo.profile.id
@@ -222,7 +220,7 @@ export default props => {
           </button>
           <button
             onClick={() => {
-              props.history.push('/user/join', loginInfo)
+              props.history.push('/user/join')
               context.action.updatePopupVisible(false)
             }}>
             회원가입

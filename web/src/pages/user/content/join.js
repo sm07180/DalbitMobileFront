@@ -34,7 +34,7 @@ const User = props => {
       <Logo>
         <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
       </Logo>
-      <JoinAuth {...props} />
+      {/* <JoinAuth {...props} /> */}
       <JoinForm {...props} />
     </Content>
   )
