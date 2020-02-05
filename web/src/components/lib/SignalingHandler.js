@@ -41,7 +41,9 @@ export class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
-    if (this.audioTag.srcObject) {
+
+    // guest stop
+    if (this.audioTag && this.audioTag.srcObject) {
       this.audioTag.pause()
       this.audioTag.srcObject = null
     }
@@ -254,13 +256,8 @@ export class SignalingHandler {
         case 'notification': {
           const {definition} = format
           if (definition === 'play_started') {
-            console.log('Guest Play started')
-          } else if (definition === 'play_finished') {
-            if (this.audioTag.srcObject) {
-              this.stop()
-            }
-            console.log('Guest Play Stopped')
-          } else if (definition === 'publish_finished') {
+          } else if (definition === 'play_finished' || definition === 'publish_finished') {
+            this.stop()
           }
           break
         }
@@ -268,6 +265,8 @@ export class SignalingHandler {
           break
         }
         case 'error': {
+          const {definition} = format
+          alert(JSON.stringify(definition))
           break
         }
         case 'pong': {
