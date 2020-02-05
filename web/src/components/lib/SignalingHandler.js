@@ -1,5 +1,5 @@
 export class SignalingHandler {
-  constructor(socketUrl, stream, debug) {
+  constructor(socketUrl, stream, audioTag, debug) {
     this.url = socketUrl
     this.ws = null
     this.micStream = stream
@@ -9,6 +9,7 @@ export class SignalingHandler {
     this.rtcPeerConn = null
     this.rtcDescription = null
     this.iceCandidate = []
+    this.audioTag = audioTag
     this.debug = debug ? debug : false
     this.sdpConstraints = {
       OfferToReceiveAudio: false,
@@ -33,25 +34,6 @@ export class SignalingHandler {
   /**
    * about websocket command method
    */
-  publish() {
-    const cmd = {
-      command: 'publish',
-      streamId: this.streamId,
-      token: this.token,
-      audio: this.micStream.getAudioTracks().length > 0 ? true : false,
-      video: false
-    }
-    this.socketSendMsg(cmd)
-  }
-  play() {
-    const cmd = {
-      command: 'play',
-      streamId: this.streamdId,
-      token: this.token,
-      room: this.room
-    }
-    this.socketSendMsg(cmd)
-  }
   stop() {
     this.closePeerConnection()
     const cmd = {
@@ -59,6 +41,10 @@ export class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
+    if (this.audioTag.srcObject) {
+      this.audioTag.pause()
+      this.audioTag.srcObject = null
+    }
   }
   join() {
     const cmd = {
@@ -125,15 +111,21 @@ export class SignalingHandler {
       this.rtcPeerConn = new RTCPeerConnection()
       this.rtcDescription = false
       this.iceCandidate = []
-      this.rtcPeerConn.addTrack(this.micStream.getAudioTracks()[0])
+      if (this.type === 'host') {
+        this.rtcPeerConn.addTrack(this.micStream.getAudioTracks()[0])
+      }
       this.rtcPeerConn.onicecandidate = e => {
         this.iceCandidateReceived(e)
       }
-      this.rtcPeerConn.ontrack = e => {}
+      this.rtcPeerConn.ontrack = e => {
+        if (!this.audioTag.srcObject) {
+          this.audioTag.srcObject = e.streams[0]
+        }
+      }
     }
   }
   closePeerConnection() {
-    if (!this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
+    if (this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
       this.rtcPeerConn.close()
       this.rtcPeerConn = null
     }
@@ -168,11 +160,12 @@ export class SignalingHandler {
         })
         this.iceCandidate = []
 
+        // guest case
         if (_type === 'offer') {
           this.rtcPeerConn
             .createAnswer(this.sdpConstraints)
             .then(config => this.gotDescription(config))
-            .catch(err => console.error('create answer error'))
+            .catch(err => console.error('create answer error' + err))
         }
       })
       .catch(err => {
@@ -203,6 +196,9 @@ export class SignalingHandler {
         this.gotDescription(config)
       })
       .catch(err => console.log(err))
+  }
+  startPlaying() {
+    this.initPeerConnection()
   }
 
   wSocketInit() {
@@ -241,8 +237,6 @@ export class SignalingHandler {
           this.startPublishing()
           break
         }
-        case 'play': {
-        }
         case 'stop': {
           this.closePeerConnection()
           break
@@ -262,6 +256,9 @@ export class SignalingHandler {
           if (definition === 'play_started') {
             console.log('Guest Play started')
           } else if (definition === 'play_finished') {
+            if (this.audioTag.srcObject) {
+              this.stop()
+            }
             console.log('Guest Play Stopped')
           } else if (definition === 'publish_finished') {
           }
@@ -288,10 +285,32 @@ export class SignalingHandler {
 export class Host extends SignalingHandler {
   constructor(socketUrl, stream, debug) {
     super(socketUrl, stream, debug)
+    this.type = 'host'
+  }
+  publish() {
+    const cmd = {
+      command: 'publish',
+      streamId: this.streamId,
+      token: this.token,
+      audio: this.micStream.getAudioTracks().length > 0 ? true : false,
+      video: false
+    }
+    this.socketSendMsg(cmd)
   }
 }
 export class Guest extends SignalingHandler {
   constructor(socketUrl, stream, debug) {
     super(socketUrl, stream, debug)
+    this.type = 'guest'
+  }
+  play() {
+    const cmd = {
+      command: 'play',
+      streamId: this.streamId,
+      token: this.token,
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+    this.startPlaying()
   }
 }
