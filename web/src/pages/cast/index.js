@@ -22,18 +22,17 @@ export default props => {
   useEffect(() => {
     // initialize mic stream and audio socket.
     ;(async () => {
-      // const stream = await getMicStream()
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
+      // const stream = await getMicStream()
       // const hostHandler = new Host(audioSocketUrl, true)
-      const guestHandler = new Guest(audioSocketUrl, true)
-
       // hostHandler.setMicStream(stream)
       // hostHandler.setStreamId('stream1')
-
-      guestHandler.setAudioTag(audioReference.current)
-      guestHandler.setStreamId('stream1')
-
       // setHandler(hostHandler)
+      // context.action.updateMediaHandler(hostHandler)
+
+      const guestHandler = new Guest(audioSocketUrl, true)
+      // guestHandler.setAudioTag(audioReference.current)
+      guestHandler.setStreamId('stream1')
       setHandler(guestHandler)
       context.action.updateMediaHandler(guestHandler)
 

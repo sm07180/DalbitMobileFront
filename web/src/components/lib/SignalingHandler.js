@@ -287,6 +287,10 @@ export class Host extends SignalingHandler {
     this.micStream = stream
   }
   publish() {
+    if (!this.micStream) {
+      return alert('Need a mic stream')
+    }
+
     const cmd = {
       command: 'publish',
       streamId: this.streamId,
@@ -308,6 +312,9 @@ export class Guest extends SignalingHandler {
     this.audioTag = audioTag
   }
   play() {
+    if (!this.audioTag) {
+      return alert('Need a audio tag')
+    }
     const cmd = {
       command: 'play',
       streamId: this.streamId,
