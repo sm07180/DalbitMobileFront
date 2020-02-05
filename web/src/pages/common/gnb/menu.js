@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
+import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
 //component
@@ -74,6 +75,13 @@ const Nheader = styled.div`
     clear: both;
     content: '';
   }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 64px;
+  }
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    height: 56px;
+    padding: 10px 10px 16px 10px;
+  }
 `
 const ICON = styled.div`
   float: left;
@@ -81,6 +89,10 @@ const ICON = styled.div`
   height: 48px;
   margin-right: 10px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_menu_normal.png') no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    width: 36px;
+    height: 36px;
+  }
 `
 const Title = styled.h2`
   float: left;
@@ -89,6 +101,9 @@ const Title = styled.h2`
   line-height: 48px;
   letter-spacing: -0.5px;
   text-align: left;
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    line-height: 36px;
+  }
 `
 const CONTENT = styled.div`
   width: 100%;

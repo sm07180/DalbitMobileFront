@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -57,6 +58,12 @@ const Close = styled.button`
   width: 48px;
   height: 48px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    top: 10px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+  }
 `
 
 const Wrap = styled.div`
