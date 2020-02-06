@@ -308,7 +308,7 @@ export default class API {
    * @param int    profImgRacy          //프로필이미지 구글선정성
    * @param string email             //이메일
    * @param int    os                //*OS구분
-   * @param string deviceid          //디바이스 고유아이디
+   * @param string deviceid          //*디바이스 고유아이디
    * @param string deviceToken     //디바이스 토큰
    * @param string appVer            //앱 버전
    * @create 김호겸 2020.01.15
@@ -585,6 +585,7 @@ export default class API {
 export const ajax = async obj => {
   const {url, method, data, params} = obj
   const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
+
   try {
     let res = await axios({
       method: method,
@@ -594,7 +595,7 @@ export const ajax = async obj => {
       },
       url: API_SERVER + url,
       params: params,
-      data: data
+      data: qs.stringify(data)
     })
     // table 모양 로그출력
     //console.table(res.data)
