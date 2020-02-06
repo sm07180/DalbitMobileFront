@@ -21,6 +21,7 @@ useEffect(() => {
 
 import React, {useContext} from 'react'
 import axios from 'axios'
+import qs from 'qs'
 import {Context} from 'context'
 //component
 import {API_SERVER} from 'context/config'
@@ -616,7 +617,7 @@ export const ajax = async obj => {
       },
       url: API_SERVER + url,
       params: params,
-      data: data
+      data: qs.parse(data)
     })
     // table 모양 로그출력
     //console.table(res.data)
