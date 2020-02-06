@@ -83,6 +83,12 @@ const CONTENT = styled.div`
   padding: 24px 20px 0 20px;
   box-sizing: border-box;
   background-color: white;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: calc(100vh - 56px);
+  }
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    height: calc(100vh - 64px);
+  }
 `
 const InfoWrap = styled.div`
   width: 100%;

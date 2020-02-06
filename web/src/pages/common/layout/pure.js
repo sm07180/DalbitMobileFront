@@ -3,7 +3,7 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
-import Toggle from './toggle-footer'
+import Toggle from '../footer/toggle-footer'
 //context
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'

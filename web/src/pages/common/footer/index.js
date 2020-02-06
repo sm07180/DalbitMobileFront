@@ -3,7 +3,7 @@
  */
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import ToggleBtn from '../layout/toggle-footer'
+import ToggleBtn from './toggle-footer'
 //pages
 //---------------------------------------------------------------------
 export default props => {

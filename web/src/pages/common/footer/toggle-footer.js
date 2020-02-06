@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import Footer from '../footer'
+import Footer from '.'
 export default props => {
   const [show, setShow] = useState(true)
   const ToggleBtn = () => {
