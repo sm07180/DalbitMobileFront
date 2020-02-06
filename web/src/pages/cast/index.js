@@ -24,21 +24,27 @@ export default props => {
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
 
-      // const hostHandler = new Host(audioSocketUrl, true)
-      // const micStream = await getMicStream()
-      // hostHandler.setMicStream(micStream)
+      const hostHandler = new Host(audioSocketUrl, true)
+      const micStream = await getMicStream()
+      hostHandler.setMicStream(micStream)
       // const audioStream = await getAudioStream(audioReference.current)
       // console.log(audioStream)
       // hostHandler.setAudioStream(audioStream)
-      // hostHandler.setStreamId('stream1')
-      // setHandler(hostHandler)
-      // context.action.updateMediaHandler(hostHandler)
 
-      const listenerHandler = new Listener(audioSocketUrl, true)
-      listenerHandler.setAudioTag(audioReference.current)
-      listenerHandler.setStreamId('stream1')
-      setHandler(listenerHandler)
-      context.action.updateMediaHandler(listenerHandler)
+      const audioCtx = new AudioContext()
+      const audioStream = audioCtx.createMediaStreamDestination().stream
+      hostHandler.setAudioStream(audioStream)
+
+      hostHandler.setStreamId('stream1')
+      setHandler(hostHandler)
+      context.action.updateMediaHandler(hostHandler)
+
+      // listener
+      // const listenerHandler = new Listener(audioSocketUrl, true)
+      // listenerHandler.setAudioTag(audioReference.current)
+      // listenerHandler.setStreamId('stream1')
+      // setHandler(listenerHandler)
+      // context.action.updateMediaHandler(listenerHandler)
     })()
 
     return () => {}
@@ -47,7 +53,7 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        {/* <div>
+        <div>
           <button
             onClick={() => {
               if (handler.ws && handler.publish) {
@@ -56,7 +62,7 @@ export default props => {
             }}>
             publish
           </button>
-        </div> */}
+        </div>
 
         <div>
           <button
@@ -69,7 +75,7 @@ export default props => {
           </button>
         </div>
 
-        <div>
+        {/* <div>
           <audio ref={audioReference} autoPlay controls></audio>
         </div>
         <div>
@@ -81,7 +87,7 @@ export default props => {
             }}>
             play
           </button>
-        </div>
+        </div> */}
       </Content>
     </Layout>
   )
