@@ -600,10 +600,6 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
-<<<<<<< HEAD
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
-
-=======
   /**
    * @todo token이 undefined경우
    */
@@ -612,7 +608,6 @@ export const ajax = async obj => {
     //  console.log('REACT: token Error')
   }
   //const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
->>>>>>> 66a327ebbac1bbd03f3c4ec105cee0910ff790e1
   try {
     let res = await axios({
       method: method,
