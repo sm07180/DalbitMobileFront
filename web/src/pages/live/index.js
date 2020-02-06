@@ -32,7 +32,7 @@ export default props => {
   return (
     <LiveProvider>
       <Layout {...props}>
-        <Content />
+        <Content {...props} />
       </Layout>
     </LiveProvider>
   )
