@@ -21,7 +21,7 @@ const JoinForm = props => {
     }
     return zero + n
   }
-  console.log(JSON.stringify(props), null, 1)
+  console.log(JSON.stringify(changes, null, 1))
   let birthFormat = d.getFullYear() + leadingZeros(d.getMonth() + 1, 2) + leadingZeros(d.getDate(), 2)
   const [boxState, setBoxState] = useState(false)
   const [changes, setChanges] = useState({
@@ -31,8 +31,10 @@ const JoinForm = props => {
     birth: birthFormat,
     gender: 'm',
     image: '',
-    memType: 'p',
+    memType: '',
     osName: 3,
+    deviceid: '2200DDD1-77A',
+
     ...props.location.state
   })
   const {loginID, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
@@ -45,31 +47,33 @@ const JoinForm = props => {
 
   async function fetchData() {
     //console.log(JSON.stringify(obj))
-    console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(props))
-    console.log('changes = ' + JSON.stringify(changes))
-    console.log('----')
-    let birthYY = ''
-    let birthMM = ''
-    let birthDD = ''
+    console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
 
-    console.log('birth = ' + changes.birth)
-    if (changes.birth) {
-      birthYY = changes.birth.substring(0, 4)
-      birthMM = changes.birth.substring(4, 6)
-      birthDD = changes.birth.substring(6, 8)
-    }
+    // console.log(JSON.stringify(changes, null, 1))
     const res = await Api.member_join({
+      // data: {
+      //   memType: changes.memType,
+      //   memId: changes.loginID,
+      //   gender: changes.gender,
+      //   nickNm: changes.loginNickNm,
+      //   birth: changes.birth,
+      //   term1: 'y',
+      //   term2: 'y',
+      //   term3: 'y',
+      //   name: changes.loginName,
+      //   os: changes.osName
+      // }
       data: {
-        memType: memType,
-        memId: loginID,
+        memType: 'p',
+        memId: '1257420621112820',
         gender: 'm',
-        nickNm: changes.loginNickNm,
-        birth: changes.birth,
+        nickNm: 'asdasdas',
+        birth: '20201111',
         term1: 'y',
         term2: 'y',
         term3: 'y',
-        name: changes.loginName,
-        os: osName
+        name: '구렌나루',
+        os: 3
       }
     })
     setFetch(res)
