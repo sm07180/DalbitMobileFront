@@ -51,29 +51,17 @@ const JoinForm = props => {
 
     // console.log(JSON.stringify(changes, null, 1))
     const res = await Api.member_join({
-      // data: {
-      //   memType: changes.memType,
-      //   memId: changes.loginID,
-      //   gender: changes.gender,
-      //   nickNm: changes.loginNickNm,
-      //   birth: changes.birth,
-      //   term1: 'y',
-      //   term2: 'y',
-      //   term3: 'y',
-      //   name: changes.loginName,
-      //   os: changes.osName
-      // }
       data: {
-        memType: 'p',
-        memId: '1257420621112820',
-        gender: 'm',
-        nickNm: 'asdasdas',
-        birth: '20201111',
+        memType: changes.memType,
+        memId: changes.loginID,
+        gender: changes.gender,
+        nickNm: changes.loginNickNm,
+        birth: changes.birth,
         term1: 'y',
         term2: 'y',
         term3: 'y',
-        name: '구렌나루',
-        os: 3
+        name: changes.loginName,
+        os: changes.osName
       }
     })
     setFetch(res)

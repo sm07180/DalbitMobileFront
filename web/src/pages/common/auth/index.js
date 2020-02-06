@@ -106,6 +106,7 @@ export default props => {
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
+        let result = confirm(res.message)
         if (props.history) {
           switch (ostype) {
             case 'g':
@@ -114,7 +115,12 @@ export default props => {
               break
             default:
           }
-          props.history.push('/user/join', loginInfo)
+
+          if (result) {
+            props.history.push('/user/join', loginInfo)
+          } else {
+            alert('회원가입 하기 싫으니깐 메인으로 갈래!')
+          }
         }
       }
       //alert(res.message)
