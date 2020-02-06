@@ -65,7 +65,17 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/join`, method: method || 'POST', data: data})
   }
-
+  /**
+   * @brief 방송방 나가기
+   * @method "DELETE"
+   * @todo
+   * @param int roomNo                //*방송방번호
+   * @create 손완휘 2020.02.06
+   */
+  static broad_exit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/exit`, method: method || 'DELETE', data: data})
+  }
   /**
    * @brief 방송방 정보수정
    * @method "POST"

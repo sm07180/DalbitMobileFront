@@ -11,10 +11,12 @@ import Api from 'context/api'
 
 //
 export default props => {
+  console.log(props)
   //---------------------------------------------------------------------
   //context
   const store = useContext(Context)
   //useState
+  const [roomId, setRoomId] = useState(null)
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
   //fetch
@@ -29,10 +31,12 @@ export default props => {
   }
   //makeRoom
   const makeRoom = (roomNo, idx) => {
-    console.log(roomNo)
+    setRoomId(roomNo)
     //fetch
     async function fetchData(obj) {
       const res = await Api.broad_join({data: {roomNo: roomNo}})
+      console.log(res)
+      console.log(res.result)
       //Error발생시
       if (res.result === 'fail') {
         const {code, message} = res
@@ -40,7 +44,14 @@ export default props => {
         console.log(message)
         return
       }
-      console.log(res)
+      //성공
+      if (res.result === 'success') {
+        const {bjStreamId} = res.data
+        console.log(bjStreamId)
+        props.history.push('/cast', res.data)
+        // console.log(res.data)
+        return
+      }
     }
     fetchData()
   }
@@ -73,13 +84,25 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {page: 1, records: 30}})
+    fetchData({params: {roomType: 1, page: 1, records: 30}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="wrap">
+        <Button
+          onClick={() => {
+            //fetch
+            async function fetchData(obj) {
+              const res = await Api.broad_exit({...obj})
+              console.log(res)
+              alert(res.message)
+            }
+            fetchData({data: {roomNo: roomId}})
+          }}>
+          방나가기
+        </Button>
         <h1>방송방 리스트</h1>
         {makeContents()}
       </div>
@@ -97,12 +120,20 @@ const Content = styled.div`
     background: #e1e1e1;
   }
 `
+const Button = styled.button`
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 20px 0;
+  color: #fff;
+  background: #ff0000;
+`
 const List = styled.a`
   display: inline-block;
   margin: 10px;
   max-width: 150px;
   width: 240px;
-  height: 100px;
+
   padding: 10px;
   vertical-align: top;
   background-size: cover;

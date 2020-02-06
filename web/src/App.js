@@ -34,6 +34,7 @@ export default () => {
       Api.setAuthToken(res.data.authToken)
       context.action.updateToken(res.data)
       //ready
+      console.table(res.data)
       setReady(true)
     }
   }
