@@ -10,7 +10,7 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {micStream, audioStream} from 'components/lib/getStream'
+import {getMicStream, getAudioStream} from 'components/lib/getStream'
 import {Host, Guest} from 'components/lib/SignalingHandler'
 
 export default props => {
@@ -23,22 +23,22 @@ export default props => {
     // initialize mic stream and audio socket.
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const stream = await micStream()
-      const hostHandler = new Host(audioSocketUrl, true)
-      hostHandler.setMicStream(stream)
-      hostHandler.setStreamId('stream1')
-      setHandler(hostHandler)
-      context.action.updateMediaHandler(hostHandler)
 
-      // audioStream()
+      // const hostHandler = new Host(audioSocketUrl, true)
+      // const micStream = await getMicStream()
+      // hostHandler.setMicStream(micStream)
+      // const audioStream = await getAudioStream(audioReference.current)
+      // console.log(audioStream)
+      // hostHandler.setAudioStream(audioStream)
+      // hostHandler.setStreamId('stream1')
+      // setHandler(hostHandler)
+      // context.action.updateMediaHandler(hostHandler)
 
-      // const guestHandler = new Guest(audioSocketUrl, true)
-      // guestHandler.setAudioTag(audioReference.current)
-      // guestHandler.setStreamId('stream1')
-      // setHandler(guestHandler)
-      // context.action.updateMediaHandler(guestHandler)
-
-      // console.log(audioStream.getAudioTracks())
+      const guestHandler = new Guest(audioSocketUrl, true)
+      guestHandler.setAudioTag(audioReference.current)
+      guestHandler.setStreamId('stream1')
+      setHandler(guestHandler)
+      context.action.updateMediaHandler(guestHandler)
     })()
 
     return () => {}
@@ -47,7 +47,7 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               if (handler.ws && handler.publish) {
@@ -56,7 +56,8 @@ export default props => {
             }}>
             publish
           </button>
-        </div>
+        </div> */}
+
         <div>
           <button
             onClick={() => {
@@ -69,7 +70,7 @@ export default props => {
         </div>
 
         <div>
-          <audio ref={audioReference} id="test-audio" autoPlay controls></audio>
+          <audio ref={audioReference} autoPlay controls></audio>
         </div>
         <div>
           <button

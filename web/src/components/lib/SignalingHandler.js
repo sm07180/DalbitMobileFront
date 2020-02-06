@@ -113,6 +113,10 @@ export class SignalingHandler {
           const micAudioTrack = this.micStream.getAudioTracks()[0]
           this.rtcPeerConn.addTrack(micAudioTrack)
         }
+        if (this.audioStream) {
+          const audioTrack = this.audioStream.getAudioTracks()[0]
+          this.rtcPeerConn.addTrack(audioTrack)
+        }
       }
       this.rtcPeerConn.onicecandidate = e => {
         this.iceCandidateReceived(e)
