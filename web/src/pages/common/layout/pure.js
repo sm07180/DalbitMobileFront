@@ -25,9 +25,9 @@ const Layout = props => {
   return (
     <Container>
       {/* 헤더설정 */}
-      {/* <Logo>
+      <Logo>
         <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-      </Logo> */}
+      </Logo>
       {/* global navigation */}
       <main>
         <article>{children}</article>
@@ -49,19 +49,17 @@ const Container = styled.div`
   /* 메인페이지 */
   main {
     display: block;
-
     margin: 0 auto;
     width: 400px;
     z-index: 1;
-    @media (max-width: ${WIDTH_TABLET}) {
-      padding-left: 0;
-    }
     /* 컨텐츠내용 */
     article {
       position: relative;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 90%;
+    main {
+      width: 90%;
+    }
   }
 `

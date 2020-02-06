@@ -16,6 +16,18 @@ NanumSquareEB = 800
 
 // mixin & variables
 @import './global.scss';
+
+/*기본 컬러 및 브레이크 포인트, config와 동일.*/
+$WIDTH_PC: 1920px;
+$WIDTH_PC_S: 1280px; //디자인 시안 사이즈
+$WIDTH_TABLET: 1024px;
+$WIDTH_TABLET_S: 840px; //디자인 시안 사이즈
+$WIDTH_MOBILE: 600px;
+$WIDTH_MOBILE_S: 360px; //디자인 시안 사이즈
+$COLOR_MAIN: #8556f6;
+$COLOR_POINT_Y: #feac2c;
+$COLOR_POINT_P: #e84d70;
+
 // common styles
 * {
   margin: 0;
@@ -26,14 +38,18 @@ NanumSquareEB = 800
 html,
 body {
   font-family: 'NanumSquare';
+  font-size: 16px;
   font-weight: 400;
   -webkit-text-size-adjust: none;
   height: 100vh;
 }
 input,
 select,
-option {
-  font-family: inherit;
+option,
+button {
+  font-family: 'NanumSquare';
+  font: inherit;
+  transform: skew(-0.03deg);
 }
 img,
 svg {
@@ -270,8 +286,6 @@ button {
   display: inline-block;
   box-sizing: border-box;
   background: transparent;
-  font-family: sans-serif;
-  font-weight: 500;
 }
 input {
   display: inline-block;
@@ -286,4 +300,51 @@ input {
 //2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
 input[type='password'] {
   font-family: sans-serif;
+}
+
+/*input number pc에서 화살표 지우기*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/*기본 input text, number의 style 가이드*/
+input[type='text'],
+input[type='number'] {
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  padding: 0 16px;
+  color: #000;
+  font-size: 16px;
+  line-height: 48px;
+  outline: none;
+  transform: skew(-0.03deg);
+}
+input[type='text'].wide,
+input[type='number'].wide {
+  padding: 0 22px;
+  line-height: 54px;
+}
+input[type='text']::placeholder,
+input[type='number']::placeholder {
+  color: #616161;
+}
+input[type='text']:focus,
+input[type='number']:focus {
+  border: 1px solid $COLOR_MAIN;
+  color: #444444;
+}
+
+input[type='number'].auth {
+  float: left;
+  width: 72%;
+}
+
+@media (max-width: $WIDTH_MOBILE) {
 }

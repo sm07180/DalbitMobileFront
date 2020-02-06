@@ -143,6 +143,7 @@ const Content = styled.nav`
     justify-content: space-around;
     a {
       margin: 0;
+      padding: 6px;
     }
   }
   @media screen and (min-width: ${WIDTH_PC}) {
