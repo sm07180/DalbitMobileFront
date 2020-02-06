@@ -10,7 +10,7 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream, getAudioStream} from 'components/lib/getStream'
+import {getMicStream} from 'components/lib/getStream'
 import {Host, Listener} from 'components/lib/SignalingHandler'
 
 export default props => {
@@ -27,14 +27,6 @@ export default props => {
       const hostHandler = new Host(audioSocketUrl, true)
       const micStream = await getMicStream()
       hostHandler.setMicStream(micStream)
-      // const audioStream = await getAudioStream(audioReference.current)
-      // console.log(audioStream)
-      // hostHandler.setAudioStream(audioStream)
-
-      const audioCtx = new AudioContext()
-      const audioStream = audioCtx.createMediaStreamDestination().stream
-      hostHandler.setAudioStream(audioStream)
-
       hostHandler.setStreamId('stream1')
       setHandler(hostHandler)
       context.action.updateMediaHandler(hostHandler)

@@ -44,17 +44,3 @@ export const removeMicStream = stream => {
     stream.removeTrack(track)
   })
 }
-
-export const getAudioStream = async tag => {
-  const audioTag = await new Promise((resolve, reject) => {
-    tag.onloadeddata = () => {
-      console.log('loaded', tag)
-      resolve(tag)
-    }
-  })
-  const audioCtx = new AudioContext()
-  const source = audioCtx.createMediaElementSource(audioTag)
-  source.connect(audioCtx.destination)
-  const {stream} = audioCtx.createMediaStreamDestination()
-  return stream
-}

@@ -113,10 +113,6 @@ export class SignalingHandler {
           const micAudioTrack = this.micStream.getAudioTracks()[0]
           this.rtcPeerConn.addTrack(micAudioTrack)
         }
-        if (this.audioStream) {
-          const audioTrack = this.audioStream.getAudioTracks()[0]
-          this.rtcPeerConn.addTrack(audioTrack)
-        }
       }
       this.rtcPeerConn.onicecandidate = e => {
         this.iceCandidateReceived(e)
@@ -288,14 +284,10 @@ export class Host extends SignalingHandler {
     super(socketUrl, debug)
     this.type = 'host'
     this.micStream = null
-    this.audioStream = null
   }
 
   setMicStream(stream) {
     this.micStream = stream
-  }
-  setAudioStream(stream) {
-    this.audioStream = stream
   }
 
   publish() {
