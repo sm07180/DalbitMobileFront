@@ -11,7 +11,7 @@ import {Context} from 'context'
 //components
 import Api from 'context/api'
 import {getMicStream, getAudioStream} from 'components/lib/getStream'
-import {Host, Guest} from 'components/lib/SignalingHandler'
+import {Host, Listener} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
@@ -34,11 +34,11 @@ export default props => {
       // setHandler(hostHandler)
       // context.action.updateMediaHandler(hostHandler)
 
-      const guestHandler = new Guest(audioSocketUrl, true)
-      guestHandler.setAudioTag(audioReference.current)
-      guestHandler.setStreamId('stream1')
-      setHandler(guestHandler)
-      context.action.updateMediaHandler(guestHandler)
+      const listenerHandler = new Listener(audioSocketUrl, true)
+      listenerHandler.setAudioTag(audioReference.current)
+      listenerHandler.setStreamId('stream1')
+      setHandler(listenerHandler)
+      context.action.updateMediaHandler(listenerHandler)
     })()
 
     return () => {}
