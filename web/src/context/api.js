@@ -617,11 +617,7 @@ export const ajax = async obj => {
       },
       url: API_SERVER + url,
       params: params,
-<<<<<<< HEAD
       data: qs.stringify(data)
-=======
-      data: qs.parse(data)
->>>>>>> 66a327ebbac1bbd03f3c4ec105cee0910ff790e1
     })
     // table 모양 로그출력
     //console.table(res.data)
