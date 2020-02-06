@@ -6,7 +6,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //components
-// import {GoogleLogin} from 'react-google-login'
+import {GoogleLogin} from 'react-google-login'
 import KakaoLogin from 'react-kakao-login'
 import NaverLogin from 'react-naver-login'
 import FacebookLogin from 'react-facebook-login'
@@ -20,7 +20,7 @@ import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
-
+//import FacebookLogin from 'pages/common/auth/fbAuth'
 //context
 import {Context} from 'context'
 import {arrayTypeAnnotation} from '@babel/types'
@@ -28,6 +28,7 @@ import {arrayTypeAnnotation} from '@babel/types'
 
 export default props => {
   const [state, setState] = useState(false)
+  //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
   const [changes, setChanges] = useState({})
 
@@ -49,6 +50,10 @@ export default props => {
         loginImg = obj.additionalUserInfo.profile.picture
         break
       case 'f':
+        loginId = obj.userID
+        loginName = obj.name
+        loginImg = obj.picture.data.url
+
         break
       case 'k':
         break
@@ -101,6 +106,7 @@ export default props => {
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
+        let result = confirm(res.message)
         if (props.history) {
           switch (ostype) {
             case 'g':
@@ -109,7 +115,12 @@ export default props => {
               break
             default:
           }
-          props.history.push('/user/join', loginInfo)
+
+          if (result) {
+            props.history.push('/user/join', loginInfo)
+          } else {
+            alert('회원가입 하기 싫으니깐 메인으로 갈래!')
+          }
         }
       }
       //alert(res.message)
@@ -121,19 +132,20 @@ export default props => {
 
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
   const responseFacebook = response => {
-    if (response && response.name) console.log('RESTAPI POST!!!!')
-    // signup(response, 'facebook')
+    // status는 앱 사용자의 로그인 상태를 지정합니다. 상태는 다음 중 하나일 수 있습니다.
+    // connected - 사용자가 Facebook에 로그인하고 앱에 로그인했습니다.
+    // not_authorized - 사용자가 Facebook에는 로그인했지만 앱에는 로그인하지 않았습니다.
+    // unknown - 사용자가 Facebook에 로그인하지 않았으므로 사용자가 앱에 로그인했거나 FB.logout()이 호출되었는지 알 수 없어, Facebook에 연결할 수 없습니다.
+    // connected 상태인 경우 authResponse가 포함되며 다음과 같이 구성되어 있습니다.
+    // accessToken - 앱 사용자의 액세스 토큰이 포함되어 있습니다.
+    // expiresIn - 토큰이 만료되어 갱신해야 하는 UNIX 시간을 표시합니다.
+    // signedRequest - 앱 사용자에 대한 정보를 포함하는 서명된 매개변수입니다.
+    // userID - 앱 사용자의 ID입니다.
 
-    // setState({
-    //   isLoggedIn: true,
-    //   userID: response.userID,
-    //   name: response.name,
-    //   email: response.email,
-    //   picture: response.picture.data.callbackUrl
-    // })
+    fetchData(response, 'f')
   }
   const ComponentClicked = response => {
-    //console.log(response)
+    console.log('FB login click =' + response)
   }
   const responseNaver = response => {
     //console.log(response)
@@ -152,41 +164,41 @@ export default props => {
     setChanges({...changes, [e.target.name]: e.target.value})
   }
   function responseGooglelogin() {
-    signInWithGoogle().then(function(result) {
-      //console.log(result)
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      var token = result.credential.accessToken
-      // The signed-in user info.
-      var user = result.user
-      // console.log('GoogleToken = ' + token)
-      // console.log('user = ' + user)
-      // auth.onAuthStateChanged(function(user) {
-      //   if (user) {
-      //     // User is signed in.
-      //     console.log('user2= ' + user)
-      //   }
-      // })
-      fetchData(result, 'g')
-      //alert(JSON.stringify(result, null, 1))
-      // SetloginStatus(true)
-    }),
-      function(error) {
-        // The provider's account email, can be used in case of
-        // auth/account-exists-with-different-credential to fetch the providers
-        // linked to the email:
-        var email = error.email
-        // The provider's credential:
-        var credential = error.credential
-        // In case of auth/account-exists-with-different-credential error,
-        // you can fetch the providers using this:
-        if (error.code === 'auth/account-exists-with-different-credential') {
-          auth.fetchSignInMethodsForEmail(email).then(function(providers) {
-            // The returned 'providers' is a list of the available providers
-            // linked to the email address. Please refer to the guide for a more
-            // complete explanation on how to recover from this error.
-          })
-        }
-      }
+    // signInWithGoogle().then(function(result) {
+    //   //console.log(result)
+    //   // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+    //   var token = result.credential.accessToken
+    //   // The signed-in user info.
+    //   var user = result.user
+    //   // console.log('GoogleToken = ' + token)
+    //   // console.log('user = ' + user)
+    //   // auth.onAuthStateChanged(function(user) {
+    //   //   if (user) {
+    //   //     // User is signed in.
+    //   //     console.log('user2= ' + user)
+    //   //   }
+    //   // })
+    //   fetchData(result, 'g')
+    //   //alert(JSON.stringify(result, null, 1))
+    //   // SetloginStatus(true)
+    // }),
+    //   function(error) {
+    //     // The provider's account email, can be used in case of
+    //     // auth/account-exists-with-different-credential to fetch the providers
+    //     // linked to the email:
+    //     var email = error.email
+    //     // The provider's credential:
+    //     var credential = error.credential
+    //     // In case of auth/account-exists-with-different-credential error,
+    //     // you can fetch the providers using this:
+    //     if (error.code === 'auth/account-exists-with-different-credential') {
+    //       auth.fetchSignInMethodsForEmail(email).then(function(providers) {
+    //         // The returned 'providers' is a list of the available providers
+    //         // linked to the email address. Please refer to the guide for a more
+    //         // complete explanation on how to recover from this error.
+    //       })
+    //     }
+    //   }
   }
   useEffect(() => {
     //console.log('changes = ' + JSON.stringify(changes))
@@ -227,15 +239,18 @@ export default props => {
           </button>
         </div>
       </ButtonArea>
-      {/* <FacebookLogin
-        appId="2418533275143361"
+
+      <FacebookLogin
+        appId="2711342585755275"
         autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
         fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
         scope="public_profile,email"
         onClick={ComponentClicked}
         callback={responseFacebook}
+        // cssClass="my-facebook-button-class"
+        // icon="fa-facebook"
       />
-      <NaverLogin
+      {/* <NaverLogin
         clientId="OQtHPCzpdRNtD9o2zBKF"
         callbackUrl="http://localhost:9000"
         render={props => <div onClick={props.onClick}>Naver Login</div>}
@@ -244,9 +259,9 @@ export default props => {
       /> */}
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
 
-      <SnsGoogleLogion tton onClick={() => responseGooglelogin()}>
+      {/* <SnsGoogleLogion onClick={() => responseGooglelogin()}>
         SIGN IN WITH GOOGLE
-      </SnsGoogleLogion>
+      </SnsGoogleLogion> */}
 
       {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}

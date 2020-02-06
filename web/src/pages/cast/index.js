@@ -10,8 +10,8 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {micStream, audioStream} from 'components/lib/getStream'
-import {Host, Guest} from 'components/lib/SignalingHandler'
+import {getMicStream} from 'components/lib/getStream'
+import {Host, Listener} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
@@ -23,22 +23,20 @@ export default props => {
     // initialize mic stream and audio socket.
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const stream = await micStream()
+
       const hostHandler = new Host(audioSocketUrl, true)
-      hostHandler.setMicStream(stream)
+      const micStream = await getMicStream()
+      hostHandler.setMicStream(micStream)
       hostHandler.setStreamId('stream1')
       setHandler(hostHandler)
       context.action.updateMediaHandler(hostHandler)
 
-      // audioStream()
-
-      // const guestHandler = new Guest(audioSocketUrl, true)
-      // guestHandler.setAudioTag(audioReference.current)
-      // guestHandler.setStreamId('stream1')
-      // setHandler(guestHandler)
-      // context.action.updateMediaHandler(guestHandler)
-
-      // console.log(audioStream.getAudioTracks())
+      // listener
+      // const listenerHandler = new Listener(audioSocketUrl, true)
+      // listenerHandler.setAudioTag(audioReference.current)
+      // listenerHandler.setStreamId('stream1')
+      // setHandler(listenerHandler)
+      // context.action.updateMediaHandler(listenerHandler)
     })()
 
     return () => {}
@@ -57,6 +55,7 @@ export default props => {
             publish
           </button>
         </div>
+
         <div>
           <button
             onClick={() => {
@@ -68,8 +67,8 @@ export default props => {
           </button>
         </div>
 
-        <div>
-          <audio ref={audioReference} id="test-audio" autoPlay controls></audio>
+        {/* <div>
+          <audio ref={audioReference} autoPlay controls></audio>
         </div>
         <div>
           <button
@@ -80,7 +79,7 @@ export default props => {
             }}>
             play
           </button>
-        </div>
+        </div> */}
       </Content>
     </Layout>
   )

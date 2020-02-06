@@ -37,7 +37,7 @@ export class SignalingHandler {
     }
     this.socketSendMsg(cmd)
 
-    // guest stop
+    // listener stop
     if (this.audioTag && this.audioTag.srcObject) {
       this.audioTag.pause()
       this.audioTag.srcObject = null
@@ -160,7 +160,7 @@ export class SignalingHandler {
         })
         this.iceCandidate = []
 
-        // guest case
+        // listener case
         if (_type === 'offer') {
           this.rtcPeerConn
             .createAnswer(this.sdpConstraints)
@@ -284,14 +284,10 @@ export class Host extends SignalingHandler {
     super(socketUrl, debug)
     this.type = 'host'
     this.micStream = null
-    this.audioStream = null
   }
 
   setMicStream(stream) {
     this.micStream = stream
-  }
-  setAudioStream(stream) {
-    this.audioStream = stream
   }
 
   publish() {
@@ -309,10 +305,10 @@ export class Host extends SignalingHandler {
     this.socketSendMsg(cmd)
   }
 }
-export class Guest extends SignalingHandler {
+export class Listener extends SignalingHandler {
   constructor(socketUrl, debug) {
     super(socketUrl, debug)
-    this.type = 'guest'
+    this.type = 'listener'
     this.audioTag = null
   }
 

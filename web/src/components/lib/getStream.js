@@ -3,7 +3,7 @@
  */
 
 // https://howlerjs.com/
-export const micStream = async () => {
+export const getMicStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
 
@@ -42,21 +42,5 @@ export const removeMicStream = stream => {
   stream.getTracks().forEach(track => {
     track.stop()
     stream.removeTrack(track)
-  })
-}
-
-export const audioStream = path => {
-  return new Promise((resolve, reject) => {
-    path = 'https://www.w3schools.com/tags/mov_bbb.mp4'
-    const videoTag = document.createElement('video')
-    // videoTag.muted = true
-    videoTag.src = path
-    videoTag.onloadeddata = () => {
-      // const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-      // const source = audioCtx.createMediaElementSource(videoTag)
-      // const gainNode = audioCtx.createGain()
-      // gainNode.gain.value = 1
-      // resolve(stream)
-    }
   })
 }

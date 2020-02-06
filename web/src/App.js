@@ -16,7 +16,7 @@ export default () => {
   //context
   const context = useContext(Context)
   //useState
-  const [fetch, setFetch] = useState(null)
+  const [ready, setReady] = useState(false)
 
   //SERVER & APP -> REACT
   const customHeader = useMemo(() => {
@@ -29,13 +29,22 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    setFetch(res)
-    console.log(res)
+    if (res.result === 'success') {
+      //update
+      Api.setAuthToken(res.data.authToken)
+      context.action.updateToken(res.data)
+      //ready
+      console.table(res.data)
+      setReady(true)
+    }
   }
   //useEffect
   useEffect(() => {
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------
-  return <Route />
+  /**
+   * @brief 정보체크이후 최종완료된 상태에서 Route진행
+   */
+  return <React.Fragment>{ready && <Route />}</React.Fragment>
 }

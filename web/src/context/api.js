@@ -19,11 +19,17 @@ useEffect(() => {
 }, [])
  */
 
+import React, {useContext} from 'react'
 import axios from 'axios'
 import qs from 'qs'
+import {Context} from 'context'
 //component
 import {API_SERVER} from 'context/config'
 
+// export const authToken = () => {
+//   const context = useContext(Context)
+//   return context.authToken
+// }
 export default class API {
   //---------------------------------------------------------------------방송관련
   /**
@@ -59,7 +65,17 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/join`, method: method || 'POST', data: data})
   }
-
+  /**
+   * @brief 방송방 나가기
+   * @method "DELETE"
+   * @todo
+   * @param int roomNo                //*방송방번호
+   * @create 손완휘 2020.02.06
+   */
+  static broad_exit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/exit`, method: method || 'DELETE', data: data})
+  }
   /**
    * @brief 방송방 정보수정
    * @method "POST"
@@ -308,7 +324,7 @@ export default class API {
    * @param int    profImgRacy          //프로필이미지 구글선정성
    * @param string email             //이메일
    * @param int    os                //*OS구분
-   * @param string deviceid          //디바이스 고유아이디
+   * @param string deviceid          //*디바이스 고유아이디
    * @param string deviceToken     //디바이스 토큰
    * @param string appVer            //앱 버전
    * @create 김호겸 2020.01.15
@@ -579,22 +595,39 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/upload`, method: method || 'POST', data: data})
   }
+  //-------------------------------------------------------------------- 토큰
+  /**
+   * @brief 토큰지정
+   * @create 손완휘 2020.02.06
+   */
+  static setAuthToken = str => {
+    this.authToken = str
+  }
 }
+
 //---------------------------------------------------------------------
+
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
+  /**
+   * @todo token이 undefined경우
+   */
+  const token = API.authToken
+  if (token === null || token === undefined) {
+    //  console.log('REACT: token Error')
+  }
+  //const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
   try {
     let res = await axios({
       method: method,
       headers: {
-        authToken: token,
+        authToken: token || '',
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: API_SERVER + url,
       params: params,
-      data: data
+      data: qs.stringify(data)
     })
     // table 모양 로그출력
     //console.table(res.data)
