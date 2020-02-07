@@ -128,6 +128,8 @@ export class SignalingHandler {
     if (this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
       this.rtcPeerConn.close()
       this.rtcPeerConn = null
+      this.rtcDescription = false
+      this.iceCandidate = []
     }
   }
   gotDescription = config => {
@@ -265,6 +267,7 @@ export class SignalingHandler {
         case 'error': {
           const {definition} = format
           alert(JSON.stringify(definition))
+          this.closePeerConnection()
           break
         }
         case 'pong': {

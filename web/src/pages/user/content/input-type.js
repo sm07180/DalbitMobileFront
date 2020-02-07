@@ -76,11 +76,30 @@ const makeInput = props => {
   }
 
   const validatePwd = pwdEntered => {
-    if (pwdEntered.length > 7 && pwdEntered.length < 21) {
-      setPwdState({
-        isPwdValid: 1
-      })
-    } else if (pwdEntered.length == 0) {
+    //비밀번호 유효성 체크 로직 (숫자,영문,특수문자 중 2가지 이상 조합, 공백 체크)
+    var pw = pwdEntered
+    var blank_pattern = pw.search(/[\s]/g)
+    var num = pw.search(/[0-9]/g)
+    var eng = pw.search(/[a-zA-Z]/gi)
+    var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+
+    if (blank_pattern != -1) {
+      var pw2 = pw.substring(0, pw.length - 1)
+      console.log('공백이 들어갔음')
+      console.log('마지막 문자열 잘라서 다시 넣어줘야됨  = ' + pw2)
+    }
+    if (pw.length > 7 && pw.length < 21) {
+      //영문,숫자, 특수문자 중 2가지 이상을 혼합 체크 로직
+      if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+        setPwdState({
+          isPwdValid: 2
+        })
+      } else {
+        setPwdState({
+          isPwdValid: 1
+        })
+      }
+    } else if (pw.length == 0) {
       setPwdState({
         isPwdValid: 0
       })
