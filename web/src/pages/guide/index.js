@@ -11,22 +11,11 @@ import Contents from './layout-contents'
 //
 
 export default props => {
-  //---------------------------------------------------------------------
-  function test(evt) {
-    console.log('do submitting stuff')
-  }
-  document.addEventListener('REACT-callback', test)
-
-  //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <button
-        onClick={() => {
-          window.callbackFunc()
-        }}>
-        마이크체크
-      </button>
-      <Contents />
+      <div>temp broadcast</div>
+      <div></div>
+      {/* <Contents /> */}
     </Layout>
   )
 }
