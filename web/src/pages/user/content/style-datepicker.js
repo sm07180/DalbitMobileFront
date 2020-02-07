@@ -16,10 +16,11 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //useState
-  const [selectedDate, setSelectedDate] = useState(props.value !== undefined ? props.value : new Date())
-  console.log('props.value = ' + selectedDate)
+  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : '')
+  //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {
     setSelectedDate(date)
+    props.change(moment(date).format('YYYYMMDD'))
   }
   //---------------------------------------------------------------------
   //캘린더 한글화
@@ -29,7 +30,7 @@ export default props => {
     <StylesProvider injectFirst>
       <DatepickerWrap>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker format="YYYY-MM-DD" margin="normal" id="date-picker-inline" label={props.text} value={selectedDate} onChange={handleDateChange} />
+          <DatePicker format="YYYY-MM-DD" margin="normal" id="date-picker-inline" name="birth" label={props.text} value={selectedDate} onChange={handleDateChange} />
         </MuiPickersUtilsProvider>
       </DatepickerWrap>
     </StylesProvider>
@@ -39,5 +40,25 @@ export default props => {
 const DatepickerWrap = styled.div`
   .MuiFormControl-root {
     width: 100%;
+    margin: 0;
+  }
+  label,
+  .MuiInput-underline:after {
+    display: none;
+  }
+  label + .MuiInput-formControl {
+    margin-top: 0;
+  }
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    display: none;
+  }
+  .MuiInputBase-input {
+    height: inherit;
+  }
+  .MuiInputBase-root {
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
   }
 `
