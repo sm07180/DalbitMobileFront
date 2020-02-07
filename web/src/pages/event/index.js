@@ -17,7 +17,11 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <Content>이벤트</Content>
+      <Content>
+        <h1>&#x1F601;</h1>
+        <h2>&#x1F3AC;</h2>
+        <h3>&#x1F42D;</h3>
+      </Content>
     </Layout>
   )
 }
@@ -27,4 +31,13 @@ export default props => {
 const Content = styled.section`
   min-height: 300px;
   background: #e1e1e1;
+  h1 {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 50px;
+  }
+  h3 {
+    font-size: 70px;
+  }
 `

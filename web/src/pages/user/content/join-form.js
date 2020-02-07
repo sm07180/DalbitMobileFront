@@ -17,7 +17,7 @@ const JoinForm = props => {
   const [radio, setRadio] = useState('m') // 성별 선택 radio 버튼 checked
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
-  console.log(date)
+  //console.log(date)
   let leadingZeros = (n, digits) => {
     var zero = ''
     n = n.toString()
@@ -31,6 +31,8 @@ const JoinForm = props => {
   const [boxState, setBoxState] = useState(false)
   const [changes, setChanges] = useState({
     loginID: '',
+    loginPwd: '',
+    loginPwdCheck: '',
     loginNickNm: '',
     loginName: '',
     birth: birthFormat,
@@ -42,17 +44,11 @@ const JoinForm = props => {
 
     ...props.location.state
   })
-  const {loginID, loginPwd, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
+  const {loginID, loginPwd, loginPwdCheck, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
   const [fetch, setFetch] = useState(null)
 
   // changes 의 변화의 따라 값을 넘기지 못한다. 20200204 제기랄
   const onLoginHandleChange = e => {
-    if (e.target.value === '남성') {
-      e.target.value = 'm'
-    } else if (e.target.value === '여성') {
-      e.target.value = 'f'
-    }
-
     // var blank_pattern = pw.search(/[\s]/g)
 
     // if (blank_pattern != -1) {
@@ -119,6 +115,16 @@ const JoinForm = props => {
     console.log(JSON.stringify(changes, null, 1))
   }, [changes])
 
+  //datepicker에서 올려준 값 받아서 바로 changes에 넣을 수 있도록 값 다듬기
+  const pickerTest = value => {
+    const target = {
+      name: 'birth',
+      value: value
+    }
+    value = {target}
+    onLoginHandleChange(value)
+  }
+
   return (
     <>
       {/* <input type="phone" name="loginID" defaultValue={changes.loginID} onChange={onLoginHandleChange} /> */}
@@ -158,52 +164,23 @@ const JoinForm = props => {
           <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} placeholder="실명" />
         </InputWrap>
         {/* 비밀번호 */}
-        <Input type="password" />
+        <InputWrap>
+          <input type="password" name="loginPwd" defaultValue={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
+          <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" />
+        </InputWrap>
+        {/* 생년월일 */}
+        <Datepicker text="생년월일" name="birth" value={changes.birth} change={pickerTest} />
         {/* 성별 */}
-        {/* <Label before={true} text="성별" />
-        <input type="radio" name="gender" value="남성" defaultChecked={changes.gender === 'm' ? true : false} /> 남성
-        <input type="radio" name="gender" value="여성" defaultChecked={changes.gender === 'f' ? true : false} /> 여성 */}
         <GenderRadio>
           <label htmlFor="genderMale" className={changes.gender == 'm' ? 'on' : 'off'}>
-            <input
-              type="radio"
-              name="gender"
-              id="genderMale"
-              value="남성"
-              defaultChecked={changes.gender === 'm'}
-              onChange={e => {
-                setChanges({gender: 'm'})
-              }}
-            />
-            남성
+            <input type="radio" name="gender" id="genderMale" value="m" defaultChecked={changes.gender === 'm'} onChange={onLoginHandleChange} />
+            남자
           </label>
           <label htmlFor="genderFemale" className={changes.gender == 'f' ? 'on' : 'off'}>
-            <input
-              type="radio"
-              name="gender"
-              id="genderFemale"
-              value="여성"
-              defaultChecked={changes.gender === 'f'}
-              onChange={e => {
-                setChanges({gender: 's'})
-              }}
-            />
-            여성
+            <input type="radio" name="gender" id="genderFemale" value="f" defaultChecked={changes.gender === 'f'} onChange={onLoginHandleChange} />
+            여자
           </label>
         </GenderRadio>
-        {/* 생년월일 */}
-        <Label before={true} text="성별" />
-        <input type="radio" name="gender" value="남성" defaultChecked={changes.gender === 'm' ? true : false} onChange={onLoginHandleChange} /> 남성
-        <input type="radio" name="gender" value="여성" defaultChecked={changes.gender === 'f' ? true : false} onChange={onLoginHandleChange} /> 여성
-        <input type="text" name="birth" defaultValue={changes.birth} onChange={onLoginHandleChange} />
-        {/* <Datepicker
-          text="생년월일"
-          name="birth"
-          value={changes.birth}
-          onChange={() => {
-            console.log('생년월일 ㅁ변화')
-          }}
-        /> */}
         {/* 약관동의 */}
         <CheckWrap>
           <input type="checkbox" /> <Label text="약관 전체 동의" />
@@ -293,6 +270,7 @@ const ProfileUpload = styled.div`
 //성별 선택 라디오 박스 영역
 const GenderRadio = styled.div`
   display: flex;
+  margin: 32px 0;
   label {
     flex: 1;
     border: 1px solid #e0e0e0;
@@ -326,6 +304,9 @@ const GenderRadio = styled.div`
     border-left: 0;
     input {
       margin-left: 0;
+    }
+    input::after {
+      margin-left: -1px;
     }
   }
   label.on {
@@ -388,5 +369,8 @@ const Button = styled.button`
   line-height: 50px;
 `
 const InputWrap = styled.div`
-  margin-top: 20px;
+  margin: 32px 0;
+  input {
+    margin-top: -1px;
+  }
 `

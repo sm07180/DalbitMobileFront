@@ -603,6 +603,13 @@ export default class API {
   static setAuthToken = str => {
     this.authToken = str
   }
+  /**
+   * @brief Server->React customHeader
+   * @create 손완휘 2020.02.06
+   */
+  static setCustomHeader = obj => {
+    this.customHeader = obj
+  }
 }
 
 //---------------------------------------------------------------------
@@ -610,19 +617,12 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params} = obj
-  /**
-   * @todo token이 undefined경우
-   */
-  const token = API.authToken
-  if (token === null || token === undefined) {
-    //  console.log('REACT: token Error')
-  }
-  //const token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgwNjkwOTM0LCJleHAiOjE1ODMxOTY1MzR9.-pU_2P_h4-GKx4t0QPwxriqpC4v02Csk_P59Ytwbt50'
   try {
     let res = await axios({
       method: method,
       headers: {
-        authToken: token || '',
+        authToken: API.authToken || '',
+        'custom-header': API.customHeader || '',
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       url: API_SERVER + url,

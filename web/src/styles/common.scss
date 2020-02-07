@@ -301,6 +301,9 @@ input {
 input[type='password'] {
   font-family: sans-serif;
 }
+input[type='password']::placeholder {
+  font-family: 'NanumSquare';
+}
 
 /*input number pc에서 화살표 지우기*/
 /* Chrome, Safari, Edge, Opera */
@@ -316,7 +319,9 @@ input[type='number'] {
 
 /*기본 input text, number의 style 가이드*/
 input[type='text'],
+input[type='password'],
 input[type='number'] {
+  position: relative;
   width: 100%;
   border: 1px solid #e5e5e5;
   padding: 0 16px;
@@ -327,18 +332,22 @@ input[type='number'] {
   transform: skew(-0.03deg);
 }
 input[type='text'].wide,
+input[type='password'].wide,
 input[type='number'].wide {
   padding: 0 22px;
   line-height: 54px;
 }
 input[type='text']::placeholder,
+input[type='password']::placeholder,
 input[type='number']::placeholder {
   color: #616161;
 }
 input[type='text']:focus,
+input[type='password']:focus,
 input[type='number']:focus {
   border: 1px solid $COLOR_MAIN;
   color: #444444;
+  z-index: 2;
 }
 
 input[type='number'].auth {
