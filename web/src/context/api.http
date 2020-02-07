@@ -34,7 +34,7 @@ content-type: application/x-www-form-urlencoded
     "memPwd":"1234",
     "gender": "m",
     "nickNm": "radiogaga",
-    "birth":"",
+    "birth":"20200206",
     "term1":"y",
     "term2":"y",
     "term3":"y",
@@ -73,9 +73,7 @@ content-type: application/x-www-form-urlencoded
     "gender":"m",
     "nickNm":"radiogaga",
     "name":"홍길동",
-    "birthYY":1980,
-    "birthMM":11,
-    "birthDD":23
+    "birth":19801123
 }
 ###
 
