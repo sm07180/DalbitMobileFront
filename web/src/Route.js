@@ -43,7 +43,7 @@ export default () => {
       <Route exact path="/app/" component={App} />
       {/* 페이지가없을경우 404로 이동 */}
       <Route path="/404" component={NotFoundPage} />
-      {/* <Redirect to="/404" /> */}
+      <Redirect to="/404" />
     </Switch>
   )
 }
