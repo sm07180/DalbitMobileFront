@@ -204,81 +204,83 @@ export class SignalingHandler {
   }
 
   wSocketInit() {
-    this.ws = new WebSocket(this.url)
-    this.ws.onopen = () => {
-      if (this.intervalId) {
-        // Clear retry websocket interval
-        clearInterval(this.intervalId)
-        this.intervalId = null
-      }
-      const pingIntervalSec = 3000
-      // Ping websocket interval
-      this.intervalId = setInterval(() => {
-        const cmd = {
-          command: 'ping'
+    if (!this.ws) {
+      this.ws = new WebSocket(this.url)
+      this.ws.onopen = () => {
+        if (this.intervalId) {
+          // Clear retry websocket interval
+          clearInterval(this.intervalId)
+          this.intervalId = null
         }
-        this.socketSendMsg(cmd)
-      }, pingIntervalSec)
-    }
-    this.ws.onclose = () => {
-      if (this.intervalId) {
-        // Clear ping websocket interval
-        clearInterval(this.intervalId)
-      }
-      const retryIntervalSec = 3000
-      // Retry websocket interval
-      this.intervalId = setInterval(() => {
-        this.wSocketInit()
-      }, retryIntervalSec)
-    }
-    this.ws.onmessage = msg => {
-      const format = JSON.parse(msg.data)
-      const {command} = format
-      switch (command) {
-        case 'start': {
-          this.startPublishing()
-          break
-        }
-        case 'stop': {
-          this.closePeerConnection()
-          break
-        }
-        case 'takeCandidate': {
-          const {label, candidate} = format
-          this.takeCandidate(label, candidate)
-          break
-        }
-        case 'takeConfiguration': {
-          const {sdp, type} = format
-          this.takeConfiguration(sdp, type)
-          break
-        }
-        case 'notification': {
-          const {definition} = format
-          if (definition === 'play_started') {
-          } else if (definition === 'play_finished' || definition === 'publish_finished') {
-            this.stop()
+        const pingIntervalSec = 3000
+        // Ping websocket interval
+        this.intervalId = setInterval(() => {
+          const cmd = {
+            command: 'ping'
           }
-          break
+          this.socketSendMsg(cmd)
+        }, pingIntervalSec)
+      }
+      this.ws.onclose = () => {
+        if (this.intervalId) {
+          // Clear ping websocket interval
+          clearInterval(this.intervalId)
         }
-        case 'streamInformation': {
-          break
-        }
-        case 'error': {
-          const {definition} = format
-          alert(JSON.stringify(definition))
-          this.closePeerConnection()
-          break
-        }
-        case 'pong': {
-          break
-        }
-        default: {
-          break
+        const retryIntervalSec = 3000
+        // Retry websocket interval
+        this.intervalId = setInterval(() => {
+          this.wSocketInit()
+        }, retryIntervalSec)
+      }
+      this.ws.onmessage = msg => {
+        const format = JSON.parse(msg.data)
+        const {command} = format
+        switch (command) {
+          case 'start': {
+            this.startPublishing()
+            break
+          }
+          case 'stop': {
+            this.closePeerConnection()
+            break
+          }
+          case 'takeCandidate': {
+            const {label, candidate} = format
+            this.takeCandidate(label, candidate)
+            break
+          }
+          case 'takeConfiguration': {
+            const {sdp, type} = format
+            this.takeConfiguration(sdp, type)
+            break
+          }
+          case 'notification': {
+            const {definition} = format
+            if (definition === 'play_started') {
+            } else if (definition === 'play_finished' || definition === 'publish_finished') {
+              this.stop()
+            }
+            break
+          }
+          case 'streamInformation': {
+            break
+          }
+          case 'error': {
+            const {definition} = format
+            alert(JSON.stringify(definition))
+            this.closePeerConnection()
+            break
+          }
+          case 'pong': {
+            break
+          }
+          default: {
+            break
+          }
         }
       }
+      this.ws.onerror = () => {}
     }
-    this.ws.onerror = () => {}
   }
 }
 

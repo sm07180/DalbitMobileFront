@@ -31,7 +31,6 @@ function TempBroad(props) {
       hostHandler.setStreamId(streamId)
       setHandler(hostHandler)
     })()
-
     return () => {
       // unmount
     }
@@ -53,6 +52,10 @@ function TempBroad(props) {
             if (!streamId) {
               return alert('Need a stream id')
             }
+            if (!handler.micStream) {
+              return alert('Need a mic and stereo mix')
+            }
+
             if (handler.ws && handler.publish && !handler.rtcPeerConn) {
               handler.publish()
               setPublishStatus(true)
