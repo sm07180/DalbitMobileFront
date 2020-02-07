@@ -52,9 +52,9 @@ const JoinForm = props => {
     var blank_pattern = pw.search(/[\s]/g)
 
     if (blank_pattern != -1) {
-      string=string.substring(0, string.length()-1);
+      //string=string.substring(0, string.length()-1);
+    }
 
-      
     setChanges({
       ...changes,
       [e.target.name]: e.target.value
