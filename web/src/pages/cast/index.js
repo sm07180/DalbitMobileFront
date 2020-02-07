@@ -70,13 +70,20 @@ export default props => {
         {!playStatus && (
           <div>
             <button
-              style={{width: '100px', height: '50px', backgroundColor: 'blue', color: 'white', cursor: 'pointer'}}
+              style={{
+                width: '100px',
+                height: '50px',
+                color: 'white',
+                cursor: 'pointer',
+                backgroundColor: 'blue'
+              }}
               onClick={() => {
                 if (!streamId) {
                   return alert('Need a stream id')
                 }
                 if (handler.ws && handler.play && !handler.rtcPeerConn) {
                   handler.play()
+                  setPlayStatus(true)
                 }
               }}>
               play
@@ -91,6 +98,7 @@ export default props => {
               onClick={() => {
                 if (handler.ws && handler.rtcPeerConn) {
                   handler.stop()
+                  setPlayStatus(false)
                 }
               }}>
               stop
