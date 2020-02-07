@@ -33,10 +33,11 @@ export default props => {
   const [changes, setChanges] = useState({})
 
   const context = useContext(Context)
+
   let loginId = ''
-  let loginOs = ''
   let loginName = ''
   let loginImg = ''
+  let loginOs = ''
 
   if (osName == 'IOS') loginOs = 2
   else if (osName == 'Android') loginOs = 1
@@ -68,8 +69,8 @@ export default props => {
       data: {
         memType: ostype,
         memId: loginId,
-        os: loginOs,
-        deviceId: '2200DDD1-77A'
+        os: context.customHeader.os,
+        deviceId: context.customHeader.deviceId
       }
     })
 
@@ -83,7 +84,7 @@ export default props => {
       birth: '',
       image: loginImg,
       memType: ostype,
-      osName: loginOs
+      osName: context.customHeader.os
     }
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 //components
@@ -9,6 +9,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import moment from 'moment'
 import Api from 'context/api'
+import {Context} from 'context'
 
 const JoinForm = props => {
   //useState
@@ -26,8 +27,12 @@ const JoinForm = props => {
     }
     return zero + n
   }
+  const context = useContext(Context)
+
+  console.log('customHeader = ' + JSON.stringify(context.customHeader, null, 1))
   console.log(JSON.stringify(changes, null, 1))
-  let birthFormat = d.getFullYear() + leadingZeros(d.getMonth() + 1, 2) + leadingZeros(d.getDate(), 2)
+  const birthFormat = d.getFullYear() + leadingZeros(d.getMonth() + 1, 2) + leadingZeros(d.getDate(), 2)
+  console.log('현재 날짜  = ' + birthFormat)
   const [boxState, setBoxState] = useState(false)
   const [changes, setChanges] = useState({
     loginID: '',
@@ -39,15 +44,15 @@ const JoinForm = props => {
     gender: 'm',
     image: '',
     memType: '',
-    osName: 3,
-    deviceid: '2200DDD1-77A',
+    osName: context.customHeader.os,
+    deviceid: context.customHeader.deviceid,
 
     ...props.location.state
   })
+
   const {loginID, loginPwd, loginPwdCheck, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
   const [fetch, setFetch] = useState(null)
 
-  // changes 의 변화의 따라 값을 넘기지 못한다. 20200204 제기랄
   const onLoginHandleChange = e => {
     // var blank_pattern = pw.search(/[\s]/g)
 
@@ -117,6 +122,7 @@ const JoinForm = props => {
 
   //datepicker에서 올려준 값 받아서 바로 changes에 넣을 수 있도록 값 다듬기
   const pickerTest = value => {
+    console.log('pickerTest = ' + pickerTest)
     const target = {
       name: 'birth',
       value: value
