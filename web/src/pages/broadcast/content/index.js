@@ -17,6 +17,25 @@ export default props => {
   //console.log(props.Info[0].category)
   const [Radio, setRadio] = useState('every')
   const [Radio2, setRadio2] = useState('일상/챗')
+  const [count, setCount] = useState(0)
+  const [count2, setCount2] = useState(0)
+
+  const handleChange = event => {
+    const element = event.target
+    const {value} = event.target
+    if (value.length > 20) {
+      return
+    }
+    setCount(element.value.length)
+  }
+  const handleChange2 = event => {
+    const element = event.target
+    const {value} = event.target
+    if (value.length > 100) {
+      return
+    }
+    setCount2(element.value.length)
+  }
   //---------------------------------------------------------------------
   const names2 = ['일상/챗', '고민/사연', '노래방', '건강', '먹방', '책/힐링', '기타', '공포', '연애/오락', '스포츠', '성우', 'ASMR', '노래/연주', '요리']
 
@@ -26,12 +45,10 @@ export default props => {
       <label htmlFor={name1}>{name1}</label>
     </RadioBoxS>
   ))
+  // 이미지 업로드 관련
   //useState
   const [file, setFile] = useState(null)
   const [url, setUrl] = useState(null)
-  //---------------------------------------------------------------------
-
-  // 이미지 업로드 관련
   function uploadSingleFile(e) {
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
@@ -40,7 +57,7 @@ export default props => {
     // console.log(file)
     // console.log(url)
   }, [uploadSingleFile])
-
+  //---------------------------------------------------------------------
   //context
   //hooks
   const {changes, setChanges, onChange} = useChange(update, {
@@ -88,60 +105,83 @@ export default props => {
         <Header>
           <h1>방송설정</h1>
         </Header>
-        <button
-          onClick={() => {
-            fetchData({data: changes})
-          }}>
-          만들기
-        </button>
 
-        <BroadDetail>
-          <JoinProhibit>
-            <h2>입장제한</h2>
-            <RadioBox>
-              <input id="every" checked={Radio === 'every'} value="every" onChange={() => setRadio('every')} type="radio" />
-              <label htmlFor="every">모두 입장</label>
-            </RadioBox>
+        <Wrap>
+          <BroadDetail>
+            <JoinProhibit>
+              <h2>입장제한</h2>
+              <RadioBox value={Radio} className={Radio === 'every' ? 'on' : 'off'}>
+                <input id="every" checked={Radio === 'every'} value="every" onChange={() => setRadio('every')} type="radio" />
+                <label htmlFor="every">모두 입장</label>
+              </RadioBox>
 
-            <RadioBox>
-              <input id="fan" checked={Radio === 'fan'} value="fan" onChange={() => setRadio('fan')} type="radio" />
-              <label htmlFor="fan">팬 만 입장</label>
-            </RadioBox>
-            <RadioBox>
-              <input id="upper20" checked={Radio === 'upper20'} value="upper20" onChange={() => setRadio('upper20')} type="radio" />
-              <label htmlFor="upper20">20세이상</label>
-            </RadioBox>
-          </JoinProhibit>
-          <BroadSubject>
-            <h2>방송주제</h2>
-            <SubjectWrap>{listItem}</SubjectWrap>
-          </BroadSubject>
-          <PictureRegist>
-            <h2>사진 등록</h2>
-            <ProfileUpload imgUrl={url}>
-              <label htmlFor="profileImg">
-                <div className={url ? 'on' : 'off'}>
-                  <img src="https://img-wishbeen.akamaized.net/plan/1444896672323_14798621115_2effb95565_k.jpg" />
-                </div>
-                <UploadWrap>
-                  <IconWrapper>
-                    <Icon></Icon>
-                    <span>재 등록하기</span>
-                  </IconWrapper>
-                </UploadWrap>
-              </label>
-              <input
-                type="file"
-                id="profileImg"
-                accept=".gif, .jpg, .png"
-                onChange={e => {
-                  uploadSingleFile(e)
-                }}
-              />
-            </ProfileUpload>
-          </PictureRegist>
-        </BroadDetail>
-        <section>{JSON.stringify(changes, null, 1)}</section>
+              <RadioBox value={Radio} className={Radio === 'fan' ? 'on' : 'off'}>
+                <input id="fan" checked={Radio === 'fan'} value="fan" onChange={() => setRadio('fan')} type="radio" />
+                <label htmlFor="fan">팬 만 입장</label>
+              </RadioBox>
+              <RadioBox value={Radio} className={Radio === 'upper20' ? 'on' : 'off'}>
+                <input id="upper20" checked={Radio === 'upper20'} value="upper20" onChange={() => setRadio('upper20')} type="radio" />
+                <label htmlFor="upper20">20세이상</label>
+              </RadioBox>
+            </JoinProhibit>
+            <BroadSubject>
+              <h2>방송주제</h2>
+              <SubjectWrap>{listItem}</SubjectWrap>
+            </BroadSubject>
+            <PictureRegist>
+              <h2>사진 등록</h2>
+              <ProfileUpload imgUrl={url}>
+                <label htmlFor="profileImg">
+                  <div className={url ? 'on' : 'off'}>
+                    <div></div>
+                  </div>
+                  <UploadWrap className={url ? 'on' : 'off'}>
+                    <IconWrapper>
+                      <span>사진등록</span>
+                      <Icon></Icon>
+                    </IconWrapper>
+                  </UploadWrap>
+                </label>
+                <input
+                  type="file"
+                  id="profileImg"
+                  accept=".gif, .jpg, .png"
+                  onChange={e => {
+                    uploadSingleFile(e)
+                  }}
+                />
+              </ProfileUpload>
+            </PictureRegist>
+            <BroadTitle>
+              <h2>방송 제목</h2>
+              <div>
+                <input onChange={handleChange} maxLength="20" placeholder="제목을 입력해주세요 (20자 이내)" />
+                <Counter>{count} / 20</Counter>
+              </div>
+            </BroadTitle>
+            <BroadWelcome>
+              <h2>인사말</h2>
+              <div>
+                <textarea
+                  onChange={handleChange2}
+                  maxLength="100"
+                  placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.
+(10 ~ 100자 이내)
+"
+                />
+                <Counter>{count2} / 100</Counter>
+              </div>
+            </BroadWelcome>
+            <CopyrightIcon></CopyrightIcon>
+            <CreateBtn
+              onClick={() => {
+                fetchData({data: changes})
+              }}>
+              방송하기
+            </CreateBtn>
+          </BroadDetail>
+        </Wrap>
+        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
   )
@@ -152,25 +192,36 @@ const Content = styled.div`
 `
 const Header = styled.div`
   width: 100%;
-  height: 124px;
-  background-color: #fff;
+  height: 110px;
+
   & h1 {
     color: #8556f6;
     font-size: 34px;
-    font-weight: 600;
-    line-height: 124px;
+    font-weight: 800;
+    line-height: 110px;
     letter-spacing: -0.85px;
     text-align: center;
   }
 `
+const Wrap = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+`
 const BroadDetail = styled.div`
   width: 394px;
-  min-height: 500px;
-  margin: 36px auto 0 auto;
+  /* min-height: 500px; */
+  margin: 0px auto 0 auto;
+  &:after {
+    display: block;
+    clear: both;
+    content: '';
+  }
 `
 
 const JoinProhibit = styled.div`
   width: 100%;
+
   transform: skew(-0.03deg);
   &:after {
     display: block;
@@ -185,24 +236,15 @@ const JoinProhibit = styled.div`
   }
 
   & input {
-    float: left;
     appearance: none;
-    width: 24px;
-    height: 24px;
-    margin-right: 15px;
-    background: url('http://hwangsh.com/img/ico-checkbox-off.png') no-repeat center center / contain;
-    cursor: pointer;
-  }
-  & input:checked {
-    background: url('http://hwangsh.com/img/ico-checkbox-on.png') no-repeat center center / contain;
   }
   & label {
     float: left;
-    line-height: 24px;
-    font-size: 16px;
-    letter-spacing: -0.4px;
+    width: 100%;
+    height: 50px;
+
+    line-height: 50px;
     text-align: center;
-    cursor: pointer;
   }
   & input:checked + label {
     color: #8556f6;
@@ -210,15 +252,20 @@ const JoinProhibit = styled.div`
 `
 
 const RadioBox = styled.div`
+  position: relative;
+  width: 33.3333333333333333333333333333333333333333%;
   float: left;
-  width: 33%;
-  height: 24px;
-  margin-top: 26px;
-  margin-bottom: 50px;
+  margin: 26px -1px 50px 0px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
   &:after {
     display: block;
     clear: both;
     content: '';
+  }
+  &.on {
+    z-index: 55;
+    border: 1px solid #8556f6;
   }
 `
 
@@ -237,7 +284,7 @@ const SubjectWrap = styled.div`
 const RadioBoxS = styled.div`
   display: inline-block;
   height: 40px;
-  margin-right: 7px;
+  margin-right: 10px;
   margin-bottom: 10px;
   &:after {
     display: block;
@@ -253,20 +300,36 @@ const RadioBoxS = styled.div`
     border-radius: 50px;
     padding: 10px 20px;
     box-sizing: border-box;
+    transform: skew(-0.03deg);
   }
   & input:checked + label {
     border: 1px solid #8556f6;
     color: #8556f6;
   }
+  &:nth-of-type(4n) {
+    margin-right: 0;
+  }
 `
 const PictureRegist = styled.div`
   width: 100%;
-  margin-top: 60px;
+  margin-top: 50px;
   & h2 {
+    position: relative;
     margin-bottom: 18px;
     font-size: 18px;
     font-weight: 600;
     letter-spacing: -0.45px;
+    &:after {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      content: '방송 배경 이미지를 등록해주세요.';
+      color: #bdbdbd;
+      font-size: 12px;
+      line-height: 1.5;
+      letter-spacing: -0.3px;
+      transform: skew(-0.03deg);
+    }
   }
 `
 
@@ -286,6 +349,7 @@ const ProfileUpload = styled.div`
   div.on {
     img {
       display: none;
+      background-color: none;
     }
   }
   label {
@@ -295,9 +359,10 @@ const ProfileUpload = styled.div`
     height: 100%;
     cursor: pointer;
 
-    img {
+    div {
       width: 100%;
       height: 294px;
+      background-color: #f5f5f5;
     }
   }
 `
@@ -306,9 +371,18 @@ const UploadWrap = styled.span`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 80px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  color: #bdbdbd;
+  transform: skew(-0.03deg);
+  &:after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+  &.on {
+    height: 80px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   &:after {
     display: block;
     clear: both;
@@ -333,4 +407,88 @@ const Icon = styled.em`
   width: 48px;
   height: 48px;
   background: url('http://www.hwangsh.com/img/camera.png') no-repeat center / cover;
+`
+const BroadTitle = styled.div`
+  position: relative;
+  width: 100%;
+  margin-top: 56px;
+  & h2 {
+    margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.45px;
+    transform: skew(-0.03deg);
+  }
+  & input {
+    display: block;
+    width: 100%;
+    height: 50px;
+    padding: 16px 0 16px 15px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    color: #8556f6;
+    font-size: 16px;
+    line-height: 1.13;
+    letter-spacing: -0.4px;
+    transform: skew(-0.03deg);
+  }
+`
+const Counter = styled.span`
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  display: block;
+  color: #bdbdbd;
+  font-size: 12px;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+  transform: skew(-0.03deg);
+`
+const BroadWelcome = styled.div`
+  position: relative;
+  width: 100%;
+  margin-top: 56px;
+  & h2 {
+    margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.45px;
+    transform: skew(-0.03deg);
+  }
+  & textarea {
+    display: block;
+    border: none;
+    appearance: none;
+    width: 100%;
+    height: 110px;
+    font-family: NanumSquare;
+    padding: 15px 40px 15px 15px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    color: #424242;
+    font-size: 14px;
+    line-height: 1.43;
+    transform: skew(-0.03deg);
+    resize: none;
+  }
+`
+const CopyrightIcon = styled.div`
+  float: right;
+  width: 102px;
+  height: 16px;
+  background: url('https://devimage.dalbitcast.com/images/api/copyright.png') no-repeat center center / cover;
+  margin: 47px 0 15px 0;
+`
+const CreateBtn = styled.button`
+  width: 100%;
+  height: 50px;
+  margin-bottom: 218px;
+  background-color: #8556f6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 50px;
+  letter-spacing: -0.4px;
+  transform: skew(-0.03deg);
 `

@@ -38,7 +38,7 @@ export default () => {
       <Route exact path="/live" component={Live} />
       <Route exact path="/store" component={Store} />
       <Route exact path="/event" component={Event} />
-      <Route exact path="/guide/" component={Guide} />
+      <Route path="/guide" component={Guide} />
       <Route exact path="/mypage/" component={Mypage} />
       <Route exact path="/app/" component={App} />
       {/* 페이지가없을경우 404로 이동 */}
