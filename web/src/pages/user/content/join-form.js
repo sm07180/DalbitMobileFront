@@ -90,9 +90,12 @@ const JoinForm = props => {
     if (res && res.code) {
       if (res.code == 0) {
         alert(res.message)
-        window.location.href = '/' // 홈페이지로 새로고침
+        //window.location.href = '/' // 홈페이지로 새로고침
+        props.history.push('/')
+        context.action.updateLogin(true)
       } else {
         alert(res.message)
+        context.action.updateLogin(false)
       }
     }
   }
