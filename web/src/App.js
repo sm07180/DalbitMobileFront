@@ -32,7 +32,7 @@ export default () => {
       }
       return info
     }
-    const element = document.getElementById('customHeader_not')
+    const element = document.getElementById('customHeader')
     if (element === null) {
       return makeCustomHeader()
     }
@@ -45,7 +45,7 @@ export default () => {
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
     if (res.result === 'success') {
-      //update
+      //context Update
       Api.setAuthToken(res.data.authToken)
       context.action.updateToken(res.data)
       //ready
@@ -56,7 +56,10 @@ export default () => {
   //useEffect
   useEffect(() => {
     console.table(customHeader)
+    //context Update
     Api.setCustomHeader(JSON.stringify(customHeader))
+    context.action.updateCustomHeader(customHeader)
+    //
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------
