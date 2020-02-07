@@ -223,7 +223,7 @@ export class SignalingHandler {
     this.ws.onclose = () => {
       if (this.intervalId) {
         // Clear ping websocket interval
-        clearInterval(pingIntervalId)
+        clearInterval(this.intervalId)
       }
       const retryIntervalSec = 3000
       // Retry websocket interval
