@@ -8,7 +8,8 @@ import React, {useMemo, useState, useEffect, useContext} from 'react'
 import Api from 'context/api'
 //context
 import {Context} from 'context'
-/*-Route-*/
+//components
+import Utility from 'components/lib/utility'
 import Route from './Route'
 
 export default () => {
@@ -20,8 +21,22 @@ export default () => {
 
   //SERVER & APP -> REACT
   const customHeader = useMemo(() => {
-    const element = document.getElementById('customHeader')
-    if (element === null) return
+    //makeCustomHeader
+    const makeCustomHeader = () => {
+      const info = {
+        os: '3',
+        locale: 'KR',
+        deviceId: Utility.createUUID(),
+        language: 'ko',
+        deviceToken: 'make_custom_header'
+      }
+      return info
+    }
+    const element = document.getElementById('customHeader_not')
+    if (element === null) {
+      return makeCustomHeader()
+    }
+
     if (element.value === null || element.value === '') return
     return typeof JSON.parse(element.value) === 'object' && JSON.parse(element.value)
   })
@@ -40,6 +55,8 @@ export default () => {
   }
   //useEffect
   useEffect(() => {
+    console.table(customHeader)
+    Api.setCustomHeader(JSON.stringify(customHeader))
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------
