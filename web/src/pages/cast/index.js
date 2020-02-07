@@ -32,16 +32,15 @@ export default props => {
       // const hostHandler = new Host(audioSocketUrl, true)
       // const micStream = await getMicStream()
       // hostHandler.setMicStream(micStream)
-      // hostHandler.setStreamId(location.state.bjStreamId)
+      // location.state && hostHandler.setStreamId(location.state.bjStreamId)
       // setHandler(hostHandler)
       // context.action.updateMediaHandler(hostHandler)
 
       // listener
       const listenerHandler = new Listener(audioSocketUrl, true)
       listenerHandler.setAudioTag(audioReference.current)
-      listenerHandler.setStreamId(location.state.bjStreamId)
+      location.state && listenerHandler.setStreamId(location.state.bjStreamId)
       setHandler(listenerHandler)
-      setStreamId(location.state.bjStreamId)
       context.action.updateMediaHandler(listenerHandler)
     })()
 
