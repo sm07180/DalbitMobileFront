@@ -37,12 +37,28 @@ const JoinForm = props => {
 
     ...props.location.state
   })
-  const {loginID, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
+  const {loginID, loginPwd, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
   const [fetch, setFetch] = useState(null)
 
   // changes 의 변화의 따라 값을 넘기지 못한다. 20200204 제기랄
   const onLoginHandleChange = e => {
-    setChanges({...changes, [e.target.name]: e.target.value})
+    con
+    if (e.target.value === '남성') {
+      e.target.value = 'm'
+    } else if (e.target.value === '여성') {
+      e.target.value = 'f'
+    }
+
+    var blank_pattern = pw.search(/[\s]/g)
+
+    if (blank_pattern != -1) {
+      string=string.substring(0, string.length()-1);
+
+      
+    setChanges({
+      ...changes,
+      [e.target.name]: e.target.value
+    })
   }
 
   async function fetchData() {
@@ -54,6 +70,7 @@ const JoinForm = props => {
       data: {
         memType: changes.memType,
         memId: changes.loginID,
+        memPwd: changes.loginPwd,
         gender: changes.gender,
         nickNm: changes.loginNickNm,
         birth: changes.birth,
@@ -77,7 +94,7 @@ const JoinForm = props => {
   }
 
   useEffect(() => {
-    console.clear()
+    //console.clear()
     console.log(JSON.stringify(changes, null, 1))
   }, [changes])
 
@@ -99,8 +116,8 @@ const JoinForm = props => {
         <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} />
         <Input type="password" />
         <Label before={true} text="성별" />
-        <input type="radio" name="gender" value="남성" defaultChecked={changes.gender === 'm' ? true : false} /> 남성
-        <input type="radio" name="gender" value="여성" defaultChecked={changes.gender === 'f' ? true : false} /> 여성
+        <input type="radio" name="gender" value="남성" defaultChecked={changes.gender === 'm' ? true : false} onChange={onLoginHandleChange} /> 남성
+        <input type="radio" name="gender" value="여성" defaultChecked={changes.gender === 'f' ? true : false} onChange={onLoginHandleChange} /> 여성
         <input type="text" name="birth" defaultValue={changes.birth} onChange={onLoginHandleChange} />
         {/* <Datepicker
           text="생년월일"
