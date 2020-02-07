@@ -42,18 +42,17 @@ const JoinForm = props => {
 
   // changes 의 변화의 따라 값을 넘기지 못한다. 20200204 제기랄
   const onLoginHandleChange = e => {
-    con
     if (e.target.value === '남성') {
       e.target.value = 'm'
     } else if (e.target.value === '여성') {
       e.target.value = 'f'
     }
 
-    var blank_pattern = pw.search(/[\s]/g)
+    // var blank_pattern = pw.search(/[\s]/g)
 
-    if (blank_pattern != -1) {
-      //string=string.substring(0, string.length()-1);
-    }
+    // if (blank_pattern != -1) {
+    //   //string=string.substring(0, string.length()-1);
+    // }
 
     setChanges({
       ...changes,
