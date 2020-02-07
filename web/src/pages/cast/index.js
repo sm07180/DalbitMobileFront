@@ -16,7 +16,11 @@ import {Host, Listener} from 'components/lib/SignalingHandler'
 export default props => {
   const context = new useContext(Context)
   const [handler, setHandler] = useState(null)
+  const [streamId, setStreamId] = useState(null)
+  const [playStatus, setPlayStatus] = useState(false)
+
   const audioReference = useRef()
+  const {location} = props.history
 
   // temp init
   useEffect(() => {
@@ -24,19 +28,21 @@ export default props => {
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
 
-      const hostHandler = new Host(audioSocketUrl, true)
-      const micStream = await getMicStream()
-      hostHandler.setMicStream(micStream)
-      hostHandler.setStreamId('stream1')
-      setHandler(hostHandler)
-      context.action.updateMediaHandler(hostHandler)
+      // host
+      // const hostHandler = new Host(audioSocketUrl, true)
+      // const micStream = await getMicStream()
+      // hostHandler.setMicStream(micStream)
+      // hostHandler.setStreamId(location.state.bjStreamId)
+      // setHandler(hostHandler)
+      // context.action.updateMediaHandler(hostHandler)
 
       // listener
-      // const listenerHandler = new Listener(audioSocketUrl, true)
-      // listenerHandler.setAudioTag(audioReference.current)
-      // listenerHandler.setStreamId('stream1')
-      // setHandler(listenerHandler)
-      // context.action.updateMediaHandler(listenerHandler)
+      const listenerHandler = new Listener(audioSocketUrl, true)
+      listenerHandler.setAudioTag(audioReference.current)
+      listenerHandler.setStreamId(location.state.bjStreamId)
+      setHandler(listenerHandler)
+      setStreamId(location.state.bjStreamId)
+      context.action.updateMediaHandler(listenerHandler)
     })()
 
     return () => {}
@@ -45,7 +51,7 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        <div>
+        {/* <div>
           <button
             onClick={() => {
               if (handler.ws && handler.publish) {
@@ -54,32 +60,39 @@ export default props => {
             }}>
             publish
           </button>
-        </div>
+        </div> */}
 
         <div>
-          <button
-            onClick={() => {
-              if (handler.ws) {
-                handler.stop()
-              }
-            }}>
-            stop
-          </button>
-        </div>
-
-        {/* <div>
           <audio ref={audioReference} autoPlay controls></audio>
         </div>
-        <div>
-          <button
-            onClick={() => {
-              if (handler.ws && handler.play) {
-                handler.play()
-              }
-            }}>
-            play
-          </button>
-        </div> */}
+
+        <div>streamId: {streamId}</div>
+
+        {!playStatus && (
+          <div>
+            <button
+              onClick={() => {
+                if (handler.ws && handler.play && !handler.rtcPeerConn) {
+                  handler.play()
+                }
+              }}>
+              play
+            </button>
+          </div>
+        )}
+
+        {playStatus && (
+          <div>
+            <button
+              onClick={() => {
+                if (handler.ws && handler.rtcPeerConn) {
+                  handler.stop()
+                }
+              }}>
+              stop
+            </button>
+          </div>
+        )}
       </Content>
     </Layout>
   )
