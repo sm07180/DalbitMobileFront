@@ -92,6 +92,7 @@ const GlobalProvider = props => {
   const value = {
     state,
     token,
+    customHeader,
     login_state,
     popup_code,
     popup_visible,

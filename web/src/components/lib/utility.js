@@ -21,19 +21,18 @@ export const addComma = x => {
 }
 //---------------------------------------------------------------------
 export default class Utility {
-  //* localStorage Object형태로 데이타저장
-  static appendLocalStorage = (localStorageName, data) => {
-    const obj = JSON.parse(localStorage.getItem(localStorageName)) || []
-    obj.push(data)
-    localStorage.setItem(localStorageName, JSON.stringify(obj))
+  /**
+   *
+   */
+  static createUUID = () => {
+    var dt = new Date().getTime()
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (dt + Math.random() * 16) % 16 | 0
+      dt = Math.floor(dt / 16)
+      return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
+    })
+    return uuid
   }
-
-  static addObjLocalStorage = (localStorageName, key, data) => {
-    const obj = JSON.parse(localStorage.getItem(localStorageName)) || {}
-    obj[key] = data
-    localStorage.setItem(localStorageName, JSON.stringify(obj))
-  }
-
   //* 배열이나 문자열 중복제거  [1,3,2,4,3,1,5,6,2,1] =>[1,3,2,4,5,6]  ,  '11411' =>'14'
   static removeOverlap = data => {
     if (typeof data === 'object') return [...new Set(data)]
@@ -94,62 +93,4 @@ export default class Utility {
       return 0
     }
   }
-  // notification localStorage
-  // 알림 모두 읽음처리
-  static readAllNotification = () => {
-    const notices = this.getNotification()
-    /**
-     *
-     */
-    notices.forEach(noti => {
-      noti.read = true
-    })
-    localStorage.setItem('notifications', JSON.stringify(notices))
-    this.onNotification()
-  }
-  // 읽기 전용 모두 읽음 처리
-  static readReadableNotification = () => {
-    const notices = this.getNotification()
-    notices.forEach(noti => {
-      //   console.log(noti);
-      if (noti.read_type !== 'action') noti.read = true
-    })
-    localStorage.setItem('notifications', JSON.stringify(notices))
-    this.onNotification()
-  }
-  // 행동 읽음처리
-  static readActionNotification = phone => {
-    const notices = this.getNotification()
-    notices.forEach(noti => {
-      // console.log(noti);
-      if (noti.read_type === 'action' && phone === noti.phone) noti.read = true
-    })
-    localStorage.setItem('notifications', JSON.stringify(notices))
-    this.onNotification()
-  }
-  // 알림 추가
-  static addNotification = notice => {
-    const notices = this.getNotification()
-    if (notices.key === 'goMain') return
-    if (notice === undefined || notice === '') return
-    notice.read = false
-    notices.push(copyObj(notice))
-    localStorage.setItem('notifications', JSON.stringify(notices))
-    this.onNotification()
-  }
-  // notice.read = true된것만체크
-  static newNotificationCount = notice => {
-    let count = 0
-    const notices = this.getNotification()
-    notices.forEach(noti => {
-      if (noti.read === false) {
-        ++count
-      }
-    })
-    return count
-  }
-  static getNotification = () => {
-    return JSON.parse(localStorage.getItem('notifications') || '[]')
-  }
-  static onNotification = () => {}
 }

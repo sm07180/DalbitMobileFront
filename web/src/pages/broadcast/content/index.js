@@ -110,16 +110,16 @@ export default props => {
           <BroadDetail>
             <JoinProhibit>
               <h2>입장제한</h2>
-              <RadioBox>
+              <RadioBox value={Radio} className={Radio === 'every' ? 'on' : 'off'}>
                 <input id="every" checked={Radio === 'every'} value="every" onChange={() => setRadio('every')} type="radio" />
                 <label htmlFor="every">모두 입장</label>
               </RadioBox>
 
-              <RadioBox>
+              <RadioBox value={Radio} className={Radio === 'fan' ? 'on' : 'off'}>
                 <input id="fan" checked={Radio === 'fan'} value="fan" onChange={() => setRadio('fan')} type="radio" />
                 <label htmlFor="fan">팬 만 입장</label>
               </RadioBox>
-              <RadioBox>
+              <RadioBox value={Radio} className={Radio === 'upper20' ? 'on' : 'off'}>
                 <input id="upper20" checked={Radio === 'upper20'} value="upper20" onChange={() => setRadio('upper20')} type="radio" />
                 <label htmlFor="upper20">20세이상</label>
               </RadioBox>
@@ -242,26 +242,30 @@ const JoinProhibit = styled.div`
     float: left;
     width: 100%;
     height: 50px;
-    border: 1px solid #e0e0e0;
-    box-sizing: border-box;
+
     line-height: 50px;
     text-align: center;
   }
   & input:checked + label {
-    border: 1px solid #8556f6;
     color: #8556f6;
   }
 `
 
 const RadioBox = styled.div`
+  position: relative;
   width: 33.3333333333333333333333333333333333333333%;
   float: left;
-  margin-top: 26px;
-  margin-bottom: 50px;
+  margin: 26px -1px 50px 0px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
   &:after {
     display: block;
     clear: both;
     content: '';
+  }
+  &.on {
+    z-index: 55;
+    border: 1px solid #8556f6;
   }
 `
 

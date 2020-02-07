@@ -22,13 +22,12 @@ function TempBroad() {
 }
 
 export default props => {
-  console.log('ddd', props.match)
-
   return (
     <Layout {...props}>
       <div>temp broadcast</div>
+
       <Switch>
-        <Route path={'/guide/:test'} component={TempBroad} />
+        <Route path={`${props.match.path}/:test`} component={TempBroad} />
       </Switch>
 
       {/* <Contents /> */}
