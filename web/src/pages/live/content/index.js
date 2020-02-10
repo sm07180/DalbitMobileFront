@@ -11,10 +11,10 @@ import Api from 'context/api'
 
 //
 export default props => {
-  console.log(props)
   //---------------------------------------------------------------------
   //context
   const store = useContext(Context)
+
   //useState
   const [roomId, setRoomId] = useState(null)
   const [fetch, setFetch] = useState(null)
@@ -22,6 +22,7 @@ export default props => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.broad_list({...obj})
+    console.log(res)
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
@@ -83,7 +84,7 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {roomType: 1, page: 1, records: 30}})
+    fetchData({params: {page: 1, records: 30}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------

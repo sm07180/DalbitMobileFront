@@ -632,12 +632,10 @@ export const ajax = async obj => {
   const {url, method, data, params, authToken} = obj
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
-
-    const token = authToken !== undefined && API.authToken !== undefined ? API.authToken : authToken
     let res = await axios({
       method: method,
       headers: {
-        authToken: token,
+        authToken: API.authToken || '',
         'custom-header': API.customHeader || '',
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
