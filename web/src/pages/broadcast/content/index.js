@@ -11,12 +11,69 @@ import {Context} from 'pages/live/store'
 import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
-
-//
 export default props => {
-  //console.log(props.Info[0].category)
-  const [Radio, setRadio] = useState('every')
-  const [Radio2, setRadio2] = useState('일상/챗')
+  //context
+  //hooks
+  const {changes, setChanges, onChange} = useChange(update, {
+    onChange: -1,
+    entryType: 0,
+    os: 3,
+    roomType: 0,
+    welcomMsg: '하이',
+    bgImg: '/temp/2020/02/03/10/20200203102802930921.jpg',
+    title: '프론트엔드'
+  })
+
+  //update
+  function update(mode) {
+    console.log('---')
+    switch (true) {
+      case mode.onChange !== undefined:
+        console.log(JSON.stringify(changes))
+        break
+    }
+  }
+
+  //update
+  function update(mode) {
+    switch (true) {
+      case mode.onChange !== undefined:
+        //console.log(JSON.stringify(changes))
+        break
+    }
+  }
+  //makeRadio
+  const makeRadio = () => {
+    const info = ['모두입장', ' 팬만 입장', '20세이상']
+    return info.map((list, index) => {
+      return (
+        <JoinRadio
+          className={index == changes.entryType ? 'on' : ''}
+          key={index}
+          onClick={() => {
+            setChanges({...changes, entryType: index})
+          }}>
+          {list}
+        </JoinRadio>
+      )
+    })
+  }
+  const makeRadios = () => {
+    const info = ['일상/챗', ' 연애/오락', '노래/연주', '고민/사연', '책/힐링', '스포츠', 'ASMR', '노래방', '건강', '공포', '먹방', '성우', '요리', '기타']
+    return info.map((list, index) => {
+      return (
+        <SubjectRadio
+          className={index == changes.roomType ? 'on' : ''}
+          key={index}
+          onClick={() => {
+            setChanges({...changes, roomType: index})
+          }}>
+          {list}
+        </SubjectRadio>
+      )
+    })
+  }
+  //글자수제한
   const [count, setCount] = useState(0)
   const [count2, setCount2] = useState(0)
 
@@ -27,6 +84,7 @@ export default props => {
       return
     }
     setCount(element.value.length)
+    setChanges({...changes, title: value})
   }
   const handleChange2 = event => {
     const element = event.target
@@ -35,16 +93,9 @@ export default props => {
       return
     }
     setCount2(element.value.length)
+    setChanges({...changes, welcomMsg: value})
   }
-  //---------------------------------------------------------------------
-  const names2 = ['일상/챗', '고민/사연', '노래방', '건강', '먹방', '책/힐링', '기타', '공포', '연애/오락', '스포츠', '성우', 'ASMR', '노래/연주', '요리']
 
-  const listItem = names2.map((name1, index) => (
-    <RadioBoxS key={index}>
-      <input id={name1} checked={Radio2 === `${name1}`} type="radio" value={name1} onChange={() => setRadio2(`${name1}`)} />
-      <label htmlFor={name1}>{name1}</label>
-    </RadioBoxS>
-  ))
   // 이미지 업로드 관련
   //useState
   const [file, setFile] = useState(null)
@@ -53,22 +104,13 @@ export default props => {
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
   }
+
   useEffect(() => {
-    // console.log(file)
-    // console.log(url)
-  }, [uploadSingleFile])
+    setChanges({...changes, bgImg: url})
+  }, [url])
   //---------------------------------------------------------------------
   //context
-  //hooks
-  const {changes, setChanges, onChange} = useChange(update, {
-    onChange: -1,
-    entryType: 0,
-    os: 3,
-    roomType: 1,
-    welcomMsg: '하이',
-    bgImg: '/temp/2020/02/03/10/20200203102802930921.jpg',
-    title: '프론트엔드'
-  })
+
   //useState
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
@@ -83,21 +125,11 @@ export default props => {
     console.log(res)
     setFetch(res.data)
   }
-  //update
-  function update(mode) {
-    switch (true) {
-      case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
-        break
-    }
-  }
   /**
    *
    * @returns
    */
-  useEffect(() => {
-    //방송방 리스트
-  }, [])
+
   //---------------------------------------------------------------------
   return (
     <>
@@ -110,23 +142,11 @@ export default props => {
           <BroadDetail>
             <JoinProhibit>
               <h2>입장제한</h2>
-              <RadioBox value={Radio} className={Radio === 'every' ? 'on' : 'off'}>
-                <input id="every" checked={Radio === 'every'} value="every" onChange={() => setRadio('every')} type="radio" />
-                <label htmlFor="every">모두 입장</label>
-              </RadioBox>
-
-              <RadioBox value={Radio} className={Radio === 'fan' ? 'on' : 'off'}>
-                <input id="fan" checked={Radio === 'fan'} value="fan" onChange={() => setRadio('fan')} type="radio" />
-                <label htmlFor="fan">팬 만 입장</label>
-              </RadioBox>
-              <RadioBox value={Radio} className={Radio === 'upper20' ? 'on' : 'off'}>
-                <input id="upper20" checked={Radio === 'upper20'} value="upper20" onChange={() => setRadio('upper20')} type="radio" />
-                <label htmlFor="upper20">20세이상</label>
-              </RadioBox>
+              {makeRadio()}
             </JoinProhibit>
             <BroadSubject>
               <h2>방송주제</h2>
-              <SubjectWrap>{listItem}</SubjectWrap>
+              <SubjectWrap>{makeRadios()}</SubjectWrap>
             </BroadSubject>
             <PictureRegist>
               <h2>사진 등록</h2>
@@ -137,8 +157,7 @@ export default props => {
                   </div>
                   <UploadWrap className={url ? 'on' : 'off'}>
                     <IconWrapper>
-                      <span>사진등록</span>
-                      <Icon></Icon>
+                      <Icon className={url ? 'on' : 'off'}></Icon>
                     </IconWrapper>
                   </UploadWrap>
                 </label>
@@ -166,8 +185,8 @@ export default props => {
                   onChange={handleChange2}
                   maxLength="100"
                   placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.
-(10 ~ 100자 이내)
-"
+                  (10 ~ 100자 이내)
+                  "
                 />
                 <Counter>{count2} / 100</Counter>
               </div>
@@ -181,7 +200,7 @@ export default props => {
             </CreateBtn>
           </BroadDetail>
         </Wrap>
-        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
+        <section>{JSON.stringify(changes, null, 1)}</section>
       </Content>
     </>
   )
@@ -193,7 +212,6 @@ const Content = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 110px;
-
   & h1 {
     color: #8556f6;
     font-size: 34px;
@@ -210,7 +228,6 @@ const Wrap = styled.div`
 `
 const BroadDetail = styled.div`
   width: 394px;
-  /* min-height: 500px; */
   margin: 0px auto 0 auto;
   &:after {
     display: block;
@@ -218,59 +235,63 @@ const BroadDetail = styled.div`
     content: '';
   }
 `
-
 const JoinProhibit = styled.div`
   width: 100%;
-
-  transform: skew(-0.03deg);
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
   & h2 {
+    margin-bottom: 24px;
     font-size: 18px;
     font-weight: 600;
     line-height: 1.17;
     letter-spacing: -0.45px;
   }
-
-  & input {
-    appearance: none;
-  }
-  & label {
-    float: left;
-    width: 100%;
-    height: 50px;
-
-    line-height: 50px;
-    text-align: center;
-  }
-  & input:checked + label {
-    color: #8556f6;
-  }
 `
-
-const RadioBox = styled.div`
+const JoinRadio = styled.div`
+  display: inline-block;
   position: relative;
-  width: 33.3333333333333333333333333333333333333333%;
-  float: left;
-  margin: 26px -1px 50px 0px;
+  width: 33.333%;
+  margin-left: -1px;
+  padding: 16px 33px 16px 33px;
   border: 1px solid #e0e0e0;
   box-sizing: border-box;
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
+  color: #707070;
+  font-size: 16px;
+  transform: skew(-0.03deg);
+  cursor: pointer;
   &.on {
-    z-index: 55;
     border: 1px solid #8556f6;
+    color: #8556f6;
+    z-index: 2;
+  }
+  &:focus {
+    outline: none;
+  }
+`
+const SubjectRadio = styled.div`
+  display: inline-block;
+  position: relative;
+  padding: 11px 17px 11px 17px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  box-sizing: border-box;
+  color: #707070;
+  font-size: 16px;
+  transform: skew(-0.03deg);
+  cursor: pointer;
+  &.on {
+    border: 1px solid #8556f6;
+    color: #8556f6;
+    z-index: 2;
+  }
+  &:focus {
+    outline: none;
   }
 `
 
 const BroadSubject = styled.div`
   width: 100%;
+  margin-top: 40px;
   & h2 {
     font-size: 18px;
     font-weight: 600;
@@ -281,35 +302,7 @@ const SubjectWrap = styled.div`
   width: 100%;
   margin-top: 25px;
 `
-const RadioBoxS = styled.div`
-  display: inline-block;
-  height: 40px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-  & input {
-    appearance: none;
-  }
-  & label {
-    float: left;
-    border: 1px solid #e0e0e0;
-    border-radius: 50px;
-    padding: 10px 20px;
-    box-sizing: border-box;
-    transform: skew(-0.03deg);
-  }
-  & input:checked + label {
-    border: 1px solid #8556f6;
-    color: #8556f6;
-  }
-  &:nth-of-type(4n) {
-    margin-right: 0;
-  }
-`
+
 const PictureRegist = styled.div`
   width: 100%;
   margin-top: 50px;
@@ -372,7 +365,7 @@ const UploadWrap = styled.span`
   bottom: 0;
   width: 100%;
   height: 100%;
-  color: #bdbdbd;
+
   transform: skew(-0.03deg);
   &:after {
     display: block;
@@ -404,9 +397,12 @@ const IconWrapper = styled.span`
 `
 const Icon = styled.em`
   float: left;
-  width: 48px;
+  width: 90px;
   height: 48px;
-  background: url('http://www.hwangsh.com/img/camera.png') no-repeat center / cover;
+  background: url('http://www.hwangsh.com/img/came.png') no-repeat center / cover;
+  &.on {
+    background: url('http://www.hwangsh.com/img/cameraon.png') no-repeat center / cover;
+  }
 `
 const BroadTitle = styled.div`
   position: relative;
@@ -491,4 +487,5 @@ const CreateBtn = styled.button`
   line-height: 50px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
+  cursor: pointer;
 `
