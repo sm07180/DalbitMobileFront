@@ -33,11 +33,10 @@ export default () => {
       return info
     }
     const element = document.getElementById('customHeader')
-    if (element === null) {
-      return makeCustomHeader()
-    }
+    //customHeade가 읽을수없는경우고정값으로생성
+    if (element === null) return makeCustomHeader()
+    if (element.value === null || element.value === '') return makeCustomHeader()
 
-    if (element.value === null || element.value === '') return
     return typeof JSON.parse(element.value) === 'object' && JSON.parse(element.value)
   })
   //---------------------------------------------------------------------
