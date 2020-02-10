@@ -308,6 +308,19 @@ export default class API {
   }
 
   /**
+   * @brief 회원 로그아웃
+   * @method "POST"
+   * @param string authToken            //*발행된토큰
+   * @param Jsonstring custom-header    //*디바이스토큰
+   * @create 김호겸 2020.01.15
+   */
+
+  static member_logout = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/member/logout`, method: method || 'POST', data: data})
+  }
+
+  /**
    * @brief 회원가입
    * @method "POST"
    * @param string memType               //*회원구분
