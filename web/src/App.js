@@ -57,6 +57,10 @@ export default () => {
     //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
     const element = document.getElementById('authToken')
     if (element !== null && typeof element.value === 'string') return element.value
+
+    //#2 쿠키로부터 'custom-header' 설정
+    const cookie = Utility.getCookie('authToken')
+    if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
   //---------------------------------------------------------------------
@@ -67,7 +71,7 @@ export default () => {
     // result 성공/실패 여부상관없이,토큰없데이트
     Api.setAuthToken(res.data.authToken)
     context.action.updateToken(res.data)
-    Utility.setCookie('authToken', JSON.stringify(res.data), DAY_COOKIE_PERIOD)
+    Utility.setCookie('authToken', res.data.authToken, DAY_COOKIE_PERIOD)
     //모든처리완료
     setReady(true)
   }
