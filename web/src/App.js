@@ -51,7 +51,7 @@ export default () => {
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined && cookie !== null) {
-      if (typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
+      //  if (typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
     }
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
