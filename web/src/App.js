@@ -49,22 +49,33 @@ export default () => {
       Api.setAuthToken(res.data.authToken)
       context.action.updateToken(res.data)
       //ready
-      console.table(res.data)
+      // console.table(res.data)
       setReady(true)
     }
   }
+  //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    console.table(customHeader)
+    console.log('1')
+    //console.table(customHeader)
     //context Update
     Api.setCustomHeader(JSON.stringify(customHeader))
+    console.log('2')
     context.action.updateCustomHeader(customHeader)
+    console.log('3')
+
     //
     fetchData({data: customHeader})
+    console.log('4')
   }, [])
   //---------------------------------------------------------------------
   /**
    * @brief 정보체크이후 최종완료된 상태에서 Route진행
    */
-  return <React.Fragment>{ready && <Route />}</React.Fragment>
+  return (
+    <React.Fragment>
+      {ready && console.log('Route')}
+      {ready && <Route />}
+    </React.Fragment>
+  )
 }
