@@ -284,7 +284,7 @@ export default class API {
    */
 
   static getToken = async obj => {
-    const {url, method, params, data} = obj || {}
+    const {url, method, authToken, data} = obj || {}
     return await ajax({...obj, url: url || `/token`, method: method || 'GET', data: data})
   }
 
@@ -629,14 +629,15 @@ export default class API {
 
 //ajax
 export const ajax = async obj => {
-  const {url, method, data, params} = obj
+  const {url, method, data, params, authToken} = obj
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
 
+    const token = authToken !== undefined && API.authToken !== undefined ? API.authToken : authToken
     let res = await axios({
       method: method,
       headers: {
-        authToken: API.authToken || '',
+        authToken: token,
         'custom-header': API.customHeader || '',
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },

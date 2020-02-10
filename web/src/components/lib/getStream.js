@@ -24,7 +24,7 @@ export const getMicStream = async () => {
 
   await navigator.mediaDevices
     .getUserMedia(constraint)
-    .then(async stream => {
+    .then(stream => {
       mediaStream = stream
     })
     .catch(e => {

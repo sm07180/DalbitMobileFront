@@ -2,28 +2,42 @@
  *  @example
  * import Utility ,{addComma} from 'components/lib/utility'
  *
-
- *
  */
-
-//---------------------------------------------------------------------
-//* 범위내에 난수발생
-export const randomRange = (n1, n2) => Math.floor(Math.random() * (n2 - n1 + 1) + n1)
-//* 3,000,000 3단위수로 ,붙이기
-export const addComma = x => {
-  try {
-    var parts = x.toString().split('.')
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    return parts.join('.')
-  } catch {
-    return 0
-  }
-}
 //---------------------------------------------------------------------
 export default class Utility {
   /**
+   * @brief 쿠키설정
+   * @param string    c_name            //*쿠키의 key(키)
+   * @param string    value             //*쿠키의 value(값)
+   * @param string    exdays            //*유효기간
+   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *
    */
+  static setCookie = (c_name, value, exdays) => {
+    const exdate = new Date()
+    exdate.setDate(exdate.getDate() + exdays)
+    const c_value = escape(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
+    document.cookie = c_name + '=' + c_value
+  }
+  /**
+   * @brief 쿠키가져오기
+   * @param string    c_name            //*쿠키의 key(키)
+   * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
+   *
+   */
+  static getCookie = c_name => {
+    let i, x, y
+    let ARRcookies = document.cookie.split(';')
+    for (i = 0; i < ARRcookies.length; i++) {
+      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='))
+      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
+      x = x.replace(/^\s+|\s+$/g, '')
+      if (x == c_name) {
+        return unescape(y)
+      }
+    }
+  }
+  //* make UUID
   static createUUID = () => {
     var dt = new Date().getTime()
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
