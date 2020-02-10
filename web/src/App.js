@@ -45,7 +45,7 @@ export default () => {
     //---------------------------------------------
     //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
     const element = document.getElementById('customHeader')
-    if (element !== null) return JSON.parse(element.value)
+    //    if (element !== null) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined && cookie !== '' && cookie !== null) return JSON.parse(cookie)
