@@ -27,6 +27,7 @@ function TempBroad(props) {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
       const hostHandler = new Host(audioSocketUrl, true)
       const micStream = await getMicStream()
+      console.log(micStream)
       hostHandler.setMicStream(micStream)
       hostHandler.setStreamId(streamId)
       setHandler(hostHandler)
