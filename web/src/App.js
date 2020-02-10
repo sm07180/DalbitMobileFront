@@ -58,11 +58,10 @@ export default () => {
   useEffect(() => {
     console.log('1')
     //console.table(customHeader)
-    //context Update
+    //CUSTOM-HEADER
     Api.setCustomHeader(JSON.stringify(customHeader))
-    console.log('2')
-    context.action.updateCustomHeader(customHeader)
-    console.log('3')
+    context.action.updateCustomHeader('custom-header')
+    Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
 
     //
     fetchData({data: customHeader})
