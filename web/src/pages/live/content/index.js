@@ -47,7 +47,7 @@ export default props => {
       }
       //성공
       if (res.result === 'success') {
-        const {bjStreamId} = res.datagit
+        const {bjStreamId} = res.data
         props.history.push('/cast', res.data)
         // console.log(res.data)
         return
