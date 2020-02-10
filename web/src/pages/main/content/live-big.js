@@ -12,11 +12,7 @@ export default props => {
   const [LiveBigInfo, setLiveBigInfo] = useState(props.ImgInfo[0])
   //---------------------------------------------------------------------
   // console.log(item)
-<<<<<<< HEAD
-  // console.log(LiveBigInfo.url)
-=======
   //console.log(LiveBigInfo.url)
->>>>>>> 2d5639ea30a13f22aafdfee08dae10200d0b3f8b
   //---------------------------------------------------------------------
   return (
     <>

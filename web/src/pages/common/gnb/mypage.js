@@ -5,6 +5,8 @@ import {Context} from 'context'
 //component
 import Gnb from './gnb-layout'
 import {Link, NavLink} from 'react-router-dom'
+import Api from 'context/api'
+
 export default props => {
   //---------------------------------------------------------------------
   const [login, setLogin] = useState(props.LoginInfo)
@@ -93,6 +95,13 @@ export default props => {
                     } else {
                       const result = confirm('로그아웃 하시겠습니까?')
                       if (result) {
+                        // const res = await Api.member_logout({
+                        //   data: {
+                        //     authToken: context.,
+                        //     custom-Header: context.customHeader,
+                        //   }
+                        // })
+
                         alert('정상적으로 로그아웃 되었습니다.')
                         context.action.updateLogin(false)
                       }

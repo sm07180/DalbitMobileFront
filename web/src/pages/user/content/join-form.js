@@ -10,7 +10,16 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
-
+/**
+곰인형-토끼 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json
+곰인형 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json
+도너츠-달 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json
+도너츠 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json
+곰인형-토끼 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_1.webp
+곰인형 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_2.webp
+도너츠-달 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_3.webp
+도너츠 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_4.webp
+ */
 const JoinForm = props => {
   //useState
   const [file, setFile] = useState(null) // img 업로드 file
@@ -59,7 +68,7 @@ const JoinForm = props => {
     // if (blank_pattern != -1) {
     //   //string=string.substring(0, string.length()-1);
     // }
-
+    console.log('onLoginHandleChange')
     setChanges({
       ...changes,
       [e.target.name]: e.target.value
@@ -83,6 +92,9 @@ const JoinForm = props => {
         term2: 'y',
         term3: 'y',
         name: changes.loginName,
+        profImg: '',
+        profImgRacy: 3,
+        email: '',
         os: changes.osName
       }
     })
@@ -94,6 +106,20 @@ const JoinForm = props => {
         //window.location.href = '/' // 홈페이지로 새로고침
         props.history.push('/')
         context.action.updateLogin(true)
+        const resUpload = await Api.image_upload({
+          data: {
+            file: '',
+            dataURL: '',
+            imageURL: changes.image,
+            uploadType: 'profile'
+          }
+        })
+        if (resUpload && resUpload.code) {
+          console.log('성공했으니 올려 멍청아 ')
+          console.log('resUpload = ' + JSON.stringify(resUpload, null, 1))
+        } else {
+          console.log('안올라갔어.')
+        }
       } else {
         alert(res.message)
         context.action.updateLogin(false)
@@ -103,8 +129,24 @@ const JoinForm = props => {
 
   // 이미지 업로드 관련
   function uploadSingleFile(e) {
+    console.log('uploadSingleFile = ' + e.target.files[0])
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
+    setChanges({
+      ...changes,
+      image: e.target.files[0]
+    })
+
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    if(reader.result){
+      console.log(JSON.stringify(reader.result,null,1))
+    }
+    // reader.onload = function () {
+    //     formData.append('dataURL', reader.result);
+    //     ajaxUploadFile(formData);
+    // }
+
   }
   function upload(e) {
     //이미지 업로드 확인, 나중에 삭제.
@@ -151,7 +193,7 @@ const JoinForm = props => {
         <ProfileUpload imgUrl={url}>
           <label htmlFor="profileImg">
             <div className={url ? 'on' : 'off'}>
-              <img src={`${IMG_SERVER}/images/api/join-profile-none.png`} />
+              <img src={changes.image ? changes.image : `${IMG_SERVER}/images/api/join-profile-none.png`} />
             </div>
             <span>클릭 이미지 파일 추가</span>
           </label>

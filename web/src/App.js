@@ -56,14 +56,10 @@ export default () => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    console.log('1')
     //console.table(customHeader)
     //context Update
     Api.setCustomHeader(JSON.stringify(customHeader))
-    console.log('2')
     context.action.updateCustomHeader(customHeader)
-    console.log('3')
-
     //
     fetchData({data: customHeader})
     console.log('4')

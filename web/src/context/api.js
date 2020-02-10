@@ -24,7 +24,7 @@ import axios from 'axios'
 import qs from 'qs'
 import {Context} from 'context'
 //component
-import {API_SERVER} from 'context/config'
+import {API_SERVER, PHOTO_SERVER} from 'context/config'
 
 // export const authToken = () => {
 //   const context = useContext(Context)
@@ -631,6 +631,8 @@ export default class API {
 export const ajax = async obj => {
   const {url, method, data, params} = obj
   try {
+    const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
+
     let res = await axios({
       method: method,
       headers: {
@@ -638,7 +640,7 @@ export const ajax = async obj => {
         'custom-header': API.customHeader || '',
         'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
-      url: API_SERVER + url,
+      url: pathType + url,
       params: params,
       data: qs.stringify(data)
     })

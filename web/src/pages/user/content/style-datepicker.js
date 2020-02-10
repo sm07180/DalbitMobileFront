@@ -16,7 +16,8 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //useState
-  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : '')
+  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : new Date())
+
   //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {
     setSelectedDate(date)
