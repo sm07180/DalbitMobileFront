@@ -38,6 +38,7 @@ export default props => {
   let loginName = ''
   let loginImg = ''
   let loginOs = ''
+  let loginPwd = ''
 
   if (osName == 'IOS') loginOs = 2
   else if (osName == 'Android') loginOs = 1
@@ -62,6 +63,15 @@ export default props => {
         break
       default:
         loginId = obj.phone
+        loginPwd = obj.pwd
+
+        if (typeof loginId === 'undefined' || !loginId) {
+          alert('휴대폰번호를 입력해 주세요')
+          return
+        } else if (typeof loginPwd === 'undefined' || !loginPwd) {
+          alert('비밀번호를 입력해 주세요')
+          return
+        }
         break
     }
 
@@ -69,6 +79,7 @@ export default props => {
       data: {
         memType: ostype,
         memId: loginId,
+        memPwd: loginPwd,
         os: context.customHeader.os,
         deviceId: context.customHeader.deviceId
       }
@@ -207,12 +218,17 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
-      <Logo>
-        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-      </Logo>
+      {window.location.pathname === '/login' ? (
+        ''
+      ) : (
+        <Logo>
+          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+        </Logo>
+      )}
+
       <LoginInput>
         <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
-        <input type="password" name="password" placeholder="비밀번호" onChange={onLoginHandleChange} />
+        <input type="password" name="pwd" placeholder="비밀번호" onChange={onLoginHandleChange} />
       </LoginInput>
       <LoginSubmit
         onClick={() => {
