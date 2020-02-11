@@ -21,6 +21,9 @@ export default props => {
   const audioReference = useRef()
   const {location} = props.history
 
+  // type : host, guest, listener
+  const type = 'listener'
+
   // temp init
   useEffect(() => {
     // initialize mic stream and audio socket.
@@ -45,17 +48,6 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        {/* <div>
-          <button
-            onClick={() => {
-              if (handler.ws && handler.publish) {
-                handler.publish()
-              }
-            }}>
-            publish
-          </button>
-        </div> */}
-
         <div>
           <audio ref={audioReference} autoPlay controls></audio>
         </div>

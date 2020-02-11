@@ -15,6 +15,7 @@ import Popup from 'pages/common/popup'
 const Layout = props => {
   //context
   const context = useContext(Context)
+  const {mediaHandler} = context
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
@@ -54,6 +55,14 @@ const Layout = props => {
       </main>
       {/* 푸터설정 */}
       <Footer Ftype="mainFooter" />
+
+      {/* 미니멀 플레이어 */}
+      {mediaHandler && mediaHandler.rtcPeerConn && (
+        <MediaPlayer>
+          <div onClick={() => mediaHandler.stop()}>stop</div>
+        </MediaPlayer>
+      )}
+
       {/* 레이어팝업 */}
       <Popup {...props} />
     </Container>
@@ -91,4 +100,14 @@ const Container = styled.div`
   /* main.sub {
     
   } */
+`
+const MediaPlayer = styled.div`
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  width: 300px;
+  height: 100px;
+  box-shadow: 4px 4px 10px #aaa;
+  background-color: #fff;
 `
