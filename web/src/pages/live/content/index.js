@@ -14,13 +14,12 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(Context)
-
   //useState
   const [roomId, setRoomId] = useState(null)
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
-  //fetch
-  async function fetchData(obj) {
+  //getBroadList
+  async function getBroadList(obj) {
     const res = await Api.broad_list({...obj})
     console.log(res)
     //Error발생시
@@ -30,31 +29,40 @@ export default props => {
     }
     setFetch(res.data)
   }
-  //makeRoom
-  const makeRoom = (roomNo, idx) => {
-    setRoomId(roomNo)
-    //fetch
-    async function fetchData(obj) {
-      const res = await Api.broad_join({data: {roomNo: roomNo}})
-      console.log(res)
-      console.log(res.result)
-      //Error발생시
-      if (res.result === 'fail') {
-        const {code, message} = res
-        alert(message)
-        console.log(message)
-        return
-      }
-      //성공
-      if (res.result === 'success') {
-        const {bjStreamId} = res.data
-        props.history.push('/cast', res.data)
-        // console.log(res.data)
-        return
-      }
+  //exitRoom
+  async function exitRoom(obj) {
+    const res = await Api.broad_exit({data: {...obj}})
+    if (res.result === 'success') {
+      return res
     }
-    fetchData()
+    alert(res.message)
   }
+  //joinRoom
+  async function joinRoom(obj) {
+    console.log(obj)
+    let exit = {}
+    const {roomNo} = obj
+    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log(res)
+    //Error발생시 (방이 입장되어 있을때)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
+      exit = await exitRoom(obj)
+      console.log(exit)
+    }
+    //Error발생시 (종료된 방송)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') {
+      alert(res.message)
+    }
+    //정상진입이거나,방탈퇴이후성공일경우
+    if (res.result === 'success' || exit.result === 'success') {
+      console.clear()
+      console.log(res)
+
+      props.history.push('/cast', res.data)
+      return
+    }
+  }
+
   //makeContents
   const makeContents = () => {
     if (fetch === null) return
@@ -63,10 +71,9 @@ export default props => {
       return (
         <List
           key={idx}
-          href="#"
           style={{backgroundImage: `url(${bgImg.thumb700x700})`}}
           onClick={() => {
-            makeRoom(roomNo, idx)
+            joinRoom(list)
           }}>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
@@ -78,13 +85,14 @@ export default props => {
       )
     })
   }
+  //---------------------------------------------------------------------
   /**
    *
    * @returns
    */
   useEffect(() => {
     //방송방 리스트
-    fetchData({params: {page: 1, records: 30}})
+    getBroadList({params: {page: 1, records: 30}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
@@ -128,7 +136,7 @@ const Button = styled.button`
   color: #fff;
   background: #ff0000;
 `
-const List = styled.a`
+const List = styled.button`
   display: inline-block;
   margin: 10px;
   max-width: 150px;

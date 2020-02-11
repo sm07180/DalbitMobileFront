@@ -32,6 +32,12 @@ export default props => {
     <Layout {...props}>
       <Content>
         <p>webp</p>
+        <Lottie
+          options={{
+            loop: false,
+            path: 'https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json'
+          }}
+        />
         <div className="wrap">
           <img src="https://devimage.dalbitcast.com/ani/webp/2020.02.07_1.webp"></img>
         </div>
