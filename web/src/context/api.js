@@ -36,7 +36,7 @@ export default class API {
    * @brief 방송방 생성
    * @method "POST"
    * @todo
-   * @param int roomType                //*방송종류
+   * @param string roomType                //*방송종류
    * @param string title                //*제목
    * @param string bgImg                //*백그라운드 이미지 경로
    * @param int bgImgRacy               //백그라운드 구글 선정성
@@ -633,7 +633,7 @@ export const ajax = async obj => {
 
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
-<<<<<<< HEAD
+
     const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded;charset=utf-8'
 
     let formData = new FormData()
@@ -648,8 +648,6 @@ export const ajax = async obj => {
 
     let dataType = url === '/upload' ? formData : qs.stringify(data)
 
-=======
->>>>>>> 06efee4ef09101d6e8464b9371f6abcddd99d47d
     let res = await axios({
       method: method,
       headers: {
