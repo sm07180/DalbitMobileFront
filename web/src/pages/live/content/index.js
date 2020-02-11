@@ -84,7 +84,7 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    getBroadList({params: {page: 1, records: 30}})
+    getBroadList({data: {page: 1, records: 30}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
