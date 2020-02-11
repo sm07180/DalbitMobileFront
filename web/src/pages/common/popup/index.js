@@ -11,6 +11,7 @@ import {Context} from 'context'
 
 //contents
 import Auth from 'pages/common/auth'
+import POPCAST from 'components/ui/pop-mic'
 //
 export default props => {
   //
@@ -21,6 +22,8 @@ export default props => {
     switch (context.popup_code) {
       case 'LOGIN':
         return <Auth {...props} />
+      case 'CAST':
+        return <POPCAST {...props} />
     }
   }
   //---------------------------------------------------------------------

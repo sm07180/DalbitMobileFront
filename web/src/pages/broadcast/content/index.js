@@ -6,19 +6,22 @@ import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
 //context
-import {Context} from 'pages/live/store'
+//import {Context} from 'pages/live/store'
+import {Context} from 'context'
 //hooks
 import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
+
 export default props => {
+  const context = useContext(Context)
   //context
   //hooks
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     entryType: 0,
-    os: 3,
     roomType: '01',
+    bgImgRacy: 3,
     welcomMsg: '하이',
     bgImg: '/temp/2020/02/03/10/20200203102802930921.jpg',
     title: '프론트엔드'
@@ -83,6 +86,7 @@ export default props => {
       )
     })
   }
+
   //글자수제한
   const [count, setCount] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -169,11 +173,17 @@ export default props => {
         return
       } else {
         console.log('정상작동했으니깐 방 생성해 짜샤!')
+        setBActive(true)
       }
       console.log(res)
 
       setFetch(res.data)
     }
+  }
+  const [BActive, setBActive] = useState(false)
+  //밸리데이션
+  const vali = () => {
+    setBActive(true)
   }
   /**
    *
@@ -190,6 +200,16 @@ export default props => {
 
         <Wrap>
           <BroadDetail>
+            {
+              <Pop
+                onClick={() => {
+                  if (!context.login_state) {
+                    context.action.updatePopup('CAST')
+                  }
+                }}>
+                팝업 임시확인
+              </Pop>
+            }
             <JoinProhibit>
               <h2>입장제한</h2>
               {makeRadio()}
@@ -245,7 +265,9 @@ export default props => {
             <CreateBtn
               onClick={() => {
                 fetchData({...changes})
-              }}>
+              }}
+              value={BActive}
+              className={BActive === true ? 'on' : ''}>
               방송하기
             </CreateBtn>
           </BroadDetail>
@@ -538,4 +560,19 @@ const CreateBtn = styled.button`
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
   cursor: pointer;
+  &.on {
+    background-color: #000;
+  }
+`
+//-------------
+const Pop = styled.button`
+  display: block;
+  width: 100%;
+  background-color: skyblue;
+  color: #fff;
+  font-size: 14px;
+  line-height: 42px;
+  letter-spacing: -0.35px;
+  cursor: pointer;
+  transform: skew(-0.03deg);
 `
