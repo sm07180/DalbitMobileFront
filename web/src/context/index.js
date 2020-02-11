@@ -26,6 +26,7 @@ const GlobalProvider = props => {
   const [gnb_state, setGnbState] = useState('')
   const [login_state, setlogin] = useState(false)
   const [mediaHandler, setMediaHandler] = useState(null)
+  const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
 
   //---------------------------------------------------------------------
   const action = {
@@ -83,9 +84,13 @@ const GlobalProvider = props => {
       setlogin(bool)
       setGnbVisible(false)
     },
-    // 오디오 웹소캣
+    // 오디오 정보
     updateMediaHandler: instance => {
       setMediaHandler(instance)
+    },
+    // 오디오 글로벌 플레이어 상태
+    updateMediaPlayerStatus: status => {
+      setMediaPlayerStatus(status)
     }
   }
   //---------------------------------------------------------------------
@@ -99,6 +104,7 @@ const GlobalProvider = props => {
     gnb_visible,
     gnb_state,
     mediaHandler,
+    mediaPlayerStatus,
 
     action
   }

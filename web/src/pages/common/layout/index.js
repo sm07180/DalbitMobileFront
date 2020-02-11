@@ -16,7 +16,7 @@ const Layout = props => {
   console.log('Layout = ' + props)
   //context
   const context = useContext(Context)
-  const {mediaHandler} = context
+  const {mediaHandler, mediaPlayerStatus} = context
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
@@ -39,9 +39,19 @@ const Layout = props => {
      */
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
+
+    if (mediaHandler && !mediaHandler.globalStartCallback) {
+      mediaHandler.setGlobalStartCallback(() => action.updateMediaPlayerStatus(true))
+      mediaHandler.setGlobalStopCallback(() => action.updateMediaPlayerStatus(false))
+    }
+
     return () => {
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
+
+      if (mediaHandler) {
+        mediaHandler.resetGlobalCallback()
+      }
     }
   }, [])
   //---------------------------------------------------------------------
@@ -57,8 +67,8 @@ const Layout = props => {
       {/* 푸터설정 */}
       <Footer Ftype="mainFooter" />
 
-      {/* 미니멀 플레이어 */}
-      {mediaHandler && mediaHandler.rtcPeerConn && (
+      {/* 미디어 플레이어 */}
+      {mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
         <MediaPlayer>
           <div onClick={() => mediaHandler.stop()}>stop</div>
         </MediaPlayer>

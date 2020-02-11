@@ -17,6 +17,8 @@ export class SignalingHandler {
     // callback
     this.localStartCallback = null
     this.localStopCallback = null
+    this.globalStartCallback = null
+    this.globalStopCallback = null
 
     // about socket info
     this.intervalId = null
@@ -32,9 +34,19 @@ export class SignalingHandler {
   setLocalStopCallback(callback) {
     this.localStopCallback = callback
   }
+  setGlobalStartCallback(callback) {
+    this.globalStartCallback = callback
+  }
+  setGlobalStopCallback(callback) {
+    this.globalStopCallback = callback
+  }
   resetLocalCallback() {
     this.localStartCallback = null
     this.localStopCallback = null
+  }
+  resetGlobalCallback() {
+    this.globalStartCallback = null
+    this.globalStopCallback = null
   }
 
   socketSendMsg(data) {
@@ -149,6 +161,9 @@ export class SignalingHandler {
 
     if (this.localStopCallback) {
       this.localStopCallback()
+    }
+    if (this.globalStopCallback) {
+      this.globalStopCallback()
     }
   }
   gotDescription = config => {
