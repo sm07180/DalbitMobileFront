@@ -7,6 +7,7 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
+import {Context} from 'context'
 //components
 import Api from 'context/api'
 import Content from './content'
