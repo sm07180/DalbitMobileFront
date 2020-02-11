@@ -18,7 +18,7 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-
+  console.log(context.token.authToken)
   /**
    *
    * @returns

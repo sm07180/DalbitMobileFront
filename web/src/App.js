@@ -44,15 +44,11 @@ export default () => {
     }
     //---------------------------------------------
     //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader')
-    if (element !== null) {
-      // if (element.value !== undefined) return JSON.parse(element.value)
-    }
+    const element = document.getElementById('customHeader1')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== null) {
-      //  if (typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
-    }
+    if (cookie !== undefined && cookie !== null && typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
@@ -88,7 +84,7 @@ export default () => {
     Utility.setCookie('custom-header', JSON.stringify(customHeader), DAY_COOKIE_PERIOD)
     console.table(customHeader)
     //#2 authToken
-    fetchData({authToken: authToken, data: customHeader})
+    fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------
   /**

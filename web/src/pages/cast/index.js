@@ -10,8 +10,7 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {getMicStream} from 'components/lib/getStream'
-import {Host, Listener} from 'components/lib/SignalingHandler'
+import {Listener} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
@@ -22,24 +21,23 @@ export default props => {
   const audioReference = useRef()
   const {location} = props.history
 
+  // type : host, guest, listener
+  const type = 'listener'
+
   // temp init
   useEffect(() => {
     // initialize mic stream and audio socket.
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
 
-      // host
-      // const hostHandler = new Host(audioSocketUrl, true)
-      // const micStream = await getMicStream()
-      // hostHandler.setMicStream(micStream)
-      // location.state && hostHandler.setStreamId(location.state.bjStreamId)
-      // setHandler(hostHandler)
-      // context.action.updateMediaHandler(hostHandler)
-
       // listener
       const listenerHandler = new Listener(audioSocketUrl, true)
       listenerHandler.setAudioTag(audioReference.current)
-      location.state && listenerHandler.setStreamId(location.state.bjStreamId)
+      if (location.state) {
+        const {bjStreamId} = location.state
+        listenerHandler.setStreamId(bjStreamId)
+        setStreamId(bjStreamId)
+      }
       setHandler(listenerHandler)
       context.action.updateMediaHandler(listenerHandler)
     })()
@@ -50,17 +48,6 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        {/* <div>
-          <button
-            onClick={() => {
-              if (handler.ws && handler.publish) {
-                handler.publish()
-              }
-            }}>
-            publish
-          </button>
-        </div> */}
-
         <div>
           <audio ref={audioReference} autoPlay controls></audio>
         </div>

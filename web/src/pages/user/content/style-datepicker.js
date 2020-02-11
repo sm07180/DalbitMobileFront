@@ -26,6 +26,12 @@ export default props => {
   useEffect(() => {
     handleDateChange(selectedDate)
   }, [props.value])
+
+  useEffect(() => {
+    handleDateChange(selectedDate)
+  }, [props.value])
+
+  //console.log('selectedDate', selectedDate)
   //---------------------------------------------------------------------
   //캘린더 한글화
   moment.locale('ko')

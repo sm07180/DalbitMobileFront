@@ -2,22 +2,25 @@
  * @file /store/index.js
  * @brief 스토어
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
+import {Context} from 'context'
 //components
 import Api from 'context/api'
 //
 export default props => {
+  const context = new useContext(Context)
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <Content>스토어</Content>
+      <Content></Content>
     </Layout>
   )
 }
