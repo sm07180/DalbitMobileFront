@@ -5,7 +5,7 @@
  *        value : YYYYMMDD, 빈 값일시 현재 날짜로 셋팅
  */
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 import moment from 'moment'
@@ -23,6 +23,12 @@ export default props => {
     setSelectedDate(date)
     props.change(moment(date).format('YYYYMMDD'))
   }
+
+  useEffect(() => {
+    handleDateChange(selectedDate)
+  }, [props.value])
+
+  //console.log('selectedDate', selectedDate)
   //---------------------------------------------------------------------
   //캘린더 한글화
   moment.locale('ko')
