@@ -22,6 +22,13 @@ function TempBroad(props) {
   const [handler, setHandler] = useState(null)
   const [publishStatus, setPublishStatus] = useState(false)
 
+  const startPlayer = () => {
+    setPublishStatus(true)
+  }
+  const stopPlayer = () => {
+    setPublishStatus(false)
+  }
+
   useEffect(() => {
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
@@ -29,10 +36,14 @@ function TempBroad(props) {
       const micStream = await getMicStream()
       hostHandler.setMicStream(micStream)
       hostHandler.setStreamId(streamId)
+      hostHandler.setLocalStartCallback(startPlayer)
+      hostHandler.setLocalStopCallback(stopPlayer)
       setHandler(hostHandler)
     })()
     return () => {
-      // unmount
+      if (handler) {
+        handler.resetLocalCallback()
+      }
     }
   }, [])
 
@@ -58,10 +69,10 @@ function TempBroad(props) {
 
             if (handler.ws && handler.publish && !handler.rtcPeerConn) {
               handler.publish()
-              setPublishStatus(true)
+              startPlayer()
             } else if (handler.ws && handler.rtcPeerConn) {
               handler.stop()
-              setPublishStatus(false)
+              stopPlayer()
             }
           }}>
           {publishStatus ? 'Stop' : 'Publish'}
