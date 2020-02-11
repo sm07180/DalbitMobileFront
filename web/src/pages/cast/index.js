@@ -21,6 +21,9 @@ export default props => {
   const audioReference = useRef()
   const {location} = props.history
 
+  // type : host, guest, listener
+  const type = 'listener'
+
   // temp init
   useEffect(() => {
     // initialize mic stream and audio socket.
