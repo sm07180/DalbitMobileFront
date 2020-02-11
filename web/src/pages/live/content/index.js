@@ -39,28 +39,20 @@ export default props => {
   }
   //joinRoom
   async function joinRoom(obj) {
-    console.log(obj)
-    let exit = {}
     const {roomNo} = obj
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(res)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-      exit = await exitRoom(obj)
-      console.log(exit)
+      const exit = await exitRoom(obj)
+      if (exit.result === 'success') joinRoom(obj)
     }
     //Error발생시 (종료된 방송)
-    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') {
-      alert(res.message)
-    }
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
     //정상진입이거나,방탈퇴이후성공일경우
-    if (res.result === 'success' || exit.result === 'success') {
-      console.clear()
-      console.log(res)
-
+    if (res.result === 'success') {
       props.history.push('/cast', res.data)
-      return
     }
+    return
   }
 
   //makeContents

@@ -7,14 +7,15 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
+import {ajax} from 'context/api'
 //components
 import Lottie from 'lottie-react-web'
 import Api from 'context/api'
-//lottie
-//import l1 from 'http://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json'
+import axios from 'axios'
 
 /**
-곰인형-토끼 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json
+곰인형-토끼 : 
+://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json
 곰인형 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json
 도너츠-달 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json
 도너츠 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json
@@ -25,26 +26,46 @@ import Api from 'context/api'
  */
 export default props => {
   //---------------------------------------------------------------------
+  const [state, setState] = useState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    console.log(state)
+  }, [state])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
       <Content>
-        <p>webp</p>
-        <Lottie
-          options={{
-            loop: false,
-            path: 'https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json'
-          }}
-        />
+        <button
+          onClick={() => {
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
+          }}>
+          버튼1
+        </button>
+        <button
+          onClick={() => {
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json')
+          }}>
+          버튼2
+        </button>
+        <button
+          onClick={() => {
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json')
+          }}>
+          버튼3
+        </button>
         <div className="wrap">
-          <img src="https://devimage.dalbitcast.com/ani/webp/2020.02.07_1.webp"></img>
+          <Lottie
+            options={{
+              autoplay: true,
+              loop: false,
+              path: state
+            }}
+          />
         </div>
-
         <h1>&#x1F601;</h1>
         <h2>&#x1F3AC;</h2>
         <h3>&#x1F42D;</h3>
+        <p>https://getemoji.com/</p>
       </Content>
     </Layout>
   )
@@ -65,7 +86,7 @@ const Content = styled.section`
     font-size: 70px;
   }
   .wrap {
-    width: 10%;
-    height: 10%;
+    max-width: 200px;
+    margin: 0 auto;
   }
 `
