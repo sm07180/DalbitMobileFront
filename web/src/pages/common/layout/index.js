@@ -57,7 +57,11 @@ const Layout = props => {
       <Footer Ftype="mainFooter" />
 
       {/* 미니멀 플레이어 */}
-      {mediaHandler && mediaHandler.rtcPeerConn && <MediaPlayer />}
+      {mediaHandler && mediaHandler.rtcPeerConn && (
+        <MediaPlayer>
+          <div onClick={() => mediaHandler.stop()}>stop</div>
+        </MediaPlayer>
+      )}
 
       {/* 레이어팝업 */}
       <Popup {...props} />

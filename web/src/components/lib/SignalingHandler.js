@@ -14,6 +14,7 @@ export class SignalingHandler {
       OfferToReceiveVideo: false
     }
 
+    // about socket info
     this.intervalId = null
     this.wSocketInit()
   }
