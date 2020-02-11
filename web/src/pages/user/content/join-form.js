@@ -51,7 +51,7 @@ const JoinForm = props => {
     birth: '',
     gender: 'm',
     image: '',
-    memType: '',
+    memType: 'p',
     osName: context.customHeader.os,
     deviceid: context.customHeader.deviceid,
 
