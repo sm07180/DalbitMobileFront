@@ -18,7 +18,7 @@ export default props => {
     onChange: -1,
     entryType: 0,
     os: 3,
-    roomType: 0,
+    roomType: '01',
     welcomMsg: '하이',
     bgImg: '/temp/2020/02/03/10/20200203102802930921.jpg',
     title: '프론트엔드'
@@ -60,13 +60,23 @@ export default props => {
   }
   const makeRadios = () => {
     const info = ['일상/챗', ' 연애/오락', '노래/연주', '고민/사연', '책/힐링', '스포츠', 'ASMR', '노래방', '건강', '공포', '먹방', '성우', '요리', '기타']
+    let leadingZeros = (n, digits) => {
+      var zero = ''
+      n = n.toString()
+      if (n.length < digits) {
+        for (var i = 0; i < digits - n.length; i++) zero += '0'
+      }
+      return zero + n
+    }
+
     return info.map((list, index) => {
+      let idx = leadingZeros(index, 2)
       return (
         <SubjectRadio
-          className={index == changes.roomType ? 'on' : ''}
+          className={idx == changes.roomType ? 'on' : ''}
           key={index}
           onClick={() => {
-            setChanges({...changes, roomType: index})
+            setChanges({...changes, roomType: idx})
           }}>
           {list}
         </SubjectRadio>
@@ -103,11 +113,23 @@ export default props => {
   function uploadSingleFile(e) {
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
+
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = function() {
+      console.log('reader', reader)
+      console.log('reader.', reader.result)
+      if (reader.result) {
+        setChanges({...changes, bgImg: reader.result})
+      } else {
+      }
+    }
   }
 
   useEffect(() => {
-    setChanges({...changes, bgImg: url})
-  }, [url])
+    console.log('changes = ' + JSON.stringify(changes, null, 1))
+    //setChanges({...changes})
+  }, [changes])
   //---------------------------------------------------------------------
   //context
 
@@ -116,14 +138,42 @@ export default props => {
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
-    const res = await Api.broad_create({...obj})
-    //Error발생시
-    if (res.result === 'fail') {
-      console.log(res.message)
-      return
+    const resUpload = await Api.image_upload({
+      data: {
+        file: '',
+        dataURL: obj.bgImg,
+        imageURL: ''
+      }
+    })
+
+    if (resUpload && resUpload.result === 'fail') {
+      console.log('upload 실패')
+    } else {
+      console.log('upload 성공')
+      setChanges({...changes, bgImg: resUpload.data.url})
+
+      const res = await Api.broad_create({
+        data: {
+          roomType: obj.roomType,
+          title: obj.title,
+          bgImg: obj.bgImg,
+          bgImgRacy: 3,
+          welcomMsg: obj.welcomMsg,
+          notice: '',
+          entryType: obj.entryType
+        }
+      })
+      //Error발생시
+      if (res.result === 'fail') {
+        console.log(res.message)
+        return
+      } else {
+        console.log('정상작동했으니깐 방 생성해 짜샤!')
+      }
+      console.log(res)
+
+      setFetch(res.data)
     }
-    console.log(res)
-    setFetch(res.data)
   }
   /**
    *
@@ -194,7 +244,7 @@ export default props => {
             <CopyrightIcon></CopyrightIcon>
             <CreateBtn
               onClick={() => {
-                fetchData({data: changes})
+                fetchData({...changes})
               }}>
               방송하기
             </CreateBtn>

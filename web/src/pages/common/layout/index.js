@@ -13,6 +13,7 @@ import Gnb from 'pages/common/gnb'
 import Popup from 'pages/common/popup'
 //
 const Layout = props => {
+  console.log('Layout = ' + props)
   //context
   const context = useContext(Context)
   //initalize
@@ -48,7 +49,7 @@ const Layout = props => {
       {/* 헤더설정 */}
       <Header {...props} />
       {/* global navigation */}
-      <Gnb />
+      <Gnb {...props} />
       <main className={props.type == 'main' ? 'main' : 'sub'}>
         <article>{children}</article>
       </main>

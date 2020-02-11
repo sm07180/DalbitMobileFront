@@ -630,20 +630,33 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params, authToken} = obj
+
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
+    const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded;charset=utf-8'
 
-    const token = authToken !== undefined && API.authToken !== undefined ? API.authToken : authToken
+    let formData = new FormData()
+    formData.append('file', '')
+    formData.append('dataURL', data.dataURL)
+    formData.append('imageURL', '')
+    if (url === '/user/join') {
+      formData.append('uploadType', 'profile')
+    } else {
+      formData.append('uploadType', 'bg')
+    }
+
+    let dataType = url === '/upload' ? formData : qs.stringify(data)
+
     let res = await axios({
       method: method,
       headers: {
-        authToken: token,
+        authToken: API.authToken || '',
         'custom-header': API.customHeader || '',
-        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+        'content-type': contentType
       },
       url: pathType + url,
       params: params,
-      data: qs.stringify(data)
+      data: dataType
     })
     // table 모양 로그출력
     //console.table(res.data)

@@ -40,8 +40,7 @@ const JoinForm = props => {
 
   console.log('customHeader = ' + JSON.stringify(context.customHeader, null, 1))
   console.log(JSON.stringify(changes, null, 1))
-  const birthFormat = d.getFullYear() + leadingZeros(d.getMonth() + 1, 2) + leadingZeros(d.getDate(), 2)
-  console.log('현재 날짜  = ' + birthFormat)
+
   const [boxState, setBoxState] = useState(false)
   const [changes, setChanges] = useState({
     loginID: '',
@@ -49,7 +48,7 @@ const JoinForm = props => {
     loginPwdCheck: '',
     loginNickNm: '',
     loginName: '',
-    birth: birthFormat,
+    birth: '',
     gender: 'm',
     image: '',
     memType: '',
@@ -91,6 +90,8 @@ const JoinForm = props => {
         term1: 'y',
         term2: 'y',
         term3: 'y',
+        term4: 'y',
+        term5: 'y',
         name: changes.loginName,
         profImg: '',
         profImgRacy: 3,
@@ -104,13 +105,13 @@ const JoinForm = props => {
       if (res.code == 0) {
         alert(res.message)
         //window.location.href = '/' // 홈페이지로 새로고침
-        props.history.push('/')
+        props.history.push('/', changes)
         context.action.updateLogin(true)
         const resUpload = await Api.image_upload({
           data: {
             file: '',
-            dataURL: '',
-            imageURL: changes.image,
+            dataURL: changes.image,
+            imageURL: '',
             uploadType: 'profile'
           }
         })
@@ -132,21 +133,24 @@ const JoinForm = props => {
     console.log('uploadSingleFile = ' + e.target.files[0])
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
-    setChanges({
-      ...changes,
-      image: e.target.files[0]
-    })
 
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    if(reader.result){
-      console.log(JSON.stringify(reader.result,null,1))
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = function() {
+      console.log('reader', reader)
+      console.log('reader.', reader.result)
+      if (reader.result) {
+        setChanges({
+          ...changes,
+          image: reader.result
+        })
+      } else {
+      }
     }
     // reader.onload = function () {
     //     formData.append('dataURL', reader.result);
     //     ajaxUploadFile(formData);
     // }
-
   }
   function upload(e) {
     //이미지 업로드 확인, 나중에 삭제.
@@ -164,7 +168,7 @@ const JoinForm = props => {
 
   //datepicker에서 올려준 값 받아서 바로 changes에 넣을 수 있도록 값 다듬기
   const pickerTest = value => {
-    console.log('pickerTest = ' + pickerTest)
+    // console.log('pickerTest = ' + pickerTest)
     const target = {
       name: 'birth',
       value: value
