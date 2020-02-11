@@ -14,6 +14,10 @@ export class SignalingHandler {
       OfferToReceiveVideo: false
     }
 
+    // callback
+    this.localStartCallback = null
+    this.localStopCallback = null
+
     // about socket info
     this.intervalId = null
     this.wSocketInit()
@@ -21,6 +25,16 @@ export class SignalingHandler {
 
   setStreamId(id) {
     this.streamId = id
+  }
+  setLocalStartCallback(callback) {
+    this.localStartCallback = callback
+  }
+  setLocalStopCallback(callback) {
+    this.localStopCallback = callback
+  }
+  resetLocalCallback() {
+    this.localStartCallback = null
+    this.localStopCallback = null
   }
 
   socketSendMsg(data) {
@@ -131,6 +145,10 @@ export class SignalingHandler {
       this.rtcPeerConn = null
       this.rtcDescription = false
       this.iceCandidate = []
+    }
+
+    if (this.localStopCallback) {
+      this.localStopCallback()
     }
   }
   gotDescription = config => {

@@ -24,6 +24,13 @@ export default props => {
   // type : host, guest, listener
   const type = 'listener'
 
+  const startPlayer = () => {
+    setPlayStatus(true)
+  }
+  const stopPlayer = () => {
+    setPlayStatus(false)
+  }
+
   // temp init
   useEffect(() => {
     // initialize mic stream and audio socket.
@@ -36,13 +43,20 @@ export default props => {
       if (location.state) {
         const {bjStreamId} = location.state
         listenerHandler.setStreamId(bjStreamId)
+        listenerHandler.setLocalStartCallback(startPlayer)
+        listenerHandler.setLocalStopCallback(stopPlayer)
+
         setStreamId(bjStreamId)
       }
       setHandler(listenerHandler)
       context.action.updateMediaHandler(listenerHandler)
     })()
 
-    return () => {}
+    return () => {
+      if (handler) {
+        handler.resetLocalCallback()
+      }
+    }
   }, [])
 
   return (
