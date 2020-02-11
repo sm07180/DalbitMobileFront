@@ -45,17 +45,6 @@ export default props => {
   return (
     <Layout {...props}>
       <Content>
-        {/* <div>
-          <button
-            onClick={() => {
-              if (handler.ws && handler.publish) {
-                handler.publish()
-              }
-            }}>
-            publish
-          </button>
-        </div> */}
-
         <div>
           <audio ref={audioReference} autoPlay controls></audio>
         </div>
