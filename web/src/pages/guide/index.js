@@ -4,21 +4,22 @@
  * @author 손완휘
  */
 
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Switch, Route, useParams} from 'react-router-dom'
 
 //layout
-import Layout from './layout'
+import Layout from 'pages/common/layout'
 import Contents from './layout-contents'
 import Guide from './layout'
-//
+//context
+import {Context} from 'context'
 
 import {getMicStream} from 'components/lib/getStream'
 import {Host} from 'components/lib/SignalingHandler'
 
 function TempBroad(props) {
+  const context = new useContext(Context)
   const {streamId} = useParams()
-
   const [handler, setHandler] = useState(null)
   const [publishStatus, setPublishStatus] = useState(false)
 
@@ -39,7 +40,9 @@ function TempBroad(props) {
       hostHandler.setLocalStartCallback(startPlayer)
       hostHandler.setLocalStopCallback(stopPlayer)
       setHandler(hostHandler)
+      context.action.updateMediaHandler(hostHandler)
     })()
+
     return () => {
       if (handler) {
         handler.resetLocalCallback()

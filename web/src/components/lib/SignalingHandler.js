@@ -149,6 +149,10 @@ export class SignalingHandler {
           this.audioTag.srcObject = e.streams[0]
         }
       }
+
+      if (this.globalStartCallback) {
+        this.globalStartCallback()
+      }
     }
   }
   closePeerConnection() {

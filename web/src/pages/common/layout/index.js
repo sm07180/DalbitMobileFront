@@ -40,7 +40,8 @@ const Layout = props => {
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
 
-    if (mediaHandler && !mediaHandler.globalStartCallback) {
+    // console.log('***layout efffecttttttttt', mediaHandler)
+    if (mediaHandler && !mediaHandler.setGlobalStartCallback) {
       mediaHandler.setGlobalStartCallback(() => action.updateMediaPlayerStatus(true))
       mediaHandler.setGlobalStopCallback(() => action.updateMediaPlayerStatus(false))
     }
