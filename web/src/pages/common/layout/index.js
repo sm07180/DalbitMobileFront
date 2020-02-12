@@ -23,19 +23,6 @@ const Layout = props => {
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
-  function update(event) {
-    switch (event.type) {
-      case 'react-gnb-open': //GNB 열기
-        context.action.updateGnbVisible(true)
-        break
-      case 'react-gnb-close': //GNB 닫기
-        context.action.updateGnbVisible(false)
-        break
-      default:
-        break
-    }
-    console.log(event.type)
-  }
   useEffect(() => {
     if (!mediaHandler) {
       const mediaHandler = new SignalingHandler()
