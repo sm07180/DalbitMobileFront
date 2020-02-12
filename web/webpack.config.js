@@ -18,8 +18,17 @@ module.exports = (env, options) => {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          exclude: '/node_modules',
-          use: ['babel-loader']
+          exclude: /(node_modules)|(dist)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              env: {
+                development: {
+                  compact: false
+                }
+              }
+            }
+          }
         },
         {
           test: /\.html$/,
