@@ -10,19 +10,16 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {Listener} from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
+  const {mediaHandler} = context
   const [handler, setHandler] = useState(null)
   const [streamId, setStreamId] = useState(null)
   const [playStatus, setPlayStatus] = useState(false)
 
   const audioReference = useRef()
   const {location} = props.history
-
-  // type : host, guest, listener
-  const type = 'listener'
 
   const startPlayer = () => {
     setPlayStatus(true)
@@ -31,27 +28,22 @@ export default props => {
     setPlayStatus(false)
   }
 
+  if (!handler && context.mediaHandler) {
+    const {mediaHandler} = context
+    mediaHandler.setType('listener')
+    mediaHandler.setAudioTag(audioReference.current)
+    if (location.state) {
+      const {bjStreamId} = location.state
+      mediaHandler.setStreamId(bjStreamId)
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
+      setStreamId(bjStreamId)
+    }
+    setHandler(mediaHandler)
+  }
+
   // temp init
   useEffect(() => {
-    // initialize mic stream and audio socket.
-    ;(async () => {
-      const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-
-      // listener
-      const listenerHandler = new Listener(audioSocketUrl, true)
-      listenerHandler.setAudioTag(audioReference.current)
-      if (location.state) {
-        const {bjStreamId} = location.state
-        listenerHandler.setStreamId(bjStreamId)
-        listenerHandler.setLocalStartCallback(startPlayer)
-        listenerHandler.setLocalStopCallback(stopPlayer)
-
-        setStreamId(bjStreamId)
-      }
-      setHandler(listenerHandler)
-      context.action.updateMediaHandler(listenerHandler)
-    })()
-
     return () => {
       if (handler) {
         handler.resetLocalCallback()
@@ -84,7 +76,7 @@ export default props => {
                 }
                 if (handler.ws && handler.play && !handler.rtcPeerConn) {
                   handler.play()
-                  setPlayStatus(true)
+                  startPlayer()
                 }
               }}>
               play
@@ -99,7 +91,7 @@ export default props => {
               onClick={() => {
                 if (handler.ws && handler.rtcPeerConn) {
                   handler.stop()
-                  setPlayStatus(false)
+                  stopPlayer()
                 }
               }}>
               stop

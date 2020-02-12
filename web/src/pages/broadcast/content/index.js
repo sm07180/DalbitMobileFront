@@ -2,7 +2,7 @@
  * @file chat.js
  * @brief 채팅
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
 //context
@@ -13,6 +13,7 @@ import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
 
+
 export default props => {
   const context = useContext(Context)
   //context
@@ -22,26 +23,17 @@ export default props => {
     entryType: 0,
     roomType: '01',
     bgImgRacy: 3,
-    welcomMsg: '하이',
-    bgImg: '/temp/2020/02/03/10/20200203102802930921.jpg',
-    title: '프론트엔드'
+    welcomMsg: '',
+    bgImg: '',
+    title: ''
   })
 
   //update
   function update(mode) {
-    console.log('---')
+    // console.log('---')
     switch (true) {
       case mode.onChange !== undefined:
         console.log(JSON.stringify(changes))
-        break
-    }
-  }
-
-  //update
-  function update(mode) {
-    switch (true) {
-      case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
         break
     }
   }
@@ -114,6 +106,7 @@ export default props => {
   //useState
   const [file, setFile] = useState(null)
   const [url, setUrl] = useState(null)
+
   function uploadSingleFile(e) {
     setFile(e.target.files[0])
     setUrl(URL.createObjectURL(e.target.files[0]))
@@ -121,19 +114,28 @@ export default props => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
     reader.onload = function() {
-      console.log('reader', reader)
-      console.log('reader.', reader.result)
       if (reader.result) {
         setChanges({...changes, bgImg: reader.result})
       } else {
       }
     }
   }
-
+  //validation
+  const [BActive, setBActive] = useState(false)
   useEffect(() => {
-    console.log('changes = ' + JSON.stringify(changes, null, 1))
-    //setChanges({...changes})
+    let value=false
+    if (changes.welcomMsg.length>10 && changes.welcomMsg.length < 101){
+      if(changes.welcomMsg.length>0 && changes.title.length < 21){
+        if(changes.bgImg !== ''){
+          value=true
+        }
+      }
+    }
+    setBActive(value)
+
+    
   }, [changes])
+
   //---------------------------------------------------------------------
   //context
 
@@ -154,6 +156,7 @@ export default props => {
       console.log('upload 실패')
     } else {
       console.log('upload 성공')
+      console.log(resUpload)
       setChanges({...changes, bgImg: resUpload.data.url})
 
       const res = await Api.broad_create({
@@ -173,19 +176,13 @@ export default props => {
         return
       } else {
         console.log('정상작동했으니깐 방 생성해 짜샤!')
-        setBActive(true)
       }
       console.log(res)
 
       setFetch(res.data)
     }
   }
-  const [BActive, setBActive] = useState(false)
-  //밸리데이션
-  const vali = () => {
-    setBActive(true)
-  }
-  /**
+  /*
    *
    * @returns
    */
@@ -272,7 +269,7 @@ export default props => {
             </CreateBtn>
           </BroadDetail>
         </Wrap>
-        <section>{JSON.stringify(changes, null, 1)}</section>
+        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
   )
@@ -551,7 +548,8 @@ const CreateBtn = styled.button`
   width: 100%;
   height: 50px;
   margin-bottom: 218px;
-  background-color: #8556f6;
+  outline:none;
+  background-color: #bdbdbd;
   color: #fff;
   font-size: 16px;
   font-weight: 500;
@@ -559,9 +557,10 @@ const CreateBtn = styled.button`
   line-height: 50px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
-  cursor: pointer;
+ 
   &.on {
-    background-color: #000;
+    background-color: #8556f6;
+    cursor: pointer;
   }
 `
 //-------------

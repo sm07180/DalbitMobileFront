@@ -15,7 +15,6 @@ import Guide from './layout'
 import {Context} from 'context'
 
 import {getAudioStream} from 'components/lib/getStream'
-import {Host} from 'components/lib/SignalingHandler'
 
 function TempBroad(props) {
   const context = new useContext(Context)
@@ -30,19 +29,20 @@ function TempBroad(props) {
     setPublishStatus(false)
   }
 
-  useEffect(() => {
+  if (!handler && context.mediaHandler) {
     ;(async () => {
-      const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const hostHandler = new Host(audioSocketUrl, true)
-      const micStream = await getAudioStream()
-      hostHandler.setMicStream(micStream)
-      hostHandler.setStreamId(streamId)
-      hostHandler.setLocalStartCallback(startPlayer)
-      hostHandler.setLocalStopCallback(stopPlayer)
-      setHandler(hostHandler)
-      context.action.updateMediaHandler(hostHandler)
+      const {mediaHandler} = context
+      const audioStream = await getAudioStream()
+      mediaHandler.setAudioStream(audioStream)
+      mediaHandler.setType('host')
+      mediaHandler.setStreamId(streamId)
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
+      setHandler(mediaHandler)
     })()
+  }
 
+  useEffect(() => {
     return () => {
       if (handler) {
         handler.resetLocalCallback()
@@ -66,8 +66,8 @@ function TempBroad(props) {
             if (!streamId) {
               return alert('Need a stream id')
             }
-            if (!handler.micStream) {
-              return alert('Need a mic and stereo mix')
+            if (!handler.audioStream) {
+              return alert('Need a audio sream and stereo mix')
             }
 
             if (handler.ws && handler.publish && !handler.rtcPeerConn) {

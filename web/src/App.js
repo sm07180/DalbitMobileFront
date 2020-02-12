@@ -21,6 +21,7 @@ import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
 import Route from './Route'
+import Interface from './Interface'
 
 export default () => {
   //---------------------------------------------------------------------
@@ -57,7 +58,6 @@ export default () => {
     //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
     const element = document.getElementById('authToken')
     if (element !== null && typeof element.value === 'string') return element.value
-
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('authToken')
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
@@ -76,7 +76,7 @@ export default () => {
     setReady(true)
   }
   //---------------------------------------------------------------------
-  //useEffect
+  //useEffect token
   useEffect(() => {
     //#1 customHeader
     Api.setCustomHeader(JSON.stringify(customHeader))
@@ -90,5 +90,10 @@ export default () => {
   /**
    * @brief 정보체크이후 최종완료된 상태에서 Route진행
    */
-  return <React.Fragment>{ready && <Route />}</React.Fragment>
+  return (
+    <React.Fragment>
+      {ready && <Interface />}
+      {ready && <Route />}
+    </React.Fragment>
+  )
 }
