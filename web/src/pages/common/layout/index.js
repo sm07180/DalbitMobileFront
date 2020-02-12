@@ -44,14 +44,11 @@ const Layout = props => {
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
 
-    if (!context.mediaHandler) {
+    if (!mediaHandler) {
       const mediaHandler = new SignalingHandler()
+      mediaHandler.setGlobalStartCallback(() => context.action.updateMediaPlayerStatus(true))
+      mediaHandler.setGlobalStopCallback(() => context.action.updateMediaPlayerStatus(false))
       context.action.updateMediaHandler(mediaHandler)
-    }
-
-    if (mediaHandler && !mediaHandler.globalStartCallback) {
-      mediaHandler.setGlobalStartCallback(() => action.updateMediaPlayerStatus(true))
-      mediaHandler.setGlobalStopCallback(() => action.updateMediaPlayerStatus(false))
     }
 
     return () => {
