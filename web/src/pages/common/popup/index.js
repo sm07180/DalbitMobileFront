@@ -7,6 +7,7 @@ import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
 
 //contents
@@ -53,9 +54,17 @@ const Container = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
+  padding: 40px 3%;
   transform: translate(-50%, -50%);
   background: #fff;
   z-index: 200;
+
+  & .logo {
+    margin-top: 0;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+  }
 `
 const Background = styled.div`
   position: fixed;

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
+import {PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
 //component
@@ -12,6 +12,33 @@ export default props => {
   const [login, setLogin] = useState(props.LoginInfo)
 
   const context = useContext(Context)
+  //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
+
+  useEffect(() => {
+    if (context.login_state) {
+      //로그인되어있으면 정보 가져오기
+      //fetchData()
+      //임시방편으로 회원가입 후 바로 내 프로필, 닉네임 볼수있게 설정. 나중에는 회원조회 api로 로그인 해서도 볼 수 있게 수정하기. 현재 회원조회 안됨
+      if (context.state.profImg) {
+        setLogin({
+          ...login,
+          title: context.state.nickNm,
+          url: PHOTO_SERVER.concat(context.state.profImg)
+        })
+      }
+    }
+  }, [context.login_state])
+
+  //fetch
+  async function fetchData() {
+    const res = await Api.member_info({
+      data: {
+        memNo: context.state.memNo
+      }
+    })
+    console.log(res)
+  }
+
   //data
   const info = [
     {title: '내프로필', url: '/live'},
@@ -41,7 +68,7 @@ export default props => {
   return (
     <>
       <Gnb>
-        <BTN
+        {/* <BTN
           onClick={() => {
             if (!context.login_state) {
               context.action.updateLogin(true)
@@ -54,7 +81,7 @@ export default props => {
           LOGIN
           <br />
           확인
-        </BTN>
+        </BTN> */}
         <MyWrap>
           <Nheader>
             <ICON></ICON>
@@ -68,7 +95,7 @@ export default props => {
                 {context.login_state ? (
                   <NoLoginTitle>
                     <h4>{login.title}</h4>
-                    <ID>{login.name}</ID>
+                    {/* <ID>{login.name}</ID> */}
                   </NoLoginTitle>
                 ) : (
                   <NoLoginTitle>
@@ -217,6 +244,7 @@ const PIMG = styled.div`
   width: 120px;
   height: 120px;
   margin: 0 auto;
+  border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center/ cover;
 `
 const Ptitle = styled.div`
@@ -243,6 +271,7 @@ const NoLoginTitle = styled.div`
     }
   }
   & h4 {
+    padding-bottom: 20px;
     color: #ffffff;
     font-size: 20px;
     line-height: 1.15;

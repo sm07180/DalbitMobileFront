@@ -107,6 +107,7 @@ export default props => {
           props.history.push('/')
           context.action.updatePopupVisible(false)
         }
+        context.action.updateState(res.data)
         context.action.updateLogin(true)
 
         // auth.onAuthStateChanged(user => {
@@ -221,7 +222,7 @@ export default props => {
       {window.location.pathname === '/login' ? (
         ''
       ) : (
-        <Logo>
+        <Logo className="logo">
           <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
         </Logo>
       )}
@@ -257,16 +258,18 @@ export default props => {
         </div>
       </ButtonArea>
 
-      <FacebookLogin
-        appId="2711342585755275"
-        autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
-        fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
-        scope="public_profile,email"
-        onClick={ComponentClicked}
-        callback={responseFacebook}
-        // cssClass="my-facebook-button-class"
-        // icon="fa-facebook"
-      />
+      <SocialLogin>
+        <FacebookLogin
+          appId="2711342585755275"
+          autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
+          fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
+          scope="public_profile,email"
+          onClick={ComponentClicked}
+          callback={responseFacebook}
+          // cssClass="my-facebook-button-class"
+          // icon="fa-facebook"
+        />
+      </SocialLogin>
       {/* <NaverLogin
         clientId="OQtHPCzpdRNtD9o2zBKF"
         callbackUrl="http://localhost:9000"
@@ -365,7 +368,7 @@ const ButtonArea = styled.div`
 `
 
 const SocialLogin = styled.div`
-  margin: 80px 0 60px 0;
+  margin: 30px 0 0 0;
   div {
     float: left;
     width: 48.5%;

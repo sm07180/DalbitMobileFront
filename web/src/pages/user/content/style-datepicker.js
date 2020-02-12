@@ -15,8 +15,11 @@ import {StylesProvider} from '@material-ui/core/styles'
 
 export default props => {
   //---------------------------------------------------------------------
+  //date 셋팅
+  let date = new Date()
+  date.setFullYear(date.getFullYear() - 17)
   //useState
-  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : new Date())
+  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
 
   //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {

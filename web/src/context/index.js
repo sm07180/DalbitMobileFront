@@ -72,6 +72,9 @@ const GlobalProvider = props => {
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
+    /**
+     * search, mypage, notice, menu
+     */
     updateGnbState: str => {
       setGnbState(str)
       //render 후 애니메이션 처리
