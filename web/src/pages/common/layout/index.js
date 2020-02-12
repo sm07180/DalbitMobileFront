@@ -17,7 +17,6 @@ import Popup from 'pages/common/popup'
 import SignalingHandler from 'components/lib/SignalingHandler'
 
 const Layout = props => {
-  console.log('Layout = ' + props)
   //context
   const context = useContext(Context)
   const {mediaHandler, mediaPlayerStatus} = context
@@ -38,23 +37,13 @@ const Layout = props => {
     console.log(event.type)
   }
   useEffect(() => {
-    /**
-     * @code document.dispatchEvent(new Event('react-gnb-open'))
-     */
-    document.addEventListener('react-gnb-open', update)
-    document.addEventListener('react-gnb-close', update)
-
     if (!mediaHandler) {
       const mediaHandler = new SignalingHandler()
       mediaHandler.setGlobalStartCallback(() => context.action.updateMediaPlayerStatus(true))
       mediaHandler.setGlobalStopCallback(() => context.action.updateMediaPlayerStatus(false))
       context.action.updateMediaHandler(mediaHandler)
     }
-
     return () => {
-      document.removeEventListener('react-gnb-open', update)
-      document.removeEventListener('react-gnb-close', update)
-
       if (mediaHandler) {
         mediaHandler.resetGlobalCallback()
       }
