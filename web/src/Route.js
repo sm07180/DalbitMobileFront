@@ -31,6 +31,7 @@ export default () => {
     <Switch>
       <Route exact path="/" component={Main} />
       <Route exact path="/broadcast" component={BroadCast} />
+      <Route exact path="/broadcast/:title" component={BroadCast} />
       <Route exact path="/cast" component={Cast} />
       <Route exact path="/user" component={User} />
       <Route exact path="/user/:title" component={User} />

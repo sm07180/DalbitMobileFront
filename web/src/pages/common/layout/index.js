@@ -1,5 +1,7 @@
 /**
  *
+ *
+ * document.dispatchEvent(new Event('native-goLogin'))
  */
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'

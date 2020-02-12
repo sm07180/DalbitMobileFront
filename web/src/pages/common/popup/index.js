@@ -20,9 +20,9 @@ export default props => {
   const makePopupContents = () => {
     console.log(context.popup_code)
     switch (context.popup_code) {
-      case 'LOGIN':
+      case 'LOGIN': //---------------------------------------로그인
         return <Auth {...props} />
-      case 'CAST':
+      case 'CAST': //----------------------------------------캐스트
         return <POPCAST {...props} />
     }
   }
