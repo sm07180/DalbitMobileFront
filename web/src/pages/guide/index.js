@@ -15,7 +15,7 @@ import Guide from './layout'
 import {Context} from 'context'
 
 import {getAudioStream} from 'components/lib/getStream'
-import {Host} from 'components/lib/SignalingHandler'
+import SignalingHandler from 'components/lib/SignalingHandler'
 
 function TempBroad(props) {
   const context = new useContext(Context)
@@ -32,10 +32,10 @@ function TempBroad(props) {
 
   useEffect(() => {
     ;(async () => {
-      const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-      const hostHandler = new Host(audioSocketUrl, true)
+      const hostHandler = new SignalingHandler(true)
       const micStream = await getAudioStream()
-      hostHandler.setMicStream(micStream)
+      hostHandler.setAudioStream(micStream)
+      hostHandler.setType('host')
       hostHandler.setStreamId(streamId)
       hostHandler.setLocalStartCallback(startPlayer)
       hostHandler.setLocalStopCallback(stopPlayer)
@@ -66,8 +66,8 @@ function TempBroad(props) {
             if (!streamId) {
               return alert('Need a stream id')
             }
-            if (!handler.micStream) {
-              return alert('Need a mic and stereo mix')
+            if (!handler.audioStream) {
+              return alert('Need a audio sream and stereo mix')
             }
 
             if (handler.ws && handler.publish && !handler.rtcPeerConn) {

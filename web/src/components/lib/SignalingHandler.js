@@ -1,6 +1,8 @@
-export class SignalingHandler {
-  constructor(socketUrl, debug) {
-    this.url = socketUrl
+const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
+
+export default class SignalingHandler {
+  constructor(debug) {
+    this.url = audioSocketUrl
     this.ws = null
     this.streamId = null
     this.token = null
@@ -14,6 +16,14 @@ export class SignalingHandler {
       OfferToReceiveVideo: false
     }
 
+    // host, guest, listener
+    this.type = null
+
+    // host
+    this.audioStream = null
+    // listener
+    this.audioTag = null
+
     // callback
     this.localStartCallback = null
     this.localStopCallback = null
@@ -25,6 +35,9 @@ export class SignalingHandler {
     this.wSocketInit()
   }
 
+  setType(type) {
+    this.type = type
+  }
   setStreamId(id) {
     this.streamId = id
   }
@@ -48,6 +61,12 @@ export class SignalingHandler {
     this.globalStartCallback = null
     this.globalStopCallback = null
   }
+  setAudioStream(stream) {
+    this.audioStream = stream
+  }
+  setAudioTag(audioTag) {
+    this.audioTag = audioTag
+  }
 
   socketSendMsg(data) {
     this.ws.send(JSON.stringify(data))
@@ -56,6 +75,41 @@ export class SignalingHandler {
   /**
    * about websocket command method
    */
+  publish() {
+    if (this.type !== 'host') {
+      return alert('Not host!')
+    }
+    if (!this.audioStream) {
+      return alert('Need a audio stream')
+    }
+
+    const cmd = {
+      command: 'publish',
+      streamId: this.streamId,
+      token: this.token,
+      audio: this.audioStream.getAudioTracks().length > 0 ? true : false,
+      video: false
+    }
+    this.socketSendMsg(cmd)
+  }
+
+  play() {
+    if (this.type !== 'listener') {
+      return alert('Not listener!')
+    }
+    if (!this.audioTag) {
+      return alert('Need a audio tag')
+    }
+    const cmd = {
+      command: 'play',
+      streamId: this.streamId,
+      token: this.token,
+      room: this.room
+    }
+    this.socketSendMsg(cmd)
+    this.startPlaying()
+  }
+
   stop() {
     this.closePeerConnection()
     const cmd = {
@@ -136,9 +190,9 @@ export class SignalingHandler {
       this.rtcDescription = false
       this.iceCandidate = []
       if (this.type === 'host') {
-        if (this.micStream) {
-          const micAudioTrack = this.micStream.getAudioTracks()[0]
-          this.rtcPeerConn.addTrack(micAudioTrack)
+        if (this.audioStream) {
+          const audioTrack = this.audioStream.getAudioTracks()[0]
+          this.rtcPeerConn.addTrack(audioTrack)
         }
       }
       this.rtcPeerConn.onicecandidate = e => {
@@ -319,56 +373,5 @@ export class SignalingHandler {
       }
       this.ws.onerror = () => {}
     }
-  }
-}
-
-export class Host extends SignalingHandler {
-  constructor(socketUrl, debug) {
-    super(socketUrl, debug)
-    this.type = 'host'
-    this.micStream = null
-  }
-
-  setMicStream(stream) {
-    this.micStream = stream
-  }
-
-  publish() {
-    if (!this.micStream) {
-      return alert('Need a mic stream')
-    }
-
-    const cmd = {
-      command: 'publish',
-      streamId: this.streamId,
-      token: this.token,
-      audio: this.micStream.getAudioTracks().length > 0 ? true : false,
-      video: false
-    }
-    this.socketSendMsg(cmd)
-  }
-}
-export class Listener extends SignalingHandler {
-  constructor(socketUrl, debug) {
-    super(socketUrl, debug)
-    this.type = 'listener'
-    this.audioTag = null
-  }
-
-  setAudioTag(audioTag) {
-    this.audioTag = audioTag
-  }
-  play() {
-    if (!this.audioTag) {
-      return alert('Need a audio tag')
-    }
-    const cmd = {
-      command: 'play',
-      streamId: this.streamId,
-      token: this.token,
-      room: this.room
-    }
-    this.socketSendMsg(cmd)
-    this.startPlaying()
   }
 }

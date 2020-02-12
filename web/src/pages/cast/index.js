@@ -10,7 +10,7 @@ import Layout from 'pages/common/layout'
 import {Context} from 'context'
 //components
 import Api from 'context/api'
-import {Listener} from 'components/lib/SignalingHandler'
+import SignalingHandler from 'components/lib/SignalingHandler'
 
 export default props => {
   const context = new useContext(Context)
@@ -35,10 +35,9 @@ export default props => {
   useEffect(() => {
     // initialize mic stream and audio socket.
     ;(async () => {
-      const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
-
       // listener
-      const listenerHandler = new Listener(audioSocketUrl, true)
+      const listenerHandler = new SignalingHandler(true)
+      listenerHandler.setType('listener')
       listenerHandler.setAudioTag(audioReference.current)
       if (location.state) {
         const {bjStreamId} = location.state
