@@ -15,7 +15,6 @@ import Guide from './layout'
 import {Context} from 'context'
 
 import {getAudioStream} from 'components/lib/getStream'
-import SignalingHandler from 'components/lib/SignalingHandler'
 
 function TempBroad(props) {
   const context = new useContext(Context)
@@ -30,19 +29,20 @@ function TempBroad(props) {
     setPublishStatus(false)
   }
 
-  useEffect(() => {
+  if (!handler && context.mediaHandler) {
     ;(async () => {
-      const hostHandler = new SignalingHandler(true)
-      const micStream = await getAudioStream()
-      hostHandler.setAudioStream(micStream)
-      hostHandler.setType('host')
-      hostHandler.setStreamId(streamId)
-      hostHandler.setLocalStartCallback(startPlayer)
-      hostHandler.setLocalStopCallback(stopPlayer)
-      setHandler(hostHandler)
-      context.action.updateMediaHandler(hostHandler)
+      const {mediaHandler} = context
+      const audioStream = await getAudioStream()
+      mediaHandler.setAudioStream(audioStream)
+      mediaHandler.setType('host')
+      mediaHandler.setStreamId(streamId)
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
+      setHandler(mediaHandler)
     })()
+  }
 
+  useEffect(() => {
     return () => {
       if (handler) {
         handler.resetLocalCallback()

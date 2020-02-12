@@ -13,7 +13,9 @@ import Header from 'pages/common/header'
 import Footer from 'pages/common/footer'
 import Gnb from 'pages/common/gnb'
 import Popup from 'pages/common/popup'
-//
+// etc
+import SignalingHandler from 'components/lib/SignalingHandler'
+
 const Layout = props => {
   console.log('Layout = ' + props)
   //context
@@ -42,8 +44,12 @@ const Layout = props => {
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
 
-    // console.log('***layout efffecttttttttt', mediaHandler)
-    if (mediaHandler && !mediaHandler.setGlobalStartCallback) {
+    if (!context.mediaHandler) {
+      const mediaHandler = new SignalingHandler()
+      context.action.updateMediaHandler(mediaHandler)
+    }
+
+    if (mediaHandler && !mediaHandler.globalStartCallback) {
       mediaHandler.setGlobalStartCallback(() => action.updateMediaPlayerStatus(true))
       mediaHandler.setGlobalStopCallback(() => action.updateMediaPlayerStatus(false))
     }
