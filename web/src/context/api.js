@@ -640,7 +640,7 @@ export const ajax = async obj => {
     formData.append('file', '')
     formData.append('dataURL', data.dataURL)
     formData.append('imageURL', '')
-    if (url === '/user/join') {
+    if (window.location.pathname === '/user/join') {
       formData.append('uploadType', 'profile')
     } else {
       formData.append('uploadType', 'bg')
