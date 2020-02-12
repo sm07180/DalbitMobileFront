@@ -14,7 +14,7 @@ import Guide from './layout'
 //context
 import {Context} from 'context'
 
-import {getMicStream} from 'components/lib/getStream'
+import {getAudioStream} from 'components/lib/getStream'
 import {Host} from 'components/lib/SignalingHandler'
 
 function TempBroad(props) {
@@ -34,7 +34,7 @@ function TempBroad(props) {
     ;(async () => {
       const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
       const hostHandler = new Host(audioSocketUrl, true)
-      const micStream = await getMicStream()
+      const micStream = await getAudioStream()
       hostHandler.setMicStream(micStream)
       hostHandler.setStreamId(streamId)
       hostHandler.setLocalStartCallback(startPlayer)

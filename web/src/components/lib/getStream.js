@@ -3,7 +3,7 @@
  */
 
 // https://howlerjs.com/
-export const getMicStream = async () => {
+export const getAudioStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
 
@@ -16,7 +16,7 @@ export const getMicStream = async () => {
       }
     })
     if (!micExist) {
-      alert('Mic is discnnected')
+      alert('Mic is disconnected')
     }
   }
 
@@ -30,7 +30,7 @@ export const getMicStream = async () => {
     .catch(e => {
       if (String(e).indexOf('Permission') !== -1) {
         // alert('Mic permission is denied')
-      } else if (String(e).indexOf('not found') !== -1) {
+      } else if (String(e).indexOf('NotFound') !== -1) {
         // alert('Mic is not found')
       }
     })
