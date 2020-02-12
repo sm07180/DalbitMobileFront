@@ -2,7 +2,7 @@
  * @file Interface.js
  * @brief Native,Windows ->React로 Interface
  * @notice
- * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail: info:'someDate'}))
+ * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail:{info:'someDate'}}))
  */
 import React, {useEffect, useContext} from 'react'
 //context
@@ -15,13 +15,14 @@ export default () => {
   function update(event) {
     switch (event.type) {
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
-        alert('native - reciveAuthToken')
+        alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-goLogin': //-------------------------Native goLogin
+        alert(JSON.stringify(event.detail, null, 1))
         context.action.updatePopup('LOGIN')
         break
       case 'native-minium': //--------------------------Native minium
-        alert('최소화')
+        alert(JSON.stringify(event.detail, null, 1))
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
