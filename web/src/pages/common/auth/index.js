@@ -101,8 +101,14 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
+        console.log(res.data)
+        /*
+         * 로그인정상
+         */
+        //token Update
+        context.action.updateToken(res.data)
+        //native 전달
         Hybrid('GetLoginToken', res.data)
-
         if (props.history) {
           props.history.push('/')
           context.action.updatePopupVisible(false)
@@ -132,7 +138,7 @@ export default props => {
           if (result) {
             props.history.push('/user/join', loginInfo)
           } else {
-            alert('회원가입 하기 싫으니깐 메인으로 갈래!')
+            alert('회원가입 실패 메인이동')
           }
         }
       }

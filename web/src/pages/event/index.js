@@ -26,8 +26,23 @@ import axios from 'axios'
  */
 export default props => {
   //---------------------------------------------------------------------
-  const [state, setState] = useState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
+  const [state, setState] = useState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json')
   //useEffect
+
+  const makeLottie = () => {
+    console.log(state)
+
+    return (
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          autoplay: true,
+          animationData: state
+        }}
+      />
+    )
+  }
   useEffect(() => {
     console.log(state)
   }, [state])
@@ -53,15 +68,7 @@ export default props => {
           }}>
           버튼3
         </button>
-        <div className="wrap">
-          <Lottie
-            options={{
-              autoplay: true,
-              loop: false,
-              path: state
-            }}
-          />
-        </div>
+        <div className="wrap">{makeLottie()}</div>
         <h1>&#x1F601;</h1>
         <h2>&#x1F3AC;</h2>
         <h3>&#x1F42D;</h3>
