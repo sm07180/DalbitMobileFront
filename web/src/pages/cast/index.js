@@ -76,7 +76,7 @@ export default props => {
                 }
                 if (handler.ws && handler.play && !handler.rtcPeerConn) {
                   handler.play()
-                  setPlayStatus(true)
+                  startPlayer()
                 }
               }}>
               play
@@ -91,7 +91,7 @@ export default props => {
               onClick={() => {
                 if (handler.ws && handler.rtcPeerConn) {
                   handler.stop()
-                  setPlayStatus(false)
+                  stopPlayer()
                 }
               }}>
               stop
