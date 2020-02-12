@@ -3,7 +3,7 @@
  */
 
 // https://howlerjs.com/
-export const getMicStream = async () => {
+export const getAudioStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
 
