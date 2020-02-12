@@ -14,12 +14,11 @@ import Api from 'context/api'
 export default props => {
   const context = new useContext(Context)
   const {mediaHandler} = context
-  const [handler, setHandler] = useState(null)
-  const [streamId, setStreamId] = useState(null)
   const [playStatus, setPlayStatus] = useState(false)
 
   const audioReference = useRef()
   const {location} = props.history
+  const {bjStreamId} = location.state
 
   const startPlayer = () => {
     setPlayStatus(true)
@@ -28,26 +27,22 @@ export default props => {
     setPlayStatus(false)
   }
 
-  if (!handler && context.mediaHandler) {
-    const {mediaHandler} = context
+  if (mediaHandler && !mediaHandler.type) {
     mediaHandler.setType('listener')
     mediaHandler.setAudioTag(audioReference.current)
     if (location.state) {
-      const {bjStreamId} = location.state
       mediaHandler.setStreamId(bjStreamId)
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
-      setStreamId(bjStreamId)
     }
-    setHandler(mediaHandler)
   }
 
   // temp init
   useEffect(() => {
     return () => {
-      if (handler) {
-        handler.resetLocalCallback()
-      }
+      // if (handler) {
+      //   handler.resetLocalCallback()
+      // }
     }
   }, [])
 
@@ -58,7 +53,7 @@ export default props => {
           <audio ref={audioReference} autoPlay controls></audio>
         </div>
 
-        <div>streamId: {streamId}</div>
+        <div>streamId: {bjStreamId}</div>
 
         {!playStatus && (
           <div>
@@ -71,11 +66,11 @@ export default props => {
                 backgroundColor: 'blue'
               }}
               onClick={() => {
-                if (!streamId) {
+                if (!bjStreamId) {
                   return alert('Need a stream id')
                 }
-                if (handler.ws && handler.play && !handler.rtcPeerConn) {
-                  handler.play()
+                if (mediaHandler && !mediaHandler.rtcPeerConn) {
+                  mediaHandler.play()
                   startPlayer()
                 }
               }}>
@@ -89,8 +84,8 @@ export default props => {
             <button
               style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
               onClick={() => {
-                if (handler.ws && handler.rtcPeerConn) {
-                  handler.stop()
+                if (mediaHandler && mediaHandler.rtcPeerConn) {
+                  mediaHandler.stop()
                   stopPlayer()
                 }
               }}>

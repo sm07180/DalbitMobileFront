@@ -16,10 +16,10 @@ import {Context} from 'context'
 
 import {getAudioStream} from 'components/lib/getStream'
 
-function TempBroad(props) {
+function TempBroad() {
   const context = new useContext(Context)
+  const {mediaHandler} = context
   const {streamId} = useParams()
-  const [handler, setHandler] = useState(null)
   const [publishStatus, setPublishStatus] = useState(false)
 
   const startPlayer = () => {
@@ -29,24 +29,23 @@ function TempBroad(props) {
     setPublishStatus(false)
   }
 
-  if (!handler && context.mediaHandler) {
+  if (mediaHandler && !mediaHandler.type) {
     ;(async () => {
-      const {mediaHandler} = context
       const audioStream = await getAudioStream()
       mediaHandler.setAudioStream(audioStream)
       mediaHandler.setType('host')
       mediaHandler.setStreamId(streamId)
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
-      setHandler(mediaHandler)
     })()
   }
 
   useEffect(() => {
     return () => {
-      if (handler) {
-        handler.resetLocalCallback()
-      }
+      console.log('un mount', mediaHandler)
+      // if (handler) {
+      //   handler.resetLocalCallback()
+      // }
     }
   }, [])
 
@@ -66,15 +65,15 @@ function TempBroad(props) {
             if (!streamId) {
               return alert('Need a stream id')
             }
-            if (!handler.audioStream) {
+            if (!mediaHandler.audioStream) {
               return alert('Need a audio sream and stereo mix')
             }
 
-            if (handler.ws && handler.publish && !handler.rtcPeerConn) {
-              handler.publish()
+            if (mediaHandler && !mediaHandler.rtcPeerConn) {
+              mediaHandler.publish()
               startPlayer()
-            } else if (handler.ws && handler.rtcPeerConn) {
-              handler.stop()
+            } else if (mediaHandler && mediaHandler.rtcPeerConn) {
+              mediaHandler.stop()
               stopPlayer()
             }
           }}>

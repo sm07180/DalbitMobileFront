@@ -23,6 +23,10 @@ const Layout = props => {
   //initalize
   const {children} = props
   //---------------------------------------------------------------------
+
+  console.log('global player status', mediaPlayerStatus)
+  console.log('mediahandler', mediaHandler)
+
   useEffect(() => {
     if (!mediaHandler) {
       const mediaHandler = new SignalingHandler()
@@ -30,11 +34,7 @@ const Layout = props => {
       mediaHandler.setGlobalStopCallback(() => context.action.updateMediaPlayerStatus(false))
       context.action.updateMediaHandler(mediaHandler)
     }
-    return () => {
-      if (mediaHandler) {
-        mediaHandler.resetGlobalCallback()
-      }
-    }
+    return () => {}
   }, [])
   //---------------------------------------------------------------------
   return (
