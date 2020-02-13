@@ -271,7 +271,8 @@ const JoinForm = props => {
         uploadType: 'profile',
         file: '',
         dataURL: changes.image,
-        imageURL: ''
+        imageURL: '',
+        uploadType: 'profile'
       }
     })
     if (resUpload && resUpload.result === 'success') {
