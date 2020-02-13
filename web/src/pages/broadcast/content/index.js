@@ -197,38 +197,39 @@ export default props => {
     setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
-      //console.log(device)
+
       if (!device) {
         context.action.updatePopup('CAST')
-      }
-      const audioStream = await navigator.mediaDevices
-        .getUserMedia({audio: true})
-        .then(result => result)
-        .catch(e => e)
-      if (!audioStream) {
-      }
+      } else {
+        const audioStream = await navigator.mediaDevices
+          .getUserMedia({audio: true})
+          .then(result => result)
+          .catch(e => e)
+        if (!audioStream) {
+        }
 
-      const AudioContext = window.AudioContext || window.webkitAudioContext
-      const audioCtx = new AudioContext()
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+        const audioCtx = new AudioContext()
 
-      const audioSource = audioCtx.createMediaStreamSource(audioStream)
-      const analyser = audioCtx.createAnalyser()
-      analyser.fftSize = 1024
-      audioSource.connect(analyser)
+        const audioSource = audioCtx.createMediaStreamSource(audioStream)
+        const analyser = audioCtx.createAnalyser()
+        analyser.fftSize = 1024
+        audioSource.connect(analyser)
 
-      const volumeCheck = () => {
-        const db = getDecibel(analyser)
-        if (db !== audioVolume) {
-          setAudioVolume(db)
-          if (!audioPass) {
-            setAudioPass(true)
+        const volumeCheck = () => {
+          const db = getDecibel(analyser)
+          if (db !== audioVolume) {
+            setAudioVolume(db)
+            if (!audioPass) {
+              setAudioPass(true)
+            }
+          }
+          if (animationFrameStatus) {
+            requestAnimationFrame(volumeCheck)
           }
         }
-        if (animationFrameStatus) {
-          requestAnimationFrame(volumeCheck)
-        }
+        volumeCheck()
       }
-      volumeCheck()
     })()
   }
 
