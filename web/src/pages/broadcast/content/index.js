@@ -185,13 +185,7 @@ export default props => {
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
   const [audioPass, setAudioPass] = useState(false)
-  let animationFrameStatus = true
-
-  useEffect(() => {
-    return () => {
-      animationFrameStatus = false
-    }
-  })
+  const [drawId, setDrawId] = useState(null)
 
   if (mediaHandler && !audioSetting) {
     setAudioSetting(true)
@@ -224,14 +218,19 @@ export default props => {
               setAudioPass(true)
             }
           }
-          if (animationFrameStatus) {
-            requestAnimationFrame(volumeCheck)
-          }
         }
-        volumeCheck()
+        if (!drawId) {
+          setDrawId(setInterval(volumeCheck))
+        }
       }
     })()
   }
+
+  useEffect(() => {
+    return () => {
+      clearInterval(drawId)
+    }
+  }, [drawId])
 
   /*
    *

@@ -28,7 +28,7 @@ function TempBroad() {
   const stopPlayer = () => {
     setPublishStatus(false)
   }
-
+  console.log('mh', mediaHandler)
   if (mediaHandler) {
     mediaHandler.setLocalStartCallback(startPlayer)
     mediaHandler.setLocalStopCallback(stopPlayer)
