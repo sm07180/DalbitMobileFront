@@ -1,11 +1,4 @@
-export default function getDecibel(stream) {
-  const AudioContext = window.AudioContext || window.webkitAudioContext
-  const audioCtx = new AudioContext()
-
-  const audioSource = audioCtx.createMediaStreamSource(stream)
-  const analyser = audioCtx.createAnalyser()
-  analyser.fftSize = 1024
-  audioSource.connect(analyser)
+export default function getDecibel(analyser) {
   const bufferLength = analyser.frequencyBinCount
   const frequencyArray = new Uint8Array(bufferLength)
 

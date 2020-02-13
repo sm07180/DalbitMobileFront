@@ -183,9 +183,17 @@ export default props => {
    */
   const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
-  const animationFrameStatus = true
+  const [audioSetting, setAudioSetting] = useState(false)
+  let animationFrameStatus = true
 
-  if (mediaHandler) {
+  useEffect(() => {
+    return () => {
+      animationFrameStatus = false
+    }
+  })
+
+  if (mediaHandler && !audioSetting) {
+    setAudioSetting(true)
     ;(async () => {
       const audioStream = await navigator.mediaDevices
         .getUserMedia({audio: true})
@@ -194,17 +202,24 @@ export default props => {
       if (!audioStream) {
       }
 
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      const audioCtx = new AudioContext()
+
+      const audioSource = audioCtx.createMediaStreamSource(audioStream)
+      const analyser = audioCtx.createAnalyser()
+      analyser.fftSize = 1024
+      audioSource.connect(analyser)
+
       const volumeCheck = () => {
-        const db = getDecibel(audioStream)
+        const db = getDecibel(analyser)
         if (db !== audioVolume) {
-          console.log('set volume')
           setAudioVolume(db)
         }
         if (animationFrameStatus) {
           requestAnimationFrame(volumeCheck)
         }
       }
-      // volumeCheck()
+      volumeCheck()
     })()
   }
 
