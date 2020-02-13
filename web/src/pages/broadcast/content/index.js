@@ -197,6 +197,10 @@ export default props => {
     setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
+      //console.log(device)
+      if (!device) {
+        context.action.updatePopup('CAST')
+      }
       const audioStream = await navigator.mediaDevices
         .getUserMedia({audio: true})
         .then(result => result)
@@ -243,17 +247,6 @@ export default props => {
 
         <Wrap>
           <BroadDetail>
-            {
-              <Pop
-                onClick={() => {
-                  if (!context.login_state) {
-                    context.action.updatePopup('CAST')
-                  }
-                }}>
-                팝업 임시확인
-              </Pop>
-            }
-
             <MicCheck>
               <h2>마이크 연결상태</h2>
               <VolumeWrap>
