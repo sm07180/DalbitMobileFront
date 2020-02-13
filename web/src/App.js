@@ -62,7 +62,7 @@ export default () => {
   const authToken = useMemo(() => {
     //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
     const element = document.getElementById('authToken')
-    if (element !== null && typeof element.value === 'string') return element.value
+    if (element !== null && typeof element.value === 'string' && element.value !== '') return element.value
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('authToken')
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
