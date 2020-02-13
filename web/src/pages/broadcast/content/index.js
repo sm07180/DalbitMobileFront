@@ -197,34 +197,39 @@ export default props => {
     setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
-      const audioStream = await navigator.mediaDevices
-        .getUserMedia({audio: true})
-        .then(result => result)
-        .catch(e => e)
-      if (!audioStream) {
-      }
 
-      const AudioContext = window.AudioContext || window.webkitAudioContext
-      const audioCtx = new AudioContext()
+      if (!device) {
+        context.action.updatePopup('CAST')
+      } else {
+        const audioStream = await navigator.mediaDevices
+          .getUserMedia({audio: true})
+          .then(result => result)
+          .catch(e => e)
+        if (!audioStream) {
+        }
 
-      const audioSource = audioCtx.createMediaStreamSource(audioStream)
-      const analyser = audioCtx.createAnalyser()
-      analyser.fftSize = 1024
-      audioSource.connect(analyser)
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+        const audioCtx = new AudioContext()
 
-      const volumeCheck = () => {
-        const db = getDecibel(analyser)
-        if (db !== audioVolume) {
-          setAudioVolume(db)
-          if (!audioPass) {
-            setAudioPass(true)
+        const audioSource = audioCtx.createMediaStreamSource(audioStream)
+        const analyser = audioCtx.createAnalyser()
+        analyser.fftSize = 1024
+        audioSource.connect(analyser)
+
+        const volumeCheck = () => {
+          const db = getDecibel(analyser)
+          if (db !== audioVolume) {
+            setAudioVolume(db)
+            if (!audioPass) {
+              setAudioPass(true)
+            }
+          }
+          if (animationFrameStatus) {
+            requestAnimationFrame(volumeCheck)
           }
         }
-        if (animationFrameStatus) {
-          requestAnimationFrame(volumeCheck)
-        }
+        volumeCheck()
       }
-      volumeCheck()
     })()
   }
 
@@ -243,17 +248,6 @@ export default props => {
 
         <Wrap>
           <BroadDetail>
-            {
-              <Pop
-                onClick={() => {
-                  if (!context.token.isLogin) {
-                    context.action.updatePopup('CAST')
-                  }
-                }}>
-                팝업 임시확인
-              </Pop>
-            }
-
             <MicCheck>
               <h2>마이크 연결상태</h2>
               <VolumeWrap>
