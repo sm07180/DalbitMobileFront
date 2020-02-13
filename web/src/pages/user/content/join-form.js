@@ -268,7 +268,6 @@ const JoinForm = props => {
     console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
     const resUpload = await Api.image_upload({
       data: {
-        uploadType: 'profile',
         file: '',
         dataURL: changes.image,
         imageURL: '',
