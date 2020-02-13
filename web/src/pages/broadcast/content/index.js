@@ -147,44 +147,44 @@ export default props => {
       data: {
         file: '',
         dataURL: obj.bgImg,
-        imageURL: ''
+        imageURL: '',
+        uploadType: 'bg'
       }
     })
+    if (resUpload) {
+      if (resUpload.result === 'success' || resUpload.code == 0) {
+        setChanges({...changes, bgImg: resUpload.data.path})
 
-    if (resUpload && resUpload.result === 'fail') {
-      console.log('upload 실패')
-    } else {
-      console.log('upload 성공')
-      setChanges({...changes, bgImg: resUpload.data.url})
-
-      const res = await Api.broad_create({
-        data: {
-          roomType: obj.roomType,
-          title: obj.title,
-          bgImg: obj.bgImg,
-          bgImgRacy: 3,
-          welcomMsg: obj.welcomMsg,
-          notice: '',
-          entryType: obj.entryType
+        const res = await Api.broad_create({
+          data: {
+            roomType: changes.roomType,
+            title: changes.title,
+            bgImg: resUpload.data.path,
+            bgImgRacy: 3,
+            welcomMsg: changes.welcomMsg,
+            notice: '',
+            entryType: changes.entryType
+          }
+        })
+        //Error발생시
+        if (res.result === 'fail') {
+          console.log(res.message)
+        } else {
+          console.log('정상작동했으니깐 방 생성!')
         }
-      })
-      //Error발생시
-      if (res.result === 'fail') {
-        console.log(res.message)
-        return
-      } else {
-        console.log('정상작동했으니깐 방 생성해 짜샤!')
-      }
-      console.log(res)
+        console.log(res)
 
-      setFetch(res.data)
+        setFetch(res.data)
+      } else {
+        console.log(resUpload.message)
+      }
     }
   }
   /*
    *
    * @returns
    */
-
+  //마이크체크
   const [volume, SetVolume] = useState(false)
   const Active = () => {
     setTimeout(() => {
