@@ -121,57 +121,73 @@ const JoinForm = props => {
         loginPwd: pw2
       })
     }
-    if (pw.length > 7 && pw.length < 21) {
-      //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
-      if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+    if (pw.length == 0) {
+      setValidate({
+        ...validate,
+        loginPwd: false
+      })
+      setCurrentPwd('')
+    } else {
+      if (pw.length > 7 && pw.length < 21) {
+        //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
+        if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+          setValidate({
+            ...validate,
+            loginPwd: false
+          })
+          setCurrentPwd('2가지 이상 조합으로 입력하세요.')
+        } else {
+          setValidate({
+            ...validate,
+            loginPwd: true
+          })
+          setCurrentPwd('사용 가능한 비밀번호 입니다.')
+        }
+      } else if (pw.length > 20) {
         setValidate({
           ...validate,
           loginPwd: false
         })
-        setCurrentPwd('2가지 이상 조합으로 입력하세요.')
+        setCurrentPwd('최대 20자 까지 입력하세요.')
       } else {
         setValidate({
           ...validate,
-          loginPwd: true
+          loginPwd: false
         })
-        setCurrentPwd('사용 가능한 비밀번호 입니다.')
+        setCurrentPwd('최소 8자 이상 입력하세요.')
       }
-    } else if (pw.length > 20) {
-      setValidate({
-        ...validate,
-        loginPwd: false
-      })
-      setCurrentPwd('최대 20자 까지 입력하세요.')
-    } else {
-      setValidate({
-        ...validate,
-        loginPwd: false
-      })
-      setCurrentPwd('최소 8자 이상 입력하세요.')
     }
   }
 
   const validateNickNm = nickEntered => {
     //닉네임 유효성 검사.. 2~20자 한글.. 전부 입력 가능.
     let nm = nickEntered
-    if (nm.length > 1 && nm.length < 21) {
-      setValidate({
-        ...validate,
-        loginNickNm: true
-      })
-      setCurrentNick('사용 가능한 닉네임 입니다.')
-    } else if (nm.length < 2) {
+    if (nm.length == 0) {
       setValidate({
         ...validate,
         loginNickNm: false
       })
-      setCurrentNick('최소 2자 이상 입력해주세요.')
-    } else if (nm.length > 20) {
-      setValidate({
-        ...validate,
-        loginNickNm: false
-      })
-      setCurrentNick('최대 20자 까지 입력이 가능합니다.')
+      setCurrentNick('')
+    } else {
+      if (nm.length > 1 && nm.length < 21) {
+        setValidate({
+          ...validate,
+          loginNickNm: true
+        })
+        setCurrentNick('사용 가능한 닉네임 입니다.')
+      } else if (nm.length < 2) {
+        setValidate({
+          ...validate,
+          loginNickNm: false
+        })
+        setCurrentNick('최소 2자 이상 입력해주세요.')
+      } else if (nm.length > 20) {
+        setValidate({
+          ...validate,
+          loginNickNm: false
+        })
+        setCurrentNick('최대 20자 까지 입력이 가능합니다.')
+      }
     }
   }
 
@@ -250,9 +266,9 @@ const JoinForm = props => {
   async function fetchData() {
     //console.log(JSON.stringify(obj))
     console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
-
     const resUpload = await Api.image_upload({
       data: {
+        uploadType: 'profile',
         file: '',
         dataURL: changes.image,
         imageURL: ''
@@ -473,7 +489,7 @@ const JoinForm = props => {
         {changes.memType == 'p' && (
           <InputWrap>
             <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
-            <span className={validate.loginPwd ? 'off' : 'on'}>2~20자 영문/숫자/특수문자</span>
+            <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
                 {currentPwd}
