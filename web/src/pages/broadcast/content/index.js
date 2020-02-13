@@ -18,7 +18,7 @@ import getDecibel from 'components/lib/getDecibel.js'
 export default props => {
   const context = useContext(Context)
   //context
-  //hooks
+  //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     entryType: 0,
