@@ -36,7 +36,7 @@ export default () => {
     const makeCustomHeader = () => {
       const info = {
         os: '3',
-        locale: 'KR',
+        locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
         deviceToken: 'make_custom_header'
@@ -45,11 +45,16 @@ export default () => {
     }
     //---------------------------------------------
     //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader1')
+    const element = document.getElementById('customHeader')
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== null && typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
+    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
+      let temp = JSON.parse(cookie)
+      temp.appVersion = '1.0.1'
+      temp.locale = 'KR'
+      return temp
+    }
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
@@ -57,7 +62,7 @@ export default () => {
   const authToken = useMemo(() => {
     //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
     const element = document.getElementById('authToken')
-    if (element !== null && typeof element.value === 'string') return element.value
+    if (element !== null && typeof element.value === 'string' && element.value !== '') return element.value
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('authToken')
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
@@ -69,9 +74,7 @@ export default () => {
     const res = await Api.getToken({...obj})
     console.table(res.data)
     // result 성공/실패 여부상관없이,토큰없데이트
-    Api.setAuthToken(res.data.authToken)
     context.action.updateToken(res.data)
-    Utility.setCookie('authToken', res.data.authToken, DAY_COOKIE_PERIOD)
     //모든처리완료
     setReady(true)
   }
@@ -79,16 +82,18 @@ export default () => {
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    Api.setCustomHeader(JSON.stringify(customHeader))
-    context.action.updateCustomHeader('custom-header')
-    Utility.setCookie('custom-header', JSON.stringify(customHeader), DAY_COOKIE_PERIOD)
+    context.action.updateCustomHeader(customHeader)
+
     console.table(customHeader)
     //#2 authToken
+    //@todo cookie 및 id="customHeader" 처리확인
+    //토큰업데이트
+    Api.setAuthToken(authToken)
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------
   /**
-   * @brief 정보체크이후 최종완료된 상태에서 Route진행
+   * @brief 정보체크이후 최종완료된 상태에서 Interface,Route진행
    */
   return (
     <React.Fragment>

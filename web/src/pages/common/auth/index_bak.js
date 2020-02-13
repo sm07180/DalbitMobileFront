@@ -2,14 +2,11 @@
  * @file auth.js
  * @brief 로그인영역
  * @todo 반응형으로 처리되어야함
- * @update contextAPI 연동
+ * @update 2020.2.13 원본
  */
-import React, {useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-//hooks
-import useChange from 'components/hooks/useChange'
 //components
-import Utility from 'components/lib/utility'
 import {GoogleLogin} from 'react-google-login'
 import KakaoLogin from 'react-kakao-login'
 import NaverLogin from 'react-naver-login'
@@ -19,7 +16,7 @@ import {osName, browserName} from 'react-device-detect'
 import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
-import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
+import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 import {arrayTypeAnnotation} from '@babel/types'
@@ -29,19 +26,24 @@ import {arrayTypeAnnotation} from '@babel/types'
 //import {switchCase} from '@babel/types'
 
 export default props => {
-  //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+
   //useState
+  const [state, setState] = useState(false)
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
-  //const [changes, setChanges] = useState({})
+  const [changes, setChanges] = useState({})
+
   let loginId = ''
   let loginName = ''
   let loginImg = ''
+  let loginOs = ''
   let loginPwd = ''
-  //---------------------------------------------------------------------
+
+  if (osName == 'IOS') loginOs = 2
+  else if (osName == 'Android') loginOs = 1
+  else loginOs = 3
   //fetch
   async function fetchData(obj, ostype) {
     switch (ostype) {
@@ -100,24 +102,27 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-        console.table(res.data)
+        console.log(res.data)
         /*
          * 로그인정상
          */
         //token Update
-        Api.setAuthToken(res.data.authToken)
         context.action.updateToken(res.data)
         //native 전달
         Hybrid('GetLoginToken', res.data)
-        //cookie
-        Utility.setCookie('authToken', res.data.authToken, '365')
-        //redirect
         if (props.history) {
           props.history.push('/')
           context.action.updatePopupVisible(false)
         }
-        //context.action.updateState(res.data)
-        //context.action.updateLogin(true)
+        context.action.updateState(res.data)
+        context.action.updateLogin(true)
+
+        // auth.onAuthStateChanged(user => {
+        //   console.log('user = ' + user)
+        //   // SetloginStatus({currentUser: user})
+        // })
+
+        //window.location.href = '/' // 홈페이지로 새로고침
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
@@ -144,14 +149,7 @@ export default props => {
       context.action.updateLogin(false)
     }
   }
-  //update
-  function update(mode) {
-    switch (true) {
-      case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
-        break
-    }
-  }
+
   // Facebook에서 성별,생일 권한은 다시 권한 요청이 있어 버린다.
   const responseFacebook = response => {
     // status는 앱 사용자의 로그인 상태를 지정합니다. 상태는 다음 중 하나일 수 있습니다.
@@ -181,6 +179,9 @@ export default props => {
   }
   const responseGoogleFail = err => {
     //console.error(err)
+  }
+  const onLoginHandleChange = e => {
+    setChanges({...changes, [e.target.name]: e.target.value})
   }
   function responseGooglelogin() {
     // signInWithGoogle().then(function(result) {
@@ -219,6 +220,9 @@ export default props => {
     //     }
     //   }
   }
+  useEffect(() => {
+    //console.log('changes = ' + JSON.stringify(changes))
+  }, [changes])
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
@@ -229,9 +233,10 @@ export default props => {
           <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
         </Logo>
       )}
+
       <LoginInput>
-        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} />
-        <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} />
+        <input type="text" name="phone" placeholder="전화번호" onChange={onLoginHandleChange} />
+        <input type="password" name="pwd" placeholder="비밀번호" onChange={onLoginHandleChange} />
       </LoginInput>
       <LoginSubmit
         onClick={() => {

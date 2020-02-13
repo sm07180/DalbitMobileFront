@@ -50,6 +50,7 @@ const CheckWarnning = styled.h4`
 const BackBTN = styled.button`
   display: block;
   position: absolute;
+  left: 0;
   bottom: 0;
   width: 100%;
   height: 50px;

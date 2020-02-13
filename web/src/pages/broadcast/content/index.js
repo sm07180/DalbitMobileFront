@@ -12,11 +12,14 @@ import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
+//etc
+import getDecibel from 'components/lib/getDecibel.js'
+import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
   const context = useContext(Context)
   //context
-  //hooks
+  //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     entryType: 0,
@@ -147,51 +150,92 @@ export default props => {
       data: {
         file: '',
         dataURL: obj.bgImg,
-        imageURL: ''
+        imageURL: '',
+        uploadType: 'bg'
       }
     })
+    if (resUpload) {
+      if (resUpload.result === 'success' || resUpload.code == 0) {
+        setChanges({...changes, bgImg: resUpload.data.path})
 
-    if (resUpload && resUpload.result === 'fail') {
-      console.log('upload 실패')
-    } else {
-      console.log('upload 성공')
-      setChanges({...changes, bgImg: resUpload.data.url})
-
-      const res = await Api.broad_create({
-        data: {
-          roomType: obj.roomType,
-          title: obj.title,
-          bgImg: obj.bgImg,
-          bgImgRacy: 3,
-          welcomMsg: obj.welcomMsg,
-          notice: '',
-          entryType: obj.entryType
-        }
-      })
-      //Error발생시
-      if (res.result === 'fail') {
-        console.log(res.message)
-        return
+        const res = await Api.broad_create({
+          data: {
+            roomType: changes.roomType,
+            title: changes.title,
+            bgImg: resUpload.data.path,
+            bgImgRacy: 3,
+            welcomMsg: changes.welcomMsg,
+            notice: '',
+            entryType: changes.entryType
+          }
+        })
+        console.log('정상작동했으니깐 방 생성!')
+        setFetch(res.data)
       } else {
-        console.log('정상작동했으니깐 방 생성해 짜샤!')
+        //Error발생시
+        console.log('방생성실패')
       }
-      console.log(res)
-
-      setFetch(res.data)
     }
   }
+
+  /**
+   * volume state
+   */
+  const {mediaHandler} = context
+  const [audioVolume, setAudioVolume] = useState(0)
+  const [audioSetting, setAudioSetting] = useState(false)
+  const [audioPass, setAudioPass] = useState(false)
+  const [drawId, setDrawId] = useState(null)
+
+  if (mediaHandler && !audioSetting) {
+    setAudioSetting(true)
+    ;(async () => {
+      const device = await getAudioDeviceCheck()
+
+      if (!device) {
+        context.action.updatePopup('CAST')
+      } else {
+        const audioStream = await navigator.mediaDevices
+          .getUserMedia({audio: true})
+          .then(result => result)
+          .catch(e => e)
+        if (!audioStream) {
+        }
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+        const audioCtx = new AudioContext()
+
+        const audioSource = audioCtx.createMediaStreamSource(audioStream)
+        const analyser = audioCtx.createAnalyser()
+        analyser.fftSize = 1024
+        audioSource.connect(analyser)
+
+        const volumeCheck = () => {
+          const db = getDecibel(analyser)
+          if (db !== audioVolume) {
+            setAudioVolume(db)
+            if (!audioPass) {
+              setAudioPass(true)
+            }
+          }
+        }
+        if (!drawId) {
+          setDrawId(setInterval(volumeCheck))
+        }
+      }
+    })()
+  }
+
+  useEffect(() => {
+    return () => {
+      clearInterval(drawId)
+    }
+  }, [drawId])
+
   /*
    *
    * @returns
    */
-
-  const [volume, SetVolume] = useState(false)
-  const Active = () => {
-    setTimeout(() => {
-      SetVolume(true)
-    }, 1200)
-  }
-  Active()
 
   //---------------------------------------------------------------------
   return (
@@ -203,24 +247,16 @@ export default props => {
 
         <Wrap>
           <BroadDetail>
-            {
-              <Pop
-                onClick={() => {
-                  if (!context.login_state) {
-                    context.action.updatePopup('CAST')
-                  }
-                }}>
-                팝업 임시확인
-              </Pop>
-            }
-
             <MicCheck>
               <h2>마이크 연결상태</h2>
               <VolumeWrap>
                 <MicIcon></MicIcon>
                 <MicVolumeBTN></MicVolumeBTN>
                 <BarWrap>
-                  <MicVolumeONBar value={volume} className={volume === true ? 'on' : 'off'}></MicVolumeONBar>
+                  <MicVolumeONBar
+                    style={{
+                      width: `${audioVolume}%`
+                    }}></MicVolumeONBar>
                 </BarWrap>
               </VolumeWrap>
             </MicCheck>
