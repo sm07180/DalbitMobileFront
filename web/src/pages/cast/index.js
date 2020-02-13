@@ -30,16 +30,15 @@ export default props => {
   if (mediaHandler && !mediaHandler.type) {
     mediaHandler.setType('listener')
     mediaHandler.setAudioTag(audioReference.current)
-    if (location.state) {
-      mediaHandler.setStreamId(bjStreamId)
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-    }
+    mediaHandler.setStreamId(bjStreamId)
+    mediaHandler.setLocalStartCallback(startPlayer)
+    mediaHandler.setLocalStopCallback(stopPlayer)
   }
 
   // temp init
   useEffect(() => {
     return () => {
+      console.log('return', context.mediaHandler)
       // if (handler) {
       //   handler.resetLocalCallback()
       // }
@@ -69,7 +68,7 @@ export default props => {
                 if (!bjStreamId) {
                   return alert('Need a stream id')
                 }
-                if (mediaHandler && !mediaHandler.rtcPeerConn) {
+                if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
                   mediaHandler.play()
                   startPlayer()
                 }
@@ -84,7 +83,7 @@ export default props => {
             <button
               style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
               onClick={() => {
-                if (mediaHandler && mediaHandler.rtcPeerConn) {
+                if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
                   mediaHandler.stop()
                   stopPlayer()
                 }

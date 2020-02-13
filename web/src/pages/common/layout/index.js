@@ -24,9 +24,6 @@ const Layout = props => {
   const {children} = props
   //---------------------------------------------------------------------
 
-  console.log('global player status', mediaPlayerStatus)
-  console.log('mediahandler', mediaHandler)
-
   useEffect(() => {
     if (!mediaHandler) {
       const mediaHandler = new SignalingHandler()
