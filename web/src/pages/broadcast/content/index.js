@@ -14,6 +14,7 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
+import {request} from 'http'
 
 export default props => {
   const context = useContext(Context)
@@ -135,8 +136,6 @@ export default props => {
       }
     }
     setBActive(value)
-
-    // console.log(context.mediaHandler)
   }, [changes])
 
   //---------------------------------------------------------------------
@@ -178,6 +177,37 @@ export default props => {
       }
     }
   }
+
+  /**
+   * volume state
+   */
+  const {mediaHandler} = context
+  const [audioVolume, setAudioVolume] = useState(0)
+  const animationFrameStatus = true
+
+  if (mediaHandler) {
+    ;(async () => {
+      const audioStream = await navigator.mediaDevices
+        .getUserMedia({audio: true})
+        .then(result => result)
+        .catch(e => e)
+      if (!audioStream) {
+      }
+
+      const volumeCheck = () => {
+        const db = getDecibel(audioStream)
+        if (db !== audioVolume) {
+          console.log('set volume')
+          setAudioVolume(db)
+        }
+        if (animationFrameStatus) {
+          requestAnimationFrame(volumeCheck)
+        }
+      }
+      // volumeCheck()
+    })()
+  }
+
   /*
    *
    * @returns
@@ -212,7 +242,7 @@ export default props => {
                 <BarWrap>
                   <MicVolumeONBar
                     style={{
-                      width: '50%'
+                      width: `${audioVolume}%`
                     }}></MicVolumeONBar>
                 </BarWrap>
               </VolumeWrap>
