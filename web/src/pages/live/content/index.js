@@ -21,7 +21,6 @@ export default props => {
   //getBroadList
   async function getBroadList(obj) {
     const res = await Api.broad_list({...obj})
-    console.log(res)
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
@@ -91,7 +90,7 @@ export default props => {
   return (
     <Content>
       <div className="wrap">
-        <Button
+        {/* <Button
           onClick={() => {
             //fetch
             async function fetchData(obj) {
@@ -102,7 +101,7 @@ export default props => {
             fetchData({data: {roomNo: roomId}})
           }}>
           방나가기
-        </Button>
+        </Button> */}
         <h1>방송방 리스트</h1>
         {makeContents()}
       </div>
