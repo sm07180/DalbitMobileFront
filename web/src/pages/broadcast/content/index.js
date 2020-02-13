@@ -136,7 +136,7 @@ export default props => {
     }
     setBActive(value)
 
-    console.log(context.mediaHandler)
+    // console.log(context.mediaHandler)
   }, [changes])
 
   //---------------------------------------------------------------------
@@ -170,17 +170,11 @@ export default props => {
             entryType: changes.entryType
           }
         })
-        //Error발생시
-        if (res.result === 'fail') {
-          console.log(res.message)
-        } else {
-          console.log('정상작동했으니깐 방 생성!')
-        }
-        console.log(res)
-
+        console.log('정상작동했으니깐 방 생성!')
         setFetch(res.data)
       } else {
-        console.log(resUpload.message)
+        //Error발생시
+        console.log('방생성실패')
       }
     }
   }
