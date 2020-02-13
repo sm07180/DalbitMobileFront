@@ -1,4 +1,4 @@
-export function getDecibel(stream) {
+export default function getDecibel(stream) {
   const AudioContext = (window.AudioContext || window.webkitAudioContext)()
   const audioCtx = new AudioContext()
 

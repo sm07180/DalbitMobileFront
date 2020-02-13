@@ -12,6 +12,8 @@ import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
+//etc
+import getDecibel from 'components/lib/getDecibel.js'
 
 export default props => {
   const context = useContext(Context)
@@ -133,6 +135,8 @@ export default props => {
       }
     }
     setBActive(value)
+
+    console.log(context.mediaHandler)
   }, [changes])
 
   //---------------------------------------------------------------------
@@ -184,14 +188,6 @@ export default props => {
    *
    * @returns
    */
-  //마이크체크
-  const [volume, SetVolume] = useState(false)
-  const Active = () => {
-    setTimeout(() => {
-      SetVolume(true)
-    }, 1200)
-  }
-  Active()
 
   //---------------------------------------------------------------------
   return (
@@ -220,7 +216,10 @@ export default props => {
                 <MicIcon></MicIcon>
                 <MicVolumeBTN></MicVolumeBTN>
                 <BarWrap>
-                  <MicVolumeONBar value={volume} className={volume === true ? 'on' : 'off'}></MicVolumeONBar>
+                  <MicVolumeONBar
+                    style={{
+                      width: '50%'
+                    }}></MicVolumeONBar>
                 </BarWrap>
               </VolumeWrap>
             </MicCheck>
