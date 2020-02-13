@@ -17,7 +17,7 @@ const GlobalProvider = props => {
   const DAY_COOKIE_PERIOD = '365'
   //state
   //---------------------------------------------------------------------
-  const [state, setState] = useState({title: '현재 이용현황', isSub: false})
+  const [state, setState] = useState({title: '현재 이용현황', isSub: false, footer: true})
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
   const [popup_code, setPopup] = useState('')
