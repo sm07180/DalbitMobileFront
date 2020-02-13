@@ -12,6 +12,7 @@ import {ajax} from 'context/api'
 import Lottie from 'lottie-react-web'
 import Api from 'context/api'
 import axios from 'axios'
+import LottieLoader from '../../components/module/lottieLoader'
 
 /**
 곰인형-토끼 : 
@@ -24,25 +25,49 @@ import axios from 'axios'
 도너츠-달 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_3.webp
 도너츠 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_4.webp
  */
+
 export default props => {
   //---------------------------------------------------------------------
   const [state, setState] = useState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json')
+  const [isShow, setShow] = useState(false)
   //useEffect
 
-  const makeLottie = () => {
-    console.log(state)
+  // const makeLottie = () => {
+  //   return (
+  //     <Lottie
+  //       options={{
+  //         loop: true,
+  //         autoplay: true,
+  //         path: state
+  //       }}
+  //     />
+  //   )
+  // }
 
+  const _show = path => {
+    setState(path)
+    setShow(!isShow)
+    setTimeout(() => {
+      setShow(false)
+    }, 3000)
+  }
+
+  const MakeLottie = props => {
     return (
-      <Lottie
-        options={{
-          loop: true,
-          autoplay: true,
-          autoplay: true,
-          animationData: state
-        }}
-      />
+      <div className="wrap">
+        <Lottie
+          options={{
+            loop: true,
+            autoplay: true,
+            path: props.path
+          }}
+          width={300}
+          height={300}
+        />
+      </div>
     )
   }
+
   useEffect(() => {
     console.log(state)
   }, [state])
@@ -68,7 +93,14 @@ export default props => {
           }}>
           버튼3
         </button>
-        <div className="wrap">{makeLottie()}</div>
+        <button
+          onClick={() => {
+            _show('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json')
+          }}>
+          버튼4
+        </button>
+        {/* <div className="wrap">{makeLottie()}</div> */}
+        {isShow && <LottieLoader path={state} width={500} height={500} />}
         <h1>&#x1F601;</h1>
         <h2>&#x1F3AC;</h2>
         <h3>&#x1F42D;</h3>
@@ -77,7 +109,6 @@ export default props => {
     </Layout>
   )
 }
-
 //---------------------------------------------------------------------
 
 const Content = styled.section`
