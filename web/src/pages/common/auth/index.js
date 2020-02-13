@@ -252,7 +252,7 @@ export default props => {
               props.history.push('/user/password')
               context.action.updatePopupVisible(false)
             }}>
-            비밀번호 찾기
+            비밀번호 변경
           </button>
           <button
             onClick={() => {
