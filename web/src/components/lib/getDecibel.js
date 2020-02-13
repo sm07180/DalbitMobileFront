@@ -8,7 +8,7 @@ export default function getDecibel(analyser) {
     total += f * f
   })
   const rms = Math.sqrt(total / bufferLength)
-  let db = 20 * (Math.log(rms) / Math.log(10))
+  let db = 30 * (Math.log(rms) / Math.log(10))
   db = Math.max(db, 0)
   db = Math.floor(db)
 

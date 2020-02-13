@@ -4,11 +4,12 @@
  * @todo 반응형으로 처리되어야함
  * @update contextAPI 연동
  */
-import React, {useEffect, useMemo, useState, useContext} from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
-//import
+//hooks
 import useChange from 'components/hooks/useChange'
 //components
+import Utility from 'components/lib/utility'
 import {GoogleLogin} from 'react-google-login'
 import KakaoLogin from 'react-kakao-login'
 import NaverLogin from 'react-naver-login'
@@ -28,6 +29,7 @@ import {arrayTypeAnnotation} from '@babel/types'
 //import {switchCase} from '@babel/types'
 
 export default props => {
+  //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
   //useState
@@ -39,9 +41,7 @@ export default props => {
   let loginName = ''
   let loginImg = ''
   let loginPwd = ''
-  let loginOs = useMemo(() => {
-    return Number(context.customHeader.os)
-  })
+  //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj, ostype) {
     switch (ostype) {
@@ -100,7 +100,7 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-        console.log(res.data)
+        console.table(res.data)
         /*
          * 로그인정상
          */
@@ -109,19 +109,15 @@ export default props => {
         context.action.updateToken(res.data)
         //native 전달
         Hybrid('GetLoginToken', res.data)
+        //cookie
+        Utility.setCookie('authToken', res.data.authToken, '365')
+        //redirect
         if (props.history) {
           props.history.push('/')
           context.action.updatePopupVisible(false)
         }
-        context.action.updateState(res.data)
-        context.action.updateLogin(true)
-
-        // auth.onAuthStateChanged(user => {
-        //   console.log('user = ' + user)
-        //   // SetloginStatus({currentUser: user})
-        // })
-
-        //window.location.href = '/' // 홈페이지로 새로고침
+        //context.action.updateState(res.data)
+        //context.action.updateLogin(true)
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
@@ -152,7 +148,7 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.onChange !== undefined:
-        console.log(JSON.stringify(changes))
+        //console.log(JSON.stringify(changes))
         break
     }
   }

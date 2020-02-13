@@ -108,6 +108,7 @@ export default class SignalingHandler {
     }
     this.socketSendMsg(cmd)
     this.startPlaying()
+    return true
   }
 
   stop() {

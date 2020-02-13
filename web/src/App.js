@@ -36,7 +36,7 @@ export default () => {
     const makeCustomHeader = () => {
       const info = {
         os: '3',
-        locale: 'KR',
+        locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
         deviceToken: 'make_custom_header'
@@ -49,7 +49,12 @@ export default () => {
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== null && typeof JSON.parse(cookie) === 'object') return JSON.parse(cookie)
+    if (cookie !== undefined && cookie !== null && typeof JSON.parse(cookie) === 'object') {
+      let temp = JSON.parse(cookie)
+      temp.appVersion = '1.0.1'
+      temp.locale = 'KR'
+      return temp
+    }
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
@@ -83,6 +88,8 @@ export default () => {
     console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
+    //토큰업데이트
+    Api.setAuthToken(authToken)
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------

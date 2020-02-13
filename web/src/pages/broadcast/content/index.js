@@ -14,12 +14,12 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
-import {request} from 'http'
+import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
   const context = useContext(Context)
   //context
-  //hooks
+  //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     entryType: 0,
@@ -184,6 +184,7 @@ export default props => {
   const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
+  const [audioPass, setAudioPass] = useState(false)
   let animationFrameStatus = true
 
   useEffect(() => {
@@ -195,31 +196,40 @@ export default props => {
   if (mediaHandler && !audioSetting) {
     setAudioSetting(true)
     ;(async () => {
-      const audioStream = await navigator.mediaDevices
-        .getUserMedia({audio: true})
-        .then(result => result)
-        .catch(e => e)
-      if (!audioStream) {
-      }
+      const device = await getAudioDeviceCheck()
 
-      const AudioContext = window.AudioContext || window.webkitAudioContext
-      const audioCtx = new AudioContext()
-
-      const audioSource = audioCtx.createMediaStreamSource(audioStream)
-      const analyser = audioCtx.createAnalyser()
-      analyser.fftSize = 1024
-      audioSource.connect(analyser)
-
-      const volumeCheck = () => {
-        const db = getDecibel(analyser)
-        if (db !== audioVolume) {
-          setAudioVolume(db)
+      if (!device) {
+        context.action.updatePopup('CAST')
+      } else {
+        const audioStream = await navigator.mediaDevices
+          .getUserMedia({audio: true})
+          .then(result => result)
+          .catch(e => e)
+        if (!audioStream) {
         }
-        if (animationFrameStatus) {
-          requestAnimationFrame(volumeCheck)
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext
+        const audioCtx = new AudioContext()
+
+        const audioSource = audioCtx.createMediaStreamSource(audioStream)
+        const analyser = audioCtx.createAnalyser()
+        analyser.fftSize = 1024
+        audioSource.connect(analyser)
+
+        const volumeCheck = () => {
+          const db = getDecibel(analyser)
+          if (db !== audioVolume) {
+            setAudioVolume(db)
+            if (!audioPass) {
+              setAudioPass(true)
+            }
+          }
+          if (animationFrameStatus) {
+            requestAnimationFrame(volumeCheck)
+          }
         }
+        volumeCheck()
       }
-      volumeCheck()
     })()
   }
 
@@ -238,17 +248,6 @@ export default props => {
 
         <Wrap>
           <BroadDetail>
-            {
-              <Pop
-                onClick={() => {
-                  if (!context.login_state) {
-                    context.action.updatePopup('CAST')
-                  }
-                }}>
-                팝업 임시확인
-              </Pop>
-            }
-
             <MicCheck>
               <h2>마이크 연결상태</h2>
               <VolumeWrap>
