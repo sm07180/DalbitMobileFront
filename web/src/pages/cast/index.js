@@ -18,7 +18,6 @@ export default props => {
 
   const audioReference = useRef()
   const {location} = props.history
-  const {bjStreamId} = location.state
 
   const startPlayer = () => {
     setPlayStatus(true)
@@ -27,23 +26,25 @@ export default props => {
     setPlayStatus(false)
   }
 
-  if (mediaHandler && !mediaHandler.type) {
-    mediaHandler.setType('listener')
-    mediaHandler.setAudioTag(audioReference.current)
-    mediaHandler.setStreamId(bjStreamId)
+  if (location.state && mediaHandler) {
     mediaHandler.setLocalStartCallback(startPlayer)
     mediaHandler.setLocalStopCallback(stopPlayer)
+
+    if (!mediaHandler.type) {
+      mediaHandler.setType('listener')
+      mediaHandler.setAudioTag(audioReference.current)
+      // mediaHandler.setStreamId(bjStreamId)
+    }
   }
 
   // temp init
   useEffect(() => {
     return () => {
-      console.log('return', context.mediaHandler)
-      // if (handler) {
-      //   handler.resetLocalCallback()
-      // }
+      if (mediaHandler) {
+        handlemediaHandlerr.resetLocalCallback()
+      }
     }
-  }, [])
+  }, [mediaHandler])
 
   return (
     <Layout {...props}>
@@ -52,7 +53,7 @@ export default props => {
           <audio ref={audioReference} autoPlay controls></audio>
         </div>
 
-        <div>streamId: {bjStreamId}</div>
+        <div>streamId: {location.state && location.state.bjStreamId}</div>
 
         {!playStatus && (
           <div>
@@ -65,7 +66,7 @@ export default props => {
                 backgroundColor: 'blue'
               }}
               onClick={() => {
-                if (!bjStreamId) {
+                if (!location.state || !location.state.bjStreamId) {
                   return alert('Need a stream id')
                 }
                 if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
