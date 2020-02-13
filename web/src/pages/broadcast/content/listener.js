@@ -42,7 +42,15 @@ const Content = styled.section`
   margin: 2.5vh auto 0 auto;
 
   & > * {
-    height: calc(94vh - 80px);
+    height: calc(95vh - 80px);
+
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      height: calc(95vh - 64px);
+    }
+  }
+
+  @media (max-width: 1260px) {
+    width: 95%;
   }
 `
 
@@ -53,7 +61,7 @@ const Chat = styled.div`
 `
 
 const Side = styled.div`
-  width: 408px;
+  width: 33.71%;
   min-width: 408px;
   background: #8556f6;
 `
