@@ -184,6 +184,7 @@ export default props => {
   const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
+  const [audioPass, setAudioPass] = useState(false)
   let animationFrameStatus = true
 
   useEffect(() => {
@@ -214,6 +215,9 @@ export default props => {
         const db = getDecibel(analyser)
         if (db !== audioVolume) {
           setAudioVolume(db)
+          if (!audioPass) {
+            setAudioPass(true)
+          }
         }
         if (animationFrameStatus) {
           requestAnimationFrame(volumeCheck)
