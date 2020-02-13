@@ -45,7 +45,7 @@ export default () => {
     }
     //---------------------------------------------
     //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader1')
+    const element = document.getElementById('customHeader')
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
@@ -69,7 +69,6 @@ export default () => {
     const res = await Api.getToken({...obj})
     console.table(res.data)
     // result 성공/실패 여부상관없이,토큰없데이트
-    Api.setAuthToken(res.data.authToken)
     context.action.updateToken(res.data)
     Utility.setCookie('authToken', res.data.authToken, DAY_COOKIE_PERIOD)
     //모든처리완료
@@ -79,11 +78,11 @@ export default () => {
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    Api.setCustomHeader(JSON.stringify(customHeader))
     context.action.updateCustomHeader(customHeader)
     Utility.setCookie('custom-header', JSON.stringify(customHeader), DAY_COOKIE_PERIOD)
     console.table(customHeader)
     //#2 authToken
+    //@todo cookie 및 id="customHeader" 처리확인
     fetchData({data: customHeader})
   }, [])
   //---------------------------------------------------------------------

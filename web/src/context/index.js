@@ -44,6 +44,7 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
+      API.setCustomHeader(JSON.stringify(obj))
       setCustomHeader(obj)
     },
     /**
@@ -54,7 +55,6 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       const {authToken} = obj
-      console.log(authToken)
       API.setAuthToken(authToken)
       setToken(obj)
     },
