@@ -26,18 +26,15 @@ export default props => {
     setPlayStatus(false)
   }
 
-  if (location.state && mediaHandler) {
-    mediaHandler.setLocalStartCallback(startPlayer)
-    mediaHandler.setLocalStopCallback(stopPlayer)
-
-    if (!mediaHandler.type) {
+  useEffect(() => {
+    if (location.state && mediaHandler) {
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setType('listener')
       mediaHandler.setAudioTag(audioReference.current)
       mediaHandler.setStreamId(location.state.bjStreamId)
     }
-  }
 
-  useEffect(() => {
     return () => {
       if (mediaHandler) {
         mediaHandler.resetLocalCallback()

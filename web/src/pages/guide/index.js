@@ -28,22 +28,19 @@ function TempBroad() {
   const stopPlayer = () => {
     setPublishStatus(false)
   }
-  console.log('mh', mediaHandler)
-  if (mediaHandler) {
-    mediaHandler.setLocalStartCallback(startPlayer)
-    mediaHandler.setLocalStopCallback(stopPlayer)
 
-    if (!mediaHandler.type) {
+  useEffect(() => {
+    if (mediaHandler) {
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
+      mediaHandler.setType('host')
+      mediaHandler.setStreamId(streamId)
       ;(async () => {
         const audioStream = await getAudioStream()
         mediaHandler.setAudioStream(audioStream)
-        mediaHandler.setType('host')
-        mediaHandler.setStreamId(streamId)
       })()
     }
-  }
 
-  useEffect(() => {
     return () => {
       if (mediaHandler) {
         mediaHandler.resetLocalCallback()
