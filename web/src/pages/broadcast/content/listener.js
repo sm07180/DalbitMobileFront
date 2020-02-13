@@ -1,12 +1,18 @@
 /**
- * @title 404페이지
+ * @title 방송방화면
+ *
  */
-import React, {useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import Live from './live'
+//context
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //pages
 
 // import Guide from ' pages/common/layout/guide.js'
+<<<<<<< HEAD
 const LiveInfo = [
   {
     category: '일상',
@@ -94,7 +100,50 @@ const LiveInfo = [
       'https://lh3.googleusercontent.com/proxy/rNffynT7M8L4UdWNYqT69v1OnKupd75mZZPUjepXfvzhvJKfNBhyd9hABmPYbReNXeV9DJOaPGnXhOKG30omzXc5g7ZsegpoO4U7WWJMDlQftG71As_Xz4vl6cDvlrXxAEGhaRFC6WjmakkVusaAmnvV8YCAW1xTLwCVI3pNx6MEJx1xd3fC5V-Ndhc8koB9FGgjRJcyXKW1iEqKhRdH8F9RnurcPlL7tRVLsVMYY_H7C2jbxCgg9ELAWm9zzajZCcElhgAy56a9eIOKLFlIia4Tmdi_lTfHGkzrBxm4HmGL69dWyVjy8QXTMIzpp4FEi1rxuExPks6L0r75jwQ'
   }
 ]
+=======
+>>>>>>> d2dcd2d12566c3de4b3edd7231b8464e40862ed5
 
-export default () => {
-  return <Live Info={LiveInfo}></Live>
+export default props => {
+  //context
+  const context = new useContext(Context)
+
+  useEffect(() => {
+    //방송방 페이지는 footer없음.
+    context.action.updateState({footer: false})
+    return () => {
+      context.action.updateState({footer: true})
+    }
+  }, [])
+
+  return (
+    <Content>
+      <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
+      <Side>{/* side content 영역 */}이곳은 사이드 컨텐츠 영역으로 디테일한 방송 정보 등을 볼 수 있습니다!!!!!! </Side>
+    </Content>
+  )
 }
+
+//---------------------------------------------------------------------
+//styled
+
+const Content = styled.section`
+  display: flex;
+  width: 1210px;
+  margin: 2.5vh auto 0 auto;
+
+  & > * {
+    height: calc(94vh - 80px);
+  }
+`
+
+const Chat = styled.div`
+  /* width: 802px; */
+  width: 66.28%;
+  background: #dcceff;
+`
+
+const Side = styled.div`
+  width: 408px;
+  min-width: 408px;
+  background: #8556f6;
+`

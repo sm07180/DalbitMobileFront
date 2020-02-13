@@ -6,6 +6,7 @@ import {Context} from 'context'
 import Gnb from './gnb-layout'
 import {Link, NavLink} from 'react-router-dom'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -95,7 +96,18 @@ export default props => {
                 <LoginChoiceOut
                   onClick={() => {
                     if (context.token.isLogin) {
-                      context.action.updateLogin(false)
+                      const result = confirm('로그아웃 하시겠습니까?')
+                      if (result) {
+                        //fetch
+                        async function fetchData(obj) {
+                          const res = await Api.member_logout({data: context.token.authToken})
+                          alert('정상적으로 로그아웃 되었습니다.')
+                          context.action.updateToken('')
+                          context.action.updateCustomHeader('')
+                          window.location.href = '/'
+                        }
+                        fetchData()
+                      }
                     }
                   }}>
                   로그아웃

@@ -49,7 +49,7 @@ export default () => {
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== null && typeof JSON.parse(cookie) === 'object') {
+    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
       let temp = JSON.parse(cookie)
       temp.appVersion = '1.0.1'
       temp.locale = 'KR'
@@ -75,7 +75,6 @@ export default () => {
     console.table(res.data)
     // result 성공/실패 여부상관없이,토큰없데이트
     context.action.updateToken(res.data)
-    Utility.setCookie('authToken', res.data.authToken, DAY_COOKIE_PERIOD)
     //모든처리완료
     setReady(true)
   }
@@ -84,7 +83,7 @@ export default () => {
   useEffect(() => {
     //#1 customHeader
     context.action.updateCustomHeader(customHeader)
-    Utility.setCookie('custom-header', JSON.stringify(customHeader), DAY_COOKIE_PERIOD)
+
     console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
