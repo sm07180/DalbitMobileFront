@@ -6,7 +6,7 @@ import Input from './input-type'
 import Datepicker from './style-datepicker'
 //import Button from './style-button'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, PHOTO_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -41,6 +41,10 @@ const JoinForm = props => {
   const [currentNick, setCurrentNick] = useState() // 닉네임 확인 도움 텍스트 값.
   const [currentName, setCurrentName] = useState() // 이름 확인 도움 텍스트 값.
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
+
+  //포토서버에 올라간 디폴트 이미지
+  const defaultImage = `${PHOTO_SERVER}/profile_1/20559801600/20200213133546969166.png`
+  const defaultImagePath = defaultImage.replace(`${PHOTO_SERVER}`, '')
 
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
@@ -264,75 +268,74 @@ const JoinForm = props => {
   //---------------------------------------------------------------------
   //fetchData
   async function fetchData() {
-    //console.log(JSON.stringify(obj))
     console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
-    const resUpload = await Api.image_upload({
-      data: {
-        file: '',
-        dataURL: changes.image,
-        imageURL: '',
-        uploadType: 'profile'
-      }
-    })
-    if (resUpload && resUpload.result === 'success') {
-      console.log('성공했으니 올려 멍청아 ')
-      console.log('resUpload = ' + JSON.stringify(resUpload, null, 1))
-      console.log('path는?', resUpload.data.path)
-      const res = await Api.member_join({
+    //이미지가 기본 이미지면 image_upload를 날리지 않는다.
+    let resultImg = ''
+
+    if (changes.image == defaultImage) {
+      //기본 이미지면 업로드 날리지 않고 기본이미지의 path바로 세팅
+      resultImg = defaultImagePath
+    } else {
+      //이미지가 등록되었다면 이미지 업로드 후 path 받아서 세팅
+      const resUpload = await Api.image_upload({
         data: {
-          memType: changes.memType,
-          memId: changes.loginID,
-          memPwd: changes.loginPwd,
-          gender: changes.gender,
-          nickNm: changes.loginNickNm,
-          birth: changes.birth,
-          term1: changes.term1,
-          term2: changes.term2,
-          term3: changes.term3,
-          term4: changes.term4,
-          term5: changes.term5,
-          name: changes.loginName,
-          profImg: resUpload.data.path,
-          profImgRacy: 3,
-          email: '',
-          os: changes.osName
+          file: '',
+          dataURL: changes.image,
+          imageURL: '',
+          uploadType: 'profile'
         }
       })
-      console.log('회원가입 REST 결과값 = ' + JSON.stringify(res))
-      if (res && res.code) {
-        if (res.code == 0) {
-          alert(res.message)
-          props.history.push('/') //회원가입 완료 후 authToken, memNo 넘겨주기
-          context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
-          //일단 이미지랑 닉네임 여기서 넘겨줌. 나중에 조회로 바꿀수있게 하고 지울것.
-          context.action.updateState({
-            nickNm: changes.loginNickNm,
-            profImg: resUpload.data.path
-          })
-          context.action.updateLogin(true)
+      if (resUpload) {
+        if (resUpload.code == 0 || resUpload.result === 'success') {
+          //업로드 성공
+          //console.log(resUpload.data)
+          resultImg = resUpload.data.path
         } else {
-          alert(res.message)
-          context.action.updateLogin(false)
+          //업로드 실패시 기본이미지 path 세팅
+          console.log(resUpload.message)
+          resultImg = defaultImagePath
         }
-      } //(res && res.code)
-    } else {
-      console.log('안올라갔어.')
-      console.log('resUpload = ' + JSON.stringify(resUpload, null, 1))
+      }
     }
 
-    //닉네임 중복확인 지금안되서 보류
-    // const resCheck = await Api.nickName_check({
-    //   date: {
-    //     nickNm: changes.loginNickNm
-    //   }
-    // })
-    // if (resCheck && resCheck.result === 'success') {
-    //   console.log('성공')
-    //   console.log('resCheck = ' + JSON.stringify(resCheck, null, 1))
-    // } else {
-    //   console.log('실패')
-    //   console.log('resCheck = ' + JSON.stringify(resCheck, null, 1))
-    // }
+    //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
+    const res = await Api.member_join({
+      data: {
+        memType: changes.memType,
+        memId: changes.loginID,
+        memPwd: changes.loginPwd,
+        gender: changes.gender,
+        nickNm: changes.loginNickNm,
+        birth: changes.birth,
+        term1: changes.term1,
+        term2: changes.term2,
+        term3: changes.term3,
+        term4: changes.term4,
+        term5: changes.term5,
+        name: changes.loginName,
+        profImg: resultImg,
+        profImgRacy: 3,
+        email: '',
+        os: changes.osName
+      }
+    })
+    //console.log('회원가입 REST 결과값 = ' + JSON.stringify(res))
+    if (res && res.code) {
+      if (res.code == 0) {
+        alert(res.message)
+        props.history.push('/') //회원가입 완료 후 authToken, memNo 넘겨주기
+        context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
+        //일단 이미지랑 닉네임 여기서 넘겨줌. 나중에 조회로 바꿀수있게 하고 지울것.
+        context.action.updateState({
+          nickNm: changes.loginNickNm,
+          profImg: resultImg
+        })
+        context.action.updateLogin(true)
+      } else {
+        alert(res.message)
+        context.action.updateLogin(false)
+      }
+    } //(res && res.code)
   }
 
   //---------------------------------------------------------------------
@@ -344,7 +347,7 @@ const JoinForm = props => {
       setChanges({
         ...changes,
         birth: dateDefault,
-        image: `${IMG_SERVER}/images/api/ico-profil-w.png`
+        image: defaultImage //포토 서버에 올려둔 기본 이미지. 나중에 지워지면 새로 올려줘야함
       })
     }
   }, [])
