@@ -1,19 +1,59 @@
 /**
- * @title 404페이지
+ * @title 방송방화면
+ *
  */
-import React, {useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import Live from './live'
+//context
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //pages
 
 // import Guide from ' pages/common/layout/guide.js'
-const LiveInfo = [
-  {
-    title: '포근한 아침 라디오입니다.',
-    name: '★하늘하늘이에요'
-  }
-]
 
-export default () => {
-  return <Live Info={LiveInfo}></Live>
+export default props => {
+  //context
+  const context = new useContext(Context)
+
+  useEffect(() => {
+    //방송방 페이지는 footer없음.
+    context.action.updateState({footer: false})
+    return () => {
+      context.action.updateState({footer: true})
+    }
+  }, [])
+
+  return (
+    <Content>
+      <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
+      <Side>{/* side content 영역 */}이곳은 사이드 컨텐츠 영역으로 디테일한 방송 정보 등을 볼 수 있습니다!!!!!! </Side>
+    </Content>
+  )
 }
+
+//---------------------------------------------------------------------
+//styled
+
+const Content = styled.section`
+  display: flex;
+  width: 1210px;
+  margin: 2.5vh auto 0 auto;
+
+  & > * {
+    height: calc(94vh - 80px);
+  }
+`
+
+const Chat = styled.div`
+  /* width: 802px; */
+  width: 66.28%;
+  background: #dcceff;
+`
+
+const Side = styled.div`
+  width: 408px;
+  min-width: 408px;
+  background: #8556f6;
+`
