@@ -226,7 +226,7 @@ export default props => {
             {
               <Pop
                 onClick={() => {
-                  if (!context.login_state) {
+                  if (!context.token.isLogin) {
                     context.action.updatePopup('CAST')
                   }
                 }}>
