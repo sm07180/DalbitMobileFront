@@ -69,8 +69,10 @@ export default props => {
                   return alert('Need a stream id')
                 }
                 if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
-                  mediaHandler.play()
-                  startPlayer()
+                  const status = mediaHandler.play()
+                  if (status) {
+                    startPlayer()
+                  }
                 }
               }}>
               play
