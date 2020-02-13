@@ -18,7 +18,7 @@ import Content from './content'
 export default props => {
   //const
   const {title} = props.match.params
-  console.log(title)
+
   //---------------------------------------------------------------------
   function setRoute() {
     switch (title) {

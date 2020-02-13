@@ -37,8 +37,7 @@ export default props => {
         options={{
           loop: true,
           autoplay: true,
-          autoplay: true,
-          animationData: state
+          path: 'https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json'
         }}
       />
     )

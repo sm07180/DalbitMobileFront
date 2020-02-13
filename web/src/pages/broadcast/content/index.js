@@ -13,7 +13,6 @@ import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
 
-
 export default props => {
   const context = useContext(Context)
   //context
@@ -108,13 +107,15 @@ export default props => {
   const [url, setUrl] = useState(null)
 
   function uploadSingleFile(e) {
-    setFile(e.target.files[0])
-    setUrl(URL.createObjectURL(e.target.files[0]))
+    // setFile(e.target.files[0])
+    // setUrl(URL.createObjectURL(e.target.files[0]))
 
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
+
     reader.onload = function() {
       if (reader.result) {
+        setUrl(reader.result)
         setChanges({...changes, bgImg: reader.result})
       } else {
       }
@@ -123,17 +124,15 @@ export default props => {
   //validation
   const [BActive, setBActive] = useState(false)
   useEffect(() => {
-    let value=false
-    if (changes.welcomMsg.length>10 && changes.welcomMsg.length < 101){
-      if(changes.welcomMsg.length>0 && changes.title.length < 21){
-        if(changes.bgImg !== ''){
-          value=true
+    let value = false
+    if (changes.welcomMsg.length > 10 && changes.welcomMsg.length < 101) {
+      if (changes.welcomMsg.length > 0 && changes.title.length < 21) {
+        if (changes.bgImg !== '') {
+          value = true
         }
       }
     }
     setBActive(value)
-
-    
   }, [changes])
 
   //---------------------------------------------------------------------
@@ -156,7 +155,6 @@ export default props => {
       console.log('upload 실패')
     } else {
       console.log('upload 성공')
-      console.log(resUpload)
       setChanges({...changes, bgImg: resUpload.data.url})
 
       const res = await Api.broad_create({
@@ -187,6 +185,14 @@ export default props => {
    * @returns
    */
 
+  const [volume, SetVolume] = useState(false)
+  const Active = () => {
+    setTimeout(() => {
+      SetVolume(true)
+    }, 1200)
+  }
+  Active()
+
   //---------------------------------------------------------------------
   return (
     <>
@@ -207,6 +213,17 @@ export default props => {
                 팝업 임시확인
               </Pop>
             }
+
+            <MicCheck>
+              <h2>마이크 연결상태</h2>
+              <VolumeWrap>
+                <MicIcon></MicIcon>
+                <MicVolumeBTN></MicVolumeBTN>
+                <BarWrap>
+                  <MicVolumeONBar value={volume} className={volume === true ? 'on' : 'off'}></MicVolumeONBar>
+                </BarWrap>
+              </VolumeWrap>
+            </MicCheck>
             <JoinProhibit>
               <h2>입장제한</h2>
               {makeRadio()}
@@ -304,6 +321,56 @@ const BroadDetail = styled.div`
     content: '';
   }
 `
+const MicCheck = styled.div`
+  width: 100%;
+  & h2 {
+    margin-bottom: 24px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.17;
+    letter-spacing: -0.45px;
+  }
+`
+const VolumeWrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 36px;
+  margin-bottom: 40px;
+  border-radius: 18px;
+  background-color: #f5f5f5;
+`
+const MicIcon = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #bdbdbd url('http://www.hwangsh.com/img/ic_mic.png') no-repeat center center / cover;
+`
+const MicVolumeBTN = styled.div``
+const BarWrap = styled.div`
+  position: absolute;
+  top: 16px;
+  left: 58.5px;
+  width: 81.47%;
+  height: 4px;
+  border-radius: 50px;
+  background-color: #bdbdbd;
+`
+
+const MicVolumeONBar = styled.div`
+  /* width: ${props => props.volume}%; */
+  width:0%;
+  height: 100%;
+  background-color: #fdad2b;
+  border-radius: 50px;
+  transition: ease-in 0.1s;
+  &.on {
+    width:100%;
+  }
+`
+
 const JoinProhibit = styled.div`
   width: 100%;
   & h2 {
@@ -548,7 +615,7 @@ const CreateBtn = styled.button`
   width: 100%;
   height: 50px;
   margin-bottom: 218px;
-  outline:none;
+  outline: none;
   background-color: #bdbdbd;
   color: #fff;
   font-size: 16px;
@@ -557,7 +624,7 @@ const CreateBtn = styled.button`
   line-height: 50px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
- 
+
   &.on {
     background-color: #8556f6;
     cursor: pointer;
