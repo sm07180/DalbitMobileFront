@@ -29,25 +29,27 @@ function TempBroad() {
     setPublishStatus(false)
   }
 
-  if (mediaHandler && !mediaHandler.type) {
-    ;(async () => {
-      const audioStream = await getAudioStream()
-      mediaHandler.setAudioStream(audioStream)
-      mediaHandler.setType('host')
-      mediaHandler.setStreamId(streamId)
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-    })()
+  if (mediaHandler) {
+    mediaHandler.setLocalStartCallback(startPlayer)
+    mediaHandler.setLocalStopCallback(stopPlayer)
+
+    if (!mediaHandler.type) {
+      ;(async () => {
+        const audioStream = await getAudioStream()
+        mediaHandler.setAudioStream(audioStream)
+        mediaHandler.setType('host')
+        mediaHandler.setStreamId(streamId)
+      })()
+    }
   }
 
   useEffect(() => {
     return () => {
-      console.log('un mount', mediaHandler)
-      // if (handler) {
-      //   handler.resetLocalCallback()
-      // }
+      if (mediaHandler) {
+        mediaHandler.resetLocalCallback()
+      }
     }
-  }, [])
+  }, [mediaHandler])
 
   return (
     <div>
