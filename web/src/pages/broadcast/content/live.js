@@ -40,8 +40,15 @@ export default props => {
       </LiveList>
     )
   })
-  return <>{livemap}</>
+  return <Wrapper>{livemap}</Wrapper>
 }
+const Wrapper = styled.div`
+  height: 100%;
+  overflow-y: scroll;
+  ::-webkit-scrollbar-track {
+    background-color: red;
+  }
+`
 const LiveList = styled.div`
   display: flex;
   width: 362px;
