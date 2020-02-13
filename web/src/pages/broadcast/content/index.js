@@ -14,12 +14,12 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
-import {request} from 'http'
+import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
   const context = useContext(Context)
   //context
-  //hooks
+  //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     entryType: 0,
@@ -183,10 +183,20 @@ export default props => {
    */
   const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
-  const animationFrameStatus = true
+  const [audioSetting, setAudioSetting] = useState(false)
+  const [audioPass, setAudioPass] = useState(false)
+  let animationFrameStatus = true
 
-  if (mediaHandler) {
+  useEffect(() => {
+    return () => {
+      animationFrameStatus = false
+    }
+  })
+
+  if (mediaHandler && !audioSetting) {
+    setAudioSetting(true)
     ;(async () => {
+      const device = await getAudioDeviceCheck()
       const audioStream = await navigator.mediaDevices
         .getUserMedia({audio: true})
         .then(result => result)
@@ -194,17 +204,27 @@ export default props => {
       if (!audioStream) {
       }
 
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      const audioCtx = new AudioContext()
+
+      const audioSource = audioCtx.createMediaStreamSource(audioStream)
+      const analyser = audioCtx.createAnalyser()
+      analyser.fftSize = 1024
+      audioSource.connect(analyser)
+
       const volumeCheck = () => {
-        const db = getDecibel(audioStream)
+        const db = getDecibel(analyser)
         if (db !== audioVolume) {
-          console.log('set volume')
           setAudioVolume(db)
+          if (!audioPass) {
+            setAudioPass(true)
+          }
         }
         if (animationFrameStatus) {
           requestAnimationFrame(volumeCheck)
         }
       }
-      // volumeCheck()
+      volumeCheck()
     })()
   }
 
