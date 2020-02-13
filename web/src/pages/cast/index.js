@@ -33,15 +33,14 @@ export default props => {
     if (!mediaHandler.type) {
       mediaHandler.setType('listener')
       mediaHandler.setAudioTag(audioReference.current)
-      // mediaHandler.setStreamId(bjStreamId)
+      mediaHandler.setStreamId(location.state.bjStreamId)
     }
   }
 
-  // temp init
   useEffect(() => {
     return () => {
       if (mediaHandler) {
-        handlemediaHandlerr.resetLocalCallback()
+        mediaHandler.resetLocalCallback()
       }
     }
   }, [mediaHandler])
