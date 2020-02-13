@@ -14,6 +14,7 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
+import {request} from 'http'
 
 export default props => {
   const context = useContext(Context)
@@ -135,8 +136,6 @@ export default props => {
       }
     }
     setBActive(value)
-
-    // console.log(context.mediaHandler)
   }, [changes])
 
   //---------------------------------------------------------------------
@@ -178,6 +177,56 @@ export default props => {
       }
     }
   }
+
+  /**
+   * volume state
+   */
+  const {mediaHandler} = context
+  const [audioVolume, setAudioVolume] = useState(0)
+  const [audioSetting, setAudioSetting] = useState(false)
+  const [audioPass, setAudioPass] = useState(false)
+  let animationFrameStatus = true
+
+  useEffect(() => {
+    return () => {
+      animationFrameStatus = false
+    }
+  })
+
+  if (mediaHandler && !audioSetting) {
+    setAudioSetting(true)
+    ;(async () => {
+      const audioStream = await navigator.mediaDevices
+        .getUserMedia({audio: true})
+        .then(result => result)
+        .catch(e => e)
+      if (!audioStream) {
+      }
+
+      const AudioContext = window.AudioContext || window.webkitAudioContext
+      const audioCtx = new AudioContext()
+
+      const audioSource = audioCtx.createMediaStreamSource(audioStream)
+      const analyser = audioCtx.createAnalyser()
+      analyser.fftSize = 1024
+      audioSource.connect(analyser)
+
+      const volumeCheck = () => {
+        const db = getDecibel(analyser)
+        if (db !== audioVolume) {
+          setAudioVolume(db)
+          if (!audioPass) {
+            setAudioPass(true)
+          }
+        }
+        if (animationFrameStatus) {
+          requestAnimationFrame(volumeCheck)
+        }
+      }
+      volumeCheck()
+    })()
+  }
+
   /*
    *
    * @returns
@@ -212,7 +261,7 @@ export default props => {
                 <BarWrap>
                   <MicVolumeONBar
                     style={{
-                      width: '50%'
+                      width: `${audioVolume}%`
                     }}></MicVolumeONBar>
                 </BarWrap>
               </VolumeWrap>
