@@ -14,7 +14,7 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
-import {request} from 'http'
+import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
   const context = useContext(Context)
@@ -196,6 +196,7 @@ export default props => {
   if (mediaHandler && !audioSetting) {
     setAudioSetting(true)
     ;(async () => {
+      const device = await getAudioDeviceCheck()
       const audioStream = await navigator.mediaDevices
         .getUserMedia({audio: true})
         .then(result => result)
