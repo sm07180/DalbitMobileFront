@@ -80,7 +80,7 @@ export default () => {
   useEffect(() => {
     //#1 customHeader
     Api.setCustomHeader(JSON.stringify(customHeader))
-    context.action.updateCustomHeader('custom-header')
+    context.action.updateCustomHeader(customHeader)
     Utility.setCookie('custom-header', JSON.stringify(customHeader), DAY_COOKIE_PERIOD)
     console.table(customHeader)
     //#2 authToken
@@ -88,7 +88,7 @@ export default () => {
   }, [])
   //---------------------------------------------------------------------
   /**
-   * @brief 정보체크이후 최종완료된 상태에서 Route진행
+   * @brief 정보체크이후 최종완료된 상태에서 Interface,Route진행
    */
   return (
     <React.Fragment>

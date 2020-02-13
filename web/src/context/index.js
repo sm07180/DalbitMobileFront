@@ -54,6 +54,7 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       const {authToken} = obj
+      console.log(authToken)
       API.setAuthToken(authToken)
       setToken(obj)
     },
