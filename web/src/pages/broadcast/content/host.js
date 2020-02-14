@@ -1,7 +1,7 @@
 /**
  * @title 404페이지
  */
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 
 //context
