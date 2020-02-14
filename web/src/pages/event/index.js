@@ -49,22 +49,6 @@ export default props => {
     setShow(!isShow)
   }
 
-  // const MakeLottie = props => {
-  //   return (
-  //     <div className="wrap">
-  //       <Lottie
-  //         options={{
-  //           loop: true,
-  //           autoplay: true,
-  //           path: props.path
-  //         }}
-  //         width={300}
-  //         height={300}
-  //       />
-  //     </div>
-  //   )
-  // }
-
   useEffect(() => {
     console.log(state)
     console.log('## render ##')

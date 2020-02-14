@@ -5,7 +5,7 @@ import Lottie from 'react-lottie'
 /*
     @Lottie
     @example <LottieLoader path={YOUR_JSON} width={500} height={500} />
-    @to-do props.width, props.height, event callback 
+    @to-do props.width, props.height,  
 */
 export default props => {
   const [isShow, setShow] = useState(true)
