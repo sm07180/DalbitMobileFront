@@ -49,7 +49,7 @@ export default props => {
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
     //정상진입이거나,방탈퇴이후성공일경우
     if (res.result === 'success') {
-      props.history.push('/cast', res.data)
+      props.history.push('/broadcast', res.data)
     }
     return
   }
