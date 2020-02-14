@@ -232,8 +232,6 @@ export default props => {
     }
   }, [drawId])
 
-  useEffect(() => {})
-
   /*
    *
    * @returns
@@ -316,10 +314,13 @@ export default props => {
             <CopyrightIcon></CopyrightIcon>
             <CreateBtn
               onClick={() => {
+                if (!audioPass) {
+                  return alert('오디오 인풋이 하나도 안되었습니다.')
+                }
                 fetchData({...changes})
               }}
               value={BActive}
-              className={BActive === true ? 'on' : ''}>
+              className={BActive === true && audioPass ? 'on' : ''}>
               방송하기
             </CreateBtn>
           </BroadDetail>
