@@ -213,9 +213,10 @@ export default props => {
         let timeOutId = null
         const volumeCheck = () => {
           const db = getDecibel(analyser)
-          timeOutId = setTimeOut(() => {
+          timeOutId = setTimeout(() => {
             setAudioVolume(0)
-          }, 500)
+          }, 2000)
+
           if (db !== audioVolume) {
             clearTimeout(timeOutId)
             setAudioVolume(db)
