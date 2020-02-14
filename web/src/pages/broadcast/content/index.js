@@ -232,6 +232,8 @@ export default props => {
     }
   }, [drawId])
 
+  useEffect(() => {})
+
   /*
    *
    * @returns
