@@ -58,10 +58,16 @@ const Chat = styled.div`
   /* width: 802px; */
   width: 66.28%;
   background: #dcceff;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+  }
 `
 
 const Side = styled.div`
   width: 33.71%;
   min-width: 408px;
   background: #8556f6;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
+  }
 `
