@@ -104,18 +104,20 @@ export default props => {
 
   //context
   const context = new useContext(Context)
+  //state
+  const [isSideOn, setIsSideOn] = useState(true)
 
   useEffect(() => {
     //방송방 페이지는 footer없음.
-    context.action.updateState({footer: false})
+    context.action.updateState({isOnCast: true})
     return () => {
-      context.action.updateState({footer: true})
+      context.action.updateState({isOnCast: false})
     }
   }, [])
   //tab
   const {currentItem, changeItem} = useTabs(0, tabConent)
   return (
-    <Content>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
       <Side>
         {/* side content 영역 */}
@@ -127,6 +129,8 @@ export default props => {
           ))}
         </Tab>
         {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
+        <button>사이드 영역 열고 닫기</button>
+        <SideContent>사이드사이드사이드</SideContent>
       </Side>
     </Content>
   )
@@ -170,19 +174,45 @@ const Content = styled.section`
   margin: 2.5vh auto 0 auto;
 
   & > * {
-    height: calc(94vh - 80px);
+    height: calc(95vh - 80px);
+    transition: width 0.5s ease-in-out;
+
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      height: 100vh;
+    }
+  }
+
+  &.side-off > div:first-child {
+    width: calc(100% - 20px);
+  }
+  &.side-off > div:last-child {
+    width: 20px;
+  }
+
+  @media (max-width: 1260px) {
+    width: 95%;
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+    margin: 0;
   }
 `
 
+//채팅창 레이아웃
 const Chat = styled.div`
   /* width: 802px; */
   width: 66.28%;
-  background: #dcceff;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+  }
 `
-
+//side영역
 const Side = styled.div`
   width: 408px;
   height: calc(94vh - 80px);
+  display: flex;
+  width: 33.71%;
   min-width: 408px;
   /* background: #8556f6; */
 `
@@ -206,4 +236,25 @@ const Tab = styled.div`
   & button:focus {
     outline: none;
   }
+
+  & > button {
+    height: calc(100% + 1px);
+    width: 20px;
+    background: #f2f2f2;
+    transform: none;
+    text-indent: -9999px;
+
+    &:after {
+      display: block;
+      width: 10px;
+      height: 10px;
+      margin: 0 auto;
+      background: #757575;
+      content: '';
+    }
+  }
+`
+
+const SideContent = styled.div`
+  width: calc(100% - 20px);
 `

@@ -50,7 +50,7 @@ export default props => {
   )
 }
 const Wrapper = styled.div`
-  height: calc(100% - 48px);
+  height: 100%;
 `
 const LiveFilter = styled.div`
   width: 100%;
