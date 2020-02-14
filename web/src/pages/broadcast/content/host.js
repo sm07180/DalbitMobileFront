@@ -1,7 +1,7 @@
 /**
  * @title 404페이지
  */
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 
 //context
@@ -30,7 +30,7 @@ export default () => {
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setType('host')
-      mediaHandler.setStreamId(streamId)
+      // mediaHandler.setStreamId(streamId)
       ;(async () => {
         const audioStream = await getAudioStream()
         mediaHandler.setAudioStream(audioStream)
