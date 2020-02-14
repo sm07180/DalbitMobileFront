@@ -16,19 +16,25 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 export default props => {
   //context
   const context = new useContext(Context)
+  //state
+  const [isSideOn, setIsSideOn] = useState(true)
 
   useEffect(() => {
     //방송방 페이지는 footer없음.
-    context.action.updateState({footer: false})
+    context.action.updateState({isOnCast: true})
     return () => {
-      context.action.updateState({footer: true})
+      context.action.updateState({isOnCast: false})
     }
   }, [])
 
   return (
-    <Content>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
-      <Side>{/* side content 영역 */}이곳은 사이드 컨텐츠 영역으로 디테일한 방송 정보 등을 볼 수 있습니다!!!!!! </Side>
+      <Side>
+        {/* side content 영역 */}
+        <button>사이드 영역 열고 닫기</button>
+        <SideContent>사이드사이드사이드</SideContent>
+      </Side>
     </Content>
   )
 }
@@ -43,31 +49,66 @@ const Content = styled.section`
 
   & > * {
     height: calc(95vh - 80px);
+    transition: width 0.5s ease-in-out;
 
     @media (max-width: ${WIDTH_TABLET_S}) {
-      height: calc(95vh - 64px);
+      height: 100vh;
     }
+  }
+
+  &.side-off > div:first-child {
+    width: calc(100% - 20px);
+  }
+  &.side-off > div:last-child {
+    width: 20px;
   }
 
   @media (max-width: 1260px) {
     width: 95%;
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+    margin: 0;
+  }
 `
 
+//채팅창 레이아웃
 const Chat = styled.div`
   /* width: 802px; */
   width: 66.28%;
-  background: #dcceff;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
   }
 `
-
+//side영역
 const Side = styled.div`
+  display: flex;
   width: 33.71%;
   min-width: 408px;
   background: #8556f6;
   @media (max-width: ${WIDTH_TABLET_S}) {
     display: none;
   }
+
+  & > button {
+    height: calc(100% + 1px);
+    width: 20px;
+    background: #f2f2f2;
+    transform: none;
+    text-indent: -9999px;
+
+    &:after {
+      display: block;
+      width: 10px;
+      height: 10px;
+      margin: 0 auto;
+      background: #757575;
+      content: '';
+    }
+  }
+`
+
+const SideContent = styled.div`
+  width: calc(100% - 20px;);
 `
