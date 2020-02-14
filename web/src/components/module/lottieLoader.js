@@ -1,12 +1,14 @@
+/**
+ * @example 사용법
+ * @todo  eventListeners 제공
+ *
+ */
+
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 // import Lottie from 'lottie-react-web'
 import Lottie from 'react-lottie'
-/*
-    @Lottie
-    @example <LottieLoader path={YOUR_JSON} width={500} height={500} />
-    @to-do props.width, props.height,  
-*/
+
 export default props => {
   const [isShow, setShow] = useState(true)
 
