@@ -367,12 +367,3 @@ input[type='tel'].auth {
 
 @media (max-width: $WIDTH_MOBILE) {
 }
-
-.scrollbar::-webkit-scrollbar {
-  width: 10px;
-  background-color: transparent;
-}
-.scrollbar::-webkit-scrollbar-thumb {
-  background: #e0e0e0;
-  border-radius: 5px;
-}
