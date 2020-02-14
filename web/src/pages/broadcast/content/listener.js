@@ -8,6 +8,9 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+//components
+import Charge from './charge'
+import NaviBar from './navibar'
 
 //pages
 
@@ -33,7 +36,10 @@ export default props => {
       <Side>
         {/* side content 영역 */}
         <button>사이드 영역 열고 닫기</button>
-        <SideContent>사이드사이드사이드</SideContent>
+        <SideContent>
+          <NaviBar title={'타이틀'} />
+          <Charge />
+        </SideContent>
       </Side>
     </Content>
   )
