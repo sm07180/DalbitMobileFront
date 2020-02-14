@@ -1,6 +1,5 @@
 /**
- * @title 방송방화면
- *
+ * @title 404페이지
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
@@ -8,10 +7,6 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import Live from './live'
-//pages
-
-// import Guide from ' pages/common/layout/guide.js'
 
 export default props => {
   const LiveInfo = [
@@ -120,17 +115,15 @@ export default props => {
     <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
       <Side>
-        {/* side content 영역 */}
-        <Tab>
-          {tabConent.map((section, index) => (
-            <button onClick={() => changeItem(index)} key={index} className={currentItem.id === index ? 'on' : ''}>
-              {section.tab}
-            </button>
-          ))}
-        </Tab>
-        {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
-        <button>사이드 영역 열고 닫기</button>
-        <SideContent>사이드사이드사이드</SideContent>
+        <button
+          onClick={() => {
+            setTimeout(() => {
+              setIsSideOn(!isSideOn)
+            }, 100)
+          }}>
+          사이드 영역 열고 닫기
+        </button>
+        <SideContent>{/* side content 영역 */}</SideContent>
       </Side>
     </Content>
   )
@@ -169,7 +162,7 @@ const useTabs = (initialTab, allTabs) => {
 //styled
 
 const Content = styled.section`
-  display: flex;
+  position: relative;
   width: 1210px;
   margin: 2.5vh auto 0 auto;
 
@@ -209,36 +202,21 @@ const Chat = styled.div`
 `
 //side영역
 const Side = styled.div`
+  overflow:hidden;
+  position: absolute;
+  right:0;
+  top:0;
   width: 408px;
-  height: calc(94vh - 80px);
-  display: flex;
-  width: 33.71%;
-  min-width: 408px;
-  /* background: #8556f6; */
-`
-
-const Tab = styled.div`
-  width: 100%;
-
-  & button {
-    width: 25%;
-    display: inline-block;
-    border: 1px solid #e0e0e0;
-    border-bottom: 1px solid ${COLOR_MAIN};
-    margin-left: -1px;
-    padding: 15px 24px;
-    &.on {
-      border: 1px solid ${COLOR_MAIN};
-      background-color: ${COLOR_MAIN};
-      color: white;
-    }
-  }
-  & button:focus {
-    outline: none;
+  /* min-width: 408px; */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
   }
 
   & > button {
-    height: calc(100% + 1px);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%
     width: 20px;
     background: #f2f2f2;
     transform: none;
@@ -246,15 +224,19 @@ const Tab = styled.div`
 
     &:after {
       display: block;
-      width: 10px;
-      height: 10px;
       margin: 0 auto;
-      background: #757575;
+      width: 0; 
+      height: 0; 
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid #757575;
       content: '';
+      
     }
   }
 `
 
 const SideContent = styled.div`
-  width: calc(100% - 20px);
+  padding-left: 20px;
+  height: 100%;
 `

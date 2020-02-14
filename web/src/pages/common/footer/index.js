@@ -25,7 +25,7 @@ export default props => {
   }, [])
 
   return (
-    <Footer className={context.state.footer ? 'on' : 'off'}>
+    <Footer className={context.state.isOnCast ? 'on-cast' : 'off-cast'}>
       {show && (
         <Menu>
           <a href="/guide">회사 소개</a>
@@ -50,7 +50,7 @@ const Footer = styled.footer`
   padding-bottom: 116px;
   text-align: center;
 
-  &.off {
+  &.on-cast {
     display: none;
   }
 `
