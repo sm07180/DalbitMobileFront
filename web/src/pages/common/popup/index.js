@@ -30,13 +30,19 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Popup>
-      {context.popup_visible && (
+      {context.popup_code === 'LOGIN' && context.popup_visible && (
         <>
           <Background
             onClick={() => {
               context.action.updatePopupVisible(false)
             }}
           />
+          <Container>{makePopupContents()}</Container>
+        </>
+      )}
+      {context.popup_code === 'CAST' && context.popup_visible && (
+        <>
+          <Background />
           <Container>{makePopupContents()}</Container>
         </>
       )}

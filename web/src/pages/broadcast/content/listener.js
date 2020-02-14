@@ -202,10 +202,10 @@ const Chat = styled.div`
 `
 //side영역
 const Side = styled.div`
-  overflow:hidden;
+  overflow: hidden;
   position: absolute;
-  right:0;
-  top:0;
+  right: 0;
+  top: 0;
   width: 408px;
   /* min-width: 408px; */
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -216,7 +216,7 @@ const Side = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    height: 100%
+    height: 100%;
     width: 20px;
     background: #f2f2f2;
     transform: none;
@@ -225,13 +225,12 @@ const Side = styled.div`
     &:after {
       display: block;
       margin: 0 auto;
-      width: 0; 
-      height: 0; 
+      width: 0;
+      height: 0;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
       border-left: 8px solid #757575;
       content: '';
-      
     }
   }
 `
