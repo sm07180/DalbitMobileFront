@@ -40,12 +40,14 @@ export default class API {
    * @param string title                //*제목
    * @param string bgImg                //*백그라운드 이미지 경로
    * @param int bgImgRacy               //백그라운드 구글 선정성
-   * @param string welcomMsg            //환영 메시지
+   * @param string welcomMsg            //*환영 메시지
    * @param string notice               //공지사항
    * @param int entryType               //*entry 타입 (0:전체,1:팬,20세이상)
    * @param int os                      //*OS 구분(1:Android,2:IOS,3:PC)
+   * @param string deviceId             //디바이스 고유아이디
+   * @param string deviceToken          //디바이스 토큰
+   * @param string appVer               //앱 버전
    * @create 김호겸 2020.01.31
-   * @updata 김호겸 2020.02.13
    */
   static broad_create = async obj => {
     const {url, method, data} = obj || {}
@@ -87,6 +89,9 @@ export default class API {
    * @param string welcomMsg            //환영 메시지
    * @param string notice               //공지사항
    * @param int os                      //*OS 구분(1:Android,2:IOS,3:PC)
+   * @param string deviceId             //디바이스 고유아이디
+   * @param string deviceToken          //디바이스 토큰
+   * @param string appVer               //앱 버전
    * @create 김호겸 2020.01.31
    */
   static broad_edit = async obj => {
@@ -289,6 +294,11 @@ export default class API {
    * @param string memType            //*회원구분
    * @param string memId              //*아이디,소셜아이디
    * @param string memPwd             //비밀번호
+   * @param int    os                 //*OS구분
+   * @param string deviceid           //디바이스 고유아이디
+   * @param string deviceToken        //디바이스 토큰
+   * @param string appVer             //앱 버전
+   * @param string appAdId            //광고 아이디
    * @create 김호겸 2020.01.15
    */
 
@@ -326,6 +336,10 @@ export default class API {
    * @param string profImg           //프로필이미지 패스
    * @param int    profImgRacy          //프로필이미지 구글선정성
    * @param string email             //이메일
+   * @param int    os                //*OS구분
+   * @param string deviceid          //*디바이스 고유아이디
+   * @param string deviceToken     //디바이스 토큰
+   * @param string appVer            //앱 버전
    * @create 김호겸 2020.01.15
    */
   static member_join = async obj => {
@@ -619,21 +633,16 @@ export const ajax = async obj => {
 
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
-
     const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded;charset=utf-8'
-
     let formData = new FormData()
-    formData.append('file', '')
-    formData.append('dataURL', data.dataURL)
-    formData.append('imageURL', '')
-    if (window.location.pathname === '/user/join') {
-      formData.append('uploadType', 'profile')
-    } else {
-      formData.append('uploadType', 'bg')
+    if (url === '/upload' && data) {
+      formData.append('file', '')
+      formData.append('dataURL', data.dataURL)
+      formData.append('imageURL', '')
+      formData.append('uploadType', data.uploadType)
     }
 
-    let dataType = url === '/upload' ? formData : qs.stringify(data)
-
+    const dataType = url === '/upload' ? formData : qs.stringify(data)
     let res = await axios({
       method: method,
       headers: {

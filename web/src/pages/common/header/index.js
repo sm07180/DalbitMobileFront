@@ -45,7 +45,7 @@ export default props => {
   }, [])
   //---------------------------------------------------------------------
   return (
-    <Header className={[type, scrollClassName]}>
+    <Header className={[type, scrollClassName, context.state.isOnCast ? 'on-cast' : 'off-cast']}>
       {/* 상단로고 */}
       <Logo type={[type, scrollClassName]} />
       {/* 네비게이션 */}
@@ -80,6 +80,13 @@ const Header = styled.header`
       }
       .mobilecast {
         display: inline-block;
+      }
+    }
+
+    &.on-cast {
+      display: none;
+      & + main {
+        padding-top: 0;
       }
     }
   }

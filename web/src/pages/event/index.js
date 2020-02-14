@@ -9,10 +9,9 @@ import Layout from 'pages/common/layout'
 //context
 import {ajax} from 'context/api'
 //components
-// import Lottie from 'lottie-react-web'
+import Lottie from 'lottie-react-web'
 import Api from 'context/api'
 import axios from 'axios'
-import LottieLoader from '../../components/module/lottieLoader'
 
 /**
 곰인형-토끼 : 
@@ -25,34 +24,26 @@ import LottieLoader from '../../components/module/lottieLoader'
 도너츠-달 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_3.webp
 도너츠 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_4.webp
  */
-
 export default props => {
   //---------------------------------------------------------------------
   const [state, setState] = useState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json')
-  const [isShow, setShow] = useState(false)
   //useEffect
 
-  // const makeLottie = () => {
-  //   return (
-  //     <Lottie
-  //       options={{
-  //         loop: true,
-  //         autoplay: true,
-  //         path: state
-  //       }}
-  //     />
-  //   )
-  // }
+  const makeLottie = () => {
+    console.log(state)
 
-  const _show = path => {
-    setState(path)
-    setShow(!isShow)
+    return (
+      <Lottie
+        options={{
+          loop: true,
+          autoplay: true,
+          path: 'https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json'
+        }}
+      />
+    )
   }
-
   useEffect(() => {
     console.log(state)
-    console.log('## render ##')
-    setShow(!isShow)
   }, [state])
   //---------------------------------------------------------------------
   return (
@@ -60,24 +51,23 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            _show('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
           }}>
           버튼1
         </button>
         <button
           onClick={() => {
-            _show('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json')
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json')
           }}>
           버튼2
         </button>
         <button
           onClick={() => {
-            _show('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json')
+            setState('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json')
           }}>
           버튼3
         </button>
-        {/* <div className="wrap">{makeLottie()}</div> */}
-        {isShow && <LottieLoader path={state} width={500} height={500} />}
+        <div className="wrap">{makeLottie()}</div>
         <h1>&#x1F601;</h1>
         <h2>&#x1F3AC;</h2>
         <h3>&#x1F42D;</h3>
@@ -86,6 +76,7 @@ export default props => {
     </Layout>
   )
 }
+
 //---------------------------------------------------------------------
 
 const Content = styled.section`

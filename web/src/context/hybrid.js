@@ -15,10 +15,10 @@ import {osName, browserName} from 'react-device-detect'
  *
  */
 export const Hybrid = (func, info) => {
-  console.log('Native post data = ' + JSON.stringify(info))
+  //console.log('Native post data = ' + JSON.stringify(info))
   switch (osName) {
     case 'Windows':
-      console.log('Windows버젼입니다')
+      //console.log('Windows버젼입니다')
       break
     case 'iOS':
       webkit.messageHandlers[func].postMessage(info)

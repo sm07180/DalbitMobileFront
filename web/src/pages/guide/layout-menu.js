@@ -19,6 +19,7 @@ export default props => {
   const styleButton = useClick(update, {menu: 'style-button'})
   const styleWebRtcTest = useClick(update, {menu: 'style-WebRtcTest'})
   const styleChart = useClick(update, {menu: 'style-chart'})
+  const stylechatTest = useClick(update, {menu: 'style-chatTest'})
 
   const hooks3 = useClick(update, {menu: 'menu3'})
 

@@ -1,12 +1,15 @@
 /**
  * @title footer
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import ToggleBtn from './toggle-footer'
+import {Context} from 'context'
 //pages
 //---------------------------------------------------------------------
 export default props => {
+  //context
+  const context = new useContext(Context)
   const [show, setShow] = useState(false)
   //console.log(props.Ftype)
   const showing = () => {
@@ -20,8 +23,9 @@ export default props => {
   useEffect(() => {
     showing()
   }, [])
+
   return (
-    <Footer>
+    <Footer className={context.state.isOnCast ? 'on-cast' : 'off-cast'}>
       {show && (
         <Menu>
           <a href="/guide">회사 소개</a>
@@ -45,6 +49,10 @@ const Footer = styled.footer`
   display: block;
   padding-bottom: 116px;
   text-align: center;
+
+  &.on-cast {
+    display: none;
+  }
 `
 const Info = styled.ul`
   font-size: 12px;

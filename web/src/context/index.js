@@ -5,19 +5,19 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useEffect, useState, createContext} from 'react'
+import React, {useEffect, useState, createContext, useMemo} from 'react'
 import API from 'context/api'
 //Context
 const Context = createContext()
 const {Provider} = Context
-
+import Utility from 'components/lib/utility'
 //
 const GlobalProvider = props => {
   //initalize
-
+  const DAY_COOKIE_PERIOD = '365'
   //state
   //---------------------------------------------------------------------
-  const [state, setState] = useState({title: '현재 이용현황', isSub: false})
+  const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
   const [popup_code, setPopup] = useState('')
@@ -44,6 +44,8 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
+      API.setCustomHeader(JSON.stringify(obj))
+      Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
     },
     /**
@@ -55,6 +57,7 @@ const GlobalProvider = props => {
     updateToken: obj => {
       const {authToken} = obj
       API.setAuthToken(authToken)
+      Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken(obj)
     },
     //팝업컨텐츠

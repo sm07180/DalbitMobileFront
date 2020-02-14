@@ -6,6 +6,7 @@ import {Context} from 'context'
 import Gnb from './gnb-layout'
 import {Link, NavLink} from 'react-router-dom'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -15,7 +16,7 @@ export default props => {
   //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
 
   useEffect(() => {
-    if (context.login_state) {
+    if (context.token.isLogin) {
       //로그인되어있으면 정보 가져오기
       //fetchData()
       //임시방편으로 회원가입 후 바로 내 프로필, 닉네임 볼수있게 설정. 나중에는 회원조회 api로 로그인 해서도 볼 수 있게 수정하기. 현재 회원조회 안됨
@@ -27,7 +28,7 @@ export default props => {
         })
       }
     }
-  }, [context.login_state])
+  }, [context.token.isLogin])
 
   //fetch
   async function fetchData() {
@@ -68,20 +69,6 @@ export default props => {
   return (
     <>
       <Gnb>
-        {/* <BTN
-          onClick={() => {
-            if (!context.login_state) {
-              context.action.updateLogin(true)
-              context.action.updateGnbVisible(true)
-            } else {
-              context.action.updateLogin(false)
-              context.action.updateGnbVisible(true)
-            }
-          }}>
-          LOGIN
-          <br />
-          확인
-        </BTN> */}
         <MyWrap>
           <Nheader>
             <ICON></ICON>
@@ -90,9 +77,9 @@ export default props => {
 
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={context.login_state ? login.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
+              <PIMG bg={context.token.isLogin ? login.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
               <Ptitle>
-                {context.login_state ? (
+                {context.token.isLogin ? (
                   <NoLoginTitle>
                     <h4>{login.title}</h4>
                     {/* <ID>{login.name}</ID> */}
@@ -105,11 +92,22 @@ export default props => {
                   </NoLoginTitle>
                 )}
               </Ptitle>
-              {context.login_state ? (
+              {context.token.isLogin ? (
                 <LoginChoiceOut
                   onClick={() => {
-                    if (context.login_state) {
-                      context.action.updateLogin(false)
+                    if (context.token.isLogin) {
+                      const result = confirm('로그아웃 하시겠습니까?')
+                      if (result) {
+                        //fetch
+                        async function fetchData(obj) {
+                          const res = await Api.member_logout({data: context.token.authToken})
+                          alert('정상적으로 로그아웃 되었습니다.')
+                          context.action.updateToken('')
+                          context.action.updateCustomHeader('')
+                          window.location.href = '/'
+                        }
+                        fetchData()
+                      }
                     }
                   }}>
                   로그아웃
@@ -117,7 +115,7 @@ export default props => {
               ) : (
                 <LoginChoice
                   onClick={() => {
-                    if (!context.login_state) {
+                    if (!context.token.isLogin) {
                       context.action.updatePopup('LOGIN')
                     } else {
                       const result = confirm('로그아웃 하시겠습니까?')
@@ -142,31 +140,6 @@ export default props => {
           <NavWrap>{makeNavi()}</NavWrap>
         </MyWrap>
       </Gnb>
-
-      {/* <span>
-        <button
-          onClick={() => {
-            if (!context.login_state) {
-              context.action.updatePopup('LOGIN')
-            } else {
-              const result = confirm('로그아웃 하시겠습니까?')
-              if (result) {
-                alert('정상적으로 로그아웃 되었습니다.')
-                context.action.updateLogin(false)
-              }
-            }
-          }}>
-          {context.login_state ? '로그아웃' : '로그인'}
-        </button>
-        <NavLink
-          title="회원가입"
-          to="/user/join"
-          onClick={() => {
-            context.action.updateGnbVisible(false)
-          }}>
-          회원가입
-        </NavLink>
-      </span> */}
     </>
   )
 }

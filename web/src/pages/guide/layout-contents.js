@@ -9,6 +9,7 @@ import {Context} from './store'
 import StyleButton from './content/style-button'
 import StyleWebRtcTest from './content/style-WebRtcTest'
 import StyleChart from './content/style-chart'
+import StyleChat from './content/style-chatTest'
 import GuideResponsive from './content/guide-responsive'
 //
 export default props => {
@@ -27,7 +28,8 @@ export default props => {
         return <StyleWebRtcTest />
       case 'style-chart':
         return <StyleChart />
-
+      case 'style-chatTest':
+        return <StyleChat />
       default:
         return <StyleWebRtcTest />
     }

@@ -108,6 +108,7 @@ export default class SignalingHandler {
     }
     this.socketSendMsg(cmd)
     this.startPlaying()
+    return true
   }
 
   stop() {
@@ -117,6 +118,13 @@ export default class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
+
+    // host stop
+    if (this.audioStream) {
+      this.audioStream.getTracks().forEach(track => {
+        track.stop()
+      })
+    }
 
     // listener stop
     if (this.audioTag && this.audioTag.srcObject) {
