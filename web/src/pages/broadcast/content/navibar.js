@@ -16,6 +16,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #fff;
+  border-bottom: 0.5px;
+  border-style: solid;
+  border-color: #e0e0e0;
+  margin-left: 20px;
 `
 
 const Title = styled.div``
