@@ -115,7 +115,9 @@ export default props => {
         if (props.history) {
           props.history.push('/')
           context.action.updatePopupVisible(false)
+          context.action.updateGnbVisible(false)
         }
+
         //context.action.updateState(res.data)
         //context.action.updateLogin(true)
       } else {

@@ -51,16 +51,21 @@ export default props => {
     if (res.result === 'success') {
       console.log(res.data)
       const {roomNo} = res.data
-      props.history.push(`/broadcast/${roomNo}`, res.data)
+      if (obj.type === 'cast') {
+        props.history.push(`/cast`, res.data)
+      } else {
+        props.history.push(`/broadcast/${roomNo}`, res.data)
+      }
     }
     return
   }
 
   //makeContents
-  const makeContents = () => {
+  const makeContents = type => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
       const {roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      list.type = type
       return (
         <List
           key={idx}
@@ -104,8 +109,11 @@ export default props => {
           }}>
           방나가기
         </Button> */}
-        <h1>방송방 리스트</h1>
+        <h1>방송방 리스트 /broadcast/:title 이동</h1>
         {makeContents()}
+        <hr></hr>
+        <h1>방송방 리스트 /cast 이동</h1>
+        {makeContents('cast')}
       </div>
     </Content>
   )
@@ -116,6 +124,10 @@ const Content = styled.div`
   width: 100%;
   padding: 0 50px;
   box-sizing: border-box;
+  hr {
+    margin: 50px 0;
+    border-bottom: 1px solid #000;
+  }
   .wrap {
     min-height: 200px;
     background: #e1e1e1;

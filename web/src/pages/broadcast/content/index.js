@@ -210,9 +210,15 @@ export default props => {
         analyser.fftSize = 1024
         audioSource.connect(analyser)
 
+        let timeOutId = null
         const volumeCheck = () => {
           const db = getDecibel(analyser)
+          timeOutId = setTimeout(() => {
+            setAudioVolume(0)
+          }, 2000)
+
           if (db !== audioVolume) {
+            clearTimeout(timeOutId)
             setAudioVolume(db)
             if (!audioPass) {
               setAudioPass(true)
@@ -231,8 +237,6 @@ export default props => {
       clearInterval(drawId)
     }
   }, [drawId])
-
-  useEffect(() => {})
 
   /*
    *
@@ -316,10 +320,13 @@ export default props => {
             <CopyrightIcon></CopyrightIcon>
             <CreateBtn
               onClick={() => {
+                if (!audioPass) {
+                  return alert('오디오 인풋이 하나도 안되었습니다.')
+                }
                 fetchData({...changes})
               }}
               value={BActive}
-              className={BActive === true ? 'on' : ''}>
+              className={BActive === true && audioPass ? 'on' : ''}>
               방송하기
             </CreateBtn>
           </BroadDetail>
