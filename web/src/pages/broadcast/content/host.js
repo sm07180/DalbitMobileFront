@@ -15,6 +15,9 @@ import {getAudioStream} from 'components/lib/getStream'
 
 export default () => {
   const context = new useContext(Context)
+
+  /** about webrtc code */
+  /*
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
 
@@ -43,6 +46,8 @@ export default () => {
       }
     }
   }, [mediaHandler])
+  */
+  /** about webrtc code */
 
   return <h1>호스트</h1>
 }
