@@ -15,6 +15,8 @@ export default props => {
   //context
   const context = useContext(Context)
   //data
+
+  useEffect(() => {})
   const info = [
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'},
@@ -26,8 +28,14 @@ export default props => {
     return info.map((list, idx) => {
       const _title = info[idx].title
       const _url = info[idx].url
+      const Check = e => {
+        if (!context.token.isLogin && idx === 3) {
+          e.preventDefault()
+          context.action.updatePopup('LOGIN')
+        }
+      }
       return (
-        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
+        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on" onClick={Check}>
           <span>{_title}</span>
         </NavLink>
       )

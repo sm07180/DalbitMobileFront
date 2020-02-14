@@ -4,7 +4,7 @@
  * @todo 반응형으로 처리되어야함
  * @update contextAPI 연동
  */
-import React, {useState, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //hooks
 import useChange from 'components/hooks/useChange'

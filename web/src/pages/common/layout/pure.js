@@ -23,7 +23,7 @@ const Layout = props => {
   useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
-    <Container>
+    <Container className="pure">
       {/* 헤더설정 */}
       <Logo>
         <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
