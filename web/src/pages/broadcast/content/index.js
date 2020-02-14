@@ -170,7 +170,9 @@ export default props => {
           }
         })
         console.log('정상작동했으니깐 방 생성!')
+
         setFetch(res.data)
+        props.history.push('/live')
       } else {
         //Error발생시
         console.log('방생성실패')
