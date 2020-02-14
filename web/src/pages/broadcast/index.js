@@ -2,7 +2,7 @@
  * @file /event/index.js
  * @brief 이벤트
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
@@ -18,6 +18,7 @@ import Content from './content'
 export default props => {
   //const
   const {title} = props.match.params
+  const context = useContext(Context)
 
   //---------------------------------------------------------------------
   function setRoute() {
