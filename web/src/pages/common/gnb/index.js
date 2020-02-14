@@ -50,7 +50,7 @@ export default props => {
         return <GnbSearch />
         break
       case 'mypage': //마이페이지
-        return <GnbMypage LoginInfo={LoginInfo} />
+        return <GnbMypage {...props} LoginInfo={LoginInfo} />
         break
       case 'notice': //알람
         return <GnbNotice NoticeInfo={NoticeInfo} />

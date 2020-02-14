@@ -101,6 +101,12 @@ export default props => {
                         //fetch
                         async function fetchData(obj) {
                           const res = await Api.member_logout({data: context.token.authToken})
+                          context.action.updateToken(res.data)
+                          props.history.push('/')
+                          context.action.updateGnbVisible(false)
+                          console.log(props)
+                          console.log(res)
+                          return
                           alert('정상적으로 로그아웃 되었습니다.')
                           context.action.updateToken('')
                           context.action.updateCustomHeader('')
