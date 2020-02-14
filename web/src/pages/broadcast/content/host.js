@@ -30,7 +30,7 @@ export default () => {
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setType('host')
-      mediaHandler.setStreamId(streamId)
+      // mediaHandler.setStreamId(streamId)
       ;(async () => {
         const audioStream = await getAudioStream()
         mediaHandler.setAudioStream(audioStream)
