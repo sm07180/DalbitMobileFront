@@ -64,7 +64,23 @@ export default props => {
   const makeContents = type => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
-      const {roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      switch (state) {
+        case 1: //-------------------방송중
+          list.state = '방송중'
+        case 2: //-------------------방송준비중
+          list.state = '방송준비중'
+        case 3: //-------------------통화중
+          list.state = '통화중'
+        case 4: //-------------------방송종료
+          list.state = '방송종료'
+        case 5: //-------------------비정상 (DJ종료상태)
+          list.state = '종료된방송'
+          break
+
+        default:
+          break
+      }
       list.type = type
       return (
         <List
@@ -73,6 +89,7 @@ export default props => {
           onClick={() => {
             joinRoom(list)
           }}>
+          <h3>[{list.state}]</h3>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
           <Profile>
@@ -145,7 +162,7 @@ const List = styled.button`
   display: inline-block;
   margin: 10px;
   max-width: 150px;
-  width: 240px;
+  width: 150px;
 
   padding: 10px;
   vertical-align: top;
