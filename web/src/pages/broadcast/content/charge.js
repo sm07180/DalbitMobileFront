@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 const testData = [
   {
@@ -66,7 +67,10 @@ export default props => {
           )
         })}
       </Goods>
-      <ButtonArea></ButtonArea>
+      <ButtonArea>
+        <Cancel>취소</Cancel>
+        <Charge>충전하기</Charge>
+      </ButtonArea>
     </Container>
   )
 }
@@ -74,7 +78,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 362px;
-  height: 608px;
+  height: 100%;
   background-color: #fff;
   margin-left: 20px;
   flex-direction: column;
@@ -173,9 +177,12 @@ const GoodsName = styled.div`
   color: ${props => (props.active ? '#ec455f' : '#424242')};
 `
 const ButtonArea = styled.div`
+  display: flex;
   width: 100%;
-  height: 150px;
-  background-color: blue;
+  height: 15%;
+  /* background-color: blue; */
+  justify-content: space-between;
+  align-items: center;
 `
 
 const Icon = styled.div`
@@ -184,4 +191,32 @@ const Icon = styled.div`
   background-color: black;
   margin-bottom: 10px;
 `
-const Cancel = styled.button``
+const Cancel = styled.button`
+  width: 49%;
+  height: 5vh;
+  background-color: white;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #8556f6;
+  color: #8556f6;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.13;
+  letter-spacing: -0.4px;
+`
+const Charge = styled.button`
+  width: 49%;
+  height: 5vh;
+  background-color: #8556f6;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.13;
+  letter-spacing: -0.4px;
+`

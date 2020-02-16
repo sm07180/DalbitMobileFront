@@ -51,16 +51,37 @@ export default props => {
     if (res.result === 'success') {
       console.log(res.data)
       const {roomNo} = res.data
-      props.history.push(`/broadcast/${roomNo}`, res.data)
+      if (obj.type === 'cast') {
+        props.history.push(`/cast`, res.data)
+      } else {
+        props.history.push(`/broadcast/${roomNo}`, res.data)
+      }
     }
     return
   }
 
   //makeContents
-  const makeContents = () => {
+  const makeContents = type => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
-      const {roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      switch (state) {
+        case 1: //-------------------방송중
+          list.state = '방송중'
+        case 2: //-------------------방송준비중
+          list.state = '방송준비중'
+        case 3: //-------------------통화중
+          list.state = '통화중'
+        case 4: //-------------------방송종료
+          list.state = '방송종료'
+        case 5: //-------------------비정상 (DJ종료상태)
+          list.state = '종료된방송'
+          break
+
+        default:
+          break
+      }
+      list.type = type
       return (
         <List
           key={idx}
@@ -68,6 +89,7 @@ export default props => {
           onClick={() => {
             joinRoom(list)
           }}>
+          <h3>[{list.state}]</h3>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
           <Profile>
@@ -104,8 +126,11 @@ export default props => {
           }}>
           방나가기
         </Button> */}
-        <h1>방송방 리스트</h1>
+        <h1>방송방 리스트 /broadcast/:title 이동</h1>
         {makeContents()}
+        <hr></hr>
+        <h1>방송방 리스트 /cast 이동</h1>
+        {makeContents('cast')}
       </div>
     </Content>
   )
@@ -116,6 +141,10 @@ const Content = styled.div`
   width: 100%;
   padding: 0 50px;
   box-sizing: border-box;
+  hr {
+    margin: 50px 0;
+    border-bottom: 1px solid #000;
+  }
   .wrap {
     min-height: 200px;
     background: #e1e1e1;
@@ -133,7 +162,7 @@ const List = styled.button`
   display: inline-block;
   margin: 10px;
   max-width: 150px;
-  width: 240px;
+  width: 150px;
 
   padding: 10px;
   vertical-align: top;

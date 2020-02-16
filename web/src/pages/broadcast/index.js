@@ -29,7 +29,6 @@ export default props => {
         return <Host {...props} />
       case 'listener': //----------------------------listener
         return <Listener {...props} />
-
       default:
         return <Content />
     }
