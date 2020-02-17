@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Navi from './navibar'
 
-const testData = [
+const testMoon = [
   {
     name: 30,
     price: '3,000'
@@ -28,48 +29,112 @@ const testData = [
     price: '300,000'
   }
 ]
+
+const testStar = [
+  {
+    name: 30,
+    price: '50'
+  },
+  {
+    name: 100,
+    price: '166'
+  },
+  {
+    name: 300,
+    price: '500'
+  },
+  {
+    name: 500,
+    price: '833'
+  },
+  {
+    name: 1000,
+    price: '1666'
+  },
+  {
+    name: 3000,
+    price: '5000'
+  }
+]
 export default props => {
   const [choice, setChoice] = useState('moon')
   const [goodsState, setGoods] = useState(0)
+  const [testData, setTestData] = useState(testMoon)
+
+  const setData = async param => {
+    if (param == 'moon') {
+      setTestData(testMoon)
+      setChoice('moon')
+    } else {
+      setTestData(testStar)
+      setChoice('star')
+    }
+  }
+
+  useEffect(() => {}, [choice])
+
+  const Ctgr = props => {
+    return (
+      <>
+        {choice === 'moon' ? (
+          <Choice active onClick={() => setData('moon')}>
+            달 충전
+          </Choice>
+        ) : (
+          <Choice onClick={() => setData('moon')}>달 충전</Choice>
+        )}
+
+        <Separator>|</Separator>
+        {choice === 'star' ? (
+          <Choice active onClick={() => setData('star')}>
+            별 충전
+          </Choice>
+        ) : (
+          <Choice onClick={() => setData('star')}>별 충전</Choice>
+        )}
+      </>
+    )
+  }
+
+  // const Title = props => {
+  //   return <Navi>{props.title}</Navi>
+  // }
+
   return (
     <Container>
+      <Navi title={'충전'} />
       <ChargeChoice>
         <ChargeTitle>
-          {choice === 'moon' ? (
-            <Choice active onClick={() => setChoice('moon')}>
-              달 충전
-            </Choice>
-          ) : (
-            <Choice onClick={() => setChoice('moon')}>달 충전</Choice>
-          )}
-
-          <Separator>|</Separator>
-          {choice === 'star' ? (
-            <Choice active onClick={() => setChoice('star')}>
-              별 충전
-            </Choice>
-          ) : (
-            <Choice onClick={() => setChoice('star')}>별 충전</Choice>
-          )}
+          <Ctgr />
         </ChargeTitle>
       </ChargeChoice>
       <MyPoint>보유 {choice === 'moon' ? '달' : '별'} 120</MyPoint>
       <Goods>
-        {testData.map((goods, key) => {
+        {testData.map((goods, idx) => {
           return (
-            <GoodsInfo active={key === goodsState ? 'active' : ''} onClick={() => setGoods(key)}>
+            <GoodsInfo active={idx === goodsState ? 'active' : ''} onClick={() => setGoods(idx)} key={idx} state={choice}>
               <Icon></Icon>
-              <GoodsName active={key === goodsState ? 'active' : ''}>
-                {choice === 'moon' ? '달' : '별'} {goods.name}
+              <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
+                달 {goods.name}
               </GoodsName>
-              <Price active={key === goodsState ? 'active' : ''}>{goods.price}원</Price>
+              <Price active={idx === goodsState ? 'active' : ''} state={choice}>
+                {choice === 'star' && '' + ' 별'}
+                {goods.price}
+                {choice === 'moon' && '원'}
+              </Price>
             </GoodsInfo>
           )
         })}
       </Goods>
       <ButtonArea>
-        <Cancel>취소</Cancel>
-        <Charge>충전하기</Charge>
+        {choice === 'moon' ? (
+          <>
+            <Cancel>취소</Cancel>
+            <Charge>충전하기</Charge>
+          </>
+        ) : (
+          <ChargeS>별로 구매하기</ChargeS>
+        )}
       </ButtonArea>
     </Container>
   )
@@ -77,12 +142,16 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  width: 362px;
+  width: 100%;
+  /* width: 362px; */
   height: 100%;
   background-color: #fff;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   flex-direction: column;
   /* background-color: red; */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 360px;
+  }
 `
 
 const ChargeChoice = styled.div`
@@ -148,13 +217,17 @@ const GoodsInfo = styled.button`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 115px;
+  width: 120px;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 104px;
+  }
   height: 126px;
   margin-bottom: 10px;
-  border-color: ${props => (props.active ? '#ec455f' : '#e0e0e0')};
+  border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   border-style: solid;
   border-radius: 10px;
   border-width: 1px;
+  padding-top: 2vh;
 `
 
 const Price = styled.div`
@@ -163,7 +236,7 @@ const Price = styled.div`
   align-items: center;
   width: 99px;
   height: 30px;
-  background-color: ${props => (props.active ? '#ec455f' : '#eeeeee')};
+  background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
 `
@@ -174,12 +247,12 @@ const GoodsName = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-  color: ${props => (props.active ? '#ec455f' : '#424242')};
+  color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#424242') : props.active ? '#fdad2b' : '#424242')};
 `
 const ButtonArea = styled.div`
   display: flex;
   width: 100%;
-  height: 15%;
+  height: 10%;
   /* background-color: blue; */
   justify-content: space-between;
   align-items: center;
@@ -192,7 +265,7 @@ const Icon = styled.div`
   margin-bottom: 10px;
 `
 const Cancel = styled.button`
-  width: 49%;
+  width: 48%;
   height: 5vh;
   background-color: white;
   border-radius: 10px;
@@ -208,7 +281,7 @@ const Cancel = styled.button`
   letter-spacing: -0.4px;
 `
 const Charge = styled.button`
-  width: 49%;
+  width: 48%;
   height: 5vh;
   background-color: #8556f6;
   border-radius: 10px;
@@ -219,4 +292,40 @@ const Charge = styled.button`
   font-style: normal;
   line-height: 1.13;
   letter-spacing: -0.4px;
+`
+// const Navi = styled.div`
+//   display: flex;
+//   width: 100%;
+//   height: 56px;
+//   border-bottom-width: 1px;
+//   border-bottom-color: #eeeeee;
+//   border-bottom-style: solid;
+//   font-size: 18px;
+//   font-weight: normal;
+//   font-stretch: normal;
+//   font-style: normal;
+//   line-height: 1.17;
+//   letter-spacing: -0.45px;
+//   align-items: center;
+//   justify-content: center;
+
+//   @media (max-width: ${WIDTH_TABLET_S}) {
+//     display: none;
+//   }
+// `
+const ChargeS = styled.button`
+  display: flex;
+  width: 100%;
+  height: 5vh;
+  background-color: #8556f6;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.13;
+  letter-spacing: -0.4px;
+  align-items: center;
+  justify-content: center;
 `
