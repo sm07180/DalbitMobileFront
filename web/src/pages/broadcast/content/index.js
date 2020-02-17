@@ -216,15 +216,12 @@ export default props => {
         analyser.fftSize = 1024
         audioSource.connect(analyser)
 
-        let timeOutId = null
         const volumeCheck = () => {
           const db = getDecibel(analyser)
-          timeOutId = setTimeout(() => {
-            setAudioVolume(0)
-          }, 2000)
 
-          if (db !== audioVolume) {
-            clearTimeout(timeOutId)
+          if (db <= 1) {
+            setAudioVolume(0)
+          } else if (db !== audioVolume) {
             setAudioVolume(db)
             if (!audioPass) {
               setAudioPass(true)
