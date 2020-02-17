@@ -177,11 +177,9 @@ export default props => {
 
     fetchData(response, 'f')
   }
-  const ComponentClicked = response => {
-    console.log('FB login click =' + response)
-  }
   const responseNaver = response => {
-    //console.log(response)
+    console.log(response)
+    fetchData(response, 'n')
   }
   const responseKakao = response => {
     console.log(response)
@@ -291,14 +289,15 @@ export default props => {
           useDefaultStyle={true}
           getProfile={true}
         />
+        <NaverLogin
+          clientId="WK0ohRsfYc9aBhZkyApJ"
+          //callbackUrl="http://localhost:9000"
+          render={props => <div onClick={props.onClick}>Naver Login</div>}
+          onSuccess={responseNaver}
+          onFailure={responseNaver}
+        />
       </SocialLogin>
-      {/* <NaverLogin
-        clientId="OQtHPCzpdRNtD9o2zBKF"
-        callbackUrl="http://localhost:9000"
-        render={props => <div onClick={props.onClick}>Naver Login</div>}
-        onSuccess={responseNaver}
-        onFailure={responseNaver}
-      /> */}
+
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
 
       {/* <SnsGoogleLogion onClick={() => responseGooglelogin()}>
