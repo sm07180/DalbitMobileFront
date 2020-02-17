@@ -51,9 +51,11 @@ export default props => {
     //정상진입이거나,방탈퇴이후성공일경우
     console.log(obj.type)
     if (res.result === 'success') {
-      const {roomNo} = res.data
+      const {bjStreamId, roomNo} = res.data
+      console.log(res.data)
       if (obj.type === 'cast') {
-        props.history.push(`/cast`, res.data)
+        props.history.push(`/guide/test/${bjStreamId}`, res.data)
+        //props.history.push(`/cast`, res.data)
       } else {
         props.history.push(`/broadcast/${roomNo}`, res.data)
       }
