@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 //etc
-import Chat from './chat'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
@@ -30,7 +29,6 @@ export default props => {
       <pre>
         <p>{makeContents()}</p>
       </pre>
-      <Chat />
     </Content>
   )
 }
