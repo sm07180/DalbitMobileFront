@@ -17,8 +17,14 @@ import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
-  const context = useContext(Context)
   //context
+  const context = useContext(Context)
+
+  if (context && context.token && !context.token.isLogin) {
+    window.location.href = '/'
+    return
+  }
+
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
@@ -221,15 +227,12 @@ export default props => {
         analyser.fftSize = 1024
         audioSource.connect(analyser)
 
-        let timeOutId = null
         const volumeCheck = () => {
           const db = getDecibel(analyser)
-          timeOutId = setTimeout(() => {
-            setAudioVolume(0)
-          }, 2000)
 
-          if (db !== audioVolume) {
-            clearTimeout(timeOutId)
+          if (db <= 1) {
+            setAudioVolume(0)
+          } else if (db !== audioVolume) {
             setAudioVolume(db)
             if (!audioPass) {
               setAudioPass(true)
