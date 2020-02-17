@@ -172,7 +172,7 @@ export default props => {
         setFetch(res.data)
         if (res) {
           if (res.code == 0) {
-            props.history.history('/live')
+            props.history.history('/live', res.data)
           } else {
             console.warn(res.message)
           }
