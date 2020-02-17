@@ -49,16 +49,10 @@ export default props => {
     //Error발생시 (종료된 방송)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
     //정상진입이거나,방탈퇴이후성공일경우
-    console.log(obj.type)
     if (res.result === 'success') {
       const {bjStreamId, roomNo} = res.data
       console.log(res.data)
-      if (obj.type === 'cast') {
-        props.history.push(`/guide/test/${bjStreamId}`, res.data)
-        //props.history.push(`/cast`, res.data)
-      } else {
-        props.history.push(`/broadcast/${roomNo}`, res.data)
-      }
+      props.history.push(`/broadcast/${roomNo}`, res.data)
     }
     return
   }
@@ -68,7 +62,6 @@ export default props => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
       let mode = '해당사항없음'
-      list.type = type
       const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
       if (state === 1) mode = '1'
       if (state === 2) mode = '2'
@@ -121,9 +114,6 @@ export default props => {
         </Button> */}
         <h1>방송방 리스트 /broadcast/:title 이동</h1>
         {makeContents()}
-        <hr></hr>
-        <h1>방송방 리스트 /cast 이동</h1>
-        {makeContents('cast')}
       </div>
     </Content>
   )
