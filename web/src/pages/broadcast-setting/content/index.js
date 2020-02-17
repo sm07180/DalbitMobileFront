@@ -169,11 +169,12 @@ export default props => {
             entryType: changes.entryType
           }
         })
-        alert(JSON.stringify(res.data, null, 1))
+        console.table(res)
         setFetch(res.data)
         if (res) {
           if (res.code == 0) {
-            props.history.history('/live')
+            console.log(res)
+            props.history.push('/broadcast/' + res.data.roomNo, res.data)
           } else {
             console.warn(res.message)
           }
