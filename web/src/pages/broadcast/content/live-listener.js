@@ -6,165 +6,148 @@ import styled from 'styled-components'
 //pages
 
 export default props => {
-  const [BjInfo, setLiveInfo] = useState(props.Info)
-  const bjmap = BjInfo.map((live, index) => {
-    const {bjNickNm, bjMemNo} = live
-    return <LiveList key={index}>{bjMemNo}</LiveList>
+  const [ManegerInfo, setManegerInfo] = useState(props.Info)
+  const [ListenInfo, setListenInfo] = useState(props.Info2)
+  const [BJInfo, setBJInfo] = useState(props.Info3)
+  //
+  const Manegermap = ManegerInfo.map((live, index) => {
+    const {bjNickNm, bjMemNo, url} = live
+    return (
+      <ManegerList key={index}>
+        <ManegerImg bg={url} />
+        <StreamID>{bjMemNo}</StreamID>
+        <NickName>{bjNickNm}</NickName>
+      </ManegerList>
+    )
+  })
+  const Listenmap = ListenInfo.map((live, index) => {
+    const {bjNickNm, bjMemNo, url} = live
+    return (
+      <ListenList key={index}>
+        <ManegerImg bg={url} />
+        <StreamID>{bjMemNo}</StreamID>
+        <NickName>{bjNickNm}</NickName>
+      </ListenList>
+    )
   })
   return (
     <Wrapper>
-      <LiveFilter></LiveFilter>
-      <LiveWrap className="scrollbar">{bjmap}</LiveWrap>
+      <LiveWrap>
+        <Title>방송 DJ</Title>
+        <DJList>
+          <ManegerImg bg={BJInfo.url} />
+          <h2>{BJInfo.bjMemNo}</h2>
+          <h5>{BJInfo.bjNickNm}</h5>
+        </DJList>
+      </LiveWrap>
+      <LiveWrap>
+        <Title>방송 매니저</Title>
+        {Manegermap}
+      </LiveWrap>
+      <LiveWrap>
+        <Title>청취자</Title>
+        <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
+      </LiveWrap>
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
-  height: calc(100% - 48px);
-`
-const LiveFilter = styled.div`
-  width: 100%;
-  height: 40px;
   margin-top: 20px;
-  border-radius: 20px;
-  background-color: #f5f5f5;
-`
-const LiveWrap = styled.div`
-  height: calc(100% - 40px);
-  overflow-y: scroll;
-  margin-top: 18px;
 `
 
-const LiveList = styled.div`
-  display: flex;
-  width: 362px;
-  padding: 0px 0 20px 11px;
+const LiveWrap = styled.div`
   margin-bottom: 20px;
-  box-sizing: border-box;
-  border-bottom: 1px solid #f5f5f5;
 `
-const ImgWrap = styled.div`
-  width: 30.93%;
-  height: 106px;
+
+const ManegerList = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 4px;
+  margin-top: 4px;
+  border: 1px solid #8555f6;
+  border-radius: 24px;
+`
+const ManegerImg = styled.div`
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center / cover;
-  position: relative;
-`
-const Sticker = styled.div`
-  position: absolute;
-  top: -2px;
-  left: 0;
 `
 
-const Reco = styled.div`
-  width: 40px;
-  height: 20px;
-  margin-top: 2px;
-  background-color: #ec455f;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
-  transform: skew(-0.03deg);
-`
-const New = styled.div`
-  width: 40px;
-  height: 20px;
-  margin-top: 2px;
-  background-color: #fdad2b;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
-  transform: skew(-0.03deg);
-`
-const Thumb = styled.div`
-  position: absolute;
-  bottom: 0px;
-  right: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: url(${props => props.thumb}) no-repeat center center / cover;
-`
-const InfoWrap = styled.div`
-  width: 69.07%;
-  height: 112px;
-  padding-left: 27px;
-  box-sizing: border-box;
-  /* background-color: orangered; */
-`
-const Category = styled.span`
-  display: block;
-  color: #8556f6;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.43;
-  letter-spacing: -0.35px;
-  transform: skew(-0.03deg);
-`
-const Title = styled.h2`
-  max-height: 18px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-top: 7px;
-  color: #424242;
-  font-size: 16px;
-  letter-spacing: -0.4px;
-  transform: skew(-0.03deg);
-`
-const Name = styled.h4`
-  margin-top: 8px;
-  color: #9e9e9e;
+const Title = styled.h4`
+  display: inline-block;
+  margin-bottom: 6px;
+  color: #616161;
   font-size: 14px;
-  line-height: 1.43;
+  font-weight: 600;
+  line-height: 1.14;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
 `
+const StreamID = styled.h4`
+  width: 53px;
+  height: 36px;
+  margin-left: 10px;
+  color: #8555f6;
+  line-height: 36px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.35px;
+  transform: skew(-0.03deg);
+`
+const NickName = styled.h4`
+  height: 36px;
+  margin-left: 36px;
+  color: #424242;
+  line-height: 36px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.35px;
+  transform: skew(-0.03deg);
+`
+////////////////////////////
+const ListenWrap = styled.div`
+  margin-bottom: 20px;
+  overflow-y: scroll;
+  height: 500px;
+`
 
-const IconWrap = styled.div`
+const ListenList = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 4px;
+  margin-top: 4px;
+  border: 1px solid #f5f5f5;
+  border-radius: 24px;
+`
+const DJList = styled.div`
   display: flex;
   width: 100%;
-  & div {
-    display: block;
-    width: 33.33%;
-    margin-top: 22px;
-    &:after {
-      display: block;
-      clear: both;
-      content: '';
-    }
-  }
-  & span {
-    display: block;
-    float: left;
-    height: 24px;
-    margin-left: 4px;
-    box-sizing: border-box;
-    color: #9e9e9e;
-    font-size: 12px;
-    line-height: 28px;
-    letter-spacing: -0.3px;
+  padding: 4px;
+  margin-top: 4px;
+  background-color: #8555f6;
+  border-radius: 24px;
+
+  & h2 {
+    width: 53px;
+    height: 36px;
+    margin-left: 10px;
+    color: #fff;
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
-`
-const NowpeopleIcon = styled.em`
-  float: left;
-  width: 24px;
-  height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_headphone_s.png') no-repeat center center / cover;
-`
-const LikeIcon = styled.em`
-  float: left;
-  width: 24px;
-  height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_hearts_s.png') no-repeat center center / cover;
-`
-const TotalpeopleIcon = styled.em`
-  float: left;
-  width: 24px;
-  height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_people.png') no-repeat center center / cover;
+
+  & h5 {
+    height: 36px;
+    margin-left: 36px;
+    color: #fff;
+    line-height: 36px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+  }
 `

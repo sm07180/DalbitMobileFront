@@ -26,7 +26,7 @@ export default props => {
           </button>
         ))}
       </Tab>
-      {currentItem.tab === '청취자' && <LiveListener Info={BjInfo} />}
+      {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
       {currentItem.tab === '타이틀' && <Charge />}
     </>
@@ -173,9 +173,94 @@ const LiveInfo = [
       'https://lh3.googleusercontent.com/proxy/rNffynT7M8L4UdWNYqT69v1OnKupd75mZZPUjepXfvzhvJKfNBhyd9hABmPYbReNXeV9DJOaPGnXhOKG30omzXc5g7ZsegpoO4U7WWJMDlQftG71As_Xz4vl6cDvlrXxAEGhaRFC6WjmakkVusaAmnvV8YCAW1xTLwCVI3pNx6MEJx1xd3fC5V-Ndhc8koB9FGgjRJcyXKW1iEqKhRdH8F9RnurcPlL7tRVLsVMYY_H7C2jbxCgg9ELAWm9zzajZCcElhgAy56a9eIOKLFlIia4Tmdi_lTfHGkzrBxm4HmGL69dWyVjy8QXTMIzpp4FEi1rxuExPks6L0r75jwQ'
   }
 ]
-const BjInfo = [
+const BJInfo = {
+  bjMemNo: '@gdgerg',
+  bjNickNm: '하늘에서 비가와요~',
+  url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+}
+
+const ManegerInfo = [
   {
     bjMemNo: '@gdgerg',
-    bjNickNm: '하늘에서 비가와요~'
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  }
+]
+const ListenInfo = [
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  },
+  {
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
+  },
+  {
+    bjMemNo: '@kfc43',
+    bjNickNm: '하늘에서 눈이와요~',
+    url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
   }
 ]
