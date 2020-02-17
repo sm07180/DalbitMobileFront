@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
+import {BroadCastProvider} from './store'
 //components
 import Api from 'context/api'
 import Chat from './content/chat'
@@ -18,7 +19,6 @@ export default props => {
   //const
   const {title} = props.match.params
   const context = useContext(Context)
-
   //---------------------------------------------------------------------
   function setRoute() {
     switch (title) {
@@ -33,6 +33,10 @@ export default props => {
   //useEffect
   useEffect(() => {}, [])
   //---------------------------------------------------------------------
-  return <Layout {...props}>{setRoute()}</Layout>
+  return (
+    <BroadCastProvider>
+      <Layout {...props}>{setRoute()}</Layout>
+    </BroadCastProvider>
+  )
 }
 //---------------------------------------------------------------------

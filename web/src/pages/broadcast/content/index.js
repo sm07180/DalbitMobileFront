@@ -6,24 +6,27 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
-
+import {BroadCastContext} from '../store'
 //etc
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
 
 export default props => {
+  //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const context = new useContext(Context) //global context
+  const store = new useContext(BroadCastContext) //store
+
   //const
   const {state} = props.location
+  //---------------------------------------------------------------------
 
   //makeContents
   const makeContents = () => {
-    console.log(props)
     return JSON.stringify(state, null, 4)
   }
-
+  //---------------------------------------------------------------------
   return (
     <Content>
       <pre>
@@ -32,9 +35,9 @@ export default props => {
     </Content>
   )
 }
-
+//---------------------------------------------------------------------
 const Content = styled.div`
   p {
-    font-size: 14px;
+    font-size: 12px;
   }
 `
