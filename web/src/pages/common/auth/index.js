@@ -276,8 +276,8 @@ export default props => {
           autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
           fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
           scope="public_profile,email"
-          onClick={ComponentClicked}
-          callback={responseFacebook}
+          onClick={responseFacebook}
+          callback="http://localhost:9000"
           // cssClass="my-facebook-button-class"
           // icon="fa-facebook"
         />
@@ -291,7 +291,7 @@ export default props => {
         />
         <NaverLogin
           clientId="WK0ohRsfYc9aBhZkyApJ"
-          //callbackUrl="http://localhost:9000"
+          callbackUrl="http://localhost:9000"
           render={props => <div onClick={props.onClick}>Naver Login</div>}
           onSuccess={responseNaver}
           onFailure={responseNaver}
