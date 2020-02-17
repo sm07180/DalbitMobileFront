@@ -33,16 +33,17 @@ export default props => {
         {/* 채팅방 영역 */}
         <ChatUI />
       </Chat>
+      <SideBTN
+        onClick={() => {
+          setTimeout(() => {
+            setIsSideOn(!isSideOn)
+          }, 100)
+        }}>
+        사이드 영역 열고 닫기
+      </SideBTN>
       <Side>
         {/* side content 영역 */}
-        <button
-          onClick={() => {
-            setTimeout(() => {
-              setIsSideOn(!isSideOn)
-            }, 100)
-          }}>
-          사이드 영역 열고 닫기
-        </button>
+
         <SlideContent>{/* <Charge /> */}</SlideContent>
       </Side>
     </Content>
@@ -55,8 +56,13 @@ export default props => {
 const Content = styled.section`
   position: relative;
   width: 1210px;
+  height: 100%;
   margin: 2.5vh auto 0 auto;
-
+  &:after {
+    clear: both;
+    display: block;
+    content: '';
+  }
   & > * {
     height: calc(95vh - 80px);
 
@@ -92,6 +98,7 @@ const Content = styled.section`
 
 //채팅창 레이아웃
 const Chat = styled.div`
+  float: left;
   width: calc(100% - 408px);
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
@@ -103,40 +110,33 @@ const Side = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  width: 408px;
+  width: 372px;
   /* min-width: 408px; */
   @media (max-width: ${WIDTH_TABLET_S}) {
     display: none;
   }
-
-  & > button {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 20px;
-    background: #f2f2f2;
-    transform: none;
-    text-indent: -9999px;
-
-    &:after {
-      display: block;
-      margin: 0 auto;
-      width: 0;
-      height: 0;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-left: 8px solid #757575;
-      content: '';
-    }
-    .side-off &:after {
-      border-left: 0;
-      border-right: 8px solid #757575;
-    }
-  }
 `
 
-const SideContent = styled.div`
-  padding-left: 20px;
-  height: 100%;
+const SideBTN = styled.button`
+  position: relative;
+  display: block;
+  width: 20px;
+  background: #f2f2f2;
+  transform: none;
+  text-indent: -9999px;
+  z-index: 11;
+  &:after {
+    display: block;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #757575;
+    content: '';
+  }
+  .side-off &:after {
+    border-left: 0;
+    border-right: 8px solid #757575;
+  }
 `
