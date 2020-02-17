@@ -43,14 +43,13 @@ const JoinForm = props => {
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
 
   //포토서버에 올라간 디폴트 이미지
-  const defaultImage = `${PHOTO_SERVER}/profile_1/20559801600/20200213133546969166.png`
+  const defaultImage = `${PHOTO_SERVER}/profile_3/profile_n.png`
   const defaultImagePath = defaultImage.replace(`${PHOTO_SERVER}`, '')
 
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
   const dateYear = date.slice(0, 4) - 17
-  //console.log(date)
   let leadingZeros = (n, digits) => {
     var zero = ''
     n = n.toString()
@@ -62,9 +61,6 @@ const JoinForm = props => {
 
   //회원가입 들어온 후 gnb닫아줘야 메인으로 갔을때 제대로 열림
   context.action.updateGnbVisible(false)
-
-  // console.log('customHeader = ' + JSON.stringify(context.customHeader, null, 1))
-  // console.log(JSON.stringify(changes, null, 1))
 
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
@@ -100,8 +96,6 @@ const JoinForm = props => {
     //유효성검사
     if (e.target.name == 'loginPwd') {
       validatePwd(e.target.value)
-    } else if (e.target.name == 'loginNickNm') {
-      validateNickNm(e.target.value)
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
     }
@@ -163,38 +157,6 @@ const JoinForm = props => {
     }
   }
 
-  const validateNickNm = nickEntered => {
-    //닉네임 유효성 검사.. 2~20자 한글.. 전부 입력 가능.
-    let nm = nickEntered
-    if (nm.length == 0) {
-      setValidate({
-        ...validate,
-        loginNickNm: false
-      })
-      setCurrentNick('')
-    } else {
-      if (nm.length > 1 && nm.length < 21) {
-        setValidate({
-          ...validate,
-          loginNickNm: true
-        })
-        setCurrentNick('사용 가능한 닉네임 입니다.')
-      } else if (nm.length < 2) {
-        setValidate({
-          ...validate,
-          loginNickNm: false
-        })
-        setCurrentNick('최소 2자 이상 입력해주세요.')
-      } else if (nm.length > 20) {
-        setValidate({
-          ...validate,
-          loginNickNm: false
-        })
-        setCurrentNick('최대 20자 까지 입력이 가능합니다.')
-      }
-    }
-  }
-
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
@@ -215,8 +177,8 @@ const JoinForm = props => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
     reader.onload = function() {
-      console.log('reader', reader)
-      console.log('reader.', reader.result)
+      // console.log('reader', reader)
+      // console.log('reader.', reader.result)
       if (reader.result) {
         setChanges({
           ...changes,
@@ -338,6 +300,35 @@ const JoinForm = props => {
     } //(res && res.code)
   }
 
+  let snsJoinSetting = {}
+
+  async function fetchNickData() {
+    const resNick = await Api.nickName_check({
+      params: {
+        nickNm: changes.loginNickNm
+      }
+    })
+    if (resNick) {
+      if (resNick.result === 'success') {
+        if (resNick.code == '1') {
+          snsJoinSetting = {...snsJoinSetting, loginNickNm: true}
+          setCurrentNick('사용 가능한 닉네임 입니다.')
+        }
+      } else if (resNick.result === 'fail') {
+        if (resNick.code == '0') {
+          snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
+          setCurrentNick('닉네임 중복입니다.')
+        } else {
+          console.log('중복체크 실패', resNick)
+        }
+      }
+      setValidate({
+        ...validate,
+        ...snsJoinSetting
+      })
+    }
+  }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -366,20 +357,70 @@ const JoinForm = props => {
   }
 
   useEffect(() => {
-    //console.clear()
+    let nm = changes.loginNickNm
+    if (nm.length == 0) {
+      // setValidate({
+      //   ...validate,
+      //   loginNickNm: false
+      // })
+      snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
+      setCurrentNick('')
+    } else {
+      if (nm.length > 1 && nm.length < 21) {
+        fetchNickData(nm)
+      } else if (nm.length < 2) {
+        // setValidate({
+        //   ...validate,
+        //   loginNickNm: false
+        // })
+        snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
+        setCurrentNick('최소 2자 이상 입력해주세요.')
+      } else if (nm.length > 20) {
+        // setValidate({
+        //   ...validate,
+        //   loginNickNm: false
+        // })
+        snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
+        setCurrentNick('최대 20자 까지 입력이 가능합니다.')
+      }
+    }
+    setValidate({
+      ...validate,
+      ...snsJoinSetting
+    })
+  }, [changes.loginNickNm])
+
+  useEffect(() => {
     console.log(JSON.stringify(changes, null, 1))
-    //console.log('체인지일어남')
     //약관 동의 유효성 체크
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setValidate({
         ...validate,
         term: true
       })
+      snsJoinSetting = {...snsJoinSetting, term: true}
     } else {
       setValidate({
         ...validate,
         term: false
       })
+      snsJoinSetting = {...snsJoinSetting, term: false}
+    }
+    if (!(changes.memType == 'p')) {
+      //validateNickNm(changes.loginNickNm)
+      snsJoinSetting = {
+        ...snsJoinSetting,
+        loginID: true,
+        loginPwd: true,
+        loginPwdCheck: true
+      }
+      setValidate(
+        {
+          ...validate,
+          ...snsJoinSetting
+        }
+        //
+      )
     }
   }, [changes])
 
@@ -419,6 +460,7 @@ const JoinForm = props => {
         ...validate,
         birth: true
       })
+      snsJoinSetting = {...snsJoinSetting, birth: true}
     } else {
       setCurrentBirth('17세 이상만 가입 가능합니다.')
       setValidate({
@@ -430,12 +472,12 @@ const JoinForm = props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    //console.log(JSON.stringify(validate, null, 1))
     if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.loginNickNm && validate.birth && validate.term) {
       setValidatePass(true)
     } else {
       setValidatePass(false)
     }
+    //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
 
   return (
@@ -455,22 +497,20 @@ const JoinForm = props => {
           </>
         )}
         {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
-        {changes.memType == 'p' && (
-          <ProfileUpload imgUrl={changes.image}>
-            <label htmlFor="profileImg">
-              <div></div>
-              <span>클릭 이미지 파일 추가</span>
-            </label>
-            <input
-              type="file"
-              id="profileImg"
-              accept=".gif, .jpg, .png"
-              onChange={e => {
-                uploadSingleFile(e)
-              }}
-            />
-          </ProfileUpload>
-        )}
+        <ProfileUpload imgUrl={changes.image}>
+          <label htmlFor="profileImg">
+            <div></div>
+            <span>클릭 이미지 파일 추가</span>
+          </label>
+          <input
+            type="file"
+            id="profileImg"
+            accept=".gif, .jpg, .png"
+            onChange={e => {
+              uploadSingleFile(e)
+            }}
+          />
+        </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
           <input type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />

@@ -352,10 +352,11 @@ export default class API {
    * @method "GET"
    * @param string nickNm            //*닉네임
    * @create 김호겸 2020.01.15
+   * @update 이은비 2020.02.17 // data -> params로 변경
    */
   static nickName_check = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/nick`, method: method || 'GET', data: data})
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/member/nick`, method: method || 'GET', params: params})
   }
 
   /**
