@@ -57,6 +57,9 @@ export default props => {
 
         break
       case 'k':
+        loginId = obj.profile.id
+        loginName = obj.profile.propertites.nickname
+        loginImg = obj.profile.propertites.profile_image
         break
       case 'n':
         break
@@ -175,7 +178,8 @@ export default props => {
     //console.log(response)
   }
   const responseKakao = response => {
-    //console.log(response)
+    console.log(response)
+    fetchData(response, 'k')
   }
   const responseGoogle = response => {
     //console.log(response)
@@ -273,6 +277,14 @@ export default props => {
           // cssClass="my-facebook-button-class"
           // icon="fa-facebook"
         />
+        <KakaoLogin
+          jsKey="275312c2c2715a7d00c6f0d6c1730353"
+          onSuccess={result => responseKakao(result)}
+          render={props => <img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="300" height="66" onClick={props.onClick} />}
+          onFailure={responseKakao}
+          useDefaultStyle={true}
+          getProfile={true}
+        />
       </SocialLogin>
       {/* <NaverLogin
         clientId="OQtHPCzpdRNtD9o2zBKF"
@@ -309,7 +321,6 @@ export default props => {
         )}
         cookiePolicy={'single_host_origin'}
       /> */}
-      {/* <KakaoLogin jsKey="b5792aba333bad75301693e5f39b6e90" onSuccess={responseKakao} buttonText="LOGIN WITH KAKAO" onFailure={responseKakao} useDefaultStyle={true} getProfile={true} /> */}
     </LoginWrap>
   )
 }

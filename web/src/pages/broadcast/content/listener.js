@@ -1,5 +1,5 @@
 /**
- * @title 404페이지
+ * @title 방송방
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
@@ -8,6 +8,9 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
+import Charge from './charge'
+import NaviBar from './navibar'
+import ChatUI from './chat-ui'
 import SlideContent from './SlideContent'
 
 export default props => {
@@ -17,73 +20,51 @@ export default props => {
   const [isSideOn, setIsSideOn] = useState(true)
 
   useEffect(() => {
-    //방송방 페이지는 footer없음.
+    //방송방 페이지는 header, footer없음.
     context.action.updateState({isOnCast: true})
     return () => {
       context.action.updateState({isOnCast: false})
     }
   }, [])
-  //tab
-  const {currentItem, changeItem} = useTabs(0, tabConent)
+
   return (
     <Content className={isSideOn ? 'side-on' : 'side-off'}>
-      <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
+      <Chat>
+        {/* 채팅방 영역 */}
+        <ChatUI />
+      </Chat>
+      <SideBTN
+        onClick={() => {
+          setTimeout(() => {
+            setIsSideOn(!isSideOn)
+          }, 100)
+        }}>
+        사이드 영역 열고 닫기
+      </SideBTN>
       <Side>
         {/* side content 영역 */}
-        <button
-          onClick={() => {
-            setTimeout(() => {
-              setIsSideOn(!isSideOn)
-            }, 100)
-          }}>
-          사이드 영역 열고 닫기
-        </button>
+
         <SlideContent>{/* <Charge /> */}</SlideContent>
       </Side>
     </Content>
   )
 }
-//tab------------------------------------------------------------------
-const tabConent = [
-  {
-    id: 0,
-    tab: '청취자'
-  },
-  {
-    id: 1,
-    tab: '게스트'
-  },
-  {
-    id: 2,
-    tab: '라이브'
-  },
-  {
-    id: 3,
-    tab: '프로필'
-  }
-]
 
-const useTabs = (initialTab, allTabs) => {
-  if (!allTabs || !Array.isArray(allTabs)) {
-    return
-  }
-  const [currentIndex, SetCurrentIndex] = useState(initialTab)
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: SetCurrentIndex
-  }
-}
 //---------------------------------------------------------------------
 //styled
 
 const Content = styled.section`
   position: relative;
   width: 1210px;
+  height: 100%;
   margin: 2.5vh auto 0 auto;
-
+  &:after {
+    clear: both;
+    display: block;
+    content: '';
+  }
   & > * {
     height: calc(95vh - 80px);
-    transition: width 0.5s ease-in-out;
 
     @media (max-width: ${WIDTH_TABLET_S}) {
       height: 100vh;
@@ -92,6 +73,9 @@ const Content = styled.section`
 
   &.side-off > div:first-child {
     width: calc(100% - 20px);
+    /* @media (max-width: ${WIDTH_TABLET_S}) {
+      width: 100%;
+    } */
   }
   &.side-off > div:last-child {
     width: 20px;
@@ -109,8 +93,8 @@ const Content = styled.section`
 
 //채팅창 레이아웃
 const Chat = styled.div`
-  /* width: 802px; */
-  width: 66.28%;
+  float: left;
+  width: calc(100% - 408px);
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
   }
@@ -121,36 +105,57 @@ const Side = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  width: 408px;
+  width: 388px;
+  padding-left: 20px;
+  background: #fff;
   /* min-width: 408px; */
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
+    padding: 20px;
+    .side-off & {
+      padding: 0;
+    }
   }
 
-  & > button {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 20px;
-    background: #f2f2f2;
-    transform: none;
-    text-indent: -9999px;
-
-    &:after {
-      display: block;
-      margin: 0 auto;
-      width: 0;
-      height: 0;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-left: 8px solid #757575;
-      content: '';
-    }
+  @media (max-width: 440px) {
+    width: calc(100% - 20px);
   }
 `
 
-const SideContent = styled.div`
-  padding-left: 20px;
-  height: 100%;
+const SideBTN = styled.button`
+  position: relative;
+  display: block;
+  width: 20px;
+  background: #f2f2f2;
+  transform: none;
+  text-indent: -9999px;
+  z-index: 11;
+  &:after {
+    display: block;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #757575;
+    content: '';
+  }
+  .side-off &:after {
+    border-left: 0;
+    border-right: 8px solid #757575;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    position: absolute;
+    right: 388px;
+    .side-off & {
+      right: 0;
+    }
+  }
+  @media (max-width: 440px) {
+    right: inherit;
+    left: 0;
+    .side-off & {
+      right: 0;
+      left: inherit;
+    }
+  }
 `

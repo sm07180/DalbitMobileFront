@@ -41,12 +41,10 @@ export default props => {
     )
   })
   return (
-    <>
-      <Wrapper>
-        <LiveFilter></LiveFilter>
-        <LiveWrap className="scrollbar">{livemap}</LiveWrap>
-      </Wrapper>
-    </>
+    <Wrapper>
+      <LiveFilter></LiveFilter>
+      <LiveWrap className="scrollbar">{livemap}</LiveWrap>
+    </Wrapper>
   )
 }
 const Wrapper = styled.div`
@@ -61,12 +59,14 @@ const LiveFilter = styled.div`
 const LiveWrap = styled.div`
   height: calc(100% - 40px);
   overflow-y: scroll;
+  margin-top: 18px;
 `
 
 const LiveList = styled.div`
   display: flex;
   width: 362px;
-  padding: 23px 11px;
+  padding: 0px 0 20px 11px;
+  margin-bottom: 20px;
   box-sizing: border-box;
   border-bottom: 1px solid #f5f5f5;
 `
