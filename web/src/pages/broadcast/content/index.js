@@ -8,14 +8,21 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 //etc
-import {getAudioStream} from 'components/lib/getStream'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
 
 export default props => {
+  //context
   const context = new useContext(Context)
-  console.log(props)
+  //const
+  const {state} = props.location
+
+  //makeContents
+  const makeContents = () => {
+    console.log(props)
+    return JSON.stringify(state, null, 4)
+  }
   /** about webrtc code */
   /*
   const {mediaHandler} = context
@@ -49,5 +56,17 @@ export default props => {
   */
   /** about webrtc code */
 
-  return <h1>호스트</h1>
+  return (
+    <Content>
+      <pre>
+        <p>{makeContents()}</p>
+      </pre>
+    </Content>
+  )
 }
+
+const Content = styled.div`
+  p {
+    font-size: 14px;
+  }
+`
