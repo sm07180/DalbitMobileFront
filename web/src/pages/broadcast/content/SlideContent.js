@@ -8,8 +8,8 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Live from './live'
-import NaviBar from './navibar'
 import Charge from './charge'
+import Present from './present'
 
 export default props => {
   const LiveInfo = [
@@ -113,7 +113,8 @@ export default props => {
         ))}
       </Tab>
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
-      {currentItem.tab === '타이틀' && <Charge />}
+      {currentItem.tab === '충전' && <Charge />}
+      {currentItem.tab === '선물' && <Present />}
     </>
   )
 }
@@ -133,7 +134,11 @@ const tabConent = [
   },
   {
     id: 3,
-    tab: '타이틀'
+    tab: '충전'
+  },
+  {
+    id: 4,
+    tab: '선물'
   }
 ]
 

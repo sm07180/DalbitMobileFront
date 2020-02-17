@@ -217,7 +217,7 @@ const GoodsInfo = styled.button`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 120px;
+  width: 115px;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 104px;
   }
@@ -293,26 +293,6 @@ const Charge = styled.button`
   line-height: 1.13;
   letter-spacing: -0.4px;
 `
-// const Navi = styled.div`
-//   display: flex;
-//   width: 100%;
-//   height: 56px;
-//   border-bottom-width: 1px;
-//   border-bottom-color: #eeeeee;
-//   border-bottom-style: solid;
-//   font-size: 18px;
-//   font-weight: normal;
-//   font-stretch: normal;
-//   font-style: normal;
-//   line-height: 1.17;
-//   letter-spacing: -0.45px;
-//   align-items: center;
-//   justify-content: center;
-
-//   @media (max-width: ${WIDTH_TABLET_S}) {
-//     display: none;
-//   }
-// `
 const ChargeS = styled.button`
   display: flex;
   width: 100%;
