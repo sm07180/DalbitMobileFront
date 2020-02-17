@@ -45,6 +45,7 @@ const GlobalProvider = props => {
      */
     updateCustomHeader: obj => {
       API.setCustomHeader(JSON.stringify(obj))
+      console.log(JSON.stringify(obj))
       Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
     },
