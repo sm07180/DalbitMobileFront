@@ -174,7 +174,7 @@ export default props => {
         if (res) {
           if (res.code == 0) {
             console.log(res)
-            props.history.push('/live')
+            props.history.push('/broadcast/' + res.roomNo, res.data)
           } else {
             console.warn(res.message)
           }
