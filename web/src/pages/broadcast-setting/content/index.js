@@ -204,7 +204,43 @@ export default props => {
   const [audioPass, setAudioPass] = useState(false)
   const [drawId, setDrawId] = useState(null)
 
+  const detectAudioDevice = () => {
+    clearInterval(drawId)
+    infiniteAudioChecker()
+  }
+
+  const infiniteAudioChecker = async () => {
+    const audioStream = await navigator.mediaDevices
+      .getUserMedia({audio: true})
+      .then(result => result)
+      .catch(e => e)
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext
+    const audioCtx = new AudioContext()
+
+    const audioSource = audioCtx.createMediaStreamSource(audioStream)
+    const analyser = audioCtx.createAnalyser()
+    analyser.fftSize = 1024
+    audioSource.connect(analyser)
+
+    const volumeCheck = () => {
+      const db = getDecibel(analyser)
+
+      if (db <= 1) {
+        setAudioVolume(0)
+      } else if (db !== audioVolume) {
+        setAudioVolume(db)
+        if (!audioPass) {
+          setAudioPass(true)
+        }
+      }
+    }
+
+    setDrawId(setInterval(volumeCheck))
+  }
+
   if (mediaHandler && !audioSetting) {
+    navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
@@ -212,42 +248,16 @@ export default props => {
       if (!device) {
         context.action.updatePopup('CAST')
       } else {
-        const audioStream = await navigator.mediaDevices
-          .getUserMedia({audio: true})
-          .then(result => result)
-          .catch(e => e)
-        if (!audioStream) {
-        }
-
-        const AudioContext = window.AudioContext || window.webkitAudioContext
-        const audioCtx = new AudioContext()
-
-        const audioSource = audioCtx.createMediaStreamSource(audioStream)
-        const analyser = audioCtx.createAnalyser()
-        analyser.fftSize = 1024
-        audioSource.connect(analyser)
-
-        const volumeCheck = () => {
-          const db = getDecibel(analyser)
-
-          if (db <= 1) {
-            setAudioVolume(0)
-          } else if (db !== audioVolume) {
-            setAudioVolume(db)
-            if (!audioPass) {
-              setAudioPass(true)
-            }
-          }
-        }
-        if (!drawId) {
-          setDrawId(setInterval(volumeCheck))
-        }
+        await infiniteAudioChecker()
       }
     })()
   }
 
   useEffect(() => {
     return () => {
+      if (drawId) {
+        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
+      }
       clearInterval(drawId)
     }
   }, [drawId])
