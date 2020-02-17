@@ -169,10 +169,14 @@ export default props => {
             entryType: changes.entryType
           }
         })
-        console.log('정상작동했으니깐 방 생성!')
-
         setFetch(res.data)
-        props.history.push('/live')
+        if (res) {
+          if (res.code == 0) {
+            props.history.history('/live')
+          } else {
+            console.warn(res.message)
+          }
+        }
       } else {
         //Error발생시
         console.log('방생성실패')
