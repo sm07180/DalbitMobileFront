@@ -10,6 +10,7 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 /*-common-*/
 import Main from 'pages/main' //메인
 import BroadCast from 'pages/broadcast' //메인
+import BroadCastSetting from 'pages/broadcast-setting' //메인
 import Guide from 'pages/guide/' //가이드
 import Login from 'pages/login/' //로그인
 import User from 'pages/user' //유저 (회원가입,회원정보입력등)
@@ -31,6 +32,7 @@ export default () => {
     <Switch>
       <Route exact path="/" component={Main} />
       <Route exact path="/broadcast" component={BroadCast} />
+      <Route exact path="/broadcast-setting" component={BroadCastSetting} />
       <Route exact path="/broadcast/:title" component={BroadCast} />
       <Route exact path="/cast" component={Cast} />
       <Route exact path="/user" component={User} />
