@@ -2,49 +2,19 @@
  * @title
  */
 import React, {useEffect, useState} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 //pages
 
 export default props => {
-  const [liveInfo, setLiveInfo] = useState(props.Info)
-  const livemap = liveInfo.map((live, index) => {
-    const {category, title, name, reco, nowpeople, totalpeople, newby, like, bg, thumb} = live
-    return (
-      <LiveList key={index}>
-        <ImgWrap bg={bg}>
-          <Sticker>
-            {reco && <Reco>{reco}</Reco>}
-            {newby && <New>{newby}</New>}
-          </Sticker>
-          {thumb && <Thumb thumb={thumb} />}
-        </ImgWrap>
-        <InfoWrap>
-          <Category>{category}</Category>
-          <Title>{title}</Title>
-          <Name>{name}</Name>
-          <IconWrap>
-            <div>
-              <NowpeopleIcon></NowpeopleIcon>
-              <span>{nowpeople}</span>
-            </div>
-            <div>
-              <LikeIcon></LikeIcon>
-              <span>{like}</span>
-            </div>
-            <div>
-              <TotalpeopleIcon></TotalpeopleIcon>
-              <span>{totalpeople}</span>
-            </div>
-          </IconWrap>
-        </InfoWrap>
-      </LiveList>
-    )
+  const [BjInfo, setLiveInfo] = useState(props.Info)
+  const bjmap = BjInfo.map((live, index) => {
+    const {bjNickNm, bjMemNo} = live
+    return <LiveList key={index}>{bjMemNo}</LiveList>
   })
   return (
     <Wrapper>
       <LiveFilter></LiveFilter>
-      <LiveWrap className="scrollbar">{livemap}</LiveWrap>
+      <LiveWrap className="scrollbar">{bjmap}</LiveWrap>
     </Wrapper>
   )
 }
@@ -67,14 +37,10 @@ const LiveWrap = styled.div`
 const LiveList = styled.div`
   display: flex;
   width: 362px;
-  padding: 0px 20px 20px 11px;
+  padding: 0px 0 20px 11px;
   margin-bottom: 20px;
   box-sizing: border-box;
   border-bottom: 1px solid #f5f5f5;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-    padding: 0px 20px 20px 0px;
-  }
 `
 const ImgWrap = styled.div`
   width: 30.93%;
@@ -182,9 +148,6 @@ const IconWrap = styled.div`
     line-height: 28px;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
-    @media (max-width: ${WIDTH_TABLET_S}) {
-      margin-left: 3px;
-    }
   }
 `
 const NowpeopleIcon = styled.em`
