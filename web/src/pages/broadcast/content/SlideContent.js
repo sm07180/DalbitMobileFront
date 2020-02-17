@@ -151,15 +151,16 @@ const useTabs = (initialTab, allTabs) => {
 //styled
 
 const Tab = styled.div`
-  width: 100%;
-
   & button {
     width: 25%;
+    height: 48px;
     display: inline-block;
     border: 1px solid #e0e0e0;
     border-bottom: 1px solid ${COLOR_MAIN};
     margin-left: -1px;
-    padding: 15px 24px;
+    &:first-child {
+      margin-left: 0;
+    }
     &.on {
       border: 1px solid ${COLOR_MAIN};
       background-color: ${COLOR_MAIN};
