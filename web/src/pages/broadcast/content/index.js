@@ -3,6 +3,7 @@
  * @brief 채팅
  */
 import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
+import {Redirect} from 'react-router-dom'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
 //context
@@ -17,8 +18,15 @@ import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 export default props => {
-  const context = useContext(Context)
   //context
+  const context = useContext(Context)
+  /**
+   * Login check
+   */
+  if (context && context.token && !context.token.isLogin) {
+    window.location.href = '/'
+  }
+
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
