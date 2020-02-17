@@ -11,6 +11,7 @@ import Live from './live'
 import LiveListener from './live-listener'
 import NaviBar from './navibar'
 import Charge from './charge'
+import Present from './present'
 
 export default props => {
   //context
@@ -28,7 +29,8 @@ export default props => {
       </Tab>
       {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
-      {currentItem.tab === '타이틀' && <Charge />}
+      {currentItem.tab === '충전' && <Charge />}
+      {currentItem.tab === '선물' && <Present />}
     </>
   )
 }
@@ -48,7 +50,11 @@ const tabConent = [
   },
   {
     id: 3,
-    tab: '타이틀'
+    tab: '충전'
+  },
+  {
+    id: 4,
+    tab: '선물'
   }
 ]
 
