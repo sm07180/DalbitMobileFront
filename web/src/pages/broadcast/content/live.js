@@ -2,6 +2,7 @@
  * @title
  */
 import React, {useEffect, useState} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 //pages
 
@@ -53,6 +54,7 @@ const Wrapper = styled.div`
 const LiveFilter = styled.div`
   width: 100%;
   height: 40px;
+  margin-top: 20px;
   border-radius: 20px;
   background-color: #f5f5f5;
 `
@@ -65,10 +67,14 @@ const LiveWrap = styled.div`
 const LiveList = styled.div`
   display: flex;
   width: 362px;
-  padding: 0px 0 20px 11px;
+  padding: 0px 20px 20px 11px;
   margin-bottom: 20px;
   box-sizing: border-box;
   border-bottom: 1px solid #f5f5f5;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+    padding: 0px 20px 20px 0px;
+  }
 `
 const ImgWrap = styled.div`
   width: 30.93%;
@@ -176,6 +182,9 @@ const IconWrap = styled.div`
     line-height: 28px;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      margin-left: 3px;
+    }
   }
 `
 const NowpeopleIcon = styled.em`

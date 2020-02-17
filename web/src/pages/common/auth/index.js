@@ -37,10 +37,14 @@ export default props => {
   const [fetch, setFetch] = useState(null)
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
   //const [changes, setChanges] = useState({})
-  let loginId = ''
-  let loginName = ''
-  let loginImg = ''
-  let loginPwd = ''
+  let loginId,
+    loginName,
+    loginImg,
+    loginPwd,
+    loginEmail,
+    loginNicknm,
+    gender = ''
+
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj, ostype) {
@@ -58,8 +62,12 @@ export default props => {
         break
       case 'k':
         loginId = obj.profile.id
-        loginName = obj.profile.propertites.nickname
-        loginImg = obj.profile.propertites.profile_image
+        loginNicknm = obj.profile.properties.nickname
+        loginImg = obj.profile.properties.profile_image
+        loginEmail = obj.profile.properties.profile_image
+        if (gender && typeof gender !== 'undefined') {
+          gender = obj.profile.kakao_account.gender === 'male' ? 'm' : 'f'
+        }
         break
       case 'n':
         break
@@ -81,9 +89,7 @@ export default props => {
       data: {
         memType: ostype,
         memId: loginId,
-        memPwd: loginPwd,
-        os: context.customHeader.os,
-        deviceId: context.customHeader.deviceId
+        memPwd: loginPwd
       }
     })
 
@@ -92,12 +98,12 @@ export default props => {
     const loginInfo = {
       loginID: loginId,
       loginName: loginName,
-      loginNickNm: '',
-      gender: 'm',
+      loginNickNm: loginNicknm,
+      gender: gender ? gender : 'm',
       birth: '',
       image: loginImg,
       memType: ostype,
-      osName: context.customHeader.os
+      email: loginEmail
     }
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
@@ -171,11 +177,9 @@ export default props => {
 
     fetchData(response, 'f')
   }
-  const ComponentClicked = response => {
-    console.log('FB login click =' + response)
-  }
   const responseNaver = response => {
-    //console.log(response)
+    console.log(response)
+    fetchData(response, 'n')
   }
   const responseKakao = response => {
     console.log(response)
@@ -272,8 +276,8 @@ export default props => {
           autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
           fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
           scope="public_profile,email"
-          onClick={ComponentClicked}
-          callback={responseFacebook}
+          onClick={responseFacebook}
+          callback="http://localhost:9000"
           // cssClass="my-facebook-button-class"
           // icon="fa-facebook"
         />
@@ -285,14 +289,15 @@ export default props => {
           useDefaultStyle={true}
           getProfile={true}
         />
+        <NaverLogin
+          clientId="WK0ohRsfYc9aBhZkyApJ"
+          callbackUrl="http://localhost:9000"
+          render={props => <div onClick={props.onClick}>Naver Login</div>}
+          onSuccess={responseNaver}
+          onFailure={responseNaver}
+        />
       </SocialLogin>
-      {/* <NaverLogin
-        clientId="OQtHPCzpdRNtD9o2zBKF"
-        callbackUrl="http://localhost:9000"
-        render={props => <div onClick={props.onClick}>Naver Login</div>}
-        onSuccess={responseNaver}
-        onFailure={responseNaver}
-      /> */}
+
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
 
       {/* <SnsGoogleLogion onClick={() => responseGooglelogin()}>

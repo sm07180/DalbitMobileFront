@@ -49,11 +49,13 @@ export default props => {
     //Error발생시 (종료된 방송)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
     //정상진입이거나,방탈퇴이후성공일경우
+    console.log(obj.type)
     if (res.result === 'success') {
+      const {bjStreamId, roomNo} = res.data
       console.log(res.data)
-      const {roomNo} = res.data
       if (obj.type === 'cast') {
-        props.history.push(`/cast`, res.data)
+        props.history.push(`/guide/test/${bjStreamId}`, res.data)
+        //props.history.push(`/cast`, res.data)
       } else {
         props.history.push(`/broadcast/${roomNo}`, res.data)
       }
@@ -65,24 +67,14 @@ export default props => {
   const makeContents = type => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
-      const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
-      switch (state) {
-        case 1: //-------------------방송중
-          list.state = '방송중'
-        case 2: //-------------------방송준비중
-          list.state = '방송준비중'
-        case 3: //-------------------통화중
-          list.state = '통화중'
-        case 4: //-------------------방송종료
-          list.state = '방송종료'
-        case 5: //-------------------비정상 (DJ종료상태)
-          list.state = '종료된방송'
-          break
-
-        default:
-          break
-      }
+      let mode = '해당사항없음'
       list.type = type
+      const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      if (state === 1) mode = '1'
+      if (state === 2) mode = '2'
+      if (state === 3) mode = '3'
+      if (state === 4) mode = '4'
+      if (state === 5) mode = '종료'
       return (
         <List
           key={idx}
@@ -90,7 +82,7 @@ export default props => {
           onClick={() => {
             joinRoom(list)
           }}>
-          <h3>[{list.state}]</h3>
+          <h3>[{mode}]</h3>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
           <Profile>
@@ -108,7 +100,7 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    getBroadList({data: {page: 1, records: 30}})
+    getBroadList({params: {roomType: '', page: 1, records: 10}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------

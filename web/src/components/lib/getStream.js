@@ -20,7 +20,7 @@ export const getAudioStream = async () => {
     }
   }
 
-  navigator.mediaDevices.ondevicechange = detectAudioDevice
+  navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
 
   await navigator.mediaDevices
     .getUserMedia(constraint)
