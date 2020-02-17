@@ -1,5 +1,5 @@
 /**
- * @title 404페이지
+ * @title 방송방
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
@@ -8,6 +8,9 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
+import Charge from './charge'
+import NaviBar from './navibar'
+import ChatUI from './chat-ui'
 import SlideContent from './SlideContent'
 
 export default props => {
@@ -17,17 +20,19 @@ export default props => {
   const [isSideOn, setIsSideOn] = useState(true)
 
   useEffect(() => {
-    //방송방 페이지는 footer없음.
+    //방송방 페이지는 header, footer없음.
     context.action.updateState({isOnCast: true})
     return () => {
       context.action.updateState({isOnCast: false})
     }
   }, [])
-  //tab
-  const {currentItem, changeItem} = useTabs(0, tabConent)
+
   return (
     <Content className={isSideOn ? 'side-on' : 'side-off'}>
-      <Chat>{/* 채팅방 영역 */}여기서는 채팅을 입력할 수 있습니다!!</Chat>
+      <Chat>
+        {/* 채팅방 영역 */}
+        <ChatUI />
+      </Chat>
       <Side>
         {/* side content 영역 */}
         <button
@@ -43,36 +48,7 @@ export default props => {
     </Content>
   )
 }
-//tab------------------------------------------------------------------
-const tabConent = [
-  {
-    id: 0,
-    tab: '청취자'
-  },
-  {
-    id: 1,
-    tab: '게스트'
-  },
-  {
-    id: 2,
-    tab: '라이브'
-  },
-  {
-    id: 3,
-    tab: '프로필'
-  }
-]
 
-const useTabs = (initialTab, allTabs) => {
-  if (!allTabs || !Array.isArray(allTabs)) {
-    return
-  }
-  const [currentIndex, SetCurrentIndex] = useState(initialTab)
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: SetCurrentIndex
-  }
-}
 //---------------------------------------------------------------------
 //styled
 
@@ -83,15 +59,22 @@ const Content = styled.section`
 
   & > * {
     height: calc(95vh - 80px);
-    transition: width 0.5s ease-in-out;
 
     @media (max-width: ${WIDTH_TABLET_S}) {
       height: 100vh;
+      transition: none;
+    }
+
+    @media all and (min-width: ${WIDTH_TABLET_S}) {
+      transition: width 0.5s ease-in-out;
     }
   }
 
   &.side-off > div:first-child {
     width: calc(100% - 20px);
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      width: 100%;
+    }
   }
   &.side-off > div:last-child {
     width: 20px;
@@ -109,8 +92,7 @@ const Content = styled.section`
 
 //채팅창 레이아웃
 const Chat = styled.div`
-  /* width: 802px; */
-  width: 66.28%;
+  width: calc(100% - 408px);
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
   }
@@ -146,6 +128,10 @@ const Side = styled.div`
       border-bottom: 8px solid transparent;
       border-left: 8px solid #757575;
       content: '';
+    }
+    .side-off &:after {
+      border-left: 0;
+      border-right: 8px solid #757575;
     }
   }
 `
