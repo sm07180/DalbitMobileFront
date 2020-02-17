@@ -68,19 +68,14 @@ const Content = styled.section`
 
     @media (max-width: ${WIDTH_TABLET_S}) {
       height: 100vh;
-      transition: none;
-    }
-
-    @media all and (min-width: ${WIDTH_TABLET_S}) {
-      transition: width 0.5s ease-in-out;
     }
   }
 
   &.side-off > div:first-child {
     width: calc(100% - 20px);
-    @media (max-width: ${WIDTH_TABLET_S}) {
+    /* @media (max-width: ${WIDTH_TABLET_S}) {
       width: 100%;
-    }
+    } */
   }
   &.side-off > div:last-child {
     width: 20px;
@@ -110,10 +105,19 @@ const Side = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  width: 372px;
+  width: 388px;
+  padding-left: 20px;
+  background: #fff;
   /* min-width: 408px; */
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
+    padding: 20px;
+    .side-off & {
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 440px) {
+    width: calc(100% - 20px);
   }
 `
 
@@ -138,5 +142,20 @@ const SideBTN = styled.button`
   .side-off &:after {
     border-left: 0;
     border-right: 8px solid #757575;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    position: absolute;
+    right: 388px;
+    .side-off & {
+      right: 0;
+    }
+  }
+  @media (max-width: 440px) {
+    right: inherit;
+    left: 0;
+    .side-off & {
+      right: 0;
+      left: inherit;
+    }
   }
 `
