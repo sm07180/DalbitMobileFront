@@ -32,7 +32,7 @@ export default props => {
 
   //fetch
   async function fetchData() {
-    const res = await Api.member_info({
+    const res = await Api.profile({
       data: {
         memNo: context.state.memNo
       }
