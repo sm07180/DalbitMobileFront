@@ -352,10 +352,11 @@ export default class API {
    * @method "GET"
    * @param string nickNm            //*닉네임
    * @create 김호겸 2020.01.15
+   * @update 이은비 2020.02.17 // data -> params로 변경
    */
   static nickName_check = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/nick`, method: method || 'GET', data: data})
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/member/nick`, method: method || 'GET', params: params})
   }
 
   /**
@@ -417,12 +418,13 @@ export default class API {
   }
 
   /**
-   * @brief 회원정보조회
+   * @brief 회원정보조회 member_info -> profile
    * @method "GET"
    * @param string    memNo             //*스타회원번호
    * @create 김호겸 2020.01.15
+   * @update 손완휘 2020.02.17
    */
-  static member_info = async obj => {
+  static profile = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/profile}`, method: method || 'GET', params: params})
   }

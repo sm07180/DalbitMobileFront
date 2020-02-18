@@ -22,7 +22,6 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
-import {arrayTypeAnnotation} from '@babel/types'
 //import FacebookLogin from 'pages/common/auth/fbAuth'
 //context
 
@@ -35,6 +34,7 @@ export default props => {
   //useState
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
+  const [nvStatus, setNvStatus] = useState(false)
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
   //const [changes, setChanges] = useState({})
   let loginId,
@@ -57,7 +57,7 @@ export default props => {
       case 'f':
         loginId = obj.userID
         loginName = obj.name
-        loginImg = obj.picture.data.url
+        loginImg = obj.picture ? obj.picture.data.url : ''
 
         break
       case 'k':
@@ -70,6 +70,14 @@ export default props => {
         }
         break
       case 'n':
+        loginId = obj.id
+        loginName = obj.name
+        loginNicknm = obj.nickname //네이버는 닉네임이 ex) gurenn***
+        loginImg = obj.profile_image
+        loginEmail = obj.email
+        if (gender && typeof gender !== 'undefined') {
+          gender = obj.gender.toLowerCase()
+        }
         break
       default:
         loginId = obj.phone
@@ -174,11 +182,29 @@ export default props => {
     // expiresIn - 토큰이 만료되어 갱신해야 하는 UNIX 시간을 표시합니다.
     // signedRequest - 앱 사용자에 대한 정보를 포함하는 서명된 매개변수입니다.
     // userID - 앱 사용자의 ID입니다.
+    //fetchData(response, 'f')
+  }
+  const responseFacebookCallback = response => {
+    // status는 앱 사용자의 로그인 상태를 지정합니다. 상태는 다음 중 하나일 수 있습니다.
+    // connected - 사용자가 Facebook에 로그인하고 앱에 로그인했습니다.
+    // not_authorized - 사용자가 Facebook에는 로그인했지만 앱에는 로그인하지 않았습니다.
+    // unknown - 사용자가 Facebook에 로그인하지 않았으므로 사용자가 앱에 로그인했거나 FB.logout()이 호출되었는지 알 수 없어, Facebook에 연결할 수 없습니다.
+    // connected 상태인 경우 authResponse가 포함되며 다음과 같이 구성되어 있습니다.
+    // accessToken - 앱 사용자의 액세스 토큰이 포함되어 있습니다.
+    // expiresIn - 토큰이 만료되어 갱신해야 하는 UNIX 시간을 표시합니다.
+    // signedRequest - 앱 사용자에 대한 정보를 포함하는 서명된 매개변수입니다.
+    // userID - 앱 사용자의 ID입니다.
+    if (response && response.id) {
+      fetchData(response, 'f')
+    }
+    console.log('responseFacebookCallback')
 
-    fetchData(response, 'f')
+    //fetchData(response, 'f')
   }
   const responseNaver = response => {
-    console.log(response)
+    console.log('32123321312321321')()
+    console.log('responseNaver')
+
     fetchData(response, 'n')
   }
   const responseKakao = response => {
@@ -229,6 +255,59 @@ export default props => {
     //     }
     //   }
   }
+
+  useEffect(() => {
+    var naverLogin = new naver.LoginWithNaverId({
+      clientId: 'WK0ohRsfYc9aBhZkyApJ',
+      callbackUrl: 'https://devm-hgkim1118.dalbitcast.com/login',
+      isPopup: false,
+      loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
+      callbackHandle: false
+    })
+    naverLogin.init()
+    if (nvStatus === false) {
+      console.log(nvStatus)
+      naverLogin.getLoginStatus(function(status) {
+        if (status) {
+          var email = naverLogin.user.getEmail()
+          var name = naverLogin.user.getNickName()
+          var profileImage = naverLogin.user.getProfileImage()
+          var birthday = naverLogin.user.getBirthday()
+          var uniqId = naverLogin.user.getId()
+          var age = naverLogin.user.getAge()
+
+          setNvStatus(status)
+          console.log('1')
+          fetchData(naverLogin.loginStatus.naverUser, 'n')
+        } else {
+          console.log('AccessToken이 올바르지 않습니다.')
+        }
+      })
+    }
+  }, [nvStatus])
+
+  const loadData = () => {
+    var el = document.getElementById('naverIdLogin')
+    el.addEventListener('load', function() {
+      console.warn('asdasdasd')
+      naverLogin.getLoginStatus(function(status) {
+        if (status) {
+          /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
+          var email = naverLogin.user.getEmail()
+          if (email == undefined || email == null) {
+            alert('이메일은 필수정보입니다. 정보제공을 동의해주세요.')
+            /* (5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 */
+            naverLogin.reprompt()
+            return
+          }
+          window.location.replace('http://' + window.location.hostname + (location.port == '' || location.port == undefined ? '' : ':' + location.port) + '/sample/main.html')
+        } else {
+          console.log('callback 처리에 실패하였습니다.')
+        }
+      })
+    })
+  }
+
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
@@ -277,7 +356,7 @@ export default props => {
           fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
           scope="public_profile,email"
           onClick={responseFacebook}
-          callback="http://localhost:9000"
+          callback={responseFacebookCallback}
           // cssClass="my-facebook-button-class"
           // icon="fa-facebook"
         />
@@ -289,13 +368,18 @@ export default props => {
           useDefaultStyle={true}
           getProfile={true}
         />
-        <NaverLogin
+        {/* <NaverLogin
           clientId="WK0ohRsfYc9aBhZkyApJ"
-          callbackUrl="http://localhost:9000"
           render={props => <div onClick={props.onClick}>Naver Login</div>}
-          onSuccess={responseNaver}
-          onFailure={responseNaver}
-        />
+          onSuccess={() => {
+            console.log('assssss')
+          }}
+          onFailure={() => {
+            console.log('asdasdasd')
+          }}
+          callbackUrl="https://devm-hgkim1118.dalbitcast.com"
+        /> */}
+        <div id="naverIdLogin" />
       </SocialLogin>
 
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}

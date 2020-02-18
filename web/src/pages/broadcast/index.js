@@ -7,7 +7,7 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
-import {Context} from 'context'
+import {BroadCastProvider} from './store'
 //components
 import Api from 'context/api'
 import Chat from './content/chat'
@@ -17,9 +17,11 @@ import Content from './content'
 export default props => {
   //const
   const {title} = props.match.params
-  const context = useContext(Context)
-
+  //const context = useContext(Context)
   //---------------------------------------------------------------------
+  /**
+   * @
+   */
   function setRoute() {
     switch (title) {
       case 'chat': //--------------------------------채팅
@@ -33,6 +35,10 @@ export default props => {
   //useEffect
   useEffect(() => {}, [])
   //---------------------------------------------------------------------
-  return <Layout {...props}>{setRoute()}</Layout>
+  return (
+    <BroadCastProvider>
+      <Layout {...props}>{setRoute()}</Layout>
+    </BroadCastProvider>
+  )
 }
 //---------------------------------------------------------------------
