@@ -186,8 +186,8 @@ const ManegerInfo = [
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
-    bjMemNo: '@kfc43',
-    bjNickNm: '하늘에서 눈이와요~',
+    bjMemNo: '@gdgerg',
+    bjNickNm: '하늘에서 비가와요~',
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   }
 ]
