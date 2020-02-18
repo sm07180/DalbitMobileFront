@@ -90,6 +90,10 @@ const JoinForm = props => {
 
   //회원가입 input onChange
   const onLoginHandleChange = e => {
+    //대소문자 구분없음, 소문자만 입력
+    if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
+      e.target.value = e.target.value.toLowerCase()
+    }
     setChanges({
       ...changes,
       [e.target.name]: e.target.value
