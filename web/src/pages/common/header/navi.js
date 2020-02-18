@@ -28,14 +28,20 @@ export default props => {
     return info.map((list, idx) => {
       const _title = info[idx].title
       const _url = info[idx].url
-      const Check = e => {
-        if (!context.token.isLogin && idx === 3) {
-          e.preventDefault()
-          context.action.updatePopup('LOGIN')
-        }
-      }
       return (
-        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on" onClick={Check}>
+        <NavLink
+          title={_title}
+          key={idx}
+          to={_url}
+          exact
+          activeClassName="on"
+          onClick={event => {
+            if (!context.token.isLogin && idx === 3) {
+              event.preventDefault()
+              context.action.updatePopup('LOGIN')
+              console.log('test')
+            }
+          }}>
           <span>{_title}</span>
         </NavLink>
       )

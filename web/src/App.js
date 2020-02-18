@@ -83,7 +83,6 @@ export default () => {
   useEffect(() => {
     //#1 customHeader
     context.action.updateCustomHeader(customHeader)
-
     console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
