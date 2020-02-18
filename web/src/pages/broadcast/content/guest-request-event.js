@@ -10,23 +10,10 @@ export default props => {
   const [liveInfo, setLiveInfo] = useState(props.Info)
 
   return (
-    // <Event value={EventValue} className={!EventValue ? 'on' : ''}>
-    //   <ul>
-    //     <li>강제퇴장</li>
-    //     <li>매니저 등록</li>
-    //     <li>게스트 초대</li>
-    //     <li>프로필 보기</li>
-    //     <li>신고하기</li>
-    //   </ul>
-    // </Event>
     <Event>
       <ul>
-        <button>강제퇴장</button>
-        <button>매니저 등록</button>
-        <button>매니저 해임</button>
-        <button>게스트 초대</button>
-        <button>프로필 보기</button>
-        <button>신고하기</button>
+        <button>초대하기</button>
+        <button>거절하기</button>
       </ul>
     </Event>
   )

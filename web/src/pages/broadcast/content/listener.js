@@ -14,20 +14,10 @@ import ChatUI from './chat-ui'
 import SlideContent from './SlideContent'
 
 export default props => {
-  const [BgState, SetBgState] = useState(false)
-  const BG = () => {
-    if (BgState === true) {
-      SetBgState(false)
-    } else {
-      SetBgState(true)
-    }
-  }
-
   //context
   const context = new useContext(Context)
   //state
   const [isSideOn, setIsSideOn] = useState(true)
-  const [eventState, setEventState] = useState(false)
   useEffect(() => {
     //방송방 페이지는 header, footer없음.
     context.action.updateState({isOnCast: true})
@@ -37,7 +27,7 @@ export default props => {
   }, [])
 
   return (
-    <Content className={isSideOn ? 'side-on' : 'side-off'} value={BgState} onClick={BG}>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>
         {/* 채팅방 영역 */}
         <ChatUI />

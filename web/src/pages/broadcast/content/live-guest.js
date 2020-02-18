@@ -1,18 +1,19 @@
 /**
  * @title 청취자
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, Children} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
-import Events from './event'
+import CancelEvent from './guest-cancel-event'
+import RequestEvent from './guest-request-event'
 //pages
 
 export default props => {
   const context = useContext(Context)
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
-  const [BJInfo, setBJInfo] = useState(props.Info3)
+  const [GuestInfo, setGuestInfo] = useState(props.Info3)
   const Manegermap = ManegerInfo.map((live, index) => {
     //클릭 이벤트
     const ToggleEvent = () => {
@@ -25,6 +26,7 @@ export default props => {
     const AllFalse = () => {
       setTrues(false)
     }
+
     const [trues, setTrues] = useState(false)
     const {bjNickNm, bjMemNo, url} = live
     return (
@@ -32,8 +34,8 @@ export default props => {
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
+        <CANCELBTN value={trues} onClick={ToggleEvent}></CANCELBTN>
+        {trues && <CancelEvent value={bjNickNm} data={trues} onClick={AllFalse} />}
         <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ManegerList>
     )
@@ -58,7 +60,7 @@ export default props => {
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
+        {trues && <RequestEvent />}
         <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ListenList>
     )
@@ -67,19 +69,21 @@ export default props => {
     <>
       <Wrapper>
         <LiveWrap>
-          <Title>방송 DJ</Title>
+          <Title>방송 참여 중 게스트</Title>
           <DJList>
-            <ManegerImg bg={BJInfo.url} />
-            <h2>{BJInfo.bjMemNo}</h2>
-            <h5>{BJInfo.bjNickNm}</h5>
+            <ManegerImg bg={GuestInfo.url} />
+            {/* <h2>{GuestInfo.bjMemNo}</h2> */}
+            <h5>{GuestInfo.bjNickNm}</h5>
+            {/* <CANCELBTN></CANCELBTN>
+            <CancelEvent /> */}
           </DJList>
         </LiveWrap>
         <LiveWrap>
-          <Title>방송 매니저</Title>
+          <Title>초대한 게스트</Title>
           {Manegermap}
         </LiveWrap>
         <LiveWrap>
-          <Title>청취자</Title>
+          <Title>게스트 요청 청취자</Title>
           <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
         </LiveWrap>
       </Wrapper>
@@ -117,30 +121,13 @@ const DJList = styled.div`
 
   & h5 {
     height: 36px;
-    margin-left: 36px;
+    margin-left: 12px;
     color: #fff;
     line-height: 36px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
-  }
-  &:after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    width: 24px;
-    height: 14px;
-    border-radius: 7px;
-    background-color: #fdad2b;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 600;
-    text-align: center;
-    line-height: 14px;
-    transform: translateY(-50%);
-    content: 'DJ';
   }
 `
 
@@ -223,6 +210,17 @@ const EVENTBTN = styled.button`
   height: 36px;
   transform: translateY(-50%);
   background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
+  outline: none;
+`
+
+const CANCELBTN = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
   outline: none;
 `
 //클릭 배경 가상요소

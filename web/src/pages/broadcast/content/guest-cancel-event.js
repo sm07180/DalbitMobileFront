@@ -1,32 +1,21 @@
 /**
  * @title 클릭 event
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, Children} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 //pages
 
 export default props => {
-  const [liveInfo, setLiveInfo] = useState(props.Info)
+  const {onClick} = props
+  console.log(onClick)
 
   return (
-    // <Event value={EventValue} className={!EventValue ? 'on' : ''}>
-    //   <ul>
-    //     <li>강제퇴장</li>
-    //     <li>매니저 등록</li>
-    //     <li>게스트 초대</li>
-    //     <li>프로필 보기</li>
-    //     <li>신고하기</li>
-    //   </ul>
-    // </Event>
     <Event>
       <ul>
-        <button>강제퇴장</button>
-        <button>매니저 등록</button>
-        <button>매니저 해임</button>
-        <button>게스트 초대</button>
-        <button>프로필 보기</button>
-        <button>신고하기</button>
+        <h1>{props.value}님을 강퇴 하시겠습니까?</h1>
+        <button onClick={onClick}>강퇴하기</button>
+        <button onClick={onClick}>취소하기</button>
       </ul>
     </Event>
   )
@@ -34,12 +23,13 @@ export default props => {
 ///////////////
 const Event = styled.div`
   position: absolute;
-  right: 23px;
-  width: 105px;
+  left: 50%;
+  width: 80%;
   padding: 13px 0;
   background-color: #fff;
   z-index: 3;
   border: 1px solid #e0e0e0;
+  transform: translateX(-50%);
   .scrollbar > div:nth-last-child(3) & {
     bottom: 0;
   }
