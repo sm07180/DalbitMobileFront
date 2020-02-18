@@ -5,78 +5,61 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
-import list from 'pages/live/content/list'
+import Events from './event'
 //pages
 
 export default props => {
   const context = useContext(Context)
   //클릭 이벤트
-  const [EventValue, SetValue] = useState(false)
-  const ToggleEvent = () => {
-    if (EventValue === false) {
-      SetValue(true)
-    } else {
-      SetValue(false)
-    }
-  }
-  const AllFalse = () => {
-    SetValue(false)
-  }
-  const checkVisible = live => {
-    live.visible = !live.visible
-    console.log(live.visible)
-  }
-  //MAP 인포
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [BJInfo, setBJInfo] = useState(props.Info3)
-  //-------------------
   const Manegermap = ManegerInfo.map((live, index) => {
+    const ToggleEvent = () => {
+      if (trues === false) {
+        setTrues(true)
+      } else {
+        setTrues(false)
+      }
+    }
+    const AllFalse = () => {
+      setTrues(false)
+    }
+    const [trues, setTrues] = useState(false)
     const {bjNickNm, bjMemNo, url} = live
-    live.visible = false
     return (
       <ManegerList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <button
-          onClick={() => {
-            checkVisible(live)
-            //   ToggleEvent(index)
-          }}>
-          이벤트클릭
-        </button>
-        <Event value={EventValue} className={!EventValue ? 'on' : ''}>
-          <ul>
-            <li>강제퇴장</li>
-            <li>매니저 등록</li>
-            <li>게스트 초대</li>
-            <li>프로필 보기</li>
-            <li>신고하기</li>
-          </ul>
-        </Event>
+        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
+        {trues && <Events />}
+        <AFTER onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ManegerList>
     )
   })
   const Listenmap = ListenInfo.map((live, index) => {
+    const ToggleEvent = () => {
+      if (trues === false) {
+        setTrues(true)
+      } else {
+        setTrues(false)
+      }
+    }
+    const AllFalse = () => {
+      setTrues(false)
+    }
+    const [trues, setTrues] = useState(false)
     const {bjNickNm, bjMemNo, url} = live
     return (
-      <div key={index}>
-        <ListenList>
-          <ManegerImg bg={url} />
-          <StreamID>{bjMemNo}</StreamID>
-          <NickName>{bjNickNm}</NickName>
-        </ListenList>
-        <Event>
-          <ul>
-            <li>강제퇴장</li>
-            <li>매니저 등록</li>
-            <li>게스트 초대</li>
-            <li>프로필 보기</li>
-            <li>신고하기</li>
-          </ul>
-        </Event>
-      </div>
+      <ListenList key={index}>
+        <ManegerImg bg={url} />
+        <StreamID>{bjMemNo}</StreamID>
+        <NickName>{bjNickNm}</NickName>
+        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
+        {trues && <Events />}
+        <AFTER onClick={AllFalse} className={trues === true ? 'on' : ''} />
+      </ListenList>
     )
   })
   return (
@@ -99,7 +82,6 @@ export default props => {
           <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
         </LiveWrap>
       </Wrapper>
-      <AFTER onClick={AllFalse} className={EventValue === true ? 'on' : ''} />
     </>
   )
 }
@@ -107,6 +89,7 @@ const Wrapper = styled.div`
   margin-top: 20px;
 `
 const AFTER = styled.div`
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -115,7 +98,8 @@ const AFTER = styled.div`
   height: 100vh;
   background-color: transparent;
   &.on {
-    z-index: 9999;
+    display: block;
+    z-index: 9998;
   }
 `
 
@@ -124,6 +108,7 @@ const LiveWrap = styled.div`
 `
 
 const ManegerList = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   padding: 4px;
@@ -169,7 +154,6 @@ const NickName = styled.h4`
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
 `
-////////////////////////////
 const ListenWrap = styled.div`
   margin-bottom: 20px;
   overflow-y: scroll;
@@ -178,7 +162,6 @@ const ListenWrap = styled.div`
 
 const ListenList = styled.div`
   width: calc(100% + 10px);
-  z-index: 1;
   position: relative;
   display: flex;
   padding: 4px;
@@ -186,12 +169,16 @@ const ListenList = styled.div`
   border: 1px solid #f5f5f5;
   border-radius: 24px;
   background-color: #fff;
-  &:hover {
-    background-color: #fdad2b;
-  }
-  &:hover > h4 {
-    color: #fff;
-  }
+`
+const EVENTBTN = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
+  outline: none;
 `
 const DJList = styled.div`
   position: relative;
@@ -241,26 +228,5 @@ const DJList = styled.div`
     transform: translateY(-50%);
 
     content: 'DJ';
-  }
-`
-const Event = styled.div`
-  position: absolute;
-  right: 23px;
-  width: 105px;
-  padding: 13px 0;
-  background-color: #fff;
-  z-index: 9999;
-  & ul {
-    & li {
-      padding: 7px 0;
-      box-sizing: border-box;
-      color: #757575;
-      font-size: 14px;
-      text-align: center;
-      letter-spacing: -0.35px;
-    }
-  }
-  &.on {
-    display: none;
   }
 `
