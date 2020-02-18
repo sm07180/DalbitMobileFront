@@ -2,12 +2,12 @@
  * @file /broadcast/index.js
  * @brief 방송방
  */
-import React, {useEffect, useContext, useState, useRef} from 'react'
+import React, {useMemo, useEffect, useContext, useState, useRef} from 'react'
 import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
-import {BroadCastContext} from '../store'
+import {BroadCastStore} from '../store'
 
 //etc
 
@@ -18,10 +18,14 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context) //global context
-  //const store = new useContext(BroadCastContext) //store
-
+  const store = new useContext(BroadCastStore) //store
   //const
   const {state} = props.location
+  //useMemo
+  const info = useMemo(() => {
+    store.action.updateRoomInfo(state)
+    return state
+  })
   //---------------------------------------------------------------------
 
   const {mediaHandler} = context

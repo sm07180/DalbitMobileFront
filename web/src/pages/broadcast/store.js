@@ -14,6 +14,7 @@ const {Provider} = BroadCastStore
 //
 const BroadCastProvider = props => {
   //state
+  const [roomNumber, setRoomNumber] = useState('')
   const [roomInfo, setRoomInfo] = useState({})
   //---------------------------------------------------------------------
   const action = {
@@ -22,14 +23,17 @@ const BroadCastProvider = props => {
      * @code store.updateCode('style-tab')
      * @param object $obj
      */
-
     //updateState
     updateRoomInfo: obj => {
-      setRoomInfo(obj)
+      if (typeof obj === 'object') setRoomInfo(obj)
+    },
+    //roomNumber
+    updateRoomNumber: num => {
+      setRoomNumber(num)
     }
   }
   //---------------------------------------------------------------------
-  const value = {roomInfo, action}
+  const value = {roomInfo, roomNumber, action}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {BroadCastStore, BroadCastProvider}
