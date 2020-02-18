@@ -118,6 +118,7 @@ export default props => {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
         console.table(res.data)
+        props.update({login: res.data})
         /*
          * 로그인정상
          */

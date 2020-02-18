@@ -10,11 +10,12 @@ import Content from './content'
 export default props => {
   //---------------------------------------------------------------------
   /**
-   * @brief 로그인이벤트처리핸들러
+   * @brief 로그인,이벤트처리핸들러
    */
   function update(mode) {
     switch (true) {
-      case mode.menu !== undefined:
+      case mode.login !== undefined: //---------------------로그인-정상
+        console.log(mode)
         break
       default:
         break
@@ -25,7 +26,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
-      <Content {...props} />
+      <Content {...props} update={update} />
     </React.Fragment>
   )
 }
