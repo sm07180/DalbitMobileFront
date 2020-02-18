@@ -116,26 +116,10 @@ export default props => {
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
       if (res.code == 0) {
-        //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-        console.table(res.data)
-        props.update({login: res.data})
         /*
          * 로그인정상
          */
-        //token Update
-        Api.setAuthToken(res.data.authToken)
-        context.action.updateToken(res.data)
-        //native 전달
-        Hybrid('GetLoginToken', res.data)
-        //cookie
-        Utility.setCookie('authToken', res.data.authToken, '365')
-        //redirect
-        if (props.history) {
-          props.history.push('/')
-          context.action.updatePopupVisible(false)
-          context.action.updateGnbVisible(false)
-        }
-
+        props.update({loginSuccess: res.data})
         //context.action.updateState(res.data)
         //context.action.updateLogin(true)
       } else {
