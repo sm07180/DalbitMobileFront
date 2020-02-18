@@ -72,7 +72,7 @@ export default props => {
 const Popup = styled.section``
 const Container = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
