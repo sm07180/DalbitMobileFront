@@ -61,7 +61,6 @@ export default props => {
       }
     })
 
-    console.log('## res :', res.result)
     setTData(res)
   }
 
@@ -71,9 +70,7 @@ export default props => {
     context.action.updatePopup('SEND_PRESENT')
     context.action.updatePopupVisible(false)
   }, [])
-  console.log('## tData : ', tData)
-  console.log('## item : ', item)
-  console.log('## count: ', count)
+
   return (
     <Container>
       <Navi title={'선물'} />

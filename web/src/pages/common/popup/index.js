@@ -54,7 +54,11 @@ export default props => {
       )}
       {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
         <>
-          <Background />
+          <Background
+            onClick={() => {
+              context.action.updatePopupVisible(false)
+            }}
+          />
           <Container>{makePopupContents()}</Container>
         </>
       )}

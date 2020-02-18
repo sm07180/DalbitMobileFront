@@ -70,16 +70,18 @@ const testStar = [
 ]
 export default props => {
   const [choice, setChoice] = useState('moon')
-  const [goodsState, setGoods] = useState(0)
+  const [goodsState, setGoods] = useState(-1)
   const [testData, setTestData] = useState(testMoon)
 
   const setData = async param => {
     if (param == 'moon') {
       setTestData(testMoon)
       setChoice('moon')
+      setGoods(-1)
     } else {
       setTestData(testStar)
       setChoice('star')
+      setGoods(-1)
     }
   }
 
@@ -90,10 +92,10 @@ export default props => {
       <>
         {choice === 'moon' ? (
           <Choice active onClick={() => setData('moon')}>
-            달 충전
+            현금 충전
           </Choice>
         ) : (
-          <Choice onClick={() => setData('moon')}>달 충전</Choice>
+          <Choice onClick={() => setData('moon')}>현금 충전</Choice>
         )}
 
         <Separator>|</Separator>
@@ -143,10 +145,10 @@ export default props => {
         {choice === 'moon' ? (
           <>
             <Cancel>취소</Cancel>
-            <Charge>충전하기</Charge>
+            <Charge active={goodsState != -1 ? 'active' : ''}>구매하기</Charge>
           </>
         ) : (
-          <ChargeS>별로 구매하기</ChargeS>
+          <ChargeS active={goodsState != -1 ? 'active' : ''}>별로 구매하기</ChargeS>
         )}
       </ButtonArea>
     </Container>
@@ -236,10 +238,12 @@ const GoodsInfo = styled.button`
   }
   height: 138px;
   margin-bottom: 4px;
-  border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
-  border-style: solid;
+  border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '') : props.active ? '#fdad2b' : '')};
+  border-style: ${props => (props.active ? 'solid' : 'none')};
   border-radius: 10px;
   border-width: 1px;
+  background: #f5f5f5;
+  background: ${props => (props.active ? '#fff' : '#f5f5f5')};
   /* padding-top: 2vh; */
 `
 
@@ -247,7 +251,7 @@ const Price = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 99px;
+  width: 100%;
   height: 28px;
   background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
@@ -296,7 +300,7 @@ const Cancel = styled.button`
 const Charge = styled.button`
   width: 48%;
   height: 5vh;
-  background-color: #8556f6;
+  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
@@ -310,7 +314,7 @@ const ChargeS = styled.button`
   display: flex;
   width: 100%;
   height: 5vh;
-  background-color: #8556f6;
+  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
