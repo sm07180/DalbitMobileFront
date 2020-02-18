@@ -350,19 +350,14 @@ const JoinForm = props => {
   }, [])
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
   const pickerOnChange = value => {
-    //if (!changes.birth) {
-    //dateDefault = value
-    setChanges({
-      ...changes,
-      birth: value
-      //포토 서버에 올려둔 기본 이미지. 나중에 지워지면 새로 올려줘야함
-    })
-    // } else {
-    //   setChanges({
-    //     ...changes,
-    //     birth: value
-    //   })
-    // }
+    if (!changes.birth) {
+      dateDefault = value
+    } else {
+      setChanges({
+        ...changes,
+        birth: value
+      })
+    }
   }
 
   useEffect(() => {
