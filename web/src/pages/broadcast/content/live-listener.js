@@ -5,6 +5,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
+import list from 'pages/live/content/list'
 //pages
 
 export default props => {
@@ -21,19 +22,30 @@ export default props => {
   const AllFalse = () => {
     SetValue(false)
   }
-
+  const checkVisible = live => {
+    live.visible = !live.visible
+    console.log(live.visible)
+  }
+  //MAP 인포
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [BJInfo, setBJInfo] = useState(props.Info3)
-  //
+  //-------------------
   const Manegermap = ManegerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
+    live.visible = false
     return (
       <ManegerList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <button onClick={ToggleEvent}>이벤트클릭</button>
+        <button
+          onClick={() => {
+            checkVisible(live)
+            //   ToggleEvent(index)
+          }}>
+          이벤트클릭
+        </button>
         <Event value={EventValue} className={!EventValue ? 'on' : ''}>
           <ul>
             <li>강제퇴장</li>

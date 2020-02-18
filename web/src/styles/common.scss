@@ -373,9 +373,8 @@ input[type='number'] {
   background-color: transparent;
 }
 .scrollbar::-webkit-scrollbar-thumb {
-  background: #e0e0e0;
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
-  margin-top: 10px;
 }
 
 @media (max-width: $WIDTH_MOBILE) {
