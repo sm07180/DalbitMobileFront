@@ -26,19 +26,31 @@ export default props => {
     store.action.updateRoomInfo(state)
     return state
   })
+  const hostRole = 3
+  const listenerRole = 0
   //---------------------------------------------------------------------
 
   const {mediaHandler} = context
+  const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
+  const {bjStreamId, roomRole} = state
 
   const audioReference = useRef()
   const {location} = props.history
 
   const startPlayer = () => {
-    setPlayStatus(true)
+    if (roomRole === hostRole) {
+      setPublishStatus(true)
+    } else if (roomRole === listenerRole) {
+      setPlayStatus(true)
+    }
   }
   const stopPlayer = () => {
-    setPlayStatus(false)
+    if (roomRole === hostRole) {
+      setPublishStatus(false)
+    } else if (roomRole === listenerRole) {
+      setPlayStatus(false)
+    }
   }
 
   useEffect(() => {
@@ -62,54 +74,92 @@ export default props => {
     return JSON.stringify(state, null, 4)
   }
   //---------------------------------------------------------------------
+
   return (
     <Content>
-      <h1>Listener</h1>
-      <div>
-        <audio ref={audioReference} autoPlay controls></audio>
-      </div>
-
-      <div>streamId: {location.state && location.state.bjStreamId}</div>
-
-      {!playStatus && (
-        <div>
-          <button
-            style={{
-              width: '100px',
-              height: '50px',
-              color: 'white',
-              cursor: 'pointer',
-              backgroundColor: 'blue'
-            }}
-            onClick={() => {
-              if (!location.state || !location.state.bjStreamId) {
-                return alert('Need a stream id')
-              }
-              if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
-                const status = mediaHandler.play()
-                if (status) {
-                  startPlayer()
+      {roomRole === hostRole ? (
+        <>
+          <h1>Host BJ</h1>
+          <div>Stream ID : {bjStreamId}</div>
+          <div>
+            <button
+              style={{
+                width: '100px',
+                height: '50px',
+                color: 'white',
+                cursor: 'pointer',
+                backgroundColor: publishStatus ? 'red' : 'blue'
+              }}
+              onClick={() => {
+                if (!bjStreamId) {
+                  return alert('Need a stream id')
                 }
-              }
-            }}>
-            play
-          </button>
-        </div>
-      )}
+                if (!mediaHandler.audioStream) {
+                  return alert('Need a audio sream and stereo mix')
+                }
 
-      {playStatus && (
-        <div>
-          <button
-            style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
-            onClick={() => {
-              if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
-                mediaHandler.stop()
-                stopPlayer()
-              }
-            }}>
-            stop
-          </button>
-        </div>
+                if (mediaHandler && !mediaHandler.rtcPeerConn) {
+                  mediaHandler.publish()
+                  startPlayer()
+                } else if (mediaHandler && mediaHandler.rtcPeerConn) {
+                  mediaHandler.stop()
+                  stopPlayer()
+                }
+              }}>
+              {publishStatus ? 'Stop' : 'Publish'}
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1>Listener</h1>
+          <div>
+            <audio ref={audioReference} autoPlay controls></audio>
+          </div>
+
+          <div>streamId: {bjStreamId}</div>
+
+          {!playStatus && (
+            <div>
+              <button
+                style={{
+                  width: '100px',
+                  height: '50px',
+                  color: 'white',
+                  cursor: 'pointer',
+                  backgroundColor: 'blue'
+                }}
+                onClick={() => {
+                  if (!bjStreamId) {
+                    return alert('Need a stream id')
+                  }
+                  if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
+                    const status = mediaHandler.play()
+                    if (status) {
+                      startPlayer()
+                    }
+                  }
+                }}>
+                play
+              </button>
+            </div>
+          )}
+
+          {playStatus && (
+            <div>
+              <button
+                style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
+                onClick={() => {
+                  if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
+                    mediaHandler.stop()
+                    stopPlayer()
+                  }
+                }}>
+                stop
+              </button>
+            </div>
+          )}
+        </>
       )}
     </Content>
   )
