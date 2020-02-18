@@ -50,6 +50,8 @@ const JoinForm = props => {
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
   const dateYear = date.slice(0, 4) - 17
+  let dateDefault = ''
+
   let leadingZeros = (n, digits) => {
     var zero = ''
     n = n.toString()
@@ -329,31 +331,38 @@ const JoinForm = props => {
     }
   }
 
-  //---------------------------------------------------------------------
-  //useEffect
   useEffect(() => {
     //이미지 값 비었을 경우 기본 프로필 이미지 셋팅
     //state 시점차이때문에 birth와 image를 처음 동시에 셋팅해주어야함, 그렇지 않으면 하나는 계속 빈값으로 엎어쳐진다.
     if (!changes.image) {
       setChanges({
         ...changes,
-        birth: dateDefault,
         image: defaultImage //포토 서버에 올려둔 기본 이미지. 나중에 지워지면 새로 올려줘야함
       })
     }
+    // } else if (!changes.birth) {
+    //   setChanges({
+    //     ...changes,
+    //     birth: dateDefault
+    //     //포토 서버에 올려둔 기본 이미지. 나중에 지워지면 새로 올려줘야함
+    //   })
+    // }
   }, [])
-
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
-  let dateDefault = ''
   const pickerOnChange = value => {
-    if (!changes.birth) {
-      dateDefault = value
-    } else {
-      setChanges({
-        ...changes,
-        birth: value
-      })
-    }
+    //if (!changes.birth) {
+    //dateDefault = value
+    setChanges({
+      ...changes,
+      birth: value
+      //포토 서버에 올려둔 기본 이미지. 나중에 지워지면 새로 올려줘야함
+    })
+    // } else {
+    //   setChanges({
+    //     ...changes,
+    //     birth: value
+    //   })
+    // }
   }
 
   useEffect(() => {
