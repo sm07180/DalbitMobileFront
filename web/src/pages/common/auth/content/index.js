@@ -34,54 +34,52 @@ export default props => {
   //useState
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
-  const [nvStatus, setNvStatus] = useState(false)
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
   //const [changes, setChanges] = useState({})
-  let loginId,
-    loginName,
-    loginImg,
-    loginPwd,
-    loginEmail,
-    loginNicknm,
+  let loginId = '',
+    loginName = '',
+    loginImg = '',
+    loginPwd = '',
+    loginEmail = '',
+    loginNicknm = '',
     gender = ''
-
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj, ostype) {
     switch (ostype) {
       case 'g':
-        loginId = obj.additionalUserInfo.profile.id
-        loginName = obj.additionalUserInfo.profile.name
-        loginImg = obj.additionalUserInfo.profile.picture
+        loginId = typeof obj.additionalUserInfo.profile !== 'undefined' ? obj.additionalUserInfo.profile.id : ''
+        loginName = typeof obj.additionalUserInfo.profile !== 'undefined' ? obj.additionalUserInfo.profile.name : ''
+        loginImg = typeof obj.additionalUserInfo.profile !== 'undefined' ? obj.additionalUserInfo.profile.picture : ''
         break
       case 'f':
-        loginId = obj.userID
-        loginName = obj.name
-        loginImg = obj.picture ? obj.picture.data.url : ''
+        loginId = typeof obj !== 'undefined' ? obj.userID : ''
+        loginName = typeof obj !== 'undefined' ? obj.name : ''
+        loginImg = typeof obj.picture !== 'undefined' ? obj.picture.data.url : ''
 
         break
       case 'k':
-        loginId = obj.profile.id
-        loginNicknm = obj.profile.properties.nickname
-        loginImg = obj.profile.properties.profile_image
-        loginEmail = obj.profile.properties.profile_image
+        loginId = typeof obj.profile !== 'undefined' ? obj.profile.id : ''
+        loginNicknm = typeof obj.profile.properties !== 'undefined' ? obj.profile.properties.nickname : ''
+        loginImg = typeof obj.profile.properties !== 'undefined' ? obj.profile.properties.profile_image : ''
+        loginEmail = typeof obj.profile.properties !== 'undefined' ? obj.profile.properties.email : ''
         if (gender && typeof gender !== 'undefined') {
           gender = obj.profile.kakao_account.gender === 'male' ? 'm' : 'f'
         }
         break
       case 'n':
-        loginId = obj.id
-        loginName = obj.name
-        loginNicknm = obj.nickname //네이버는 닉네임이 ex) gurenn***
-        loginImg = obj.profile_image
-        loginEmail = obj.email
+        loginId = typeof obj !== 'undefiend' ? obj.id : ''
+        loginName = typeof obj !== 'undefiend' ? obj.name : ''
+        loginNicknm = typeof obj !== 'undefiend' ? obj.nickname : '' //네이버는 닉네임이 ex) gurenn***
+        loginImg = typeof obj !== 'undefiend' ? obj.profile_image : ''
+        loginEmail = typeof obj !== 'undefiend' ? obj.email : ''
         if (gender && typeof gender !== 'undefined') {
           gender = obj.gender.toLowerCase()
         }
         break
       default:
-        loginId = obj.phone
-        loginPwd = obj.pwd
+        loginId = typeof obj !== 'undefiend' ? obj.phone : ''
+        loginPwd = typeof obj !== 'undefiend' ? obj.pwd : ''
 
         if (typeof loginId === 'undefined' || !loginId) {
           alert('휴대폰번호를 입력해 주세요')
@@ -116,10 +114,9 @@ export default props => {
     console.log('loginInfo = ' + JSON.stringify(loginInfo))
     if (res && res.code) {
       if (res.code == 0) {
-        /*
-         * 로그인정상
-         */
+        //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
         props.update({loginSuccess: res.data})
+
         //context.action.updateState(res.data)
         //context.action.updateLogin(true)
       } else {
@@ -138,6 +135,12 @@ export default props => {
           if (result) {
             props.history.push('/user/join', loginInfo)
           } else {
+            if (ostype === 'n') {
+              localStorage.removeItem('com.naver.nid.access_token')
+              localStorage.removeItem('com.naver.nid.oauth.state_token')
+            }
+
+            props.history.push('/')
             alert('회원가입 실패 메인이동')
           }
         }
@@ -250,48 +253,46 @@ export default props => {
       callbackHandle: false
     })
     naverLogin.init()
-    if (nvStatus === false) {
-      console.log(nvStatus)
-      naverLogin.getLoginStatus(function(status) {
-        if (status) {
-          var email = naverLogin.user.getEmail()
-          var name = naverLogin.user.getNickName()
-          var profileImage = naverLogin.user.getProfileImage()
-          var birthday = naverLogin.user.getBirthday()
-          var uniqId = naverLogin.user.getId()
-          var age = naverLogin.user.getAge()
 
-          setNvStatus(status)
-          console.log('1')
-          fetchData(naverLogin.loginStatus.naverUser, 'n')
-        } else {
-          console.log('AccessToken이 올바르지 않습니다.')
-        }
-      })
-    }
-  }, [nvStatus])
+    naverLogin.getLoginStatus(function(status) {
+      if (status) {
+        var email = naverLogin.user.getEmail()
+        var name = naverLogin.user.getNickName()
+        var profileImage = naverLogin.user.getProfileImage()
+        var birthday = naverLogin.user.getBirthday()
+        var uniqId = naverLogin.user.getId()
+        var age = naverLogin.user.getAge()
 
-  const loadData = () => {
-    var el = document.getElementById('naverIdLogin')
-    el.addEventListener('load', function() {
-      console.warn('asdasdasd')
-      naverLogin.getLoginStatus(function(status) {
-        if (status) {
-          /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
-          var email = naverLogin.user.getEmail()
-          if (email == undefined || email == null) {
-            alert('이메일은 필수정보입니다. 정보제공을 동의해주세요.')
-            /* (5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 */
-            naverLogin.reprompt()
-            return
-          }
-          window.location.replace('http://' + window.location.hostname + (location.port == '' || location.port == undefined ? '' : ':' + location.port) + '/sample/main.html')
-        } else {
-          console.log('callback 처리에 실패하였습니다.')
+        if (!context.token.isLogin) {
+          fetchData(naverLogin.user, 'n')
         }
-      })
+      } else {
+        console.log('AccessToken이 올바르지 않습니다.')
+      }
     })
-  }
+  }, [])
+
+  // const loadData = () => {
+  //   var el = document.getElementById('naverIdLogin')
+  //   el.addEventListener('load', function() {
+  //     console.warn('asdasdasd')
+  //     naverLogin.getLoginStatus(function(status) {
+  //       if (status) {
+  //         /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
+  //         var email = naverLogin.user.getEmail()
+  //         if (email == undefined || email == null) {
+  //           alert('이메일은 필수정보입니다. 정보제공을 동의해주세요.')
+  //           /* (5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 */
+  //           naverLogin.reprompt()
+  //           return
+  //         }
+  //         window.location.replace('http://' + window.location.hostname + (location.port == '' || location.port == undefined ? '' : ':' + location.port) + '/sample/main.html')
+  //       } else {
+  //         console.log('callback 처리에 실패하였습니다.')
+  //       }
+  //     })
+  //   })
+  // }
 
   //---------------------------------------------------------------------
   return (
