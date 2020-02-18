@@ -4,7 +4,6 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
-import {ServerWritableStream} from 'grpc'
 
 const testData = [
   {
@@ -33,6 +32,8 @@ const testBox = [0, 1, 2, 3, 4, 5, 6, 7]
 export default props => {
   const [bWidth, setWidth] = useState()
   const [tData, setTData] = useState([])
+  const [item, setItem] = useState(-1)
+  const [count, setCount] = useState(0)
   const context = useContext(Context)
 
   const widthCalc = () => {
@@ -42,6 +43,14 @@ export default props => {
     }
   }
 
+  const pickItem = idx => {
+    if (item != idx) {
+      setItem(idx)
+      setCount(1)
+    } else if (item === idx) {
+      setCount(count + 1)
+    }
+  }
   async function fetchData() {
     const res = await Api.send_gift({
       data: {
@@ -53,9 +62,6 @@ export default props => {
     })
 
     console.log('## res :', res.result)
-    // if(res.result != 'fail'){
-
-    // }
     setTData(res)
   }
 
@@ -66,7 +72,8 @@ export default props => {
     context.action.updatePopupVisible(false)
   }, [])
   console.log('## tData : ', tData)
-  console.log('## popup_code', context.popup_code)
+  console.log('## item : ', item)
+  console.log('## count: ', count)
   return (
     <Container>
       <Navi title={'선물'} />
@@ -89,14 +96,17 @@ export default props => {
       <BoxArea>
         {testBox.map((data, idx) => {
           return (
-            <ItemInfo key={idx}>
-              {/* <ItemBox /> */}
-              <Picked />
+            <ItemInfo key={idx} onClick={() => pickItem(idx)}>
+              {item == idx && (
+                <Picked>
+                  <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
+                </Picked>
+              )}
               <ItemBox>
                 <ItemImg>
                   <img src={'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'} width={70} height={70} />
                 </ItemImg>
-                <Icon>
+                <Icon active={idx === item ? 'active' : ''}>
                   <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
                   123
                 </Icon>
@@ -281,22 +291,23 @@ const BoxArea = styled.div`
   flex-flow: wrap;
   width: 100%;
   height: 250px;
+  justify-content: center;
+  align-items: center;
 `
 
 const ItemInfo = styled.button`
   display: flex;
-  flex-direction: column;
   width: 24%;
-  height: 100px;
+  height: 120px;
   margin-right: 3px;
   justify-content: center;
   align-items: center;
 `
 
-const ItemImg = styled.button`
+const ItemImg = styled.div`
   display: flex;
   width: 100%;
-  height: 76px;
+  height: 70px;
   /* border-style: solid;
   border-color: #e0e0e0;
   border-width: 1px; */
@@ -309,18 +320,22 @@ const Icon = styled.div`
   margin-top: 6px;
   justify-content: center;
   align-items: center;
+  z-index: 110;
 
-  & div {
-    width: 16px;
-    height: 16px;
-    background-color: black;
-    margin-right: 5px;
-  }
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: -0.35px;
+
+  color: ${props => (props.active == 'active' ? '#fff' : '#757575')};
 `
 const ButtonArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-top: 20px;
 `
 
 const Charge = styled.button`
@@ -451,12 +466,26 @@ const Photo = styled.div`
   height: 36px;
 `
 const Picked = styled.div`
+display: flex;
   position: absolute;
   width: 100%;
   height: 100%;
-  /* background: rgba(0, 0, 0, 0.6); */
-  background: ${props => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')};
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  /* background: ${props => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')}; */
   z-index: 100;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.58;
+  letter-spacing: -0.6px;
+  text-align: left;
+  color: #fff;
+
 `
 const ItemBox = styled.div`
   display: flex;
