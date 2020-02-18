@@ -7,7 +7,6 @@ import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
-import {Context} from 'context'
 import {BroadCastProvider} from './store'
 //components
 import Api from 'context/api'
@@ -18,7 +17,7 @@ import Content from './content'
 export default props => {
   //const
   const {title} = props.match.params
-  const context = useContext(Context)
+  //const context = useContext(Context)
   //---------------------------------------------------------------------
   /**
    * @

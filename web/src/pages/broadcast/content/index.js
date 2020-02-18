@@ -1,5 +1,6 @@
 /**
- * @title 404페이지
+ * @file /broadcast/index.js
+ * @brief 방송방
  */
 import React, {useEffect, useContext, useState, useRef} from 'react'
 import styled from 'styled-components'
@@ -17,7 +18,7 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context) //global context
-  const store = new useContext(BroadCastContext) //store
+  //const store = new useContext(BroadCastContext) //store
 
   //const
   const {state} = props.location
