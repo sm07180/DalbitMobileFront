@@ -251,31 +251,29 @@ export default props => {
   }
 
   useEffect(() => {
-    var naverLogin = new naver.LoginWithNaverId({
-      clientId: 'WK0ohRsfYc9aBhZkyApJ',
-      callbackUrl: 'https://devm-hgkim1118.dalbitcast.com/login',
-      isPopup: false,
-      loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
-      callbackHandle: false
-    })
-    naverLogin.init()
-
-    naverLogin.getLoginStatus(function(status) {
-      if (status) {
-        // var email = naverLogin.user.getEmail()
-        // var name = naverLogin.user.getNickName()
-        // var profileImage = naverLogin.user.getProfileImage()
-        // var birthday = naverLogin.user.getBirthday()
-        // var uniqId = naverLogin.user.getId()
-        // var age = naverLogin.user.getAge()
-
-        if (!context.token.isLogin) {
-          fetchData(naverLogin.user, 'n')
-        }
-      } else {
-        console.log('AccessToken이 올바르지 않습니다.')
-      }
-    })
+    // var naverLogin = new naver.LoginWithNaverId({
+    //   clientId: 'WK0ohRsfYc9aBhZkyApJ',
+    //   callbackUrl: 'https://devm-hgkim1118.dalbitcast.com/login',
+    //   isPopup: false,
+    //   loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
+    //   callbackHandle: false
+    // })
+    // naverLogin.init()
+    // naverLogin.getLoginStatus(function(status) {
+    //   if (status) {
+    //     // var email = naverLogin.user.getEmail()
+    //     // var name = naverLogin.user.getNickName()
+    //     // var profileImage = naverLogin.user.getProfileImage()
+    //     // var birthday = naverLogin.user.getBirthday()
+    //     // var uniqId = naverLogin.user.getId()
+    //     // var age = naverLogin.user.getAge()
+    //     if (!context.token.isLogin) {
+    //       fetchData(naverLogin.user, 'n')
+    //     }
+    //   } else {
+    //     console.log('AccessToken이 올바르지 않습니다.')
+    //   }
+    // })
   }, [])
 
   // const loadData = () => {
