@@ -22,6 +22,7 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
+
 //import FacebookLogin from 'pages/common/auth/fbAuth'
 //context
 
@@ -138,6 +139,11 @@ export default props => {
             if (ostype === 'n') {
               localStorage.removeItem('com.naver.nid.access_token')
               localStorage.removeItem('com.naver.nid.oauth.state_token')
+
+              // Utility.removeCookie('NID_AUT', '', -1)
+              // Utility.removeCookie('NID_JKL', '', -1)
+              // Utility.removeCookie('NID_SES', '', -1)
+              // Utility.removeCookie('NNB', '', -1)
             }
 
             props.history.push('/')
@@ -256,12 +262,12 @@ export default props => {
 
     naverLogin.getLoginStatus(function(status) {
       if (status) {
-        var email = naverLogin.user.getEmail()
-        var name = naverLogin.user.getNickName()
-        var profileImage = naverLogin.user.getProfileImage()
-        var birthday = naverLogin.user.getBirthday()
-        var uniqId = naverLogin.user.getId()
-        var age = naverLogin.user.getAge()
+        // var email = naverLogin.user.getEmail()
+        // var name = naverLogin.user.getNickName()
+        // var profileImage = naverLogin.user.getProfileImage()
+        // var birthday = naverLogin.user.getBirthday()
+        // var uniqId = naverLogin.user.getId()
+        // var age = naverLogin.user.getAge()
 
         if (!context.token.isLogin) {
           fetchData(naverLogin.user, 'n')
@@ -343,6 +349,7 @@ export default props => {
           scope="public_profile,email"
           onClick={responseFacebook}
           callback={responseFacebookCallback}
+
           // cssClass="my-facebook-button-class"
           // icon="fa-facebook"
         />
