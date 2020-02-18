@@ -68,6 +68,9 @@ export default props => {
       if (state === 3) mode = '3'
       if (state === 4) mode = '4'
       if (state === 5) mode = '종료'
+
+      //
+      if (state !== 1) return
       return (
         <List
           key={idx}
