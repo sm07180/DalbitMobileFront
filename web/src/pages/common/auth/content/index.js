@@ -370,7 +370,7 @@ export default props => {
           }}
           callbackUrl="https://devm-hgkim1118.dalbitcast.com"
         /> */}
-        <div id="naverIdLogin" />
+        {/* <div id="naverIdLogin" /> */}
       </SocialLogin>
 
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}

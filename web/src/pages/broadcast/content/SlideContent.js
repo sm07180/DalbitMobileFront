@@ -9,6 +9,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Live from './live'
 import LiveListener from './live-listener'
+import LiveGuest from './live-guest'
 import NaviBar from './navibar'
 import Charge from './charge'
 import Present from './present'
@@ -29,6 +30,7 @@ export default props => {
         ))}
       </Tab>
       {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
+      {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
@@ -190,6 +192,11 @@ const BJInfo = {
   bjNickNm: '하늘에서 비가와요~',
   url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
 }
+const GuestInfo = {
+  bjMemNo: '@guest0070',
+  bjNickNm: '◆뚜비두밥 :D',
+  url: 'https://file.mk.co.kr/meet/neds/2020/02/image_readtop_2020_103512_15805116424071678.jpg'
+}
 
 const ManegerInfo = [
   {
@@ -199,7 +206,7 @@ const ManegerInfo = [
   },
   {
     bjMemNo: '@gdgerg',
-    bjNickNm: '하늘에서 비가와요~',
+    bjNickNm: '눈바람 비가와요~',
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   }
 ]

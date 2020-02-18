@@ -124,6 +124,7 @@ const SwiperWrap = styled.div`
     height: 36px;
     margin-top: 0;
     box-sizing: border-box;
+    z-index: 2;
     @media (max-width: ${WIDTH_TABLET_S}) {
       display: none;
     }
@@ -179,7 +180,7 @@ const ToggleBtn = styled.div`
   height: 36px;
   background: url('https://devimage.dalbitcast.com/images/api/ico-stop.png') no-repeat center center / cover;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 2;
   @media (max-width: ${WIDTH_TABLET_S}) {
     display: none;
   }

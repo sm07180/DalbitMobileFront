@@ -25,6 +25,7 @@ export default props => {
         context.action.updateToken(mode.loginSuccess)
         //native 전달
         Hybrid('GetLoginToken', mode.loginSuccess)
+        //
         //redirect
         if (props.history) {
           props.history.push('/')
@@ -37,7 +38,9 @@ export default props => {
     }
   }
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    console.log(context.token.isLogin)
+  }, [])
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
