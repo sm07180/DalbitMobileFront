@@ -2,7 +2,9 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Navi from './navibar'
-import {calculateString} from 'bytebuffer'
+import Api from 'context/api'
+import {Context} from 'context'
+import {ServerWritableStream} from 'grpc'
 
 const testData = [
   {
@@ -15,9 +17,23 @@ const testData = [
   }
 ]
 
+const targetData = [
+  {
+    nickname: 'BJ라디오~~',
+    type: 0
+  },
+  {
+    nickname: '러브angel~~',
+    type: 1
+  }
+]
+
 const testBox = [0, 1, 2, 3, 4, 5, 6, 7]
+
 export default props => {
   const [bWidth, setWidth] = useState()
+  const [tData, setTData] = useState([])
+  const context = useContext(Context)
 
   const widthCalc = () => {
     if (testData != undefined) {
@@ -26,16 +42,37 @@ export default props => {
     }
   }
 
+  async function fetchData() {
+    const res = await Api.send_gift({
+      data: {
+        roomNo: '91578888356181',
+        memNo: '91578888124122',
+        itemNo: '1001',
+        itemCnt: 1
+      }
+    })
+
+    console.log('## res :', res.result)
+    // if(res.result != 'fail'){
+
+    // }
+    setTData(res)
+  }
+
   useEffect(() => {
     widthCalc()
+    fetchData()
+    context.action.updatePopup('SEND_PRESENT')
+    context.action.updatePopupVisible(false)
   }, [])
-  console.log('## bWidth : ', bWidth)
+  console.log('## tData : ', tData)
+  console.log('## popup_code', context.popup_code)
   return (
     <Container>
       <Navi title={'선물'} />
       {testData[0].guestYn === 'Y' && (
         <Target>
-          <TargetInfo />
+          <TargetInfo targetData={targetData} />
         </Target>
       )}
       <LevelInfo>
@@ -53,10 +90,17 @@ export default props => {
         {testBox.map((data, idx) => {
           return (
             <ItemInfo key={idx}>
-              <ItemBox />
-              <Icon>
-                <div></div>123
-              </Icon>
+              {/* <ItemBox /> */}
+              <Picked />
+              <ItemBox>
+                <ItemImg>
+                  <img src={'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'} width={70} height={70} />
+                </ItemImg>
+                <Icon>
+                  <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
+                  123
+                </Icon>
+              </ItemBox>
             </ItemInfo>
           )
         })}
@@ -64,13 +108,13 @@ export default props => {
       <ButtonArea>
         <Charge>
           <MyPoint>
-            <div></div>
-            <span>648</span>
+            <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_m@2x.png'} width={24} height={24} />
+            123123
           </MyPoint>
           <Plus />
         </Charge>
         <Send>보내기</Send>
-        <SecretSend>
+        <SecretSend onClick={() => context.action.updatePopupVisible(true)}>
           몰래
           <br />
           보내기
@@ -81,22 +125,25 @@ export default props => {
 }
 
 const TargetInfo = props => {
+  const [state, setState] = useState(0)
   return (
     <>
-      <Dj>
-        <DjImg></DjImg>
-        <DjInfo>
-          <Tag target={'dj'}>DJ</Tag>
-          <div>{props.nickname}</div>
-        </DjInfo>
-      </Dj>
-      <Dj>
-        <DjImg></DjImg>
-        <DjInfo>
-          <Tag target={'dj'}>DJ</Tag>
-          <div>{props.nickname}</div>
-        </DjInfo>
-      </Dj>
+      {props.targetData.map((data, idx) => {
+        return (
+          <Dj key={idx} onClick={() => setState(idx)} active={idx === state ? 'active' : ''}>
+            <Profile>
+              {/* <Photo>
+              </Photo> */}
+              <img src="https://devimage.dalbitcast.com/images/api/guest@2x.png" width={36} height={36} />
+
+              <Tag target={data.type}>{data.type === 0 ? 'DJ' : '게스트'}</Tag>
+            </Profile>
+            <DjInfo>
+              <div>{data.nickname}</div>
+            </DjInfo>
+          </Dj>
+        )
+      })}
     </>
   )
 }
@@ -130,10 +177,9 @@ const Dj = styled.button`
   border-width: 1px;
   border-color: #bdbdbd;
   border-style: solid;
-  padding-left: 5px;
-  padding-right: 5px;
-  /* justify-content: center; */
-  /* align-items: center; */
+  border-color: ${props => (props.active == 'active' ? '#8556f6' : '')};
+  justify-content: center;
+  align-items: center;
 `
 const Guest = styled.button`
   display: flex;
@@ -237,22 +283,25 @@ const BoxArea = styled.div`
   height: 250px;
 `
 
-const ItemInfo = styled.div`
+const ItemInfo = styled.button`
   display: flex;
   flex-direction: column;
   width: 24%;
   height: 100px;
   margin-right: 3px;
+  justify-content: center;
   align-items: center;
 `
 
-const ItemBox = styled.button`
+const ItemImg = styled.button`
   display: flex;
   width: 100%;
   height: 76px;
-  border-style: solid;
+  /* border-style: solid;
   border-color: #e0e0e0;
-  border-width: 1px;
+  border-width: 1px; */
+  align-items: center;
+  justify-content: center;
 `
 const Icon = styled.div`
   display: flex;
@@ -301,15 +350,16 @@ const Plus = styled.div`
 const MyPoint = styled.div`
   display: flex;
   width: 50px;
-  height: 50px;
+  height: 48px;
   align-items: center;
 
-  & div {
-    background-color: black;
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-  }
+  font-size: 18px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.78;
+  letter-spacing: normal;
+  color: #8556f6;
 `
 const Send = styled.button`
   display: flex;
@@ -355,26 +405,26 @@ const DjImg = styled.div`
   border-radius: 30px;
 `
 const Tag = styled.div`
-  height: 16px;
-  background-color: ${props => (props.target == 'dj' ? '#8555f6' : '#ec455f')};
-  width: ${props => (props.target == 'dj' ? '25px' : '42px')};
+  display: flex;
+  height: 14px;
+  background-color: ${props => (props.target === 0 ? '#8555f6' : '#ec455f')};
+  width: 36px;
   border-radius: 10px;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 9px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  line-height: 1.67;
-  letter-spacing: -0.3px;
-  text-align: left;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-bottom: 5px;
+  line-height: 2.22;
+  letter-spacing: -0.23px;
+  text-align: center;
+  position: absolute;
+  bottom: 5px;
+  justify-content: center;
+  align-items: center;
 `
 const DjInfo = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-left: 10px;
   font-size: 14px;
   font-weight: normal;
   font-stretch: normal;
@@ -382,5 +432,37 @@ const DjInfo = styled.div`
   line-height: 1.14;
   letter-spacing: -0.35px;
   text-align: left;
+  align-items: center;
+  justify-content: left;
   width: 80%;
+  height: 35px;
+  /* background-color: red; */
+`
+const Profile = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+`
+const Photo = styled.div`
+  position: absolute;
+  width: 36px;
+  height: 36px;
+`
+const Picked = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* background: rgba(0, 0, 0, 0.6); */
+  background: ${props => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')};
+  z-index: 100;
+`
+const ItemBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 94px;
+  align-items: center;
+  justify-content: center;
 `

@@ -6,54 +6,66 @@ import Navi from './navibar'
 const testMoon = [
   {
     name: 30,
-    price: '3,000'
+    price: '3,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
-    price: '10,000'
+    price: '10,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
-    price: '30,000'
+    price: '30,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
-    price: '50,000'
+    price: '50,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
-    price: '100,000'
+    price: '100,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
-    price: '300,000'
+    price: '300,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 
 const testStar = [
   {
     name: 30,
-    price: '50'
+    price: '50',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
-    price: '166'
+    price: '166',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
-    price: '500'
+    price: '500',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
-    price: '833'
+    price: '833',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
-    price: '1666'
+    price: '1666',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
-    price: '5000'
+    price: '5000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 export default props => {
@@ -113,12 +125,13 @@ export default props => {
         {testData.map((goods, idx) => {
           return (
             <GoodsInfo active={idx === goodsState ? 'active' : ''} onClick={() => setGoods(idx)} key={idx} state={choice}>
-              <Icon></Icon>
+              {/* <Icon imgUrl={goods.imgUrl} /> */}
+              <img src={goods.imgUrl} width={80} height={80} />
               <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
                 달 {goods.name}
               </GoodsName>
               <Price active={idx === goodsState ? 'active' : ''} state={choice}>
-                {choice === 'star' && '' + ' 별'}
+                {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
                 {goods.price}
                 {choice === 'moon' && '원'}
               </Price>
@@ -210,7 +223,7 @@ const Goods = styled.div`
   flex-flow: wrap;
   justify-content: space-between;
   width: 100%;
-  height: 264px;
+  height: 290px;
 `
 const GoodsInfo = styled.button`
   display: flex;
@@ -221,13 +234,13 @@ const GoodsInfo = styled.button`
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 104px;
   }
-  height: 126px;
-  margin-bottom: 10px;
+  height: 138px;
+  margin-bottom: 4px;
   border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   border-style: solid;
   border-radius: 10px;
   border-width: 1px;
-  padding-top: 2vh;
+  /* padding-top: 2vh; */
 `
 
 const Price = styled.div`
@@ -235,7 +248,7 @@ const Price = styled.div`
   justify-content: center;
   align-items: center;
   width: 99px;
-  height: 30px;
+  height: 28px;
   background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
@@ -243,16 +256,16 @@ const Price = styled.div`
 
 const GoodsName = styled.div`
   width: 100px;
-  height: 18px;
+  height: 16px;
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#424242') : props.active ? '#fdad2b' : '#424242')};
 `
 const ButtonArea = styled.div`
   display: flex;
   width: 100%;
-  height: 10%;
+  height: 8%;
   /* background-color: blue; */
   justify-content: space-between;
   align-items: center;
@@ -261,7 +274,7 @@ const ButtonArea = styled.div`
 const Icon = styled.div`
   width: 25px;
   height: 25px;
-  background-color: black;
+  /* background-color: black; */
   margin-bottom: 10px;
 `
 const Cancel = styled.button`

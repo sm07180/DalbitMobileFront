@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
+import Present from 'pages/broadcast/content/present-popup'
 //
 export default props => {
   //
@@ -25,6 +26,8 @@ export default props => {
         return <Auth {...props} />
       case 'CAST': //----------------------------------------캐스트
         return <POPCAST {...props} />
+      case 'SEND_PRESENT': //----------------------------------------방송-몰래 선물보내기
+        return <Present {...props} />
     }
   }
   //---------------------------------------------------------------------
@@ -43,6 +46,16 @@ export default props => {
       {context.popup_code === 'CAST' && context.popup_visible && (
         <>
           <Background />
+          <Container>{makePopupContents()}</Container>
+        </>
+      )}
+      {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
+        <>
+          <Background
+            onClick={() => {
+              context.action.updatePopupVisible(false)
+            }}
+          />
           <Container>{makePopupContents()}</Container>
         </>
       )}
