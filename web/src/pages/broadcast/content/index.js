@@ -10,6 +10,7 @@ import {Context} from 'context'
 import {BroadCastStore} from '../store'
 
 //etc
+import {getAudioStream} from 'components/lib/getStream'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
@@ -54,12 +55,23 @@ export default props => {
   }
 
   useEffect(() => {
-    if (location.state && mediaHandler) {
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-      mediaHandler.setType('listener')
-      mediaHandler.setAudioTag(audioReference.current)
-      mediaHandler.setStreamId(location.state.bjStreamId)
+    if (mediaHandler) {
+      if (roomRole === hostRole) {
+        mediaHandler.setLocalStartCallback(startPlayer)
+        mediaHandler.setLocalStopCallback(stopPlayer)
+        mediaHandler.setType('host')
+        mediaHandler.setStreamId(bjStreamId)
+        ;(async () => {
+          const audioStream = await getAudioStream()
+          mediaHandler.setAudioStream(audioStream)
+        })()
+      } else if (roomRole === listenerRole) {
+        mediaHandler.setLocalStartCallback(startPlayer)
+        mediaHandler.setLocalStopCallback(stopPlayer)
+        mediaHandler.setType('listener')
+        mediaHandler.setAudioTag(audioReference.current)
+        mediaHandler.setStreamId(bjStreamId)
+      }
     }
 
     return () => {
