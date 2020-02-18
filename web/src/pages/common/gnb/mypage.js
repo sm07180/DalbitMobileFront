@@ -102,6 +102,8 @@ export default props => {
                         async function fetchData(obj) {
                           const res = await Api.member_logout({data: context.token.authToken})
                           context.action.updateToken(res.data)
+                          localStorage.removeItem('com.naver.nid.access_token')
+                          localStorage.removeItem('com.naver.nid.oauth.state_token')
                           props.history.push('/')
                           context.action.updateGnbVisible(false)
                           console.log(props)

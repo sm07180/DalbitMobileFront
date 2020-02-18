@@ -14,6 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
 import Present from 'pages/broadcast/content/present-popup'
+import LiveClickEvent from 'components/ui/eventbox'
 //
 export default props => {
   //
@@ -28,6 +29,8 @@ export default props => {
         return <POPCAST {...props} />
       case 'SEND_PRESENT': //----------------------------------------방송-몰래 선물보내기
         return <Present {...props} />
+      case 'LiveClickEvent': //----------------------------------------라이브청취자 클릭이벤트
+        return <LiveClickEvent {...props} />
     }
   }
   //---------------------------------------------------------------------
@@ -51,12 +54,18 @@ export default props => {
       )}
       {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
         <>
-          <Background
+          <Background />
+          <Container>{makePopupContents()}</Container>
+        </>
+      )}
+      {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
+        <>
+          <EventBackground
             onClick={() => {
               context.action.updatePopupVisible(false)
             }}
           />
-          <Container>{makePopupContents()}</Container>
+          <EventContainer>{makePopupContents()}</EventContainer>
         </>
       )}
     </Popup>
@@ -95,3 +104,6 @@ const Background = styled.div`
   background: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);
 `
+
+const EventContainer = styled.div``
+const EventBackground = styled.div``

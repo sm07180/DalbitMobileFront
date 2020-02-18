@@ -68,6 +68,9 @@ export default props => {
       if (state === 3) mode = '3'
       if (state === 4) mode = '4'
       if (state === 5) mode = '종료'
+
+      //
+      if (state !== 1) return
       return (
         <List
           key={idx}
@@ -93,7 +96,7 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    getBroadList({params: {roomType: '', page: 1, records: 10}})
+    getBroadList({params: {roomType: '', page: 1, records: 20}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------

@@ -3,7 +3,7 @@
  *
  * document.dispatchEvent(new Event('native-goLogin'))
  */
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
