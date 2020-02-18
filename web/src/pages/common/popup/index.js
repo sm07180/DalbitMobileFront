@@ -30,24 +30,29 @@ export default props => {
         return <LiveClickEvent {...props} />
     }
   }
+
+  useEffect(() => {
+    context.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
+  }, [context.popup_visible])
+
   //---------------------------------------------------------------------
   return (
     <Popup>
       {context.popup_code === 'LOGIN' && context.popup_visible && (
-        <>
+        <Container>
+          <Wrap>{makePopupContents()}</Wrap>
           <Background
             onClick={() => {
               context.action.updatePopupVisible(false)
             }}
           />
-          <Container>{makePopupContents()}</Container>
-        </>
+        </Container>
       )}
       {context.popup_code === 'CAST' && context.popup_visible && (
-        <>
+        <Container>
+          <Wrap>{makePopupContents()}</Wrap>
           <Background />
-          <Container>{makePopupContents()}</Container>
-        </>
+        </Container>
       )}
       {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
         <>
@@ -64,25 +69,29 @@ export default props => {
 }
 
 //---------------------------------------------------------------------
-const Popup = styled.section`
-  /* mobile media query */
-
-  /* pc media query */
-`
+const Popup = styled.section``
 const Container = styled.div`
+  display: flex;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  padding: 40px 3%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  z-index: 200;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
 
   & .logo {
     margin-top: 0;
   }
+`
+const Wrap = styled.div`
+  width: 500px;
+  padding: 50px 40px;
+  background: #fff;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
+    padding: 40px 5%;
   }
 `
 const Background = styled.div`
@@ -94,6 +103,7 @@ const Background = styled.div`
   z-index: 100;
   background: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);
+  z-index: -1;
 `
 
 const EventContainer = styled.div``

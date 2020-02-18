@@ -377,5 +377,10 @@ input[type='number'] {
   border-radius: 5px;
 }
 
+/* 팝업 오픈시 스크롤 막기 */
+.popup-open {
+  overflow: hidden;
+}
+
 @media (max-width: $WIDTH_MOBILE) {
 }

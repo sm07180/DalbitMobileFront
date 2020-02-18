@@ -4,6 +4,7 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import Toggle from '../footer/toggle-footer'
+import {Link, NavLink} from 'react-router-dom'
 //context
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
@@ -26,7 +27,9 @@ const Layout = props => {
     <Container className="pure">
       {/* 헤더설정 */}
       <Logo>
-        <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+        <NavLink to="/" exact>
+          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+        </NavLink>
       </Logo>
       {/* global navigation */}
       <main>
