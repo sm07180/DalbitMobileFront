@@ -10,7 +10,7 @@ import {WIDTH_TABLET} from 'context/config'
 //layout
 import Layout from 'pages/common/layout/pure'
 //components
-import Join from './content/join'
+import Join from './content/join-form'
 import Password from './content/password'
 
 const User = props => {

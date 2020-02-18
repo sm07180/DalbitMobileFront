@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
+import LiveClickEvent from 'components/ui/eventbox'
 //
 export default props => {
   //
@@ -25,6 +26,8 @@ export default props => {
         return <Auth {...props} />
       case 'CAST': //----------------------------------------캐스트
         return <POPCAST {...props} />
+      case 'LiveClickEvent': //----------------------------------------라이브청취자 클릭이벤트
+        return <LiveClickEvent {...props} />
     }
   }
   //---------------------------------------------------------------------
@@ -44,6 +47,16 @@ export default props => {
         <>
           <Background />
           <Container>{makePopupContents()}</Container>
+        </>
+      )}
+      {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
+        <>
+          <EventBackground
+            onClick={() => {
+              context.action.updatePopupVisible(false)
+            }}
+          />
+          <EventContainer>{makePopupContents()}</EventContainer>
         </>
       )}
     </Popup>
@@ -82,3 +95,6 @@ const Background = styled.div`
   background: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);
 `
+
+const EventContainer = styled.div``
+const EventBackground = styled.div``

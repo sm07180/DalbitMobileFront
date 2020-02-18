@@ -1,31 +1,14 @@
 /**
- * @file auth.js
- * @brief 로그인영역
- * @todo 반응형으로 처리되어야함
- * @update contextAPI 연동
+ *
  */
-import React, {useState, useEffect, useContext} from 'react'
-import styled from 'styled-components'
-//hooks
-import useChange from 'components/hooks/useChange'
-//components
-import Utility from 'components/lib/utility'
-import {GoogleLogin} from 'react-google-login'
-import KakaoLogin from 'react-kakao-login'
-import NaverLogin from 'react-naver-login'
-import FacebookLogin from 'react-facebook-login'
-import {osName, browserName} from 'react-device-detect'
+import React, {useEffect, useContext, useState} from 'react'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
-import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
-import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
-//import FacebookLogin from 'pages/common/auth/fbAuth'
-//context
-
-//import {switchCase} from '@babel/types'
+//components
+import Utility from 'components/lib/utility'
+import Content from './content'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -123,9 +106,7 @@ export default props => {
         Api.setAuthToken(res.data.authToken)
         context.action.updateToken(res.data)
         //native 전달
-        Hybrid('GetLoginToken', res.data)
-        //cookie
-        Utility.setCookie('authToken', res.data.authToken, '365')
+        Hybrid('GetLoginToken', mode.loginSuccess)
         //redirect
         if (props.history) {
           props.history.push('/')
@@ -312,185 +293,8 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    <LoginWrap>
-      {window.location.pathname === '/login' ? (
-        ''
-      ) : (
-        <Logo className="logo">
-          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-        </Logo>
-      )}
-      <LoginInput>
-        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} />
-        <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} />
-      </LoginInput>
-      <LoginSubmit
-        onClick={() => {
-          fetchData({...changes}, 'p')
-        }}>
-        로그인
-      </LoginSubmit>
-      <ButtonArea>
-        <input type="checkbox" id="keeplogin" />
-        <label htmlFor="keeplogin">로그인 유지</label>
-        <div>
-          <button
-            onClick={() => {
-              props.history.push('/user/password')
-              context.action.updatePopupVisible(false)
-            }}>
-            비밀번호 변경
-          </button>
-          <button
-            onClick={() => {
-              props.history.push('/user/join')
-              context.action.updatePopupVisible(false)
-            }}>
-            회원가입
-          </button>
-        </div>
-      </ButtonArea>
-
-      <SocialLogin>
-        <FacebookLogin
-          appId="2711342585755275"
-          autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
-          fields="name,email,picture" //어떤 정보를 받아올지 입력하는 필드
-          scope="public_profile,email"
-          onClick={responseFacebook}
-          callback={responseFacebookCallback}
-          // cssClass="my-facebook-button-class"
-          // icon="fa-facebook"
-        />
-        <KakaoLogin
-          jsKey="275312c2c2715a7d00c6f0d6c1730353"
-          onSuccess={result => responseKakao(result)}
-          render={props => <img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg" width="300" height="66" onClick={props.onClick} />}
-          onFailure={responseKakao}
-          useDefaultStyle={true}
-          getProfile={true}
-        />
-        {/* <NaverLogin
-          clientId="WK0ohRsfYc9aBhZkyApJ"
-          render={props => <div onClick={props.onClick}>Naver Login</div>}
-          onSuccess={() => {
-            console.log('assssss')
-          }}
-          onFailure={() => {
-            console.log('asdasdasd')
-          }}
-          callbackUrl="https://devm-hgkim1118.dalbitcast.com"
-        /> */}
-        <div id="naverIdLogin" />
-      </SocialLogin>
-
-      {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
-
-      {/* <SnsGoogleLogion onClick={() => responseGooglelogin()}>
-        SIGN IN WITH GOOGLE
-      </SnsGoogleLogion> */}
-
-      {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
-      {/* <button onClick={signOut}>Sign out</button> */}
-      {/* {currentUser ? (
-        <div className="option" onClick={() => auth.signOut()}>
-          SIGN OUT
-        </div>
-      ) : (
-        <Link className="option" to="/signin">
-          SIGN IN
-        </Link>
-      )} */}
-      {/* <GoogleLogin
-        clientId="76445230270-03g60q4kooi6qg0qvtjtnqqnn70juulc.apps.googleusercontent.com"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogleFail}
-        render={renderProps => (
-          <button onClick={renderProps.onClick} disabled={renderProps.disabled}>
-            LOGIN WITH GOOGLE
-          </button>
-        )}
-        cookiePolicy={'single_host_origin'}
-      /> */}
-    </LoginWrap>
+    <React.Fragment>
+      <Content {...props} update={update} />
+    </React.Fragment>
   )
 }
-
-//---------------------------------------------------------------------
-const Logo = styled.div`
-  margin: 60px 0 50px 0;
-  text-align: center;
-`
-const LoginWrap = styled.div``
-
-const LoginInput = styled.div`
-  input {
-    width: 100%;
-    border: 1px solid #e5e5e5;
-    font-size: 16px;
-    line-height: 56px;
-    text-indent: 18px;
-  }
-  input + input {
-    margin-top: 14px;
-  }
-`
-const LoginSubmit = styled.button`
-  width: 100%;
-  margin-top: 14px;
-  background: ${COLOR_MAIN};
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 64px;
-`
-
-const ButtonArea = styled.div`
-  margin-top: 20px;
-  label {
-    padding-left: 5px;
-    color: #555;
-  }
-  div {
-    float: right;
-    button {
-      color: ${COLOR_MAIN};
-    }
-    button + button::before {
-      display: inline-block;
-      width: 1px;
-      height: 12px;
-      margin: 0 10px -1px 10px;
-      background: ${COLOR_MAIN};
-      content: '';
-    }
-  }
-`
-
-const SocialLogin = styled.div`
-  margin: 30px 0 0 0;
-  div {
-    float: left;
-    width: 48.5%;
-    height: 48px;
-    margin-left: 3%;
-    margin-bottom: 12px;
-    background: #f5f5f5;
-  }
-  div:nth-child(2n + 1) {
-    margin-left: 0;
-  }
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-`
-const SnsGoogleLogion = styled.button`
-  padding: 10px 34px 10px 50px;
-  border: 1px solid #e5e5e5;
-  background: #fff url(https://devimage.dalbitcast.com/svg/ico-google.svg) no-repeat -1px -3px;
-  color: #757575;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-`

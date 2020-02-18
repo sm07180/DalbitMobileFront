@@ -1,58 +1,106 @@
 /**
  * @title
  */
-import React, {useEffect, useState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import {Context} from 'context'
+import Api from 'context/api'
+import Events from './event'
 //pages
 
 export default props => {
+  const context = useContext(Context)
+  //클릭 이벤트
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [BJInfo, setBJInfo] = useState(props.Info3)
-  //
   const Manegermap = ManegerInfo.map((live, index) => {
+    const ToggleEvent = () => {
+      if (trues === false) {
+        setTrues(true)
+      } else {
+        setTrues(false)
+      }
+    }
+    const AllFalse = () => {
+      setTrues(false)
+    }
+    const [trues, setTrues] = useState(false)
     const {bjNickNm, bjMemNo, url} = live
     return (
       <ManegerList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
+        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
+        {trues && <Events />}
+        <AFTER onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ManegerList>
     )
   })
   const Listenmap = ListenInfo.map((live, index) => {
+    const ToggleEvent = () => {
+      if (trues === false) {
+        setTrues(true)
+      } else {
+        setTrues(false)
+      }
+    }
+    const AllFalse = () => {
+      setTrues(false)
+    }
+    const [trues, setTrues] = useState(false)
     const {bjNickNm, bjMemNo, url} = live
     return (
       <ListenList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
+        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
+        {trues && <Events />}
+        <AFTER onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ListenList>
     )
   })
   return (
-    <Wrapper>
-      <LiveWrap>
-        <Title>방송 DJ</Title>
-        <DJList>
-          <ManegerImg bg={BJInfo.url} />
-          <h2>{BJInfo.bjMemNo}</h2>
-          <h5>{BJInfo.bjNickNm}</h5>
-        </DJList>
-      </LiveWrap>
-      <LiveWrap>
-        <Title>방송 매니저</Title>
-        {Manegermap}
-      </LiveWrap>
-      <LiveWrap>
-        <Title>청취자</Title>
-        <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
-      </LiveWrap>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <LiveWrap>
+          <Title>방송 DJ</Title>
+          <DJList>
+            <ManegerImg bg={BJInfo.url} />
+            <h2>{BJInfo.bjMemNo}</h2>
+            <h5>{BJInfo.bjNickNm}</h5>
+          </DJList>
+        </LiveWrap>
+        <LiveWrap>
+          <Title>방송 매니저</Title>
+          {Manegermap}
+        </LiveWrap>
+        <LiveWrap>
+          <Title>청취자</Title>
+          <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
+        </LiveWrap>
+      </Wrapper>
+    </>
   )
 }
 const Wrapper = styled.div`
   margin-top: 20px;
+`
+const AFTER = styled.div`
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  &.on {
+    display: block;
+    z-index: 9998;
+  }
 `
 
 const LiveWrap = styled.div`
@@ -60,6 +108,7 @@ const LiveWrap = styled.div`
 `
 
 const ManegerList = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   padding: 4px;
@@ -105,7 +154,6 @@ const NickName = styled.h4`
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
 `
-////////////////////////////
 const ListenWrap = styled.div`
   margin-bottom: 20px;
   overflow-y: scroll;
@@ -113,14 +161,27 @@ const ListenWrap = styled.div`
 `
 
 const ListenList = styled.div`
-  width: 100%;
+  width: calc(100% + 10px);
+  position: relative;
   display: flex;
   padding: 4px;
   margin-top: 4px;
   border: 1px solid #f5f5f5;
   border-radius: 24px;
+  background-color: #fff;
+`
+const EVENTBTN = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
+  outline: none;
 `
 const DJList = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   padding: 4px;
@@ -149,5 +210,23 @@ const DJList = styled.div`
     font-weight: 600;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+  }
+  &:after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 24px;
+    height: 14px;
+    border-radius: 7px;
+    background-color: #fdad2b;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 14px;
+    transform: translateY(-50%);
+
+    content: 'DJ';
   }
 `
