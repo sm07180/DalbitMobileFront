@@ -288,8 +288,9 @@ export const SendMessageChat = objChat => {
   console.log('sendMessage = ' + JSON.stringify(params))
   //sendMessage.handle(publicChannelHandle, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '테스트1 메세지입니다. - Channel Publish')
   //sendMessage.socket(socketConfig.channel.publicChannelName, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '123123123123123')
-
-  sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
+  if (objChat.roomNo) {
+    sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
+  }
 }
 
 export const sendMessageJson = function(cmd, params, msg) {
