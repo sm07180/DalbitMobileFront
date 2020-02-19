@@ -43,6 +43,7 @@ export default props => {
       </ButtonArea>
       <TextArea>
         <PointInput placeholder="직접 입력" type="number" maxLength="5" value={text} onChange={handleChangeInput} />
+        <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
     </Container>
   )

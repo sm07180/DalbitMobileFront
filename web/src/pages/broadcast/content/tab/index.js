@@ -12,6 +12,7 @@ import LiveListener from './listen'
 import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
+import Boost from './boost'
 export default props => {
   //---------------------------------------------------------------------
   //context
