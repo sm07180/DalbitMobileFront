@@ -22,6 +22,8 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
+// socketCluster 연결
+import SocketCluster from 'context/socketCluster'
 
 export default () => {
   //---------------------------------------------------------------------
@@ -104,6 +106,7 @@ export default () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
+      {ready && <SocketCluster />}
     </React.Fragment>
   )
 }

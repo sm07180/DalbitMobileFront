@@ -15,13 +15,18 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
+  const {mypage} = context
   //useMemo
-  console.log(context.mypage)
   const {isLogin} = context.token
+  const profileImg = useMemo(() => {
+    return 'https://devimage.dalbitcast.com/images/api/profileGnb.png'
+
+    if (isLogin && mypage !== undefined) return mypage.profImg.url
+    if (!isLogin) return 'https://devimage.dalbitcast.com/images/api/profileGnb.png'
+  })
   //useState
   const [login, setLogin] = useState(props.LoginInfo)
   //const
-  const {mypage} = context
   //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
 
   //data
@@ -81,11 +86,11 @@ export default props => {
 
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={isLogin ? mypage.profImg.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
+              <PIMG bg={profileImg}></PIMG>
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{mypage.nickNm}</h4>
+                    {/* <h4>{mypage.nickNm}</h4> */}
                     {/* <ID>{login.name}</ID> */}
                   </NoLoginTitle>
                 ) : (

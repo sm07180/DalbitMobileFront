@@ -14,6 +14,8 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
+
+const sc = require('context/socketCluster')
 import SideContent from './tab'
 
 //pages
@@ -82,7 +84,7 @@ export default props => {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('listener')
-        mediaHandler.setAudioTag(audioReference.current)
+        // mediaHandler.setAudioTag(audioReference.current)
         mediaHandler.setStreamId(bjStreamId)
       }
     }
@@ -98,13 +100,19 @@ export default props => {
   const makeContents = () => {
     return JSON.stringify(state, null, 4)
   }
+
+  useEffect(() => {
+    // 방 소켓 연결
+    console.log('방소켓 연결 해라 ')
+    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo)
+  }, [])
   //---------------------------------------------------------------------
 
   return (
     <Content>
       <Chat>
         {/* 채팅방 영역 */}
-        <ChatUI />
+        <ChatUI {...props} />
       </Chat>
       <SideBTN
         onClick={() => {

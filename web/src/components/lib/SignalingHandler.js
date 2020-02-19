@@ -22,7 +22,8 @@ export default class SignalingHandler {
     // host
     this.audioStream = null
     // listener
-    this.audioTag = null
+    // this.audioTag = null
+    this.audioTag = document.createElement('audio')
 
     // callback
     this.localStartCallback = null
@@ -83,7 +84,7 @@ export default class SignalingHandler {
         this.stop()
       }
     } else {
-      if (!this.audioStream) {
+      if (!this.audioStream && this.type === 'host') {
         await this.setAudioStream()
       }
     }

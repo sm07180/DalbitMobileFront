@@ -13,6 +13,7 @@ import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
 import Profile from './profile'
+import Boost from './boost'
 export default props => {
   //---------------------------------------------------------------------
   //context

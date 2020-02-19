@@ -23,7 +23,7 @@ let socketConfig = null
 
 let loginInfo = null
 
-const socketClusterDestory = (destorySocket, destoryChannel) => {
+export const socketClusterDestory = (destorySocket, destoryChannel) => {
   if (destoryChannel != undefined && destoryChannel != '') {
     if (destoryChannel == socketConfig.channel.publicChannelName) {
       console.log('채널 해제')
@@ -59,7 +59,7 @@ const socketClusterDestory = (destorySocket, destoryChannel) => {
   }
 }
 
-const scConnection = obj => {
+export const scConnection = obj => {
   const setServiceConfig = () => {
     socketConfig.socketServerPort = 8000
     socketConfig.socketServerHost = 'devsv1.dalbitcast.com'
@@ -154,10 +154,11 @@ const scConnection = obj => {
     setServiceConfig()
   }
 
+  //socketClusterDestory(true)
   // /************************************************************/
-
+  //const HeaderObj = context.customHeader
   let options = {
-    path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.memNo, memNo: obj.memNo, locale: 'koKR'}),
+    path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.token.memNo, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
     //path: '/socketcluster/',
     port: socketConfig.socketServerPort,
     hostname: socketConfig.socketServerHost,
@@ -187,23 +188,24 @@ const scConnection = obj => {
   }
   console.table(options)
   socket = SocketClusterClient.connect(options)
+  console.log('소켓 연결 시도 ')
 
-  alert('소켓 연결')
   socket.on(socketConfig.event.socket.CONNECT /*'connect'*/, function(status) {
-    console.log(socket.getState())
     if (socket.getState() === 'open') {
-      // 해당 채널로 입장
-      socketClusterBinding('channel.public.dalbit')
+      if (window.location.pathname === '/') {
+        // public 채널로 입장
+        socketClusterBinding('channel.public.dalbit')
+      }
     }
     var logStr = '[socket.connect]\n'
-    // try {
-    //   logStr += 'isAuthenticated:' + status.isAuthenticated + '\n'
-    //   logStr += 'status: ' + JSON.stringify(status) + '\n'
-    //   $('#loginTokenLabel').html(status.isAuthenticated)
-    // } catch (e) {
-    //   logStr += 'error: ' + status + '\n'
-    //   $('#loginTokenLabel').html('error')
-    // }
+    try {
+      logStr += 'isAuthenticated:' + status.isAuthenticated + '\n'
+      logStr += 'status: ' + JSON.stringify(status) + '\n'
+      //   $('#loginTokenLabel').html(status.isAuthenticated)
+    } catch (e) {
+      logStr += 'error: ' + status + '\n'
+      //   $('#loginTokenLabel').html('error')
+    }
     console.warn(logStr)
     //$('#socketLabel').html(socketConfig.event.socket.CONNECT)
   })
@@ -211,8 +213,8 @@ const scConnection = obj => {
   socket.on(socketConfig.event.socket.SUBSCRIBE /*'subscribe'*/, function(channelname, data) {
     //channelname, {channel: "test"}
     var logStr = '[socket.subscribe]\n'
-    // logStr += 'channel: ' + channelname + '\n';
-    // logStr += 'data: ' + JSON.stringify(data) + '\n';
+    logStr += 'channel: ' + channelname + '\n'
+    logStr += 'data: ' + JSON.stringify(data) + '\n'
     console.warn(logStr)
     //$('#socketLabel').html(socketConfig.event.socket.SUBSCRIBE)
   })
@@ -225,7 +227,7 @@ const scConnection = obj => {
   })
 }
 
-const socketClusterBinding = channel => {
+export const socketClusterBinding = channel => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)
   if (socket != null) {
     if (socket.state === 'open') {
@@ -233,24 +235,28 @@ const socketClusterBinding = channel => {
         alert('채널이 없습니다.')
         return
       }
-      publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
+      if (window.location.pathname === '/') {
+        publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
+      } else {
+        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+      }
     } else {
       alert('소켓 상태 = ' + socket.state)
     }
   } else {
-    alert('소켓 null')
+    console.warn('소켓 null')
   }
 }
 
-const socketChannelBinding = (channelObj, channelObjName) => {
+export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
     socket.subscribe(channelObjName)
-    alert(channelObjName + '채널 입장')
+    console.log(channelObjName + '채널 입장')
     return channelObj
     //console.log('채널 입장')
   }
 }
-const scDestory = () => {
+export const scDestory = () => {
   console.log('해제 전 소켓 상태 = ' + socket.getState())
   socket.disconnect()
 
@@ -272,13 +278,22 @@ if (socket !== null) {
   //   //$('#socketLabel').html(socketConfig.event.socket.CONNECT);
   // })
 }
-const SendMessageChat = obj => {
-  return
+export const SendMessageChat = objChat => {
+  const params = {
+    memNo: objChat.bjMemNo,
+    isFan: objChat.isFan,
+    roomRole: objChat.roomRole,
+    roleRight: objChat.roleRight
+  }
+  console.log('sendMessage = ' + JSON.stringify(params))
   //sendMessage.handle(publicChannelHandle, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '테스트1 메세지입니다. - Channel Publish')
-  sendMessage.socket(obj.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, {}, obj.message)
+  //sendMessage.socket(socketConfig.channel.publicChannelName, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '123123123123123')
+  if (objChat.roomNo) {
+    sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
+  }
 }
 
-var sendMessageJson = function(cmd, params, msg) {
+export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {
     return {
       cmd: cmd,
@@ -311,7 +326,7 @@ var sendMessageJson = function(cmd, params, msg) {
     }
   }
 }
-var sendMessage = {
+export const sendMessage = {
   handle: function(handle, type, param, msg) {
     // param.memNo = $('#partnerNo').val();
     // param.memFan = $('#memFan').val();
@@ -335,6 +350,10 @@ var sendMessage = {
     // })
   },
   socket: function(channel, type, param, msg) {
+    // param.memNo = ''
+    // param.isFan = ''
+    // param.roomRole = ''
+    // param.roleRight = ''
     var msgJson = sendMessageJson(type, param, msg)
     //해당 체널에 전체 메세지가 전송됨 (다른 채널에는 메세지 전송 안됨) ===== subscribe 구독하지 않아도 메세지 전송은 된다!!!
     /*{
@@ -433,25 +452,25 @@ var sendMessage = {
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
-  console.log(props)
-  // useEffect(() => {
-  //   loginInfo = context.token
-  //   //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
-  //   scConnection(loginInfo)
-  // }, [])
+  useEffect(() => {
+    loginInfo = context
+    //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
+    console.log('소켓 연결 토큰 값 = ' + JSON.stringify(loginInfo))
+    scConnection(loginInfo)
+  }, [])
 
   return (
     <>
       <Content>
-        <button onClick={() => scConnection(loginInfo)}>소켓 연결</button>
+        {/* <button onClick={() => scConnection(loginInfo)}>소켓 연결</button>
         <br></br>
         <button onClick={() => scDestory()}>소켓 해제</button>
         <br></br>
         <button onClick={() => socketClusterBinding('channel.public.dalbit')}>채널입장</button>
         <br></br>
         {/* <button onClick={() => socketClusterDestory(false, 'channel.public.dalbit')}>채널퇴장</button> */}
-        <br></br>
-        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button>
+        {/* <br></br>
+        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button> */} */}
       </Content>
     </>
   )
