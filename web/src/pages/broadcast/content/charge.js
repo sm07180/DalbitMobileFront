@@ -242,20 +242,22 @@ const GoodsInfo = styled.button`
   border-style: ${props => (props.active ? 'solid' : 'none')};
   border-radius: 10px;
   border-width: 1px;
-  background: #f5f5f5;
   background: ${props => (props.active ? '#fff' : '#f5f5f5')};
-  /* padding-top: 2vh; */
 `
 
 const Price = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 110px;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100px;
+  }
   height: 28px;
   background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
+  margin-top: 4px;
 `
 
 const GoodsName = styled.div`

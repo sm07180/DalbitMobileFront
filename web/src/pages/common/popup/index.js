@@ -58,14 +58,21 @@ export default props => {
         </Container>
       )}
       {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
-        <>
+        <Container>
           <Background
             onClick={() => {
               context.action.updatePopupVisible(false)
             }}
           />
-          <Container>{makePopupContents()}</Container>
-        </>
+          <PresentWrap>
+            <div className="buttonArea">
+              <button className="close" onClick={() => context.action.updatePopupVisible(false)}>
+                <img scr={'https://devimage.dalbitcast.com/images/api/ic_close_m@2x.png'} width={36} height={36} />
+              </button>
+            </div>
+            {makePopupContents()}
+          </PresentWrap>
+        </Container>
       )}
       {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
         <>
@@ -121,3 +128,26 @@ const Background = styled.div`
 
 const EventContainer = styled.div``
 const EventBackground = styled.div``
+
+const PresentWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 300px;
+  /* background: #fff; */
+  background: rgba(0, 0, 0, 0);
+  border-radius: 10px;
+
+  .close {
+    display: flex;
+    width: 36px;
+    height: 36px;
+  }
+
+  .buttonArea {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    justify-content: flex-end;
+  }
+`
