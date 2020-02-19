@@ -42,8 +42,7 @@ export default props => {
       </SideBTN>
       <Side>
         {/* side content 영역 */}
-
-        <SlideContent>{/* <Charge /> */}</SlideContent>
+        <SlideContent />
       </Side>
     </Content>
   )

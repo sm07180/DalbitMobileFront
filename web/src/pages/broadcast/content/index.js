@@ -120,7 +120,7 @@ export default props => {
         <SlideContent>{/* <Charge /> */}</SlideContent>
       </Side>
       {roomRole === hostRole ? (
-        <>
+        <AudioWrap>
           <h1>Host BJ</h1>
           <div>Stream ID : {bjStreamId}</div>
           <div>
@@ -151,9 +151,9 @@ export default props => {
               {publishStatus ? 'Stop' : 'Publish'}
             </button>
           </div>
-        </>
+        </AudioWrap>
       ) : (
-        <>
+        <AudioWrap>
           <h1>Listener</h1>
           <div>
             <audio ref={audioReference} autoPlay controls></audio>
@@ -201,7 +201,7 @@ export default props => {
               </button>
             </div>
           )}
-        </>
+        </AudioWrap>
       )}
     </Content>
   )
@@ -313,4 +313,13 @@ const SideBTN = styled.button`
       left: inherit;
     }
   }
+`
+////////////////////////오디오랩
+const AudioWrap = styled.div`
+  position: fixed;
+  top: 20%;
+  width: 300px;
+  height: 200px;
+  background-color: aliceblue;
+  z-index: 999;
 `

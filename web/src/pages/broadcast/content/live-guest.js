@@ -14,6 +14,18 @@ export default props => {
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [GuestInfo, setGuestInfo] = useState(props.Info3)
+  const [BTNcheck, setBTNcheck] = useState(false)
+
+  const ToggleGuest = () => {
+    if (BTNcheck === false) {
+      setBTNcheck(true)
+    } else {
+      setBTNcheck(false)
+    }
+  }
+  const AllFalse = () => {
+    setBTNcheck(false)
+  }
   const Manegermap = ManegerInfo.map((live, index) => {
     //클릭 이벤트
     const ToggleEvent = () => {
@@ -35,7 +47,7 @@ export default props => {
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <CANCELBTN value={trues} onClick={ToggleEvent}></CANCELBTN>
-        {trues && <CancelEvent value={bjNickNm} data={trues} onClick={AllFalse} />}
+        {trues && <CancelEvent value={bjNickNm} onClick={AllFalse} />}
         <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
       </ManegerList>
     )
@@ -74,8 +86,9 @@ export default props => {
             <ManegerImg bg={GuestInfo.url} />
             {/* <h2>{GuestInfo.bjMemNo}</h2> */}
             <h5>{GuestInfo.bjNickNm}</h5>
-            {/* <CANCELBTN></CANCELBTN>
-            <CancelEvent /> */}
+            <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
+            {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
+            <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} />
           </DJList>
         </LiveWrap>
         <LiveWrap>
@@ -223,6 +236,17 @@ const CANCELBTN = styled.button`
   background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
   outline: none;
 `
+const CancelEventGuest = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round2.png') no-repeat center center / cover;
+  outline: none;
+`
+
 //클릭 배경 가상요소
 const BackGround = styled.div`
   display: none;
