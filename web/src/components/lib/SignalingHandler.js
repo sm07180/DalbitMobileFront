@@ -83,7 +83,7 @@ export default class SignalingHandler {
         this.stop()
       }
     } else {
-      if (!this.audioStream) {
+      if (!this.audioStream && this.type === 'host') {
         await this.setAudioStream()
       }
     }
