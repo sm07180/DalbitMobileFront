@@ -15,7 +15,7 @@ export default props => {
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([])
-  const [roomInfo, setRoomInfo] = useState([])
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -37,12 +37,11 @@ export default props => {
           </div>
         </Message>
       )
+
       setComments([comments, resulte])
       console.log('메세지 날려라')
-      setRoomInfo({
-        ...props.location.state,
-        msg: e.target.value
-      })
+
+      sc.SendMessageChat({...props.location.state, msg: e.target.value})
       // objSendInfo.roomNo = props.location.state.roomNo
       // objSendInfo.message = e.target.value
 
@@ -50,10 +49,14 @@ export default props => {
       e.target.value = ''
     }
   }
-  useEffect(() => {
-    console.log(roomInfo)
-    sc.SendMessageChat(roomInfo)
-  }, [roomInfo])
+  // useEffect(() => {
+  //   console.log(roomInfo)
+  //   // if (msgFlag) {
+  //   //   sc.SendMessageChat(roomInfo)
+  //   // } else {
+  //   //   setMsgFlag(true)
+  //   // }
+  // }, [roomInfo])
   //tab
 
   //채팅창 마우스 휠 작동시
