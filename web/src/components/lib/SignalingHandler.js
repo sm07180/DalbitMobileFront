@@ -1,3 +1,4 @@
+import {getAudioStream} from 'components/lib/getStream'
 const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
 
 export default class SignalingHandler {

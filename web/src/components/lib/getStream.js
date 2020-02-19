@@ -3,22 +3,24 @@
  */
 
 // https://howlerjs.com/
+
+const detectAudioDevice = async () => {
+  const devices = await navigator.mediaDevices.enumerateDevices()
+  let micExist = false
+  devices.forEach(d => {
+    if (d.kind === 'audioinput') {
+      micExist = true
+    }
+  })
+
+  if (!micExist) {
+    // alert('Mic is disconnected')
+  }
+}
+
 export const getAudioStream = async () => {
   const constraint = {audio: true}
   let mediaStream = null
-
-  const detectAudioDevice = async () => {
-    const devices = await navigator.mediaDevices.enumerateDevices()
-    let micExist = false
-    devices.forEach(d => {
-      if (d.kind === 'audioinput') {
-        micExist = true
-      }
-    })
-    if (!micExist) {
-      alert('Mic is disconnected')
-    }
-  }
 
   navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
 
@@ -37,10 +39,9 @@ export const getAudioStream = async () => {
   return mediaStream
 }
 
-export const removeMicStream = stream => {
-  navigator.mediaDevices.ondevicechange = null
+export const removeAudioStream = stream => {
+  navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
   stream.getTracks().forEach(track => {
     track.stop()
-    stream.removeTrack(track)
   })
 }

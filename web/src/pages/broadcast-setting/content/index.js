@@ -16,6 +16,8 @@ import Api from 'context/api'
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
+let audioStream = null
+
 export default props => {
   //context
   const context = useContext(Context)
@@ -210,7 +212,7 @@ export default props => {
   }
 
   const infiniteAudioChecker = async () => {
-    const audioStream = await navigator.mediaDevices
+    audioStream = await navigator.mediaDevices
       .getUserMedia({audio: true})
       .then(result => result)
       .catch(e => e)
@@ -341,11 +343,16 @@ export default props => {
                 <Counter>{count2} / 100</Counter>
               </div>
             </BroadWelcome>
-            <CopyrightIcon></CopyrightIcon>
+            <CopyrightIcon />
             <CreateBtn
               onClick={() => {
                 if (!audioPass) {
                   return alert('오디오 인풋이 하나도 안되었습니다.')
+                }
+                if (audioStream) {
+                  audioStream.getTracks().forEach(track => {
+                    track.stop()
+                  })
                 }
                 fetchData({...changes})
               }}
