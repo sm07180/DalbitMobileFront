@@ -28,7 +28,7 @@ export default props => {
   }
   //useEffect
   useEffect(() => {
-    if (isLogin) fetchData()
+    // if (isLogin) fetchData()
   }, [])
   //---------------------------------------------------------------------
   return (
