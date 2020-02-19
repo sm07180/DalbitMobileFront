@@ -244,7 +244,7 @@ export const socketClusterBinding = channel => {
       alert('소켓 상태 = ' + socket.state)
     }
   } else {
-    alert('소켓 null')
+    console.warn('소켓 null')
   }
 }
 
