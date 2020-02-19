@@ -16,7 +16,6 @@ export default props => {
   //state
   const [comments, setComments] = useState([])
   const [roomInfo, setRoomInfo] = useState([])
-  let test = React.createRef()
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -53,7 +52,6 @@ export default props => {
   }
   useEffect(() => {
     console.log(roomInfo)
-    console.log('현재 얘가 영역임', test)
     sc.SendMessageChat(roomInfo)
   }, [roomInfo])
   //tab
