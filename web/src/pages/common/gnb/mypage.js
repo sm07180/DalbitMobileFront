@@ -19,6 +19,8 @@ export default props => {
   //useMemo
   const {isLogin} = context.token
   const profileImg = useMemo(() => {
+    return 'https://devimage.dalbitcast.com/images/api/profileGnb.png'
+
     if (isLogin && mypage !== undefined) return mypage.profImg.url
     if (!isLogin) return 'https://devimage.dalbitcast.com/images/api/profileGnb.png'
   })
@@ -88,7 +90,7 @@ export default props => {
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{mypage.nickNm}</h4>
+                    {/* <h4>{mypage.nickNm}</h4> */}
                     {/* <ID>{login.name}</ID> */}
                   </NoLoginTitle>
                 ) : (
