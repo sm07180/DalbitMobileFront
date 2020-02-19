@@ -405,11 +405,11 @@ const ListenInfo = [
 ]
 //프로필 데이터
 const Profiledata = {
-  profImg: 'https://img.insight.co.kr/static/2019/12/12/700/uk43076n9944w8b8u275.jpg',
+  profImg: 'https://lh3.googleusercontent.com/proxy/RmQV5QRjLDB43l5YJsC7Nx6of4OF-x9eFdV2P9CjfAFNvbgqiorz7O586gPrL9VjP1sWdv4afuKU7uujFuB3wE6Ryi92f4h-Q430XDGmPfuvzcw3KIycLu5f',
   exp: '140',
   grade: '골드',
   level: '31',
-  nickNm: 'BJ라디오라디오',
+  nickNm: 'BJ라디오라디오😍',
   memNo: '@bjradio',
   fanCnt: '12000',
   starCnt: '870'
