@@ -470,7 +470,7 @@ export default props => {
         <br></br>
         {/* <button onClick={() => socketClusterDestory(false, 'channel.public.dalbit')}>채널퇴장</button> */}
         {/* <br></br>
-        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button> */} */}
+        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button> */}
       </Content>
     </>
   )
