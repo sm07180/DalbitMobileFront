@@ -1,14 +1,11 @@
 /**
- * @title 클릭 event
+ * @title 게스트 request클릭 event
  */
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
-//pages
-
 export default props => {
-  const [liveInfo, setLiveInfo] = useState(props.Info)
-
+  //-------------------------------------------------------------
   return (
     <Event>
       <ul>
@@ -18,7 +15,8 @@ export default props => {
     </Event>
   )
 }
-///////////////
+//-------------------------------------------------------------
+//styled
 const Event = styled.div`
   position: absolute;
   right: 23px;
@@ -30,7 +28,6 @@ const Event = styled.div`
   .scrollbar > div:nth-last-child(3) & {
     bottom: 0;
   }
-
   & ul {
     & button {
       display: block;
@@ -46,7 +43,6 @@ const Event = styled.div`
       }
     }
   }
-
   &.on {
     display: none;
   }

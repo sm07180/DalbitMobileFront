@@ -1,13 +1,18 @@
 /**
- * @title 라이브
+ * @title 라이브탭 컨텐츠
  */
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
-//pages
-
+//components-------------------------------------------------------------
+import SelectInfo from './live-select-popular'
+import CategoryInfo from './live-select-category'
+import Refresh from './live-refresh'
+//------------------------------------------------------------------
 export default props => {
+  //0.배열Info State--------------------------------------------------
   const [liveInfo, setLiveInfo] = useState(props.Info)
+  //map:live----------------------------------------------------------
   const livemap = liveInfo.map((live, index) => {
     const {category, title, name, reco, nowpeople, totalpeople, newby, like, bg, thumb} = live
     return (
@@ -41,17 +46,26 @@ export default props => {
       </LiveList>
     )
   })
+  //------------------------------------------------------------------
   return (
     <Wrapper>
-      <LiveFilter></LiveFilter>
+      <LiveFilter>
+        <Refresh />
+        <SelectInfo Info={PopularInfo} />
+        <CategoryInfo Info={categoryInfo} />
+      </LiveFilter>
       <LiveWrap className="scrollbar">{livemap}</LiveWrap>
     </Wrapper>
   )
 }
+//------------------------------------------------------------------
+//styled
 const Wrapper = styled.div`
   height: calc(100% - 48px);
 `
 const LiveFilter = styled.div`
+  position: relative;
+  display: flex;
   width: 100%;
   height: 40px;
   margin-top: 20px;
@@ -127,7 +141,6 @@ const InfoWrap = styled.div`
   height: 112px;
   padding-left: 27px;
   box-sizing: border-box;
-  /* background-color: orangered; */
 `
 const Category = styled.span`
   display: block;
@@ -205,3 +218,27 @@ const TotalpeopleIcon = styled.em`
   height: 24px;
   background: url('http://www.hwangsh.com/img/ic_people.png') no-repeat center center / cover;
 `
+//data---------------------------------------------------------------
+//셀렉트 가데이터(포푸러)
+const PopularInfo = {
+  option1: '인기순',
+  option2: '추천순'
+}
+
+//셀렉트 가데이터(카테고리)
+
+const categoryInfo = [
+  {option: '건강/스포츠'},
+  {option: '일상'},
+  {option: '노래/연주'},
+  {option: '노래방'},
+  {option: '수다/채팅'},
+  {option: '고민/사연'},
+  {option: '건강/스포츠'},
+  {option: '여행/힐링'},
+  {option: '외국어'},
+  {option: '책/스토리'},
+  {option: '연애/오락'},
+  {option: 'ASMR'},
+  {option: '기타'}
+]

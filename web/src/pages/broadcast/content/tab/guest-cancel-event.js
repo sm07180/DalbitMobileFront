@@ -1,15 +1,12 @@
 /**
- * @title 클릭 event
+ * @title 게트스 클릭 캔슬 event
  */
 import React, {useEffect, useState, Children} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
-//pages
-
 export default props => {
+  //---------------------------------------------------
   const {onClick} = props
-  console.log(onClick)
-
   return (
     <Event>
       <ul>
@@ -20,7 +17,8 @@ export default props => {
     </Event>
   )
 }
-///////////////
+//-----------------------------------------------------
+//styled
 const Event = styled.div`
   position: absolute;
   left: 50%;

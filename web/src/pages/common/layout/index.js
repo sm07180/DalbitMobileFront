@@ -34,6 +34,9 @@ const Layout = props => {
     return () => {}
   }, [])
   //---------------------------------------------------------------------
+
+  let pathCheck = props.location.pathname.indexOf('/broadcast') < 0 ? true : false
+
   return (
     <Container>
       {/* 헤더설정 */}
@@ -47,10 +50,21 @@ const Layout = props => {
       <Footer Ftype="mainFooter" />
 
       {/* 미디어 플레이어 */}
-      {mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
-        <MediaPlayer>
-          <div onClick={() => mediaHandler.stop()}>stop</div>
-        </MediaPlayer>
+      {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
+        <MediaPlayerWrap>
+          <MediaPlayer>
+            <div
+              style={{cursor: 'pointer'}}
+              onClick={() => {
+                console.log(mediaHandler)
+                if (mediaHandler.rtcPeerConn) {
+                  mediaHandler.stop()
+                }
+              }}>
+              stop
+            </div>
+          </MediaPlayer>
+        </MediaPlayerWrap>
       )}
 
       {/* 레이어팝업 */}
@@ -91,13 +105,25 @@ const Container = styled.div`
     
   } */
 `
-const MediaPlayer = styled.div`
+const MediaPlayerWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: fixed;
-  right: 20px;
   bottom: 20px;
+  width: 100%;
   z-index: 100;
-  width: 300px;
-  height: 100px;
-  box-shadow: 4px 4px 10px #aaa;
-  background-color: #fff;
+`
+const MediaPlayer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: 14px 32px;
+  box-sizing: border-box;
+  width: 90%;
+  border-radius: 44px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
 `

@@ -41,7 +41,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
 
   //GNB메뉴 타입 4가지 만들기
   function makeGnbType() {
