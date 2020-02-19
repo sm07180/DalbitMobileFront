@@ -318,9 +318,9 @@ const SideBTN = styled.button`
 ////////////////////////오디오랩
 const AudioWrap = styled.div`
   position: fixed;
-  top: 20%;
-  width: 300px;
-  height: 200px;
-  background-color: aliceblue;
+  top: 41%;
+  left: 3%;
+  width: 238px;
+  height: 108px;
   z-index: 999;
 `
