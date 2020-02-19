@@ -1,4 +1,3 @@
-import {getAudioStream} from 'components/lib/getStream'
 const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
 
 export default class SignalingHandler {
@@ -36,8 +35,11 @@ export default class SignalingHandler {
     this.wSocketInit()
   }
 
-  setType(type) {
+  async setType(type) {
     this.type = type
+    if (this.type === 'host') {
+      await this.setAudioStream()
+    }
   }
   setStreamId(id) {
     this.streamId = id
@@ -65,11 +67,53 @@ export default class SignalingHandler {
   setAudioTag(audioTag) {
     this.audioTag = audioTag
   }
-  setAudioStream(stream) {
-    // this.audioStream = stream
+
+  async detectAudioDevice() {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    let micExist = false
+    devices.forEach(d => {
+      if (d.kind === 'audioinput') {
+        micExist = true
+      }
+    })
+
+    if (!micExist) {
+      if (this.audioStream) {
+        this.removeAudioStream()
+        this.stop()
+      }
+    } else {
+      if (!this.audioStream) {
+        await this.setAudioStream()
+      }
+    }
   }
 
-  removeAudioStream() {}
+  async setAudioStream() {
+    navigator.mediaDevices.addEventListener('devicechange', this.detectAudioDevice)
+
+    const constraint = {audio: true}
+    await navigator.mediaDevices
+      .getUserMedia(constraint)
+      .then(stream => {
+        this.audioStream = stream
+      })
+      .catch(e => {
+        if (String(e).indexOf('Permission') !== -1) {
+          // alert('Mic permission is denied')
+        } else if (String(e).indexOf('NotFound') !== -1) {
+          // alert('Mic is not found')
+        }
+      })
+  }
+
+  removeAudioStream() {
+    navigator.mediaDevices.removeEventListener('devicechange', this.detectAudioDevice)
+    this.audioStream.getTracks().forEach(track => {
+      track.stop()
+    })
+    this.audioStream = null
+  }
 
   socketSendMsg(data) {
     this.ws.send(JSON.stringify(data))
@@ -121,13 +165,6 @@ export default class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
-
-    // host stop
-    if (this.audioStream) {
-      this.audioStream.getTracks().forEach(track => {
-        track.stop()
-      })
-    }
 
     // listener stop
     if (this.audioTag && this.audioTag.srcObject) {

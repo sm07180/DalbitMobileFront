@@ -11,7 +11,7 @@ import {BroadCastStore} from '../store'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 //etc
-import {getAudioStream} from 'components/lib/getStream'
+
 //components
 import ChatUI from './chat-ui'
 import SlideContent from './SlideContent'
@@ -74,10 +74,6 @@ export default props => {
         mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('host')
         mediaHandler.setStreamId(bjStreamId)
-        ;(async () => {
-          const audioStream = await getAudioStream()
-          mediaHandler.setAudioStream(audioStream)
-        })()
       } else if (roomRole === listenerRole) {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
