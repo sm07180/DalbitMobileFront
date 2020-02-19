@@ -41,12 +41,11 @@ export default props => {
           </div>
         </Message>
       )
+
       setComments([comments, resulte])
       console.log('메세지 날려라')
-      setRoomInfo({
-        ...roomInfo,
-        msg: e.target.value
-      })
+
+      sc.SendMessageChat({...props.location.state, msg: e.target.value})
       // objSendInfo.roomNo = props.location.state.roomNo
       // objSendInfo.message = e.target.value
 

@@ -23,6 +23,7 @@ import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 
+const sc = require('context/socketCluster')
 //import FacebookLogin from 'pages/common/auth/fbAuth'
 //context
 
@@ -117,9 +118,12 @@ export default props => {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
         props.update({loginSuccess: res.data})
-
-        //context.action.updateState(res.data)
-        //context.action.updateLogin(true)
+        const scLoginInfo = {
+          authToken: res.data.authToken,
+          memNo: res.data.memNo,
+          locale: 'koKR'
+        }
+        sc.sendMessage.login(scLoginInfo)
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
@@ -127,12 +131,9 @@ export default props => {
         if (props.history) {
           switch (ostype) {
             case 'g':
-              //props.history.push('/user', obj.profileObj)
-              //props.history.push('/user/join', loginInfo)
               break
             default:
           }
-
           if (result) {
             props.history.push('/user/join', loginInfo)
           } else {
