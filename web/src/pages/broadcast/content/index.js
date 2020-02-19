@@ -45,9 +45,6 @@ export default props => {
   const [playStatus, setPlayStatus] = useState(false)
   const {bjStreamId, roomRole} = state
 
-  const audioReference = useRef()
-  const {location} = props.history
-
   const startPlayer = () => {
     if (roomRole === hostRole) {
       setPublishStatus(true)
@@ -84,7 +81,6 @@ export default props => {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('listener')
-        mediaHandler.setAudioTag(audioReference.current)
         mediaHandler.setStreamId(bjStreamId)
       }
     }
@@ -109,7 +105,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   return (
-    <Content>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>
         {/* 채팅방 영역 */}
         <ChatUI {...props} />
@@ -163,9 +159,6 @@ export default props => {
       ) : (
         <AudioWrap>
           <h1>Listener</h1>
-          <div>
-            <audio ref={audioReference} autoPlay controls></audio>
-          </div>
 
           <div>streamId: {bjStreamId}</div>
 
@@ -183,7 +176,7 @@ export default props => {
                   if (!bjStreamId) {
                     return alert('Need a stream id')
                   }
-                  if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && !mediaHandler.rtcPeerConn) {
                     const status = mediaHandler.play()
                     if (status) {
                       startPlayer()
@@ -200,7 +193,7 @@ export default props => {
               <button
                 style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
                 onClick={() => {
-                  if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && mediaHandler.rtcPeerConn) {
                     mediaHandler.stop()
                     stopPlayer()
                   }
@@ -240,7 +233,7 @@ const Content = styled.section`
       width: 100%;
     } */
   }
-  &.side-off > div:last-child {
+  &.side-off > button + div {
     width: 20px;
   }
 
@@ -325,9 +318,9 @@ const SideBTN = styled.button`
 ////////////////////////오디오랩
 const AudioWrap = styled.div`
   position: fixed;
-  top: 20%;
-  width: 300px;
-  height: 200px;
-  background-color: aliceblue;
+  top: 41%;
+  left: 3%;
+  width: 238px;
+  height: 108px;
   z-index: 999;
 `

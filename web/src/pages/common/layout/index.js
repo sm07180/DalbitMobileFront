@@ -126,4 +126,8 @@ const MediaPlayer = styled.div`
   border-radius: 44px;
   background-color: rgba(0, 0, 0, 0.85);
   color: #fff;
+
+  @media (max-width: 780px) {
+    width: 100%;
+  }
 `
