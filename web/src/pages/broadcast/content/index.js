@@ -69,6 +69,10 @@ export default props => {
   }, [])
   useEffect(() => {
     if (mediaHandler) {
+      if (mediaHandler.rtcPeerConn) {
+        mediaHandler.stop()
+      }
+
       if (roomRole === hostRole) {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
