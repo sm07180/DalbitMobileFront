@@ -22,7 +22,8 @@ export default class SignalingHandler {
     // host
     this.audioStream = null
     // listener
-    this.audioTag = null
+    // this.audioTag = null
+    this.audioTag = document.createElement('audio')
 
     // callback
     this.localStartCallback = null

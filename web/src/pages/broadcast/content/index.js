@@ -84,7 +84,7 @@ export default props => {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('listener')
-        mediaHandler.setAudioTag(audioReference.current)
+        // mediaHandler.setAudioTag(audioReference.current)
         mediaHandler.setStreamId(bjStreamId)
       }
     }
