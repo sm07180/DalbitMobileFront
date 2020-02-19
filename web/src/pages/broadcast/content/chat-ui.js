@@ -11,7 +11,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   //state
   const [isSideOn, setIsSideOn] = useState(true)
   const [comments, setComments] = useState([])

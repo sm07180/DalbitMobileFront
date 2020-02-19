@@ -22,8 +22,8 @@ import SlideContent from './SlideContent'
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context) //global context
-  const store = new useContext(BroadCastStore) //store
+  const context = useContext(Context) //global context
+  const store = useContext(BroadCastStore) //store
   //const
   const {state} = props.location
   //useMemo

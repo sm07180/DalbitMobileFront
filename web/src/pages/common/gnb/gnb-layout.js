@@ -8,7 +8,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   //initalize
   const {children} = props
 

@@ -17,7 +17,7 @@ import {Context} from 'context'
 import {getAudioStream} from 'components/lib/getStream'
 
 function TempBroad() {
-  const context = new useContext(Context)
+  const context = useContext(Context)
   const {mediaHandler} = context
   const {streamId} = useParams()
   const [publishStatus, setPublishStatus] = useState(false)
