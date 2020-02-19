@@ -25,7 +25,6 @@ import Interface from './Interface'
 
 export default () => {
   //---------------------------------------------------------------------
-  const DAY_COOKIE_PERIOD = '365'
   //context
   const context = useContext(Context)
   //useState

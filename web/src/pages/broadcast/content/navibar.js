@@ -38,5 +38,5 @@ const Back = styled.button`
   margin-left: 0px;
   width: 20px;
   height: 20px;
-  background-color: black;
+  background: url('https://devimage.dalbitcast.com/images/api/arrow_left.svg') no-repeat center;
 `

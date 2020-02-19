@@ -12,7 +12,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 //
 export default props => {
-  const context = new useContext(Context)
+  const context = useContext(Context)
 
   //---------------------------------------------------------------------
   //useEffect

@@ -14,7 +14,7 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   return (
     <>
       <Gnb className={context.gnb_visible ? 'on' : 'off'}>
