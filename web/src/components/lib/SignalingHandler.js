@@ -62,12 +62,14 @@ export default class SignalingHandler {
     this.globalStartCallback = null
     this.globalStopCallback = null
   }
-  setAudioStream(stream) {
-    this.audioStream = stream
-  }
   setAudioTag(audioTag) {
     this.audioTag = audioTag
   }
+  setAudioStream(stream) {
+    // this.audioStream = stream
+  }
+
+  removeAudioStream() {}
 
   socketSendMsg(data) {
     this.ws.send(JSON.stringify(data))
