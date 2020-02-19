@@ -25,10 +25,17 @@ export default props => {
         context.action.updateToken(mode.loginSuccess)
         //native 전달
         Hybrid('GetLoginToken', mode.loginSuccess)
-        //
+        //mypage update
+        async function fetchData(obj) {
+          const res = await Api.mypage({...obj})
+          if (res.result === 'success') {
+            context.action.updateMypage(res.data)
+          }
+        }
+        fetchData()
+
         //redirect
         if (props.history) {
-          props.history.push('/')
           context.action.updatePopupVisible(false)
           context.action.updateGnbVisible(false)
         }

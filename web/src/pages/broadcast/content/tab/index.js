@@ -1,5 +1,5 @@
 /**
- * @title 404페이지
+ * @title 사이드 컨텐츠(탭)
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
@@ -8,20 +8,21 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Live from './live'
-import LiveListener from './live-listener'
-import LiveGuest from './live-guest'
-import NaviBar from './navibar'
+import LiveListener from './listen'
+import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
-import Boost from './boost'
-
 export default props => {
+  //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-  //tab
+  //---------------------------------------------------------------------
+  //tab:탭클릭 index정의 state
   const {currentItem, changeItem} = useTabs(0, tabConent)
+  //---------------------------------------------------------------------
   return (
     <>
+      {/* 탭버튼 */}
       <Tab>
         {tabConent.map((section, index) => (
           <button onClick={() => changeItem(index)} key={index} className={currentItem.id === index ? 'on' : ''}>
@@ -29,6 +30,7 @@ export default props => {
           </button>
         ))}
       </Tab>
+      {/* 탭컨텐츠영역 */}
       {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
       {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
@@ -38,7 +40,43 @@ export default props => {
     </>
   )
 }
-//tab------------------------------------------------------------------
+//------------------------------------------------------------------
+//tab function
+const useTabs = (initialTab, allTabs) => {
+  if (!allTabs || !Array.isArray(allTabs)) {
+    return
+  }
+  const [currentIndex, SetCurrentIndex] = useState(initialTab)
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: SetCurrentIndex
+  }
+}
+//------------------------------------------------------------------
+//styled
+const Tab = styled.div`
+  & button {
+    width: 25%;
+    height: 48px;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    border-bottom: 1px solid ${COLOR_MAIN};
+    margin-left: -1px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &.on {
+      border: 1px solid ${COLOR_MAIN};
+      background-color: ${COLOR_MAIN};
+      color: white;
+    }
+  }
+  & button:focus {
+    outline: none;
+  }
+`
+//------------------------------------------------------------------
+//탭 셀렉트 배열
 const tabConent = [
   {
     id: 0,
@@ -65,41 +103,8 @@ const tabConent = [
     tab: '부스트'
   }
 ]
-
-const useTabs = (initialTab, allTabs) => {
-  if (!allTabs || !Array.isArray(allTabs)) {
-    return
-  }
-  const [currentIndex, SetCurrentIndex] = useState(initialTab)
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: SetCurrentIndex
-  }
-}
-//---------------------------------------------------------------------
-//styled
-
-const Tab = styled.div`
-  & button {
-    width: 25%;
-    height: 48px;
-    display: inline-block;
-    border: 1px solid #e0e0e0;
-    border-bottom: 1px solid ${COLOR_MAIN};
-    margin-left: -1px;
-    &:first-child {
-      margin-left: 0;
-    }
-    &.on {
-      border: 1px solid ${COLOR_MAIN};
-      background-color: ${COLOR_MAIN};
-      color: white;
-    }
-  }
-  & button:focus {
-    outline: none;
-  }
-`
+//data------------------------------------------------------------------
+//라이브 가데이터
 const LiveInfo = [
   {
     category: '일상',
@@ -187,17 +192,19 @@ const LiveInfo = [
       'https://lh3.googleusercontent.com/proxy/rNffynT7M8L4UdWNYqT69v1OnKupd75mZZPUjepXfvzhvJKfNBhyd9hABmPYbReNXeV9DJOaPGnXhOKG30omzXc5g7ZsegpoO4U7WWJMDlQftG71As_Xz4vl6cDvlrXxAEGhaRFC6WjmakkVusaAmnvV8YCAW1xTLwCVI3pNx6MEJx1xd3fC5V-Ndhc8koB9FGgjRJcyXKW1iEqKhRdH8F9RnurcPlL7tRVLsVMYY_H7C2jbxCgg9ELAWm9zzajZCcElhgAy56a9eIOKLFlIia4Tmdi_lTfHGkzrBxm4HmGL69dWyVjy8QXTMIzpp4FEi1rxuExPks6L0r75jwQ'
   }
 ]
+//BJ가데이터
 const BJInfo = {
   bjMemNo: '@gdgerg',
   bjNickNm: '하늘에서 비가와요~',
   url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
 }
+//Guest가데이터
 const GuestInfo = {
   bjMemNo: '@guest0070',
   bjNickNm: '◆뚜비두밥 :D',
   url: 'https://file.mk.co.kr/meet/neds/2020/02/image_readtop_2020_103512_15805116424071678.jpg'
 }
-
+//Maneger가데이터
 const ManegerInfo = [
   {
     bjMemNo: '@gdgerg',
@@ -210,6 +217,7 @@ const ManegerInfo = [
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   }
 ]
+//리스너가데이터
 const ListenInfo = [
   {
     bjMemNo: '@gdgerg',

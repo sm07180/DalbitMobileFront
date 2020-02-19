@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
-import SlideContent from './SlideContent'
+import SideContent from './tab'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
@@ -69,6 +69,10 @@ export default props => {
   }, [])
   useEffect(() => {
     if (mediaHandler) {
+      if (mediaHandler.rtcPeerConn) {
+        mediaHandler.stop()
+      }
+
       if (roomRole === hostRole) {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
@@ -113,10 +117,10 @@ export default props => {
       <Side>
         {/* side content 영역 */}
 
-        <SlideContent>{/* <Charge /> */}</SlideContent>
+        <SideContent>{/* <Charge /> */}</SideContent>
       </Side>
       {roomRole === hostRole ? (
-        <>
+        <AudioWrap>
           <h1>Host BJ</h1>
           <div>Stream ID : {bjStreamId}</div>
           <div>
@@ -147,9 +151,9 @@ export default props => {
               {publishStatus ? 'Stop' : 'Publish'}
             </button>
           </div>
-        </>
+        </AudioWrap>
       ) : (
-        <>
+        <AudioWrap>
           <h1>Listener</h1>
           <div>
             <audio ref={audioReference} autoPlay controls></audio>
@@ -197,7 +201,7 @@ export default props => {
               </button>
             </div>
           )}
-        </>
+        </AudioWrap>
       )}
     </Content>
   )
@@ -309,4 +313,13 @@ const SideBTN = styled.button`
       left: inherit;
     }
   }
+`
+////////////////////////오디오랩
+const AudioWrap = styled.div`
+  position: fixed;
+  top: 20%;
+  width: 300px;
+  height: 200px;
+  background-color: aliceblue;
+  z-index: 999;
 `

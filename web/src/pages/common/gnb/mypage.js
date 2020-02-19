@@ -1,4 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react'
+/**
+ *
+ */
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import {PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
@@ -10,35 +13,16 @@ import Utility from 'components/lib/utility'
 
 export default props => {
   //---------------------------------------------------------------------
-  const [login, setLogin] = useState(props.LoginInfo)
-
+  //useContext
   const context = useContext(Context)
+  //useMemo
+  console.log(context.mypage)
+  const {isLogin} = context.token
+  //useState
+  const [login, setLogin] = useState(props.LoginInfo)
+  //const
+  const {mypage} = context
   //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
-
-  useEffect(() => {
-    if (context.token.isLogin) {
-      //로그인되어있으면 정보 가져오기
-      //fetchData()
-      //임시방편으로 회원가입 후 바로 내 프로필, 닉네임 볼수있게 설정. 나중에는 회원조회 api로 로그인 해서도 볼 수 있게 수정하기. 현재 회원조회 안됨
-      if (context.state.profImg) {
-        setLogin({
-          ...login,
-          title: context.state.nickNm,
-          url: PHOTO_SERVER.concat(context.state.profImg)
-        })
-      }
-    }
-  }, [context.token.isLogin])
-
-  //fetch
-  async function fetchData() {
-    const res = await Api.profile({
-      data: {
-        memNo: context.state.memNo
-      }
-    })
-    console.log(res)
-  }
 
   //data
   const info = [
@@ -66,6 +50,26 @@ export default props => {
       )
     })
   }
+  //---------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {}, [])
+
+  // useEffect(() => {
+  //   if (context.token.isLogin) {
+  //     //로그인되어있으면 정보 가져오기
+  //     //fetchData()
+  //     //임시방편으로 회원가입 후 바로 내 프로필, 닉네임 볼수있게 설정. 나중에는 회원조회 api로 로그인 해서도 볼 수 있게 수정하기. 현재 회원조회 안됨
+  //     if (context.state.profImg) {
+  //       setLogin({
+  //         ...login,
+  //         ...context.mypage,
+  //         title: context.state.nickNm,
+  //         url: PHOTO_SERVER.concat(context.state.profImg)
+  //       })
+  //     }
+  //   }
+  // }, [context.token.isLogin])
+  //---------------------------------------------------------------------
   return (
     <>
       <Gnb>
@@ -77,11 +81,11 @@ export default props => {
 
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={context.token.isLogin ? login.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
+              <PIMG bg={isLogin ? mypage.profImg.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{login.title}</h4>
+                    <h4>{mypage.nickNm}</h4>
                     {/* <ID>{login.name}</ID> */}
                   </NoLoginTitle>
                 ) : (

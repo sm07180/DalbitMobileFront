@@ -1,85 +1,111 @@
 /**
- * @title 청취자
+ * @title 탭 guest
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
-import Events from './event'
-//pages
-
+//components----------------------------------------------------
+import CancelEvent from './guest-cancel-event'
+import RequestEvent from './guest-request-event'
 export default props => {
+  //context------------------------------------------------------------
   const context = useContext(Context)
+  //------------------------------------------------------------------
+  //0.매니저정보..배열 호출 state-------------------------------------
+  //1.청취자정보..배열 호출 state-------------------------------------
+  //2.게스트정보..배열 호출 state-------------------------------------
+  //3.버튼 visibility 체크----------------------------------------
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
-  const [BJInfo, setBJInfo] = useState(props.Info3)
+  const [GuestInfo, setGuestInfo] = useState(props.Info3)
+  const [BTNcheck, setBTNcheck] = useState(false)
+  //visibility btn function----------------------------------------------
+  const ToggleGuest = () => {
+    if (BTNcheck === false) {
+      setBTNcheck(true)
+    } else {
+      setBTNcheck(false)
+    }
+  }
+  //visibility bg function----------------------------------------------
+  const AllFalse = () => {
+    setBTNcheck(false)
+  }
+  //매니저map----------------------------------------------
   const Manegermap = ManegerInfo.map((live, index) => {
-    //클릭 이벤트
+    const {bjNickNm, bjMemNo, url} = live
+    const [checkVisibility, SetcheckVisibility] = useState(false)
+    //function
     const ToggleEvent = () => {
-      if (trues === false) {
-        setTrues(true)
+      if (checkVisibility === false) {
+        SetcheckVisibility(true)
       } else {
-        setTrues(false)
+        SetcheckVisibility(false)
       }
     }
     const AllFalse = () => {
-      setTrues(false)
+      SetcheckVisibility(false)
     }
-    const [trues, setTrues] = useState(false)
-    const {bjNickNm, bjMemNo, url} = live
+    //-------------------------------------------------------
     return (
       <ManegerList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
+        <CANCELBTN value={checkVisibility} onClick={ToggleEvent}></CANCELBTN>
+        {checkVisibility && <CancelEvent value={bjNickNm} onClick={AllFalse} />}
+        <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} />
       </ManegerList>
     )
   })
+  //리스너map----------------------------------------------
   const Listenmap = ListenInfo.map((live, index) => {
+    const {bjNickNm, bjMemNo, url} = live
+    const [checkVisibility, SetcheckVisibility] = useState(false)
     //클릭 이벤트
     const ToggleEvent = () => {
-      if (trues === false) {
-        setTrues(true)
+      if (checkVisibility === false) {
+        SetcheckVisibility(true)
       } else {
-        setTrues(false)
+        SetcheckVisibility(false)
       }
     }
     const AllFalse = () => {
-      setTrues(false)
+      SetcheckVisibility(false)
     }
-    const [trues, setTrues] = useState(false)
-    const {bjNickNm, bjMemNo, url} = live
+    //-------------------------------------------------------
     return (
       <ListenList key={index}>
         <ManegerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
+        <EVENTBTN value={checkVisibility} onClick={ToggleEvent}></EVENTBTN>
+        {checkVisibility && <RequestEvent />}
+        <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} />
       </ListenList>
     )
   })
+  //render-------------------------------------------------------
   return (
     <>
       <Wrapper>
         <LiveWrap>
-          <Title>방송 DJ</Title>
+          <Title>방송 참여 중 게스트</Title>
           <DJList>
-            <ManegerImg bg={BJInfo.url} />
-            <h2>{BJInfo.bjMemNo}</h2>
-            <h5>{BJInfo.bjNickNm}</h5>
+            <ManegerImg bg={GuestInfo.url} />
+            <h5>{GuestInfo.bjNickNm}</h5>
+            <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
+            {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
+            <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} />
           </DJList>
         </LiveWrap>
         <LiveWrap>
-          <Title>방송 매니저</Title>
+          <Title>초대한 게스트</Title>
           {Manegermap}
         </LiveWrap>
         <LiveWrap>
-          <Title>청취자</Title>
+          <Title>게스트 요청 청취자</Title>
           <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
         </LiveWrap>
       </Wrapper>
@@ -90,11 +116,9 @@ export default props => {
 const Wrapper = styled.div`
   margin-top: 20px;
 `
-
 const LiveWrap = styled.div`
   margin-bottom: 20px;
 `
-
 const DJList = styled.div`
   position: relative;
   display: flex;
@@ -114,10 +138,9 @@ const DJList = styled.div`
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
-
   & h5 {
     height: 36px;
-    margin-left: 36px;
+    margin-left: 12px;
     color: #fff;
     line-height: 36px;
     font-size: 14px;
@@ -125,25 +148,7 @@ const DJList = styled.div`
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
-  &:after {
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    width: 24px;
-    height: 14px;
-    border-radius: 7px;
-    background-color: #fdad2b;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 600;
-    text-align: center;
-    line-height: 14px;
-    transform: translateY(-50%);
-    content: 'DJ';
-  }
 `
-
 const ManegerList = styled.div`
   position: relative;
   width: 100%;
@@ -202,7 +207,6 @@ const ListenWrap = styled.div`
     }
   }
 `
-
 const ListenList = styled.div`
   width: calc(100% + 10px);
   position: relative;
@@ -213,7 +217,6 @@ const ListenList = styled.div`
   border-radius: 24px;
   background-color: #fff;
 `
-
 //이벤트버튼
 const EVENTBTN = styled.button`
   position: absolute;
@@ -225,6 +228,28 @@ const EVENTBTN = styled.button`
   background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
   outline: none;
 `
+
+const CANCELBTN = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
+  outline: none;
+`
+const CancelEventGuest = styled.button`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round2.png') no-repeat center center / cover;
+  outline: none;
+`
+
 //클릭 배경 가상요소
 const BackGround = styled.div`
   display: none;
