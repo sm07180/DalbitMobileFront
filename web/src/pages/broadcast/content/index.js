@@ -105,7 +105,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   return (
-    <Content>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>
         {/* 채팅방 영역 */}
         <ChatUI {...props} />
@@ -233,7 +233,7 @@ const Content = styled.section`
       width: 100%;
     } */
   }
-  &.side-off > div:last-child {
+  &.side-off > button + div {
     width: 20px;
   }
 
