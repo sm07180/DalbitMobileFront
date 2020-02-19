@@ -50,22 +50,22 @@ const Layout = props => {
       <Footer Ftype="mainFooter" />
 
       {/* 미디어 플레이어 */}
-      {/* {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && ( */}
-      <MediaPlayerWrap>
-        <MediaPlayer>
-          <div
-            style={{cursor: 'pointer'}}
-            onClick={() => {
-              console.log(mediaHandler)
-              if (mediaHandler.rtcPeerConn) {
-                mediaHandler.stop()
-              }
-            }}>
-            stop
-          </div>
-        </MediaPlayer>
-      </MediaPlayerWrap>
-      {/* )} */}
+      {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
+        <MediaPlayerWrap>
+          <MediaPlayer>
+            <div
+              style={{cursor: 'pointer'}}
+              onClick={() => {
+                console.log(mediaHandler)
+                if (mediaHandler.rtcPeerConn) {
+                  mediaHandler.stop()
+                }
+              }}>
+              stop
+            </div>
+          </MediaPlayer>
+        </MediaPlayerWrap>
+      )}
 
       {/* 레이어팝업 */}
       <Popup {...props} />
