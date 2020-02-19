@@ -79,12 +79,6 @@ export default () => {
     //모든처리완료
     setReady(true)
     // 로그인이 되었을때
-
-    const res1 = await Api.mypage()
-    if (res1.result === 'success') {
-      console.log(res1)
-      context.action.updateMypage(res1.data)
-    }
   }
   //---------------------------------------------------------------------
   //useEffect token

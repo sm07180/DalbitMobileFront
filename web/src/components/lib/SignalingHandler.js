@@ -24,6 +24,7 @@ export default class SignalingHandler {
     // listener
     // this.audioTag = null
     this.audioTag = document.createElement('audio')
+    this.audioTag.autoplay = true
 
     // callback
     this.localStartCallback = null

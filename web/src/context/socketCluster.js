@@ -245,6 +245,9 @@ export const socketClusterBinding = channel => {
     }
   } else {
     console.warn('소켓 null')
+    if (window.location.pathname !== '/') {
+      privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+    }
   }
 }
 
@@ -280,17 +283,14 @@ if (socket !== null) {
 }
 export const SendMessageChat = objChat => {
   const params = {
-    memNo: objChat.bjMemNo,
+    //memNo: objChat.bjMemNo,
+    memNo: '',
     isFan: objChat.isFan,
     roomRole: objChat.roomRole,
     roleRight: objChat.roleRight
   }
   console.log('sendMessage = ' + JSON.stringify(params))
-  //sendMessage.handle(publicChannelHandle, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '테스트1 메세지입니다. - Channel Publish')
-  //sendMessage.socket(socketConfig.channel.publicChannelName, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '123123123123123')
-  if (objChat.roomNo) {
-    sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
-  }
+  sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
 }
 
 export const sendMessageJson = function(cmd, params, msg) {
@@ -384,18 +384,18 @@ export const sendMessage = {
           emit: false,
           msg: 'message'
       }*/
-    // socket.emit('chat', sendMessageJson(type, param, msg), function(err, data) {
-    //   if (err) {
-    //     console.error('sendMessage emit error ' + err)
-    //   } else {
-    //     if (data.success) {
-    //       //서버에서 필요한 작업 성공
-    //       console.log('sendMessage emit: ' + JSON.stringify(data))
-    //     } else {
-    //       console.log('sendMessage emit: ' + JSON.stringify(data))
-    //     }
-    //   }
-    // })
+    socket.emit('chat', sendMessageJson(type, param, msg), function(err, data) {
+      if (err) {
+        console.error('sendMessage emit error ' + err)
+      } else {
+        if (data.success) {
+          //서버에서 필요한 작업 성공
+          console.log('sendMessage emit: ' + JSON.stringify(data))
+        } else {
+          console.log('sendMessage emit: ' + JSON.stringify(data))
+        }
+      }
+    })
   },
   loginToken: function(user) {
     /*{
@@ -407,20 +407,20 @@ export const sendMessage = {
           }
           msg: ''
       }*/
-    // socket.emit('loginToken', sendMessageJson(socketConfig.packet.send.PACKET_SEND_LOGIN_TK, user, ''), function(err, success) {
-    //   if (err) {
-    //     console.error('sendMessage emit loginToken error ' + err)
-    //     //$('#loginTokenLabel').html(err)
-    //   } else {
-    //     //$('#loginTokenLabel').html(success)
-    //     if (success) {
-    //       //서버에서 필요한 작업 성공
-    //       console.log('sendMessage emit loginToken success: ' + success)
-    //     } else {
-    //       console.log('sendMessage emit loginToken fail: ' + success)
-    //     }
-    //   }
-    // })
+    socket.emit('loginToken', sendMessageJson(socketConfig.packet.send.PACKET_SEND_LOGIN_TK, user, ''), function(err, success) {
+      if (err) {
+        console.error('sendMessage emit loginToken error ' + err)
+        //$('#loginTokenLabel').html(err)
+      } else {
+        //$('#loginTokenLabel').html(success)
+        if (success) {
+          //서버에서 필요한 작업 성공
+          console.log('sendMessage emit loginToken success: ' + success)
+        } else {
+          console.log('sendMessage emit loginToken fail: ' + success)
+        }
+      }
+    })
   },
   login: function(user) {
     /*{
@@ -432,20 +432,20 @@ export const sendMessage = {
       }
       msg: ''
       }*/
-    // socket.emit('login', sendMessageJson(socketConfig.packet.send.PACKET_SEND_LOGIN, user, ''), function(err, success) {
-    //   if (err) {
-    //     console.error('sendMessage emit login error ' + err)
-    //     //$('#socketLoginLabel').html(err)
-    //   } else {
-    //     //$('#socketLoginLabel').html(success)
-    //     if (success) {
-    //       //서버에서 필요한 작업 성공
-    //       console.log('sendMessage emit login success: ' + success)
-    //     } else {
-    //       console.log('sendMessage emit login fail: ' + success)
-    //     }
-    //   }
-    // })
+    socket.emit('login', sendMessageJson(socketConfig.packet.send.PACKET_SEND_LOGIN, user, ''), function(err, success) {
+      if (err) {
+        console.error('sendMessage emit login error ' + err)
+        //$('#socketLoginLabel').html(err)
+      } else {
+        //$('#socketLoginLabel').html(success)
+        if (success) {
+          //서버에서 필요한 작업 성공
+          console.log('sendMessage emit login success: ' + success)
+        } else {
+          console.log('sendMessage emit login fail: ' + success)
+        }
+      }
+    })
   }
 }
 
@@ -470,7 +470,7 @@ export default props => {
         <br></br>
         {/* <button onClick={() => socketClusterDestory(false, 'channel.public.dalbit')}>채널퇴장</button> */}
         {/* <br></br>
-        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button> */} */}
+        <button onClick={() => SendMessageChat()}>채팅메세지(channel Pulblish)</button> */}
       </Content>
     </>
   )

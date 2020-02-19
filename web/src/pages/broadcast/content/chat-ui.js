@@ -9,13 +9,17 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 const sc = require('context/socketCluster')
+
+//component
+import InfoContainer from './chat-info-container'
+
 export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([])
-  const [roomInfo, setRoomInfo] = useState([])
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -37,12 +41,11 @@ export default props => {
           </div>
         </Message>
       )
+
       setComments([comments, resulte])
       console.log('메세지 날려라')
-      setRoomInfo({
-        ...props.location.state,
-        msg: e.target.value
-      })
+
+      sc.SendMessageChat({...props.location.state, msg: e.target.value})
       // objSendInfo.roomNo = props.location.state.roomNo
       // objSendInfo.message = e.target.value
 
@@ -50,11 +53,6 @@ export default props => {
       e.target.value = ''
     }
   }
-  useEffect(() => {
-    console.log(roomInfo)
-    sc.SendMessageChat(roomInfo)
-  }, [roomInfo])
-  //tab
 
   //채팅창 마우스 휠 작동시
   const handleOnWheel = () => {
@@ -72,16 +70,32 @@ export default props => {
 
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    console.log('나이스', roomInfo)
+  }, [])
 
   useEffect(() => {}, [comments])
 
   //---------------------------------------------------------------------
   return (
-    <Content bgImg={`${IMG_SERVER}/images/api/pexels-photo.jpg`}>
-      <InfoArea>정보 담는 영역</InfoArea>
+    <Content bgImg={roomInfo.bgImg.url}>
+      <InfoContainer {...roomInfo} />
       <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
+          {/* 가이드 메시지 */}
+          <Message className="guide">
+            <div>
+              <span>
+                방송방에 입장하였습니다.
+                <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
+              </span>
+            </div>
+          </Message>
+          <Message className="guide">
+            <div>
+              <span>[안내] 방송이 시작되었습니다.</span>
+            </div>
+          </Message>
           {/* 입장 */}
           <Message className="enter-exit">
             <div>
@@ -121,6 +135,12 @@ export default props => {
               <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
             </div>
           </Message>
+          {/* 가이드 메시지 */}
+          <Message className="guide">
+            <div>
+              <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
+            </div>
+          </Message>
           {comments}
         </Scrollbars>
       </CommentList>
@@ -149,13 +169,6 @@ const Content = styled.section`
     content: '';
   }
 `
-
-const InfoArea = styled.div`
-  height: 80px;
-  border-bottom: 1px solid #e0e0e0;
-  background: none;
-`
-
 const CommentList = styled.div`
   /* overflow-y: scroll; */
   position: absolute;
@@ -168,9 +181,10 @@ const CommentList = styled.div`
     bottom: 0;
     max-height: 100% !important;
     width: 100%;
-    & > div {
-      margin-right: -18px !important;
-    }
+  }
+
+  & > div > div:first-child {
+    margin-right: -18px !important;
   }
 `
 
@@ -229,6 +243,14 @@ const Message = styled.div`
     font-size: 14px;
     color: #fff;
     text-align: center;
+    transform: skew(-0.03deg);
+  }
+
+  &.guide span {
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.6;
     transform: skew(-0.03deg);
   }
 
