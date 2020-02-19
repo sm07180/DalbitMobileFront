@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
-import SlideContent from './tab/SlideContent'
+import SideContent from './tab'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'
@@ -113,7 +113,7 @@ export default props => {
       <Side>
         {/* side content 영역 */}
 
-        <SlideContent>{/* <Charge /> */}</SlideContent>
+        <SideContent>{/* <Charge /> */}</SideContent>
       </Side>
       {roomRole === hostRole ? (
         <AudioWrap>

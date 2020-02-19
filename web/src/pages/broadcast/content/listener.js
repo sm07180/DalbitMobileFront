@@ -8,10 +8,8 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
-import Charge from './tab/charge'
-import NaviBar from './tab/navibar'
 import ChatUI from './chat-ui'
-import SlideContent from './tab/SlideContent'
+import SideContent from './tab'
 
 export default props => {
   //context
@@ -42,7 +40,7 @@ export default props => {
       </SideBTN>
       <Side>
         {/* side content 영역 */}
-        <SlideContent />
+        <SideContent />
       </Side>
     </Content>
   )

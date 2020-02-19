@@ -1,8 +1,10 @@
+/**
+ * @title 라이브탭 컨텐츠 -refresh button
+ */
 import React, {useState} from 'react'
-import {WIDTH_MOBILE} from 'context/config'
 import styled from 'styled-components'
-
 export default props => {
+  //------------------------------------------------------------------
   return (
     <>
       <Wrap>
@@ -12,6 +14,8 @@ export default props => {
     </>
   )
 }
+//------------------------------------------------------------------
+//styled
 const Wrap = styled.div`
   display: flex;
   width: 33.33%;

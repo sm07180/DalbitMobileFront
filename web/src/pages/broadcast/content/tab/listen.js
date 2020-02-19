@@ -5,16 +5,23 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
-import Events from './event'
-//pages
-
+//components--------------------------------------------------
+import Events from './listener-event'
 export default props => {
+  //context---------------------------------------------------------
   const context = useContext(Context)
+  //----------------------------------------------------------------
+  //0.매니저정보 info스테이트----------------------------------------
+  //1.청취자정보 info스테이트----------------------------------------
+  //2.비제이정보 info스테이트----------------------------------------
   const [ManegerInfo, setManegerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [BJInfo, setBJInfo] = useState(props.Info3)
+  //메니저 info맵----------------------------------------------------
   const Manegermap = ManegerInfo.map((live, index) => {
-    //클릭 이벤트
+    const {bjNickNm, bjMemNo, url} = live
+    const [trues, setTrues] = useState(false)
+    //클릭visibility function
     const ToggleEvent = () => {
       if (trues === false) {
         setTrues(true)
@@ -22,11 +29,11 @@ export default props => {
         setTrues(false)
       }
     }
+    //클릭 bg visibility function
     const AllFalse = () => {
       setTrues(false)
     }
-    const [trues, setTrues] = useState(false)
-    const {bjNickNm, bjMemNo, url} = live
+    //----------------------------------------------------------------
     return (
       <ManegerList key={index}>
         <ManegerImg bg={url} />
@@ -38,7 +45,10 @@ export default props => {
       </ManegerList>
     )
   })
+  //----------------------------------------------------------------
   const Listenmap = ListenInfo.map((live, index) => {
+    const {bjNickNm, bjMemNo, url} = live
+    const [trues, setTrues] = useState(false)
     //클릭 이벤트
     const ToggleEvent = () => {
       if (trues === false) {
@@ -50,8 +60,7 @@ export default props => {
     const AllFalse = () => {
       setTrues(false)
     }
-    const [trues, setTrues] = useState(false)
-    const {bjNickNm, bjMemNo, url} = live
+    //----------------------------------------------------------------
     return (
       <ListenList key={index}>
         <ManegerImg bg={url} />
@@ -63,6 +72,7 @@ export default props => {
       </ListenList>
     )
   })
+  //render------------------------------------------------------------
   return (
     <>
       <Wrapper>
@@ -86,15 +96,14 @@ export default props => {
     </>
   )
 }
-//-----------------------------------style
+//----------------------------------------------------------------
+//style
 const Wrapper = styled.div`
   margin-top: 20px;
 `
-
 const LiveWrap = styled.div`
   margin-bottom: 20px;
 `
-
 const DJList = styled.div`
   position: relative;
   display: flex;
@@ -213,7 +222,6 @@ const ListenList = styled.div`
   border-radius: 24px;
   background-color: #fff;
 `
-
 //이벤트버튼
 const EVENTBTN = styled.button`
   position: absolute;

@@ -1,12 +1,18 @@
+/**
+ * @title 라이브탭 인기순 셀렉트박스 컴포넌트
+ */
 import React, {useState} from 'react'
-import {WIDTH_MOBILE} from 'context/config'
 import styled from 'styled-components'
-
 export default props => {
+  //0.인기순..배열 호출 state-------------------------------------------
+  //1.셀렉트박스 visibility 체크----------------------------------------
+  //2.셀렉트박스 text 변경 초기 state-----------------------------------
   const [PopularInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChec2k, setSelectChecks] = useState(PopularInfo.option1)
-  //   const [Option, setOption] = useState('')
+  const [SelectChange, setSelectChange] = useState(PopularInfo.option1)
+  //------------------------------------------------------------------
+  //function
+  //셀렉트 버튼 토글 function
   const ToggleSelect = () => {
     if (SelectCheck === false) {
       setSelectCheck(true)
@@ -14,27 +20,28 @@ export default props => {
       setSelectCheck(false)
     }
   }
+  //백그라운드 클릭 셀렉트해제 function
   const AllFalse = () => {
     setSelectCheck(false)
   }
-
+  //------------------------------------------------------------------
   return (
     <>
       <Select onClick={ToggleSelect}>
-        <h2>{SelectChec2k}</h2>
+        <h2>{SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
         <div className="optionWrap">
           <p
             onClick={() => {
-              setSelectChecks(PopularInfo.option1)
+              setSelectChange(PopularInfo.option1)
               setSelectCheck(false)
             }}>
             {PopularInfo.option1}
           </p>
           <p
             onClick={() => {
-              setSelectChecks(PopularInfo.option2)
+              setSelectChange(PopularInfo.option2)
               setSelectCheck(false)
             }}>
             {PopularInfo.option2}
@@ -45,7 +52,8 @@ export default props => {
     </>
   )
 }
-
+//------------------------------------------------------------------
+//styled
 const Select = styled.div`
   display: inline-block;
   line-height: 40px;

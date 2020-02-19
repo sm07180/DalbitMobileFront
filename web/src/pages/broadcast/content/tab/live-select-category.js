@@ -1,12 +1,17 @@
 import React, {useState} from 'react'
-import {WIDTH_MOBILE} from 'context/config'
 import styled from 'styled-components'
 
 export default props => {
+  //------------------------------------------------------------------
+  //0.케테고리맵..배열 호출 state---------------------------------------
+  //1.셀렉트박스 visibility 체크----------------------------------------
+  //2.셀렉트박스 text 변경 초기 state-----------------------------------
   const [categoryInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChec2k, setSelectChecks] = useState(categoryInfo[0].option)
-  //   const [Option, setOption] = useState('')
+  const [SelectChange, setSelectChange] = useState(categoryInfo[0].option)
+  //------------------------------------------------------------------
+  //function
+  //셀렉트 버튼 토글 function
   const ToggleSelect = () => {
     if (SelectCheck === false) {
       setSelectCheck(true)
@@ -17,24 +22,26 @@ export default props => {
   const AllFalse = () => {
     setSelectCheck(false)
   }
+  //------------------------------------------------------------------
+  //category map
   const categorySelect = categoryInfo.map((item, index) => {
     const {option} = item
     return (
       <p
         key={index}
         onClick={() => {
-          setSelectChecks(option)
+          setSelectChange(option)
           setSelectCheck(false)
         }}>
         {option}
       </p>
     )
   })
-
+  //------------------------------------------------------------------
   return (
     <>
       <Select onClick={ToggleSelect}>
-        <h2>{SelectChec2k}</h2>
+        <h2>{SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
         <div className="optionWrap">{categorySelect}</div>
@@ -43,7 +50,8 @@ export default props => {
     </>
   )
 }
-
+//------------------------------------------------------------------
+//styled
 const Select = styled.div`
   display: inline-block;
   line-height: 40px;

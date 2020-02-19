@@ -4,13 +4,15 @@
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
+//components-------------------------------------------------------------
 import SelectInfo from './live-select-popular'
 import CategoryInfo from './live-select-category'
 import Refresh from './live-refresh'
-//pages
-
+//------------------------------------------------------------------
 export default props => {
+  //0.배열Info State--------------------------------------------------
   const [liveInfo, setLiveInfo] = useState(props.Info)
+  //map:live----------------------------------------------------------
   const livemap = liveInfo.map((live, index) => {
     const {category, title, name, reco, nowpeople, totalpeople, newby, like, bg, thumb} = live
     return (
@@ -44,6 +46,7 @@ export default props => {
       </LiveList>
     )
   })
+  //------------------------------------------------------------------
   return (
     <Wrapper>
       <LiveFilter>
@@ -55,6 +58,8 @@ export default props => {
     </Wrapper>
   )
 }
+//------------------------------------------------------------------
+//styled
 const Wrapper = styled.div`
   height: calc(100% - 48px);
 `
@@ -136,7 +141,6 @@ const InfoWrap = styled.div`
   height: 112px;
   padding-left: 27px;
   box-sizing: border-box;
-  /* background-color: orangered; */
 `
 const Category = styled.span`
   display: block;
@@ -214,6 +218,7 @@ const TotalpeopleIcon = styled.em`
   height: 24px;
   background: url('http://www.hwangsh.com/img/ic_people.png') no-repeat center center / cover;
 `
+//data---------------------------------------------------------------
 //셀렉트 가데이터(포푸러)
 const PopularInfo = {
   option1: '인기순',
