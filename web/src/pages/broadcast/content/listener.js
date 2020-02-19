@@ -15,7 +15,7 @@ import SlideContent from './SlideContent'
 
 export default props => {
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   //state
   const [isSideOn, setIsSideOn] = useState(true)
   useEffect(() => {

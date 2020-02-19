@@ -17,7 +17,7 @@ import Boost from './boost'
 
 export default props => {
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   //tab
   const {currentItem, changeItem} = useTabs(0, tabConent)
   return (

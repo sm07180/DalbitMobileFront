@@ -35,8 +35,11 @@ export default class SignalingHandler {
     this.wSocketInit()
   }
 
-  setType(type) {
+  async setType(type) {
     this.type = type
+    if (this.type === 'host') {
+      await this.setAudioStream()
+    }
   }
   setStreamId(id) {
     this.streamId = id
@@ -61,11 +64,55 @@ export default class SignalingHandler {
     this.globalStartCallback = null
     this.globalStopCallback = null
   }
-  setAudioStream(stream) {
-    this.audioStream = stream
-  }
   setAudioTag(audioTag) {
     this.audioTag = audioTag
+  }
+
+  async detectAudioDevice() {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    let micExist = false
+    devices.forEach(d => {
+      if (d.kind === 'audioinput') {
+        micExist = true
+      }
+    })
+
+    if (!micExist) {
+      if (this.audioStream) {
+        this.removeAudioStream()
+        this.stop()
+      }
+    } else {
+      if (!this.audioStream) {
+        await this.setAudioStream()
+      }
+    }
+  }
+
+  async setAudioStream() {
+    navigator.mediaDevices.addEventListener('devicechange', this.detectAudioDevice)
+
+    const constraint = {audio: true}
+    await navigator.mediaDevices
+      .getUserMedia(constraint)
+      .then(stream => {
+        this.audioStream = stream
+      })
+      .catch(e => {
+        if (String(e).indexOf('Permission') !== -1) {
+          // alert('Mic permission is denied')
+        } else if (String(e).indexOf('NotFound') !== -1) {
+          // alert('Mic is not found')
+        }
+      })
+  }
+
+  removeAudioStream() {
+    navigator.mediaDevices.removeEventListener('devicechange', this.detectAudioDevice)
+    this.audioStream.getTracks().forEach(track => {
+      track.stop()
+    })
+    this.audioStream = null
   }
 
   socketSendMsg(data) {
@@ -118,13 +165,6 @@ export default class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
-
-    // host stop
-    if (this.audioStream) {
-      this.audioStream.getTracks().forEach(track => {
-        track.stop()
-      })
-    }
 
     // listener stop
     if (this.audioTag && this.audioTag.srcObject) {

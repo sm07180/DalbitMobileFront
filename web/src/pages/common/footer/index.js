@@ -9,7 +9,7 @@ import {Context} from 'context'
 //---------------------------------------------------------------------
 export default props => {
   //context
-  const context = new useContext(Context)
+  const context = useContext(Context)
   const [show, setShow] = useState(false)
   //console.log(props.Ftype)
   const showing = () => {
