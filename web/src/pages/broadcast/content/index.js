@@ -15,7 +15,7 @@ import {getAudioStream} from 'components/lib/getStream'
 //components
 import ChatUI from './chat-ui'
 import SlideContent from './SlideContent'
-
+const sc = require('context/socketCluster')
 //pages
 // import Guide from ' pages/common/layout/guide.js'
 
@@ -98,13 +98,19 @@ export default props => {
   const makeContents = () => {
     return JSON.stringify(state, null, 4)
   }
+
+  useEffect(() => {
+    // 방 소켓 연결
+    console.log('방소켓 연결 해라 ')
+    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo)
+  }, [])
   //---------------------------------------------------------------------
 
   return (
     <Content>
       <Chat>
         {/* 채팅방 영역 */}
-        <ChatUI />
+        <ChatUI {...props} />
       </Chat>
       <SideBTN
         onClick={() => {
