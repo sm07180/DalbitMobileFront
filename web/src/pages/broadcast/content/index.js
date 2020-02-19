@@ -176,7 +176,7 @@ export default props => {
                   if (!bjStreamId) {
                     return alert('Need a stream id')
                   }
-                  if (this.audioTag && mediaHandler && !mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && !mediaHandler.rtcPeerConn) {
                     const status = mediaHandler.play()
                     if (status) {
                       startPlayer()
@@ -193,7 +193,7 @@ export default props => {
               <button
                 style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
                 onClick={() => {
-                  if (this.audioTag && mediaHandler && mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && mediaHandler.rtcPeerConn) {
                     mediaHandler.stop()
                     stopPlayer()
                   }
