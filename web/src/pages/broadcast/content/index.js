@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
-import SlideContent from './SlideContent'
+import SlideContent from './tab/SlideContent'
 
 //pages
 // import Guide from ' pages/common/layout/guide.js'

@@ -13,7 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
-import Present from 'pages/broadcast/content/present-popup'
+import Present from 'pages/broadcast/content/tab/present'
 import LiveClickEvent from 'components/ui/eventbox'
 //
 export default props => {
