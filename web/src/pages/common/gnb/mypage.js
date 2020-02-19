@@ -81,7 +81,7 @@ export default props => {
 
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={isLogin ? mypage.profImg.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
+              {/* <PIMG bg={isLogin ? mypage.profImg.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG> */}
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>

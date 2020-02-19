@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
-import SlideContent from './SlideContent'
+
 const sc = require('context/socketCluster')
 import SideContent from './tab'
 
