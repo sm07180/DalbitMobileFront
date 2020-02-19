@@ -12,6 +12,7 @@ import LiveListener from './listen'
 import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
+import Profile from './profile'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -37,6 +38,7 @@ export default props => {
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
+      {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
     </>
   )
 }
@@ -101,6 +103,10 @@ const tabConent = [
   {
     id: 5,
     tab: '부스트'
+  },
+  {
+    id: 6,
+    tab: '프로필'
   }
 ]
 //data------------------------------------------------------------------
@@ -396,3 +402,14 @@ const ListenInfo = [
     url: 'https://pbs.twimg.com/media/EOF2QQ8UwAAKOnW.jpg'
   }
 ]
+//프로필 데이터
+const Profiledata = {
+  profImg: 'https://img.insight.co.kr/static/2019/12/12/700/uk43076n9944w8b8u275.jpg',
+  exp: '140',
+  grade: '골드',
+  level: '31',
+  nickNm: 'BJ라디오라디오',
+  memNo: '@bjradio',
+  fanCnt: '12000',
+  starCnt: '870'
+}
