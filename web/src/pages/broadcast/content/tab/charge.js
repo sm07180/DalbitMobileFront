@@ -6,68 +6,82 @@ import Navi from './navibar'
 const testMoon = [
   {
     name: 30,
-    price: '3,000'
+    price: '3,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
-    price: '10,000'
+    price: '10,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
-    price: '30,000'
+    price: '30,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
-    price: '50,000'
+    price: '50,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
-    price: '100,000'
+    price: '100,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
-    price: '300,000'
+    price: '300,000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 
 const testStar = [
   {
     name: 30,
-    price: '50'
+    price: '50',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
-    price: '166'
+    price: '166',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
-    price: '500'
+    price: '500',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
-    price: '833'
+    price: '833',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
-    price: '1666'
+    price: '1666',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
-    price: '5000'
+    price: '5000',
+    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 export default props => {
   const [choice, setChoice] = useState('moon')
-  const [goodsState, setGoods] = useState(0)
+  const [goodsState, setGoods] = useState(-1)
   const [testData, setTestData] = useState(testMoon)
 
   const setData = async param => {
     if (param == 'moon') {
       setTestData(testMoon)
       setChoice('moon')
+      setGoods(-1)
     } else {
       setTestData(testStar)
       setChoice('star')
+      setGoods(-1)
     }
   }
 
@@ -78,10 +92,10 @@ export default props => {
       <>
         {choice === 'moon' ? (
           <Choice active onClick={() => setData('moon')}>
-            달 충전
+            현금 충전
           </Choice>
         ) : (
-          <Choice onClick={() => setData('moon')}>달 충전</Choice>
+          <Choice onClick={() => setData('moon')}>현금 충전</Choice>
         )}
 
         <Separator>|</Separator>
@@ -113,12 +127,13 @@ export default props => {
         {testData.map((goods, idx) => {
           return (
             <GoodsInfo active={idx === goodsState ? 'active' : ''} onClick={() => setGoods(idx)} key={idx} state={choice}>
-              <Icon></Icon>
+              {/* <Icon imgUrl={goods.imgUrl} /> */}
+              <img src={goods.imgUrl} width={80} height={80} />
               <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
                 달 {goods.name}
               </GoodsName>
               <Price active={idx === goodsState ? 'active' : ''} state={choice}>
-                {choice === 'star' && '' + ' 별'}
+                {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
                 {goods.price}
                 {choice === 'moon' && '원'}
               </Price>
@@ -130,10 +145,10 @@ export default props => {
         {choice === 'moon' ? (
           <>
             <Cancel>취소</Cancel>
-            <Charge>충전하기</Charge>
+            <Charge active={goodsState != -1 ? 'active' : ''}>구매하기</Charge>
           </>
         ) : (
-          <ChargeS>별로 구매하기</ChargeS>
+          <ChargeS active={goodsState != -1 ? 'active' : ''}>별로 구매하기</ChargeS>
         )}
       </ButtonArea>
     </Container>
@@ -210,7 +225,7 @@ const Goods = styled.div`
   flex-flow: wrap;
   justify-content: space-between;
   width: 100%;
-  height: 264px;
+  height: 290px;
 `
 const GoodsInfo = styled.button`
   display: flex;
@@ -221,38 +236,42 @@ const GoodsInfo = styled.button`
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 104px;
   }
-  height: 126px;
-  margin-bottom: 10px;
-  border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
-  border-style: solid;
+  height: 138px;
+  margin-bottom: 4px;
+  border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '') : props.active ? '#fdad2b' : '')};
+  border-style: ${props => (props.active ? 'solid' : 'none')};
   border-radius: 10px;
   border-width: 1px;
-  padding-top: 2vh;
+  background: ${props => (props.active ? '#fff' : '#f5f5f5')};
 `
 
 const Price = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 99px;
-  height: 30px;
+  width: 110px;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100px;
+  }
+  height: 28px;
   background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
+  margin-top: 4px;
 `
 
 const GoodsName = styled.div`
   width: 100px;
-  height: 18px;
+  height: 16px;
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#424242') : props.active ? '#fdad2b' : '#424242')};
 `
 const ButtonArea = styled.div`
   display: flex;
   width: 100%;
-  height: 10%;
+  height: 8%;
   /* background-color: blue; */
   justify-content: space-between;
   align-items: center;
@@ -261,7 +280,7 @@ const ButtonArea = styled.div`
 const Icon = styled.div`
   width: 25px;
   height: 25px;
-  background-color: black;
+  /* background-color: black; */
   margin-bottom: 10px;
 `
 const Cancel = styled.button`
@@ -283,7 +302,7 @@ const Cancel = styled.button`
 const Charge = styled.button`
   width: 48%;
   height: 5vh;
-  background-color: #8556f6;
+  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
@@ -297,7 +316,7 @@ const ChargeS = styled.button`
   display: flex;
   width: 100%;
   height: 5vh;
-  background-color: #8556f6;
+  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;

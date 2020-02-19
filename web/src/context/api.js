@@ -624,9 +624,17 @@ export default class API {
   static setCustomHeader = obj => {
     this.customHeader = obj
   }
-}
+  //--------------------------------------------------------------------- 방송 사이드컨텐츠 test
 
-//---------------------------------------------------------------------
+  /**
+   * @brief 방송방 선물하기
+   * @create 최우정 2020.02.17
+   */
+  static send_gift = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/gift`, method: method || 'POST', data: data})
+  }
+}
 
 //ajax
 export const ajax = async obj => {
