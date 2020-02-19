@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
+import Present from 'pages/broadcast/content/present-popup'
 import LiveClickEvent from 'components/ui/eventbox'
 //
 export default props => {
@@ -26,6 +27,8 @@ export default props => {
         return <Auth {...props} />
       case 'CAST': //----------------------------------------캐스트
         return <POPCAST {...props} />
+      case 'SEND_PRESENT': //----------------------------------------방송-몰래 선물보내기
+        return <Present {...props} />
       case 'LiveClickEvent': //----------------------------------------라이브청취자 클릭이벤트
         return <LiveClickEvent {...props} />
     }
@@ -52,6 +55,23 @@ export default props => {
         <Container>
           <Wrap>{makePopupContents()}</Wrap>
           <Background />
+        </Container>
+      )}
+      {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
+        <Container>
+          <Background
+            onClick={() => {
+              context.action.updatePopupVisible(false)
+            }}
+          />
+          <PresentWrap>
+            <div className="buttonArea">
+              <button className="close" onClick={() => context.action.updatePopupVisible(false)}>
+                <img scr={'https://devimage.dalbitcast.com/images/api/ic_close_m@2x.png'} width={36} height={36} />
+              </button>
+            </div>
+            {makePopupContents()}
+          </PresentWrap>
         </Container>
       )}
       {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
@@ -108,3 +128,26 @@ const Background = styled.div`
 
 const EventContainer = styled.div``
 const EventBackground = styled.div``
+
+const PresentWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 300px;
+  /* background: #fff; */
+  background: rgba(0, 0, 0, 0);
+  border-radius: 10px;
+
+  .close {
+    display: flex;
+    width: 36px;
+    height: 36px;
+  }
+
+  .buttonArea {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    justify-content: flex-end;
+  }
+`

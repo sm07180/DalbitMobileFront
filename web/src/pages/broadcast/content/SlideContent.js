@@ -13,6 +13,7 @@ import LiveGuest from './live-guest'
 import NaviBar from './navibar'
 import Charge from './charge'
 import Present from './present'
+import Boost from './boost'
 
 export default props => {
   //context
@@ -33,6 +34,7 @@ export default props => {
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
+      {currentItem.tab === '부스트' && <Boost />}
     </>
   )
 }
@@ -57,6 +59,10 @@ const tabConent = [
   {
     id: 4,
     tab: '선물'
+  },
+  {
+    id: 5,
+    tab: '부스트'
   }
 ]
 

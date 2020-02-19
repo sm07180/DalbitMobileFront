@@ -18,6 +18,7 @@ const GlobalProvider = props => {
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
+  const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
   const [popup_code, setPopup] = useState('')
@@ -44,7 +45,6 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
-      console.log(JSON.stringify(obj))
       API.setCustomHeader(JSON.stringify(obj))
       Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
@@ -60,6 +60,13 @@ const GlobalProvider = props => {
       API.setAuthToken(authToken)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken(obj)
+    },
+    /**
+     * @brief 마이페이지 업데이트
+     * @param object obj                        //마이페이지
+     */
+    updateMypage: obj => {
+      setMypage(mypage => ({...mypage, ...obj}))
     },
     //팝업컨텐츠
     updatePopup: str => {
@@ -103,6 +110,7 @@ const GlobalProvider = props => {
   //---------------------------------------------------------------------
   const value = {
     state,
+    mypage,
     token,
     customHeader,
     login_state,
