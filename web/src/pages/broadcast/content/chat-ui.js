@@ -1,7 +1,7 @@
 /**
  * @title 채팅 ui 컴포넌트
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -9,15 +9,21 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
+  //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
   //state
   const [isSideOn, setIsSideOn] = useState(true)
   const [comments, setComments] = useState([])
+  const [isOverHeight, setIsOverHeight] = useState(false) // 채팅창 스크롤이 있는지 없는지 상태 값, 초기엔 height가 0이므로 false
+  const [checkMove, setCheckMove] = useState() // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
+  //ref
+  const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
 
-  let test = React.createRef()
+  //---------------------------------------------------------------------
+  //function
 
-  //comment Key Press
+  //채팅 입력시(input KeyPress)
   const handleCommentKeyPress = e => {
     if (e.target.value && e.key == 'Enter') {
       //setComments(...comments, e.target.value)
@@ -32,19 +38,53 @@ export default props => {
       )
       setComments([comments, resulte])
       e.target.value = ''
-      // console.log(test)
-      test.current.scrollTop = test.current.offsetHeight
     }
   }
 
+  //스크롤 셋팅
+  const settingScroll = type => {
+    if (type == 'addComment') {
+      //채팅이 입력되었을시 스크롤을 최하단으로 옮기기
+      chatArea.current.scrollTop = chatArea.current.offsetHeight
+      setCheckMove(false)
+    } else if (type == 'move') {
+      setCheckMove(true)
+    }
+  }
+
+  //채팅창 마우스 휠 작동시
+  const handleOnWheel = () => {
+    settingScroll('move')
+  }
+
+  //---------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {}, [])
+
   useEffect(() => {
-    console.log('현재 얘가 영역임', test)
-  }, [])
-  //tab
+    if (!(chatArea.current.scrollHeight == chatArea.current.offsetHeight)) {
+      if (!isOverHeight) {
+        //처음에 바텀 찍은 후의 로직
+        if (!checkMove) {
+          // 스크롤 움직이지 않았을때만 스크롤 바텀 유지
+          settingScroll('addComment')
+        }
+      } else {
+        //스크롤 생긴 후 처음 바텀 찍기
+        settingScroll('addComment')
+        setIsOverHeight(true) // 스크롤 생김
+      }
+    } else {
+      settingScroll('addComment')
+      setIsOverHeight(false) // 스크롤 없음
+    }
+  }, [comments])
+
+  //---------------------------------------------------------------------
   return (
     <Content bgImg="">
       <InfoArea>정보 담는 영역</InfoArea>
-      <CommentList className="scroll" ref={test}>
+      <CommentList className="scroll" ref={chatArea} onWheel={handleOnWheel}>
         {comments}
       </CommentList>
       <InputComment>
