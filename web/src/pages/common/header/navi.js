@@ -7,7 +7,7 @@ import React, {useEffect, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
-import {Hybird} from 'context'
+import {Hybird} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -52,7 +52,7 @@ export default props => {
             console.log(props)
             props.history.push('/broadcast-setting')
           } else {
-            Hybird(RoomMake)
+            //  Hybird(RoomMake)
           }
         }}>
         <span>방송하기</span>
