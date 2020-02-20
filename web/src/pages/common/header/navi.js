@@ -44,18 +44,24 @@ export default props => {
        * @todos 방송중일때 방송중으로 떠야함
        */
 
-      <Link
-        to="/broadcast-setting"
-        className="broadcast"
+      <button
+        key="broadcast"
         onClick={event => {
+          event.preventDefault()
           //Hybird App이 아닐때
           if (context.customHeader.hybridApp === 'N') {
+            console.log(props)
+            if (context && context.token && !context.token.isLogin) {
+              alert('로그인필요')
+              return
+            }
+            props.history.push('/broadcast-setting')
           } else {
-            //  Hybird(RoomMake)
+            Hybird(RoomMake)
           }
         }}>
         <span>방송하기</span>
-      </Link>
+      </button>
     )
     return [navi, broadCast]
   }
@@ -100,7 +106,7 @@ const Content = styled.nav`
       }
     }
   }
-  a.broadcast {
+  button {
     padding: 9px 20px 9px 48px;
     border-radius: 40px;
     background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;
