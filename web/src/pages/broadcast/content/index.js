@@ -43,7 +43,7 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, roomRole} = state
+  const {bjStreamId, roomRole, bjProfImg} = state
 
   const startPlayer = () => {
     if (roomRole === hostRole) {
@@ -72,16 +72,17 @@ export default props => {
         mediaHandler.stop()
       }
 
+      if (bjProfImg) {
+        mediaHandler.setHostImage(bjProfImg.url)
+      }
+      mediaHandler.setLocalStartCallback(startPlayer)
+      mediaHandler.setLocalStopCallback(stopPlayer)
+      mediaHandler.setStreamId(bjStreamId)
+
       if (roomRole === hostRole) {
-        mediaHandler.setLocalStartCallback(startPlayer)
-        mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('host')
-        mediaHandler.setStreamId(bjStreamId)
       } else if (roomRole === listenerRole) {
-        mediaHandler.setLocalStartCallback(startPlayer)
-        mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('listener')
-        mediaHandler.setStreamId(bjStreamId)
       }
     }
 
