@@ -266,10 +266,11 @@ export default class API {
    * @todo
    * @param string roomNo                 //*방송방번호
    * @create 김호겸 2020.01.31
+   * @update 이은비 2020.02.20            //data -> params로 변경
    */
   static broad_info = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/info`, method: method || 'GET', data: data})
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/info`, method: method || 'GET', params: params})
   }
   //--------------------------------------------------------------------- 회원 관련
   /**

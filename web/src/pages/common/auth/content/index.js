@@ -118,10 +118,17 @@ export default props => {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
         props.update({loginSuccess: res.data})
+        // 20200220 - 김호겸 이부분에서 roomNo 값 ,즉 비회원이고 방에 들어갔다가 login 할 경우 방번호를 넣어주어야 한다.추후 처리 예정
+        let pathUrl = ''
+        let UserRoomNo = ''
+
+        pathUrl = window.location.search
+        UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
         const scLoginInfo = {
           authToken: res.data.authToken,
           memNo: res.data.memNo,
-          locale: 'koKR'
+          locale: 'koKR',
+          roomNo: UserRoomNo
         }
         sc.sendMessage.login(scLoginInfo)
       } else {
@@ -147,8 +154,8 @@ export default props => {
               // Utility.removeCookie('NNB', '', -1)
             }
 
-            props.history.push('/')
-            alert('회원가입 실패 메인이동')
+            //props.history.push('/')
+            //alert('회원가입 실패 메인이동')
           }
         }
       }
@@ -250,7 +257,11 @@ export default props => {
     //     }
     //   }
   }
-
+  const pwdEnterkeyHandle = e => {
+    if (e.keyCode == 13) {
+      fetchData({...changes}, 'p')
+    }
+  }
   useEffect(() => {
     // var naverLogin = new naver.LoginWithNaverId({
     //   clientId: 'WK0ohRsfYc9aBhZkyApJ',
@@ -310,8 +321,8 @@ export default props => {
         </Logo>
       )}
       <LoginInput>
-        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} />
-        <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} />
+        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} autoFocus />
+        <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} onKeyPress={() => pwdEnterkeyHandle(event)} />
       </LoginInput>
       <LoginSubmit
         onClick={() => {

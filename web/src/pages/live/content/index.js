@@ -52,7 +52,7 @@ export default props => {
     if (res.result === 'success') {
       const {bjStreamId, roomNo} = res.data
       console.log(res.data)
-      props.history.push(`/broadcast/${roomNo}`, res.data)
+      props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
     }
     return
   }

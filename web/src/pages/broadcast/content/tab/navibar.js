@@ -24,9 +24,7 @@ const Navi = styled.div`
   border-bottom-color: #eeeeee;
   border-bottom-style: solid;
   font-size: 18px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1.17;
   letter-spacing: -0.45px;
   align-items: center;

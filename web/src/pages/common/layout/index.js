@@ -15,6 +15,8 @@ import Gnb from 'pages/common/gnb'
 import Popup from 'pages/common/popup'
 // etc
 import SignalingHandler from 'components/lib/SignalingHandler'
+// image
+import stopSvg from 'images/ic_close_b.svg'
 
 const Layout = props => {
   //context
@@ -53,16 +55,23 @@ const Layout = props => {
       {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
         <MediaPlayerWrap>
           <MediaPlayer>
-            <div
-              style={{cursor: 'pointer'}}
-              onClick={() => {
-                console.log(mediaHandler)
-                if (mediaHandler.rtcPeerConn) {
-                  mediaHandler.stop()
-                }
-              }}>
-              stop
-            </div>
+            {mediaHandler.type === 'listener' && (
+              <img
+                src={stopSvg}
+                style={{
+                  cursor: 'pointer',
+                  marginLeft: 'auto',
+                  width: '36px',
+                  height: '36px'
+                }}
+                onClick={() => {
+                  console.log(mediaHandler)
+                  if (mediaHandler.rtcPeerConn) {
+                    mediaHandler.stop()
+                  }
+                }}
+              />
+            )}
           </MediaPlayer>
         </MediaPlayerWrap>
       )}
