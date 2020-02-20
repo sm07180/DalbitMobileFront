@@ -55,21 +55,24 @@ const Layout = props => {
         <MediaPlayerWrap>
           <MediaPlayer>
             {mediaHandler.type === 'listener' && (
-              <img
-                src={stopSvg}
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: 'auto',
-                  width: '36px',
-                  height: '36px'
-                }}
-                onClick={() => {
-                  console.log(mediaHandler)
-                  if (mediaHandler.rtcPeerConn) {
-                    mediaHandler.stop()
-                  }
-                }}
-              />
+              <>
+                <img style={{width: '60px', borderRadius: '50%'}} src={mediaHandler.connectedHostImage} />
+                <img
+                  src={stopSvg}
+                  style={{
+                    cursor: 'pointer',
+                    marginLeft: 'auto',
+                    width: '36px',
+                    height: '36px'
+                  }}
+                  onClick={() => {
+                    console.log(mediaHandler)
+                    if (mediaHandler.rtcPeerConn) {
+                      mediaHandler.stop()
+                    }
+                  }}
+                />
+              </>
             )}
           </MediaPlayer>
         </MediaPlayerWrap>
