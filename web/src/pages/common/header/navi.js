@@ -57,6 +57,7 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
+            alert(context.customHeader.os)
             Hybird('RoomMake')
           }
         }}>
