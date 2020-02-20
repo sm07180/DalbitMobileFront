@@ -55,7 +55,7 @@ const Layout = props => {
       {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
         <MediaPlayerWrap>
           <MediaPlayer>
-            {mediaHandler.type === 'guest' && (
+            {mediaHandler.type === 'listener' && (
               <img
                 src={stopSvg}
                 style={{

@@ -250,7 +250,7 @@ export default class SignalingHandler {
         this.iceCandidateReceived(e)
       }
       this.rtcPeerConn.ontrack = e => {
-        if (!this.audioTag.srcObject) {
+        if (this.audioTag && !this.audioTag.srcObject) {
           this.audioTag.srcObject = e.streams[0]
         }
       }
