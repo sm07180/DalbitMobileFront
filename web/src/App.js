@@ -14,6 +14,7 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
+import {osName, browserName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
@@ -35,10 +36,16 @@ export default () => {
   const customHeader = useMemo(() => {
     //makeCustomHeader
     const makeCustomHeader = () => {
+      //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
+      let _os = '3'
+      if (osName === 'Android') _os = '1'
+      if (osName === 'iOS') _os = '2'
       const info = {
-        os: '3',
+        os: _os,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
+        hybridApp: 'N', //하이브리앱이 아닐경우 (PC,Mobile브라우져로 접속시)
+        browserName: browserName,
         language: 'ko',
         deviceToken: 'make_custom_header'
       }
