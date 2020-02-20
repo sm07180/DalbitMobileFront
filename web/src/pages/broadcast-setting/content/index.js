@@ -22,11 +22,6 @@ export default props => {
   //context
   const context = useContext(Context)
 
-  if (context && context.token && !context.token.isLogin) {
-    window.location.href = '/'
-    return
-  }
-
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
