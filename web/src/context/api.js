@@ -634,6 +634,15 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/gift`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief 방송방 회원정보 조회
+   * @create 황상한 2020.02.20
+   */
+  static info_view = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
+  }
+  //-------------------------------------------------------------
 }
 
 //ajax

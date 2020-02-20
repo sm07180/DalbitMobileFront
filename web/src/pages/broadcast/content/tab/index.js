@@ -14,6 +14,7 @@ import Charge from './charge'
 import Present from './present'
 import Profile from './profile'
 import Boost from './boost'
+import Report from './report'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -40,6 +41,7 @@ export default props => {
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
+      {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
     </>
   )
 }
@@ -108,6 +110,10 @@ const tabConent = [
   {
     id: 6,
     tab: '프로필'
+  },
+  {
+    id: 7,
+    tab: '신고하기'
   }
 ]
 //data------------------------------------------------------------------
@@ -406,11 +412,15 @@ const ListenInfo = [
 //프로필 데이터
 const Profiledata = {
   profImg: 'https://lh3.googleusercontent.com/proxy/RmQV5QRjLDB43l5YJsC7Nx6of4OF-x9eFdV2P9CjfAFNvbgqiorz7O586gPrL9VjP1sWdv4afuKU7uujFuB3wE6Ryi92f4h-Q430XDGmPfuvzcw3KIycLu5f',
-  exp: '140',
+  exp: 140,
   grade: '골드',
-  level: '31',
+  level: 31,
   nickNm: 'BJ라디오라디오😍',
-  memNo: '@bjradio',
-  fanCnt: '12000',
-  starCnt: '870'
+  memId: '@bjradio',
+  fanCnt: 12000,
+  starCnt: 870
+}
+//신고하기 데이터
+const Reportdata = {
+  nickNm: '솜사탕사탕'
 }
