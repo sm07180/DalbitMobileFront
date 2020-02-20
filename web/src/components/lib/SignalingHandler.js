@@ -5,7 +5,8 @@ export default class SignalingHandler {
     this.url = audioSocketUrl
     this.ws = null
     this.streamId = null
-    this.token = null
+    this.publishToken = null
+    this.playToken = null
     this.room = null
     this.rtcPeerConn = null
     this.rtcDescription = null

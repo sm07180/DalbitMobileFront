@@ -55,21 +55,23 @@ const Layout = props => {
       {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
         <MediaPlayerWrap>
           <MediaPlayer>
-            <img
-              src={stopSvg}
-              style={{
-                cursor: 'pointer',
-                marginLeft: 'auto',
-                width: '36px',
-                height: '36px'
-              }}
-              onClick={() => {
-                console.log(mediaHandler)
-                if (mediaHandler.rtcPeerConn) {
-                  mediaHandler.stop()
-                }
-              }}
-            />
+            {mediaHandler.type === 'guest' && (
+              <img
+                src={stopSvg}
+                style={{
+                  cursor: 'pointer',
+                  marginLeft: 'auto',
+                  width: '36px',
+                  height: '36px'
+                }}
+                onClick={() => {
+                  console.log(mediaHandler)
+                  if (mediaHandler.rtcPeerConn) {
+                    mediaHandler.stop()
+                  }
+                }}
+              />
+            )}
           </MediaPlayer>
         </MediaPlayerWrap>
       )}
