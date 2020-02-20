@@ -43,12 +43,9 @@ export default props => {
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
-<<<<<<< HEAD
-      {currentItem.tab === '사연' && <Story />}
-=======
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
+      {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '공지사항' && <Notice />}
->>>>>>> 5a2a1726ccf582ce471c80b00ad0368b73597bfb
     </>
   )
 }
@@ -120,15 +117,15 @@ const tabConent = [
   },
   {
     id: 7,
-<<<<<<< HEAD
-    tab: '사연'
-=======
     tab: '신고하기'
   },
   {
     id: 8,
     tab: '공지사항'
->>>>>>> 5a2a1726ccf582ce471c80b00ad0368b73597bfb
+  },
+  {
+    id: 9,
+    tab: '신고하기'
   }
 ]
 //data------------------------------------------------------------------
