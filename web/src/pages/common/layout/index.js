@@ -38,7 +38,6 @@ const Layout = props => {
   //---------------------------------------------------------------------
 
   let pathCheck = props.location.pathname.indexOf('/broadcast') < 0 ? true : false
-
   return (
     <Container>
       {/* 헤더설정 */}

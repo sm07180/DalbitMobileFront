@@ -27,6 +27,8 @@ export default class SignalingHandler {
     // host, guest
     this.audioStream = null
 
+    this.connectedHostImage = null
+
     // callback
     this.localStartCallback = null
     this.localStopCallback = null
@@ -69,6 +71,9 @@ export default class SignalingHandler {
   }
   setAudioTag(audioTag) {
     this.audioTag = audioTag
+  }
+  setHostImage(img) {
+    this.connectedHostImage = img
   }
 
   async detectAudioDevice() {
@@ -168,6 +173,8 @@ export default class SignalingHandler {
       streamId: this.streamId
     }
     this.socketSendMsg(cmd)
+
+    this.connectedHostImage = null
 
     // listener stop
     if (this.audioTag && this.audioTag.srcObject) {
