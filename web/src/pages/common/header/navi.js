@@ -7,6 +7,7 @@ import React, {useEffect, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
+import {Hybird} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -20,32 +21,43 @@ export default props => {
   const info = [
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'},
-    {title: '이벤트', url: '/event'},
-    {title: '방송하기', url: '/broadcast-setting'}
+    {title: '이벤트', url: '/event'}
+    // {title: '방송하기', url: '/broadcast-setting'}
   ]
   //makeMenu
   const makeNavi = () => {
-    return info.map((list, idx) => {
+    //라이브,스토어,이벤트 메뉴
+    const navi = info.map((list, idx) => {
       const _title = info[idx].title
       const _url = info[idx].url
       return (
-        <NavLink
-          title={_title}
-          key={idx}
-          to={_url}
-          exact
-          activeClassName="on"
-          onClick={event => {
-            if (!context.token.isLogin && idx === 3) {
-              event.preventDefault()
-              context.action.updatePopup('LOGIN')
-              console.log('test')
-            }
-          }}>
+        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on" onClick={event => {}}>
           <span>{_title}</span>
         </NavLink>
       )
     })
+    //방송하기
+    console.log(context.customHeader.hybridApp === 'N')
+
+    const broadCast = (
+      /**
+       * @todos 방송중일때 방송중으로 떠야함
+       */
+
+      <Link
+        to="/broadcast-setting"
+        className="broadcast"
+        onClick={event => {
+          //Hybird App이 아닐때
+          if (context.customHeader.hybridApp === 'N') {
+          } else {
+            //  Hybird(RoomMake)
+          }
+        }}>
+        <span>방송하기</span>
+      </Link>
+    )
+    return [navi, broadCast]
   }
   //---------------------------------------------------------------------
   return <Content className={`${props.type}`}>{makeNavi()}</Content>
@@ -88,7 +100,7 @@ const Content = styled.nav`
       }
     }
   }
-  a:last-child {
+  a.broadcast {
     padding: 9px 20px 9px 48px;
     border-radius: 40px;
     background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;

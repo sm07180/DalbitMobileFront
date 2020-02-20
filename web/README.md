@@ -5,7 +5,26 @@
 
 # 공통
 
-### 로그인여부확인
+> custom Header 출력 (PC접속시)
+
+```
+os: "3"
+locale: "temp_KR"
+deviceId: "e9609b9f-626c-41d1-8a4d-8b327152e691"
+hybridApp: "N"
+browserName: "Chrome"
+language: "ko"
+deviceToken: "make_custom_header"
+```
+
+> 네이티브앱 과 모바일웹 구분
+
+```
+//값이 "N" 일경우 모바일웹
+context.customHeader.hybridApp
+```
+
+> 로그인여부확인
 
 ```
 context.token.isLogin

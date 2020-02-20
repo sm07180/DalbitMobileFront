@@ -1,6 +1,6 @@
 /**
  * @file chat.js
- * @brief 채팅
+ * @brief 방송세팅
  */
 import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
 import styled from 'styled-components'
