@@ -14,6 +14,7 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
+import {osName, browserName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
@@ -22,6 +23,8 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
+// socketCluster 연결
+import SocketCluster from 'context/socketCluster'
 
 export default () => {
   //---------------------------------------------------------------------
@@ -33,10 +36,16 @@ export default () => {
   const customHeader = useMemo(() => {
     //makeCustomHeader
     const makeCustomHeader = () => {
+      //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
+      let _os = '3'
+      if (osName === 'Android') _os = '1'
+      if (osName === 'iOS') _os = '2'
       const info = {
-        os: '3',
+        os: _os,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
+        hybridApp: 'N', //하이브리앱이 아닐경우 (PC,Mobile브라우져로 접속시)
+        browserName: browserName,
         language: 'ko',
         deviceToken: 'make_custom_header'
       }
@@ -77,12 +86,6 @@ export default () => {
     //모든처리완료
     setReady(true)
     // 로그인이 되었을때
-
-    const res1 = await Api.mypage()
-    if (res1.result === 'success') {
-      console.log(res1)
-      context.action.updateMypage(res1.data)
-    }
   }
   //---------------------------------------------------------------------
   //useEffect token
@@ -104,6 +107,7 @@ export default () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
+      {ready && <SocketCluster />}
     </React.Fragment>
   )
 }

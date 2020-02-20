@@ -14,6 +14,8 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //components
 import ChatUI from './chat-ui'
+
+const sc = require('context/socketCluster')
 import SideContent from './tab'
 
 //pages
@@ -42,9 +44,6 @@ export default props => {
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
   const {bjStreamId, roomRole} = state
-
-  const audioReference = useRef()
-  const {location} = props.history
 
   const startPlayer = () => {
     if (roomRole === hostRole) {
@@ -82,7 +81,6 @@ export default props => {
         mediaHandler.setLocalStartCallback(startPlayer)
         mediaHandler.setLocalStopCallback(stopPlayer)
         mediaHandler.setType('listener')
-        mediaHandler.setAudioTag(audioReference.current)
         mediaHandler.setStreamId(bjStreamId)
       }
     }
@@ -98,13 +96,19 @@ export default props => {
   const makeContents = () => {
     return JSON.stringify(state, null, 4)
   }
+
+  useEffect(() => {
+    // 방 소켓 연결
+    console.log('방소켓 연결 해라 ')
+    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo)
+  }, [])
   //---------------------------------------------------------------------
 
   return (
-    <Content>
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>
         {/* 채팅방 영역 */}
-        <ChatUI />
+        <ChatUI {...props} />
       </Chat>
       <SideBTN
         onClick={() => {
@@ -155,9 +159,6 @@ export default props => {
       ) : (
         <AudioWrap>
           <h1>Listener</h1>
-          <div>
-            <audio ref={audioReference} autoPlay controls></audio>
-          </div>
 
           <div>streamId: {bjStreamId}</div>
 
@@ -175,7 +176,7 @@ export default props => {
                   if (!bjStreamId) {
                     return alert('Need a stream id')
                   }
-                  if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && !mediaHandler.rtcPeerConn) {
                     const status = mediaHandler.play()
                     if (status) {
                       startPlayer()
@@ -192,7 +193,7 @@ export default props => {
               <button
                 style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
                 onClick={() => {
-                  if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
+                  if (mediaHandler.audioTag && mediaHandler && mediaHandler.rtcPeerConn) {
                     mediaHandler.stop()
                     stopPlayer()
                   }
@@ -232,7 +233,7 @@ const Content = styled.section`
       width: 100%;
     } */
   }
-  &.side-off > div:last-child {
+  &.side-off > button + div {
     width: 20px;
   }
 
@@ -317,9 +318,9 @@ const SideBTN = styled.button`
 ////////////////////////오디오랩
 const AudioWrap = styled.div`
   position: fixed;
-  top: 20%;
-  width: 300px;
-  height: 200px;
-  background-color: aliceblue;
+  top: 41%;
+  left: 3%;
+  width: 238px;
+  height: 108px;
   z-index: 999;
 `

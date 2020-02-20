@@ -272,9 +272,10 @@ if (socket !== null) {
   //   //$('#socketLabel').html(socketConfig.event.socket.CONNECT);
   // })
 }
-const SendMessageChat = () => {
+const SendMessageChat = obj => {
+  return
   //sendMessage.handle(publicChannelHandle, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '테스트1 메세지입니다. - Channel Publish')
-  sendMessage.socket(socketConfig.channel.publicChannelName, socketConfig.packet.send.PACKET_SEND_CHAT, {}, '123123123123123')
+  sendMessage.socket(obj.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, {}, obj.message)
 }
 
 var sendMessageJson = function(cmd, params, msg) {
@@ -334,10 +335,6 @@ var sendMessage = {
     // })
   },
   socket: function(channel, type, param, msg) {
-    param.memNo = ''
-    param.memFan = ''
-    param.memRole = ''
-    param.memAuthority = ''
     var msgJson = sendMessageJson(type, param, msg)
     //해당 체널에 전체 메세지가 전송됨 (다른 채널에는 메세지 전송 안됨) ===== subscribe 구독하지 않아도 메세지 전송은 된다!!!
     /*{
@@ -437,11 +434,11 @@ export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   console.log(props)
-  useEffect(() => {
-    loginInfo = context.token
-    //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
-    scConnection(loginInfo)
-  }, [])
+  // useEffect(() => {
+  //   loginInfo = context.token
+  //   //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
+  //   scConnection(loginInfo)
+  // }, [])
 
   return (
     <>

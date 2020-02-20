@@ -15,13 +15,15 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
-  //useMemo
-  console.log(context.mypage)
   const {isLogin} = context.token
+  const {mypage} = context
   //useState
+  //useMemo
+
+  //useState
+  const [fetch, setFetch] = useState({profImg: {url: 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}, nickNm: ''})
   const [login, setLogin] = useState(props.LoginInfo)
   //const
-  const {mypage} = context
   //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
 
   //data
@@ -34,6 +36,16 @@ export default props => {
     {title: '설정', url: '/store?고객센터'},
     {title: '방송국관리', url: '/store?설정'}
   ]
+  //---------------------------------------------------------------------
+  //fetch
+  async function fetchData(obj) {
+    const res = await Api.mypage()
+    if (res.result === 'success') {
+      setFetch(res.data)
+      context.action.updateMypage(res.data)
+    }
+  }
+  //makeProfile
   const makeNavi = () => {
     return info.map((list, idx) => {
       const _title = info[idx].title
@@ -52,23 +64,9 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
-
-  // useEffect(() => {
-  //   if (context.token.isLogin) {
-  //     //로그인되어있으면 정보 가져오기
-  //     //fetchData()
-  //     //임시방편으로 회원가입 후 바로 내 프로필, 닉네임 볼수있게 설정. 나중에는 회원조회 api로 로그인 해서도 볼 수 있게 수정하기. 현재 회원조회 안됨
-  //     if (context.state.profImg) {
-  //       setLogin({
-  //         ...login,
-  //         ...context.mypage,
-  //         title: context.state.nickNm,
-  //         url: PHOTO_SERVER.concat(context.state.profImg)
-  //       })
-  //     }
-  //   }
-  // }, [context.token.isLogin])
+  useEffect(() => {
+    if (isLogin) fetchData()
+  }, [context.token.isLogin])
   //---------------------------------------------------------------------
   return (
     <>
@@ -78,14 +76,13 @@ export default props => {
             <ICON></ICON>
             <Title>마이 페이지</Title>
           </Nheader>
-
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={isLogin ? mypage.profImg.url : 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}></PIMG>
+              <PIMG bg={fetch.profImg.url}></PIMG>
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{mypage.nickNm}</h4>
+                    <h4>{fetch.nickNm}</h4>
                     {/* <ID>{login.name}</ID> */}
                   </NoLoginTitle>
                 ) : (
@@ -96,7 +93,7 @@ export default props => {
                   </NoLoginTitle>
                 )}
               </Ptitle>
-              {context.token.isLogin ? (
+              {context.token.isLogin && mypage !== null ? (
                 <LoginChoiceOut
                   onClick={() => {
                     if (context.token.isLogin) {
