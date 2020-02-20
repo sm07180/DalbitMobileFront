@@ -14,6 +14,7 @@ import Charge from './charge'
 import Present from './present'
 import Profile from './profile'
 import Boost from './boost'
+import Story from './story'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -40,6 +41,7 @@ export default props => {
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
+      {currentItem.tab === '사연' && <Story />}
     </>
   )
 }
@@ -108,6 +110,10 @@ const tabConent = [
   {
     id: 6,
     tab: '프로필'
+  },
+  {
+    id: 7,
+    tab: '사연'
   }
 ]
 //data------------------------------------------------------------------
