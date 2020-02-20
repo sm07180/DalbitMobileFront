@@ -58,7 +58,7 @@ export default props => {
             props.history.push('/broadcast-setting')
           } else {
             alert(context.customHeader.os)
-            Hybird('RoomMake', '')
+            Hybrid('RoomMake', '')
           }
         }}>
         <span>방송하기</span>
