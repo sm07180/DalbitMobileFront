@@ -45,12 +45,11 @@ export default props => {
        */
 
       <Link
+        to="/broadcast-setting"
         className="broadcast"
         onClick={event => {
           //Hybird App이 아닐때
           if (context.customHeader.hybridApp === 'N') {
-            console.log(props)
-            props.history.push('/broadcast-setting')
           } else {
             //  Hybird(RoomMake)
           }
