@@ -1,15 +1,20 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import {BotButton} from './bot-button'
+import {Context} from 'context'
 
 const testData = [20, 50, 100, 500, 1000]
 export default props => {
   //-------------------------------------------------------- declare start
   const [point, setPoint] = useState()
   const [text, setText] = useState('')
+  const [active, setActive] = useState(false)
+  const [send, setSend] = useState(false)
+  const context = useContext(Context)
   //-------------------------------------------------------- func start
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
-    console.log('# maxLength : ', maxLength)
+    console.log('# value', value)
     if (value.length > maxLength) {
       alert('## Max Length is 5 ##')
       return false
@@ -17,14 +22,32 @@ export default props => {
 
     setText(value)
   }
+
+  const _active = param => {
+    if (param === 'input') {
+      setPoint(-1)
+      setActive(true)
+    } else {
+      setPoint(param)
+      setActive(false)
+      setText('')
+    }
+    setSend(true)
+  }
+
+  useEffect(() => {
+    context.action.updatePopup('Charge')
+    context.action.updatePopupVisible(false)
+  }, [])
   //-------------------------------------------------------- components start
   console.log('## text : ', text)
+  console.log('## context : ', context)
   return (
     <Container>
       <Contents>
         <div>
           <p>
-            <b>솜사탕사탕사탕</b> 님에게
+            <span>솜사탕사탕사탕</span> 님에게
           </p>
           <p>루비를 선물하시겠습니까?</p>
         </div>
@@ -32,18 +55,23 @@ export default props => {
       <MyPoint>
         <div>보유 달 &nbsp;120</div>
       </MyPoint>
-      <ButtonArea>
+      <Select>
         {testData.map((data, idx) => {
           return (
-            <PointButton key={idx} onClick={() => setPoint(idx)} active={point == idx ? 'active' : ''}>
+            <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
               {data}
             </PointButton>
           )
         })}
-      </ButtonArea>
+      </Select>
       <TextArea>
-        <PointInput placeholder="직접 입력" type="number" maxLength="5" value={text} onChange={handleChangeInput} />
+        <PointInput placeholder="직접 입력" type="number" maxLength="5" value={text} onChange={handleChangeInput} onClick={() => _active('input')} active={active ? 'active' : ''} />
+        <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
+      <ButtonArea>
+        <BotButton title={'충전하기'} borderColor={'#8556f6'} color={'#8556f6'} callback={() => context.action.updatePopupVisible(true)} />
+        <BotButton title={'선물하기'} borderColor={'#bdbdbd'} background={send ? '#8556f6' : '#bdbdbd'} color={'#fff'} />
+      </ButtonArea>
     </Container>
   )
 }
@@ -66,12 +94,14 @@ const Contents = styled.div`
     width: 168px;
     height: 42px;
     font-size: 16px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
+    font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.4px;
     text-align: center;
+  }
+
+  & > div > p > span {
+    font-weight: 600;
   }
 `
 
@@ -83,15 +113,13 @@ const MyPoint = styled.div`
   margin-bottom: 10px;
 
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1.13;
   letter-spacing: -0.4px;
   text-align: center;
   color: #ec455f;
 `
-const ButtonArea = styled.div`
+const Select = styled.div`
   display: flex;
   justify-content: space-between;
   align-content: center;
@@ -107,6 +135,7 @@ const PointButton = styled.button`
   border-width: 1px;
   border-radius: 10px;
   color: ${props => (props.active == 'active' ? '#8556f6' : '#616161')};
+  font-weight: 400;
 `
 const TextArea = styled.div`
   display: flex;
@@ -114,6 +143,14 @@ const TextArea = styled.div`
   height: 58px;
   flex-direction: column;
   margin-top: 8px;
+
+  & > p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.35px;
+    color: #bdbdbd;
+  }
 `
 const PointInput = styled.input`
   display: flex;
@@ -122,14 +159,20 @@ const PointInput = styled.input`
   border-style: solid;
   border-width: 1px;
   border-radius: 10px;
-  border-color: #e0e0e0;
   padding-left: 10px;
   padding-right: 10px;
+  margin-bottom: 10px;
 
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
+  border-color: ${props => (props.active === 'active' ? '#8556f6' : '#e0e0e0')};
+`
+const ButtonArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 8%;
+  justify-content: space-between;
+  align-items: center;
 `

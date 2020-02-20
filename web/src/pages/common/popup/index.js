@@ -13,8 +13,9 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Auth from 'pages/common/auth'
 import POPCAST from 'components/ui/pop-mic'
-import Present from 'pages/broadcast/content/tab/present'
+import Present from 'pages/broadcast/content/tab/present-popup'
 import LiveClickEvent from 'components/ui/eventbox'
+import Charge from 'pages/broadcast/content/tab/charge-popup'
 //
 export default props => {
   //
@@ -31,6 +32,8 @@ export default props => {
         return <Present {...props} />
       case 'LiveClickEvent': //----------------------------------------라이브청취자 클릭이벤트
         return <LiveClickEvent {...props} />
+      case 'Charge': //----------------------------------------방송-달 충전하기
+        return <Charge {...props} />
     }
   }
 
@@ -83,6 +86,19 @@ export default props => {
           />
           <EventContainer>{makePopupContents()}</EventContainer>
         </>
+      )}
+      {context.popup_code === 'Charge' && context.popup_visible && (
+        <Container>
+          <Background />
+          <ChargeWrap>
+            <div className="buttonArea">
+              <button className="close" onClick={() => context.action.updatePopupVisible(false)}>
+                <img scr={'https://devimage.dalbitcast.com/images/api/ic_close_m@2x.png'} width={36} height={36} />
+              </button>
+            </div>
+            {makePopupContents()}
+          </ChargeWrap>
+        </Container>
       )}
     </Popup>
   )
@@ -142,6 +158,29 @@ const PresentWrap = styled.div`
     display: flex;
     width: 36px;
     height: 36px;
+  }
+
+  .buttonArea {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    justify-content: flex-end;
+  }
+`
+const ChargeWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 344px;
+  height: 665px;
+  /* background: #fff; */
+  background: rgba(0, 0, 0, 0);
+  border-radius: 10px;
+
+  .close {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    background-color: red;
   }
 
   .buttonArea {
