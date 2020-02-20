@@ -9,6 +9,7 @@ export default class SignalingHandler {
     this.playToken = null
     this.room = null
     this.rtcPeerConn = null
+    this.guestRtcPeerConn = null
     this.rtcDescription = null
     this.iceCandidate = []
     this.debug = debug ? debug : false
