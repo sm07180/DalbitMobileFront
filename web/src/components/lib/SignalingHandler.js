@@ -18,15 +18,14 @@ export default class SignalingHandler {
       OfferToReceiveVideo: false
     }
 
+    this.audioTag = document.createElement('audio')
+    this.audioTag.autoplay = true
+
     // host, guest, listener
     this.type = null
 
-    // host
+    // host, guest
     this.audioStream = null
-    // listener
-    // this.audioTag = null
-    this.audioTag = document.createElement('audio')
-    this.audioTag.autoplay = true
 
     // callback
     this.localStartCallback = null
@@ -41,7 +40,7 @@ export default class SignalingHandler {
 
   async setType(type) {
     this.type = type
-    if (this.type === 'host') {
+    if (this.type === 'host' || this.type === 'guest') {
       await this.setAudioStream()
     }
   }
