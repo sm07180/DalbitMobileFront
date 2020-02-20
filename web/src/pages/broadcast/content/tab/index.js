@@ -16,6 +16,7 @@ import Profile from './profile'
 import Boost from './boost'
 import Report from './report'
 import Notice from './notice'
+import BroadModify from './broad-setting-modify'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -44,6 +45,7 @@ export default props => {
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice />}
+      {currentItem.tab === '방송수정' && <BroadModify />}
     </>
   )
 }
@@ -120,6 +122,10 @@ const tabConent = [
   {
     id: 8,
     tab: '공지사항'
+  },
+  {
+    id: 9,
+    tab: '방송수정'
   }
 ]
 //data------------------------------------------------------------------
