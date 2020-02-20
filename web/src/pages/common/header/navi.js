@@ -49,7 +49,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          if (context.customHeader.hybridApp === 'N') {
+          if (context.customHeader.os === '3') {
             console.log(props)
             if (context && context.token && !context.token.isLogin) {
               alert('로그인필요')
@@ -57,7 +57,7 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
-            Hybird(RoomMake)
+            Hybird('RoomMake')
           }
         }}>
         <span>방송하기</span>
