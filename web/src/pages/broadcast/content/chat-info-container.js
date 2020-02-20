@@ -17,24 +17,13 @@ export default props => {
   //state
   //const
   const {bjHolder, fanRank, bgImg, title, bjProfImg, rank, bjNickNm, likes} = {...props}
-  console.log('랭크', fanRank)
 
   //---------------------------------------------------------------------
-  //fetch
-  async function fetchData() {
-    const res = await Api.broad_info({
-      params: {
-        roomNo: props.roomNo
-      }
-    })
-    setFetch({...fetch, ...res.data})
-    console.log('방정보는', res)
-  }
+  //map
 
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {}, [])
-
   //---------------------------------------------------------------------
   return (
     <Content>
@@ -72,18 +61,20 @@ export default props => {
           <li>00:30:00</li>
         </ul>
         <div>
-          <button>메시지</button>
-          <button>알람</button>
+          <button title="메시지보기">메시지</button>
+          <button title="알람보기">알람</button>
         </div>
       </div>
       <div className="option">
         <ul>
-          <li>TOP 12</li>
-          <li>추천</li>
-          <li>인기</li>
-          <li>신입</li>
+          <li className="rank">TOP {rank}</li>
+          <li className="recommend">추천</li>
+          <li className="popular">인기</li>
+          <li className="new">신입</li>
         </ul>
-        <button className="invite">게스트 초대</button>
+        <div>
+          <button className="invite">게스트 신청</button>
+        </div>
       </div>
     </Content>
   )
@@ -109,7 +100,7 @@ const Content = styled.div`
     & > figure {
       flex-basis: 60px;
       height: 60px;
-      margin: 11px;
+      margin: 8px 10px;
       border-radius: 50%;
     }
     /* DJ 이름, 방송 제목 */
@@ -129,6 +120,7 @@ const Content = styled.div`
           font-size: 18px;
         }
         &:last-child {
+          margin-top: 6px;
           font-size: 16px;
           transform: skew(-0.03deg);
         }
@@ -186,9 +178,103 @@ const Content = styled.div`
   }
 
   .cast-info {
+    display: flex;
+    height: 34px;
+    border-radius: 34px;
+    background: rgba(0, 0, 0, 0.2);
+    ul {
+      flex: 1 0 auto;
+      li {
+        display: inline-block;
+        margin-left: 16px;
+        padding-left: 26px;
+        background-size: 18px !important;
+        color: #fff;
+        font-size: 15px;
+        line-height: 34px;
+        transform: skew(-0.03deg);
+      }
+      li:nth-child(1) {
+        background: url(${IMG_SERVER}/images/chat/ic_people.png) no-repeat 1px center;
+      }
+      li:nth-child(2) {
+        background: url(${IMG_SERVER}/images/chat/ic_heart.png) no-repeat 1px center;
+      }
+      li:nth-child(3) {
+        background: url(${IMG_SERVER}/images/chat/ic_time.png) no-repeat 1px center;
+      }
+    }
+    div {
+      flex: 0 0 60px;
+      margin-right: 10px;
+      padding: 5px 0;
+
+      button {
+        width: 24px;
+        height: 24px;
+        text-indent: -9999px;
+      }
+      button:first-child {
+        background: url(${IMG_SERVER}/images/chat/ic_mail.png) no-repeat center center / cover;
+      }
+      button:last-child {
+        margin-left: 6px;
+        background: url(${IMG_SERVER}/images/chat/ic_alarm.png) no-repeat center center / cover;
+      }
+    }
   }
 
   .option {
+    display: flex;
+    margin-top: 14px;
+    ul {
+      flex: 1 0 auto;
+      li {
+        display: inline-block;
+        padding: 0 10px;
+        border-radius: 28px;
+        font-size: 14px;
+        color: #fff;
+        line-height: 28px;
+        transform: skew(-0.03deg);
+      }
+      li.rank {
+        padding: 0 16px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .dj li.rank {
+        padding-left: 34px;
+        border: 1px solid #9e9e9e;
+        background: rgba(255, 255, 255, 0.2);
+        line-height: 26px;
+      }
+      li.recommend {
+        background: ${COLOR_MAIN};
+      }
+      li.popular {
+        background: ${COLOR_POINT_P};
+      }
+      li.new {
+        background: ${COLOR_POINT_Y};
+      }
+      li + li {
+        margin-left: 5px;
+      }
+    }
+    div {
+      flex: 1 0 100px;
+      text-align: right;
+      button {
+        display: inline-block;
+        padding: 0 15px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.2);
+        font-size: 14px;
+        color: #fff;
+        line-height: 28px;
+        transform: skew(-0.03deg);
+      }
+    }
   }
 `
 
@@ -200,8 +286,8 @@ const Figure = styled.figure`
   &.dj:after {
     display: block;
     position: absolute;
-    left: -10px;
-    top: -10px;
+    left: -12px;
+    top: -11px;
     width: 82px;
     height: 82px;
     background: url(${props => props.holder}) no-repeat 0 0 / cover;

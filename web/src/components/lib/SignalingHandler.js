@@ -5,9 +5,11 @@ export default class SignalingHandler {
     this.url = audioSocketUrl
     this.ws = null
     this.streamId = null
-    this.token = null
+    this.publishToken = null
+    this.playToken = null
     this.room = null
     this.rtcPeerConn = null
+    this.guestRtcPeerConn = null
     this.rtcDescription = null
     this.iceCandidate = []
     this.debug = debug ? debug : false
@@ -16,15 +18,14 @@ export default class SignalingHandler {
       OfferToReceiveVideo: false
     }
 
+    this.audioTag = document.createElement('audio')
+    this.audioTag.autoplay = true
+
     // host, guest, listener
     this.type = null
 
-    // host
+    // host, guest
     this.audioStream = null
-    // listener
-    // this.audioTag = null
-    this.audioTag = document.createElement('audio')
-    this.audioTag.autoplay = true
 
     // callback
     this.localStartCallback = null
@@ -39,7 +40,7 @@ export default class SignalingHandler {
 
   async setType(type) {
     this.type = type
-    if (this.type === 'host') {
+    if (this.type === 'host' || this.type === 'guest') {
       await this.setAudioStream()
     }
   }
@@ -249,7 +250,7 @@ export default class SignalingHandler {
         this.iceCandidateReceived(e)
       }
       this.rtcPeerConn.ontrack = e => {
-        if (!this.audioTag.srcObject) {
+        if (this.audioTag && !this.audioTag.srcObject) {
           this.audioTag.srcObject = e.streams[0]
         }
       }
