@@ -3,13 +3,17 @@ import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Navi from './navibar'
 import Api from 'context/api'
-// import Rbutton from './report-button'
 import {Context} from 'context'
-//
-
 export default props => {
+  //context------------------------------------------
   const context = useContext(Context)
+  //0.신고하기 Data state --------------------------------------
+  //1.selected 초기state ---------------------------------------
+  //2.버튼 active 비지빌리티--------------------------------------
   const [ReportInfo, setReportInfo] = useState(props.Info)
+  const [select, setSelect] = useState('')
+  const [active, setActive] = useState(false)
+  //3.버튼info 배열 --------------------------------------
   const BTNInfo = [
     {
       title: '프로필 사진'
@@ -27,23 +31,12 @@ export default props => {
       title: '기타'
     }
   ]
-
-  const [select, setSelect] = useState('')
-  const [active, setActive] = useState(false)
-
+  //셀렉트function-----------------------------------
   const handleSelectChange = event => {
     const value = event.target.value
     setSelect(value)
   }
-
-  const Reportmap = BTNInfo.map((live, index) => {
-    const {title} = live
-    return (
-      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === title ? 'on' : ''} key={index}>
-        {title}
-      </BTN>
-    )
-  })
+  //신고하기버튼 벨리데이션 function-----------------------
   const SubmitBTNChange = () => {
     if (select != '') {
       setActive(true)
@@ -53,6 +46,16 @@ export default props => {
   useEffect(() => {
     SubmitBTNChange()
   })
+  //버튼map
+  const Reportmap = BTNInfo.map((live, index) => {
+    const {title} = live
+    return (
+      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === title ? 'on' : ''} key={index}>
+        {title}
+      </BTN>
+    )
+  })
+  //------------------------------------------------------------
   return (
     <Container>
       <Navi title={'신고'} />

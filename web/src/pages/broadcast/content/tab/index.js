@@ -15,6 +15,7 @@ import Present from './present'
 import Profile from './profile'
 import Boost from './boost'
 import Report from './report'
+import Notice from './notice'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -42,6 +43,7 @@ export default props => {
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
+      {currentItem.tab === '공지사항' && <Notice />}
     </>
   )
 }
@@ -114,6 +116,10 @@ const tabConent = [
   {
     id: 7,
     tab: '신고하기'
+  },
+  {
+    id: 8,
+    tab: '공지사항'
   }
 ]
 //data------------------------------------------------------------------

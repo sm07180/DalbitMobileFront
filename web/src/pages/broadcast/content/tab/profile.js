@@ -5,8 +5,13 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 export default props => {
+  //----------------------------------------------context
+  const context = useContext(Context)
+  //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)
+  //------------------------------------------------
   const percent = PInfo.exp / 300
+  //function validation
   const validate1000 = () => {
     if (PInfo.fanCnt > 999) {
       return PInfo.fanCnt / 1000 + 'K'
@@ -14,9 +19,8 @@ export default props => {
       return PInfo.fanCnt
     }
   }
-  //----------------------------------------------context
-  const context = useContext(Context)
   //--------------------------------------
+  //api
   async function fetchData() {
     const res = await Api.info_view({
       params: {
@@ -29,7 +33,7 @@ export default props => {
   useEffect(() => {
     fetchData()
   }, [])
-  //console.log(percent)
+  //----------------------------------------
   return (
     <Container>
       <Navi title={'프로필'} />
@@ -61,7 +65,8 @@ export default props => {
     </Container>
   )
 }
-
+//----------------------------------------
+//styled
 const Container = styled.div`
   display: flex;
   width: 100%;
