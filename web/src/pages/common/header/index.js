@@ -49,7 +49,7 @@ export default props => {
       {/* 상단로고 */}
       <Logo type={[type, scrollClassName]} />
       {/* 네비게이션 */}
-      <Navi type={scrollClassName} />
+      <Navi {...props} type={scrollClassName} />
       {/* 프로필이미지&GNB */}
       {/* <Profile type={scrollTop !== 0 ? 'scroll' : 'top'} /> */}
       {/* 오른쪽 메뉴들 */}
