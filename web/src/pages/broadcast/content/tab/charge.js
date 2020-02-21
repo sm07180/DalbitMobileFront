@@ -184,9 +184,7 @@ const Choice = styled.button`
   justify-content: center;
   /* font-family: NanumSquareEB; */
   font-size: 18px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 800;
   line-height: 1.17;
   letter-spacing: -0.45px;
   color: ${props => (props.active ? '#8556f6' : '#9e9e9e')};
@@ -207,14 +205,11 @@ const ChargeTitle = styled.div`
 `
 
 const MyPoint = styled.div`
-  /* font-family: NanumSquareB; */
   display: flex;
   width: 100%;
   height: 30px;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.35px;
   justify-content: center;
@@ -258,6 +253,12 @@ const Price = styled.div`
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
   margin-top: 4px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.13;
+  letter-spacing: -0.4px;
+  text-align: center;
 `
 
 const GoodsName = styled.div`
@@ -267,6 +268,10 @@ const GoodsName = styled.div`
   justify-content: center;
   margin-bottom: 6px;
   color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#424242') : props.active ? '#fdad2b' : '#424242')};
+  font-size: 14px;
+  font-weight: 400;
+  /* line-height: 1.14; */
+  letter-spacing: -0.35px;
 `
 const ButtonArea = styled.div`
   display: flex;
@@ -293,9 +298,7 @@ const Cancel = styled.button`
   border-color: #8556f6;
   color: #8556f6;
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.13;
   letter-spacing: -0.4px;
 `
@@ -306,9 +309,7 @@ const Charge = styled.button`
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.13;
   letter-spacing: -0.4px;
 `

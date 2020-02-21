@@ -1,8 +1,26 @@
 /**
- * @file chat.js
- * @brief 방송세팅
+ * @title 라이브탭 방송수정
  */
-import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
+// import React, {useState} from 'react'
+// import styled from 'styled-components'
+// import BroadSetting from '../../../broadcast-setting/content'
+// export default props => {
+//------------------------------------------------------------------
+// return <></>
+// }
+//------------------------------------------------------------------
+//styled
+// const Wrap = styled.div`
+//   display: flex;
+//   width: 33.33%;
+//   margin-left: 12px;
+//   align-items: center;
+// `
+/**
+ * @file 라이브탭 방송수정
+ * @brief 방송세팅수정
+ */
+import React, {useMemo, useEffect, useContext, useState, useCallback, useRef} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
 //context
@@ -12,6 +30,8 @@ import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 //components
 import Api from 'context/api'
+import Navi from './navibar'
+import {Scrollbars} from 'react-custom-scrollbars'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
@@ -19,8 +39,23 @@ import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 let audioStream = null
 
 export default props => {
+  //ref
+  const settingArea = useRef(null) //세팅 스크롤 영역 선택자
+  const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
   //context
   const context = useContext(Context)
+  //채팅창 마우스 휠 작동시
+  const [checkMove, setCheckMove] = useState(false)
+  const handleOnWheel = () => {
+    setCheckMove(true)
+  }
+  const scrollOnUpdate = e => {
+    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
+    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
+    if (!checkMove) {
+      scrollbars.current.scroll()
+    }
+  }
 
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
@@ -268,13 +303,15 @@ export default props => {
   return (
     <>
       <Content>
-        <Header>
+        <Navi title={'방송설정'} />
+        {/* <Header>
           <h1>방송설정</h1>
-        </Header>
+        </Header> */}
 
-        <Wrap>
-          <BroadDetail>
-            <MicCheck>
+        <Wrap className="scrollbar" onWheel={handleOnWheel} ref={settingArea}>
+          <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
+            <BroadDetail>
+              {/* <MicCheck>
               <h2>마이크 연결상태</h2>
               <VolumeWrap>
                 <MicIcon></MicIcon>
@@ -286,77 +323,79 @@ export default props => {
                     }}></MicVolumeONBar>
                 </BarWrap>
               </VolumeWrap>
-            </MicCheck>
-            <JoinProhibit>
-              <h2>입장제한</h2>
-              {makeRadio()}
-            </JoinProhibit>
-            <BroadSubject>
-              <h2>방송주제</h2>
-              <SubjectWrap>{makeRadios()}</SubjectWrap>
-            </BroadSubject>
-            <PictureRegist>
-              <h2>사진 등록</h2>
-              <ProfileUpload imgUrl={url}>
-                <label htmlFor="profileImg">
-                  <div className={url ? 'on' : 'off'}>
-                    <div></div>
-                  </div>
-                  <UploadWrap className={url ? 'on' : 'off'}>
-                    <IconWrapper>
-                      <Icon className={url ? 'on' : 'off'}></Icon>
-                    </IconWrapper>
-                  </UploadWrap>
-                </label>
-                <input
-                  type="file"
-                  id="profileImg"
-                  accept=".gif, .jpg, .png"
-                  onChange={e => {
-                    uploadSingleFile(e)
-                  }}
-                />
-              </ProfileUpload>
-            </PictureRegist>
-            <BroadTitle>
-              <h2>방송 제목</h2>
-              <div>
-                <input onChange={handleChange} maxLength="20" placeholder="제목을 입력해주세요 (20자 이내)" />
-                <Counter>{count} / 20</Counter>
-              </div>
-            </BroadTitle>
-            <BroadWelcome>
-              <h2>인사말</h2>
-              <div>
-                <textarea
-                  onChange={handleChange2}
-                  maxLength="100"
-                  placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.
+            </MicCheck> */}
+              <JoinProhibit>
+                <h2>입장제한</h2>
+                {makeRadio()}
+              </JoinProhibit>
+              <BroadSubject>
+                <h2>방송주제</h2>
+                <SubjectWrap>{makeRadios()}</SubjectWrap>
+              </BroadSubject>
+              <PictureRegist>
+                <h2>사진 등록</h2>
+                <ProfileUpload imgUrl={url}>
+                  <label htmlFor="profileImg">
+                    <div className={url ? 'on' : 'off'}>
+                      <div></div>
+                    </div>
+                    <UploadWrap className={url ? 'on' : 'off'}>
+                      <IconWrapper>
+                        <Icon className={url ? 'on' : 'off'}></Icon>
+                      </IconWrapper>
+                    </UploadWrap>
+                  </label>
+                  <input
+                    type="file"
+                    id="profileImg"
+                    accept=".gif, .jpg, .png"
+                    onChange={e => {
+                      uploadSingleFile(e)
+                    }}
+                  />
+                </ProfileUpload>
+              </PictureRegist>
+              <BroadTitle>
+                <h2>방송 제목</h2>
+                <div>
+                  <input onChange={handleChange} maxLength="20" placeholder="제목을 입력해주세요 (20자 이내)" />
+                  <Counter>{count} / 20</Counter>
+                </div>
+              </BroadTitle>
+              <BroadWelcome>
+                <h2>인사말</h2>
+                <div>
+                  <textarea
+                    onChange={handleChange2}
+                    maxLength="100"
+                    placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.
                   (10 ~ 100자 이내)
                   "
-                />
-                <Counter>{count2} / 100</Counter>
-              </div>
-            </BroadWelcome>
-            <CopyrightIcon />
-            <CreateBtn
-              onClick={() => {
-                if (!audioPass) {
-                  return alert('오디오 인풋이 하나도 안되었습니다.')
-                }
-                if (audioStream) {
-                  audioStream.getTracks().forEach(track => {
-                    track.stop()
-                  })
-                }
-                fetchData({...changes})
-              }}
-              value={BActive}
-              className={BActive === true && audioPass ? 'on' : ''}>
-              방송하기
-            </CreateBtn>
-          </BroadDetail>
+                  />
+                  <Counter>{count2} / 100</Counter>
+                </div>
+              </BroadWelcome>
+              <CopyrightIcon />
+              <CreateBtn
+                onClick={() => {
+                  if (!audioPass) {
+                    return alert('오디오 인풋이 하나도 안되었습니다.')
+                  }
+                  if (audioStream) {
+                    audioStream.getTracks().forEach(track => {
+                      track.stop()
+                    })
+                  }
+                  fetchData({...changes})
+                }}
+                value={BActive}
+                className={BActive === true && audioPass ? 'on' : ''}>
+                수정하기
+              </CreateBtn>
+            </BroadDetail>
+          </Scrollbars>
         </Wrap>
+
         {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
@@ -380,11 +419,11 @@ const Header = styled.div`
 `
 const Wrap = styled.div`
   width: 100%;
-  height: 100%;
-  padding-top: 50px;
+  overflow-y: scroll;
+  height: 600px;
 `
 const BroadDetail = styled.div`
-  width: 394px;
+  width: 100%;
   margin: 0px auto 0 auto;
   &:after {
     display: block;
@@ -445,6 +484,7 @@ const MicVolumeONBar = styled.div`
 const JoinProhibit = styled.div`
   width: 100%;
   & h2 {
+    margin-top: 34px;
     margin-bottom: 24px;
     font-size: 18px;
     font-weight: 600;
@@ -457,11 +497,12 @@ const JoinRadio = styled.div`
   position: relative;
   width: 33.333%;
   margin-left: -1px;
-  padding: 16px 33px 16px 33px;
+  padding: 11px 24px 11px 24px;
   border: 1px solid #e0e0e0;
   box-sizing: border-box;
   color: #707070;
   font-size: 16px;
+  text-align: center;
   transform: skew(-0.03deg);
   cursor: pointer;
   &.on {
@@ -471,6 +512,9 @@ const JoinRadio = styled.div`
   }
   &:focus {
     outline: none;
+  }
+  &:nth-of-type(1) {
+    margin-left: 0;
   }
 `
 const SubjectRadio = styled.div`
@@ -498,7 +542,7 @@ const SubjectRadio = styled.div`
 
 const BroadSubject = styled.div`
   width: 100%;
-  margin-top: 40px;
+  margin-top: 30px;
   & h2 {
     font-size: 18px;
     font-weight: 600;
@@ -512,7 +556,7 @@ const SubjectWrap = styled.div`
 
 const PictureRegist = styled.div`
   width: 100%;
-  margin-top: 50px;
+  margin-top: 36px;
   & h2 {
     position: relative;
     margin-bottom: 18px;
@@ -685,7 +729,6 @@ const CopyrightIcon = styled.div`
 const CreateBtn = styled.button`
   width: 100%;
   height: 50px;
-  margin-bottom: 218px;
   outline: none;
   background-color: #bdbdbd;
   color: #fff;

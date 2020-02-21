@@ -1,10 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Navi from './navibar'
+import Api from 'context/api'
+import {Context} from 'context'
 export default props => {
+  //----------------------------------------------context
+  const context = useContext(Context)
+  //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)
+  //------------------------------------------------
   const percent = PInfo.exp / 300
+  //function validation
   const validate1000 = () => {
     if (PInfo.fanCnt > 999) {
       return PInfo.fanCnt / 1000 + 'K'
@@ -12,7 +19,21 @@ export default props => {
       return PInfo.fanCnt
     }
   }
-  //console.log(percent)
+  //--------------------------------------
+  //api
+  async function fetchData() {
+    const res = await Api.info_view({
+      params: {
+        memNo: '41581991354103',
+        roomNo: '91582156781600'
+      }
+    })
+    console.log(res)
+  }
+  useEffect(() => {
+    fetchData()
+  }, [])
+  //----------------------------------------
   return (
     <Container>
       <Navi title={'프로필'} />
@@ -30,7 +51,7 @@ export default props => {
         {PInfo.grade} / Lv.{PInfo.level}
       </h5>
       <h5 className="nickWrap">{PInfo.nickNm}</h5>
-      <h5 className="IdWrap">{PInfo.memNo}</h5>
+      <h5 className="IdWrap">{PInfo.memId}</h5>
       <div className="fanWrap">
         <div>
           <span>팬</span>
@@ -44,7 +65,8 @@ export default props => {
     </Container>
   )
 }
-
+//----------------------------------------
+//styled
 const Container = styled.div`
   display: flex;
   width: 100%;

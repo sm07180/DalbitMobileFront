@@ -21,6 +21,8 @@ import Api from 'context/api'
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
+import {Log, Table} from 'components/lib/log'
+
 import Route from './Route'
 import Interface from './Interface'
 // socketCluster 연결
@@ -80,7 +82,7 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    console.table(res.data)
+    Table(res.data)
     // result 성공/실패 여부상관없이,토큰없데이트
     context.action.updateToken(res.data)
     //모든처리완료
@@ -92,7 +94,7 @@ export default () => {
   useEffect(() => {
     //#1 customHeader
     context.action.updateCustomHeader(customHeader)
-    console.table(customHeader)
+    Table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
     //토큰업데이트

@@ -146,12 +146,16 @@ export default props => {
               <span>cherry🍒 님이 퇴장하셨습니다.</span>
             </div>
           </Message>
-          {/* 기본 청취자 메시지 */}
+          {/* DJ, 매니저, 게스트일 경우 메시지 */}
           <Message className="comment" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
             <figure></figure>
             <div>
-              <p>러브angel~👼</p>
-              <pre>목소리가 스윗하네요 </pre>
+              <p>
+                <b className="dj">DJ</b>꿀보이스😍
+                {/* <b className="manager">매니저</b>꿀매니저😍
+                <b className="guest">게스트</b>지나가는게스트😍 */}
+              </p>
+              <pre>안녕하세요. 내가 바로 DJ입니다.</pre>
             </div>
           </Message>
           {/* 좋아요~ */}
@@ -204,7 +208,7 @@ const CommentList = styled.div`
   position: absolute;
   bottom: 66px;
   width: 100%;
-  height: calc(100% - 146px);
+  height: calc(100% - 240px);
   & > div {
     /* height: 100%; */
     position: absolute !important;
@@ -291,6 +295,23 @@ const Message = styled.div`
     font-weight: 600;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
+    b {
+      display: inline-block;
+      margin-right: 5px;
+      padding: 2px 6px;
+      border-radius: 20px;
+      font-size: 10px;
+
+      &.dj {
+        background: ${COLOR_MAIN};
+      }
+      &.manager {
+        background: ${COLOR_POINT_Y};
+      }
+      &.guest {
+        background: ${COLOR_POINT_P};
+      }
+    }
   }
 
   pre {

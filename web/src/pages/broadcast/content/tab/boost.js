@@ -58,12 +58,14 @@ const Rank = styled.div`
   width: 49px;
   height: 22px;
   justify-content: center;
+  align-items: center;
 `
 
 const Now = styled.div`
   display: flex;
   font-size: 20px;
   letter-spacing: -0.5px;
+  font-weight: 600;
   color: ${props => (props.active === 'active' ? '#8556f6' : '#616161')};
 `
 const Total = styled.div`
@@ -75,15 +77,15 @@ const Total = styled.div`
   font-style: normal;
   line-height: 1.83;
   letter-spacing: -0.35px;
+  font-weight: 400;
+  text-align: left;
 `
 const Title = styled.div`
   display: flex;
   width: 100%;
   height: 48px;
   font-size: 20px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.5px;
   justify-content: center;
@@ -107,18 +109,23 @@ const TimeInactive = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.31;
+  letter-spacing: -0.4px;
+  text-align: left;
+  color: #707070;
 `
 
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 196px;
+  width: 250px;
   height: 56px;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.43;
   letter-spacing: -0.35px;
   margin-top: 16px;
@@ -128,12 +135,11 @@ const Info = styled.div`
 const Point = styled.p`
   display: flex;
   text-align: center;
-  width: 196px;
+  justify-content: center;
+  width: 250px;
   height: 96px;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1.43;
   letter-spacing: -0.35px;
   color: ${props => (props.active === 'active' ? '#ec455f' : '#8555f6')};
@@ -146,9 +152,7 @@ const UseBoost = styled.button`
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.13;
   letter-spacing: -0.4px;
   align-items: center;
@@ -168,9 +172,7 @@ const TimeActive = styled.div`
   margin-top: 10px;
 
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1.31;
   letter-spacing: -0.4px;
   text-align: left;

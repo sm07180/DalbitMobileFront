@@ -50,6 +50,11 @@ button {
   font-family: 'NanumSquare';
   font: inherit;
   transform: skew(-0.03deg);
+  outline: none;
+}
+select,
+option,
+button {
   cursor: pointer;
 }
 button:disabled {

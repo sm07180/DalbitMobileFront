@@ -38,7 +38,6 @@ const Layout = props => {
   //---------------------------------------------------------------------
 
   let pathCheck = props.location.pathname.indexOf('/broadcast') < 0 ? true : false
-
   return (
     <Container>
       {/* 헤더설정 */}
@@ -55,21 +54,26 @@ const Layout = props => {
       {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
         <MediaPlayerWrap>
           <MediaPlayer>
-            <img
-              src={stopSvg}
-              style={{
-                cursor: 'pointer',
-                marginLeft: 'auto',
-                width: '36px',
-                height: '36px'
-              }}
-              onClick={() => {
-                console.log(mediaHandler)
-                if (mediaHandler.rtcPeerConn) {
-                  mediaHandler.stop()
-                }
-              }}
-            />
+            {mediaHandler.type === 'listener' && (
+              <>
+                <img style={{width: '60px', borderRadius: '50%'}} src={mediaHandler.connectedHostImage} />
+                <img
+                  src={stopSvg}
+                  style={{
+                    cursor: 'pointer',
+                    marginLeft: 'auto',
+                    width: '36px',
+                    height: '36px'
+                  }}
+                  onClick={() => {
+                    console.log(mediaHandler)
+                    if (mediaHandler.rtcPeerConn) {
+                      mediaHandler.stop()
+                    }
+                  }}
+                />
+              </>
+            )}
           </MediaPlayer>
         </MediaPlayerWrap>
       )}

@@ -3,6 +3,7 @@
  * @example   : 사용법
  * @ios       : webkit.messageHandlers.GetLoginToken.postMessage(res.data) -> Hybrid('GetLoginToken', res.data)
  * @android   : window.android.GetLoginToken(JSON.stringify(res.data)) -> Hybrid('GetLoginToken', res.data)
+ * @todo      : context.customHeader.os 를 1,2를 체크해서 복합적으로 구현
  *
  */
 import React, {useEffect, useState} from 'react'

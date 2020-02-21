@@ -40,7 +40,7 @@ export default props => {
 
   return (
     <>
-      {props.guestYn === 'Y' && (
+      {props.testData.guestYn === 'Y' && (
         <Target>
           <TargetInfo targetData={props.targetData} />
         </Target>
@@ -165,9 +165,7 @@ const UserLevel = styled.div`
   display: flex;
   width: 100%;
   font-size: 22px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 800;
   line-height: 1.09;
   letter-spacing: -0.55px;
   justify-content: center;
@@ -183,9 +181,7 @@ const NextLevel = styled.div`
   margin-top: 10px;
   color: #616161;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.71;
   letter-spacing: -0.35px;
   text-align: center;
@@ -197,15 +193,13 @@ const BarWrap = styled.div`
   width: 100%;
   height: 20px;
   margin-top: 10px;
+  font-weight: 400;
 
   & span {
     display: flex;
     align-items: center;
     color: #bdbdbd;
     font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
     letter-spacing: normal;
   }
 `
@@ -275,9 +269,7 @@ const Icon = styled.div`
   z-index: 110;
 
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 1;
   letter-spacing: -0.35px;
 
@@ -321,9 +313,7 @@ const MyPoint = styled.div`
   align-items: center;
 
   font-size: 18px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 800;
   line-height: 0.78;
   letter-spacing: normal;
   color: #8556f6;
@@ -339,9 +329,7 @@ const Send = styled.button`
   justify-content: center;
 
   font-size: 16px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.13;
   letter-spacing: -0.4px;
   text-align: center;
@@ -359,9 +347,7 @@ const SecretSend = styled.button`
 
   color: #fff;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
 `
@@ -379,9 +365,7 @@ const Tag = styled.div`
   border-radius: 10px;
   color: #ffffff;
   font-size: 9px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 2.22;
   letter-spacing: -0.23px;
   text-align: center;
@@ -393,9 +377,7 @@ const Tag = styled.div`
 const DjInfo = styled.div`
   display: flex;
   font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
   text-align: left;
@@ -418,7 +400,7 @@ const Photo = styled.div`
   height: 36px;
 `
 const Picked = styled.div`
-display: flex;
+  display: flex;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -430,9 +412,7 @@ display: flex;
   align-items: center;
 
   font-size: 24px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
+  font-weight: 600;
   line-height: 0.58;
   letter-spacing: -0.6px;
   text-align: left;
