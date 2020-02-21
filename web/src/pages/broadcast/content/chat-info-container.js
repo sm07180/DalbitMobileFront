@@ -14,60 +14,102 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  console.log('방정보를 알아봅시다..', props)
   //state
+  const [room, setRoom] = useState({
+    bjHolder: '',
+    fanRank: [
+      {
+        profImg: {
+          url: ''
+        },
+        nickNm: ''
+      },
+      {
+        profImg: {
+          url: ''
+        },
+        nickNm: ''
+      },
+      {
+        profImg: {
+          url: ''
+        },
+        nickNm: ''
+      }
+    ],
+    bgImg: '',
+    title: '',
+    bjProfImg: '',
+    rank: '',
+    bjNickNm: '',
+    likes: ''
+  })
   //const
-  const {bjHolder, fanRank, bgImg, title, bjProfImg, rank, bjNickNm, likes} = {...props}
+
+  //const {bjHolder, fanRank, bgImg, title, bjProfImg, rank, bjNickNm, likes} = {...props}
 
   //---------------------------------------------------------------------
   //map
 
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    setRoom({
+      ...room,
+      ...props
+    })
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="dj-info">
-        <Figure src={bjProfImg.url} holder={bjHolder} title={bjNickNm} className="dj">
-          <img src={bjProfImg.url} alt={bjNickNm} />
+        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
+          <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
-          <p>{bjNickNm}</p>
-          <p>{title}</p>
+          <p>{room.bjNickNm}</p>
+          <p>{room.title}</p>
         </div>
         <ul>
           <li>
-            <Figure src={fanRank[0].profImg.url} title={fanRank[0].nickNm}>
-              <img src={fanRank[0].profImg.url} alt={fanRank[0].nickNm} />
+            <Figure src={room.fanRank[0].profImg.url} title={room.fanRank[0].nickNm}>
+              <img src={room.fanRank[0].profImg.url} alt={room.fanRank[0].nickNm} />
             </Figure>
           </li>
           <li>
-            <Figure src={fanRank[1].profImg.url} title={fanRank[1].nickNm}>
-              <img src={fanRank[1].profImg.url} alt={fanRank[1].nickNm} />
+            <Figure src={room.fanRank[1].profImg.url} title={room.fanRank[1].nickNm}>
+              <img src={room.fanRank[1].profImg.url} alt={room.fanRank[1].nickNm} />
             </Figure>
           </li>
           <li>
-            <Figure src={fanRank[2].profImg.url} title={fanRank[2].nickNm}>
-              <img src={fanRank[2].profImg.url} alt={fanRank[2].nickNm} />
+            <Figure src={room.fanRank[2].profImg.url} title={room.fanRank[2].nickNm}>
+              <img src={room.fanRank[2].profImg.url} alt={room.fanRank[2].nickNm} />
             </Figure>
           </li>
-          <li>13.5K</li>
+          <li>50</li>
+          {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
         </ul>
       </div>
       <div className="cast-info">
         <ul>
           <li>85</li>
-          <li>850</li>
+          {/* 누적 청취자 수 */}
+          <li>{room.likes}</li>
+          {/* 현재 방송 좋아요 수 */}
           <li>00:30:00</li>
+          {/* 방송 남은 시간 */}
         </ul>
         <div>
-          <button title="메시지보기">메시지</button>
-          <button title="알람보기">알람</button>
+          <button title="사연">사연</button>
+          {/* 새로운 사연 왔을시 별도 알림, 클릭시 사연 탭 */}
+          <button title="공지사항">공지사항</button>
+          {/* 클릭시 공지 탭 */}
         </div>
       </div>
       <div className="option">
         <ul>
-          <li className="rank">TOP {rank}</li>
+          <li className="rank">TOP {room.rank}</li>
           <li className="recommend">추천</li>
           <li className="popular">인기</li>
           <li className="new">신입</li>
@@ -170,6 +212,7 @@ const Content = styled.div`
         line-height: 60px;
         text-align: center;
         transform: skew(-0.03deg);
+        cursor: pointer;
       }
       li + li {
         margin-left: 3px;
