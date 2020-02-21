@@ -13,6 +13,23 @@ const sc = require('context/socketCluster')
 //component
 import InfoContainer from './chat-info-container'
 
+export const getTest = data => {
+  //console.log(JSON.stringify(data))
+  const resulte = (
+    <Message key={0}>
+      <figure></figure>
+      <div>
+        <p>{data.event}</p>
+        <pre>{data.event}</pre>
+      </div>
+    </Message>
+  )
+  //return data
+  //console.log('메세지 날려라')
+
+  //setComments([comments, resulte])
+}
+
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -42,9 +59,9 @@ export default props => {
         </Message>
       )
 
-      setComments([comments, resulte])
       console.log('메세지 날려라')
 
+      setComments([comments, resulte])
       sc.SendMessageChat({...props.location.state, msg: e.target.value})
       // objSendInfo.roomNo = props.location.state.roomNo
       // objSendInfo.message = e.target.value
@@ -68,13 +85,26 @@ export default props => {
     }
   }
 
+  // document.addEventListener('socket-receiveMessageData', scRecvData => {
+  //   console.log(scRecvData.detail.data.data.msg)
+  //   // const resulte = (
+  //   //   <Message key={0}>
+  //   //     <figure></figure>
+  //   //     <div>
+  //   //       <p>{scRecvData.detail.data.data.user.nk}</p>
+  //   //       <pre>{scRecvData.detail.data.data.msg}</pre>
+  //   //     </div>
+  //   //   </Message>
+  //   // )
+  //   // setComments([comments, resulte])
+  // })
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    console.log('나이스', roomInfo)
+    console.log('나이스')
   }, [])
 
-  useEffect(() => {}, [comments])
+  //useEffect(() => {}, [comments])
 
   //---------------------------------------------------------------------
   return (

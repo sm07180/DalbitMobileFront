@@ -5,6 +5,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
+import {getTest} from 'pages/broadcast/content/chat-ui'
 const SocketClusterClient = require('socketcluster-client')
 // import {Context} from 'context'
 // import Api from 'context/api'
@@ -22,7 +23,6 @@ const isServiceConfig = true
 let socketConfig = null
 
 let loginInfo = null
-
 export const socketClusterDestory = (destorySocket, destoryChannel) => {
   if (destoryChannel != undefined && destoryChannel != '') {
     if (destoryChannel == socketConfig.channel.publicChannelName) {
@@ -154,7 +154,7 @@ export const scConnection = obj => {
   if (isServiceConfig) {
     setServiceConfig()
   }
-
+  //console.log('context.customHeader = ' + context.customHeader)
   //socketClusterDestory(true)
   // /************************************************************/
   //const HeaderObj = context.customHeader
@@ -620,10 +620,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
       logStr += 'error: ' + e + '\n'
     }
     console.warn(logStr)
-    receiveMessageData(data)
-    // if (data.event === 'chat') {
-    //   receiveMessageData(dataObj)
-    // }
+    if (data !== '#1') receiveMessageData(JSON.parse(data))
   })
 
   //서버시간 수신
@@ -647,15 +644,15 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
   })
 }
 
+// var event = new CustomEvent('socket-receiveMessageData', { detail: elem.dataset.time });
+// document.dispatchEvent(event)
 // 서버로 받은 데이터
-export const receiveMessageData = revData => {
-  console.log('receiveMessageData')
-  if (revData && revData.event === '#publish') {
-    console.warn('서버로 부터 받은 데이터 = ' + revData)
-    return revData
-  }
+
+export const receiveMessageData = recvData => {
+  console.warn('서버로 부터 받은 데이터 = ' + recvData)
+  if (recvData.event === '#publish') getTest(recvData)
 }
-export const socketClusterBinding = channel => {
+export const socketClusterBinding = (channel, Info) => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)
   if (socket != null) {
     if (socket.state === 'open') {
@@ -672,9 +669,13 @@ export const socketClusterBinding = channel => {
       alert('소켓 상태 = ' + socket.state)
     }
   } else {
-    console.warn('소켓 null')
-    if (window.location.pathname !== '/') {
-      privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+    if (socket != null) {
+      if (window.location.pathname !== '/') {
+        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+      }
+    } else {
+      console.warn('소켓 null')
+      if (Info) scConnection(Info)
     }
   }
 }
@@ -693,21 +694,6 @@ export const scDestory = () => {
 
   alert('소켓 해제')
   console.log('해제 후 소켓 상태 = ' + socket.getState())
-}
-if (socket !== null) {
-  // socket.on(socketConfig.event.socket.CONNECT /*'connect'*/, function() {
-  //   var logStr = '[socket.connect]\n'
-  //   // try {
-  //   //     logStr += 'isAuthenticated:' + status.isAuthenticated + '\n';
-  //   //     logStr += 'status: ' + JSON.stringify(status) + '\n';
-  //   //     $('#loginTokenLabel').html(status.isAuthenticated);
-  //   // } catch (e) {
-  //   //     logStr += 'error: ' + status + '\n';
-  //   //     $('#loginTokenLabel').html('error');
-  //   // }
-  //   console.warn(logStr)
-  //   //$('#socketLabel').html(socketConfig.event.socket.CONNECT);
-  // })
 }
 export const SendMessageChat = objChat => {
   const params = {
