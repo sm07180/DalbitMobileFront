@@ -39,6 +39,7 @@ import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 let audioStream = null
 
 export default props => {
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -64,7 +65,7 @@ export default props => {
     roomType: '01',
     bgImgRacy: 3,
     welcomMsg: '',
-    bgImg: '',
+    bgImg: roomInfo.bgImg.url,
     title: ''
   })
 
@@ -196,8 +197,9 @@ export default props => {
       if (resUpload.result === 'success' || resUpload.code == 0) {
         setChanges({...changes, bgImg: resUpload.data.path})
 
-        const res = await Api.broad_create({
+        const res = await Api.broad_edit({
           data: {
+            roomNo: '91582269014675',
             roomType: changes.roomType,
             title: changes.title,
             bgImg: resUpload.data.path,
@@ -215,7 +217,7 @@ export default props => {
             /**
              * @todos 소켓연결필요
              */
-            props.history.push('/broadcast/' + res.data.roomNo, res.data)
+            //props.history.push('/broadcast/' + res.data.roomNo, res.data)
           } else {
             console.warn(res.message)
           }
@@ -226,73 +228,6 @@ export default props => {
       }
     }
   }
-
-  /**
-   * volume state
-   */
-  const {mediaHandler} = context
-  const [audioVolume, setAudioVolume] = useState(0)
-  const [audioSetting, setAudioSetting] = useState(false)
-  const [audioPass, setAudioPass] = useState(false)
-  const [drawId, setDrawId] = useState(null)
-
-  const detectAudioDevice = () => {
-    clearInterval(drawId)
-    infiniteAudioChecker()
-  }
-
-  const infiniteAudioChecker = async () => {
-    audioStream = await navigator.mediaDevices
-      .getUserMedia({audio: true})
-      .then(result => result)
-      .catch(e => e)
-
-    const AudioContext = window.AudioContext || window.webkitAudioContext
-    const audioCtx = new AudioContext()
-
-    const audioSource = audioCtx.createMediaStreamSource(audioStream)
-    const analyser = audioCtx.createAnalyser()
-    analyser.fftSize = 1024
-    audioSource.connect(analyser)
-
-    const volumeCheck = () => {
-      const db = getDecibel(analyser)
-
-      if (db <= 1) {
-        setAudioVolume(0)
-      } else if (db !== audioVolume) {
-        setAudioVolume(db)
-        if (!audioPass) {
-          setAudioPass(true)
-        }
-      }
-    }
-
-    setDrawId(setInterval(volumeCheck))
-  }
-
-  if (mediaHandler && !audioSetting) {
-    navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
-    setAudioSetting(true)
-    ;(async () => {
-      const device = await getAudioDeviceCheck()
-
-      if (!device) {
-        context.action.updatePopup('CAST')
-      } else {
-        await infiniteAudioChecker()
-      }
-    })()
-  }
-
-  useEffect(() => {
-    return () => {
-      if (drawId) {
-        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
-      }
-      clearInterval(drawId)
-    }
-  }, [drawId])
 
   /*
    *
@@ -378,18 +313,9 @@ export default props => {
               <CopyrightIcon />
               <CreateBtn
                 onClick={() => {
-                  if (!audioPass) {
-                    return alert('오디오 인풋이 하나도 안되었습니다.')
-                  }
-                  if (audioStream) {
-                    audioStream.getTracks().forEach(track => {
-                      track.stop()
-                    })
-                  }
                   fetchData({...changes})
                 }}
-                value={BActive}
-                className={BActive === true && audioPass ? 'on' : ''}>
+                value={BActive}>
                 수정하기
               </CreateBtn>
             </BroadDetail>

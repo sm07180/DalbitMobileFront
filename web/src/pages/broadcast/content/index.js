@@ -101,7 +101,7 @@ export default props => {
   useEffect(() => {
     // 방 소켓 연결
     console.log('방소켓 연결 해라 ')
-    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo)
+    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
   }, [])
   //---------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ export default props => {
       <Side>
         {/* side content 영역 */}
 
-        <SideContent>{/* <Charge /> */}</SideContent>
+        <SideContent {...props}>{/* <Charge /> */}</SideContent>
       </Side>
       {roomRole === hostRole ? (
         <AudioWrap>
