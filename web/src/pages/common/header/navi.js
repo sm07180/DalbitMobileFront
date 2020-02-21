@@ -37,8 +37,6 @@ export default props => {
       )
     })
     //방송하기
-    console.log(context.customHeader.hybridApp === 'N')
-
     const broadCast = (
       /**
        * @todos 방송중일때 방송중으로 떠야함
@@ -57,7 +55,6 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
-            alert(context.customHeader.os)
             Hybrid('RoomMake', '')
           }
         }}>
