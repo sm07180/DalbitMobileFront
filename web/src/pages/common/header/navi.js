@@ -7,7 +7,7 @@ import React, {useEffect, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
-import {Hybird} from 'context/hybrid'
+import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -37,25 +37,29 @@ export default props => {
       )
     })
     //방송하기
-    console.log(context.customHeader.hybridApp === 'N')
-
     const broadCast = (
       /**
        * @todos 방송중일때 방송중으로 떠야함
        */
 
-      <Link
-        to="/broadcast-setting"
-        className="broadcast"
+      <button
+        key="broadcast"
         onClick={event => {
+          event.preventDefault()
           //Hybird App이 아닐때
-          if (context.customHeader.hybridApp === 'N') {
+          if (context.customHeader.os === '3') {
+            console.log(props)
+            if (context && context.token && !context.token.isLogin) {
+              alert('로그인필요')
+              return
+            }
+            props.history.push('/broadcast-setting')
           } else {
-            //  Hybird(RoomMake)
+            Hybrid('RoomMake', '')
           }
         }}>
         <span>방송하기</span>
-      </Link>
+      </button>
     )
     return [navi, broadCast]
   }
@@ -100,7 +104,7 @@ const Content = styled.nav`
       }
     }
   }
-  a.broadcast {
+  button {
     padding: 9px 20px 9px 48px;
     border-radius: 40px;
     background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;
