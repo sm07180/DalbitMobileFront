@@ -10,7 +10,6 @@ import Layout from 'pages/common/layout'
 import {BroadCastProvider} from './store'
 //components
 import Api from 'context/api'
-import Chat from './content/chat'
 import Listener from './content/listener'
 import Content from './content'
 //
@@ -24,8 +23,6 @@ export default props => {
    */
   function setRoute() {
     switch (title) {
-      case 'chat': //--------------------------------채팅
-        return <Chat {...props} />
       case 'listener': //----------------------------listener
         return <Listener {...props} />
       default:
