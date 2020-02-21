@@ -12,6 +12,7 @@ const sc = require('context/socketCluster')
 
 //component
 import InfoContainer from './chat-info-container'
+import InputComment from './chat-input-comment'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -24,9 +25,11 @@ export default props => {
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
+  const wrap = useRef(null)
 
   //---------------------------------------------------------------------
   //function
+  //Sconst wrap =
 
   //채팅 입력시(input KeyPress)
   const handleCommentKeyPress = e => {
@@ -41,9 +44,11 @@ export default props => {
           </div>
         </Message>
       )
+      //const resulte = `<pre>${e.target.value}</pre>`
 
       setComments([comments, resulte])
       console.log('메세지 날려라')
+      //wrap.current.append(resulte)
 
       sc.SendMessageChat({...props.location.state, msg: e.target.value})
       // objSendInfo.roomNo = props.location.state.roomNo
@@ -74,78 +79,16 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content bgImg={roomInfo.bgImg.url}>
+      {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} />
       <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-          {/* 가이드 메시지 */}
-          <Message className="guide">
-            <div>
-              <span>
-                방송방에 입장하였습니다.
-                <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
-              </span>
-            </div>
-          </Message>
-          <Message className="guide">
-            <div>
-              <span>[안내] 방송이 시작되었습니다.</span>
-            </div>
-          </Message>
-          {/* 입장 */}
-          <Message className="enter-exit">
-            <div>
-              <span>cherry🍒 님이 입장하셨습니다.</span>
-            </div>
-          </Message>
-          {/* 기본 청취자 메시지 */}
-          <Message className="comment" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
-            <figure></figure>
-            <div>
-              <p>cherry🍒</p>
-              <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
-            </div>
-          </Message>
-          {/* 퇴장 */}
-          <Message className="enter-exit">
-            <div>
-              <span>cherry🍒 님이 퇴장하셨습니다.</span>
-            </div>
-          </Message>
-          {/* DJ, 매니저, 게스트일 경우 메시지 */}
-          <Message className="comment" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-            <figure></figure>
-            <div>
-              <p>
-                <b className="dj">DJ</b>꿀보이스😍
-                {/* <b className="manager">매니저</b>꿀매니저😍
-                <b className="guest">게스트</b>지나가는게스트😍 */}
-              </p>
-              <pre>안녕하세요. 내가 바로 DJ입니다.</pre>
-            </div>
-          </Message>
-          {/* 좋아요~ */}
-          <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-            <div>
-              <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
-            </div>
-          </Message>
-          <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-            <div>
-              <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
-            </div>
-          </Message>
-          {/* 가이드 메시지 */}
-          <Message className="guide">
-            <div>
-              <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
-            </div>
-          </Message>
+          {/* <div ref={wrap}></div> */}
           {comments}
         </Scrollbars>
       </CommentList>
-      <InputComment>
-        <input type="text" placeholder="대화를 입력해주세요." onKeyPress={handleCommentKeyPress} />
-      </InputComment>
+      {/* 하단 메시지 입력 영역 */}
+      <InputComment onKeyPress={handleCommentKeyPress} />
     </Content>
   )
 }
@@ -294,22 +237,5 @@ const Message = styled.div`
     word-break: break-word;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
-  }
-`
-
-const InputComment = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 66px;
-  padding: 15px;
-  background: #212121;
-
-  input {
-    width: 100%;
-    border: 0;
-    border-radius: 36px;
-    line-height: 36px;
-    text-indent: 18px;
   }
 `

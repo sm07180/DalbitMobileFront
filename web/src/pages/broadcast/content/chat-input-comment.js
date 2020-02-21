@@ -36,6 +36,9 @@ export default props => {
         <button className="volume" title="볼륨조정">
           볼륨조정
         </button>
+        <ul className="volume-box">
+          <li>인사</li>
+        </ul>
         <button className="quick" title="빠른말">
           빠른말
         </button>
@@ -105,7 +108,7 @@ const Content = styled.div`
   div {
     flex: 0 0 160px;
     button + button {
-      margin-left: 5px;
+      margin-left: 8px;
     }
     ul {
       display: none;
