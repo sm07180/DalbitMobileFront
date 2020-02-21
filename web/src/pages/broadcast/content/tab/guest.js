@@ -159,8 +159,8 @@ const ManegerList = styled.div`
   border-radius: 24px;
 `
 const ManegerImg = styled.div`
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center / cover;
 `

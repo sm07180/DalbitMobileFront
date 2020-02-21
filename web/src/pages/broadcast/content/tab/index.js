@@ -14,11 +14,11 @@ import Charge from './charge'
 import Present from './present'
 import Profile from './profile'
 import Boost from './boost'
-import Story from './story'
 import Report from './report'
 import Notice from './notice'
-
+import Story from './story'
 import Macro from './macro'
+import BroadModify from './broad-setting-modify'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -46,8 +46,9 @@ export default props => {
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
-      {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '공지사항' && <Notice />}
+      {currentItem.tab === '사연' && <Story />}
+      {currentItem.tab === '방송수정' && <BroadModify />}
       {currentItem.tab === '빠른 말' && <Macro />}
     </>
   )
@@ -132,6 +133,10 @@ const tabConent = [
   },
   {
     id: 10,
+    tab: '방송수정'
+  },
+  {
+    id: 11,
     tab: '빠른 말'
   }
 ]
