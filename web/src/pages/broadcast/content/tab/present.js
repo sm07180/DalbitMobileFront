@@ -12,8 +12,6 @@ const testData = [
     level: 11,
     expNext: 160,
     exp: 140,
-    maxExp: 300,
-    percent: 42,
     guestYn: 'Y'
   }
 ]

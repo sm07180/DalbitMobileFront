@@ -17,6 +17,8 @@ import Boost from './boost'
 import Story from './story'
 import Report from './report'
 import Notice from './notice'
+
+import Macro from './macro'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -46,6 +48,7 @@ export default props => {
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '공지사항' && <Notice />}
+      {currentItem.tab === '빠른 말' && <Macro />}
     </>
   )
 }
@@ -126,6 +129,10 @@ const tabConent = [
   {
     id: 9,
     tab: '사연'
+  },
+  {
+    id: 10,
+    tab: '빠른 말'
   }
 ]
 //data------------------------------------------------------------------
