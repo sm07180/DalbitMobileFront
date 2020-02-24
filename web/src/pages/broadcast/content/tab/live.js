@@ -17,7 +17,7 @@ export default props => {
   const context = useContext(Context)
   //0.배열Info State--------------------------------------------------
   const [blist, setBlist] = useState(null)
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  // const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -47,7 +47,7 @@ export default props => {
             {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
           </ImgWrap>
           <InfoWrap>
-            <Category>{(roomType == '00' ? '일상/챗' : '', roomType == '01' ? '연애/오락' : '', roomType == '02' ? '노래/연주' : '', roomType == '03' ? '고민/사연' : '')}</Category>
+            <Category>{roomType == '00' ? '일상/챗' : ''}</Category>
             <Title>{title}</Title>
             <Name>{bjNickNm}</Name>
             <IconWrap>

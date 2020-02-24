@@ -53,9 +53,6 @@ export default props => {
   const scrollOnUpdate = e => {
     //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
-    if (!checkMove) {
-      scrollbars.current.scroll()
-    }
   }
 
   //hooks-usechange
