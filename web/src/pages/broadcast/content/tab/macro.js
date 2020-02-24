@@ -20,18 +20,62 @@ const testData = [
 export default props => {
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
+  const [text, setText] = useState(testData)
+  const [input1, setInput1] = useState(testData[0])
+  const [input2, setInput2] = useState(testData[1])
+  const [input3, setInput3] = useState(testData[2])
   //------------------------------------------------------ func start
+  const handleChangeInput = param => {
+    const {value, maxLength, name} = event.target
+    // textarea 마다 state 초기화
+    if (name === 'input1') setInput1({...input1, contents: value})
+    if (name === 'input2') setInput2({...input2, contents: value})
+    if (name === 'input3') setInput3({...input3, contents: value})
+  }
+  useEffect(() => {
+    console.log('## useEffect')
+    setText(testData)
+  }, [])
   //------------------------------------------------------ components start
   return (
     <Container>
       <Navi title={'빠른 말 설정'} />
       {edit ? (
         <EditMain>
-          <div className="editTitle">
-            <div>인사</div>
-            <SaveButton>저장</SaveButton>
-          </div>
-          <HelloTextArea maxLength={50} />
+          {/* {testData.map((data, idx) => {
+            return (
+              <React.Fragment key={idx}>
+                <div className="editTitle">
+                  <div>{data.macro}</div>
+                  <SaveButton>저장</SaveButton>
+                </div>
+                <TextArea maxLength={50} name={idx} onChange={() => handleChangeInput(idx)}>
+                  {data.contents}
+                </TextArea>
+              </React.Fragment>
+            )
+          })} */}
+          <React.Fragment>
+            <div className="editTitle">
+              <div>{input1.macro}</div>
+              <SaveButton>저장</SaveButton>
+            </div>
+            <TextArea maxLength={50} onChange={handleChangeInput} value={input1.contents} name="input1" />
+          </React.Fragment>
+          <React.Fragment>
+            <div className="editTitle">
+              <div>{input2.macro}</div>
+              <SaveButton>저장</SaveButton>
+            </div>
+            <TextArea maxLength={50} onChange={handleChangeInput} value={input2.contents} name="input2" />
+          </React.Fragment>
+          <React.Fragment>
+            <div className="editTitle">
+              <div>{input3.macro}</div>
+              <SaveButton>저장</SaveButton>
+            </div>
+            <TextArea maxLength={50} onChange={handleChangeInput} value={input3.contents} name="input3" />
+          </React.Fragment>
         </EditMain>
       ) : (
         <>
@@ -191,6 +235,7 @@ const EditMain = styled.div`
     justify-content: space-between;
     height: 30px;
     align-items: center;
+    margin-top: 15px;
 
     font-size: 16px;
     font-weight: 400;
@@ -208,8 +253,6 @@ const EditMain = styled.div`
 
     font-size: 14px;
     font-weight: 400;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.43;
     letter-spacing: -0.35px;
     text-align: left;
@@ -232,9 +275,9 @@ const SaveButton = styled.button`
   justify-content: center;
   align-items: center;
 `
-const HelloTextArea = styled.textarea`
+const TextArea = styled.textarea`
   width: 100%;
-  height: 96px;
+  height: 136px;
   border-radius: 10px;
   background-color: #f5f5f5;
   margin-top: 6px;
