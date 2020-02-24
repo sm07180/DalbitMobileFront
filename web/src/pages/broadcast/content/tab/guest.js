@@ -24,23 +24,6 @@ export default props => {
   const [GuestInfo, setGuestInfo] = useState(props.Info3)
   const [BTNcheck, setBTNcheck] = useState(false)
 
-  useEffect(() => {
-    ;(async () => {
-      console.log(props.location.state)
-      const {roomNo} = props.location.state
-      console.log('room no', roomNo)
-      const listener = await API.broad_listeners({
-        params: {
-          roomNo: roomNo
-          // page: 1,
-          // record: 1
-        }
-      })
-
-      console.log(listener)
-    })()
-  }, [])
-
   //visibility btn function----------------------------------------------
   const ToggleGuest = () => {
     if (BTNcheck === false) {

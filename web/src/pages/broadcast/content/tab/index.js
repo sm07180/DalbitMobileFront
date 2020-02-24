@@ -38,7 +38,7 @@ export default props => {
         ))}
       </Tab>
       {/* 탭컨텐츠영역 */}
-      {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
+      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
       {currentItem.tab === '게스트' && <LiveGuest {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
       {currentItem.tab === '충전' && <Charge />}

@@ -4,7 +4,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
-import Api from 'context/api'
+import API from 'context/api'
 //components--------------------------------------------------
 import Events from './listener-event'
 export default props => {
@@ -14,11 +14,27 @@ export default props => {
   //0.매니저정보 info스테이트----------------------------------------
   //1.청취자정보 info스테이트----------------------------------------
   //2.비제이정보 info스테이트----------------------------------------
-  const [ManegerInfo, setManegerInfo] = useState(props.Info)
-  const [ListenInfo, setListenInfo] = useState(props.Info2)
+  const [ManagerInfo, setManagerInfo] = useState([])
+  const [ListenInfo, setListenInfo] = useState([])
   const [BJInfo, setBJInfo] = useState(props.Info3)
+
+  useEffect(() => {
+    ;(async () => {
+      const {roomNo} = props.location.state
+      const listener = await API.broad_listeners({
+        params: {
+          roomNo: roomNo
+          // page: 1,
+          // record: 1
+        }
+      })
+
+      console.log(listener)
+    })()
+  }, [])
+
   //메니저 info맵----------------------------------------------------
-  const Manegermap = ManegerInfo.map((live, index) => {
+  const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
     const [trues, setTrues] = useState(false)
     //클릭visibility function
@@ -35,14 +51,14 @@ export default props => {
     }
     //----------------------------------------------------------------
     return (
-      <ManegerList key={index}>
-        <ManegerImg bg={url} />
+      <ManagerList key={index}>
+        <ManagerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
         {trues && <Events />}
         <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
-      </ManegerList>
+      </ManagerList>
     )
   })
   //----------------------------------------------------------------
@@ -63,7 +79,7 @@ export default props => {
     //----------------------------------------------------------------
     return (
       <ListenList key={index}>
-        <ManegerImg bg={url} />
+        <ManagerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
@@ -79,14 +95,14 @@ export default props => {
         <LiveWrap>
           <Title>방송 DJ</Title>
           <DJList>
-            <ManegerImg bg={BJInfo.url} />
+            <ManagerImg bg={BJInfo.url} />
             <h2>{BJInfo.bjMemNo}</h2>
             <h5>{BJInfo.bjNickNm}</h5>
           </DJList>
         </LiveWrap>
         <LiveWrap>
           <Title>방송 매니저</Title>
-          {Manegermap}
+          {Managermap}
         </LiveWrap>
         <LiveWrap>
           <Title>청취자</Title>
@@ -153,7 +169,7 @@ const DJList = styled.div`
   }
 `
 
-const ManegerList = styled.div`
+const ManagerList = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -162,7 +178,7 @@ const ManegerList = styled.div`
   border: 1px solid #8555f6;
   border-radius: 24px;
 `
-const ManegerImg = styled.div`
+const ManagerImg = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
