@@ -5,11 +5,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
-import {getTest} from 'pages/broadcast/content/chat-ui'
-const SocketClusterClient = require('socketcluster-client')
-// import {Context} from 'context'
-// import Api from 'context/api'
 
+const SocketClusterClient = require('socketcluster-client')
 //socket object
 let socket = null
 
@@ -572,6 +569,8 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'login: ' + dataObj.data.data.user.login + '\n'
           logStr += 'msg: ' + dataObj.data.data.msg + '\n'
         }
+        //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
+        receiveMessageData(JSON.parse(data))
       } else {
         /*if (dataObj.type == 'subscribe') {
                   //{"rid":5,"error":{"message":"Action was silently blocked by subscribe middleware","name":"SilentMiddlewareBlockedError","type":"subscribe"}}
@@ -620,7 +619,6 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
       logStr += 'error: ' + e + '\n'
     }
     console.warn(logStr)
-    if (data !== '#1') receiveMessageData(JSON.parse(data))
   })
 
   //서버시간 수신
@@ -649,8 +647,11 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
 // 서버로 받은 데이터
 
 export const receiveMessageData = recvData => {
-  console.warn('서버로 부터 받은 데이터 = ' + recvData)
-  if (recvData.event === '#publish') getTest(recvData)
+  console.log('서버로 부터 받은 데이터 = ' + recvData)
+  //ts.props.getTest(recvData)
+
+  const destroyEvent = new CustomEvent('socketSendData', {detail: recvData})
+  document.dispatchEvent(destroyEvent)
 }
 export const socketClusterBinding = (channel, Info) => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)

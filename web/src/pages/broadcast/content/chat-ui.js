@@ -8,31 +8,14 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 const sc = require('context/socketCluster')
 
 //component
 import InfoContainer from './chat-info-container'
 
-export const getTest = data => {
-  //console.log(JSON.stringify(data))
-  const resulte = (
-    <Message key={0}>
-      <figure></figure>
-      <div>
-        <p>{data.event}</p>
-        <pre>{data.event}</pre>
-      </div>
-    </Message>
-  )
-  //return data
-  //console.log('메세지 날려라')
-
-  //setComments([comments, resulte])
-}
-
 export default props => {
   //---------------------------------------------------------------------
-  //context
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([])
@@ -44,33 +27,33 @@ export default props => {
 
   //---------------------------------------------------------------------
   //function
-
-  //채팅 입력시(input KeyPress)
-  const handleCommentKeyPress = e => {
+  const postMessageChange = e => {
+    //context
     if (e.target.value && e.key == 'Enter') {
-      //setComments(...comments, e.target.value)
-      const resulte = (
-        <Message key={0}>
-          <figure></figure>
-          <div>
-            <p>닉네임</p>
-            <pre>{e.target.value}</pre>
-          </div>
-        </Message>
-      )
-
-      console.log('메세지 날려라')
-
-      setComments([comments, resulte])
-      sc.SendMessageChat({...props.location.state, msg: e.target.value})
-      // objSendInfo.roomNo = props.location.state.roomNo
-      // objSendInfo.message = e.target.value
-
-      //sc.SendMessageChat(props)
-      e.target.value = ''
+      if (context.token.isLogin) {
+        //     const resulte = (
+        //       <Message key={0}>
+        //         <figure></figure>
+        //         <div>
+        //           <p>닉네임</p>
+        //           <pre>{e.target.value}</pre>
+        //         </div>
+        //       </Message>
+        //     )
+        //     //setComments([comments, resulte])
+        var node = document.createElement('LI')
+        var textnode = document.createTextNode(e.target.value)
+        node.appendChild(textnode)
+        console.log('node= ' + JSON.stringify(node))
+        document.getElementById('myList').appendChild(node)
+        sc.SendMessageChat({...props.location.state, msg: e.target.value})
+        e.target.value = ''
+      } else {
+        e.target.value = ''
+        alert('비회원은 채팅에 참여 하실수 없습니다.')
+      }
     }
   }
-
   //채팅창 마우스 휠 작동시
   const handleOnWheel = () => {
     setCheckMove(true)
@@ -84,24 +67,32 @@ export default props => {
       scrollbars.current.scrollToBottom()
     }
   }
+  const getRecvData = data => {
+    console.log(data)
+    const resulte = (
+      <Message key={0}>
+        <figure></figure>
+        <div>
+          <p>닉네임</p>
+          <pre>{data.detail.data.data.msg}</pre>
+        </div>
+      </Message>
+    )
 
-  // document.addEventListener('socket-receiveMessageData', scRecvData => {
-  //   console.log(scRecvData.detail.data.data.msg)
-  //   // const resulte = (
-  //   //   <Message key={0}>
-  //   //     <figure></figure>
-  //   //     <div>
-  //   //       <p>{scRecvData.detail.data.data.user.nk}</p>
-  //   //       <pre>{scRecvData.detail.data.data.msg}</pre>
-  //   //     </div>
-  //   //   </Message>
-  //   // )
-  //   // setComments([comments, resulte])
-  // })
+    //console.log('메세지 날려라')
+
+    setComments([comments, resulte])
+
+    console.log(comments)
+  }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    console.log('나이스')
+    const res = document.addEventListener('socketSendData', data => {
+      getRecvData(data)
+      return () => document.removeEventListener('socketSendData')
+    })
   }, [])
 
   //useEffect(() => {}, [comments])
@@ -175,11 +166,12 @@ export default props => {
               <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
             </div>
           </Message>
-          {comments}
+
+          <li id="myList"></li>
         </Scrollbars>
       </CommentList>
       <InputComment>
-        <input type="text" placeholder="대화를 입력해주세요." onKeyPress={handleCommentKeyPress} />
+        <input type="text" placeholder="대화를 입력해주세요." onKeyPress={postMessageChange} />
       </InputComment>
     </Content>
   )
