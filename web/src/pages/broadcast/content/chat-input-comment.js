@@ -14,10 +14,25 @@ export default props => {
   //context
   const context = useContext(Context)
   //state
+  const [toggle, setToggle] = useState({
+    volume: false,
+    quick: false,
+    menu: false
+  })
   //const
 
   //---------------------------------------------------------------------
-  //map
+  //function
+
+  //오른쪽 메뉴들 토글기능
+  const activeMenu = e => {
+    const current = e.target.className
+    setToggle({
+      volume: current == 'volume' ? !toggle.volume : false,
+      quick: current == 'quick' ? !toggle.quick : false,
+      menu: current == 'menu' ? !toggle.menu : false
+    })
+  }
 
   //---------------------------------------------------------------------
   //useEffect
@@ -33,26 +48,27 @@ export default props => {
         <button className="like" title="좋아요~">
           좋아요
         </button>
-        <button className="volume" title="볼륨조정">
+        <button className="volume" title="볼륨조정" onClick={activeMenu}>
           볼륨조정
         </button>
-        <ul className="volume-box">
-          <li>인사</li>
+        <ul className={`volume-box ${toggle.volume ? 'on' : 'off'}`}>
+          <li>볼륨조절바</li>
         </ul>
-        <button className="quick" title="빠른말">
+        <button className="quick" title="빠른말" onClick={activeMenu}>
           빠른말
         </button>
-        <ul className="quick-box">
+
+        <ul className={`quick-box ${toggle.quick ? 'on' : 'off'}`}>
           <li>인사</li>
           <li>박수</li>
           <li>감사</li>
           <li>세팅</li>
         </ul>
-        <button className="menu" title="기타메뉴">
+        <button className="menu" title="기타메뉴" onClick={activeMenu}>
           기타메뉴
         </button>
-        <ul className="menu-box">
-          <li className="modify">수정하기</li>
+        <ul className={`menu-box ${toggle.menu ? 'on' : 'off'}`}>
+          <li className="edit">수정하기</li>
           <li className="share">공유하기</li>
           <li className="exit">방송종료</li>
         </ul>
@@ -112,6 +128,65 @@ const Content = styled.div`
     }
     ul {
       display: none;
+      position: absolute;
+      &.on {
+        display: block;
+      }
+      &.volume-box {
+        bottom: 53px;
+        right: 102px;
+        width: 22px;
+        height: 106px;
+        border-radius: 25px;
+        background: #000;
+        text-indent: -9999px;
+      }
+      &.quick-box,
+      &.menu-box {
+        position: absolute;
+        bottom: 78px;
+        right: 15px;
+        li {
+          display: inline-block;
+          padding: 0 15px;
+          border-radius: 30px;
+          background: #dbdbdb;
+          color: #212121;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 32px;
+          vertical-align: top;
+          cursor: pointer;
+          transform: skew(-0.03deg);
+        }
+        li + li {
+          margin-left: 10px;
+        }
+      }
+      &.quick-box {
+        li:last-child {
+          background: #dbdbdb url(${IMG_SERVER}/images/chat/ic_setting.png) no-repeat center center / cover;
+          background-size: 20px;
+          text-indent: -9999px;
+        }
+      }
+      &.menu-box {
+        li {
+          padding: 0 15px 0 38px;
+        }
+        li.edit {
+          background: #dbdbdb url(${IMG_SERVER}/images/chat/ic_edit.png) no-repeat 14px center;
+          background-size: 20px;
+        }
+        li.share {
+          background: #dbdbdb url(${IMG_SERVER}/images/chat/ic_share.png) no-repeat 14px center;
+          background-size: 20px;
+        }
+        li.exit {
+          background: #dbdbdb url(${IMG_SERVER}/images/chat/ic_sign_off.png) no-repeat 14px center;
+          background-size: 20px;
+        }
+      }
     }
   }
 `

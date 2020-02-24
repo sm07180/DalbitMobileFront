@@ -105,9 +105,7 @@ export default props => {
   // })
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {
-    console.log('나이스')
-  }, [])
+  useEffect(() => {}, [])
 
   //useEffect(() => {}, [comments])
 
