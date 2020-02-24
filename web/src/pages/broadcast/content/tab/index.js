@@ -16,6 +16,8 @@ import Profile from './profile'
 import Boost from './boost'
 import Report from './report'
 import Notice from './notice'
+import Story from './story'
+import Macro from './macro'
 import BroadModify from './broad-setting-modify'
 export default props => {
   //---------------------------------------------------------------------
@@ -37,7 +39,7 @@ export default props => {
       </Tab>
       {/* 탭컨텐츠영역 */}
       {currentItem.tab === '청취자' && <LiveListener Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
-      {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
+      {currentItem.tab === '게스트' && <LiveGuest {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} />}
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
@@ -45,7 +47,9 @@ export default props => {
       {currentItem.tab === '프로필' && <Profile Info={Profiledata} {...props} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice />}
+      {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '방송수정' && <BroadModify {...props} />}
+      {currentItem.tab === '빠른 말' && <Macro />}
     </>
   )
 }
@@ -125,7 +129,15 @@ const tabConent = [
   },
   {
     id: 9,
+    tab: '사연'
+  },
+  {
+    id: 10,
     tab: '방송수정'
+  },
+  {
+    id: 11,
+    tab: '빠른 말'
   }
 ]
 //data------------------------------------------------------------------

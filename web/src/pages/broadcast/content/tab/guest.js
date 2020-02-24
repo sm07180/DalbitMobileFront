@@ -4,10 +4,12 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
-import Api from 'context/api'
+import API from 'context/api'
+
 //components----------------------------------------------------
 import CancelEvent from './guest-cancel-event'
 import RequestEvent from './guest-request-event'
+
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
@@ -16,10 +18,29 @@ export default props => {
   //1.청취자정보..배열 호출 state-------------------------------------
   //2.게스트정보..배열 호출 state-------------------------------------
   //3.버튼 visibility 체크----------------------------------------
-  const [ManagerInfo, setManagerInfo] = useState(props.Info)
-  const [ListenInfo, setListenInfo] = useState(props.Info2)
+
+  const [ManagerInfo, setManagerInfo] = useState([])
+  const [ListenInfo, setListenInfo] = useState([])
   const [GuestInfo, setGuestInfo] = useState(props.Info3)
   const [BTNcheck, setBTNcheck] = useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      console.log(props.location.state)
+      const {roomNo} = props.location.state
+      console.log('room no', roomNo)
+      const listener = await API.broad_listeners({
+        params: {
+          roomNo: roomNo
+          // page: 1,
+          // record: 1
+        }
+      })
+
+      console.log(listener)
+    })()
+  }, [])
+
   //visibility btn function----------------------------------------------
   const ToggleGuest = () => {
     if (BTNcheck === false) {
