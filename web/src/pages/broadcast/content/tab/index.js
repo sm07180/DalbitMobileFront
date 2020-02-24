@@ -44,11 +44,11 @@ export default props => {
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
-      {currentItem.tab === '프로필' && <Profile Info={Profiledata} />}
+      {currentItem.tab === '프로필' && <Profile Info={Profiledata} {...props} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice />}
       {currentItem.tab === '사연' && <Story />}
-      {currentItem.tab === '방송수정' && <BroadModify />}
+      {currentItem.tab === '방송수정' && <BroadModify {...props} />}
       {currentItem.tab === '빠른 말' && <Macro />}
     </>
   )

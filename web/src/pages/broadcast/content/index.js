@@ -122,7 +122,7 @@ export default props => {
       <Side>
         {/* side content 영역 */}
 
-        <SideContent>{/* <Charge /> */}</SideContent>
+        <SideContent {...props}>{/* <Charge /> */}</SideContent>
       </Side>
       {roomRole === hostRole ? (
         <AudioWrap>

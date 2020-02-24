@@ -5,6 +5,8 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 export default props => {
+  //console.log(props)
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //----------------------------------------------context
   const context = useContext(Context)
   //0.프로필인포 state정의------------------------------------------
@@ -38,7 +40,7 @@ export default props => {
     <Container>
       <Navi title={'프로필'} />
       <div className="imgWrap">
-        <PIMG bg={PInfo.profImg} />
+        <PIMG bg={roomInfo.bjProfImg.url} />
       </div>
       <div className="gazeWrap">
         <div className="gazeBar">
@@ -50,8 +52,8 @@ export default props => {
       <h5 className="levelWrap">
         {PInfo.grade} / Lv.{PInfo.level}
       </h5>
-      <h5 className="nickWrap">{PInfo.nickNm}</h5>
-      <h5 className="IdWrap">{PInfo.memId}</h5>
+      <h5 className="nickWrap">{roomInfo.bjNickNm}</h5>
+      <h5 className="IdWrap">{roomInfo.bjStreamId}</h5>
       <div className="fanWrap">
         <div>
           <span>팬</span>

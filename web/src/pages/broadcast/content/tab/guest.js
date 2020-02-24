@@ -16,7 +16,7 @@ export default props => {
   //1.청취자정보..배열 호출 state-------------------------------------
   //2.게스트정보..배열 호출 state-------------------------------------
   //3.버튼 visibility 체크----------------------------------------
-  const [ManegerInfo, setManegerInfo] = useState(props.Info)
+  const [ManagerInfo, setManagerInfo] = useState(props.Info)
   const [ListenInfo, setListenInfo] = useState(props.Info2)
   const [GuestInfo, setGuestInfo] = useState(props.Info3)
   const [BTNcheck, setBTNcheck] = useState(false)
@@ -33,7 +33,7 @@ export default props => {
     setBTNcheck(false)
   }
   //매니저map----------------------------------------------
-  const Manegermap = ManegerInfo.map((live, index) => {
+  const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
     const [checkVisibility, SetcheckVisibility] = useState(false)
     //function
@@ -49,14 +49,14 @@ export default props => {
     }
     //-------------------------------------------------------
     return (
-      <ManegerList key={index}>
-        <ManegerImg bg={url} />
+      <ManagerList key={index}>
+        <ManagerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <CANCELBTN value={checkVisibility} onClick={ToggleEvent}></CANCELBTN>
         {checkVisibility && <CancelEvent value={bjNickNm} onClick={AllFalse} />}
         <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} />
-      </ManegerList>
+      </ManagerList>
     )
   })
   //리스너map----------------------------------------------
@@ -77,7 +77,7 @@ export default props => {
     //-------------------------------------------------------
     return (
       <ListenList key={index}>
-        <ManegerImg bg={url} />
+        <ManagerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <EVENTBTN value={checkVisibility} onClick={ToggleEvent}></EVENTBTN>
@@ -93,7 +93,7 @@ export default props => {
         <LiveWrap>
           <Title>방송 참여 중 게스트</Title>
           <DJList>
-            <ManegerImg bg={GuestInfo.url} />
+            <ManagerImg bg={GuestInfo.url} />
             <h5>{GuestInfo.bjNickNm}</h5>
             <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
             {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
@@ -102,7 +102,7 @@ export default props => {
         </LiveWrap>
         <LiveWrap>
           <Title>초대한 게스트</Title>
-          {Manegermap}
+          {Managermap}
         </LiveWrap>
         <LiveWrap>
           <Title>게스트 요청 청취자</Title>
@@ -149,7 +149,7 @@ const DJList = styled.div`
     transform: skew(-0.03deg);
   }
 `
-const ManegerList = styled.div`
+const ManagerList = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -158,7 +158,7 @@ const ManegerList = styled.div`
   border: 1px solid #8555f6;
   border-radius: 24px;
 `
-const ManegerImg = styled.div`
+const ManagerImg = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
