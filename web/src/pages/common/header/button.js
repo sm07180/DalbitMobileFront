@@ -63,8 +63,11 @@ const Content = styled.div`
   right: 10px;
   top: 18px;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    top: 11px;
+    top: 7px;
     right: 8px;
+  }
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    top: 12px;
   }
 `
 

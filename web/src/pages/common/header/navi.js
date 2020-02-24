@@ -83,7 +83,8 @@ const Content = styled.nav`
     font-size: 18px;
     letter-spacing: -0.45px;
     @media screen and (min-width: ${WIDTH_TABLET}) {
-      &:not(:last-child):hover {
+      &:not(:last-child):hover,
+      &:not(:last-child).on {
         color: ${COLOR_MAIN};
         font-weight: 600;
       }
@@ -100,7 +101,8 @@ const Content = styled.nav`
         transition: all 0.2s ease-in-out;
         content: '';
       }
-      &:hover::after {
+      &:hover::after,
+      &.on::after {
         top: 32px;
         opacity: 1;
       }

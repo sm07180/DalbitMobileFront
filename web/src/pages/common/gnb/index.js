@@ -14,7 +14,7 @@ import GnbMenu from './menu'
 
 export default props => {
   const NoticeInfo = [
-    {id: 1, title: '해롱해롱해요', url: 'https://www.city.kr/files/attach/images/164/023/751/004/0370b36693077e678e52244fbadea4d2.jpg'},
+    {id: 1, title: '해롱해롱해요', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
     {id: 2, title: '하늘에서 비가와요~', url: 'https://newsimg.sedaily.com/2019/03/29/1VGS0VWD74_1.jpg'},
     {id: 3, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
     {id: 4, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
@@ -56,7 +56,7 @@ export default props => {
         return <GnbNotice NoticeInfo={NoticeInfo} />
         break
       case 'menu': //기본 메뉴
-        return <GnbMenu MenuInfo={MenuInfo} />
+        return <GnbMenu {...props} MenuInfo={MenuInfo} />
         break
       default:
         break

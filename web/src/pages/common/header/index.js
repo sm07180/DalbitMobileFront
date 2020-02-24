@@ -69,7 +69,7 @@ const Header = styled.header`
   z-index: 10;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 64px;
+    height: 56px;
     border-bottom: 0;
     background: ${COLOR_MAIN};
     /* 모바일 헤더는 메인에서 스크롤 했을때와 서브페이지에서의 헤더가 같은 타입. */
@@ -89,10 +89,6 @@ const Header = styled.header`
         padding-top: 0;
       }
     }
-  }
-
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 56px;
   }
 `
 

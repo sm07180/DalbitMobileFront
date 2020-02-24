@@ -53,10 +53,10 @@ const Gnb = styled.div`
 
 const Close = styled.button`
   position: absolute;
-  top: 16px;
+  top: 8px;
   right: 10px;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
   @media (max-width: ${WIDTH_MOBILE_S}) {
     top: 10px;
