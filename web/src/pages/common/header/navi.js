@@ -50,7 +50,9 @@ export default props => {
           if (context.customHeader.os === '3') {
             console.log(props)
             if (context && context.token && !context.token.isLogin) {
-              alert('로그인필요')
+              context.action.updatePopup('LOGIN')
+              //alert('로그인필요')
+              //props.history.push('/login')
               return
             }
             props.history.push('/broadcast-setting')
