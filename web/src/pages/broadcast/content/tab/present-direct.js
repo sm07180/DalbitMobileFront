@@ -69,7 +69,7 @@ export default props => {
         <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
       <ButtonArea>
-        <BotButton title={'충전하기'} borderColor={'#8556f6'} color={'#8556f6'} callback={() => context.action.updatePopupVisible(true)} />
+        <BotButton title={'충전하기'} borderColor={'#8556f6'} color={'#8556f6'} clickEvent={() => context.action.updatePopupVisible(true)} />
         <BotButton title={'선물하기'} borderColor={'#bdbdbd'} background={send ? '#8556f6' : '#bdbdbd'} color={'#fff'} />
       </ButtonArea>
     </Container>

@@ -7,7 +7,7 @@ const BotButton = props => {
       background={props.background}
       borderColor={props.borderColor}
       color={props.color}
-      onClick={props.callback ? () => props.callback() : console.log()}
+      onClick={props.clickEvent ? () => props.clickEvent() : console.log()}
       width={props.width}
       heigth={props.heigth}>
       {props.title}
@@ -17,7 +17,7 @@ const BotButton = props => {
 
 const LButton = props => {
   return (
-    <LongButton background={props.background} borderColor={props.borderColor} color={props.color} onClick={props.callback ? () => props.callback() : console.log()} width={props.width}>
+    <LongButton background={props.background} borderColor={props.borderColor} color={props.color} onClick={props.clickEvent ? () => props.clickEvent() : console.log()} width={props.width}>
       {props.title}
     </LongButton>
   )
@@ -42,7 +42,7 @@ const LongButton = styled.button`
   display: flex;
   width: 100%;
   height: 5.5vh;
-  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
+  background: ${props => (props.background ? props.background : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;

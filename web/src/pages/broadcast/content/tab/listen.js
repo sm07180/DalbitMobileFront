@@ -4,7 +4,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
-import Api from 'context/api'
+import API from 'context/api'
 //components--------------------------------------------------
 import Events from './listener-event'
 export default props => {
@@ -14,13 +14,29 @@ export default props => {
   //0.매니저정보 info스테이트----------------------------------------
   //1.청취자정보 info스테이트----------------------------------------
   //2.비제이정보 info스테이트----------------------------------------
-  const [ManegerInfo, setManegerInfo] = useState(props.Info)
-  const [ListenInfo, setListenInfo] = useState(props.Info2)
+  const [ManagerInfo, setManagerInfo] = useState([])
+  const [ListenInfo, setListenInfo] = useState(null)
+  const [trues, setTrues] = useState(false)
+  const [listenTrues, setListenTrues] = useState(false)
+
   const [BJInfo, setBJInfo] = useState(props.Info3)
+
+  const fetchListenList = async () => {
+    const {roomNo} = props.location.state
+    const res = await API.broad_listeners({
+      params: {roomNo}
+    })
+    if (res.result === 'success') {
+      const {list} = res.data
+      setListenInfo(list)
+    }
+    return
+  }
+
   //메니저 info맵----------------------------------------------------
-  const Manegermap = ManegerInfo.map((live, index) => {
+  const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
-    const [trues, setTrues] = useState(false)
+
     //클릭visibility function
     const ToggleEvent = () => {
       if (trues === false) {
@@ -35,62 +51,73 @@ export default props => {
     }
     //----------------------------------------------------------------
     return (
-      <ManegerList key={index}>
-        <ManegerImg bg={url} />
+      <ManagerList key={index}>
+        <ManagerImg bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
         <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
         {trues && <Events />}
         <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
-      </ManegerList>
+      </ManagerList>
     )
   })
   //----------------------------------------------------------------
-  const Listenmap = ListenInfo.map((live, index) => {
-    const {bjNickNm, bjMemNo, url} = live
-    const [trues, setTrues] = useState(false)
-    //클릭 이벤트
-    const ToggleEvent = () => {
-      if (trues === false) {
-        setTrues(true)
-      } else {
-        setTrues(false)
+
+  const drawListenList = () => {
+    if (ListenInfo === null) return
+    return ListenInfo.map((live, index) => {
+      const {nickNm, memNo, profImg} = live
+      const {thumb62x62} = profImg
+
+      //클릭 이벤트
+      const ToggleEvent = () => {
+        // if (listenTrues === false) {
+        //   setListenTrues(true)
+        // } else {
+        //   setListenTrues(false)
+        // }
       }
-    }
-    const AllFalse = () => {
-      setTrues(false)
-    }
-    //----------------------------------------------------------------
-    return (
-      <ListenList key={index}>
-        <ManegerImg bg={url} />
-        <StreamID>{bjMemNo}</StreamID>
-        <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
-      </ListenList>
-    )
-  })
+      const AllFalse = () => {
+        // setListenTrues(false)
+      }
+      //----------------------------------------------------------------
+      return (
+        <ListenList key={index}>
+          <ManagerImg bg={thumb62x62} />
+          <StreamID>{memNo}</StreamID>
+          <NickName>{nickNm}</NickName>
+          <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
+          {listenTrues && <Events />}
+          <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
+        </ListenList>
+      )
+    })
+  }
+
   //render------------------------------------------------------------
+
+  useEffect(() => {
+    fetchListenList()
+  }, [])
+
   return (
     <>
       <Wrapper>
         <LiveWrap>
           <Title>방송 DJ</Title>
           <DJList>
-            <ManegerImg bg={BJInfo.url} />
+            <ManagerImg bg={BJInfo.url} />
             <h2>{BJInfo.bjMemNo}</h2>
             <h5>{BJInfo.bjNickNm}</h5>
           </DJList>
         </LiveWrap>
         <LiveWrap>
           <Title>방송 매니저</Title>
-          {Manegermap}
+          {Managermap}
         </LiveWrap>
         <LiveWrap>
           <Title>청취자</Title>
-          <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
+          <ListenWrap className="scrollbar">{drawListenList()}</ListenWrap>
         </LiveWrap>
       </Wrapper>
     </>
@@ -153,7 +180,7 @@ const DJList = styled.div`
   }
 `
 
-const ManegerList = styled.div`
+const ManagerList = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -162,7 +189,7 @@ const ManegerList = styled.div`
   border: 1px solid #8555f6;
   border-radius: 24px;
 `
-const ManegerImg = styled.div`
+const ManagerImg = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;

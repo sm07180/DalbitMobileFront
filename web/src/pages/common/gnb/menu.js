@@ -1,10 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
+import {Link, NavLink} from 'react-router-dom'
+
+//context
+import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //component
 import Gnb from './gnb-layout'
-import {Link, NavLink} from 'react-router-dom'
+
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -45,13 +51,27 @@ export default props => {
           </Nheader>
 
           <CONTENT className={`${props.type}`}>
-            <LiveStart>
-              <StartBtn></StartBtn>
-              <StartIcon>
-                <span></span>
-                <h2>방송하기</h2>
-              </StartIcon>
-            </LiveStart>
+            <StartBtn
+              key="broadcast"
+              onClick={event => {
+                event.preventDefault()
+                //Hybird App이 아닐때
+                if (context.customHeader.os === '3') {
+                  console.log(props)
+                  if (context && context.token && !context.token.isLogin) {
+                    context.action.updatePopup('LOGIN')
+                    //alert('로그인필요')
+                    //props.history.push('/login')
+                    return
+                  }
+                  props.history.push('/broadcast-setting')
+                } else {
+                  Hybrid('RoomMake', '')
+                }
+                context.action.updateGnbVisible(false)
+              }}>
+              <h2>방송하기</h2>
+            </StartBtn>
             {makeNavi()}
           </CONTENT>
         </NoticeWrap>
@@ -67,43 +87,29 @@ const NoticeWrap = styled.div`
 `
 const Nheader = styled.div`
   width: 100%;
-  height: 80px;
-  padding: 16px 20px 16px 20px;
+  height: 56px;
+  padding: 10px;
   box-sizing: border-box;
   &:after {
     display: block;
     clear: both;
     content: '';
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 64px;
-  }
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 56px;
-    padding: 10px 10px 16px 10px;
-  }
 `
 const ICON = styled.div`
   float: left;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   margin-right: 10px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_menu_normal.png') no-repeat center center / cover;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    width: 36px;
-    height: 36px;
-  }
+  background: url(${IMG_SERVER}/images/api/ic_menu_normal.png) no-repeat center center / cover;
 `
 const Title = styled.h2`
   float: left;
   color: #fff;
   font-size: 20px;
-  line-height: 48px;
+  line-height: 36px;
   letter-spacing: -0.5px;
   text-align: left;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    line-height: 36px;
-  }
 `
 const CONTENT = styled.div`
   width: 100%;
@@ -112,47 +118,18 @@ const CONTENT = styled.div`
   box-sizing: border-box;
   /* background-color: white; */
 `
-const LiveStart = styled.div`
-  position: relative;
-  width: 100%;
-  height: 40px;
-  margin-bottom: 30px;
-  cursor: pointer;
-`
 const StartBtn = styled.button`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 40px;
+  height: 80px;
+  margin-bottom: 30px;
   border-radius: 20px;
-  background-color: #fff;
-`
-const StartIcon = styled.div`
-  width: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-  & span {
-    float: left;
-    width: 36px;
-    height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ico-cast-w.png') no-repeat center center/ cover;
-  }
-  & h2 {
-    float: left;
-    width: 64px;
-    color: #8556f6;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 36px;
-    letter-spacing: -0.45px;
+  background: #fff url(${IMG_SERVER}/images/api/ch_img_gnb_menu.png) no-repeat 82% center;
+  background-size: 80px;
+  h2 {
+    padding: 5px 0 0 40px;
+    color: ${COLOR_MAIN};
+    font-size: 24px;
+    text-align: left;
   }
 `
 const LinkLi = styled.div`
@@ -175,7 +152,7 @@ const LinkLi = styled.div`
     right: 0;
     width: 24px;
     height: 24px;
-    background: url('http://www.hwangsh.com/img/ic_arrow_right_color_s.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_arrow_right_color_s.png) no-repeat center center / cover;
     transform: translateY(-50%);
     content: '';
   }

@@ -19,6 +19,7 @@ import Live from 'pages/live' //라이브
 import Store from 'pages/store' //스토어
 import Event from 'pages/event' //이벤트
 import Mypage from 'pages/mypage' //마이페이지
+import Search from 'pages/search' //검색
 import NotFoundPage from 'pages/common/404' //404 페이지없을경우
 /*-app-*/
 import App from 'pages/app' //라이브
@@ -44,6 +45,7 @@ export default () => {
       <Route path="/guide" component={Guide} />
       <Route exact path="/mypage/" component={Mypage} />
       <Route exact path="/app/" component={App} />
+      <Route exact path="/search" component={Search} />
       {/* 페이지가없을경우 404로 이동 */}
       <Route path="/404" component={NotFoundPage} />
       <Redirect to="/404" />

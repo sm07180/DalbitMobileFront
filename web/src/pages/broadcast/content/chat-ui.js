@@ -13,6 +13,7 @@ const sc = require('context/socketCluster')
 
 //component
 import InfoContainer from './chat-info-container'
+import InputComment from './chat-input-comment'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -24,6 +25,7 @@ export default props => {
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
+  const wrap = useRef(null)
 
   //---------------------------------------------------------------------
   //function
@@ -100,6 +102,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content bgImg={roomInfo.bgImg.url}>
+      {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} />
       <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
@@ -321,22 +324,5 @@ const Message = styled.div`
     word-break: break-word;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
-  }
-`
-
-const InputComment = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 66px;
-  padding: 15px;
-  background: #212121;
-
-  input {
-    width: 100%;
-    border: 0;
-    border-radius: 36px;
-    line-height: 36px;
-    text-indent: 18px;
   }
 `

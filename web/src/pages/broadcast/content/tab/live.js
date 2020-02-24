@@ -1,51 +1,84 @@
 /**
  * @title 라이브탭 컨텐츠
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 //components-------------------------------------------------------------
 import SelectInfo from './live-select-popular'
 import CategoryInfo from './live-select-category'
 import Refresh from './live-refresh'
+import API from 'context/api'
+
+import {Context} from 'context'
 //------------------------------------------------------------------
 export default props => {
+  //context
+  const context = useContext(Context)
   //0.배열Info State--------------------------------------------------
-  const [liveInfo, setLiveInfo] = useState(props.Info)
-  //map:live----------------------------------------------------------
-  const livemap = liveInfo.map((live, index) => {
-    const {category, title, name, reco, nowpeople, totalpeople, newby, like, bg, thumb} = live
-    return (
-      <LiveList key={index}>
-        <ImgWrap bg={bg}>
-          <Sticker>
-            {reco && <Reco>{reco}</Reco>}
-            {newby && <New>{newby}</New>}
-          </Sticker>
-          {thumb && <Thumb thumb={thumb} />}
-        </ImgWrap>
-        <InfoWrap>
-          <Category>{category}</Category>
-          <Title>{title}</Title>
-          <Name>{name}</Name>
-          <IconWrap>
-            <div>
-              <NowpeopleIcon></NowpeopleIcon>
-              <span>{nowpeople}</span>
-            </div>
-            <div>
-              <LikeIcon></LikeIcon>
-              <span>{like}</span>
-            </div>
-            <div>
-              <TotalpeopleIcon></TotalpeopleIcon>
-              <span>{totalpeople}</span>
-            </div>
-          </IconWrap>
-        </InfoWrap>
-      </LiveList>
-    )
-  })
+  const [blist, setBlist] = useState(null)
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  //------------------------------------------------------------------
+  //fetch
+  async function fetchData(obj) {
+    const res = await API.broad_list({
+      url: '/broad/list',
+      method: 'get'
+    })
+    if (res.result === 'success') {
+      setBlist(res.data)
+    }
+    console.log(res)
+    // setBlist(list)
+  }
+
+  const makeContents = () => {
+    if (blist === null) return
+    return blist.list.map((live, index) => {
+      const {roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg} = live
+
+      return (
+        <LiveList key={index}>
+          <ImgWrap bg={bgImg.url}>
+            <Sticker>
+              {reco && <Reco>{reco}</Reco>}
+              {newby && <New>{newby}</New>}
+            </Sticker>
+            {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
+          </ImgWrap>
+          <InfoWrap>
+            <Category>{(roomType == '00' ? '일상/챗' : '', roomType == '01' ? '연애/오락' : '', roomType == '02' ? '노래/연주' : '', roomType == '03' ? '고민/사연' : '')}</Category>
+            <Title>{title}</Title>
+            <Name>{bjNickNm}</Name>
+            <IconWrap>
+              <div>
+                <NowpeopleIcon></NowpeopleIcon>
+                <span>{nowpeople}</span>
+              </div>
+              <div>
+                <LikeIcon></LikeIcon>
+                <span>{likeCnt}</span>
+              </div>
+              <div>
+                <TotalpeopleIcon></TotalpeopleIcon>
+                <span>{entryCnt}</span>
+              </div>
+            </IconWrap>
+          </InfoWrap>
+        </LiveList>
+      )
+    })
+  }
+  //------------------------------------------------------------------
+  useEffect(() => {
+    fetchData({
+      data: {
+        roomType: '',
+        page: 1,
+        records: 10
+      }
+    })
+  }, [])
   //------------------------------------------------------------------
   return (
     <Wrapper>
@@ -54,7 +87,7 @@ export default props => {
         <SelectInfo Info={PopularInfo} />
         <CategoryInfo Info={categoryInfo} />
       </LiveFilter>
-      <LiveWrap className="scrollbar">{livemap}</LiveWrap>
+      <LiveWrap className="scrollbar">{makeContents()}</LiveWrap>
     </Wrapper>
   )
 }

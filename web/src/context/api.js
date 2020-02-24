@@ -122,8 +122,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_listeners = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/listeners`, method: method || 'GET', data: data})
+    const {url, method, data, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/listeners`, method: method || 'GET', params: params || {}})
   }
   /**
    * @brief 방송방 좋아요 추가
@@ -643,6 +643,7 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
   }
+
   //-------------------------------------------------------------
 }
 

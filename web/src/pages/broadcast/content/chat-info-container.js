@@ -14,7 +14,7 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-  console.log('방정보를 알아봅시다..', props)
+  //console.log('방정보를 알아봅시다..', props)
   //state
   const [room, setRoom] = useState({
     bjHolder: '',
@@ -47,10 +47,20 @@ export default props => {
   })
   //const
 
-  //const {bjHolder, fanRank, bgImg, title, bjProfImg, rank, bjNickNm, likes} = {...props}
-
   //---------------------------------------------------------------------
   //map
+
+  const creatFanRank = () => {
+    return room.fanRank.map((item, index) => {
+      return (
+        <li className={`top${++index}`} key={index}>
+          <Figure src={item.profImg.url} title={item.nickNm}>
+            <img src={item.profImg.url} alt={item.nickNm} />
+          </Figure>
+        </li>
+      )
+    })
+  }
 
   //---------------------------------------------------------------------
   //useEffect
@@ -72,22 +82,9 @@ export default props => {
           <p>{room.title}</p>
         </div>
         <ul>
-          <li>
-            <Figure src={room.fanRank[0].profImg.url} title={room.fanRank[0].nickNm}>
-              <img src={room.fanRank[0].profImg.url} alt={room.fanRank[0].nickNm} />
-            </Figure>
-          </li>
-          <li>
-            <Figure src={room.fanRank[1].profImg.url} title={room.fanRank[1].nickNm}>
-              <img src={room.fanRank[1].profImg.url} alt={room.fanRank[1].nickNm} />
-            </Figure>
-          </li>
-          <li>
-            <Figure src={room.fanRank[2].profImg.url} title={room.fanRank[2].nickNm}>
-              <img src={room.fanRank[2].profImg.url} alt={room.fanRank[2].nickNm} />
-            </Figure>
-          </li>
-          <li>50</li>
+          {room.fanRank[0].profImg.url && creatFanRank()}
+
+          <li className="people">50</li>
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
         </ul>
       </div>
@@ -172,6 +169,7 @@ const Content = styled.div`
     ul {
       flex-basis: 200px;
       padding: 16px 0;
+      text-align: right;
       li {
         display: inline-block;
         position: relative;
@@ -191,16 +189,16 @@ const Content = styled.div`
         height: 18px;
         content: '';
       }
-      li:nth-child(1):after {
+      li.top1:after {
         background: url(${IMG_SERVER}/images/chat/ic_gold.png) no-repeat 0 0 / cover;
       }
-      li:nth-child(2):after {
+      li.top2:after {
         background: url(${IMG_SERVER}/images/chat/ic_silver.png) no-repeat 0 0 / cover;
       }
-      li:nth-child(3):after {
+      li.top3:after {
         background: url(${IMG_SERVER}/images/chat/ic_bronze.png) no-repeat 0 0 / cover;
       }
-      li:nth-child(4) {
+      li.people {
         width: 47px;
         height: 47px;
         border-radius: 50%;

@@ -20,7 +20,24 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <Content></Content>
+      <Content>
+        <div>
+          <button
+            onClick={() => {
+              context.action.alert({msg: 'MESSAGE'})
+            }}>
+            Alert
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              context.action.confirm({msg: 'confirm'})
+            }}>
+            Confirm
+          </button>
+        </div>
+      </Content>
     </Layout>
   )
 }
@@ -30,4 +47,11 @@ export default props => {
 const Content = styled.section`
   min-height: 300px;
   background: #e1e1e1;
+  button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    background: #ff0000;
+    color: #fff;
+  }
 `

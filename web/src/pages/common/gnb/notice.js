@@ -13,7 +13,10 @@ export default props => {
     return (
       <InfoWrap key={index}>
         <IMG bg={url}></IMG>
-        <TALK>{title}</TALK>
+        <TALK>
+          {title}
+          <span>13시간 전</span>
+        </TALK>
       </InfoWrap>
     )
   })
@@ -39,48 +42,35 @@ const NoticeWrap = styled.div`
 `
 const Nheader = styled.div`
   width: 100%;
-  height: 80px;
-  padding: 16px 10px 16px 10px;
+  height: 56px;
+  padding: 10px;
   box-sizing: border-box;
   &:after {
     display: block;
     clear: both;
     content: '';
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 64px;
-  }
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 56px;
-    padding: 10px 10px 10px 10px;
-  }
 `
 const ICON = styled.div`
   float: left;
-  width: 48px;
-  height: 48px;
-  margin-right: 10px;
+  width: 36px;
+  height: 36px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_alarm.png') no-repeat center center / cover;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    width: 36px;
-    height: 36px;
-  }
 `
 const Title = styled.h2`
   float: left;
+  margin-left: 8px;
   color: #fff;
   font-size: 20px;
-  line-height: 48px;
+  line-height: 36px;
   letter-spacing: -0.5px;
   text-align: left;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    line-height: 36px;
-  }
 `
 const CONTENT = styled.div`
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 56px);
   padding: 24px 20px 0 20px;
+  border-left: 1px solid #eee;
   box-sizing: border-box;
   background-color: white;
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -91,21 +81,15 @@ const CONTENT = styled.div`
   }
 `
 const InfoWrap = styled.div`
+  overflow: hidden;
   width: 100%;
-  border-bottom: 1px solid #eeeeee;
-  margin-bottom: 6px;
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
+  margin-bottom: 16px;
 `
 const IMG = styled.div`
   float: left;
   width: 36px;
   height: 36px;
-  margin-bottom: 6px;
-  margin-right: 9px;
+  margin: 1px 10px 0 0;
   border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center / cover;
 `
@@ -113,7 +97,13 @@ const TALK = styled.h4`
   float: left;
   color: #757575;
   font-size: 14px;
-  line-height: 36px;
+  font-weight: 400;
+  line-height: 20px;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
+  span {
+    display: block;
+    color: #dbdbdb;
+    font-size: 12px;
+  }
 `
