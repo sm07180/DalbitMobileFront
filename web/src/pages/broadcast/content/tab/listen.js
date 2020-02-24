@@ -15,13 +15,28 @@ export default props => {
   //1.청취자정보 info스테이트----------------------------------------
   //2.비제이정보 info스테이트----------------------------------------
   const [ManagerInfo, setManagerInfo] = useState([])
-  const [ListenInfo, setListenInfo] = useState([])
+  const [ListenInfo, setListenInfo] = useState(null)
+  const [trues, setTrues] = useState(false)
+  const [listenTrues, setListenTrues] = useState(false)
+
   const [BJInfo, setBJInfo] = useState(props.Info3)
+
+  const fetchListenList = async () => {
+    const {roomNo} = props.location.state
+    const res = await API.broad_listeners({
+      params: {roomNo}
+    })
+    if (res.result === 'success') {
+      const {list} = res.data
+      setListenInfo(list)
+    }
+    return
+  }
 
   //메니저 info맵----------------------------------------------------
   const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
-    const [trues, setTrues] = useState(false)
+
     //클릭visibility function
     const ToggleEvent = () => {
       if (trues === false) {
@@ -47,51 +62,42 @@ export default props => {
     )
   })
   //----------------------------------------------------------------
-  const Listenmap = ListenInfo.map((live, index) => {
-    // const {nickNm, memNo, profImg} = live
-    const [trues, setTrues] = useState(false)
-    //클릭 이벤트
-    const ToggleEvent = () => {
-      if (trues === false) {
-        setTrues(true)
-      } else {
-        setTrues(false)
+
+  const drawListenList = () => {
+    if (ListenInfo === null) return
+    return ListenInfo.map((live, index) => {
+      const {nickNm, memNo, profImg} = live
+      const {thumb62x62} = profImg
+
+      //클릭 이벤트
+      const ToggleEvent = () => {
+        // if (listenTrues === false) {
+        //   setListenTrues(true)
+        // } else {
+        //   setListenTrues(false)
+        // }
       }
-    }
-    const AllFalse = () => {
-      setTrues(false)
-    }
-    //----------------------------------------------------------------
-    return (
-      <ListenList key={index}>
-        {/* <ManagerImg bg={profImg} />
-        <StreamID>{memNo}</StreamID>
-        <NickName>{nickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} /> */}
-      </ListenList>
-    )
-  })
+      const AllFalse = () => {
+        // setListenTrues(false)
+      }
+      //----------------------------------------------------------------
+      return (
+        <ListenList key={index}>
+          <ManagerImg bg={thumb62x62} />
+          <StreamID>{memNo}</StreamID>
+          <NickName>{nickNm}</NickName>
+          <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
+          {listenTrues && <Events />}
+          <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
+        </ListenList>
+      )
+    })
+  }
+
   //render------------------------------------------------------------
 
   useEffect(() => {
-    async function fetchData() {
-      const {roomNo} = props.location.state
-      const {data} = await API.broad_listeners({
-        params: {
-          roomNo: roomNo
-          // page: 1,
-          // record: 1
-        }
-      })
-
-      const {list} = data
-      console.log('list', list)
-      // setListenInfo(list)
-    }
-
-    fetchData()
+    fetchListenList()
   }, [])
 
   return (
@@ -111,7 +117,7 @@ export default props => {
         </LiveWrap>
         <LiveWrap>
           <Title>청취자</Title>
-          <ListenWrap className="scrollbar">{/* {Listenmap} */}</ListenWrap>
+          <ListenWrap className="scrollbar">{drawListenList()}</ListenWrap>
         </LiveWrap>
       </Wrapper>
     </>
