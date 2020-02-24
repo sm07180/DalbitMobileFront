@@ -48,11 +48,11 @@ const Content = styled.div`
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    top: 10px;
+    top: 7px;
     left: 14px;
     width: 38%;
     a {
-      max-width: 160px;
+      max-width: 148px;
       min-width: 100px;
       img.mobile {
         display: block;
@@ -72,13 +72,13 @@ const Content = styled.div`
         }
         img.mobilesub {
           display: block;
-          width: 40px;
+          width: 38px;
         }
       }
     }
   }
 
-  @media (max-width: ${WIDTH_MOBILE_S}) {
+  /* @media (max-width: ${WIDTH_MOBILE_S}) {
     &.scroll,
     &.sub {
       a {
@@ -87,5 +87,5 @@ const Content = styled.div`
         }
       }
     }
-  }
+  } */
 `

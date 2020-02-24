@@ -27,6 +27,7 @@ export default props => {
       console.log(res.message)
       return
     }
+    console.log(res.data)
     setFetch(res.data)
   }
   //exitRoom
@@ -62,7 +63,7 @@ export default props => {
     if (fetch === null) return
     return fetch.list.map((list, idx) => {
       let mode = '해당사항없음'
-      const {state, roomNo, bjProfImg, welcomMsg, bgImg, title} = list
+      const {state, roomNo, gstProfImg, bjProfImg, welcomMsg, bgImg, title} = list
       if (state === 1) mode = '1'
       if (state === 2) mode = '2'
       if (state === 3) mode = '3'
@@ -74,16 +75,18 @@ export default props => {
       return (
         <List
           key={idx}
-          style={{backgroundImage: `url(${bgImg.thumb700x700})`}}
+          style={{backgroundImage: `url(${bjProfImg.thumb700x700})`}}
           onClick={() => {
             joinRoom(list)
           }}>
           <h3>[{mode}]</h3>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
-          <Profile>
-            <img src={`${bjProfImg.url}`} alt="" />
-          </Profile>
+          {gstProfImg !== '' && (
+            <Profile>
+              <img src={`${gstProfImg.thumb190x190}`} alt="" />
+            </Profile>
+          )}
           <h3>{roomNo}</h3>
         </List>
       )
@@ -115,7 +118,7 @@ export default props => {
           }}>
           방나가기
         </Button> */}
-        <h1>방송방 리스트 /broadcast/:title 이동</h1>
+
         {makeContents()}
       </div>
     </Content>

@@ -109,8 +109,9 @@ const GlobalProvider = props => {
     alert: obj => {
       const {msg} = obj
       //팝업
+      console.log(obj)
       setVisible(true)
-      setMessage({visible: true, ...obj})
+      setMessage({type: 'alert', visible: true, ...obj})
     },
     /**
      * 시스템팝업(레이어구성)
@@ -120,7 +121,7 @@ const GlobalProvider = props => {
       const {msg} = obj
       //팝업
       setVisible(true)
-      setMessage({visible: true, ...obj})
+      setMessage({type: 'confirm', visible: true, ...obj})
     },
     //login 상태
     updateLogin: bool => {
