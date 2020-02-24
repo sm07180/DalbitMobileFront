@@ -46,11 +46,14 @@ const GlobalProvider = props => {
      */
     updateCustomHeader: obj => {
       API.setCustomHeader(JSON.stringify(obj))
-      //쿠키초기화
-      Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
-      setTimeout(() => {
-        Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
-      }, 100)
+
+      Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
+
+      // //쿠키초기화
+      // Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
+      // setTimeout(() => {
+      //   Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
+      // }, 100)
       setCustomHeader(obj)
     },
     /**
@@ -62,11 +65,14 @@ const GlobalProvider = props => {
     updateToken: obj => {
       const {authToken} = obj
       API.setAuthToken(authToken)
-      //쿠키초기화
-      Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
-      setTimeout(() => {
-        Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-      }, 100)
+
+      Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
+
+      // //쿠키초기화
+      // Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
+      // setTimeout(() => {
+      //   Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
+      // }, 100)
       setToken(obj)
     },
     /**
