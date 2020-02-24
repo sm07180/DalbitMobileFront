@@ -16,13 +16,13 @@ import POPCAST from 'components/ui/pop-mic'
 import Present from 'pages/broadcast/content/tab/present-popup'
 import LiveClickEvent from 'components/ui/eventbox'
 import Charge from 'pages/broadcast/content/tab/charge-popup'
+
 //
 export default props => {
   //
   const context = useContext(Context)
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
-    console.log(context.popup_code)
     switch (context.popup_code) {
       case 'LOGIN': //---------------------------------------로그인
         return <Auth {...props} />
@@ -36,7 +36,7 @@ export default props => {
         return <Charge {...props} />
     }
   }
-
+  //useEffect
   useEffect(() => {
     context.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
   }, [context.popup_visible])

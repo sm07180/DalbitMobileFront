@@ -18,21 +18,6 @@ export default props => {
   const [ListenInfo, setListenInfo] = useState([])
   const [BJInfo, setBJInfo] = useState(props.Info3)
 
-  useEffect(() => {
-    ;(async () => {
-      const {roomNo} = props.location.state
-      const listener = await API.broad_listeners({
-        params: {
-          roomNo: roomNo
-          // page: 1,
-          // record: 1
-        }
-      })
-
-      console.log(listener)
-    })()
-  }, [])
-
   //메니저 info맵----------------------------------------------------
   const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
@@ -63,7 +48,7 @@ export default props => {
   })
   //----------------------------------------------------------------
   const Listenmap = ListenInfo.map((live, index) => {
-    const {bjNickNm, bjMemNo, url} = live
+    // const {nickNm, memNo, profImg} = live
     const [trues, setTrues] = useState(false)
     //클릭 이벤트
     const ToggleEvent = () => {
@@ -79,16 +64,36 @@ export default props => {
     //----------------------------------------------------------------
     return (
       <ListenList key={index}>
-        <ManagerImg bg={url} />
-        <StreamID>{bjMemNo}</StreamID>
-        <NickName>{bjNickNm}</NickName>
+        {/* <ManagerImg bg={profImg} />
+        <StreamID>{memNo}</StreamID>
+        <NickName>{nickNm}</NickName>
         <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
         {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
+        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} /> */}
       </ListenList>
     )
   })
   //render------------------------------------------------------------
+
+  useEffect(() => {
+    async function fetchData() {
+      const {roomNo} = props.location.state
+      const {data} = await API.broad_listeners({
+        params: {
+          roomNo: roomNo
+          // page: 1,
+          // record: 1
+        }
+      })
+
+      const {list} = data
+      console.log('list', list)
+      // setListenInfo(list)
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <>
       <Wrapper>
@@ -106,7 +111,7 @@ export default props => {
         </LiveWrap>
         <LiveWrap>
           <Title>청취자</Title>
-          <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
+          <ListenWrap className="scrollbar">{/* {Listenmap} */}</ListenWrap>
         </LiveWrap>
       </Wrapper>
     </>

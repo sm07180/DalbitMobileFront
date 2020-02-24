@@ -18,6 +18,7 @@ const GlobalProvider = props => {
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
+  const [message, setMessage] = useState({visible: false})
   const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
@@ -46,14 +47,8 @@ const GlobalProvider = props => {
      */
     updateCustomHeader: obj => {
       API.setCustomHeader(JSON.stringify(obj))
-
+      Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
       Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
-
-      // //쿠키초기화
-      // Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
-      // setTimeout(() => {
-      //   Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
-      // }, 100)
       setCustomHeader(obj)
     },
     /**
@@ -65,7 +60,7 @@ const GlobalProvider = props => {
     updateToken: obj => {
       const {authToken} = obj
       API.setAuthToken(authToken)
-
+      Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
 
       // //쿠키초기화
@@ -107,6 +102,26 @@ const GlobalProvider = props => {
         setGnbVisible(!gnb_visible)
       }, 10)
     },
+    /**
+     * 시스템팝업(레이어구성)
+     * @param {msg} 메시지영역
+     */
+    alert: obj => {
+      const {msg} = obj
+      //팝업
+      setVisible(true)
+      setMessage({visible: true, ...obj})
+    },
+    /**
+     * 시스템팝업(레이어구성)
+     * @param {msg} 메시지영역
+     */
+    confirm: obj => {
+      const {msg} = obj
+      //팝업
+      setVisible(true)
+      setMessage({visible: true, ...obj})
+    },
     //login 상태
     updateLogin: bool => {
       setlogin(bool)
@@ -125,6 +140,7 @@ const GlobalProvider = props => {
   const value = {
     state,
     mypage,
+    message,
     token,
     customHeader,
     login_state,
