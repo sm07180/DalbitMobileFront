@@ -58,7 +58,7 @@ export default props => {
       method: 'GET'
     })
     console.log('## res :', res)
-    setText(res.data)
+    // setText(res.data)
   }
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default props => {
       <Navi title={'빠른 말 설정'} />
       {edit ? (
         <EditMain>
-          {text.map((data, idx) => {
+          {testData.map((data, idx) => {
             return <MacroInput data={data} key={idx} _click={updateShortcut} />
           })}
         </EditMain>
