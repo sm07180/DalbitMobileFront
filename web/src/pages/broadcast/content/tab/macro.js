@@ -2,39 +2,68 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Navi from './navibar'
 import {LButton} from './bot-button'
+import Api from 'context/api'
 
 const testData = [
   {
-    macro: '인사',
-    contents: '안녕하세요. ㅇㅇㅇ입니다. 잘부탁드립니다 :)'
+    orderNo: 1,
+    order: '인사',
+    text: '안녕하세요.ㅇㅇㅇ입니다. 잘부탁드립니다 :)',
+    isOn: true
   },
   {
-    macro: '박수',
-    contents: '👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏'
+    orderNo: 2,
+    order: '박수',
+    text: '👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏',
+    isOn: true
   },
   {
-    macro: '감사',
-    contents: '감ㅅr합니다^_^* ㅇㅇㅇ입니다. 잘부탁드립니다 :) 감ㅅr합니다^_^* 감ㅅr합니다^_^*'
+    orderNo: 3,
+    order: '감사',
+    text: '감ㅅr합니다^_^*ㅇㅇㅇ입니다.잘부탁드립니다 :)감ㅅr합니다^_^*',
+    isOn: true
   }
 ]
 export default props => {
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
-  const [text, setText] = useState(testData)
-  const [input1, setInput1] = useState(testData[0])
-  const [input2, setInput2] = useState(testData[1])
-  const [input3, setInput3] = useState(testData[2])
+  const [text, setText] = useState()
   //------------------------------------------------------ func start
   const handleChangeInput = param => {
     const {value, maxLength, name} = event.target
-    // textarea 마다 state 초기화
-    if (name === 'input1') setInput1({...input1, contents: value})
-    if (name === 'input2') setInput2({...input2, contents: value})
-    if (name === 'input3') setInput3({...input3, contents: value})
   }
+
+  async function updateShortcut(param) {
+    console.log('param', param)
+    const {orderNo, order, text} = param
+    const res = await Api.member_broadcast_shortcut({
+      data: {
+        orderNo: orderNo,
+        order: order,
+        text: text,
+        isOn: true
+      },
+      method: 'POST'
+    })
+    console.log('## res :', res)
+    if (res.result === 'fail') {
+      console.log('## fail')
+    } else {
+      console.log('## success')
+    }
+  }
+
+  async function selectShortcut() {
+    const res = await Api.member_broadcast_shortcut({
+      method: 'GET'
+    })
+    console.log('## res :', res)
+    // setText(res.data)
+  }
+
   useEffect(() => {
     console.log('## useEffect')
-    setText(testData)
+    selectShortcut()
   }, [])
   //------------------------------------------------------ components start
   return (
@@ -42,40 +71,9 @@ export default props => {
       <Navi title={'빠른 말 설정'} />
       {edit ? (
         <EditMain>
-          {/* {testData.map((data, idx) => {
-            return (
-              <React.Fragment key={idx}>
-                <div className="editTitle">
-                  <div>{data.macro}</div>
-                  <SaveButton>저장</SaveButton>
-                </div>
-                <TextArea maxLength={50} name={idx} onChange={() => handleChangeInput(idx)}>
-                  {data.contents}
-                </TextArea>
-              </React.Fragment>
-            )
-          })} */}
-          <React.Fragment>
-            <div className="editTitle">
-              <div>{input1.macro}</div>
-              <SaveButton>저장</SaveButton>
-            </div>
-            <TextArea maxLength={50} onChange={handleChangeInput} value={input1.contents} name="input1" />
-          </React.Fragment>
-          <React.Fragment>
-            <div className="editTitle">
-              <div>{input2.macro}</div>
-              <SaveButton>저장</SaveButton>
-            </div>
-            <TextArea maxLength={50} onChange={handleChangeInput} value={input2.contents} name="input2" />
-          </React.Fragment>
-          <React.Fragment>
-            <div className="editTitle">
-              <div>{input3.macro}</div>
-              <SaveButton>저장</SaveButton>
-            </div>
-            <TextArea maxLength={50} onChange={handleChangeInput} value={input3.contents} name="input3" />
-          </React.Fragment>
+          {testData.map((data, idx) => {
+            return <MacroInput data={data} key={idx} _click={updateShortcut} />
+          })}
         </EditMain>
       ) : (
         <>
@@ -89,8 +87,8 @@ export default props => {
               {testData.map((data, idx) => {
                 return (
                   <MacroLoop key={idx}>
-                    <div className="key">{data.macro}</div>
-                    <div className="value">{data.contents.substring(0, 9)}</div>
+                    <div className="key">{data.order}</div>
+                    <div className="value">{data.text.substring(0, 9)}</div>
                   </MacroLoop>
                 )
               })}
@@ -102,6 +100,40 @@ export default props => {
         </>
       )}
     </Container>
+  )
+}
+
+const MacroInput = props => {
+  //------------------------------------------------------ declare start
+  const [text, setText] = useState('')
+  //------------------------------------------------------ func start
+  const handleChangeInput = param => {
+    const {value, maxLength, name} = event.target
+    setText(value)
+  }
+
+  const _update = (orderNo, order) => {
+    let params = {
+      orderNo: orderNo,
+      order: order,
+      text: text
+    }
+    props._click(params)
+  }
+
+  useEffect(() => {
+    setText(props.data.text)
+  }, [])
+
+  //------------------------------------------------------ components start
+  return (
+    <React.Fragment>
+      <div className="editTitle">
+        <div>{props.data.order}</div>
+        <SaveButton onClick={() => _update(props.data.orderNo, props.data.order)}>저장</SaveButton>
+      </div>
+      <TextArea onChange={handleChangeInput} maxLength={50} value={text} name="input1" />
+    </React.Fragment>
   )
 }
 

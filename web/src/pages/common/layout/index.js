@@ -13,6 +13,7 @@ import Header from 'pages/common/header'
 import Footer from 'pages/common/footer'
 import Gnb from 'pages/common/gnb'
 import Popup from 'pages/common/popup'
+import Message from 'pages/common/message'
 // etc
 import SignalingHandler from 'components/lib/SignalingHandler'
 // image
@@ -77,9 +78,10 @@ const Layout = props => {
           </MediaPlayer>
         </MediaPlayerWrap>
       )}
-
       {/* 레이어팝업 */}
       <Popup {...props} />
+      {/* 메시지팝업 */}
+      <Message {...props} />
     </Container>
   )
 }

@@ -1,7 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {Scrollbars} from 'react-custom-scrollbars'
 
 export default props => {
   //-------------------------------------------------- declare start
@@ -12,6 +13,7 @@ export default props => {
   const [count, setCount] = useState(0)
   const [sendType, setSendType] = useState(1)
   const [maxExp, setMaxExp] = useState(0)
+  const scrollbars = useRef(null)
 
   //-------------------------------------------------- func start
 
@@ -64,28 +66,30 @@ export default props => {
           <span>{maxExp}</span>
         </BarWrap>
       </LevelInfo>
-      <BoxArea>
-        {props.testBox.map((data, idx) => {
-          return (
-            <ItemInfo key={idx} onClick={() => pickItem(idx)}>
-              {item == idx && (
-                <Picked>
-                  <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
-                </Picked>
-              )}
-              <ItemBox>
-                <ItemImg>
-                  <img src={'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'} width={70} height={70} />
-                </ItemImg>
-                <Icon active={idx === item ? 'active' : ''}>
-                  <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
-                  123
-                </Icon>
-              </ItemBox>
-            </ItemInfo>
-          )
-        })}
-      </BoxArea>
+      <Scrollbars ref={scrollbars} style={{height: 250}} autoHide>
+        <BoxArea>
+          {props.testBox.map((data, idx) => {
+            return (
+              <ItemInfo key={idx} onClick={() => pickItem(idx)}>
+                {item == idx && (
+                  <Picked>
+                    <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
+                  </Picked>
+                )}
+                <ItemBox>
+                  <ItemImg>
+                    <img src={'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'} width={70} height={70} />
+                  </ItemImg>
+                  <Icon active={idx === item ? 'active' : ''}>
+                    <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
+                    123
+                  </Icon>
+                </ItemBox>
+              </ItemInfo>
+            )
+          })}
+        </BoxArea>
+      </Scrollbars>
       <ButtonArea>
         <SendDirect onClick={() => props._sendType(1)}>
           <MyPoint>
@@ -245,7 +249,7 @@ const BoxArea = styled.div`
   flex-flow: wrap;
   width: 100%;
   height: 250px;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 `
 
