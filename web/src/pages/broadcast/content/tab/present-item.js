@@ -11,12 +11,20 @@ export default props => {
   const [item, setItem] = useState(-1)
   const [count, setCount] = useState(0)
   const [sendType, setSendType] = useState(1)
+  const [maxExp, setMaxExp] = useState(0)
 
   //-------------------------------------------------- func start
 
   const widthCalc = () => {
+    // expNext 필요 경험치 150
+    // exp 현재 경험치 50
+    //
     if (props.testData != undefined) {
-      const barWidth = (props.testData.percent * 320) / 100
+      const maxExp = props.testData.exp + props.testData.expNext
+      const calWidth = (props.testData.exp / maxExp) * 100
+      const barWidth = (310 * calWidth) / 100
+
+      setMaxExp(maxExp)
       setWidth(barWidth)
     }
   }
@@ -53,7 +61,7 @@ export default props => {
           <Bar>
             <Exp exp={bWidth}>{props.testData.exp}</Exp>
           </Bar>
-          <span>{props.testData.maxExp}</span>
+          <span>{maxExp}</span>
         </BarWrap>
       </LevelInfo>
       <BoxArea>
