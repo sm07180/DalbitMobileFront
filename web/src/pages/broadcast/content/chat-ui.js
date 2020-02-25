@@ -8,32 +8,15 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 const sc = require('context/socketCluster')
 
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 
-export const getTest = data => {
-  //console.log(JSON.stringify(data))
-  const resulte = (
-    <Message key={0}>
-      <figure></figure>
-      <div>
-        <p>{data.event}</p>
-        <pre>{data.event}</pre>
-      </div>
-    </Message>
-  )
-  //return data
-  //console.log('메세지 날려라')
-
-  //setComments([comments, resulte])
-}
-
 export default props => {
   //---------------------------------------------------------------------
-  //context
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([])
@@ -46,36 +29,33 @@ export default props => {
 
   //---------------------------------------------------------------------
   //function
-  //Sconst wrap =
-
-  //채팅 입력시(input KeyPress)
-  const handleCommentKeyPress = e => {
+  const postMessageChange = e => {
+    //context
     if (e.target.value && e.key == 'Enter') {
-      //setComments(...comments, e.target.value)
-      const resulte = (
-        <Message key={0}>
-          <figure></figure>
-          <div>
-            <p>닉네임</p>
-            <pre>{e.target.value}</pre>
-          </div>
-        </Message>
-      )
-      //const resulte = `<pre>${e.target.value}</pre>`
-
-      console.log('메세지 날려라')
-      //wrap.current.append(resulte)
-
-      setComments([comments, resulte])
-      sc.SendMessageChat({...props.location.state, msg: e.target.value})
-      // objSendInfo.roomNo = props.location.state.roomNo
-      // objSendInfo.message = e.target.value
-
-      //sc.SendMessageChat(props)
-      e.target.value = ''
+      if (context.token.isLogin) {
+        //     const resulte = (
+        //       <Message key={0}>
+        //         <figure></figure>
+        //         <div>
+        //           <p>닉네임</p>
+        //           <pre>{e.target.value}</pre>
+        //         </div>
+        //       </Message>
+        //     )
+        //     //setComments([comments, resulte])
+        var node = document.createElement('LI')
+        var textnode = document.createTextNode(e.target.value)
+        node.appendChild(textnode)
+        console.log('node= ' + JSON.stringify(node))
+        document.getElementById('myList').appendChild(node)
+        sc.SendMessageChat({...props.location.state, msg: e.target.value})
+        e.target.value = ''
+      } else {
+        e.target.value = ''
+        alert('비회원은 채팅에 참여 하실수 없습니다.')
+      }
     }
   }
-
   //채팅창 마우스 휠 작동시
   const handleOnWheel = () => {
     setCheckMove(true)
@@ -89,23 +69,33 @@ export default props => {
       scrollbars.current.scrollToBottom()
     }
   }
+  const getRecvData = data => {
+    console.log(data)
+    const resulte = (
+      <Message key={0}>
+        <figure></figure>
+        <div>
+          <p>닉네임</p>
+          <pre>{data.detail.data.data.msg}</pre>
+        </div>
+      </Message>
+    )
 
-  // document.addEventListener('socket-receiveMessageData', scRecvData => {
-  //   console.log(scRecvData.detail.data.data.msg)
-  //   // const resulte = (
-  //   //   <Message key={0}>
-  //   //     <figure></figure>
-  //   //     <div>
-  //   //       <p>{scRecvData.detail.data.data.user.nk}</p>
-  //   //       <pre>{scRecvData.detail.data.data.msg}</pre>
-  //   //     </div>
-  //   //   </Message>
-  //   // )
-  //   // setComments([comments, resulte])
-  // })
+    //console.log('메세지 날려라')
+
+    setComments([comments, resulte])
+
+    console.log(comments)
+  }
+
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const res = document.addEventListener('socketSendData', data => {
+      getRecvData(data)
+      return () => document.removeEventListener('socketSendData')
+    })
+  }, [])
 
   //useEffect(() => {}, [comments])
 
@@ -116,12 +106,76 @@ export default props => {
       <InfoContainer {...roomInfo} />
       <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-          {/* <div ref={wrap}></div> */}
-          {comments}
+          {/* 가이드 메시지 */}
+          <Message className="guide">
+            <div>
+              <span>
+                방송방에 입장하였습니다.
+                <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
+              </span>
+            </div>
+          </Message>
+          <Message className="guide">
+            <div>
+              <span>[안내] 방송이 시작되었습니다.</span>
+            </div>
+          </Message>
+          {/* 입장 */}
+          <Message className="enter-exit">
+            <div>
+              <span>cherry🍒 님이 입장하셨습니다.</span>
+            </div>
+          </Message>
+          {/* 기본 청취자 메시지 */}
+          <Message className="comment" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
+            <figure></figure>
+            <div>
+              <p>cherry🍒</p>
+              <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
+            </div>
+          </Message>
+          {/* 퇴장 */}
+          <Message className="enter-exit">
+            <div>
+              <span>cherry🍒 님이 퇴장하셨습니다.</span>
+            </div>
+          </Message>
+          {/* DJ, 매니저, 게스트일 경우 메시지 */}
+          <Message className="comment" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+            <figure></figure>
+            <div>
+              <p>
+                <b className="dj">DJ</b>꿀보이스😍
+                {/* <b className="manager">매니저</b>꿀매니저😍
+                <b className="guest">게스트</b>지나가는게스트😍 */}
+              </p>
+              <pre>안녕하세요. 내가 바로 DJ입니다.</pre>
+            </div>
+          </Message>
+          {/* 좋아요~ */}
+          <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+            <div>
+              <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
+            </div>
+          </Message>
+          <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+            <div>
+              <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
+            </div>
+          </Message>
+          {/* 가이드 메시지 */}
+          <Message className="guide">
+            <div>
+              <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
+            </div>
+          </Message>
+
+          <li id="myList"></li>
         </Scrollbars>
       </CommentList>
-      {/* 하단 메시지 입력 영역 */}
-      <InputComment onKeyPress={handleCommentKeyPress} />
+      <InputComment>
+        <input type="text" placeholder="대화를 입력해주세요." onKeyPress={postMessageChange} />
+      </InputComment>
     </Content>
   )
 }

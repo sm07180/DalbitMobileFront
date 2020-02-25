@@ -6,6 +6,16 @@
 //---------------------------------------------------------------------
 export default class Utility {
   /**
+   * @brief nl2br
+
+   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
+   *
+   */
+  static nl2br = text => {
+    //return <div dangerouslySetInnerHTML={{__html: body}} />
+    return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+  }
+  /**
    * @brief 쿠키설정
    * @param string    c_name            //*쿠키의 key(키)
    * @param string    value             //*쿠키의 value(값)
