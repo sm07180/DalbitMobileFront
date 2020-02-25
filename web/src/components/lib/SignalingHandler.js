@@ -46,6 +46,12 @@ export default class SignalingHandler {
       await this.setAudioStream()
     }
   }
+  setPublishToken(token) {
+    this.publishToken = token
+  }
+  setPlayToken(token) {
+    this.playToken = token
+  }
   setStreamId(id) {
     this.streamId = id
   }
