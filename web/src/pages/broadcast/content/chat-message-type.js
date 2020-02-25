@@ -11,72 +11,107 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 export default props => {
   //---------------------------------------------------------------------
-  return (
-    <Content bgImg={roomInfo.bgImg.url}>
-      <Message className="guide">
-        <div>
-          <span>
-            방송방에 입장하였습니다.
-            <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
-          </span>
-        </div>
-      </Message>
-      <Message className="guide">
-        <div>
-          <span>[안내] 방송이 시작되었습니다.</span>
-        </div>
-      </Message>
-      {/* 입장 */}
-      <Message className="enter-exit">
-        <div>
-          <span>cherry🍒 님이 입장하셨습니다.</span>
-        </div>
-      </Message>
-      {/* 기본 청취자 메시지 */}
-      <Message className="comment" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
-        <figure></figure>
-        <div>
-          <p>cherry🍒</p>
-          <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
-        </div>
-      </Message>
-      {/* 퇴장 */}
-      <Message className="enter-exit">
-        <div>
-          <span>cherry🍒 님이 퇴장하셨습니다.</span>
-        </div>
-      </Message>
-      {/* DJ, 매니저, 게스트일 경우 메시지 */}
-      <Message className="comment" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-        <figure></figure>
-        <div>
-          <p>
-            <b className="dj">DJ</b>꿀보이스😍
-            {/* <b className="manager">매니저</b>꿀매니저😍
-                <b className="guest">게스트</b>지나가는게스트😍 */}
-          </p>
-          <pre>안녕하세요. 내가 바로 DJ입니다.</pre>
-        </div>
-      </Message>
-      {/* 좋아요~ */}
-      <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-        <div>
-          <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
-        </div>
-      </Message>
-      <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-        <div>
-          <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
-        </div>
-      </Message>
-      {/* 가이드 메시지 */}
-      <Message className="guide">
-        <div>
-          <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
-        </div>
-      </Message>
-    </Content>
-  )
+  console.log('메세지 타입 = ' + props)
+  switch (props.data.cmd) {
+    case 'connect':
+      return (
+        <>
+          <Message className={'guide'}>
+            <div>
+              <span>
+                방송방에 입장하였습니다.
+                <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
+              </span>
+            </div>
+          </Message>
+          <Message className="enter-exit">
+            <div>
+              <span>{props.data.msg}</span>
+            </div>
+          </Message>
+        </>
+      )
+      break
+    case 'chat':
+      return (
+        <Message className="comment" profImg={props.data.user.image}>
+          <figure></figure>
+          <div>
+            <p>{props.data.user.nk}</p>
+            <pre>{props.data.msg}</pre>
+          </div>
+        </Message>
+      )
+      break
+    default:
+      break
+  }
+  // return (
+  //   <Content bgImg={roomInfo.bgImg.url}>
+  //     <Message className="guide">
+  //       <div>
+  //         <span>
+  //           방송방에 입장하였습니다.
+  //           <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
+  //         </span>
+  //       </div>
+  //     </Message>
+  //     <Message className="guide">
+  //       <div>
+  //         <span>[안내] 방송이 시작되었습니다.</span>
+  //       </div>
+  //     </Message>
+  //     {/* 입장 */}
+  //     <Message className="enter-exit">
+  //       <div>
+  //         <span>cherry🍒 님이 입장하셨습니다.</span>
+  //       </div>
+  //     </Message>
+  //     {/* 기본 청취자 메시지 */}
+  //     <Message className="comment" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
+  //       <figure></figure>
+  //       <div>
+  //         <p>cherry🍒</p>
+  //         <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
+  //       </div>
+  //     </Message>
+  //     {/* 퇴장 */}
+  //     <Message className="enter-exit">
+  //       <div>
+  //         <span>cherry🍒 님이 퇴장하셨습니다.</span>
+  //       </div>
+  //     </Message>
+  //     {/* DJ, 매니저, 게스트일 경우 메시지 */}
+  //     <Message className="comment" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+  //       <figure></figure>
+  //       <div>
+  //         <p>
+  //           <b className="dj">DJ</b>꿀보이스😍
+  //           {/* <b className="manager">매니저</b>꿀매니저😍
+  //               <b className="guest">게스트</b>지나가는게스트😍 */}
+  //         </p>
+  //         <pre>안녕하세요. 내가 바로 DJ입니다.</pre>
+  //       </div>
+  //     </Message>
+  //     {/* 좋아요~ */}
+  //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+  //       <div>
+  //         <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
+  //       </div>
+  //     </Message>
+  //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
+  //       <div>
+  //         <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
+  //       </div>
+  //     </Message>
+  //     {/* 가이드 메시지 */}
+  //     <Message className="guide">
+  //       <div>
+  //         <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
+  //       </div>
+  //     </Message>
+  //   </Content>
+  // )
 }
 
 //---------------------------------------------------------------------
