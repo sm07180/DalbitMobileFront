@@ -9,11 +9,9 @@ import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
 //components
-import Api from 'context/api'
 //
 export default props => {
   const context = useContext(Context)
-
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {}, [])
@@ -24,7 +22,14 @@ export default props => {
         <div>
           <button
             onClick={() => {
-              context.action.alert({msg: 'MESSAGE'})
+              context.action.alert({
+                //콜백처리
+                callback: () => {
+                  console.log('----callback 예제')
+                },
+                title: '로그인에러!',
+                msg: `메시지내용입니다. \n2줄메시지내용입니다.`
+              })
             }}>
             Alert
           </button>
@@ -32,7 +37,31 @@ export default props => {
         <div>
           <button
             onClick={() => {
-              context.action.confirm({msg: 'confirm'})
+              context.action.alert({
+                //콜백처리
+                callback: () => {
+                  console.log('callback처리')
+                },
+                title: '로그인에러!',
+                msg: '<ol><li>타입1</li><li>타입1</li></ol>'
+              })
+            }}>
+            Alert
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              context.action.confirm({
+                //콜백처리
+                callback: () => {
+                  console.log('confirm처리')
+                },
+                cancelCallback: () => {
+                  console.log('cancel콜백')
+                },
+                msg: 'confirm'
+              })
             }}>
             Confirm
           </button>

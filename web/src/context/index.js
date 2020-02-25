@@ -108,9 +108,6 @@ const GlobalProvider = props => {
      */
     alert: obj => {
       const {msg} = obj
-      //팝업
-      console.log(obj)
-      setVisible(true)
       setMessage({type: 'alert', visible: true, ...obj})
     },
     /**
@@ -119,8 +116,6 @@ const GlobalProvider = props => {
      */
     confirm: obj => {
       const {msg} = obj
-      //팝업
-      setVisible(true)
       setMessage({type: 'confirm', visible: true, ...obj})
     },
     //login 상태
