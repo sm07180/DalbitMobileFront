@@ -83,10 +83,10 @@ const User = props => {
           <TabsBar position="static">
             <Tabs value={value} onChange={handleChange} aria-label="mypage tabs area">
               <Tab label="공지사항" {...a11yProps(0)} />
-              <Tab label="팬보드" {...a11yProps(1)} />
-              <Tab label="내지갑" {...a11yProps(2)} />
-              <Tab label="리포트" {...a11yProps(3)} />
-              <Tab label="팬/스타" {...a11yProps(4)} />
+              {/* <Tab label="팬보드" {...a11yProps(1)} /> */}
+              {/* <Tab label="내지갑" {...a11yProps(2)} /> */}
+              {/* <Tab label="리포트" {...a11yProps(3)} /> */}
+              {/* <Tab label="팬/스타" {...a11yProps(4)} /> */}
               <Tab label="설정" {...a11yProps(5)} />
             </Tabs>
           </TabsBar>
