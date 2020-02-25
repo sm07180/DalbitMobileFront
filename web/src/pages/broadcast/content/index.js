@@ -37,6 +37,7 @@ export default props => {
   const [isSideOn, setIsSideOn] = useState(true)
 
   const hostRole = 3
+  // const guestRole = ?
   const listenerRole = 0
   //---------------------------------------------------------------------
 
@@ -81,6 +82,7 @@ export default props => {
 
       if (roomRole === hostRole) {
         mediaHandler.setType('host')
+        // mediaHandler.setPublishToken(pubToken)
       } else if (roomRole === listenerRole) {
         mediaHandler.setType('listener')
       }

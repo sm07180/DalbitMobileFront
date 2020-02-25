@@ -16,6 +16,10 @@ const BroadCastProvider = props => {
   //state
   const [roomNumber, setRoomNumber] = useState('')
   const [roomInfo, setRoomInfo] = useState({})
+  const [listenerList, setListenerList] = useState([])
+  const [managerList, setManagerList] = useState([])
+  const [guestList, setGuestList] = useState([])
+
   //---------------------------------------------------------------------
   const action = {
     /**
@@ -30,10 +34,27 @@ const BroadCastProvider = props => {
     //roomNumber
     updateRoomNumber: num => {
       setRoomNumber(num)
+    },
+    updateListenerList: list => {
+      setListenerList(list)
+    },
+    updateManagerList: list => {
+      setManagerList(list)
+    },
+    updateGuestList: list => {
+      setGuestList(list)
     }
   }
   //---------------------------------------------------------------------
-  const value = {roomInfo, roomNumber, action}
+  const value = {
+    roomInfo,
+    roomNumber,
+    listenerList,
+    managerList,
+    guestList,
+
+    action
+  }
   return <Provider value={value}>{props.children}</Provider>
 }
 export {BroadCastStore, BroadCastProvider}
