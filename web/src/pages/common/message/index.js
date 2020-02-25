@@ -33,14 +33,18 @@ export default props => {
     }
   }
   //---------------------------------------------------------------------
-  return <Message>{makeContents(context.message.visible)}</Message>
+  return <React.Fragment>{context.message.visible && <Message>{makeContents(context.message.visible)}</Message>}</React.Fragment>
 }
 //---------------------------------------------------------------------
 const Message = styled.section`
-  display: inline-block;
-  position: absolute;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
-  z-index: 80;
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 120;
 `

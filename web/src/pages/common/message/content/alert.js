@@ -10,6 +10,7 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 //hooks
 import useClick from 'components/hooks/useClick'
@@ -21,27 +22,36 @@ export default props => {
   //context
   const context = useContext(Context)
   //--hooks
-  const confirm = useClick(update, {visible: false})
+  const cancel = useClick(update, {visible: false})
+  const confirm = useClick(update, {callback: 'confirm'})
   //---------------------------------------------------------------------
   //공통함수
   function update(mode) {
     switch (true) {
-      case mode.visible !== undefined:
+      case mode.visible !== undefined: //---------------------팝업닫기
         //팝업닫기
         if (mode.visible === false) context.action.alert({visible: false})
+        break
+      case mode.callback !== undefined: //---------------------콜백처리
         //콜백
-        if (context.message.callback !== undefined) {
+        if (mode.callback === 'confirm' && context.message.callback !== undefined) {
           context.message.callback()
         }
+        context.action.alert({visible: false})
         break
     }
   }
   //---------------------------------------------------------------------
   return (
     <Alert>
+      <Close {...cancel}>
+        <img src={`${IMG_SERVER}/images/common/ic_close_m@2x.png`} />
+      </Close>
       <div className="wrap-message">
-        <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
-        <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
+        {/* 타이틀 */}
+        {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
+        {/* 메시지 */}
+        {context.message.msg && <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>}
       </div>
       <div className="wrap-btn">
         <button className="confirm" {...confirm}>
@@ -52,14 +62,13 @@ export default props => {
   )
 }
 //---------------------------------------------------------------------
-
 const Alert = styled.section`
+  position: relative;
   min-width: 300px;
-  max-width: 400px;
+  max-width: 500px;
   padding: 5px;
   border-radius: 10px;
   background: #fff;
-  border: 1px solid #ccc;
   box-sizing: border-box;
   .wrap-message {
     width: 100%;
@@ -73,12 +82,18 @@ const Alert = styled.section`
   /* 타이틀 */
   h1 {
     display: block;
-    margin-bottom: 30px;
     text-align: center;
     font-weight: normal;
   }
   /* 메시지 */
   .msg {
+    padding: 62px 63px;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: -0.35px;
     word-break: break-all;
     text-align: center;
   }
@@ -93,5 +108,15 @@ const Alert = styled.section`
     height: 48px;
     border-radius: 10px;
     background-color: #8555f6;
+  }
+`
+const Close = styled.a`
+  display: inline-block;
+  position: absolute;
+  top: -35px;
+  right: 0;
+  img {
+    width: 36px;
+    height: 36px;
   }
 `

@@ -11,6 +11,7 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 //hooks
 import useClick from 'components/hooks/useClick'
@@ -34,11 +35,11 @@ export default props => {
         break
       case mode.callback !== undefined: //---------------------콜백처리
         //콜백
-        if (mode.callback === 'confirm') {
+        if (mode.callback === 'confirm' && context.message.callback !== undefined) {
           context.message.callback()
         }
         //캔슬콜백(취소)
-        if (mode.callback === 'cancel') {
+        if (mode.callback === 'cancel' && context.message.cancelCallback !== undefined) {
           context.message.cancelCallback()
         }
         context.action.alert({visible: false})
@@ -48,6 +49,9 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Alert>
+      <Close {...cancel}>
+        <img src={`${IMG_SERVER}/images/common/ic_close_m@2x.png`} />
+      </Close>
       <div className="wrap-message">
         {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
@@ -64,8 +68,8 @@ export default props => {
   )
 }
 //---------------------------------------------------------------------
-
 const Alert = styled.section`
+  position: relative;
   min-width: 300px;
   max-width: 400px;
   padding: 5px;
@@ -75,7 +79,6 @@ const Alert = styled.section`
   box-sizing: border-box;
   .wrap-message {
     width: 100%;
-    padding-top: 20px;
   }
   .wrap-btn {
     display: flex;
@@ -85,12 +88,18 @@ const Alert = styled.section`
   /* 타이틀 */
   h1 {
     display: block;
-    margin-bottom: 30px;
     text-align: center;
     font-weight: normal;
   }
   /* 메시지 */
   .msg {
+    padding: 62px 63px;
+    font-size: 16px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.71;
+    letter-spacing: -0.35px;
     word-break: break-all;
     text-align: center;
   }
@@ -105,14 +114,24 @@ const Alert = styled.section`
     background-color: #8555f6;
     /* 취소 */
     &:nth-child(odd) {
-      margin-right: 5px;
+      margin-right: 4px;
       border: 1px solid #8556f6;
       color: #8556f6;
       background: #fff;
     }
     /* 확인 */
     &:nth-child(even) {
-      margin-left: 5px;
+      margin-left: 4px;
     }
+  }
+`
+const Close = styled.a`
+  display: inline-block;
+  position: absolute;
+  top: -35px;
+  right: 0;
+  img {
+    width: 36px;
+    height: 36px;
   }
 `
