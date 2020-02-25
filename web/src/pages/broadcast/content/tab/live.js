@@ -1,7 +1,7 @@
 /**
  * @title 라이브탭 컨텐츠
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 //components-------------------------------------------------------------
@@ -9,15 +9,18 @@ import SelectInfo from './live-select-popular'
 import CategoryInfo from './live-select-category'
 import Refresh from './live-refresh'
 import API from 'context/api'
-
+import {broadcastLive} from 'constant/broadcast'
 import {Context} from 'context'
+import {Scrollbars} from 'react-custom-scrollbars'
 //------------------------------------------------------------------
 export default props => {
   //context
   const context = useContext(Context)
+  //ref
+  const settingArea = useRef(null) //세팅 스크롤 영역 선택자
+  const scrollbars = useRef(null) // 스크롤 영역 선택자
   //0.배열Info State--------------------------------------------------
-  const [blist, setBlist] = useState(null)
-  // const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const [broadList, setBroadList] = useState(null)
   //------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -26,15 +29,24 @@ export default props => {
       method: 'get'
     })
     if (res.result === 'success') {
-      setBlist(res.data)
+      setBroadList(res.data)
     }
     console.log(res)
-    // setBlist(list)
+  }
+  //라이브 마우스 스크롤
+  const [checkMove, setCheckMove] = useState(false)
+  const handleOnWheel = () => {
+    setCheckMove(true)
+  }
+  const scrollOnUpdate = e => {
+    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
+    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
 
+  //라이브 맵------------------------------------------------------------------------------------------------------
   const makeContents = () => {
-    if (blist === null) return
-    return blist.list.map((live, index) => {
+    if (broadList === null) return
+    return broadList.list.map((live, index) => {
       const {roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg} = live
 
       return (
@@ -47,13 +59,13 @@ export default props => {
             {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
           </ImgWrap>
           <InfoWrap>
-            <Category>{roomType == '00' ? '일상/챗' : ''}</Category>
+            <Category>{broadcastLive[roomType]}</Category>
             <Title>{title}</Title>
             <Name>{bjNickNm}</Name>
             <IconWrap>
               <div>
                 <NowpeopleIcon></NowpeopleIcon>
-                <span>{nowpeople}</span>
+                <span>{entryCnt}</span>
               </div>
               <div>
                 <LikeIcon></LikeIcon>
@@ -87,7 +99,11 @@ export default props => {
         <SelectInfo Info={PopularInfo} />
         <CategoryInfo Info={categoryInfo} />
       </LiveFilter>
-      <LiveWrap className="scrollbar">{makeContents()}</LiveWrap>
+      <LiveWrap onWheel={handleOnWheel} ref={settingArea}>
+        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+          {makeContents()}
+        </Scrollbars>
+      </LiveWrap>
     </Wrapper>
   )
 }
@@ -107,8 +123,13 @@ const LiveFilter = styled.div`
 `
 const LiveWrap = styled.div`
   height: calc(100% - 40px);
-  overflow-y: scroll;
   margin-top: 18px;
+  & .scrollCustom {
+    & > div:nth-child(3) {
+      width: 10px !important;
+      height: auto;
+    }
+  }
 `
 
 const LiveList = styled.div`
