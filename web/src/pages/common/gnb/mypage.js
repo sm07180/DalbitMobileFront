@@ -2,7 +2,7 @@
  *
  */
 import React, {useState, useEffect, useContext, useMemo} from 'react'
-import {PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
+import {IMG_SERVER, PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
 //component
@@ -24,17 +24,15 @@ export default props => {
   const [fetch, setFetch] = useState({profImg: {url: 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}, nickNm: ''})
   const [login, setLogin] = useState(props.LoginInfo)
   //const
-  //console.log('전역에 잘 담겼는지 확인할거에요', context.state)
+  //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
 
   //data
   const info = [
-    {title: '내프로필', url: '/live'},
+    {title: '내 정보 관리', url: '/mypage'},
+    {title: '공지사항', url: '/mypage'},
     {title: '팬보드', url: '/store?캐스트'},
     {title: '내지갑', url: '/store'},
-    {title: '리포트', url: '/event'},
-    {title: '팬스타', url: '/store?랭킹'},
-    {title: '설정', url: '/store?고객센터'},
-    {title: '방송국관리', url: '/store?설정'}
+    {title: '리포트', url: '/event'}
   ]
   //---------------------------------------------------------------------
   //fetch
@@ -83,44 +81,65 @@ export default props => {
                 {context.token.isLogin ? (
                   <NoLoginTitle>
                     <h4>{fetch.nickNm}</h4>
-                    {/* <ID>{login.name}</ID> */}
+                    <ID>{fetch.memId}</ID>
                   </NoLoginTitle>
                 ) : (
                   <NoLoginTitle>
                     <span>
-                      <em>로그인</em>이 필요합니다
+                      <em
+                        onClick={() => {
+                          if (!context.token.isLogin) {
+                            context.action.updatePopup('LOGIN')
+                          } else {
+                            const result = confirm('로그아웃 하시겠습니까?')
+                            if (result) {
+                              // const res = await Api.member_logout({
+                              //   data: {
+                              //     authToken: context.,
+                              //     custom-Header: context.customHeader,
+                              //   }
+                              // })
+
+                              alert('정상적으로 로그아웃 되었습니다.')
+                              context.action.updateLogin(false)
+                            }
+                          }
+                        }}>
+                        로그인
+                      </em>
+                      이 필요합니다
                     </span>
                   </NoLoginTitle>
                 )}
               </Ptitle>
               {context.token.isLogin && mypage !== null ? (
-                <LoginChoiceOut
-                  onClick={() => {
-                    if (context.token.isLogin) {
-                      const result = confirm('로그아웃 하시겠습니까?')
-                      if (result) {
-                        //fetch
-                        async function fetchData(obj) {
-                          const res = await Api.member_logout({data: context.token.authToken})
-                          context.action.updateToken(res.data)
-                          localStorage.removeItem('com.naver.nid.access_token')
-                          localStorage.removeItem('com.naver.nid.oauth.state_token')
-                          props.history.push('/')
-                          context.action.updateGnbVisible(false)
-                          console.log(props)
-                          console.log(res)
-                          return
-                          alert('정상적으로 로그아웃 되었습니다.')
-                          context.action.updateToken('')
-                          context.action.updateCustomHeader('')
-                          window.location.href = '/'
-                        }
-                        fetchData()
-                      }
-                    }
-                  }}>
-                  로그아웃
-                </LoginChoiceOut>
+                <MyInfo>
+                  <p className="total cast">
+                    <span>총 방송 시간</span>
+                    <b>124시간 23분</b>
+                    {/*mypage res.data에 값 따로 내려오지않음 */}
+                  </p>
+                  <p className="total listen">
+                    <span>총 청취 시간</span>
+                    <b>35시간 5분</b>
+                    {/*mypage res.data에 값 따로 내려오지않음 */}
+                  </p>
+                  <ul>
+                    <li className="count like">
+                      <span>좋아요</span>
+                      <b>34,111</b>
+                      {/*mypage res.data에 값 따로 내려오지않음 */}
+                    </li>
+                    <li className="count star">
+                      <span>보유별</span>
+                      <b>{fetch.goldCnt}</b>
+                    </li>
+                    <li className="count moon">
+                      <span>보유달</span>
+                      <b>{fetch.rubyCnt}</b>
+                    </li>
+                  </ul>
+                </MyInfo>
               ) : (
                 <LoginChoice
                   onClick={() => {
@@ -146,7 +165,39 @@ export default props => {
               )}
             </ProfileWrap>
           </CONTENT>
-          <NavWrap>{makeNavi()}</NavWrap>
+
+          <NavWrap>
+            {context.token.isLogin && mypage !== null && makeNavi()}
+            {context.token.isLogin && mypage !== null && (
+              <LoginChoiceOut
+                onClick={() => {
+                  if (context.token.isLogin) {
+                    const result = confirm('로그아웃 하시겠습니까?')
+                    if (result) {
+                      //fetch
+                      async function fetchData(obj) {
+                        const res = await Api.member_logout({data: context.token.authToken})
+                        context.action.updateToken(res.data)
+                        localStorage.removeItem('com.naver.nid.access_token')
+                        localStorage.removeItem('com.naver.nid.oauth.state_token')
+                        props.history.push('/')
+                        context.action.updateGnbVisible(false)
+                        console.log(props)
+                        console.log(res)
+                        return
+                        alert('정상적으로 로그아웃 되었습니다.')
+                        context.action.updateToken('')
+                        context.action.updateCustomHeader('')
+                        window.location.href = '/'
+                      }
+                      fetchData()
+                    }
+                  }
+                }}>
+                로그아웃
+              </LoginChoiceOut>
+            )}
+          </NavWrap>
         </MyWrap>
       </Gnb>
     </>
@@ -173,49 +224,35 @@ const MyWrap = styled.div`
 `
 const Nheader = styled.div`
   width: 100%;
-  height: 80px;
-  padding: 16px 20px 16px 20px;
-  box-sizing: border-box;
+  height: 56px;
+  padding: 10px;
+
   &:after {
     display: block;
     clear: both;
     content: '';
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 64px;
-  }
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 56px;
-    padding: 10px 10px 16px 10px;
-  }
 `
 const ICON = styled.div`
   float: left;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   margin-right: 10px;
   background: url('https://devimage.dalbitcast.com/images/api/ic_user_normal.png') no-repeat center center / cover;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    width: 36px;
-    height: 36px;
-  }
 `
 const Title = styled.h2`
   float: left;
   color: #fff;
   font-size: 20px;
-  line-height: 48px;
+  line-height: 36px;
   letter-spacing: -0.5px;
   text-align: left;
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    line-height: 36px;
-  }
 `
 const CONTENT = styled.div`
   width: 100%;
   height: calc(100vh -80px);
-  padding: 10px 20px 0 20px;
-  box-sizing: border-box;
+  padding: 15px 20px 0 20px;
+
   /* background-color: white; */
 `
 const ProfileWrap = styled.div`
@@ -250,12 +287,13 @@ const NoLoginTitle = styled.div`
       font-style: normal;
       line-height: 1.15;
       font-weight: 600;
+      cursor: pointer;
     }
   }
   & h4 {
-    padding-bottom: 20px;
     color: #ffffff;
     font-size: 20px;
+    font-weight: 400;
     line-height: 1.15;
     letter-spacing: -0.5px;
     text-align: center;
@@ -288,10 +326,9 @@ const LoginChoiceOut = styled.button`
   display: block;
   width: 100%;
   height: 40px;
-  border: solid 1px #936af5;
-  box-sizing: border-box;
-  background-color: #8556f6;
-  color: #fff;
+  margin-top: 30px;
+  border: solid 1px #e0e0e0;
+  color: #757575;
   font-size: 14px;
   line-height: 40px;
   letter-spacing: -0.35px;
@@ -299,10 +336,13 @@ const LoginChoiceOut = styled.button`
   transform: skew(-0.03deg);
 `
 const NavWrap = styled.div`
-  height: calc(100% - 364px);
+  height: calc(100% - 320px);
   padding: 20px 20px 0 20px;
-  box-sizing: border-box;
   background-color: white;
+
+  & > a:first-child > div {
+    border-top: 0;
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: calc(100% - 340px);
   }
@@ -311,11 +351,83 @@ const NavWrap = styled.div`
   }
 `
 
+const MyInfo = styled.div`
+  p {
+    overflow: hidden;
+    padding: 7px 15px 7px 40px;
+    border-radius: 20px;
+    * {
+      display: inline-block;
+      color: #fff;
+      transform: skew(0.03deg);
+    }
+
+    &.cast {
+      background: rgba(255, 255, 255, 0.05) url(${IMG_SERVER}/images/api/ic_gnb_time.png) no-repeat 10px center;
+      background-size: 24px;
+    }
+
+    &.listen {
+      background: rgba(255, 255, 255, 0.05) url(${IMG_SERVER}/images/api/ic_gnb_headphone.png) no-repeat 10px center;
+      background-size: 24px;
+    }
+
+    b {
+      float: right;
+      font-weight: 400;
+    }
+  }
+  p + p {
+    margin-top: 5px;
+  }
+  span {
+    color: rgba(255, 255, 255, 0.5);
+    transform: skew(0.03deg);
+  }
+
+  ul {
+    display: flex;
+    margin-top: 20px;
+    li {
+      flex: 1 0 auto;
+      padding: 10px;
+      border-radius: 10px;
+      * {
+        display: block;
+        text-align: center;
+      }
+
+      &.like {
+        background: rgba(255, 255, 255, 0.05) url(${IMG_SERVER}/images/api/ic_gnb_like.png) no-repeat center center;
+        background-size: 24px;
+      }
+      &.star {
+        background: rgba(255, 255, 255, 0.05) url(${IMG_SERVER}/images/api/ic_gnb_star.png) no-repeat center center;
+        background-size: 24px;
+      }
+      &.moon {
+        background: rgba(255, 255, 255, 0.05) url(${IMG_SERVER}/images/api/ic_gnb_moon.png) no-repeat center center;
+        background-size: 24px;
+      }
+    }
+
+    li + li {
+      margin-left: 5px;
+    }
+    b {
+      padding-top: 36px;
+      color: #fff;
+      font-weight: 400;
+      transform: skew(0.03deg);
+    }
+  }
+`
+
 const LinkLi = styled.div`
   position: relative;
   width: 100%;
   height: 40px;
-  border-bottom: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
   & span {
     display: block;
     color: #757575;

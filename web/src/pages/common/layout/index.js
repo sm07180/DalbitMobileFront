@@ -38,7 +38,7 @@ const Layout = props => {
   }, [])
   //---------------------------------------------------------------------
 
-  let pathCheck = props.location.pathname.indexOf('/broadcast') < 0 ? true : false
+  let pathCheck = window.location.pathname.indexOf('/broadcast') < 0 ? true : false
   return (
     <Container>
       {/* 헤더설정 */}
@@ -67,7 +67,6 @@ const Layout = props => {
                     height: '36px'
                   }}
                   onClick={() => {
-                    console.log(mediaHandler)
                     if (mediaHandler.rtcPeerConn) {
                       mediaHandler.stop()
                     }
@@ -103,11 +102,8 @@ const Container = styled.div`
       width: 100%;
     }
     @media (max-width: ${WIDTH_TABLET_S}) {
-      padding-top: 64px;
-      width: 100%;
-    }
-    @media (max-width: ${WIDTH_MOBILE_S}) {
       padding-top: 56px;
+      width: 100%;
     }
     /* 컨텐츠내용 */
     article {

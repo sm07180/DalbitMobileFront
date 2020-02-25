@@ -6,6 +6,8 @@ import styled from 'styled-components'
 //components
 import {Context} from './store'
 //pages
+//ui
+import Alert from './content/ui/alert'
 import StyleButton from './content/style-button'
 import StyleWebRtcTest from './content/style-WebRtcTest'
 import StyleChart from './content/style-chart'
@@ -20,6 +22,8 @@ export default props => {
   //makeContents
   const makeContents = () => {
     switch (store.menuCode) {
+      case 'alert': //------------------------레이어팝업(alert & system)
+        return <Alert />
       case 'guide-responsive':
         return <GuideResponsive />
       case 'style-button':
@@ -31,7 +35,7 @@ export default props => {
       case 'style-chatTest':
         return <StyleChat />
       default:
-        return <StyleWebRtcTest />
+        return <Alert />
     }
   }
   //---------------------------------------------------------------------

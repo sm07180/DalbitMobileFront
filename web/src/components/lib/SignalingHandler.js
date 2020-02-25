@@ -46,6 +46,12 @@ export default class SignalingHandler {
       await this.setAudioStream()
     }
   }
+  setPublishToken(token) {
+    this.publishToken = token
+  }
+  setPlayToken(token) {
+    this.playToken = token
+  }
   setStreamId(id) {
     this.streamId = id
   }
@@ -141,7 +147,7 @@ export default class SignalingHandler {
     const cmd = {
       command: 'publish',
       streamId: this.streamId,
-      token: this.token,
+      token: this.publishToken,
       audio: this.audioStream.getAudioTracks().length > 0 ? true : false,
       video: false
     }
@@ -158,7 +164,7 @@ export default class SignalingHandler {
     const cmd = {
       command: 'play',
       streamId: this.streamId,
-      token: this.token,
+      token: this.playToken,
       room: this.room
     }
     this.socketSendMsg(cmd)

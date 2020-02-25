@@ -136,7 +136,7 @@ const DJList = styled.div`
     height: 36px;
     margin-left: 10px;
     color: #fff;
-    line-height: 36px;
+    line-height: 40px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;
@@ -146,7 +146,7 @@ const DJList = styled.div`
     height: 36px;
     margin-left: 12px;
     color: #fff;
-    line-height: 36px;
+    line-height: 40px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;

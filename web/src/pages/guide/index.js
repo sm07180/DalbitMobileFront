@@ -14,85 +14,10 @@ import Guide from './layout'
 //context
 import {Context} from 'context'
 
-import {getAudioStream} from 'components/lib/getStream'
-
-function TempBroad() {
-  const context = useContext(Context)
-  const {mediaHandler} = context
-  const {streamId} = useParams()
-  const [publishStatus, setPublishStatus] = useState(false)
-
-  const startPlayer = () => {
-    setPublishStatus(true)
-  }
-  const stopPlayer = () => {
-    setPublishStatus(false)
-  }
-
-  useEffect(() => {
-    if (mediaHandler) {
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-      mediaHandler.setType('host')
-      mediaHandler.setStreamId(streamId)
-      ;(async () => {
-        const audioStream = await getAudioStream()
-        mediaHandler.setAudioStream(audioStream)
-      })()
-    }
-
-    return () => {
-      if (mediaHandler) {
-        mediaHandler.resetLocalCallback()
-      }
-    }
-  }, [mediaHandler])
-
-  return (
-    <div>
-      <div>Stream ID : {streamId}</div>
-      <div>
-        <button
-          style={{
-            width: '100px',
-            height: '50px',
-            color: 'white',
-            cursor: 'pointer',
-            backgroundColor: publishStatus ? 'red' : 'blue'
-          }}
-          onClick={() => {
-            if (!streamId) {
-              return alert('Need a stream id')
-            }
-            if (!mediaHandler.audioStream) {
-              return alert('Need a audio sream and stereo mix')
-            }
-
-            if (mediaHandler && !mediaHandler.rtcPeerConn) {
-              mediaHandler.publish()
-              startPlayer()
-            } else if (mediaHandler && mediaHandler.rtcPeerConn) {
-              mediaHandler.stop()
-              stopPlayer()
-            }
-          }}>
-          {publishStatus ? 'Stop' : 'Publish'}
-        </button>
-      </div>
-    </div>
-  )
-}
-
 export default props => {
   return (
-    <Layout {...props}>
-      <div>temp broadcast</div>
-
-      <Switch>
-        <Route exact path={`${props.match.path}/:streamId`} component={TempBroad} />
-      </Switch>
-
-      {/* <Contents /> */}
-    </Layout>
+    <Guide {...props}>
+      <Contents />
+    </Guide>
   )
 }

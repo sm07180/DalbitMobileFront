@@ -13,85 +13,9 @@ import Api from 'context/api'
 
 export default props => {
   const context = useContext(Context)
-  const {mediaHandler} = context
-  const [playStatus, setPlayStatus] = useState(false)
-
-  const audioReference = useRef()
-  const {location} = props.history
-
-  const startPlayer = () => {
-    setPlayStatus(true)
-  }
-  const stopPlayer = () => {
-    setPlayStatus(false)
-  }
-
-  useEffect(() => {
-    if (location.state && mediaHandler) {
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-      mediaHandler.setType('listener')
-      mediaHandler.setAudioTag(audioReference.current)
-      mediaHandler.setStreamId(location.state.bjStreamId)
-    }
-
-    return () => {
-      if (mediaHandler) {
-        mediaHandler.resetLocalCallback()
-      }
-    }
-  }, [mediaHandler])
-
   return (
     <Layout {...props}>
-      <Content>
-        <div>
-          <audio ref={audioReference} autoPlay controls></audio>
-        </div>
-
-        <div>streamId: {location.state && location.state.bjStreamId}</div>
-
-        {!playStatus && (
-          <div>
-            <button
-              style={{
-                width: '100px',
-                height: '50px',
-                color: 'white',
-                cursor: 'pointer',
-                backgroundColor: 'blue'
-              }}
-              onClick={() => {
-                if (!location.state || !location.state.bjStreamId) {
-                  return alert('Need a stream id')
-                }
-                if (audioReference && mediaHandler && !mediaHandler.rtcPeerConn) {
-                  const status = mediaHandler.play()
-                  if (status) {
-                    startPlayer()
-                  }
-                }
-              }}>
-              play
-            </button>
-          </div>
-        )}
-
-        {playStatus && (
-          <div>
-            <button
-              style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
-              onClick={() => {
-                if (audioReference && mediaHandler && mediaHandler.rtcPeerConn) {
-                  mediaHandler.stop()
-                  stopPlayer()
-                }
-              }}>
-              stop
-            </button>
-          </div>
-        )}
-      </Content>
+      <Content></Content>
     </Layout>
   )
 }

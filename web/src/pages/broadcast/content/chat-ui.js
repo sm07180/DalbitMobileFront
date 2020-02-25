@@ -8,32 +8,15 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 const sc = require('context/socketCluster')
 
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 
-export const getTest = data => {
-  //console.log(JSON.stringify(data))
-  const resulte = (
-    <Message key={0}>
-      <figure></figure>
-      <div>
-        <p>{data.event}</p>
-        <pre>{data.event}</pre>
-      </div>
-    </Message>
-  )
-  //return data
-  //console.log('메세지 날려라')
-
-  //setComments([comments, resulte])
-}
-
 export default props => {
   //---------------------------------------------------------------------
-  //context
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([])
@@ -46,36 +29,18 @@ export default props => {
 
   //---------------------------------------------------------------------
   //function
-  //Sconst wrap =
-
-  //채팅 입력시(input KeyPress)
-  const handleCommentKeyPress = e => {
+  const postMessageChange = e => {
+    //context
     if (e.target.value && e.key == 'Enter') {
-      //setComments(...comments, e.target.value)
-      const resulte = (
-        <Message key={0}>
-          <figure></figure>
-          <div>
-            <p>닉네임</p>
-            <pre>{e.target.value}</pre>
-          </div>
-        </Message>
-      )
-      //const resulte = `<pre>${e.target.value}</pre>`
-
-      console.log('메세지 날려라')
-      //wrap.current.append(resulte)
-
-      setComments([comments, resulte])
-      sc.SendMessageChat({...props.location.state, msg: e.target.value})
-      // objSendInfo.roomNo = props.location.state.roomNo
-      // objSendInfo.message = e.target.value
-
-      //sc.SendMessageChat(props)
-      e.target.value = ''
+      if (context.token.isLogin) {
+        sc.SendMessageChat({...props.location.state, msg: e.target.value})
+        e.target.value = ''
+      } else {
+        e.target.value = ''
+        alert('비회원은 채팅에 참여 하실수 없습니다.')
+      }
     }
   }
-
   //채팅창 마우스 휠 작동시
   const handleOnWheel = () => {
     setCheckMove(true)
@@ -90,22 +55,36 @@ export default props => {
     }
   }
 
-  // document.addEventListener('socket-receiveMessageData', scRecvData => {
-  //   console.log(scRecvData.detail.data.data.msg)
-  //   // const resulte = (
-  //   //   <Message key={0}>
-  //   //     <figure></figure>
-  //   //     <div>
-  //   //       <p>{scRecvData.detail.data.data.user.nk}</p>
-  //   //       <pre>{scRecvData.detail.data.data.msg}</pre>
-  //   //     </div>
-  //   //   </Message>
-  //   // )
-  //   // setComments([comments, resulte])
-  // })
+  let msgData = []
+  const getRecvData = data => {
+    //console.log(data)
+    msgData = msgData.concat(data)
+
+    const resulte = msgData.map((item, index) => {
+      return (
+        <Message key={index}>
+          <figure></figure>
+          <div>
+            <p>닉네임</p>
+            <pre>{item.detail.data.data.msg}</pre>
+          </div>
+        </Message>
+      )
+    })
+
+    //console.log('메세지 날려라')
+
+    setComments(resulte)
+  }
+
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const res = document.addEventListener('socketSendData', data => {
+      getRecvData(data)
+      return () => document.removeEventListener('socketSendData')
+    })
+  }, [])
 
   //useEffect(() => {}, [comments])
 
@@ -116,12 +95,10 @@ export default props => {
       <InfoContainer {...roomInfo} />
       <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-          {/* <div ref={wrap}></div> */}
           {comments}
         </Scrollbars>
       </CommentList>
-      {/* 하단 메시지 입력 영역 */}
-      <InputComment onKeyPress={handleCommentKeyPress} />
+      <InputComment onKeyPress={postMessageChange} />
     </Content>
   )
 }

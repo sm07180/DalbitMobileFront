@@ -1,21 +1,7 @@
 /**
  * @title 라이브탭 방송수정
  */
-// import React, {useState} from 'react'
-// import styled from 'styled-components'
-// import BroadSetting from '../../../broadcast-setting/content'
-// export default props => {
-//------------------------------------------------------------------
-// return <></>
-// }
-//------------------------------------------------------------------
-//styled
-// const Wrap = styled.div`
-//   display: flex;
-//   width: 33.33%;
-//   margin-left: 12px;
-//   align-items: center;
-// `
+
 /**
  * @file 라이브탭 방송수정
  * @brief 방송세팅수정
@@ -32,32 +18,13 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
-//etc
-import getDecibel from 'components/lib/getDecibel.js'
-import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
-
-let audioStream = null
-
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
-  const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
+  const scrollbars = useRef(null) // 스크롤 영역 선택자
   //context
   const context = useContext(Context)
-  //채팅창 마우스 휠 작동시
-  const [checkMove, setCheckMove] = useState(false)
-  const handleOnWheel = () => {
-    setCheckMove(true)
-  }
-  const scrollOnUpdate = e => {
-    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
-    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
-    if (!checkMove) {
-      scrollbars.current.scroll()
-    }
-  }
-
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
@@ -68,7 +35,6 @@ export default props => {
     bgImg: roomInfo.bgImg.url,
     title: ''
   })
-
   //update
   function update(mode) {
     // console.log('---')
@@ -78,6 +44,16 @@ export default props => {
         break
     }
   }
+  //방송수정 마우스 스크롤
+  const [checkMove, setCheckMove] = useState(false)
+  const handleOnWheel = () => {
+    setCheckMove(true)
+  }
+  const scrollOnUpdate = e => {
+    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
+    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
+  }
+
   //makeRadio
   const makeRadio = () => {
     const info = ['모두입장', ' 팬만 입장', '20세이상']
@@ -228,7 +204,7 @@ export default props => {
       }
     }
   }
-
+  //-------------------------------------------------------------------------
   /*
    *
    * @returns
@@ -239,26 +215,9 @@ export default props => {
     <>
       <Content>
         <Navi title={'방송설정'} />
-        {/* <Header>
-          <h1>방송설정</h1>
-        </Header> */}
-
-        <Wrap className="scrollbar" onWheel={handleOnWheel} ref={settingArea}>
-          <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
+        <Wrap onWheel={handleOnWheel} ref={settingArea}>
+          <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
             <BroadDetail>
-              {/* <MicCheck>
-              <h2>마이크 연결상태</h2>
-              <VolumeWrap>
-                <MicIcon></MicIcon>
-                <MicVolumeBTN></MicVolumeBTN>
-                <BarWrap>
-                  <MicVolumeONBar
-                    style={{
-                      width: `${audioVolume}%`
-                    }}></MicVolumeONBar>
-                </BarWrap>
-              </VolumeWrap>
-            </MicCheck> */}
               <JoinProhibit>
                 <h2>입장제한</h2>
                 {makeRadio()}
@@ -321,8 +280,6 @@ export default props => {
             </BroadDetail>
           </Scrollbars>
         </Wrap>
-
-        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
   )
@@ -330,22 +287,17 @@ export default props => {
 //---------------------------------------------------------------------
 const Content = styled.div`
   width: 100%;
-`
-const Header = styled.div`
-  width: 100%;
-  height: 110px;
-  & h1 {
-    color: #8556f6;
-    font-size: 34px;
-    font-weight: 800;
-    line-height: 110px;
-    letter-spacing: -0.85px;
-    text-align: center;
+  & .scrollCustom {
+    & > div:nth-child(3) {
+      width: 10px !important;
+      height: auto;
+    }
   }
 `
+
 const Wrap = styled.div`
   width: 100%;
-  overflow-y: scroll;
+
   height: 600px;
 `
 const BroadDetail = styled.div`
@@ -355,55 +307,6 @@ const BroadDetail = styled.div`
     display: block;
     clear: both;
     content: '';
-  }
-`
-const MicCheck = styled.div`
-  width: 100%;
-  & h2 {
-    margin-bottom: 24px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.17;
-    letter-spacing: -0.45px;
-  }
-`
-const VolumeWrap = styled.div`
-  position: relative;
-  width: 100%;
-  height: 36px;
-  margin-bottom: 40px;
-  border-radius: 18px;
-  background-color: #f5f5f5;
-`
-const MicIcon = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #bdbdbd url('http://www.hwangsh.com/img/ic_mic.png') no-repeat center center / cover;
-`
-const MicVolumeBTN = styled.div``
-const BarWrap = styled.div`
-  position: absolute;
-  top: 16px;
-  left: 58.5px;
-  width: 81.47%;
-  height: 4px;
-  border-radius: 50px;
-  background-color: #bdbdbd;
-`
-
-const MicVolumeONBar = styled.div`
-  /* width: ${props => props.volume}%; */
-  width:0%;
-  height: 100%;
-  background-color: #fdad2b;
-  border-radius: 50px;
-  transition: ease-in 0.1s;
-  &.on {
-    width:100%;
   }
 `
 
@@ -669,16 +572,4 @@ const CreateBtn = styled.button`
     background-color: #8556f6;
     cursor: pointer;
   }
-`
-//-------------
-const Pop = styled.button`
-  display: block;
-  width: 100%;
-  background-color: skyblue;
-  color: #fff;
-  font-size: 14px;
-  line-height: 42px;
-  letter-spacing: -0.35px;
-  cursor: pointer;
-  transform: skew(-0.03deg);
 `
