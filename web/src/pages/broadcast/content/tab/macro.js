@@ -27,12 +27,10 @@ const testData = [
 export default props => {
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
-  const [text, setText] = useState()
+  const [shortcut, setShortcut] = useState([])
   //------------------------------------------------------ func start
-  const handleChangeInput = param => {
-    const {value, maxLength, name} = event.target
-  }
 
+  //빠른 말 수정/저장
   async function updateShortcut(param) {
     console.log('param', param)
     const {orderNo, order, text} = param
@@ -46,19 +44,17 @@ export default props => {
       method: 'POST'
     })
     console.log('## res :', res)
-    if (res.result === 'fail') {
-      console.log('## fail')
-    } else {
-      console.log('## success')
-    }
+    if (res.result === 'success') selectShortcut()
   }
 
+  //빠른 말 조회 (TEST)
   async function selectShortcut() {
     const res = await Api.member_broadcast_shortcut({
       method: 'GET'
     })
+
+    if (res.result === 'success') setShortcut(res.data)
     console.log('## res :', res)
-    // setText(res.data)
   }
 
   useEffect(() => {
@@ -71,7 +67,7 @@ export default props => {
       <Navi title={'빠른 말 설정'} />
       {edit ? (
         <EditMain>
-          {testData.map((data, idx) => {
+          {shortcut.map((data, idx) => {
             return <MacroInput data={data} key={idx} _click={updateShortcut} />
           })}
         </EditMain>
@@ -84,7 +80,7 @@ export default props => {
               <div className="contents">내용</div>
             </div>
             <MacroArea>
-              {testData.map((data, idx) => {
+              {shortcut.map((data, idx) => {
                 return (
                   <MacroLoop key={idx}>
                     <div className="key">{data.order}</div>
