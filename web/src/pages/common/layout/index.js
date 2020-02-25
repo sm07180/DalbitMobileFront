@@ -67,7 +67,6 @@ const Layout = props => {
                     height: '36px'
                   }}
                   onClick={() => {
-                    console.log(mediaHandler)
                     if (mediaHandler.rtcPeerConn) {
                       mediaHandler.stop()
                     }
