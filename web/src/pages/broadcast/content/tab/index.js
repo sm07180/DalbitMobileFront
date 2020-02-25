@@ -19,6 +19,7 @@ import Notice from './notice'
 import Story from './story'
 import Macro from './macro'
 import BroadModify from './broad-setting-modify'
+import PresentGiven from './present-given'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -50,6 +51,7 @@ export default props => {
       {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '방송수정' && <BroadModify {...props} />}
       {currentItem.tab === '빠른 말' && <Macro />}
+      {currentItem.tab === '받은선물' && <PresentGiven />}
     </>
   )
 }
@@ -138,6 +140,10 @@ const tabConent = [
   {
     id: 11,
     tab: '빠른 말'
+  },
+  {
+    id: 12,
+    tab: '받은선물'
   }
 ]
 //data------------------------------------------------------------------
