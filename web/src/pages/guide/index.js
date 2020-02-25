@@ -14,8 +14,6 @@ import Guide from './layout'
 //context
 import {Context} from 'context'
 
-import {getAudioStream} from 'components/lib/getStream'
-
 function TempBroad() {
   const context = useContext(Context)
   const {mediaHandler} = context
@@ -28,25 +26,6 @@ function TempBroad() {
   const stopPlayer = () => {
     setPublishStatus(false)
   }
-
-  useEffect(() => {
-    if (mediaHandler) {
-      mediaHandler.setLocalStartCallback(startPlayer)
-      mediaHandler.setLocalStopCallback(stopPlayer)
-      mediaHandler.setType('host')
-      mediaHandler.setStreamId(streamId)
-      ;(async () => {
-        const audioStream = await getAudioStream()
-        mediaHandler.setAudioStream(audioStream)
-      })()
-    }
-
-    return () => {
-      if (mediaHandler) {
-        mediaHandler.resetLocalCallback()
-      }
-    }
-  }, [mediaHandler])
 
   return (
     <div>
