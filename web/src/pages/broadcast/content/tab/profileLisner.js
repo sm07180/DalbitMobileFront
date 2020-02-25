@@ -40,6 +40,7 @@ export default props => {
   return (
     <Container>
       <Navi title={'프로필'} />
+      <button className="reportBtn"></button>
       <div className="imgWrap">
         <PIMG bg={roomInfo.bjProfImg.url} />
       </div>
@@ -65,12 +66,27 @@ export default props => {
           <em>{PInfo.starCnt}</em>
         </div>
       </div>
+      <div className="functionWrap">
+        <div className="managerBtn">
+          <button></button>
+          <p>매니저 해제</p>
+        </div>
+        <div className="KickBtn">
+          <button></button>
+          <p>강퇴하기</p>
+        </div>
+      </div>
+      <div className="submitWrap">
+        <button>+ 팬등록</button>
+        <button>선물하기</button>
+      </div>
     </Container>
   )
 }
 //----------------------------------------
 //styled
 const Container = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   height: 100%;
@@ -79,6 +95,14 @@ const Container = styled.div`
   flex-direction: column;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 360px;
+  }
+  .reportBtn {
+    position: absolute;
+    top: 94px;
+    left: 25px;
+    width: 36px;
+    height: 36px;
+    background: url('https://devimage.dalbitcast.com/images/api/ic_report.png') no-repeat center center / cover;
   }
   .imgWrap {
     position: relative;
@@ -165,6 +189,72 @@ const Container = styled.div`
         letter-spacing: -0.5px;
         transform: skew(-0.03deg);
       }
+    }
+  }
+  .functionWrap {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    & .managerBtn {
+      padding: 8px 0 10px 0;
+      width: 50%;
+      & > button {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin: 0 auto;
+        background: url('https://devimage.dalbitcast.com/images/api/manager.png') no-repeat center center / cover;
+      }
+      & > p {
+        margin-top: 6px;
+        color: #9e9e9e;
+        font-size: 14px;
+        line-height: 1.14;
+        letter-spacing: -0.35px;
+        text-align: center;
+        transform: skew(-0.03deg);
+      }
+    }
+    & .KickBtn {
+      padding: 8px 0 10px 0;
+      width: 50%;
+      & > button {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin: 0 auto;
+        background: url('https://devimage.dalbitcast.com/images/api/ic_forced%20exit.png') no-repeat center center / cover;
+      }
+      & > p {
+        margin-top: 6px;
+        color: #9e9e9e;
+        font-size: 14px;
+        line-height: 1.14;
+        letter-spacing: -0.35px;
+        text-align: center;
+        transform: skew(-0.03deg);
+      }
+    }
+  }
+  & .submitWrap {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+    & button {
+      display: block;
+      width: 50%;
+      padding: 15px 0 15px 0;
+      border-radius: 10px;
+      background-color: #8556f6;
+      color: #fff;
+      font-size: 16px;
+      transform: skew(-0.03deg);
+    }
+    & button:first-child {
+      margin-right: 8px;
+      border: 1px solid #bdbdbd;
+      background-color: #fff;
+      color: #9e9e9e;
     }
   }
 `

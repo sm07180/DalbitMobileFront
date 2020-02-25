@@ -62,14 +62,11 @@ function a11yProps(index) {
 //
 const User = props => {
   //---------------------------------------------------------------------
-  console.log(props.index)
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
   const [value, setValue] = React.useState(props.index ? props.index : 0)
-
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
-
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
@@ -85,11 +82,12 @@ const User = props => {
         <StylesProvider injectFirst>
           <TabsBar position="static">
             <Tabs value={value} onChange={handleChange} aria-label="mypage tabs area">
-              <Tab label="팬보드" {...a11yProps(0)} />
-              <Tab label="내지갑" {...a11yProps(1)} />
-              <Tab label="리포트" {...a11yProps(2)} />
-              <Tab label="팬/스타" {...a11yProps(3)} />
-              <Tab label="설정" {...a11yProps(4)} />
+              <Tab label="공지사항" {...a11yProps(0)} />
+              {/* <Tab label="팬보드" {...a11yProps(1)} /> */}
+              {/* <Tab label="내지갑" {...a11yProps(2)} /> */}
+              {/* <Tab label="리포트" {...a11yProps(3)} /> */}
+              {/* <Tab label="팬/스타" {...a11yProps(4)} /> */}
+              <Tab label="설정" {...a11yProps(5)} />
             </Tabs>
           </TabsBar>
           <TabContentWrap value={value} index={0}>
@@ -139,7 +137,7 @@ const TabsBar = styled(AppBar)`
     margin: 0 auto;
   }
   .MuiTab-root {
-    min-width: 20%;
+    min-width: 16.6666%;
   }
   .MuiTabs-indicator {
     height: 3px;

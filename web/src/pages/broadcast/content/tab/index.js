@@ -13,6 +13,7 @@ import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
 import Profile from './profile'
+import Profile2 from './profileLisner'
 import Boost from './boost'
 import Report from './report'
 import Notice from './notice'
@@ -20,6 +21,8 @@ import Story from './story'
 import Macro from './macro'
 import BroadModify from './broad-setting-modify'
 export default props => {
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  console.log(props)
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -41,10 +44,12 @@ export default props => {
       {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
       {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} {...props} />}
+      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
+      {currentItem.tab === '게스트' && <LiveGuest {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}
-      {currentItem.tab === '프로필' && <Profile Info={Profiledata} {...props} />}
+      {currentItem.tab === '프로필' && <Profile2 Info={Profiledata} {...props} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice />}
       {currentItem.tab === '사연' && <Story />}
