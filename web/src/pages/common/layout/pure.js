@@ -12,6 +12,7 @@ import {HEADER_HEIGHT} from 'context/config'
 import Footer from 'pages/common/footer'
 //layout
 import Popup from 'pages/common/popup'
+import Message from 'pages/common/message'
 //
 const Layout = props => {
   const [show, setShow] = useState(false)
@@ -39,6 +40,8 @@ const Layout = props => {
       <Footer Ftype="loginFooter"></Footer>
       {/* 레이어팝업 */}
       <Popup {...props} />
+      {/* 메시지팝업 */}
+      <Message {...props} />
     </Container>
   )
 }

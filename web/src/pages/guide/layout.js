@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import {GuideProvider} from './store'
 //component
 import Menu from './layout-menu'
+import Message from 'pages/common/message'
 //
 
 const Guide = props => {
@@ -22,6 +23,8 @@ const Guide = props => {
         {/* 컨텐츠영역 */}
         <article>{children}</article>
       </Contents>
+      {/* 메시지가이드 */}
+      <Message />
     </GuideProvider>
   )
 }

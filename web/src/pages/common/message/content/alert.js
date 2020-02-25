@@ -1,5 +1,11 @@
 /**
- *
+ * @file alert.js
+ * @brief alert 기능과 가능 확인버튼1개의 레이어팝업
+ * @use context.action.alert({})
+ * @todo
+ * @param {callback} function          //콜백처리받을 함수명(확인하기 클릭시)
+ * @param {title} string               //상단제목없으면 노출안됨
+ * @param {msg} string(html)           //메시지영역 노출 (html or)
  */
 import React, {useContext} from 'react'
 import styled from 'styled-components'
