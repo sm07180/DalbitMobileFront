@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -35,7 +35,7 @@ module.exports = (env, options) => {
           use: [
             {
               loader: 'html-loader',
-              options: {minimize: true}
+              options: {minimize: false}
             }
           ]
         },
@@ -73,15 +73,6 @@ module.exports = (env, options) => {
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
-      // alias: {
-      //   Context: path.resolve(__dirname, 'src/context/'),
-      //   Pages: path.resolve(__dirname, 'src/pages/'),
-      //   App: path.resolve(__dirname, 'src/pages/app/'),
-      //   Contents: path.resolve(__dirname, 'src/contents/'),
-      //   Styles: path.resolve(__dirname, 'src/styles/'),
-      //   Components: path.resolve(__dirname, 'src/components/'),
-      //   '@': path.resolve(__dirname, 'src/')
-      // }
     }
   }
   if (options.mode === 'development') {
@@ -109,13 +100,15 @@ module.exports = (env, options) => {
       }),
       new MiniCssExtractPlugin({
         filename: 'style.css'
-      })
+      }),
+      new CopyWebpackPlugin([{from: './public/static'}])
     ]
   } else {
     config.plugins = [
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
-      })
+      }),
+      new CopyWebpackPlugin([{from: './public/static'}])
     ]
   }
 
