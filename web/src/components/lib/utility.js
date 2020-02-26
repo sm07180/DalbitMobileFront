@@ -122,9 +122,13 @@ export default class Utility {
     }
     return _map
   }
-  //* 휴대폰번호 010-3456-1234 형태로 "-"추가 3자리 4자리가능
+  //* 휴대폰번호 010-3456-1234 형태로 "-"추가 3자리 4자리가능, 전체 11자리를 한꺼번에 입력받아 리턴할 경우 사용.
   static phoneAddHypen = string => {
-    if (typeof string === 'string' && string !== null && string !== '') return string.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3')
+    if (typeof string === 'string' && string !== null && string !== '')
+      return string
+        .replace(/[^0-9]/g, '')
+        .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/, '$1-$2-$3')
+        .replace('--', '-')
   }
   //* 자리수맞추기
   static digitNumber = (n, width) => {
