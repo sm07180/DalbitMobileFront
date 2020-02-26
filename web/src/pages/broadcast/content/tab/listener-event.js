@@ -5,16 +5,17 @@ import React, {useEffect, useState} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 export default props => {
+  const {onClick} = props
   //--------------------------------------------------------
   return (
     <Event>
       <ul>
-        <button>강제퇴장</button>
-        <button>매니저 등록</button>
-        <button>매니저 해임</button>
-        <button>게스트 초대</button>
-        <button>프로필 보기</button>
-        <button>신고하기</button>
+        <button onClick={onClick}>강제퇴장</button>
+        <button onClick={onClick}>매니저 등록</button>
+        <button onClick={onClick}>매니저 해임</button>
+        <button onClick={onClick}>게스트 초대</button>
+        <button onClick={onClick}>프로필 보기</button>
+        <button onClick={onClick}>신고하기</button>
       </ul>
     </Event>
   )

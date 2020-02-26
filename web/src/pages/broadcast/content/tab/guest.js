@@ -1,29 +1,28 @@
 /**
  * @title 탭 guest
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
-
 //components----------------------------------------------------
-import CancelEvent from './guest-cancel-event'
 import RequestEvent from './guest-request-event'
-
+import {Scrollbars} from 'react-custom-scrollbars'
+import {BroadCastStore} from '../../store'
+import EventBtnRequest from './guest-btn-request'
+import EventBtnInvite from './guest-btn-invite'
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
   //------------------------------------------------------------------
-  //0.매니저정보..배열 호출 state-------------------------------------
-  //1.청취자정보..배열 호출 state-------------------------------------
-  //2.게스트정보..배열 호출 state-------------------------------------
-  //3.버튼 visibility 체크----------------------------------------
-
-  const [ManagerInfo, setManagerInfo] = useState([])
-  const [ListenInfo, setListenInfo] = useState([])
+  //0.게스트정보..배열 호출 state-------------------------------------
+  //1.초대정보..배열 호출 state-------------------------------------
+  //2.신청정보..배열 호출 state-------------------------------------
+  //3.버튼 visibility 체크----------------------------------------현재 가데이터입니다 STORE에 저장해두셧으니 게스트는 붙이실떄 임포트하시면됩니다.
   const [GuestInfo, setGuestInfo] = useState(props.Info3)
+  const [InviteInfo, setInviteInfo] = useState(props.Info)
+  const [RequestInfo, setRequestInfo] = useState(props.Info2)
   const [BTNcheck, setBTNcheck] = useState(false)
-
   //visibility btn function----------------------------------------------
   const ToggleGuest = () => {
     if (BTNcheck === false) {
@@ -36,82 +35,75 @@ export default props => {
   const AllFalse = () => {
     setBTNcheck(false)
   }
-  //매니저map----------------------------------------------
-  const Managermap = ManagerInfo.map((live, index) => {
+  // 마우스 스크롤
+  const settingArea = useRef(null) //세팅 스크롤 영역 선택자
+  const scrollbars = useRef(null) // 스크롤 영역 선택자
+  const [checkMove, setCheckMove] = useState(false)
+  const handleOnWheel = () => {
+    setCheckMove(true)
+  }
+  const scrollOnUpdate = e => {
+    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
+    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
+  }
+  //초대맵----------------------------------------------
+  const InviteMap = InviteInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
-    const [checkVisibility, SetcheckVisibility] = useState(false)
-    //function
-    const ToggleEvent = () => {
-      if (checkVisibility === false) {
-        SetcheckVisibility(true)
-      } else {
-        SetcheckVisibility(false)
-      }
-    }
-    const AllFalse = () => {
-      SetcheckVisibility(false)
-    }
+
     //-------------------------------------------------------
     return (
-      <ManagerList key={index}>
-        <ManagerImg bg={url} />
+      <InviteList key={index}>
+        <ImgArea bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <CANCELBTN value={checkVisibility} onClick={ToggleEvent}></CANCELBTN>
-        {checkVisibility && <CancelEvent value={bjNickNm} onClick={AllFalse} />}
-        <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} />
-      </ManagerList>
+        <div className="btnwrap">
+          <EventBtnInvite />
+        </div>
+      </InviteList>
     )
   })
-  //리스너map----------------------------------------------
-  const Listenmap = ListenInfo.map((live, index) => {
+  //요청맵----------------------------------------------
+  const RequestMap = RequestInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
-    const [checkVisibility, SetcheckVisibility] = useState(false)
     //클릭 이벤트
-    const ToggleEvent = () => {
-      if (checkVisibility === false) {
-        SetcheckVisibility(true)
-      } else {
-        SetcheckVisibility(false)
-      }
-    }
-    const AllFalse = () => {
-      SetcheckVisibility(false)
-    }
     //-------------------------------------------------------
     return (
-      <ListenList key={index}>
-        <ManagerImg bg={url} />
+      <RequestList key={index}>
+        <ImgArea bg={url} />
         <StreamID>{bjMemNo}</StreamID>
         <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={checkVisibility} onClick={ToggleEvent}></EVENTBTN>
-        {checkVisibility && <RequestEvent />}
-        <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} />
-      </ListenList>
+        <div className="btnwrap">
+          <EventBtnRequest />
+        </div>
+      </RequestList>
     )
   })
   //render-------------------------------------------------------
   return (
     <>
-      <Wrapper>
-        <LiveWrap>
-          <Title>방송 참여 중 게스트</Title>
-          <DJList>
-            <ManagerImg bg={GuestInfo.url} />
-            <h5>{GuestInfo.bjNickNm}</h5>
-            <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
-            {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
-            <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} />
-          </DJList>
-        </LiveWrap>
-        <LiveWrap>
-          <Title>초대한 게스트</Title>
-          {Managermap}
-        </LiveWrap>
-        <LiveWrap>
-          <Title>게스트 요청 청취자</Title>
-          <ListenWrap className="scrollbar">{Listenmap}</ListenWrap>
-        </LiveWrap>
+      <Wrapper onWheel={handleOnWheel} ref={settingArea}>
+        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+          <GuestWrap>
+            <Title>방송 참여 중 게스트</Title>
+            <DJList>
+              <ImgArea bg={GuestInfo.url} />
+              <h5>{GuestInfo.bjNickNm}</h5>
+              <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
+              {/* {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
+              임시로 백그라운트 클릭이나 소규모 팝업생성했었는데 컨텍스트 레이어팝업 확정된거같아 이벤트 뺴놓습니다
+              (이벤트 주는 구조정도 참고 하시면 될거같습니다.)
+              <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} /> */}
+            </DJList>
+          </GuestWrap>
+          <GuestWrap>
+            <Title>초대한 게스트</Title>
+            {InviteMap}
+          </GuestWrap>
+          <GuestWrap>
+            <Title>게스트 요청 청취자</Title>
+            <ListenWrap>{RequestMap}</ListenWrap>
+          </GuestWrap>
+        </Scrollbars>
       </Wrapper>
     </>
   )
@@ -119,9 +111,21 @@ export default props => {
 //-----------------------------------style
 const Wrapper = styled.div`
   margin-top: 20px;
+  height: calc(100% - 160px);
+  & .scrollCustom {
+    & > div:nth-child(3) {
+      width: 10px !important;
+    }
+  }
 `
-const LiveWrap = styled.div`
+const GuestWrap = styled.div`
   margin-bottom: 20px;
+  & .btnwrap {
+    position: absolute;
+    right: 0;
+    width: 36px;
+    height: 36px;
+  }
 `
 const DJList = styled.div`
   position: relative;
@@ -153,7 +157,7 @@ const DJList = styled.div`
     transform: skew(-0.03deg);
   }
 `
-const ManagerList = styled.div`
+const InviteList = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -162,7 +166,7 @@ const ManagerList = styled.div`
   border: 1px solid #8555f6;
   border-radius: 24px;
 `
-const ManagerImg = styled.div`
+const ImgArea = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -202,17 +206,14 @@ const NickName = styled.h4`
 `
 const ListenWrap = styled.div`
   z-index: 4;
-  overflow-y: scroll;
-  max-height: 420px;
-  overflow-x: hidden;
   & > div:nth-last-child(-n + 4) {
     div {
       bottom: 0;
     }
   }
 `
-const ListenList = styled.div`
-  width: calc(100% + 10px);
+const RequestList = styled.div`
+  width: 100%;
   position: relative;
   display: flex;
   padding: 4px;
@@ -221,28 +222,7 @@ const ListenList = styled.div`
   border-radius: 24px;
   background-color: #fff;
 `
-//이벤트버튼
-const EVENTBTN = styled.button`
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  width: 36px;
-  height: 36px;
-  transform: translateY(-50%);
-  background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
-  outline: none;
-`
 
-const CANCELBTN = styled.button`
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  transform: translateY(-50%);
-  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
-  outline: none;
-`
 const CancelEventGuest = styled.button`
   position: absolute;
   right: 16px;
@@ -252,20 +232,4 @@ const CancelEventGuest = styled.button`
   transform: translateY(-50%);
   background: url('https://devimage.dalbitcast.com/images/api/ic_close_round2.png') no-repeat center center / cover;
   outline: none;
-`
-
-//클릭 배경 가상요소
-const BackGround = styled.div`
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
-  background-color: transparent;
-  &.on {
-    display: block;
-    z-index: 2;
-  }
 `
