@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -36,7 +36,7 @@ module.exports = (env, options) => {
           use: [
             {
               loader: 'html-loader',
-              options: {minimize: true}
+              options: {minimize: false}
             }
           ]
         },
@@ -106,7 +106,8 @@ module.exports = (env, options) => {
       }),
       new MiniCssExtractPlugin({
         filename: 'style.css'
-      })
+      }),
+      new CopyWebpackPlugin([{from: './public/static'}])
     ]
   } else {
     config.devServer = {
@@ -132,7 +133,8 @@ module.exports = (env, options) => {
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
         title: 'Production',
         showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
-      })
+      }),
+      new CopyWebpackPlugin([{from: './public/static'}])
     ]
   }
 

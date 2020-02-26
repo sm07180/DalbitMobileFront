@@ -1,26 +1,28 @@
 /**
  * @title 청취자
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
 //components--------------------------------------------------
 import Events from './listener-event'
+import EventBTNS from './listen-eventBTN'
+import {Scrollbars} from 'react-custom-scrollbars'
+import {BroadCastStore} from '../../store'
 export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
+  const store = useContext(BroadCastStore) //store
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
-  //1.청취자정보 info스테이트----------------------------------------
+  //1.백그라운드 비지빌리티----------------------------------------
   //2.비제이정보 info스테이트----------------------------------------
   const [ManagerInfo, setManagerInfo] = useState([])
-  const [ListenInfo, setListenInfo] = useState(null)
   const [trues, setTrues] = useState(false)
-  const [listenTrues, setListenTrues] = useState(false)
-
   const [BJInfo, setBJInfo] = useState(props.Info3)
-
+  //---------------------------------------------------------------
+  //api
   const fetchListenList = async () => {
     const {roomNo} = props.location.state
     const res = await API.broad_listeners({
@@ -28,15 +30,26 @@ export default props => {
     })
     if (res.result === 'success') {
       const {list} = res.data
-      setListenInfo(list)
+      store.action.updateListenerList(list)
     }
     return
   }
-
-  //메니저 info맵----------------------------------------------------
+  //---------------------------------------------------------------
+  // 마우스 스크롤
+  const settingArea = useRef(null) //세팅 스크롤 영역 선택자
+  const scrollbars = useRef(null) // 스크롤 영역 선택자
+  const [checkMove, setCheckMove] = useState(false)
+  const handleOnWheel = () => {
+    setCheckMove(true)
+  }
+  const scrollOnUpdate = e => {
+    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
+    settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
+  }
+  //메니저 info맵-----------------------
+  //-----------------------------
   const Managermap = ManagerInfo.map((live, index) => {
     const {bjNickNm, bjMemNo, url} = live
-
     //클릭visibility function
     const ToggleEvent = () => {
       if (trues === false) {
@@ -62,63 +75,51 @@ export default props => {
     )
   })
   //----------------------------------------------------------------
-
+  //리스너 인포맵
   const drawListenList = () => {
-    if (ListenInfo === null) return
-    return ListenInfo.map((live, index) => {
+    if (store.listenerList === null) return
+    return store.listenerList.map((live, index) => {
       const {nickNm, memNo, profImg} = live
       const {thumb62x62} = profImg
-
-      //클릭 이벤트
-      const ToggleEvent = () => {
-        // if (listenTrues === false) {
-        //   setListenTrues(true)
-        // } else {
-        //   setListenTrues(false)
-        // }
-      }
-      const AllFalse = () => {
-        // setListenTrues(false)
-      }
       //----------------------------------------------------------------
       return (
         <ListenList key={index}>
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
-          <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
-          {listenTrues && <Events />}
-          <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
+          <div className="btnwrap">
+            <EventBTNS />
+          </div>
         </ListenList>
       )
     })
   }
-
-  //render------------------------------------------------------------
-
+  //-------------------------------------------------------------------------
   useEffect(() => {
     fetchListenList()
   }, [])
-
+  //render--------------------------------------------------------------------
   return (
     <>
-      <Wrapper>
-        <LiveWrap>
-          <Title>방송 DJ</Title>
-          <DJList>
-            <ManagerImg bg={BJInfo.url} />
-            <h2>{BJInfo.bjMemNo}</h2>
-            <h5>{BJInfo.bjNickNm}</h5>
-          </DJList>
-        </LiveWrap>
-        <LiveWrap>
-          <Title>방송 매니저</Title>
-          {Managermap}
-        </LiveWrap>
-        <LiveWrap>
-          <Title>청취자</Title>
-          <ListenWrap className="scrollbar">{drawListenList()}</ListenWrap>
-        </LiveWrap>
+      <Wrapper onWheel={handleOnWheel} ref={settingArea}>
+        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+          <LiveWrap>
+            <Title>방송 DJ</Title>
+            <DJList>
+              <ManagerImg bg={BJInfo.url} />
+              <h2>{BJInfo.bjMemNo}</h2>
+              <h5>{BJInfo.bjNickNm}</h5>
+            </DJList>
+          </LiveWrap>
+          <LiveWrap>
+            <Title>방송 매니저</Title>
+            {Managermap}
+          </LiveWrap>
+          <LiveWrap>
+            <Title>청취자</Title>
+            <ListenWrap>{drawListenList()}</ListenWrap>
+          </LiveWrap>
+        </Scrollbars>
       </Wrapper>
     </>
   )
@@ -126,7 +127,19 @@ export default props => {
 //----------------------------------------------------------------
 //style
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* 차후 탭 제거시 고정높이값 변경되어야함 */
+  height: calc(100% - 160px);
   margin-top: 20px;
+  & > div:last-child {
+    height: 100%;
+  }
+  & .scrollCustom {
+    & > div:nth-child(3) {
+      width: 10px !important;
+    }
+  }
 `
 const LiveWrap = styled.div`
   margin-bottom: 20px;
@@ -229,18 +242,22 @@ const NickName = styled.h4`
 `
 const ListenWrap = styled.div`
   z-index: 4;
-  overflow-y: scroll;
-  max-height: 420px;
-  overflow-x: hidden;
+
   & > div:nth-last-child(-n + 4) {
     div {
       bottom: 0;
     }
   }
+  & > div:first-child {
+    div {
+      /* max-height: 100% !important; */
+      bottom: auto !important;
+    }
+  }
 `
 
 const ListenList = styled.div`
-  width: calc(100% + 10px);
+  width: 100%;
   position: relative;
   display: flex;
   padding: 4px;
@@ -248,6 +265,12 @@ const ListenList = styled.div`
   border: 1px solid #f5f5f5;
   border-radius: 24px;
   background-color: #fff;
+  & .btnwrap {
+    position: absolute;
+    right: 0;
+    width: 36px;
+    height: 36px;
+  }
 `
 //이벤트버튼
 const EVENTBTN = styled.button`

@@ -23,7 +23,7 @@ import BroadModify from './broad-setting-modify'
 import PresentGiven from './present-given'
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
-  console.log(props)
+  //console.log(props)
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -42,11 +42,9 @@ export default props => {
         ))}
       </Tab>
       {/* 탭컨텐츠영역 */}
-      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
-      {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
+      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info3={BJInfo} />}
+      {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} {...props} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} {...props} />}
-      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={BJInfo} />}
-      {currentItem.tab === '게스트' && <LiveGuest {...props} Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} />}
       {currentItem.tab === '충전' && <Charge />}
       {currentItem.tab === '선물' && <Present />}
       {currentItem.tab === '부스트' && <Boost />}

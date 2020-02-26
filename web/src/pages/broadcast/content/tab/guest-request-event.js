@@ -5,12 +5,13 @@ import React, {useEffect, useState} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 export default props => {
+  const {onClick} = props
   //-------------------------------------------------------------
   return (
     <Event>
       <ul>
-        <button>초대하기</button>
-        <button>거절하기</button>
+        <button onClick={onClick}>초대하기</button>
+        <button onClick={onClick}>거절하기</button>
       </ul>
     </Event>
   )
