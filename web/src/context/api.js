@@ -653,6 +653,13 @@ export default class API {
     return await ajax({...obj, url: url || '/broad/history', method: method || 'GET', params: params})
   }
 
+  /**
+   * @brief 공통정보 조회하기
+   * @create 최우정 2020.02.26
+   */
+  static splash = async obj => {
+    return await ajax({url: '/splash', method: 'GET'})
+  }
   //-------------------------------------------------------------
 }
 
