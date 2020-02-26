@@ -25,7 +25,7 @@ const LButton = props => {
 
 const Button = styled.button`
   width: ${props => (props.width ? props.width.toString() + 'px' : '48%')};
-  height: ${props => (props.height ? props.height.toString() + 'px' : '5vh')};
+  height: ${props => (props.height ? props.height.toString() + 'px' : '48px')};
   background-color: ${props => (props.background ? props.background : '#fff')};
   border-radius: 10px;
   border-width: 1px;
@@ -41,7 +41,7 @@ const Button = styled.button`
 const LongButton = styled.button`
   display: flex;
   width: 100%;
-  height: 5.5vh;
+  height: 48px;
   background: ${props => (props.background ? props.background : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
