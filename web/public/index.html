@@ -7,16 +7,16 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css" />
     <title>INFOREX-FRONTEND</title>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+    <!-- <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script> -->
     <script>
-      var naverLogin = new naver.LoginWithNaverId({
-        clientId: 'WK0ohRsfYc9aBhZkyApJ',
-        callbackUrl: 'https://devm-hgkim1118.dalbitcast.com',
-        isPopup: false,
-        loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
-        callbackHandle: false
-        /* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
-      })
+      // var naverLogin = new naver.LoginWithNaverId({
+      //   clientId: 'WK0ohRsfYc9aBhZkyApJ',
+      //   callbackUrl: 'https://devm-hgkim1118.dalbitcast.com',
+      //   isPopup: false,
+      //   loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
+      //   callbackHandle: false
+      //   /* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
+      // })
 
       /* (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 */
       //naverLogin.init()
@@ -38,6 +38,29 @@
     </script>
   </head>
   <body>
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+           https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyD5rY6sPsRqvlTb7jtEzO32vOHu-lbdDrs',
+        authDomain: 'dalbitcast-1a445.firebaseapp.com',
+        databaseURL: 'https://dalbitcast-1a445.firebaseio.com',
+        projectId: 'dalbitcast-1a445',
+        storageBucket: 'dalbitcast-1a445.appspot.com',
+        messagingSenderId: '76445230270',
+        appId: '1:76445230270:web:7cbe088acdddba78a3aaef',
+        measurementId: 'G-GY6SLG0J86'
+      }
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+      firebase.analytics()
+    </script>
+
     <!-- 
     APP->REACT로 초기 랜더링시 전달해주는값     
     @notice  <div id="root"></div> 앞에 전달되어야함
