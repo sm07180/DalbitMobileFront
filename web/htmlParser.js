@@ -27,10 +27,9 @@ clientBodyOriginalChildNodes.forEach(node => {
   clientBody.appendChild(node)
 })
 
-const strFinalTemplate = clientRoot.toString()
+let strFinalTemplate = clientRoot.toString()
 const defaultJSPInitString = `<%@ page contentType="text/html;charset=UTF-8" language="java" %>\n`
-const defaultIPChekcer = `
-<%
+const defaultIPChekcer = `<%
   String serverIp = "";
   try {
       java.net.InetAddress ip = java.net.InetAddress.getLocalHost();
@@ -39,7 +38,15 @@ const defaultIPChekcer = `
   if(!com.dalbit.util.DalbitUtil.isEmpty(serverIp)){
 %><meta name="viewport2" content="<%=serverIp.substring(serverIp.length() - 1)%>" /><%
   }
-%>
-`
+%>`
+const headTagIndex = strFinalTemplate.indexOf('<head>')
+const splitedFront = strFinalTemplate.slice(0, headTagIndex)
+const splitedBack = strFinalTemplate.slice(headTagIndex + 6)
+// console.log(splitedBack)
+// console.log(splitedFront)
+// console.log(headTagIndex)
+
+strFinalTemplate = splitedFront + defaultIPChekcer + splitedBack
+
 fs.writeFileSync('./dist/layout.jsp', defaultJSPInitString)
 fs.appendFileSync('./dist/layout.jsp', strFinalTemplate)
