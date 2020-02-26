@@ -350,6 +350,7 @@ export default props => {
         </div>
       </ButtonArea>
 
+      {/* 현재 소셜로그인쪽 display:none; */}
       <SocialLogin>
         <FacebookLogin
           appId="2711342585755275"
@@ -447,9 +448,12 @@ const LoginSubmit = styled.button`
 
 const ButtonArea = styled.div`
   margin-top: 20px;
+  padding-bottom: 10px;
   label {
     padding-left: 5px;
-    color: #555;
+    color: #757575;
+    line-height: 24px;
+    vertical-align: top;
   }
   div {
     float: right;
@@ -465,9 +469,24 @@ const ButtonArea = styled.div`
       content: '';
     }
   }
+  input[type='checkbox'] {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin: 0 8px 0 0;
+    appearance: none;
+    border: none;
+    outline: none;
+    /* cursor: pointer; */
+    background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
+    &:checked {
+      background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+    }
+  }
 `
 
 const SocialLogin = styled.div`
+  display: none;
   margin: 30px 0 0 0;
   div {
     float: left;
