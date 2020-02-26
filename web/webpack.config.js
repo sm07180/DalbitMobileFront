@@ -13,7 +13,7 @@ module.exports = (env, options) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/dist/',
-      filename: 'bundle.js', //2020-02-03 [kimhogyeom] 나중에 배포할때는 hash 적용해서 해야 할듯
+      filename: '[name].[hash].js',
       chunkFilename: '[name].[chunkhash].js'
     },
     module: {
@@ -107,6 +107,9 @@ module.exports = (env, options) => {
       }),
       new MiniCssExtractPlugin({
         filename: 'style.css'
+      }),
+      new CleanWebpackPlugin({
+        cleanAfterEveryBuildPatterns: ['./dist']
       }),
       new CopyWebpackPlugin([{from: './public/static'}])
     ]
