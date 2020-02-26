@@ -649,9 +649,10 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
 export const receiveMessageData = recvData => {
   console.log('서버로 부터 받은 데이터 = ' + recvData)
   //ts.props.getTest(recvData)
-
-  const destroyEvent = new CustomEvent('socketSendData', {detail: recvData})
-  document.dispatchEvent(destroyEvent)
+  if (recvData && recvData.data.channel !== 'channel.public.dalbit') {
+    const destroyEvent = new CustomEvent('socketSendData', {detail: recvData.data})
+    document.dispatchEvent(destroyEvent)
+  }
 }
 export const socketClusterBinding = (channel, Info) => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)

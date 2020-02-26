@@ -4,8 +4,7 @@
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import Player from './webRtc/player'
-import Broad from './webRtc/broad'
+
 export default () => {
   const [show, setShow] = useState(false)
   const [show2, setShow2] = useState(false)
@@ -32,8 +31,6 @@ export default () => {
       <Content>
         <Btn onClick={() => operation()}>방송듣기</Btn>
         <Btn onClick={() => operation2()}>방송하기</Btn>
-        {show ? <Player /> : null}
-        {show2 ? <Broad /> : null}
       </Content>
     </>
   )
