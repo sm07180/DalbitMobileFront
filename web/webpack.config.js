@@ -108,11 +108,15 @@ module.exports = (env, options) => {
       new MiniCssExtractPlugin({
         filename: 'style.css'
       }),
-      new CleanWebpackPlugin({
-        cleanAfterEveryBuildPatterns: ['./dist']
-      }),
       new CopyWebpackPlugin([{from: './public/static'}])
     ]
+
+    config.output = {
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: '/dist/',
+      filename: 'bundle.js',
+      chunkFilename: 'bundle.js'
+    }
   } else {
     config.devServer = {
       hot: true,
