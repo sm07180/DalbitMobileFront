@@ -31,7 +31,15 @@ export default props => {
       const _title = info[idx].title
       const _url = info[idx].url
       return (
-        <NavLink title={_title} key={idx} to={_url} exact activeClassName="on" onClick={event => {}}>
+        <NavLink
+          title={_title}
+          key={idx}
+          to={_url}
+          exact
+          activeClassName="on"
+          onClick={event => {
+            window.firebase.analytics().logEvent(`${_title}-GNB-CLICK`)
+          }}>
           <span>{_title}</span>
         </NavLink>
       )

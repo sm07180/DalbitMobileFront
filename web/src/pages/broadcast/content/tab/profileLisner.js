@@ -4,10 +4,12 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
+import Ranking from './ranking'
 export default props => {
   //console.log(props)
 
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
+
   //----------------------------------------------context
   const context = useContext(Context)
   //0.프로필인포 state정의------------------------------------------
@@ -36,6 +38,7 @@ export default props => {
   useEffect(() => {
     fetchData()
   }, [])
+
   //----------------------------------------
   return (
     <Container>
@@ -58,13 +61,16 @@ export default props => {
       <h5 className="IdWrap">{roomInfo.bjStreamId}</h5>
       <div className="fanWrap">
         <div>
-          <span>팬</span>
-          <em>{validate1000()}</em>
+          <div className="fanstarbox">
+            <span>팬</span>
+            <em>{validate1000()}</em>
+          </div>
+          <div className="fanstarbox">
+            <span>스타</span>
+            <em>{PInfo.starCnt}</em>
+          </div>
         </div>
-        <div>
-          <span>스타</span>
-          <em>{PInfo.starCnt}</em>
-        </div>
+        <Ranking {...roomInfo} />
       </div>
       <div className="functionWrap">
         <div className="managerBtn">
@@ -167,13 +173,19 @@ const Container = styled.div`
   .fanWrap {
     display: flex;
     width: 100%;
+    flex-direction: column;
     margin-top: 16px;
     padding: 28px 0;
     border-radius: 20px;
     background-color: #f4f4f4;
     text-align: center;
     & div {
-      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      & .fanstarbox {
+        width: 50%;
+      }
       & span {
         color: #9e9e9e;
         margin-right: 16px;

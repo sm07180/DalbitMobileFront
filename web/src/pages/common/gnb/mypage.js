@@ -21,7 +21,7 @@ export default props => {
   //useMemo
 
   //useState
-  const [fetch, setFetch] = useState({profImg: {url: 'https://devimage.dalbitcast.com/images/api/profileGnb.png'}, nickNm: ''})
+  const [fetch, setFetch] = useState(false)
   const [login, setLogin] = useState(props.LoginInfo)
   //const
   //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
@@ -76,12 +76,12 @@ export default props => {
           </Nheader>
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={fetch.profImg.url}></PIMG>
+              <PIMG bg={fetch && fetch.profImg.url}></PIMG>
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{fetch.nickNm}</h4>
-                    <ID>{fetch.memId}</ID>
+                    <h4>{fetch && fetch.nickNm}</h4>
+                    <ID>{fetch && fetch.memId}</ID>
                   </NoLoginTitle>
                 ) : (
                   <NoLoginTitle>
@@ -132,11 +132,11 @@ export default props => {
                     </li>
                     <li className="count star">
                       <span>보유별</span>
-                      <b>{fetch.goldCnt}</b>
+                      <b>{fetch && fetch.byeolCnt}</b>
                     </li>
                     <li className="count moon">
                       <span>보유달</span>
-                      <b>{fetch.rubyCnt}</b>
+                      <b>{fetch && fetch.dalCnt}</b>
                     </li>
                   </ul>
                 </MyInfo>
@@ -182,8 +182,7 @@ export default props => {
                         localStorage.removeItem('com.naver.nid.oauth.state_token')
                         props.history.push('/')
                         context.action.updateGnbVisible(false)
-                        console.log(props)
-                        console.log(res)
+                        setFetch(false) // 넣어둔 mypage 정보 초기화.
                         return
                         alert('정상적으로 로그아웃 되었습니다.')
                         context.action.updateToken('')
@@ -264,7 +263,7 @@ const PIMG = styled.div`
   height: 120px;
   margin: 0 auto;
   border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center/ cover;
+  background: url(${props => (props.bg ? props.bg : `${IMG_SERVER}/images/api/profileGnb.png`)}) no-repeat center center/ cover;
 `
 const Ptitle = styled.div`
   width: 100%;
@@ -338,6 +337,7 @@ const LoginChoiceOut = styled.button`
 const NavWrap = styled.div`
   height: calc(100% - 320px);
   padding: 20px 20px 0 20px;
+  border-left: 1px solid #eeeeee;
   background-color: white;
 
   & > a:first-child > div {

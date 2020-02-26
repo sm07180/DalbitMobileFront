@@ -2,6 +2,7 @@
 .vscode
 
 # dependencies
+/dist
 /dist/bundle.js*
 /dist/index.html*
 

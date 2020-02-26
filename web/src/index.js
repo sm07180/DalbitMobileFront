@@ -15,18 +15,8 @@ import 'styles/swiper.scss'
 import {GlobalProvider} from 'context'
 //
 
-import ReactGA from 'react-ga'
-
-ReactGA.initialize('UA-157282550-2')
-
-function logPageView() {
-  console.log('GA 시작')
-  ReactGA.set({page: window.location.pathname})
-  ReactGA.pageview(window.location.pat)
-}
-
 ReactDOM.render(
-  <BrowserRouter onUpdata={logPageView}>
+  <BrowserRouter>
     <GlobalProvider>
       <App />
     </GlobalProvider>

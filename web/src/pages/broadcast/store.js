@@ -41,6 +41,7 @@ const BroadCastProvider = props => {
     updateListenerList: list => {
       setListenerList(list)
     },
+
     updateManagerList: list => {
       setManagerList(list)
     },

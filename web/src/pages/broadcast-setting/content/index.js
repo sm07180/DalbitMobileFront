@@ -17,6 +17,7 @@ import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 
 let audioStream = null
+let drawId = null
 
 export default props => {
   //context
@@ -199,7 +200,6 @@ export default props => {
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
   const [audioPass, setAudioPass] = useState(false)
-  const [drawId, setDrawId] = useState(null)
 
   const detectAudioDevice = () => {
     clearInterval(drawId)
@@ -233,7 +233,7 @@ export default props => {
       }
     }
 
-    setDrawId(setInterval(volumeCheck))
+    drawId = setInterval(volumeCheck)
   }
 
   if (mediaHandler && !audioSetting) {
@@ -254,10 +254,10 @@ export default props => {
     return () => {
       if (drawId) {
         navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
+        clearInterval(drawId)
       }
-      clearInterval(drawId)
     }
-  }, [drawId])
+  }, [])
 
   /*
    *

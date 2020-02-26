@@ -697,7 +697,6 @@ export const ajax = async obj => {
       formData.append('imageURL', '')
       formData.append('uploadType', data.uploadType)
     }
-
     const dataType = url === '/upload' ? formData : qs.stringify(data)
     let res = await axios({
       method: method,
@@ -710,6 +709,7 @@ export const ajax = async obj => {
       params: params,
       data: dataType
     })
+
     // table 모양 로그출력
     //console.table(res.data)
     // string 로그출력
