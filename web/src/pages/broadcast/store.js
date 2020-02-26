@@ -21,6 +21,7 @@ const BroadCastProvider = props => {
   const [guestList, setGuestList] = useState([])
 
   const [shortCutList, setShortCutList] = useState([])
+  const [boostList, setBoostList] = useState([])
 
   //---------------------------------------------------------------------
   const action = {
@@ -49,6 +50,9 @@ const BroadCastProvider = props => {
 
     updateShortCutList: list => {
       setShortCutList(list)
+    },
+    updateBoostList: list => {
+      setBoostList(list)
     }
   }
   //---------------------------------------------------------------------
@@ -60,6 +64,7 @@ const BroadCastProvider = props => {
     guestList,
 
     shortCutList,
+    boostList,
 
     action
   }
