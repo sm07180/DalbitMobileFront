@@ -677,9 +677,7 @@ export const ajax = async obj => {
       formData.append('imageURL', '')
       formData.append('uploadType', data.uploadType)
     }
-
     const dataType = url === '/upload' ? formData : qs.stringify(data)
-    const port = window.location.port === '44443' ? ':44443' : ''
     let res = await axios({
       method: method,
       headers: {
@@ -687,7 +685,7 @@ export const ajax = async obj => {
         'custom-header': API.customHeader || '',
         'content-type': contentType
       },
-      url: pathType + port + url,
+      url: pathType + url,
       params: params,
       data: dataType
     })

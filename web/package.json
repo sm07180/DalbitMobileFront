@@ -18,7 +18,6 @@
     "cross-env": "^6.0.3",
     "eslint-config-prettier": "^6.9.0",
     "file-loader": "^5.0.2",
-    "firebase": "^7.8.0",
     "moment": "^2.24.0",
     "qs": "^6.9.1",
     "react": "^16.12.0",
@@ -27,7 +26,6 @@
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.12.0",
     "react-facebook-login": "^4.1.1",
-    "react-ga": "^2.7.0",
     "react-google-login": "^5.0.7",
     "react-helmet": "^5.2.1",
     "react-id-swiper": "^2.4.0",
@@ -47,7 +45,8 @@
   "scripts": {
     "dev": "webpack --mode development",
     "prod": "webpack --mode production",
-    "start": "webpack-dev-server --mode development"
+    "start": "webpack-dev-server --mode development",
+    "real": "webpack-dev-server --mode production"
   },
   "eslintConfig": {
     "extends": [
