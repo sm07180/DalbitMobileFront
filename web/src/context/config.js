@@ -8,8 +8,8 @@
  * @brief 서버분기
  */
 export const SERVICE_SERVER = 'https://devwww2.dalbitcast.com' //서비스서버
-export const API_SERVER = 'https://devapi2.dalbitcast.com' //API서버
-export const IMG_SERVER = 'https://devimage.dalbitcast.com' //이미지 CDN
+export const API_SERVER = window.location.port === '44443' ? 'https://devapi2.dalbitcast.com:44443' : 'https://devapi2.dalbitcast.com' //API서버
+export const IMG_SERVER = window.location.port === '44443' ? 'https://devimage.dalbitcast.com:44443' : 'https://devimage.dalbitcast.com' //이미지 CDN
 export const PHOTO_SERVER = 'https://devphoto2.dalbitcast.com' //이미지서버 (사용자가 올리는서버)
 //export const PHOTO_SERVER = 'https://devm-leejaeho1144.dalbitcast.com:4433' //이미지서버 (사용자가 올리는서버)
 
