@@ -263,7 +263,7 @@ const PIMG = styled.div`
   height: 120px;
   margin: 0 auto;
   border-radius: 50%;
-  background: #fff url(${props => (props.bg ? props.bg : `${IMG_SERVER}/images/api/profileGnb.png`)}) no-repeat center center/ cover;
+  background: url(${props => (props.bg ? props.bg : `${IMG_SERVER}/images/api/profileGnb.png`)}) no-repeat center center/ cover;
 `
 const Ptitle = styled.div`
   width: 100%;
