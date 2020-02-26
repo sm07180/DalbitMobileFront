@@ -686,10 +686,11 @@ export const ajax = async obj => {
         'custom-header': API.customHeader || '',
         'content-type': contentType
       },
-      url: pathType + url,
+      url: pathType + url + window.location.port,
       params: params,
       data: dataType
     })
+
     // table 모양 로그출력
     //console.table(res.data)
     // string 로그출력
