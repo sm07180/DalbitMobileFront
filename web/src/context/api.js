@@ -687,7 +687,7 @@ export const ajax = async obj => {
         'custom-header': API.customHeader || '',
         'content-type': contentType
       },
-      url: pathType + url + port,
+      url: pathType + port + url,
       params: params,
       data: dataType
     })
