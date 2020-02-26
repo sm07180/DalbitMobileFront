@@ -1,7 +1,6 @@
 /**
- * @file header/index.js
- * @brief PC,Mobile 상단에 적용되는 Header영역
- * @todo 반응형으로 처리되어야함
+ * @file popup/index.js
+ * @brief 로그인 팝업
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
@@ -12,28 +11,18 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //contents
 import Auth from 'pages/common/auth'
-import POPCAST from 'components/ui/pop-mic'
-import Present from 'pages/broadcast/content/tab/present-popup'
-import LiveClickEvent from 'components/ui/eventbox'
-import Charge from 'pages/broadcast/content/tab/charge-popup'
 
 //
 export default props => {
-  //
+  //context
   const context = useContext(Context)
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code) {
       case 'LOGIN': //---------------------------------------로그인
         return <Auth {...props} />
-      case 'CAST': //----------------------------------------캐스트
-        return <POPCAST {...props} />
-      case 'SEND_PRESENT': //----------------------------------------방송-몰래 선물보내기
-        return <Present {...props} />
-      case 'LiveClickEvent': //----------------------------------------라이브청취자 클릭이벤트
-        return <LiveClickEvent {...props} />
-      case 'Charge': //----------------------------------------방송-달 충전하기
-        return <Charge {...props} />
+      default:
+        return <div>팝업 컨텐츠가 정의되지않음</div>
     }
   }
   //useEffect
@@ -44,7 +33,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Popup>
-      {context.popup_code === 'LOGIN' && context.popup_visible && (
+      {context.popup_visible && (
         <Container>
           <Wrap>{makePopupContents()}</Wrap>
           <Background
@@ -52,52 +41,6 @@ export default props => {
               context.action.updatePopupVisible(false)
             }}
           />
-        </Container>
-      )}
-      {context.popup_code === 'CAST' && context.popup_visible && (
-        <Container>
-          <Wrap>{makePopupContents()}</Wrap>
-          <Background />
-        </Container>
-      )}
-      {context.popup_code === 'SEND_PRESENT' && context.popup_visible && (
-        <Container>
-          <Background
-            onClick={() => {
-              context.action.updatePopupVisible(false)
-            }}
-          />
-          <PresentWrap>
-            <div className="buttonArea">
-              <button className="close" onClick={() => context.action.updatePopupVisible(false)}>
-                <img scr={'https://devimage.dalbitcast.com/images/api/ic_close_m@2x.png'} width={36} height={36} />
-              </button>
-            </div>
-            {makePopupContents()}
-          </PresentWrap>
-        </Container>
-      )}
-      {context.popup_code === 'LiveClickEvent' && context.popup_visible && (
-        <>
-          <EventBackground
-            onClick={() => {
-              context.action.updatePopupVisible(false)
-            }}
-          />
-          <EventContainer>{makePopupContents()}</EventContainer>
-        </>
-      )}
-      {context.popup_code === 'Charge' && context.popup_visible && (
-        <Container>
-          <Background />
-          <ChargeWrap>
-            <div className="buttonArea">
-              <button className="close" onClick={() => context.action.updatePopupVisible(false)}>
-                <img scr={'https://devimage.dalbitcast.com/images/api/ic_close_m@2x.png'} width={36} height={36} />
-              </button>
-            </div>
-            {makePopupContents()}
-          </ChargeWrap>
         </Container>
       )}
     </Popup>
@@ -140,53 +83,4 @@ const Background = styled.div`
   background: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);
   z-index: -1;
-`
-
-const EventContainer = styled.div``
-const EventBackground = styled.div``
-
-const PresentWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  height: 300px;
-  /* background: #fff; */
-  background: rgba(0, 0, 0, 0);
-  border-radius: 10px;
-
-  .close {
-    display: flex;
-    width: 36px;
-    height: 36px;
-  }
-
-  .buttonArea {
-    display: flex;
-    width: 100%;
-    height: 36px;
-    justify-content: flex-end;
-  }
-`
-const ChargeWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 344px;
-  height: 665px;
-  /* background: #fff; */
-  background: rgba(0, 0, 0, 0);
-  border-radius: 10px;
-
-  .close {
-    display: flex;
-    width: 36px;
-    height: 36px;
-    background-color: red;
-  }
-
-  .buttonArea {
-    display: flex;
-    width: 100%;
-    height: 36px;
-    justify-content: flex-end;
-  }
 `

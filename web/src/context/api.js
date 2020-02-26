@@ -644,6 +644,22 @@ export default class API {
     return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
   }
 
+  /**
+   * @brief 방송방 선물받은 내역보기
+   * @create 최우정 2020.02.25
+   */
+  static broadcast_room_received_gift_history = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || '/broad/history', method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 공통정보 조회하기
+   * @create 최우정 2020.02.26
+   */
+  static splash = async obj => {
+    return await ajax({url: '/splash', method: 'GET'})
+  }
   //-------------------------------------------------------------
 }
 
@@ -661,7 +677,6 @@ export const ajax = async obj => {
       formData.append('imageURL', '')
       formData.append('uploadType', data.uploadType)
     }
-
     const dataType = url === '/upload' ? formData : qs.stringify(data)
     let res = await axios({
       method: method,
@@ -674,6 +689,7 @@ export const ajax = async obj => {
       params: params,
       data: dataType
     })
+
     // table 모양 로그출력
     //console.table(res.data)
     // string 로그출력

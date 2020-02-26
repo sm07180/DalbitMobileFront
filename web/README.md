@@ -30,6 +30,35 @@ context.customHeader.hybridApp
 context.token.isLogin
 ```
 
+# Google Analytics
+
+```
+//index.html
+<script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-analytics.js"></script>
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+    apiKey: 'AIzaSyD5rY6sPsRqvlTb7jtEzO32vOHu-lbdDrs',
+    authDomain: 'dalbitcast-1a445.firebaseapp.com',
+    databaseURL: 'https://dalbitcast-1a445.firebaseio.com',
+    projectId: 'dalbitcast-1a445',
+    storageBucket: 'dalbitcast-1a445.appspot.com',
+    messagingSenderId: '76445230270',
+    appId: '1:76445230270:web:7cbe088acdddba78a3aaef',
+    measurementId: 'G-GY6SLG0J86'
+    }
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig)
+    firebase.analytics()
+</script>
+
+//사용시
+window.firebase.analytics().logEvent(`REACT-GNB-CLICK`)
+```
+
 # 플러그인
 
 # 라우팅

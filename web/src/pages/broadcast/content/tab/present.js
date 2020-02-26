@@ -6,6 +6,7 @@ import SendDirect from './present-direct'
 import SendItem from './present-item.js'
 import Api from 'context/api'
 import {Context} from 'context'
+import {BroadCastStore} from '../../store'
 
 const testData = [
   {
@@ -33,13 +34,15 @@ const testBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 export default props => {
   const [sendType, setSendType] = useState(0)
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //-------------------------------------------------------- func start
 
-  async function fetchData() {
+  // 선물하기
+  async function send() {
     const res = await Api.send_gift({
       data: {
-        roomNo: '91578888356181',
-        memNo: '91578888124122',
+        roomNo: store.roomInfo.roomNo.toString(),
+        memNo: context.token.memNo.toString(),
         itemNo: '1001',
         itemCnt: 1
       }
@@ -48,12 +51,12 @@ export default props => {
     console.log('## res :', res)
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [])
+  useEffect(() => {}, [])
 
   //-------------------------------------------------------- components start
   console.log('## sendType : ', sendType)
+  console.log('## store :', store)
+  console.log('## context :', context)
   return (
     <Container>
       <Navi title={'선물'} />
