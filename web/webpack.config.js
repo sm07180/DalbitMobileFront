@@ -10,7 +10,7 @@ const fs = require('fs')
 module.exports = (env, options) => {
   const config = {
     entry: {
-      vendor: ['react', 'react-dom', 'react-router-dom'],
+      vendor: ['react', 'styled-components', 'react-router-dom'],
       app: './src/index.js'
     },
     output: {
@@ -73,20 +73,6 @@ module.exports = (env, options) => {
           loader: 'file-loader'
         }
       ]
-    },
-    optimization: {
-      // https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            chunks: 'all',
-            name: 'vendor',
-            enforce: true,
-            test: /[\\/]node_modules[\\/]/
-          }
-        }
-      }
     },
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
