@@ -58,10 +58,13 @@ export default props => {
   let msgData = []
   const getRecvData = data => {
     msgData = msgData.concat(data)
+
     const resulte = msgData.map((item, index) => {
       return <MessageType {...item} key={index} rcvData={data}></MessageType>
     })
+
     setComments(resulte)
+    //setRoomInfo(...roomInfo, data)
   }
 
   //---------------------------------------------------------------------

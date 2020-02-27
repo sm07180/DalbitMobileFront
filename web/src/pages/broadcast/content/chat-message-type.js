@@ -43,6 +43,15 @@ export default props => {
         </Message>
       )
       break
+    case 'disconnect':
+      return (
+        <Message className="enter-exit">
+          <div>
+            <span>{props.data.msg}</span>
+          </div>
+        </Message>
+      )
+      break
     default:
       break
   }

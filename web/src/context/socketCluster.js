@@ -570,6 +570,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'msg: ' + dataObj.data.data.msg + '\n'
         }
         //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
+        console.log('receiveMessageData')
         receiveMessageData(JSON.parse(data))
       } else {
         /*if (dataObj.type == 'subscribe') {
