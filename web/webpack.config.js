@@ -3,14 +3,15 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
 module.exports = (env, options) => {
   const config = {
     entry: {
-      app: './src/index.js',
-      vendor: ['react', 'react-dom', 'react-router-dom']
+      vendor: ['react', 'react-dom', 'react-router-dom'],
+      app: './src/index.js'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -73,16 +74,24 @@ module.exports = (env, options) => {
         }
       ]
     },
-
+    optimization: {
+      // https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            chunks: 'all',
+            name: 'vendor',
+            enforce: true,
+            test: /[\\/]node_modules[\\/]/
+          }
+        }
+      }
+    },
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
     }
-    // optimization: {
-    //   splitChunks: {
-    //     chunks: 'all'
-    //   }
-    // }
   }
   if (options.mode === 'development') {
     config.devtool = 'source-map'
@@ -123,6 +132,7 @@ module.exports = (env, options) => {
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
       }),
+      new BundleAnalyzerPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
