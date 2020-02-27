@@ -127,7 +127,11 @@ const GlobalProvider = props => {
     updateMediaHandler: instance => {
       setMediaHandler(instance)
     },
-    // 오디오 글로벌 플레이어 상태
+
+    /**
+     * 오디오 글로벌 플레이어 상태
+     * @param boolean status
+     */
     updateMediaPlayerStatus: status => {
       setMediaPlayerStatus(status)
     }
