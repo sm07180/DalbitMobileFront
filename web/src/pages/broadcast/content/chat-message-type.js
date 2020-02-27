@@ -26,7 +26,7 @@ export default props => {
           </Message>
           <Message className="enter-exit">
             <div>
-              <span>{props.data.msg}</span>
+              <span>{props.data.recvMsg.msg}</span>
             </div>
           </Message>
         </>
@@ -38,7 +38,7 @@ export default props => {
           <figure></figure>
           <div>
             <p>{props.data.user.nk}</p>
-            <pre>{props.data.msg}</pre>
+            <pre>{props.data.recvMsg.msg}</pre>
           </div>
         </Message>
       )
@@ -47,7 +47,7 @@ export default props => {
       return (
         <Message className="enter-exit">
           <div>
-            <span>{props.data.msg}</span>
+            <span>{props.data.recvMsg.msg}</span>
           </div>
         </Message>
       )

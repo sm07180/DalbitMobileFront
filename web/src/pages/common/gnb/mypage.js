@@ -88,22 +88,7 @@ export default props => {
                     <span>
                       <em
                         onClick={() => {
-                          if (!context.token.isLogin) {
-                            context.action.updatePopup('LOGIN')
-                          } else {
-                            const result = confirm('로그아웃 하시겠습니까?')
-                            if (result) {
-                              // const res = await Api.member_logout({
-                              //   data: {
-                              //     authToken: context.,
-                              //     custom-Header: context.customHeader,
-                              //   }
-                              // })
-
-                              alert('정상적으로 로그아웃 되었습니다.')
-                              context.action.updateLogin(false)
-                            }
-                          }
+                          context.action.updatePopup('LOGIN')
                         }}>
                         로그인
                       </em>
@@ -143,22 +128,7 @@ export default props => {
               ) : (
                 <LoginChoice
                   onClick={() => {
-                    if (!context.token.isLogin) {
-                      context.action.updatePopup('LOGIN')
-                    } else {
-                      const result = confirm('로그아웃 하시겠습니까?')
-                      if (result) {
-                        // const res = await Api.member_logout({
-                        //   data: {
-                        //     authToken: context.,
-                        //     custom-Header: context.customHeader,
-                        //   }
-                        // })
-
-                        alert('정상적으로 로그아웃 되었습니다.')
-                        context.action.updateLogin(false)
-                      }
-                    }
+                    context.action.updatePopup('LOGIN')
                   }}>
                   로그인
                 </LoginChoice>
@@ -171,10 +141,9 @@ export default props => {
             {context.token.isLogin && mypage !== null && (
               <LoginChoiceOut
                 onClick={() => {
-                  if (context.token.isLogin) {
-                    const result = confirm('로그아웃 하시겠습니까?')
-                    if (result) {
-                      //fetch
+                  context.action.confirm({
+                    //콜백처리
+                    callback: () => {
                       async function fetchData(obj) {
                         const res = await Api.member_logout({data: context.token.authToken})
                         context.action.updateToken(res.data)
@@ -190,8 +159,9 @@ export default props => {
                         window.location.href = '/'
                       }
                       fetchData()
-                    }
-                  }
+                    },
+                    msg: `로그아웃 하시겠습니까?`
+                  })
                 }}>
                 로그아웃
               </LoginChoiceOut>
