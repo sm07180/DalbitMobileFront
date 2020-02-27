@@ -3,7 +3,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -118,24 +117,10 @@ module.exports = (env, options) => {
       chunkFilename: 'bundle.js'
     }
   } else {
-    config.devServer = {
-      hot: true,
-      contentBase: path.resolve('./dist'),
-      index: 'index.html',
-      port: 443,
-      host: '0.0.0.0',
-      historyApiFallback: true, // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
-      disableHostCheck: true,
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, 'key/privkey.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'key/fullchain.pem'))
-      }
-    }
     config.plugins = [
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
       }),
-      new BundleAnalyzerPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
