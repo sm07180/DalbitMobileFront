@@ -558,7 +558,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'nk: ' + dataObj.data.user.nk + '\n'
           logStr += 'locale: ' + dataObj.data.user.locale + '\n'
           logStr += 'login: ' + dataObj.data.user.login + '\n'
-          logStr += 'msg: ' + dataObj.data.msg + '\n'
+          logStr += 'msg: ' + dataObj.data.recvMsg.msg + '\n'
         } else {
           logStr += 'channel: ' + dataObj.data.channel + '\n'
           logStr += 'cmd: ' + dataObj.data.data.cmd + '\n'
@@ -567,7 +567,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'nk: ' + dataObj.data.data.user.nk + '\n'
           logStr += 'locale: ' + dataObj.data.data.user.locale + '\n'
           logStr += 'login: ' + dataObj.data.data.user.login + '\n'
-          logStr += 'msg: ' + dataObj.data.data.msg + '\n'
+          logStr += 'msg: ' + dataObj.data.data.recvMsg.msg + '\n'
         }
         //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
         console.log('receiveMessageData')
@@ -585,7 +585,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
         ) {
           //{"rid":2,"data":{"cmd":"login","params":{},"msg":{"authToken":"11579140995534","memNo":"11579140995534","channel":"public.channel","id":"id_11579140995534","error":null,"success":true},"user":{"authToken":"11579140995534","memNo":"11579140995534","id":"id_11579140995534","nk":"nk_11579140995534","sex":"sex_11579140995534","age":"age_11579140995534","level":"level_11579140995534"}}}
           //logStr += 'rid: ' + dataObj.rid + '\n';
-          logStr += 'login: ' + JSON.stringify(dataObj.data.msg) + '\n'
+          logStr += 'login: ' + JSON.stringify(dataObj.data.recvMsg.msg) + '\n'
         } else if (dataObj.error && dataObj.error.type == 'subscribe') {
           /*{
                       "rid":2,
@@ -669,7 +669,12 @@ export const socketClusterBinding = (channel, Info) => {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }
     } else {
-      alert('소켓 상태 = ' + socket.state)
+      alert('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
+      if (window.location.pathname !== '/' && channel) {
+        setTimeout(() => {
+          privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        }, 500)
+      }
     }
   } else {
     if (socket != null) {
@@ -701,10 +706,10 @@ export const scDestory = () => {
 export const SendMessageChat = objChat => {
   const params = {
     //memNo: objChat.bjMemNo,
-    memNo: '',
-    isFan: objChat.isFan,
-    roomRole: objChat.roomRole,
-    roleRight: objChat.roleRight
+    memNo: ''
+    // isFan: objChat.isFan,
+    // auth: objChat.auth,
+    // ctrlRole: objChat.ctrlRole
   }
   console.log('sendMessage = ' + JSON.stringify(params))
   sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
@@ -715,31 +720,31 @@ export const sendMessageJson = function(cmd, params, msg) {
     return {
       cmd: cmd,
       login: params, //user
-      msg: msg //''
+      sendMsg: msg //''
     }
   } else if (cmd == /*'loginToken'*/ socketConfig.packet.send.PACKET_SEND_LOGIN_TK) {
     return {
       cmd: cmd,
       loginToken: params, //user
-      msg: msg //''
+      sendMsg: msg //''
     }
   } else if (cmd == /*'emit'*/ socketConfig.packet.send.PACKET_SEND_EMIT) {
     return {
       cmd: cmd,
       emit: params, //self
-      msg: msg //''
+      sendMsg: msg //''
     }
   } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_CHAT) {
     return {
       cmd: cmd,
       chat: params, //self
-      msg: msg //''
+      sendMsg: msg //''
     }
   } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_CHAT_END) {
     return {
       cmd: cmd,
       chat: params, //self
-      msg: msg //''
+      sendMsg: msg //''
     }
   }
 }
@@ -756,7 +761,7 @@ export const sendMessage = {
       chat: {
           memNo: '회원SEQ'
       },
-      msg: 'message'
+      sendMsg: 'message'
       }*/
     // handle.publish(msgJson, function(err) {
     //   if (err) {
@@ -778,7 +783,7 @@ export const sendMessage = {
       chat: {
           memNo: '회원SEQ'
       },
-      msg: 'message'
+      sendMsg: 'message'
       }*/
     socket.publish(channel, msgJson, function(err) {
       if (err) {
@@ -799,7 +804,7 @@ export const sendMessage = {
     /*{
           cmd: 'emit',
           emit: false,
-          msg: 'message'
+          sendMsg: 'message'
       }*/
     socket.emit('chat', sendMessageJson(type, param, msg), function(err, data) {
       if (err) {
@@ -822,7 +827,7 @@ export const sendMessage = {
           memNo: '회원SEQ',
           locale: 'koKR'
           }
-          msg: ''
+          sendMsg: ''
       }*/
     socket.emit('loginToken', sendMessageJson(socketConfig.packet.send.PACKET_SEND_LOGIN_TK, user, ''), function(err, success) {
       if (err) {
