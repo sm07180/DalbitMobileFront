@@ -35,6 +35,8 @@ export default props => {
   })
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
+  const [timerFlag, setTimerFlag] = useState(false)
+  const [myTimer, setMyTimer] = useState()
 
   const hostRole = 3
   // const guestRole = ?
@@ -44,19 +46,19 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, roomRole, bjProfImg} = state
+  const {bjStreamId, auth, bjProfImg} = state
 
   const startPlayer = () => {
-    if (roomRole === hostRole) {
+    if (auth === hostRole) {
       setPublishStatus(true)
-    } else if (roomRole === listenerRole) {
+    } else if (auth === listenerRole) {
       setPlayStatus(true)
     }
   }
   const stopPlayer = () => {
-    if (roomRole === hostRole) {
+    if (auth === hostRole) {
       setPublishStatus(false)
-    } else if (roomRole === listenerRole) {
+    } else if (auth === listenerRole) {
       setPlayStatus(false)
     }
   }
@@ -80,10 +82,10 @@ export default props => {
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
 
-      if (roomRole === hostRole) {
+      if (auth === hostRole) {
         mediaHandler.setType('host')
         // mediaHandler.setPublishToken(pubToken)
-      } else if (roomRole === listenerRole) {
+      } else if (auth === listenerRole) {
         mediaHandler.setType('listener')
       }
     }
@@ -94,6 +96,33 @@ export default props => {
       }
     }
   }, [mediaHandler])
+
+  //--------------------------------------------------------------------- 부스트 정보 조회 테스트 by 최우정
+  useEffect(() => {
+    let flag = false
+    store.action.initBoost(props.location.state.roomNo)
+    return () => {
+      flag = true
+    }
+  }, [])
+
+  useEffect(() => {
+    if (store.boostList.boostCnt > 0) {
+      const stop = clearInterval(myTimer)
+      setMyTimer(stop)
+      let myTime = store.boostList.boostTime
+      const interval = setInterval(() => {
+        myTime -= 1
+        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60))
+        store.action.updateTimer(m)
+        if (myTime === 0) {
+          clearInterval(interval)
+        }
+      }, 1000)
+      setMyTimer(interval)
+    }
+  }, [store.boostList])
+  //---------------------------------------------------------------------
 
   //makeContents
   const makeContents = () => {
@@ -106,7 +135,6 @@ export default props => {
     if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
   }, [])
   //---------------------------------------------------------------------
-
   return (
     <Content className={isSideOn ? 'side-on' : 'side-off'}>
       <Chat>
@@ -126,7 +154,7 @@ export default props => {
 
         <SideContent {...props}>{/* <Charge /> */}</SideContent>
       </Side>
-      {roomRole === hostRole ? (
+      {auth === hostRole ? (
         <AudioWrap>
           <h1>Host BJ</h1>
           <div>Stream ID : {bjStreamId}</div>

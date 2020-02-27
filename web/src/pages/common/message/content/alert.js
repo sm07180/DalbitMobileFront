@@ -31,6 +31,7 @@ export default props => {
       case mode.visible !== undefined: //---------------------팝업닫기
         //팝업닫기
         if (mode.visible === false) context.action.alert({visible: false})
+        if (context.message.visible === false) context.action.alert({visible: false})
         break
       case mode.callback !== undefined: //---------------------콜백처리
         //콜백

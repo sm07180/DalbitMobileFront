@@ -3,13 +3,15 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
 module.exports = (env, options) => {
   const config = {
-    entry: './src/index.js',
+    entry: {
+      app: './src/index.js',
+      vendor: ['react', 'react-dom', 'react-router-dom']
+    },
     output: {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/dist/',
@@ -86,7 +88,7 @@ module.exports = (env, options) => {
     config.devtool = 'source-map'
     config.devServer = {
       hot: true,
-      contentBase: path.resolve('./dist'),
+      contentBase: path.resolve('./'),
       index: 'index.html',
       port: 443,
       host: '0.0.0.0',
@@ -102,7 +104,6 @@ module.exports = (env, options) => {
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-        title: 'Development',
         showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
       new MiniCssExtractPlugin({
@@ -112,30 +113,16 @@ module.exports = (env, options) => {
     ]
 
     config.output = {
-      path: path.resolve(__dirname, 'dist'),
-      publicPath: '/dist/',
-      filename: 'bundle.js',
-      chunkFilename: 'bundle.js'
+      path: path.resolve(__dirname),
+      publicPath: '/',
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[chunkhash].js'
     }
   } else {
-    config.devServer = {
-      hot: true,
-      contentBase: path.resolve('./dist'),
-      index: 'index.html',
-      port: 443,
-      host: '0.0.0.0',
-      historyApiFallback: true, // 서버사이드렌더링 문제 해결 코드 express 를 사용할 경우 nodejs 에서 해결
-      disableHostCheck: true,
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, 'key/privkey.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'key/fullchain.pem'))
-      }
-    }
     config.plugins = [
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
       }),
-      new BundleAnalyzerPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
