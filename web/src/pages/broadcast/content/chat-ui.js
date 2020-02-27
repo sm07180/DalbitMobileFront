@@ -97,7 +97,7 @@ export default props => {
           {comments}
         </Scrollbars>
       </CommentList>
-      <InputComment onKeyPress={postMessageChange} />
+      <InputComment {...roomInfo} onKeyPress={postMessageChange} />
     </Content>
   )
 }
