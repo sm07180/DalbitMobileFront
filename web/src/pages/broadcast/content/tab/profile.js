@@ -88,7 +88,7 @@ const Container = styled.div`
     position: relative;
     width: 126px;
     height: 126px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_frame_l.png') no-repeat center center/ cover;
+    background: url(${IMG_SERVER}/images/api/ic_frame_l.png) no-repeat center center/ cover;
   }
   .gazeWrap {
     position: relative;

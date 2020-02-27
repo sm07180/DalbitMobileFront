@@ -2,6 +2,7 @@
  * @title 라이브탭 인기순 셀렉트박스 컴포넌트
  */
 import React, {useState} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 export default props => {
   //0.인기순..배열 호출 state-------------------------------------------
@@ -59,7 +60,7 @@ const Select = styled.div`
   line-height: 40px;
   width: 33.33%;
   position: relative;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_arrow_down_color.png') no-repeat center right;
+  background: url(${IMG_SERVER}/images/api/ic_arrow_down_color.png) no-repeat center right;
   cursor: pointer;
   & h2 {
     padding-right: 24px;
