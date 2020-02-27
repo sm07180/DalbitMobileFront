@@ -18,38 +18,18 @@ export default props => {
   //----------------------------------------------------- declare start
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
-  const [boostData, setBoostData] = useState([])
+  const [boostData, setBoostData] = useState(store.boostList)
   const [flag, setFlag] = useState(false)
   const [timer, setTimer] = useState()
-  const [boostTime, setBoostTime] = useState(18)
-
+  const [myTimer, setMyTimer] = useState()
+  let myTime = store.boostList.boostTime
   //----------------------------------------------------- func start
   useEffect(() => {
-    console.log('## store : ', store)
-    console.log('## context :', context)
-    boostInfo()
-  }, [flag])
-
-  useEffect(() => {
-    if (store.boostList.boostCnt > 0) {
-      _timer()
-    }
-  }, [store])
-
-  // 부스트 정보 조회
-  async function boostInfo() {
-    const res = await Api.broadcast_room_live_ranking_select({
-      params: {
-        roomNo: store.roomInfo.roomNo.toString()
-      }
-    })
-    console.log('## res - boostInfo :', res)
-    if (res.result === 'success') store.action.updateBoostList(res.data)
-  }
+    if (store.boostList.length === 0) store.action.initBoost(store.roomInfo.roomNo)
+  }, [])
 
   // 부스트 사용하기
   async function useBoost() {
-    clearInterval(_timer.interval)
     const res = await Api.broadcast_room_use_item({
       data: {
         roomNo: store.roomInfo.roomNo.toString(),
@@ -58,17 +38,7 @@ export default props => {
       }
     })
     console.log('## res - useBoost :', res)
-    if (res.result === 'success') setFlag(!flag)
-  }
-
-  const _timer = () => {
-    let time = boostTime
-    let interval = setInterval(() => {
-      if (time === 0) clearInterval(interval)
-      let m = Math.floor(time / 60) + ':' + (time % 60)
-      setTimer(m)
-      time--
-    }, 1000)
+    store.action.initBoost(store.roomInfo.roomNo)
   }
 
   //----------------------------------------------------- components start
@@ -85,7 +55,7 @@ export default props => {
           <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
           {store.boostList.boostCnt !== 0 ? (
             <TimeActive>
-              {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {timer}
+              {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
             </TimeActive>
           ) : (
             <TimeInactive>30:00</TimeInactive>

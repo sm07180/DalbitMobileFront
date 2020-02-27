@@ -8,6 +8,7 @@
   const store = useContext(Context)
  */
 import React, {useState, createContext} from 'react'
+import Api from 'context/api'
 //Context
 const BroadCastStore = createContext()
 const {Provider} = BroadCastStore
@@ -22,6 +23,20 @@ const BroadCastProvider = props => {
 
   const [shortCutList, setShortCutList] = useState([])
   const [boostList, setBoostList] = useState([])
+  const [timer, setTimer] = useState()
+  const [storyList, setStoryList] = useState([])
+  const [story, setStory] = useState([])
+
+  //---------------------------------------------------------------------
+  async function selectBoostList(param) {
+    const res = await Api.broadcast_room_live_ranking_select({
+      params: {
+        roomNo: param
+      }
+    })
+    console.log('## store - boostInfo :', res)
+    if (res.result === 'success') setBoostList(res.data)
+  }
 
   //---------------------------------------------------------------------
   const action = {
@@ -54,6 +69,18 @@ const BroadCastProvider = props => {
     },
     updateBoostList: list => {
       setBoostList(list)
+    },
+    updateTimer: props => {
+      setTimer(props)
+    },
+    initBoost: obj => {
+      selectBoostList(obj)
+    },
+    updateStoryList: list => {
+      setStoryList(list)
+    },
+    updateStory: data => {
+      setStory(data)
     }
   }
   //---------------------------------------------------------------------
@@ -66,6 +93,9 @@ const BroadCastProvider = props => {
 
     shortCutList,
     boostList,
+    timer,
+    storyList,
+    story,
 
     action
   }

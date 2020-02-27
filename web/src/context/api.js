@@ -206,10 +206,11 @@ export default class API {
    * @param string roomNo                 //*방송방번호
    * @param string contents                 //*사연등록
    * @create 김호겸 2020.01.31
+   * @modify 최우정 2020.02.27 / stoty => story 변경
    */
-  static broad_stoty = async obj => {
+  static broad_story = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/stoty`, method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/broad/story`, method: method || 'POST', data: data})
   }
   /**
    * @brief 방송방 사연 목록 조회
@@ -218,10 +219,11 @@ export default class API {
    * @param string roomNo                 //*방송방번호
    * @param string contents                 //*사연등록
    * @create 김호겸 2020.01.31
+   * @modify 최우정 2020.02.27 / data => params 변경, stoty => story 변경
    */
-  static broad_stoty = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/stoty`, method: method || 'GET', data: data})
+  static broad_story = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/story`, method: method || 'GET', params: params})
   }
   /**
    * @brief 방송방 사연 목록 삭제
@@ -230,10 +232,11 @@ export default class API {
    * @param string roomNo                 //*방송방번호
    * @param int storyIdx                 //*사연 인덱스 번호
    * @create 김호겸 2020.01.31
+   * @modify 최우정 2020.02.27 / stoty => story 변경
    */
-  static broad_stoty = async obj => {
+  static broad_story = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/stoty`, method: method || 'DELETE', data: data})
+    return await ajax({...obj, url: url || `/broad/story`, method: method || 'DELETE', data: data})
   }
   /**
    * @brief 방송방 공유링크 확인 (익명 로그인일때 프로시저 memLogin:0 추가)

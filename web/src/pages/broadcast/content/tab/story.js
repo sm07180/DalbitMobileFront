@@ -6,147 +6,16 @@ import {Context} from 'context'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {Img} from './profileImg'
 import Util from '../../util/broadcast-util'
-import BroadContext from '../../store'
-const list = [
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: 'BJ님! 일반 라디오방송 DJ보다 훨씬 잘하십니다.' + '이번에 저 방탄소년단 콘서트에 가는데요!' + '저 곡하나 신청해도 될까요? ㅎㅎ' + '방탄소년단 최신곡으로 하나 부탁드려요! ',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '사연사연사연',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents:
-      '일반 라디오방송 DJ보다 훨씬 잘하시는 것 같아요! 이번에 저 아이유 콘서트에 가는데요! 저 곡하나 신청해도 될까요? ㅎㅎ 아이유 블루밍 최신곡으로 하나 부탁드려요! 매번 좋은노래 틀어주셔서 감사합니다 :)',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  },
-  {
-    storyIdx: 25,
-    writerNo: '11577950603958',
-    nickNm: 'nicknameTest',
-    profImg: {
-      url: '',
-      path: ''
-    },
-    contents: '마지막1',
-    writeDt: '20200101151454',
-    writeTs: 15483125756
-  }
-]
+import {BroadCastStore} from '../../store'
+import Api from 'context/api'
 
-const paging = {
-  total: 102,
-  records: 10,
-  page: 1,
-  prev: 0,
-  next: 2,
-  totalpage: 21
-}
-
-const test = {list: list, paging: paging}
 export default props => {
   //----------------------------------------------- declare start
   const [text, setText] = useState('')
   const [count, setCount] = useState(0)
   const [type, setType] = useState(true)
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   const scrollbars = useRef(null)
   const [now, setNow] = useState()
   //----------------------------------------------- func start
@@ -165,37 +34,54 @@ export default props => {
     now += d.getMinutes() + ':'
     now += d.getSeconds().toString().length > 1 ? d.getSeconds() : '0' + d.getSeconds()
     setNow(now)
+    selectStoryList()
   }
 
-  // const _include = (obj, el) => {
-  //   let objArr = []
-  //   let flag = false
+  const selectStoryList = async () => {
+    const res = await Api.broad_story({
+      params: {
+        roomNo: store.roomInfo.roomNo,
+        page: 1,
+        records: 10
+      },
+      method: 'GET'
+    })
+    console.log('## story - res :', res)
+    if (res.result === 'success') {
+      store.action.updateStoryList(res.data)
+    }
+  }
 
-  //   if (context.customHeader.abcd != undefined) {
-  //     alert('true')
-  //   } else {
-  //     alert('false')
-  //   }
+  const writeStory = async () => {
+    const res = await Api.broad_story({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        contents: text
+      },
+      method: 'POST'
+    })
+    console.log('## writeStory - res :', res)
+    if (res.result === 'success') selectStoryList()
+  }
 
-  //   obj.forEach(data => {
-  //     objArr.push(Object.keys(data).toString())
-  //   })
-
-  //   el.forEach(data => {
-  //     if (objArr.includes(Object.keys(data).toString()) === true) {
-  //       flag = true
-  //     } else {
-  //       flag = false
-  //     }
-  //   })
-  //   return flag
-  // }
+  const deleteStory = async param => {
+    const res = await Api.broad_story({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        storyIdx: param
+      },
+      method: 'DELETE'
+    })
+    console.log('## deleteStory - res :', res)
+    if (res.result === 'success') selectStoryList()
+  }
 
   useEffect(() => {
-    console.log('## context : ', context)
-    refresh()
+    if (type) {
+      selectStoryList()
+      refresh()
+    }
   }, [])
-
   //----------------------------------------------- components start
   return (
     <Container>
@@ -207,27 +93,28 @@ export default props => {
               <button onClick={() => refresh()} />
               <span>{now}</span>
             </div>
-            <Count>사연수 : {test.list.length}개</Count>
+            <Count>사연수 : {store.storyList.list ? store.storyList.paging.total : 0}개</Count>
           </div>
           <Scrollbars ref={scrollbars} style={{height: '100%'}} autoHide>
-            {test.list.map((data, idx) => {
-              return (
-                <Contents key={idx}>
-                  <UserInfo>
-                    <div>
-                      <Img width={40} height={40} src={'https://devimage.dalbitcast.com/images/api/profile_test5.jpg'} marginRight={8} />
-                      <div>{data.nickNm}</div>
-                    </div>
-                    <div>
-                      <span>{Util.format(data.writeDt)}</span>
-                      <SaveButton>삭제</SaveButton>
-                    </div>
-                  </UserInfo>
-                  <Story>{data.contents}</Story>
-                  <hr />
-                </Contents>
-              )
-            })}
+            {store.storyList.list &&
+              store.storyList.list.map((data, idx) => {
+                return (
+                  <Contents key={idx}>
+                    <UserInfo>
+                      <div>
+                        <Img width={40} height={40} src={'https://devimage.dalbitcast.com/images/api/profile_test5.jpg'} marginRight={8} />
+                        <div>{data.nickNm}</div>
+                      </div>
+                      <div>
+                        <span>{Util.format(data.writeDt)}</span>
+                        <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
+                      </div>
+                    </UserInfo>
+                    <Story>{data.contents}</Story>
+                    <hr />
+                  </Contents>
+                )
+              })}
           </Scrollbars>
         </DjMain>
       ) : (
@@ -244,7 +131,7 @@ export default props => {
               <Counter>{count} / 100</Counter>
             </div>
           </ListenerMain>
-          <LButton title={'등록하기'} />
+          <LButton title={'등록하기'} background={'#8556f6'} clickEvent={() => writeStory()} />
         </>
       )}
     </Container>
