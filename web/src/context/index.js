@@ -78,8 +78,8 @@ const GlobalProvider = props => {
       setMypage(mypage => ({...mypage, ...obj}))
     },
     //팝업컨텐츠
-    updatePopup: str => {
-      setPopup(str)
+    updatePopup: (str, terms) => {
+      setPopup([str, terms])
       //팝업
       setVisible(true)
     },
