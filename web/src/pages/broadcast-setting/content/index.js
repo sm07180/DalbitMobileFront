@@ -22,6 +22,17 @@ let drawId = null
 export default props => {
   //context
   const context = useContext(Context)
+  // const al = () => {
+  //   context.action.updatePopup({
+  //     msg: `저작권자의 허락을 받지 않고
+  //   저작재산권 또는 저작인격권을
+  //   침해하는 방법으로 저작물을
+  //   이용하는 행위를 할 경우,
+  //   저작권법 136조 제1항 제1호
+  //   위반으로 형사처벌 대상이 될 수
+  //   있습니다.`
+  //   })
+  // }
 
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
@@ -196,14 +207,20 @@ export default props => {
   /**
    * volume state
    */
-  const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
   const [audioPass, setAudioPass] = useState(false)
 
-  const detectAudioDevice = () => {
+  const detectAudioDevice = async () => {
+    const device = await getAudioDeviceCheck()
+    setAudioPass(false)
+    setAudioVolume(0)
     clearInterval(drawId)
-    infiniteAudioChecker()
+    console.log('detect', device)
+
+    if (device) {
+      await infiniteAudioChecker()
+    }
   }
 
   const infiniteAudioChecker = async () => {
@@ -222,7 +239,6 @@ export default props => {
 
     const volumeCheck = () => {
       const db = getDecibel(analyser)
-
       if (db <= 1) {
         setAudioVolume(0)
       } else if (db !== audioVolume) {
@@ -236,16 +252,15 @@ export default props => {
     drawId = setInterval(volumeCheck)
   }
 
-  if (mediaHandler && !audioSetting) {
+  // init
+  if (!drawId) {
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
-    setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
 
-      if (!device) {
-        context.action.updatePopup('CAST')
-      } else {
+      if (device) {
         await infiniteAudioChecker()
+      } else {
       }
     })()
   }
