@@ -8,6 +8,7 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLO
 //context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
+
 //hooks
 import useChange from 'components/hooks/useChange'
 //components
@@ -15,24 +16,39 @@ import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
+//import {visible} from 'ansi-colors'
 
 let audioStream = null
 let drawId = null
 
 export default props => {
-  //context
   const context = useContext(Context)
+
+  //context
+  const element = `
+  <div>마이크 연결이 안되어있습니다.</div>
+ 
+  `
+  //방생성 얼러트
   // const al = () => {
-  //   context.action.updatePopup({
-  //     msg: `저작권자의 허락을 받지 않고
-  //   저작재산권 또는 저작인격권을
-  //   침해하는 방법으로 저작물을
-  //   이용하는 행위를 할 경우,
-  //   저작권법 136조 제1항 제1호
-  //   위반으로 형사처벌 대상이 될 수
-  //   있습니다.`
+  //   context.action.alert({
+  //     msg: element,
+  //     title: '마이크 연결 에러!',
+
+  //     callback: () => {
+  //       props.history.push('/')
+  // setTimeout(() => {
+  //   context.action.alert({visible: false})
+  // }, 1)
+  // context.action.alert({visible: false})
+  //context.message.visible = true
+  //  e.preventdefault()
+  //     }
   //   })
   // }
+  // useEffect(() => {
+  //   console.log(context)
+  // }, [])
 
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
@@ -261,6 +277,19 @@ export default props => {
       if (device) {
         await infiniteAudioChecker()
       } else {
+        context.action.alert({
+          msg: element,
+          title: '마이크 연결 에러!',
+          callback: () => {
+            props.history.push('/')
+            // setTimeout(() => {
+            //   context.action.alert({visible: false})
+            // }, 1)
+            context.action.alert({visible: false})
+            //context.message.visible = true
+            //  e.preventdefault()
+          }
+        })
       }
     })()
   }
