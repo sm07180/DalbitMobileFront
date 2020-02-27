@@ -8,7 +8,10 @@ const fs = require('fs')
 
 module.exports = (env, options) => {
   const config = {
-    entry: './src/index.js',
+    entry: {
+      app: './src/index.js',
+      vendor: ['react', 'react-dom', 'react-router-dom']
+    },
     output: {
       path: path.resolve(__dirname, 'dist'),
       publicPath: '/dist/',
@@ -101,7 +104,6 @@ module.exports = (env, options) => {
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-        title: 'Development',
         showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
       new MiniCssExtractPlugin({
@@ -113,8 +115,8 @@ module.exports = (env, options) => {
     config.output = {
       path: path.resolve(__dirname),
       publicPath: '/',
-      filename: 'bundle.js',
-      chunkFilename: 'bundle.js'
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[chunkhash].js'
     }
   } else {
     config.plugins = [
