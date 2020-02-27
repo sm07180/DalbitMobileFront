@@ -46,19 +46,19 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, roomRole, bjProfImg} = state
+  const {bjStreamId, auth, bjProfImg} = state
 
   const startPlayer = () => {
-    if (roomRole === hostRole) {
+    if (auth === hostRole) {
       setPublishStatus(true)
-    } else if (roomRole === listenerRole) {
+    } else if (auth === listenerRole) {
       setPlayStatus(true)
     }
   }
   const stopPlayer = () => {
-    if (roomRole === hostRole) {
+    if (auth === hostRole) {
       setPublishStatus(false)
-    } else if (roomRole === listenerRole) {
+    } else if (auth === listenerRole) {
       setPlayStatus(false)
     }
   }
@@ -82,10 +82,10 @@ export default props => {
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
 
-      if (roomRole === hostRole) {
+      if (auth === hostRole) {
         mediaHandler.setType('host')
         // mediaHandler.setPublishToken(pubToken)
-      } else if (roomRole === listenerRole) {
+      } else if (auth === listenerRole) {
         mediaHandler.setType('listener')
       }
     }
@@ -154,7 +154,7 @@ export default props => {
 
         <SideContent {...props}>{/* <Charge /> */}</SideContent>
       </Side>
-      {roomRole === hostRole ? (
+      {auth === hostRole ? (
         <AudioWrap>
           <h1>Host BJ</h1>
           <div>Stream ID : {bjStreamId}</div>

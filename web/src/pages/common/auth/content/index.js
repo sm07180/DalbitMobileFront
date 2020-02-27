@@ -35,7 +35,8 @@ export default props => {
   //useState
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: ''})
+
   //const [changes, setChanges] = useState({})
   let loginId = '',
     loginName = '',
@@ -91,6 +92,8 @@ export default props => {
         }
         break
     }
+
+    loginId = loginId.replace(/-/g, '')
 
     const res = await Api.member_login({
       data: {
@@ -320,7 +323,18 @@ export default props => {
         </Logo>
       )}
       <LoginInput>
-        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} autoFocus />
+        <input
+          type="text"
+          name="phone"
+          placeholder="전화번호"
+          onChange={e => {
+            const value = Utility.phoneAddHypen(event.target.value)
+            setChanges({...changes, phone: value})
+          }}
+          value={changes.phone}
+          autoFocus
+          maxLength={13}
+        />
         <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} onKeyPress={() => pwdEnterkeyHandle(event)} />
       </LoginInput>
       <LoginSubmit

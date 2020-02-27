@@ -8,6 +8,7 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLO
 //context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
+
 //hooks
 import useChange from 'components/hooks/useChange'
 //components
@@ -15,13 +16,39 @@ import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
+//import {visible} from 'ansi-colors'
 
 let audioStream = null
 let drawId = null
 
 export default props => {
-  //context
   const context = useContext(Context)
+
+  //context
+  const element = `
+  <div>마이크 연결이 안되어있습니다.</div>
+ 
+  `
+  //방생성 얼러트
+  // const al = () => {
+  //   context.action.alert({
+  //     msg: element,
+  //     title: '마이크 연결 에러!',
+
+  //     callback: () => {
+  //       props.history.push('/')
+  // setTimeout(() => {
+  //   context.action.alert({visible: false})
+  // }, 1)
+  // context.action.alert({visible: false})
+  //context.message.visible = true
+  //  e.preventdefault()
+  //     }
+  //   })
+  // }
+  // useEffect(() => {
+  //   console.log(context)
+  // }, [])
 
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
@@ -196,14 +223,20 @@ export default props => {
   /**
    * volume state
    */
-  const {mediaHandler} = context
   const [audioVolume, setAudioVolume] = useState(0)
   const [audioSetting, setAudioSetting] = useState(false)
   const [audioPass, setAudioPass] = useState(false)
 
-  const detectAudioDevice = () => {
+  const detectAudioDevice = async () => {
+    const device = await getAudioDeviceCheck()
+    setAudioPass(false)
+    setAudioVolume(0)
     clearInterval(drawId)
-    infiniteAudioChecker()
+    console.log('detect', device)
+
+    if (device) {
+      await infiniteAudioChecker()
+    }
   }
 
   const infiniteAudioChecker = async () => {
@@ -222,7 +255,6 @@ export default props => {
 
     const volumeCheck = () => {
       const db = getDecibel(analyser)
-
       if (db <= 1) {
         setAudioVolume(0)
       } else if (db !== audioVolume) {
@@ -236,16 +268,28 @@ export default props => {
     drawId = setInterval(volumeCheck)
   }
 
-  if (mediaHandler && !audioSetting) {
+  // init
+  if (!drawId) {
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
-    setAudioSetting(true)
     ;(async () => {
       const device = await getAudioDeviceCheck()
 
-      if (!device) {
-        context.action.updatePopup('CAST')
-      } else {
+      if (device) {
         await infiniteAudioChecker()
+      } else {
+        context.action.alert({
+          msg: element,
+          title: '마이크 연결 에러!',
+          callback: () => {
+            props.history.push('/')
+            // setTimeout(() => {
+            //   context.action.alert({visible: false})
+            // }, 1)
+            context.action.alert({visible: false})
+            //context.message.visible = true
+            //  e.preventdefault()
+          }
+        })
       }
     })()
   }
