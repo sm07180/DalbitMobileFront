@@ -85,7 +85,7 @@ module.exports = (env, options) => {
     config.devtool = 'source-map'
     config.devServer = {
       hot: true,
-      contentBase: path.resolve('./dist'),
+      contentBase: path.resolve('./'),
       index: 'index.html',
       port: 443,
       host: '0.0.0.0',
@@ -111,7 +111,7 @@ module.exports = (env, options) => {
     ]
 
     config.output = {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname),
       publicPath: '/',
       filename: 'bundle.js',
       chunkFilename: 'bundle.js'
