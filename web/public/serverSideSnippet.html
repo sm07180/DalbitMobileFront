@@ -1,0 +1,3 @@
+<textarea name="authToken" id="authToken" style="display:none;"><%=request.getHeader("authToken") == null ? "" : request.getHeader("authToken") %></textarea>
+<textarea name="customHeader" id="customHeader" style="display:none;"><%=request.getHeader("custom-header") == null ? "" : java.net.URLDecoder.decode(request.getHeader("custom-header")) %></textarea>
+<textarea name="redirectUrl" id="redirectUrl" style="display:none;"><%=request.getHeader("redirectUrl") == null ? (response.getHeader("redirectUrl") == null ? "" : java.net.URLDecoder.decode(response.getHeader("redirectUrl"))) : java.net.URLDecoder.decode(request.getHeader("redirectUrl")) %></textarea>

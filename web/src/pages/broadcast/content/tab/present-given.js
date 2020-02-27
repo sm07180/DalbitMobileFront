@@ -4,6 +4,7 @@ import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Api from 'context/api'
 import {Context} from 'context'
+import {BroadCastStore} from '../../store'
 
 const totalCnt = 42
 const totalGold = 7800
@@ -169,12 +170,14 @@ const test = {totalCnt: totalCnt, totalGold: totalGold, list: list}
 export default props => {
   //--------------------------------------------------- declare start
   const [secretYn, setSecret] = useState(false)
+  const [givenData, setGivenData] = useState([])
   const scrollbars = useRef(null)
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //--------------------------------------------------- func start
 
   async function fetchData() {
-    const roomNo = history.state.state.roomNo
+    const roomNo = store.roomInfo.roomNo
     const res = await Api.broadcast_room_received_gift_history({
       params: {
         roomNo: roomNo.toString(),
@@ -183,11 +186,21 @@ export default props => {
       }
     })
     console.log('## res : ', res)
+    if (res.result != 'fail') {
+      setGivenData(res)
+    }
+  }
+
+  async function test() {
+    const res = await Api.splash({})
+    console.log('## splash :', res)
   }
 
   useEffect(() => {
     fetchData()
+    test()
   }, [])
+  console.log('## givenData :', givenData)
   //--------------------------------------------------- components start
   return (
     <Container>
@@ -196,17 +209,41 @@ export default props => {
       <Info>
         <GivenThings>
           <span>받은 수</span>
-          <span className="count">{totalCnt}</span>
+          <span className="count">{givenData.totalCnt ? givenData.totalCnt : 0}</span>
         </GivenThings>
         <span className="separator">|</span>
         <GivenThings>
           <span>받은 골드</span>
-          <span className="count">{totalGold}</span>
+          <span className="count">{givenData.totalGold ? givenData.totalGold : 0}</span>
         </GivenThings>
       </Info>
       <History>
         <Scrollbars ref={scrollbars} style={{height: '100%'}} autoHide>
-          {test.list.map((data, idx) => {
+          {givenData.length > 0 &&
+            givenData.list.map((data, idx) => {
+              return (
+                <Contents key={idx}>
+                  <UserInfo>
+                    <Img />
+                    <div className="user">
+                      <div>{data.nickNm}</div>
+                      <span>{data.giftDt}</span>
+                    </div>
+                  </UserInfo>
+                  <ItemInfo>
+                    <div className="item">
+                      {data.isSecret && <Secret>몰래</Secret>}
+                      <span>{data.itemNm}</span>
+                    </div>
+
+                    <div className="gold">
+                      <span>골드 {data.gold}</span>
+                    </div>
+                  </ItemInfo>
+                </Contents>
+              )
+            })}
+          {/* {givenData.list.map((data, idx) => {
             return (
               <Contents key={idx}>
                 <UserInfo>
@@ -228,7 +265,7 @@ export default props => {
                 </ItemInfo>
               </Contents>
             )
-          })}
+          })} */}
           {/* <Contents>
             <UserInfo>
               <Img />

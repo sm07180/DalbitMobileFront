@@ -21,7 +21,6 @@ import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
-import {signInWithGoogle, auth} from 'components/lib/firebase.utils'
 
 const sc = require('context/socketCluster')
 //import FacebookLogin from 'pages/common/auth/fbAuth'
@@ -36,7 +35,8 @@ export default props => {
   //useState
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: ''})
+
   //const [changes, setChanges] = useState({})
   let loginId = '',
     loginName = '',
@@ -92,6 +92,8 @@ export default props => {
         }
         break
     }
+
+    loginId = loginId.replace(/-/g, '')
 
     const res = await Api.member_login({
       data: {
@@ -321,7 +323,18 @@ export default props => {
         </Logo>
       )}
       <LoginInput>
-        <input type="text" name="phone" placeholder="전화번호" onChange={onChange} autoFocus />
+        <input
+          type="text"
+          name="phone"
+          placeholder="전화번호"
+          onChange={e => {
+            const value = Utility.phoneAddHypen(event.target.value)
+            setChanges({...changes, phone: value})
+          }}
+          value={changes.phone}
+          autoFocus
+          maxLength={13}
+        />
         <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} onKeyPress={() => pwdEnterkeyHandle(event)} />
       </LoginInput>
       <LoginSubmit
@@ -351,6 +364,7 @@ export default props => {
         </div>
       </ButtonArea>
 
+      {/* 현재 소셜로그인쪽 display:none; */}
       <SocialLogin>
         <FacebookLogin
           appId="2711342585755275"
@@ -448,9 +462,12 @@ const LoginSubmit = styled.button`
 
 const ButtonArea = styled.div`
   margin-top: 20px;
+  padding-bottom: 10px;
   label {
     padding-left: 5px;
-    color: #555;
+    color: #757575;
+    line-height: 24px;
+    vertical-align: top;
   }
   div {
     float: right;
@@ -466,9 +483,24 @@ const ButtonArea = styled.div`
       content: '';
     }
   }
+  input[type='checkbox'] {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin: 0 8px 0 0;
+    appearance: none;
+    border: none;
+    outline: none;
+    /* cursor: pointer; */
+    background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
+    &:checked {
+      background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+    }
+  }
 `
 
 const SocialLogin = styled.div`
+  display: none;
   margin: 30px 0 0 0;
   div {
     float: left;

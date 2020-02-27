@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 //components
+import Utility from 'components/lib/utility'
 import Datepicker from './style-datepicker'
 //import Button from './style-button'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -164,7 +165,8 @@ const JoinForm = props => {
 
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
-    let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    const loginIdVal = Utility.phoneAddHypen(idEntered)
     setChanges({
       ...changes,
       loginID: loginIdVal
@@ -266,10 +268,11 @@ const JoinForm = props => {
     }
 
     //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
+    const loginID = changes.loginID.replace(/-/g, '')
     const res = await Api.member_join({
       data: {
         memType: changes.memType,
-        memId: changes.loginID,
+        memId: loginID,
         memPwd: changes.loginPwd,
         gender: changes.gender,
         nickNm: changes.loginNickNm,
@@ -496,7 +499,7 @@ const JoinForm = props => {
         {changes.memType == 'p' && (
           <>
             <PhoneAuth>
-              <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="11" />
+              <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
               <button disabled={!validate.loginID}>인증요청</button>
             </PhoneAuth>
             <PhoneAuth>

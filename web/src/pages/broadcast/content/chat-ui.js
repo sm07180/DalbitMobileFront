@@ -22,10 +22,10 @@ export default props => {
   const [comments, setComments] = useState([])
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
+  const [child, setChild] = useState() // 메세지 children
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
-  const wrap = useRef(null)
 
   //---------------------------------------------------------------------
   //function
@@ -41,18 +41,22 @@ export default props => {
       }
     }
   }
-  //채팅창 마우스 휠 작동시
-  const handleOnWheel = () => {
-    setCheckMove(true)
+
+  //스크롤
+  const handleOnWheel = e => {
+    const top = scrollbars.current.getValues().top
+    if (top < 1) {
+      // 스크롤 위로 작동
+      setCheckMove(true)
+    } else if (top == 1 || top == 0) {
+      // 스크롤 없거나 바텀 찍었음
+      setCheckMove(false)
+    }
   }
 
   //채팅창 리스트가 업데이트 되었을때
   const scrollOnUpdate = e => {
-    //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
-    chatArea.current.children[0].children[0].style.maxHeight = `calc(${chatArea.current.offsetHeight}px + 17px)`
-    if (!checkMove) {
-      scrollbars.current.scrollToBottom()
-    }
+    setChild(scrollbars.current.props.children)
   }
 
   let msgData = []
@@ -76,13 +80,20 @@ export default props => {
     })
   }, [])
 
+  useEffect(() => {
+    chatArea.current.children[0].children[0].style.maxHeight = `calc(${chatArea.current.offsetHeight}px + 17px)`
+    if (!checkMove) {
+      scrollbars.current.scrollToBottom()
+    }
+  }, [child])
+
   //---------------------------------------------------------------------
   return (
     <Content bgImg={roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} />
-      <CommentList className="scroll" onWheel={handleOnWheel} ref={chatArea}>
-        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
+      <CommentList className="scroll" ref={chatArea}>
+        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} onScrollStop={handleOnWheel} autoHide>
           {comments}
         </Scrollbars>
       </CommentList>

@@ -653,6 +653,33 @@ export default class API {
     return await ajax({...obj, url: url || '/broad/history', method: method || 'GET', params: params})
   }
 
+  /**
+   * @brief 공통정보 조회하기
+   * @create 최우정 2020.02.26
+   */
+  static splash = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({url: url || '/splash', method: method || 'GET'})
+  }
+
+  /**
+   * @brief 방송방 순위, 부스트 사용한황 조회 * 현재 부스트 tab에서 사용 중(임시) 방송방 진입 시 가져와야 할 듯
+   * @create 최우정 2020.02.26
+   */
+  static broadcast_room_live_ranking_select = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || '/broad/boost', method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 방송방 부스트 사용하기
+   * @create 최우정 2020.02.26
+   */
+  static broadcast_room_use_item = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || '/broad/boost', method: method || 'POST', data: data})
+  }
+
   //-------------------------------------------------------------
 }
 
@@ -670,7 +697,6 @@ export const ajax = async obj => {
       formData.append('imageURL', '')
       formData.append('uploadType', data.uploadType)
     }
-
     const dataType = url === '/upload' ? formData : qs.stringify(data)
     let res = await axios({
       method: method,
@@ -683,6 +709,7 @@ export const ajax = async obj => {
       params: params,
       data: dataType
     })
+
     // table 모양 로그출력
     //console.table(res.data)
     // string 로그출력

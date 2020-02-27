@@ -3,51 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- 나눔스퀘어폰트embed -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css" />
     <title>INFOREX-FRONTEND</title>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
-    <script>
-      var naverLogin = new naver.LoginWithNaverId({
-        clientId: 'WK0ohRsfYc9aBhZkyApJ',
-        callbackUrl: 'https://devm-hgkim1118.dalbitcast.com',
-        isPopup: false,
-        loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */,
-        callbackHandle: false
-        /* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
-      })
-
-      /* (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 */
-      //naverLogin.init()
-    </script>
-    <script>
-      /**
-       * App -> React sampleCode
-       * @params "detail" 속성으로 전달
-       */
-      function native() {
-        document.dispatchEvent(
-          new CustomEvent('native-goLogin', {
-            detail: {title: 'text', auth: '111112222CCCCCDDDDD'}
-          })
-        )
-        return true
-        //document.dispatchEvent(new Event('REACT-callback'))
-      }
-    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/7.9.1/firebase-analytics.js"></script>
+    <script type="text/javascript" src="/dist/js/firebaseInit.js"></script>
+    <script type="text/javascript" src="/dist/js/reactSampleCode.js" charset="utf-8"></script>
   </head>
   <body>
-    <!-- 
-    APP->REACT로 초기 랜더링시 전달해주는값     
-    @notice  <div id="root"></div> 앞에 전달되어야함
-    @위의코드는 서버에서 내려주고있음
-    -->
-    <!-- <textarea name="customHeader" id="customHeader" style="display:none;">
-        { "locale" : "KR", "deviceId" : "5E5D8EE5-FC84-40BE-84D7-73598ABC9FEB", "os" : "2", "language" : "ko", "deviceToken" : "d6ZW5ZHyEUI9qVeLhXyItO:APA91bH4hFV0H4pWv6CIvT2LAUVwfiHKeVos0rbSZE8x4DTmkbxns9XwP6f3t_qXEkaHWxvJtpO6hTAaNzFtY59l5pG1Rv_Rt0zBD5C1paVnrgFavJOGBgeUJ2rDsElEPI9deFVsj2WV" }</textarea
-    > -->
-    <!-- <textarea name="authToken" id="authToken" style="display:none;"></textarea>
-    <textarea name="customHeader" id="customHeader" style="display:none;"></textarea> -->
     <div id="root"></div>
   </body>
 </html>

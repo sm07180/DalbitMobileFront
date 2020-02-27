@@ -6,71 +6,59 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
 //components--------------------------------------------------
-import Events from './listener-event'
+
 export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
-  const [eventCheck, setEventCheck] = useState(false)
 
-  const [listenTrues, setListenTrues] = useState(false)
-  //클릭visibility function
-  // const ToggleEvent = () => {
-  //   if (trues === false) {
-  //     setTrues(true)
-  //   } else {
-  //     setTrues(false)
-  //   }
-  // }
-
-  // //클릭 bg visibility function
-  // const AllFalse = () => {
-  //   setTrues(false)
-  // }
+  const [checkVisibility, SetcheckVisibility] = useState(false)
 
   //----------------------------------------------------------------
 
   //클릭 이벤트
   const ToggleEvent = () => {
-    if (eventCheck === false) {
-      setListenTrues(true)
+    if (checkVisibility === false) {
+      SetcheckVisibility(true)
     } else {
-      setListenTrues(false)
+      SetcheckVisibility(false)
     }
   }
   const AllFalse = () => {
-    setListenTrues(false)
+    SetcheckVisibility(false)
   }
-
   //render------------------------------------------------------------
   //----------------------------------------------------------------
   useEffect(() => {}, [])
 
   return (
     <Wrapper>
-      <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
-      {listenTrues && <Events onClick={AllFalse} />}
-      <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
+      <EVENTBTN value={checkVisibility} onClick={ToggleEvent}></EVENTBTN>
+      {/* {checkVisibility}
+      임시로 백그라운트 클릭이나 소규모 팝업생성했었는데 컨텍스트 레이어팝업 확정된거같아 이벤트 뺴놓습니다
+      
+      <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} /> */}
     </Wrapper>
   )
 }
 //----------------------------------------------------------------
 //style
 const Wrapper = styled.div`
-  margin-top: 20px;
   float: right;
+  width: 40px;
+  height: 40px;
   position: relative;
 `
 //이벤트버튼
 const EVENTBTN = styled.button`
   position: absolute;
   right: 16px;
-  top: 0;
-  width: 36px;
-  height: 36px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
   transform: translateY(-50%);
-  background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
+  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
   outline: none;
 `
 //클릭 배경 가상요소
@@ -88,3 +76,13 @@ const BackGround = styled.div`
     z-index: 2;
   }
 `
+// const EVENTBTN = styled.button`
+//   position: absolute;
+//   right: 16px;
+//   top: 50%;
+//   width: 36px;
+//   height: 36px;
+//   transform: translateY(-50%);
+//   background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
+//   outline: none;
+// `

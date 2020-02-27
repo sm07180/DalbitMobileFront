@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import Navi from './navibar'
 import {LButton} from './bot-button'
 import Api from 'context/api'
+import {BroadCastStore} from '../../store'
+import {Context} from 'context'
 
 const testData = [
   {
@@ -28,6 +30,8 @@ export default props => {
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
   const [shortcut, setShortcut] = useState([])
+  const store = useContext(BroadCastStore)
+  const context = useContext(Context)
   //------------------------------------------------------ func start
 
   //빠른 말 수정/저장
@@ -53,14 +57,20 @@ export default props => {
       method: 'GET'
     })
 
-    if (res.result === 'success') setShortcut(res.data)
-    console.log('## res :', res)
+    if (res.result === 'success') {
+      store.action.updateShortCutList(res.data)
+      setShortcut(res.data)
+    }
+    console.log('## member_broadcast_shortcut :', res)
   }
 
   useEffect(() => {
     console.log('## useEffect')
+    console.log('## store.shortCutList :', store.shortCutList)
     selectShortcut()
   }, [])
+  console.log('## store : ', store)
+  console.log('## context :', context)
   //------------------------------------------------------ components start
   return (
     <Container>

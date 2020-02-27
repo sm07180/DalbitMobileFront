@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {Img} from './profileImg'
 import Util from '../../util/broadcast-util'
-
+import BroadContext from '../../store'
 const list = [
   {
     storyIdx: 25,
@@ -148,15 +148,23 @@ export default props => {
   const [type, setType] = useState(true)
   const context = useContext(Context)
   const scrollbars = useRef(null)
+  const [now, setNow] = useState()
   //----------------------------------------------- func start
 
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
-    console.log('# value', value)
-    console.log('# count', count)
 
     setCount(value.length)
     setText(value)
+  }
+
+  const refresh = () => {
+    let d = new Date()
+    let now
+    now = d.getHours() + ':'
+    now += d.getMinutes() + ':'
+    now += d.getSeconds().toString().length > 1 ? d.getSeconds() : '0' + d.getSeconds()
+    setNow(now)
   }
 
   // const _include = (obj, el) => {
@@ -185,7 +193,9 @@ export default props => {
 
   useEffect(() => {
     console.log('## context : ', context)
+    refresh()
   }, [])
+
   //----------------------------------------------- components start
   return (
     <Container>
@@ -194,8 +204,8 @@ export default props => {
         <DjMain>
           <div className="topBar">
             <div className="refresh">
-              <button />
-              <span>17:45:20</span>
+              <button onClick={() => refresh()} />
+              <span>{now}</span>
             </div>
             <Count>사연수 : {test.list.length}개</Count>
           </div>
