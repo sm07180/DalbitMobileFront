@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import Api from 'context/api'
 
 //context
+import Utility from 'components/lib/utility'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -131,7 +132,8 @@ const User = props => {
 
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
-    let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    const loginIdVal = Utility.phoneAddHypen(idEntered)
     setChanges({
       ...changes,
       loginID: loginIdVal
@@ -163,9 +165,10 @@ const User = props => {
   //fetchData
   async function fetchData() {
     console.log('버튼 클릭 후 props= ' + JSON.stringify(changes))
+    const loginID = changes.loginID.replace(/-/g, '')
     const res = await Api.password_modify({
       data: {
-        memId: changes.loginID,
+        memId: loginID,
         memPwd: changes.loginPwd
       }
     })
@@ -188,7 +191,7 @@ const User = props => {
       <Title>비밀번호 변경</Title>
       <FormWrap>
         <PhoneAuth>
-          <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="11" />
+          <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
           <button disabled={!validate.loginID}>인증요청</button>
         </PhoneAuth>
         <PhoneAuth>

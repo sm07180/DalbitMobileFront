@@ -2,6 +2,7 @@
  * @title 청취자
  */
 import React, {useState, useEffect, useContext} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
@@ -58,7 +59,7 @@ const EVENTBTN = styled.button`
   width: 18px;
   height: 18px;
   transform: translateY(-50%);
-  background: url('https://devimage.dalbitcast.com/images/api/ic_close_round.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/ic_close_round.png) no-repeat center center / cover;
   outline: none;
 `
 //클릭 배경 가상요소

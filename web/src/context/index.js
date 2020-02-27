@@ -78,8 +78,8 @@ const GlobalProvider = props => {
       setMypage(mypage => ({...mypage, ...obj}))
     },
     //팝업컨텐츠
-    updatePopup: str => {
-      setPopup(str)
+    updatePopup: (str, terms) => {
+      setPopup([str, terms])
       //팝업
       setVisible(true)
     },
@@ -127,7 +127,11 @@ const GlobalProvider = props => {
     updateMediaHandler: instance => {
       setMediaHandler(instance)
     },
-    // 오디오 글로벌 플레이어 상태
+
+    /**
+     * 오디오 글로벌 플레이어 상태
+     * @param boolean status
+     */
     updateMediaPlayerStatus: status => {
       setMediaPlayerStatus(status)
     }

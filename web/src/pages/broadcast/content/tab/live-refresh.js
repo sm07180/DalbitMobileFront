@@ -2,6 +2,7 @@
  * @title 라이브탭 컨텐츠 -refresh button
  */
 import React, {useState} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 export default props => {
   //------------------------------------------------------------------
@@ -25,7 +26,7 @@ const Wrap = styled.div`
     display: inline-block;
     width: 18px;
     height: 18px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_refresh.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_refresh.png) no-repeat center center / cover;
   }
   & p {
     margin-left: 6px;

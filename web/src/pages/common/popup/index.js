@@ -11,6 +11,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //contents
 import Auth from 'pages/common/auth'
+import Terms from 'pages/common/terms'
 
 //
 export default props => {
@@ -18,9 +19,21 @@ export default props => {
   const context = useContext(Context)
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
-    switch (context.popup_code) {
+    switch (context.popup_code[0]) {
       case 'LOGIN': //---------------------------------------로그인
         return <Auth {...props} />
+      case 'TERMS': //---------------------------------------이용약관
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <Terms {...props} />
+          </>
+        )
       default:
         return <div>팝업 컨텐츠가 정의되지않음</div>
     }
@@ -35,7 +48,7 @@ export default props => {
     <Popup>
       {context.popup_visible && (
         <Container>
-          <Wrap>{makePopupContents()}</Wrap>
+          <Wrap className={context.popup_code[0] == 'TERMS' ? 'round' : 'square'}>{makePopupContents()}</Wrap>
           <Background
             onClick={() => {
               context.action.updatePopupVisible(false)
@@ -65,12 +78,36 @@ const Container = styled.div`
   }
 `
 const Wrap = styled.div`
+  position: relative;
   width: 500px;
   padding: 50px 40px;
   background: #fff;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
     padding: 40px 5%;
+  }
+
+  &.round {
+    width: 450px;
+    padding: 30px 0;
+    height: 80%;
+    max-height: auto;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 80%;
+    }
+  }
+
+  & > button {
+    display: inline-block;
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    top: -35px;
+    right: -12px;
+    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+    text-indent: -9999px;
   }
 `
 const Background = styled.div`

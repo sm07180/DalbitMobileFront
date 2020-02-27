@@ -28,13 +28,28 @@ export default props => {
     <Footer className={context.state.isOnCast ? 'on-cast' : 'off-cast'}>
       {show && (
         <Menu>
-          <a href="/guide">회사 소개</a>
-          <a href="#">서비스 소개</a>
-          <a href="#">인재채용</a>
-          <a href="#">개인정보 처리방침</a>
-          <a href="#">서비스 이용약관</a>
-          <a href="#">청소년 보호정책</a>
-          <a href="#">운영정책</a>
+          <button
+            onClick={() => {
+              props.history.push('/guide')
+            }}>
+            회사 소개
+          </button>
+          <button>서비스 소개</button>
+          <button>인재채용</button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'privacy')
+            }}>
+            개인정보 처리방침
+          </button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'service')
+            }}>
+            서비스 이용약관
+          </button>
+          <button>청소년 보호정책</button>
+          <button>운영정책</button>
         </Menu>
       )}
       <Info>
@@ -76,7 +91,7 @@ const Menu = styled.div`
   border-top: 1px solid #8556f6;
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 0;
-  a {
+  button {
     display: inline-block;
     margin-right: 10px;
     padding: 5px;

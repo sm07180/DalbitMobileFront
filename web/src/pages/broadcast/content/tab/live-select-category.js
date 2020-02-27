@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
   //------------------------------------------------------------------
   //0.케테고리맵..배열 호출 state---------------------------------------
@@ -58,7 +58,7 @@ const Select = styled.div`
   width: 33.33%;
   margin-right: 18px;
   position: relative;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_arrow_down_color.png') no-repeat center right;
+  background: url(${IMG_SERVER}/images/api/ic_arrow_down_color.png) no-repeat center right;
   cursor: pointer;
   & h2 {
     padding-right: 24px;

@@ -8,7 +8,6 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLO
 //context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
-
 //hooks
 import useChange from 'components/hooks/useChange'
 //components
@@ -16,40 +15,16 @@ import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
-//import {visible} from 'ansi-colors'
-
+//
 let audioStream = null
 let drawId = null
-
 export default props => {
   const context = useContext(Context)
-
   //context
+  //context 얼러트창 text
   const element = `
   <div>마이크 연결이 안되어있습니다.</div>
- 
   `
-  //방생성 얼러트
-  // const al = () => {
-  //   context.action.alert({
-  //     msg: element,
-  //     title: '마이크 연결 에러!',
-
-  //     callback: () => {
-  //       props.history.push('/')
-  // setTimeout(() => {
-  //   context.action.alert({visible: false})
-  // }, 1)
-  // context.action.alert({visible: false})
-  //context.message.visible = true
-  //  e.preventdefault()
-  //     }
-  //   })
-  // }
-  // useEffect(() => {
-  //   console.log(context)
-  // }, [])
-
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
@@ -224,16 +199,14 @@ export default props => {
    * volume state
    */
   const [audioVolume, setAudioVolume] = useState(0)
-  const [audioSetting, setAudioSetting] = useState(false)
   const [audioPass, setAudioPass] = useState(false)
 
   const detectAudioDevice = async () => {
-    const device = await getAudioDeviceCheck()
     setAudioPass(false)
     setAudioVolume(0)
     clearInterval(drawId)
-    console.log('detect', device)
 
+    const device = await getAudioDeviceCheck()
     if (device) {
       await infiniteAudioChecker()
     }
@@ -270,24 +243,20 @@ export default props => {
 
   // init
   if (!drawId) {
+    console.log(drawId)
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     ;(async () => {
       const device = await getAudioDeviceCheck()
-
       if (device) {
         await infiniteAudioChecker()
       } else {
+        drawId = true
         context.action.alert({
           msg: element,
           title: '마이크 연결 에러!',
           callback: () => {
-            props.history.push('/')
-            // setTimeout(() => {
-            //   context.action.alert({visible: false})
-            // }, 1)
             context.action.alert({visible: false})
-            //context.message.visible = true
-            //  e.preventdefault()
+            props.history.push('/')
           }
         })
       }
@@ -650,9 +619,9 @@ const Icon = styled.em`
   float: left;
   width: 90px;
   height: 48px;
-  background: url('http://www.hwangsh.com/img/came.png') no-repeat center / cover;
+  background: url(${IMG_SERVER}/images/api/came.png) no-repeat center / cover;
   &.on {
-    background: url('http://www.hwangsh.com/img/cameraon.png') no-repeat center / cover;
+    background: url(${IMG_SERVER}/images/api/cameraon.png) no-repeat center / cover;
   }
 `
 const BroadTitle = styled.div`
@@ -723,7 +692,7 @@ const CopyrightIcon = styled.div`
   float: right;
   width: 102px;
   height: 16px;
-  background: url('https://devimage.dalbitcast.com/images/api/copyright.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/copyright.png) no-repeat center center / cover;
   margin: 47px 0 15px 0;
 `
 const CreateBtn = styled.button`

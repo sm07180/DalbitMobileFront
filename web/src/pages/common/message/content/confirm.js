@@ -58,10 +58,10 @@ export default props => {
       </div>
       <div className="wrap-btn">
         <button className="cancel" {...cancel}>
-          취소하기
+          취소
         </button>
         <button className="confirm" {...confirm}>
-          확인하기
+          확인
         </button>
       </div>
     </Alert>
@@ -95,13 +95,11 @@ const Alert = styled.section`
   .msg {
     padding: 62px 63px;
     font-size: 16px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.71;
     letter-spacing: -0.35px;
     word-break: break-all;
     text-align: center;
+    transform: skew(-0.03deg);
   }
 
   /* 버튼 */
@@ -130,6 +128,7 @@ const Close = styled.a`
   position: absolute;
   top: -35px;
   right: 0;
+  cursor: pointer;
   img {
     width: 36px;
     height: 36px;

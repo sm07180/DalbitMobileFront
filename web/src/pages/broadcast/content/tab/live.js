@@ -258,19 +258,19 @@ const NowpeopleIcon = styled.em`
   float: left;
   width: 24px;
   height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_headphone_s.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/ic_headphone_s.png) no-repeat center center / cover;
 `
 const LikeIcon = styled.em`
   float: left;
   width: 24px;
   height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_hearts_s.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/ic_hearts_s.png) no-repeat center center / cover;
 `
 const TotalpeopleIcon = styled.em`
   float: left;
   width: 24px;
   height: 24px;
-  background: url('http://www.hwangsh.com/img/ic_people.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/ic_people.png) no-repeat center center / cover;
 `
 //data---------------------------------------------------------------
 //셀렉트 가데이터(포푸러)
