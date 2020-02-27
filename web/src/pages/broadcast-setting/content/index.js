@@ -20,6 +20,7 @@ let audioStream = null
 let drawId = null
 export default props => {
   const context = useContext(Context)
+
   //context
   //context 얼러트창 text
   const element = `
