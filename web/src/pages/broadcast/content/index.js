@@ -74,8 +74,12 @@ export default props => {
     if (mediaHandler) {
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
-        mediaHandler.stop()
+        if (streamId !== this.streamId) {
+          mediaHandler.stop()
+        }
       }
+
+      mediaHandler.setContext = context
 
       if (bjProfImg) {
         mediaHandler.setHostImage(bjProfImg.url)
