@@ -36,7 +36,7 @@ export default props => {
   }
 
   useEffect(() => {
-    context.action.updatePopup('Charge')
+    context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
   }, [])
   //-------------------------------------------------------- components start

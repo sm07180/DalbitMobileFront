@@ -48,7 +48,16 @@ export default props => {
       method: 'POST'
     })
     console.log('## res :', res)
-    if (res.result === 'success') selectShortcut()
+    if (res.result === 'success') {
+      context.action.alert({
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: '빠른 말이 수정되었습니다.'
+      })
+      selectShortcut()
+    }
   }
 
   //빠른 말 조회 (TEST)
@@ -94,7 +103,7 @@ export default props => {
                 return (
                   <MacroLoop key={idx}>
                     <div className="key">{data.order}</div>
-                    <div className="value">{data.text.substring(0, 9)}</div>
+                    <div className="value">{data.text}</div>
                   </MacroLoop>
                 )
               })}

@@ -61,7 +61,16 @@ export default props => {
       method: 'POST'
     })
     console.log('## writeStory - res :', res)
-    if (res.result === 'success') selectStoryList()
+    if (res.result === 'success') {
+      context.action.alert({
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: '사연이 등록되었습니다.'
+      })
+      selectStoryList()
+    }
   }
 
   const deleteStory = async param => {

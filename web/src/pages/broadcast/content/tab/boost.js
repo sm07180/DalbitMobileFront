@@ -39,6 +39,13 @@ export default props => {
     })
     console.log('## res - useBoost :', res)
     store.action.initBoost(store.roomInfo.roomNo)
+    context.action.alert({
+      callback: () => {
+        console.log('callback처리')
+      },
+      title: '달빛라디오',
+      msg: '부스터가 사용되었습니다.'
+    })
   }
 
   //----------------------------------------------------- components start
