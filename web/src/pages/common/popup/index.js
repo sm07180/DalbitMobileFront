@@ -1,6 +1,7 @@
 /**
  * @file popup/index.js
- * @brief 로그인 팝업
+ * @brief 공통 팝업
+ * @use context.action.updatePopup('CHARGE')
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
@@ -11,10 +12,13 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //contents
 import Auth from 'pages/common/auth'
+import Charge from 'pages/broadcast/content/tab/charge-popup'
 import Terms from 'pages/common/terms'
 
 //
 export default props => {
+  //state
+  const [layout, setLayout] = useState('')
   //context
   const context = useContext(Context)
   //   레이어팝업컨텐츠
@@ -22,6 +26,18 @@ export default props => {
     switch (context.popup_code[0]) {
       case 'LOGIN': //---------------------------------------로그인
         return <Auth {...props} />
+      case 'CHARGE': //---------------------------------------충전
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <Charge {...props} />
+          </>
+        )
       case 'TERMS': //---------------------------------------이용약관
         return (
           <>
@@ -43,12 +59,22 @@ export default props => {
     context.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
   }, [context.popup_visible])
 
+  useEffect(() => {
+    if (context.popup_code[0] == 'TERMS') {
+      setLayout('round')
+    } else if (context.popup_code[0] == 'CHARGE') {
+      setLayout('round charge')
+    } else {
+      setLayout('square')
+    }
+  }, [context.popup_code])
+
   //---------------------------------------------------------------------
   return (
     <Popup>
       {context.popup_visible && (
         <Container>
-          <Wrap className={context.popup_code[0] == 'TERMS' ? 'round' : 'square'}>{makePopupContents()}</Wrap>
+          <Wrap className={layout}>{makePopupContents()}</Wrap>
           <Background
             onClick={() => {
               context.action.updatePopupVisible(false)
@@ -96,6 +122,15 @@ const Wrap = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 100%;
       max-height: 80%;
+    }
+    &.charge {
+      width: 340px;
+      max-height: 90%;
+      padding: 0;
+      height: auto;
+      @media (max-width: ${WIDTH_MOBILE_S}) {
+        width: 90%;
+      }
     }
   }
 
