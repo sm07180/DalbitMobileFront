@@ -46,8 +46,9 @@
   },
   "scripts": {
     "dev": "webpack && node jspGenerator.js",
-    "prod": "webpack --mode production && node jspGenerator.js",
-    "real": "webpack-dev-server --mode production && node jspGenerator.js",
+    "deploy": "webpack --env=deploy && node jspGenerator.js",
+    "prod": "webpack --env=deploy --mode production && node jspGenerator.js",
+    "real": "webpack --env=deploy --mode production && node jspGenerator.js",
     "start": "webpack-dev-server --mode development"
   },
   "eslintConfig": {

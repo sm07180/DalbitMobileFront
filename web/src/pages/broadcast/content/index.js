@@ -35,7 +35,6 @@ export default props => {
   })
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
-  const [timerFlag, setTimerFlag] = useState(false)
   const [myTimer, setMyTimer] = useState()
 
   const hostRole = 3
@@ -69,11 +68,18 @@ export default props => {
       context.action.updateState({isOnCast: false})
     }
   }, [])
+
+  // Media Handle Logic
   useEffect(() => {
     if (mediaHandler) {
+      // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
-        mediaHandler.stop()
+        if (streamId !== this.streamId) {
+          mediaHandler.stop()
+        }
       }
+
+      mediaHandler.setContext = context
 
       if (bjProfImg) {
         mediaHandler.setHostImage(bjProfImg.url)
@@ -87,6 +93,16 @@ export default props => {
         // mediaHandler.setPublishToken(pubToken)
       } else if (auth === listenerRole) {
         mediaHandler.setType('listener')
+      }
+
+      // media start
+      if (mediaHandler.streamId) {
+        if (mediaHandler.type === 'host') {
+          mediaHandler.publish()
+        }
+        if (mediaHandler.type === 'listener') {
+          mediaHandler.play()
+        }
       }
     }
 
@@ -166,90 +182,8 @@ export default props => {
       </SideBTN>
       <Side>
         {/* side content 영역 */}
-
         <SideContent {...props}>{/* <Charge /> */}</SideContent>
       </Side>
-      {auth === hostRole ? (
-        <AudioWrap>
-          <h1>Host BJ</h1>
-          <div>Stream ID : {bjStreamId}</div>
-          <div>
-            <button
-              style={{
-                width: '100px',
-                height: '50px',
-                color: 'white',
-                cursor: 'pointer',
-                backgroundColor: publishStatus ? 'red' : 'blue'
-              }}
-              onClick={() => {
-                if (!bjStreamId) {
-                  return alert('Need a stream id')
-                }
-                if (!mediaHandler.audioStream) {
-                  return alert('Need a audio sream and stereo mix')
-                }
-
-                if (mediaHandler && !mediaHandler.rtcPeerConn) {
-                  mediaHandler.publish()
-                  startPlayer()
-                } else if (mediaHandler && mediaHandler.rtcPeerConn) {
-                  mediaHandler.stop()
-                  stopPlayer()
-                }
-              }}>
-              {publishStatus ? 'Stop' : 'Publish'}
-            </button>
-          </div>
-        </AudioWrap>
-      ) : (
-        <AudioWrap>
-          <h1>Listener</h1>
-
-          <div>streamId: {bjStreamId}</div>
-
-          {!playStatus && (
-            <div>
-              <button
-                style={{
-                  width: '100px',
-                  height: '50px',
-                  color: 'white',
-                  cursor: 'pointer',
-                  backgroundColor: 'blue'
-                }}
-                onClick={() => {
-                  if (!bjStreamId) {
-                    return alert('Need a stream id')
-                  }
-                  if (mediaHandler.audioTag && mediaHandler && !mediaHandler.rtcPeerConn) {
-                    const status = mediaHandler.play()
-                    if (status) {
-                      startPlayer()
-                    }
-                  }
-                }}>
-                play
-              </button>
-            </div>
-          )}
-
-          {playStatus && (
-            <div>
-              <button
-                style={{width: '100px', height: '50px', backgroundColor: 'red', color: 'white', cursor: 'pointer'}}
-                onClick={() => {
-                  if (mediaHandler.audioTag && mediaHandler && mediaHandler.rtcPeerConn) {
-                    mediaHandler.stop()
-                    stopPlayer()
-                  }
-                }}>
-                stop
-              </button>
-            </div>
-          )}
-        </AudioWrap>
-      )}
     </Content>
   )
 }

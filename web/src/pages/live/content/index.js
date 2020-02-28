@@ -79,7 +79,7 @@ export default props => {
       return (
         <List
           key={idx}
-          style={{backgroundImage: `url(${bjProfImg.thumb700x700})`}}
+          style={{backgroundImage: `url(${bgImg.url})`}}
           onClick={() => {
             joinRoom(list)
           }}>

@@ -433,6 +433,17 @@ export default class API {
   }
 
   /**
+   * @brie0f 회원정보조회 profile
+   * @method "GET"
+   * @param string    memNo             //*회원번호
+   * @create 이은비 2020.01.15
+   */
+  static profile = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"
    * @create 김호겸 2020.01.15

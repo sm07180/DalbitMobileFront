@@ -132,7 +132,6 @@ module.exports = (env, options) => {
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
       }),
-      //new BundleAnalyzerPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
@@ -141,6 +140,9 @@ module.exports = (env, options) => {
       }),
       new CopyWebpackPlugin([{from: './public/static'}])
     ]
+    if (options.env !== 'deploy') {
+      config.plugins.push(new BundleAnalyzerPlugin())
+    }
   }
 
   return config

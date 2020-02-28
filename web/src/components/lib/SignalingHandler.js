@@ -35,6 +35,9 @@ export default class SignalingHandler {
     this.globalStartCallback = null
     this.globalStopCallback = null
 
+    // global context(for alert ui)
+    this.context = null
+
     // about socket info
     this.intervalId = null
     this.wSocketInit()
@@ -80,6 +83,10 @@ export default class SignalingHandler {
   }
   setHostImage(img) {
     this.connectedHostImage = img
+  }
+
+  setContext(context) {
+    this.context = context
   }
 
   async detectAudioDevice() {
@@ -161,6 +168,10 @@ export default class SignalingHandler {
     if (!this.audioTag) {
       return alert('Need a audio tag')
     }
+    if (!this.streamId) {
+      return alert('Need a stream Id!')
+    }
+
     const cmd = {
       command: 'play',
       streamId: this.streamId,
