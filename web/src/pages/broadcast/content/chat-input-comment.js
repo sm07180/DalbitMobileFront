@@ -8,6 +8,8 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {Link, NavLink} from 'react-router-dom'
+const sc = require('context/socketCluster')
 
 export default props => {
   //---------------------------------------------------------------------
@@ -33,7 +35,23 @@ export default props => {
       menu: current == 'menu' ? !toggle.menu : false
     })
   }
-
+  const broadcastOff = e => {
+    console.log(props)
+    let bcEndType = ''
+    bcEndType = props.auth == 3 ? '방송 종료' : '방송 나가기'
+    context.action.confirm({
+      //콜백처리
+      callback: () => {
+        props.history.push('/')
+        sc.scDestory()
+      },
+      //캔슬콜백처리
+      cancelCallback: () => {
+        //alert('confirm callback 취소하기')
+      },
+      msg: bcEndType + ' 하시겠습니까?'
+    })
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {}, [])
@@ -70,7 +88,9 @@ export default props => {
         <ul className={`menu-box ${toggle.menu ? 'on' : 'off'}`}>
           <li className="edit">수정하기</li>
           <li className="share">공유하기</li>
-          <li className="exit">방송종료</li>
+          <li className="exit" onClick={broadcastOff}>
+            {props.auth == 3 ? '방송종료' : '나가기'}
+          </li>
         </ul>
       </div>
     </Content>

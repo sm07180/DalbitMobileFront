@@ -108,13 +108,13 @@ const Container = styled.div`
     left: 25px;
     width: 36px;
     height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_report.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_report.png) no-repeat center center / cover;
   }
   .imgWrap {
     position: relative;
     width: 126px;
     height: 126px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_frame_l.png') no-repeat center center/ cover;
+    background: url(${IMG_SERVER}/images/api/ic_frame_l.png) no-repeat center center/ cover;
   }
   .gazeWrap {
     position: relative;
@@ -215,7 +215,7 @@ const Container = styled.div`
         width: 24px;
         height: 24px;
         margin: 0 auto;
-        background: url('https://devimage.dalbitcast.com/images/api/manager.png') no-repeat center center / cover;
+        background: url(${IMG_SERVER}/images/api/manager.png) no-repeat center center / cover;
       }
       & > p {
         margin-top: 6px;
@@ -235,7 +235,7 @@ const Container = styled.div`
         width: 24px;
         height: 24px;
         margin: 0 auto;
-        background: url('https://devimage.dalbitcast.com/images/api/ic_forced%20exit.png') no-repeat center center / cover;
+        background: url(${IMG_SERVER}/images/api/ic_forced%20exit.png) no-repeat center center / cover;
       }
       & > p {
         margin-top: 6px;

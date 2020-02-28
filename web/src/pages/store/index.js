@@ -14,7 +14,9 @@ export default props => {
   const context = useContext(Context)
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    context.action.updateMediaPlayerStatus(true)
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>

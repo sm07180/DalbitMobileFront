@@ -581,6 +581,7 @@ const JoinForm = props => {
           <div>
             <input type="checkbox" name="allTerm" id="allTerm" checked={allTerm} onChange={selectAllTerm} /> <label htmlFor="allTerm">약관 전체 동의</label>
             <button
+              className={boxState ? 'on' : 'off'}
               onClick={() => {
                 setBoxState(!boxState)
               }}>
@@ -593,35 +594,60 @@ const JoinForm = props => {
               <label htmlFor="term1">
                 <span>[필수]</span>서비스 이용약관 동의(필수)
               </label>
-              <button onClick={() => {}}>자세히 보기</button>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'service')
+                }}>
+                자세히 보기
+              </button>
             </div>
             <div>
               <input type="checkbox" name="term2" id="term2" checked={changes.term2 == 'y' ? true : false} value={termHandle(changes.term2)} onChange={termCheckHandle} />
               <label htmlFor="term2">
                 <span>[필수]</span>개인정보 취급방침
               </label>
-              <button onClick={() => {}}>자세히 보기</button>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'privacy')
+                }}>
+                자세히 보기
+              </button>
             </div>
             <div>
               <input type="checkbox" name="term3" id="term3" checked={changes.term3 == 'y' ? true : false} value={termHandle(changes.term3)} onChange={termCheckHandle} />
               <label htmlFor="term3">
                 <span>[필수]</span>청소년 보호정책
               </label>
-              <button onClick={() => {}}>자세히 보기</button>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'youthProtection')
+                }}>
+                자세히 보기
+              </button>
             </div>
             <div>
               <input type="checkbox" name="term4" id="term4" checked={changes.term4 == 'y' ? true : false} value={termHandle(changes.term4)} onChange={termCheckHandle} />
               <label htmlFor="term4">
                 <span>[필수]</span>운영정책
               </label>
-              <button onClick={() => {}}>자세히 보기</button>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'operating')
+                }}>
+                자세히 보기
+              </button>
             </div>
             <div>
               <input type="checkbox" name="term5" id="term5" checked={changes.term5 == 'y' ? true : false} value={termHandle(changes.term5)} onChange={termCheckHandle} />
               <label htmlFor="term5">
-                <span>[선택]</span>마케팅 정보 제공 동의3
+                <span>[선택]</span>마케팅 정보 제공 동의
               </label>
-              <button onClick={() => {}}>자세히 보기</button>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'marketing')
+                }}>
+                자세히 보기
+              </button>
             </div>
           </CheckBox>
         </CheckWrap>
@@ -805,12 +831,17 @@ const CheckWrap = styled.div`
       text-indent: -9999px;
     }
 
-    & > button {
-      background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
-    }
     label {
       display: inline-block;
       transform: skew(-0.03deg);
+    }
+  }
+  & > div:first-child > button {
+    background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
+    /* transition: transform 0.3s ease-in-out; */
+
+    &.on {
+      transform: rotate(180deg);
     }
   }
   & > div:first-child {
