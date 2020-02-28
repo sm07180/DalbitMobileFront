@@ -110,7 +110,7 @@ export default props => {
                         <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
                       </div>
                     </UserInfo>
-                    <Story>{data.contents}</Story>
+                    <Story value={data.contents} disabled />
                     <hr />
                   </Contents>
                 )
@@ -307,13 +307,16 @@ const SaveButton = styled.button`
   align-items: center;
   margin-left: 16.8px;
 `
-const Story = styled.div`
+const Story = styled.textarea`
   display: flex;
   width: 100%;
+  height: 150px;
   background: #f5f5f5;
   padding: 20px;
   margin-top: 12px;
   border-radius: 10px;
+  overflow: hidden;
+  resize: none;
 
   font-size: 14px;
   font-weight: 400;
