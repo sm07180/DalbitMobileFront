@@ -74,6 +74,20 @@ module.exports = (env, options) => {
         }
       ]
     },
+    // optimization: {
+    //   // https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
+    //   splitChunks: {
+    //     chunks: 'all',
+    //     cacheGroups: {
+    //       vendor: {
+    //         chunks: 'all',
+    //         name: 'vendor',
+    //         enforce: true,
+    //         test: /[\\/]node_modules[\\/]/,
+    //       },
+    //     },
+    //   },
+    // },
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
@@ -118,7 +132,7 @@ module.exports = (env, options) => {
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
       }),
-      new BundleAnalyzerPlugin(),
+      //new BundleAnalyzerPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.

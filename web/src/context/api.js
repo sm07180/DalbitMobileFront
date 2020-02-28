@@ -682,6 +682,14 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || '/broad/boost', method: method || 'POST', data: data})
   }
+  /**
+   * @brief 방송방 토큰 재생성
+   * @create 김호겸 2020.02.28
+   */
+  static broadcast_reToken = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || '/broad/reToken', method: method || 'POST', data: data})
+  }
 
   //-------------------------------------------------------------
 }
