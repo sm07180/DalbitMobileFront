@@ -15,7 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
-  const {isLogin} = context.token
+  const {isLogin, memNo} = context.token
   const {mypage} = context
   //useState
   //useMemo
@@ -23,6 +23,7 @@ export default props => {
   //useState
   const [fetch, setFetch] = useState(false)
   const [login, setLogin] = useState(props.LoginInfo)
+
   //const
   //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
 
@@ -37,7 +38,11 @@ export default props => {
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
-    const res = await Api.mypage()
+    const res = await Api.profile({
+      params: {
+        memNo: memNo
+      }
+    })
     if (res.result === 'success') {
       setFetch(res.data)
       context.action.updateMypage(res.data)
@@ -101,19 +106,16 @@ export default props => {
                 <MyInfo>
                   <p className="total cast">
                     <span>총 방송 시간</span>
-                    <b>124시간 23분</b>
-                    {/*mypage res.data에 값 따로 내려오지않음 */}
+                    <b>{fetch && Utility.secondsToTime(fetch.broadTotTime)}</b>
                   </p>
                   <p className="total listen">
                     <span>총 청취 시간</span>
-                    <b>35시간 5분</b>
-                    {/*mypage res.data에 값 따로 내려오지않음 */}
+                    <b>{fetch && Utility.secondsToTime(fetch.listenTotTime)}</b>
                   </p>
                   <ul>
                     <li className="count like">
                       <span>좋아요</span>
-                      <b>34,111</b>
-                      {/*mypage res.data에 값 따로 내려오지않음 */}
+                      <b>{fetch && fetch.likeTotCnt}</b>
                     </li>
                     <li className="count star">
                       <span>보유별</span>

@@ -151,4 +151,10 @@ export default class Utility {
       return 0
     }
   }
+  //초 단위 숫자를 시 분 포맷으로 변경
+  static secondsToTime = seconds => {
+    const hour = parseInt(seconds / 3600)
+    const min = parseInt((seconds % 3600) / 60)
+    return `${hour}시간 ${hour}분`
+  }
 }
