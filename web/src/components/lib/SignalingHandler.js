@@ -161,6 +161,10 @@ export default class SignalingHandler {
     if (!this.audioTag) {
       return alert('Need a audio tag')
     }
+    if (!this.streamId) {
+      return alert('Need a stream Id!')
+    }
+
     const cmd = {
       command: 'play',
       streamId: this.streamId,
