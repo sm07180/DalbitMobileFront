@@ -5,6 +5,9 @@ import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //components
 
 // etc
@@ -46,23 +49,51 @@ export default props => {
       {context.mediaPlayerStatus && (
         <MediaPlayerWrap>
           <MediaPlayer>
-            <>
-              <img style={{width: '60px', borderRadius: '50%'}} />
-              <img
-                src={stopSvg}
-                style={{
-                  cursor: 'pointer',
-                  marginLeft: 'auto',
-                  width: '36px',
-                  height: '36px'
-                }}
-                onClick={() => {
-                  if (mediaHandler.rtcPeerConn) {
-                    mediaHandler.stop()
-                  }
-                }}
-              />
-            </>
+            <div className="equalizer">
+              <ul>
+                <li>
+                  <span></span>
+                </li>
+                <li>
+                  <span></span>
+                </li>
+                <li>
+                  <span></span>
+                </li>
+                <li>
+                  <span></span>
+                </li>
+                <li>
+                  <span></span>
+                </li>
+              </ul>
+              <p>LIVE</p>
+            </div>
+            <div className="info">
+              <div className="profile">
+                <Figure url={'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1'}></Figure>
+                <em></em>
+              </div>
+
+              <p>
+                <b>BJ아이유😍</b>
+                ✨상쾌한 아침을 함께해요✨
+              </p>
+            </div>
+            <div className="state">
+              <span>85</span>
+              <span>85</span>
+              <span>850</span>
+            </div>
+            <button
+              className="close"
+              onClick={() => {
+                if (mediaHandler.rtcPeerConn) {
+                  mediaHandler.stop()
+                }
+              }}>
+              닫기
+            </button>
           </MediaPlayer>
         </MediaPlayerWrap>
       )}
@@ -84,16 +115,202 @@ const MediaPlayer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  position: relative;
   padding: 14px 32px;
   box-sizing: border-box;
-  width: 90%;
+  width: 1210px;
   border-radius: 44px;
   background-color: rgba(0, 0, 0, 0.85);
   color: #fff;
 
-  @media (max-width: 780px) {
-    width: 100%;
+  b,
+  p,
+  span {
+    display: inline-block;
+    transform: skew(-0.03deg);
+  }
+
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: 95%;
+  }
+
+  .equalizer {
+    width: 36px;
+    height: 36px;
+    margin-right: 20px;
+    color: ${COLOR_POINT_Y};
+    text-align: center;
+
+    ul {
+      height: 14px;
+      width: 20px;
+      margin: 0 auto;
+      padding: 0 0 0 0;
+      position: relative;
+      li {
+        width: 2px;
+        float: left;
+        margin: 0 2px 0 0;
+        padding: 0;
+        height: 14px;
+        position: relative;
+        list-style-type: none;
+        span {
+          display: block;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 14px;
+          background: ${COLOR_POINT_Y};
+        }
+      }
+      li:nth-child(1) span {
+        animation: equalizer-bar 2s 1s ease-out alternate infinite;
+      }
+      li:nth-child(2) span {
+        animation: equalizer-bar 2s 0.5s ease-out alternate infinite;
+      }
+      li:nth-child(3) span {
+        animation: equalizer-bar 2s 1.5s ease-out alternate infinite;
+      }
+      li:nth-child(4) span {
+        animation: equalizer-bar 2s 0.25s ease-out alternate infinite;
+      }
+      li:nth-child(5) span {
+        animation: equalizer-bar 2s 2s ease-out alternate infinite;
+      }
+    }
+    p {
+      padding-top: 6px;
+      font-size: 11px;
+    }
+  }
+
+  /* 정보부분 */
+  .info {
+    display: flex;
+    align-items: center;
+    p {
+      margin-top: 4px;
+      font-size: 14px;
+      line-height: 24px;
+      b {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    .profile {
+      display: inline-block;
+      position: relative;
+      height: 60px;
+    }
+    cursor: pointer;
+  }
+
+  .state {
+    margin: 0 auto;
+    cursor: pointer;
+    span {
+      padding-left: 23px;
+      line-height: 18px;
+    }
+    span:nth-child(1) {
+      background: url(${IMG_SERVER}/images/api/ic_bar_people.png) no-repeat left center;
+      background-size: 18px;
+    }
+    span:nth-child(2) {
+      background: url(${IMG_SERVER}/images/api/ic_bar_peoples.png) no-repeat left center;
+      background-size: 18px;
+    }
+    span:nth-child(3) {
+      background: url(${IMG_SERVER}/images/api/ic_bar_heart.png) no-repeat left center;
+      background-size: 18px;
+    }
+    span + span {
+      margin-left: 18px;
+    }
+  }
+
+  .close {
+    width: 50px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: -10px;
+    background: url(${IMG_SERVER}/images/api/ic_close_b.png) no-repeat center center / cover;
+    background-size: 36px;
+    text-indent: -9999px;
+  }
+
+  @media (min-width: ${WIDTH_TABLET_S}) {
+    .close:hover {
+      animation: rotate-center 0.5s ease-in-out both;
+    }
+
+    &:hover figure {
+      position: relative;
+      z-index: 1;
+      animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
+    }
+
+    &:hover figure + em {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 80px;
+      height: 80px;
+      box-sizing: border-box;
+      margin-left: -10px;
+      margin-top: -10px;
+      border-radius: 100px;
+      background-color: ${COLOR_POINT_Y};
+      opacity: 0.6;
+      animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    padding: 12px 22px;
+    .equalizer {
+      height: 29px;
+      margin-right: 10px;
+    }
+    .state {
+      display: none;
+    }
+    .info {
+      p {
+        margin-top: 2px;
+        font-size: 12px;
+        line-height: 20px;
+        b {
+          font-size: 14px;
+        }
+      }
+      .profile {
+        height: 40px;
+      }
+    }
+    .close {
+      display: none;
+    }
+  }
+`
+
+const Figure = styled.figure`
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  border-radius: 50%;
+  background: url(${props => props.url}) no-repeat center center / cover;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
   }
 `
 
