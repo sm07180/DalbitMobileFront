@@ -10,6 +10,7 @@
  *        4 : 설정
  */
 import React, {useEffect, useState} from 'react'
+import {Switch, Route} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
@@ -30,6 +31,7 @@ import Box from '@material-ui/core/Box'
 
 //components
 import MyProfile from './content/my-profile'
+import Notice from './content/notice.js'
 import FanBoard from './content/fan-board'
 import MyWallet from './content/my-wallet'
 import Report from './content/report'
@@ -79,33 +81,9 @@ const User = props => {
       <Content>
         <MyProfile />
 
-        <StylesProvider injectFirst>
-          <TabsBar position="static">
-            <Tabs value={value} onChange={handleChange} aria-label="mypage tabs area">
-              <Tab label="공지사항" {...a11yProps(0)} />
-              {/* <Tab label="팬보드" {...a11yProps(1)} /> */}
-              {/* <Tab label="내지갑" {...a11yProps(2)} /> */}
-              {/* <Tab label="리포트" {...a11yProps(3)} /> */}
-              {/* <Tab label="팬/스타" {...a11yProps(4)} /> */}
-              <Tab label="설정" {...a11yProps(5)} />
-            </Tabs>
-          </TabsBar>
-          <TabContentWrap value={value} index={0}>
-            <FanBoard />
-          </TabContentWrap>
-          <TabContentWrap value={value} index={1}>
-            <MyWallet />
-          </TabContentWrap>
-          <TabContentWrap value={value} index={2}>
-            <Report />
-          </TabContentWrap>
-          <TabContentWrap value={value} index={3}>
-            <FanStar />
-          </TabContentWrap>
-          <TabContentWrap value={value} index={4}>
-            <Setting />
-          </TabContentWrap>
-        </StylesProvider>
+        <Switch>
+          <Route exact path="/mypage/notice" component={Notice} />
+        </Switch>
       </Content>
     </Layout>
   )
