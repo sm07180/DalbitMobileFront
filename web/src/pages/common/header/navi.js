@@ -11,6 +11,7 @@ import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {osName, browserName} from 'react-device-detect'
 //
 export default props => {
   //context
@@ -54,7 +55,6 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          alert('context.customHeader.hybridApp' + context.customHeader.hybridApp)
           if (context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               context.action.updatePopup('LOGIN')
@@ -64,7 +64,7 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
-            alert('RoomMake')
+            alert('osName : ' + osName)
             Hybrid('RoomMake', '')
           }
         }}>
