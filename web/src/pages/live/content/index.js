@@ -62,6 +62,7 @@ export default props => {
         context.action.updateBroadcastreToken(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       } else {
+        alert('실행')
         Hybrid('RoomJoin', res.data)
       }
     }
