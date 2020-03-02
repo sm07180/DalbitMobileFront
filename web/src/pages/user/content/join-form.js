@@ -10,16 +10,7 @@ import {IMG_SERVER, PHOTO_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABL
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
-/**
-곰인형-토끼 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_1.json
-곰인형 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json
-도너츠-달 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_3.json
-도너츠 : https://devimage.dalbitcast.com/ani/lottie/2020.02.07_4.json
-곰인형-토끼 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_1.webp
-곰인형 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_2.webp
-도너츠-달 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_3.webp
-도너츠 : https://devimage.dalbitcast.com/ani/webp/2020.02.07_4.webp
- */
+
 const JoinForm = props => {
   //context
   const context = useContext(Context)
@@ -292,14 +283,15 @@ const JoinForm = props => {
     //console.log('회원가입 REST 결과값 = ' + JSON.stringify(res))
     if (res && res.code) {
       if (res.code == 0) {
-        alert(res.message)
+        //alert(res.message)
         props.history.push('/') //회원가입 완료 후 authToken, memNo 넘겨주기
-        context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
+        context.action.updateToken(res.data)
+        // context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
         //일단 이미지랑 닉네임 여기서 넘겨줌. 나중에 조회로 바꿀수있게 하고 지울것.
-        context.action.updateState({
-          nickNm: changes.loginNickNm,
-          profImg: resultImg
-        })
+        // context.action.updateState({
+        //   nickNm: changes.loginNickNm,
+        //   profImg: resultImg
+        // })
         context.action.updateLogin(true)
       } else {
         alert(res.message)
