@@ -57,14 +57,12 @@ export default props => {
           //Hybird App이 아닐때
           if (context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
+              //로그인 팝업레이어실행
               context.action.updatePopup('LOGIN')
-              //alert('로그인필요')
-              //props.history.push('/login')
               return
             }
             props.history.push('/broadcast-setting')
           } else {
-            alert('osName : ' + osName)
             Hybrid('RoomMake', '')
           }
         }}>
