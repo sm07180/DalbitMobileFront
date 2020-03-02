@@ -73,30 +73,28 @@ export default props => {
 
     setComments(resulte)
   }
-  const  = getRecvTopData = data  => {
+  const getRecvTopData = data => {
     const recvTopData = data.detail.data.recvMsg
     // if(recvTopData.position === 'top1'){
 
     // }else{
 
-    // } 
+    // }
 
     // setSystemMsg(resulte)
     // return <MessageType {...item} key={index} rcvData={data}></MessageType>
-
   }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
-      if(data && data.detail){
-        if(recvMsg.position === 'chat'){
-          getRecvChatData(data.detail)      
-        }else{
-          //getRecvTopData(data.detail)      
+      if (data && data.detail) {
+        if (recvMsg.position === 'chat') {
+          getRecvChatData(data.detail)
+        } else {
+          //getRecvTopData(data.detail)
         }
-        
       }
       //settopTipMessageData(data.detail)
       return () => document.removeEventListener('socketSendData')
