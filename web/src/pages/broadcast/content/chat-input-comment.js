@@ -35,21 +35,33 @@ export default props => {
       menu: current == 'menu' ? !toggle.menu : false
     })
   }
+
+  async function broad_exit(roomNo) {
+    const res = await Api.broad_exit({data: {roomNo: roomNo}})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+  }
   const broadcastOff = e => {
     console.log(props)
     let bcEndType = ''
-    bcEndType = props.auth == 3 ? '방송 종료' : '방송 나가기'
+    //bcEndType = props.auth == 3 ? '방송 종료' : '방송 나가기'
     context.action.confirm({
       //콜백처리
       callback: () => {
-        props.history.push('/')
-        sc.scDestory()
+        //props.history.push('/')
+        broad_exit(context.broadcastReToken.roomNo)
+        sc.SendMessageChatEnd(context.broadcastReToken)
+        //sc.socketClusterDestory(false, context.broadcastReToken.roomNo)
+        window.location.replace('https://' + window.location.hostname)
       },
       //캔슬콜백처리
       cancelCallback: () => {
         //alert('confirm callback 취소하기')
       },
-      msg: bcEndType + ' 하시겠습니까?'
+      msg: '방송을 종료 하시겠습니까?'
     })
   }
   //---------------------------------------------------------------------

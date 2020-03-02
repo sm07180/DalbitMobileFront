@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {BroadCastStore} from '../store'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
+import Api from 'context/api'
 //etc
 
 //components
@@ -74,8 +74,12 @@ export default props => {
     if (mediaHandler) {
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
-        mediaHandler.stop()
+        if (streamId !== this.streamId) {
+          mediaHandler.stop()
+        }
       }
+
+      mediaHandler.setContext = context
 
       if (bjProfImg) {
         mediaHandler.setHostImage(bjProfImg.url)
@@ -136,10 +140,30 @@ export default props => {
   }, [store.boostList])
   //---------------------------------------------------------------------
 
+  //makeContents
+  const makeContents = () => {
+    return JSON.stringify(state, null, 4)
+  }
+
+  async function getReToken(roomNo) {
+    const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+    sc.socketClusterBinding(res.data.roomNo, res.data)
+    context.action.updateBroadcastreToken(res.data)
+    //return res.data
+  }
   useEffect(() => {
     // 방 소켓 연결
     console.log('방소켓 연결 해라 ')
-    if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+    if (props.location.state.auth === 3) {
+      getReToken(props.location.state.roomNo)
+    } else {
+      if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+    }
   }, [])
   //---------------------------------------------------------------------
   return (

@@ -52,6 +52,24 @@ export default props => {
         </Message>
       )
       break
+    case 'chatEnd':
+      return (
+        <Message className="enter-exit">
+          <div>
+            <span>{props.data.recvMsg.msg}</span>
+          </div>
+        </Message>
+      )
+      break
+    case 'bjEnd':
+      return (
+        <Message className="enter-exit">
+          <div>
+            <span>{props.data.recvMsg.msg}</span>
+          </div>
+        </Message>
+      )
+      break
     default:
       break
   }

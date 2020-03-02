@@ -17,6 +17,9 @@ NanumSquareEB = 800
 // mixin & variables
 @import './global.scss';
 
+// animation
+@import './animation.scss';
+
 /*기본 컬러 및 브레이크 포인트, config와 동일.*/
 $WIDTH_PC: 1920px;
 $WIDTH_PC_S: 1280px; //디자인 시안 사이즈

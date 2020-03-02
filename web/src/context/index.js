@@ -29,7 +29,7 @@ const GlobalProvider = props => {
   const [login_state, setlogin] = useState(false)
   const [mediaHandler, setMediaHandler] = useState(null)
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
-
+  const [broadcastReToken, setBroadcastReToken] = useState(null) //create 2020.02.28 김호겸 - 방송방 reToken 정보
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -134,6 +134,12 @@ const GlobalProvider = props => {
      */
     updateMediaPlayerStatus: status => {
       setMediaPlayerStatus(status)
+    },
+    /**
+     * 방송방 토큰 재생성
+     */
+    updateBroadcastreToken: obj => {
+      setBroadcastReToken(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -150,6 +156,7 @@ const GlobalProvider = props => {
     gnb_state,
     mediaHandler,
     mediaPlayerStatus,
+    broadcastReToken,
 
     action
   }

@@ -6,7 +6,8 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'pages/live/store'
+//import {Context} from 'pages/live/store'
+import {Context} from 'context'
 //components
 import Api from 'context/api'
 
@@ -14,7 +15,8 @@ import Api from 'context/api'
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const store = useContext(Context)
+  //const store = useContext(Context)
+  const context = useContext(Context)
   //useState
   const [roomId, setRoomId] = useState(null)
   const [fetch, setFetch] = useState(null)
@@ -42,6 +44,7 @@ export default props => {
   async function joinRoom(obj) {
     const {roomNo} = obj
     const res = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
       const exit = await exitRoom(obj)
@@ -53,6 +56,7 @@ export default props => {
     if (res.result === 'success') {
       const {bjStreamId, roomNo} = res.data
       console.log(res.data)
+      context.action.updateBroadcastreToken(res.data)
       props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
     }
     return
@@ -75,7 +79,7 @@ export default props => {
       return (
         <List
           key={idx}
-          style={{backgroundImage: `url(${bjProfImg.thumb700x700})`}}
+          style={{backgroundImage: `url(${bgImg.url})`}}
           onClick={() => {
             joinRoom(list)
           }}>

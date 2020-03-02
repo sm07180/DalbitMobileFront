@@ -5,6 +5,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
+import Api from 'context/api'
 
 const SocketClusterClient = require('socketcluster-client')
 //socket object
@@ -20,6 +21,7 @@ const isServiceConfig = true
 let socketConfig = null
 
 let loginInfo = null
+
 export const socketClusterDestory = (destorySocket, destoryChannel) => {
   if (destoryChannel != undefined && destoryChannel != '') {
     if (destoryChannel == socketConfig.channel.publicChannelName) {
@@ -152,7 +154,7 @@ export const scConnection = obj => {
     setServiceConfig()
   }
   //console.log('context.customHeader = ' + context.customHeader)
-  //socketClusterDestory(true)
+  //ssocketClusterDestory(true)
   // /************************************************************/
   //const HeaderObj = context.customHeader
   let options = {
@@ -641,15 +643,40 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
     // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
     // $('.messages').scrollTop(st + 10000)
   })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_CHAT_END, function(data) {
+    alert(JSON.stringify(data))
+    receiveMessageData(JSON.parse(data))
+    // st = parseInt($('.messages').scrollTop(), 10)
+    // $('#messages-list').append($('<li>').text('channel : ' + data.channel))
+    // $('#messages-list').append($('<li>').text('error : ' + data.error))
+    // $('#messages-list').append($('<li>').text('streamId : ' + data.streamId))
+    // $('#messages-list').append($('<li>').text('publishTokenId : ' + data.publishTokenId))
+    // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
+    // $('.messages').scrollTop(st + 10000)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_BJRECONNECT, function(data) {
+    alert(JSON.stringify(data))
+    // st = parseInt($('.messages').scrollTop(), 10)
+    // $('#messages-list').append($('<li>').text('channel : ' + data.channel))
+    // $('#messages-list').append($('<li>').text('error : ' + data.error))
+    // $('#messages-list').append($('<li>').text('streamId : ' + data.streamId))
+    // $('#messages-list').append($('<li>').text('publishTokenId : ' + data.publishTokenId))
+    // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
+    // $('.messages').scrollTop(st + 10000)
+  })
 }
 
 // var event = new CustomEvent('socket-receiveMessageData', { detail: elem.dataset.time });
 // document.dispatchEvent(event)
 // 서버로 받은 데이터
-
 export const receiveMessageData = recvData => {
   console.log('서버로 부터 받은 데이터 = ' + recvData)
-  //ts.props.getTest(recvData)
+  if (recvData && recvData.data.channel !== 'channel.public.dalbit' && recvData.data.data.cmd === 'chatEnd') {
+    if (recvData.data.data.recvMsg.msg === 'bjOut') {
+      socketClusterDestory(false, recvData.data.channel)
+      window.location.replace('https://' + window.location.hostname)
+    }
+  }
   if (recvData && recvData.data.channel !== 'channel.public.dalbit') {
     const destroyEvent = new CustomEvent('socketSendData', {detail: recvData.data})
     document.dispatchEvent(destroyEvent)
@@ -657,6 +684,8 @@ export const receiveMessageData = recvData => {
 }
 export const socketClusterBinding = (channel, Info) => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)
+  //socketClusterDestory(false, channel)
+
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
@@ -714,7 +743,15 @@ export const SendMessageChat = objChat => {
   console.log('sendMessage = ' + JSON.stringify(params))
   sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
 }
-
+// 방송방 종료
+export const SendMessageChatEnd = objChatInfo => {
+  const params = {
+    //memNo: objChat.bjMemNo,
+    memNo: ''
+  }
+  console.log('sendMessage = ' + JSON.stringify(params))
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
+}
 export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {
     return {
@@ -870,7 +907,6 @@ export const sendMessage = {
     })
   }
 }
-
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -878,6 +914,7 @@ export default props => {
     loginInfo = context
     //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
     console.log('소켓 연결 토큰 값 = ' + JSON.stringify(loginInfo))
+
     scConnection(loginInfo)
   }, [])
 

@@ -433,6 +433,17 @@ export default class API {
   }
 
   /**
+   * @brie0f 회원정보조회 profile
+   * @method "GET"
+   * @param string    memNo             //*회원번호
+   * @create 이은비 2020.01.15
+   */
+  static profile = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"
    * @create 김호겸 2020.01.15
@@ -681,6 +692,14 @@ export default class API {
   static broadcast_room_use_item = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || '/broad/boost', method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 방송방 토큰 재생성
+   * @create 김호겸 2020.02.28
+   */
+  static broadcast_reToken = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || '/broad/reToken', method: method || 'POST', data: data})
   }
 
   //-------------------------------------------------------------
