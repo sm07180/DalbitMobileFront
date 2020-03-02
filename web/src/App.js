@@ -109,7 +109,7 @@ export default () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {ready && <SocketCluster />}
+      {ready && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }
