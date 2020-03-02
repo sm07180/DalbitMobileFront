@@ -23,8 +23,17 @@ export default props => {
         const {authToken} = mode.loginSuccess
         //Update
         context.action.updateToken(mode.loginSuccess)
-        //native 전달
-        Hybrid('GetLoginToken', mode.loginSuccess)
+        const _href = window.location.href
+        /**
+         * @native 전달
+         */
+        //앱에서호출되는 로그인팝업
+        if (_href.indexOf('/login') !== -1) {
+          Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
+        } else {
+          //일반적인 로그인성공
+          Hybrid('GetLoginToken', mode.loginSuccess)
+        }
         //mypage update
         async function fetchData(obj) {
           const res = await Api.mypage({...obj})
@@ -33,7 +42,6 @@ export default props => {
           }
         }
         fetchData()
-
         //redirect
         if (props.history) {
           context.action.updatePopupVisible(false)

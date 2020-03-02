@@ -21,6 +21,8 @@ import SideContent from './tab'
 //pages
 // import Guide from ' pages/common/layout/guide.js'
 
+let audioStartInterval = null
+
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -74,7 +76,7 @@ export default props => {
     if (mediaHandler) {
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
-        if (streamId !== this.streamId) {
+        if (mediaHandler.streamId !== bjStreamId) {
           mediaHandler.stop()
         }
       }
@@ -98,10 +100,20 @@ export default props => {
       // media start
       if (mediaHandler.streamId) {
         if (mediaHandler.type === 'host') {
-          mediaHandler.publish()
+          audioStartInterval = setInterval(() => {
+            if (mediaHandler.ws.readyState === 1) {
+              mediaHandler.publish()
+              clearInterval(audioStartInterval)
+            }
+          }, 50)
         }
         if (mediaHandler.type === 'listener') {
-          mediaHandler.play()
+          audioStartInterval = setInterval(() => {
+            if (mediaHandler.ws.readyState === 1) {
+              mediaHandler.play()
+              clearInterval(audioStartInterval)
+            }
+          }, 50)
         }
       }
     }
@@ -113,31 +125,6 @@ export default props => {
     }
   }, [mediaHandler])
 
-  //--------------------------------------------------------------------- 부스트 정보 조회 테스트 by 최우정
-  useEffect(() => {
-    let flag = false
-    store.action.initBoost(props.location.state.roomNo)
-    return () => {
-      flag = true
-    }
-  }, [])
-
-  useEffect(() => {
-    if (store.boostList.boostCnt > 0) {
-      const stop = clearInterval(myTimer)
-      setMyTimer(stop)
-      let myTime = store.boostList.boostTime
-      const interval = setInterval(() => {
-        myTime -= 1
-        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60))
-        store.action.updateTimer(m)
-        if (myTime === 0) {
-          clearInterval(interval)
-        }
-      }, 1000)
-      setMyTimer(interval)
-    }
-  }, [store.boostList])
   //---------------------------------------------------------------------
 
   //makeContents

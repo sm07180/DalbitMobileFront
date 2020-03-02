@@ -140,9 +140,9 @@ module.exports = (env, options) => {
       }),
       new CopyWebpackPlugin([{from: './public/static'}])
     ]
-    if (options.env !== 'deploy') {
-      config.plugins.push(new BundleAnalyzerPlugin())
-    }
+    // if (options.env !== 'deploy') {
+    //   config.plugins.push(new BundleAnalyzerPlugin())
+    // }
   }
 
   return config

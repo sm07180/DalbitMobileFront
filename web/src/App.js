@@ -82,7 +82,7 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    console.warn(res.data)
+    console.table(res.data)
     // result 성공/실패 여부상관없이,토큰없데이트
     context.action.updateToken(res.data)
     //모든처리완료
@@ -94,7 +94,7 @@ export default () => {
   useEffect(() => {
     //#1 customHeader
     context.action.updateCustomHeader(customHeader)
-    console.warn(customHeader)
+    console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
     //토큰업데이트
@@ -109,7 +109,7 @@ export default () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {ready && <SocketCluster />}
+      {ready && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }

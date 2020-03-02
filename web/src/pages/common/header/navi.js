@@ -11,6 +11,7 @@ import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {osName, browserName} from 'react-device-detect'
 //
 export default props => {
   //context
@@ -49,17 +50,15 @@ export default props => {
       /**
        * @todos 방송중일때 방송중으로 떠야함
        */
-
       <button
         key="broadcast"
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          if (context.customHeader.os === '3') {
+          if (context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
+              //로그인 팝업레이어실행
               context.action.updatePopup('LOGIN')
-              //alert('로그인필요')
-              //props.history.push('/login')
               return
             }
             props.history.push('/broadcast-setting')

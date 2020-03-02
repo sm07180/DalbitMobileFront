@@ -35,6 +35,8 @@ export default props => {
   const [sendType, setSendType] = useState(0)
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  const [profile, setProfile] = useState()
+  const [common, setCommon] = useState()
   //-------------------------------------------------------- func start
 
   // 선물하기
@@ -42,7 +44,7 @@ export default props => {
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo.toString(),
-        memNo: context.token.memNo.toString(),
+        memNo: store.roomInfo.bjMemNo.toString(),
         itemNo: '1001',
         itemCnt: 1
       }
@@ -51,16 +53,33 @@ export default props => {
     console.log('## res :', res)
   }
 
-  useEffect(() => {}, [])
+  // 방송 프로필
+  const broadProfile = async () => {
+    const res = await Api.member_info_view({
+      method: 'GET'
+    })
+    console.log('## present - res :', res)
+    if (res.result === 'success') setProfile(res.data)
+  }
+
+  // 공통
+  async function commonData() {
+    const res = await Api.splash({})
+    console.log('## splash :', res)
+    if (res.result === 'success') setCommon(res.data)
+  }
+
+  useEffect(() => {
+    broadProfile()
+    commonData()
+  }, [])
 
   //-------------------------------------------------------- components start
-  console.log('## sendType : ', sendType)
-  console.log('## store :', store)
-  console.log('## context :', context)
+  console.log('## common : ', common)
   return (
     <Container>
       <Navi title={'선물'} />
-      {sendType == 0 ? <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} /> : <SendDirect />}
+      {sendType == 0 ? <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} /> : <SendDirect />}
     </Container>
   )
 }
@@ -71,8 +90,5 @@ const Container = styled.div`
   height: 100%;
   background-color: #fff;
   flex-direction: column;
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 360px;
-  }
+  /* justify-content: space-between; */
 `

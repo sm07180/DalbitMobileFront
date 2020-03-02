@@ -4,7 +4,9 @@
 import React, {useState, useEffect, useContext, useMemo} from 'react'
 import {IMG_SERVER, PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
+//context
 import {Context} from 'context'
+import {Hybrid} from 'context/hybrid'
 //component
 import Gnb from './gnb-layout'
 import {Link, NavLink} from 'react-router-dom'
@@ -153,6 +155,7 @@ export default props => {
                         localStorage.removeItem('com.naver.nid.oauth.state_token')
                         props.history.push('/')
                         context.action.updateGnbVisible(false)
+                        Hybrid('GetLogoutToken', res.data)
                         setFetch(false) // 넣어둔 mypage 정보 초기화.
                         return
                         alert('정상적으로 로그아웃 되었습니다.')

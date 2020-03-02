@@ -18,27 +18,58 @@ export default props => {
   //----------------------------------------------------- declare start
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
-  const [boostData, setBoostData] = useState(store.boostList)
+  const [boostData, setBoostData] = useState()
   const [flag, setFlag] = useState(false)
   const [timer, setTimer] = useState()
   const [myTimer, setMyTimer] = useState()
-  let myTime = store.boostList.boostTime
   //----------------------------------------------------- func start
+  // useEffect(() => {
+  //   if (store.boostList.length === 0) store.action.initBoost(store.roomInfo.roomNo)
+  // }, [])
+
   useEffect(() => {
-    if (store.boostList.length === 0) store.action.initBoost(store.roomInfo.roomNo)
+    let flag = false
+    store.action.initBoost(store.roomInfo.roomNo)
+    return () => {
+      flag = true
+    }
   }, [])
+
+  useEffect(() => {
+    if (store.boostList.boostCnt > 0) {
+      const stop = clearInterval(myTimer)
+      setMyTimer(stop)
+      let myTime = store.boostList.boostTime
+      const interval = setInterval(() => {
+        myTime -= 1
+        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60))
+        store.action.updateTimer(m)
+        if (myTime === 0) {
+          clearInterval(interval)
+        }
+      }, 1000)
+      setMyTimer(interval)
+    }
+  }, [store.boostList])
 
   // 부스트 사용하기
   async function useBoost() {
     const res = await Api.broadcast_room_use_item({
       data: {
-        roomNo: store.roomInfo.roomNo.toString(),
+        roomNo: store.roomInfo.roomNo,
         itemNo: '2001',
         itemCnt: 1
       }
     })
     console.log('## res - useBoost :', res)
     store.action.initBoost(store.roomInfo.roomNo)
+    context.action.alert({
+      callback: () => {
+        console.log('callback처리')
+      },
+      title: '달빛라디오',
+      msg: '부스터가 사용되었습니다.'
+    })
   }
 
   //----------------------------------------------------- components start
@@ -52,13 +83,18 @@ export default props => {
           <Total>{store.boostList.roomCnt}</Total>
         </Rank>
         <BoostImgArea>
-          <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
           {store.boostList.boostCnt !== 0 ? (
-            <TimeActive>
-              {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
-            </TimeActive>
+            <>
+              <img src="https://devimage.dalbitcast.com/images/api/boost_active@2x.png" width={200} height={160} />
+              <TimeActive>
+                {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
+              </TimeActive>
+            </>
           ) : (
-            <TimeInactive>30:00</TimeInactive>
+            <>
+              <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
+              <TimeInactive>30:00</TimeInactive>
+            </>
           )}
         </BoostImgArea>
 
@@ -212,13 +248,15 @@ const TimeActive = styled.div`
   justify-content: center;
   align-items: center;
   padding: 8px 16px 8px 16px;
-  margin-top: 10px;
 
   font-size: 14px;
   font-weight: 600;
   line-height: 1.29;
   letter-spacing: -0.35px;
   text-align: left;
+
+  position: absolute;
+  bottom: 0;
 
   & > span {
     font-size: 10px;

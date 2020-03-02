@@ -12,7 +12,7 @@ export default props => {
   const [item, setItem] = useState(-1)
   const [count, setCount] = useState(0)
   const [sendType, setSendType] = useState(1)
-  const [maxExp, setMaxExp] = useState(0)
+  const [percent, setPercent] = useState(0)
   const scrollbars = useRef(null)
 
   //-------------------------------------------------- func start
@@ -23,10 +23,10 @@ export default props => {
     //
     if (props.testData != undefined) {
       const maxExp = props.testData.exp + props.testData.expNext
-      const calWidth = (props.testData.exp / maxExp) * 100
-      const barWidth = (310 * calWidth) / 100
+      const percent = Math.floor((props.testData.exp / maxExp) * 100)
+      const barWidth = (236 * percent) / 100
 
-      setMaxExp(maxExp)
+      setPercent(percent)
       setWidth(barWidth)
     }
   }
@@ -45,67 +45,65 @@ export default props => {
     context.action.updatePopup('SEND_PRESENT')
     context.action.updatePopupVisible(false)
   }, [])
-
   //-------------------------------------------------- components start
-
+  console.log('## props.common :', props.common)
   return (
-    <>
-      {props.testData.guestYn === 'Y' && (
-        <Target>
-          <TargetInfo targetData={props.targetData} />
-        </Target>
-      )}
-      <LevelInfo>
-        <UserLevel>LEVEL {props.testData.level}</UserLevel>
-        <NextLevel>다음 레벨까지 {props.testData.expNext}EXP 남았습니다.</NextLevel>
-        <BarWrap>
-          <span>0</span>
-          <Bar>
-            <Exp exp={bWidth}>{props.testData.exp}</Exp>
-          </Bar>
-          <span>{maxExp}</span>
-        </BarWrap>
-      </LevelInfo>
-      <Scrollbars ref={scrollbars} style={{height: 250}} autoHide>
-        <BoxArea>
-          {props.testBox.map((data, idx) => {
-            return (
-              <ItemInfo key={idx} onClick={() => pickItem(idx)}>
-                {item == idx && (
-                  <Picked>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
-                  </Picked>
-                )}
-                <ItemBox>
-                  <ItemImg>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'} width={70} height={70} />
-                  </ItemImg>
-                  <Icon active={idx === item ? 'active' : ''}>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
-                    123
-                  </Icon>
-                </ItemBox>
-              </ItemInfo>
-            )
-          })}
-        </BoxArea>
-      </Scrollbars>
+    <Container>
+      <MainContents>
+        <LevelInfo>
+          <DashBoard>
+            {props.testData.guestYn === 'Y' && (
+              <Target>
+                <TargetInfo targetData={props.targetData} />
+              </Target>
+            )}
+            <Level>
+              <UserLevel>LEVEL {props.testData.level}</UserLevel>
+              <BarWrap>
+                <Bar>
+                  <Exp exp={bWidth}>{percent}%</Exp>
+                </Bar>
+              </BarWrap>
+            </Level>
+            <MyItem>
+              <div className="myTitle">내가 보유한 달</div>
+              <div className="myItem">
+                123,123,122&nbsp;&nbsp;<button>+</button>
+              </div>
+            </MyItem>
+          </DashBoard>
+        </LevelInfo>
+        <Scrollbars ref={scrollbars} style={{height: '60%'}} autoHide>
+          <BoxArea>
+            {props.common !== undefined &&
+              props.common.items.map((data, idx) => {
+                return (
+                  <ItemInfo key={idx} onClick={() => pickItem(idx)}>
+                    {item == idx && (
+                      <Picked>
+                        <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
+                      </Picked>
+                    )}
+                    <ItemBox>
+                      <ItemImg>
+                        <img src={data.thumbs} width={70} height={70} />
+                      </ItemImg>
+                      <Icon active={idx === item ? 'active' : ''}>
+                        <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
+                        {data.cost}
+                      </Icon>
+                    </ItemBox>
+                  </ItemInfo>
+                )
+              })}
+          </BoxArea>
+        </Scrollbars>
+      </MainContents>
       <ButtonArea>
-        <SendDirect onClick={() => props._sendType(1)}>
-          <MyPoint>
-            <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_m@2x.png'} width={24} height={24} />
-            123123
-          </MyPoint>
-          <Plus />
-        </SendDirect>
-        <Send>보내기</Send>
-        <SecretSend onClick={() => context.action.updatePopupVisible(true)}>
-          몰래
-          <br />
-          보내기
-        </SecretSend>
+        <SecretSend onClick={() => context.action.updatePopupVisible(true)}>몰래&nbsp;보내기</SecretSend>
+        <Send onClick={() => props.send()}>보내기</Send>
       </ButtonArea>
-    </>
+    </Container>
   )
 }
 
@@ -115,10 +113,9 @@ const TargetInfo = props => {
     <>
       {props.targetData.map((data, idx) => {
         return (
-          <Dj key={idx} onClick={() => setState(idx)} active={idx === state ? 'active' : ''}>
+          <Dj onClick={() => setState(idx)} active={idx === state ? 'active' : ''} key={idx}>
+            {idx !== state && <Cover></Cover>}
             <Profile>
-              {/* <Photo>
-                </Photo> */}
               <img src="https://devimage.dalbitcast.com/images/api/guest@2x.png" width={36} height={36} />
 
               <Tag target={data.type}>{data.type === 0 ? 'DJ' : '게스트'}</Tag>
@@ -134,6 +131,21 @@ const TargetInfo = props => {
 }
 
 //-------------------------------------------------- styled start
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+`
+const MainContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 90%;
+`
+
 const Target = styled.div`
   display: flex;
   flex-direction: row;
@@ -167,65 +179,36 @@ const Guest = styled.button`
 const LevelInfo = styled.div`
   display: flex;
   width: 100%;
-  height: 140px;
-  justify-content: center;
+  height: 190px;
   align-items: center;
   flex-direction: column;
 `
 
 const UserLevel = styled.div`
   display: flex;
-  width: 100%;
-  font-size: 22px;
+  width: 100px;
+  font-size: 18px;
   font-weight: 800;
-  line-height: 1.09;
-  letter-spacing: -0.55px;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  line-height: 1.33;
+  letter-spacing: -0.45px;
+  color: #8556f6;
 `
-const NextLevel = styled.div`
-  display: flex;
-  width: 100%;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  color: #616161;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.71;
-  letter-spacing: -0.35px;
-  text-align: center;
-`
+
 const BarWrap = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  height: 20px;
-  margin-top: 10px;
+  /* justify-content: center; */
+  width: 70%;
   font-weight: 400;
-
-  & span {
-    display: flex;
-    align-items: center;
-    color: #bdbdbd;
-    font-size: 14px;
-    letter-spacing: normal;
-  }
 `
 
 const Bar = styled.div`
   display: flex;
-  width: 310px;
+  width: 236px;
   background-color: #fff;
   border-radius: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  border-width: 1px;
-  border-color: #e0e0e0;
-  border-style: solid;
 `
 const Exp = styled.div`
   display: flex;
@@ -237,18 +220,16 @@ const Exp = styled.div`
   justify-content: flex-end;
   padding-right: 5px;
   color: #ffffff;
-  font-size: 14px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
 `
 const BoxArea = styled.div`
   display: flex;
   flex-flow: wrap;
   width: 100%;
-  height: 250px;
+
+  /* height: 500px; */
   justify-content: left;
   align-items: center;
 `
@@ -256,9 +237,9 @@ const BoxArea = styled.div`
 const ItemInfo = styled.button`
   display: flex;
   width: 24%;
-  height: 120px;
+  height: 98px;
   margin-right: 3px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 `
 
@@ -269,13 +250,11 @@ const ItemImg = styled.div`
   /* border-style: solid;
   border-color: #e0e0e0;
   border-width: 1px; */
-  align-items: center;
   justify-content: center;
 `
 const Icon = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 6px;
   justify-content: center;
   align-items: center;
   z-index: 110;
@@ -290,8 +269,10 @@ const Icon = styled.div`
 const ButtonArea = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  align-items: flex-start;
+  width: 100%;
+  height: 100px;
 `
 
 const SendDirect = styled.button`
@@ -332,7 +313,7 @@ const MyPoint = styled.div`
 `
 const Send = styled.button`
   display: flex;
-  width: 108px;
+  width: 55%;
   height: 48px;
   background-color: #8556f6;
   border-radius: 10px;
@@ -349,19 +330,22 @@ const Send = styled.button`
 `
 const SecretSend = styled.button`
   display: flex;
-  width: 60px;
+  width: 45%;
   height: 48px;
-  background-color: #fdad2b;
+  background-color: #fff;
   border-radius: 10px;
   margin-left: 8px;
   align-items: center;
   justify-content: center;
 
-  color: #fff;
+  color: #8556f6;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
+  border-style: solid;
+  border-color: #8556f6;
+  border-width: 1px;
 `
 const DjImg = styled.div`
   width: 36px;
@@ -406,11 +390,7 @@ const Profile = styled.div`
   height: 50px;
   align-items: center;
 `
-const Photo = styled.div`
-  position: absolute;
-  width: 36px;
-  height: 36px;
-`
+
 const Picked = styled.div`
   display: flex;
   position: absolute;
@@ -421,7 +401,8 @@ const Picked = styled.div`
   /* background: ${props => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')}; */
   z-index: 100;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 30px;
 
   font-size: 24px;
   font-weight: 600;
@@ -435,7 +416,68 @@ const ItemBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 94px;
+  height: 98px;
   align-items: center;
   justify-content: center;
+`
+const DashBoard = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 170px;
+  background: #f6f6f6;
+  align-items: center;
+`
+const Cover = styled.div`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 56px;
+  border-radius: 10px;
+  background: ${props => !props.active && 'rgba(255, 255, 255, 0.7)'};
+  /* background: yellow; */
+  z-index: 999;
+`
+const Level = styled.div`
+  display: flex;
+  width: 90%;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+`
+const MyItem = styled.div`
+  display: flex;
+  width: 90%;
+  height: 34px;
+  align-items: center;
+  justify-content: space-between;
+
+  .myTitle {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.35px;
+    color: #919191;
+  }
+
+  .myItem {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.35px;
+    color: #424242;
+
+    & > button {
+      display: flex;
+      width: 15px;
+      height: 15px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #8555f6;
+      border-radius: 75px;
+      color: #8555f6;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 `

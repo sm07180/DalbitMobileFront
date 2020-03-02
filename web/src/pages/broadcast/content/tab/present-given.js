@@ -170,7 +170,7 @@ const test = {totalCnt: totalCnt, totalGold: totalGold, list: list}
 export default props => {
   //--------------------------------------------------- declare start
   const [secretYn, setSecret] = useState(false)
-  const [givenData, setGivenData] = useState([])
+  const [givenData, setGivenData] = useState(test)
   const scrollbars = useRef(null)
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
@@ -191,16 +191,17 @@ export default props => {
     }
   }
 
-  async function test() {
+  async function commonData() {
     const res = await Api.splash({})
     console.log('## splash :', res)
   }
 
   useEffect(() => {
-    fetchData()
-    test()
+    // fetchData()
+    commonData()
   }, [])
   console.log('## givenData :', givenData)
+  console.log('## store :', store)
   //--------------------------------------------------- components start
   return (
     <Container>
@@ -218,8 +219,8 @@ export default props => {
         </GivenThings>
       </Info>
       <History>
-        <Scrollbars ref={scrollbars} style={{height: '100%'}} autoHide>
-          {givenData.length > 0 &&
+        <Scrollbars ref={scrollbars} style={{height: '90%'}} autoHide>
+          {givenData.list.length > 0 &&
             givenData.list.map((data, idx) => {
               return (
                 <Contents key={idx}>

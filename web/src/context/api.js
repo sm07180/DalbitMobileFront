@@ -639,7 +639,7 @@ export default class API {
   static setCustomHeader = obj => {
     this.customHeader = obj
   }
-  //--------------------------------------------------------------------- 방송 사이드컨텐츠 test
+  //--------------------------------------------------------------------- 방송 사이드컨텐츠
 
   /**
    * @brief 방송방 선물하기
@@ -648,6 +648,14 @@ export default class API {
   static send_gift = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/gift`, method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 방송방 개인 정보 조회
+   * @create 최우정 2020.03.02
+   */
+  static member_info_view = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/profile`, method: method || 'GET', params: params})
   }
   /**
    * @brief 방송방 회원정보 조회

@@ -126,18 +126,25 @@ export default props => {
       <Goods>
         {testData.map((goods, idx) => {
           return (
-            <GoodsInfo active={idx === goodsState ? 'active' : ''} onClick={() => setGoods(idx)} key={idx} state={choice}>
-              {/* <Icon imgUrl={goods.imgUrl} /> */}
-              <img src={goods.imgUrl} width={80} height={80} />
-              <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
-                달 {goods.name}
-              </GoodsName>
+            <Wrap key={idx}>
+              <GoodsInfo active={idx === goodsState ? 'active' : ''} onClick={() => setGoods(idx)} state={choice}>
+                {/* <Icon imgUrl={goods.imgUrl} /> */}
+                <img src={goods.imgUrl} width={80} height={80} />
+                <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
+                  달 {goods.name}
+                </GoodsName>
+                {/* <Price active={idx === goodsState ? 'active' : ''} state={choice}>
+                {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
+                {goods.price}
+                {choice === 'moon' && '원'}
+              </Price> */}
+              </GoodsInfo>
               <Price active={idx === goodsState ? 'active' : ''} state={choice}>
                 {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
                 {goods.price}
                 {choice === 'moon' && '원'}
               </Price>
-            </GoodsInfo>
+            </Wrap>
           )
         })}
       </Goods>
@@ -164,9 +171,9 @@ const Container = styled.div`
   /* margin-left: 20px; */
   flex-direction: column;
   /* background-color: red; */
-  @media (max-width: ${WIDTH_TABLET_S}) {
+  /* @media (max-width: ${WIDTH_TABLET_S}) {
     width: 360px;
-  }
+  } */
 `
 
 const ChargeChoice = styled.div`
@@ -227,12 +234,13 @@ const GoodsInfo = styled.button`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 115px;
-  @media (max-width: ${WIDTH_TABLET_S}) {
+  /* width: 115px; */
+  width: 100%;
+  /* @media (max-width: ${WIDTH_TABLET_S}) {
     width: 104px;
-  }
-  height: 138px;
-  margin-bottom: 4px;
+  } */
+  height: 108px;
+  margin-bottom: 2px;
   border-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '') : props.active ? '#fdad2b' : '')};
   border-style: ${props => (props.active ? 'solid' : 'none')};
   border-radius: 10px;
@@ -244,12 +252,13 @@ const Price = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 110px;
+  /* width: 110px;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100px;
-  }
+  } */
+  width :100%;
   height: 28px;
-  background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#e0e0e0') : props.active ? '#fdad2b' : '#e0e0e0')};
+  background-color: ${props => (props.state === 'moon' ? (props.active ? '#ec455f' : '#fff') : props.active ? '#fdad2b' : '#fff')};
   color: ${props => (props.active ? '#ffffff' : '#757575')};
   border-radius: 10px;
   margin-top: 4px;
@@ -262,7 +271,9 @@ const Price = styled.div`
 `
 
 const GoodsName = styled.div`
-  width: 100px;
+  /* width: 100px; */
+  width: 100%;
+
   height: 16px;
   display: flex;
   justify-content: center;
@@ -290,7 +301,7 @@ const Icon = styled.div`
 `
 const Cancel = styled.button`
   width: 48%;
-  height: 5vh;
+  height: 48px;
   background-color: white;
   border-radius: 10px;
   border-width: 1px;
@@ -304,7 +315,7 @@ const Cancel = styled.button`
 `
 const Charge = styled.button`
   width: 48%;
-  height: 5vh;
+  height: 48px;
   background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
@@ -316,7 +327,7 @@ const Charge = styled.button`
 const ChargeS = styled.button`
   display: flex;
   width: 100%;
-  height: 5vh;
+  height: 48px;
   background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
@@ -328,4 +339,7 @@ const ChargeS = styled.button`
   letter-spacing: -0.4px;
   align-items: center;
   justify-content: center;
+`
+const Wrap = styled.div`
+  width: calc(33% - 1px);
 `
