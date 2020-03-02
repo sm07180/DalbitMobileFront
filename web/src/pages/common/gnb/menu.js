@@ -84,6 +84,8 @@ export default props => {
 //styled
 const NoticeWrap = styled.div`
   width: 100%;
+  height: 100%;
+  background: ${COLOR_MAIN};
 `
 const Nheader = styled.div`
   width: 100%;
@@ -114,7 +116,7 @@ const Title = styled.h2`
 const CONTENT = styled.div`
   width: 100%;
   height: calc(100vh -80px);
-  padding: 10px 20px 0 20px;
+  padding: 10px 20px 40px 20px;
   box-sizing: border-box;
   /* background-color: white; */
 `

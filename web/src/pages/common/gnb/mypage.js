@@ -2,6 +2,7 @@
  *
  */
 import React, {useState, useEffect, useContext, useMemo} from 'react'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 //context
@@ -195,11 +196,13 @@ const BTN = styled.button`
 const MyWrap = styled.div`
   width: 100%;
   height: 100%;
+  background: #fff;
 `
 const Nheader = styled.div`
   width: 100%;
   height: 56px;
   padding: 10px;
+  background:${COLOR_MAIN}
 
   &:after {
     display: block;
@@ -225,13 +228,13 @@ const Title = styled.h2`
 const CONTENT = styled.div`
   width: 100%;
   height: calc(100vh -80px);
-  padding: 15px 20px 0 20px;
+  padding: 15px 20px 30px 20px;
+  background: ${COLOR_MAIN};
 
   /* background-color: white; */
 `
 const ProfileWrap = styled.div`
   width: 100%;
-  margin-bottom: 30px;
 `
 const PIMG = styled.div`
   width: 120px;
@@ -310,19 +313,14 @@ const LoginChoiceOut = styled.button`
   transform: skew(-0.03deg);
 `
 const NavWrap = styled.div`
-  height: calc(100% - 320px);
+  max-height: calc(100% - 320px);
+  min-height: 340px;
   padding: 20px 20px 0 20px;
   border-left: 1px solid #eeeeee;
   background-color: white;
 
   & > a:first-child > div {
     border-top: 0;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: calc(100% - 340px);
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: calc(100% - 348px);
   }
 `
 

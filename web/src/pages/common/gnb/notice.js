@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 
@@ -45,6 +46,7 @@ const Nheader = styled.div`
   height: 56px;
   padding: 10px;
   box-sizing: border-box;
+  background: ${COLOR_MAIN};
   &:after {
     display: block;
     clear: both;

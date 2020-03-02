@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import {Scrollbars} from 'react-custom-scrollbars'
 import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 //context
 import {Context} from 'context'
@@ -11,15 +12,24 @@ export default props => {
   const context = useContext(Context)
   //initalize
   const {children} = props
+  //ref
+  const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
+
+  const onUpdate = e => {
+    console.log('ㅠㅠ')
+    scrollbars.current.children[0].children[0].style.maxHeight = `calc(${document.body.clientHeight}px + 17px)`
+  }
 
   return (
     <>
-      <Gnb className={context.gnb_visible ? 'on' : 'off'}>
-        <Close
-          onClick={() => {
-            context.action.updateGnbVisible(false)
-          }}></Close>
-        <Wrap>{children}</Wrap>
+      <Gnb className={context.gnb_visible ? 'on' : 'off'} ref={scrollbars} state={context.gnb_state}>
+        <Scrollbars autoHeight autoHide autoHeightMax={'100%'} onUpdate={onUpdate}>
+          <Close
+            onClick={() => {
+              context.action.updateGnbVisible(false)
+            }}></Close>
+          <Wrap>{children}</Wrap>
+        </Scrollbars>
       </Gnb>
     </>
   )
@@ -38,9 +48,13 @@ const Gnb = styled.div`
   height: 100%;
   padding: 0;
   border-right: 1px solid #ccc;
-  background: #8555f6;
+  background: #fff;
+  background: ${props => (props.state == 'menu' ? COLOR_MAIN : '#fff')};
   transition: right 0.5s ease-in-out;
   z-index: 11;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+  }
 
   &.on {
     right: 0;
