@@ -21,6 +21,8 @@ import SideContent from './tab'
 //pages
 // import Guide from ' pages/common/layout/guide.js'
 
+let audioStartInterval = null
+
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -98,10 +100,20 @@ export default props => {
       // media start
       if (mediaHandler.streamId) {
         if (mediaHandler.type === 'host') {
-          mediaHandler.publish()
+          audioStartInterval = setInterval(() => {
+            if (mediaHandler.ws.readyState === 1) {
+              mediaHandler.publish()
+              clearInterval(audioStartInterval)
+            }
+          }, 50)
         }
         if (mediaHandler.type === 'listener') {
-          mediaHandler.play()
+          audioStartInterval = setInterval(() => {
+            if (mediaHandler.ws.readyState === 1) {
+              mediaHandler.play()
+              clearInterval(audioStartInterval)
+            }
+          }, 50)
         }
       }
     }
