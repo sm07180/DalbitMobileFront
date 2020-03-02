@@ -6,6 +6,7 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
+import {Hybrid} from 'context/hybrid'
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
 //components
@@ -54,10 +55,15 @@ export default props => {
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
     //정상진입이거나,방탈퇴이후성공일경우
     if (res.result === 'success') {
-      const {bjStreamId, roomNo} = res.data
-      console.log(res.data)
-      context.action.updateBroadcastreToken(res.data)
-      props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+      //하이브리드앱이 아닐때
+      if (context.customHeader.hybridApp === 'N') {
+        const {bjStreamId, roomNo} = res.data
+        console.log(res.data)
+        context.action.updateBroadcastreToken(res.data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+      } else {
+        Hybrid('RoomJoin', res.data)
+      }
     }
     return
   }
