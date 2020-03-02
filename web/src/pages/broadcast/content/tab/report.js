@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -89,7 +90,7 @@ const Container = styled.div`
     letter-spacing: -0.4px;
     transform: skew(-0.03deg);
     & > span {
-      color: #8556f6;
+      color: ${COLOR_MAIN};
     }
   }
   & p {
@@ -113,8 +114,8 @@ const BTN = styled.button`
   transform: skew(-0.03deg);
   outline: none;
   &.on {
-    border: 1px solid #8556f6;
-    color: #8556f6;
+    border: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
     font-weight: 600;
   }
 `
@@ -129,6 +130,6 @@ const SubmitBTN = styled.button`
   color: #fff;
   letter-spacing: -0.4px;
   &.on {
-    background-color: #8556f6;
+    background-color: ${COLOR_MAIN};
   }
 `

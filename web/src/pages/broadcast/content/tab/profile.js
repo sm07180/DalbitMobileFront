@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -168,7 +169,7 @@ const Container = styled.div`
         transform: skew(-0.03deg);
       }
       & em {
-        color: #8556f6;
+        color: ${COLOR_MAIN};
         font-size: 20px;
         font-weight: 600;
         font-style: normal;
@@ -192,7 +193,7 @@ const PIMG = styled.div`
 const GazeBar = styled.div`
   position: absolute;
   width: calc(${props => props.gaze} * 100%);
-  background-color: #8556f6;
+  background-color: ${COLOR_MAIN};
   border-radius: 10px;
   & p {
     padding-right: 5px;

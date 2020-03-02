@@ -4,7 +4,8 @@
  */
 import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
+import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 //context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
@@ -26,6 +27,7 @@ export default props => {
   const element = `
   <div>마이크 연결이 안되어있습니다.</div>
   `
+
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
@@ -243,7 +245,29 @@ export default props => {
   }
 
   // init
+  // if (!drawId) {
+  //   //console.log(drawId)
+  //   navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
+  //   ;(async () => {
+  //     const device = await getAudioDeviceCheck()
+  //     if (device) {
+  //       await infiniteAudioChecker()
+  //     } else {
+  //       drawId = true
+  //       context.action.alert({
+  //         msg: element,
+  //         title: '마이크 연결 에러!',
+  //         callback: () => {
+  //           context.action.alert({visible: false})
+  //           props.history.push('/')
+  //         }
+  //       })
+  //     }
+  //   })()
+  // }
+
   if (!drawId) {
+    //console.log(drawId)
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     ;(async () => {
       const device = await getAudioDeviceCheck()
@@ -255,8 +279,10 @@ export default props => {
           msg: element,
           title: '마이크 연결 에러!',
           callback: () => {
-            context.action.alert({visible: false})
             props.history.push('/')
+            if ((window.location = '/')) {
+              context.action.alert({visible: false})
+            }
           }
         })
       }
@@ -383,7 +409,7 @@ const Header = styled.div`
   width: 100%;
   height: 110px;
   & h1 {
-    color: #8556f6;
+    color: ${COLOR_MAIN};
     font-size: 34px;
     font-weight: 800;
     line-height: 110px;
@@ -430,7 +456,7 @@ const MicIcon = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #bdbdbd url('http://www.hwangsh.com/img/ic_mic.png') no-repeat center center / cover;
+  background: #bdbdbd url(${IMG_SERVER}/images/api/ic_mic.png) no-repeat center center / cover;
 `
 const MicVolumeBTN = styled.div``
 const BarWrap = styled.div`
@@ -478,8 +504,8 @@ const JoinRadio = styled.div`
   transform: skew(-0.03deg);
   cursor: pointer;
   &.on {
-    border: 1px solid #8556f6;
-    color: #8556f6;
+    border: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
     z-index: 2;
   }
   &:focus {
@@ -500,8 +526,8 @@ const SubjectRadio = styled.div`
   transform: skew(-0.03deg);
   cursor: pointer;
   &.on {
-    border: 1px solid #8556f6;
-    color: #8556f6;
+    border: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
     z-index: 2;
   }
   &:focus {
@@ -642,7 +668,7 @@ const BroadTitle = styled.div`
     padding: 16px 0 16px 15px;
     box-sizing: border-box;
     background-color: #f5f5f5;
-    color: #8556f6;
+    color: ${COLOR_MAIN};
     font-size: 16px;
     line-height: 1.13;
     letter-spacing: -0.4px;
@@ -710,7 +736,7 @@ const CreateBtn = styled.button`
   transform: skew(-0.03deg);
 
   &.on {
-    background-color: #8556f6;
+    background-color: ${COLOR_MAIN};
     cursor: pointer;
   }
 `

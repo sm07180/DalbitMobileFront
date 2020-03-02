@@ -329,6 +329,12 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+/*IOS input reset*/
+input {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}
+
 /*기본 input text, number의 style 가이드 방송화면에선 적용 안됨.*/
 .off-cast + main,
 .pure {

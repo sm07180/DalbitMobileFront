@@ -3,6 +3,7 @@
  */
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import styled from 'styled-components'
 //components-------------------------------------------------------------
 import SelectInfo from './live-select-popular'
@@ -198,7 +199,7 @@ const InfoWrap = styled.div`
 `
 const Category = styled.span`
   display: block;
-  color: #8556f6;
+  color: ${COLOR_MAIN};
   font-size: 12px;
   font-weight: 600;
   line-height: 1.43;

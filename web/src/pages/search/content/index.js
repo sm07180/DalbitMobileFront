@@ -1,19 +1,58 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import SearchTab from './searchTab'
+import NoResult from './noResult'
+import Page from './pagination'
 import Total from './total' // 검색결과 통합
-
+import Fill from './filter'
+import {Context} from 'context'
+import API from 'context/api'
 export default props => {
+  const context = useContext(Context)
+  //state
+  const [result, setResult] = useState(false)
+  //검색결과가 있냐없냐를 result 값의 true/false로 벨리데이션을 setstate 해서 resultType의 값 변화에 따라 탭을 호출할껀지 결과없음을 호출할껀지..
+  const [resultType, setResultType] = useState(0)
+  //Click-function
+  const checkResult = () => {
+    if (!result) {
+      setResultType(2)
+    } else {
+      setResultType(1)
+    }
+  }
+
+  // const [broadList, setBroadList] = useState(null)
+  // const [list, setPosts] = useState([])
+  // async function fetchData(obj) {
+  //   const res = await API.broad_list({
+  //     url: '/broad/list',
+  //     method: 'get'
+  //   })
+  //   if (res.result === 'success') {
+  //     setBroadList(res.data)
+  //   }
+  //   console.log(res)
+  //   console.log(res.data.list)
+  //   setPosts(res.data.list)
+  // }
+
+  // useEffect(() => {
+  //   fetchData({
+  //     data: {
+  //       roomType: '',
+  //       page: 1,
+  //       records: 10
+  //     }
+  //   })
+  // }, [])
   return (
     <Container>
       <SearchWrap>
-        <div className="searchBar">
-          <span>검색</span>
-          <SearchBar>
-            <input maxLength="30" />
-            <Icon />
-          </SearchBar>
-        </div>
-        <Total />
+        <Fill onClick={checkResult} setValue={setResult} />
+        {resultType === 1 ? <SearchTab /> : ''}
+        {resultType === 2 ? <NoResult /> : ''}
+        <Page />
       </SearchWrap>
     </Container>
   )

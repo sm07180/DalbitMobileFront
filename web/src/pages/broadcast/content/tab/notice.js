@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -104,7 +105,7 @@ const RegistBTN = styled.button`
   width: 100%;
   padding: 15px 0;
   border-radius: 10px;
-  background-color: #8556f6;
+  background-color: ${COLOR_MAIN};
   color: #fff;
   font-size: 16px;
   letter-spacing: -0.4px;
