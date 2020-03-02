@@ -113,31 +113,6 @@ export default props => {
     }
   }, [mediaHandler])
 
-  //--------------------------------------------------------------------- 부스트 정보 조회 테스트 by 최우정
-  useEffect(() => {
-    let flag = false
-    store.action.initBoost(props.location.state.roomNo)
-    return () => {
-      flag = true
-    }
-  }, [])
-
-  useEffect(() => {
-    if (store.boostList.boostCnt > 0) {
-      const stop = clearInterval(myTimer)
-      setMyTimer(stop)
-      let myTime = store.boostList.boostTime
-      const interval = setInterval(() => {
-        myTime -= 1
-        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60))
-        store.action.updateTimer(m)
-        if (myTime === 0) {
-          clearInterval(interval)
-        }
-      }, 1000)
-      setMyTimer(interval)
-    }
-  }, [store.boostList])
   //---------------------------------------------------------------------
 
   //makeContents
