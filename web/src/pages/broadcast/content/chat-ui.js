@@ -19,7 +19,8 @@ export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   //state
-  const [comments, setComments] = useState([])
+  const [comments, setComments] = useState([]) //기본 채팅창에 들어가는 메시지들
+  const [systemMsg, setSystemMsg] = useState({}) // 채팅창 상단에 들어가는 시스템 메시지들
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   const [child, setChild] = useState() // 메세지 children
@@ -56,11 +57,14 @@ export default props => {
 
   //채팅창 리스트가 업데이트 되었을때
   const scrollOnUpdate = e => {
+    chatArea.current.children[0].children[0].style.maxHeight = `calc(${chatArea.current.offsetHeight}px + 17px)`
     setChild(scrollbars.current.props.children)
   }
 
   let msgData = []
-  const getRecvData = data => {
+  const getRecvChatData = data => {
+    console.log('메시지데이터', data)
+
     msgData = msgData.concat(data)
 
     const resulte = msgData.map((item, index) => {
@@ -68,20 +72,38 @@ export default props => {
     })
 
     setComments(resulte)
-    //setRoomInfo(...roomInfo, data)
   }
+  const  = getRecvTopData = data  => {
+    const recvTopData = data.detail.data.recvMsg
+    // if(recvTopData.position === 'top1'){
 
+    // }else{
+
+    // } 
+
+    // setSystemMsg(resulte)
+    // return <MessageType {...item} key={index} rcvData={data}></MessageType>
+
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
-      getRecvData(data.detail)
+      const recvMsg = data.detail.data.recvMsg
+      if(data && data.detail){
+        if(recvMsg.position === 'chat'){
+          getRecvChatData(data.detail)      
+        }else{
+          //getRecvTopData(data.detail)      
+        }
+        
+      }
+      //settopTipMessageData(data.detail)
       return () => document.removeEventListener('socketSendData')
     })
   }, [])
 
   useEffect(() => {
-    chatArea.current.children[0].children[0].style.maxHeight = `calc(${chatArea.current.offsetHeight}px + 17px)`
     if (!checkMove) {
       scrollbars.current.scrollToBottom()
     }
@@ -91,7 +113,7 @@ export default props => {
   return (
     <Content bgImg={roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
-      <InfoContainer {...roomInfo} />
+      <InfoContainer {...roomInfo} msg={systemMsg} />
       <CommentList className="scroll" ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} onScrollStop={handleOnWheel} autoHide>
           {comments}

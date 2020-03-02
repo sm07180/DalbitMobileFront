@@ -71,6 +71,13 @@ export default props => {
       )
       break
     default:
+      return (
+        <Message className="enter-exit">
+          <div>
+            <span>123</span>
+          </div>
+        </Message>
+      )
       break
   }
   // return (
