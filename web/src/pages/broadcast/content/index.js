@@ -74,7 +74,7 @@ export default props => {
     if (mediaHandler) {
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
-        if (mediaHandler.streamId !== this.streamId) {
+        if (mediaHandler.streamId !== bjStreamId) {
           mediaHandler.stop()
         }
       }
