@@ -54,6 +54,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
+          alert('context.customHeader.hybridApp' + context.customHeader.hybridApp)
           if (context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               context.action.updatePopup('LOGIN')
@@ -63,6 +64,7 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
+            alert('RoomMake')
             Hybrid('RoomMake', '')
           }
         }}>
