@@ -71,8 +71,5 @@ const Container = styled.div`
   height: 100%;
   background-color: #fff;
   flex-direction: column;
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 360px;
-  }
+  justify-content: space-between;
 `

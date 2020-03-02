@@ -319,12 +319,11 @@ const SaveButton = styled.button`
 const Story = styled.textarea`
   display: flex;
   width: 100%;
-  height: 150px;
+  height: 15vh;
   background: #f5f5f5;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
   margin-top: 12px;
   border-radius: 10px;
-  overflow: hidden;
   resize: none;
 
   font-size: 14px;
