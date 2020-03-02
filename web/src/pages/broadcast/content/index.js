@@ -82,10 +82,6 @@ export default props => {
       }
 
       mediaHandler.setContext = context
-
-      if (bjProfImg) {
-        mediaHandler.setHostImage(bjProfImg.url)
-      }
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
