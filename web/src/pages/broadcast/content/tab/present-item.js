@@ -66,7 +66,7 @@ export default props => {
           <span>{maxExp}</span>
         </BarWrap>
       </LevelInfo>
-      <Scrollbars ref={scrollbars} style={{height: 250}} autoHide>
+      <Scrollbars ref={scrollbars} style={{height: '50%'}} autoHide>
         <BoxArea>
           {props.testBox.map((data, idx) => {
             return (
@@ -134,6 +134,7 @@ const TargetInfo = props => {
 }
 
 //-------------------------------------------------- styled start
+
 const Target = styled.div`
   display: flex;
   flex-direction: row;
@@ -248,7 +249,7 @@ const BoxArea = styled.div`
   display: flex;
   flex-flow: wrap;
   width: 100%;
-  height: 250px;
+  /* height: 500px; */
   justify-content: left;
   align-items: center;
 `
@@ -256,7 +257,7 @@ const BoxArea = styled.div`
 const ItemInfo = styled.button`
   display: flex;
   width: 24%;
-  height: 120px;
+  height: 98px;
   margin-right: 3px;
   justify-content: center;
   align-items: center;
@@ -290,8 +291,10 @@ const Icon = styled.div`
 const ButtonArea = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  align-items: flex-start;
+  width: 100%;
+  height: 100px;
 `
 
 const SendDirect = styled.button`

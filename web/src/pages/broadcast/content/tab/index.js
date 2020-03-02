@@ -30,7 +30,6 @@ export default props => {
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
   const {currentItem, changeItem} = useTabs(0, tabConent)
-  console.log('## props :', props)
   //---------------------------------------------------------------------
   return (
     <>

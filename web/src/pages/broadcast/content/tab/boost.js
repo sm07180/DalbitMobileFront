@@ -39,6 +39,13 @@ export default props => {
     })
     console.log('## res - useBoost :', res)
     store.action.initBoost(store.roomInfo.roomNo)
+    context.action.alert({
+      callback: () => {
+        console.log('callback처리')
+      },
+      title: '달빛라디오',
+      msg: '부스터가 사용되었습니다.'
+    })
   }
 
   //----------------------------------------------------- components start
@@ -52,13 +59,18 @@ export default props => {
           <Total>{store.boostList.roomCnt}</Total>
         </Rank>
         <BoostImgArea>
-          <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
           {store.boostList.boostCnt !== 0 ? (
-            <TimeActive>
-              {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
-            </TimeActive>
+            <>
+              <img src="https://devimage.dalbitcast.com/images/api/boost_active@2x.png" width={200} height={160} />
+              <TimeActive>
+                {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
+              </TimeActive>
+            </>
           ) : (
-            <TimeInactive>30:00</TimeInactive>
+            <>
+              <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
+              <TimeInactive>30:00</TimeInactive>
+            </>
           )}
         </BoostImgArea>
 
@@ -212,13 +224,15 @@ const TimeActive = styled.div`
   justify-content: center;
   align-items: center;
   padding: 8px 16px 8px 16px;
-  margin-top: 10px;
 
   font-size: 14px;
   font-weight: 600;
   line-height: 1.29;
   letter-spacing: -0.35px;
   text-align: left;
+
+  position: absolute;
+  bottom: 0;
 
   & > span {
     font-size: 10px;

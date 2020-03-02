@@ -1,37 +1,19 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import Navi from './navibar'
 import {LButton} from './bot-button'
 import Api from 'context/api'
 import {BroadCastStore} from '../../store'
 import {Context} from 'context'
+import {Scrollbars} from 'react-custom-scrollbars'
 
-const testData = [
-  {
-    orderNo: 1,
-    order: '인사',
-    text: '안녕하세요.ㅇㅇㅇ입니다. 잘부탁드립니다 :)',
-    isOn: true
-  },
-  {
-    orderNo: 2,
-    order: '박수',
-    text: '👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏',
-    isOn: true
-  },
-  {
-    orderNo: 3,
-    order: '감사',
-    text: '감ㅅr합니다^_^*ㅇㅇㅇ입니다.잘부탁드립니다 :)감ㅅr합니다^_^*',
-    isOn: true
-  }
-]
 export default props => {
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
   const [shortcut, setShortcut] = useState([])
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
+  const scrollbars = useRef(null)
   //------------------------------------------------------ func start
 
   //빠른 말 수정/저장
@@ -48,7 +30,16 @@ export default props => {
       method: 'POST'
     })
     console.log('## res :', res)
-    if (res.result === 'success') selectShortcut()
+    if (res.result === 'success') {
+      context.action.alert({
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: '빠른 말이 수정되었습니다.'
+      })
+      selectShortcut()
+    }
   }
 
   //빠른 말 조회 (TEST)
@@ -69,17 +60,19 @@ export default props => {
     console.log('## store.shortCutList :', store.shortCutList)
     selectShortcut()
   }, [])
-  console.log('## store : ', store)
-  console.log('## context :', context)
+
+  useEffect(() => {}, [])
   //------------------------------------------------------ components start
   return (
     <Container>
       <Navi title={'빠른 말 설정'} />
       {edit ? (
         <EditMain>
+          {/* <Scrollbars ref={scrollbars} style={{height: '90%'}} autoHide> */}
           {shortcut.map((data, idx) => {
-            return <MacroInput data={data} key={idx} _click={updateShortcut} />
+            return <MacroInput data={data} key={idx} _click={updateShortcut} _select={selectShortcut} />
           })}
+          {/* </Scrollbars> */}
         </EditMain>
       ) : (
         <>
@@ -94,7 +87,7 @@ export default props => {
                 return (
                   <MacroLoop key={idx}>
                     <div className="key">{data.order}</div>
-                    <div className="value">{data.text.substring(0, 9)}</div>
+                    <div className="value">{data.text}</div>
                   </MacroLoop>
                 )
               })}
@@ -112,9 +105,20 @@ export default props => {
 const MacroInput = props => {
   //------------------------------------------------------ declare start
   const [text, setText] = useState('')
+  const context = useContext(Context)
   //------------------------------------------------------ func start
   const handleChangeInput = param => {
     const {value, maxLength, name} = event.target
+    let numberOfLines = (value.match(/\n/g) || []).length + 1
+    if (numberOfLines === 5) {
+      context.action.alert({
+        callback: () => {
+          console.log()
+        },
+        title: '달빛라디오',
+        msg: '입력 가능한 수를 초과했습니다.'
+      })
+    }
     setText(value)
   }
 
@@ -138,7 +142,7 @@ const MacroInput = props => {
         <div>{props.data.order}</div>
         <SaveButton onClick={() => _update(props.data.orderNo, props.data.order)}>저장</SaveButton>
       </div>
-      <TextArea onChange={handleChangeInput} maxLength={50} value={text} name="input1" />
+      <TextArea onChange={handleChangeInput} maxLength={50} value={text} numerOf />
     </React.Fragment>
   )
 }
@@ -147,7 +151,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 520px;
+  height: 100%;
 
   & > .title {
     display: flex;
@@ -207,7 +211,7 @@ const MacroArea = styled.div`
 
   .key {
     display: flex;
-    width: 75px;
+    width: 20%;
     height: 40px;
     background-color: #f5f5f5;
     border-radius: 20px;
@@ -223,12 +227,13 @@ const MacroArea = styled.div`
 
   .value {
     display: flex;
-    width: 279px;
+    width: 75%;
     height: 40px;
     background-color: #f5f5f5;
     border-radius: 20px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    overflow: hidden;
 
     font-size: 14px;
     font-weight: normal;
@@ -237,6 +242,7 @@ const MacroArea = styled.div`
     line-height: 1.5;
     letter-spacing: -0.35px;
     color: #424242;
+    padding: 10px 15px 10px 15px;
   }
 `
 
@@ -248,6 +254,7 @@ const MacroLoop = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
+  overflow: hidden;
 `
 const ButtonArea = styled.div`
   display: flex;
@@ -319,4 +326,5 @@ const TextArea = styled.textarea`
   border-radius: 10px;
   background-color: #f5f5f5;
   margin-top: 6px;
+  overflow: hidden;
 `
