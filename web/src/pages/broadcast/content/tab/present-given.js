@@ -198,9 +198,10 @@ export default props => {
 
   useEffect(() => {
     // fetchData()
-    // commonData()
+    commonData()
   }, [])
   console.log('## givenData :', givenData)
+  console.log('## store :', store)
   //--------------------------------------------------- components start
   return (
     <Container>
