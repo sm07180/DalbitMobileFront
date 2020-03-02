@@ -49,13 +49,12 @@ export default props => {
       /**
        * @todos 방송중일때 방송중으로 떠야함
        */
-
       <button
         key="broadcast"
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          if (context.customHeader.os === '3') {
+          if (context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               context.action.updatePopup('LOGIN')
               //alert('로그인필요')
