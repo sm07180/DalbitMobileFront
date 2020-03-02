@@ -25,7 +25,11 @@ export const Hybrid = (func, info) => {
       webkit.messageHandlers[func].postMessage(info)
       break
     case 'Android':
-      window.android[func](JSON.stringify(info))
+      if (info === '' || info === null) {
+        window.android[func]()
+      } else {
+        window.android[func](JSON.stringify(info))
+      }
       break
     default:
       break
