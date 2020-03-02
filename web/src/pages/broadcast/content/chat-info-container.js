@@ -49,6 +49,12 @@ export default props => {
 
   //---------------------------------------------------------------------
   //map
+  // setSystemMsg({...systemMsg, 3: <div>테테테테스트</div>})
+  // setTimeout(() => {
+  //   const item = systemMsg
+  //   delete item[3]
+  //   setSystemMsg({...systemMsg, ...item})
+  // }, 3000)
 
   const creatFanRank = () => {
     return room.fanRank.map((item, index) => {
@@ -62,6 +68,14 @@ export default props => {
     })
   }
 
+  const creatMsg = () => {
+    const items = []
+    for (let key in props.msg) {
+      items.push(props.msg[key])
+    }
+    return <>{items}</>
+  }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -73,6 +87,17 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
+      {/* 시스템메시지, tip메시지 있을경우 뿌려주기 */}
+      {creatMsg()}
+      <div className="system-msg top">
+        <span>마이크 OFF</span>
+      </div>
+      <div className="system-msg tip">
+        <span>
+          새로 방송에 참여한 청취자의 이름을 불러주세요!
+          <br />더 활발하게 참여할거에요!
+        </span>
+      </div>
       <div className="dj-info">
         <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
@@ -124,6 +149,34 @@ export default props => {
 const Content = styled.div`
   position: relative;
   padding: 10px;
+
+  .system-msg {
+    position: absolute;
+    left: 0;
+    top: 125px;
+    width: calc(100% - 20px);
+    margin: 10px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #ec455f;
+    color: #fff;
+    z-index: 1;
+
+    &.top {
+      top: 81px;
+      padding: 8px;
+      border-radius: 30px;
+      background: rgba(236, 69, 95, 0.8);
+      text-align: center;
+    }
+
+    span {
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 600;
+      transform: skew(-0.03deg);
+    }
+  }
 
   .dj-info {
     display: flex;

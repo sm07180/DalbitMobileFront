@@ -244,7 +244,6 @@ export default props => {
 
   // init
   if (!drawId) {
-    console.log(drawId)
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     ;(async () => {
       const device = await getAudioDeviceCheck()
