@@ -9,7 +9,6 @@ const serverRoot = HTMLParser.parse(serverTemplateStr)
 // @ts-ignore
 const clientBody = clientRoot.querySelector('body')
 // @ts-ignore
-const clientHead = clientRoot.querySelector('head')
 
 const clientBodyOriginalChildNodes = []
 clientBody.childNodes.forEach(node => {
@@ -42,9 +41,6 @@ const defaultIPChekcer = `<%
 const headTagIndex = strFinalTemplate.indexOf('<head>')
 const splitedFront = strFinalTemplate.slice(0, headTagIndex)
 const splitedBack = strFinalTemplate.slice(headTagIndex + 6)
-// console.log(splitedBack)
-// console.log(splitedFront)
-// console.log(headTagIndex)
 
 strFinalTemplate = splitedFront + defaultIPChekcer + splitedBack
 
