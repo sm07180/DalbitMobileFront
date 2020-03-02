@@ -682,10 +682,38 @@ export const receiveMessageData = recvData => {
     document.dispatchEvent(destroyEvent)
   }
 }
+
+// export async function retoken(obj) {
+//   const {rooomNo} = obj
+//   const res = await Api.broadcast_reToken({data: {roomNo: rooomNo}})
+//   //Error발생시
+//   if (res.result === 'fail') {
+//     console.log(res.message)
+//     return
+//   }
+
+//   console.log(res.data)
+// }
+
 export const socketClusterBinding = (channel, Info) => {
   //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)
   //socketClusterDestory(false, channel)
+  // var isSocketConnected = false
+  // var scState = ''
+  // try {
+  //   scState = socket.getState() || 'nothing' //connecting, open, closed
+  //   if (scState == 'open') {
+  //     isSocketConnected = true
+  //   }
+  // } catch (e) {
+  //   scState = 'nothing'
+  // }
+  // if (!isSocketConnected) {
+  //   console.log('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
+  //   //return false
+  // }
 
+  //socketReload = socket
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
@@ -706,13 +734,15 @@ export const socketClusterBinding = (channel, Info) => {
       }
     }
   } else {
+    //socket = socketReload
     if (socket != null) {
       if (window.location.pathname !== '/') {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }
     } else {
-      console.warn('소켓 null')
+      //  console.warn('소켓 null')
       if (Info) scConnection(Info)
+      privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
     }
   }
 }
@@ -913,7 +943,7 @@ export default props => {
   useEffect(() => {
     loginInfo = context
     //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
-    console.log('소켓 연결 토큰 값 = ' + JSON.stringify(loginInfo))
+    //console.log('소켓 연결 토큰 값 = ' + JSON.stringify(loginInfo))
 
     scConnection(loginInfo)
   }, [])

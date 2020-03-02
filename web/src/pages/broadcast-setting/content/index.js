@@ -184,7 +184,7 @@ export default props => {
             /**
              * @todos 소켓연결필요
              */
-            props.history.push('/broadcast/' + res.data.roomNo, res.data)
+            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
           } else {
             console.warn(res.message)
           }

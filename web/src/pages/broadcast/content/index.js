@@ -164,8 +164,19 @@ export default props => {
       console.log(res.message)
       return
     }
-    sc.socketClusterBinding(res.data.roomNo, res.data)
+    //sc.socketClusterBinding(res.data.roomNo, res.data)
+    sc.socketClusterBinding(res.data.roomNo, context)
     context.action.updateBroadcastreToken(res.data)
+    //return res.data
+  }
+  async function reloadRoom(roomNo) {
+    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+    props.history.push('/broadcast/' + '?roomNo=' + roomNo)
     //return res.data
   }
   useEffect(() => {
@@ -175,6 +186,7 @@ export default props => {
       getReToken(props.location.state.roomNo)
     } else {
       if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+      //reloadRoom(props.location.state.roomNo)
     }
   }, [])
   //---------------------------------------------------------------------
