@@ -122,7 +122,7 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_listeners = async obj => {
-    const {url, method, data, params} = obj || {}
+    const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/listeners`, method: method || 'GET', params: params || {}})
   }
   /**
@@ -700,6 +700,16 @@ export default class API {
   static broadcast_reToken = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || '/broad/reToken', method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 공통 서치
+   * @create 황상한 2020.03.02
+   */
+
+  static live_search = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || '/search/live', method: method || 'GET', params: params})
   }
 
   //-------------------------------------------------------------

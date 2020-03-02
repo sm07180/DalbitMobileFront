@@ -8,7 +8,8 @@
  */
 import React, {useMemo, useEffect, useContext, useState, useCallback, useRef} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, COLOR_MAIN} from 'context/config'
+import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 //context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
@@ -335,8 +336,8 @@ const JoinRadio = styled.div`
   transform: skew(-0.03deg);
   cursor: pointer;
   &.on {
-    border: 1px solid #8556f6;
-    color: #8556f6;
+    border: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
     z-index: 2;
   }
   &:focus {
@@ -360,8 +361,8 @@ const SubjectRadio = styled.div`
   transform: skew(-0.03deg);
   cursor: pointer;
   &.on {
-    border: 1px solid #8556f6;
-    color: #8556f6;
+    border: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
     z-index: 2;
   }
   &:focus {
@@ -479,9 +480,9 @@ const Icon = styled.em`
   float: left;
   width: 90px;
   height: 48px;
-  background: url('http://www.hwangsh.com/img/came.png') no-repeat center / cover;
+  background: url(${IMG_SERVER}/images/api/came.png) no-repeat center / cover;
   &.on {
-    background: url('http://www.hwangsh.com/img/cameraon.png') no-repeat center / cover;
+    background: url(${IMG_SERVER}/images/api/cameraon.png) no-repeat center / cover;
   }
 `
 const BroadTitle = styled.div`
@@ -502,7 +503,7 @@ const BroadTitle = styled.div`
     padding: 16px 0 16px 15px;
     box-sizing: border-box;
     background-color: #f5f5f5;
-    color: #8556f6;
+    color: ${COLOR_MAIN};
     font-size: 16px;
     line-height: 1.13;
     letter-spacing: -0.4px;
@@ -552,7 +553,7 @@ const CopyrightIcon = styled.div`
   float: right;
   width: 102px;
   height: 16px;
-  background: url('https://devimage.dalbitcast.com/images/api/copyright.png') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/images/api/copyright.png) no-repeat center center / cover;
   margin: 47px 0 15px 0;
 `
 const CreateBtn = styled.button`
@@ -569,7 +570,7 @@ const CreateBtn = styled.button`
   transform: skew(-0.03deg);
 
   &.on {
-    background-color: #8556f6;
+    background-color: ${COLOR_MAIN};
     cursor: pointer;
   }
 `
