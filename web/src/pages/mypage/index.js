@@ -17,8 +17,8 @@ import Api from 'context/api'
 //components
 import MyProfile from './content/myProfile.js'
 import Notice from './content/notice.js'
-//import FanBoard from './content/fanBoard.js'
 import MyWallet from './content/myWallet'
+//import FanBoard from './content/fanBoard.js'
 //import Report from './content/report'
 //import Setting from './content/setting'
 
