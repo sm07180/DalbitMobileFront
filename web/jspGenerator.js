@@ -39,8 +39,9 @@ const defaultIPChekcer = `<%
   }
 %>`
 const headTagIndex = strFinalTemplate.indexOf('<head>')
-const splitedFront = strFinalTemplate.slice(0, headTagIndex)
-const splitedBack = strFinalTemplate.slice(headTagIndex + 6)
+const headTagLength = '<head>'.length
+const splitedFront = strFinalTemplate.slice(0, headTagIndex + headTagLength)
+const splitedBack = strFinalTemplate.slice(headTagIndex + headTagLength)
 
 strFinalTemplate = splitedFront + defaultIPChekcer + splitedBack
 
