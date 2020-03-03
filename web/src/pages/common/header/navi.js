@@ -56,6 +56,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
+          console.log(context.customHeader)
           if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               //로그인 팝업레이어실행

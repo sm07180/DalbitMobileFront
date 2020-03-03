@@ -9,7 +9,7 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 /**
  * 하이브리드 앱연동을 문제발생,lazy로딩 x
  */
-import Login from 'pages/login'
+//import Login from 'pages/login'
 //const Login = React.lazy(() => import('pages/login'))
 /* :title  
 /user/join 회원가입 
@@ -21,7 +21,7 @@ const Main = React.lazy(() => import('pages/main'))
 const BroadCast = React.lazy(() => import('pages/broadcast'))
 const BroadCastSetting = React.lazy(() => import('pages/broadcast-setting'))
 const Guide = React.lazy(() => import('pages/guide'))
-//const Login = React.lazy(() => import('pages/login'))
+const Login = React.lazy(() => import('pages/login'))
 const User = React.lazy(() => import('pages/user'))
 const Cast = React.lazy(() => import('pages/cast'))
 const Live = React.lazy(() => import('pages/live'))
