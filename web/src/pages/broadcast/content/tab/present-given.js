@@ -205,7 +205,7 @@ export default props => {
   //--------------------------------------------------- components start
   return (
     <Container>
-      <Navi title={'받은 선물 내역'} />
+      <Navi title={'받은 선물 내역'} prev={props.prev} _changeItem={props._changeItem} />
       <div className="title">현 방송방 내에서 받은 선물 내역 입니다.</div>
       <Info>
         <GivenThings>

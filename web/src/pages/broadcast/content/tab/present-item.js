@@ -13,6 +13,7 @@ export default props => {
   const [count, setCount] = useState(0)
   const [sendType, setSendType] = useState(1)
   const [percent, setPercent] = useState(0)
+  const [itemNo, setItemNo] = useState(-1)
   const scrollbars = useRef(null)
 
   //-------------------------------------------------- func start
@@ -31,18 +32,22 @@ export default props => {
     }
   }
 
-  const pickItem = idx => {
+  const pickItem = (idx, itemNo) => {
     if (item != idx) {
       setItem(idx)
       setCount(1)
+      setItemNo(itemNo)
     } else if (item === idx) {
       setCount(count + 1)
+      setItemNo(itemNo)
     }
+    console.log('## pickItem : ', 'idx: ', idx, 'count: ', count, 'itemNo :', itemNo)
   }
 
   useEffect(() => {
     widthCalc()
-    context.action.updatePopup('SEND_PRESENT')
+    // context.action.updatePopup('SEND_PRESENT')
+    context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
   }, [])
   //-------------------------------------------------- components start
@@ -78,7 +83,7 @@ export default props => {
             {props.common !== undefined &&
               props.common.items.map((data, idx) => {
                 return (
-                  <ItemInfo key={idx} onClick={() => pickItem(idx)}>
+                  <ItemInfo key={idx} onClick={() => pickItem(idx, data.itemNo)}>
                     {item == idx && (
                       <Picked>
                         <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
@@ -101,7 +106,7 @@ export default props => {
       </MainContents>
       <ButtonArea>
         <SecretSend onClick={() => context.action.updatePopupVisible(true)}>몰래&nbsp;보내기</SecretSend>
-        <Send onClick={() => props.send()}>보내기</Send>
+        <Send onClick={() => props.send(count, itemNo)}>보내기</Send>
       </ButtonArea>
     </Container>
   )

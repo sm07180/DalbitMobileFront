@@ -40,16 +40,15 @@ export default props => {
   //-------------------------------------------------------- func start
 
   // 선물하기
-  async function send() {
+  async function send(count, itemNo) {
     const res = await Api.send_gift({
       data: {
-        roomNo: store.roomInfo.roomNo.toString(),
-        memNo: store.roomInfo.bjMemNo.toString(),
-        itemNo: '1001',
-        itemCnt: 1
+        roomNo: store.roomInfo.roomNo,
+        memNo: store.roomInfo.bjMemNo,
+        itemNo: itemNo,
+        itemCnt: count
       }
     })
-
     console.log('## res :', res)
   }
 
@@ -75,10 +74,10 @@ export default props => {
   }, [])
 
   //-------------------------------------------------------- components start
-  console.log('## common : ', common)
+  console.log('## store : ', store)
   return (
     <Container>
-      <Navi title={'선물'} />
+      <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
       {sendType == 0 ? <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} /> : <SendDirect />}
     </Container>
   )
