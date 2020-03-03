@@ -20,7 +20,8 @@ export default props => {
   const context = useContext(Context)
   //state
   const [comments, setComments] = useState([]) //기본 채팅창에 들어가는 메시지들
-  const [systemMsg, setSystemMsg] = useState({}) // 채팅창 상단에 들어가는 시스템 메시지들
+  const [top1Msg, setTop1Msg] = useState([]) // 채팅창 상단 top1메시지
+  const [top2Msg, setTop2Msg] = useState([]) // 채팅창 상단 top2메시지
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   const [child, setChild] = useState() // 메세지 children
@@ -73,32 +74,69 @@ export default props => {
 
     setComments(resulte)
   }
+
+  //top 메시지 부분.. top1, top2 나누어져있음
+
+  let top2Data = []
   const getRecvTopData = data => {
     const recvTopData = data.detail.data.recvMsg
-    // if(recvTopData.position === 'top1'){
-
-    // }else{
-
-    // }
-
-    // setSystemMsg(resulte)
-    // return <MessageType {...item} key={index} rcvData={data}></MessageType>
+    if (recvTopData.position === 'top1') {
+      const resulte = (
+        <div className="system-msg top1">
+          <span>{recvTopData.msg}</span>
+        </div>
+      )
+      setTop1Msg(resulte)
+    } else {
+      top2Data = topData.concat(data)
+      const resulte = top2Data.map((item, index) => {
+        return (
+          <div className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
+            <span>{item.msg}</span>
+          </div>
+        )
+      })
+      setTop2Msg(resulte)
+    }
   }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
+      console.log('recvMsgrecvMsgrecvMsgrecvMsgrecvMsg', recvMsg)
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
           getRecvChatData(data.detail)
         } else {
-          //getRecvTopData(data.detail)
+          getRecvTopData(data.detail)
         }
       }
       //settopTipMessageData(data.detail)
       return () => document.removeEventListener('socketSendData')
     })
+
+    //임시 테스트값
+    // setTop1Msg([
+    //   <div className="system-msg top1">
+    //     <span>마이크OFF</span>
+    //   </div>
+    // ])
+    // setTop2Msg([
+    //   <div className="system-msg top2">
+    //     <span>긴급입니다!! 긴급입니다!!</span>
+    //   </div>,
+    //   <div className="system-msg top2">
+    //     <span>운영정책 위반사항으로 채팅창 사용이 금지됩니다.</span>
+    //   </div>,
+    //   <div className="system-msg top2">
+    //     <span>[안내] 방송 종료까지 5분 남았습니다.</span>
+    //   </div>,
+    //   <div className={`system-msg top2 ${3 == 3 ? 'tip' : ''}`}>
+    //     <span>누군가 팬이 되어 고마움을 표현하세요 ! 서로 행복해집니다^_^</span>
+    //   </div>
+    // ])
   }, [])
 
   useEffect(() => {
@@ -111,7 +149,7 @@ export default props => {
   return (
     <Content bgImg={roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
-      <InfoContainer {...roomInfo} msg={systemMsg} />
+      <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
       <CommentList className="scroll" ref={chatArea}>
         <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} onScrollStop={handleOnWheel} autoHide>
           {comments}
@@ -159,112 +197,135 @@ const CommentList = styled.div`
   }
 `
 
-// const Message = styled.div`
-//   position: relative;
-//   margin: 16px;
+const Message = styled.div`
+  position: relative;
+  margin: 16px;
 
-//   figure {
-//     display: inline-block;
-//     position: absolute;
-//     left: 0;
-//     top: 0;
-//     width: 36px;
-//     height: 36px;
-//     border-radius: 50%;
-//     background: #fff url(${props => props.profImg}) no-repeat center center / cover;
-//   }
+  figure {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff url(${props => props.profImg}) no-repeat center center / cover;
+  }
 
-//   div {
-//     padding-left: 44px;
-//   }
+  div {
+    padding-left: 44px;
+  }
 
-//   &.enter-exit div {
-//     text-align: center;
-//     span {
-//       display: flex;
-//       width: 100%;
-//       justify-content: center;
-//       align-items: center;
-//       text-align: center;
-//       color: #fff;
-//       font-size: 14px;
-//       font-weight: 600;
-//       letter-spacing: -0.35px;
-//       transform: skew(-0.03deg);
+  &.enter-exit div {
+    text-align: center;
+    span {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.35px;
+      transform: skew(-0.03deg);
 
-//       &:before,
-//       &:after {
-//         border-top: 1px solid rgba(255, 255, 255, 0.3);
-//         margin: 0 12px 0 0;
-//         flex: 1 0 12px;
-//         content: '';
-//       }
-//       &:after {
-//         margin: 0 0 0 12px;
-//         flex: 1 0 12px;
-//       }
-//     }
-//   }
+      &:before,
+      &:after {
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        margin: 0 12px 0 0;
+        flex: 1 0 12px;
+        content: '';
+      }
+      &:after {
+        margin: 0 0 0 12px;
+        flex: 1 0 12px;
+      }
+    }
+  }
 
-//   &.like span {
-//     display: block;
-//     padding: 7px;
-//     background: rgba(0, 0, 0, 0.5);
-//     border-radius: 36px;
-//     font-size: 14px;
-//     color: #fff;
-//     text-align: center;
-//     transform: skew(-0.03deg);
-//   }
+  &.present {
+    pre {
+      overflow: hidden;
+      position: relative;
+      padding-left: 65px;
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54px;
+        height: 100%;
+        border-radius: 10px;
+        background: #fff url(${props => props.itemImg}) no-repeat center center / cover;
+        background-size: 48px;
+        content: '';
+      }
+    }
+  }
 
-//   &.guide span {
-//     display: inline-block;
-//     color: #fff;
-//     font-size: 14px;
-//     line-height: 1.6;
-//     transform: skew(-0.03deg);
-//   }
+  &.like span {
+    display: block;
+    padding: 7px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 36px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    transform: skew(-0.03deg);
+  }
 
-//   p {
-//     margin: 0 0 8px 4px;
-//     color: #fff;
-//     font-size: 12px;
-//     font-weight: 600;
-//     letter-spacing: -0.3px;
-//     transform: skew(-0.03deg);
-//     b {
-//       display: inline-block;
-//       margin-right: 5px;
-//       padding: 2px 6px;
-//       border-radius: 20px;
-//       font-size: 10px;
+  &.like.guest span {
+    background: rgba(133, 85, 246, 0.5);
+  }
 
-//       &.dj {
-//         background: ${COLOR_MAIN};
-//       }
-//       &.manager {
-//         background: ${COLOR_POINT_Y};
-//       }
-//       &.guest {
-//         background: ${COLOR_POINT_P};
-//       }
-//     }
-//   }
+  &.guide span {
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+    transform: skew(-0.03deg);
+  }
 
-//   pre {
-//     display: inline-block;
-//     padding: 9px 14px;
-//     border-radius: 10px;
-//     background: rgba(0, 0, 0, 0.3);
-//     color: #fff;
-//     font-family: 'NanumSquare';
-//     font-size: 14px;
-//     font-weight: 600;
-//     line-height: 18px;
-//     white-space: pre-wrap;
-//     word-wrap: break-word;
-//     word-break: break-word;
-//     letter-spacing: -0.35px;
-//     transform: skew(-0.03deg);
-//   }
-// `
+  p {
+    margin: 0 0 8px 4px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    transform: skew(-0.03deg);
+    b {
+      display: inline-block;
+      margin-right: 5px;
+      padding: 2px 6px;
+      border-radius: 20px;
+      font-size: 10px;
+
+      &.dj {
+        background: ${COLOR_MAIN};
+      }
+      &.manager {
+        background: ${COLOR_POINT_Y};
+      }
+      &.guest {
+        background: ${COLOR_POINT_P};
+      }
+    }
+  }
+
+  pre {
+    display: inline-block;
+    padding: 9px 14px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: 'NanumSquare';
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+  }
+`

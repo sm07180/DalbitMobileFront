@@ -144,6 +144,26 @@ export default props => {
   //         <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
   //       </div>
   //     </Message>
+  //     {/* 게스트 참여 */}
+  // <Message className="like guest">
+  //   <div>
+  //     <span>러브angel~👼 님이 게스트 참여를 원합니다. 수락해주세요!</span>
+  //   </div>
+  // </Message>
+
+  //     {/* 선물 전달 */}
+  // <Message className="comment present" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+  //   <figure></figure>
+  //   <div>
+  //     <p>
+  //       <b className="manager">DJ</b>꿀매니저😍
+  //     </p>
+  //     <pre>
+  //       <strong>도넛을 먹는 달덩이 X100</strong> 을<br />
+  //       선물하였습니다.
+  //     </pre>
+  //   </div>
+  // </Message>
   //   </Content>
   // )
 }
@@ -232,6 +252,25 @@ const Message = styled.div`
     }
   }
 
+  &.present {
+    pre {
+      overflow: hidden;
+      position: relative;
+      padding-left: 65px;
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54px;
+        height: 100%;
+        border-radius: 10px;
+        background: #fff url(${props => props.itemImg}) no-repeat center center / cover;
+        background-size: 48px;
+        content: '';
+      }
+    }
+  }
+
   &.like span {
     display: block;
     padding: 7px;
@@ -241,6 +280,10 @@ const Message = styled.div`
     color: #fff;
     text-align: center;
     transform: skew(-0.03deg);
+  }
+
+  &.like.guest span {
+    background: rgba(133, 85, 246, 0.5);
   }
 
   &.guide span {
