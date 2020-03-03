@@ -11,7 +11,7 @@ import API from 'context/api'
 export default props => {
   const context = useContext(Context)
   //state
-  const [result, setResult] = useState(false)
+  const [result, setResult] = useState(null)
   //검색결과가 있냐없냐를 result 값의 true/false로 벨리데이션을 setstate 해서 resultType의 값 변화에 따라 탭을 호출할껀지 결과없음을 호출할껀지..
 
   return (
