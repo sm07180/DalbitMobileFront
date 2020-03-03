@@ -56,7 +56,7 @@ export default props => {
   }
   //useEffect
   useEffect(() => {
-    console.log(context.token.isLogin)
+    alert('로그인실행test1')
   }, [])
   //---------------------------------------------------------------------
   return (
