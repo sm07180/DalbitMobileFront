@@ -145,7 +145,7 @@ const Wrapper = styled.div`
 const LiveWrap = styled.div`
   margin-bottom: 20px;
   &:nth-child(3) {
-    min-height: 110px;
+    min-height: 242px;
   }
 `
 const DJList = styled.div`

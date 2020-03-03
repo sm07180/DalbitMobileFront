@@ -7,6 +7,7 @@ import React, {useEffect, useContext} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
+import Utility from 'components/lib/utility'
 import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
@@ -55,7 +56,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          if (context.customHeader.hybridApp === 'N') {
+          if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               //로그인 팝업레이어실행
               context.action.updatePopup('LOGIN')

@@ -152,7 +152,7 @@ export default class SignalingHandler {
       command: 'publish',
       streamId: this.streamId,
       token: this.publishToken,
-      audio: this.audioStream.getAudioTracks().length > 0 ? true : false,
+      audio: this.audioStream && this.audioStream.getAudioTracks().length > 0 ? true : false,
       video: false
     }
     this.socketSendMsg(cmd)

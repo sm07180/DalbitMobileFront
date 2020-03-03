@@ -3,10 +3,8 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
 export default props => {
-  const {onClick} = props
   let {setValue} = props
   const context = useContext(Context)
-  const [broadList, setBroadList] = useState(null)
   const [list, setPosts] = useState([])
   const [filter, setFilter] = useState('')
   const [show, setShow] = useState(false)
@@ -14,57 +12,69 @@ export default props => {
   async function fetchData() {
     const res = await API.live_search({
       params: {
-        search: setFilter,
+        search: filter,
         page: 1,
         records: 10
       }
     })
     if (res.result === 'success') {
-      setBroadList(res.params)
+      setPosts(res.data.list)
+      //props.history.push('/user/')
     }
-
-    console.log(res.params.list)
-    setPosts(res.params.list)
+    console.log(res)
   }
 
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  const ShowFilter = list.map((item, index) => {
-    // if (filter.length !== 0) {
-    //   if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
-    //     setValue(true)
-    //     return <li key={index}>{item.title}</li>
-    //   } else {
-    //     console.log('결과없음')
-    //     setValue(false)
-    //     return null
-    //   }
-    // }
-    //setValue(false)
-  })
   const ShowClick = () => {
     setShow(true)
+    fetchData()
+  }
+
+  const ShowFilter = list.map((item, index) => {
+    if (filter.length > 1) {
+      if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
+        setValue(true)
+        return (
+          <ListWrap>
+            <li key={index}>{item.title}</li>
+          </ListWrap>
+        )
+      } else {
+        return null
+      }
+    } else {
+      setValue(false)
+    }
+  })
+
+  const searchOnKeyDown = e => {
+    const {currentTarget} = e
+    if (currentTarget.value === '') {
+      return
+    }
+    if (e.keyCode === 13) {
+      fetchData()
+    }
   }
 
   return (
     <Wrap>
       <SearchBar>
-        <input value={filter} onChange={e => (setFilter(e.target.value), setShow(false))} />
+        <input value={filter} onKeyDown={searchOnKeyDown} onChange={e => (setFilter(e.target.value), setShow(false))} />
         <Icon
           onClick={() => {
             ShowClick()
-            onClick()
           }}></Icon>
       </SearchBar>
-      <ul>
-        <div className="div">{show === true && ShowFilter}</div>
-      </ul>
+      {props.children}
+      <ul>{show === true && ShowFilter}</ul>
     </Wrap>
   )
 }
-const Wrap = styled.div``
+const Wrap = styled.div`
+  & .box {
+    background-color: blue;
+  }
+`
 const SearchBar = styled.div`
   display: flex;
   width: 100%;
@@ -93,4 +103,12 @@ const Icon = styled.button`
   width: 48px;
   height: 48px;
   background: url('https://devimage.dalbitcast.com/svg/ic_search_normal.svg');
+`
+
+const ListWrap = styled.ul`
+  width: 100%;
+  display: flex;
+  & li {
+    width: 14.7%;
+  }
 `

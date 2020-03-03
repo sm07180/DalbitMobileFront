@@ -1,11 +1,9 @@
 import React from 'react'
 const Posts = ({posts}) => {
   return (
-    <ul className="list-group mb-4">
+    <ul>
       {posts.map((post, index) => (
-        <li key={index} className="list-group-item">
-          {post.title}
-        </li>
+        <li key={index}>{post.title}</li>
       ))}
     </ul>
   )
