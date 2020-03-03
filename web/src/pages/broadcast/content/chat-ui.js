@@ -64,8 +64,6 @@ export default props => {
 
   let msgData = []
   const getRecvChatData = data => {
-    console.log('메시지데이터', data)
-
     msgData = msgData.concat(data)
 
     const resulte = msgData.map((item, index) => {
@@ -105,7 +103,6 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
-      console.log('recvMsgrecvMsgrecvMsgrecvMsgrecvMsg', recvMsg)
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
           getRecvChatData(data.detail)
