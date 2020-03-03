@@ -66,8 +66,7 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
-            alert('앱실행')
-            Hybrid('RoomMake')
+            Hybrid('RoomMake', '')
           }
         }}>
         <span>방송하기</span>
