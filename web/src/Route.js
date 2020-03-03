@@ -3,14 +3,13 @@
  * @brief Router 목록들
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
-import React, {Suspense, lazy} from 'react'
+import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 
 /* :title  
 /user/join 회원가입 
 /user/password 비밀번호찾기
 */
-
 //pages
 /*-common-*/
 const Main = React.lazy(() => import('pages/main'))

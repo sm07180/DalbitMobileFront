@@ -3,9 +3,14 @@
  * @params "detail" 속성으로 전달
  */
 function native() {
+  // document.dispatchEvent(
+  //   new CustomEvent('native-goLogin', {
+  //     detail: {title: 'text', auth: '111112222CCCCCDDDDD'}
+  //   })
+  // )
   document.dispatchEvent(
-    new CustomEvent('native-goLogin', {
-      detail: {title: 'text', auth: '111112222CCCCCDDDDD'}
+    new CustomEvent('native-navigator', {
+      detail: {url: '/login/'}
     })
   )
   return true

@@ -7,12 +7,15 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout/pure'
-import SnsLogin from 'pages/common/auth'
+import Auth from 'pages/common/auth'
 
 export default props => {
+  console.log(props)
+  //---------------------------------------------------------------------
+  //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <SnsLogin {...props}></SnsLogin>
+      <Auth {...props}></Auth>
     </Layout>
   )
 }
