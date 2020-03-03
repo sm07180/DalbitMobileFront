@@ -33,7 +33,6 @@ export default props => {
     })
     if (res.result === 'success') {
       setPosts(res.data.list)
-      //props.history.push('/user/')
     }
     console.log(res)
   }
