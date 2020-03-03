@@ -16,7 +16,6 @@ export default props => {
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
 
   const onUpdate = e => {
-    console.log('ㅠㅠ')
     scrollbars.current.children[0].children[0].style.maxHeight = `calc(${document.body.clientHeight}px + 17px)`
   }
 
