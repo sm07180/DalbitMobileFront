@@ -24,12 +24,11 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 
 //components
-import MyProfile from './content/my-profile'
+import MyProfile from './content/myProfile.js'
 import Notice from './content/notice.js'
-import FanBoard from './content/fan-board'
-import MyWallet from './content/my-wallet'
+import FanBoard from './content/fanBoard.js'
+import MyWallet from './content/myWallet'
 import Report from './content/report'
-import FanStar from './content/fan-star'
 import Setting from './content/setting'
 
 //
