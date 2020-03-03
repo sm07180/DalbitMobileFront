@@ -12,68 +12,78 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 export default props => {
   //---------------------------------------------------------------------
   console.log('메세지 타입 = ' + props)
-  switch (props.data.cmd) {
-    case 'connect':
-      return (
-        <>
-          <Message className={'guide'}>
-            <div>
-              <span>
-                방송방에 입장하였습니다.
-                <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
-              </span>
-            </div>
-          </Message>
-          <Message className="enter-exit">
-            <div>
-              <span>{props.data.recvMsg.msg}</span>
-            </div>
-          </Message>
-        </>
-      )
-      break
-    case 'chat':
-      return (
-        <Message className="comment" profImg={props.data.user.image}>
-          <figure></figure>
+
+  if (props.data.cmd === 'connect') {
+    return (
+      <>
+        <Message className={'guide'}>
           <div>
-            <p>{props.data.user.nk}</p>
-            <pre>{props.data.recvMsg.msg}</pre>
+            <span>
+              방송방에 입장하였습니다.
+              <br /> 적극적인 방송참여로 방송방의 인싸가 되어보세요!
+            </span>
           </div>
         </Message>
-      )
-      break
-    case 'disconnect':
-      return (
-        <Message className="enter-exit">
-          <div>
-            <span>{props.data.recvMsg.msg}</span>
-          </div>
-        </Message>
-      )
-      break
-    case 'chatEnd':
-      return (
-        <Message className="enter-exit">
-          <div>
-            <span>{props.data.recvMsg.msg}</span>
-          </div>
-        </Message>
-      )
-      break
-    case 'bjEnd':
-      return (
-        <Message className="enter-exit">
-          <div>
-            <span>{props.data.recvMsg.msg}</span>
-          </div>
-        </Message>
-      )
-      break
-    default:
-      return <></>
-      break
+      </>
+    )
+  } else if (props.data.cmd === 'reqWelcome') {
+    return (
+      <Message className="enter-exit">
+        <div>
+          <span>{props.data.recvMsg.msg}</span>
+        </div>
+      </Message>
+    )
+  } else if (props.data.cmd === 'chat') {
+    return (
+      <Message className="comment" profImg={props.data.user.image}>
+        <figure></figure>
+        <div>
+          <p>
+            {props.rcvData.data.user.auth == 3 ? (
+              <b className="dj">DJ</b>
+            ) : props.rcvData.data.user.auth == 2 ? (
+              <b className="guest">게스트</b>
+            ) : props.rcvData.data.user.auth == 1 ? (
+              <b className="manager">매니저</b>
+            ) : (
+              <></>
+            )}
+            {props.rcvData.data.user.nk}
+          </p>
+
+          <pre>{props.data.recvMsg.msg}</pre>
+        </div>
+      </Message>
+    )
+  } else if (props.data.cmd === 'disconnect') {
+    return (
+      <Message className="enter-exit">
+        <div>
+          <span>{props.data.recvMsg.msg}</span>
+        </div>
+      </Message>
+    )
+  } else if (props.data.cmd === 'chatEnd') {
+    return (
+      <Message className="enter-exit">
+        <div>
+          <span>{props.data.recvMsg.msg}</span>
+        </div>
+      </Message>
+    )
+  } else if (props.data.cmd === 'bjEnd') {
+    return (
+      <Message className="enter-exit">
+        <div>
+          <span>{props.data.recvMsg.msg}</span>
+        </div>
+      </Message>
+    )
+  } else {
+    return <></>
   }
+
   // return (
   //   <Content bgImg={roomInfo.bgImg.url}>
   //     <Message className="guide">

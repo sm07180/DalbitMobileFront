@@ -102,7 +102,26 @@ export const scConnection = obj => {
         PACKET_RECV_CONNECT: 'connect', //다른 접속자 접속 알림 메세지
         PACKET_RECV_DISCONNECT: 'disconnect', //다른 접속자 접속해제 알림 메세지
         PACKET_RECV_CHAT_END: 'chatEnd', //BJ/채팅종료
-        PACKET_RECV_BJRECONNECT: 'bjReconnect' //BJ 재접속 알림메세지 -> update 2020-02-20 김호겸
+        PACKET_RECV_BJRECONNECT: 'bjReconnect', //BJ 재접속 알림메세지 -> update 2020-02-20 김호겸
+        PACKET_RECV_REQWELCOME: 'reqWelcome', // 인사말
+        PACKET_RECV_REQKICKOUT: 'reqKickOut', // 강퇴
+        PACKET_RECV_REQGIFDAL: 'reqGiftDal', // 달선물
+        PACKET_RECV_REQGIFIMG: 'reqGiftImg', //이미지 선물
+        PACKET_RECV_REQGUEST: 'reqGuest', // 게스트 초대/취소/승락/거절
+        PACKET_RECV_REQFAN: 'reqFan', // 팬등록/해제
+        PACKET_RECV_REQGOOD: 'reqGood', //
+        PACKET_RECV_REQBOOSTER: 'reqBooster',
+        PACKET_RECV_REQNOTICE: 'reqNotice',
+        PACKET_RECV_REQSTORY: 'reqStory',
+        PACKET_RECV_REQCHANGECOUNT: 'reqChangeCount',
+        PACKET_RECV_REQROOMCHANGETIME: 'reqRoomChangeTime',
+        PACKET_RECV_REQROOMCHANGEINFO: 'reqRoomChangeInfo',
+        PACKET_RECV_REQGRANT: 'reqGrant',
+        PACKET_RECV_REQPLAYTOKEN: 'reqPLayToken',
+        PACKET_RECV_REQMICON: 'reqMicOn',
+        PACKET_RECV_REQMICOFF: 'reqMicOff',
+        PACKET_RECV_REQCALLING: 'reqCalling',
+        PACKET_RECV_REQENDCALL: 'reqEndCall'
       }
     },
 
@@ -217,7 +236,6 @@ export const scConnection = obj => {
     logStr += 'channel: ' + channelname + '\n'
     logStr += 'data: ' + JSON.stringify(data) + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.SUBSCRIBE)
   })
   ///// subscribeFail 구독(채팅방입장) 실패
   ///// 동 이벤트는 channelObj.on(socketConfig.event.channel.SUBSCRIBEFAIL,..) 채널의 subscribeFail 이벤트 발생후 발생됨
@@ -236,8 +254,6 @@ export const scConnection = obj => {
     var logStr = '[socket.close]\n'
     logStr += 'error.code: ' + error + '\n'
     console.warn(logStr)
-
-    //$('#socketLabel').html(socketConfig.event.socket.CLOSE)
   }) ///// channel unsubscribe
   ///// 동 이벤트는 channelObj.on(socketConfig.event.channel.UNSUBSCRIBE,..) 채널의 unsubscribe 이벤트 발생후 발생됨
   socket.on(socketConfig.event.socket.UNSUBSCRIBE /*'unsubscribe'*/, function(channelname, data) {
@@ -246,7 +262,6 @@ export const scConnection = obj => {
     logStr += 'channel: ' + channelname + '\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.UNSUBSCRIBE)
   })
 
   ///// channel subscribe 상태 변경
@@ -260,6 +275,7 @@ export const scConnection = obj => {
     logStr += 'data: ' + JSON.stringify(data) + '\n'
     console.warn(logStr)
     //$('#socketLabel').html(socketConfig.event.socket.SUBSCRIBESTATECHANGE)
+    //receiveMessageData(JSON.parse(data))
   })
 
   /////socket 접속 실패
@@ -285,7 +301,6 @@ export const scConnection = obj => {
     var logStr = '[socket.connectAbort]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.CONNECTABORT)
   })
 
   //접속 실패 후, 소켓 close
@@ -293,7 +308,6 @@ export const scConnection = obj => {
     var logStr = '[socket.close]\n'
     logStr += 'error.code: ' + error + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.CLOSE)
   })
 
   //접속 실패 후, 재접속 시도
@@ -301,21 +315,18 @@ export const scConnection = obj => {
     var logStr = '[socket.connecting]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.CONNECTING)
   })
 
   socket.on(socketConfig.event.socket.RAW /*'raw'*/, function(data) {
     var logStr = '[socket.raw]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.RAW)
   })
 
   socket.on(socketConfig.event.socket.KICKOUT /*'kickOut'*/, function(data) {
     var logStr = '[socket.kickOut]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.KICKOUT)
   })
 
   socket.on(socketConfig.event.socket.AUTHSTATECHANGE /*'authStateChange'*/, function(data) {
@@ -337,21 +348,18 @@ export const scConnection = obj => {
     var logStr = '[socket.subscribeRequest]\n'
     logStr += 'channel: ' + channel + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.SUBSCRIBEREQUEST)
   })
 
   socket.on(socketConfig.event.socket.AUTHENTICATE /*'authenticate'*/, function(data) {
     var logStr = '[socket.authenticate]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.AUTHENTICATE)
   })
 
   socket.on(socketConfig.event.socket.DEAUTHENTICATE /*'deauthenticate'*/, function(data) {
     var logStr = '[socket.deauthenticate]\n'
     logStr += 'data: ' + data + '\n'
     console.warn(logStr)
-    //$('#socketLabel').html(socketConfig.event.socket.DEAUTHENTICATE)
   })
 
   socket.on(socketConfig.event.socket.MESSAGE /*'message'*/, function(data) {
@@ -627,42 +635,81 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
   //서버시간 수신
   socket.on(socketConfig.packet.recv.PACKET_RECV_TIME, function(data) {
     console.warn(data.time)
-    //st = parseInt($('.messages').scrollTop(),10);
-    //$('#messages-list').append($('<li>').text('time : ' + data));
-    //$('.messages').scrollTop(st + 10000);
+    receiveMessageData(data)
   })
 
   //Ant Media Serber 발행 Token 정보
   socket.on(socketConfig.packet.recv.PACKET_RECV_TOKEN, function(data) {
     alert(JSON.stringify(data))
-    // st = parseInt($('.messages').scrollTop(), 10)
-    // $('#messages-list').append($('<li>').text('channel : ' + data.channel))
-    // $('#messages-list').append($('<li>').text('error : ' + data.error))
-    // $('#messages-list').append($('<li>').text('streamId : ' + data.streamId))
-    // $('#messages-list').append($('<li>').text('publishTokenId : ' + data.publishTokenId))
-    // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
-    // $('.messages').scrollTop(st + 10000)
+    receiveMessageData(data)
   })
   socket.on(socketConfig.packet.recv.PACKET_RECV_CHAT_END, function(data) {
     alert(JSON.stringify(data))
-    receiveMessageData(JSON.parse(data))
-    // st = parseInt($('.messages').scrollTop(), 10)
-    // $('#messages-list').append($('<li>').text('channel : ' + data.channel))
-    // $('#messages-list').append($('<li>').text('error : ' + data.error))
-    // $('#messages-list').append($('<li>').text('streamId : ' + data.streamId))
-    // $('#messages-list').append($('<li>').text('publishTokenId : ' + data.publishTokenId))
-    // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
-    // $('.messages').scrollTop(st + 10000)
+    receiveMessageData(data)
   })
   socket.on(socketConfig.packet.recv.PACKET_RECV_BJRECONNECT, function(data) {
-    alert(JSON.stringify(data))
-    // st = parseInt($('.messages').scrollTop(), 10)
-    // $('#messages-list').append($('<li>').text('channel : ' + data.channel))
-    // $('#messages-list').append($('<li>').text('error : ' + data.error))
-    // $('#messages-list').append($('<li>').text('streamId : ' + data.streamId))
-    // $('#messages-list').append($('<li>').text('publishTokenId : ' + data.publishTokenId))
-    // $('#messages-list').append($('<li>').text('playTokenId : ' + data.playTokenId))
-    // $('.messages').scrollTop(st + 10000)
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQWELCOME, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQKICKOUT, function(data) {
+    receiveMessageData(data)
+  })
+
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQKICKOUT, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGIFDAL, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGIFIMG, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGUEST, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQFAN, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGOOD, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQBOOSTER, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQNOTICE, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQSTORY, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQCHANGECOUNT, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQROOMCHANGETIME, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQROOMCHANGEINFO, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGRANT, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQPLAYTOKEN, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQMICON, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQMICOFF, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQCALLING, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQENDCALL, function(data) {
+    receiveMessageData(data)
   })
 }
 
@@ -780,7 +827,8 @@ export const SendMessageChatEnd = objChatInfo => {
     memNo: ''
   }
   console.log('sendMessage = ' + JSON.stringify(params))
-  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
+  //sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, 'roomOut')
 }
 export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {

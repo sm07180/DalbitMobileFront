@@ -52,6 +52,7 @@ export default props => {
       //콜백처리
       callback: () => {
         //props.history.push('/')
+        console.log(props)
         broad_exit(context.broadcastReToken.roomNo)
         sc.SendMessageChatEnd(context.broadcastReToken)
         //sc.socketClusterDestory(false, context.broadcastReToken.roomNo)
