@@ -56,7 +56,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          alert(JSON.stringify(context.customHeader))
+          alert(JSON.stringify(context.customHeader, null, 1))
 
           if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
@@ -66,8 +66,8 @@ export default props => {
             }
             props.history.push('/broadcast-setting')
           } else {
-            Hybrid('RoomMake')
             alert('앱실행')
+            Hybrid('RoomMake')
           }
         }}>
         <span>방송하기</span>
