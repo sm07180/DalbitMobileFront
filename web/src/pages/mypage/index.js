@@ -26,10 +26,10 @@ import Box from '@material-ui/core/Box'
 //components
 import MyProfile from './content/myProfile.js'
 import Notice from './content/notice.js'
-import FanBoard from './content/fanBoard.js'
+//import FanBoard from './content/fanBoard.js'
 import MyWallet from './content/myWallet'
-import Report from './content/report'
-import Setting from './content/setting'
+//import Report from './content/report'
+//import Setting from './content/setting'
 
 //
 const User = props => {

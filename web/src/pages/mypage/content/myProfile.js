@@ -9,11 +9,11 @@ import styled from 'styled-components'
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-const Profile = () => {
+const myProfile = () => {
   return <MyProfile>내 프로필 영역 component</MyProfile>
 }
 
-export default Profile
+export default myProfile
 
 const MyProfile = styled.div`
   width: 600px;
