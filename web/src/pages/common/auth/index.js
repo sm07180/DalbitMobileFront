@@ -54,10 +54,7 @@ export default props => {
         break
     }
   }
-  //useEffect
-  useEffect(() => {
-    alert('로그인실행test1')
-  }, [])
+
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
