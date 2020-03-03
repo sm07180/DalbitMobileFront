@@ -34,7 +34,6 @@ const NotFoundPage = React.lazy(() => import('pages/common/404'))
 const App = React.lazy(() => import('pages/app'))
 
 export default () => {
-  alert('router')
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <Switch>
