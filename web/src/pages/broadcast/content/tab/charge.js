@@ -116,7 +116,7 @@ export default props => {
 
   return (
     <Container>
-      <Navi title={'충전'} />
+      <Navi title={'충전'} prev={props.prev} _changeItem={props._changeItem} />
       <ChargeChoice>
         <ChargeTitle>
           <Ctgr />

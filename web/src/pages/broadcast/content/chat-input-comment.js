@@ -9,12 +9,14 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link, NavLink} from 'react-router-dom'
+import {BroadCastStore} from '../store'
 const sc = require('context/socketCluster')
 
 export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //state
   const [toggle, setToggle] = useState({
     volume: false,
@@ -92,7 +94,7 @@ export default props => {
           <li>인사</li>
           <li>박수</li>
           <li>감사</li>
-          <li>세팅</li>
+          <li onClick={() => store.action.updateTab(11)}>세팅</li>
         </ul>
         <button className="menu" title="기타메뉴" onClick={activeMenu}>
           기타메뉴

@@ -71,7 +71,7 @@ export default props => {
       msg: '부스터가 사용되었습니다.'
     })
   }
-
+  console.log('## props :', props)
   //----------------------------------------------------- components start
   return (
     <Container>

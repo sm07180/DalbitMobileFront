@@ -1,65 +1,91 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {BotButton} from './bot-button'
+import {Scrollbars} from 'react-custom-scrollbars'
 
-const testData = ['신용카드 결제', '휴대폰 결제', '무통장 입금(계좌이체)', '실시간 계좌이체']
+const testData = [
+  {
+    id: 0,
+    type: '신용카드 결제'
+  },
+  {
+    id: 1,
+    type: '휴대폰 결제'
+  },
+  {
+    id: 2,
+    type: '무통장 입금(계좌이체)'
+  },
+  {
+    id: 3,
+    type: '실시간 계좌이체'
+  }
+]
 export default props => {
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
+  const scrollbars = useRef(null)
   //-------------------------------------------------------- func start
   //-------------------------------------------------------- components start
   return (
     <Container>
-      <div className="title">달 충전하기</div>
-      <InfoWrap>
-        <Info>
-          <div className="subTitle">구매 내역</div>
-          <div>
-            <div>결제상품</div>
-            <div className="goods">달&nbsp;100</div>
-          </div>
-          <div>
-            <div>결제금액</div>
-            <div className="price">
-              10,000<span>원</span>
+      <Scrollbars ref={scrollbars} style={{height: '629px'}} autoHide>
+        <div className="title">달 충전하기</div>
+        <InfoWrap>
+          <Info>
+            <div className="subTitle">구매 내역</div>
+            <div>
+              <div>결제상품</div>
+              <div className="goods">달&nbsp;100</div>
             </div>
+            <div>
+              <div>결제금액</div>
+              <div className="price">
+                10,000<span>원</span>
+              </div>
+            </div>
+          </Info>
+        </InfoWrap>
+        <PaymentWrap>
+          <Payment>
+            <div className="subTitle">결제수단</div>
+            <ItemArea>
+              {testData.map((data, idx) => {
+                return (
+                  <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
+                    {data.type}
+                  </ItemBox>
+                )
+              })}
+            </ItemArea>
+          </Payment>
+        </PaymentWrap>
+        {charge === 2 && (
+          <DepositInfo>
+            <div className="subTitle">무통장 입금</div>
+          </DepositInfo>
+        )}
+        <NoticeArea>
+          <div className="noticeTitle">
+            <div className="circle">!</div>
+            <div>달 충전 안내</div>
           </div>
-        </Info>
-      </InfoWrap>
-      <PaymentWrap>
-        <Payment>
-          <div className="subTitle">결제수단</div>
-          <ItemArea>
-            {testData.map((data, idx) => {
-              return (
-                <ItemBox key={idx} onClick={() => setCharge(idx)} active={idx === charge ? 'active' : ''}>
-                  {data}
-                </ItemBox>
-              )
-            })}
-          </ItemArea>
-        </Payment>
-      </PaymentWrap>
-      <NoticeArea>
-        <div className="noticeTitle">
-          <div className="circle">!</div>
-          <div>달 충전 안내</div>
-        </div>
-        <div className="notice">
-          <p>∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-          <p>∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-          <p>∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 </p>
-          <p>&nbsp;&nbsp;또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-          <p>∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 </p>
-          <p>&nbsp;&nbsp;있습니다.</p>
-        </div>
-      </NoticeArea>
-      <ButtonArea>
-        <div>
-          <BotButton width={150} height={48} background={'#fff'} color={'#8556f6'} borderColor={'#8556f6'} title={'취소하기'} />
-          <BotButton width={150} height={48} background={charge != -1 ? '#8556f6' : '#bdbdbd'} color={'#fff'} title={'충전하기'} />
-        </div>
-      </ButtonArea>
+          <div className="notice">
+            <p>∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+            <p>∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+            <p>∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 </p>
+            <p>&nbsp;&nbsp;또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+            <p>∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 </p>
+            <p>&nbsp;&nbsp;있습니다.</p>
+          </div>
+        </NoticeArea>
+        <ButtonArea>
+          <div>
+            <BotButton width={150} height={48} background={'#fff'} color={'#8556f6'} borderColor={'#8556f6'} title={'취소하기'} />
+            <BotButton width={150} height={48} background={charge != -1 ? '#8556f6' : '#bdbdbd'} color={'#fff'} title={'충전하기'} />
+          </div>
+        </ButtonArea>
+      </Scrollbars>
     </Container>
   )
 }
@@ -68,7 +94,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 629px;
+  /* height: 629px; */
   background-color: #fff;
   border-radius: 10px;
 
@@ -87,12 +113,19 @@ const Container = styled.div`
   }
 
   .subTitle {
+    display: flex;
+    width: 100%;
+    height: 48px;
     color: #8556f6;
     font-size: 16px;
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -0.4px;
     text-align: center;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    align-items: center;
+    justify-content: space-between;
   }
 `
 
@@ -255,4 +288,12 @@ const ButtonArea = styled.div`
     align-items: center;
     justify-content: space-between;
   }
+`
+const DepositInfo = styled.div`
+  display: flex;
+  width: 90%;
+  height: 250px;
+  flex-direction: column;
+  background: red;
+  align-items: center;
 `
