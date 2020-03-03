@@ -10,8 +10,8 @@ import Layout from 'pages/common/layout/pure'
 import Auth from 'pages/common/auth'
 
 export default props => {
-  console.log(props)
   //---------------------------------------------------------------------
+  alert('2')
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
