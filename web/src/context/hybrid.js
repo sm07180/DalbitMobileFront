@@ -22,7 +22,11 @@ export const Hybrid = (func, info) => {
       //console.log('Windows버젼입니다')
       break
     case 'iOS':
-      webkit.messageHandlers[func].postMessage(info)
+      if (info === '' || info === null) {
+        webkit.messageHandlers[func].postMessage()
+      } else {
+        webkit.messageHandlers[func].postMessage(info)
+      }
       break
     case 'Android':
       if (info === '' || info === null) {

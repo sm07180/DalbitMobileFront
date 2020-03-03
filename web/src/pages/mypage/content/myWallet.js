@@ -9,7 +9,7 @@ import styled from 'styled-components'
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-const TabWallet = () => {
+const myWallet = () => {
   return (
     <MyWallet>
       <h3>루비 상세내역(최근 3개월)</h3>
@@ -20,6 +20,6 @@ const TabWallet = () => {
   )
 }
 
-export default TabWallet
+export default myWallet
 
 const MyWallet = styled.div``

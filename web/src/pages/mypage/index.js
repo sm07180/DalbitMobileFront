@@ -14,32 +14,18 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 //context
 import Api from 'context/api'
 
-//material-ui
-import PropTypes from 'prop-types'
-import {StylesProvider} from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-
 //components
-import MyProfile from './content/my-profile'
+import MyProfile from './content/myProfile.js'
 import Notice from './content/notice.js'
-import FanBoard from './content/fan-board'
-import MyWallet from './content/my-wallet'
-import Report from './content/report'
-import FanStar from './content/fan-star'
-import Setting from './content/setting'
+import MyWallet from './content/myWallet'
+//import FanBoard from './content/fanBoard.js'
+//import Report from './content/report'
+//import Setting from './content/setting'
 
 //
 const User = props => {
   //---------------------------------------------------------------------
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
-  const [value, setValue] = React.useState(props.index ? props.index : 0)
-  const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
@@ -53,7 +39,10 @@ const User = props => {
         <MyProfile />
 
         <Switch>
+          <Route exact path="/mypage/profile" component={MyProfile} />
           <Route exact path="/mypage/notice" component={Notice} />
+          {/* <Route exact path="/mypage/wallet" component={Notice} /> */}
+          {/* <Route exact path="/mypage/fanboard" component={Notice} /> */}
         </Switch>
       </Content>
     </Layout>

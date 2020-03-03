@@ -12,7 +12,7 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 //material ui
 import TextField from '@material-ui/core/TextField'
 
-const TabFanBoard = ({value, onChange}) => {
+const fanBoard = ({value, onChange}) => {
   const [listItems, setListItem] = useState([
     {id: 0, name: '홍길동1', date: '2019-09-09', text: '팬입니다.'},
     {id: 1, name: '홍길동2', date: '2019-09-09', text: '팬입니다.'},
@@ -75,7 +75,7 @@ const TabFanBoard = ({value, onChange}) => {
   )
 }
 
-export default TabFanBoard
+export default fanBoard
 
 const FanBoard = styled.div``
 

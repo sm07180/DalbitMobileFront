@@ -140,17 +140,19 @@ export default class SignalingHandler {
    */
   publish() {
     if (this.type !== 'host') {
-      return alert('Not host!')
+      //return alert('Not host!')
+      return console.warn('Not host!')
     }
     if (!this.audioStream) {
-      return alert('Need a audio stream')
+      return console.warn('Need a audio stream')
+      //return alert('Need a audio stream')
     }
 
     const cmd = {
       command: 'publish',
       streamId: this.streamId,
       token: this.publishToken,
-      audio: this.audioStream.getAudioTracks().length > 0 ? true : false,
+      audio: this.audioStream && this.audioStream.getAudioTracks().length > 0 ? true : false,
       video: false
     }
     this.socketSendMsg(cmd)
@@ -158,13 +160,16 @@ export default class SignalingHandler {
 
   play() {
     if (this.type !== 'listener') {
-      return alert('Not listener!')
+      //return alert('Not listener!')
+      return console.warn('Need a audio stream')
     }
     if (!this.audioTag) {
-      return alert('Need a audio tag')
+      //return alert('Need a audio tag')
+      return console.warn('Need a audio tag')
     }
     if (!this.streamId) {
-      return alert('Need a stream Id!')
+      //return alert('Need a stream Id!')
+      return console.warn('Need a stream Id!')
     }
 
     const cmd = {

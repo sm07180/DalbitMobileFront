@@ -315,7 +315,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
-      {window.location.pathname === '/login' ? (
+      {window.location.pathname.indexOf('/login') !== -1 ? (
         ''
       ) : (
         <Logo className="logo">

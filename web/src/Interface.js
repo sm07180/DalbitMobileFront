@@ -5,16 +5,24 @@
  * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail:{info:'someDate'}}))
  */
 import React, {useEffect, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
 
-export default () => {
+export default props => {
   //context
   const context = useContext(Context)
+  //history
+  let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
+      case 'native-navigator': //-----------------------Native navigator
+        const {url, info} = event.detail
+        history.push(url, {...info, type: 'native-navigator'})
+        break
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
+        context.action.updateToken(event.detail)
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-goLogin': //-------------------------Native goLogin
@@ -35,10 +43,12 @@ export default () => {
         break
     }
   }
+
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
     /*----native----*/
+    document.addEventListener('native-navigator', update)
     document.addEventListener('native-goLogin', update)
     document.addEventListener('native-minium', update)
     document.addEventListener('native-reciveAuthToken', update)
@@ -47,6 +57,7 @@ export default () => {
     document.addEventListener('react-gnb-close', update)
     return () => {
       /*----native----*/
+      document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-goLogin', update)
       document.removeEventListener('native-minium', update)
       document.removeEventListener('native-reciveAuthToken', update)

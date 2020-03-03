@@ -56,9 +56,8 @@ export default props => {
     //정상진입이거나,방탈퇴이후성공일경우
     if (res.result === 'success') {
       //하이브리드앱이 아닐때
-      if (context.customHeader.hybridApp === 'N') {
+      if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
         const {bjStreamId, roomNo} = res.data
-        console.log(res.data)
         context.action.updateBroadcastreToken(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       } else {

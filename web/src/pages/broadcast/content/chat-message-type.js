@@ -24,7 +24,7 @@ export default props => {
               </span>
             </div>
           </Message>
-          <Message className="enter-exit">
+          <Message className="guide">
             <div>
               <span>{props.data.recvMsg.msg}</span>
             </div>
@@ -109,6 +109,14 @@ export default props => {
   //         <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
   //       </div>
   //     </Message>
+  //      {/* 메시지 날리는 사람이 팬일경우 className fan 추가 */}
+  //     <Message className="comment fan" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
+  //       <figure></figure>
+  //       <div>
+  //         <p>cherry🍒</p>
+  //         <pre>제가 팬입니다. 클래스네임 fan 추가해주세요~ </pre>
+  //       </div>
+  //     </Message>
   //     {/* 퇴장 */}
   //     <Message className="enter-exit">
   //       <div>
@@ -130,11 +138,6 @@ export default props => {
   //     {/* 좋아요~ */}
   //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
   //       <div>
-  //         <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
-  //       </div>
-  //     </Message>
-  //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-  //       <div>
   //         <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
   //       </div>
   //     </Message>
@@ -144,6 +147,26 @@ export default props => {
   //         <span>[안내] 방송 종료 시간까지 5분 남았습니다.</span>
   //       </div>
   //     </Message>
+  //     {/* 게스트 참여 */}
+  // <Message className="like guest">
+  //   <div>
+  //     <span>러브angel~👼 님이 게스트 참여를 원합니다. 수락해주세요!</span>
+  //   </div>
+  // </Message>
+
+  //     {/* 선물 전달 */}
+  // <Message className="comment present" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+  //   <figure></figure>
+  //   <div>
+  //     <p>
+  //       <b className="manager">DJ</b>꿀매니저😍
+  //     </p>
+  //     <pre>
+  //       <strong>도넛을 먹는 달덩이 X100</strong> 을<br />
+  //       선물하였습니다.
+  //     </pre>
+  //   </div>
+  // </Message>
   //   </Content>
   // )
 }
@@ -189,6 +212,19 @@ const Message = styled.div`
   position: relative;
   margin: 16px;
 
+  &.fan figure:after {
+    display: inline-block;
+    position: absolute;
+    right: -3px;
+    bottom: 0;
+    padding: 1px 4px;
+    border-radius: 50%;
+    background: ${COLOR_MAIN};
+    font-size: 8px;
+    color: #fff;
+    content: 'F';
+  }
+
   figure {
     display: inline-block;
     position: absolute;
@@ -232,6 +268,25 @@ const Message = styled.div`
     }
   }
 
+  &.present {
+    pre {
+      overflow: hidden;
+      position: relative;
+      padding-left: 65px;
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54px;
+        height: 100%;
+        border-radius: 10px;
+        background: #fff url(${props => props.itemImg}) no-repeat center center / cover;
+        background-size: 48px;
+        content: '';
+      }
+    }
+  }
+
   &.like span {
     display: block;
     padding: 7px;
@@ -241,6 +296,10 @@ const Message = styled.div`
     color: #fff;
     text-align: center;
     transform: skew(-0.03deg);
+  }
+
+  &.like.guest span {
+    background: rgba(133, 85, 246, 0.5);
   }
 
   &.guide span {

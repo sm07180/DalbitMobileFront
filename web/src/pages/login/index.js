@@ -7,12 +7,18 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout/pure'
-import SnsLogin from 'pages/common/auth'
+import Auth from 'pages/common/auth'
 
 export default props => {
+  //---------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    alert('login실행')
+  }, [])
+  //---------------------------------------------------------------------
   return (
     <Layout {...props}>
-      <SnsLogin {...props}></SnsLogin>
+      <Auth {...props}></Auth>
     </Layout>
   )
 }

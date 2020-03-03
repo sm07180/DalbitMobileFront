@@ -32,11 +32,11 @@ export default props => {
 
   //data
   const info = [
-    {title: '내 정보 관리', url: '/mypage'},
-    {title: '공지사항', url: '/mypage'},
-    {title: '팬보드', url: '/store?캐스트'},
-    {title: '내지갑', url: '/store'},
-    {title: '리포트', url: '/event'}
+    {title: '내 정보 관리', url: '/mypage/profile'},
+    {title: '공지사항', url: '/mypage/notice'},
+    {title: '팬보드', url: '/mypage/fanboard'},
+    {title: '내지갑', url: '/mypage/wallet'},
+    {title: '리포트', url: '/mypage/report'}
   ]
   //---------------------------------------------------------------------
   //fetch

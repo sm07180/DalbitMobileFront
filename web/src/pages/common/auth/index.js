@@ -54,10 +54,7 @@ export default props => {
         break
     }
   }
-  //useEffect
-  useEffect(() => {
-    console.log(context.token.isLogin)
-  }, [])
+
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
