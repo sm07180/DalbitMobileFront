@@ -18,18 +18,12 @@ export default props => {
   //----------------------------------------------------- declare start
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
-  const [boostData, setBoostData] = useState()
-  const [flag, setFlag] = useState(false)
-  const [timer, setTimer] = useState()
   const [myTimer, setMyTimer] = useState()
   //----------------------------------------------------- func start
-  // useEffect(() => {
-  //   if (store.boostList.length === 0) store.action.initBoost(store.roomInfo.roomNo)
-  // }, [])
 
   useEffect(() => {
     let flag = false
-    store.action.initBoost(store.roomInfo.roomNo)
+    store.action.initBoost(store.roomInfo.roomNo) //부스트 정보조회
     return () => {
       flag = true
     }
@@ -37,15 +31,16 @@ export default props => {
 
   useEffect(() => {
     if (store.boostList.boostCnt > 0) {
+      // 남아있는 부스트 시간이 있으면 인터벌 시작
       const stop = clearInterval(myTimer)
       setMyTimer(stop)
       let myTime = store.boostList.boostTime
       const interval = setInterval(() => {
         myTime -= 1
-        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60))
+        let m = Math.floor(myTime / 60) + ':' + ((myTime % 60).toString().length > 1 ? myTime % 60 : '0' + (myTime % 60)) // 받아온 값을 mm:ss 형태로 변경
         store.action.updateTimer(m)
         if (myTime === 0) {
-          clearInterval(interval)
+          clearInterval(interval) // 부스트 시간이 끝나면 stop
         }
       }, 1000)
       setMyTimer(interval)
@@ -57,13 +52,14 @@ export default props => {
     const res = await Api.broadcast_room_use_item({
       data: {
         roomNo: store.roomInfo.roomNo,
-        itemNo: '2001',
+        itemNo: '2001', // 부스트 사용 시 아이템 선택 없음 문의 필요
         itemCnt: 1
       }
     })
     console.log('## res - useBoost :', res)
-    store.action.initBoost(store.roomInfo.roomNo)
+    store.action.initBoost(store.roomInfo.roomNo) // 부스트 사용 후 다시 조회
     context.action.alert({
+      // 부스트 사용완료 팝업
       callback: () => {
         console.log('callback처리')
       },

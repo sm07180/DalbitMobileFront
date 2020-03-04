@@ -21,7 +21,7 @@ export default props => {
   const widthCalc = () => {
     // expNext 필요 경험치 150
     // exp 현재 경험치 50
-    //
+    // 퍼센트 계산함수
     if (props.testData != undefined) {
       const maxExp = props.testData.exp + props.testData.expNext
       const percent = Math.floor((props.testData.exp / maxExp) * 100)
@@ -46,7 +46,6 @@ export default props => {
 
   useEffect(() => {
     widthCalc()
-    // context.action.updatePopup('SEND_PRESENT')
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
   }, [])
@@ -59,7 +58,7 @@ export default props => {
           <DashBoard>
             {props.testData.guestYn === 'Y' && (
               <Target>
-                <TargetInfo targetData={props.targetData} />
+                <TargetInfo targetData={props.targetData} bjNickNm={props.bjNickNm} />
               </Target>
             )}
             <Level>
@@ -112,11 +111,12 @@ export default props => {
   )
 }
 
+// DJ, Guest 선택
 const TargetInfo = props => {
   const [state, setState] = useState(0)
   return (
     <>
-      {props.targetData.map((data, idx) => {
+      {/* {props.targetData.map((data, idx) => {
         return (
           <Dj onClick={() => setState(idx)} active={idx === state ? 'active' : ''} key={idx}>
             {idx !== state && <Cover></Cover>}
@@ -130,7 +130,17 @@ const TargetInfo = props => {
             </DjInfo>
           </Dj>
         )
-      })}
+      })} */}
+      <Dj>
+        {/* {idx !== state && <Cover></Cover>} */}
+        <Profile>
+          <img src="https://devimage.dalbitcast.com/images/api/guest@2x.png" width={36} height={36} />
+          <Tag>DJ</Tag>
+        </Profile>
+        <DjInfo>
+          <div>{props.bjNickNm}</div>
+        </DjInfo>
+      </Dj>
     </>
   )
 }
@@ -361,7 +371,8 @@ const DjImg = styled.div`
 const Tag = styled.div`
   display: flex;
   height: 14px;
-  background-color: ${props => (props.target === 0 ? '#8555f6' : '#ec455f')};
+  /* background-color: ${props => (props.target === 0 ? '#8555f6' : '#ec455f')}; */
+  background:#8555f6;
   width: 36px;
   border-radius: 10px;
   color: #ffffff;

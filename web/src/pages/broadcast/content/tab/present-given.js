@@ -191,13 +191,14 @@ export default props => {
     }
   }
 
+  // 공통값 조회 - context or store로 이동 필요함
   async function commonData() {
     const res = await Api.splash({})
     console.log('## splash :', res)
   }
 
   useEffect(() => {
-    // fetchData()
+    // fetchData() api 테스트 완료했지만 데이터가 없어 테스트 데이터로 바인딩
     commonData()
   }, [])
   console.log('## givenData :', givenData)
@@ -244,48 +245,6 @@ export default props => {
                 </Contents>
               )
             })}
-          {/* {givenData.list.map((data, idx) => {
-            return (
-              <Contents key={idx}>
-                <UserInfo>
-                  <Img />
-                  <div className="user">
-                    <div>{data.nickNm}</div>
-                    <span>{data.giftDt}</span>
-                  </div>
-                </UserInfo>
-                <ItemInfo>
-                  <div className="item">
-                    {data.isSecret && <Secret>몰래</Secret>}
-                    <span>{data.itemNm}</span>
-                  </div>
-
-                  <div className="gold">
-                    <span>골드 {data.gold}</span>
-                  </div>
-                </ItemInfo>
-              </Contents>
-            )
-          })} */}
-          {/* <Contents>
-            <UserInfo>
-              <Img />
-              <div className="user">
-                <div>야호야호</div>
-                <span>17:20:00</span>
-              </div>
-            </UserInfo>
-            <ItemInfo>
-              <div className="item">
-                {secretYn && <Secret>몰래</Secret>}
-                <span>item name</span>
-              </div>
-
-              <div className="gold">
-                <span>골드 50</span>
-              </div>
-            </ItemInfo>
-          </Contents> */}
         </Scrollbars>
       </History>
     </Container>

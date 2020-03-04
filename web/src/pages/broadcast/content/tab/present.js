@@ -68,6 +68,7 @@ export default props => {
     if (res.result === 'success') setCommon(res.data)
   }
 
+  //선물하기 진입 시 필요데이터 조회
   useEffect(() => {
     broadProfile()
     commonData()
@@ -75,10 +76,15 @@ export default props => {
 
   //-------------------------------------------------------- components start
   console.log('## store : ', store)
+  console.log('## context : ', context)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
-      {sendType == 0 ? <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} /> : <SendDirect />}
+      {sendType == 0 ? (
+        <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} />
+      ) : (
+        <SendDirect />
+      )}
     </Container>
   )
 }

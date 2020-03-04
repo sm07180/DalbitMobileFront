@@ -38,7 +38,7 @@ export default props => {
         title: '달빛라디오',
         msg: '빠른 말이 수정되었습니다.'
       })
-      selectShortcut()
+      selectShortcut() // 빠른 말 수정 완료 후 조회
     }
   }
 
@@ -55,6 +55,7 @@ export default props => {
     console.log('## member_broadcast_shortcut :', res)
   }
 
+  //진입 시 빠른 말 조회
   useEffect(() => {
     console.log('## useEffect')
     console.log('## store.shortCutList :', store.shortCutList)

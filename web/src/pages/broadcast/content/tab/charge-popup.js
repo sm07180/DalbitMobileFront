@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {BotButton} from './bot-button'
 import {Scrollbars} from 'react-custom-scrollbars'
+import SuccessPopup from './charge-success-popup'
 
 const testData = [
   {
@@ -21,70 +22,192 @@ const testData = [
     type: '실시간 계좌이체'
   }
 ]
+
+const receiptData = [
+  {
+    id: 0,
+    type: '선택안함'
+  },
+  {
+    id: 1,
+    type: '소득공제용'
+  },
+  {
+    id: 2,
+    type: '지출증빙용'
+  }
+]
 export default props => {
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
   const scrollbars = useRef(null)
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [useage, setUseage] = useState(0)
+  const [select, setSelect] = useState(false)
+  const [pick, setPick] = useState('주민등록번호')
+  const [confirm, setConfirm] = useState(false)
   //-------------------------------------------------------- func start
+  // input 분기
+  const handleChange = e => {
+    if (e.target.name === 'name') {
+      setName(e.target.value)
+    } else if (e.target.name === 'phone') {
+      setPhone(e.target.value)
+    } else if (e.target.name === 'pay') {
+      console.log('## pay :', e.target.value)
+    } else if (e.target.name === 'company') {
+      console.log('## company : ', e.target.value)
+    }
+  }
+
+  // 무통장입금 - 소득공제용 - select
+  const choice = index => {
+    if (index === 0) {
+      setPick('주민등록번호')
+      setSelect(false)
+    } else {
+      setPick('휴대폰번호')
+      setSelect(false)
+    }
+  }
+
+  const doCharge = () => {
+    // 충전하기 api 통신 후 success 받으면 화면 전환 or 이니시스 모듈 페이지 리다이렉트
+    setConfirm(true)
+  }
+
+  // 무통장입금 - 현금영수증 Component
+  const receipt = props => {
+    return (
+      <div className="receipt">
+        <span>현금영수증</span>
+        <div className="useage">
+          {receiptData.map((data, index) => {
+            return (
+              <React.Fragment key={index}>
+                <Useage onClick={() => setUseage(index)} active={useage === index ? 'active' : ''}>
+                  {data.type}
+                </Useage>
+              </React.Fragment>
+            )
+          })}
+        </div>
+        {useage !== 0 && (
+          <div className="receiptInfo">
+            {useage !== 0 && (
+              <>
+                <div className="select">
+                  {useage === 1 && (
+                    <>
+                      <Select onClick={() => setSelect(!select)} active>
+                        <span>{pick}</span>
+                        <div></div>
+                      </Select>
+                      <input type="number" name="pay" onChange={handleChange} />
+                    </>
+                  )}
+                  {useage === 2 && (
+                    <>
+                      <Select>
+                        <span>사업자번호</span>
+                      </Select>
+                      <input type="number" name="company" onChange={handleChange} />
+                    </>
+                  )}
+                </div>
+                {select && (
+                  <Event>
+                    <ul>
+                      <button onClick={() => choice(0)}>주민등록번호</button>
+                      <button onClick={() => choice(1)}>휴대폰번호</button>
+                    </ul>
+                  </Event>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   //-------------------------------------------------------- components start
   return (
     <Container>
-      <Scrollbars ref={scrollbars} style={{height: '629px'}} autoHide>
-        <div className="title">달 충전하기</div>
-        <InfoWrap>
-          <Info>
-            <div className="subTitle">구매 내역</div>
-            <div>
-              <div>결제상품</div>
-              <div className="goods">달&nbsp;100</div>
-            </div>
-            <div>
-              <div>결제금액</div>
-              <div className="price">
-                10,000<span>원</span>
+      <Scrollbars ref={scrollbars} style={{height: '649px'}} autoHide>
+        {confirm ? (
+          <SuccessPopup />
+        ) : (
+          <>
+            <div className="title">달 충전하기</div>
+            <InfoWrap>
+              <Info>
+                <div className="subTitle">구매 내역</div>
+                <div>
+                  <div>결제상품</div>
+                  <div className="goods">달&nbsp;100</div>
+                </div>
+                <div>
+                  <div>결제금액</div>
+                  <div className="price">
+                    10,000<span>원</span>
+                  </div>
+                </div>
+              </Info>
+            </InfoWrap>
+            <PaymentWrap>
+              <Payment>
+                <div className="subTitle">결제수단</div>
+                <ItemArea>
+                  {testData.map((data, idx) => {
+                    return (
+                      <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
+                        {data.type}
+                      </ItemBox>
+                    )
+                  })}
+                </ItemArea>
+              </Payment>
+            </PaymentWrap>
+            {charge === 2 && (
+              <DepositInfo>
+                <div className="depositTitle">
+                  <div className="subTitle">무통장 입금</div>
+                  <div className="info">
+                    <div>입금자</div>
+                    <input name="name" onChange={handleChange} value={name} />
+                  </div>
+                  <div className="info">
+                    <div>전화번호</div>
+                    <input placeholder="입금 정보 문자메시지 전송(선택사항)" onChange={handleChange} name="phone" value={phone} type="number" />
+                  </div>
+                </div>
+                {receipt()}
+              </DepositInfo>
+            )}
+            <NoticeArea>
+              <div className="noticeTitle">
+                <div className="circle">!</div>
+                <div>달 충전 안내</div>
               </div>
-            </div>
-          </Info>
-        </InfoWrap>
-        <PaymentWrap>
-          <Payment>
-            <div className="subTitle">결제수단</div>
-            <ItemArea>
-              {testData.map((data, idx) => {
-                return (
-                  <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
-                    {data.type}
-                  </ItemBox>
-                )
-              })}
-            </ItemArea>
-          </Payment>
-        </PaymentWrap>
-        {charge === 2 && (
-          <DepositInfo>
-            <div className="subTitle">무통장 입금</div>
-          </DepositInfo>
+              <div className="notice">
+                <p>∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+                <p>∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+                <p>∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 </p>
+                <p>&nbsp;&nbsp;또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+                <p>∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 </p>
+                <p>&nbsp;&nbsp;있습니다.</p>
+              </div>
+            </NoticeArea>
+            <ButtonArea>
+              <div>
+                <BotButton width={150} height={48} background={'#fff'} color={'#8556f6'} borderColor={'#8556f6'} title={'취소하기'} />
+                <BotButton width={150} height={48} background={charge != -1 ? '#8556f6' : '#bdbdbd'} color={'#fff'} title={'충전하기'} clickEvent={doCharge} />
+              </div>
+            </ButtonArea>
+          </>
         )}
-        <NoticeArea>
-          <div className="noticeTitle">
-            <div className="circle">!</div>
-            <div>달 충전 안내</div>
-          </div>
-          <div className="notice">
-            <p>∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-            <p>∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-            <p>∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 </p>
-            <p>&nbsp;&nbsp;또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-            <p>∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 </p>
-            <p>&nbsp;&nbsp;있습니다.</p>
-          </div>
-        </NoticeArea>
-        <ButtonArea>
-          <div>
-            <BotButton width={150} height={48} background={'#fff'} color={'#8556f6'} borderColor={'#8556f6'} title={'취소하기'} />
-            <BotButton width={150} height={48} background={charge != -1 ? '#8556f6' : '#bdbdbd'} color={'#fff'} title={'충전하기'} />
-          </div>
-        </ButtonArea>
       </Scrollbars>
     </Container>
   )
@@ -187,7 +310,7 @@ const InfoWrap = styled.div`
 const PaymentWrap = styled.div`
   display: flex;
   width: 100%;
-  height: 130px;
+  height: 140px;
   justify-content: center;
 `
 const Payment = styled.div`
@@ -280,6 +403,7 @@ const ButtonArea = styled.div`
   height: 48px;
   justify-content: center;
   margin-top: 15px;
+  margin-bottom: 5px;
 
   & > div {
     display: flex;
@@ -291,9 +415,173 @@ const ButtonArea = styled.div`
 `
 const DepositInfo = styled.div`
   display: flex;
-  width: 90%;
-  height: 250px;
+  width: 100%;
+  /* height: 250px; */
   flex-direction: column;
-  background: red;
   align-items: center;
+
+  .depositTitle {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 100%;
+
+    .info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 68px;
+      border-bottom-color: #e0e0e0;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.35px;
+      color: #616161;
+
+      & > input {
+        width: 232px;
+        height: 40px;
+        border-radius: 10px;
+        border-style: solid;
+        border-color: #e0e0e0;
+        border-width: 1px;
+        padding: 12px 10px 12px 10px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.43;
+        letter-spacing: -0.35px;
+      }
+    }
+  }
+
+  .receipt {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    /* height: 72px; */
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: -0.35px;
+    color: #616161;
+
+    & > span {
+      display: flex;
+      width: 100%;
+      height: 36px;
+      align-items: center;
+    }
+
+    .useage {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .receiptInfo {
+      display: flex;
+      width: 100%;
+      height: 70px;
+      /* background-color: yellow; */
+      .select {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: space-between;
+
+        & > input {
+          display: flex;
+          width: 66%;
+          height: 40px;
+          border-radius: 10px;
+          border-style: solid;
+          border-color: #e0e0e0;
+          border-width: 1px;
+          padding: 12px 10px 12px 10px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 1.43;
+          letter-spacing: -0.35px;
+        }
+      }
+    }
+  }
 `
+const Useage = styled.button`
+  width: 31%;
+  height: 5vh;
+  border-radius: 10px;
+  border-color: ${props => (props.active ? '#8556f6' : '#e0e0e0')};
+  border-width: 1px;
+  border-style: solid;
+  color: ${props => (props.active ? '#8556f6' : '#616161')};
+`
+
+const Event = styled.div`
+  position: absolute;
+  /* right: 23px; */
+  /* top: 40px; */
+  margin-top: 50px;
+  width: 31%;
+  padding: 13px 0;
+  background-color: #fff;
+  z-index: 3;
+  border: 1px solid #e0e0e0;
+  /* .scrollbar > div:nth-last-child(3) & {
+    bottom: 0;
+  } */
+  & ul {
+    & button {
+      display: block;
+      width: 100%;
+      padding: 7px 0;
+      box-sizing: border-box;
+      color: #757575;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: -0.35px;
+      &:hover {
+        background-color: #f8f8f8;
+      }
+    }
+  }
+  &.on {
+    display: none;
+  }
+`
+const Select = styled.button`
+  display: flex;
+  width: 31%;
+  height: 40px;
+  border-radius: 10px;
+  border-color: #e0e0e0;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.67;
+  letter-spacing: -0.3px;
+  text-align: center;
+  color: #616161;
+  align-items: center;
+  justify-content: space-between;
+  justify-content: ${props => (props.active ? 'space-between' : 'center')};
+  padding: 0px 3px 0px 3px;
+
+  & > div {
+    display: flex;
+    background: url('https://devimage.dalbitcast.com/images/api/ico_selectdown_g_s.png');
+    width: 22px;
+    height: 22px;
+  }
+`
+// const SelectView = styled.div`
+//   display: flex;
+//   width: 100%;
+//   justify-content: center;
+// `
