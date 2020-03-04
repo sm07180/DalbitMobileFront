@@ -80,9 +80,17 @@ export default props => {
       )
     } else {
       if (props.auth == 3) {
-        return <button className="invite">게스트 초대</button>
+        return (
+          <button className="invite" onClick={() => store.action.updateTab(1)}>
+            게스트 초대
+          </button>
+        )
       } else {
-        return <button className="invite">게스트 신청</button>
+        return (
+          <button className="invite" onClick={() => store.action.updateTab(1)}>
+            게스트 신청
+          </button>
+        )
       }
     }
   }
@@ -133,7 +141,9 @@ export default props => {
           {/* 팬랭킹 영역 */}
           {room.fanRank[0].profImg.url && creatFanRank()}
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
-          <li className="people">50</li>
+          <li className="people" onClick={() => store.action.updateTab(0)}>
+            50
+          </li>
         </ul>
       </div>
       <div className="cast-info">
@@ -147,9 +157,13 @@ export default props => {
         </ul>
         <div>
           {/* 새클릭시 사연 탭 */}
-          <button title="사연">사연</button>
+          <button title="사연" onClick={() => store.action.updateTab(9)}>
+            사연
+          </button>
           {/* 클릭시 공지 탭 */}
-          <button title="공지사항">공지사항</button>
+          <button title="공지사항" onClick={() => store.action.updateTab(8)}>
+            공지사항
+          </button>
         </div>
       </div>
       <div className="option">

@@ -19,6 +19,7 @@ const GlobalProvider = props => {
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
   const [message, setMessage] = useState({visible: false})
+  const [roomInfo, setRoomInfo] = useState(null) //방송방정보
   const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
@@ -62,13 +63,13 @@ const GlobalProvider = props => {
       API.setAuthToken(authToken)
       Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-
-      // //쿠키초기화
-      // Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
-      // setTimeout(() => {
-      //   Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-      // }, 100)
       setToken(obj)
+    },
+    /**
+     * @brief 입장한방, 생성한방 정보업데이트
+     */
+    updateRoomInfo: obj => {
+      setRoomInfo(obj)
     },
     /**
      * @brief 마이페이지 업데이트
@@ -145,6 +146,7 @@ const GlobalProvider = props => {
   //---------------------------------------------------------------------
   const value = {
     state,
+    roomInfo,
     mypage,
     message,
     token,

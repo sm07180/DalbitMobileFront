@@ -1,7 +1,7 @@
 /**
  *
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useMemo, useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 //context
@@ -19,19 +19,31 @@ const Layout = props => {
   const context = useContext(Context)
   //initalize
   const {children} = props
+  // ~~/navigator/?router=/login 형태로 넘어올때
+  const isNavigator = useMemo(() => {
+    console.log(props)
+    //  if (props.location !== undefined || props.location.state === undefined) return false
+    // if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
+    return false
+  })
   //---------------------------------------------------------------------
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    console.log(isNavigator)
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Container className="pure">
       {/* 닫기버튼 */}
-      <CloseButton
-        onClick={() => {
-          Hybrid('CloseLayerPopup')
-        }}>
-        닫기
-      </CloseButton>
+      {isNavigator && (
+        <CloseButton
+          onClick={() => {
+            Hybrid('CloseLayerPopup')
+          }}>
+          닫기
+        </CloseButton>
+      )}
+
       {/* 헤더설정 */}
       <Logo>
         <NavLink to="/" exact>

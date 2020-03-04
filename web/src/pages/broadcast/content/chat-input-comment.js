@@ -25,7 +25,7 @@ export default props => {
     menu: false,
     like: false
   })
-  const [shortMessage, setShortMessage] = useEffect(null)
+  const [shortMessage, setShortMessage] = useState(null)
 
   //---------------------------------------------------------------------
   //function
@@ -42,9 +42,9 @@ export default props => {
       boost: toggle.boost
     })
 
-    // if(current === 'quick' && toggle.quick){
-
-    // }
+    if (current === 'quick' && !toggle.quick) {
+      broad_shortcut()
+    }
   }
 
   //마이크 on off 기능~
@@ -71,7 +71,9 @@ export default props => {
 
   //부스트
   const activeBoost = () => {
+    store.action.updateTab(5)
     //부스트 탭 열린 후 부스트 사용에 따른 분기처리.
+    store.action.updateTab(5)
   }
 
   //좋아요 보내기
@@ -113,6 +115,17 @@ export default props => {
     })
   }
 
+  //빠른말 가져오기
+  async function broad_shortcut() {
+    const res = await Api.member_broadcast_shortcut({
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      setShortMessage(res.data)
+      store.action.updateShortCutList(res.data)
+    }
+  }
   const Commandlist = () => {
     const info = ['인사', '박수', '감사']
 
@@ -128,8 +141,12 @@ export default props => {
       )
     })
   }
-  const fastSendMeassage = index => {
-    console.log(index)
+  const fastSendMeassage = idx => {
+    const list = store.shortCutList
+
+    if (list && idx) {
+      sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
+    }
   }
 
   const creatLikeBoost = () => {
@@ -162,7 +179,7 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {}, [])
-  useEffect(() => {}, [])
+
   //---------------------------------------------------------------------
   return (
     <Content>

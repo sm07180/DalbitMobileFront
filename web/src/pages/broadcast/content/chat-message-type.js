@@ -12,7 +12,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 export default props => {
   //---------------------------------------------------------------------
   console.log('메세지 타입 = ' + props)
-  if (props.data.cmd === 'broadstart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
+  if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
     return (
       <>
         <Message className="guide">

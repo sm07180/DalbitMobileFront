@@ -52,10 +52,15 @@ export default props => {
             <Figure url={'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1'}></Figure>
             <em></em>
           </div>
-          <p>
-            <b>BJ아이유😍</b>
-            ✨상쾌한 아침을 함께해요✨
-          </p>
+          <button
+            onClick={() => {
+              props.update({playerNavigator: true})
+            }}>
+            <p>
+              <b>BJ아이유😍</b>
+              ✨상쾌한 아침을 함께해요✨
+            </p>
+          </button>
         </div>
         <div className="state">
           <span>85</span>
@@ -65,9 +70,7 @@ export default props => {
         <button
           className="close"
           onClick={() => {
-            // if (mediaHandler.rtcPeerConn) {
-            //   mediaHandler.stop()
-            // }
+            props.update({playerClose: true})
           }}>
           닫기
         </button>
@@ -181,7 +184,7 @@ const MediaPlayer = styled.div`
       position: relative;
       height: 60px;
     }
-    cursor: pointer;
+    /* cursor: pointer; */
   }
 
   .state {

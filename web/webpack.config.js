@@ -11,7 +11,8 @@ module.exports = (env, options) => {
   const config = {
     entry: {
       vendor: ['react', 'styled-components', 'react-router-dom'],
-      app: './src/index.js'
+      app: './src/index.js',
+      login: './src/html/login.js'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -115,6 +116,11 @@ module.exports = (env, options) => {
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
         showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
+      new HtmlWebPackPlugin({
+        template: './public/html/login.html',
+        filename: 'login.html',
+        chunks: ['login']
+      }),
       new MiniCssExtractPlugin({
         filename: 'style.css'
       }),
@@ -137,6 +143,11 @@ module.exports = (env, options) => {
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
         title: 'Production',
         showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
+      }),
+      new HtmlWebPackPlugin({
+        template: './public/html/login.html',
+        filename: 'login.html',
+        chunks: ['login']
       }),
       new CopyWebpackPlugin([{from: './public/static'}])
     ]

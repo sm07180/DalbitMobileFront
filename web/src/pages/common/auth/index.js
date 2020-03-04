@@ -24,7 +24,6 @@ export default props => {
         //Update
         context.action.updateToken(mode.loginSuccess)
         const _href = window.location.href
-
         //mypage update
         async function fetchData(obj) {
           const res = await Api.mypage({...obj})
@@ -34,6 +33,7 @@ export default props => {
         }
         fetchData()
         //redirect
+
         if (props.history) {
           context.action.updatePopupVisible(false)
           context.action.updateGnbVisible(false)
