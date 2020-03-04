@@ -37,7 +37,6 @@ export default props => {
         if (props.history) {
           context.action.updatePopupVisible(false)
           context.action.updateGnbVisible(false)
-
           /**
            * @native 전달
            */
