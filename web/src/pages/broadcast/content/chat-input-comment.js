@@ -23,7 +23,7 @@ export default props => {
     quick: false,
     menu: false
   })
-  //const
+  const [shortMessage, setShortMessage] = useEffect(null)
 
   //---------------------------------------------------------------------
   //function
@@ -36,6 +36,10 @@ export default props => {
       quick: current == 'quick' ? !toggle.quick : false,
       menu: current == 'menu' ? !toggle.menu : false
     })
+
+    // if(current === 'quick' && toggle.quick){
+
+    // }
   }
 
   async function broad_exit(roomNo) {
@@ -48,19 +52,14 @@ export default props => {
     return res
   }
   const broadcastOff = e => {
-    console.log('broadcastOff = ' + JSON.stringify(props))
-    let bcEndType = ''
-    //bcEndType = props.auth == 3 ? '방송 종료' : '방송 나가기'
     context.action.confirm({
       //콜백처리
       callback: () => {
-        //props.history.push('/')
         const res = broad_exit(props.roomNo)
         if (res) {
           sc.SendMessageChatEnd(props)
         }
         window.location.replace('https://' + window.location.hostname)
-        //sc.socketClusterDestory(false, context.broadcastReToken.roomNo)
       },
       //캔슬콜백처리
       cancelCallback: () => {
@@ -69,8 +68,29 @@ export default props => {
       msg: '방송을 종료 하시겠습니까?'
     })
   }
+
+  const Commandlist = () => {
+    const info = ['인사', '박수', '감사']
+
+    return info.map((list, index) => {
+      return (
+        <li
+          key={index}
+          onClick={() => {
+            fastSendMeassage({cmdType: index})
+          }}>
+          {list}
+        </li>
+      )
+    })
+  }
+  const fastSendMeassage = index => {
+    console.log(index)
+  }
+
   //---------------------------------------------------------------------
   //useEffect
+  useEffect(() => {}, [])
   useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
@@ -94,9 +114,7 @@ export default props => {
         </button>
 
         <ul className={`quick-box ${toggle.quick ? 'on' : 'off'}`}>
-          <li>인사</li>
-          <li>박수</li>
-          <li>감사</li>
+          {Commandlist()}
           <li onClick={() => store.action.updateTab(11)}>세팅</li>
         </ul>
         <button className="menu" title="기타메뉴" onClick={activeMenu}>
