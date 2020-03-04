@@ -47,7 +47,7 @@ export default props => {
   function makeGnbType() {
     switch (context.gnb_state) {
       case 'search': //검색
-        return <GnbSearch />
+        return <GnbSearch {...props} />
         break
       case 'mypage': //마이페이지
         return <GnbMypage {...props} LoginInfo={LoginInfo} />

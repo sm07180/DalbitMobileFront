@@ -2,24 +2,29 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
-import {PreviousMap} from 'postcss'
+import NoResult from './noResult'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
-  let {setValue} = props
   const context = useContext(Context)
+  //////////////////////////////////////////////////////////////
   const [list, setPosts] = useState([])
+  const [listM, setPostsM] = useState([])
   const [filter, setFilter] = useState('')
+  const [filterM, setFilterM] = useState('')
   const [show, setShow] = useState(false)
   const [query, setQuery] = useState('')
-
+  /////////////////////////////////////////////////////////////
   const prevQueryRef = useRef('')
   useEffect(() => {
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
     if (prevQueryRef.current !== qs) {
       setFilter(qs)
+      setFilterM(qs)
       prevQueryRef.current = qs
     }
     ShowClick()
-    console.log('pq', prevQueryRef)
+    //console.log('pq', prevQueryRef)
   }, [query])
 
   async function fetchData() {
@@ -32,20 +37,57 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      setPosts(res.data.list)
+      if (res.data) {
+        setPosts(res.data.list)
+      }
     }
-    console.log(res)
+    const resMember = await API.member_search({
+      params: {
+        search: filter || qs,
+        page: 1,
+        records: 10
+      }
+    })
+    if (resMember.result === 'success') {
+      if (resMember.data) {
+        setPostsM(resMember.data.list)
+      }
+    } else {
+      setShow(false)
+    }
   }
 
   const ShowClick = () => {
+    setPosts([])
+    setPostsM([])
     setShow(true)
     fetchData()
   }
+  /////////////////////////////////////////////////
 
+  const ShowFilter2 = listM.map((item, index) => {
+    if (filterM.length > 1) {
+      if (item.nickNm.toLocaleLowerCase().includes(filterM.toLocaleLowerCase())) {
+        return (
+          <MemberWrap key={index}>
+            <Mimg bg={item.profImg.url}></Mimg>
+            <InfoBox>
+              <div className="id">{item.memId}</div>
+              <div className="idName">{item.nickNm}</div>
+            </InfoBox>
+            {item.roomNo !== '0' && <div className="livebox"></div>}
+          </MemberWrap>
+        )
+      } else {
+        return null
+      }
+    } else {
+    }
+  })
+  //
   const ShowFilter = list.map((item, index) => {
     if (filter.length > 1) {
       if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
-        setValue(true)
         return (
           <ListWrap key={index}>
             <Img className="imgwrap" bg={item.profImg.url}>
@@ -70,7 +112,6 @@ export default props => {
         return null
       }
     } else {
-      setValue(false)
     }
   })
 
@@ -80,33 +121,94 @@ export default props => {
       return
     }
     if (e.keyCode === 13) {
+      setPosts([])
+      setPostsM([])
       setShow(true)
       fetchData()
     }
   }
-
+  ///////////////////////////////
+  //---------------------------------------------------------------------
+  //tab:탭클릭 index정의 state
+  const {currentItem, changeItem} = useTabs(0, tabConent)
+  //---------------------------------------------------------------------
   return (
     <Wrap>
       <SearchBar>
-        <input value={filter} onKeyDown={searchOnKeyDown} onChange={e => (setFilter(e.target.value), setShow(false))} />
+        <input value={(filter, filterM)} onKeyDown={searchOnKeyDown} onChange={e => (setFilter(e.target.value), setFilterM(e.target.value), setShow(false))} />
         <Icon
           onClick={() => {
             ShowClick()
           }}></Icon>
       </SearchBar>
-      {props.children}
+      {show === false && <NoResult />}
       {show === true && (
-        <div className="liveList">
-          <div className="livetitle">
-            <p>
-              라이브 <em>{list.length}건</em>
-            </p>
-            <p>
-              결과 더보기<em></em>
-            </p>
+        <>
+          <Tab>
+            {tabConent.map((section, index) => (
+              <button onClick={() => changeItem(index)} key={index} className={currentItem.id === index ? 'on' : ''}>
+                {section.tab}
+              </button>
+            ))}
+          </Tab>
+          {currentItem.tab === '통합' && (
+            <>
+              <div className="liveList">
+                <div className="livetitle">
+                  <p>
+                    사람 <em>{listM.length}명</em>
+                  </p>
+                  <p>
+                    결과 더보기<em></em>
+                  </p>
+                </div>
+                <div className="flexWrap">{ShowFilter2}</div>
+              </div>
+
+              <div className="liveList">
+                <div className="livetitle">
+                  <p>
+                    라이브 <em>{list.length}건</em>
+                  </p>
+                  <p>
+                    결과 더보기<em></em>
+                  </p>
+                </div>
+                <div className="flexWrap">{ShowFilter}</div>
+              </div>
+            </>
+          )}
+          {currentItem.tab === '사람' && (
+            <>
+              <div className="liveList">
+                <div className="livetitle">
+                  <p>
+                    사람 <em>{listM.length}명</em>
+                  </p>
+                  <p>
+                    결과 더보기<em></em>
+                  </p>
+                </div>
+                <div className="flexWrap">{ShowFilter2}</div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+      {currentItem.tab === '라이브' && (
+        <>
+          <div className="liveList">
+            <div className="livetitle">
+              <p>
+                라이브 <em>{list.length}건</em>
+              </p>
+              <p>
+                결과 더보기<em></em>
+              </p>
+            </div>
+            <div className="flexWrap">{ShowFilter}</div>
           </div>
-          <div className="flexWrap">{ShowFilter}</div>
-        </div>
+        </>
       )}
     </Wrap>
   )
@@ -260,5 +362,103 @@ const InfoWrap = styled.div`
     & .like {
       background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
     }
+  }
+`
+//tab function
+const useTabs = (initialTab, allTabs) => {
+  if (!allTabs || !Array.isArray(allTabs)) {
+    return
+  }
+  const [currentIndex, SetCurrentIndex] = useState(initialTab)
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: SetCurrentIndex
+  }
+}
+//------------------------------------------------------------------
+//styled
+const Tab = styled.div`
+  margin-top: 50px;
+  & button {
+    width: 33.33%;
+    height: 48px;
+    display: inline-block;
+    border: 1px solid #e0e0e0;
+    border-bottom: 1px solid ${COLOR_MAIN};
+    color: ${COLOR_MAIN};
+    margin-left: -1px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &.on {
+      border: 1px solid ${COLOR_MAIN};
+      background-color: ${COLOR_MAIN};
+      color: white;
+    }
+  }
+  & button:focus {
+    outline: none;
+  }
+`
+//------------------------------------------------------------------
+//탭 셀렉트 배열
+const tabConent = [
+  {
+    id: 0,
+    tab: '통합'
+  },
+  {
+    id: 1,
+    tab: '사람'
+  },
+  {
+    id: 2,
+    tab: '라이브'
+  }
+]
+///
+const MemberWrap = styled.div`
+  display: flex;
+  position: relative;
+  width: 33%;
+  height: 58px;
+  border: solid 1px #f5f5f5;
+  border-radius: 32px;
+  margin-right: 5px;
+  padding: 11px 10px;
+  box-sizing: border-box;
+  & .livebox {
+    position: absolute;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: url('https://devimage.dalbitcast.com/images/api/ic_live.png') no-repeat center center / cover;
+  }
+`
+const Mimg = styled.div`
+  width: 36px;
+  height: 36px;
+  background: url(${props => props.bg}) no-repeat center center / cover;
+  border-radius: 50%;
+`
+const InfoBox = styled.div`
+  margin-left: 10px;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+  & .id {
+    display: inline-block;
+    height: 50%;
+    font-size: 14px;
+    color: #8555f6;
+    letter-spacing: -0.35px;
+  }
+  & .idName {
+    height: 50%;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    color: #424242;
   }
 `
