@@ -118,7 +118,7 @@ module.exports = (env, options) => {
       new MiniCssExtractPlugin({
         filename: 'style.css'
       }),
-      new CopyWebpackPlugin([{from: './public/static'}])
+      new CopyWebpackPlugin([{from: './public/static'}, {from: './public/html'}])
     ]
 
     config.output = {
@@ -138,7 +138,7 @@ module.exports = (env, options) => {
         title: 'Production',
         showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
-      new CopyWebpackPlugin([{from: './public/static'}])
+      new CopyWebpackPlugin([{from: './public/static'}, {from: './public/html'}])
     ]
     // if (options.env !== 'deploy') {
     //   config.plugins.push(new BundleAnalyzerPlugin())
