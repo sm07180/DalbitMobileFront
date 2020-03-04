@@ -60,7 +60,12 @@ export default props => {
   const ShowClick = () => {
     setPosts([])
     setPostsM([])
-    setShow(true)
+
+    if (listM.length === 0 && list.length === 0) {
+      setShow(false)
+    } else {
+      setShow(true)
+    }
     fetchData()
   }
   /////////////////////////////////////////////////
@@ -123,7 +128,12 @@ export default props => {
     if (e.keyCode === 13) {
       setPosts([])
       setPostsM([])
-      setShow(true)
+
+      if (listM.length === 0 && list.length === 0) {
+        setShow(false)
+      } else {
+        setShow(true)
+      }
       fetchData()
     }
   }
