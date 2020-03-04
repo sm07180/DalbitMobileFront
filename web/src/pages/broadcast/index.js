@@ -9,14 +9,16 @@ import Layout from 'pages/common/layout'
 //context
 import {BroadCastProvider} from './store'
 //components
+import {Context} from 'context'
 import Api from 'context/api'
 import Listener from './content/listener'
 import Content from './content'
 //
 export default props => {
+  //context
+  const context = useContext(Context)
   //const
   const {title} = props.match.params
-  //const context = useContext(Context)
   //---------------------------------------------------------------------
   /**
    * @
@@ -30,7 +32,11 @@ export default props => {
     }
   }
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const {state} = props.location
+    //context Update
+    context.action.updateRoomInfo(state)
+  }, [])
   //---------------------------------------------------------------------
   return (
     <BroadCastProvider>

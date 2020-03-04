@@ -71,7 +71,9 @@ export default props => {
 
   //부스트
   const activeBoost = () => {
+    store.action.updateTab(5)
     //부스트 탭 열린 후 부스트 사용에 따른 분기처리.
+    store.action.updateTab(5)
   }
 
   //좋아요 보내기
