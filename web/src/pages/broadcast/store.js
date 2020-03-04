@@ -26,6 +26,17 @@ const BroadCastProvider = props => {
   const [timer, setTimer] = useState()
   const [storyList, setStoryList] = useState([])
   const [story, setStory] = useState([])
+  const [tabIdx, setTabIdx] = useState(0)
+  const arr = [
+    {id: 0, tab: '청취자'},
+    {id: 1, tab: '게스트'},
+    {id: 2, tab: '라이브'}
+  ]
+  const [tabContent, setTabContent] = useState(arr)
+
+  //---------------------------------------------------------
+
+  //---------------------------------------------------------
 
   //---------------------------------------------------------------------
   async function selectBoostList(param) {
@@ -81,6 +92,13 @@ const BroadCastProvider = props => {
     },
     updateStory: data => {
       setStory(data)
+    },
+    updateTab: num => {
+      setTabIdx(num)
+      if (tabIdx === num) return
+      if (num === 11) {
+        setTabContent([...tabContent, {id: num, tab: '빠른 말'}])
+      }
     }
   }
   //---------------------------------------------------------------------
@@ -96,8 +114,9 @@ const BroadCastProvider = props => {
     timer,
     storyList,
     story,
-
-    action
+    tabIdx,
+    action,
+    tabContent
   }
   return <Provider value={value}>{props.children}</Provider>
 }

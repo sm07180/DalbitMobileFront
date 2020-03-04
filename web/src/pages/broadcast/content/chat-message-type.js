@@ -113,6 +113,14 @@ export default props => {
   //         <pre>목소리 좋으시네요~ 자주 들으러 올게요!</pre>
   //       </div>
   //     </Message>
+  //      {/* 메시지 날리는 사람이 팬일경우 className fan 추가 */}
+  //     <Message className="comment fan" profImg={`${IMG_SERVER}/images/api/ti375a8312.jpg`}>
+  //       <figure></figure>
+  //       <div>
+  //         <p>cherry🍒</p>
+  //         <pre>제가 팬입니다. 클래스네임 fan 추가해주세요~ </pre>
+  //       </div>
+  //     </Message>
   //     {/* 퇴장 */}
   //     <Message className="enter-exit">
   //       <div>
@@ -132,11 +140,6 @@ export default props => {
   //       </div>
   //     </Message>
   //     {/* 좋아요~ */}
-  //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
-  //       <div>
-  //         <span>러브angel~👼 님이 좋아요를 하셨습니다.</span>
-  //       </div>
-  //     </Message>
   //     <Message className="like" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}>
   //       <div>
   //         <span>가장 못생긴 오징어🦑 님이 좋아요를 하셨습니다.</span>
@@ -212,6 +215,19 @@ const CommentList = styled.div`
 const Message = styled.div`
   position: relative;
   margin: 16px;
+
+  &.fan figure:after {
+    display: inline-block;
+    position: absolute;
+    right: -3px;
+    bottom: 0;
+    padding: 1px 4px;
+    border-radius: 50%;
+    background: ${COLOR_MAIN};
+    font-size: 8px;
+    color: #fff;
+    content: 'F';
+  }
 
   figure {
     display: inline-block;

@@ -22,10 +22,15 @@ export const Hybrid = (func, info) => {
       //console.log('Windows버젼입니다')
       break
     case 'iOS':
-      webkit.messageHandlers[func].postMessage(info)
+      if (info === '' || info === null || info === undefined) {
+        //IOS는 string으로라도 넣어주어야함
+        webkit.messageHandlers[func].postMessage('')
+      } else {
+        webkit.messageHandlers[func].postMessage(info)
+      }
       break
     case 'Android':
-      if (info === '' || info === null) {
+      if (info === '' || info === null || info === undefined) {
         window.android[func]()
       } else {
         window.android[func](JSON.stringify(info))

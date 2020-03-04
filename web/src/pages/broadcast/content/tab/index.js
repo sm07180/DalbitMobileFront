@@ -5,6 +5,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
+import {BroadCastStore} from '../../store'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Live from './live'
@@ -21,40 +22,74 @@ import Story from './story'
 import Macro from './macro'
 import BroadModify from './broad-setting-modify'
 import PresentGiven from './present-given'
+import Navi from './navibar'
+
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const [state, setState] = useState({
+    prev: '청취자',
+    next: '청취자'
+  })
   //console.log(props)
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
-  const {currentItem, changeItem} = useTabs(0, tabConent)
+  const {currentItem, changeItem} = useTabs(0, store.tabContent)
   //---------------------------------------------------------------------
+  const usePrev = index => {
+    if (index !== state.next) {
+      setState({
+        prev: state.next,
+        next: index
+      })
+    }
+    changeItem(index)
+  }
+
+  useEffect(() => {
+    changeItem(store.tabIdx)
+    console.log('## index.js - tabContent :', tabContent)
+    // console.log('## store.tabIdx :', store.tabIdx)
+  }, [store.tabContent])
+
+  console.log('## store: ', store)
   return (
     <>
       {/* 탭버튼 */}
       <Tab>
-        {tabConent.map((section, index) => (
-          <button onClick={() => changeItem(index)} key={index} className={currentItem.id === index ? 'on' : ''}>
+        {/* {store.tabItem.map((
+          section,
+          index // prevState를 사용하기 위해 usePrev 함수 생성
+        ) => (
+          <button onClick={() => usePrev(index)} key={index} className={section.id === index ? 'on' : ''}>
             {section.tab}
           </button>
-        ))}
+        ))} */}
+        {store.tabContent.map((data, index) => {
+          return (
+            <button onClick={() => usePrev(data.id)} key={index} className={currentItem.tab === data.tab ? 'on' : ''}>
+              {data.tab}
+            </button>
+          )
+        })}
       </Tab>
       {/* 탭컨텐츠영역 */}
       {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info3={BJInfo} />}
       {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} {...props} />}
       {currentItem.tab === '라이브' && <Live Info={LiveInfo} {...props} />}
-      {currentItem.tab === '충전' && <Charge />}
-      {currentItem.tab === '선물' && <Present />}
+      {currentItem.tab === '충전' && <Charge prev={state.prev} _changeItem={usePrev} />}
+      {currentItem.tab === '선물' && <Present prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile2 Info={Profiledata} {...props} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice />}
       {currentItem.tab === '사연' && <Story />}
       {currentItem.tab === '방송수정' && <BroadModify {...props} />}
-      {currentItem.tab === '빠른 말' && <Macro />}
-      {currentItem.tab === '받은선물' && <PresentGiven />}
+      {currentItem.tab === '빠른 말' && <Macro prev={state.prev} _changeItem={usePrev} />}
+      {currentItem.tab === '받은선물' && <PresentGiven prev={state.prev} _changeItem={usePrev} />}
     </>
   )
 }
@@ -65,9 +100,16 @@ const useTabs = (initialTab, allTabs) => {
     return
   }
   const [currentIndex, SetCurrentIndex] = useState(initialTab)
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: SetCurrentIndex
+  if (!allTabs[currentIndex]) {
+    return {
+      currentItem: allTabs[3],
+      changeItem: SetCurrentIndex
+    }
+  } else {
+    return {
+      currentItem: allTabs[currentIndex],
+      changeItem: SetCurrentIndex
+    }
   }
 }
 //------------------------------------------------------------------
@@ -95,31 +137,32 @@ const Tab = styled.div`
 `
 //------------------------------------------------------------------
 //탭 셀렉트 배열
-const tabConent = [
+
+const tabContent = [
   {
     id: 0,
     tab: '청취자'
   },
-  // {
-  //   id: 1,
-  //   tab: '게스트'
-  // },
-  // {
-  //   id: 2,
-  //   tab: '라이브'
-  // },
+  {
+    id: 1,
+    tab: '게스트'
+  },
+  {
+    id: 2,
+    tab: '라이브'
+  }
   // {
   //   id: 3,
   //   tab: '충전'
   // },
-  {
-    id: 4,
-    tab: '선물'
-  },
-  {
-    id: 5,
-    tab: '부스트'
-  },
+  // {
+  //   id: 4,
+  //   tab: '선물'
+  // },
+  // {
+  //   id: 5,
+  //   tab: '부스트'
+  // },
   // {
   //   id: 6,
   //   tab: '프로필'
@@ -145,10 +188,10 @@ const tabConent = [
   //   id: 11,
   //   tab: '빠른 말'
   // },
-  {
-    id: 12,
-    tab: '받은선물'
-  }
+  // {
+  //   id: 12,
+  //   tab: '받은선물'
+  // }
 ]
 //data------------------------------------------------------------------
 //라이브 가데이터

@@ -58,7 +58,6 @@ export default props => {
       //하이브리드앱이 아닐때
       if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
         const {bjStreamId, roomNo} = res.data
-        console.log(res.data)
         context.action.updateBroadcastreToken(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       } else {

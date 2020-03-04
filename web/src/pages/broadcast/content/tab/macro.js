@@ -65,7 +65,7 @@ export default props => {
   //------------------------------------------------------ components start
   return (
     <Container>
-      <Navi title={'빠른 말 설정'} />
+      <Navi title={'빠른 말 설정'} prev={props.prev} _changeItem={props._changeItem} />
       {edit ? (
         <EditMain>
           {/* <Scrollbars ref={scrollbars} style={{height: '90%'}} autoHide> */}

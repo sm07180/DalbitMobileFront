@@ -39,7 +39,10 @@ const User = props => {
         <MyProfile />
 
         <Switch>
+          <Route exact path="/mypage/profile" component={MyProfile} />
           <Route exact path="/mypage/notice" component={Notice} />
+          {/* <Route exact path="/mypage/wallet" component={Notice} /> */}
+          {/* <Route exact path="/mypage/fanboard" component={Notice} /> */}
         </Switch>
       </Content>
     </Layout>
