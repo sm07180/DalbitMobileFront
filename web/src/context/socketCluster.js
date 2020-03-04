@@ -827,8 +827,7 @@ export const SendMessageChatEnd = objChatInfo => {
     memNo: ''
   }
   console.log('sendMessage = ' + JSON.stringify(params))
-  //sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
-  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, 'roomOut')
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
 }
 export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {

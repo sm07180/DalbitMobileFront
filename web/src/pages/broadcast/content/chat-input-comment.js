@@ -45,20 +45,22 @@ export default props => {
       console.log(res.message)
       return
     }
+    return res
   }
   const broadcastOff = e => {
-    console.log(props)
+    console.log('broadcastOff = ' + JSON.stringify(props))
     let bcEndType = ''
     //bcEndType = props.auth == 3 ? '방송 종료' : '방송 나가기'
     context.action.confirm({
       //콜백처리
       callback: () => {
         //props.history.push('/')
-        console.log(props)
-        broad_exit(context.broadcastReToken.roomNo)
-        sc.SendMessageChatEnd(context.broadcastReToken)
-        //sc.socketClusterDestory(false, context.broadcastReToken.roomNo)
+        const res = broad_exit(props.roomNo)
+        if (res) {
+          sc.SendMessageChatEnd(props)
+        }
         window.location.replace('https://' + window.location.hostname)
+        //sc.socketClusterDestory(false, context.broadcastReToken.roomNo)
       },
       //캔슬콜백처리
       cancelCallback: () => {
