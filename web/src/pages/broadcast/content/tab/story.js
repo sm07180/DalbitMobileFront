@@ -27,6 +27,7 @@ export default props => {
     setText(value)
   }
 
+  //사연 새로고침
   const refresh = () => {
     let d = new Date()
     let now
@@ -37,6 +38,7 @@ export default props => {
     selectStoryList()
   }
 
+  //사연조회
   const selectStoryList = async () => {
     const res = await Api.broad_story({
       params: {
@@ -52,6 +54,7 @@ export default props => {
     }
   }
 
+  //사연작성
   const writeStory = async () => {
     const res = await Api.broad_story({
       data: {
@@ -73,6 +76,7 @@ export default props => {
     }
   }
 
+  //사연 삭제 후 조회
   const deleteStory = async param => {
     const res = await Api.broad_story({
       data: {
@@ -86,6 +90,7 @@ export default props => {
   }
 
   useEffect(() => {
+    //Dj - 사연조회, Listener - 사연작성
     if (type) {
       selectStoryList()
       refresh()
@@ -115,7 +120,7 @@ export default props => {
                         <div>{data.nickNm}</div>
                       </div>
                       <div>
-                        <span>{Util.format(data.writeDt)}</span>
+                        <span>{Util.format(data.writeDt)}</span> {/* date format 함수 */}
                         <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
                       </div>
                     </UserInfo>

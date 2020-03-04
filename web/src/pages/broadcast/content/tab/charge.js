@@ -68,6 +68,7 @@ const testStar = [
     imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
+// 충전하기 현재 (2020-03-04) API 없음
 export default props => {
   const [choice, setChoice] = useState('moon')
   const [goodsState, setGoods] = useState(-1)
@@ -109,11 +110,6 @@ export default props => {
       </>
     )
   }
-
-  // const Title = props => {
-  //   return <Navi>{props.title}</Navi>
-  // }
-
   return (
     <Container>
       <Navi title={'충전'} prev={props.prev} _changeItem={props._changeItem} />
@@ -133,11 +129,6 @@ export default props => {
                 <GoodsName active={idx === goodsState ? 'active' : ''} state={choice}>
                   달 {goods.name}
                 </GoodsName>
-                {/* <Price active={idx === goodsState ? 'active' : ''} state={choice}>
-                {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
-                {goods.price}
-                {choice === 'moon' && '원'}
-              </Price> */}
               </GoodsInfo>
               <Price active={idx === goodsState ? 'active' : ''} state={choice}>
                 {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
@@ -189,7 +180,6 @@ const Choice = styled.button`
   display: flex;
   width: 50%;
   justify-content: center;
-  /* font-family: NanumSquareEB; */
   font-size: 18px;
   font-weight: 800;
   line-height: 1.17;

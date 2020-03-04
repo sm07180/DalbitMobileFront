@@ -32,6 +32,16 @@ const BroadCastProvider = props => {
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
     {id: 2, tab: '라이브'}
+    // {id: 3, tab: '충전'},
+    // {id: 4, tab: '선물'}
+    // {id: 5, tab: '부스트'},
+    // {id: 6, tab: '프로필'},
+    // {id: 7, tab: '신고하기'},
+    // {id: 8, tab: '공지사항'},
+    // {id: 9, tab: '사연'},
+    // {id: 10, tab: '방송수정'},
+    // {id: 11, tab: '빠른 말'},
+    // {id: 12, tab: '받은 선물'},
   ]
   const [tabContent, setTabContent] = useState(arr)
 
@@ -97,9 +107,19 @@ const BroadCastProvider = props => {
     updateTab: num => {
       setTabIdx(num)
       if (tabIdx === num) return
-      if (num === 11) {
-        setTabContent([...tabContent, {id: num, tab: '빠른 말'}])
-      }
+      if (num === 0) setTabContent([...tabContent, {id: num, tab: '청취자'}])
+      if (num === 1) setTabContent([...tabContent, {id: num, tab: '게스트'}])
+      if (num === 2) setTabContent([...tabContent, {id: num, tab: '라이브'}])
+      if (num === 3) setTabContent([...tabContent, {id: num, tab: '충전'}])
+      if (num === 4) setTabContent([...tabContent, {id: num, tab: '선물'}])
+      if (num === 5) setTabContent([...tabContent, {id: num, tab: '부스트'}])
+      if (num === 6) setTabContent([...tabContent, {id: num, tab: '프로필'}])
+      if (num === 7) setTabContent([...tabContent, {id: num, tab: '신고하기'}])
+      if (num === 8) setTabContent([...tabContent, {id: num, tab: '공지사항'}])
+      if (num === 9) setTabContent([...tabContent, {id: num, tab: '사연'}])
+      if (num === 10) setTabContent([...tabContent, {id: num, tab: '방송수정'}])
+      if (num === 11) setTabContent([...tabContent, {id: num, tab: '빠른 말'}])
+      if (num === 12) setTabContent([...tabContent, {id: num, tab: '받은 선물'}])
     },
     updateLike: num => {
       setLike(num)

@@ -4,6 +4,7 @@ import {BotButton} from './bot-button'
 import {Context} from 'context'
 
 const testData = [20, 50, 100, 500, 1000]
+// 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default props => {
   //-------------------------------------------------------- declare start
   const [point, setPoint] = useState()
