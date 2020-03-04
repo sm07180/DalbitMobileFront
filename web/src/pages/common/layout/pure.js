@@ -3,12 +3,11 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
-import Toggle from '../footer/toggle-footer'
-import {Link, NavLink} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 //context
+import {Hybrid} from 'context/hybrid'
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
-import {HEADER_HEIGHT} from 'context/config'
 import Footer from 'pages/common/footer'
 //layout
 import Popup from 'pages/common/popup'
@@ -26,6 +25,13 @@ const Layout = props => {
   //---------------------------------------------------------------------
   return (
     <Container className="pure">
+      {/* 닫기버튼 */}
+      <CloseButton
+        onClick={() => {
+          Hybrid('CloseLayerPopup')
+        }}>
+        닫기
+      </CloseButton>
       {/* 헤더설정 */}
       <Logo>
         <NavLink to="/" exact>
@@ -47,6 +53,15 @@ const Layout = props => {
 }
 export default Layout
 //---------------------------------------------------------------------
+const CloseButton = styled.button`
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  display: inline-block;
+  padding: 10px;
+  background: #000;
+  color: #fff;
+`
 const Logo = styled.div`
   margin: 60px 0 50px 0;
   text-align: center;

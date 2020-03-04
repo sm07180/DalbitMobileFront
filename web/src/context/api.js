@@ -719,6 +719,10 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || '/search/live', method: method || 'GET', params: params})
   }
+  static member_search = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || '/search/member', method: method || 'GET', params: params})
+  }
 
   //-------------------------------------------------------------
 }

@@ -15,17 +15,16 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {osName, browserName} from 'react-device-detect'
 //
 export default props => {
-  //context
-  const context = useContext(Context)
+  //---------------------------------------------------------------------
   //data
-
-  useEffect(() => {})
   const info = [
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'},
     {title: '이벤트', url: '/event'}
     // {title: '방송하기', url: '/broadcast-setting'}
   ]
+  //context
+  const context = useContext(Context)
   //makeMenu
   const makeNavi = () => {
     //라이브,스토어,이벤트 메뉴
@@ -56,7 +55,7 @@ export default props => {
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
-          console.log(context.customHeader)
+          //alert(JSON.stringify(context.customHeader, null, 1))
           if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
             if (context && context.token && !context.token.isLogin) {
               //로그인 팝업레이어실행
@@ -66,7 +65,6 @@ export default props => {
             props.history.push('/broadcast-setting')
           } else {
             Hybrid('RoomMake')
-            alert('앱실행')
           }
         }}>
         <span>방송하기</span>
@@ -74,6 +72,8 @@ export default props => {
     )
     return [navi, broadCast]
   }
+  //---------------------------------------------------------------------
+  useEffect(() => {})
   //---------------------------------------------------------------------
   return <Content className={`${props.type}`}>{makeNavi()}</Content>
 }

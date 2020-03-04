@@ -27,6 +27,7 @@ const BroadCastProvider = props => {
   const [storyList, setStoryList] = useState([])
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
+  const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
@@ -119,6 +120,9 @@ const BroadCastProvider = props => {
       if (num === 10) setTabContent([...tabContent, {id: num, tab: '방송수정'}])
       if (num === 11) setTabContent([...tabContent, {id: num, tab: '빠른 말'}])
       if (num === 12) setTabContent([...tabContent, {id: num, tab: '받은 선물'}])
+    },
+    updateLike: num => {
+      setLike(num)
     }
   }
   //---------------------------------------------------------------------
@@ -136,7 +140,8 @@ const BroadCastProvider = props => {
     story,
     tabIdx,
     action,
-    tabContent
+    tabContent,
+    like
   }
   return <Provider value={value}>{props.children}</Provider>
 }

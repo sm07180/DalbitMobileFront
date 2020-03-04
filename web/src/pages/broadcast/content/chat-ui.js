@@ -77,7 +77,8 @@ export default props => {
 
   let top2Data = []
   const getRecvTopData = data => {
-    const recvTopData = data.detail.data.recvMsg
+    const recvTopData = data.data.recvMsg
+    console.warn('recvTopData = ' + recvTopData)
     if (recvTopData.position === 'top1') {
       const resulte = (
         <div className="system-msg top1">
@@ -86,7 +87,7 @@ export default props => {
       )
       setTop1Msg(resulte)
     } else {
-      top2Data = topData.concat(data)
+      top2Data = top2Data.concat(recvTopData)
       const resulte = top2Data.map((item, index) => {
         return (
           <div className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>

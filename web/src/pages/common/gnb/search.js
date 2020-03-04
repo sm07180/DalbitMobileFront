@@ -1,20 +1,56 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-
-//context
 import {Context} from 'context'
+import API from 'context/api'
+//context
+
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_MOBILE, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S} from 'context/config'
 //component
 
 export default props => {
+  const context = useContext(Context)
+  const [searchtext, setPosts] = useState([])
+  //
+  async function fetchData() {
+    const res = await API.live_search({
+      params: {
+        search: search,
+        page: 1,
+        records: 10
+      }
+    })
+    if (res.result === 'success') {
+      console.log(res)
+      setPosts(res.data.list)
+    }
+    console.log(res)
+  }
+
+  const ClickLink = async () => {
+    if (search === '') {
+      return
+    }
+    window.location.href = `/search?query=${search}`
+    //props.history.push(`/search?query=${search}`)
+  }
+
   const [search, setSearch] = useState('')
   const handleChange = event => {
     setSearch(event.target.value)
   }
+  const searchOnKeyDown = e => {
+    const {currentTarget} = e
+    if (currentTarget.value === '') {
+      return
+    }
+    if (e.keyCode === 13) {
+      window.location.href = `/search?query=${search}`
+    }
+  }
   //---------------------------------------------------------------------
   //context
-  const context = useContext(Context)
+
   return (
     <>
       <Gnb className={context.gnb_visible ? 'on' : 'off'}>
@@ -23,8 +59,8 @@ export default props => {
             context.action.updateGnbVisible(false)
           }}></Close>
         <SearchWrap>
-          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} />
-          <button></button>
+          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} onKeyDown={searchOnKeyDown}/>
+          <button onClick={ClickLink}></button>
         </SearchWrap>
       </Gnb>
     </>
