@@ -59,7 +59,7 @@ export default props => {
             context.action.updateGnbVisible(false)
           }}></Close>
         <SearchWrap>
-          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} onKeyDown={searchOnKeyDown}/>
+          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} onKeyDown={searchOnKeyDown} />
           <button onClick={ClickLink}></button>
         </SearchWrap>
       </Gnb>

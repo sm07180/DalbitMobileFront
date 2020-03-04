@@ -14,8 +14,7 @@ export default props => {
   return (
     <Container>
       <SearchWrap>
-        <Fill>
-        </Fill>
+        <Fill />
         {/* <Page /> */}
       </SearchWrap>
     </Container>

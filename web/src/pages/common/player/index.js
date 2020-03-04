@@ -5,6 +5,7 @@
 import React, {useMemo, useEffect, useContext} from 'react'
 //context
 import {Context} from 'context'
+import {Hybrid} from 'context/hybrid'
 // etc
 import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
@@ -20,6 +21,22 @@ export default props => {
     return true
   })
   //---------------------------------------------------------------------
+  function update(mode) {
+    switch (true) {
+      case mode.playerClose !== undefined: //--------------------------Player 종료
+        if (mediaHandler.rtcPeerConn) {
+          mediaHandler.stop()
+          Hybrid('ExitRoom')
+        }
+        break
+      case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
+        const {roomNo} = context.roomInfo
+        props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
+        break
+      default:
+        break
+    }
+  }
   /**
    * @brief 로그인,이벤트처리핸들러
    */
@@ -41,7 +58,7 @@ export default props => {
   return (
     <React.Fragment>
       {/* 미디어 플레이어 */}
-      {visible && context.mediaPlayerStatus && <Content {...props} />}
+      {visible && context.mediaPlayerStatus && <Content {...props} update={update} />}
     </React.Fragment>
   )
 }
