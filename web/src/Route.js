@@ -5,7 +5,8 @@
  */
 import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
-
+//
+import Navigator from './pages/navigator'
 /**
  * 하이브리드 앱연동을 문제발생,lazy로딩 x
  */
@@ -53,6 +54,8 @@ export default () => {
         <Route exact path="/mypage/:sub" component={Mypage} />
         <Route exact path="/app/" component={App} />
         <Route exact path="/search" component={Search} />
+        {/* navigator */}
+        <Route exact path="/navigator" component={Navigator} />
         {/* 페이지가없을경우 404로 이동 */}
         <Route path="/404" component={NotFoundPage} />
         <Redirect to="/404" />

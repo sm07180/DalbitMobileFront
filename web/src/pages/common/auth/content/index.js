@@ -10,10 +10,10 @@ import styled from 'styled-components'
 import useChange from 'components/hooks/useChange'
 //components
 import Utility from 'components/lib/utility'
-import {GoogleLogin} from 'react-google-login'
-import KakaoLogin from 'react-kakao-login'
-import NaverLogin from 'react-naver-login'
-import FacebookLogin from 'react-facebook-login'
+//import {GoogleLogin} from 'react-google-login'
+//import KakaoLogin from 'react-kakao-login'
+//import NaverLogin from 'react-naver-login'
+//import FacebookLogin from 'react-facebook-login'
 import {osName, browserName} from 'react-device-detect'
 //context
 import {Context} from 'context'
@@ -363,9 +363,8 @@ export default props => {
           </button>
         </div>
       </ButtonArea>
-
       {/* 현재 소셜로그인쪽 display:none; */}
-      <SocialLogin>
+      {/* <SocialLogin>
         <FacebookLogin
           appId="2711342585755275"
           autoLoad={false} //실행과 동시에 자동으로 로그인 팝업창이 뜸
@@ -396,15 +395,12 @@ export default props => {
           }}
           callbackUrl="https://devm-hgkim1118.dalbitcast.com"
         /> */}
-        {/* <div id="naverIdLogin" /> */}
-      </SocialLogin>
-
+      {/* <div id="naverIdLogin" /> */}
+      {/* </SocialLogin> */}
       {/* <CustomButton onClick={signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
-
       {/* <SnsGoogleLogion onClick={() => responseGooglelogin()}>
         SIGN IN WITH GOOGLE
       </SnsGoogleLogion> */}
-
       {/* <CustomButton onClick={() => signInWithGoogle}>SIGN IN WITH GOOGLE</CustomButton> */}
       {/* <button onClick={signOut}>Sign out</button> */}
       {/* {currentUser ? (

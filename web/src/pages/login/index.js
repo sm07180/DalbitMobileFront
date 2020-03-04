@@ -12,9 +12,7 @@ import Auth from 'pages/common/auth'
 export default props => {
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {
-    alert('login실행')
-  }, [])
+  useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
