@@ -32,11 +32,21 @@ export default props => {
       return
     }
     window.location.href = `/search?query=${search}`
+    //props.history.push(`/search?query=${search}`)
   }
 
   const [search, setSearch] = useState('')
   const handleChange = event => {
     setSearch(event.target.value)
+  }
+  const searchOnKeyDown = e => {
+    const {currentTarget} = e
+    if (currentTarget.value === '') {
+      return
+    }
+    if (e.keyCode === 13) {
+      window.location.href = `/search?query=${search}`
+    }
   }
   //---------------------------------------------------------------------
   //context
@@ -49,7 +59,7 @@ export default props => {
             context.action.updateGnbVisible(false)
           }}></Close>
         <SearchWrap>
-          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} />
+          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} onKeyDown={searchOnKeyDown}/>
           <button onClick={ClickLink}></button>
         </SearchWrap>
       </Gnb>

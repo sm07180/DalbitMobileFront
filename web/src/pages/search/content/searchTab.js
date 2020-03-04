@@ -10,6 +10,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Total from './total'
 
 export default props => {
+  let {setValue} = props
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)

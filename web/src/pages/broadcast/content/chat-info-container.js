@@ -4,6 +4,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {BroadCastStore} from '../store'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -14,6 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //console.log('방정보를 알아봅시다..', props)
   //state
   const [room, setRoom] = useState({
@@ -43,18 +45,18 @@ export default props => {
     bjProfImg: '',
     rank: '',
     bjNickNm: '',
-    likes: ''
+    likes: '',
+    gstMemNo: '',
+    gstNickNm: '',
+    gstProfImg: ''
   })
+  //부스트 상태값. 기본값은 방장인지 아닌지만 판단함
+  const [boost, setBoost] = useState(props.auth == 3 ? 'boost-off' : '')
+
   //const
 
   //---------------------------------------------------------------------
   //map
-  // setSystemMsg({...systemMsg, 3: <div>테테테테스트</div>})
-  // setTimeout(() => {
-  //   const item = systemMsg
-  //   delete item[3]
-  //   setSystemMsg({...systemMsg, ...item})
-  // }, 3000)
 
   const creatFanRank = () => {
     return room.fanRank.map((item, index) => {
@@ -68,7 +70,22 @@ export default props => {
     })
   }
 
-  const creatTopMsg = msgType => {}
+  // 방장일경우 게스트 초대, 청취자일경우 게스트 신청, 게스트가 있을경우 게스트 프로필 노출
+  const creatGuest = () => {
+    if (room.gstMemNo) {
+      return (
+        <Figure className="guest" src={room.gstProfImg}>
+          <span>G</span>
+        </Figure>
+      )
+    } else {
+      if (props.auth == 3) {
+        return <button className="invite">게스트 초대</button>
+      } else {
+        return <button className="invite">게스트 신청</button>
+      }
+    }
+  }
 
   //---------------------------------------------------------------------
   //useEffect
@@ -78,6 +95,24 @@ export default props => {
       ...props
     })
   }, [])
+
+  //좋아요~부스트단계 바뀔시마다 셋팅해줘야할것들.. top랭크 영역표시 클래스 조절하기
+  useEffect(() => {
+    if (props.auth == 3) {
+      store.action.updateLike(3)
+    } else {
+      if (store.like == 3) {
+        //like 단계가 3일경우 부스트가 꺼진 상태임. 2단계에서 빨간하트를 클릭시 3단계로 진입함. dj는 기본값이 부스트가 꺼진상태임.
+        setBoost('boost-off')
+      } else if (store.like == 4) {
+        //like 단계가 4일경우 부스트를 사용하는 중임.
+        setBoost('boost-on')
+      } else {
+        //like단계가 1~2일경우 (좋아요하기전, 하고나서) top랭크 영역은 평범하게 표시해줌, 추가 클래스네임 없으므로 빈값으로 셋팅함
+        setBoost('')
+      }
+    }
+  }, [store.like])
   //---------------------------------------------------------------------
   return (
     <Content>
@@ -86,6 +121,7 @@ export default props => {
       <div className="top2-wrap">{props.top2Msg}</div>
 
       <div className="dj-info">
+        {/* 방장 프로필, 방장 닉네임, 방 제목 */}
         <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
@@ -94,36 +130,43 @@ export default props => {
           <p>{room.title}</p>
         </div>
         <ul>
+          {/* 팬랭킹 영역 */}
           {room.fanRank[0].profImg.url && creatFanRank()}
-          <li className="people">50</li>
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
+          <li className="people">50</li>
         </ul>
       </div>
       <div className="cast-info">
         <ul>
-          <li>85</li>
           {/* 누적 청취자 수 */}
-          <li>{room.likes}</li>
+          <li>85</li>
           {/* 현재 방송 좋아요 수 */}
-          <li>00:30:00</li>
+          <li>{room.likes}</li>
           {/* 방송 남은 시간 */}
+          {props.auth === 3 && <li>00:30:00</li>}
         </ul>
         <div>
+          {/* 새클릭시 사연 탭 */}
           <button title="사연">사연</button>
-          {/* 새로운 사연 왔을시 별도 알림, 클릭시 사연 탭 */}
-          <button title="공지사항">공지사항</button>
           {/* 클릭시 공지 탭 */}
+          <button title="공지사항">공지사항</button>
         </div>
       </div>
       <div className="option">
         <ul>
-          <li className="rank">TOP {room.rank}</li>
-          <li className="recommend">추천</li>
-          <li className="popular">인기</li>
-          <li className="new">신입</li>
+          {/* 
+          랭킹 (부스터 사용 표시)
+          boost-off 상태 -> dj일 경우, 청취자가 좋아요를 했을경우
+          boost-on 상태 -> 부스터 쓸 경우. */}
+          <li className={`rank ${boost}`}>TOP {room.rank}</li>
+          {/* 방에 붙여진 딱지 추천, 인기, 신입 */}
+          {props.isRecomm && <li className="recommend">추천</li>}
+          {props.isPop && <li className="popular">인기</li>}
+          {props.isNew && <li className="new">신입</li>}
         </ul>
         <div>
-          <button className="invite">게스트 신청</button>
+          {/* 방장일경우 게스트 초대 버튼, 청취자일경우 게스트 신청 버튼, 게스트가 있을경우 게스트 프로필 노출  */}
+          {creatGuest()}
         </div>
       </div>
     </Content>
@@ -136,6 +179,7 @@ export default props => {
 const Content = styled.div`
   position: relative;
   padding: 10px;
+  z-index: 1;
 
   .system-msg {
     position: absolute;
@@ -352,8 +396,39 @@ const Content = styled.div`
         transform: skew(-0.03deg);
       }
       li.rank {
+        position: relative;
         padding: 0 16px;
         background: rgba(255, 255, 255, 0.2);
+      }
+      li.rank.boost-off {
+        padding-left: 35px;
+        border: 1px solid #9e9e9e;
+        &:before {
+          display: inline-block;
+          position: absolute;
+          left: -1px;
+          top: -1px;
+          width: 29px;
+          height: 29px;
+          border-radius: 50%;
+          background: #9e9e9e url(${IMG_SERVER}/images/chat/ic_chat_top_carrot.png) no-repeat center center/ cover;
+          content: '';
+        }
+      }
+      li.rank.boost-on {
+        padding-right: 35px;
+        border: 1px solid #feac2b;
+        &:before {
+          display: inline-block;
+          position: absolute;
+          right: -1px;
+          top: -1px;
+          width: 29px;
+          height: 29px;
+          border-radius: 50%;
+          background: #fff url(${IMG_SERVER}/images/chat/ic_booster.png) no-repeat center center/ cover;
+          content: '';
+        }
       }
       .dj li.rank {
         padding-left: 34px;
@@ -393,7 +468,7 @@ const Content = styled.div`
 
 const Figure = styled.figure`
   position: relative;
-  background: url(${props => props.src}) no-repeat center center / cover;
+  background: #fff url(${props => props.src}) no-repeat center center / cover;
   cursor: pointer;
 
   &.dj:after {
@@ -405,5 +480,24 @@ const Figure = styled.figure`
     height: 82px;
     background: url(${props => props.holder}) no-repeat 0 0 / cover;
     content: '';
+  }
+
+  &.guest {
+    width: 60px;
+    height: 60px;
+    margin: 0 0 0 auto;
+    border-radius: 50%;
+    span {
+      display: inline-block;
+      position: absolute;
+      right: -2px;
+      bottom: 0;
+      padding: 3px 6px;
+      border-radius: 50%;
+      background: ${COLOR_POINT_P};
+      color: #fff;
+      font-size: 13px;
+      transform: skew(-0.3deg);
+    }
   }
 `

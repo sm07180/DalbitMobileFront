@@ -15,7 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    context.action.updateMediaPlayerStatus(true)
+    //context.action.updateMediaPlayerStatus(true)
   }, [])
   //---------------------------------------------------------------------
   return (
