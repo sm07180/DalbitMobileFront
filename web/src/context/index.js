@@ -30,6 +30,7 @@ const GlobalProvider = props => {
   const [mediaHandler, setMediaHandler] = useState(null)
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
   const [broadcastReToken, setBroadcastReToken] = useState(null) //create 2020.02.28 김호겸 - 방송방 reToken 정보
+  const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -140,6 +141,10 @@ const GlobalProvider = props => {
      */
     updateBroadcastreToken: obj => {
       setBroadcastReToken(obj)
+    },
+    //방생성 후 방정보 가지고있음, 방 종료시 사라짐
+    updateCastState: obj => {
+      setCastState(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -157,6 +162,7 @@ const GlobalProvider = props => {
     mediaHandler,
     mediaPlayerStatus,
     broadcastReToken,
+    cast_state,
 
     action
   }
