@@ -12,7 +12,7 @@ export default props => {
   const [listM, setPostsM] = useState([])
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(null)
   const [query, setQuery] = useState('')
   /////////////////////////////////////////////////////////////
   const prevQueryRef = useRef('')
@@ -24,7 +24,6 @@ export default props => {
       prevQueryRef.current = qs
     }
     ShowClick()
-    //console.log('pq', prevQueryRef)
   }, [query])
 
   async function fetchData() {
@@ -39,6 +38,7 @@ export default props => {
     if (res.result === 'success') {
       if (res.data) {
         setPosts(res.data.list)
+        setShow(true)
       }
     }
     const resMember = await API.member_search({
@@ -51,8 +51,11 @@ export default props => {
     if (resMember.result === 'success') {
       if (resMember.data) {
         setPostsM(resMember.data.list)
+        setShow(true)
       }
-    } else {
+    }
+
+    if (resMember.result === 'fail' && res.result === 'fail') {
       setShow(false)
     }
   }
@@ -60,14 +63,15 @@ export default props => {
   const ShowClick = () => {
     setPosts([])
     setPostsM([])
-
-    if (listM.length === 0 && list.length === 0) {
-      setShow(false)
-    } else {
-      setShow(true)
-    }
+    // setShow(true)
+    // if (listM.length === 0 && list.length === 0) {
+    //   setShow(false)
+    // } else {
+    //   setShow(true)
+    // }
     fetchData()
   }
+
   /////////////////////////////////////////////////
 
   const ShowFilter2 = listM.map((item, index) => {
@@ -128,13 +132,13 @@ export default props => {
     if (e.keyCode === 13) {
       setPosts([])
       setPostsM([])
-
-      if (listM.length === 0 && list.length === 0) {
-        setShow(false)
-      } else {
-        setShow(true)
-      }
+      // if (listM.length == 0 && list.length == 0) {
+      //   setShow(false)
+      // } else {
+      //   setShow(true)
+      // }
       fetchData()
+      // setShow(true)
     }
   }
   ///////////////////////////////
