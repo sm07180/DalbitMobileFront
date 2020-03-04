@@ -109,19 +109,19 @@ export const scConnection = obj => {
         PACKET_RECV_REQGIFIMG: 'reqGiftImg', //이미지 선물
         PACKET_RECV_REQGUEST: 'reqGuest', // 게스트 초대/취소/승락/거절
         PACKET_RECV_REQFAN: 'reqFan', // 팬등록/해제
-        PACKET_RECV_REQGOOD: 'reqGood', //
-        PACKET_RECV_REQBOOSTER: 'reqBooster',
-        PACKET_RECV_REQNOTICE: 'reqNotice',
-        PACKET_RECV_REQSTORY: 'reqStory',
-        PACKET_RECV_REQCHANGECOUNT: 'reqChangeCount',
-        PACKET_RECV_REQROOMCHANGETIME: 'reqRoomChangeTime',
-        PACKET_RECV_REQROOMCHANGEINFO: 'reqRoomChangeInfo',
-        PACKET_RECV_REQGRANT: 'reqGrant',
-        PACKET_RECV_REQPLAYTOKEN: 'reqPLayToken',
-        PACKET_RECV_REQMICON: 'reqMicOn',
-        PACKET_RECV_REQMICOFF: 'reqMicOff',
-        PACKET_RECV_REQCALLING: 'reqCalling',
-        PACKET_RECV_REQENDCALL: 'reqEndCall'
+        PACKET_RECV_REQGOOD: 'reqGood', // 좋아요
+        PACKET_RECV_REQBOOSTER: 'reqBooster', //부스터실행
+        PACKET_RECV_REQNOTICE: 'reqNotice', //공지사항작성
+        PACKET_RECV_REQSTORY: 'reqStory', //사연작성
+        PACKET_RECV_REQCHANGECOUNT: 'reqChangeCount', //랭킹,좋아요 수
+        PACKET_RECV_REQROOMCHANGETIME: 'reqRoomChangeTime', //채팅방 방송시간 변경
+        PACKET_RECV_REQROOMCHANGEINFO: 'reqRoomChangeInfo', //채팅방 정보 변경
+        PACKET_RECV_REQGRANT: 'reqGrant', //매니저 지정 / 해제
+        PACKET_RECV_REQPLAYTOKEN: 'reqPLayToken', // playToken 생성 요청
+        PACKET_RECV_REQMICON: 'reqMicOn', //마이크 On
+        PACKET_RECV_REQMICOFF: 'reqMicOff', //마이크 Off
+        PACKET_RECV_REQCALLING: 'reqCalling', // 통화중
+        PACKET_RECV_REQENDCALL: 'reqEndCall' //통화 종료
       }
     },
 
