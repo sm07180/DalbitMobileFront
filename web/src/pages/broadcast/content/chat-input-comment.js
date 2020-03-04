@@ -121,7 +121,7 @@ export default props => {
     //Error발생시
     if (res.result === 'success') {
       setShortMessage(res.data)
-      store.action.updateShortCutList(shortMessage)
+      store.action.updateShortCutList(res.data)
     }
   }
   const Commandlist = () => {
@@ -142,7 +142,7 @@ export default props => {
   const fastSendMeassage = idx => {
     const list = store.shortCutList
 
-    if (list && idx.cmdType) {
+    if (list && idx) {
       sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
     }
   }
