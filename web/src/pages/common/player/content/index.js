@@ -215,6 +215,7 @@ const MediaPlayer = styled.div`
   }
 
   .close {
+    display: block;
     width: 50px;
     height: 50px;
     margin-left: auto;
