@@ -18,14 +18,13 @@ import Api from 'context/api'
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
-  alert(customHeader)
   alert('OS : ' + customHeader.os)
   if (customHeader.os === 1 || customHeader.os === 2 || customHeader.os === '1' || customHeader.os === '2') {
     const element = document.getElementById('customHeader')
-    alert(element.value)
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
       const _temp = JSON.parse(element.value)
-      alert(_temp)
+      alert(element.value)
+      alert(JSON.stringify(element.value, null, 1))
     }
     return true
   }
