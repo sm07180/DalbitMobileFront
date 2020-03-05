@@ -22,8 +22,8 @@ export default props => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show
-        alert('native - player - show')
-        alert(event.detail)
+        context.action.mediaPlayerStatus(true)
+        context.action.updateRoomInfo(event.detail)
         break
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
         context.action.updateToken(event.detail)
@@ -32,9 +32,6 @@ export default props => {
       case 'native-goLogin': //-------------------------Native goLogin
         alert(JSON.stringify(event.detail, null, 1))
         context.action.updatePopup('LOGIN')
-        break
-      case 'native-minium': //--------------------------Native minium
-        alert(JSON.stringify(event.detail, null, 1))
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
@@ -52,11 +49,9 @@ export default props => {
   //useEffect addEventListener
   useEffect(() => {
     /*----native----*/
-    document.addEventListener('native-navigator', update)
-    document.addEventListener('native-player-show', update)
-
+    document.addEventListener('native-navigator', update) //완료
+    document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-goLogin', update)
-    document.addEventListener('native-minium', update)
     document.addEventListener('native-reciveAuthToken', update)
     /*----react----*/
     document.addEventListener('react-gnb-open', update)
@@ -66,7 +61,6 @@ export default props => {
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-goLogin', update)
-      document.removeEventListener('native-minium', update)
       document.removeEventListener('native-reciveAuthToken', update)
       /*----react----*/
       document.removeEventListener('react-gnb-open', update)
