@@ -19,7 +19,7 @@ export const isHybrid = () => {
   const customHeader = Api.customHeader
   //하이브리드앱 아닐경우 예외처리
   alert(customHeader)
-  if (customHeader.os === '1' && customHeader.os === '2') {
+  if (customHeader.os === 1 || customHeader.os === 2 || customHeader.os === '1' || customHeader.os === '2') {
     const element = document.getElementById('customHeader')
     alert(element.value)
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
