@@ -33,6 +33,7 @@ export default props => {
   //useMemo
   const info = useMemo(() => {
     store.action.updateRoomInfo(state)
+    context.action.updateRoomInfo(state)
     return state
   })
   //useState
