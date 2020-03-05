@@ -13,6 +13,9 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //component
 import Service from './content/service'
 import Privacy from './content/privacy'
+import YouthProtect from './content/youth-protect'
+import Operating from './content/operating'
+import Maketing from './content/maketing'
 
 ////---------------------------------------------------------------------
 export default props => {
@@ -25,8 +28,14 @@ export default props => {
     switch (context.popup_code[1]) {
       case 'service': //---------------------------------------서비스 이용약관
         return <Service {...props} />
-      case 'privacy': //---------------------------------------서비스 이용약관
+      case 'privacy': //---------------------------------------개인정보 취급방침
         return <Privacy {...props} />
+      case 'youthProtect': //---------------------------------------청소년 보호정책
+        return <YouthProtect {...props} />
+      case 'operating': //---------------------------------------운영정책
+        return <Operating {...props} />
+      case 'maketing': //---------------------------------------마케팅 수신 동의약관
+        return <Maketing {...props} />
       default:
         return <div>약관 컨텐츠가 정의되지않음</div>
     }
@@ -84,5 +93,25 @@ const Terms = styled.div`
   }
   p.sub {
     color: #9e9e9e;
+
+    span {
+      display: inline-block;
+    }
+    span.depth1 {
+      margin-top: 20px;
+      padding-left: 10px;
+    }
+    span.depth2 {
+      margin-top: 15px;
+      padding-left: 20px;
+    }
+    span.depth3 {
+      margin-top: 10px;
+      padding-left: 30px;
+    }
+    span.depth4 {
+      margin-top: 5px;
+      padding-left: 40px;
+    }
   }
 `

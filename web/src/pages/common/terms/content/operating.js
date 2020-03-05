@@ -1,7 +1,6 @@
 /**
- * @file terms/content/privacy.js
- * @brief 개인정보 처리방침
- * @todo 컨텐츠 내용 업데이트
+ * @file terms/content/operating.js
+ * @brief 운영정책
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
@@ -18,7 +17,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h2>개인정보 처리방침</h2>
+      <h2>운영정책</h2>
     </Content>
   )
 }
