@@ -258,7 +258,7 @@ export default class API {
    */
   static broad_kickout = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/link`, method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/broad/kickout`, method: method || 'POST', data: data})
   }
 
   /**
@@ -273,6 +273,31 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/info`, method: method || 'GET', params: params})
   }
+  /**
+   * @brief 방송방 매니저지정
+   * @method "POST"
+   * @todo
+   * @param string roomNo                 //*방송방번호
+   * @param string memNo                 //*매니저지정회원번호
+   * @create 김호겸 2020.03.05
+   */
+  static broad_manager = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/manager`, method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 방송방 매니저지정취소
+   * @method "DELETE"
+   * @todo
+   * @param string roomNo                 //*방송방번호
+   * @param string memNo                 //*매니저지정회원번호
+   * @create 김호겸 2020.03.05
+   */
+  static broad_manager = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/manager`, method: method || 'DELETE', data: data})
+  }
+
   //--------------------------------------------------------------------- 회원 관련
   /**
    * @brief 토큰조회

@@ -51,7 +51,7 @@ export default props => {
   return (
     <Wrapper>
       <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
-      {listenTrues && <Events onClick={AllFalse} />}
+      {listenTrues && <Events onClick={AllFalse} selectidx={props.selectidx} />}
       <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
     </Wrapper>
   )
