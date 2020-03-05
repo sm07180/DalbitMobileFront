@@ -9,12 +9,18 @@ export default props => {
   const context = useContext(Context)
   //////////////////////////////////////////////////////////////
   const [list, setPosts] = useState([])
+  //방송리스트 map
   const [listM, setPostsM] = useState([])
+  //맴버리스트 map
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
+  //온체이지 글자
   const [show, setShow] = useState(false)
+  //검색결과
   const [query, setQuery] = useState('')
+  //qs
   /////////////////////////////////////////////////////////////
+  //초기 qs검색 api호출및 필터 벨류 저장
   const prevQueryRef = useRef('')
   useEffect(() => {
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
@@ -25,7 +31,7 @@ export default props => {
     }
     ShowClick()
   }, [query])
-
+  //검색 api호출및 필터 벨류 저장
   async function fetchData() {
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
     const res = await API.live_search({
@@ -65,8 +71,19 @@ export default props => {
     setPostsM([])
     fetchData()
   }
+  const searchOnKeyDown = e => {
+    const {currentTarget} = e
+    if (currentTarget.value === '') {
+      return
+    }
+    if (e.keyCode === 13) {
+      setPosts([])
+      setPostsM([])
+      fetchData()
+    }
+  }
 
-  /////////////////////////////////////////////////
+  /////////////////////////////////////////////////맵
 
   const ShowFilter2 = listM.map((item, index) => {
     if (filterM.length > 1) {
@@ -117,19 +134,6 @@ export default props => {
     } else {
     }
   })
-
-  const searchOnKeyDown = e => {
-    const {currentTarget} = e
-    if (currentTarget.value === '') {
-      return
-    }
-    if (e.keyCode === 13) {
-      setPosts([])
-      setPostsM([])
-      fetchData()
-    }
-  }
-  ///////////////////////////////
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
   const {currentItem, changeItem} = useTabs(0, tabConent)
@@ -235,6 +239,10 @@ const Wrap = styled.div`
     }
     & .flexWrap {
       display: flex;
+      @media (max-width: ${WIDTH_MOBILE}) {
+        margin-top: 10px;
+        flex-direction: column;
+      }
     }
     & p:first-child {
       float: left;
@@ -372,7 +380,58 @@ const InfoWrap = styled.div`
     }
   }
 `
-//tab function
+///
+const MemberWrap = styled.div`
+  display: flex;
+  position: relative;
+  width: 33.33%;
+  height: 58px;
+  border: solid 1px #f5f5f5;
+  border-radius: 32px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 11px 10px;
+  box-sizing: border-box;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
+  & .livebox {
+    position: absolute;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: url('https://devimage.dalbitcast.com/images/api/ic_live.png') no-repeat center center / cover;
+  }
+`
+const Mimg = styled.div`
+  width: 36px;
+  height: 36px;
+  background: url(${props => props.bg}) no-repeat center center / cover;
+  border-radius: 50%;
+`
+const InfoBox = styled.div`
+  margin-left: 10px;
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+  }
+  & .id {
+    display: inline-block;
+    height: 50%;
+    font-size: 14px;
+    color: #8555f6;
+    letter-spacing: -0.35px;
+  }
+  & .idName {
+    height: 50%;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    color: #424242;
+  }
+`
+
+//tab function && styled
 const useTabs = (initialTab, allTabs) => {
   if (!allTabs || !Array.isArray(allTabs)) {
     return
@@ -424,50 +483,3 @@ const tabConent = [
     tab: '라이브'
   }
 ]
-///
-const MemberWrap = styled.div`
-  display: flex;
-  position: relative;
-  width: 33%;
-  height: 58px;
-  border: solid 1px #f5f5f5;
-  border-radius: 32px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  padding: 11px 10px;
-  box-sizing: border-box;
-  & .livebox {
-    position: absolute;
-    right: 10px;
-    width: 36px;
-    height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_live.png') no-repeat center center / cover;
-  }
-`
-const Mimg = styled.div`
-  width: 36px;
-  height: 36px;
-  background: url(${props => props.bg}) no-repeat center center / cover;
-  border-radius: 50%;
-`
-const InfoBox = styled.div`
-  margin-left: 10px;
-  &:after {
-    content: '';
-    clear: both;
-    display: block;
-  }
-  & .id {
-    display: inline-block;
-    height: 50%;
-    font-size: 14px;
-    color: #8555f6;
-    letter-spacing: -0.35px;
-  }
-  & .idName {
-    height: 50%;
-    font-size: 14px;
-    letter-spacing: -0.35px;
-    color: #424242;
-  }
-`
