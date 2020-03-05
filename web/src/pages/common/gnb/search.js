@@ -31,8 +31,9 @@ export default props => {
     if (search === '') {
       return
     }
-    window.location.href = `/search?query=${search}`
-    //props.history.push(`/search?query=${search}`)
+    //window.location.href = `/search?query=${search}`
+    props.history.push(`/search?query=${search}`)
+    context.action.updateGnbVisible(false)
   }
 
   const [search, setSearch] = useState('')
@@ -45,7 +46,8 @@ export default props => {
       return
     }
     if (e.keyCode === 13) {
-      window.location.href = `/search?query=${search}`
+      props.history.push(`/search?query=${search}`)
+      context.action.updateGnbVisible(false)
     }
   }
   //---------------------------------------------------------------------

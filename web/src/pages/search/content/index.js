@@ -14,7 +14,8 @@ export default props => {
   return (
     <Container>
       <SearchWrap>
-        <Fill />
+        <h1>검색</h1>
+        <Fill {...props} />
         {/* <Page /> */}
       </SearchWrap>
     </Container>
@@ -33,7 +34,14 @@ const SearchWrap = styled.div`
   width: 70%;
   height: 100%;
   flex-direction: column;
-
+  & h1 {
+    margin: 40px 0;
+    text-align: center;
+    color: #8556f6;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.7px;
+  }
   .searchBar {
     display: flex;
     flex-direction: column;
