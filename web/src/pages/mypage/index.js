@@ -16,6 +16,8 @@ import Api from 'context/api'
 
 //components
 import MyProfile from './content/myProfile.js'
+import Navigation from './content/navigation.js'
+
 import Notice from './content/notice.js'
 import MyWallet from './content/myWallet'
 //import FanBoard from './content/fanBoard.js'
@@ -37,6 +39,8 @@ const User = props => {
       </ContentHeader>
       <Content>
         <MyProfile />
+
+        <Navigation />
 
         <Switch>
           <Route exact path="/mypage/notice" component={Notice} />
