@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import SelectInfo from './live-select-popular'
 import CategoryInfo from './live-select-category'
 import Refresh from './live-refresh'
-import API from 'context/api'
+import Api from 'context/api'
 import {broadcastLive} from 'constant/broadcast'
 import {Context} from 'context'
 import {Scrollbars} from 'react-custom-scrollbars'
@@ -22,18 +22,20 @@ export default props => {
   const scrollbars = useRef(null) // 스크롤 영역 선택자
   //0.배열Info State--------------------------------------------------
   const [broadList, setBroadList] = useState(null)
+  const [fetch, setFetch] = useState(null)
   //------------------------------------------------------------------
   //fetch
-  async function fetchData(obj) {
-    const res = await API.broad_list({
-      url: '/broad/list',
-      method: 'get'
-    })
-    if (res.result === 'success') {
-      setBroadList(res.data)
+  async function getBroadList(obj) {
+    const res = await Api.broad_list({...obj})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
     }
-    console.log(res)
+    console.log(res.data)
+    setFetch(res.data)
   }
+
   //라이브 마우스 스크롤
   const [checkMove, setCheckMove] = useState(false)
   const handleOnWheel = () => {
@@ -46,12 +48,21 @@ export default props => {
 
   //라이브 맵------------------------------------------------------------------------------------------------------
   const makeContents = () => {
-    if (broadList === null) return
-    return broadList.list.map((live, index) => {
-      const {roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg} = live
+    if (fetch === null) return
+    return fetch.list.map((live, index) => {
+      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg} = live
+      let mode = '해당사항없음'
+      if (state === 1) mode = '1'
+      if (state === 2) mode = '2'
+      if (state === 3) mode = '3'
+      if (state === 4) mode = '4'
+      if (state === 5) mode = '종료'
+      //
+      if (state !== 1) return
 
       return (
         <LiveList key={index}>
+          <h3>[{mode}]</h3>
           <ImgWrap bg={bgImg.url}>
             <Sticker>
               {reco && <Reco>{reco}</Reco>}
@@ -84,13 +95,8 @@ export default props => {
   }
   //------------------------------------------------------------------
   useEffect(() => {
-    fetchData({
-      data: {
-        roomType: '',
-        page: 1,
-        records: 10
-      }
-    })
+    //방송방 리스트
+    getBroadList({params: {roomType: '', page: 1, records: 100}})
   }, [])
   //------------------------------------------------------------------
   return (
@@ -140,6 +146,9 @@ const LiveList = styled.div`
   margin-bottom: 20px;
   box-sizing: border-box;
   border-bottom: 1px solid #f5f5f5;
+  & h3 {
+    font-size: 0;
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
     padding: 0px 20px 20px 0px;
