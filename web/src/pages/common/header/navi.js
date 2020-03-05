@@ -8,7 +8,7 @@ import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import Utility from 'components/lib/utility'
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -19,8 +19,8 @@ export default props => {
   //data
   const info = [
     {title: '라이브', url: '/live'},
-    {title: '스토어', url: '/store'},
-    {title: '이벤트', url: '/event'}
+    {title: '캐스트', url: '/cast'},
+    {title: '랭킹', url: '/ranking'}
     // {title: '방송하기', url: '/broadcast-setting'}
   ]
   //context
@@ -51,18 +51,17 @@ export default props => {
         key="broadcast"
         onClick={event => {
           event.preventDefault()
-          //Hybird App이 아닐때
-          //alert(JSON.stringify(context.customHeader, null, 1))
           if (!context.cast_state) {
-            if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
+            //하이브리드앱
+            if (isHybrid()) {
+              Hybrid('RoomMake')
+            } else {
               if (context && context.token && !context.token.isLogin) {
                 //로그인 팝업레이어실행
                 context.action.updatePopup('LOGIN')
                 return
               }
               props.history.push('/broadcast-setting')
-            } else {
-              Hybrid('RoomMake')
             }
           }
         }}>
@@ -118,6 +117,7 @@ const Content = styled.nav`
   }
   button {
     padding: 9px 20px 9px 48px;
+    margin-left: 12px;
     border-radius: 40px;
     background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;
     color: #fff;

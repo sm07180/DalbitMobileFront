@@ -16,7 +16,7 @@ export default props => {
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
 
   const onUpdate = e => {
-    scrollbars.current.children[0].children[0].style.maxHeight = `calc(${document.body.clientHeight}px + 17px)`
+    scrollbars.current.children[0].children[0].style.height = `calc(${document.body.clientHeight}px + 17px)`
   }
 
   return (
@@ -46,7 +46,6 @@ const Gnb = styled.div`
   width: 320px;
   height: 100%;
   padding: 0;
-  border-right: 1px solid #ccc;
   background: #fff;
   background: ${props => (props.state == 'menu' ? COLOR_MAIN : '#fff')};
   transition: right 0.5s ease-in-out;

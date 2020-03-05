@@ -1,6 +1,6 @@
 /**
- * @file /cast/index.js
- * @brief 캐스트 페이지
+ * @file /ranking/index.js
+ * @brief 랭킹 페이지
  */
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
@@ -16,7 +16,7 @@ export default props => {
   const context = useContext(Context)
   return (
     <Layout {...props}>
-      <Content>캐스트</Content>
+      <Content>랭킹</Content>
     </Layout>
   )
 }

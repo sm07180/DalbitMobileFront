@@ -11,33 +11,30 @@ import Api from 'context/api'
 //---------------------------------------------------------------------
 /**
  *
- * @param string  func          //*function 이름 (Method)55
- * @param any     info          //*data (string or object )
+ * @brief 하이브리드앱 여부체크확인
  *
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
-  alert(customHeader)
-  alert('OS : ' + customHeader.os)
-  if (customHeader.os === 1 || customHeader.os === 2 || customHeader.os === '1' || customHeader.os === '2') {
+  if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
+    //<textarea id="customHeader" > 2중체크
     const element = document.getElementById('customHeader')
-    alert(element.value)
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const _temp = JSON.parse(element.value)
-      alert(_temp)
+      const val = JSON.parse(element.value)
+      if (val.os + '' === '1' || val.os + '' === '2') return true
     }
-    return true
   }
   return false
 }
+/**
+ *
+ * @param string  func          //*function 이름 (Method)55
+ * @param any     info          //*data (string or object )
+ *
+ */
 export const Hybrid = (func, info) => {
-  const customHeader = Api.customHeader
-  //하이브리드앱 아닐경우 예외처리
-  // if (customHeader.os !== '1' && customHeader.os !== '2') {
-  //   console.log(`하이브리드앱이 아님!! osName: ${osName} , browserName: ${browserName}`)
-  //   return
-  // }
+  if (!isHybrid()) return
   switch (osName) {
     case 'Windows':
       //console.log('Windows버젼입니다')

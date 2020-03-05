@@ -141,7 +141,7 @@ export default props => {
             </ProfileWrap>
           </CONTENT>
 
-          <NavWrap>
+          <NavWrap className={context.token.isLogin ? 'login' : 'logout'}>
             {context.token.isLogin && mypage !== null && makeNavi()}
             {context.token.isLogin && mypage !== null && (
               <LoginChoiceOut
@@ -313,14 +313,31 @@ const LoginChoiceOut = styled.button`
   transform: skew(-0.03deg);
 `
 const NavWrap = styled.div`
-  max-height: calc(100% - 320px);
-  min-height: 340px;
-  padding: 20px 20px 0 20px;
-  border-left: 1px solid #eeeeee;
+  position: relative;
+
+  /* min-height: 340px; */
+  padding: 20px 20px 40px 20px;
   background-color: white;
+
+  &.login {
+    min-height: calc(100% - 490px);
+  }
+  &.logout {
+    min-height: calc(100% - 348px);
+  }
 
   & > a:first-child > div {
     border-top: 0;
+  }
+
+  &:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: #eee;
+    content: '';
   }
 `
 
