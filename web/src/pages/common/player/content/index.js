@@ -5,7 +5,6 @@
 import React, {useState, useMemo, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -16,12 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-  //useMemo
-  useEffect(() => {
-    if (isHybrid()) {
-      alert(JSON.stringify(context.roomInfo))
-    }
-  }, [])
+
   //makeContents
   const makeContents = visible => {
     /**
@@ -55,7 +49,7 @@ export default props => {
         </div>
         <div className="info">
           <div className="profile">
-            {/* <Figure url={context.roomInfo.bjProfImg.thumb120x120}></Figure> */}
+            <Figure url={'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1'}></Figure>
             <em></em>
           </div>
           <p
@@ -66,14 +60,14 @@ export default props => {
               // })
               props.update({playerNavigator: true})
             }}>
-            <b>{context.roomInfo.bjNickNm}</b>
-            <span>{context.roomInfo.title}</span>
+            <b>BJ아이유😍</b>
+            <span>✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨</span>
           </p>
         </div>
         <div className="state">
           <span>85</span>
           <span>85</span>
-          {/* <span>{context.roomInfo.likes}</span> */}
+          <span>850</span>
         </div>
         <button
           className="close"
