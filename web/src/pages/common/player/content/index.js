@@ -72,6 +72,10 @@ export default props => {
         <button
           className="close"
           onClick={() => {
+            context.action.confirm({
+              callback: () => {},
+              msg: `닫기`
+            })
             props.update({playerClose: true})
           }}>
           닫기
