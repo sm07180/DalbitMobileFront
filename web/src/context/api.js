@@ -19,10 +19,8 @@ useEffect(() => {
 }, [])
  */
 
-import React, {useContext} from 'react'
 import axios from 'axios'
 import qs from 'qs'
-import {Context} from 'context'
 //component
 import {API_SERVER, PHOTO_SERVER} from 'context/config'
 
@@ -730,7 +728,6 @@ export default class API {
 //ajax
 export const ajax = async obj => {
   const {url, method, data, params, authToken} = obj
-
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
     const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded;charset=utf-8'

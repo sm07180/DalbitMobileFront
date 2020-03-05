@@ -41,6 +41,7 @@ export default props => {
         store.action.updateTimer(m)
         if (myTime === 0) {
           clearInterval(interval) // 부스트 시간이 끝나면 stop
+          store.action.updateLike(3)
         }
       }, 1000)
       setMyTimer(interval)
@@ -58,6 +59,7 @@ export default props => {
     })
     console.log('## res - useBoost :', res)
     store.action.initBoost(store.roomInfo.roomNo) // 부스트 사용 후 다시 조회
+    store.action.updateLike(4)
     context.action.alert({
       // 부스트 사용완료 팝업
       callback: () => {

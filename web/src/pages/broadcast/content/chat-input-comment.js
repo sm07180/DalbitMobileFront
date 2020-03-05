@@ -106,6 +106,7 @@ export default props => {
           sc.SendMessageChatEnd(props)
         }
         window.location.replace('https://' + window.location.hostname)
+        context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
       },
       //캔슬콜백처리
       cancelCallback: () => {

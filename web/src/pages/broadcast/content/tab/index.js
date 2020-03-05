@@ -37,7 +37,7 @@ export default props => {
   const store = useContext(BroadCastStore)
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
-  const {currentItem, changeItem} = useTabs(0, store.tabContent)
+  const {currentItem, changeItem} = useTabs(0, store.currentTab)
   //---------------------------------------------------------------------
   const usePrev = index => {
     if (index !== state.next) {
@@ -51,9 +51,8 @@ export default props => {
 
   useEffect(() => {
     changeItem(store.tabIdx)
-    console.log('## index.js - tabContent :', tabContent)
-    // console.log('## store.tabIdx :', store.tabIdx)
-  }, [store.tabContent])
+    console.log('## index.js - tabContent :', store.currentTab)
+  }, [store.tabIdx])
 
   console.log('## store: ', store)
   return (
@@ -68,7 +67,7 @@ export default props => {
             {section.tab}
           </button>
         ))} */}
-        {store.tabContent.map((data, index) => {
+        {store.currentTab.map((data, index) => {
           return (
             <button onClick={() => usePrev(data.id)} key={index} className={currentItem.tab === data.tab ? 'on' : ''}>
               {data.tab}

@@ -82,7 +82,11 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    console.table(res.data)
+    if (res === undefined) {
+      console.log('토큰에러')
+    } else {
+      console.table(res.data)
+    }
     // result 성공/실패 여부상관없이,토큰없데이트
     context.action.updateToken(res.data)
     //모든처리완료
