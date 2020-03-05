@@ -21,6 +21,10 @@ export default props => {
         const {url, info} = event.detail
         history.push(url, {...info, type: 'native-navigator'})
         break
+      case 'native-player-show': //---------------------Native player-show
+        alert('native - player - show')
+        alert(event.detail)
+        break
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
         context.action.updateToken(event.detail)
         alert(JSON.stringify(event.detail, null, 1))
@@ -49,6 +53,8 @@ export default props => {
   useEffect(() => {
     /*----native----*/
     document.addEventListener('native-navigator', update)
+    document.addEventListener('native-player-show', update)
+
     document.addEventListener('native-goLogin', update)
     document.addEventListener('native-minium', update)
     document.addEventListener('native-reciveAuthToken', update)
@@ -58,6 +64,7 @@ export default props => {
     return () => {
       /*----native----*/
       document.removeEventListener('native-navigator', update)
+      document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-goLogin', update)
       document.removeEventListener('native-minium', update)
       document.removeEventListener('native-reciveAuthToken', update)

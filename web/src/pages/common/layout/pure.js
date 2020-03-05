@@ -21,6 +21,7 @@ const Layout = props => {
   const {children} = props
   // ~~/navigator/?router=/login 형태로 넘어올때
   const isNavigator = useMemo(() => {
+    if (props.location.state === undefined) return false
     if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
     return false
   })
