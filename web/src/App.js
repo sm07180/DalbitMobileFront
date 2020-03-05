@@ -46,7 +46,6 @@ export default () => {
         os: _os,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
-        hybridApp: 'N', //하이브리앱이 아닐경우 (PC,Mobile브라우져로 접속시)
         browserName: browserName,
         language: 'ko',
         deviceToken: 'make_custom_header'

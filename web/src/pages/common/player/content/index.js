@@ -52,15 +52,17 @@ export default props => {
             <Figure url={'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1'}></Figure>
             <em></em>
           </div>
-          <button
+          <p
             onClick={() => {
+              // context.action.confirm({
+              //   callback: () => {},
+              //   msg: `방송방 다시들어가기`
+              // })
               props.update({playerNavigator: true})
             }}>
-            <p>
-              <b>BJ아이유😍</b>
-              ✨상쾌한 아침을 함께해요✨
-            </p>
-          </button>
+            <b>BJ아이유😍</b>
+            <span>✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨</span>
+          </p>
         </div>
         <div className="state">
           <span>85</span>
@@ -141,6 +143,7 @@ const MediaPlayer = styled.div`
           bottom: 0;
           height: 14px;
           background: ${COLOR_POINT_Y};
+          transform: none;
         }
       }
       li:nth-child(1) span {
@@ -173,6 +176,7 @@ const MediaPlayer = styled.div`
       margin-top: 4px;
       font-size: 14px;
       line-height: 24px;
+      cursor: pointer;
       b {
         display: block;
         font-size: 18px;
@@ -189,7 +193,6 @@ const MediaPlayer = styled.div`
 
   .state {
     margin: 0 auto;
-    cursor: pointer;
     span {
       padding-left: 23px;
       line-height: 18px;
@@ -212,6 +215,7 @@ const MediaPlayer = styled.div`
   }
 
   .close {
+    display: block;
     width: 50px;
     height: 50px;
     margin-left: auto;
@@ -259,20 +263,29 @@ const MediaPlayer = styled.div`
       display: none;
     }
     .info {
+      max-width: calc(100% - 70px);
       p {
+        width: calc(100% - 50px);
         margin-top: 2px;
         font-size: 12px;
         line-height: 20px;
         b {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
           font-size: 14px;
+        }
+        span {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
       }
       .profile {
         height: 40px;
       }
-    }
-    .close {
-      display: none;
     }
   }
 `

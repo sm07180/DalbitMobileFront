@@ -30,26 +30,35 @@ export default props => {
         <Menu>
           <button
             onClick={() => {
-              props.history.push('/guide')
-            }}>
-            회사 소개
-          </button>
-          <button>서비스 소개</button>
-          <button>인재채용</button>
-          <button
-            onClick={() => {
-              context.action.updatePopup('TERMS', 'privacy')
-            }}>
-            개인정보 처리방침
-          </button>
-          <button
-            onClick={() => {
               context.action.updatePopup('TERMS', 'service')
             }}>
             서비스 이용약관
           </button>
-          <button>청소년 보호정책</button>
-          <button>운영정책</button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'privacy')
+            }}>
+            개인정보 취급방침
+          </button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'youthProtect')
+            }}>
+            청소년 보호정책
+          </button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'operating')
+            }}>
+            운영정책
+          </button>
+          <button
+            onClick={() => {
+              context.action.updatePopup('TERMS', 'maketing')
+            }}>
+            마케팅 수신 동의약관
+          </button>
+          <button>서비스 SNS 채널</button>
         </Menu>
       )}
       <Info>

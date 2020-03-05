@@ -239,6 +239,7 @@ const Side = styled.div`
   width: 388px;
   padding-left: 20px;
   background: #fff;
+  z-index: 2;
   /* min-width: 408px; */
   @media (max-width: ${WIDTH_TABLET_S}) {
     padding: 20px;
