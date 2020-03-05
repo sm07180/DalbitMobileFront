@@ -74,6 +74,14 @@ export default props => {
           }}>
           닫기
         </button>
+        <a
+          href="#1"
+          onClick={event => {
+            event.preventDefault()
+            props.update({playerClose: true})
+          }}>
+          닫기
+        </a>
       </MediaPlayer>
     </MediaPlayerWrap>
   )

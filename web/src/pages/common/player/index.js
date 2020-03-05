@@ -24,9 +24,12 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
-        if (mediaHandler.rtcPeerConn) {
-          mediaHandler.stop()
+        if (isHybrid()) {
           Hybrid('ExitRoom')
+        } else {
+          if (mediaHandler.rtcPeerConn) {
+            mediaHandler.stop()
+          }
         }
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
@@ -34,7 +37,8 @@ export default props => {
           Hybrid('RoomReconnect', context.roomInfo)
         } else {
           const {roomNo} = context.roomInfo
-          props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
+          alert('테스트중')
+          //  props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
         }
         break
       default:

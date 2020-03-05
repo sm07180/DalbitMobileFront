@@ -24,7 +24,6 @@ export default props => {
       case 'native-player-show': //---------------------Native player-show
         context.action.updateMediaPlayerStatus(true)
         context.action.updateRoomInfo(event.detail)
-        alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
         context.action.updateToken(event.detail)
