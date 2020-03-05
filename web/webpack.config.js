@@ -74,20 +74,7 @@ module.exports = (env, options) => {
         }
       ]
     },
-    // optimization: {
-    //   // https://webpack.js.org/plugins/split-chunks-plugin/#optimization-splitchunks
-    //   splitChunks: {
-    //     chunks: 'all',
-    //     cacheGroups: {
-    //       vendor: {
-    //         chunks: 'all',
-    //         name: 'vendor',
-    //         enforce: true,
-    //         test: /[\\/]node_modules[\\/]/,
-    //       },
-    //     },
-    //   },
-    // },
+
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
