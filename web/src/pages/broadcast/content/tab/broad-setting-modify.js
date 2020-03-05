@@ -1,8 +1,4 @@
 /**
- * @title 라이브탭 방송수정
- */
-
-/**
  * @file 라이브탭 방송수정
  * @brief 방송세팅수정
  */
@@ -20,31 +16,14 @@ import Api from 'context/api'
 import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
+  const context = useContext(Context)
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const RoInfo = JSON.stringify(roomInfo.roomNo)
+  console.log(RoInfo)
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
   const scrollbars = useRef(null) // 스크롤 영역 선택자
   //context
-  const context = useContext(Context)
-  //hooks-usechange
-  const {changes, setChanges, onChange} = useChange(update, {
-    onChange: -1,
-    entryType: 0,
-    roomType: '01',
-    bgImgRacy: 3,
-    welcomMsg: '',
-    bgImg: roomInfo.bgImg.url,
-    title: ''
-  })
-  //update
-  function update(mode) {
-    // console.log('---')
-    switch (true) {
-      case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
-        break
-    }
-  }
   //방송수정 마우스 스크롤
   const [checkMove, setCheckMove] = useState(false)
   const handleOnWheel = () => {
@@ -55,6 +34,27 @@ export default props => {
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
 
+  //hooks-usechange
+  //hooks-usechange
+  const {changes, setChanges, onChange} = useChange(update, {
+    onChange: -1,
+    entryType: 0,
+    roomType: '01',
+    bgImgRacy: 3,
+    welcomMsg: '',
+    bgImg: '',
+    title: ''
+  })
+
+  //update
+  function update(mode) {
+    // console.log('---')
+    switch (true) {
+      case mode.onChange !== undefined:
+        //console.log(JSON.stringify(changes))
+        break
+    }
+  }
   //makeRadio
   const makeRadio = () => {
     const info = ['모두입장', ' 팬만 입장', '20세이상']
@@ -176,14 +176,12 @@ export default props => {
 
         const res = await Api.broad_edit({
           data: {
-            roomNo: '91582269014675',
+            roomNo: RoInfo,
             roomType: changes.roomType,
             title: changes.title,
             bgImg: resUpload.data.path,
             bgImgRacy: 3,
-            welcomMsg: changes.welcomMsg,
-            notice: '',
-            entryType: changes.entryType
+            welcomMsg: changes.welcomMsg
           }
         })
         console.table(res)
@@ -194,14 +192,15 @@ export default props => {
             /**
              * @todos 소켓연결필요
              */
-            //props.history.push('/broadcast/' + res.data.roomNo, res.data)
+            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+            context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
           } else {
             console.warn(res.message)
           }
         }
       } else {
         //Error발생시
-        console.log('방생성실패')
+        console.log('방수정실패')
       }
     }
   }
