@@ -25,6 +25,7 @@ export default props => {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         if (isHybrid()) {
+          alert('ExitRoom')
           Hybrid('ExitRoom')
         } else {
           if (mediaHandler.rtcPeerConn) {
