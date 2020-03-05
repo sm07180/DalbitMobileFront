@@ -75,6 +75,17 @@ export default props => {
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>
             </StartBtn>
             {makeNavi()}
+            <button
+              className="mobile"
+              onClick={() => {
+                context.action.alert({
+                  //콜백처리
+                  callback: () => {},
+                  msg: `현재 준비중입니다.`
+                })
+              }}>
+              달빛라디오 앱 설치하기
+            </button>
           </CONTENT>
         </NoticeWrap>
       </Gnb>
@@ -121,6 +132,37 @@ const CONTENT = styled.div`
   padding: 10px 20px 40px 20px;
   box-sizing: border-box;
   /* background-color: white; */
+
+  button.mobile {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
+    padding: 16px 16px 16px 55px;
+    border: 1px solid #fff;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 16px;
+    background: url(${IMG_SERVER}/images/api/btn_logo@3x.png) no-repeat 10% 14px;
+    background-size: 20px;
+    text-align: left;
+
+    &:after {
+      display: block;
+      position: absolute;
+      right: 20px;
+      top: 11px;
+      width: 24px;
+      height: 24px;
+      background: url(${IMG_SERVER}/images/api/ico_down@3x.png) no-repeat center center/ cover;
+      content: '';
+    }
+
+    @media (max-width: ${WIDTH_TABLET_S}) {
+      display: block;
+    }
+  }
 `
 const StartBtn = styled.button`
   width: 100%;

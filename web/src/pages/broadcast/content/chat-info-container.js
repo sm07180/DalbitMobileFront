@@ -246,16 +246,17 @@ const Content = styled.div`
     }
   }
 
-  .top2-wrap .system-msg:nth-child(2) {
-    top: 179px;
-  }
-  .top2-wrap .system-msg:nth-child(3) {
-    top: 233px;
-  }
-  .top2-wrap .system-msg:nth-child(4) {
-    top: 287px;
-  }
+  .top2-wrap {
+    position: absolute;
+    top: 125px;
+    width: 100%;
 
+    & .system-msg {
+      position: relative;
+      top: 0;
+      margin: 10px 0 0 0;
+    }
+  }
   .dj-info {
     display: flex;
     position: relative;
