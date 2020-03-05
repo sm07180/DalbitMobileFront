@@ -35,7 +35,7 @@ export default props => {
   //useState
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: ''})
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: '', pwd: ''})
 
   //const [changes, setChanges] = useState({})
   let loginId = '',
@@ -312,6 +312,18 @@ export default props => {
   //   })
   // }
 
+  const pwdValidateHandle = e => {
+    let value = e.target.value.toLowerCase()
+    let blank_pattern = value.search(/[\s]/g)
+    if (blank_pattern != -1) {
+      value = value.substring(0, value.length - 1)
+    }
+    if (!(e.keyCode >= 37 && e.keyCode <= 40)) {
+      value = value.replace(/[^a-z0-9]/gi, '')
+    }
+    setChanges({...changes, pwd: value})
+  }
+
   //---------------------------------------------------------------------
   return (
     <LoginWrap>
@@ -335,7 +347,7 @@ export default props => {
           autoFocus
           maxLength={13}
         />
-        <input type="password" name="pwd" placeholder="비밀번호" onChange={onChange} onKeyPress={() => pwdEnterkeyHandle(event)} />
+        <input type="password" name="pwd" placeholder="비밀번호" onChange={pwdValidateHandle} value={changes.pwd} onKeyPress={() => pwdEnterkeyHandle(event)} />
       </LoginInput>
       <LoginSubmit
         onClick={() => {
