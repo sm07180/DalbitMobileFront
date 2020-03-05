@@ -127,6 +127,24 @@ export default props => {
       store.action.updateShortCutList(res.data)
     }
   }
+  async function broad_Link() {
+    console.log(JSON.stringify(props))
+    const res = await Api.broad_link({
+      params: {
+        link: store.roomInfo.link
+      },
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      console.log('## broad_link  res = ' + res)
+    } else {
+      console.log('## broad_link  res = ' + res)
+    }
+  }
+  const broadcastLink = e => {
+    broad_Link()
+  }
   const Commandlist = () => {
     const info = ['인사', '박수', '감사']
 
@@ -211,8 +229,14 @@ export default props => {
           기타메뉴
         </button>
         <ul className={`menu-box ${toggle.menu ? 'on' : 'off'}`}>
-          {props.auth === 3 && <li className="edit">수정하기</li>}
-          <li className="share">공유하기</li>
+          {props.auth === 3 && (
+            <li className="edit" onClick={() => store.action.updateTab(10)}>
+              수정하기
+            </li>
+          )}
+          <li className="share" onClick={broadcastLink}>
+            공유하기
+          </li>
           <li className="exit" onClick={broadcastOff}>
             {props.auth == 3 ? '방송종료' : '나가기'}
           </li>
