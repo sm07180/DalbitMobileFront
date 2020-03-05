@@ -16,7 +16,7 @@ import Api from 'context/api'
  *
  */
 export const isHybrid = () => {
-  const customHeader = Api.customHeader
+  const customHeader = JSON.parse(Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
   alert(customHeader)
   alert('OS : ' + customHeader.os)
