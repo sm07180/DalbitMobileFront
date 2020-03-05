@@ -54,10 +54,10 @@ export default props => {
           </div>
           <p
             onClick={() => {
-              context.action.confirm({
-                callback: () => {},
-                msg: `방송방 다시들어가기`
-              })
+              // context.action.confirm({
+              //   callback: () => {},
+              //   msg: `방송방 다시들어가기`
+              // })
               props.update({playerNavigator: true})
             }}>
             <b>BJ아이유😍</b>
