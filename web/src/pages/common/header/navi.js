@@ -118,6 +118,7 @@ const Content = styled.nav`
   }
   button {
     padding: 9px 20px 9px 48px;
+    margin-left: 12px;
     border-radius: 40px;
     background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;
     color: #fff;
