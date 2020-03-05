@@ -5,7 +5,7 @@
 import React, {useMemo, useEffect, useContext} from 'react'
 //context
 import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 // etc
 import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
@@ -30,8 +30,12 @@ export default props => {
         }
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
-        const {roomNo} = context.roomInfo
-        props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
+        if (isHybrid()) {
+          Hybrid('RoomReconnect', context.roomInfo)
+        } else {
+          const {roomNo} = context.roomInfo
+          props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
+        }
         break
       default:
         break

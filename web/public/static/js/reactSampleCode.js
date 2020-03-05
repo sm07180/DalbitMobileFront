@@ -9,7 +9,7 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-navigator', {
+    new CustomEvent('native-player-show', {
       detail: {url: '/login/'}
     })
   )
