@@ -10,7 +10,6 @@ const fs = require('fs')
 module.exports = (env, options) => {
   const config = {
     entry: {
-      vendor: ['react', 'styled-components', 'react-router-dom'],
       app: './src/index.js',
       login: './src/html/login.js'
     },
@@ -114,6 +113,7 @@ module.exports = (env, options) => {
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
+        chunks: ['app'],
         showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
       new HtmlWebPackPlugin({
@@ -141,7 +141,7 @@ module.exports = (env, options) => {
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-        title: 'Production',
+        chunks: ['app'],
         showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
       }),
       new HtmlWebPackPlugin({

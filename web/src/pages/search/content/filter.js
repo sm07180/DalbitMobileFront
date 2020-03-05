@@ -12,7 +12,7 @@ export default props => {
   const [listM, setPostsM] = useState([])
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
-  const [show, setShow] = useState(null)
+  const [show, setShow] = useState(false)
   const [query, setQuery] = useState('')
   /////////////////////////////////////////////////////////////
   const prevQueryRef = useRef('')
@@ -63,12 +63,6 @@ export default props => {
   const ShowClick = () => {
     setPosts([])
     setPostsM([])
-    // setShow(true)
-    // if (listM.length === 0 && list.length === 0) {
-    //   setShow(false)
-    // } else {
-    //   setShow(true)
-    // }
     fetchData()
   }
 
@@ -132,13 +126,7 @@ export default props => {
     if (e.keyCode === 13) {
       setPosts([])
       setPostsM([])
-      // if (listM.length == 0 && list.length == 0) {
-      //   setShow(false)
-      // } else {
-      //   setShow(true)
-      // }
       fetchData()
-      // setShow(true)
     }
   }
   ///////////////////////////////
@@ -167,7 +155,7 @@ export default props => {
           </Tab>
           {currentItem.tab === '통합' && (
             <>
-              <div className="liveList">
+              <div className="liveList MnoResult">
                 <div className="livetitle">
                   <p>
                     사람 <em>{listM.length}명</em>
@@ -179,7 +167,7 @@ export default props => {
                 <div className="flexWrap">{ShowFilter2}</div>
               </div>
 
-              <div className="liveList">
+              <div className="liveList noResult">
                 <div className="livetitle">
                   <p>
                     라이브 <em>{list.length}건</em>
@@ -194,7 +182,7 @@ export default props => {
           )}
           {currentItem.tab === '사람' && (
             <>
-              <div className="liveList">
+              <div className="liveList MnoResult">
                 <div className="livetitle">
                   <p>
                     사람 <em>{listM.length}명</em>
@@ -211,7 +199,7 @@ export default props => {
       )}
       {currentItem.tab === '라이브' && (
         <>
-          <div className="liveList">
+          <div className="liveList noResult">
             <div className="livetitle">
               <p>
                 라이브 <em>{list.length}건</em>
@@ -231,6 +219,12 @@ const Wrap = styled.div`
   & .liveList {
     width: 100%;
     margin-top: 58px;
+    &.noResult {
+      margin-bottom: 101px;
+    }
+    &.MnoResult {
+      margin-bottom: 50px;
+    }
     & .livetitle {
       width: 100%;
       &:after {
@@ -439,6 +433,7 @@ const MemberWrap = styled.div`
   border: solid 1px #f5f5f5;
   border-radius: 32px;
   margin-right: 5px;
+  margin-bottom: 5px;
   padding: 11px 10px;
   box-sizing: border-box;
   & .livebox {

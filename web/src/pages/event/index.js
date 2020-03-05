@@ -5,6 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //layout
+import {isHybrid} from 'context/hybrid'
 import Layout from 'pages/common/layout'
 //context
 import {ajax} from 'context/api'
@@ -60,6 +61,8 @@ export default props => {
       <Content>
         <button
           onClick={() => {
+            isHybrid()
+
             setLottie('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
           }}>
           버튼1
@@ -92,6 +95,13 @@ export default props => {
 const Content = styled.section`
   min-height: 300px;
   background: #e1e1e1;
+  button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+  }
   h1 {
     font-size: 30px;
   }
