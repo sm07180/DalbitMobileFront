@@ -57,13 +57,15 @@ export default props => {
 
   //좋아요~!
   const activeLike = () => {
+    console.log('store.like')
+
     if (store.like == 1) {
       //좋아요 성공시..
       setToggle({
         ...toggle,
         like: true
       })
-      store.action.updateLike(2)
+      broad_likes(store.roomInfo.roomNo)
     } else if (store.like == 2) {
       store.action.updateLike(3)
     }
@@ -83,8 +85,10 @@ export default props => {
     if (res.result === 'fail') {
       console.log(res.message)
       return
+    } else {
+      console.log('## liket res = ' + res)
+      store.action.updateLike(2)
     }
-    return res
   }
 
   //방나가기
