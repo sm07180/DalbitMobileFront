@@ -77,7 +77,7 @@ export default props => {
             </div>
           )} */}
           <div className="btnwrap">
-            <EventBTNS />
+            <EventBTNS selectidx={index} />
           </div>
         </ListenList>
       )
@@ -111,7 +111,7 @@ export default props => {
               </div>
             ))} */}
           <div className="btnwrap">
-            <EventBTNS />
+            <EventBTNS selectidx={index} />
           </div>
         </ListenList>
       )
