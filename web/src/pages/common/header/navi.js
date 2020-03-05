@@ -47,27 +47,26 @@ export default props => {
     })
     //방송하기
     const broadCast = (
-      /**
-       * @todos 방송중일때 방송중으로 떠야함
-       */
       <button
         key="broadcast"
         onClick={event => {
           event.preventDefault()
           //Hybird App이 아닐때
           //alert(JSON.stringify(context.customHeader, null, 1))
-          if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
-            if (context && context.token && !context.token.isLogin) {
-              //로그인 팝업레이어실행
-              context.action.updatePopup('LOGIN')
-              return
+          if (!context.cast_state) {
+            if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
+              if (context && context.token && !context.token.isLogin) {
+                //로그인 팝업레이어실행
+                context.action.updatePopup('LOGIN')
+                return
+              }
+              props.history.push('/broadcast-setting')
+            } else {
+              Hybrid('RoomMake')
             }
-            props.history.push('/broadcast-setting')
-          } else {
-            Hybrid('RoomMake')
           }
         }}>
-        <span>방송하기</span>
+        <span>{context.cast_state ? '방송중' : '방송하기'}</span>
       </button>
     )
     return [navi, broadCast]
