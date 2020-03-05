@@ -12,6 +12,7 @@ import EventBTNS from './listen-eventBTN'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
 export default props => {
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
@@ -107,9 +108,9 @@ export default props => {
           <LiveWrap>
             <Title>방송 DJ</Title>
             <DJList>
-              <ManagerImg bg={BJInfo.url} />
-              <h2>{BJInfo.bjMemNo}</h2>
-              <h5>{BJInfo.bjNickNm}</h5>
+              <ManagerImg bg={roomInfo.bjProfImg.url} />
+              <h2>{roomInfo.bjStreamId}</h2>
+              <h5>{roomInfo.bjNickNm}</h5>
             </DJList>
           </LiveWrap>
           <LiveWrap>
@@ -157,7 +158,7 @@ const DJList = styled.div`
   background-color: #8555f6;
   border-radius: 24px;
   & h2 {
-    width: 53px;
+    max-width: 70px;
     height: 36px;
     margin-left: 10px;
     color: #fff;
@@ -166,6 +167,8 @@ const DJList = styled.div`
     font-weight: 600;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   & h5 {
@@ -224,7 +227,7 @@ const Title = styled.h4`
   transform: skew(-0.03deg);
 `
 const StreamID = styled.h4`
-  width: 53px;
+  max-width: 70px;
   height: 36px;
   margin-left: 10px;
   color: #8555f6;
@@ -233,6 +236,8 @@ const StreamID = styled.h4`
   font-weight: 600;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 const NickName = styled.h4`
   height: 36px;
