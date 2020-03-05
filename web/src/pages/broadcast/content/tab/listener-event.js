@@ -6,6 +6,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import styled from 'styled-components'
 export default props => {
   const {onClick} = props
+
   //--------------------------------------------------------
   return (
     <Event>
