@@ -33,10 +33,10 @@ export const isHybrid = () => {
 export const Hybrid = (func, info) => {
   const customHeader = Api.customHeader
   //하이브리드앱 아닐경우 예외처리
-  if (customHeader.os !== '1' && customHeader.os !== '2') {
-    console.log(`하이브리드앱이 아님!! osName: ${osName} , browserName: ${browserName}`)
-    return
-  }
+  // if (customHeader.os !== '1' && customHeader.os !== '2') {
+  //   console.log(`하이브리드앱이 아님!! osName: ${osName} , browserName: ${browserName}`)
+  //   return
+  // }
   switch (osName) {
     case 'Windows':
       //console.log('Windows버젼입니다')
