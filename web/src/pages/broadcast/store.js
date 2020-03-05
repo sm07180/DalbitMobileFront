@@ -44,6 +44,7 @@ const BroadCastProvider = props => {
     // {id: 12, tab: '받은 선물'},
   ]
   const [tabContent, setTabContent] = useState(arr)
+  const [currentTab, setCurrentTab] = useState(arr)
 
   //---------------------------------------------------------
 
@@ -108,16 +109,16 @@ const BroadCastProvider = props => {
       setTabIdx(num)
       if (tabIdx === num) return
 
-      if (num === 3) setTabContent([tabContent.slice(0, 2), {id: num, tab: '충전'}])
-      if (num === 4) setTabContent([...tabContent, {id: num, tab: '선물'}])
-      if (num === 5) setTabContent([...tabContent, {id: num, tab: '부스트'}])
-      if (num === 6) setTabContent([...tabContent, {id: num, tab: '프로필'}])
-      if (num === 7) setTabContent([...tabContent, {id: num, tab: '신고하기'}])
-      if (num === 8) setTabContent([...tabContent, {id: num, tab: '공지사항'}])
-      if (num === 9) setTabContent([...tabContent, {id: num, tab: '사연'}])
-      if (num === 10) setTabContent([...tabContent, {id: num, tab: '방송수정'}])
-      if (num === 11) setTabContent([tabContent.slice(0, 2), {id: num, tab: '빠른 말'}])
-      if (num === 12) setTabContent([...tabContent, {id: num, tab: '받은 선물'}])
+      if (num === 3) setCurrentTab(tabContent.concat({id: num, tab: '충전'}))
+      if (num === 4) setCurrentTab(tabContent.concat({id: num, tab: '선물'}))
+      if (num === 5) setCurrentTab(tabContent.concat({id: num, tab: '부스트'}))
+      if (num === 6) setCurrentTab(tabContent.concat({id: num, tab: '프로필'}))
+      if (num === 7) setCurrentTab(tabContent.concat({id: num, tab: '신고하기'}))
+      if (num === 8) setCurrentTab(tabContent.concat({id: num, tab: '공지사항'}))
+      if (num === 9) setCurrentTab(tabContent.concat({id: num, tab: '사연'}))
+      if (num === 10) setCurrentTab(tabContent.concat({id: num, tab: '방송수정'}))
+      if (num === 11) setCurrentTab(tabContent.concat({id: num, tab: '빠른 말'}))
+      if (num === 12) setCurrentTab(tabContent.concat({id: num, tab: '받은 선물'}))
     },
     updateLike: num => {
       setLike(num)
@@ -139,7 +140,8 @@ const BroadCastProvider = props => {
     tabIdx,
     action,
     tabContent,
-    like
+    like,
+    currentTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }
