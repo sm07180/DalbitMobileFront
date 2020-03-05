@@ -72,6 +72,10 @@ export default props => {
         <button
           className="close"
           onClick={() => {
+            context.action.confirm({
+              callback: () => {},
+              msg: `닫기`
+            })
             props.update({playerClose: true})
           }}>
           닫기
@@ -215,6 +219,7 @@ const MediaPlayer = styled.div`
   }
 
   .close {
+    display: block;
     width: 50px;
     height: 50px;
     margin-left: auto;
