@@ -34,8 +34,8 @@ export default props => {
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
         if (isHybrid()) {
-          alert('RoomReconnect')
-          Hybrid('RoomReconnect', context.roomInfo)
+          alert('ReconnectRoom')
+          Hybrid('ReconnectRoom', context.roomInfo)
         } else {
           const {roomNo} = context.roomInfo
           alert('테스트중')
