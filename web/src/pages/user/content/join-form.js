@@ -106,6 +106,7 @@ const JoinForm = props => {
     let pw = pwdEntered
     let blank_pattern = pw.search(/[\s]/g)
     let num = pw.search(/[0-9]/g)
+    let kor = pw.search(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/)
     let eng = pw.search(/[a-zA-Z]/gi)
     let spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
 
@@ -123,33 +124,41 @@ const JoinForm = props => {
       })
       setCurrentPwd('')
     } else {
-      if (pw.length > 7 && pw.length < 21) {
-        //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
-        if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+      if (kor > 0) {
+        setValidate({
+          ...validate,
+          loginPwd: false
+        })
+        setCurrentPwd('영문/숫자/특수문자만 입력가능합니다.')
+      } else {
+        if (pw.length > 7 && pw.length < 21) {
+          //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
+          if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+            setValidate({
+              ...validate,
+              loginPwd: false
+            })
+            setCurrentPwd('2가지 이상 조합으로 입력하세요.')
+          } else {
+            setValidate({
+              ...validate,
+              loginPwd: true
+            })
+            setCurrentPwd('사용 가능한 비밀번호 입니다.')
+          }
+        } else if (pw.length > 20) {
           setValidate({
             ...validate,
             loginPwd: false
           })
-          setCurrentPwd('2가지 이상 조합으로 입력하세요.')
+          setCurrentPwd('최대 20자 까지 입력하세요.')
         } else {
           setValidate({
             ...validate,
-            loginPwd: true
+            loginPwd: false
           })
-          setCurrentPwd('사용 가능한 비밀번호 입니다.')
+          setCurrentPwd('최소 8자 이상 입력하세요.')
         }
-      } else if (pw.length > 20) {
-        setValidate({
-          ...validate,
-          loginPwd: false
-        })
-        setCurrentPwd('최대 20자 까지 입력하세요.')
-      } else {
-        setValidate({
-          ...validate,
-          loginPwd: false
-        })
-        setCurrentPwd('최소 8자 이상 입력하세요.')
       }
     }
   }

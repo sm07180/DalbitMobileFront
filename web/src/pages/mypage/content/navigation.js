@@ -14,7 +14,7 @@ export default props => {
         {txt: '내 지갑', route: 'wallet'},
         {txt: '리포트', route: 'report'},
         {txt: '알림', route: 'alert'},
-        {txt: '방송 설정', route: 'config'}
+        {txt: '방송 설정', route: 'setting'}
       ]
     : [{}]
 
