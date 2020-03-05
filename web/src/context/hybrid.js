@@ -11,8 +11,7 @@ import Api from 'context/api'
 //---------------------------------------------------------------------
 /**
  *
- * @param string  func          //*function 이름 (Method)55
- * @param any     info          //*data (string or object )
+ * @brief 하이브리드앱 여부체크확인
  *
  */
 export const isHybrid = () => {
@@ -23,21 +22,19 @@ export const isHybrid = () => {
     const element = document.getElementById('customHeader')
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
       const val = JSON.parse(element.value)
-      if (val.os + '' === '1' || val.os + '' === '2') {
-        alert('OS는  ' + val.os + '')
-        return true
-      }
+      if (val.os + '' === '1' || val.os + '' === '2') return true
     }
   }
   return false
 }
+/**
+ *
+ * @param string  func          //*function 이름 (Method)55
+ * @param any     info          //*data (string or object )
+ *
+ */
 export const Hybrid = (func, info) => {
-  const customHeader = Api.customHeader
-  //하이브리드앱 아닐경우 예외처리
-  // if (customHeader.os !== '1' && customHeader.os !== '2') {
-  //   console.log(`하이브리드앱이 아님!! osName: ${osName} , browserName: ${browserName}`)
-  //   return
-  // }
+  if (!isHybrid()) return
   switch (osName) {
     case 'Windows':
       //console.log('Windows버젼입니다')
