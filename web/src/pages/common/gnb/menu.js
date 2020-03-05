@@ -17,10 +17,10 @@ export default props => {
   //data
   const info = [
     {title: '라이브', url: '/live'},
-    {title: '캐스트', url: '/store?캐스트'},
+    {title: '캐스트', url: '/cast'},
+    {title: '랭킹', url: '/ranking'},
     {title: '스토어', url: '/store'},
     {title: '이벤트', url: '/event'},
-    {title: '랭킹', url: '/store?랭킹'},
     {title: '고객센터', url: '/store?고객센터'},
     {title: '설정', url: '/store?설정'}
   ]

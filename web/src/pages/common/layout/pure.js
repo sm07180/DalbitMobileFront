@@ -5,7 +5,7 @@ import React, {useMemo, useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 //context
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
 import Footer from 'pages/common/footer'
@@ -21,8 +21,9 @@ const Layout = props => {
   const {children} = props
   // ~~/navigator/?router=/login 형태로 넘어올때
   const isNavigator = useMemo(() => {
-    if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
-    return false
+    return isHybrid()
+    // if (props.location.state === undefined) return false
+    // if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
   })
   //---------------------------------------------------------------------
 

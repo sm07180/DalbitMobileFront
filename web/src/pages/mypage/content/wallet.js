@@ -1,5 +1,5 @@
 /**
- * @file /mypage/content/my-wallet.js
+ * @file /mypage/content/mwallet.js
  * @brief 마이페이지 내지갑
  */
 
@@ -9,17 +9,17 @@ import styled from 'styled-components'
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-const myWallet = () => {
+const wallet = () => {
   return (
-    <MyWallet>
+    <Wallet>
       <h3>루비 상세내역(최근 3개월)</h3>
       <ul>
         <li></li>
       </ul>
-    </MyWallet>
+    </Wallet>
   )
 }
 
-export default myWallet
+export default wallet
 
-const MyWallet = styled.div``
+const Wallet = styled.div``

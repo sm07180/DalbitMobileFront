@@ -820,6 +820,7 @@ export const SendMessageChat = objChat => {
   console.log('sendMessage = ' + JSON.stringify(params))
   sendMessage.socket(objChat.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT, params, objChat.msg)
 }
+
 // 방송방 종료
 export const SendMessageChatEnd = objChatInfo => {
   const params = {

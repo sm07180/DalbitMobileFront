@@ -25,6 +25,7 @@ const Guide = React.lazy(() => import('pages/guide'))
 const Login = React.lazy(() => import('pages/login'))
 const User = React.lazy(() => import('pages/user'))
 const Cast = React.lazy(() => import('pages/cast'))
+const Ranking = React.lazy(() => import('pages/ranking'))
 const Live = React.lazy(() => import('pages/live'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
@@ -45,7 +46,8 @@ export default () => {
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
         <Route exact path="/broadcast/:title" component={BroadCast} />
-        <Route exact path="/cast" component={BroadCast} />
+        <Route exact path="/cast" component={Cast} />
+        <Route exact path="/ranking" component={Ranking} />
         <Route exact path="/user" component={User} />
         <Route exact path="/user/:title" component={User} />
         <Route exact path="/login" component={Login} />
