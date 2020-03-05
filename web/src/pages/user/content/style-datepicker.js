@@ -8,6 +8,9 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 import moment from 'moment'
 import DateFnsUtils from '@date-io/moment'
 import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
@@ -73,5 +76,9 @@ const DatepickerWrap = styled.div`
     font-size: inherit;
     font-family: inherit;
     line-height: inherit;
+  }
+  .MuiInputBase-input.MuiInput-input {
+    background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 96% center;
+    background-size: 24px;
   }
 `
