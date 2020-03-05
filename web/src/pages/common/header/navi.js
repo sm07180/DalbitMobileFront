@@ -8,7 +8,7 @@ import {Link, NavLink} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import Utility from 'components/lib/utility'
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -51,18 +51,17 @@ export default props => {
         key="broadcast"
         onClick={event => {
           event.preventDefault()
-          //Hybird App이 아닐때
-          //alert(JSON.stringify(context.customHeader, null, 1))
           if (!context.cast_state) {
-            if (context.customHeader.hybridApp !== undefined && context.customHeader.hybridApp === 'N') {
+            //하이브리드앱
+            if (isHybrid()) {
+              Hybrid('RoomMake')
+            } else {
               if (context && context.token && !context.token.isLogin) {
                 //로그인 팝업레이어실행
                 context.action.updatePopup('LOGIN')
                 return
               }
               props.history.push('/broadcast-setting')
-            } else {
-              Hybrid('RoomMake')
             }
           }
         }}>

@@ -5,7 +5,7 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //layout
-import {isHybrid} from 'context/hybrid'
+
 import Layout from 'pages/common/layout'
 //context
 import {ajax} from 'context/api'
@@ -61,8 +61,6 @@ export default props => {
       <Content>
         <button
           onClick={() => {
-            isHybrid()
-
             setLottie('https://devimage.dalbitcast.com/ani/lottie/2020.02.07_2.json')
           }}>
           버튼1

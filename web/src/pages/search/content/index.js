@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import SearchTab from './searchTab'
 import NoResult from './noResult'
 import Page from './pagination'
@@ -34,6 +35,12 @@ const SearchWrap = styled.div`
   width: 70%;
   height: 100%;
   flex-direction: column;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 90%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+  }
   & h1 {
     margin: 40px 0;
     text-align: center;

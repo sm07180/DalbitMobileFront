@@ -34,8 +34,9 @@ export default props => {
   //useEffect
   useEffect(() => {
     const {state} = props.location
+    if (state === null || state === undefined) return
     //context Update
-    context.action.updateRoomInfo(state)
+    //context.action.updateRoomInfo(state)
   }, [])
   //---------------------------------------------------------------------
   return (
