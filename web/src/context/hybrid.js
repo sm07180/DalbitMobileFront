@@ -19,12 +19,15 @@ export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
   if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
+    //<textarea id="customHeader" > 2중체크
     const element = document.getElementById('customHeader')
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const _temp = JSON.parse(element.value)
-      alert(element.value)
+      const val = JSON.parse(element.value)
+      if (val.os + '' === '1' || val.os + '' === '2') {
+        alert('OS는  ' + val.os + '')
+        return true
+      }
     }
-    return true
   }
   return false
 }
