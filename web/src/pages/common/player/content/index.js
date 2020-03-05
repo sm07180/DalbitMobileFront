@@ -55,7 +55,7 @@ export default props => {
         </div>
         <div className="info">
           <div className="profile">
-            <Figure url={context.roomInfo.bjProfImg.thumb120x120}></Figure>
+            {/* <Figure url={context.roomInfo.bjProfImg.thumb120x120}></Figure> */}
             <em></em>
           </div>
           <p
@@ -73,7 +73,7 @@ export default props => {
         <div className="state">
           <span>85</span>
           <span>85</span>
-          <span>{context.roomInfo.likes}</span>
+          {/* <span>{context.roomInfo.likes}</span> */}
         </div>
         <button
           className="close"
