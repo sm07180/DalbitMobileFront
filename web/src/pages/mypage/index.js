@@ -19,10 +19,12 @@ import MyProfile from './content/myProfile.js'
 import Navigation from './content/navigation.js'
 
 import Notice from './content/notice.js'
-import MyWallet from './content/myWallet'
-//import FanBoard from './content/fanBoard.js'
-//import Report from './content/report'
-//import Setting from './content/setting'
+import FanBoard from './content/fanBoard.js'
+import Cast from './content/cast.js'
+import Wallet from './content/wallet.js'
+import Report from './content/report.js'
+import Alert from './content/alert.js'
+import Setting from './content/setting.js'
 
 //
 const User = props => {
@@ -42,16 +44,30 @@ const User = props => {
 
         <Navigation />
 
-        <Switch>
-          <Route exact path="/mypage/notice" component={Notice} />
-          {/* <Route exact path="/mypage/wallet" component={Notice} /> */}
-          {/* <Route exact path="/mypage/fanboard" component={Notice} /> */}
-        </Switch>
+        <SubContent>
+          <Switch>
+            <Route exact path="/mypage/notice" component={Notice} />
+            <Route exact path="/mypage/fanboard" component={FanBoard} />
+            <Route exact path="/mypage/cast" component={Cast} />
+            <Route exact path="/mypage/wallet" component={Wallet} />
+            <Route exact path="/mypage/report" component={Report} />
+            <Route exact path="/mypage/alert" component={Alert} />
+            <Route exact path="/mypage/setting" component={Setting} />
+          </Switch>
+        </SubContent>
       </Content>
     </Layout>
   )
 }
 export default User
+
+const SubContent = styled.div`
+  margin: 0 auto;
+
+  @media (max-width: ${WIDTH_PC}) {
+    width: 90%;
+  }
+`
 
 const ContentHeader = styled.div`
   display: flex;

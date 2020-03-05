@@ -70,7 +70,7 @@ export default props => {
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
           <div className="btnwrap">
-            <EventBTNS />
+            <EventBTNS selectidx={index} />
           </div>
         </ListenList>
       )
@@ -97,7 +97,7 @@ export default props => {
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
           <div className="btnwrap">
-            <EventBTNS />
+            <EventBTNS selectidx={index} />
           </div>
         </ListenList>
       )
