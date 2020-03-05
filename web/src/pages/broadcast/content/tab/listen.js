@@ -13,6 +13,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  console.log('roomInfo = ' + roomInfo)
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
@@ -49,43 +50,49 @@ export default props => {
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
   //메니저 info맵-----------------------
-  //-----------------------------
-  const Managermap = ManagerInfo.map((live, index) => {
-    const {bjNickNm, bjMemNo, url} = live
-    //클릭visibility function
-    const ToggleEvent = () => {
-      if (trues === false) {
-        setTrues(true)
-      } else {
-        setTrues(false)
-      }
-    }
-    //클릭 bg visibility function
-    const AllFalse = () => {
-      setTrues(false)
-    }
-    //----------------------------------------------------------------
-    return (
-      <ManagerList key={index}>
-        <ManagerImg bg={url} />
-        <StreamID>{bjMemNo}</StreamID>
-        <NickName>{bjNickNm}</NickName>
-        <EVENTBTN value={trues} onClick={ToggleEvent}></EVENTBTN>
-        {trues && <Events />}
-        <BackGround onClick={AllFalse} className={trues === true ? 'on' : ''} />
-      </ManagerList>
-    )
-  })
+
+  const drawManegerList = () => {
+    if (store.listenerList === null) return
+    return store.listenerList.map((live, index) => {
+      let mode = '해당사항없음'
+      const {nickNm, memNo, profImg, auth} = live
+      const {thumb62x62} = profImg
+      if (auth === 0) mode = '0'
+      if (auth === 1) mode = '1'
+      if (auth === 2) mode = '2'
+      //
+      if (auth !== 1) return
+      //----------------------------------------------------------------
+      return (
+        <ListenList key={index}>
+          <p className="authClass">[{mode}]</p>
+          <ManagerImg bg={thumb62x62} />
+          <StreamID>{memNo}</StreamID>
+          <NickName>{nickNm}</NickName>
+          <div className="btnwrap">
+            <EventBTNS />
+          </div>
+        </ListenList>
+      )
+    })
+  }
   //----------------------------------------------------------------
   //리스너 인포맵
   const drawListenList = () => {
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
-      const {nickNm, memNo, profImg} = live
+      let mode = '해당사항없음'
+      const {nickNm, memNo, profImg, auth} = live
       const {thumb62x62} = profImg
       //----------------------------------------------------------------
+      if (auth === 0) mode = '0'
+      if (auth === 1) mode = '1'
+      if (auth === 2) mode = '2'
+      //
+      if (auth !== 0) return
       return (
         <ListenList key={index}>
+          <p className="authClass">[{mode}]</p>
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
@@ -115,7 +122,7 @@ export default props => {
           </LiveWrap>
           <LiveWrap>
             <Title>방송 매니저</Title>
-            {Managermap}
+            {drawManegerList()}
           </LiveWrap>
           <LiveWrap>
             <Title>청취자</Title>
@@ -200,15 +207,15 @@ const DJList = styled.div`
   }
 `
 
-const ManagerList = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  padding: 4px;
-  margin-top: 4px;
-  border: 1px solid #8555f6;
-  border-radius: 24px;
-`
+// const ManagerList = styled.div`
+//   position: relative;
+//   width: 100%;
+//   display: flex;
+//   padding: 4px;
+//   margin-top: 4px;
+//   border: 1px solid #8555f6;
+//   border-radius: 24px;
+// `
 const ManagerImg = styled.div`
   width: 36px;
   height: 36px;
@@ -263,6 +270,9 @@ const ListenWrap = styled.div`
       bottom: auto !important;
     }
   }
+  & .authClass {
+    font-size: 0;
+  }
 `
 
 const ListenList = styled.div`
@@ -279,6 +289,9 @@ const ListenList = styled.div`
     right: 0;
     width: 36px;
     height: 36px;
+  }
+  & .authClass {
+    font-size: 0;
   }
 `
 //이벤트버튼
