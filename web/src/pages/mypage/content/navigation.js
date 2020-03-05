@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
@@ -22,9 +22,9 @@ export default props => {
     <Navigation>
       {category.map((bundle, index) => {
         return (
-          <Link to={`/mypage/${bundle.route}`} key={index}>
+          <NavLink to={`/mypage/${bundle.route}`} activeClassName="active" key={index}>
             <TabText>{bundle.txt}</TabText>
-          </Link>
+          </NavLink>
         )
       })}
     </Navigation>
@@ -34,9 +34,6 @@ export default props => {
 const TabText = styled.div`
   color: #8556f6;
   cursor: pointer;
-
-  &.active {
-  }
 `
 
 const Navigation = styled.div`
@@ -50,6 +47,21 @@ const Navigation = styled.div`
     align-items: center;
     width: 14.285%;
     height: 48px;
+    box-sizing: border-box;
+    border-right: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &.active {
+      border-right: none;
+
+      background-color: #8556f6;
+      & > div {
+        color: #fff;
+      }
+    }
   }
 
   @media (max-width: ${WIDTH_PC}) {
