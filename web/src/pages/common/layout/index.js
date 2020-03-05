@@ -72,6 +72,10 @@ const Container = styled.div`
     @media (max-width: ${WIDTH_TABLET_S}) {
       padding-top: 56px;
       width: 100%;
+
+      .on-cast & {
+        padding-top: 0;
+      }
     }
     /* 컨텐츠내용 */
     article {
