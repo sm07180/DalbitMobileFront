@@ -366,4 +366,40 @@ const Message = styled.div`
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin: 12px 10px;
+    p {
+      margin: 0 0 6px 4px;
+    }
+    div {
+      padding-left: 42px;
+      span {
+        font-size: 12px;
+      }
+    }
+    &.enter-exit div,
+    &.like div {
+      padding-left: 0;
+    }
+    &.enter-exit div {
+      span {
+        font-size: 12px;
+      }
+    }
+    &.guide {
+      span {
+        font-size: 12px;
+      }
+    }
+    &.like {
+      span {
+        font-size: 12px;
+      }
+    }
+    pre {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  }
 `
