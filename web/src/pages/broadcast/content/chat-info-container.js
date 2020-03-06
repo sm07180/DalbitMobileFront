@@ -522,9 +522,10 @@ const Content = styled.div`
 
     .top2-wrap {
       top: 93px;
+      width: calc(100% - 10px);
 
       .system-msg {
-        width: calc(100% - 10px);
+        width: 100%;
         margin: 8px 0 0 0;
       }
     }
