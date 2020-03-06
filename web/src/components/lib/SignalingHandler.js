@@ -280,10 +280,10 @@ export default class SignalingHandler {
   closePeerConnection() {
     if (this.rtcPeerConn && this.rtcPeerConn.signalingState !== 'closed') {
       this.rtcPeerConn.close()
-      this.rtcPeerConn = null
-      this.rtcDescription = false
-      this.iceCandidate = []
     }
+    this.rtcPeerConn = null
+    this.rtcDescription = false
+    this.iceCandidate = []
 
     if (this.localStopCallback) {
       this.localStopCallback()
