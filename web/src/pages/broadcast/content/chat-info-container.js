@@ -246,14 +246,16 @@ const Content = styled.div`
     }
   }
 
-  .top2-wrap .system-msg:nth-child(2) {
-    top: 179px;
-  }
-  .top2-wrap .system-msg:nth-child(3) {
-    top: 233px;
-  }
-  .top2-wrap .system-msg:nth-child(4) {
-    top: 287px;
+  .top2-wrap {
+    position: absolute;
+    top: 125px;
+    width: 100%;
+
+    & .system-msg {
+      position: relative;
+      top: 0;
+      margin: 10px 0 0 0;
+    }
   }
 
   .dj-info {
@@ -478,6 +480,65 @@ const Content = styled.div`
       }
     }
   }
+
+  /* 모바일반응형 */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    .dj-info {
+      & > figure {
+        flex-basis: 40px;
+        height: 40px;
+      }
+      div {
+        padding: 12px 0 9px 5px;
+
+        p:first-child {
+          font-size: 14px;
+        }
+        p:last-child {
+          margin-top: 3px;
+          font-size: 12px;
+        }
+      }
+      ul {
+        flex-basis: 138px;
+        padding: 11px 0;
+        figure {
+          width: 32px;
+          height: 32px;
+        }
+        li:nth-child(-n + 3):after {
+          width: 12px;
+          height: 12px;
+        }
+        li.people {
+          width: 33px;
+          height: 33px;
+          background: url(${IMG_SERVER}/images/chat/ic_fan.png) no-repeat center 8px;
+          background-size: 10px;
+          font-size: 10px;
+          line-height: 40px;
+        }
+        li + li {
+          margin-left: 2px;
+        }
+      }
+    }
+
+    .cast-info {
+      height: 28px;
+      border-radius: 28px;
+
+      ul {
+        li {
+          line-height: 28px;
+        }
+      }
+
+      div {
+        padding: 2px 0;
+      }
+    }
+  }
 `
 
 const Figure = styled.figure`
@@ -512,6 +573,15 @@ const Figure = styled.figure`
       color: #fff;
       font-size: 13px;
       transform: skew(-0.3deg);
+    }
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    &.dj:after {
+      left: -9px;
+      top: -9px;
+      width: 56px;
+      height: 56px;
     }
   }
 `

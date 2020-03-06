@@ -89,7 +89,10 @@ export const scConnection = obj => {
         PACKET_SEND_LOGIN: 'login',
         PACKET_SEND_LOGIN_TK: 'loginToken',
         PACKET_SEND_EMIT: 'emit',
-        PACKET_SEND_CHAT_END: 'chatEnd' //BJ/채팅종료
+        PACKET_SEND_CHAT_END: 'chatEnd', //BJ/채팅종료
+        PACKET_SEND_REQKICKOUT: 'reqKickOut', //강퇴
+        PACKET_SEND_REQGIFDAL: 'reqGiftDal', //달선물
+        PACKET_SEND_REQGRANT: 'reqGrant' //매니저 지정 / 해제
       },
       recv: {
         PACKET_RECV_CHAT: 'chat', //채팅 메세지
@@ -656,10 +659,6 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
   socket.on(socketConfig.packet.recv.PACKET_RECV_REQKICKOUT, function(data) {
     receiveMessageData(data)
   })
-
-  socket.on(socketConfig.packet.recv.PACKET_RECV_REQKICKOUT, function(data) {
-    receiveMessageData(data)
-  })
   socket.on(socketConfig.packet.recv.PACKET_RECV_REQGIFDAL, function(data) {
     receiveMessageData(data)
   })
@@ -830,6 +829,24 @@ export const SendMessageChatEnd = objChatInfo => {
   console.log('sendMessage = ' + JSON.stringify(params))
   sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
 }
+//강퇴
+export const SendMessageKickout = objChatInfo => {
+  const params = {
+    memNo: ''
+  }
+  console.log('sendMessage = ' + JSON.stringify(params))
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_REQKICKOUT, params, '')
+}
+
+//매니저 지정, 해제 매니저 지정시에는 sendMsg 값을 1 로, 매니저 해제시에는 sendMsg 값을 0 으로 설정하면 됩니다.
+export const SendMessageReqGrant = objChatInfo => {
+  const params = {
+    memNo: objChatInfo.memNo
+  }
+  console.log('sendMessage = ' + JSON.stringify(params))
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_REQKICKOUT, params, objChatInfo.managerType)
+}
+
 export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {
     return {
@@ -856,6 +873,18 @@ export const sendMessageJson = function(cmd, params, msg) {
       sendMsg: msg //''
     }
   } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_CHAT_END) {
+    return {
+      cmd: cmd,
+      chat: params, //self
+      sendMsg: msg //''
+    }
+  } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_REQKICKOUT) {
+    return {
+      cmd: cmd,
+      chat: params, //self
+      sendMsg: msg //''
+    }
+  } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_REQGRANT) {
     return {
       cmd: cmd,
       chat: params, //self

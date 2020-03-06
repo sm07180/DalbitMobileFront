@@ -40,12 +40,20 @@ export default () => {
               const element = `
               <div><img src=${imgUrl}></div>
               <ol><li>ol-li tab 타입1</li><li>타입1</li></ol>`
+
               context.action.alert({
                 //콜백처리
                 callback: () => {
-                  alert('alert callback 확인하기')
+                  //alert('alert callback 확인하기')
+                  setTimeout(() => {
+                    context.action.alert({
+                      //콜백처리
+                      title: '창2!',
+                      msg: element
+                    })
+                  }, 0)
                 },
-                title: '로그인에러!',
+                title: '창1!',
                 msg: element
               })
             }}>

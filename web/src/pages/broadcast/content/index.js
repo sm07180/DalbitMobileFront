@@ -33,6 +33,7 @@ export default props => {
   //useMemo
   const info = useMemo(() => {
     store.action.updateRoomInfo(state)
+    context.action.updateRoomInfo(state)
     return state
   })
   //useState
@@ -81,7 +82,7 @@ export default props => {
         }
       }
 
-      mediaHandler.setContext = context
+      mediaHandler.setContext(context)
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)

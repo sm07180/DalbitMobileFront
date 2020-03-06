@@ -5,6 +5,7 @@
 import React, {useState, useMemo, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {isHybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -15,14 +16,12 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-
-  //makeContents
-  const makeContents = visible => {
-    /**
-     * @visible true
-     */
-  }
-
+  //useEffect
+  useEffect(() => {
+    if (isHybrid()) {
+      alert(JSON.stringify(context.roomInfo))
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <MediaPlayerWrap>
