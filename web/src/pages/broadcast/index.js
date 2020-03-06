@@ -3,15 +3,12 @@
  * @brief 이벤트
  */
 import React, {useEffect, useState, useContext} from 'react'
-import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
 //context
+import {Context} from 'context'
 import {BroadCastProvider} from './store'
 //components
-import {Context} from 'context'
-import Api from 'context/api'
-import Listener from './content/listener'
 import Content from './content'
 //
 export default props => {
@@ -24,15 +21,17 @@ export default props => {
    * @
    */
   function setRoute() {
-    switch (title) {
-      case 'listener': //----------------------------listener
-        return <Listener {...props} />
-      default:
-        return <Content {...props} />
-    }
+    return <Content {...props} />
   }
   //useEffect
-
+  useEffect(() => {
+    const {state} = props.location
+    if (state === undefined || state === null) {
+      alert('props.location.state')
+    } else {
+      context.action.updateRoomInfo(state)
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <BroadCastProvider>

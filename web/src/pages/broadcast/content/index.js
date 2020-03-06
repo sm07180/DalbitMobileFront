@@ -161,9 +161,11 @@ export default props => {
     console.log('방소켓 연결 해라 ')
     if (props.location.state.auth === 3) {
       getReToken(props.location.state.roomNo)
+      //sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {
-      if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
-      //reloadRoom(props.location.state.roomNo)
+      //if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+      reloadRoom(props.location.state.roomNo)
+      sc.socketClusterBinding(props.location.state.roomNo, context)
     }
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음

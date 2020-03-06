@@ -180,7 +180,7 @@ export const scConnection = obj => {
   // /************************************************************/
   //const HeaderObj = context.customHeader
   let options = {
-    path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.token.memNo, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
+    path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.token.authToken, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
     //path: '/socketcluster/',
     port: socketConfig.socketServerPort,
     hostname: socketConfig.socketServerHost,
@@ -772,7 +772,7 @@ export const socketClusterBinding = (channel, Info) => {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }
     } else {
-      alert('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
+      console.warn('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
       if (window.location.pathname !== '/' && channel) {
         setTimeout(() => {
           privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
@@ -788,7 +788,7 @@ export const socketClusterBinding = (channel, Info) => {
     } else {
       //  console.warn('소켓 null')
       if (Info) scConnection(Info)
-      privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+      if (socket.state === 'open') privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
     }
   }
 }
