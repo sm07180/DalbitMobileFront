@@ -168,7 +168,7 @@ export default props => {
   //fetch
 
   async function fetchData() {
-    if (photoPath) {
+    if (photoPath && !fetch) {
       setChanges({...changes, bgImg: photoPath})
 
       const res = await Api.broad_create({
@@ -186,7 +186,6 @@ export default props => {
       setFetch(res.data)
       if (res) {
         if (res.code == 0) {
-          console.log(res)
           /**
            * @todos 소켓연결필요
            */
