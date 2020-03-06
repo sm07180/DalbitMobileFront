@@ -47,6 +47,7 @@ const BroadCastProvider = props => {
   ]
   const [tabContent, setTabContent] = useState(arr)
   const [currentTab, setCurrentTab] = useState(arr)
+  const [flag, setFlag] = useState(false)
 
   //---------------------------------------------------------
 
@@ -108,9 +109,9 @@ const BroadCastProvider = props => {
       setStory(data)
     },
     updateTab: num => {
+      setFlag(!flag)
       setTabIdx(num)
       if (tabIdx === num) return
-
       if (num === 3) setCurrentTab(tabContent.concat({id: num, tab: '충전'}))
       if (num === 4) setCurrentTab(tabContent.concat({id: num, tab: '선물'}))
       if (num === 5) setCurrentTab(tabContent.concat({id: num, tab: '부스트'}))
@@ -146,7 +147,8 @@ const BroadCastProvider = props => {
     tabContent,
     like,
     currentTab,
-    listenTrues
+    listenTrues,
+    flag
   }
 
   return <Provider value={value}>{props.children}</Provider>
