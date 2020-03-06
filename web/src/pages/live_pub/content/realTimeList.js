@@ -7,7 +7,9 @@ export default props => {
   const [sort1, setSort1] = useState('랭킹')
   const [sort2, setSort2] = useState('방송주제')
   const [sort3, setSort3] = useState()
+  const [open1, setOpen1] = useState(false)
   //----------------------------------------------------------- func start
+
   //----------------------------------------------------------- components start
   return (
     <Container>
@@ -20,7 +22,14 @@ export default props => {
             <Sort>
               <div className="dropDown">
                 <span>{sort1}</span>
-                <button></button> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
+                <button onClick={() => setOpen1(!open1)}></button> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
+                {open1 && (
+                  <DropDown>
+                    <li>option1</li>
+                    <li>option2</li>
+                    <li>option3</li>
+                  </DropDown>
+                )}
               </div>
               <div className="dropDown">
                 <span>{sort2}</span>
@@ -115,7 +124,10 @@ const Sort = styled.div`
     color: #8556f6;
     align-items: center;
     justify-content: space-between;
-    padding-left: 10px;
+    position: relative;
+    & > span {
+      padding-left: 10px;
+    }
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 48%;
     }
@@ -127,4 +139,29 @@ const Sort = styled.div`
       background: url('https://devimage.dalbitcast.com/images/api/ic_arrow_down.png');
     }
   }
+`
+const DropDown = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 116px;
+  height: 116px;
+  position: absolute;
+  top: 38px;
+  z-index: 11;
+  background: #fff;
+  border-style: solid;
+  border-color: #8556f6;
+  border-width: 1px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
+
+  & > li {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* background-color: red; */
 `
