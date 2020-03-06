@@ -5,17 +5,20 @@ import React, {useState, useEffect, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
+import {BroadCastStore} from 'pages/broadcast/store'
+
 import API from 'context/api'
 //components--------------------------------------------------
 import Events from './listener-event'
 export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
+  const [eventCheck, setEventCheck] = useState(false)
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
-  const [eventCheck, setEventCheck] = useState(false)
-
   const [listenTrues, setListenTrues] = useState(false)
+  //const [listenTrues, setListenTrues] = useState(false)
   //클릭visibility function
   // const ToggleEvent = () => {
   //   if (trues === false) {
@@ -33,15 +36,23 @@ export default props => {
   //----------------------------------------------------------------
 
   //클릭 이벤트
+  // const ToggleEvent = () => {
+  //   store.action.updateListenTrues(true)
+  // }
+  // const AllFalse = () => {
+  //   store.action.updateListenTrues(false)
+  // }
+
   const ToggleEvent = () => {
     if (eventCheck === false) {
       setListenTrues(true)
     } else {
-      setListenTrues(false)
+      store.action.updateListenTrues(false) || setListenTrues(false)
     }
   }
+
   const AllFalse = () => {
-    setListenTrues(false)
+    store.action.updateListenTrues(false) || setListenTrues(false)
   }
 
   //render------------------------------------------------------------
@@ -50,9 +61,9 @@ export default props => {
 
   return (
     <Wrapper>
-      <EVENTBTN value={listenTrues} onClick={ToggleEvent}></EVENTBTN>
-      {listenTrues && <Events onClick={AllFalse} selectidx={props.selectidx} />}
-      <BackGround onClick={AllFalse} className={listenTrues === true ? 'on' : ''} />
+      <EVENTBTN value={store.listenTrues || listenTrues} onClick={() => ToggleEvent()}></EVENTBTN>
+      {store.listenTrues || (listenTrues && <Events onClick={AllFalse} selectidx={props.selectidx} />)}
+      <BackGround onClick={AllFalse} className={store.listenTrues || listenTrues === true ? 'on' : ''} />
     </Wrapper>
   )
 }

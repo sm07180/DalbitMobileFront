@@ -32,15 +32,18 @@ const Container = styled.div`
 `
 const SearchWrap = styled.div`
   display: flex;
-  width: 70%;
+  width: 1210px;
   height: 100%;
   flex-direction: column;
-  @media (max-width: ${WIDTH_TABLET_S}) {
+  @media (max-width: 1240px) {
+    width: 95%;
+  }
+  /* @media (max-width: ${WIDTH_TABLET_S}) {
     width: 90%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
-  }
+  } */
   & h1 {
     margin: 40px 0;
     text-align: center;

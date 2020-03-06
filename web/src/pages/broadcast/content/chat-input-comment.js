@@ -17,6 +17,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  const {mediaHandler} = context
   //state
   const [toggle, setToggle] = useState({
     mike: true, //마이크는 켜있는상태~
@@ -111,6 +112,7 @@ export default props => {
         }
         window.location.replace('https://' + window.location.hostname)
         context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
+        mediaHandler.stop()
       },
       //캔슬콜백처리
       cancelCallback: () => {
@@ -390,6 +392,33 @@ const Content = styled.div`
           background: #dbdbdb url(${IMG_SERVER}/images/chat/ic_sign_off.png) no-repeat 14px center;
           background-size: 20px;
         }
+      }
+    }
+  }
+  /* 모바일반응형 */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 56px;
+    padding: 10px 6px;
+    input {
+      margin: 0 4px;
+      font-size: 12px;
+      text-indent: 14px;
+    }
+    div {
+      flex: 0 0 136px;
+    }
+    button {
+      width: 34px;
+      margin-left: 0;
+    }
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    div {
+      flex: 0 0 102px;
+    }
+    button {
+      &.volume {
+        display: none;
       }
     }
   }

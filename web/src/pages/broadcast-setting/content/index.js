@@ -19,6 +19,7 @@ import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 //
 let audioStream = null
 let drawId = null
+
 export default props => {
   const context = useContext(Context)
 
@@ -41,10 +42,8 @@ export default props => {
 
   //update
   function update(mode) {
-    // console.log('---')
     switch (true) {
       case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
         break
     }
   }
@@ -178,7 +177,7 @@ export default props => {
             entryType: changes.entryType
           }
         })
-        console.table(res)
+
         setFetch(res.data)
         if (res) {
           if (res.code == 0) {
@@ -206,12 +205,12 @@ export default props => {
   const [audioPass, setAudioPass] = useState(false)
 
   const detectAudioDevice = async () => {
-    setAudioPass(false)
-    setAudioVolume(0)
-    clearInterval(drawId)
-
     const device = await getAudioDeviceCheck()
-    if (device) {
+    if (drawId && device) {
+      setAudioPass(false)
+      setAudioVolume(0)
+      clearInterval(drawId)
+      drawId = null
       await infiniteAudioChecker()
     }
   }
@@ -242,33 +241,12 @@ export default props => {
       }
     }
 
-    drawId = setInterval(volumeCheck)
+    if (!drawId) {
+      drawId = setInterval(volumeCheck)
+    }
   }
 
-  // init
-  // if (!drawId) {
-  //   //console.log(drawId)
-  //   navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
-  //   ;(async () => {
-  //     const device = await getAudioDeviceCheck()
-  //     if (device) {
-  //       await infiniteAudioChecker()
-  //     } else {
-  //       drawId = true
-  //       context.action.alert({
-  //         msg: element,
-  //         title: '마이크 연결 에러!',
-  //         callback: () => {
-  //           context.action.alert({visible: false})
-  //           props.history.push('/')
-  //         }
-  //       })
-  //     }
-  //   })()
-  // }
-
   if (!drawId) {
-    //console.log(drawId)
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     ;(async () => {
       const device = await getAudioDeviceCheck()
@@ -281,9 +259,7 @@ export default props => {
           title: '마이크 연결 에러!',
           callback: () => {
             props.history.push('/')
-            if ((window.location = '/')) {
-              context.action.alert({visible: false})
-            }
+            context.action.alert({visible: false})
           }
         })
       }
@@ -293,8 +269,10 @@ export default props => {
   useEffect(() => {
     return () => {
       if (drawId) {
-        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
         clearInterval(drawId)
+        drawId = null
+        audioStream = null
+        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
       }
     }
   }, [])

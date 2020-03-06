@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
 import {Context} from 'context'
-import {AllFalse} from './listen-eventBTN'
 
 const sc = require('context/socketCluster')
 
@@ -60,10 +59,11 @@ export default props => {
     })
     //Error발생시
     if (res.result === 'success') {
-      const Type = type != 1 ? 0 : 1
-      const newObj = {roomNo: store.roomInfo.roomNo, memNo: obj.memNo, managerType: Type}
-      sc.SendMessageReqGrant(newObj)
-      broadListenListReload()
+      //sc.sendMessage()
+      console.log('broadManager  res = ' + res)
+      store.action.updateListenTrues()
+    } else {
+      console.log('broadManager  res = ' + res)
     }
   }
 

@@ -86,33 +86,34 @@ export default props => {
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
-
-      if (auth === hostRole) {
-        mediaHandler.setType('host')
-        // mediaHandler.setPublishToken(pubToken)
-      } else if (auth === listenerRole) {
-        mediaHandler.setType('listener')
-      }
-
-      // media start
-      if (mediaHandler.streamId) {
-        if (mediaHandler.type === 'host') {
-          audioStartInterval = setInterval(() => {
-            if (mediaHandler.ws.readyState === 1) {
-              mediaHandler.publish()
-              clearInterval(audioStartInterval)
-            }
-          }, 50)
+      ;(async () => {
+        if (auth === hostRole) {
+          await mediaHandler.setType('host')
+          // mediaHandler.setPublishToken(pubToken)
+        } else if (auth === listenerRole) {
+          await mediaHandler.setType('listener')
         }
-        if (mediaHandler.type === 'listener') {
-          audioStartInterval = setInterval(() => {
-            if (mediaHandler.ws.readyState === 1) {
-              mediaHandler.play()
-              clearInterval(audioStartInterval)
-            }
-          }, 50)
+
+        // media start
+        if (mediaHandler.streamId) {
+          if (mediaHandler.type === 'host') {
+            audioStartInterval = setInterval(() => {
+              if (mediaHandler.ws.readyState === 1) {
+                mediaHandler.publish()
+                clearInterval(audioStartInterval)
+              }
+            }, 50)
+          }
+          if (mediaHandler.type === 'listener') {
+            audioStartInterval = setInterval(() => {
+              if (mediaHandler.ws.readyState === 1) {
+                mediaHandler.play()
+                clearInterval(audioStartInterval)
+              }
+            }, 50)
+          }
         }
-      }
+      })()
     }
 
     return () => {
