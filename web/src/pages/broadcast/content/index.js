@@ -134,6 +134,7 @@ export default props => {
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
+      props.history.push('/')
       return
     }
     //sc.socketClusterBinding(res.data.roomNo, res.data)
