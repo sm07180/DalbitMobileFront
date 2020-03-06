@@ -28,7 +28,8 @@ export default class Utility {
     const exdate = new Date()
     exdate.setDate(exdate.getDate() + exdays)
     const c_value = decodeURIComponent(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = c_name + '=' + c_value + '; domain=dalbitcast.com' + '; path=/'
+    document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;domain=dalbitcast.com'
+    // document.cookie = c_name + '=' + c_value + '; path=/'
   }
   /**
    * @brief 쿠키가져오기
