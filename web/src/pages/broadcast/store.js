@@ -15,12 +15,13 @@ const {Provider} = BroadCastStore
 //
 const BroadCastProvider = props => {
   //state
+
   const [roomNumber, setRoomNumber] = useState('')
   const [roomInfo, setRoomInfo] = useState({})
   const [listenerList, setListenerList] = useState([])
   const [managerList, setManagerList] = useState([])
   const [guestList, setGuestList] = useState([])
-
+  const [listenTrues, setListenTrues] = useState(false)
   const [shortCutList, setShortCutList] = useState([])
   const [boostList, setBoostList] = useState([])
   const [timer, setTimer] = useState()
@@ -28,6 +29,7 @@ const BroadCastProvider = props => {
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
   const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
+
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
@@ -122,6 +124,9 @@ const BroadCastProvider = props => {
     },
     updateLike: num => {
       setLike(num)
+    },
+    updateListenTrues: bool => {
+      setListenTrues(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -131,7 +136,6 @@ const BroadCastProvider = props => {
     listenerList,
     managerList,
     guestList,
-
     shortCutList,
     boostList,
     timer,
@@ -141,8 +145,10 @@ const BroadCastProvider = props => {
     action,
     tabContent,
     like,
-    currentTab
+    currentTab,
+    listenTrues
   }
+
   return <Provider value={value}>{props.children}</Provider>
 }
 export {BroadCastStore, BroadCastProvider}

@@ -168,7 +168,7 @@ export default props => {
                     결과 더보기<em></em>
                   </p>
                 </div>
-                <div className="flexWrap">{ShowFilter2}</div>
+                <div className="flexWrap memflex">{ShowFilter2}</div>
               </div>
 
               <div className="liveList noResult">
@@ -231,6 +231,7 @@ const Wrap = styled.div`
     }
     & .livetitle {
       width: 100%;
+      line-height: 36px;
       &:after {
         content: '';
         clear: both;
@@ -238,12 +239,13 @@ const Wrap = styled.div`
       }
     }
     & .flexWrap {
+      width: 100%;
       display: flex;
-      @media (max-width: ${WIDTH_MOBILE}) {
-        margin-top: 10px;
-        flex-direction: column;
-      }
+      flex-wrap: wrap;
+      align-items: flex-start;
+      margin-top: 26px;
     }
+
     & p:first-child {
       float: left;
       color: #8556f6;
@@ -309,9 +311,41 @@ const Icon = styled.button`
 `
 
 const ListWrap = styled.div`
-  width: 148px;
-  margin-right: 29px;
+  width: calc(14.28% - 25px);
   margin-bottom: 37px;
+  margin-right: 29px;
+  &:nth-child(7n) {
+    margin-right: 0px;
+  }
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: calc(16.66% - 25px);
+    &:nth-child(7n) {
+      margin-right: 29px;
+    }
+    &:nth-child(6n) {
+      margin-right: 0px;
+    }
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: calc(25% - 25px);
+    &:nth-child(6n) {
+      margin-right: 29px;
+    }
+    &:nth-child(4n) {
+      margin-right: 0px;
+    }
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: calc(50% - 4px);
+    margin-right: 8px;
+    &:nth-child(4n) {
+      margin-right: 29px;
+    }
+    &:nth-child(2n) {
+      margin-right: 0px;
+    }
+  }
+
   & em {
     display: block;
     margin-top: 19px;
@@ -384,16 +418,24 @@ const InfoWrap = styled.div`
 const MemberWrap = styled.div`
   display: flex;
   position: relative;
-  width: 33.33%;
+  width: calc(33.33% - 5px);
   height: 58px;
   border: solid 1px #f5f5f5;
   border-radius: 32px;
-  margin-right: 5px;
   margin-bottom: 5px;
   padding: 11px 10px;
   box-sizing: border-box;
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+  @media (max-width: ${WIDTH_PC_S}) {
+    width: calc(50% - 5px);
+  }
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
+    &:not(:last-child) {
+      margin-right: 0px;
+    }
   }
   & .livebox {
     position: absolute;

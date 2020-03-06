@@ -248,7 +248,7 @@ const Title = styled.h4`
   transform: skew(-0.03deg);
 `
 const StreamID = styled.h4`
-  max-width: 70px;
+  max-width: 100px;
   height: 36px;
   margin-left: 10px;
   color: #8555f6;

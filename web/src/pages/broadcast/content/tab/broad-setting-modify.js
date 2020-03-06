@@ -18,8 +18,8 @@ import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
   const context = useContext(Context)
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
-  const RoInfo = JSON.stringify(roomInfo.roomNo)
-  console.log(RoInfo)
+  const RoomNumbers = JSON.stringify(roomInfo.roomNo)
+  //console.log(RoomNumbers)
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
   const scrollbars = useRef(null) // 스크롤 영역 선택자
@@ -173,10 +173,10 @@ export default props => {
     if (resUpload) {
       if (resUpload.result === 'success' || resUpload.code == 0) {
         setChanges({...changes, bgImg: resUpload.data.path})
-
+        console.log(changes)
         const res = await Api.broad_edit({
           data: {
-            roomNo: RoInfo,
+            roomNo: RoomNumbers,
             roomType: changes.roomType,
             title: changes.title,
             bgImg: resUpload.data.path,
@@ -184,20 +184,23 @@ export default props => {
             welcomMsg: changes.welcomMsg
           }
         })
-        console.table(res)
-        setFetch(res.data)
-        if (res) {
-          if (res.code == 0) {
-            console.log(res)
-            /**
-             * @todos 소켓연결필요
-             */
-            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-            context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-          } else {
-            console.warn(res.message)
-          }
+        if (res.result === 'success' || res.code == 0) {
+          setFetch(res.data)
         }
+        console.log(res)
+
+        // if (res) {
+        //   if (res.code == 0) {
+        //     console.log(res)
+        //     /**
+        //      * @todos 소켓연결필요
+        //      */
+        //     props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+        //     context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+        //   } else {
+        //     console.warn(res.message)
+        //   }
+        // }
       } else {
         //Error발생시
         console.log('방수정실패')
