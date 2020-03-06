@@ -114,13 +114,26 @@ export default props => {
 
   // 이미지 업로드 관련
   //useState
-  const [file, setFile] = useState(null)
   const [url, setUrl] = useState(null)
+  const [photoPath, setPhotoPath] = useState(null)
+
+  const photoUploadCallback = async obj => {
+    const uploaded = await Api.image_upload({
+      data: {
+        file: '',
+        dataURL: obj.bgImg,
+        imageURL: '',
+        uploadType: 'bg'
+      }
+    })
+    if (uploaded && uploaded.result !== 'success') {
+      alert('Photo upload failed!')
+    } else {
+      setPhotoPath(uploaded.data.path)
+    }
+  }
 
   function uploadSingleFile(e) {
-    // setFile(e.target.files[0])
-    // setUrl(URL.createObjectURL(e.target.files[0]))
-
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
 
@@ -128,7 +141,7 @@ export default props => {
       if (reader.result) {
         setUrl(reader.result)
         setChanges({...changes, bgImg: reader.result})
-      } else {
+        photoUploadCallback({uploadType: 'bg', bgImg: reader.result})
       }
     }
   }
@@ -153,48 +166,39 @@ export default props => {
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
   //fetch
-  async function fetchData(obj) {
-    const resUpload = await Api.image_upload({
-      data: {
-        file: '',
-        dataURL: obj.bgImg,
-        imageURL: '',
-        uploadType: 'bg'
-      }
-    })
-    if (resUpload) {
-      if (resUpload.result === 'success' || resUpload.code == 0) {
-        setChanges({...changes, bgImg: resUpload.data.path})
 
-        const res = await Api.broad_create({
-          data: {
-            roomType: changes.roomType,
-            title: changes.title,
-            bgImg: resUpload.data.path,
-            bgImgRacy: 3,
-            welcomMsg: changes.welcomMsg,
-            notice: '',
-            entryType: changes.entryType
-          }
-        })
+  async function fetchData() {
+    if (photoPath) {
+      setChanges({...changes, bgImg: photoPath})
 
-        setFetch(res.data)
-        if (res) {
-          if (res.code == 0) {
-            console.log(res)
-            /**
-             * @todos 소켓연결필요
-             */
-            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-            context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-          } else {
-            console.warn(res.message)
-          }
+      const res = await Api.broad_create({
+        data: {
+          roomType: changes.roomType,
+          title: changes.title,
+          bgImg: photoPath,
+          bgImgRacy: 3,
+          welcomMsg: changes.welcomMsg,
+          notice: '',
+          entryType: changes.entryType
         }
-      } else {
-        //Error발생시
-        console.log('방생성실패')
+      })
+
+      setFetch(res.data)
+      if (res) {
+        if (res.code == 0) {
+          console.log(res)
+          /**
+           * @todos 소켓연결필요
+           */
+          props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+        } else {
+          console.warn(res.message)
+        }
       }
+    } else {
+      //Error발생시
+      console.log('방생성실패')
     }
   }
 
