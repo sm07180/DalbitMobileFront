@@ -2,44 +2,17 @@ import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import Api from 'context/api'
+import {Context} from 'context'
 //components
 import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
 
-const testData = [
-  {
-    rank: 1,
-    code: '노래/연주',
-    title: '비오는 날, 기분이 뽀송해지는 점심 라디오',
-    intro: '우리의 미래를 함께 할 DJ',
-    listenCnt: '4,698',
-    likeCnt: '11,546',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/live_profile.png'
-  },
-  {
-    rank: 2,
-    code: '노래/연주',
-    title: '비오는 날, 기분이 뽀송해지는 점심 라디오',
-    intro: '우리의 미래를 함께 할 DJ',
-    listenCnt: '4,698',
-    likeCnt: '11,546',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/live_profile.png'
-  },
-  {
-    rank: 3,
-    code: '노래/연주',
-    title: '☂️ 비오는 날, 기분이 뽀송해지는 점심 라디오',
-    intro: '우리의 미래를 함께 할 DJ와 함께해요 우리의 미래를 함께 할',
-    listenCnt: '4,698',
-    likeCnt: '11,546',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/live_profile.png'
-  }
-]
 export default props => {
   //----------------------------------------------------------- declare start
   const [list, setList] = useState([])
+  const context = useContext(Context)
   //----------------------------------------------------------- func start
   const getBroadList = async obj => {
     const res = await Api.broad_list({...obj})
@@ -48,22 +21,30 @@ export default props => {
       console.log(res.message)
       return
     }
-    console.log('## res :', res.data)
     setList(res.data)
+  }
+
+  const commonData = async obj => {
+    const res = await Api.splash({})
+    if (res.result === 'success') {
+      console.log('## res :', res.data)
+      context.action.updateCommon(res.data)
+    }
   }
 
   useEffect(() => {
     getBroadList({params: {roomType: '', page: 1, records: 10}})
+    commonData()
   }, [])
   //----------------------------------------------------------- components start
-  console.log('## list : ', list)
+  console.log('## context :', context)
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
           {list.list !== undefined && <TopRank broadList={list} />}
-          <Live />
+          {list.list !== undefined && <Live broadList={list} />}
         </MainContents>
       </Wrap>
       <Pagination />

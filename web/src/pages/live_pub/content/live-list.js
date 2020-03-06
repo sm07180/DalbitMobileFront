@@ -1,12 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
+import {Context} from 'context'
 
 const test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 export default props => {
   //------------------------------------------------------------ declare start
   const [hover, setHover] = useState(false)
   const [seleted, setSelected] = useState()
+  const context = useContext(Context)
+  const [roomType, setRoomType] = useState(context.common.roomType)
+
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)
@@ -15,11 +19,11 @@ export default props => {
   //------------------------------------------------------------ components start
   return (
     <Container>
-      {test.map((data, index) => {
+      {props.broadList.list.map((data, index) => {
         return (
           <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)}>
             <div className="profile">
-              <div className="rank">{data}</div>
+              <div className="rank">{index + 1}</div>
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
@@ -27,30 +31,31 @@ export default props => {
                   </div>
                 )}
                 <div className="profileImg">
-                  <div>
-                    <div></div>
-                  </div>
+                  <BgImg url={data.bgImg.url}>
+                    <Img url={data.bjProfImg.url}></Img>
+                  </BgImg>
                 </div>
               </div>
             </div>
             <MobileWrap>
               <div className="content">
                 <div className="title">
-                  책/힐링<Tag>신입</Tag>
+                  {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
+                  <Tag>신입</Tag>
                 </div>
-                <div className="roomTitle">☂️ 비오는 날...</div>
-                <div className="intro">우리의 미래를 함께 할 DJ와...</div>
+                <div className="roomTitle">{data.title}</div>
+                <div className="intro">{data.bjNickNm}</div>
               </div>
               <CountArea>
                 <div>
                   <Icon>
                     <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;12,123
+                    &nbsp;&nbsp;{data.entryCnt}
                   </Icon>
                   <span>|</span>
                   <Icon>
                     <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;123,123
+                    &nbsp;&nbsp;{data.likeCnt}
                   </Icon>
                 </div>
               </CountArea>
@@ -133,22 +138,6 @@ const List = styled.div`
       align-items: center;
       position: relative;
       z-index: 1;
-
-      & > div {
-        width: 96px;
-        height: 96px;
-        background: url('https://devimage.dalbitcast.com/images/api/IU_profile.png') no-repeat;
-      }
-
-      & > div > div {
-        width: 60px;
-        height: 60px;
-        background: url('https://devimage.dalbitcast.com/images/api/mini_profile.png') no-repeat;
-        position: absolute;
-        bottom: -20px;
-        right: -20px;
-        z-index: 999;
-      }
     }
   }
 
@@ -276,4 +265,22 @@ const Tag = styled.div`
   align-items: center;
   margin-left: 4px;
   margin-top: 1px;
+`
+const BgImg = styled.div`
+  width: 96px;
+  height: 96px;
+  background: url(${props => (props.url ? props.url : '')}) no-repeat;
+  border-radius: 10px;
+`
+
+const Img = styled.div`
+  width: 40px;
+  height: 40px;
+  background: url(${props => (props.url ? props.url : '')}) no-repeat;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  z-index: 999;
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 `

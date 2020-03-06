@@ -1,29 +1,41 @@
-import React, {useMemo, useState, useEffect} from 'react'
+import React, {useMemo, useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import Swiper from 'react-id-swiper'
+import {Context} from 'context'
 
 export default props => {
   //-------------------------------------------------------------- declare start
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
+  const context = useContext(Context)
+  const [roomType, setRoomType] = useState()
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
 
+  //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)
   }
-  //-------------------------------------------------------------- func start
+
+  useEffect(() => {
+    setRoomType(context.common.roomType)
+  }, [])
+
+  // useEffect(() => {
+  //   if (roomType) {
+  //     console.log('## aaa : ', roomType.map(x => x.cd).indexOf('02'))
+  //   }
+  // }, [roomType])
 
   //-------------------------------------------------------------- components start
-  console.log('## props :', props)
+  console.log('## roomType : ', roomType)
   return (
     <Container>
       <Swiper width={width} spaceBetween={10}>
         {props.broadList.list.slice(0, 3).map((data, index) => {
-          console.log('## data : ', data)
           return (
             <Contents key={index}>
               {index === selected && hover && (
@@ -37,7 +49,8 @@ export default props => {
               </Image>
               <Info>
                 <div className="title">
-                  <div>{data.roomType}</div>
+                  {/* <div>{data.roomType}</div> */}
+                  <div>{roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
                   <Tag>신입</Tag>
                 </div>
                 <div className="roomTitle">{data.title.substring(0, 30)}</div>

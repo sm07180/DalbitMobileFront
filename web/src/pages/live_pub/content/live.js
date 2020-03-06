@@ -84,7 +84,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      <LiveList />
+      <LiveList broadList={props.broadList} />
     </Container>
   )
 }
