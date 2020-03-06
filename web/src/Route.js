@@ -30,6 +30,7 @@ const Live = React.lazy(() => import('pages/live'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
 const Mypage = React.lazy(() => import('pages/mypage'))
+const MypageSetting = React.lazy(() => import('pages/mypage/setting.js'))
 const Search = React.lazy(() => import('pages/search'))
 const NotFoundPage = React.lazy(() => import('pages/common/404'))
 
@@ -55,7 +56,7 @@ export default () => {
         <Route exact path="/store" component={Store} />
         <Route exact path="/event" component={Event} />
         <Route path="/guide" component={Guide} />
-        <Route exact path="/mypage/" component={Mypage} />
+        <Route exact path="/mypage/setting" component={MypageSetting} />
         <Route exact path="/mypage/:sub" component={Mypage} />
         <Route exact path="/app/" component={App} />
         <Route exact path="/search" component={Search} />
