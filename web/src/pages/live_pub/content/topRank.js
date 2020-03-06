@@ -15,49 +15,8 @@ export default props => {
     setSelected(index)
     setHover(flag)
   }
-
-  const MakeSwiper = props => {
-    return (
-      <Swiper width={props.swiper} spaceBetween={10}>
-        {props.testData.map((data, index) => {
-          return (
-            <Contents key={index}>
-              {index === selected && hover && (
-                <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-                  <button />
-                </div>
-              )}
-              <Image img={data.imgUrl} onMouseEnter={() => handleHover(true, index)} rank={data.rank}>
-                {hover && index === selected ? <></> : <div>{data.rank}</div>}
-              </Image>
-              <Info>
-                <div className="title">
-                  <div>{data.code}</div>
-                  <Tag>신입</Tag>
-                </div>
-                <div className="roomTitle">{data.title.substring(0, 30)}</div>
-                <div className="intro">{data.intro}</div>
-                <CountArea>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.listenCnt}
-                  </Icon>
-                  <span>|</span>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.likeCnt}
-                  </Icon>
-                </CountArea>
-              </Info>
-            </Contents>
-          )
-        })}
-      </Swiper>
-    )
-  }
   //-------------------------------------------------------------- func start
 
-  console.log('## width :', width)
   //-------------------------------------------------------------- components start
   return (
     <Container>
@@ -96,7 +55,6 @@ export default props => {
           )
         })}
       </Swiper>
-      {/* <MakeSwiper swiper={swiper} testData={props.testData} /> */}
     </Container>
   )
 }
