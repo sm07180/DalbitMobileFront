@@ -151,18 +151,16 @@ export default props => {
                     callback: () => {
                       async function fetchData(obj) {
                         const res = await Api.member_logout({data: context.token.authToken})
-                        context.action.updateToken(res.data)
-                        localStorage.removeItem('com.naver.nid.access_token')
-                        localStorage.removeItem('com.naver.nid.oauth.state_token')
-                        props.history.push('/')
-                        context.action.updateGnbVisible(false)
-                        Hybrid('GetLogoutToken', res.data)
-                        setFetch(false) // 넣어둔 mypage 정보 초기화.
-                        return
-                        alert('정상적으로 로그아웃 되었습니다.')
-                        context.action.updateToken('')
-                        context.action.updateCustomHeader('')
-                        window.location.href = '/'
+                        if (res.result === 'success') {
+                          //로그아웃성공
+                          context.action.updateToken(res.data)
+                          localStorage.removeItem('com.naver.nid.access_token')
+                          localStorage.removeItem('com.naver.nid.oauth.state_token')
+                          props.history.push('/')
+                          context.action.updateGnbVisible(false)
+                          Hybrid('GetLogoutToken', res.data)
+                          setFetch(false) // 넣어둔 mypage 정보 초기화.
+                        }
                       }
                       fetchData()
                     },
