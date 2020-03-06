@@ -48,7 +48,7 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, auth, bjProfImg} = state
+  const {bjStreamId, auth} = state
 
   const startPlayer = () => {
     if (auth === hostRole) {
