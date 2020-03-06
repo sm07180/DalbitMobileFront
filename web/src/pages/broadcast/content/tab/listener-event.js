@@ -17,6 +17,38 @@ export default props => {
   let selectlistener = ''
   let res = ''
 
+  //신고하기
+  // async function broadListenListReload() {
+  //   const res = await Api.member_declar({
+  //     data: {
+  //       memNo: store.roomInfo.roomNo,
+  //       reason : ,
+  //       cont :
+
+  //     }
+  //   })
+  //   if (res.result === 'success') {
+  //     const {list} = res.data
+  //     store.action.updateListenerList(list)
+  //   }
+  //   return
+  // }
+
+  //방송방 청취자 리스트 조회  Api
+  async function broadListenListReload() {
+    const res = await Api.broad_listeners({
+      params: {
+        roomNo: store.roomInfo.roomNo
+      }
+    })
+    if (res.result === 'success') {
+      const {list} = res.data
+      store.action.updateListenerList(list)
+    }
+    return
+  }
+
+  //매니저 지정 , 해제 Api
   async function broadManager(type, obj) {
     const methodType = type === 1 ? 'POST' : 'DELETE'
     const res = await Api.broad_manager({
@@ -31,11 +63,11 @@ export default props => {
       const Type = type != 1 ? 0 : 1
       const newObj = {roomNo: store.roomInfo.roomNo, memNo: obj.memNo, managerType: Type}
       sc.SendMessageReqGrant(newObj)
-    } else {
-      console.log('broadManager  res = ' + res)
+      broadListenListReload()
     }
   }
 
+  // 강퇴 Api
   async function broadkickout(obj) {
     const res = await Api.broad_kickout({
       data: {
@@ -47,13 +79,11 @@ export default props => {
     //Error발생시
     if (res.result === 'success') {
       sc.SendMessageKickout(res)
-      //sc.sendMessage()
-    } else {
+      broadListenListReload()
     }
   }
 
   const drawListenList = idx => {
-    console.log('store.listenerList = ' + store.listenerList)
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
       if (index === idx) {
@@ -90,7 +120,6 @@ export default props => {
             msg: selectlistener.nickNm + ' 님을 매니저로 지정 하시겠습니까?'
           })
         }
-
         break
       case 2: //매니저 해임
         res = drawListenList(props.selectidx)
@@ -107,10 +136,13 @@ export default props => {
         }
         break
       case 3: //게스트 초대
+        store.action.updateTab(1)
         break
       case 4: //프로필 보기
+        store.action.updateTab(6)
         break
       case 5: //신고하기
+        store.action.updateTab(7)
         break
       default:
         break
