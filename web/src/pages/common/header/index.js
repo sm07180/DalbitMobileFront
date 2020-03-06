@@ -85,7 +85,8 @@ const Header = styled.header`
 
     &.on-cast {
       display: none;
-      & + main {
+      & + main,
+      & + .off + main {
         padding-top: 0;
       }
     }
