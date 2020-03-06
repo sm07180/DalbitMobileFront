@@ -205,12 +205,12 @@ export default props => {
   const [audioPass, setAudioPass] = useState(false)
 
   const detectAudioDevice = async () => {
-    setAudioPass(false)
-    setAudioVolume(0)
-    clearInterval(drawId)
-
     const device = await getAudioDeviceCheck()
-    if (device) {
+    if (drawId && device) {
+      setAudioPass(false)
+      setAudioVolume(0)
+      clearInterval(drawId)
+      drawId = null
       await infiniteAudioChecker()
     }
   }
