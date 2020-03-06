@@ -15,12 +15,13 @@ const {Provider} = BroadCastStore
 //
 const BroadCastProvider = props => {
   //state
+
   const [roomNumber, setRoomNumber] = useState('')
   const [roomInfo, setRoomInfo] = useState({})
   const [listenerList, setListenerList] = useState([])
   const [managerList, setManagerList] = useState([])
   const [guestList, setGuestList] = useState([])
-
+  const [listenTrues, setListenTrues] = useState(false)
   const [shortCutList, setShortCutList] = useState([])
   const [boostList, setBoostList] = useState([])
   const [timer, setTimer] = useState()
@@ -28,10 +29,12 @@ const BroadCastProvider = props => {
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
   const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
+  const [ListenerSelect, setListenerSelect] = useState({}) // 청취자 탭에서 선택한 유저 정보
+
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
-    {id: 2, tab: '라이브'}
+    {id: 2, tab: '라이브'},
     // {id: 3, tab: '충전'},
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
@@ -39,7 +42,7 @@ const BroadCastProvider = props => {
     // {id: 7, tab: '신고하기'},
     // {id: 8, tab: '공지사항'},
     // {id: 9, tab: '사연'},
-    // {id: 10, tab: '방송수정'},
+    {id: 10, tab: '방송수정'}
     // {id: 11, tab: '빠른 말'},
     // {id: 12, tab: '받은 선물'},
   ]
@@ -72,6 +75,9 @@ const BroadCastProvider = props => {
     //updateState
     updateRoomInfo: obj => {
       if (typeof obj === 'object') setRoomInfo(obj)
+    },
+    updateListenerSelect: obj => {
+      if (typeof obj === 'object') setListenerSelect(obj)
     },
     //roomNumber
     updateRoomNumber: num => {
@@ -123,6 +129,9 @@ const BroadCastProvider = props => {
     },
     updateLike: num => {
       setLike(num)
+    },
+    updateListenTrues: bool => {
+      setListenTrues(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -132,7 +141,6 @@ const BroadCastProvider = props => {
     listenerList,
     managerList,
     guestList,
-
     shortCutList,
     boostList,
     timer,
@@ -143,8 +151,10 @@ const BroadCastProvider = props => {
     tabContent,
     like,
     currentTab,
-    flag
+    flag,
+    ListenerSelect
   }
+
   return <Provider value={value}>{props.children}</Provider>
 }
 export {BroadCastStore, BroadCastProvider}

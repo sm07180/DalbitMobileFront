@@ -14,6 +14,7 @@ import {BroadCastStore} from '../../store'
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   console.log('roomInfo = ' + roomInfo)
+
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
@@ -60,6 +61,7 @@ export default props => {
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
+      if (auth === 2) mode = '3'
       //
       if (auth !== 1) return
       //----------------------------------------------------------------
@@ -69,6 +71,11 @@ export default props => {
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
+          {/* {auth === '3' && (
+            <div className="btnwrap">
+              <EventBTNS />
+            </div>
+          )} */}
           <div className="btnwrap">
             <EventBTNS selectidx={index} />
           </div>
@@ -88,6 +95,7 @@ export default props => {
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
+      if (auth === 3) mode = '3'
       //
       if (auth !== 0) return
       return (
@@ -96,6 +104,12 @@ export default props => {
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
+          {/* {auth === '3' ||
+            (auth === '1' && (
+              <div className="btnwrap">
+                <EventBTNS />
+              </div>
+            ))} */}
           <div className="btnwrap">
             <EventBTNS selectidx={index} />
           </div>
@@ -234,7 +248,7 @@ const Title = styled.h4`
   transform: skew(-0.03deg);
 `
 const StreamID = styled.h4`
-  max-width: 70px;
+  max-width: 100px;
   height: 36px;
   margin-left: 10px;
   color: #8555f6;

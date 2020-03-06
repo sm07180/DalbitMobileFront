@@ -10,9 +10,11 @@ import {Context} from 'context'
 import {BroadCastStore} from '../store'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Api from 'context/api'
+
 //etc
 
 //components
+import useResize from 'components/hooks/useResize'
 import ChatUI from './chat-ui'
 
 const sc = require('context/socketCluster')
@@ -38,6 +40,7 @@ export default props => {
   })
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
+  const [resizeCheck, setResizeCheck] = useState(false)
   const [myTimer, setMyTimer] = useState()
 
   const hostRole = 3
@@ -48,7 +51,7 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, auth, bjProfImg} = state
+  const {bjStreamId, auth} = state
 
   const startPlayer = () => {
     if (auth === hostRole) {
@@ -86,33 +89,34 @@ export default props => {
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
-
-      if (auth === hostRole) {
-        mediaHandler.setType('host')
-        // mediaHandler.setPublishToken(pubToken)
-      } else if (auth === listenerRole) {
-        mediaHandler.setType('listener')
-      }
-
-      // media start
-      if (mediaHandler.streamId) {
-        if (mediaHandler.type === 'host') {
-          audioStartInterval = setInterval(() => {
-            if (mediaHandler.ws.readyState === 1) {
-              mediaHandler.publish()
-              clearInterval(audioStartInterval)
-            }
-          }, 50)
+      ;(async () => {
+        if (auth === hostRole) {
+          await mediaHandler.setType('host')
+          // mediaHandler.setPublishToken(pubToken)
+        } else if (auth === listenerRole) {
+          await mediaHandler.setType('listener')
         }
-        if (mediaHandler.type === 'listener') {
-          audioStartInterval = setInterval(() => {
-            if (mediaHandler.ws.readyState === 1) {
-              mediaHandler.play()
-              clearInterval(audioStartInterval)
-            }
-          }, 50)
+
+        // media start
+        if (mediaHandler.streamId) {
+          if (mediaHandler.type === 'host') {
+            audioStartInterval = setInterval(() => {
+              if (mediaHandler.ws.readyState === 1) {
+                mediaHandler.publish()
+                clearInterval(audioStartInterval)
+              }
+            }, 50)
+          }
+          if (mediaHandler.type === 'listener') {
+            audioStartInterval = setInterval(() => {
+              if (mediaHandler.ws.readyState === 1) {
+                mediaHandler.play()
+                clearInterval(audioStartInterval)
+              }
+            }, 50)
+          }
         }
-      }
+      })()
     }
 
     return () => {
@@ -134,6 +138,7 @@ export default props => {
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
+      props.history.push('/')
       return
     }
     //sc.socketClusterBinding(res.data.roomNo, res.data)
@@ -156,11 +161,31 @@ export default props => {
     console.log('방소켓 연결 해라 ')
     if (props.location.state.auth === 3) {
       getReToken(props.location.state.roomNo)
+      //sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {
-      if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
-      //reloadRoom(props.location.state.roomNo)
+      //if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+      reloadRoom(props.location.state.roomNo)
+      sc.socketClusterBinding(props.location.state.roomNo, context)
+    }
+
+    //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
+    if (window.innerWidth <= 840) {
+      setIsSideOn(false)
     }
   }, [])
+
+  //방송방 리사이즈시
+  //pc->모바일은 탭닫음 //모바일->pc는 탭열림
+  //나중에 모바일 사이드탭->팝업으로 변경시 수정해야 할 부분
+  useEffect(() => {
+    if (window.innerWidth <= 840 && isSideOn && !resizeCheck) {
+      setIsSideOn(false)
+      setResizeCheck(true)
+    } else if (window.innerWidth > 840 && resizeCheck) {
+      setIsSideOn(true)
+      setResizeCheck(false)
+    }
+  }, [useResize()])
   //---------------------------------------------------------------------
   return (
     <Content className={isSideOn ? 'side-on' : 'side-off'}>

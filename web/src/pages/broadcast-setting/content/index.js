@@ -19,6 +19,7 @@ import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 //
 let audioStream = null
 let drawId = null
+
 export default props => {
   const context = useContext(Context)
 
@@ -41,10 +42,8 @@ export default props => {
 
   //update
   function update(mode) {
-    // console.log('---')
     switch (true) {
       case mode.onChange !== undefined:
-        //console.log(JSON.stringify(changes))
         break
     }
   }
@@ -115,13 +114,26 @@ export default props => {
 
   // 이미지 업로드 관련
   //useState
-  const [file, setFile] = useState(null)
   const [url, setUrl] = useState(null)
+  const [photoPath, setPhotoPath] = useState(null)
+
+  const photoUploadCallback = async obj => {
+    const uploaded = await Api.image_upload({
+      data: {
+        file: '',
+        dataURL: obj.bgImg,
+        imageURL: '',
+        uploadType: 'bg'
+      }
+    })
+    if (uploaded && uploaded.result !== 'success') {
+      alert('Photo upload failed!')
+    } else {
+      setPhotoPath(uploaded.data.path)
+    }
+  }
 
   function uploadSingleFile(e) {
-    // setFile(e.target.files[0])
-    // setUrl(URL.createObjectURL(e.target.files[0]))
-
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
 
@@ -129,7 +141,7 @@ export default props => {
       if (reader.result) {
         setUrl(reader.result)
         setChanges({...changes, bgImg: reader.result})
-      } else {
+        photoUploadCallback({uploadType: 'bg', bgImg: reader.result})
       }
     }
   }
@@ -154,48 +166,38 @@ export default props => {
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
   //fetch
-  async function fetchData(obj) {
-    const resUpload = await Api.image_upload({
-      data: {
-        file: '',
-        dataURL: obj.bgImg,
-        imageURL: '',
-        uploadType: 'bg'
-      }
-    })
-    if (resUpload) {
-      if (resUpload.result === 'success' || resUpload.code == 0) {
-        setChanges({...changes, bgImg: resUpload.data.path})
 
-        const res = await Api.broad_create({
-          data: {
-            roomType: changes.roomType,
-            title: changes.title,
-            bgImg: resUpload.data.path,
-            bgImgRacy: 3,
-            welcomMsg: changes.welcomMsg,
-            notice: '',
-            entryType: changes.entryType
-          }
-        })
-        console.table(res)
-        setFetch(res.data)
-        if (res) {
-          if (res.code == 0) {
-            console.log(res)
-            /**
-             * @todos 소켓연결필요
-             */
-            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-            context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-          } else {
-            console.warn(res.message)
-          }
+  async function fetchData() {
+    if (photoPath && !fetch) {
+      setChanges({...changes, bgImg: photoPath})
+
+      const res = await Api.broad_create({
+        data: {
+          roomType: changes.roomType,
+          title: changes.title,
+          bgImg: photoPath,
+          bgImgRacy: 3,
+          welcomMsg: changes.welcomMsg,
+          notice: '',
+          entryType: changes.entryType
         }
-      } else {
-        //Error발생시
-        console.log('방생성실패')
+      })
+
+      setFetch(res.data)
+      if (res) {
+        if (res.code == 0) {
+          /**
+           * @todos 소켓연결필요
+           */
+          props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+        } else {
+          console.warn(res.message)
+        }
       }
+    } else {
+      //Error발생시
+      console.log('방생성실패')
     }
   }
 
@@ -206,12 +208,12 @@ export default props => {
   const [audioPass, setAudioPass] = useState(false)
 
   const detectAudioDevice = async () => {
-    setAudioPass(false)
-    setAudioVolume(0)
-    clearInterval(drawId)
-
     const device = await getAudioDeviceCheck()
-    if (device) {
+    if (drawId && device) {
+      setAudioPass(false)
+      setAudioVolume(0)
+      clearInterval(drawId)
+      drawId = null
       await infiniteAudioChecker()
     }
   }
@@ -242,33 +244,12 @@ export default props => {
       }
     }
 
-    drawId = setInterval(volumeCheck)
+    if (!drawId) {
+      drawId = setInterval(volumeCheck)
+    }
   }
 
-  // init
-  // if (!drawId) {
-  //   //console.log(drawId)
-  //   navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
-  //   ;(async () => {
-  //     const device = await getAudioDeviceCheck()
-  //     if (device) {
-  //       await infiniteAudioChecker()
-  //     } else {
-  //       drawId = true
-  //       context.action.alert({
-  //         msg: element,
-  //         title: '마이크 연결 에러!',
-  //         callback: () => {
-  //           context.action.alert({visible: false})
-  //           props.history.push('/')
-  //         }
-  //       })
-  //     }
-  //   })()
-  // }
-
   if (!drawId) {
-    //console.log(drawId)
     navigator.mediaDevices.addEventListener('devicechange', detectAudioDevice)
     ;(async () => {
       const device = await getAudioDeviceCheck()
@@ -281,9 +262,7 @@ export default props => {
           title: '마이크 연결 에러!',
           callback: () => {
             props.history.push('/')
-            if ((window.location = '/')) {
-              context.action.alert({visible: false})
-            }
+            context.action.alert({visible: false})
           }
         })
       }
@@ -293,8 +272,10 @@ export default props => {
   useEffect(() => {
     return () => {
       if (drawId) {
-        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
         clearInterval(drawId)
+        drawId = null
+        audioStream = null
+        navigator.mediaDevices.removeEventListener('devicechange', detectAudioDevice)
       }
     }
   }, [])
@@ -381,6 +362,9 @@ export default props => {
             <CopyrightIcon />
             <CreateBtn
               onClick={() => {
+                if (!audioStream) {
+                  return
+                }
                 if (!audioPass) {
                   return alert('오디오 인풋이 하나도 안되었습니다.')
                 }
@@ -388,6 +372,7 @@ export default props => {
                   audioStream.getTracks().forEach(track => {
                     track.stop()
                   })
+                  audioStream = null
                 }
                 fetchData({...changes})
               }}
@@ -397,7 +382,6 @@ export default props => {
             </CreateBtn>
           </BroadDetail>
         </Wrap>
-        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
   )

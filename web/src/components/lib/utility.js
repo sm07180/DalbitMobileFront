@@ -17,7 +17,7 @@ export default class Utility {
     return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
   }
   /**
-   * @brief 쿠키설정
+   * @brief 쿠키설정 path=/;domain=dalbitcast.com
    * @param string    c_name            //*쿠키의 key(키)
    * @param string    value             //*쿠키의 value(값)
    * @param string    exdays            //*유효기간
@@ -28,7 +28,7 @@ export default class Utility {
     const exdate = new Date()
     exdate.setDate(exdate.getDate() + exdays)
     const c_value = decodeURIComponent(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = c_name + '=' + c_value + '; domain=dalbitcast.com' + '; path=/'
+    document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;domain=dalbitcast.com'
   }
   /**
    * @brief 쿠키가져오기

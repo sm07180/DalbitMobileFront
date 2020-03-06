@@ -5,6 +5,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../store'
+import {useHistory} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -16,6 +17,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  let history = useHistory()
   //console.log('방정보를 알아봅시다..', props)
   //state
   const [room, setRoom] = useState({
@@ -121,6 +123,7 @@ export default props => {
       }
     }
   }, [store.like])
+
   //---------------------------------------------------------------------
   return (
     <Content>
@@ -129,6 +132,14 @@ export default props => {
       <div className="top2-wrap">{props.top2Msg}</div>
 
       <div className="dj-info">
+        {/* 모바일 백버튼 */}
+        <button
+          className="minimize"
+          onClick={() => {
+            history.goBack()
+          }}>
+          최소화
+        </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
         <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
@@ -263,6 +274,10 @@ const Content = styled.div`
     position: relative;
     & > * {
       flex: 0 0 auto;
+    }
+
+    .minimize {
+      display: none;
     }
     img {
       display: none;
@@ -483,13 +498,61 @@ const Content = styled.div`
 
   /* 모바일반응형 */
   @media (max-width: ${WIDTH_TABLET_S}) {
+    padding: 5px;
+    .system-msg {
+      width: calc(100% - 10px);
+      margin: 10px 5px;
+      padding: 8px 10px;
+      span {
+        font-size: 12px;
+        line-height: 18px;
+      }
+      &.top1 {
+        top: 53px;
+        padding: 4px 5px;
+      }
+      &.top2.tip span {
+        padding-left: 46px;
+        &:before {
+          padding: 0 8px;
+          line-height: 20px;
+        }
+      }
+    }
+
+    .top2-wrap {
+      top: 93px;
+      width: calc(100% - 10px);
+
+      .system-msg {
+        width: 100%;
+        margin: 8px 0 0 0;
+      }
+    }
+
     .dj-info {
+      align-items: center;
+      .minimize {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 2px;
+        background: url(${IMG_SERVER}/images/chat/ic_arrow_down@2x.png) no-repeat center center/ cover;
+        text-indent: -9999px;
+      }
+
       & > figure {
         flex-basis: 40px;
         height: 40px;
       }
       div {
+        max-width: calc(100% - 238px);
         padding: 12px 0 9px 5px;
+
+        p {
+          overflow: hidden;
+          white-space: nowrap;
+        }
 
         p:first-child {
           font-size: 14px;
@@ -500,8 +563,8 @@ const Content = styled.div`
         }
       }
       ul {
-        flex-basis: 138px;
-        padding: 11px 0;
+        flex-basis: 148px;
+        padding: 11px 0 11px 10px;
         figure {
           width: 32px;
           height: 32px;
@@ -526,16 +589,34 @@ const Content = styled.div`
 
     .cast-info {
       height: 28px;
+      margin-top: 2px;
       border-radius: 28px;
 
       ul {
         li {
+          font-size: 12px;
           line-height: 28px;
         }
       }
 
       div {
         padding: 2px 0;
+      }
+    }
+
+    .option {
+      margin-top: 10px;
+      ul {
+        li {
+          font-size: 10px;
+          line-height: 22px;
+        }
+      }
+      div {
+        button {
+          font-size: 10px;
+          line-height: 22px;
+        }
       }
     }
   }
