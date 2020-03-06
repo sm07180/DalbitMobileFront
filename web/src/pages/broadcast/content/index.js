@@ -82,7 +82,7 @@ export default props => {
         }
       }
 
-      mediaHandler.setContext = context
+      mediaHandler.setContext(context)
       mediaHandler.setLocalStartCallback(startPlayer)
       mediaHandler.setLocalStopCallback(stopPlayer)
       mediaHandler.setStreamId(bjStreamId)
