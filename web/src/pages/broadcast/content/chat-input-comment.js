@@ -393,4 +393,31 @@ const Content = styled.div`
       }
     }
   }
+  /* 모바일반응형 */
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 56px;
+    padding: 10px 6px;
+    input {
+      margin: 0 4px;
+      font-size: 12px;
+      text-indent: 14px;
+    }
+    div {
+      flex: 0 0 136px;
+    }
+    button {
+      width: 34px;
+      margin-left: 0;
+    }
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    div {
+      flex: 0 0 102px;
+    }
+    button {
+      &.volume {
+        display: none;
+      }
+    }
+  }
 `
