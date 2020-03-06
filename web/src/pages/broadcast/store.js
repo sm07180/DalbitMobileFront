@@ -29,6 +29,7 @@ const BroadCastProvider = props => {
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
   const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
+  const [ListenerSelect, setListenerSelect] = useState({}) // 청취자 탭에서 선택한 유저 정보
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -74,6 +75,9 @@ const BroadCastProvider = props => {
     //updateState
     updateRoomInfo: obj => {
       if (typeof obj === 'object') setRoomInfo(obj)
+    },
+    updateListenerSelect: obj => {
+      if (typeof obj === 'object') setListenerSelect(obj)
     },
     //roomNumber
     updateRoomNumber: num => {
@@ -147,8 +151,8 @@ const BroadCastProvider = props => {
     tabContent,
     like,
     currentTab,
-    listenTrues,
-    flag
+    flag,
+    ListenerSelect
   }
 
   return <Provider value={value}>{props.children}</Provider>

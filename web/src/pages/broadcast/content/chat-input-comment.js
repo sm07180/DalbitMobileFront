@@ -17,6 +17,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  const {mediaHandler} = context
   //state
   const [toggle, setToggle] = useState({
     mike: true, //마이크는 켜있는상태~
@@ -111,6 +112,7 @@ export default props => {
         }
         window.location.replace('https://' + window.location.hostname)
         context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
+        mediaHandler.stop()
       },
       //캔슬콜백처리
       cancelCallback: () => {

@@ -205,12 +205,12 @@ export default props => {
   const [audioPass, setAudioPass] = useState(false)
 
   const detectAudioDevice = async () => {
-    setAudioPass(false)
-    setAudioVolume(0)
-    clearInterval(drawId)
-
     const device = await getAudioDeviceCheck()
-    if (device) {
+    if (drawId && device) {
+      setAudioPass(false)
+      setAudioVolume(0)
+      clearInterval(drawId)
+      drawId = null
       await infiniteAudioChecker()
     }
   }
@@ -359,6 +359,9 @@ export default props => {
             <CopyrightIcon />
             <CreateBtn
               onClick={() => {
+                if (!audioStream) {
+                  return
+                }
                 if (!audioPass) {
                   return alert('오디오 인풋이 하나도 안되었습니다.')
                 }
@@ -366,6 +369,7 @@ export default props => {
                   audioStream.getTracks().forEach(track => {
                     track.stop()
                   })
+                  audioStream = null
                 }
                 fetchData({...changes})
               }}
@@ -375,7 +379,6 @@ export default props => {
             </CreateBtn>
           </BroadDetail>
         </Wrap>
-        {/* <section>{JSON.stringify(changes, null, 1)}</section> */}
       </Content>
     </>
   )
