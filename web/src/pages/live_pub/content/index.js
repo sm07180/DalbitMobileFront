@@ -1,10 +1,12 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
+import Api from 'context/api'
 //components
 import Title from './title'
 import TopRank from './topRank'
-import RealTimeList from './realTimeList'
+import Live from './live'
+import Pagination from './pagination'
 
 const testData = [
   {
@@ -36,15 +38,35 @@ const testData = [
   }
 ]
 export default props => {
+  //----------------------------------------------------------- declare start
+  const [list, setList] = useState([])
+  //----------------------------------------------------------- func start
+  const getBroadList = async obj => {
+    const res = await Api.broad_list({...obj})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+    console.log('## res :', res.data)
+    setList(res.data)
+  }
+
+  useEffect(() => {
+    getBroadList({params: {roomType: '', page: 1, records: 10}})
+  }, [])
+  //----------------------------------------------------------- components start
+  console.log('## list : ', list)
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          <TopRank testData={testData} />
-          <RealTimeList />
+          {list.list !== undefined && <TopRank broadList={list} />}
+          <Live />
         </MainContents>
       </Wrap>
+      <Pagination />
     </Container>
   )
 }
