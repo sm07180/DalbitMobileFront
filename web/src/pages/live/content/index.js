@@ -79,9 +79,9 @@ export default props => {
       if (state === 2) mode = '2'
       if (state === 3) mode = '3'
       if (state === 4) mode = '4'
-      if (state === 5) mode = '종료'
+      if (state === 5) mode = '비정상종료'
       //
-      if (state !== 1) return
+      //  if (state !== 1) return
       return (
         <List
           key={idx}
@@ -92,7 +92,7 @@ export default props => {
           <h3>[{mode}]</h3>
           <h1>{title}</h1>
           <h2>{welcomMsg}</h2>
-          {gstProfImg !== '' && (
+          {gstProfImg.thumb190x190 !== '' && (
             <Profile>
               <img src={`${gstProfImg.thumb190x190}`} alt="" />
             </Profile>
@@ -162,7 +162,7 @@ const List = styled.button`
   margin: 10px;
   max-width: 150px;
   width: 150px;
-
+  min-height: 100px;
   padding: 10px;
   vertical-align: top;
   background-size: cover;
