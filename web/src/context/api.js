@@ -297,7 +297,19 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/manager`, method: method || 'DELETE', data: data})
   }
-
+  /**
+   * @brief 방송방 상태변경
+   * @method "POST"
+   * @todo
+   * @param string roomNo                 //*방송방번호
+   * @param boolean isMic                 //*마이크 on/off(on :True,off: False)
+   * @param boolean isCall                 //*통화중여부(통화중 : True , 미통화중 : False)
+   * @create 김호겸 2020.03.06
+   */
+  static broad_state = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/state`, method: method || 'POST', data: data})
+  }
   //--------------------------------------------------------------------- 회원 관련
   /**
    * @brief 토큰조회

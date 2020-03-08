@@ -29,6 +29,7 @@ const BroadCastProvider = props => {
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
   const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
+  const [sumlike, setSumLike] = useState(0) // 채팅방 좋아요 누적수
   const [ListenerSelect, setListenerSelect] = useState({}) // 청취자 탭에서 선택한 유저 정보
 
   const arr = [
@@ -132,6 +133,11 @@ const BroadCastProvider = props => {
     },
     updateListenTrues: bool => {
       setListenTrues(bool)
+    },
+    updateLikeSum: num => {
+      num = context.roomInfo.like + num
+      console.log('updateLikeSum = ' + num)
+      setSumLike(num)
     }
   }
   //---------------------------------------------------------------------
@@ -152,7 +158,8 @@ const BroadCastProvider = props => {
     like,
     currentTab,
     flag,
-    ListenerSelect
+    ListenerSelect,
+    sumlike
   }
 
   return <Provider value={value}>{props.children}</Provider>
