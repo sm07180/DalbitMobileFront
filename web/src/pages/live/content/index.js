@@ -30,8 +30,10 @@ export default props => {
       console.log(res.message)
       return
     }
-    console.log(res.data)
-    setFetch(res.data)
+    if (res.result === 'success') {
+      console.log(res.data)
+      setFetch(res.data)
+    }
   }
   //exitRoom
   async function exitRoom(obj) {
@@ -78,7 +80,6 @@ export default props => {
       if (state === 3) mode = '3'
       if (state === 4) mode = '4'
       if (state === 5) mode = '종료'
-
       //
       if (state !== 1) return
       return (
