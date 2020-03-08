@@ -1,27 +1,41 @@
-import React, {useMemo, useState, useEffect} from 'react'
+import React, {useMemo, useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import Swiper from 'react-id-swiper'
+import {Context} from 'context'
 
 export default props => {
   //-------------------------------------------------------------- declare start
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
+  const context = useContext(Context)
+  const [roomType, setRoomType] = useState()
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
 
+  //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)
   }
-  //-------------------------------------------------------------- func start
+
+  useEffect(() => {
+    setRoomType(context.common.roomType)
+  }, [])
+
+  // useEffect(() => {
+  //   if (roomType) {
+  //     console.log('## aaa : ', roomType.map(x => x.cd).indexOf('02'))
+  //   }
+  // }, [roomType])
 
   //-------------------------------------------------------------- components start
+  console.log('## roomType : ', roomType)
   return (
     <Container>
       <Swiper width={width} spaceBetween={10}>
-        {props.testData.map((data, index) => {
+        {props.broadList.list.slice(0, 3).map((data, index) => {
           return (
             <Contents key={index}>
               {index === selected && hover && (
@@ -29,20 +43,22 @@ export default props => {
                   <button />
                 </div>
               )}
-              <Image img={data.imgUrl} onMouseEnter={() => handleHover(true, index)} rank={data.rank}>
-                {hover && index === selected ? <></> : <div>{data.rank}</div>}
+              <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
+                {hover && index === selected ? <></> : <div>{index + 1}</div>}
+                <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
               </Image>
               <Info>
                 <div className="title">
-                  <div>{data.code}</div>
+                  {/* <div>{data.roomType}</div> */}
+                  <div>{roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
                   <Tag>신입</Tag>
                 </div>
                 <div className="roomTitle">{data.title.substring(0, 30)}</div>
-                <div className="intro">{data.intro}</div>
+                <div className="nickName">{data.bjNickNm}</div>
                 <CountArea>
                   <Icon>
                     <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.listenCnt}
+                    &nbsp;&nbsp;{data.entryCnt}
                   </Icon>
                   <span>|</span>
                   <Icon>
@@ -81,6 +97,7 @@ const Contents = styled.div`
     background-color: rgba(133, 86, 246, 0.5);
     justify-content: center;
     align-items: center;
+    z-index: 999;
 
     & > button {
       display: flex;
@@ -97,6 +114,7 @@ const Image = styled.div`
   width: 180px;
   height: 180px;
   background-color: blue;
+  position: relative;
 
   & > div {
     display: flex;
@@ -113,6 +131,13 @@ const Image = styled.div`
     letter-spacing: -0.6px;
     color: #fff;
     border-bottom-right-radius: 15px;
+  }
+
+  & > img {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 `
 
@@ -152,7 +177,7 @@ const Info = styled.div`
     line-height: 1.5;
   }
 
-  .intro {
+  .nickName {
     display: flex;
     width: 90%;
     @media (max-width: ${WIDTH_MOBILE}) {

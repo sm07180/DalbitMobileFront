@@ -46,7 +46,6 @@ export default () => {
         os: _os,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
-        browserName: browserName,
         language: 'ko',
         deviceToken: 'make_custom_header'
       }

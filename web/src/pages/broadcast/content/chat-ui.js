@@ -172,4 +172,9 @@ const CommentList = styled.div`
   & > div > div:first-child {
     margin-right: -18px !important;
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    bottom: 55px;
+    height: calc(100% - 188px);
+  }
 `

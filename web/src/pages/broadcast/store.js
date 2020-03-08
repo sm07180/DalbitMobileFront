@@ -35,7 +35,7 @@ const BroadCastProvider = props => {
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
-    {id: 2, tab: '라이브'},
+    {id: 2, tab: '라이브'}
     // {id: 3, tab: '충전'},
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
@@ -43,9 +43,9 @@ const BroadCastProvider = props => {
     // {id: 7, tab: '신고하기'},
     // {id: 8, tab: '공지사항'},
     // {id: 9, tab: '사연'},
-    {id: 10, tab: '방송수정'}
+    // {id: 10, tab: '방송수정'}
     // {id: 11, tab: '빠른 말'},
-    // {id: 12, tab: '받은 선물'},
+    // {id: 12, tab: '받은 선물'}
   ]
   const [tabContent, setTabContent] = useState(arr)
   const [currentTab, setCurrentTab] = useState(arr)
