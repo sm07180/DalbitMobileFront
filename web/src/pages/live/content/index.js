@@ -75,13 +75,13 @@ export default props => {
     return fetch.list.map((list, idx) => {
       let mode = '해당사항없음'
       const {state, roomNo, gstProfImg, bjProfImg, welcomMsg, bgImg, title} = list
-      if (state === 1) mode = '1'
+      if (state === 1) mode = '라이브중'
       if (state === 2) mode = '2'
       if (state === 3) mode = '3'
       if (state === 4) mode = '4'
       if (state === 5) mode = '비정상종료'
       //
-      //  if (state !== 1) return
+      if (state !== 1) return
       return (
         <List
           key={idx}
