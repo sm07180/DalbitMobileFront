@@ -39,18 +39,6 @@ export default props => {
     {title: '리포트', url: '/mypage/report'}
   ]
   //---------------------------------------------------------------------
-  //fetch
-  async function fetchData(obj) {
-    const res = await Api.profile({
-      params: {
-        memNo: memNo
-      }
-    })
-    if (res.result === 'success') {
-      setFetch(res.data)
-      context.action.updateMypage(res.data)
-    }
-  }
   //makeProfile
   const makeNavi = () => {
     return info.map((list, idx) => {
@@ -70,9 +58,9 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {
-    if (isLogin) fetchData()
-  }, [context.token.isLogin])
+  // useEffect(() => {
+  //   if (isLogin) fetchData()
+  // }, [context.token.isLogin])
   //---------------------------------------------------------------------
   return (
     <>
@@ -84,12 +72,12 @@ export default props => {
           </Nheader>
           <CONTENT>
             <ProfileWrap>
-              <PIMG bg={fetch && fetch.profImg.url}></PIMG>
+              <PIMG bg={mypage && mypage.profImg.url}></PIMG>
               <Ptitle>
                 {context.token.isLogin ? (
                   <NoLoginTitle>
-                    <h4>{fetch && fetch.nickNm}</h4>
-                    <ID>{fetch && fetch.memId}</ID>
+                    <h4>{mypage && mypage.nickNm}</h4>
+                    <ID>{mypage && mypage.memId}</ID>
                   </NoLoginTitle>
                 ) : (
                   <NoLoginTitle>
@@ -109,24 +97,24 @@ export default props => {
                 <MyInfo>
                   <p className="total cast">
                     <span>총 방송 시간</span>
-                    <b>{fetch && Utility.secondsToTime(fetch.broadTotTime)}</b>
+                    <b>{mypage && Utility.secondsToTime(mypage.broadTotTime)}</b>
                   </p>
                   <p className="total listen">
                     <span>총 청취 시간</span>
-                    <b>{fetch && Utility.secondsToTime(fetch.listenTotTime)}</b>
+                    <b>{mypage && Utility.secondsToTime(mypage.listenTotTime)}</b>
                   </p>
                   <ul>
                     <li className="count like">
                       <span>좋아요</span>
-                      <b>{fetch && fetch.likeTotCnt}</b>
+                      <b>{mypage && mypage.likeTotCnt}</b>
                     </li>
                     <li className="count star">
                       <span>보유별</span>
-                      <b>{fetch && fetch.byeolCnt}</b>
+                      <b>{mypage && mypage.byeolCnt}</b>
                     </li>
                     <li className="count moon">
                       <span>보유달</span>
-                      <b>{fetch && fetch.dalCnt}</b>
+                      <b>{mypage && mypage.dalCnt}</b>
                     </li>
                   </ul>
                 </MyInfo>
@@ -159,7 +147,7 @@ export default props => {
                           props.history.push('/')
                           context.action.updateGnbVisible(false)
                           Hybrid('GetLogoutToken', res.data)
-                          setFetch(false) // 넣어둔 mypage 정보 초기화.
+                          context.action.updateMypage(false) // 넣어둔 mypage 정보 초기화.
                         }
                       }
                       fetchData()
