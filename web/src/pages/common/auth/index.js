@@ -25,17 +25,17 @@ export default props => {
         context.action.updateToken(mode.loginSuccess)
         const _href = window.location.href
         //mypage update
-        async function fetchData() {
-          const res = await Api.profile({
-            params: {
-              memNo: memNo
-            }
-          })
-          if (res.result === 'success') {
-            context.action.updateMypage(res.data)
-          }
-        }
-        fetchData()
+        // async function fetchData() {
+        //   const res = await Api.profile({
+        //     params: {
+        //       memNo: memNo
+        //     }
+        //   })
+        //   if (res.result === 'success') {
+        //     context.action.updateMypage(res.data)
+        //   }
+        // }
+        //fetchData()
         //redirect
 
         if (props.history) {
