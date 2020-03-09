@@ -52,7 +52,6 @@ const User = props => {
             <Route exact path="/mypage/wallet" component={Wallet} />
             <Route exact path="/mypage/report" component={Report} />
             <Route exact path="/mypage/alert" component={Alert} />
-            <Route exact path="/mypage/setting" component={Setting} />
           </Switch>
         </SubContent>
       </Content>
