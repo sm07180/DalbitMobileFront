@@ -57,11 +57,15 @@ const IntroduceAndFan = styled.div`
 `
 
 const InfoConfigBtn = styled.div`
-  padding: 10px 20px;
   border: 1px solid #bdbdbd;
   border-radius: 18px;
   cursor: pointer;
   color: #9e9e9e;
+
+  & > a {
+    display: block;
+    padding: 10px 20px;
+  }
 `
 
 const InfoWrap = styled.div`
