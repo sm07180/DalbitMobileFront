@@ -20,13 +20,17 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.loginSuccess !== undefined: //---------------------로그인,정상
-        const {authToken} = mode.loginSuccess
+        const {authToken, memNo} = mode.loginSuccess
         //Update
         context.action.updateToken(mode.loginSuccess)
         const _href = window.location.href
         //mypage update
-        async function fetchData(obj) {
-          const res = await Api.mypage({...obj})
+        async function fetchData() {
+          const res = await Api.profile({
+            params: {
+              memNo: memNo
+            }
+          })
           if (res.result === 'success') {
             context.action.updateMypage(res.data)
           }

@@ -10,7 +10,11 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link, NavLink} from 'react-router-dom'
 import {BroadCastStore} from '../store'
+import {useHistory} from 'react-router-dom'
 const sc = require('context/socketCluster')
+
+//component
+import LottieLoader from 'components/module/lottieLoader'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -18,6 +22,7 @@ export default props => {
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
   const {mediaHandler} = context
+  const history = useHistory()
   //state
   const [toggle, setToggle] = useState({
     mike: true, //마이크는 켜있는상태~
@@ -54,6 +59,7 @@ export default props => {
       ...toggle,
       mike: !toggle.mike
     })
+    broad_micOnOff(toggle.mike)
   }
 
   //좋아요~!
@@ -61,11 +67,6 @@ export default props => {
     console.log('store.like')
 
     if (store.like == 1) {
-      //좋아요 성공시..
-      setToggle({
-        ...toggle,
-        like: true
-      })
       broad_likes(store.roomInfo.roomNo)
     } else if (store.like == 2) {
       store.action.updateLike(3)
@@ -80,15 +81,52 @@ export default props => {
   }
 
   //좋아요 보내기
+
   async function broad_likes(roomNo) {
+    let myFanJoin
     const res = await Api.broad_likes({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
+      store.action.updateLike(3)
+      context.action.alert({
+        // 좋아요 중복 사용 알림 팝업
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: res.message
+      })
+      //console.log(res.message)
       return
     } else {
       console.log('## liket res = ' + res)
       store.action.updateLike(2)
+      setToggle({
+        ...toggle,
+        like: true
+      })
+      // 좋아요 누른 후 10초 뒤에 팬등록 팝업 실행
+      setTimeout(() => {
+        context.action.confirm({
+          //콜백처리
+          callback: () => {
+            const res = broad_pan_insert({
+              data: {
+                memNo: store.roomInfo.bjMemNo,
+                roomNo: roomNo
+              }
+            })
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {
+            //alert('confirm callback 취소하기')
+          },
+          msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
+          저의 팬이 되어주시겠어요?`
+        })
+      }, 10000)
+
+      clearTimeout()
     }
   }
 
@@ -110,7 +148,8 @@ export default props => {
         if (res) {
           sc.SendMessageChatEnd(props)
         }
-        window.location.replace('https://' + window.location.hostname)
+        //window.location.replace('https://' + window.location.hostname)
+        history.push('/')
         context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
       },
@@ -122,6 +161,23 @@ export default props => {
     })
   }
 
+  //마이크 on off
+  async function broad_micOnOff(isMic) {
+    //return
+    console.log('broad_micOnOff = ' + isMic)
+    const res = await Api.broad_state({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        isMic: isMic,
+        isCall: false
+      }
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      // setShortMessage(res.data)
+      // store.action.updateShortCutList(res.data)
+    }
+  }
   //빠른말 가져오기
   async function broad_shortcut() {
     const res = await Api.member_broadcast_shortcut({
@@ -208,11 +264,19 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <button className="present" title="선물하기">
-        선물하기
-      </button>
+      {/* <button className="present" title="선물하기">
+
+      </button> */}
+      <div
+        className="present"
+        onClick={() => {
+          store.action.updateTab(4)
+        }}>
+        <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
+      </div>
+
       <input type="text" placeholder="대화를 입력해주세요." onKeyPress={props.onKeyPress} />
-      <div>
+      <div className="btn-wrap">
         {/* 좋아요-부스터버튼, 마이크 버튼 */}
         {creatLikeBoost()}
         {/* 볼륨조절버튼 */}
@@ -267,11 +331,18 @@ const Content = styled.div`
   input {
     flex: 0 auto;
     width: 100%;
-    margin: 0 10px;
+    margin: 0 10px 0 40px;
     border: 0;
     border-radius: 36px;
     line-height: 36px;
     text-indent: 18px;
+  }
+
+  div.present {
+    position: absolute;
+    left: 3px;
+    top: 10px;
+    width: 52px;
   }
 
   button {
@@ -330,7 +401,7 @@ const Content = styled.div`
     }
   }
 
-  div {
+  div.btn-wrap {
     flex: 0 0 160px;
     ul {
       display: none;
@@ -400,11 +471,17 @@ const Content = styled.div`
     height: 56px;
     padding: 10px 6px;
     input {
-      margin: 0 4px;
+      margin: 0 4px 0 42px;
       font-size: 12px;
       text-indent: 14px;
     }
-    div {
+    div.present {
+      position: absolute;
+      left: -1px;
+      top: 6px;
+      width: 40px;
+    }
+    div.btn-wrap {
       flex: 0 0 136px;
     }
     button {
@@ -413,7 +490,7 @@ const Content = styled.div`
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    div {
+    div.btn-wrap {
       flex: 0 0 102px;
     }
     button {
