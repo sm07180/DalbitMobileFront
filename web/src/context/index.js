@@ -6,11 +6,14 @@ const store = useContext(Context)
 
  */
 import React, {useEffect, useState, createContext, useMemo} from 'react'
+//context
 import API from 'context/api'
+import Utility from 'components/lib/utility'
+
 //Context
 const Context = createContext()
 const {Provider} = Context
-import Utility from 'components/lib/utility'
+
 //
 const GlobalProvider = props => {
   //initalize

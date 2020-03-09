@@ -16,7 +16,12 @@ export default props => {
   const context = useContext(Context)
   return (
     <Layout {...props}>
-      <Content>캐스트</Content>
+      <Content>
+        <h1>CustomHeader</h1>
+        <section>{JSON.stringify(context.customHeader, null, 1)}</section>
+        <h1>token</h1>
+        <section>{JSON.stringify(context.token, null, 1)}</section>
+      </Content>
     </Layout>
   )
 }

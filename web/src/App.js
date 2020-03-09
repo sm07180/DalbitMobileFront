@@ -32,6 +32,16 @@ export default () => {
   const context = useContext(Context)
   //useState
   const [ready, setReady] = useState(false)
+  //isHybrid체크
+  const isHybrid = useMemo(() => {
+    const element = document.getElementById('customHeader')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
+      const val = JSON.parse(element.value)
+      if (val.os + '' === '1' || val.os + '' === '2') return 'Y'
+      return 'N'
+    }
+    return 'N'
+  })
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //makeCustomHeader
@@ -42,6 +52,7 @@ export default () => {
       if (osName === 'iOS') _os = '2'
       const info = {
         os: _os,
+        isHybrid: isHybrid,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
