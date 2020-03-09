@@ -13,10 +13,10 @@ export default props => {
   const [isShow, setShow] = useState(true)
   const MakeLottie = props => {
     return (
-      <LottieView className={props.className ? props.className : ''}>
+      <LottieView>
         {isShow && (
           <Lottie
-            eventListeners={[props.event ? props.event : false]}
+            eventListeners={props.event ? props.event : [{}]}
             // eventListeners={[
             //   {
             //     eventName: 'complete',
