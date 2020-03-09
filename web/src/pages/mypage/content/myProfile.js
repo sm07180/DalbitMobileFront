@@ -4,6 +4,7 @@
  */
 
 import React, {useEffect, useStet} from 'react'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
@@ -26,7 +27,9 @@ const myProfile = props => {
             <span style={{color: '#424242', fontSize: '24px'}}>DJ라디오라디오</span>
             <span style={{verticalAlign: 'text-bottom'}}>@dalbit</span>
           </div>
-          <InfoConfigBtn>내 정보 관리</InfoConfigBtn>
+          <InfoConfigBtn>
+            <Link to="/mypage/setting">내 정보 관리</Link>
+          </InfoConfigBtn>
         </InfoWrap>
 
         <div className="fan-and-start-text">
@@ -54,11 +57,15 @@ const IntroduceAndFan = styled.div`
 `
 
 const InfoConfigBtn = styled.div`
-  padding: 10px 20px;
   border: 1px solid #bdbdbd;
   border-radius: 18px;
   cursor: pointer;
   color: #9e9e9e;
+
+  & > a {
+    display: block;
+    padding: 10px 20px;
+  }
 `
 
 const InfoWrap = styled.div`
