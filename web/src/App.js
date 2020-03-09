@@ -103,13 +103,14 @@ export default () => {
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    context.action.updateCustomHeader({...customHeader, isHybrid: isHybrid})
-    console.table(customHeader)
+    const _customHeader = {...customHeader, isHybrid: isHybrid}
+    context.action.updateCustomHeader(_customHeader)
+    console.table(_customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
     //토큰업데이트
     Api.setAuthToken(authToken)
-    fetchData({data: customHeader})
+    fetchData({data: _customHeader})
   }, [])
   //---------------------------------------------------------------------
   /**

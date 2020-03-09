@@ -27,6 +27,7 @@ export default props => {
         break
       case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
         context.action.updateToken(event.detail)
+        alert('native-reciveAuthToken')
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-goLogin': //-------------------------Native goLogin
