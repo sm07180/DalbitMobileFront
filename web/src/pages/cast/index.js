@@ -31,4 +31,8 @@ export default props => {
 const Content = styled.section`
   min-height: 300px;
   background: #e1e1e1;
+  section {
+    padding: 20px;
+    word-break: break-all;
+  }
 `
