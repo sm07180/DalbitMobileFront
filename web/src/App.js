@@ -52,7 +52,6 @@ export default () => {
       if (osName === 'iOS') _os = '2'
       const info = {
         os: _os,
-        isHybrid: isHybrid,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
@@ -104,7 +103,7 @@ export default () => {
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    context.action.updateCustomHeader(customHeader)
+    context.action.updateCustomHeader({...customHeader, isHybrid: isHybrid})
     console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
