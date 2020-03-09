@@ -495,6 +495,16 @@ const Content = styled.div`
     }
     div.btn-wrap {
       flex: 0 0 136px;
+
+      ul.menu-box,
+      ul.quick-box {
+        bottom: 66px;
+        right: 10px;
+      }
+      ul.volume-box {
+        right: 81px;
+        bottom: 46px;
+      }
     }
     button {
       width: 34px;
