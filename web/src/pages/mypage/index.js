@@ -24,7 +24,6 @@ import Cast from './content/cast.js'
 import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
-import Setting from './content/setting.js'
 
 //
 const User = props => {
