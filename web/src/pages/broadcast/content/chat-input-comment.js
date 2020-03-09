@@ -54,6 +54,7 @@ export default props => {
       ...toggle,
       mike: !toggle.mike
     })
+    broad_micOnOff(toggle.mike)
   }
 
   //좋아요~!
@@ -88,7 +89,11 @@ export default props => {
       return
     } else {
       console.log('## liket res = ' + res)
+
       store.action.updateLike(2)
+      //store.action.updateLikeSum(1)
+
+      //store.action.updateLikeSum()
     }
   }
 
@@ -122,6 +127,23 @@ export default props => {
     })
   }
 
+  //마이크 on off
+  async function broad_micOnOff(isMic) {
+    //return
+    console.log('broad_micOnOff = ' + isMic)
+    const res = await Api.broad_state({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        isMic: isMic,
+        isCall: false
+      }
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      // setShortMessage(res.data)
+      // store.action.updateShortCutList(res.data)
+    }
+  }
   //빠른말 가져오기
   async function broad_shortcut() {
     const res = await Api.member_broadcast_shortcut({
