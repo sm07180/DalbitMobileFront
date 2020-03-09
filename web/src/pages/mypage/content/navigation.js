@@ -40,7 +40,7 @@ const Navigation = styled.div`
   display: flex;
   flex-direction: row;
   border: 1px solid #e0e0e0;
-
+  border-bottom: 1px solid #8556f6;
   a {
     display: flex;
     justify-content: center;
