@@ -25,13 +25,13 @@ export default props => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateRoomInfo(event.detail)
         break
-      case 'native-recieveAuthToken': //-----------------Native reciveAuthToken
+      case 'native-receiveAuthToken': //-----------------Native receiveAuthToken
         context.action.updateToken(event.detail)
-        alert('native-recieveAuthToken')
+        alert('native-receiveAuthToken')
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-goLogin': //-------------------------Native goLogin
-        alert(JSON.stringify(event.detail, null, 1))
+        alert('native-goLogin')
         context.action.updatePopup('LOGIN')
         break
       case 'react-gnb-open': //-------------------------GNB 열기
