@@ -10,7 +10,11 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link, NavLink} from 'react-router-dom'
 import {BroadCastStore} from '../store'
+import {useHistory} from 'react-router-dom'
 const sc = require('context/socketCluster')
+
+//component
+import LottieLoader from 'components/module/lottieLoader'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -18,6 +22,7 @@ export default props => {
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
   const {mediaHandler} = context
+  const history = useHistory()
   //state
   const [toggle, setToggle] = useState({
     mike: true, //마이크는 켜있는상태~
@@ -115,7 +120,8 @@ export default props => {
         if (res) {
           sc.SendMessageChatEnd(props)
         }
-        window.location.replace('https://' + window.location.hostname)
+        //window.location.replace('https://' + window.location.hostname)
+        history.push('/')
         context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
       },
@@ -231,7 +237,7 @@ export default props => {
   return (
     <Content>
       <button className="present" title="선물하기">
-        선물하기
+        <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={36} height={36} loop={true} event={false}></LottieLoader>
       </button>
       <input type="text" placeholder="대화를 입력해주세요." onKeyPress={props.onKeyPress} />
       <div>
