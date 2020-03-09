@@ -25,9 +25,9 @@ export default props => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateRoomInfo(event.detail)
         break
-      case 'native-reciveAuthToken': //-----------------Native reciveAuthToken
+      case 'native-recieveAuthToken': //-----------------Native reciveAuthToken
         context.action.updateToken(event.detail)
-        alert('native-reciveAuthToken')
+        alert('native-recieveAuthToken')
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-goLogin': //-------------------------Native goLogin
@@ -53,7 +53,7 @@ export default props => {
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-goLogin', update)
-    document.addEventListener('native-reciveAuthToken', update)
+    document.addEventListener('native-recieveAuthToken', update)
     /*----react----*/
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
@@ -62,7 +62,7 @@ export default props => {
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-goLogin', update)
-      document.removeEventListener('native-reciveAuthToken', update)
+      document.removeEventListener('native-recieveAuthToken', update)
       /*----react----*/
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
