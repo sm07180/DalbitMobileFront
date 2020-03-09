@@ -88,16 +88,19 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    if (res === undefined) {
-      console.log('토큰에러')
-    } else {
+    if (res.result === 'success') {
       console.table(res.data)
+      // result 성공/실패 여부상관없이,토큰없데이트
+      context.action.updateToken(res.data)
+      //JWT토큰동일한지유효성확인
+      if (isHybrid === 'Y' && res.data.authToken !== authToken) {
+        Hybrid('GetLoginToken', res.data)
+      }
+      //모든처리완료
+      setReady(true)
+    } else {
+      console.log('토큰에러')
     }
-    // result 성공/실패 여부상관없이,토큰없데이트
-    context.action.updateToken(res.data)
-    //모든처리완료
-    setReady(true)
-    // 로그인이 되었을때
   }
   //---------------------------------------------------------------------
   //useEffect token
@@ -106,9 +109,7 @@ export default () => {
     const _customHeader = {...customHeader, isHybrid: isHybrid}
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
-    //#2 authToken
-    //@todo cookie 및 id="customHeader" 처리확인
-    //토큰업데이트
+    //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
   }, [])
