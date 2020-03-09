@@ -14,7 +14,7 @@ const myProfile = props => {
   return (
     <MyProfile>
       <ProfileImg />
-      <div style={{marginLeft: '24px'}}>
+      <div style={{marginLeft: '24px', width: '100%'}}>
         <LevelWrap>
           <LevelText>LEVEL 12</LevelText>
           <LevelStatusBarWrap>
