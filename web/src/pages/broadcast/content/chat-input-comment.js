@@ -276,9 +276,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      {/* <button className="present" title="선물하기">
-
-      </button> */}
       <div
         className="present"
         onClick={() => {
