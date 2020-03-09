@@ -236,11 +236,19 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <button className="present" title="선물하기">
-        <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={36} height={36} loop={true} event={false}></LottieLoader>
-      </button>
+      {/* <button className="present" title="선물하기">
+
+      </button> */}
+      <div
+        className="present"
+        onClick={() => {
+          store.action.updateTab(4)
+        }}>
+        <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
+      </div>
+
       <input type="text" placeholder="대화를 입력해주세요." onKeyPress={props.onKeyPress} />
-      <div>
+      <div className="btn-wrap">
         {/* 좋아요-부스터버튼, 마이크 버튼 */}
         {creatLikeBoost()}
         {/* 볼륨조절버튼 */}
@@ -295,11 +303,18 @@ const Content = styled.div`
   input {
     flex: 0 auto;
     width: 100%;
-    margin: 0 10px;
+    margin: 0 10px 0 40px;
     border: 0;
     border-radius: 36px;
     line-height: 36px;
     text-indent: 18px;
+  }
+
+  div.present {
+    position: absolute;
+    left: 3px;
+    top: 10px;
+    width: 52px;
   }
 
   button {
@@ -358,7 +373,7 @@ const Content = styled.div`
     }
   }
 
-  div {
+  div.btn-wrap {
     flex: 0 0 160px;
     ul {
       display: none;
@@ -428,11 +443,17 @@ const Content = styled.div`
     height: 56px;
     padding: 10px 6px;
     input {
-      margin: 0 4px;
+      margin: 0 4px 0 42px;
       font-size: 12px;
       text-indent: 14px;
     }
-    div {
+    div.present {
+      position: absolute;
+      left: -1px;
+      top: 6px;
+      width: 40px;
+    }
+    div.btn-wrap {
       flex: 0 0 136px;
     }
     button {
@@ -441,7 +462,7 @@ const Content = styled.div`
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    div {
+    div.btn-wrap {
       flex: 0 0 102px;
     }
     button {

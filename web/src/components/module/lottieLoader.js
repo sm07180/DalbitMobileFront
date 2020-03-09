@@ -11,20 +11,20 @@ import Lottie from 'react-lottie'
 
 export default props => {
   const [isShow, setShow] = useState(true)
-
   const MakeLottie = props => {
     return (
-      <LottieView>
+      <LottieView className={props.className ? props.className : ''}>
         {isShow && (
           <Lottie
-            eventListeners={[
-              {
-                eventName: 'complete',
-                callback: () => setShow(false)
-              }
-            ]}
+            eventListeners={[props.event ? props.event : false]}
+            // eventListeners={[
+            //   {
+            //     eventName: 'complete',
+            //     callback: () => setShow(false)
+            //   }
+            // ]}
             options={{
-              loop: false,
+              loop: props.loop ? props.loop : false,
               autoplay: true,
               path: props.path
             }}
@@ -36,11 +36,7 @@ export default props => {
     )
   }
 
-  return <MakeLottie path={props.path} />
+  return <MakeLottie path={props.path} width={props.width} height={props.height} event={props.event} loop={props.loop} className={props.className} />
 }
 
-const LottieView = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  position: absolute;
-`
+const LottieView = styled.div``
