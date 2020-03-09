@@ -72,6 +72,8 @@ export default props => {
   //makeContents
   const makeContents = type => {
     if (fetch === null) return
+    console.clear()
+    console.log(fetch.list)
     return fetch.list.map((list, idx) => {
       let mode = '해당사항없음'
       const {state, roomNo, gstProfImg, bjProfImg, welcomMsg, bgImg, title} = list
@@ -81,25 +83,26 @@ export default props => {
       if (state === 4) mode = '4'
       if (state === 5) mode = '비정상종료'
       //
-      if (state !== 1) return
-      return (
-        <List
-          key={idx}
-          style={{backgroundImage: `url(${bgImg.url})`}}
-          onClick={() => {
-            joinRoom(list)
-          }}>
-          <h3>[{mode}]</h3>
-          <h1>{title}</h1>
-          <h2>{welcomMsg}</h2>
-          {gstProfImg.thumb190x190 !== '' && (
-            <Profile>
-              <img src={`${gstProfImg.thumb190x190}`} alt="" />
-            </Profile>
-          )}
-          <h3>{roomNo}</h3>
-        </List>
-      )
+      if (state === 1 || state === '1') {
+        return (
+          <List
+            key={idx}
+            style={{backgroundImage: `url(${bgImg.url})`}}
+            onClick={() => {
+              joinRoom(list)
+            }}>
+            <h3>[{mode}]</h3>
+            <h1>{title}</h1>
+            <h2>{welcomMsg}</h2>
+            {gstProfImg.thumb190x190 !== '' && (
+              <Profile>
+                <img src={`${gstProfImg.thumb190x190}`} alt="" />
+              </Profile>
+            )}
+            <h3>{roomNo}</h3>
+          </List>
+        )
+      }
     })
   }
   //---------------------------------------------------------------------
@@ -109,7 +112,7 @@ export default props => {
    */
   useEffect(() => {
     //방송방 리스트
-    getBroadList({params: {roomType: '', page: 1, records: 100}})
+    getBroadList({params: {roomType: '', page: 1, records: 10}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
   //---------------------------------------------------------------------
