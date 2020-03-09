@@ -104,8 +104,8 @@ export default props => {
         </Scrollbars>
       </MainContents>
       <ButtonArea>
-        <SecretSend onClick={() => context.action.updatePopupVisible(true)}>몰래&nbsp;보내기</SecretSend>
-        <Send onClick={() => props.send(count, itemNo)}>보내기</Send>
+        <SecretSend onClick={() => props.send(count, itemNo, true)}>몰래&nbsp;보내기</SecretSend>
+        <Send onClick={() => props.send(count, itemNo, false)}>보내기</Send>
       </ButtonArea>
     </Container>
   )

@@ -40,13 +40,14 @@ export default props => {
   //-------------------------------------------------------- func start
 
   // 선물하기
-  async function send(count, itemNo) {
+  async function send(count, itemNo, flag) {
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo,
         memNo: store.roomInfo.bjMemNo,
         itemNo: itemNo,
-        itemCnt: count
+        itemCnt: count,
+        isSecret: flag
       }
     })
     console.log('## res :', res)

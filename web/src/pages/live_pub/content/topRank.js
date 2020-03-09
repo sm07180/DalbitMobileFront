@@ -31,7 +31,7 @@ export default props => {
   // }, [roomType])
 
   //-------------------------------------------------------------- components start
-  console.log('## roomType : ', roomType)
+  console.log('## props : ', props)
   return (
     <Container>
       <Swiper width={width} spaceBetween={10}>
@@ -40,7 +40,7 @@ export default props => {
             <Contents key={index}>
               {index === selected && hover && (
                 <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-                  <button />
+                  <button onClick={() => props.joinRoom({roomNo: data.roomNo})} />
                 </div>
               )}
               <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>

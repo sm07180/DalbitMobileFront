@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
+import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import LiveList from './live-list'
 
@@ -11,6 +12,7 @@ export default props => {
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [open3, setOpen3] = useState(false)
+  const context = useContext(Context)
   //----------------------------------------------------------- func start
   const drop1 = () => {
     setOpen1(!open1)
@@ -29,13 +31,26 @@ export default props => {
   }
 
   // dropDown 선택 시 데이터 가져와야함
-  const searchLive = index => {
-    console.log('## searchLive :', index)
+  const searchLive = (index, data) => {
+    if (index === 1) setSort1(data.cdNm)
+
+    if (index === 2) {
+      setSort2(data.cdNm)
+      const params = {
+        roomType: data.cd,
+        page: 1,
+        records: 10
+      }
+      props.getBroadList({params})
+    }
+
+    if (index === 3) setSort3(data.cdNm)
     setOpen1(false)
     setOpen2(false)
     setOpen3(false)
   }
   //----------------------------------------------------------- components start
+  console.log('## context :', context)
   return (
     <Container>
       <TopArea>
@@ -50,9 +65,10 @@ export default props => {
                 <Icon onClick={() => drop1()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
                 {open1 && (
                   <DropDown>
-                    <li onClick={() => searchLive(0)}>option1</li>
-                    <li onClick={() => searchLive(1)}>option2</li>
-                    <li onClick={() => searchLive(2)}>option3</li>
+                    <li onClick={() => searchLive(1, '랭킹')}>랭킹</li>
+                    <li onClick={() => searchLive(1, '추천')}>추천</li>
+                    <li onClick={() => searchLive(1, '인기')}>인기</li>
+                    <li onClick={() => searchLive(1, '신입')}>신입</li>
                   </DropDown>
                 )}
               </div>
@@ -61,9 +77,13 @@ export default props => {
                 <Icon onClick={() => drop2()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
                 {open2 && (
                   <DropDown>
-                    <li onClick={() => searchLive(3)}>option1</li>
-                    <li onClick={() => searchLive(4)}>option2</li>
-                    <li onClick={() => searchLive(5)}>option3</li>
+                    {context.common.roomType.map((data, index) => {
+                      return (
+                        <li onClick={() => searchLive(2, data)} key={index}>
+                          {data.cdNm}
+                        </li>
+                      )
+                    })}
                   </DropDown>
                 )}
               </div>
@@ -84,7 +104,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      <LiveList broadList={props.broadList} />
+      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} />
     </Container>
   )
 }
@@ -196,7 +216,7 @@ const DropDown = styled.ul`
   display: flex;
   flex-direction: column;
   width: 136px;
-  height: 116px;
+  /* height: 116px; */
   position: absolute;
   top: 38px;
   z-index: 11;
