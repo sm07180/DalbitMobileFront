@@ -80,22 +80,29 @@ export default props => {
     const recvTopData = data.data.recvMsg
     console.warn('recvTopData = ' + recvTopData)
     if (recvTopData.position === 'top1') {
-      const resulte = (
+      const result = (
         <div className="system-msg top1">
           <span>{recvTopData.msg}</span>
         </div>
       )
-      setTop1Msg(resulte)
+      setTop1Msg(result)
     } else {
       top2Data = top2Data.concat(recvTopData)
-      const resulte = top2Data.map((item, index) => {
+      console.log('123123123123123123')
+      const result = top2Data.map((item, index) => {
+        if (item.level === 1 || item.level === 2 || item.level === 3 || item.level === 4) {
+          setTimeout(() => {
+            const el = document.getElementsByClassName('top2-wrap')
+            //if (el[0]) el[0].childNodes[0].remove()
+          }, 2000)
+        }
         return (
           <div className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
             <span>{item.msg}</span>
           </div>
         )
       })
-      setTop2Msg(resulte)
+      setTop2Msg(result)
     }
   }
 
