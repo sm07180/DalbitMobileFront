@@ -72,8 +72,6 @@ export default props => {
   //makeContents
   const makeContents = type => {
     if (fetch === null) return
-    console.clear()
-    console.log(fetch.list)
     return fetch.list.map((list, idx) => {
       let mode = '해당사항없음'
       const {state, roomNo, gstProfImg, bjProfImg, welcomMsg, bgImg, title} = list
