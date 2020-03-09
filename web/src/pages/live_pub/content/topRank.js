@@ -9,7 +9,7 @@ export default props => {
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
   const context = useContext(Context)
-  const [roomType, setRoomType] = useState()
+  const [roomType, setRoomType] = useState([])
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
@@ -21,21 +21,18 @@ export default props => {
   }
 
   useEffect(() => {
-    setRoomType(context.common.roomType)
-  }, [])
+    console.log('123123123123')
+  }, [context])
 
-  // useEffect(() => {
-  //   if (roomType) {
-  //     console.log('## aaa : ', roomType.map(x => x.cd).indexOf('02'))
-  //   }
-  // }, [roomType])
+  const SwiperRank = () => {
+    const params = {
+      width: width,
+      spaceBetween: 10
+    }
 
-  //-------------------------------------------------------------- components start
-  console.log('## props : ', props)
-  return (
-    <Container>
-      <Swiper width={width} spaceBetween={10}>
-        {props.broadList.list.slice(0, 3).map((data, index) => {
+    return (
+      <Swiper {...params}>
+        {props.broadList.slice(0, 3).map((data, index) => {
           return (
             <Contents key={index}>
               {index === selected && hover && (
@@ -43,14 +40,14 @@ export default props => {
                   <button onClick={() => props.joinRoom({roomNo: data.roomNo})} />
                 </div>
               )}
-              <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
-                {hover && index === selected ? <></> : <div>{index + 1}</div>}
+              <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+                {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
                 <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
               </Image>
               <Info>
                 <div className="title">
                   {/* <div>{data.roomType}</div> */}
-                  <div>{roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
+                  <div>{context.common.roomType && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
                   <Tag>신입</Tag>
                 </div>
                 <div className="roomTitle">{data.title.substring(0, 30)}</div>
@@ -71,14 +68,23 @@ export default props => {
           )
         })}
       </Swiper>
-    </Container>
-  )
+    )
+  }
+
+  //-------------------------------------------------------------- components start
+  console.log('## context :', context)
+  return <Container>{SwiperRank()}</Container>
 }
 
 const Container = styled.div`
   display: flex;
   width: 90%;
   justify-content: space-between;
+
+  .swiperWrap {
+    display: flex;
+    justify-content: flex-start;
+  }
 `
 const Contents = styled.div`
   display: flex;
@@ -98,6 +104,9 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 999;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
 
     & > button {
       display: flex;

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
@@ -13,6 +13,7 @@ export default props => {
   const [open2, setOpen2] = useState(false)
   const [open3, setOpen3] = useState(false)
   const context = useContext(Context)
+  const [list, setList] = useState([{cd: '', cdNm: '전체'}])
   //----------------------------------------------------------- func start
   const drop1 = () => {
     setOpen1(!open1)
@@ -41,6 +42,7 @@ export default props => {
         page: 1,
         records: 10
       }
+      props.setType(data.cd)
       props.getBroadList({params})
     }
 
@@ -49,6 +51,12 @@ export default props => {
     setOpen2(false)
     setOpen3(false)
   }
+
+  useEffect(() => {
+    if (context.common !== undefined) {
+      setList(list.concat(context.common.roomType))
+    }
+  }, [context])
   //----------------------------------------------------------- components start
   console.log('## context :', context)
   return (
@@ -77,7 +85,7 @@ export default props => {
                 <Icon onClick={() => drop2()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
                 {open2 && (
                   <DropDown>
-                    {context.common.roomType.map((data, index) => {
+                    {list.map((data, index) => {
                       return (
                         <li onClick={() => searchLive(2, data)} key={index}>
                           {data.cdNm}
@@ -104,7 +112,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} />
+      {props.broadList.length > 0 && <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />}
     </Container>
   )
 }

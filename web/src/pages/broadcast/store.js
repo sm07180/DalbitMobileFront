@@ -35,8 +35,8 @@ const BroadCastProvider = props => {
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
-    {id: 2, tab: '라이브'}
-    // {id: 3, tab: '충전'}
+    {id: 2, tab: '라이브'},
+    {id: 3, tab: '충전'}
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
     // {id: 6, tab: '프로필'},

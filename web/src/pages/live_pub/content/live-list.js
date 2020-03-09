@@ -20,11 +20,11 @@ export default props => {
   console.log('## props : ', props)
   return (
     <Container>
-      {props.broadList.list.map((data, index) => {
+      {props.broadList.map((data, index) => {
         return (
-          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)}>
+          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
             <div className="profile">
-              <div className="rank">{index + 1}</div>
+              <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? props.paging.page - 1 + 10 + index : index + 1}</div>
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
@@ -107,6 +107,9 @@ const List = styled.div`
       align-items: center;
       z-index: 99;
       border-radius: 10px;
+      @media (max-width: ${WIDTH_MOBILE}) {
+        display: none;
+      }
 
       & > button {
         display: flex;

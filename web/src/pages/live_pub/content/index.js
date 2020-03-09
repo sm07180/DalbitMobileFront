@@ -13,7 +13,9 @@ import Pagination from './pagination'
 export default props => {
   //----------------------------------------------------------- declare start
   const [list, setList] = useState([])
+  const [paging, setPaging] = useState()
   const context = useContext(Context)
+  const [type, setType] = useState('') // roomType
   //----------------------------------------------------------- func start
   const getBroadList = async obj => {
     console.log('## obj :', obj)
@@ -27,17 +29,20 @@ export default props => {
     //데이터 없을시
     if (res.code === '0') {
       setList(false)
+    } else {
+      setList(res.data.list)
+      setPaging(res.data.paging)
+      window.scrollTo(0, 0)
     }
     console.log('## res :', res)
-    setList(res.data)
   }
 
   const commonData = async obj => {
     const res = await Api.splash({})
     if (res.result === 'success') {
-      console.log('## res :', res.data)
       context.action.updateCommon(res.data)
     }
+    console.log('## res :', res.data)
   }
 
   //exitRoom
@@ -76,32 +81,33 @@ export default props => {
   }
 
   useEffect(() => {
-    getBroadList({params: {roomType: '', page: 1, records: 10}})
+    getBroadList({params: {roomType: type, page: 1, records: 10}})
     commonData()
   }, [])
 
-  useEffect(() => {}, [list])
+  // useEffect(() => {}, [list])
   //----------------------------------------------------------- components start
   console.log('## context :', context)
+  console.log('## type: ', type)
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          {list.list ? (
+          {list === false ? (
             <>
-              <TopRank broadList={list} joinRoom={joinRoom} />
-              <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} />
+              <div>데이터 없음 ㅇㅅㅇ</div>
+              <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
             </>
           ) : (
-            <div>데이터 없음 ㅇㅅㅇ</div>
+            <>
+              <TopRank broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} />
+              <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
+            </>
           )}
-
-          {/* {list.list !== undefined && <TopRank broadList={list} joinRoom={joinRoom} />}
-          {list.list !== undefined && <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} />} */}
         </MainContents>
       </Wrap>
-      <Pagination />
+      <Pagination paging={paging} getBroadList={getBroadList} type={type} />
     </Container>
   )
 }

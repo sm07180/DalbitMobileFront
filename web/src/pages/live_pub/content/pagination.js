@@ -8,25 +8,46 @@ export default props => {
   //------------------------------------------------------------ declare start
   const [page, setPage] = useState(0)
   const [sendPage, setSendPage] = useState(1)
+  const [iterator, setIterator] = useState([])
 
   //------------------------------------------------------------ func start
   const getData = index => {
+    console.log('index : ', index)
     setPage(index)
     setSendPage(index + 1)
+    props.getBroadList({params: {roomType: props.type, page: index + 1, records: 10}})
   }
 
   const prev = () => {
+    console.log('## sendPage : ', sendPage)
     if (page === 0) return
+    props.getBroadList({params: {roomType: props.type, page: sendPage - 1, records: 10}})
     setPage(page - 1)
+    setSendPage(sendPage - 1)
   }
 
   const next = () => {
-    if (page === 9) return
+    console.log('## sendPage : ', sendPage)
+    if (page + 1 === props.paging.totalPage) return
+    props.getBroadList({params: {roomType: props.type, page: sendPage + 1, records: 10}})
     setPage(page + 1)
+    setSendPage(sendPage + 1)
   }
 
-  //------------------------------------------------------------ components start
+  useEffect(() => {
+    if (props.paging !== undefined) {
+      let arr = []
+      let i = 1
+      for (i; i <= props.paging.totalPage; i++) {
+        arr.push(i)
+        console.log('## push arr :', iterator)
+      }
+      setIterator(arr)
+    }
+  }, [props.paging])
 
+  //------------------------------------------------------------ components start
+  console.log('## iterator :', iterator)
   return (
     <Container>
       <div className="wrap">
@@ -36,14 +57,14 @@ export default props => {
           </Left>
           <div className="page">
             {window.innerWidth > 600
-              ? test.map((data, index) => {
+              ? iterator.map((data, index) => {
                   return (
                     <Page key={index} onClick={() => getData(index)} active={page === index ? 'active' : ''}>
                       {index + 1}
                     </Page>
                   )
                 })
-              : mTest.map((data, index) => {
+              : iterator.map((data, index) => {
                   return (
                     <Page key={index} onClick={() => getData(index)} active={page === index ? 'active' : ''}>
                       {index + 1}
@@ -91,7 +112,6 @@ const Container = styled.div`
 
   .page {
     display: flex;
-    width: 100%;
     height: 36px;
     justify-content: space-between;
 
@@ -155,6 +175,7 @@ const Page = styled.button`
   line-height: 2.14;
   letter-spacing: -0.35px;
   /* color: #bdbdbd; */
+  margin: 0px 2px 0px 2px;
 
   border-color: ${props => (props.active ? 'none' : '#e0e0e0')};
   background: ${props => (props.active ? '#8556f6' : '#fff')};
