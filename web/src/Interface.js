@@ -53,7 +53,7 @@ export default props => {
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-goLogin', update)
-    document.addEventListener('native-recieveAuthToken', update)
+    document.addEventListener('native-receiveAuthToken', update)
     /*----react----*/
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
@@ -62,7 +62,7 @@ export default props => {
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-goLogin', update)
-      document.removeEventListener('native-recieveAuthToken', update)
+      document.removeEventListener('native-receiveAuthToken', update)
       /*----react----*/
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
