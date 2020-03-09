@@ -51,7 +51,7 @@ export const socketClusterDestory = (destorySocket, destoryChannel) => {
         privateChannelHandle.destroy()
         privateChannelHandle = null
       }
-      //socket.destroy()
+      socket.destroy()
       socket = null
     }
     //$('#loginTokenLabel').html('')
@@ -179,6 +179,9 @@ export const scConnection = obj => {
   //ssocketClusterDestory(true)
   // /************************************************************/
   //const HeaderObj = context.customHeader
+
+  socketClusterDestory(true)
+
   let options = {
     path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.token.authToken, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
     //path: '/socketcluster/',
@@ -699,7 +702,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
     receiveMessageData(data)
   })
   socket.on(socketConfig.packet.recv.PACKET_RECV_REQMICON, function(data) {
-    receiveMessageData(data)
+    //receiveMessageData(data)
   })
   socket.on(socketConfig.packet.recv.PACKET_RECV_REQMICOFF, function(data) {
     receiveMessageData(data)
@@ -760,6 +763,9 @@ export const socketClusterBinding = (channel, Info) => {
   // }
 
   //socketReload = socket
+
+  socketClusterDestory(false, channel)
+
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
