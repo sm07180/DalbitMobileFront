@@ -286,7 +286,7 @@ const Message = styled.div`
     pre {
       overflow: hidden;
       position: relative;
-      padding-left: 65px;
+      padding: 16px 14px 16px 65px;
       &:before {
         position: absolute;
         left: 0;
