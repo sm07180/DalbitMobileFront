@@ -36,7 +36,7 @@ const BroadCastProvider = props => {
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
     {id: 2, tab: '라이브'}
-    // {id: 3, tab: '충전'},
+    // {id: 3, tab: '충전'}
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
     // {id: 6, tab: '프로필'},
@@ -47,7 +47,12 @@ const BroadCastProvider = props => {
     // {id: 11, tab: '빠른 말'},
     // {id: 12, tab: '받은 선물'}
   ]
-  const [tabContent, setTabContent] = useState(arr)
+  let defaultArr = [
+    {id: 0, tab: '청취자'},
+    {id: 1, tab: '게스트'},
+    {id: 2, tab: '라이브'}
+  ]
+  // const [tabContent, setTabContent] = useState(arr)
   const [currentTab, setCurrentTab] = useState(arr)
   const [flag, setFlag] = useState(false)
 
@@ -117,16 +122,16 @@ const BroadCastProvider = props => {
       setFlag(!flag)
       setTabIdx(num)
       if (tabIdx === num) return
-      if (num === 3) setCurrentTab(tabContent.concat({id: num, tab: '충전'}))
-      if (num === 4) setCurrentTab(tabContent.concat({id: num, tab: '선물'}))
-      if (num === 5) setCurrentTab(tabContent.concat({id: num, tab: '부스트'}))
-      if (num === 6) setCurrentTab(tabContent.concat({id: num, tab: '프로필'}))
-      if (num === 7) setCurrentTab(tabContent.concat({id: num, tab: '신고하기'}))
-      if (num === 8) setCurrentTab(tabContent.concat({id: num, tab: '공지사항'}))
-      if (num === 9) setCurrentTab(tabContent.concat({id: num, tab: '사연'}))
-      if (num === 10) setCurrentTab(tabContent.concat({id: num, tab: '방송수정'}))
-      if (num === 11) setCurrentTab(tabContent.concat({id: num, tab: '빠른 말'}))
-      if (num === 12) setCurrentTab(tabContent.concat({id: num, tab: '받은 선물'}))
+      if (num === 3) setCurrentTab(defaultArr.concat({id: num, tab: '충전'}))
+      if (num === 4) setCurrentTab(defaultArr.concat({id: num, tab: '선물'}))
+      if (num === 5) setCurrentTab(defaultArr.concat({id: num, tab: '부스트'}))
+      if (num === 6) setCurrentTab(defaultArr.concat({id: num, tab: '프로필'}))
+      if (num === 7) setCurrentTab(defaultArr.concat({id: num, tab: '신고하기'}))
+      if (num === 8) setCurrentTab(defaultArr.concat({id: num, tab: '공지사항'}))
+      if (num === 9) setCurrentTab(defaultArr.concat({id: num, tab: '사연'}))
+      if (num === 10) setCurrentTab(defaultArr.concat({id: num, tab: '방송수정'}))
+      if (num === 11) setCurrentTab(defaultArr.concat({id: num, tab: '빠른 말'}))
+      if (num === 12) setCurrentTab(defaultArr.concat({id: num, tab: '받은 선물'}))
     },
     updateLike: num => {
       setLike(num)
@@ -154,7 +159,6 @@ const BroadCastProvider = props => {
     story,
     tabIdx,
     action,
-    tabContent,
     like,
     currentTab,
     flag,

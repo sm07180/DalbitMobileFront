@@ -17,6 +17,7 @@ export default props => {
   }
   //------------------------------------------------------------ func start
   //------------------------------------------------------------ components start
+  console.log('## props : ', props)
   return (
     <Container>
       {props.broadList.list.map((data, index) => {
@@ -27,7 +28,7 @@ export default props => {
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
-                    <button></button>
+                    <button onClick={() => props.joinRoom({roomNo: data.roomNo})}></button>
                   </div>
                 )}
                 <div className="profileImg">
