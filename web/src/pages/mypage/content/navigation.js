@@ -14,7 +14,7 @@ export default props => {
         {txt: '내 지갑', route: 'wallet'},
         {txt: '리포트', route: 'report'},
         {txt: '알림', route: 'alert'},
-        {txt: '방송 설정', route: 'setting'}
+        {txt: '방송 설정', route: 'bcsetting'}
       ]
     : [{}]
 
@@ -40,7 +40,7 @@ const Navigation = styled.div`
   display: flex;
   flex-direction: row;
   border: 1px solid #e0e0e0;
-
+  border-bottom: 1px solid #8556f6;
   a {
     display: flex;
     justify-content: center;

@@ -181,6 +181,24 @@ export default props => {
   //     </pre>
   //   </div>
   // </Message>
+
+  // 팬등록, 선물주세요
+  // <Message className="comment action" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+  //           <figure></figure>
+  //           <div>
+  //             <p>
+  //               <b className="dj">DJ</b>BJ라디오
+  //             </p>
+  //             <span>
+  //               좋아요 감사합니다.
+  //               <br />
+  //               000님
+  //               <br />
+  //               저의 팬이 되어주시겠어요?
+  //               <button>+팬등록</button>
+  //             </span>
+  //           </div>
+  //         </Message>
   //   </Content>
   // )
 }
@@ -225,6 +243,35 @@ const CommentList = styled.div`
 const Message = styled.div`
   position: relative;
   margin: 16px;
+
+  &.action {
+    span {
+      display: block;
+      overflow: hidden;
+      position: relative;
+      max-width: 270px;
+      padding: 14px;
+      padding-bottom: 54px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: center;
+      transform: skew(-0.03deg);
+      button {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: calc(100% + 2px);
+        padding: 10px 0;
+        background: ${COLOR_MAIN};
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+  }
 
   &.fan figure:after {
     display: inline-block;
@@ -286,7 +333,7 @@ const Message = styled.div`
     pre {
       overflow: hidden;
       position: relative;
-      padding-left: 65px;
+      padding: 16px 14px 16px 65px;
       &:before {
         position: absolute;
         left: 0;

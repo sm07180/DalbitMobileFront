@@ -80,22 +80,35 @@ export default props => {
     const recvTopData = data.data.recvMsg
     console.warn('recvTopData = ' + recvTopData)
     if (recvTopData.position === 'top1') {
-      const resulte = (
+      const result = (
         <div className="system-msg top1">
           <span>{recvTopData.msg}</span>
         </div>
       )
-      setTop1Msg(resulte)
+      setTop1Msg(result)
     } else {
       top2Data = top2Data.concat(recvTopData)
-      const resulte = top2Data.map((item, index) => {
+      console.log('123123123123123123')
+      const result = top2Data.map((item, index) => {
+        if (item.level < 5) {
+          setTimeout(() => {
+            const el = document.getElementsByClassName('top2-wrap')
+            const el2 = document.getElementById(`index${index}`)
+            //document.getElementsByTagName()
+            //if (el[0]) el[0].childNodes[index].remove()
+            if (el2 !== null) {
+              el2.remove()
+              top2Data.splice(index, 1)
+            }
+          }, item.time * 1000)
+        }
         return (
-          <div className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
+          <TipMsg className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level} id={`index${index}`}>
             <span>{item.msg}</span>
-          </div>
+          </TipMsg>
         )
       })
-      setTop2Msg(resulte)
+      setTop2Msg(result)
     }
   }
 
@@ -177,4 +190,8 @@ const CommentList = styled.div`
     bottom: 55px;
     height: calc(100% - 188px);
   }
+`
+
+const TipMsg = styled.div`
+  order: ${props => props.level};
 `

@@ -258,6 +258,8 @@ const Content = styled.div`
   }
 
   .top2-wrap {
+    display: flex;
+    flex-wrap: wrap;
     position: absolute;
     top: 125px;
     width: 100%;

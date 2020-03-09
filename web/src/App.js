@@ -21,8 +21,6 @@ import Api from 'context/api'
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
-import {Log, Table} from 'components/lib/log'
-
 import Route from './Route'
 import Interface from './Interface'
 // socketCluster 연결
@@ -34,6 +32,16 @@ export default () => {
   const context = useContext(Context)
   //useState
   const [ready, setReady] = useState(false)
+  //isHybrid체크
+  const isHybrid = useMemo(() => {
+    const element = document.getElementById('customHeader')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
+      const val = JSON.parse(element.value)
+      if (val.os + '' === '1' || val.os + '' === '2') return 'Y'
+      return 'N'
+    }
+    return 'N'
+  })
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //makeCustomHeader
@@ -80,28 +88,30 @@ export default () => {
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
-    if (res === undefined) {
-      console.log('토큰에러')
-    } else {
+    if (res.result === 'success') {
       console.table(res.data)
+      // result 성공/실패 여부상관없이,토큰없데이트
+      context.action.updateToken(res.data)
+      //JWT토큰동일한지유효성확인
+      if (isHybrid === 'Y' && res.data.authToken !== authToken) {
+        Hybrid('GetLoginToken', res.data)
+      }
+      //모든처리완료
+      setReady(true)
+    } else {
+      console.log('토큰에러')
     }
-    // result 성공/실패 여부상관없이,토큰없데이트
-    context.action.updateToken(res.data)
-    //모든처리완료
-    setReady(true)
-    // 로그인이 되었을때
   }
   //---------------------------------------------------------------------
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    context.action.updateCustomHeader(customHeader)
-    console.table(customHeader)
-    //#2 authToken
-    //@todo cookie 및 id="customHeader" 처리확인
-    //토큰업데이트
+    const _customHeader = {...customHeader, isHybrid: isHybrid}
+    context.action.updateCustomHeader(_customHeader)
+    console.table(_customHeader)
+    //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
-    fetchData({data: customHeader})
+    fetchData({data: _customHeader})
   }, [])
   //---------------------------------------------------------------------
   /**

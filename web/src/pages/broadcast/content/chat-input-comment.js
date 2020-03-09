@@ -110,26 +110,38 @@ export default props => {
         context.action.confirm({
           //콜백처리
           callback: () => {
-            const res = broad_pan_insert({
-              data: {
-                memNo: store.roomInfo.bjMemNo,
-                roomNo: roomNo
-              }
-            })
+            broad_pan_insert()
           },
           //캔슬콜백처리
           cancelCallback: () => {
             //alert('confirm callback 취소하기')
           },
+          buttonText: {
+            right: '+팬등록'
+          },
           msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
           저의 팬이 되어주시겠어요?`
         })
-      }, 10000)
+      }, 1000)
 
       clearTimeout()
     }
   }
-
+  //팬등록
+  async function broad_pan_insert() {
+    const res = await Api.broad_pan_insert({
+      data: {
+        memNo: store.roomInfo.bjMemNo,
+        roomNo: roomNo
+      }
+    })
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+    return res
+  }
   //방나가기
   async function broad_exit(roomNo) {
     const res = await Api.broad_exit({data: {roomNo: roomNo}})
@@ -145,7 +157,7 @@ export default props => {
       //콜백처리
       callback: () => {
         const res = broad_exit(props.roomNo)
-        if (res) {
+        if (res.result === 'success') {
           sc.SendMessageChatEnd(props)
         }
         //window.location.replace('https://' + window.location.hostname)
@@ -264,9 +276,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      {/* <button className="present" title="선물하기">
-
-      </button> */}
       <div
         className="present"
         onClick={() => {
@@ -483,6 +492,16 @@ const Content = styled.div`
     }
     div.btn-wrap {
       flex: 0 0 136px;
+
+      ul.menu-box,
+      ul.quick-box {
+        bottom: 66px;
+        right: 10px;
+      }
+      ul.volume-box {
+        right: 81px;
+        bottom: 46px;
+      }
     }
     button {
       width: 34px;
