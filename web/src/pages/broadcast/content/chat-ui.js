@@ -90,14 +90,20 @@ export default props => {
       top2Data = top2Data.concat(recvTopData)
       console.log('123123123123123123')
       const result = top2Data.map((item, index) => {
-        if (item.level === 1 || item.level === 2 || item.level === 3 || item.level === 4) {
+        if (item.level < 5) {
           setTimeout(() => {
             const el = document.getElementsByClassName('top2-wrap')
-            //if (el[0]) el[0].childNodes[0].remove()
-          }, 2000)
+            const el2 = document.getElementById(`index${index}`)
+            //document.getElementsByTagName()
+            //if (el[0]) el[0].childNodes[index].remove()
+            if (el2 !== null) {
+              el2.remove()
+              top2Data.splice(index, 1)
+            }
+          }, item.time * 1000)
         }
         return (
-          <TipMsg className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
+          <TipMsg className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level} id={`index${index}`}>
             <span>{item.msg}</span>
           </TipMsg>
         )
