@@ -62,11 +62,6 @@ export default props => {
     console.log('store.like')
 
     if (store.like == 1) {
-      //좋아요 성공시..
-      setToggle({
-        ...toggle,
-        like: true
-      })
       broad_likes(store.roomInfo.roomNo)
     } else if (store.like == 2) {
       store.action.updateLike(3)
@@ -81,19 +76,52 @@ export default props => {
   }
 
   //좋아요 보내기
+
   async function broad_likes(roomNo) {
+    let myFanJoin
     const res = await Api.broad_likes({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
+      store.action.updateLike(3)
+      context.action.alert({
+        // 좋아요 중복 사용 알림 팝업
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: res.message
+      })
+      //console.log(res.message)
       return
     } else {
       console.log('## liket res = ' + res)
-
       store.action.updateLike(2)
-      //store.action.updateLikeSum(1)
+      setToggle({
+        ...toggle,
+        like: true
+      })
+      // 좋아요 누른 후 10초 뒤에 팬등록 팝업 실행
+      setTimeout(() => {
+        context.action.confirm({
+          //콜백처리
+          callback: () => {
+            const res = broad_pan_insert({
+              data: {
+                memNo: store.roomInfo.bjMemNo,
+                roomNo: roomNo
+              }
+            })
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {
+            //alert('confirm callback 취소하기')
+          },
+          msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
+          저의 팬이 되어주시겠어요?`
+        })
+      }, 10000)
 
-      //store.action.updateLikeSum()
+      clearTimeout()
     }
   }
 

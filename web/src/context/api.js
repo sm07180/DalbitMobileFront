@@ -310,6 +310,18 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/state`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief 방송방 팬 등록(BJ팬 등록 경우 채팅방 알림)
+   * @method "POST"
+   * @todo
+   * @param string memNo                 //*스타회원번호
+   * @param string roomNo                 //*방송방 번호
+   * @create 김호겸 2020.03.09
+   */
+  static broad_pan_insert = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/pan`, method: method || 'POST', data: data})
+  }
   //--------------------------------------------------------------------- 회원 관련
   /**
    * @brief 토큰조회
