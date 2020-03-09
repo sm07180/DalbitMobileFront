@@ -97,9 +97,9 @@ export default props => {
           }, 2000)
         }
         return (
-          <div className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
+          <TipMsg className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level}>
             <span>{item.msg}</span>
-          </div>
+          </TipMsg>
         )
       })
       setTop2Msg(result)
@@ -184,4 +184,8 @@ const CommentList = styled.div`
     bottom: 55px;
     height: calc(100% - 188px);
   }
+`
+
+const TipMsg = styled.div`
+  order: ${props => props.level};
 `
