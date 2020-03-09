@@ -24,7 +24,6 @@ import Cast from './content/cast.js'
 import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
-import Setting from './content/setting.js'
 
 //
 const User = props => {
@@ -52,7 +51,6 @@ const User = props => {
             <Route exact path="/mypage/wallet" component={Wallet} />
             <Route exact path="/mypage/report" component={Report} />
             <Route exact path="/mypage/alert" component={Alert} />
-            <Route exact path="/mypage/setting" component={Setting} />
           </Switch>
         </SubContent>
       </Content>
