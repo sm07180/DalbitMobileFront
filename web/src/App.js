@@ -21,8 +21,6 @@ import Api from 'context/api'
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
-import {Log, Table} from 'components/lib/log'
-
 import Route from './Route'
 import Interface from './Interface'
 // socketCluster 연결
@@ -34,6 +32,16 @@ export default () => {
   const context = useContext(Context)
   //useState
   const [ready, setReady] = useState(false)
+  //isHybrid체크
+  const isHybrid = useMemo(() => {
+    const element = document.getElementById('customHeader')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
+      const val = JSON.parse(element.value)
+      if (val.os + '' === '1' || val.os + '' === '2') return 'Y'
+      return 'N'
+    }
+    return 'N'
+  })
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //makeCustomHeader
@@ -95,7 +103,7 @@ export default () => {
   //useEffect token
   useEffect(() => {
     //#1 customHeader
-    context.action.updateCustomHeader(customHeader)
+    context.action.updateCustomHeader({...customHeader, isHybrid: isHybrid})
     console.table(customHeader)
     //#2 authToken
     //@todo cookie 및 id="customHeader" 처리확인
