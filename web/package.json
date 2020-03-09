@@ -19,6 +19,7 @@
     "cross-env": "^6.0.3",
     "eslint-config-prettier": "^6.9.0",
     "file-loader": "^5.0.2",
+    "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "node-html-parser": "^1.2.7",
     "qs": "^6.9.1",

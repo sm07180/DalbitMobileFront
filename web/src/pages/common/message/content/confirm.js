@@ -8,8 +8,9 @@
  * @param {title} string               //상단제목없으면 노출안됨
  * @param {msg} string(html)           //메시지영역 노출 (html or)
  */
-import React, {useContext} from 'react'
+import React, {useMemo, useContext} from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 //context
 import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
@@ -25,7 +26,21 @@ export default props => {
   //--hooks
   const confirm = useClick(update, {callback: 'confirm'})
   const cancel = useClick(update, {callback: 'cancel'})
-
+  //--useMemo
+  const cancelText = useMemo(() => {
+    if (_.hasIn(context.message, 'buttonText.left')) {
+      return context.message.buttonText.left
+    } else {
+      return '취소'
+    }
+  })
+  const confirmText = useMemo(() => {
+    if (_.hasIn(context.message, 'buttonText.right')) {
+      return context.message.buttonText.right
+    } else {
+      return '확인'
+    }
+  })
   //---------------------------------------------------------------------
   //공통함수
   function update(mode) {
@@ -58,10 +73,10 @@ export default props => {
       </div>
       <div className="wrap-btn">
         <button className="cancel" {...cancel}>
-          취소
+          {cancelText}
         </button>
         <button className="confirm" {...confirm}>
-          확인
+          {confirmText}
         </button>
       </div>
     </Alert>
