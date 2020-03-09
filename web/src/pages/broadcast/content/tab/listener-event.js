@@ -59,6 +59,7 @@ export default props => {
     })
     //Error발생시
     if (res.result === 'success') {
+      broadListenListReload()
       //sc.sendMessage()
       console.log('broadManager  res = ' + res)
       store.action.updateListenTrues()
