@@ -166,6 +166,7 @@ const GlobalProvider = props => {
     state,
     roomInfo,
     mypage,
+    profile,
     message,
     token,
     customHeader,
