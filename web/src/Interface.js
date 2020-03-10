@@ -26,12 +26,10 @@ export default props => {
         context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native start
-        alert('native-start')
         context.action.updateMediaPlayerStatus(true)
-        // context.action.updateRoomInfo(event.detail)
         break
-      case 'native-end': //-----------------------------Native start
-        alert('native-end')
+      case 'native-end': //-----------------------------Native end
+        context.action.updateMediaPlayerStatus(false)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
