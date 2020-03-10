@@ -18,13 +18,9 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
-  const {isLogin, memNo} = context.token
   const {mypage} = context
   //useState
   //useMemo
-
-  //const
-  //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
 
   //data
   const info = [
@@ -53,19 +49,6 @@ export default props => {
     })
   }
 
-  const fetchData = () => {
-    const userInfo = Api.profile({params: {memNo: memNo}})
-    if (userInfo.result === 'success') {
-      context.action.updateMypage(userInfo.data)
-    }
-  }
-
-  useEffect(() => {
-    if (!mypage && isLogin) {
-      fetchData()
-    }
-  }, [isLogin])
-  console.log('mypage', mypage)
   //---------------------------------------------------------------------
   return (
     <>

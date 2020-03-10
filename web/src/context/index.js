@@ -81,7 +81,6 @@ const GlobalProvider = props => {
      * @param object obj                        //마이페이지
      */
     updateMypage: obj => {
-      //setMypage(mypage => ({...mypage, ...obj}))
       setMypage(mypage => obj)
     },
     //팝업컨텐츠
