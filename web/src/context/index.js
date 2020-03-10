@@ -36,7 +36,6 @@ const GlobalProvider = props => {
   const [broadcastTotalInfo, setBroadcastTotalInfo] = useState(null) //create 2020.02.28 김호겸 - 방송방 reToken 정보
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   const [common, setCommon] = useState() //공통코드
-  const [userInfo, setUserInfo] = useState(null) // 유저 정보
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -156,10 +155,6 @@ const GlobalProvider = props => {
     //공통코드 live 진입 시 context에 저장  * /splash api 참조 *
     updateCommon: obj => {
       setCommon(obj)
-    },
-    // 유저 프로필 정보
-    updateUserInfo: obj => {
-      setUserInfo(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -180,7 +175,6 @@ const GlobalProvider = props => {
     broadcastTotalInfo,
     cast_state,
     common,
-    userInfo,
 
     action
   }
