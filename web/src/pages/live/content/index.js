@@ -115,6 +115,11 @@ export default props => {
     getBroadList({params: {roomType: '', page: 1, records: 10}})
     //fetchData({params: {roomType: 0, page: 1, records: 10}})
   }, [])
+
+  // useEffect(() => {
+  //   console.clear()
+  //   console.log(context.broadcastTotalInfo)
+  // }, [context.broadcastTotalInfo])
   //---------------------------------------------------------------------
   return (
     <Content>

@@ -143,6 +143,7 @@ const GlobalProvider = props => {
     },
     /**
      * 방송방 토큰 재생성
+     * @breif 방들어올때,생성할때
      */
     updateBroadcastTotalInfo: obj => {
       setBroadcastTotalInfo(obj)
