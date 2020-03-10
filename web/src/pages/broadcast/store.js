@@ -16,8 +16,9 @@ const {Provider} = BroadCastStore
 const BroadCastProvider = props => {
   //state
 
+  const [auth, setAuth] = useState()
   const [roomNumber, setRoomNumber] = useState('')
-  const [roomInfo, setRoomInfo] = useState({})
+  const [roomInfo, setRoomInfo] = useState(null)
   const [listenerList, setListenerList] = useState([])
   const [managerList, setManagerList] = useState([])
   const [guestList, setGuestList] = useState([])
@@ -81,6 +82,9 @@ const BroadCastProvider = props => {
     //updateState
     updateRoomInfo: obj => {
       if (typeof obj === 'object') setRoomInfo(obj)
+      if (typeof obj === 'object') {
+        //    console.log('obj', obj)
+      }
     },
     updateListenerSelect: obj => {
       if (typeof obj === 'object') setListenerSelect(obj)
@@ -143,10 +147,15 @@ const BroadCastProvider = props => {
       num = context.roomInfo.like + num
       console.log('updateLikeSum = ' + num)
       setSumLike(num)
+    },
+    //TEST
+    updateAuth: num => {
+      setAuth(num)
     }
   }
   //---------------------------------------------------------------------
   const value = {
+    auth,
     roomInfo,
     roomNumber,
     listenerList,

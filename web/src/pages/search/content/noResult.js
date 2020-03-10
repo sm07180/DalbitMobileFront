@@ -39,6 +39,7 @@ const ResultWrap = styled.div`
   align-items: center;
   width: 100%;
   margin: 100px 0 90px 0;
+
   & h2 {
     color: #757575;
     font-size: 24px;
@@ -53,12 +54,28 @@ const ResultWrap = styled.div`
 
     & div {
       width: 50%;
+      @media (max-width: ${WIDTH_MOBILE}) {
+        &:first-child {
+          width: 0;
+        }
+        &:last-child {
+          width: 100%;
+        }
+      }
       &:last-child {
         margin-left: 182px;
+        @media (max-width: ${WIDTH_MOBILE}) {
+          margin-left: 0px;
+        }
         & > img {
           width: 296.4px;
           height: 424.7px;
           margin-top: 40px;
+          @media (max-width: ${WIDTH_MOBILE}) {
+            display: block;
+            margin: 40px auto 0 auto;
+            width: 90%;
+          }
         }
       }
     }

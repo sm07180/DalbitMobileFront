@@ -54,7 +54,7 @@ export default props => {
     console.log('## index.js - tabContent :', store.currentTab)
   }, [store.flag])
 
-  console.log('## store: ', store)
+  // console.log('## store: ', store)
   return (
     <>
       {/* 탭버튼 */}
