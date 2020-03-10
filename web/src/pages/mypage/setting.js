@@ -14,13 +14,13 @@ export default props => {
   const context = useContext(Context)
   const {mypage} = context
   if (!mypage) {
-    // props.history.push('/')
+    props.history.push('/')
   }
   // const ppimg = mypage.profImg['thumb88x88']
 
   // console.log('props', props)
   console.log('ctx', context)
-  console.log('ctx mypage', context.mypage)
+  console.log('ctx mypage', mypage.profImg['thumb88x88'])
 
   const [pImg, setPimg] = useState(null)
   const profileImageUpload = e => {
@@ -41,7 +41,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : ''})`}}>
+          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : context.mypage.profImg['thumb88x88']})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
           </ProfileImg>
