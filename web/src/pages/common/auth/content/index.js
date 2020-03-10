@@ -133,22 +133,6 @@ export default props => {
           roomNo: UserRoomNo
         }
         sc.sendMessage.login(scLoginInfo)
-
-        //마이페이지업데이트
-        async function fetchData(resMemNo) {
-          const res = await Api.profile({
-            params: {
-              memNo: resMemNo
-            }
-          })
-          if (res.result === 'success') {
-            setFetch(res.data)
-            context.action.updateMypage(res.data)
-          } else {
-            console.log('error', res.result)
-          }
-        }
-        fetchData(res.data.memNo)
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)

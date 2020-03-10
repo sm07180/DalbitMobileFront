@@ -25,9 +25,13 @@ export default props => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateRoomInfo(event.detail)
         break
-      case 'native-goLogin': //-------------------------Native goLogin
-        alert('native-goLogin')
-        context.action.updatePopup('LOGIN')
+      case 'native-start': //---------------------------Native start
+        alert('native-start')
+        context.action.updateMediaPlayerStatus(true)
+        // context.action.updateRoomInfo(event.detail)
+        break
+      case 'native-end': //-----------------------------Native start
+        alert('native-end')
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
@@ -46,7 +50,8 @@ export default props => {
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
-    document.addEventListener('native-goLogin', update)
+    document.addEventListener('native-start', update) //진행중
+    document.addEventListener('native-end', update) //진행중
     /*----react----*/
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
@@ -54,7 +59,8 @@ export default props => {
       /*----native----*/
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
-      document.removeEventListener('native-goLogin', update)
+      document.removeEventListener('native-start', update) //진행중
+      document.removeEventListener('native-end', update) //진행중
       /*----react----*/
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
