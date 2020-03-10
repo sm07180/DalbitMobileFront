@@ -3,18 +3,25 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 
-import React, {useEffect, useStet} from 'react'
+import React, {useEffect, useStet, useContext} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
+// context
+import {Context} from 'context'
+
 const myProfile = props => {
+  const context = useContext(Context)
+  const {mypage} = context
+  console.log(mypage)
+
   return (
     <MyProfile>
-      <ProfileImg />
-      <div style={{marginLeft: '24px', width: '100%'}}>
+      <ProfileImg style={{backgroundImage: `url(${mypage.profImg ? mypage.profImg['thumb190x190'] : ''})`}} />
+      <div style={{marginLeft: '24px', width: 'calc(100% - 180px)'}}>
         <LevelWrap>
           <LevelText>LEVEL 12</LevelText>
           <LevelStatusBarWrap>
@@ -41,7 +48,7 @@ const myProfile = props => {
         </CountingWrap>
 
         <IntroduceAndFan>
-          <div>불러주는 진짜 사연 라디오</div>
+          <div>{mypage.profMsg}</div>
           <div></div>
         </IntroduceAndFan>
       </div>
@@ -123,10 +130,12 @@ const LevelWrap = styled.div`
   flex-direction: row;
 `
 
-const ProfileImg = styled.img`
+const ProfileImg = styled.div`
   display: block;
   width: 156px;
   height: 156px;
+  background-size: cover;
+  background-position: center;
 `
 
 const MyProfile = styled.div`
