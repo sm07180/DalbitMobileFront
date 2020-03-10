@@ -56,23 +56,8 @@ export default props => {
       )
     })
   }
-  //fetch
-  async function fetchData(obj) {
-    const res = await Api.profile({
-      params: {
-        memNo: memNo
-      }
-    })
-    if (res.result === 'success') {
-      setFetch(res.data)
-      context.action.updateMypage(res.data)
-    }
-  }
-  //---------------------------------------------------------------------
 
-  useEffect(() => {
-    if (isLogin) fetchData()
-  }, [context.token.isLogin])
+  useEffect(() => {}, [context.token.isLogin])
   //---------------------------------------------------------------------
   return (
     <>
