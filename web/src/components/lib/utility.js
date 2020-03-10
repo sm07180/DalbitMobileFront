@@ -30,24 +30,6 @@ export default class Utility {
     document.cookie = c_name + '=' + c_value + ';path=/;Secure;Domain=dalbitcast.com'
   }
   /**
-   * @brief 쿠키가져오기
-   * @param string    c_name            //*쿠키의 key(키)
-   * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
-   *
-   */
-  static getCookie = c_name => {
-    let i, x, y
-    let ARRcookies = document.cookie.split(';')
-    for (i = 0; i < ARRcookies.length; i++) {
-      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='))
-      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
-      x = x.replace(/^\s+|\s+$/g, '')
-      if (x == c_name) {
-        return decodeURIComponent(y)
-      }
-    }
-  }
-  /**
    * @brief 쿠키 삭제
    * @param string    c_name            //*쿠키의 key(키)
    * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
