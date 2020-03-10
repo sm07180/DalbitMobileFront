@@ -40,26 +40,26 @@ export default props => {
         if (props.history) {
           context.action.updatePopupVisible(false)
           context.action.updateGnbVisible(false)
-
-          const contextAuthToken = context.token.authToken
-          const {authToken} = mode.loginSuccess
-          console.log(contextAuthToken)
-          console.log(authToken)
-          if (contextAuthToken === authToken) {
-            alert('토큰이 동일')
-            return true
+          /**
+           * @native 전달
+           */
+          //앱에서호출되는 로그인팝업
+          if (_href.indexOf('/login') !== -1) {
+            Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
           } else {
-            /**
-             * @native 전달
-             */
-            //앱에서호출되는 로그인팝업
-            if (_href.indexOf('/login') !== -1) {
-              Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
-            } else {
-              //일반적인 로그인성공
-              Hybrid('GetLoginToken', mode.loginSuccess)
-            }
+            //일반적인 로그인성공
+            Hybrid('GetLoginToken', mode.loginSuccess)
           }
+
+          // const contextAuthToken = context.token.authToken
+          // const {authToken} = mode.loginSuccess
+          // console.log(contextAuthToken)
+          // console.log(authToken)
+          // if (contextAuthToken === authToken) {
+          //   alert('토큰이 동일')
+          //   return true
+          // } else {
+          // }
         }
         break
       default:
