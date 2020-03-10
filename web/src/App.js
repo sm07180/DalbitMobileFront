@@ -102,7 +102,6 @@ export default () => {
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
       } else {
-        Utility.setCookie('native-active', '', '-1')
         if (res.data.authToken !== authToken) {
           Hybrid('GetLoginToken', res.data)
           // if (isHybrid === 'Y') alert('GetLoginToken')
