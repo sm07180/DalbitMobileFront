@@ -96,6 +96,12 @@ export default () => {
       if (userInfo.result === 'success') {
         context.action.updateMypage(userInfo.data)
       }
+
+      const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+      if (profileInfo.result === 'success') {
+        context.action.updateProfile(profileInfo.data)
+      }
+
       context.action.updateToken(res.data)
       //하이브리디일때만
       if (isHybrid === 'Y') {
