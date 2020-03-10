@@ -17,7 +17,7 @@ const {Provider} = Context
 //
 const GlobalProvider = props => {
   //initalize
-  const DAY_COOKIE_PERIOD = '365'
+  const DAY_COOKIE_PERIOD = 100
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
