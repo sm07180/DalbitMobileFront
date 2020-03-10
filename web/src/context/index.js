@@ -144,7 +144,7 @@ const GlobalProvider = props => {
     /**
      * 방송방 토큰 재생성
      */
-    updateBroadcastreTotalInfo: obj => {
+    updateBroadcastTotalInfo: obj => {
       setBroadcastTotalInfo(obj)
     },
     //방생성 후 방정보 가지고있음, 방 종료시 사라짐
