@@ -10,8 +10,6 @@ export default props => {
   const [selected, setSelected] = useState()
   const context = useContext(Context)
   const [roomType, setRoomType] = useState([])
-  const [list, setList] = useState([])
-  const arr = ['1', '2', '3']
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
@@ -25,10 +23,7 @@ export default props => {
     }
   }, [])
 
-  useEffect(() => {
-    setList(props.broadList)
-  }, [])
-
+  // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
     return (
       <Contents key={index}>
@@ -77,12 +72,12 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  /* width: 90%; */
+  width: 90%;
   justify-content: space-between;
 `
 const Contents = styled.div`
   display: flex;
-  /* width: 400px; */
+  width: 400px;
   height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;

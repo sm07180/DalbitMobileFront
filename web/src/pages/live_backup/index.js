@@ -8,11 +8,11 @@ import React, {useEffect, useContext, useState} from 'react'
 import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
-// import {LiveProvider} from './store'
+import {LiveProvider} from './store'
 //components
 import Api from 'context/api'
 //pages
-import Content from 'pages/live_pub/content/'
+import Content from 'pages/live/content/'
 //
 export default props => {
   //---------------------------------------------------------------------

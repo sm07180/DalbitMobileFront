@@ -26,7 +26,7 @@ const Login = React.lazy(() => import('pages/login'))
 const User = React.lazy(() => import('pages/user'))
 const Cast = React.lazy(() => import('pages/cast'))
 const Ranking = React.lazy(() => import('pages/ranking'))
-const Live = React.lazy(() => import('pages/live'))
+// const Live = React.lazy(() => import('pages/live_backup'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
 const Mypage = React.lazy(() => import('pages/mypage'))
@@ -35,7 +35,7 @@ const Search = React.lazy(() => import('pages/search'))
 const NotFoundPage = React.lazy(() => import('pages/common/404'))
 
 //live pub
-const LivePub = React.lazy(() => import('pages/live_pub'))
+const Live = React.lazy(() => import('pages/live'))
 // import App from 'pages/app' //라이브
 const App = React.lazy(() => import('pages/app'))
 
@@ -60,7 +60,7 @@ export default () => {
         <Route exact path="/mypage/:sub" component={Mypage} />
         <Route exact path="/app/" component={App} />
         <Route exact path="/search" component={Search} />
-        <Route exact path="/livePub" component={LivePub} />
+        {/* <Route exact path="/livePub" component={LivePub} /> */}
         {/* navigator */}
         <Route exact path="/navigator" component={Navigator} />
         {/* 페이지가없을경우 404로 이동 */}
