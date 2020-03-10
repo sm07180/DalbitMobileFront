@@ -8,27 +8,25 @@ export default props => {
   //----------------------------------------------------------- declare start
   const [sort1, setSort1] = useState('랭킹')
   const [sort2, setSort2] = useState('방송주제')
-  const [sort3, setSort3] = useState('인기순')
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [open3, setOpen3] = useState(false)
   const context = useContext(Context)
   const [list, setList] = useState([{cd: '', cdNm: '전체'}])
   //----------------------------------------------------------- func start
+
+  // dropDown button
   const drop1 = () => {
     setOpen1(!open1)
     setOpen2(false)
     setOpen3(false)
   }
+
+  // dropDown button
   const drop2 = () => {
     setOpen1(false)
     setOpen2(!open2)
     setOpen3(false)
-  }
-  const drop3 = () => {
-    setOpen1(false)
-    setOpen2(false)
-    setOpen3(!open3)
   }
 
   // dropDown 선택 시 데이터 가져와야함
@@ -43,10 +41,9 @@ export default props => {
         records: 10
       }
       props.setType(data.cd)
-      props.getBroadList({params})
+      props.getBroadList({params}) // 조회 function call
     }
 
-    if (index === 3) setSort3(data.cdNm)
     setOpen1(false)
     setOpen2(false)
     setOpen3(false)
@@ -58,7 +55,6 @@ export default props => {
     }
   }, [context])
   //----------------------------------------------------------- components start
-  console.log('## context :', context)
   return (
     <Container>
       <TopArea>
@@ -94,19 +90,6 @@ export default props => {
                     })}
                   </DropDown>
                 )}
-              </div>
-              <div className="sideDropDown">
-                <div className="dropDown">
-                  <span>{sort3}</span>
-                  <Icon onClick={() => drop3()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
-                  {open3 && (
-                    <DropDown>
-                      <li onClick={() => searchLive(6)}>option1</li>
-                      <li onClick={() => searchLive(7)}>option2</li>
-                      <li onClick={() => searchLive(8)}>option3</li>
-                    </DropDown>
-                  )}
-                </div>
               </div>
             </Sort>
           </div>

@@ -1,40 +1,51 @@
-/**
- * @file chat.js
- * @brief 채팅
- * test
- */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useContext, useState, useMemo} from 'react'
 import styled from 'styled-components'
-//context
-import {isHybrid, Hybrid} from 'context/hybrid'
-//import {Context} from 'pages/live/store'
-import {Context} from 'context'
-//components
+import {WIDTH_MOBILE} from 'context/config'
 import Api from 'context/api'
+import {Context} from 'context'
+import {isHybrid, Hybrid} from 'context/hybrid'
+//components
+import Title from './title'
+import TopRank from './topRank'
+import Live from './live'
+import Pagination from './pagination'
 
-//
 export default props => {
-  //---------------------------------------------------------------------
-  //context
-  //const store = useContext(Context)
+  //----------------------------------------------------------- declare start
+  const [list, setList] = useState([])
+  const [paging, setPaging] = useState()
   const context = useContext(Context)
-  //useState
-  const [roomId, setRoomId] = useState(null)
-  const [fetch, setFetch] = useState(null)
-  //---------------------------------------------------------------------
-  //getBroadList
-  async function getBroadList(obj) {
+  const [type, setType] = useState('') // roomType
+  const width = useMemo(() => {
+    return window.innerWidth >= 600 ? 400 : 200
+  })
+  //----------------------------------------------------------- func start
+
+  // 방송방 리스트 조회
+  const getBroadList = async obj => {
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
+      console.log('## res :', res)
+      setList(false)
       return
-    }
-    if (res.result === 'success') {
-      console.log(res.data)
-      setFetch(res.data)
+    } else {
+      setList(res.data.list)
+      setPaging(res.data.paging)
+      console.log('## res :', res)
     }
   }
+
+  // 공통코드 조회
+  const commonData = async obj => {
+    const res = await Api.splash({})
+    if (res.result === 'success') {
+      context.action.updateCommon(res.data) // context에 update
+    }
+    console.log('## res :', res.data)
+  }
+
   //exitRoom
   async function exitRoom(obj) {
     const res = await Api.broad_exit({data: {...obj}})
@@ -43,6 +54,7 @@ export default props => {
     }
     alert(res.message)
   }
+
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
@@ -69,141 +81,48 @@ export default props => {
     return
   }
 
-  //makeContents
-  const makeContents = type => {
-    if (fetch === null) return
-    const count = fetch.list.filter(list => list.state === 1).length
-    if (count === 0) alert('현재라이브중인 방송이 없습니다')
-    return fetch.list.map((list, idx) => {
-      let mode = '해당사항없음'
-      const {state, roomNo, gstProfImg, bjProfImg, welcomMsg, bgImg, title} = list
-      if (state === 1) mode = '라이브중'
-      if (state === 2) mode = '2'
-      if (state === 3) mode = '3'
-      if (state === 4) mode = '4'
-      if (state === 5) mode = '비정상종료'
-      //
-      if (state === 1 || state === '1') {
-        return (
-          <List
-            key={idx}
-            style={{backgroundImage: `url(${bgImg.url})`}}
-            onClick={() => {
-              joinRoom(list)
-            }}>
-            <h3>[{mode}]</h3>
-            <h1>{title}</h1>
-            <h2>{welcomMsg}</h2>
-            {gstProfImg.thumb190x190 !== '' && (
-              <Profile>
-                <img src={`${gstProfImg.thumb190x190}`} alt="" />
-              </Profile>
-            )}
-            <h3>{roomNo}</h3>
-          </List>
-        )
-      }
-    })
-  }
-  //---------------------------------------------------------------------
-  /**
-   *
-   * @returns
-   */
   useEffect(() => {
-    //방송방 리스트
-    getBroadList({params: {roomType: '', page: 1, records: 10}})
-    //fetchData({params: {roomType: 0, page: 1, records: 10}})
+    getBroadList({params: {roomType: type, page: 1, records: 10}})
+    commonData()
   }, [])
 
-  // useEffect(() => {
-  //   console.clear()
-  //   console.log(context.broadcastTotalInfo)
-  // }, [context.broadcastTotalInfo])
-  //---------------------------------------------------------------------
+  //----------------------------------------------------------- components start
   return (
-    <Content>
-      <div className="wrap">
-        {/* <Button
-          onClick={() => {
-            //fetch
-            async function fetchData(obj) {
-              const res = await Api.broad_exit({...obj})
-              console.log(res)
-              alert(res.message)
-            }
-            fetchData({data: {roomNo: roomId}})
-          }}>
-          방나가기
-        </Button> */}
-
-        {makeContents()}
-      </div>
-    </Content>
+    <Container>
+      <Title title={'라이브'} />
+      <Wrap>
+        <MainContents>
+          {list.length > 1 && <TopRank broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} />}
+          <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
+        </MainContents>
+      </Wrap>
+      <Pagination paging={paging} getBroadList={getBroadList} type={type} />
+    </Container>
   )
 }
-//---------------------------------------------------------------------
-const Content = styled.div`
-  max-width: 1920px;
-  width: 100%;
-  padding: 0 50px;
-  box-sizing: border-box;
-  hr {
-    margin: 50px 0;
-    border-bottom: 1px solid #000;
-  }
-  .wrap {
-    min-height: 200px;
-    background: #e1e1e1;
-  }
-`
-const Button = styled.button`
-  display: block;
-  width: 100%;
-  font-size: 16px;
-  padding: 20px 0;
-  color: #fff;
-  background: #ff0000;
-`
-const List = styled.button`
-  display: inline-block;
-  margin: 10px;
-  max-width: 150px;
-  width: 150px;
-  min-height: 100px;
-  padding: 10px;
-  vertical-align: top;
-  background-size: cover;
-  box-sizing: border-box;
 
-  h1 {
-    font-size: 14px;
-    color: #ff0000;
-  }
-  h2 {
-    font-size: 12px;
-    color: blue;
-  }
-  h3 {
-    display: block;
-    font-size: 12px;
-    color: #fff;
-    background: #000;
-  }
-  img {
-    width: 100%;
-    height: auto;
-    vertical-align: top;
-  }
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
 `
-const Profile = styled.span`
-  display: inline-block;
-  width: 50px;
-  height: 50px;
 
-  img {
+const MainContents = styled.div`
+  @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
-    height: auto;
-    vertical-align: top;
+    align-items: flex-start;
   }
+  display: flex;
+  width: 80%;
+  height: 100%;
+  align-items: flex-start;
+  flex-direction: column;
+`
+const Wrap = styled.div`
+  display: flex;
+  width: 90%;
+  height: 100%;
+  justify-content: center;
 `

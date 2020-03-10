@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 
 export default props => {
   //------------------------------------------------------ declare start
@@ -19,6 +20,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 3vh;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 80px;
+    margin-bottom: 0px;
+  }
 
   & > div {
     display: flex;

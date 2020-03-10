@@ -13,14 +13,12 @@ import {Context} from 'context'
 export default props => {
   const context = useContext(Context)
   const {mypage} = context
-  if (!mypage) {
-    // props.history.push('/')
-  }
-  // const ppimg = mypage.profImg['thumb88x88']
+  const [nickname, setNickname] = useState('')
+  const [profileMsg, setProfileMsg] = useState('')
 
-  // console.log('props', props)
-  console.log('ctx', context)
-  console.log('ctx mypage', context.mypage)
+  if (!mypage) {
+    props.history.push('/')
+  }
 
   const [pImg, setPimg] = useState(null)
   const profileImageUpload = e => {
@@ -35,32 +33,49 @@ export default props => {
     }
   }
 
+  const changeNickname = e => {
+    const {currentTarget} = e
+    setNickname(currentTarget.value)
+  }
+
+  const changeMsg = e => {
+    const {currentTarget} = e
+    setProfileMsg(currentTarget.value)
+  }
+
   const saveUpload = () => {}
+
+  useEffect(() => {
+    console.log('ctx', context)
+    console.log('ctx mypage', mypage)
+    setNickname(mypage.nickNm)
+    setProfileMsg(mypage.profMsg)
+  }, [])
 
   return (
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : ''})`}}>
+          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : context.mypage.profImg ? context.mypage.profImg['thumb88x88'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
           </ProfileImg>
           <div className="nickname">
-            <NicknameInput autoComplete="off" />
+            <NicknameInput autoComplete="off" value={nickname} onChange={changeNickname} />
           </div>
-          <UserId>@elpapp01</UserId>
-          <PasswordInput autoComplete="new-password" />
-          <BirthDate>1952-05-30</BirthDate>
+          <UserId>{`@${mypage.memId}`}</UserId>
+          {/* <PasswordInput autoComplete="new-password" /> */}
+          <BirthDate>{`${mypage.birth.slice(0, 4)}-${mypage.birth.slice(4, 6)}-${mypage.birth.slice(6)}`}</BirthDate>
           <GenderWrap>
-            <GenderTab>남자</GenderTab>
-            <GenderTab className="off">여자</GenderTab>
+            <GenderTab className={mypage.gender === 'm' ? '' : 'off'}>남자</GenderTab>
+            <GenderTab className={mypage.gender === 'w' ? '' : 'off'}>여자</GenderTab>
           </GenderWrap>
 
           <GenderAlertMsg>* 생년월일과 성별 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
 
           <div className="msg-wrap">
             <MsgTitle>프로필 메세지</MsgTitle>
-            <MsgText></MsgText>
+            <MsgText value={profileMsg} onChange={changeMsg} />
           </div>
           <SaveBtn onClick={saveUpload}>저장</SaveBtn>
         </SettingWrap>
@@ -131,6 +146,10 @@ const BirthDate = styled.div`
 `
 
 const PasswordInput = styled.input.attrs({type: 'password'})`
+  display: block;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  width: 100%;
   margin-top: 20px;
 `
 const UserId = styled.div`
@@ -143,6 +162,9 @@ const UserId = styled.div`
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  width: 100%;
 `
 
 const ProfileImg = styled.div`

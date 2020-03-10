@@ -96,11 +96,12 @@ export default props => {
       refresh()
     }
   }, [])
+  console.log('## context.token.memNo :', context.token.memNo)
   //----------------------------------------------- components start
   return (
     <Container>
-      <Navi title={type ? '등록 사연' : '사연'} />
-      {type ? (
+      <Navi title={context.token.memNo === store.roomInfo.bjMemNo ? '등록 사연' : '사연'} prev={props.prev} _changeItem={props._changeItem} />
+      {context.token.memNo === store.roomInfo.bjMemNo ? (
         <DjMain>
           <div className="topBar">
             <div className="refresh">
