@@ -131,7 +131,10 @@ export default () => {
     //-----##TEST
 
     if (isHybrid === 'Y') {
-      alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
+      alert('하이브리드')
+      // const _val = sessionStorage.setItem('PLAYER_INFO')
+      // alert(_val)
+      // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
       //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
     }
     // sessionStorage.setItem('23동의대', 0)
