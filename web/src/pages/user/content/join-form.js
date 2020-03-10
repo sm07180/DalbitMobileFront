@@ -32,6 +32,7 @@ const JoinForm = props => {
   const [currentNick, setCurrentNick] = useState() // 닉네임 확인 도움 텍스트 값.
   const [currentName, setCurrentName] = useState() // 이름 확인 도움 텍스트 값.
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
+  const [imgData, setImgData] = useState()
 
   //포토서버에 올라간 디폴트 이미지
   const defaultImage = `${PHOTO_SERVER}/profile_3/profile_n.png`
@@ -187,10 +188,11 @@ const JoinForm = props => {
       // console.log('reader', reader)
       // console.log('reader.', reader.result)
       if (reader.result) {
-        setChanges({
-          ...changes,
-          image: reader.result
-        })
+        // setChanges({
+        //   ...changes,
+        //   image: reader.result
+        // })
+        setImgData(reader.result)
       } else {
       }
     }
@@ -241,7 +243,7 @@ const JoinForm = props => {
     //이미지가 기본 이미지면 image_upload를 날리지 않는다.
     let resultImg = ''
 
-    if (changes.image == defaultImage) {
+    if (imgData == defaultImage) {
       //기본 이미지면 업로드 날리지 않고 기본이미지의 path바로 세팅
       resultImg = defaultImagePath
     } else {
@@ -249,7 +251,7 @@ const JoinForm = props => {
       const resUpload = await Api.image_upload({
         data: {
           file: '',
-          dataURL: changes.image,
+          dataURL: imgData,
           imageURL: '',
           uploadType: 'profile'
         }
@@ -349,10 +351,12 @@ const JoinForm = props => {
     let firstSetting = {}
     if (!changes.image && !changes.birth) {
       firstSetting = {birth: dateDefault, image: defaultImage}
+      setImgData(firstSetting.image)
     } else if (!changes.image) {
       firstSetting = {
         image: defaultImage
       }
+      setImgData(defaultImage)
     } else if (!changes.birth) {
       firstSetting = {birth: dateDefault}
     }
@@ -515,7 +519,7 @@ const JoinForm = props => {
           </>
         )}
         {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
-        <ProfileUpload imgUrl={changes.image}>
+        <ProfileUpload imgUrl={imgData}>
           <label htmlFor="profileImg">
             <div></div>
             <span>클릭 이미지 파일 추가</span>

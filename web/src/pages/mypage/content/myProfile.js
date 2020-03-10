@@ -3,29 +3,36 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 
-import React, {useEffect, useStet} from 'react'
+import React, {useEffect, useStet, useContext} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
+// context
+import {Context} from 'context'
+
 const myProfile = props => {
+  const context = useContext(Context)
+  const {profile} = context
+  console.log(profile)
+
   return (
     <MyProfile>
-      <ProfileImg />
-      <div style={{marginLeft: '24px', width: '100%'}}>
+      <ProfileImg style={{backgroundImage: `url(${profile.profImg ? profile.profImg['thumb190x190'] : ''})`}} />
+      <div style={{marginLeft: '24px', width: 'calc(100% - 180px)'}}>
         <LevelWrap>
-          <LevelText>LEVEL 12</LevelText>
+          <LevelText>LEVEL {profile.level}</LevelText>
           <LevelStatusBarWrap>
-            <LevelStatus style={{width: '40%'}}>40%</LevelStatus>
+            <LevelStatus style={{width: `${profile.level}%`}}>{`${profile.level}%`}</LevelStatus>
           </LevelStatusBarWrap>
         </LevelWrap>
 
         <InfoWrap>
           <div>
-            <span style={{color: '#424242', fontSize: '24px'}}>DJ라디오라디오</span>
-            <span style={{marginLeft: '6px', verticalAlign: 'text-bottom', color: '#bdbdbd', fontSize: '14px'}}>@dalbit</span>
+            <span style={{color: '#424242', fontSize: '24px'}}>{profile.nickNm}</span>
+            <span style={{marginLeft: '6px', verticalAlign: 'text-bottom', color: '#bdbdbd', fontSize: '14px'}}>{`@${profile.memId}`}</span>
           </div>
           <InfoConfigBtn>
             <Link to="/mypage/setting">내 정보 관리</Link>
@@ -34,14 +41,14 @@ const myProfile = props => {
 
         <CountingWrap>
           <span>팬</span>
-          <CoutingNumber>12k</CoutingNumber>
+          <CoutingNumber>{profile.fanCnt}</CoutingNumber>
           <span style={{margin: '0 12px'}}>|</span>
           <span>스타</span>
-          <CoutingNumber>870</CoutingNumber>
+          <CoutingNumber>{profile.starCnt}</CoutingNumber>
         </CountingWrap>
 
         <IntroduceAndFan>
-          <div>불러주는 진짜 사연 라디오</div>
+          <div>{profile.profMsg}</div>
           <div></div>
         </IntroduceAndFan>
       </div>
@@ -123,10 +130,12 @@ const LevelWrap = styled.div`
   flex-direction: row;
 `
 
-const ProfileImg = styled.img`
+const ProfileImg = styled.div`
   display: block;
   width: 156px;
   height: 156px;
+  background-size: cover;
+  background-position: center;
 `
 
 const MyProfile = styled.div`

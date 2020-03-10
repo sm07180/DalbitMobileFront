@@ -24,6 +24,7 @@ const GlobalProvider = props => {
   const [message, setMessage] = useState({visible: false})
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
   const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
+  const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
   const [popup_code, setPopup] = useState('')
@@ -81,7 +82,10 @@ const GlobalProvider = props => {
      * @param object obj                        //마이페이지
      */
     updateMypage: obj => {
-      setMypage(mypage => obj)
+      setMypage(obj)
+    },
+    updateProfile: profile => {
+      setProfile(profile)
     },
     //팝업컨텐츠
     updatePopup: (str, terms) => {
@@ -162,6 +166,7 @@ const GlobalProvider = props => {
     state,
     roomInfo,
     mypage,
+    profile,
     message,
     token,
     customHeader,
