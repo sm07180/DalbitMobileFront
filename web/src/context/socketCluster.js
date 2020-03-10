@@ -745,26 +745,8 @@ export const receiveMessageData = recvData => {
 // }
 
 export const socketClusterBinding = (channel, Info) => {
-  //소켓 접속 완료 상테 (connecting - 접속중 , close - 소켓 종료)
+  //새로고침시 문제가 됨 .....
   //socketClusterDestory(false, channel)
-  // var isSocketConnected = false
-  // var scState = ''
-  // try {
-  //   scState = socket.getState() || 'nothing' //connecting, open, closed
-  //   if (scState == 'open') {
-  //     isSocketConnected = true
-  //   }
-  // } catch (e) {
-  //   scState = 'nothing'
-  // }
-  // if (!isSocketConnected) {
-  //   console.log('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
-  //   //return false
-  // }
-
-  //socketReload = socket
-
-  socketClusterDestory(false, channel)
 
   if (socket != null) {
     if (socket.state === 'open') {
@@ -794,7 +776,12 @@ export const socketClusterBinding = (channel, Info) => {
     } else {
       //  console.warn('소켓 null')
       if (Info) scConnection(Info)
-      if (socket.state === 'open') privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+      setTimeout(() => {
+        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+      }, 500)
+      // if (socket.state === 'open') {
+
+      // }
     }
   }
 }
