@@ -96,20 +96,17 @@ export default () => {
       //세션
 
       const _active = Utility.getCookie('native-active')
-      if (isHybrid === 'Y') {
-        alert(_active)
-        alert(JSON.stringify(customHeader, null, 1))
-      }
-      if (_active === '' || _active === null || _active === undefined) {
+      alert('native-active :' + _active)
+      if (isHybrid !== 'Y') {
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
-        if (isHybrid === 'Y') alert('GetLoginToken')
       } else {
-        if (isHybrid === 'Y' && res.data.authToken !== authToken) {
+        if (res.data.authToken !== authToken) {
           Hybrid('GetLoginToken', res.data)
-          if (isHybrid === 'Y') alert('GetLoginToken')
+          // if (isHybrid === 'Y') alert('GetLoginToken')
         }
       }
+
       //모든처리완료
       setReady(true)
     } else {
