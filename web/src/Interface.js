@@ -26,6 +26,7 @@ export default props => {
         context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native start
+        alert(JSON.stringify(evnet, null, 1))
         context.action.updateMediaPlayerStatus(true)
         break
       case 'native-end': //-----------------------------Native end
