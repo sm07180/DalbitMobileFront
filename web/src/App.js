@@ -128,7 +128,8 @@ export default () => {
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
-    //##TEST
+    //-----##TEST
+    console.log(JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
     if (isHybrid === 'Y') {
       alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO'))
     //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
