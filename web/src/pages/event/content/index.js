@@ -18,7 +18,7 @@ export default props => {
     <>
       <Container>
         <h1>이벤트</h1>
-        <Tab />
+        <Tab {...props} />
         {/* <Pagination /> */}
         {/* <Fill {...props} /> */}
         {/* <Page /> */}

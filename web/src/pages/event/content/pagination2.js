@@ -95,7 +95,7 @@ export default props => {
             ShowClick()
           }}></Icon>
       </SearchBar>
-      {show === false && <NoResult />}
+      {show === false && <NoResult {...props} />}
       {show && ShowFilter2}
     </Wrap>
   )

@@ -73,7 +73,7 @@ export default props => {
         </Pagination>
       )}
       {currentItem.tab === '당첨자 발표' && (
-        <Pagination2>
+        <Pagination2 {...props}>
           <div className="titleBox">
             <h2>전체</h2>
             <h3>{list.length}</h3>
