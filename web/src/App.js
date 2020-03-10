@@ -98,9 +98,11 @@ export default () => {
       if (_active === '' || _active === null || _active === undefined) {
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
+        if (isHybrid === 'Y') alert('GetLoginToken')
       } else {
         if (isHybrid === 'Y' && res.data.authToken !== authToken) {
           Hybrid('GetLoginToken', res.data)
+          if (isHybrid === 'Y') alert('GetLoginToken')
         }
       }
       //모든처리완료
