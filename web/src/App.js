@@ -129,10 +129,10 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log(JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
+
     if (isHybrid === 'Y') {
-      alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO'))
-    //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
+      alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
+      //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
     }
     // sessionStorage.setItem('23동의대', 0)
   }, [])
