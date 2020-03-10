@@ -134,7 +134,7 @@ export default props => {
         }
         sc.sendMessage.login(scLoginInfo)
 
-        const userInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        const userInfo = await Api.mypage()
         if (userInfo.result === 'success') {
           context.action.updateMypage(userInfo.data)
         }
