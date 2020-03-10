@@ -31,13 +31,15 @@ const User = props => {
   //---------------------------------------------------------------------
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0
   //---------------------------------------------------------------------
+
+  console.log('mypage', props)
+
   return (
     <Layout {...props}>
       <ContentHeader>
         <h1>
           <a href="/">마이페이지</a>
         </h1>
-        {/* <MypageButton>방송국 관리</MypageButton> */}
       </ContentHeader>
       <Content>
         <MyProfile />

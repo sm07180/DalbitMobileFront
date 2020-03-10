@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {Switch, Route, Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -8,13 +8,42 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
 //context
 import Api from 'context/api'
+import {Context} from 'context'
 
 export default props => {
+  const context = useContext(Context)
+  const {mypage} = context
+  if (!mypage) {
+    // props.history.push('/')
+  }
+  // const ppimg = mypage.profImg['thumb88x88']
+
+  // console.log('props', props)
+  console.log('ctx', context)
+
+  const [pImg, setPimg] = useState(null)
+  const profileImageUpload = e => {
+    const target = e.currentTarget
+    let reader = new FileReader()
+    reader.readAsDataURL(target.files[0])
+    reader.onload = () => {
+      if (reader.result) {
+        setPimg(reader.result)
+        // photo upload api
+      }
+    }
+  }
+
+  const saveUpload = () => {}
+
   return (
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg />
+          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : ''})`}}>
+            <label htmlFor="profileImg" />
+            <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+          </ProfileImg>
           <div className="nickname">
             <NicknameInput autoComplete="off" />
           </div>
@@ -32,7 +61,7 @@ export default props => {
             <MsgTitle>프로필 메세지</MsgTitle>
             <MsgText></MsgText>
           </div>
-          <SaveBtn>저장</SaveBtn>
+          <SaveBtn onClick={saveUpload}>저장</SaveBtn>
         </SettingWrap>
       </Content>
     </Layout>
@@ -115,8 +144,7 @@ const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
 `
 
-const ProfileImg = styled.img`
-  display: block;
+const ProfileImg = styled.div`
   margin: 0 auto;
   margin-bottom: 32px;
   border: 1px solid #8556f5;
@@ -124,6 +152,22 @@ const ProfileImg = styled.img`
   width: 88px;
   height: 88px;
   cursor: pointer;
+  background-size: cover;
+  background-position: center;
+
+  label {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  & > input[type='file'] {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
 `
 
 const SettingWrap = styled.div`
