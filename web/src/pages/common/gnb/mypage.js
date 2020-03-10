@@ -23,10 +23,6 @@ export default props => {
   //useState
   //useMemo
 
-  //useState
-  const [fetch, setFetch] = useState(false)
-  const [login, setLogin] = useState(props.LoginInfo)
-
   //const
   //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
 
@@ -57,7 +53,19 @@ export default props => {
     })
   }
 
-  useEffect(() => {}, [context.token.isLogin])
+  const fetchData = () => {
+    const userInfo = Api.profile({params: {memNo: memNo}})
+    if (userInfo.result === 'success') {
+      context.action.updateMypage(userInfo.data)
+    }
+  }
+
+  useEffect(() => {
+    if (!mypage && isLogin) {
+      fetchData()
+    }
+  }, [isLogin])
+  console.log('mypage', mypage)
   //---------------------------------------------------------------------
   return (
     <>
@@ -152,7 +160,7 @@ export default props => {
                           props.history.push('/')
                           context.action.updateGnbVisible(false)
                           Hybrid('GetLogoutToken', res.data)
-                          context.action.updateMypage(false) // 넣어둔 mypage 정보 초기화.
+                          context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                         }
                       }
                       fetchData()
