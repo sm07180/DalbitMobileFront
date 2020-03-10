@@ -92,7 +92,6 @@ export default () => {
     if (res.result === 'success') {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
-
       const userInfo = await Api.profile({params: {memNo: res.data.memNo}})
       if (userInfo.result === 'success') {
         context.action.updateMypage(userInfo.data)
@@ -103,13 +102,15 @@ export default () => {
       const _active = Utility.getCookie('native-active')
       if (isHybrid === 'Y') {
         alert('native-active :' + _active)
-        Utility.setCookie('native-active', 'Y', null)
-        Hybrid('GetLoginToken', res.data)
-      } else {
-        alert(res.data.authToken === authToken)
-        if (res.data.authToken !== authToken) {
-          //  Hybrid('GetLoginToken', res.data)
-          // if (isHybrid === 'Y') alert('GetLoginToken')
+        if (_active !== 'Y') {
+          Utility.setCookie('native-active', 'Y', null)
+          Hybrid('GetLoginToken', res.data)
+        } else {
+          alert(res.data.authToken === authToken)
+          if (res.data.authToken !== authToken) {
+            Hybrid('GetLoginToken', res.data)
+            // if (isHybrid === 'Y') alert('GetLoginToken')
+          }
         }
       }
       //모든처리완료
