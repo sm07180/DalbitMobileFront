@@ -85,21 +85,21 @@ export default props => {
       )
     })
   }
-  const authClick = () => {
-    console.clear()
+  // const authClick = () => {
+  //   console.clear()
 
-    console.log(store.auth)
-  }
-  const authClickChange = () => {
-    console.clear()
-    console.log(' 변경')
-    // console.log(JSON.stringify(store.roomInfo, null, 1))
-    store.action.updateAuth(2)
-    // store.action.updateRoomInfo({auth: 1})
-  }
-  useEffect(() => {
-    //console.log('store.roomInfo.auth : ' + store.roomInfo.auth)
-  }, [store.roomInfo.auth])
+  //   console.log(store.auth)
+  // }
+  // const authClickChange = () => {
+  //   console.clear()
+  //   console.log(' 변경')
+  //   // console.log(JSON.stringify(store.roomInfo, null, 1))
+  //   store.action.updateAuth(2)
+  //   // store.action.updateRoomInfo({auth: 1})
+  // }
+  // useEffect(() => {
+  //   //console.log('store.roomInfo.auth : ' + store.roomInfo.auth)
+  // }, [store.roomInfo.auth])
   //----------------------------------------------------------------
   //리스너 인포맵
   const drawListenList = () => {
