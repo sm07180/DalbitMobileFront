@@ -21,6 +21,7 @@ const GlobalProvider = props => {
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
+  const [nativePlayer, setNativePlayer] = useState(null)
   const [message, setMessage] = useState({visible: false})
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
   const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
@@ -83,6 +84,16 @@ const GlobalProvider = props => {
      */
     updateMypage: obj => {
       setMypage(obj)
+    },
+    /**
+     * @brief Native->Player실행
+     * @param string roomNo
+     * @param string bjNickNm
+     * @param string title
+     * @param string bjProfImg
+     */
+    updateNativePlayer: obj => {
+      setNativePlayer(obj)
     },
     updateProfile: profile => {
       setProfile(profile)
@@ -165,6 +176,7 @@ const GlobalProvider = props => {
   const value = {
     state,
     roomInfo,
+    nativePlayer,
     mypage,
     profile,
     message,

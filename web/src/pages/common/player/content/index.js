@@ -16,12 +16,14 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+
   //useEffect
   useEffect(() => {
     if (isHybrid()) {
-      alert(JSON.stringify(context.roomInfo))
+      alert('Player')
+      alert(JSON.stringify(context.nativePlayer))
     }
-  }, [])
+  }, [context.nativePlayer])
   //---------------------------------------------------------------------
   return (
     <MediaPlayerWrap>
