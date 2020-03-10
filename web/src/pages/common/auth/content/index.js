@@ -133,6 +133,11 @@ export default props => {
           roomNo: UserRoomNo
         }
         sc.sendMessage.login(scLoginInfo)
+
+        const userInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        if (userInfo.result === 'success') {
+          context.action.updateMypage(userInfo.data)
+        }
       } else {
         context.action.updatePopupVisible(false)
         context.action.updateLogin(false)
