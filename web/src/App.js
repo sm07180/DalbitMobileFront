@@ -93,8 +93,15 @@ export default () => {
       // result 성공/실패 여부상관없이,토큰없데이트
       context.action.updateToken(res.data)
       //JWT토큰동일한지유효성확인
-      if (isHybrid === 'Y' && res.data.authToken !== authToken) {
+      //세션
+      const _active = Utility.getCookie('native-active')
+      if (_active === '' || _active === null || _active === undefined) {
+        Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
+      } else {
+        if (isHybrid === 'Y' && res.data.authToken !== authToken) {
+          Hybrid('GetLoginToken', res.data)
+        }
       }
       //모든처리완료
       setReady(true)

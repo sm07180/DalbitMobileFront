@@ -25,7 +25,9 @@ export default class Utility {
    */
   static setCookie = (c_name, value, exdays) => {
     const exdate = new Date()
-    exdate.setDate(exdate.getDate() + Number(exdays))
+    if (exdays !== null) {
+      exdate.setDate(exdate.getDate() + Number(exdays))
+    }
     const c_value = decodeURIComponent(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
     document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;Secure;Domain=dalbitcast.com'
   }
