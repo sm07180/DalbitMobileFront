@@ -20,6 +20,7 @@ export default props => {
 
   // console.log('props', props)
   console.log('ctx', context)
+  console.log('ctx mypage', context.mypage)
 
   const [pImg, setPimg] = useState(null)
   const profileImageUpload = e => {

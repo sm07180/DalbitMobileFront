@@ -24,18 +24,7 @@ export default props => {
         //Update
         context.action.updateToken(mode.loginSuccess)
         const _href = window.location.href
-        //mypage update
-        // async function fetchData() {
-        //   const res = await Api.profile({
-        //     params: {
-        //       memNo: memNo
-        //     }
-        //   })
-        //   if (res.result === 'success') {
-        //     context.action.updateMypage(res.data)
-        //   }
-        // }
-        //fetchData()
+
         //redirect
         if (props.history) {
           context.action.updatePopupVisible(false)
@@ -50,16 +39,6 @@ export default props => {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)
           }
-
-          // const contextAuthToken = context.token.authToken
-          // const {authToken} = mode.loginSuccess
-          // console.log(contextAuthToken)
-          // console.log(authToken)
-          // if (contextAuthToken === authToken) {
-          //   alert('토큰이 동일')
-          //   return true
-          // } else {
-          // }
         }
         break
       default:

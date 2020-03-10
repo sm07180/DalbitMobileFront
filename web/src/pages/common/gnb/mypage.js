@@ -71,7 +71,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   useEffect(() => {
-    if (isLogin) fetchData()
+    // if (isLogin) fetchData()
   }, [context.token.isLogin])
   //---------------------------------------------------------------------
   return (

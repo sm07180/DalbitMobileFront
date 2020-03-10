@@ -87,11 +87,29 @@ export default () => {
   })
   //---------------------------------------------------------------------
   //fetch
+
+  // async function fetchData(obj) {
+  //   const res = await Api.profile({
+  //     params: {
+  //       memNo: memNo
+  //     }
+  //   })
+  //   if (res.result === 'success') {
+  //     setFetch(res.data)
+  //     context.action.updateMypage(res.data)
+  //   }
+  // }
+
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
     if (res.result === 'success') {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
+
+      const userInfo = await Api.profile({params: {memNo: res.data.memNo}})
+      if (userInfo.result === 'success') {
+        context.action.updateUserInfo(userInfo.data)
+      }
       context.action.updateToken(res.data)
       //JWT토큰동일한지유효성확인
       //세션
