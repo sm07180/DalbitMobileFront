@@ -18,6 +18,7 @@ import {osName, browserName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
+import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
@@ -96,8 +97,8 @@ export default () => {
       //세션
 
       const _active = Utility.getCookie('native-active')
-      alert('native-active :' + _active)
       if (isHybrid !== 'Y') {
+        alert('native-active :' + _active)
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
       } else {
