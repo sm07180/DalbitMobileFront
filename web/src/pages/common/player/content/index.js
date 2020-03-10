@@ -16,12 +16,20 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-
+  //useState
+  /**
+   * {roomNo,bjNickNm,title,bjProfImg}
+   */
+  const [info, setInfo] = useState({
+    bjNickNm: 'BJ아이유😍',
+    roomNo: null,
+    bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+    title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨'
+  })
   //useEffect
   useEffect(() => {
     if (isHybrid()) {
-      alert('Player')
-      alert(JSON.stringify(context.nativePlayer))
+      setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
@@ -50,7 +58,7 @@ export default props => {
         </div>
         <div className="info">
           <div className="profile">
-            <Figure url={'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1'}></Figure>
+            <Figure url={info.bjProfImg}></Figure>
             <em></em>
           </div>
           <p
@@ -61,8 +69,8 @@ export default props => {
               // })
               props.update({playerNavigator: true})
             }}>
-            <b>BJ아이유😍</b>
-            <span>✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨</span>
+            <b>{info.bjNickNm}</b>
+            <span>{info.title}</span>
           </p>
         </div>
         <div className="state">
