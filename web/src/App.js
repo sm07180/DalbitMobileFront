@@ -95,19 +95,18 @@ export default () => {
       context.action.updateToken(res.data)
       //JWT토큰동일한지유효성확인
       //세션
-
       const _active = Utility.getCookie('native-active')
       if (isHybrid === 'Y') {
         alert('native-active :' + _active)
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
       } else {
+        alert(res.data.authToken === authToken)
         if (res.data.authToken !== authToken) {
-          Hybrid('GetLoginToken', res.data)
+          //  Hybrid('GetLoginToken', res.data)
           // if (isHybrid === 'Y') alert('GetLoginToken')
         }
       }
-
       //모든처리완료
       setReady(true)
     } else {
