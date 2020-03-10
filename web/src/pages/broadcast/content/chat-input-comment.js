@@ -128,7 +128,7 @@ export default props => {
     const res = await Api.broad_pan_insert({
       data: {
         memNo: store.roomInfo.bjMemNo,
-        roomNo: roomNo
+        roomNo: store.roomInfo.roomNo
       }
     })
     //Error발생시
