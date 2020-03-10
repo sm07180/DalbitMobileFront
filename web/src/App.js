@@ -94,6 +94,9 @@ export default () => {
       context.action.updateToken(res.data)
       //JWT토큰동일한지유효성확인
       //세션
+      if (isHybrid === 'Y') {
+        alert(JSON.stringify(customHeader, null, 1))
+      }
       const _active = Utility.getCookie('native-active')
       if (_active === '' || _active === null || _active === undefined) {
         Utility.setCookie('native-active', 'Y', null)
