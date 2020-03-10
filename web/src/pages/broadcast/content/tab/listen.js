@@ -128,7 +128,7 @@ export default props => {
                 <EventBTNS />
               </div>
             ))} */}
-          <p>
+          {/* <p>
             <button
               onClick={() => {
                 authClick()
@@ -143,7 +143,7 @@ export default props => {
               }}>
               변경
             </button>
-          </p>
+          </p> */}
 
           {context.token.memNo !== memNo && <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>}
         </ListenList>

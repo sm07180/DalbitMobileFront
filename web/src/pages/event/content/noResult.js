@@ -6,13 +6,19 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
+import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
+  //console.log(props)
+  const context = useContext(Context)
   //---------------------------------------------------------------------
   //context
   //---------------------------------------------------------------------
+  const BACK = () => {
+    props.history.push('/')
+  }
   return (
     <>
       <ResultWrap>
@@ -21,7 +27,9 @@ export default props => {
         </div>
 
         <h2>조회 된 검색 결과가 없습니다.</h2>
-        <button class="back">뒤로가기</button>
+        <button className="back" onClick={BACK}>
+          뒤로가기
+        </button>
       </ResultWrap>
     </>
   )
