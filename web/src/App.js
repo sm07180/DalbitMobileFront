@@ -130,6 +130,7 @@ export default () => {
     fetchData({data: _customHeader})
     //##TEST
     if (isHybrid === 'Y') {
+      alert('isHybrid : ' + isHybrid)
       alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
     }
     // sessionStorage.setItem('23동의대', 0)
