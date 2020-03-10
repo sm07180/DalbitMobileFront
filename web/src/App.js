@@ -97,11 +97,12 @@ export default () => {
       //세션
 
       const _active = Utility.getCookie('native-active')
-      if (isHybrid !== 'Y') {
+      if (isHybrid === 'Y') {
         alert('native-active :' + _active)
         Utility.setCookie('native-active', 'Y', null)
         Hybrid('GetLoginToken', res.data)
       } else {
+        Utility.setCookie('native-active', '', '-1')
         if (res.data.authToken !== authToken) {
           Hybrid('GetLoginToken', res.data)
           // if (isHybrid === 'Y') alert('GetLoginToken')
