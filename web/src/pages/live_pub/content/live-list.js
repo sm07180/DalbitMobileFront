@@ -17,14 +17,14 @@ export default props => {
   }
   //------------------------------------------------------------ func start
   //------------------------------------------------------------ components start
-  console.log('## props : ', props)
+  console.log('## roomType : ', roomType)
   return (
     <Container>
       {props.broadList.map((data, index) => {
         return (
           <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
             <div className="profile">
-              <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? props.paging.page - 1 + 10 + index : index + 1}</div>
+              <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
@@ -42,7 +42,9 @@ export default props => {
               <div className="content">
                 <div className="title">
                   {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
-                  <Tag>신입</Tag>
+                  {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                  {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                  {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
                 </div>
                 <div className="roomTitle">{data.title}</div>
                 <div className="intro">{data.bjNickNm}</div>
@@ -259,7 +261,7 @@ const MobileWrap = styled.div`
 `
 const Tag = styled.div`
   height: 16px;
-  background: #feac2b;
+  background: ${props => (props.bgColor ? props.bgColor : '')};
   font-size: 10px;
   font-weight: 400;
   color: #fff;

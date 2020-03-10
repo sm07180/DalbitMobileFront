@@ -95,19 +95,6 @@ export default props => {
                   </DropDown>
                 )}
               </div>
-              <div className="sideDropDown">
-                <div className="dropDown">
-                  <span>{sort3}</span>
-                  <Icon onClick={() => drop3()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
-                  {open3 && (
-                    <DropDown>
-                      <li onClick={() => searchLive(6)}>option1</li>
-                      <li onClick={() => searchLive(7)}>option2</li>
-                      <li onClick={() => searchLive(8)}>option3</li>
-                    </DropDown>
-                  )}
-                </div>
-              </div>
             </Sort>
           </div>
         </div>

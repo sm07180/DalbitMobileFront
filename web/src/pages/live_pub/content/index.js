@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useContext, useState, useMemo} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE} from 'context/config'
 import Api from 'context/api'
@@ -16,25 +16,23 @@ export default props => {
   const [paging, setPaging] = useState()
   const context = useContext(Context)
   const [type, setType] = useState('') // roomType
+  const width = useMemo(() => {
+    return window.innerWidth >= 600 ? 400 : 200
+  })
   //----------------------------------------------------------- func start
   const getBroadList = async obj => {
-    console.log('## obj :', obj)
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
-      return
-    }
-
-    //데이터 없을시
-    if (res.code === '0') {
+      console.log('## res :', res)
       setList(false)
+      return
     } else {
       setList(res.data.list)
       setPaging(res.data.paging)
-      window.scrollTo(0, 0)
+      console.log('## res :', res)
     }
-    console.log('## res :', res)
   }
 
   const commonData = async obj => {
@@ -85,16 +83,14 @@ export default props => {
     commonData()
   }, [])
 
-  // useEffect(() => {}, [list])
   //----------------------------------------------------------- components start
-  console.log('## context :', context)
-  console.log('## type: ', type)
+  console.log('## list :', list)
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          {list === false ? (
+          {/* {list === false ? (
             <>
               <div>데이터 없음 ㅇㅅㅇ</div>
               <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
@@ -104,7 +100,9 @@ export default props => {
               <TopRank broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} />
               <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
             </>
-          )}
+          )} */}
+          {list.length > 1 && <TopRank broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} />}
+          <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
         </MainContents>
       </Wrap>
       <Pagination paging={paging} getBroadList={getBroadList} type={type} />

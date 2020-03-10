@@ -1,53 +1,78 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
-const test = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-const mTest = [0, 1, 2, 3, 4]
-//페이징 구현해야함 - 모듈 쓰세요 ~
+
+// 페이징 임시적으로 구현
 export default props => {
   //------------------------------------------------------------ declare start
-  const [page, setPage] = useState(0)
-  const [sendPage, setSendPage] = useState(1)
+  const [page, setPage] = useState(1)
   const [iterator, setIterator] = useState([])
 
   //------------------------------------------------------------ func start
   const getData = index => {
     console.log('index : ', index)
     setPage(index)
-    setSendPage(index + 1)
-    props.getBroadList({params: {roomType: props.type, page: index + 1, records: 10}})
+    props.getBroadList({params: {roomType: props.type, page: index, records: 10}})
   }
 
   const prev = () => {
-    console.log('## sendPage : ', sendPage)
-    if (page === 0) return
-    props.getBroadList({params: {roomType: props.type, page: sendPage - 1, records: 10}})
+    if (page === 1) return
+    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10}})
     setPage(page - 1)
-    setSendPage(sendPage - 1)
   }
 
   const next = () => {
-    console.log('## sendPage : ', sendPage)
-    if (page + 1 === props.paging.totalPage) return
-    props.getBroadList({params: {roomType: props.type, page: sendPage + 1, records: 10}})
+    if (page === props.paging.totalPage) return
+    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10}})
     setPage(page + 1)
-    setSendPage(sendPage + 1)
   }
 
   useEffect(() => {
     if (props.paging !== undefined) {
       let arr = []
-      let i = 1
-      for (i; i <= props.paging.totalPage; i++) {
-        arr.push(i)
-        console.log('## push arr :', iterator)
+
+      // pc 페이징 10개씩
+      if ((props.paging.page - 1) % 10 === 0) {
+        arr = []
+        let j = props.paging.page
+        for (j; j <= props.paging.totalPage; j++) {
+          arr.push(j)
+        }
+        setIterator(arr)
+      } else if (props.paging.page % 10 === 0) {
+        arr = []
+        let k = props.paging.page - 9
+        for (k; k <= props.paging.totalPage; k++) {
+          arr.push(k)
+        }
+        setIterator(arr)
       }
-      setIterator(arr)
+
+      // mobile 페이징 5개씩
+      if ((props.paging.page - 1) % 5 === 0) {
+        arr = []
+        let j = props.paging.page
+        for (j; j <= props.paging.totalPage; j++) {
+          arr.push(j)
+        }
+        setIterator(arr)
+      } else if (props.paging.page % 5 === 0) {
+        arr = []
+        let k = props.paging.page - 4
+        for (k; k <= props.paging.totalPage; k++) {
+          arr.push(k)
+        }
+        setIterator(arr)
+      }
     }
   }, [props.paging])
 
+  useEffect(() => {
+    setPage(1)
+    setIterator([''])
+  }, [props.type])
+
   //------------------------------------------------------------ components start
-  console.log('## iterator :', iterator)
   return (
     <Container>
       <div className="wrap">
@@ -57,17 +82,17 @@ export default props => {
           </Left>
           <div className="page">
             {window.innerWidth > 600
-              ? iterator.map((data, index) => {
+              ? iterator.slice(0, 10).map((data, index) => {
                   return (
-                    <Page key={index} onClick={() => getData(index)} active={page === index ? 'active' : ''}>
-                      {index + 1}
+                    <Page key={index} onClick={() => getData(data)} active={page === data ? 'active' : ''}>
+                      {props.paging !== undefined && data}
                     </Page>
                   )
                 })
-              : iterator.map((data, index) => {
+              : iterator.slice(0, 5).map((data, index) => {
                   return (
-                    <Page key={index} onClick={() => getData(index)} active={page === index ? 'active' : ''}>
-                      {index + 1}
+                    <Page key={index} onClick={() => getData(data)} active={page === data ? 'active' : ''}>
+                      {props.paging !== undefined && data}
                     </Page>
                   )
                 })}
@@ -95,7 +120,7 @@ const Container = styled.div`
     align-items: flex-end;
 
     @media (max-width: ${WIDTH_MOBILE}) {
-        width: 80%;
+      width: 80%;
     }
   }
 
@@ -106,7 +131,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     @media (max-width: ${WIDTH_MOBILE}) {
-        width: 90%;
+      width: 90%;
     }
   }
 
@@ -114,25 +139,6 @@ const Container = styled.div`
     display: flex;
     height: 36px;
     justify-content: space-between;
-
-    /* & > button {
-      display: flex;
-      width: 36px;
-      height: 36px;
-      border-style: solid;
-      border-width: 1px;
-      border-radius: 8px;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 2.14;
-      letter-spacing: -0.35px;
-
-      border-color: ${props => (props.active ? 'none' : '#e0e0e0')};
-      background: ${props => (props.active ? '#8556f6' : '#fff')};
-      color: ${props => (props.active ? '#fff' : '#bdbdbd')};
-    } */
   }
 `
 const Left = styled.button`

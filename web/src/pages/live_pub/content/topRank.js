@@ -10,9 +10,8 @@ export default props => {
   const [selected, setSelected] = useState()
   const context = useContext(Context)
   const [roomType, setRoomType] = useState([])
-  const width = useMemo(() => {
-    return window.innerWidth >= 600 ? 400 : 200
-  })
+  const [list, setList] = useState([])
+  const arr = ['1', '2', '3']
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
@@ -21,74 +20,69 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log('123123123123')
-  }, [context])
-
-  const SwiperRank = () => {
-    const params = {
-      width: width,
-      spaceBetween: 10
+    if (context.common !== undefined) {
+      setRoomType(context.common.roomType)
     }
+  }, [])
 
+  useEffect(() => {
+    setList(props.broadList)
+  }, [])
+
+  const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
     return (
-      <Swiper {...params}>
-        {props.broadList.slice(0, 3).map((data, index) => {
-          return (
-            <Contents key={index}>
-              {index === selected && hover && (
-                <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-                  <button onClick={() => props.joinRoom({roomNo: data.roomNo})} />
-                </div>
-              )}
-              <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
-                {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
-                <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
-              </Image>
-              <Info>
-                <div className="title">
-                  {/* <div>{data.roomType}</div> */}
-                  <div>{context.common.roomType && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
-                  <Tag>신입</Tag>
-                </div>
-                <div className="roomTitle">{data.title.substring(0, 30)}</div>
-                <div className="nickName">{data.bjNickNm}</div>
-                <CountArea>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.entryCnt}
-                  </Icon>
-                  <span>|</span>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.likeCnt}
-                  </Icon>
-                </CountArea>
-              </Info>
-            </Contents>
-          )
-        })}
-      </Swiper>
+      <Contents key={index}>
+        {index === selected && hover && (
+          <div className="hover" onMouseLeave={() => handleHover(false, index)}>
+            <button onClick={() => props.joinRoom({roomNo: data.roomNo})} />
+          </div>
+        )}
+        <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+          {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
+          <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
+        </Image>
+        <Info>
+          <div className="title">
+            <div>{context.common.roomType && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
+            {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+            {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+            {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+          </div>
+          <div className="roomTitle">{data.title.substring(0, 30)}</div>
+          <div className="nickName">{data.bjNickNm}</div>
+          <CountArea>
+            <Icon>
+              <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+              &nbsp;&nbsp;{data.entryCnt}
+            </Icon>
+            <span>|</span>
+            <Icon>
+              <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+              &nbsp;&nbsp;{data.likeCnt}
+            </Icon>
+          </CountArea>
+        </Info>
+      </Contents>
     )
-  }
-
+  })
   //-------------------------------------------------------------- components start
-  console.log('## context :', context)
-  return <Container>{SwiperRank()}</Container>
+  return (
+    <Container>
+      <Swiper width={props.width} spaceBetween={10}>
+        {swiperValue}
+      </Swiper>
+    </Container>
+  )
 }
 
 const Container = styled.div`
   display: flex;
-  width: 90%;
+  /* width: 90%; */
   justify-content: space-between;
-
-  .swiperWrap {
-    display: flex;
-    justify-content: flex-start;
-  }
 `
 const Contents = styled.div`
   display: flex;
-  width: 400px;
+  /* width: 400px; */
   height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
@@ -156,14 +150,15 @@ const Info = styled.div`
   width: 210px;
   height: 180px;
   align-items: center;
+  margin-left: 10px;
 
   .title {
     display: flex;
     width: 90%;
+    height: 60px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
     }
-    height: 30px;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.43;
@@ -173,12 +168,14 @@ const Info = styled.div`
   }
 
   .roomTitle {
+    display: flex;
     width: 90%;
+    height: 100px;
+    padding-top: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
       height: 40px;
     }
-    height: 48px;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.4px;
@@ -189,11 +186,11 @@ const Info = styled.div`
   .nickName {
     display: flex;
     width: 90%;
+    height: 45px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
       height: 40px;
     }
-    height: 40px;
     margin-top: 15px;
     word-break: break-all;
     font-size: 14px;
@@ -205,7 +202,7 @@ const Info = styled.div`
 `
 const Tag = styled.div`
   height: 16px;
-  background: #feac2b;
+  background: ${props => (props.bgColor ? props.bgColor : '')};
   font-size: 10px;
   font-weight: 400;
   color: #fff;
@@ -237,7 +234,7 @@ const CountArea = styled.div`
 const Icon = styled.div`
   display: flex;
   align-items: center;
-  width: 80px;
+  width: 75px;
   height: 24px;
   font-size: 14px;
   font-weight: 400;
