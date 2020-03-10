@@ -159,6 +159,9 @@ export default props => {
                         const res = await Api.member_logout({data: context.token.authToken})
                         if (res.result === 'success') {
                           //로그아웃성공
+                          //쿠키삭제
+                          Utility.setCookie('custom-header', '', -1)
+
                           context.action.updateToken(res.data)
                           localStorage.removeItem('com.naver.nid.access_token')
                           localStorage.removeItem('com.naver.nid.oauth.state_token')
