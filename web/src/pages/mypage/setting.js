@@ -146,6 +146,10 @@ const BirthDate = styled.div`
 `
 
 const PasswordInput = styled.input.attrs({type: 'password'})`
+  display: block;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  width: 100%;
   margin-top: 20px;
 `
 const UserId = styled.div`
@@ -158,6 +162,9 @@ const UserId = styled.div`
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
+  border: 1px solid #e5e5e5;
+  padding: 16px;
+  width: 100%;
 `
 
 const ProfileImg = styled.div`
