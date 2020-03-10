@@ -29,6 +29,8 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (isHybrid()) {
+      const session = JSON.stringify(context.nativePlayer)
+      sessionStorage.setItem('PLAYER_INFO', session)
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
