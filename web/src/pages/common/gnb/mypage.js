@@ -139,7 +139,6 @@ export default props => {
                   context.action.confirm({
                     //콜백처리
                     callback: () => {
-                      context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                       async function fetchData(obj) {
                         const res = await Api.member_logout({data: context.token.authToken})
                         if (res.result === 'success') {
@@ -153,6 +152,7 @@ export default props => {
                           props.history.push('/')
                           context.action.updateGnbVisible(false)
                           Hybrid('GetLogoutToken', res.data)
+                          context.action.updateMypage(false) // 넣어둔 mypage 정보 초기화.
                         }
                       }
                       fetchData()
