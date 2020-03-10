@@ -10,6 +10,7 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import API from 'context/api'
+import useResize from 'components/hooks/useResize'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
@@ -19,7 +20,7 @@ export default props => {
   const [posts, setPosts] = useState([])
   const [broadList, setBroadList] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [postsPerPage] = useState(6)
+  const [postsPerPage, setPostperpage] = useState(6)
 
   //context
   //---------------------------------------------------------------------
@@ -53,6 +54,16 @@ export default props => {
       }
     })
   }, [])
+
+  //이벤트 리사이즈시
+
+  useEffect(() => {
+    if (window.innerWidth <= 600) {
+      setPostperpage(3)
+    } else if (window.innerWidth > 600) {
+      setPostperpage(6)
+    }
+  }, [useResize()])
 
   //현재페이지
   const indexOfLastPost = currentPage * postsPerPage

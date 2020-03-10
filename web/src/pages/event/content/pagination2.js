@@ -5,6 +5,7 @@ import API from 'context/api'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import NoResult from './noResult'
 export default props => {
   const context = useContext(Context)
   //////////////////////////////////////////////////////////////
@@ -16,7 +17,7 @@ export default props => {
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
   //온체이지 글자
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(true)
   //검색결과
 
   //검색 api호출및 필터 벨류 저장
@@ -94,7 +95,8 @@ export default props => {
             ShowClick()
           }}></Icon>
       </SearchBar>
-      {ShowFilter2}
+      {show === false && <NoResult />}
+      {show && ShowFilter2}
     </Wrap>
   )
 }
@@ -190,6 +192,9 @@ const SearchBar = styled.div`
   align-items: center;
   padding-left: 20px;
   padding-right: 10px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 70%;
+  }
   & input {
     width: 95%;
     height: 100%;

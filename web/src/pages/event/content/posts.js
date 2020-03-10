@@ -32,7 +32,6 @@ const Wrap = styled.ul`
     margin-right: 26px;
     margin-bottom: 50px;
     background-color: #f5f5f5;
-
     &:nth-child(3n) {
       margin-right: 0;
     }
@@ -52,6 +51,25 @@ const Wrap = styled.ul`
       font-weight: normal;
       letter-spacing: -0.4px;
       transform: skew(-0.03deg);
+    }
+    @media (max-width: ${WIDTH_TABLET}) {
+      width: calc(50% - 13px);
+      &:nth-child(3n) {
+        margin-right: 26px;
+      }
+      &:nth-child(2n) {
+        margin-right: 0px;
+      }
+    }
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: calc(100%);
+      margin-right: 0;
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
     }
   }
 `
