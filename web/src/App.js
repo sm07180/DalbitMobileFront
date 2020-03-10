@@ -18,6 +18,7 @@ import {osName, browserName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
+import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
@@ -91,10 +92,19 @@ export default () => {
     if (res.result === 'success') {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
+      const userInfo = await Api.profile({params: {memNo: res.data.memNo}})
+      if (userInfo.result === 'success') {
+        context.action.updateMypage(userInfo.data)
+      }
       context.action.updateToken(res.data)
-      //JWT토큰동일한지유효성확인
-      if (isHybrid === 'Y' && res.data.authToken !== authToken) {
-        Hybrid('GetLoginToken', res.data)
+      //하이브리디일때만
+      if (isHybrid === 'Y') {
+        if (Utility.getCookie('native-active') !== 'Y') {
+          Utility.setCookie('native-active', 'Y', null)
+          Hybrid('GetLoginToken', res.data)
+        } else {
+          if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
+        }
       }
       //모든처리완료
       setReady(true)

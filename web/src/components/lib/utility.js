@@ -8,7 +8,6 @@
 export default class Utility {
   /**
    * @brief nl2br
-
    * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *
    */
@@ -26,9 +25,11 @@ export default class Utility {
    */
   static setCookie = (c_name, value, exdays) => {
     const exdate = new Date()
-    exdate.setDate(exdate.getDate() + exdays)
+    if (exdays !== null) {
+      exdate.setDate(exdate.getDate() + Number(exdays))
+    }
     const c_value = decodeURIComponent(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;domain=dalbitcast.com'
+    document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;Secure;Domain=dalbitcast.com'
   }
   /**
    * @brief 쿠키가져오기

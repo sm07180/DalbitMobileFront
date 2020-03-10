@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-
+import {isHybrid, Hybrid} from 'context/hybrid'
 //components
 import Utility from 'components/lib/utility'
 import Datepicker from './style-datepicker'
@@ -301,6 +301,11 @@ const JoinForm = props => {
         //   nickNm: changes.loginNickNm,
         //   profImg: resultImg
         // })
+        //@hybrid
+        if (isHybrid()) {
+          alert('앱내 회원가입완료')
+          Hybrid('GetLoginToken', res.data)
+        }
         context.action.updateLogin(true)
       } else {
         alert(res.message)

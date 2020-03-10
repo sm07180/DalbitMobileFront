@@ -78,17 +78,19 @@ export default props => {
   let top2Data = []
   const getRecvTopData = data => {
     const recvTopData = data.data.recvMsg
-    console.warn('recvTopData = ' + recvTopData)
+
+    //console.warn('recvTopData = ' + recvTopData)
+
     if (recvTopData.position === 'top1') {
       const result = (
         <div className="system-msg top1">
           <span>{recvTopData.msg}</span>
         </div>
       )
+      //console.log('result = ' + result)
       setTop1Msg(result)
     } else {
       top2Data = top2Data.concat(recvTopData)
-      console.log('123123123123123123')
       const result = top2Data.map((item, index) => {
         if (item.level < 5) {
           setTimeout(() => {

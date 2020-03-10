@@ -143,7 +143,7 @@ export default props => {
     }
     //sc.socketClusterBinding(res.data.roomNo, res.data)
     sc.socketClusterBinding(res.data.roomNo, context)
-    context.action.updateBroadcastreToken(res.data)
+    context.action.updateBroadcastTotalInfo(res.data)
     //return res.data
   }
   async function reloadRoom(roomNo) {
@@ -164,16 +164,22 @@ export default props => {
       getReToken(props.location.state.roomNo)
       sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {
-      // document.addEventListener('keydown', function(e) {
-      //   const keyCode = e.keyCode
-      //   console.log('pushed key ' + e.key)
-      //   if (e.key == 'F5') {
-      //     reloadRoom(props.location.state.roomNo)
-      //   } else {
-      //   }
-      //   return () => document.removeEventListener('keydown')
-      // })
-      if (props && props.location.state) sc.socketClusterBinding(props.location.state.roomNo, context)
+      document.addEventListener('keydown', function(e) {
+        const keyCode = e.keyCode
+        console.log('pushed key ' + e.key)
+        if (e.key == 'F5') {
+          reloadRoom(props.location.state.roomNo)
+        } else {
+        }
+        return () => document.removeEventListener('keydown')
+      })
+      if (props && props.location.state) {
+        // if (props.location.state.auth == 0) {
+        //   reloadRoom(props.location.state.roomNo)
+        // } else {
+        sc.socketClusterBinding(props.location.state.roomNo, context)
+        //}
+      }
     }
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음

@@ -55,11 +55,7 @@ export default props => {
 
   //마이크 on off 기능~
   const activeMike = () => {
-    setToggle({
-      ...toggle,
-      mike: !toggle.mike
-    })
-    broad_micOnOff(toggle.mike)
+    broad_micOnOff(!toggle.mike)
   }
 
   //좋아요~!
@@ -132,7 +128,7 @@ export default props => {
     const res = await Api.broad_pan_insert({
       data: {
         memNo: store.roomInfo.bjMemNo,
-        roomNo: roomNo
+        roomNo: store.roomInfo.roomNo
       }
     })
     //Error발생시
@@ -156,12 +152,15 @@ export default props => {
     context.action.confirm({
       //콜백처리
       callback: () => {
+        console.log('asdasdasdasd')
         const res = broad_exit(props.roomNo)
         if (res.result === 'success') {
           sc.SendMessageChatEnd(props)
         }
         //window.location.replace('https://' + window.location.hostname)
+        sc.socketClusterDestory(true)
         history.push('/')
+
         context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
       },
@@ -176,7 +175,6 @@ export default props => {
   //마이크 on off
   async function broad_micOnOff(isMic) {
     //return
-    console.log('broad_micOnOff = ' + isMic)
     const res = await Api.broad_state({
       data: {
         roomNo: store.roomInfo.roomNo,
@@ -185,7 +183,12 @@ export default props => {
       }
     })
     //Error발생시
+
     if (res.result === 'success') {
+      setToggle({
+        ...toggle,
+        mike: !toggle.mike
+      })
       // setShortMessage(res.data)
       // store.action.updateShortCutList(res.data)
     }

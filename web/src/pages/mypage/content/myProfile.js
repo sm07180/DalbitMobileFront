@@ -25,19 +25,20 @@ const myProfile = props => {
         <InfoWrap>
           <div>
             <span style={{color: '#424242', fontSize: '24px'}}>DJ라디오라디오</span>
-            <span style={{verticalAlign: 'text-bottom'}}>@dalbit</span>
+            <span style={{marginLeft: '6px', verticalAlign: 'text-bottom', color: '#bdbdbd', fontSize: '14px'}}>@dalbit</span>
           </div>
           <InfoConfigBtn>
             <Link to="/mypage/setting">내 정보 관리</Link>
           </InfoConfigBtn>
         </InfoWrap>
 
-        <div className="fan-and-start-text">
+        <CountingWrap>
           <span>팬</span>
-          <span>12k</span>
+          <CoutingNumber>12k</CoutingNumber>
+          <span style={{margin: '0 12px'}}>|</span>
           <span>스타</span>
-          <span>870</span>
-        </div>
+          <CoutingNumber>870</CoutingNumber>
+        </CountingWrap>
 
         <IntroduceAndFan>
           <div>불러주는 진짜 사연 라디오</div>
@@ -58,6 +59,21 @@ const IntroduceAndFan = styled.div`
   font-size: 14px;
   margin-top: 16px;
 `
+const CoutingNumber = styled.span`
+  font-size: 14px;
+  color: #8555f6;
+  letter-spacing: -0.35px;
+  margin-left: 6px;
+`
+
+const CountingWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  letter-spacing: -0.35px;
+  color: #707070;
+  margin-top: 12px;
+`
 
 const InfoConfigBtn = styled.div`
   border: 1px solid #bdbdbd;
@@ -68,6 +84,7 @@ const InfoConfigBtn = styled.div`
   & > a {
     display: block;
     padding: 10px 20px;
+    user-select: none;
   }
 `
 
@@ -76,6 +93,7 @@ const InfoWrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 21px;
 `
 
 const LevelStatus = styled.div`
@@ -85,6 +103,7 @@ const LevelStatus = styled.div`
   text-align: right;
   color: #fff;
   font-size: 9px;
+  padding: 1px 0;
   padding-right: 6px;
   box-sizing: border-box;
 `

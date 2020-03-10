@@ -18,17 +18,9 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
-  const {isLogin, memNo} = context.token
   const {mypage} = context
   //useState
   //useMemo
-
-  //useState
-  const [fetch, setFetch] = useState(false)
-  const [login, setLogin] = useState(props.LoginInfo)
-
-  //const
-  //console.log('전역에 잘 담겼는지 확인할거에요', mypage)
 
   //data
   const info = [
@@ -56,23 +48,7 @@ export default props => {
       )
     })
   }
-  //fetch
-  async function fetchData(obj) {
-    const res = await Api.profile({
-      params: {
-        memNo: memNo
-      }
-    })
-    if (res.result === 'success') {
-      setFetch(res.data)
-      context.action.updateMypage(res.data)
-    }
-  }
-  //---------------------------------------------------------------------
 
-  useEffect(() => {
-    if (isLogin) fetchData()
-  }, [context.token.isLogin])
   //---------------------------------------------------------------------
   return (
     <>
@@ -154,17 +130,20 @@ export default props => {
                   context.action.confirm({
                     //콜백처리
                     callback: () => {
-                      context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                       async function fetchData(obj) {
                         const res = await Api.member_logout({data: context.token.authToken})
                         if (res.result === 'success') {
                           //로그아웃성공
+                          //쿠키삭제
+                          Utility.setCookie('custom-header', '', -1)
+
                           context.action.updateToken(res.data)
                           localStorage.removeItem('com.naver.nid.access_token')
                           localStorage.removeItem('com.naver.nid.oauth.state_token')
                           props.history.push('/')
                           context.action.updateGnbVisible(false)
                           Hybrid('GetLogoutToken', res.data)
+                          context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                         }
                       }
                       fetchData()
