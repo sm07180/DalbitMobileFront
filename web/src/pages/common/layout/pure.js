@@ -37,7 +37,7 @@ const Layout = props => {
       {isNavigator && (
         <CloseButton
           onClick={() => {
-            Hybrid('CloseLayerPopup')
+            Hybrid('CloseLayerPopup', '')
           }}>
           닫기
         </CloseButton>
