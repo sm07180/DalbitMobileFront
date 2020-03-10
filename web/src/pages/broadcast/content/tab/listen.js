@@ -76,13 +76,30 @@ export default props => {
               <EventBTNS />
             </div>
           )} */}
-          <div className="btnwrap">
-            <EventBTNS selectidx={index} />
-          </div>
+          {context.token.memNo !== memNo && (
+            <div className="btnwrap">
+              <EventBTNS selectidx={index} />
+            </div>
+          )}
         </ListenList>
       )
     })
   }
+  const authClick = () => {
+    console.clear()
+
+    console.log(store.auth)
+  }
+  const authClickChange = () => {
+    console.clear()
+    console.log(' 변경')
+    // console.log(JSON.stringify(store.roomInfo, null, 1))
+    store.action.updateAuth(2)
+    // store.action.updateRoomInfo({auth: 1})
+  }
+  useEffect(() => {
+    //console.log('store.roomInfo.auth : ' + store.roomInfo.auth)
+  }, [store.roomInfo.auth])
   //----------------------------------------------------------------
   //리스너 인포맵
   const drawListenList = () => {
@@ -91,6 +108,7 @@ export default props => {
       let mode = '해당사항없음'
       const {nickNm, memNo, profImg, auth} = live
       const {thumb62x62} = profImg
+
       //----------------------------------------------------------------
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
@@ -110,9 +128,24 @@ export default props => {
                 <EventBTNS />
               </div>
             ))} */}
-          <div className="btnwrap">
-            <EventBTNS selectidx={index} />
-          </div>
+          <p>
+            <button
+              onClick={() => {
+                authClick()
+              }}>
+              현재
+            </button>{' '}
+          </p>
+          <p>
+            <button
+              onClick={() => {
+                authClickChange()
+              }}>
+              변경
+            </button>
+          </p>
+
+          {context.token.memNo !== memNo && <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>}
         </ListenList>
       )
     })

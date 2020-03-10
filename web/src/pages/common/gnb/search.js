@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
+
 //context
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -26,14 +27,20 @@ export default props => {
     }
     console.log(res)
   }
-
+  // const queryString = useMemo(() => {
+  //   if (props.location.search === undefined) return ''
+  //   return qs.parse(props.location.search, {ignoreQueryPrefix: true})
+  // })
   const ClickLink = async () => {
     if (search === '') {
       return
     }
-    window.location.href = `/search?query=${search}`
-    // props.history.push(`/search?query=${search}`)
-    // context.action.updateGnbVisible(false)
+    //window.location.href = `/search?query=${search}`
+    //props.history.push(`/search?query=${search}`)
+    //props.history.push('/search' + '?query=' + search)
+    props.history.push(`/search?query=${search}`)
+    context.action.updateGnbVisible(false)
+    window.location.reload()
   }
 
   const [search, setSearch] = useState('')
@@ -46,9 +53,10 @@ export default props => {
       return
     }
     if (e.keyCode === 13) {
-      window.location.href = `/search?query=${search}`
-      // props.history.push(`/search?query=${search}`)
-      // context.action.updateGnbVisible(false)
+      //window.location.href = `/search?query=${search}`
+      props.history.push(`/search?query=${search}`)
+      context.action.updateGnbVisible(false)
+      window.location.reload()
     }
   }
   //---------------------------------------------------------------------

@@ -18,6 +18,7 @@ export default props => {
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
   const [listenTrues, setListenTrues] = useState(false)
+
   //const [listenTrues, setListenTrues] = useState(false)
   //클릭visibility function
   // const ToggleEvent = () => {

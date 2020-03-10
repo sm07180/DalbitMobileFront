@@ -143,8 +143,10 @@ const Container = styled.div`
 `
 const Left = styled.button`
   display: flex;
-  width: 36px;
-  height: 37px;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  margin-right: 5px;
 
   & > div {
     display: flex;
@@ -155,9 +157,10 @@ const Left = styled.button`
 `
 const Right = styled.button`
   display: flex;
-  width: 36px;
-  height: 37px;
-  justify-content: flex-end;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  margin-left: 5px;
 
   & > div {
     display: flex;

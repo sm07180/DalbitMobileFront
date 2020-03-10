@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {Context} from 'context'
 
-const test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 export default props => {
   //------------------------------------------------------------ declare start
   const [hover, setHover] = useState(false)
@@ -11,11 +10,15 @@ export default props => {
   const context = useContext(Context)
   const [roomType, setRoomType] = useState(context.common.roomType)
 
+  //------------------------------------------------------------ func start
+
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)
   }
-  //------------------------------------------------------------ func start
+
+  //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
+
   //------------------------------------------------------------ components start
   console.log('## roomType : ', roomType)
   return (
