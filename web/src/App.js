@@ -97,20 +97,13 @@ export default () => {
         context.action.updateMypage(userInfo.data)
       }
       context.action.updateToken(res.data)
-      //JWT토큰동일한지유효성확인
-      //세션
-      const _active = Utility.getCookie('native-active')
+      //하이브리디일때만
       if (isHybrid === 'Y') {
-        alert('native-active :' + _active)
-        if (_active !== 'Y') {
+        if (Utility.getCookie('native-active') !== 'Y') {
           Utility.setCookie('native-active', 'Y', null)
           Hybrid('GetLoginToken', res.data)
         } else {
-          alert(res.data.authToken === authToken)
-          if (res.data.authToken !== authToken) {
-            Hybrid('GetLoginToken', res.data)
-            // if (isHybrid === 'Y') alert('GetLoginToken')
-          }
+          if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
         }
       }
       //모든처리완료
