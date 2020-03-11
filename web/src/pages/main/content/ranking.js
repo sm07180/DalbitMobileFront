@@ -114,7 +114,7 @@ export default props => {
             onClick={() => {
               props.history.push('/ranking')
             }}>
-            plus
+            더보기
           </span>
         </div>
         <div className="change-btn">
@@ -214,7 +214,7 @@ const Content = styled.div`
   @media (max-width: ${WIDTH_PC_S}) {
     width: 97.5%;
     margin: 0 0 0 2.5%;
-    padding: 40px 0 60px 0;
+
     &:after {
       display: block;
     }
@@ -226,6 +226,7 @@ const Content = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
+    padding: 40px 0 60px 0;
     .top-wrap {
       .title-btn {
         h2 {

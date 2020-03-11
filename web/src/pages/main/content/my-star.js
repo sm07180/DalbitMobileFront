@@ -161,6 +161,18 @@ const SwiperWrap = styled.div`
     left: calc(50% + 94px);
     background: url('https://devimage.dalbitcast.com/images/api/ico-next.png') no-repeat center center / cover;
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    padding: 40px 0 60px 0;
+    .title-btn {
+      h2 {
+        font-size: 22px;
+      }
+    }
+    & .swiper-container {
+      margin-top: 20px;
+    }
+  }
 `
 const SliderControl = styled.div`
   width: 120px;
@@ -187,6 +199,8 @@ const SliderControl = styled.div`
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
+    /* margin-right: 2.5%; */
+    display: none;
   }
 `
 const ToggleBtn = styled.div`
