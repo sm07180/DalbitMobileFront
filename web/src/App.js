@@ -136,7 +136,7 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.error('version 1.0')
+    console.log('### version 1.0')
     if (isHybrid === 'Y') {
       //  alert('customHeader.isFirst : ' + customHeader.isFirst)
       //alert(nativeInfo)
