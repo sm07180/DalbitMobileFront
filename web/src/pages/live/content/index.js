@@ -123,10 +123,10 @@ export default props => {
   }
 
   useEffect(() => {
-    document.addEventListener('scroll', onScroll)
+    // document.addEventListener('scroll', onScroll)
     getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
-    return () => document.removeEventListener('scroll', onScroll)
+    // return () => document.removeEventListener('scroll', onScroll)
   }, [])
 
   console.log('## store.list :', store.list)
