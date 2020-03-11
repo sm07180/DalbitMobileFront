@@ -535,7 +535,7 @@ const JoinForm = props => {
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
-          <input type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
+          <input autoComplete="off" type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
           <span className={validate.loginNickNm ? 'off' : 'on'}>2~10자</span>
           {currentNick && (
             <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>
@@ -553,7 +553,7 @@ const JoinForm = props => {
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
           <InputWrap>
-            <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
+            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
             <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
