@@ -794,7 +794,7 @@ export default class API {
    * @create 이은비 2020.03.11
    */
   static get_dj_ranking = async obj => {
-    const {url, method, data} = obj || {}
+    const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/rank/dj`, method: method || 'GET', params: params})
   }
 
@@ -807,7 +807,7 @@ export default class API {
    * @create 이은비 2020.03.11
    */
   static get_fan_ranking = async obj => {
-    const {url, method, data} = obj || {}
+    const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 

@@ -158,7 +158,7 @@ const Main = props => {
       <MainSlider Info={slideInfo} />
       {/* 스타 랭킹 영역 */}
       <RangkingWrap>
-        <StarRangking />
+        <StarRangking {...props} />
       </RangkingWrap>
       {/* 인기 DJ 영역 */}
       <PopularWrap>
