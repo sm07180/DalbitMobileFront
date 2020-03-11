@@ -46,7 +46,7 @@ export default () => {
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
-        deviceToken: 'make_custom_header'
+        deviceToken: 'make_custom_header_v1'
       }
       return info
     }
