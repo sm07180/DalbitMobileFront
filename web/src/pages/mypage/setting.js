@@ -12,13 +12,13 @@ import {Context} from 'context'
 
 export default props => {
   const context = useContext(Context)
-  const {mypage} = context
+  const {profile} = context
   const [nickname, setNickname] = useState('')
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
 
-  if (!mypage) {
+  if (!profile) {
     props.history.push('/')
   }
 
@@ -54,9 +54,9 @@ export default props => {
 
   const saveUpload = async () => {
     const data = {
-      gender: mypage.gender,
+      gender: profile.gender,
       nickNm: nickname,
-      birth: mypage.birth,
+      birth: profile.birth,
       profMsg: profileMsg
     }
 
@@ -72,29 +72,28 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log('ctx mypage', mypage)
-    setNickname(mypage.nickNm)
-    setProfileMsg(mypage.profMsg)
-    setPhotoPath(mypage.profImg.path)
+    setNickname(profile.nickNm)
+    setProfileMsg(profile.profMsg)
+    setPhotoPath(profile.profImg.path)
   }, [])
 
   return (
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : context.mypage.profImg ? context.mypage.profImg['thumb88x88'] : ''})`}}>
+          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb88x88'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
           </ProfileImg>
           <div className="nickname">
             <NicknameInput autoComplete="off" value={nickname} onChange={changeNickname} />
           </div>
-          <UserId>{`@${mypage.memId}`}</UserId>
+          <UserId>{`@${profile.memId}`}</UserId>
           {/* <PasswordInput autoComplete="new-password" /> */}
-          <BirthDate>{`${mypage.birth.slice(0, 4)}-${mypage.birth.slice(4, 6)}-${mypage.birth.slice(6)}`}</BirthDate>
+          {/* <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate> */}
           <GenderWrap>
-            <GenderTab className={mypage.gender === 'm' ? '' : 'off'}>남자</GenderTab>
-            <GenderTab className={mypage.gender === 'w' ? '' : 'off'}>여자</GenderTab>
+            <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
+            <GenderTab className={profile.gender === 'w' ? '' : 'off'}>여자</GenderTab>
           </GenderWrap>
 
           <GenderAlertMsg>* 생년월일과 성별 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>

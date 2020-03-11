@@ -98,10 +98,6 @@ export default () => {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
       if (res.data.isLogin) {
-        const userInfo = await Api.mypage()
-        if (userInfo.result === 'success') {
-          context.action.updateMypage(userInfo.data)
-        }
         const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
         if (profileInfo.result === 'success') {
           context.action.updateProfile(profileInfo.data)
