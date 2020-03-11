@@ -32,12 +32,12 @@ export default props => {
       return
     } else {
       console.log('## res :', res)
-      res.data.list.forEach(data => {
-        if (data.state === 1) setList(list.concat(data))
-        // if(data.state === 1) setPaging(res.data.paging)
-      })
-      // setList(res.data.list)
-      // setPaging(res.data.paging)
+      // res.data.list.forEach(data => {
+      //   if (data.state === 1) setList(list.concat(data))
+      //   if(data.state === 1) setPaging(res.data.paging)
+      // })
+      setList(res.data.list)
+      setPaging(res.data.paging)
     }
   }
 
@@ -100,7 +100,8 @@ export default props => {
           <Live broadList={list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
         </MainContents>
       </Wrap>
-      <Pagination paging={paging} getBroadList={getBroadList} type={type} />
+      {/* {!isHybrid() && <Pagination paging={paging} getBroadList={getBroadList} type={type} />} */}
+      {window.innerWidth > 600 && <Pagination paging={paging} getBroadList={getBroadList} type={type} />}
     </Container>
   )
 }
