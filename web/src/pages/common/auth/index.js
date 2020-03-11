@@ -50,6 +50,12 @@ export default props => {
   return (
     <React.Fragment>
       <Content {...props} update={update} />
+      <button
+        onClick={() => {
+          Utility.setCookie('native-player-info', 'new_win-GetLoginTokenNewWin', 100)
+        }}>
+        TEST
+      </button>
     </React.Fragment>
   )
 }
