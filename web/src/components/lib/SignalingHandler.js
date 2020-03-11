@@ -20,6 +20,7 @@ export default class SignalingHandler {
 
     this.audioTag = document.createElement('audio')
     this.audioTag.autoplay = true
+    this.audioTag.muted = false
 
     // host, guest, listener
     this.type = null
@@ -192,6 +193,13 @@ export default class SignalingHandler {
       this.audioTag.srcObject = null
     }
   }
+
+  setMuted(status) {
+    if (this.audioTag) {
+      this.audioTag.muted = status
+    }
+  }
+
   join() {
     const cmd = {
       command: 'join',
