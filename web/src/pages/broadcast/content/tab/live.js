@@ -117,7 +117,7 @@ export default props => {
 //------------------------------------------------------------------
 //styled
 const Wrapper = styled.div`
-  height: calc(100% - 48px);
+  height: calc(100% - 80px);
 `
 const LiveFilter = styled.div`
   position: relative;

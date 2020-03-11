@@ -16,7 +16,6 @@ import {Context} from 'context'
 const myProfile = props => {
   const context = useContext(Context)
   const {profile} = context
-  console.log(profile)
 
   return (
     <MyProfile>

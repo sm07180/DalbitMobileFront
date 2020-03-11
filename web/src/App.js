@@ -85,6 +85,11 @@ export default () => {
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
+  //Native->REACT
+  const nativeInfo = useMemo(() => {
+    return customHeader.isFirst
+    //console.log(customHeader.isF)
+  })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -103,17 +108,16 @@ export default () => {
         }
       }
       context.action.updateToken(res.data)
-      //하이브리디일때
+      //하이브리드일때
       if (isHybrid === 'Y') {
         //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          //alert('실행')
+          // alert(Utility.getCookie('native-info'))
           context.action.updateMediaPlayerStatus(true)
         }
         //active
-        if (Utility.getCookie('native-active') !== 'Y') {
-          Utility.setCookie('native-active', 'Y', null)
+        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           Hybrid('GetLoginToken', res.data)
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
@@ -136,14 +140,9 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-
     if (isHybrid === 'Y') {
-      // const _val = sessionStorage.setItem('PLAYER_INFO')
-      // alert(_val)
-      // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
-      //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
+      //alert(nativeInfo)
     }
-    // sessionStorage.setItem('23동의대', 0)
   }, [])
   //---------------------------------------------------------------------
   /**

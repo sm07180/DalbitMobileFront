@@ -18,7 +18,10 @@ import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
   const context = useContext(Context)
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
-  const RoomNumbers = JSON.stringify(roomInfo.roomNo)
+  //기존이미지 패스및 룸넘버 변수화
+  const RoomNumbers = roomInfo.roomNo
+  const DelImg = roomInfo.bgImg.path
+  //console.log(RoomNumbers)
   //console.log(RoomNumbers)
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -181,6 +184,7 @@ export default props => {
             title: changes.title,
             bgImg: resUpload.data.path,
             bgImgRacy: 3,
+            bgImgDel: DelImg,
             welcomMsg: changes.welcomMsg
           }
         })
@@ -188,19 +192,6 @@ export default props => {
           setFetch(res.data)
         }
         console.log(res)
-
-        // if (res) {
-        //   if (res.code == 0) {
-        //     console.log(res)
-        //     /**
-        //      * @todos 소켓연결필요
-        //      */
-        //     props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-        //     context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-        //   } else {
-        //     console.warn(res.message)
-        //   }
-        // }
       } else {
         //Error발생시
         console.log('방수정실패')
@@ -277,7 +268,8 @@ export default props => {
                 onClick={() => {
                   fetchData({...changes})
                 }}
-                value={BActive}>
+                value={BActive}
+                className={BActive === true ? 'on' : ''}>
                 수정하기
               </CreateBtn>
             </BroadDetail>
@@ -300,8 +292,7 @@ const Content = styled.div`
 
 const Wrap = styled.div`
   width: 100%;
-
-  height: 600px;
+  height: 700px;
 `
 const BroadDetail = styled.div`
   width: 100%;
@@ -570,7 +561,7 @@ const CreateBtn = styled.button`
   line-height: 50px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
-
+  border-radius: 10px;
   &.on {
     background-color: ${COLOR_MAIN};
     cursor: pointer;

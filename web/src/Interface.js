@@ -23,7 +23,7 @@ export default props => {
         break
       case 'native-player-show': //---------------------Native player-show
         context.action.updateMediaPlayerStatus(true)
-        context.action.updateRoomInfo(event.detail)
+        // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native start
         context.action.updateNativePlayer(event.detail)

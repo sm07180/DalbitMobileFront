@@ -35,6 +35,12 @@ export default props => {
             }}>
             세션쿠키테스트
           </button>
+          <button
+            onClick={() => {
+              alert(Utility.getCookie('native-info'))
+            }}>
+            native-info (Y)
+          </button>
         </section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>

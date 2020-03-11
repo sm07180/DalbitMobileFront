@@ -15,20 +15,29 @@ export default props => {
   const {mypage} = context
   const [nickname, setNickname] = useState('')
   const [profileMsg, setProfileMsg] = useState('')
+  const [photoPath, setPhotoPath] = useState('')
+  const [tempPhoto, setTempPhoto] = useState(null)
 
   if (!mypage) {
     props.history.push('/')
   }
 
-  const [pImg, setPimg] = useState(null)
   const profileImageUpload = e => {
     const target = e.currentTarget
     let reader = new FileReader()
     reader.readAsDataURL(target.files[0])
-    reader.onload = () => {
+    reader.onload = async () => {
       if (reader.result) {
-        setPimg(reader.result)
-        // photo upload api
+        const res = await Api.image_upload({
+          data: {
+            dataURL: reader.result,
+            uploadType: 'profile'
+          }
+        })
+        if (res.result === 'success') {
+          setTempPhoto(reader.result)
+          setPhotoPath(res.data.path)
+        }
       }
     }
   }
@@ -43,20 +52,38 @@ export default props => {
     setProfileMsg(currentTarget.value)
   }
 
-  const saveUpload = () => {}
+  const saveUpload = async () => {
+    const data = {
+      gender: mypage.gender,
+      nickNm: nickname,
+      birth: mypage.birth,
+      profMsg: profileMsg
+    }
+
+    if (photoPath) {
+      data['profImg'] = photoPath
+    }
+
+    const res = await Api.profile_edit({data})
+    if (res.result === 'success') {
+      console.log(res)
+      // context.action.updateProfile(res.data)
+      return alert('저장되었습니다.')
+    }
+  }
 
   useEffect(() => {
-    console.log('ctx', context)
     console.log('ctx mypage', mypage)
     setNickname(mypage.nickNm)
     setProfileMsg(mypage.profMsg)
+    setPhotoPath(mypage.profImg.path)
   }, [])
 
   return (
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${pImg ? pImg : context.mypage.profImg ? context.mypage.profImg['thumb88x88'] : ''})`}}>
+          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : context.mypage.profImg ? context.mypage.profImg['thumb88x88'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
           </ProfileImg>
@@ -102,6 +129,7 @@ const MsgText = styled.textarea`
   resize: none;
   padding: 16px;
   height: 178px;
+  font-family: inherit;
 `
 
 const MsgTitle = styled.div`
