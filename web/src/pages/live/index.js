@@ -23,10 +23,6 @@ export default props => {
    * @returns
    */
 
-  useEffect(() => {
-    //
-  }, [])
-
   //---------------------------------------------------------------------
   return (
     <LiveProvider>

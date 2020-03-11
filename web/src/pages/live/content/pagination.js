@@ -12,18 +12,18 @@ export default props => {
   const getData = index => {
     console.log('index : ', index)
     setPage(index)
-    props.getBroadList({params: {roomType: props.type, page: index, records: 10}})
+    props.getBroadList({params: {roomType: props.type, page: index, records: 10}}, true)
   }
 
   const prev = () => {
     if (page === 1) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10}})
+    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10}}, true)
     setPage(page - 1)
   }
 
   const next = () => {
     if (page === props.paging.totalPage) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10}})
+    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10}}, true)
     setPage(page + 1)
   }
 
@@ -42,23 +42,6 @@ export default props => {
       } else if (props.paging.page % 10 === 0) {
         arr = []
         let k = props.paging.page - 9
-        for (k; k <= props.paging.totalPage; k++) {
-          arr.push(k)
-        }
-        setIterator(arr)
-      }
-
-      // mobile 페이징 5개씩
-      if ((props.paging.page - 1) % 5 === 0) {
-        arr = []
-        let j = props.paging.page
-        for (j; j <= props.paging.totalPage; j++) {
-          arr.push(j)
-        }
-        setIterator(arr)
-      } else if (props.paging.page % 5 === 0) {
-        arr = []
-        let k = props.paging.page - 4
         for (k; k <= props.paging.totalPage; k++) {
           arr.push(k)
         }
