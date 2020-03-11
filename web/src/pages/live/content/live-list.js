@@ -13,7 +13,6 @@ export default props => {
   const [roomType, setRoomType] = useState(context.common.roomType)
 
   //------------------------------------------------------------ func start
-
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)

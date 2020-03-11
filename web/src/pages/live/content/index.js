@@ -62,7 +62,7 @@ export default props => {
     } else {
       console.log('## res :', res)
       console.log('## store.list : ', store.list)
-      store.action.updateList(store.list.concat(res.data.list))
+      store.action.updateList(res.data.list)
       setPaging(res.data.paging)
     }
   }
