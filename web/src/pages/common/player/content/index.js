@@ -35,7 +35,7 @@ export default props => {
     /**
      * @안드로이드
      */
-    alert('실행')
+
     // if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
     //   if (context.customHeader.os + '' === '1') {
     //     // const _val = JSON.stringify(context.nativePlayer)

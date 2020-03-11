@@ -133,7 +133,7 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log('### version 2.3')
+    console.log('### version 2.4')
     /**
      * @새창에서도 실행되므로 주의요망
      */
@@ -144,6 +144,7 @@ export default () => {
         Utility.setCookie('native-player-info', '', -1)
       } else if (customHeader.isFirst === 'N') {
         const _cookie = Utility.getCookie('native-player-info')
+        alert(typeof _cookie + ' _cookie' + _cookie)
         if (_cookie !== undefined) {
           alert('창1')
         }
