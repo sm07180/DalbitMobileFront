@@ -6,6 +6,7 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 export default props => {
+  //console.log(props.selectidx)
   //context------------------------------------------
   const context = useContext(Context)
   //0.신고하기 Data state --------------------------------------
@@ -15,6 +16,20 @@ export default props => {
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
   //3.버튼info 배열 --------------------------------------
+  //api
+  const fetchData = async () => {
+    // const {roomNo} = props.location.state
+    const res = await Api.member_declar({
+      data: {
+        memNo: '11577931027280',
+        reason: 1
+      }
+    })
+    if (res.result === 'success') {
+    }
+    console.log(res)
+    return
+  }
   const BTNInfo = [
     {
       title: '프로필 사진'
@@ -66,7 +81,9 @@ export default props => {
       <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
 
       {Reportmap}
-      <SubmitBTN className={active === true ? 'on' : ''}>신고하기</SubmitBTN>
+      <SubmitBTN className={active === true ? 'on' : ''} onClick={() => fetchData()}>
+        신고하기
+      </SubmitBTN>
     </Container>
   )
 }

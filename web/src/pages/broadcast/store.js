@@ -15,7 +15,7 @@ const {Provider} = BroadCastStore
 //
 const BroadCastProvider = props => {
   //state
-
+  const [reportData, setReportData] = useState([])
   const [auth, setAuth] = useState()
   const [roomNumber, setRoomNumber] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
@@ -155,6 +155,9 @@ const BroadCastProvider = props => {
     },
     updateMikeState: bool => {
       setMikeState(bool)
+    },
+    updateReportData: list => {
+      setReportData(list)
     }
   }
   //---------------------------------------------------------------------
@@ -177,7 +180,8 @@ const BroadCastProvider = props => {
     flag,
     ListenerSelect,
     sumlike,
-    mikeState
+    mikeState,
+    reportData
   }
 
   return <Provider value={value}>{props.children}</Provider>

@@ -164,6 +164,10 @@ export default props => {
         store.action.updateTab(6)
         break
       case 5: //신고하기
+        res = drawListenList(props.selectidx)
+        // console.log(res[1])
+        store.action.updateReportData(res[idx])
+        console.log(store.reportData)
         store.action.updateTab(7)
         break
       default:

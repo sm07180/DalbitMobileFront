@@ -530,10 +530,12 @@ export default class API {
   /**
    * @brief 회원 신고하기
    * @method "POST"
-   * @param string    memNo             //*신고회원번호
-   * @param int       reason             //*신고사유
-   * @param string    cont               //*상세내용
+   * @param string    memNo             //*신고회원번호(필)
+   * @param int       reason             //*신고사유(필)
+   * @param string    cont               //*기타 신고 사유
+   * @param string    roomNo               //*룸넘버
    * @create 김호겸 2020.01.15
+   * @수정 황상한 2020.03.11
    */
   static member_declar = async obj => {
     const {url, method, data} = obj || {}
