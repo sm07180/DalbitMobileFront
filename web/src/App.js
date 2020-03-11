@@ -108,8 +108,8 @@ export default () => {
         //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          alert('실행')
-          //    context.action.updateMediaPlayerStatus(true)
+          //alert('실행')
+          context.action.updateMediaPlayerStatus(true)
         }
         //active
         if (Utility.getCookie('native-active') !== 'Y') {
