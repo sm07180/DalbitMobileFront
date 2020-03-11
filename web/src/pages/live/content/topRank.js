@@ -10,6 +10,7 @@ export default props => {
   const [selected, setSelected] = useState()
   const context = useContext(Context)
   const [roomType, setRoomType] = useState([])
+  const [type, setType] = useState('')
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
@@ -25,6 +26,7 @@ export default props => {
 
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
+    console.log('## props.broadList : ', props.broadList)
     return (
       <Contents key={index}>
         {index === selected && hover && (
@@ -61,6 +63,8 @@ export default props => {
     )
   })
   //-------------------------------------------------------------- components start
+  console.log('## props.type: ', props.type)
+  console.log('## type :', type)
   return (
     <Container>
       <Swiper width={props.width} spaceBetween={10}>

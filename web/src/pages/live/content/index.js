@@ -11,7 +11,16 @@ import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
+//window.addEventListener 사용하면 state 가 초기화 되는 문제로 데이터들 함수 외부 변수로 사용 중
+let liveList = []
+let livePaging = []
+let liveType = ''
+let reload = true
 
+const liveComponent = props => {
+  const [state, setState] = useState('test')
+  return <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
+}
 export default props => {
   //----------------------------------------------------------- declare start
   const [list, setList] = useState([])
@@ -20,14 +29,17 @@ export default props => {
   const store = useContext(LiveStore)
   const [type, setType] = useState('') // roomType
   const [page, setPage] = useState(1)
+  const [rank, setRank] = useState([])
   const scrollbars = useRef(null)
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
+  const [test, setTest] = useState('test')
   //----------------------------------------------------------- func start
 
   // 방송방 리스트 조회
-  const getBroadList = async obj => {
+  const getBroadList = async (obj, reload) => {
+    console.log('## type :', type)
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
@@ -36,15 +48,12 @@ export default props => {
       setList(false)
       return
     } else {
-      console.log('## res :', res)
-      console.log('## store.store :', store.list)
-      // res.data.list.forEach(data => {
-      //   if (data.state === 1) setList(list.concat(data))
-      //   if(data.state === 1) setPaging(res.data.paging)
-      // })
-      // setList(res.data.list)
       store.action.updateList(res.data.list)
-
+      liveList = res.data.list
+      livePaging = res.data.paging
+      if (reload === undefined) {
+        setRank(res.data.list.slice(0, 3))
+      }
       setPaging(res.data.paging)
     }
   }
@@ -62,7 +71,7 @@ export default props => {
     } else {
       console.log('## res :', res)
       console.log('## store.list : ', store.list)
-      store.action.updateList(res.data.list)
+      store.action.updateList([...liveList, ...res.data.list])
       setPaging(res.data.paging)
     }
   }
@@ -113,32 +122,36 @@ export default props => {
   }
 
   const onScroll = e => {
-    console.log('## store.list: ', store.list)
-    console.log('## type :', type)
-    console.log('## page :', page)
-    const position = window.scrollY
-    if (position === 500) {
-      console.log(position)
-      mobileConcat({params: {roomType: type, page: page + 1, records: 10}})
+    if (window.innerWidth <= 600) {
+      console.log('## paging :', livePaging)
+      const position = window.scrollY
+      console.log('## position :', position)
+      if (position === 400) {
+        console.log(position)
+        mobileConcat({params: {roomType: type, page: livePaging.next, records: 10}})
+        window.scrollTo(0, 100)
+      }
     }
   }
 
   useEffect(() => {
-    // document.addEventListener('scroll', onScroll)
     getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
-    // return () => document.removeEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
-  // console.log('## store.list :', store.list)
-  console.log('## context :', context)
+  console.log('## store.list :', store)
+  // console.log('## context :', context)
   //----------------------------------------------------------- components start
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          {store.list.length > 1 && <TopRank broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} />}
+          {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />}
           <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
         </MainContents>
       </Wrap>
