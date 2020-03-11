@@ -79,20 +79,20 @@ export default () => {
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
   })
-  //Native->REACT
-  const nativeInfo = useMemo(() => {
-    if (customHeader.isFirst === undefined) return {}
-    //최초앱구동실행
-    if (customHeader.isFirst === 'Y') {
-      Utility.setCookie('native-player-info', '', -1)
-    } else if (customHeader.isFirst === 'N') {
-      alert('customHeader.isFirst : ' + customHeader.isFirst)
-      //  && Utility.getCookie('native-player-info') !== undefined
-      context.action.updateMediaPlayerStatus(true)
-      // return JSON.parse(Utility.getCookie('native-player-info'))
-    }
-    return customHeader.isFirst
-  })
+  // //Native->REACT
+  // const nativeInfo = useMemo(() => {
+  //   if (customHeader.isFirst === undefined) return {}
+  //   //최초앱구동실행
+  //   if (customHeader.isFirst === 'Y') {
+  //     Utility.setCookie('native-player-info', '', -1)
+  //   } else if (customHeader.isFirst === 'N') {
+  //     alert('customHeader.isFirst : ')
+  //     //  && Utility.getCookie('native-player-info') !== undefined
+  //     context.action.updateMediaPlayerStatus(true)
+  //     // return JSON.parse(Utility.getCookie('native-player-info'))
+  //   }
+  //   return customHeader.isFirst
+  // })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -133,10 +133,16 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log('### version 1.0')
+    console.log('### version 1.2')
     if (isHybrid === 'Y') {
-      //  alert('customHeader.isFirst : ' + customHeader.isFirst)
-      //alert(nativeInfo)
+      //최초앱구동실행
+      if (customHeader.isFirst === 'Y') {
+        Utility.setCookie('native-player-info', '', -1)
+      } else if (customHeader.isFirst === 'N') {
+        //  && Utility.getCookie('native-player-info') !== undefined
+        context.action.updateMediaPlayerStatus(true)
+        // return JSON.parse(Utility.getCookie('native-player-info'))
+      }
     }
   }, [])
   //---------------------------------------------------------------------

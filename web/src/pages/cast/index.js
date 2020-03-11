@@ -31,7 +31,8 @@ export default props => {
         <section>
           <button
             onClick={() => {
-              const _info = JSON.parse(Utility.getCookie('native-player-info'))
+              const _info = Utility.getCookie('native-player-info')
+              //    const _info = JSON.parse(Utility.getCookie('native-player-info'))
               if (_info === '' || _info === undefined) {
                 alert('쿠키없음')
               } else {
