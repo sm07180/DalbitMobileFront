@@ -117,7 +117,7 @@ export default () => {
         }
       }
       //-----##TEST
-      console.log('### version 2.5')
+      console.log('### version 2.6')
       /**
        * @새창에서도 실행되므로 주의요망
        */
