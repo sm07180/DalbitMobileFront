@@ -80,7 +80,6 @@ export default () => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
   })
   //Native->REACT
-  alert(Utility.getCookie('native-player-info'))
   const nativeInfo = useMemo(() => {
     if (customHeader.isFirst === undefined) return {}
     //최초앱구동실행
