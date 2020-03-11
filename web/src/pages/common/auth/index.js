@@ -35,7 +35,7 @@ export default props => {
           if (_href.indexOf('/login') !== -1) {
             Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
             alert('test')
-            Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
+            // Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
           } else {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)
