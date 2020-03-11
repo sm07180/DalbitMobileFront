@@ -136,12 +136,12 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 88%;
-  height: 100%;
+  /* height: 100%; */
   flex-direction: column;
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
   }
 `
 const List = styled.div`
@@ -278,7 +278,7 @@ const List = styled.div`
 const CountArea = styled.div`
   display: flex;
   width: 30%;
-  height: 100%;
+  /* height: 100%; */
   padding-bottom: 22px;
   justify-content: flex-end;
   align-items: flex-end;
