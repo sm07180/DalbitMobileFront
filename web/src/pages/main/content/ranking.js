@@ -18,6 +18,7 @@ export default props => {
   const [rankingType, setRankingType] = useState('dj')
   const [djInfo, setDjInfo] = useState([])
   const [fanInfo, setFanInfo] = useState([])
+  const [sswiper, updateSwiper] = useState(false)
 
   //api
 
@@ -31,6 +32,7 @@ export default props => {
     })
     if (resDj.result === 'success') {
       setDjInfo(resDj.data.list)
+      sswiper.update()
     } else {
       console.log('실패', resDj.result)
     }
@@ -52,14 +54,14 @@ export default props => {
   let rankingSlider = {}
   const params = {
     slidesPerView: 'auto',
-    spaceBetween: 6,
+    spaceBetween: 12,
     //freeMode: true,
-    resistanceRatio: 0,
-    breakpoints: {
-      360: {
-        spaceBetween: 12
-      }
-    }
+    resistanceRatio: 0
+    // breakpoints: {
+    //   360: {
+    //     spaceBetween: 12
+    //   }
+    // }
   }
 
   //map
@@ -96,9 +98,11 @@ export default props => {
   }
 
   //useEffect
+  useEffect(() => {}, [])
+
   useEffect(() => {
-    fetch()
-  }, [])
+    if (sswiper) fetch()
+  }, [sswiper])
 
   return (
     <Content>
@@ -124,11 +128,7 @@ export default props => {
       <RankingWrap>
         <PcWrap>{rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}</PcWrap>
         <MobileWrap>
-          <Swiper
-            {...params}
-            getSwiper={e => {
-              rankingSlider = e
-            }}>
+          <Swiper {...params} getSwiper={updateSwiper}>
             {rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}
           </Swiper>
         </MobileWrap>

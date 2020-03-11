@@ -84,9 +84,9 @@ export default () => {
     if (customHeader.isFirst === undefined) return {}
     //최초앱구동실행
     if (customHeader.isFirst === 'Y') {
-      Utility.setCookie('native-info', '', -1)
-    } else if (customHeader.isFirst === 'N') {
-      // return JSON.parse(Utility.getCookie('native-info'))
+      Utility.setCookie('native-player-info', '', -1)
+    } else if (customHeader.isFirst === 'N' && Utility.getCookie('native-player-info')) {
+      return JSON.parse(Utility.getCookie('native-player-info'))
     }
     return customHeader.isFirst
   })
@@ -108,10 +108,10 @@ export default () => {
       if (isHybrid === 'Y') {
         //Utility.setCookie('native-info', 'Y', null)
         //info
-        if (Utility.getCookie('native-info') === 'Y') {
-          // alert(Utility.getCookie('native-info'))
-          context.action.updateMediaPlayerStatus(true)
-        }
+        // if (Utility.getCookie('native-info') === 'Y') {
+        //   // alert(Utility.getCookie('native-info'))
+        //   context.action.updateMediaPlayerStatus(true)
+        // }
         //active
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           Hybrid('GetLoginToken', res.data)
@@ -132,13 +132,13 @@ export default () => {
     const _customHeader = {...customHeader, isHybrid: isHybrid}
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
-
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
+    console.log('### version 1.0')
     if (isHybrid === 'Y') {
-      alert('customHeader.isFirst : ' + customHeader.isFirst)
+      //  alert('customHeader.isFirst : ' + customHeader.isFirst)
       //alert(nativeInfo)
     }
   }, [])

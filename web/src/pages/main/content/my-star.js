@@ -3,16 +3,20 @@
  * @brief 메인 라이브, 나의 스타 라이브component
  *
  */
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import ContentBox from './my-star-contentBox'
-import {WIDTH_PC_S, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
-import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const [sswiper, updateSwiper] = useState(true)
+
+  //ref
+  const prev = useRef(null) // 채팅창 스크롤 영역 선택자
+  const next = useRef(null) // 채팅창 스크롤 영역 선택자
 
   const stopToggle = () => {
     if (sswiper.autoplay.paused == true) {
@@ -21,6 +25,15 @@ export default props => {
       sswiper.autoplay.pause()
     }
   }
+
+  const goNextSlide = () => {
+    sswiper.slideNext()
+  }
+
+  const goPrevSlide = () => {
+    sswiper.slidePrev()
+  }
+
   const params = {
     slidesPerColumnFill: 'row',
     resistanceRatio: 0,
@@ -28,13 +41,11 @@ export default props => {
       0: {
         slidesPerView: 1,
         slidesPerGroup: 1,
-        slidesPerColumn: 2,
         spaceBetween: -9
       },
       //0까지
       601: {
         slidesPerView: 2,
-        slidesPerColumn: 2,
         spaceBetween: 0
       },
 
@@ -43,15 +54,15 @@ export default props => {
         slidesPerView: 3,
         spaceBetween: 14,
         slidesPerGroup: 1,
-        slidesPerColumn: 2
+        slidesPerColumn: 1
       }
       //1280까지
-    },
-
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev'
     }
+
+    // navigation: {
+    //   nextEl: '.swiper-button-next',
+    //   prevEl: '.swiper-button-prev'
+    // }
   }
   const arraySlide = slideInfo.map((item, index) => {
     const {id, title, url, name, reco, category, popu, avata, people, like} = item
@@ -70,13 +81,13 @@ export default props => {
             <Category>{category}</Category>
             <Title>{title}</Title>
             <Name>{name}</Name>
+            <People>
+              <Viewer></Viewer>
+              <span>{people}</span>
+              <Lover></Lover>
+              <span>{like}</span>
+            </People>
           </Info>
-          <People>
-            <Viewer></Viewer>
-            <span>{people}</span>
-            <Lover></Lover>
-            <span>{like}</span>
-          </People>
         </ContentBox>
       </Slide>
     )
@@ -85,9 +96,20 @@ export default props => {
   return (
     <>
       <SwiperWrap>
-        <ToggleBtn onClick={stopToggle}></ToggleBtn>
-        <Stitle>나의 스타 방송</Stitle>
-        <SliderControl></SliderControl>
+        <div className="title-btn">
+          <h2>나의 스타 방송</h2>
+          <SliderControl>
+            <button className="prev" onClick={goPrevSlide}>
+              이전
+            </button>
+            <button className="stop" onClick={stopToggle}>
+              중지
+            </button>
+            <button className="next" onClick={goNextSlide}>
+              다음
+            </button>
+          </SliderControl>
+        </div>
         <Swiper {...params} getSwiper={updateSwiper}>
           {arraySlide}
         </Swiper>
@@ -98,18 +120,20 @@ export default props => {
 
 const SwiperWrap = styled.div`
   position: relative;
-  width: 82.48%;
-  margin: 79px auto 74px auto;
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 94.53%;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 97.73%;
-    margin: 76.5px 0 65.5px 2.26%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 97.73%;
-    margin: 38.5px 0 34.5px 2.26%;
+  padding: 60px 0 80px 0;
+
+  .title-btn {
+    display: flex;
+    line-height: 36px;
+    text-align: left;
+    h2 {
+      display: inline-block;
+      margin-right: 18px;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.85px;
+      color: ${COLOR_MAIN};
+    }
   }
 
   & .swiper-container {
@@ -138,38 +162,31 @@ const SwiperWrap = styled.div`
     background: url('https://devimage.dalbitcast.com/images/api/ico-next.png') no-repeat center center / cover;
   }
 `
-const Stitle = styled.h2`
-  width: 50%;
-  color: ${COLOR_MAIN};
-  text-align: right;
-  font-size: 34px;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.85px;
-  @media (max-width: ${WIDTH_PC_S}) {
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-    text-align: center;
-    line-height: 1.15;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    font-size: 28px;
-    line-height: 1;
-    letter-spacing: -0.7px;
-  }
-`
 const SliderControl = styled.div`
-  position: absolute;
-  top: 0;
-  left: calc(50% + 16px);
   width: 120px;
   height: 36px;
+  margin: 0 0 0 auto;
+  padding: 0 8px 0 11px;
   border: 1px solid ${COLOR_MAIN};
   border-radius: 18px;
   box-sizing: border-box;
+
+  button {
+    width: 33px;
+    height: 36px;
+    text-indent: -9999px;
+
+    &.prev {
+      background: url(${IMG_SERVER}/images/api/ico-prev.png) no-repeat center center/ cover;
+    }
+    &.stop {
+      background: url(${IMG_SERVER}/images/api/ico-stop.png) no-repeat center center/ cover;
+    }
+    &.next {
+      background: url(${IMG_SERVER}/images/api/ico-next.png) no-repeat center center/ cover;
+    }
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
   }
 `
 const ToggleBtn = styled.div`
@@ -202,7 +219,7 @@ const Info = styled.div`
 `
 const Category = styled.span`
   display: block;
-  color: ${COLOR_GRAY};
+  color: #777;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.35px;
@@ -213,7 +230,7 @@ const Title = styled.h2`
   max-height: 46px;
   margin: 21px 0 9px 0;
   box-sizing: border-box;
-  color: ${COLOR_GREYISHBROWN};
+  color: #444;
   white-space: nowrap;
   text-overflow: ellipsis;
   white-space: normal;
@@ -301,7 +318,7 @@ const Popu = styled.span`
   height: 28px;
   margin-left: 5px;
   background-color: #fff;
-  color: ${COLOR_PINK};
+  color: ${COLOR_POINT_P};
   font-size: 14px;
   text-align: center;
   font-weight: 700;
@@ -314,18 +331,7 @@ const Popu = styled.span`
 
 const People = styled.div`
   position: absolute;
-  left: 53.29%;
-  bottom: 24px;
-  width: 80%;
-  height: 24px;
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    left: 47.29%;
-  }
+  bottom: 0;
   & span {
     float: left;
     overflow: hidden;
