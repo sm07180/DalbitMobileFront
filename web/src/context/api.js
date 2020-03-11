@@ -783,6 +783,34 @@ export default class API {
     return await ajax({...obj, url: url || '/search/member', method: method || 'GET', params: params})
   }
 
+  //-------------------------------------------------------------------- 메인 관련
+
+  /**
+   * @brief DJ 랭킹 가져오기
+   * @method "GET"
+   * @param int rankType                      //기간 (1:전일, 2:주간 (일~토), 3:월간)
+   * @param int page                          //페이지번호
+   * @param int records                       //페이지당 리스트 수
+   * @create 이은비 2020.03.11
+   */
+  static get_dj_ranking = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rank/dj`, method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 팬 랭킹 가져오기
+   * @method "GET"
+   * @param int rankType                      //기간 (1:전일, 2:주간 (일~토), 3:월간)
+   * @param int page                          //페이지번호
+   * @param int records                       //페이지당 리스트 수
+   * @create 이은비 2020.03.11
+   */
+  static get_fan_ranking = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
+  }
+
   //-------------------------------------------------------------
 }
 
