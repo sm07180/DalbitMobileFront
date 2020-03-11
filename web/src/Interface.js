@@ -21,8 +21,9 @@ export default props => {
         const {url, info} = event.detail
         history.push(url, {...info, type: 'native-navigator'})
         break
-      case 'native-player-show': //---------------------Native player-show
+      case 'native-player-show': //---------------------Native player-show (Android)
         context.action.updateMediaPlayerStatus(true)
+        alert(JSON.stringify(event.detail, null, 1))
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native start
