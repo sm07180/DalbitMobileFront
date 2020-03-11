@@ -16,7 +16,6 @@ import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 import store from 'pages/store'
 import {BroadCastStore} from '../store'
-import {createUnionTypeAnnotation} from 'C:/Users/USER/AppData/Local/Microsoft/TypeScript/3.6/node_modules/@babel/types/lib'
 
 export default props => {
   //---------------------------------------------------------------------
