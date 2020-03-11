@@ -5,12 +5,12 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {LiveStore} from '../store'
 //components
 import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
-import {LiveStore} from '../store'
 
 export default props => {
   //----------------------------------------------------------- declare start
@@ -62,7 +62,7 @@ export default props => {
     } else {
       console.log('## res :', res)
       console.log('## store.list : ', store.list)
-      store.action.updateList(store.list.concat(res.data.list))
+      store.action.updateList(res.data.list)
       setPaging(res.data.paging)
     }
   }
@@ -88,7 +88,8 @@ export default props => {
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log('obj :: ', roomNo)
+    const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
     console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
@@ -104,7 +105,7 @@ export default props => {
       } else {
         //하이브리드앱이 아닐때
         const {roomNo} = res.data
-        context.action.updateBroadcastTotalInfo(res.data)
+        context.action.updateBroadcastTotalInfo(obj)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
     }
@@ -129,7 +130,8 @@ export default props => {
     // return () => document.removeEventListener('scroll', onScroll)
   }, [])
 
-  console.log('## store.list :', store.list)
+  // console.log('## store.list :', store.list)
+  console.log('## context :', context)
   //----------------------------------------------------------- components start
   return (
     <Container>

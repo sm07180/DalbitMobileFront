@@ -39,7 +39,8 @@ const LiveProvider = props => {
     },
 
     updateList: obj => {
-      setList([...obj])
+      // setList(list => ({...list, ...obj}))
+      setList(obj)
     }
   }
   //---------------------------------------------------------------------

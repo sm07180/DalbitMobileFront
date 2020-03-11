@@ -95,6 +95,13 @@ export default props => {
     })
   }, [])
 
+  // useEffect(() => {
+  //   console.clear()
+  //   console.log('방정보가 수정 되어 여기에 한번 들어와야 된다. ')
+  //   console.log('context.broadcastTotalInfo.title = ' + context.broadcastTotalInfo.title)
+
+  // }, [context.broadcastTotalInfo.title])
+
   //좋아요~부스트단계 바뀔시마다 셋팅해줘야할것들.. top랭크 영역표시 클래스 조절하기
   useEffect(() => {
     if (props.auth == 3) {
@@ -135,25 +142,25 @@ export default props => {
         </Figure>
         <div>
           <p>{room.bjNickNm}</p>
-          <p>{room.title}</p>
+          <p>{context.broadcastTotalInfo.title}</p>
         </div>
         <ul>
           {/* 팬랭킹 영역 */}
           {room.fanRank[0].profImg.url && creatFanRank()}
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
           <li className="people" onClick={() => store.action.updateTab(0)}>
-            50
+            {context.broadcastTotalInfo.userCount != '' ? context.broadcastTotalInfo.userCount : 0}
           </li>
         </ul>
       </div>
       <div className="cast-info">
         <ul>
           {/* 누적 청취자 수 */}
-          <li>85</li>
+          <li>{context.broadcastTotalInfo.historyCount != '' ? context.broadcastTotalInfo.historyCount : 0}</li>
           {/* 현재 방송 좋아요 수 */}
 
-          {/* <li>{context.broadcastTotalInfo == null ? room.likes : context.broadcastTotalInfo.likes}</li> */}
-          <li>{likeCheck()}</li>
+          <li>{context.broadcastTotalInfo.likes !== null ? context.broadcastTotalInfo.likes : room.likes}</li>
+          {/* <li>{likeCheck()}</li> */}
           {/* 방송 남은 시간 */}
           {props.auth === 3 && <li>00:30:00</li>}
         </ul>
