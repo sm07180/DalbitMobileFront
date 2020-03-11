@@ -16,7 +16,6 @@ export default props => {
   let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
-    alert(event.type)
     switch (event.type) {
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
