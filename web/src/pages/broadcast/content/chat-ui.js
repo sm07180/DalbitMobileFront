@@ -11,12 +11,12 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 const sc = require('context/socketCluster')
 import MessageType from './chat-message-type'
+
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 import store from 'pages/store'
 import {BroadCastStore} from '../store'
-import {createUnionTypeAnnotation} from 'C:/Users/USER/AppData/Local/Microsoft/TypeScript/3.6/node_modules/@babel/types/lib'
 
 export default props => {
   //---------------------------------------------------------------------
