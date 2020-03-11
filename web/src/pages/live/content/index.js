@@ -31,9 +31,13 @@ export default props => {
       setList(false)
       return
     } else {
-      setList(res.data.list)
-      setPaging(res.data.paging)
       console.log('## res :', res)
+      res.data.list.forEach(data => {
+        if (data.state === 1) setList(list.concat(data))
+        // if(data.state === 1) setPaging(res.data.paging)
+      })
+      // setList(res.data.list)
+      // setPaging(res.data.paging)
     }
   }
 
@@ -82,7 +86,7 @@ export default props => {
   }
 
   useEffect(() => {
-    getBroadList({params: {roomType: type, page: 1, records: 10}})
+    getBroadList({params: {roomType: type, page: 1, records: 100}})
     commonData()
   }, [])
 
@@ -123,6 +127,6 @@ const MainContents = styled.div`
 const Wrap = styled.div`
   display: flex;
   width: 90%;
-  height: 100%;
+  height: 90%;
   justify-content: center;
 `
