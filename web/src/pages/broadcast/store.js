@@ -34,6 +34,7 @@ const BroadCastProvider = props => {
   const [sumlike, setSumLike] = useState(0) // 채팅방 좋아요 누적수
   const [ListenerSelect, setListenerSelect] = useState({}) // 청취자 탭에서 선택한 유저 정보
   const [mikeState, setMikeState] = useState(true) // 마이크상태. 기본 값 켜있음 true
+  const [broadcastProfileInfo, setBroadcastProfileInfo] = useState(null) // 방송방 프로필보기
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -162,6 +163,9 @@ const BroadCastProvider = props => {
     },
     updatereportIndex: num => {
       setReportIndex(num)
+    },
+    updateBroadcastProfileInfo: obj => {
+      setBroadcastProfileInfo(broadcastProfileInfo => ({...broadcastProfileInfo, ...obj}))
     }
   }
   //---------------------------------------------------------------------
@@ -186,7 +190,8 @@ const BroadCastProvider = props => {
     sumlike,
     mikeState,
     reportData,
-    reportIndex
+    reportIndex,
+    broadcastProfileInfo
   }
 
   return <Provider value={value}>{props.children}</Provider>

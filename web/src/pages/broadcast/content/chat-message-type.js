@@ -17,6 +17,7 @@ export default props => {
 
   //팬등록
   async function broad_pan_insert() {
+    console.loo('팬등록 = ' + store.roomInfo)
     const res = await Api.broad_pan_insert({
       data: {
         memNo: store.roomInfo.bjMemNo,
@@ -41,7 +42,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   console.log('메세지 타입 = ' + props)
-  if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
+  if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
     return (
       <>
         <Message className="guide">
@@ -73,9 +74,6 @@ export default props => {
 
           <pre>{props.data.recvMsg.msg}</pre>
         </div>
-        {/* <div>
-          <span>{props.data.recvMsg.msg}</span>
-        </div> */}
       </Message>
     )
   } else if (props.data.cmd === 'reqGood') {
@@ -130,7 +128,7 @@ export default props => {
           <span>
             좋아요 감사합니다.
             <br />
-            {`${store.roomInfo.nk} 님`}
+            {`${props.rcvData.data.user.nk} 님`}
             <br />
             저의 팬이 되어주시겠어요?
             <button onClick={() => broad_pan_insert()}>+팬등록</button>

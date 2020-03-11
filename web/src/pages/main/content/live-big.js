@@ -9,25 +9,27 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
-  const [LiveBigInfo, setLiveBigInfo] = useState(props.ImgInfo[0])
+  //const [LiveBigInfo, setLiveBigInfo] = useState(props.ImgInfo[0])
+  const {bjProfImg, roomNo, roomType, title, entryCnt, likeCnt, bjNickNm} = {...props.info}
   //---------------------------------------------------------------------
   // console.log(item)
   // console.log(LiveBigInfo.url)
   //---------------------------------------------------------------------
   return (
     <>
-      <LiveBigWrap>
-        <ImgWrap bg={LiveBigInfo.url}>
-          <Avata bg={LiveBigInfo.avata}></Avata>
-        </ImgWrap>
+      <LiveBigWrap
+        onClick={() => {
+          props.joinRoom({roomNo: roomNo})
+        }}>
+        <ImgWrap bg={bjProfImg.url}>{/* <Avata bg={LiveBigInfo.avata}></Avata> */}</ImgWrap>
         <InfoWrap>
-          <InfoTitle>{LiveBigInfo.title}</InfoTitle>
-          <BjName>{LiveBigInfo.name}</BjName>
+          <InfoTitle>{title}</InfoTitle>
+          <BjName>{bjNickNm}</BjName>
           <People>
             <Viewer></Viewer>
             <Lover></Lover>
-            <span>{LiveBigInfo.people}</span>
-            <span>{LiveBigInfo.like}</span>
+            <span>{entryCnt}</span>
+            <span>{likeCnt}</span>
           </People>
         </InfoWrap>
       </LiveBigWrap>
@@ -43,6 +45,7 @@ const LiveBigWrap = styled.div`
   height: 336px;
   margin-right: 43px;
   margin-bottom: 60px;
+  cursor: pointer;
   &:after {
     content: '';
     clear: both;
