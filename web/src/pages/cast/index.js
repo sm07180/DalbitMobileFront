@@ -31,14 +31,14 @@ export default props => {
         <section>
           <button
             onClick={() => {
-              const _info = JSON.parse(Utility.getCookie('native-info'))
+              const _info = JSON.parse(Utility.getCookie('native-player-info'))
               if (_info === '' || _info === undefined) {
                 alert('쿠키없음')
               } else {
                 alert(JSON.stringify(_info, null, 1))
               }
             }}>
-            native-info
+            native-player-info
           </button>
         </section>
         <h1>CustomHeader</h1>
