@@ -109,7 +109,7 @@ export default props => {
     <Content>
       <div className="top-wrap">
         <div className="title-btn">
-          <h2>랭킹</h2>
+          <h2>랭 킹</h2>
           <span
             onClick={() => {
               props.history.push('/ranking')
@@ -314,14 +314,16 @@ const MobileWrap = styled.div`
   }
   @media (max-width: ${WIDTH_PC_S}) {
     display: block;
+    overflow: hidden;
+    height: 393px;
     .swiper-container {
       padding-right: 2.5%;
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 342px;
     .swiper-slide {
       width: 40%;
-      height: 342px;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
