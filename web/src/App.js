@@ -105,6 +105,13 @@ export default () => {
       context.action.updateToken(res.data)
       //하이브리디일때만
       if (isHybrid === 'Y') {
+        alert('info : ' + Utility.getCookie('native-info'))
+        Utility.setCookie('native-info', 'Y', null)
+        //info
+        if (Utility.getCookie('native-info') === 'Y') {
+          alert('실행')
+        }
+        //active
         if (Utility.getCookie('native-active') !== 'Y') {
           Utility.setCookie('native-active', 'Y', null)
           Hybrid('GetLoginToken', res.data)
@@ -131,7 +138,6 @@ export default () => {
     //-----##TEST
 
     if (isHybrid === 'Y') {
-      alert('하이브리드')
       // const _val = sessionStorage.setItem('PLAYER_INFO')
       // alert(_val)
       // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))

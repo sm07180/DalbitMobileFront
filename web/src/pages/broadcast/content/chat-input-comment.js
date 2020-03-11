@@ -45,7 +45,6 @@ export default props => {
       volume: current == 'volume' ? !toggle.volume : false,
       quick: current == 'quick' ? !toggle.quick : false,
       menu: current == 'menu' ? !toggle.menu : false,
-      mike: toggle.mike,
       like: toggle.like,
       boost: toggle.boost
     })
@@ -57,7 +56,7 @@ export default props => {
 
   //마이크 on off 기능~
   const activeMike = () => {
-    broad_micOnOff(!toggle.mike)
+    broad_micOnOff(!store.mikeState)
   }
 
   //좋아요~!
@@ -189,10 +188,7 @@ export default props => {
     //Error발생시
 
     if (res.result === 'success') {
-      setToggle({
-        ...toggle,
-        mike: !toggle.mike
-      })
+      store.action.updateMikeState(!store.mikeState)
       // setShortMessage(res.data)
       // store.action.updateShortCutList(res.data)
     }
@@ -254,7 +250,7 @@ export default props => {
     // 청취자일 경우 좋아요 버튼 노출, 좋아요 했을시에는 부스트(당근모양) 버튼 노출
     if (props.auth === 3) {
       return (
-        <button name="mike" className={`mike ${toggle.mike ? 'on' : 'off'}`} title="마이크" onClick={activeMike}>
+        <button name="mike" className={`mike ${store.mikeState ? 'on' : 'off'}`} title="마이크" onClick={activeMike}>
           마이크
         </button>
       )
