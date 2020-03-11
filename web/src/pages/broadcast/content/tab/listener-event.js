@@ -105,6 +105,20 @@ export default props => {
     }
   }
 
+  async function broadProfileInfo(obj) {
+    const res = await Api.profile({
+      params: {
+        memNo: obj.memNo
+      },
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      console.log('## 선택 프로필 정보 res = ' + res.data)
+      store.action.updateBroadcastProfileInfo(res.data)
+    }
+  }
+
   const drawListenList = idx => {
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
@@ -161,6 +175,8 @@ export default props => {
         store.action.updateTab(1)
         break
       case 4: //프로필 보기
+        res = drawListenList(props.selectidx)
+        broadProfileInfo(selectlistener)
         store.action.updateTab(6)
         break
       case 5: //신고하기
