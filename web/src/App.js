@@ -33,16 +33,6 @@ export default () => {
   const context = useContext(Context)
   //useState
   const [ready, setReady] = useState(false)
-  //isHybrid체크
-  const isHybrid = useMemo(() => {
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const val = JSON.parse(element.value)
-      if (val.os + '' === '1' || val.os + '' === '2') return 'Y'
-      return 'N'
-    }
-    return 'N'
-  })
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //makeCustomHeader
@@ -85,6 +75,21 @@ export default () => {
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
+  //isHybrid체크
+  const isHybrid = useMemo(() => {
+    return customHeader.isFirst !== undefined ? 'Y' : 'N'
+  })
+  //Native->REACT
+  const nativeInfo = useMemo(() => {
+    if (customHeader.isFirst === undefined) return {}
+    //최초앱구동실행
+    if (customHeader.isFirst === 'Y') {
+      Utility.setCookie('native-info', '', -1)
+    } else if (customHeader.isFirst === 'N') {
+      // return JSON.parse(Utility.getCookie('native-info'))
+    }
+    return customHeader.isFirst
+  })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -93,10 +98,6 @@ export default () => {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
       if (res.data.isLogin) {
-        const userInfo = await Api.mypage()
-        if (userInfo.result === 'success') {
-          context.action.updateMypage(userInfo.data)
-        }
         const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
         if (profileInfo.result === 'success') {
           context.action.updateProfile(profileInfo.data)
@@ -108,12 +109,11 @@ export default () => {
         //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          alert(Utility.getCookie('native-info'))
+          // alert(Utility.getCookie('native-info'))
           context.action.updateMediaPlayerStatus(true)
         }
         //active
-        if (Utility.getCookie('native-active') !== 'Y') {
-          Utility.setCookie('native-active', 'Y', null)
+        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           Hybrid('GetLoginToken', res.data)
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
@@ -132,18 +132,15 @@ export default () => {
     const _customHeader = {...customHeader, isHybrid: isHybrid}
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
+
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-
     if (isHybrid === 'Y') {
-      // const _val = sessionStorage.setItem('PLAYER_INFO')
-      // alert(_val)
-      // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
-      //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
+      alert('customHeader.isFirst : ' + customHeader.isFirst)
+      //alert(nativeInfo)
     }
-    // sessionStorage.setItem('23동의대', 0)
   }, [])
   //---------------------------------------------------------------------
   /**

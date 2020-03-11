@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import LiveList from './live-list'
-
 export default props => {
   //----------------------------------------------------------- declare start
   const [sort1, setSort1] = useState('랭킹')
@@ -54,6 +53,7 @@ export default props => {
       setList(list.concat(context.common.roomType))
     }
   }, [context])
+
   //----------------------------------------------------------- components start
   return (
     <Container>
@@ -103,7 +103,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 70%;
+  /* height: 100%; */
   flex-direction: column;
 `
 

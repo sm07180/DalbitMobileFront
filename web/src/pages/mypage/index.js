@@ -25,8 +25,8 @@ import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
-
 //
+
 const User = props => {
   //---------------------------------------------------------------------
   // props.index 값 받았을 시 해당되는 탭을 on 시켜줌, 값 없을 시 기본 0

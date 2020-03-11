@@ -438,12 +438,20 @@ export default class API {
    * @param string bgImg             //배경이미지 패스
    * @param string bgImgDel          //삭제 할 배경이미지 패스
    * @param int    bgImgRacy            //배경이미지 구글 선정성
-   * @param string message           //메세지
+   * @param string profMsg           //메세지
    * @create 김호겸 2020.01.15
    */
 
   static profile_edit = async obj => {
     const {url, method, memember, data} = obj || {}
+    const {gender, nickNm, birth} = data
+    if (!gender) {
+      return alert('gender is empty')
+    } else if (!nickNm) {
+      return alert('nickNm is empty')
+    } else if (!birth) {
+      return alert('birth is empty')
+    }
     return await ajax({...obj, url: url || `/mypage/profile`, method: method || 'POST', data: data})
   }
 
@@ -522,10 +530,12 @@ export default class API {
   /**
    * @brief 회원 신고하기
    * @method "POST"
-   * @param string    memNo             //*신고회원번호
-   * @param int       reason             //*신고사유
-   * @param string    cont               //*상세내용
+   * @param string    memNo             //*신고회원번호(필)
+   * @param int       reason             //*신고사유(필)
+   * @param string    cont               //*기타 신고 사유
+   * @param string    roomNo               //*룸넘버
    * @create 김호겸 2020.01.15
+   * @수정 황상한 2020.03.11
    */
   static member_declar = async obj => {
     const {url, method, data} = obj || {}
@@ -773,6 +783,34 @@ export default class API {
   static member_search = async obj => {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || '/search/member', method: method || 'GET', params: params})
+  }
+
+  //-------------------------------------------------------------------- 메인 관련
+
+  /**
+   * @brief DJ 랭킹 가져오기
+   * @method "GET"
+   * @param int rankType                      //기간 (1:전일, 2:주간 (일~토), 3:월간)
+   * @param int page                          //페이지번호
+   * @param int records                       //페이지당 리스트 수
+   * @create 이은비 2020.03.11
+   */
+  static get_dj_ranking = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/rank/dj`, method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 팬 랭킹 가져오기
+   * @method "GET"
+   * @param int rankType                      //기간 (1:전일, 2:주간 (일~토), 3:월간)
+   * @param int page                          //페이지번호
+   * @param int records                       //페이지당 리스트 수
+   * @create 이은비 2020.03.11
+   */
+  static get_fan_ranking = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 
   //-------------------------------------------------------------

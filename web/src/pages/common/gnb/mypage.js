@@ -18,7 +18,7 @@ export default props => {
   //---------------------------------------------------------------------
   //useContext
   const context = useContext(Context)
-  const {mypage} = context
+  const {profile} = context
   //useState
   //useMemo
 
@@ -63,10 +63,12 @@ export default props => {
               <Ptitle>
                 {context.token.isLogin ? (
                   <>
-                    <PIMG bg={mypage && mypage.profImg.url}></PIMG>
+                    <Link to="/mypage/setting" style={{display: 'inline-block'}} onClick={() => context.action.updateGnbVisible(false)}>
+                      <PIMG bg={profile && profile.profImg['thumb120x120']} />
+                    </Link>
                     <NoLoginTitle>
-                      <h4>{mypage && mypage.nickNm}</h4>
-                      <ID>{mypage && mypage.memId}</ID>
+                      <h4>{profile && profile.nickNm}</h4>
+                      <ID>{profile && profile.memId}</ID>
                     </NoLoginTitle>
                   </>
                 ) : (
@@ -86,28 +88,28 @@ export default props => {
                   </>
                 )}
               </Ptitle>
-              {context.token.isLogin && mypage !== null ? (
+              {context.token.isLogin && profile !== null ? (
                 <MyInfo>
                   <p className="total cast">
                     <span>총 방송 시간</span>
-                    <b>{mypage && Utility.secondsToTime(mypage.broadTotTime)}</b>
+                    <b>{profile && Utility.secondsToTime(profile.broadTotTime)}</b>
                   </p>
                   <p className="total listen">
                     <span>총 청취 시간</span>
-                    <b>{mypage && Utility.secondsToTime(mypage.listenTotTime)}</b>
+                    <b>{profile && Utility.secondsToTime(profile.listenTotTime)}</b>
                   </p>
                   <ul>
                     <li className="count like">
                       <span>좋아요</span>
-                      <b>{mypage && mypage.likeTotCnt}</b>
+                      <b>{profile && profile.likeTotCnt}</b>
                     </li>
                     <li className="count star">
                       <span>보유별</span>
-                      <b>{mypage && mypage.byeolCnt}</b>
+                      <b>{profile && profile.byeolCnt}</b>
                     </li>
                     <li className="count moon">
                       <span>보유달</span>
-                      <b>{mypage && mypage.dalCnt}</b>
+                      <b>{profile && profile.dalCnt}</b>
                     </li>
                   </ul>
                 </MyInfo>
@@ -123,8 +125,8 @@ export default props => {
           </CONTENT>
 
           <NavWrap className={context.token.isLogin ? 'login' : 'logout'}>
-            {context.token.isLogin && mypage !== null && makeNavi()}
-            {context.token.isLogin && mypage !== null && (
+            {context.token.isLogin && profile !== null && makeNavi()}
+            {context.token.isLogin && profile !== null && (
               <LoginChoiceOut
                 onClick={() => {
                   context.action.confirm({
@@ -145,6 +147,7 @@ export default props => {
                             props.history.push('/')
                             context.action.updateGnbVisible(false)
                             context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
+                            context.action.updateProfile(null)
                           }
                         }
                         fetchData()
@@ -229,6 +232,7 @@ const PIMG = styled.div`
 `
 const Ptitle = styled.div`
   width: 100%;
+  text-align: center;
 `
 const NoLoginTitle = styled.div`
   width: 100%;
