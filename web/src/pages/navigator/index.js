@@ -21,7 +21,7 @@ export default props => {
     if (queryString === '') alert('정보가없습니다')
     //title
     const {history} = props
-    alert(queryString)
+
     history.push(queryString.router, {...queryString, type: 'native-navigator'})
   }, [])
   //---------------------------------------------------------------------

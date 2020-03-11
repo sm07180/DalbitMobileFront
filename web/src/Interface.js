@@ -26,9 +26,9 @@ export default props => {
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        if (event.detail !== undefined && event.detail !== '') {
-          alert(JSON.stringify(event.detail, null, 1))
-        }
+        // if (event.detail !== undefined && event.detail !== '') {
+        //   alert(JSON.stringify(event.detail, null, 1))
+        // }
         //  context.action.updateNativePlayer(event.detail)
         context.action.updateMediaPlayerStatus(true)
         break
