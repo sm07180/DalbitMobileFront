@@ -3,10 +3,10 @@
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE, WIDTH_TABLET_S} from 'context/config'
-import {WIDTH_TABLET} from 'context/config'
-import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC_S} from 'context/config'
+//context
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
   const [LiveBigInfo, setLiveBigInfo] = useState(props.ImgInfo[0])
@@ -35,7 +35,7 @@ export default props => {
   )
 }
 //---------------------------------------------------------------------
-//큰거는 809 42.13% 1920기준의
+//큰거는 809 42.13% 1920기준의 예??
 //714
 const LiveBigWrap = styled.div`
   float: left;
@@ -53,11 +53,11 @@ const LiveBigWrap = styled.div`
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: 168px;
+    width: 100%;
+    height: 180px;
+    margin-bottom: 36px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
-    height: 160px;
-    margin-bottom: 36px;
   }
 `
 const ImgWrap = styled.div`
@@ -94,13 +94,13 @@ const InfoWrap = styled.div`
   box-sizing: border-box;
   background-color: #f5f5f5;
   @media (max-width: ${WIDTH_PC_S}) {
-    padding: 11.2% 9.54% 0 9.54%;
+    padding: 11.2% 9.54% 20px 9.54%;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    padding: 6.06% 5.35% 0 5.35%;
+    padding: 6.06% 5.35% 40px 5.35%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    padding: 6.06% 4.87% 0 4.87%;
+    padding: 6.06% 4.87% 40px 4.87%;
   }
 `
 const InfoTitle = styled.h2`
@@ -129,6 +129,7 @@ const InfoTitle = styled.h2`
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: -0.4px;
+    transform: skew(-0.03deg);
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     margin-bottom: 8px;
@@ -149,6 +150,7 @@ const BjName = styled.h4`
     font-size: 14px;
     line-height: 1.71;
     letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     line-height: 1.43;
