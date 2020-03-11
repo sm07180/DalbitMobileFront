@@ -66,8 +66,7 @@ export default props => {
 
     const res = await Api.profile_edit({data})
     if (res.result === 'success') {
-      console.log(res)
-      // context.action.updateProfile(res.data)
+      context.action.updateProfile(res.data)
       return alert('저장되었습니다.')
     }
   }
