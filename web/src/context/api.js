@@ -438,12 +438,20 @@ export default class API {
    * @param string bgImg             //배경이미지 패스
    * @param string bgImgDel          //삭제 할 배경이미지 패스
    * @param int    bgImgRacy            //배경이미지 구글 선정성
-   * @param string message           //메세지
+   * @param string profMsg           //메세지
    * @create 김호겸 2020.01.15
    */
 
   static profile_edit = async obj => {
     const {url, method, memember, data} = obj || {}
+    const {gender, nickNm, birth} = data
+    if (!gender) {
+      return alert('gender is empty')
+    } else if (!nickNm) {
+      return alert('nickNm is empty')
+    } else if (!birth) {
+      return alert('birth is empty')
+    }
     return await ajax({...obj, url: url || `/mypage/profile`, method: method || 'POST', data: data})
   }
 
