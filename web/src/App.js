@@ -133,7 +133,7 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log('### version 2.2')
+    console.log('### version 2.3')
     /**
      * @새창에서도 실행되므로 주의요망
      */
