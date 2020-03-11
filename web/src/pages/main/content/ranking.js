@@ -308,7 +308,9 @@ const PcWrap = styled.div`
 const MobileWrap = styled.div`
   display: none;
   .swiper-slide {
+    overflow: hidden;
     width: 30%;
+    height: auto;
   }
   @media (max-width: ${WIDTH_PC_S}) {
     display: block;
