@@ -34,7 +34,6 @@ export default props => {
           //앱에서호출되는 로그인팝업
           if (_href.indexOf('/login') !== -1) {
             Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
-            alert('test')
             // Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
           } else {
             //일반적인 로그인성공
