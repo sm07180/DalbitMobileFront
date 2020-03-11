@@ -8,8 +8,25 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {BroadCastStore} from '../store'
 
 export default props => {
+  const store = useContext(BroadCastStore)
+
+  //팬등록
+  async function broad_pan_insert() {
+    const res = await Api.broad_pan_insert({
+      data: {
+        memNo: store.roomInfo.bjMemNo,
+        roomNo: store.roomInfo.roomNo
+      }
+    })
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    }
+  }
   //---------------------------------------------------------------------
   console.log('메세지 타입 = ' + props)
   if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
@@ -87,6 +104,25 @@ export default props => {
       <Message className="like guest">
         <div>
           <span>{props.data.recvMsg.msg}</span>
+        </div>
+      </Message>
+    )
+  } else if (props.data.cmd === 'reqGoodFirst') {
+    return (
+      <Message className="comment action" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+        <figure></figure>
+        <div>
+          <p>
+            <b className="dj">DJ</b>BJ라디오
+          </p>
+          <span>
+            좋아요 감사합니다.
+            <br />
+            {`${store.roomInfo.nk} 님`}
+            <br />
+            저의 팬이 되어주시겠어요?
+            <button onClick={() => broad_pan_insert()}>+팬등록</button>
+          </span>
         </div>
       </Message>
     )

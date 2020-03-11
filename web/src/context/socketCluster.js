@@ -124,7 +124,8 @@ export const scConnection = obj => {
         PACKET_RECV_REQMICON: 'reqMicOn', //마이크 On
         PACKET_RECV_REQMICOFF: 'reqMicOff', //마이크 Off
         PACKET_RECV_REQCALLING: 'reqCalling', // 통화중
-        PACKET_RECV_REQENDCALL: 'reqEndCall' //통화 종료
+        PACKET_RECV_REQENDCALL: 'reqEndCall', //통화 종료
+        PACKET_RECV_REQGOODFIRST: 'reqGoodFirst' //최초 좋아요
       }
     },
 
@@ -711,6 +712,9 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
     receiveMessageData(data)
   })
   socket.on(socketConfig.packet.recv.PACKET_RECV_REQENDCALL, function(data) {
+    receiveMessageData(data)
+  })
+  socket.on(socketConfig.packet.recv.PACKET_RECV_REQGOODFIRST, function(data) {
     receiveMessageData(data)
   })
 }

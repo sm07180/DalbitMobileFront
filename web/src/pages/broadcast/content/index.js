@@ -153,6 +153,8 @@ export default props => {
       console.log(res.message)
       return
     }
+    console.log('asdasdasdasd')
+    context.action.updateBroadcastTotalInfo(res.data)
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
     //return res.data
   }

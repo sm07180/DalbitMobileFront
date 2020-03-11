@@ -21,6 +21,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+
   const {mediaHandler} = context
   const history = useHistory()
   //state
@@ -39,6 +40,7 @@ export default props => {
   //오른쪽 메뉴들 토글기능
   const activeMenu = e => {
     const current = e.target.name
+
     setToggle({
       volume: current == 'volume' ? !toggle.volume : false,
       quick: current == 'quick' ? !toggle.quick : false,
@@ -77,7 +79,6 @@ export default props => {
   }
 
   //좋아요 보내기
-
   async function broad_likes(roomNo) {
     let myFanJoin
     const res = await Api.broad_likes({data: {roomNo: roomNo}})
@@ -96,31 +97,34 @@ export default props => {
       return
     } else {
       console.log('## liket res = ' + res)
+
+      context.action.updateBroadcastTotalInfo({...context.broadcastTotalInfo, ...res.data.rank, ...res.data.likes})
+      //console.log('context BroadcastTotalInfo = ' + context.broadcastTotalInfo)
       store.action.updateLike(2)
       setToggle({
         ...toggle,
         like: true
       })
       // 좋아요 누른 후 10초 뒤에 팬등록 팝업 실행
-      setTimeout(() => {
-        context.action.confirm({
-          //콜백처리
-          callback: () => {
-            broad_pan_insert()
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {
-            //alert('confirm callback 취소하기')
-          },
-          buttonText: {
-            right: '+팬등록'
-          },
-          msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
-          저의 팬이 되어주시겠어요?`
-        })
-      }, 1000)
+      // setTimeout(() => {
+      //   context.action.confirm({
+      //     //콜백처리
+      //     callback: () => {
+      //       broad_pan_insert()
+      //     },
+      //     //캔슬콜백처리
+      //     cancelCallback: () => {
+      //       //alert('confirm callback 취소하기')
+      //     },
+      //     buttonText: {
+      //       right: '+팬등록'
+      //     },
+      //     msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
+      //     저의 팬이 되어주시겠어요?`
+      //   })
+      // }, 1000)
 
-      clearTimeout()
+      //clearTimeout()
     }
   }
   //팬등록
@@ -274,7 +278,9 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    toggle.mike = true
+  }, [store.mikestate])
 
   //---------------------------------------------------------------------
   return (
