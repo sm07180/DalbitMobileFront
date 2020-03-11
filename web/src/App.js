@@ -103,12 +103,12 @@ export default () => {
         }
       }
       context.action.updateToken(res.data)
-      //하이브리디일때
+      //하이브리드일때
       if (isHybrid === 'Y') {
         //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          //alert('실행')
+          alert(Utility.getCookie('native-info'))
           context.action.updateMediaPlayerStatus(true)
         }
         //active
