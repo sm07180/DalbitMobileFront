@@ -10,7 +10,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 import MainSlider from './main-slider'
 import StarRangking from './ranking'
-import PopularDJ from './my-star'
+import MyStar from './my-star'
 import ContentList from './live'
 //components
 const Main = props => {
@@ -161,10 +161,9 @@ const Main = props => {
         <StarRangking {...props} />
       </RangkingWrap>
       {/* 인기 DJ 영역 */}
-      <PopularWrap>
-        <Border />
-        <PopularDJ Info={slideInfo} />
-      </PopularWrap>
+      <MyStarWrap>
+        <MyStar Info={slideInfo} />
+      </MyStarWrap>
       {/* 라이브 list 영역, 캐스트 list 영역 */}
       <ContentListWrap>
         <Border2 />
@@ -180,14 +179,16 @@ export default Main
 const Content = styled.div``
 const RangkingWrap = styled.section``
 
-const PopularWrap = styled.section`
-  max-width: 1467px;
-  width: 94.53%;
+const MyStarWrap = styled.section`
+  width: 1464px;
   margin: 0 auto;
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 100%;
+  border-top: 1px solid ${COLOR_MAIN};
+  @media (max-width: 1480px) {
+    width: 95%;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 97.5%;
+    margin: 0 0 0 2.5%;
   }
 `
 const Border = styled.div`

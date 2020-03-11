@@ -12,7 +12,10 @@ export default props => {
 
 const Wrap = styled.div`
   height: 190px;
-  margin-bottom: 26px;
+  margin-right: 20%;
+  @media (max-width: 1480px) {
+    margin-right: 0;
+  }
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 140px;
   }
