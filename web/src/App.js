@@ -85,10 +85,8 @@ export default () => {
     //최초앱구동실행
     if (customHeader.isFirst === 'Y') {
       Utility.setCookie('native-player-info', '', -1)
-    } else if (customHeader.isFirst === 'N' && Utility.getCookie('native-player-info')) {
-      if (Utility.getCookie('native-player-info') !== undefined) {
-        context.action.updateMediaPlayerStatus(true)
-      }
+    } else if (customHeader.isFirst === 'N' && Utility.getCookie('native-player-info') !== undefined) {
+      context.action.updateMediaPlayerStatus(true)
       return JSON.parse(Utility.getCookie('native-player-info'))
     }
     return customHeader.isFirst
