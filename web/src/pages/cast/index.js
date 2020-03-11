@@ -32,7 +32,11 @@ export default props => {
           <button
             onClick={() => {
               const _info = JSON.parse(Utility.getCookie('native-info'))
-              alert(JSON.stringify(_info, null, 1))
+              if (_info === '' || _info === undefined) {
+                alert('쿠키없음')
+              } else {
+                alert(JSON.stringify(_info, null, 1))
+              }
             }}>
             native-info
           </button>

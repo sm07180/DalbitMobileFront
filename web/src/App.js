@@ -138,6 +138,7 @@ export default () => {
     fetchData({data: _customHeader})
     //-----##TEST
     if (isHybrid === 'Y') {
+      alert('customHeader.isFirst : ' + customHeader.isFirst)
       //alert(nativeInfo)
     }
   }, [])
