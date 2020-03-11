@@ -133,7 +133,7 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log('### version 1.6')
+    console.log('### version 1.8')
     if (isHybrid === 'Y') {
       //최초앱구동실행
       if (customHeader.isFirst === 'Y') {
