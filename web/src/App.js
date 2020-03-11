@@ -33,16 +33,6 @@ export default () => {
   const context = useContext(Context)
   //useState
   const [ready, setReady] = useState(false)
-  //isHybrid체크
-  const isHybrid = useMemo(() => {
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const val = JSON.parse(element.value)
-      if (val.os + '' === '1' || val.os + '' === '2') return 'Y'
-      return 'N'
-    }
-    return 'N'
-  })
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //makeCustomHeader
@@ -85,10 +75,20 @@ export default () => {
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
+  //isHybrid체크
+  const isHybrid = useMemo(() => {
+    return customHeader.isFirst !== undefined ? 'Y' : 'N'
+  })
   //Native->REACT
   const nativeInfo = useMemo(() => {
+    if (customHeader.isFirst === undefined) return {}
+    //최초앱구동실행
+    if (customHeader.isFirst === 'Y') {
+      Utility.setCookie('native-info', '', -1)
+    } else if (customHeader.isFirst === 'N') {
+      // return JSON.parse(Utility.getCookie('native-info'))
+    }
     return customHeader.isFirst
-    //console.log(customHeader.isF)
   })
   //---------------------------------------------------------------------
   //fetch
@@ -132,11 +132,13 @@ export default () => {
     const _customHeader = {...customHeader, isHybrid: isHybrid}
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
+
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
     if (isHybrid === 'Y') {
+      alert('customHeader.isFirst : ' + customHeader.isFirst)
       //alert(nativeInfo)
     }
   }, [])
