@@ -135,6 +135,7 @@ export default () => {
     //-----##TEST
     console.log('### version 1.8')
     if (isHybrid === 'Y') {
+      alert('isHybrid ' + isHybrid + ' , customHeader.isFirst : ' + customHeader.isFirst)
       //최초앱구동실행
       if (customHeader.isFirst === 'Y') {
         Utility.setCookie('native-player-info', '', -1)
