@@ -30,7 +30,7 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (isHybrid()) {
-      setInfo(context.nativePlayer)
+      //  setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
