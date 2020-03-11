@@ -4,6 +4,7 @@
  */
 import React, {useState, useMemo, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 //context
 import {isHybrid} from 'context/hybrid'
 import {Context} from 'context'
@@ -34,12 +35,13 @@ export default props => {
     /**
      * @안드로이드
      */
-    if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      const _val = JSON.stringify(context.nativePlayer)
-      setInfo(context.nativePlayer)
-      Utility.setCookie('native-player-info', _val, 100)
-    } else {
-      Utility.setCookie('native-player-info', 'IOS', 100)
+    if (_.hasIn(context.customHeader, 'os') && context.nativePlayer !== null && context.nativePlayer !== undefined) {
+      if (context.customHeader.os + '' === '1') {
+        const _val = JSON.stringify(context.nativePlayer)
+        setInfo(context.nativePlayer)
+        Utility.setCookie('native-player-info', _val, 100)
+        alert('native-player-info 쿠키실행')
+      }
     }
     //
   }, [context.nativePlayer])
