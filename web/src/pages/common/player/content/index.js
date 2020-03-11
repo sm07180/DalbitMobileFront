@@ -37,11 +37,9 @@ export default props => {
      */
 
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      if (context.customHeader.os + '' === '1') {
-        const _val = JSON.stringify(context.nativePlayer)
-        setInfo(context.nativePlayer)
-        Utility.setCookie('native-player-info', _val, 100)
-      }
+      const _val = JSON.stringify(context.nativePlayer)
+      setInfo(context.nativePlayer)
+      Utility.setCookie('native-player-info', _val, 100)
     }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
