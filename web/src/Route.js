@@ -62,7 +62,7 @@ export default () => {
         <Route exact path="/search" component={Search} />
         {/* <Route exact path="/livePub" component={LivePub} /> */}
         {/* navigator */}
-        <Route exact path="/navigator" component={Navigator} />
+        <Route path="/navigator" component={Navigator} />
         {/* 페이지가없을경우 404로 이동 */}
         <Route path="/error" component={NotFoundPage} />
         <Redirect to="/error" />
