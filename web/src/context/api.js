@@ -425,9 +425,10 @@ export default class API {
   /**
    * @brief 프로필 편집
    * @method "POST"
-   * @param string gender            //*성별
-   * @param string nickNm            //*닉네임
+   * @param string gender(required)            //*성별
+   * @param string nickNm(required)            //*닉네임
    * @param string name              //*이름
+   * @param string birth(required)   //*생일
    * @param string birthYY           //*생년
    * @param string birthMM           //*생월
    * @param string birthDD           //*생일
@@ -662,6 +663,7 @@ export default class API {
   /**
    * @brief 이미지 업로드
    * @method "POST"
+   * @param string uploadType (required) 'bg or profile'
    * @param string file                      //file 객체
    * @param string dataUrl                   //data URL
    * @param string imageUrl                  //image URL
@@ -669,6 +671,8 @@ export default class API {
    */
   static image_upload = async obj => {
     const {url, method, data} = obj || {}
+    const {uploadType} = data
+    if (!uploadType) return alert('Require uploadType')
     return await ajax({...obj, url: url || `/upload`, method: method || 'POST', data: data})
   }
   //-------------------------------------------------------------------- 토큰
