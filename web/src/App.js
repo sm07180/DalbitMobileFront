@@ -46,7 +46,7 @@ export default () => {
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
         language: 'ko',
-        deviceToken: 'make_custom_header_v1'
+        deviceToken: 'make_custom_header'
       }
       return info
     }
@@ -136,6 +136,7 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
+    console.error('version 1.0')
     if (isHybrid === 'Y') {
       //  alert('customHeader.isFirst : ' + customHeader.isFirst)
       //alert(nativeInfo)

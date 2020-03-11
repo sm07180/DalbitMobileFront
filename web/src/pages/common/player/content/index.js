@@ -38,6 +38,8 @@ export default props => {
       const _val = JSON.stringify(context.nativePlayer)
       setInfo(context.nativePlayer)
       Utility.setCookie('native-player-info', _val, 100)
+    } else {
+      Utility.setCookie('native-player-info', 'IOS', 100)
     }
     //
   }, [context.nativePlayer])
