@@ -12,6 +12,7 @@ import {BroadCastStore} from '../store'
 import Api from 'context/api'
 
 export default props => {
+  const context = useContext(Context)
   const store = useContext(BroadCastStore)
 
   //팬등록

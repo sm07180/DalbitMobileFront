@@ -588,7 +588,8 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
         }
         //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
         console.log('receiveMessageData')
-        receiveMessageData(JSON.parse(data))
+        const parseData = JSON.parse(data)
+        if (parseData.data.channel !== 'channel.public.dalbit') receiveMessageData(parseData)
       } else {
         /*if (dataObj.type == 'subscribe') {
                   //{"rid":5,"error":{"message":"Action was silently blocked by subscribe middleware","name":"SilentMiddlewareBlockedError","type":"subscribe"}}
@@ -723,6 +724,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
 // document.dispatchEvent(event)
 // 서버로 받은 데이터
 export const receiveMessageData = recvData => {
+  if (recvData.data.channel == 'channel.public.dalbit') return
   console.log('서버로 부터 받은 데이터 = ' + recvData)
   if (recvData && recvData.data.channel !== 'channel.public.dalbit' && recvData.data.data.cmd === 'chatEnd') {
     if (recvData.data.data.recvMsg.msg === 'bjOut') {

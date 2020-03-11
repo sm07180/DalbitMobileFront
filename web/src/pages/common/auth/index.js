@@ -24,7 +24,6 @@ export default props => {
         //Update
         context.action.updateToken(mode.loginSuccess)
         const _href = window.location.href
-
         //redirect
         if (props.history) {
           context.action.updatePopupVisible(false)

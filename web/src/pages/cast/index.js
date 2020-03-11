@@ -31,16 +31,19 @@ export default props => {
         <section>
           <button
             onClick={() => {
-              const _info = JSON.parse(Utility.getCookie('native-info'))
+              const _info = Utility.getCookie('native-player-info')
+              //    const _info = JSON.parse(Utility.getCookie('native-player-info'))
               if (_info === '' || _info === undefined) {
                 alert('쿠키없음')
               } else {
                 alert(JSON.stringify(_info, null, 1))
               }
             }}>
-            native-info
+            native-player-info
           </button>
         </section>
+        <h1>native-player-info</h1>
+        <section>{JSON.stringify(Utility.getCookie('native-player-info', null, 1))}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>

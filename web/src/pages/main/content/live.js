@@ -7,8 +7,10 @@ import styled from 'styled-components'
 import Select from 'components/ui/select'
 import BroadContent from './live-broad-content'
 import LiveCastBig from './live-big'
-import {WIDTH_MOBILE, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_PC_S} from 'context/config'
-import {COLOR_MAIN, COLOR_GREYISHBROWN, COLOR_GRAY, COLOR_PINK} from 'context/color'
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //context
 
 const SelectInfo = [
@@ -221,13 +223,17 @@ export default props => {
   return (
     <>
       <Content>
-        <Stitle>
-          <h2>실시간 LIVE</h2>
-          <span>plus</span>
-          <SelectWrap>
-            <Select Info={SelectInfo} />
-          </SelectWrap>
-        </Stitle>
+        <div className="top-wrap">
+          <div className="title-btn">
+            <h2>실시간 LIVE</h2>
+            <span
+              onClick={() => {
+                props.history.push('/live')
+              }}>
+              더보기
+            </span>
+          </div>
+        </div>
 
         <LiveCastBigWrap>
           <LiveCastBig ImgInfo={LiveBigInfo} />
@@ -241,24 +247,53 @@ export default props => {
 
 const Content = styled.div`
   width: 100%;
-  margin-top: 79px;
-  margin-bottom: 93px;
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 100%;
+  padding: 60px 0 80px 0;
+
+  .top-wrap {
+    display: flex;
+    & .title-btn {
+      line-height: 36px;
+      text-align: left;
+      & h2 {
+        display: inline-block;
+        margin-right: 18px;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.85px;
+        color: ${COLOR_MAIN};
+      }
+      & span {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        font-size: 0;
+        background: url(${IMG_SERVER}/images/api/ico-more-p.png) no-repeat center center / cover;
+        vertical-align: top;
+        cursor: pointer;
+      }
+    }
   }
+
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
-    margin-top: 44px;
-    margin-bottom: 72.5px;
+    padding: 40px 2.5% 60px 0;
+
+    .top-wrap {
+      & .title-btn {
+        & h2 {
+          font-size: 22px;
+        }
+      }
+    }
   }
 `
 const LiveCastBigWrap = styled.div`
   overflow: hidden;
+  margin-top: 35px;
   & div:nth-of-type(2) {
     margin-right: 0;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-top: 20px;
   }
 `
 const Stitle = styled.div`

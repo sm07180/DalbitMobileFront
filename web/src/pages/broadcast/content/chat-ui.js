@@ -11,12 +11,12 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 const sc = require('context/socketCluster')
 import MessageType from './chat-message-type'
+
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 import store from 'pages/store'
 import {BroadCastStore} from '../store'
-import {createUnionTypeAnnotation} from 'C:/Users/USER/AppData/Local/Microsoft/TypeScript/3.6/node_modules/@babel/types/lib'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -67,8 +67,6 @@ export default props => {
 
   let msgData = []
   const getRecvChatData = data => {
-    //총접속자 , 누적 사용자수 업데이트
-    context.action.updateBroadcastTotalInfo(data.data.conut)
     msgData = msgData.concat(data)
 
     const resulte = msgData.map((item, index) => {
@@ -82,8 +80,6 @@ export default props => {
   let top2Data = []
   const getRecvTopData = data => {
     const recvTopData = data.data.recvMsg
-
-    //console.warn('recvTopData = ' + recvTopData)
 
     if (recvTopData.position === 'top1') {
       if (data.data.cmd !== 'reqMicOn' || data.data.cmd === 'reqCalling') {
@@ -127,6 +123,12 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
+      //총접속자 , 누적 사용자수 업데이트
+      if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') context.action.updateBroadcastTotalInfo(data.detail.data.count)
+      //랭킹,좋아요 수
+      if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
+      //
+
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
           if (data.detail.data.cmd === 'reqRoomChangeInfo') {

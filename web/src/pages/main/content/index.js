@@ -2,19 +2,23 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET_S, WIDTH_TABLET, WIDTH_PC_S} from 'context/config'
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {Context} from 'context'
 
 import MainSlider from './main-slider'
 import StarRangking from './ranking'
-import PopularDJ from './my-star'
+import MyStar from './my-star'
 import ContentList from './live'
 //components
 const Main = props => {
   //---------------------------------------------------------------------
+  //context
+  const context = useContext(Context)
+
   //임시 데이터
   const slideInfo = [
     {
@@ -160,16 +164,17 @@ const Main = props => {
       <RangkingWrap>
         <StarRangking {...props} />
       </RangkingWrap>
-      {/* 인기 DJ 영역 */}
-      <PopularWrap>
-        <Border />
-        <PopularDJ Info={slideInfo} />
-      </PopularWrap>
+      {/* 내 스타 영역.. 로그인시에만 보여줌 */}
+      {context.token.isLogin && (
+        <SectionWrap>
+          <MyStar Info={slideInfo} />
+        </SectionWrap>
+      )}
+
       {/* 라이브 list 영역, 캐스트 list 영역 */}
-      <ContentListWrap>
-        <Border2 />
+      <SectionWrap>
         <ContentList type="live" />
-      </ContentListWrap>
+      </SectionWrap>
     </Content>
   )
 }
@@ -180,81 +185,30 @@ export default Main
 const Content = styled.div``
 const RangkingWrap = styled.section``
 
-const PopularWrap = styled.section`
-  max-width: 1467px;
-  width: 94.53%;
-  margin: 0 auto;
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 100%;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-  }
-`
-const Border = styled.div`
+const SectionWrap = styled.section`
   position: relative;
-  width: 100%;
+  width: 1464px;
   margin: 0 auto;
   border-top: 1px solid ${COLOR_MAIN};
   &:after {
-    display: block;
+    display: none;
     position: absolute;
-    top: 0px;
-    left: 50%;
-    width: 1px;
-    height: 40px;
-    content: '';
-    background-color: ${COLOR_MAIN};
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 21px;
-    }
-  }
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 95.47%;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 95.47%;
-  }
-`
-
-const ContentListWrap = styled.section`
-  max-width: 1467px;
-  width: 94.53%;
-  margin: 0 auto;
-  &:after {
-    display: block;
-    clear: both;
+    top: -1px;
+    right: 0;
+    width: 2.5%;
+    height: 1px;
+    background: #fff;
     content: '';
   }
 
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 95.47%;
-  }
-  @media (max-width: ${WIDTH_TABLET}) {
-    width: 95.47%;
-  }
-`
-const Border2 = styled.div`
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-  border-top: 1px solid ${COLOR_MAIN};
-  &:after {
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 50%;
-    width: 1px;
-    height: 40px;
-    background-color: ${COLOR_MAIN};
-    content: '';
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 21px;
-    }
+  @media (max-width: 1480px) {
+    width: 95%;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
+    width: 97.5%;
+    margin: 0 0 0 2.5%;
+    &:after {
+      display: block;
+    }
   }
 `

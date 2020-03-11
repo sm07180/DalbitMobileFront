@@ -79,17 +79,20 @@ export default () => {
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
   })
-  //Native->REACT
-  const nativeInfo = useMemo(() => {
-    if (customHeader.isFirst === undefined) return {}
-    //최초앱구동실행
-    if (customHeader.isFirst === 'Y') {
-      Utility.setCookie('native-info', '', -1)
-    } else if (customHeader.isFirst === 'N') {
-      // return JSON.parse(Utility.getCookie('native-info'))
-    }
-    return customHeader.isFirst
-  })
+  // //Native->REACT
+  // const nativeInfo = useMemo(() => {
+  //   if (customHeader.isFirst === undefined) return {}
+  //   //최초앱구동실행
+  //   if (customHeader.isFirst === 'Y') {
+  //     Utility.setCookie('native-player-info', '', -1)
+  //   } else if (customHeader.isFirst === 'N') {
+  //     alert('customHeader.isFirst : ')
+  //     //  && Utility.getCookie('native-player-info') !== undefined
+  //     context.action.updateMediaPlayerStatus(true)
+  //     // return JSON.parse(Utility.getCookie('native-player-info'))
+  //   }
+  //   return customHeader.isFirst
+  // })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -106,14 +109,8 @@ export default () => {
       context.action.updateToken(res.data)
       //하이브리드일때
       if (isHybrid === 'Y') {
-        //Utility.setCookie('native-info', 'Y', null)
-        //info
-        if (Utility.getCookie('native-info') === 'Y') {
-          // alert(Utility.getCookie('native-info'))
-          context.action.updateMediaPlayerStatus(true)
-        }
-        //active
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
+          //active
           Hybrid('GetLoginToken', res.data)
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
@@ -132,14 +129,20 @@ export default () => {
     const _customHeader = {...customHeader, isHybrid: isHybrid}
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
-
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
+    console.log('### version 2')
     if (isHybrid === 'Y') {
-      alert('customHeader.isFirst : ' + customHeader.isFirst)
-      //alert(nativeInfo)
+      alert('isHybrid : ' + isHybrid + ' , isFirst : ' + customHeader.isFirst)
+      //최초앱구동실행
+      if (customHeader.isFirst === 'Y') {
+        Utility.setCookie('native-player-info', '', -1)
+      } else if (customHeader.isFirst === 'N') {
+        const _cookie = Utility.getCookie('native-player-info')
+        alert(_cookie)
+      }
     }
   }, [])
   //---------------------------------------------------------------------

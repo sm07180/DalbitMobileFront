@@ -9,114 +9,81 @@ import styled from 'styled-components'
 //layout
 import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 
-//material ui
-import TextField from '@material-ui/core/TextField'
-
-const fanBoard = ({value, onChange}) => {
-  const [listItems, setListItem] = useState([
-    {id: 0, name: '홍길동1', date: '2019-09-09', text: '팬입니다.'},
-    {id: 1, name: '홍길동2', date: '2019-09-09', text: '팬입니다.'},
-    {id: 2, name: '홍길동3', date: '2019-09-09', text: '멋져요'},
-    {id: 3, name: '홍길동4', date: '2019-09-09', text: '방송언제하나요'}
-  ])
-
+export default props => {
   const [writeText, setWriteText] = useState('')
 
   function boardDelet(idx) {
     setListItem(listItems.filter((item, id) => id !== idx.idx))
   }
 
-  function boardAdd(data) {
-    setListItem([
-      ...listItems,
-      {
-        name: '내이름',
-        date: '2019-09-09',
-        text: writeText
-      }
-    ])
-  }
-
-  const makeFanBoard = () => {
-    return listItems.map((list, idx) => {
-      return (
-        <FanBoardList key={idx}>
-          <p>{list.name}</p>
-          <span>{list.date}</span>
-          <p>{list.text}</p>
-          <button
-            onClick={() => {
-              boardDelet({idx})
-            }}>
-            삭제
-          </button>
-        </FanBoardList>
-      )
-    })
-  }
-
-  const handlingSubmit = e => {
-    e.preventDefault()
-    boardAdd()
-  }
-
-  const handleChange = e => {
-    setWriteText(e.target.value)
-  }
+  const placeholderText = '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
 
   return (
-    <FanBoard>
-      <WriteArea onSubmit={handlingSubmit}>
-        <Textarea value={value} onChange={handleChange}></Textarea>
-        <Button type="submit">쓰기</Button>
+    <FanBoard className="fanboard">
+      <WriteArea>
+        <Textarea placeholder={placeholderText} />
+        <WriteAreaBottom>
+          <TextCount>10 / 200</TextCount>
+          <CommentSubmitBtn>등록</CommentSubmitBtn>
+        </WriteAreaBottom>
       </WriteArea>
-      <ListArea>{makeFanBoard()}</ListArea>
+      <ListArea></ListArea>
     </FanBoard>
   )
 }
-
-export default fanBoard
-
-const FanBoard = styled.div``
-
-const WriteArea = styled.form`
-  display: flex;
-  justify-content: space-between;
-`
-
-const Textarea = styled.textarea`
-  width: 78%;
-  height: 80px;
-  margin-right: 2%;
-  padding: 8px;
-  border: 1px solid #e4e4e4;
-  resize: none;
-`
-
-const Button = styled.button`
-  width: 20%;
-  height: 80px;
-  background: #feac2c;
-  color: #fff;
-`
 
 const ListArea = styled.div`
   margin: 30px 0;
 `
 
-const FanBoardList = styled.div`
-  position: relative;
-  padding: 10px;
-  border-bottom: 1px solid #e4e4e4;
+const CommentSubmitBtn = styled.button`
+  width: 92px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+  background-color: #8556f6;
+`
 
-  * {
-    color: #555;
+const TextCount = styled.div`
+  width: calc(100% - 92px);
+  font-size: 14px;
+  padding: 17px 20px;
+  height: 50px;
+  box-sizing: border-box;
+  border-top: 1px solid #d0d0d0;
+`
+
+const WriteAreaBottom = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+const Textarea = styled.textarea`
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding: 8px;
+  resize: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  padding: 18px 20px;
+
+  &::placeholder {
+    color: #bdbdbd;
     font-size: 14px;
+    letter-spacing: -0.35px;
   }
 
-  button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  &:focus {
+    outline: none;
   }
 `
+
+const WriteArea = styled.div`
+  border: 1px solid #d0d0d0;
+`
+
+const FanBoard = styled.div``

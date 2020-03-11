@@ -72,7 +72,6 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log(profile)
     setNickname(profile.nickNm)
     setProfileMsg(profile.profMsg)
     setPhotoPath(profile.profImg.path)

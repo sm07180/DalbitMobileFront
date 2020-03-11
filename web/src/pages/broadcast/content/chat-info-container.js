@@ -95,12 +95,11 @@ export default props => {
     })
   }, [])
 
-  // useEffect(() => {
-  //   console.clear()
-  //   console.log('방정보가 수정 되어 여기에 한번 들어와야 된다. ')
-  //   console.log('context.broadcastTotalInfo.title = ' + context.broadcastTotalInfo.title)
-
-  // }, [context.broadcastTotalInfo.title])
+  useEffect(() => {
+    console.clear()
+    console.log('방정보가 수정 되어 여기에 한번 들어와야 된다. ')
+    console.log('context.broadcastTotalInfo.title = ' + context.broadcastTotalInfo.title)
+  }, [context.broadcastTotalInfo.historyCount, context.broadcastTotalInfo.userCount])
 
   //좋아요~부스트단계 바뀔시마다 셋팅해줘야할것들.. top랭크 영역표시 클래스 조절하기
   useEffect(() => {

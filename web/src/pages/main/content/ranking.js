@@ -18,6 +18,7 @@ export default props => {
   const [rankingType, setRankingType] = useState('dj')
   const [djInfo, setDjInfo] = useState([])
   const [fanInfo, setFanInfo] = useState([])
+  const [sswiper, updateSwiper] = useState(false)
 
   //api
 
@@ -31,6 +32,7 @@ export default props => {
     })
     if (resDj.result === 'success') {
       setDjInfo(resDj.data.list)
+      sswiper.update()
     } else {
       console.log('실패', resDj.result)
     }
@@ -44,6 +46,7 @@ export default props => {
     })
     if (resfan.result === 'success') {
       setFanInfo(resfan.data.list)
+      sswiper.update()
     } else {
       console.log('실패', resfan.result)
     }
@@ -52,14 +55,14 @@ export default props => {
   let rankingSlider = {}
   const params = {
     slidesPerView: 'auto',
-    spaceBetween: 6,
+    spaceBetween: 12,
     //freeMode: true,
-    resistanceRatio: 0,
-    breakpoints: {
-      360: {
-        spaceBetween: 12
-      }
-    }
+    resistanceRatio: 0
+    // breakpoints: {
+    //   360: {
+    //     spaceBetween: 12
+    //   }
+    // }
   }
 
   //map
@@ -96,9 +99,11 @@ export default props => {
   }
 
   //useEffect
+  useEffect(() => {}, [])
+
   useEffect(() => {
-    fetch()
-  }, [])
+    if (sswiper) fetch()
+  }, [sswiper])
 
   return (
     <Content>
@@ -109,7 +114,7 @@ export default props => {
             onClick={() => {
               props.history.push('/ranking')
             }}>
-            plus
+            더보기
           </span>
         </div>
         <div className="change-btn">
@@ -124,11 +129,7 @@ export default props => {
       <RankingWrap>
         <PcWrap>{rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}</PcWrap>
         <MobileWrap>
-          <Swiper
-            {...params}
-            getSwiper={e => {
-              rankingSlider = e
-            }}>
+          <Swiper {...params} getSwiper={updateSwiper}>
             {rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}
           </Swiper>
         </MobileWrap>
@@ -147,6 +148,17 @@ const Content = styled.div`
   padding: 60px 0 80px 0;
   border-top: 1px solid ${COLOR_MAIN};
   text-align: center;
+
+  &:after {
+    display: none;
+    position: absolute;
+    top: -1px;
+    right: 0;
+    width: 2.5%;
+    height: 1px;
+    background: #fff;
+    content: '';
+  }
 
   .top-wrap {
     display: flex;
@@ -196,14 +208,26 @@ const Content = styled.div`
   }
 
   @media (max-width: 1480px) {
+    width: 95%;
+  }
+
+  @media (max-width: ${WIDTH_PC_S}) {
     width: 97.5%;
     margin: 0 0 0 2.5%;
-    padding: 40px 0 60px 0;
+
+    &:after {
+      display: block;
+    }
+    .top-wrap {
+      .change-btn {
+        margin: 0 2.5% 0 auto;
+      }
+    }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
+    padding: 40px 0 60px 0;
     .top-wrap {
-      margin-right: 2.5%;
       .title-btn {
         h2 {
           font-size: 22px;
@@ -284,22 +308,28 @@ const PcWrap = styled.div`
 const MobileWrap = styled.div`
   display: none;
   .swiper-slide {
+    overflow: hidden;
     width: 30%;
+    height: auto;
   }
   @media (max-width: ${WIDTH_PC_S}) {
     display: block;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    .swiper-slide {
-      width: 40%;
-    }
+    overflow: hidden;
+    height: 393px;
     .swiper-container {
       padding-right: 2.5%;
+    }
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    height: 342px;
+    .swiper-slide {
+      width: 40%;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     .swiper-slide {
       width: 65%;
+      height: ;
     }
   }
 `

@@ -19,6 +19,7 @@ export default props => {
   const context = useContext(Context)
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //기존이미지 패스및 룸넘버 변수화
+  console.log(roomInfo.bgImg.path)
   const RoomNumbers = roomInfo.roomNo
   const DelImg = roomInfo.bgImg.path
   //console.log(RoomNumbers)
@@ -133,13 +134,18 @@ export default props => {
     // setUrl(URL.createObjectURL(e.target.files[0]))
 
     let reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
 
-    reader.onload = function() {
-      if (reader.result) {
-        setUrl(reader.result)
-        setChanges({...changes, bgImg: reader.result})
-      } else {
+    const file = e.target.files[0]
+    if (e.target.files.length != 0) {
+      reader.readAsDataURL(file)
+
+      reader.onload = function() {
+        if (reader.result) {
+          setUrl(reader.result)
+          setChanges({...changes, bgImg: reader.result})
+        } else {
+          console.log('파일이 존재하지 않는다.')
+        }
       }
     }
   }
@@ -175,8 +181,8 @@ export default props => {
     })
     if (resUpload) {
       if (resUpload.result === 'success' || resUpload.code == 0) {
-        setChanges({...changes, bgImg: resUpload.data.path})
-        console.log(changes)
+        //setChanges({...changes, bgImg: resUpload.data.path})
+        //console.log(changes)
         const res = await Api.broad_edit({
           data: {
             roomNo: RoomNumbers,
