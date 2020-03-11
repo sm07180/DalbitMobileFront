@@ -8,5 +8,17 @@ import styled from 'styled-components'
 // import Guide from ' pages/common/layout/guide.js'
 
 export default () => {
-  return <h1>Error</h1>
+  return (
+    <>
+      <section>
+        <ul>
+          <li>로고이미지</li>
+          <li>에러타이틀</li>
+          <li>에러내용</li>
+          <li>버튼</li>
+          <li>하단이미지</li>
+        </ul>
+      </section>
+    </>
+  )
 }

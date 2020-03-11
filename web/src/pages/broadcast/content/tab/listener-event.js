@@ -181,9 +181,8 @@ export default props => {
         break
       case 5: //신고하기
         res = drawListenList(props.selectidx)
-        // console.log(res[1])
-        store.action.updateReportData(res[idx])
-        console.log(store.reportData)
+        console.log(props.selectidx)
+        store.action.updateReportData(res[props.selectidx])
         store.action.updateTab(7)
         break
       default:
