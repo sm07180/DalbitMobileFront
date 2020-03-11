@@ -46,6 +46,7 @@ export default props => {
     })
     if (resfan.result === 'success') {
       setFanInfo(resfan.data.list)
+      sswiper.update()
     } else {
       console.log('실패', resfan.result)
     }
@@ -148,6 +149,17 @@ const Content = styled.div`
   border-top: 1px solid ${COLOR_MAIN};
   text-align: center;
 
+  &:after {
+    display: none;
+    position: absolute;
+    top: -1px;
+    right: 0;
+    width: 2.5%;
+    height: 1px;
+    background: #fff;
+    content: '';
+  }
+
   .top-wrap {
     display: flex;
     & .title-btn {
@@ -196,14 +208,25 @@ const Content = styled.div`
   }
 
   @media (max-width: 1480px) {
+    width: 95%;
+  }
+
+  @media (max-width: ${WIDTH_PC_S}) {
     width: 97.5%;
     margin: 0 0 0 2.5%;
     padding: 40px 0 60px 0;
+    &:after {
+      display: block;
+    }
+    .top-wrap {
+      .change-btn {
+        margin: 0 2.5% 0 auto;
+      }
+    }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     .top-wrap {
-      margin-right: 2.5%;
       .title-btn {
         h2 {
           font-size: 22px;
@@ -288,13 +311,13 @@ const MobileWrap = styled.div`
   }
   @media (max-width: ${WIDTH_PC_S}) {
     display: block;
+    .swiper-container {
+      padding-right: 2.5%;
+    }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     .swiper-slide {
       width: 40%;
-    }
-    .swiper-container {
-      padding-right: 2.5%;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {

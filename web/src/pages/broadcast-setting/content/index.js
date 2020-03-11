@@ -135,13 +135,19 @@ export default props => {
 
   function uploadSingleFile(e) {
     let reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
 
-    reader.onload = function() {
-      if (reader.result) {
-        setUrl(reader.result)
-        setChanges({...changes, bgImg: reader.result})
-        photoUploadCallback({uploadType: 'bg', bgImg: reader.result})
+    const file = e.target.files[0]
+    if (e.target.files.length != 0) {
+      reader.readAsDataURL(file)
+
+      reader.onload = function() {
+        if (reader.result) {
+          setUrl(reader.result)
+          setChanges({...changes, bgImg: reader.result})
+          photoUploadCallback({uploadType: 'bg', bgImg: reader.result})
+        } else {
+          console.log('파일이 존재하지 않는다.')
+        }
       }
     }
   }
