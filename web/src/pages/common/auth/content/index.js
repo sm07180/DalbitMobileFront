@@ -137,6 +137,11 @@ export default props => {
         const userInfo = await Api.mypage()
         if (userInfo.result === 'success') {
           context.action.updateMypage(userInfo.data)
+          Api.profile({params: {memNo: res.data.memNo}}).then(profileInfo => {
+            if (profileInfo.result === 'success') {
+              context.action.updateProfile(profileInfo.data)
+            }
+          })
         }
       } else {
         context.action.updatePopupVisible(false)
