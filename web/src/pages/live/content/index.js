@@ -11,6 +11,7 @@ import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
 import {LiveStore} from '../store'
+import {BroadCastStore} from 'pages/broadcast/store'
 
 export default props => {
   //----------------------------------------------------------- declare start
@@ -18,6 +19,7 @@ export default props => {
   const [paging, setPaging] = useState()
   const context = useContext(Context)
   const store = useContext(LiveStore)
+  const broad = useContext(BroadCastStore) // 방송방 스토어
   const [type, setType] = useState('') // roomType
   const [page, setPage] = useState(1)
   const scrollbars = useRef(null)
@@ -87,7 +89,7 @@ export default props => {
 
   //joinRoom
   async function joinRoom(obj) {
-    const {roomNo} = obj
+    const {roomNo, entryCnt} = obj
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)

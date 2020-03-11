@@ -29,7 +29,7 @@ export default props => {
       <Contents key={index}>
         {index === selected && hover && (
           <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-            <button onClick={() => props.joinRoom({roomNo: data.roomNo})} />
+            <button onClick={() => props.joinRoom({roomNo: data.roomNo, entryCnt: data.entryCnt})} />
           </div>
         )}
         <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
