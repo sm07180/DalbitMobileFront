@@ -321,11 +321,13 @@ const MobileWrap = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     .swiper-slide {
       width: 40%;
+      height: 342px;
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     .swiper-slide {
       width: 65%;
+      height: ;
     }
   }
 `
