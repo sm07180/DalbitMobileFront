@@ -29,10 +29,10 @@ export default props => {
       <Contents key={index}>
         {index === selected && hover && (
           <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-            <button onClick={() => props.joinRoom({roomNo: data.roomNo, entryCnt: data.entryCnt})} />
+            <button onClick={() => props.joinRoom(data)} />
           </div>
         )}
-        <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+        <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
           {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
         </Image>

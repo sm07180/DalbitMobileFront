@@ -38,13 +38,13 @@ export default props => {
     <Container>
       {props.broadList.map((data, index) => {
         return (
-          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
             <div className="profile">
               <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
-                    <button onClick={() => props.joinRoom({roomNo: data.roomNo, entryCnt: data.entryCnt})}></button>
+                    <button onClick={() => props.joinRoom(data)}></button>
                   </div>
                 )}
                 <div className="profileImg">

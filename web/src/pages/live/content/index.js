@@ -5,13 +5,12 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {LiveStore} from '../store'
 //components
 import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
-import {LiveStore} from '../store'
-import {BroadCastStore} from 'pages/broadcast/store'
 
 export default props => {
   //----------------------------------------------------------- declare start
@@ -19,7 +18,6 @@ export default props => {
   const [paging, setPaging] = useState()
   const context = useContext(Context)
   const store = useContext(LiveStore)
-  const broad = useContext(BroadCastStore) // 방송방 스토어
   const [type, setType] = useState('') // roomType
   const [page, setPage] = useState(1)
   const scrollbars = useRef(null)
@@ -89,8 +87,9 @@ export default props => {
 
   //joinRoom
   async function joinRoom(obj) {
-    const {roomNo, entryCnt} = obj
-    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    const {roomNo} = obj
+    console.log('obj :: ', roomNo)
+    const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
     console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
@@ -106,7 +105,7 @@ export default props => {
       } else {
         //하이브리드앱이 아닐때
         const {roomNo} = res.data
-        context.action.updateBroadcastTotalInfo(res.data)
+        context.action.updateBroadcastTotalInfo(obj)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
     }
@@ -131,7 +130,8 @@ export default props => {
     // return () => document.removeEventListener('scroll', onScroll)
   }, [])
 
-  console.log('## store.list :', store.list)
+  // console.log('## store.list :', store.list)
+  console.log('## context :', context)
   //----------------------------------------------------------- components start
   return (
     <Container>
