@@ -1,13 +1,15 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {Context} from 'context'
+import {Scrollbars} from 'react-custom-scrollbars'
 
 export default props => {
   //------------------------------------------------------------ declare start
   const [hover, setHover] = useState(false)
   const [seleted, setSelected] = useState()
   const context = useContext(Context)
+  const scrollbars = useRef(null)
   const [roomType, setRoomType] = useState(context.common.roomType)
 
   //------------------------------------------------------------ func start
@@ -23,52 +25,150 @@ export default props => {
   console.log('## roomType : ', roomType)
   return (
     <Container>
-      {props.broadList.map((data, index) => {
-        return (
-          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
-            <div className="profile">
-              <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
-              <div>
-                {index == seleted && hover && (
-                  <div className="hoverWrap">
-                    <button onClick={() => props.joinRoom({roomNo: data.roomNo})}></button>
+      {window.innerWidth <= 600 ? (
+        <Scrollbars ref={scrollbars} style={{height: '500px'}} autoHide>
+          {props.broadList.map((data, index) => {
+            return (
+              <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+                <div className="profile">
+                  <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
+                  <div>
+                    {index == seleted && hover && (
+                      <div className="hoverWrap">
+                        <button onClick={() => props.joinRoom({roomNo: data.roomNo})}></button>
+                      </div>
+                    )}
+                    <div className="profileImg">
+                      <BgImg url={data.bgImg.url}>
+                        <Img url={data.bjProfImg.url}></Img>
+                      </BgImg>
+                    </div>
                   </div>
-                )}
-                <div className="profileImg">
-                  <BgImg url={data.bgImg.url}>
-                    <Img url={data.bjProfImg.url}></Img>
-                  </BgImg>
                 </div>
-              </div>
-            </div>
-            <MobileWrap>
-              <div className="content">
-                <div className="title">
-                  {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
-                  {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
-                  {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
-                  {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
-                </div>
-                <div className="roomTitle">{data.title}</div>
-                <div className="intro">{data.bjNickNm}</div>
-              </div>
-              <CountArea>
+                <MobileWrap>
+                  <div className="content">
+                    <div className="title">
+                      {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
+                      {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                      {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                      {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+                    </div>
+                    <div className="roomTitle">{data.title}</div>
+                    <div className="intro">{data.bjNickNm}</div>
+                  </div>
+                  <CountArea>
+                    <div>
+                      <Icon>
+                        <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                        &nbsp;&nbsp;{data.entryCnt}
+                      </Icon>
+                      <span>|</span>
+                      <Icon>
+                        <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                        &nbsp;&nbsp;{data.likeCnt}
+                      </Icon>
+                    </div>
+                  </CountArea>
+                </MobileWrap>
+              </List>
+            )
+          })}
+        </Scrollbars>
+      ) : (
+        props.broadList.map((data, index) => {
+          return (
+            <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+              <div className="profile">
+                <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
                 <div>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.entryCnt}
-                  </Icon>
-                  <span>|</span>
-                  <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
-                    &nbsp;&nbsp;{data.likeCnt}
-                  </Icon>
+                  {index == seleted && hover && (
+                    <div className="hoverWrap">
+                      <button onClick={() => props.joinRoom({roomNo: data.roomNo})}></button>
+                    </div>
+                  )}
+                  <div className="profileImg">
+                    <BgImg url={data.bgImg.url}>
+                      <Img url={data.bjProfImg.url}></Img>
+                    </BgImg>
+                  </div>
                 </div>
-              </CountArea>
-            </MobileWrap>
-          </List>
-        )
-      })}
+              </div>
+              <MobileWrap>
+                <div className="content">
+                  <div className="title">
+                    {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
+                    {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                    {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                    {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+                  </div>
+                  <div className="roomTitle">{data.title}</div>
+                  <div className="intro">{data.bjNickNm}</div>
+                </div>
+                <CountArea>
+                  <div>
+                    <Icon>
+                      <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                      &nbsp;&nbsp;{data.entryCnt}
+                    </Icon>
+                    <span>|</span>
+                    <Icon>
+                      <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                      &nbsp;&nbsp;{data.likeCnt}
+                    </Icon>
+                  </div>
+                </CountArea>
+              </MobileWrap>
+            </List>
+          )
+        })
+      )}
+
+      {/* {props.broadList.map((data, index) => {
+          return (
+            <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom({roomNo: data.roomNo})}>
+              <div className="profile">
+                <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
+                <div>
+                  {index == seleted && hover && (
+                    <div className="hoverWrap">
+                      <button onClick={() => props.joinRoom({roomNo: data.roomNo})}></button>
+                    </div>
+                  )}
+                  <div className="profileImg">
+                    <BgImg url={data.bgImg.url}>
+                      <Img url={data.bjProfImg.url}></Img>
+                    </BgImg>
+                  </div>
+                </div>
+              </div>
+              <MobileWrap>
+                <div className="content">
+                  <div className="title">
+                    {roomType && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
+                    {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                    {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                    {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+                  </div>
+                  <div className="roomTitle">{data.title}</div>
+                  <div className="intro">{data.bjNickNm}</div>
+                </div>
+                <CountArea>
+                  <div>
+                    <Icon>
+                      <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                      &nbsp;&nbsp;{data.entryCnt}
+                    </Icon>
+                    <span>|</span>
+                    <Icon>
+                      <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                      &nbsp;&nbsp;{data.likeCnt}
+                    </Icon>
+                  </div>
+                </CountArea>
+              </MobileWrap>
+            </List>
+          )
+        })} */}
     </Container>
   )
 }
@@ -280,6 +380,7 @@ const BgImg = styled.div`
   height: 96px;
   background: url(${props => (props.url ? props.url : '')}) no-repeat;
   border-radius: 10px;
+  position: relative;
 `
 
 const Img = styled.div`

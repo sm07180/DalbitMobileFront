@@ -53,6 +53,7 @@ export default props => {
     if (res.result === 'success') {
       if (res.data) {
         setPosts(res.data.list)
+        console.log(res.data.list)
         setShow(true)
       }
     }
@@ -66,6 +67,7 @@ export default props => {
     if (resMember.result === 'success') {
       if (resMember.data) {
         setPostsM(resMember.data.list)
+
         setShow(true)
       }
     }
@@ -117,14 +119,24 @@ export default props => {
   const ShowFilter = list.map((item, index) => {
     if (filter.length > 1) {
       if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
+        const {nickNm, memNo, profImg, auth, title} = item
+        const {thumb62x62} = profImg
+        let mode = '해당사항없음'
+        // if (auth === 0) mode = '0'
+        // if (auth === 1) mode = '1'
+        // if (auth === 2) mode = '2'
+        // if (auth === 2) mode = '3'
+        // //
+        // if (auth !== 1) return
         return (
           <ListWrap key={index}>
-            <Img className="imgwrap" bg={item.profImg.url}>
-              <Thumb thumb={item.profImg.thumb62x62} />
+            {/* <p className="authClass">[{mode}]</p> */}
+            <Img className="imgwrap" bg={profImg.url}>
+              <Thumb thumb={thumb62x62} />
             </Img>
-            <em>{item.title}</em>
-            <h2>{item.title}</h2>
-            <h3>{item.nickNm}</h3>
+            <em>{title}</em>
+            <h2>{title}</h2>
+            <h3>{nickNm}</h3>
             <InfoWrap>
               <div>
                 <span className="listen"></span>

@@ -112,7 +112,7 @@ export default props => {
 //-----------------------------------style
 const Wrapper = styled.div`
   margin-top: 20px;
-  height: calc(100% - 160px);
+  height: calc(100% - 60px);
   & .scrollCustom {
     & > div:nth-child(3) {
       width: 10px !important;
