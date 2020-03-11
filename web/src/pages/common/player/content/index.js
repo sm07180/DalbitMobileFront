@@ -41,7 +41,8 @@ export default props => {
       if (context.customHeader.os + '' === '1') {
         const _val = JSON.stringify(context.nativePlayer)
         setInfo(context.nativePlayer)
-        // Utility.setCookie('native-player-info', _val, 100)
+        //alert(JSON.s)
+        Utility.setCookie('native-player-info', _val, 100)
         //  alert('native-player-info 쿠키실행')
       }
     }
