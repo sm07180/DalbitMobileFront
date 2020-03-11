@@ -133,12 +133,12 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-    console.log('### version 2.1')
+    console.log('### version 2.2')
     /**
      * @새창에서도 실행되므로 주의요망
      */
     if (isHybrid === 'Y') {
-      alert('isHybrid _ ' + isHybrid + ' , isFirst _ ' + customHeader.isFirst)
+      alert('isHybrid_ ' + isHybrid + ' , isFirst_ ' + customHeader.isFirst)
       //최초앱구동실행
       if (customHeader.isFirst === 'Y') {
         Utility.setCookie('native-player-info', '', -1)
