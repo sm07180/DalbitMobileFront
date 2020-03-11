@@ -105,10 +105,11 @@ export default () => {
       context.action.updateToken(res.data)
       //하이브리디일때
       if (isHybrid === 'Y') {
-        Utility.setCookie('native-info', 'Y', null)
+        //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          context.action.updateMediaPlayerStatus(true)
+          alert('실행')
+          //    context.action.updateMediaPlayerStatus(true)
         }
         //active
         if (Utility.getCookie('native-active') !== 'Y') {
