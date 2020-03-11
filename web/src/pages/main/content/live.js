@@ -2,12 +2,15 @@
  * @file /content/context-list.js
  * @brief 메인 라이브, 캐스트 리스트 component
  */
-import React from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import Select from 'components/ui/select'
 import BroadContent from './live-broad-content'
 import LiveCastBig from './live-big'
+import Api from 'context/api'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
@@ -218,7 +221,76 @@ const broadContentInfo = [
 ]
 
 export default props => {
-  //components
+  const history = useHistory()
+  const context = useContext(Context)
+
+  //state
+  const [top1Data, setTop1Data] = useState()
+  const [top2Data, setTop2Data] = useState()
+  const [listData, setListData] = useState()
+
+  //api
+
+  const fetch = async () => {
+    const res = await Api.broad_list({
+      // params: {
+      //   roomType: 1,
+      //   page: 1,
+      //   records: 5
+      // }
+    })
+    if (res.result === 'success') {
+      setTop1Data(res.data.list[0])
+      setTop2Data(res.data.list[1])
+      setListData(res.data.list.slice(2))
+    } else {
+    }
+  }
+
+  //exitRoom
+  async function exitRoom(obj) {
+    const res = await Api.broad_exit({data: {...obj}})
+    if (res.result === 'success') {
+      return res
+    }
+    alert(res.message)
+  }
+
+  //joinRoom
+  async function joinRoom(obj) {
+    console.log('objobjobjobjobjobj', obj)
+    const {roomNo} = obj
+    console.log('obj :: ', roomNo)
+    const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
+    console.log('roomNo = ' + roomNo)
+    //Error발생시 (방이 입장되어 있을때)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
+      const exit = await exitRoom(obj)
+      if (exit.result === 'success') joinRoom(obj)
+    }
+    //Error발생시 (종료된 방송)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
+    //정상진입이거나,방탈퇴이후성공일경우
+    if (res.result === 'success') {
+      if (isHybrid()) {
+        Hybrid('RoomJoin', res.data)
+      } else {
+        //하이브리드앱이 아닐때
+        const {roomNo} = res.data
+        context.action.updateBroadcastTotalInfo(obj)
+        history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+      }
+    }
+    return
+  }
+
+  const liveJoinRoom = roomNum => {
+    joinRoom(roomNum)
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
     <>
@@ -228,18 +300,21 @@ export default props => {
             <h2>실시간 LIVE</h2>
             <span
               onClick={() => {
-                props.history.push('/live')
+                history.push('/live')
               }}>
               더보기
             </span>
           </div>
         </div>
-
-        <LiveCastBigWrap>
-          <LiveCastBig ImgInfo={LiveBigInfo} />
-          <LiveCastBig ImgInfo={LiveBigInfo} />
-        </LiveCastBigWrap>
-        <BroadContent BroadInfo={broadContentInfo} className="brContent"></BroadContent>
+        {listData && (
+          <>
+            <LiveCastBigWrap>
+              <LiveCastBig info={top1Data} joinRoom={liveJoinRoom} />
+              <LiveCastBig info={top2Data} joinRoom={liveJoinRoom} />
+            </LiveCastBigWrap>
+            <BroadContent info={listData} joinRoom={liveJoinRoom} className="brContent"></BroadContent>
+          </>
+        )}
       </Content>
     </>
   )

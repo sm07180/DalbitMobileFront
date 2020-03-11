@@ -36,14 +36,14 @@ export default props => {
      * @안드로이드
      */
 
-    if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      if (context.customHeader.os + '' === '1') {
-        // const _val = JSON.stringify(context.nativePlayer)
-        // setInfo(context.nativePlayer)
-        // Utility.setCookie('native-player-info', _val, 100)
-        alert('native-player-info 쿠키실행')
-      }
-    }
+    // if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
+    //   if (context.customHeader.os + '' === '1') {
+    //     // const _val = JSON.stringify(context.nativePlayer)
+    //     // setInfo(context.nativePlayer)
+    //     // Utility.setCookie('native-player-info', _val, 100)
+    //     alert('native-player-info 쿠키실행')
+    //   }
+    // }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
   return (
