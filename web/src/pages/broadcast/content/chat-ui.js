@@ -124,9 +124,10 @@ export default props => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
       //총접속자 , 누적 사용자수 업데이트
-      if (data.detail.data.cmd == 'connect') {
-        if (data.detail.data.count) context.action.updateBroadcastTotalInfo(data.detail.data.count)
-      }
+      if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') context.action.updateBroadcastTotalInfo(data.detail.data.count)
+      //랭킹,좋아요 수
+      if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
+      //
 
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
