@@ -66,7 +66,7 @@ export default props => {
   const createSlide = (array, type) => {
     return array.map((item, index) => {
       const rankClass = `nth${item.rank}`
-      console.log('itemitesm', item)
+
       return (
         <RankingItem
           key={index}
