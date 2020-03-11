@@ -11,6 +11,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 const sc = require('context/socketCluster')
 import MessageType from './chat-message-type'
+
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
