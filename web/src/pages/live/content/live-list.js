@@ -141,6 +141,7 @@ const Container = styled.div`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
+    height: 100%;
   }
 `
 const List = styled.div`
