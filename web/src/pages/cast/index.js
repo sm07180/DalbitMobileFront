@@ -41,6 +41,8 @@ export default props => {
             native-player-info
           </button>
         </section>
+        <h1>native-player-info</h1>
+        <section>{JSON.stringify(Utility.getCookie('native-player-info', null, 1))}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>
