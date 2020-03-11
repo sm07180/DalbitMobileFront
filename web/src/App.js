@@ -109,8 +109,8 @@ export default () => {
       context.action.updateToken(res.data)
       //하이브리드일때
       if (isHybrid === 'Y') {
-        //active
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
+          //active
           Hybrid('GetLoginToken', res.data)
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
@@ -137,7 +137,7 @@ export default () => {
     if (isHybrid === 'Y') {
       //최초앱구동실행
       if (customHeader.isFirst === 'Y') {
-        //   Utility.setCookie('native-player-info', '', -1)
+        Utility.setCookie('native-player-info', '', -1)
       } else if (customHeader.isFirst === 'N') {
         //  && Utility.getCookie('native-player-info') !== undefined
         //  context.action.updateMediaPlayerStatus(true)
