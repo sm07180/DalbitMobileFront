@@ -86,7 +86,7 @@ export default () => {
     if (customHeader.isFirst === 'Y') {
       Utility.setCookie('native-info', '', -1)
     } else if (customHeader.isFirst === 'N') {
-      return JSON.parse(Utility.getCookie('native-info'))
+      // return JSON.parse(Utility.getCookie('native-info'))
     }
     return customHeader.isFirst
   })
