@@ -5,6 +5,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
+import Api from 'context/api'
 
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -13,35 +14,41 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 //components
 
 export default props => {
-  const slideInfo = [
-    {
-      id: '1',
-      rank: '1',
-      tag: '추천',
-      title: '박 + 룰루 소리부자',
-      img: 'https://devimage.dalbitcast.com/images/api/tica034m19020284.jpg',
-      gold: '4,693',
-      like: '16,555'
-    },
-    {
-      id: '2',
-      rank: '2',
-      tag: '추천',
-      title: '나른 새벽 함께 해요',
-      img: 'https://devimage.dalbitcast.com/images/api/tica034j16080551.jpg',
-      gold: '4,693',
-      like: '16,555'
-    },
-    {
-      id: '3',
-      rank: '3',
-      tag: '추천',
-      title: '어닝 [팬 모집중]',
-      img: 'https://devimage.dalbitcast.com/images/api/ti375a8312.jpg',
-      gold: '4,693',
-      like: '16,555'
+  //state
+  const [rankingType, setRankingType] = useState('dj')
+  const [djInfo, setDjInfo] = useState([])
+  const [fanInfo, setFanInfo] = useState([])
+
+  //api
+
+  const fetch = async () => {
+    const resDj = await Api.get_dj_ranking({
+      params: {
+        rankType: 1,
+        page: 1,
+        records: 5
+      }
+    })
+    if (resDj.result === 'success') {
+      setDjInfo(resDj.data.list)
+    } else {
+      console.log('실패', resDj.result)
     }
-  ]
+
+    const resfan = await Api.get_fan_ranking({
+      params: {
+        rankType: 1,
+        page: 1,
+        records: 5
+      }
+    })
+    if (resfan.result === 'success') {
+      setFanInfo(resfan.data.list)
+    } else {
+      console.log('실패', resfan.result)
+    }
+  }
+
   let rankingSlider = {}
   const params = {
     slidesPerView: 'auto',
@@ -55,40 +62,74 @@ export default props => {
     }
   }
 
-  const arraySlide = slideInfo.map((item, index) => {
-    const {id, rank, tag, title, img, gold, like} = item
-    const rankClass = `nth${rank}`
-    return (
-      <RankingItem key={id} className={rankClass}>
-        <ImgBox url={img}>
-          <img src={img}></img>
-          <span>{tag}</span>
-        </ImgBox>
-        <p>{rank}</p>
-        <h2>{title}</h2>
-        <State>
-          <span>{gold}</span>
-          <span>{like}</span>
-        </State>
-      </RankingItem>
-    )
-  })
+  //map
+  const createSlide = (array, type) => {
+    return array.map((item, index) => {
+      const rankClass = `nth${item.rank}`
+      console.log('itemitesm', item)
+      return (
+        <RankingItem
+          key={index}
+          className={rankClass}
+          onClick={() => {
+            props.history.push('/')
+          }}>
+          <ImgBox url={item.profImg.url}>
+            <img src={item.profImg.url}></img>
+            <p>{item.rank}</p>
+          </ImgBox>
+          <h2>{item.nickNm}</h2>
+          {type == 'dj' && (
+            <State>
+              <span>500</span>
+              <span>1200</span>
+            </State>
+          )}
+        </RankingItem>
+      )
+    })
+  }
+
+  //function
+  const handleTypeChange = e => {
+    setRankingType(e.target.name)
+  }
+
+  //useEffect
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
     <Content>
-      <Stitle>
-        <h2>랭킹</h2>
-        <span>plus</span>
-      </Stitle>
+      <div className="top-wrap">
+        <div className="title-btn">
+          <h2>랭킹</h2>
+          <span
+            onClick={() => {
+              props.history.push('/ranking')
+            }}>
+            plus
+          </span>
+        </div>
+        <div className="change-btn">
+          <button name="dj" className={`${rankingType == 'dj' ? 'on' : 'off'}`} onClick={handleTypeChange}>
+            DJ
+          </button>
+          <button name="fan" className={`${rankingType == 'fan' ? 'on' : 'off'}`} onClick={handleTypeChange}>
+            팬
+          </button>
+        </div>
+      </div>
       <RankingWrap>
-        <PcWrap>{arraySlide}</PcWrap>
+        <PcWrap>{rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}</PcWrap>
         <MobileWrap>
           <Swiper
             {...params}
             getSwiper={e => {
               rankingSlider = e
             }}>
-            {arraySlide}
+            {rankingType == 'dj' ? createSlide(djInfo, 'dj') : createSlide(fanInfo, 'fan')}
           </Swiper>
         </MobileWrap>
       </RankingWrap>
@@ -101,75 +142,92 @@ export default props => {
 
 const Content = styled.div`
   position: relative;
-  width: 904px;
-  margin: 77px auto 100px auto;
+  width: 1464px;
+  margin: 0 auto;
+  padding: 60px 0 80px 0;
+  border-top: 1px solid ${COLOR_MAIN};
   text-align: center;
 
-  &:before {
-    position: absolute;
-    top: -77px;
-    left: 50%;
-    width: 1px;
-    height: 40px;
-    background: ${COLOR_MAIN};
-    content: '';
+  .top-wrap {
+    display: flex;
+    & .title-btn {
+      line-height: 36px;
+      text-align: left;
+      & h2 {
+        display: inline-block;
+        margin-right: 18px;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.85px;
+        color: ${COLOR_MAIN};
+      }
+      & span {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        font-size: 0;
+        background: url(${IMG_SERVER}/images/api/ico-more-p.png) no-repeat center center / cover;
+        vertical-align: top;
+        cursor: pointer;
+      }
+    }
+    & .change-btn {
+      margin: 0 0 0 auto;
+
+      button {
+        width: 80px;
+        border-radius: 34px;
+        font-size: 20px;
+        line-height: 34px;
+
+        &.on {
+          border: 1px solid ${COLOR_MAIN};
+          color: ${COLOR_MAIN};
+        }
+        &.off {
+          border: 1px solid #e0e0e0;
+          color: #9e9e9e;
+        }
+      }
+      button + button {
+        margin-left: 5px;
+      }
+    }
   }
 
-  @media (max-width: ${WIDTH_PC_S}) {
-    width: 95%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
+  @media (max-width: 1480px) {
     width: 97.5%;
-    margin: 48px 0 60px 2.5%;
-    &:before {
-      display: none;
-    }
+    margin: 0 0 0 2.5%;
+    padding: 40px 0 60px 0;
   }
-`
-const Stitle = styled.div`
-  width: 100%;
-  height: 36px;
-  &:after {
-    display: block;
-    content: '';
-    clear: both;
-  }
-  & h2 {
-    display: inline-block;
-    margin-right: 16px;
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -0.85px;
-    color: ${COLOR_MAIN};
-    @media (max-width: ${WIDTH_MOBILE}) {
-      float: left;
-      font-size: 28px;
-    }
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    height: auto;
-  }
-  & span {
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    font-size: 0;
-    background: url('https://devimage.dalbitcast.com/images/api/ico-more-p.png') no-repeat center center / cover;
-    vertical-align: top;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      float: right;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    .top-wrap {
       margin-right: 2.5%;
+      .title-btn {
+        h2 {
+          font-size: 22px;
+        }
+      }
+
+      .change-btn {
+        button {
+          width: 60px;
+          font-size: 16px;
+          line-height: 30px;
+        }
+      }
     }
   }
 `
 
 const RankingWrap = styled.div`
   margin-top: 37px;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 25px;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-top: 20px;
   }
 
-  .nth1 p {
+  /* .nth1 p {
     position: relative;
     width: 60px;
     margin-top: -30px;
@@ -187,9 +245,9 @@ const RankingWrap = styled.div`
       height: 34px;
       background: url(${IMG_SERVER}/svg/ico-crown.svg) no-repeat center / cover;
       content: '';
-    }
+    } */
 
-    @media (max-width: ${WIDTH_MOBILE}) {
+    /* @media (max-width: ${WIDTH_MOBILE}) {
       margin-top: -22px;
       width: 44px;
       padding: 0;
@@ -201,31 +259,24 @@ const RankingWrap = styled.div`
         width: 34px;
         height: 28px;
       }
-    }
+    } */
   }
+  .nth1 p {
+    background: ${COLOR_MAIN};
+  }
+
   .nth2 p {
     background: ${COLOR_POINT_P};
   }
   .nth3 p {
     background: ${COLOR_POINT_Y};
   }
-  @media (min-width: ${WIDTH_MOBILE}) {
-    .nth1 {
-      order: 2;
-    }
-    .nth2 {
-      order: 1;
-    }
-    .nth3 {
-      order: 3;
-    }
-  }
 `
 
 const PcWrap = styled.div`
   display: flex;
-  justify-content: space-between;
-  @media (max-width: ${WIDTH_MOBILE}) {
+  justify-content: center;
+  @media (max-width: ${WIDTH_PC_S}) {
     display: none;
   }
 `
@@ -233,38 +284,69 @@ const PcWrap = styled.div`
 const MobileWrap = styled.div`
   display: none;
   .swiper-slide {
-    width: 60%;
+    width: 30%;
+  }
+  @media (max-width: ${WIDTH_PC_S}) {
+    display: block;
+  }
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    .swiper-slide {
+      width: 40%;
+    }
+    .swiper-container {
+      padding-right: 2.5%;
+    }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    display: block;
+    .swiper-slide {
+      width: 65%;
+    }
   }
 `
 
 const RankingItem = styled.div`
-  width: 32.3%;
+  /* width: 32.3%; */
+  width:19.12%
   text-align: center;
+  cursor:pointer;
+
+  & + &{
+    margin-left:1.1%;
+    @media (max-width: ${WIDTH_PC_S}) {
+      margin:0;
+    }
+  }
 
   p {
-    width: 44px;
-    margin: -22px auto 32px auto;
-    border-radius: 50%;
-    background: ${COLOR_POINT_P};
+    width: 56px;
+    border-radius: 0 0 15px 0;
+    background: rgba(0, 0, 0, 0.3);
     color: #fff;
+    text-align: center;
     font-size: 28px;
     font-weight: 600;
-    line-height: 44px;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      margin: -22px auto 18px auto;
-    }
+    line-height: 56px;
   }
   h2 {
     overflow: hidden;
+    margin-top: 40px;
     color: #424242;
     font-size: 24px;
     font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    p{
+      width:40px;
+      font-size:20px;
+      line-height:40px;
+    }
+    h2{
+      margin-top:25px;
+      font-size:18px;
+    }
   }
 `
 
@@ -272,8 +354,7 @@ const ImgBox = styled.div`
   overflow: hidden;
   position: relative;
   width: 100%;
-  height: 292px;
-  padding: 4px;
+  height: 280px;
   background: url(${props => props.url}) no-repeat center center / cover;
   text-align: left;
   z-index: -1;
@@ -293,7 +374,10 @@ const ImgBox = styled.div`
     z-index: -1;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 230px;
+    height: 260px;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    /* height: 260px; */
   }
   @media (max-width: ${WIDTH_MOBILE_S}) {
     height: 180px;
@@ -315,7 +399,8 @@ const State = styled.div`
 
   span:first-child {
     padding-left: 44px;
-    background: url(${IMG_SERVER}/svg/ico-gold.svg) no-repeat left center;
+    background: url(${IMG_SERVER}/images/api/ic_moon_y@2x.png) no-repeat left center;
+    background-size: 36px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding-left: 29px;
       background-size: 22px;
@@ -339,6 +424,23 @@ const State = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 14px;
       margin: 0 10px -2px 13px;
+    }
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-top: 10px;
+    span {
+      font-size: 14px;
+      background-size: 24px !important;
+    }
+    span:first-child {
+      padding-left: 28px;
+    }
+    span:first-child:after {
+      margin: 0 10px -3px 14px;
+    }
+    span:last-child {
+      padding-left: 26px;
     }
   }
 `

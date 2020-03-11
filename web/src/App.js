@@ -85,7 +85,7 @@ export default () => {
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
-  //Native->REACT (authToken)
+  //Native->REACT
   const nativeInfo = useMemo(() => {
     return customHeader.isFirst
     //console.log(customHeader.isF)
@@ -113,12 +113,11 @@ export default () => {
         //Utility.setCookie('native-info', 'Y', null)
         //info
         if (Utility.getCookie('native-info') === 'Y') {
-          alert(Utility.getCookie('native-info'))
+          // alert(Utility.getCookie('native-info'))
           context.action.updateMediaPlayerStatus(true)
         }
         //active
-        if (Utility.getCookie('native-active') !== 'Y') {
-          Utility.setCookie('native-active', 'Y', null)
+        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           Hybrid('GetLoginToken', res.data)
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
@@ -142,7 +141,7 @@ export default () => {
     fetchData({data: _customHeader})
     //-----##TEST
     if (isHybrid === 'Y') {
-      alert(nativeInfo)
+      //alert(nativeInfo)
     }
   }, [])
   //---------------------------------------------------------------------

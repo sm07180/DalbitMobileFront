@@ -9,13 +9,14 @@
  */
 import React, {useState, createContext} from 'react'
 //Context
-const Context = createContext()
-const {Provider} = Context
+const LiveStore = createContext()
+const {Provider} = LiveStore
 //
 const LiveProvider = props => {
   //state
   const [state, setState] = useState({code: 'test'})
   const [menuCode, setMenuCode] = useState('')
+  const [list, setList] = useState([])
   //---------------------------------------------------------------------
   const action = {
     /**
@@ -35,10 +36,14 @@ const LiveProvider = props => {
     //updateState
     updateState: obj => {
       setState(state => ({...state, ...obj}))
+    },
+
+    updateList: obj => {
+      setList([...obj])
     }
   }
   //---------------------------------------------------------------------
-  const value = {state, menuCode, action}
+  const value = {state, menuCode, action, list}
   return <Provider value={value}>{props.children}</Provider>
 }
-export {Context, LiveProvider}
+export {LiveStore, LiveProvider}

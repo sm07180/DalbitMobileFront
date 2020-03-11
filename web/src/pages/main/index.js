@@ -19,7 +19,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props} type="main">
-      <Content />
+      <Content {...props} />
     </Layout>
   )
 }
