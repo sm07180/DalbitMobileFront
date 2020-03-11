@@ -22,7 +22,6 @@ export default props => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show
-        alert('실행')
         context.action.updateMediaPlayerStatus(true)
         // context.action.updateRoomInfo(event.detail)
         break
