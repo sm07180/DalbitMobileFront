@@ -118,13 +118,13 @@ export default props => {
     const position = window.scrollY
     if (position === 500) {
       console.log(position)
-      mobileConcat({params: {roomType: type, page: page + 1, records: 3}})
+      mobileConcat({params: {roomType: type, page: page + 1, records: 10}})
     }
   }
 
   useEffect(() => {
     document.addEventListener('scroll', onScroll)
-    getBroadList({params: {roomType: type, page: page, records: 3}})
+    getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
     return () => document.removeEventListener('scroll', onScroll)
   }, [])
@@ -150,7 +150,7 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   /* height: 100%; */
-  margin-bottom: 50px;
+  margin-bottom: 2%;
   flex-direction: column;
   align-items: center;
 `
