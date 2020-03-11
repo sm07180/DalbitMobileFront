@@ -91,7 +91,7 @@ export default props => {
           </div>
           <UserId>{`@${profile.memId}`}</UserId>
           {/* <PasswordInput autoComplete="new-password" /> */}
-          {/* <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate> */}
+          <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
           <GenderWrap>
             <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
             <GenderTab className={profile.gender === 'w' ? '' : 'off'}>여자</GenderTab>
