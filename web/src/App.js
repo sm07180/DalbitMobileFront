@@ -134,6 +134,9 @@ export default () => {
     fetchData({data: _customHeader})
     //-----##TEST
     console.log('### version 2')
+    /**
+     * @새창에서도 실행되므로 주의요망
+     */
     if (isHybrid === 'Y') {
       alert('isHybrid : ' + isHybrid + ' , isFirst : ' + customHeader.isFirst)
       //최초앱구동실행
@@ -141,7 +144,9 @@ export default () => {
         Utility.setCookie('native-player-info', '', -1)
       } else if (customHeader.isFirst === 'N') {
         const _cookie = Utility.getCookie('native-player-info')
-        alert(_cookie)
+        if (_cookie !== undefined) {
+          alert('창1')
+        }
       }
     }
   }, [])
