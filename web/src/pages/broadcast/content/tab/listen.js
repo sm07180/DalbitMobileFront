@@ -186,7 +186,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   /* 차후 탭 제거시 고정높이값 변경되어야함 */
-  height: calc(100% - 160px);
+  height: calc(100% - 60px);
   margin-top: 20px;
   & > div:last-child {
     height: 100%;
