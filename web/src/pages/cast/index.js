@@ -31,7 +31,8 @@ export default props => {
         <section>
           <button
             onClick={() => {
-              alert(JSON.stringify(Utility.getCookie('native-info'), null, 1))
+              const _info = JSON.parse(Utility.getCookie('native-info'))
+              alert(JSON.stringify(_info, null, 1))
             }}>
             native-info
           </button>

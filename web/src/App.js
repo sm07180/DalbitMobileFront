@@ -82,8 +82,13 @@ export default () => {
   //Native->REACT
   const nativeInfo = useMemo(() => {
     if (customHeader.isFirst === undefined) return {}
+    //최초앱구동실행
+    if (customHeader.isFirst === 'Y') {
+      Utility.setCookie('native-info', '', -1)
+    } else if (customHeader.isFirst === 'N') {
+      return JSON.parse(Utility.getCookie('native-info'))
+    }
     return customHeader.isFirst
-    //console.log(customHeader.isF)
   })
   //---------------------------------------------------------------------
   //fetch
