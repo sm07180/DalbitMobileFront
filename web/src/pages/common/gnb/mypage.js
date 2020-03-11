@@ -63,7 +63,9 @@ export default props => {
               <Ptitle>
                 {context.token.isLogin ? (
                   <>
-                    <PIMG bg={mypage && mypage.profImg.url}></PIMG>
+                    <Link to="/mypage/setting" style={{display: 'inline-block'}} onClick={() => context.action.updateGnbVisible(false)}>
+                      <PIMG bg={mypage && mypage.profImg.url} />
+                    </Link>
                     <NoLoginTitle>
                       <h4>{mypage && mypage.nickNm}</h4>
                       <ID>{mypage && mypage.memId}</ID>
@@ -229,6 +231,7 @@ const PIMG = styled.div`
 `
 const Ptitle = styled.div`
   width: 100%;
+  text-align: center;
 `
 const NoLoginTitle = styled.div`
   width: 100%;
