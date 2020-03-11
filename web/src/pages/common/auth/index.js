@@ -35,7 +35,6 @@ export default props => {
           //앱에서호출되는 로그인팝업
           if (_href.indexOf('/login') !== -1) {
             Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
-            Utility.setCookie('native-active', 'Y', null)
           } else {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)
