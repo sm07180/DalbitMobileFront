@@ -29,8 +29,7 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (isHybrid()) {
-      const session = JSON.stringify(context.nativePlayer)
-      sessionStorage.setItem('PLAYER_INFO', session)
+      Utility.setCookie('native-info', 'Y', null)
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
