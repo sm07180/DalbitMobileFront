@@ -21,6 +21,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+
   const {mediaHandler} = context
   const history = useHistory()
   //state
@@ -39,11 +40,11 @@ export default props => {
   //오른쪽 메뉴들 토글기능
   const activeMenu = e => {
     const current = e.target.name
+
     setToggle({
       volume: current == 'volume' ? !toggle.volume : false,
       quick: current == 'quick' ? !toggle.quick : false,
       menu: current == 'menu' ? !toggle.menu : false,
-      mike: toggle.mike,
       like: toggle.like,
       boost: toggle.boost
     })
@@ -55,7 +56,7 @@ export default props => {
 
   //마이크 on off 기능~
   const activeMike = () => {
-    broad_micOnOff(!toggle.mike)
+    broad_micOnOff(!store.mikeState)
   }
 
   //좋아요~!
@@ -77,7 +78,6 @@ export default props => {
   }
 
   //좋아요 보내기
-
   async function broad_likes(roomNo) {
     let myFanJoin
     const res = await Api.broad_likes({data: {roomNo: roomNo}})
@@ -96,31 +96,34 @@ export default props => {
       return
     } else {
       console.log('## liket res = ' + res)
+
+      context.action.updateBroadcastTotalInfo({...context.broadcastTotalInfo, ...res.data.rank, ...res.data.likes})
+      //console.log('context BroadcastTotalInfo = ' + context.broadcastTotalInfo)
       store.action.updateLike(2)
       setToggle({
         ...toggle,
         like: true
       })
       // 좋아요 누른 후 10초 뒤에 팬등록 팝업 실행
-      setTimeout(() => {
-        context.action.confirm({
-          //콜백처리
-          callback: () => {
-            broad_pan_insert()
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {
-            //alert('confirm callback 취소하기')
-          },
-          buttonText: {
-            right: '+팬등록'
-          },
-          msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
-          저의 팬이 되어주시겠어요?`
-        })
-      }, 1000)
+      // setTimeout(() => {
+      //   context.action.confirm({
+      //     //콜백처리
+      //     callback: () => {
+      //       broad_pan_insert()
+      //     },
+      //     //캔슬콜백처리
+      //     cancelCallback: () => {
+      //       //alert('confirm callback 취소하기')
+      //     },
+      //     buttonText: {
+      //       right: '+팬등록'
+      //     },
+      //     msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
+      //     저의 팬이 되어주시겠어요?`
+      //   })
+      // }, 1000)
 
-      clearTimeout()
+      //clearTimeout()
     }
   }
   //팬등록
@@ -185,10 +188,7 @@ export default props => {
     //Error발생시
 
     if (res.result === 'success') {
-      setToggle({
-        ...toggle,
-        mike: !toggle.mike
-      })
+      store.action.updateMikeState(!store.mikeState)
       // setShortMessage(res.data)
       // store.action.updateShortCutList(res.data)
     }
@@ -250,7 +250,7 @@ export default props => {
     // 청취자일 경우 좋아요 버튼 노출, 좋아요 했을시에는 부스트(당근모양) 버튼 노출
     if (props.auth === 3) {
       return (
-        <button name="mike" className={`mike ${toggle.mike ? 'on' : 'off'}`} title="마이크" onClick={activeMike}>
+        <button name="mike" className={`mike ${store.mikeState ? 'on' : 'off'}`} title="마이크" onClick={activeMike}>
           마이크
         </button>
       )
@@ -274,7 +274,9 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    toggle.mike = true
+  }, [store.mikestate])
 
   //---------------------------------------------------------------------
   return (

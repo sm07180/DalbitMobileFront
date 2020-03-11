@@ -14,7 +14,7 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
-import {osName, browserName} from 'react-device-detect'
+import {osName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
@@ -92,19 +92,26 @@ export default () => {
     if (res.result === 'success') {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
-      const userInfo = await Api.mypage()
-      if (userInfo.result === 'success') {
-        context.action.updateMypage(userInfo.data)
+      if (res.data.isLogin) {
+        const userInfo = await Api.mypage()
+        if (userInfo.result === 'success') {
+          context.action.updateMypage(userInfo.data)
+        }
+        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        if (profileInfo.result === 'success') {
+          context.action.updateProfile(profileInfo.data)
+        }
       }
-
-      const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-      if (profileInfo.result === 'success') {
-        context.action.updateProfile(profileInfo.data)
-      }
-
       context.action.updateToken(res.data)
-      //하이브리디일때만
+      //하이브리디일때
       if (isHybrid === 'Y') {
+        //Utility.setCookie('native-info', 'Y', null)
+        //info
+        if (Utility.getCookie('native-info') === 'Y') {
+          alert('실행')
+          //    context.action.updateMediaPlayerStatus(true)
+        }
+        //active
         if (Utility.getCookie('native-active') !== 'Y') {
           Utility.setCookie('native-active', 'Y', null)
           Hybrid('GetLoginToken', res.data)
@@ -128,6 +135,15 @@ export default () => {
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
+    //-----##TEST
+
+    if (isHybrid === 'Y') {
+      // const _val = sessionStorage.setItem('PLAYER_INFO')
+      // alert(_val)
+      // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
+      //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
+    }
+    // sessionStorage.setItem('23동의대', 0)
   }, [])
   //---------------------------------------------------------------------
   /**

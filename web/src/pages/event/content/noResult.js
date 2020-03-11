@@ -6,26 +6,30 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
+import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
+  //console.log(props)
+  const context = useContext(Context)
   //---------------------------------------------------------------------
   //context
   //---------------------------------------------------------------------
+  const BACK = () => {
+    props.history.push('/')
+  }
   return (
     <>
       <ResultWrap>
-        <h2>
-          결과값이 없네요 <br />
-          ㅠㅠ
-        </h2>
         <div>
-          <div></div>
-          <div>
-            <img src={`${IMG_SERVER}/images/api/noresultimg.png`} />
-          </div>
+          <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
         </div>
+
+        <h2>조회 된 검색 결과가 없습니다.</h2>
+        <button className="back" onClick={BACK}>
+          뒤로가기
+        </button>
       </ResultWrap>
     </>
   )
@@ -36,11 +40,12 @@ export default props => {
 const ResultWrap = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
   width: 100%;
-  margin: 100px 0 90px 0;
+  margin: 160px 0 90px 0;
 
   & h2 {
+    margin-top: 40px;
     color: #757575;
     font-size: 24px;
     font-weight: 600;
@@ -48,36 +53,22 @@ const ResultWrap = styled.div`
     letter-spacing: -0.6px;
     text-align: center;
   }
-  & > div {
-    display: flex;
+  & div {
     width: 100%;
+    & img {
+      display: block;
 
-    & div {
-      width: 50%;
-      @media (max-width: ${WIDTH_MOBILE}) {
-        &:first-child {
-          width: 0;
-        }
-        &:last-child {
-          width: 100%;
-        }
-      }
-      &:last-child {
-        margin-left: 182px;
-        @media (max-width: ${WIDTH_MOBILE}) {
-          margin-left: 0px;
-        }
-        & > img {
-          width: 296.4px;
-          height: 424.7px;
-          margin-top: 40px;
-          @media (max-width: ${WIDTH_MOBILE}) {
-            display: block;
-            margin: 40px auto 0 auto;
-            width: 90%;
-          }
-        }
-      }
+      width: 298.5px;
+      height: 226.7px;
+      margin: 0 auto;
     }
+  }
+  & .back {
+    width: 144px;
+    height: 50px;
+    margin: 44px auto 0 auto;
+    border-radius: 10px;
+    border: 1px solid #8556f6;
+    color: #8556f6;
   }
 `

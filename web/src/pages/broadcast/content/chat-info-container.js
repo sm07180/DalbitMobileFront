@@ -21,7 +21,6 @@ export default props => {
   //console.log('방정보를 알아봅시다..', props)
   //state
   const [room, setRoom] = useState({
-    bjHolder: '',
     fanRank: [
       {
         profImg: {
@@ -42,15 +41,7 @@ export default props => {
         nickNm: ''
       }
     ],
-    bgImg: '',
-    title: '',
-    bjProfImg: '',
-    rank: '',
-    bjNickNm: '',
-    likes: '',
-    gstMemNo: '',
-    gstNickNm: '',
-    gstProfImg: ''
+    ...props
   })
   //부스트 상태값. 기본값은 방장인지 아닌지만 판단함
   const [boost, setBoost] = useState(props.auth == 3 ? 'boost-off' : '')
@@ -81,22 +72,20 @@ export default props => {
         </Figure>
       )
     } else {
-      if (props.auth == 3) {
-        return (
-          <button className="invite" onClick={() => store.action.updateTab(1)}>
-            게스트 초대
-          </button>
-        )
-      } else {
-        return (
-          <button className="invite" onClick={() => store.action.updateTab(1)}>
-            게스트 신청
-          </button>
-        )
-      }
+      return (
+        <button className="invite" onClick={() => store.action.updateTab(1)}>
+          {props.auth == 3 ? '게스트 초대' : '게스트 신청'}
+        </button>
+      )
     }
   }
-
+  const likeCheck = () => {
+    if (context.broadcastTotalInfo === null) {
+      return room.like
+    } else {
+      return context.broadcastTotalInfo.likes
+    }
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -162,7 +151,9 @@ export default props => {
           {/* 누적 청취자 수 */}
           <li>85</li>
           {/* 현재 방송 좋아요 수 */}
-          <li>{room.likes}</li>
+
+          {/* <li>{context.broadcastTotalInfo == null ? room.likes : context.broadcastTotalInfo.likes}</li> */}
+          <li>{likeCheck()}</li>
           {/* 방송 남은 시간 */}
           {props.auth === 3 && <li>00:30:00</li>}
         </ul>

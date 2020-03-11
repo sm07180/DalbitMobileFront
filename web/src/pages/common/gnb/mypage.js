@@ -130,23 +130,25 @@ export default props => {
                   context.action.confirm({
                     //콜백처리
                     callback: () => {
-                      async function fetchData(obj) {
-                        const res = await Api.member_logout({data: context.token.authToken})
-                        if (res.result === 'success') {
-                          //로그아웃성공
-                          //쿠키삭제
-                          Utility.setCookie('custom-header', '', -1)
-
-                          context.action.updateToken(res.data)
-                          localStorage.removeItem('com.naver.nid.access_token')
-                          localStorage.removeItem('com.naver.nid.oauth.state_token')
-                          props.history.push('/')
-                          context.action.updateGnbVisible(false)
-                          Hybrid('GetLogoutToken', res.data)
-                          context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
+                      setTimeout(() => {
+                        async function fetchData(obj) {
+                          const res = await Api.member_logout({data: context.token.authToken})
+                          if (res.result === 'success') {
+                            //로그아웃성공
+                            //쿠키삭제
+                            Utility.setCookie('custom-header', '', -1)
+                            alert(JSON.stringify(res.data, null, 1))
+                            Hybrid('GetLogoutToken', res.data)
+                            context.action.updateToken(res.data)
+                            localStorage.removeItem('com.naver.nid.access_token')
+                            localStorage.removeItem('com.naver.nid.oauth.state_token')
+                            props.history.push('/')
+                            context.action.updateGnbVisible(false)
+                            context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
+                          }
                         }
-                      }
-                      fetchData()
+                        fetchData()
+                      }, 0)
                     },
                     msg: `로그아웃 하시겠습니까?`
                   })

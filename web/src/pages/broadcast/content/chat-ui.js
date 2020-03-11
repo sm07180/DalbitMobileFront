@@ -82,13 +82,17 @@ export default props => {
     //console.warn('recvTopData = ' + recvTopData)
 
     if (recvTopData.position === 'top1') {
-      const result = (
-        <div className="system-msg top1">
-          <span>{recvTopData.msg}</span>
-        </div>
-      )
-      //console.log('result = ' + result)
-      setTop1Msg(result)
+      if (data.data.cmd !== 'reqMicOn') {
+        const result = (
+          <div className="system-msg top1">
+            <span>{recvTopData.msg}</span>
+          </div>
+        )
+        setTop1Msg(result)
+        document.getElementsByClassName('system-msg top1')[0].style.visibility = 'visible'
+      } else {
+        document.getElementsByClassName('system-msg top1')[0].style.visibility = 'hidden'
+      }
     } else {
       top2Data = top2Data.concat(recvTopData)
       const result = top2Data.map((item, index) => {

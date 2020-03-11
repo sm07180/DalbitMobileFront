@@ -11,8 +11,11 @@ import {Context} from 'context'
 const sc = require('context/socketCluster')
 
 export default props => {
+  //const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
+  //console.log(roomInfo)
+  //const {state} = props.roomInfo
   let selectlistener = ''
   let res = ''
 
@@ -46,26 +49,44 @@ export default props => {
     }
     return
   }
-
+  setInterval(() => {
+    //console.log(store.roomInfo.auth)
+    //console.log()
+  }, 5000)
   //매니저 지정 , 해제 Api
   async function broadManager(type, obj) {
     const methodType = type === 1 ? 'POST' : 'DELETE'
+
     const res = await Api.broad_manager({
       data: {
         roomNo: store.roomInfo.roomNo,
-        memNo: obj.memNo
+        memNo: obj.memNo,
+        auth: store.roomInfo.auth
       },
       method: methodType
     })
     //Error발생시
     if (res.result === 'success') {
       broadListenListReload()
-      //sc.sendMessage()
+      //console.log(res)
+      //console.log(res.data.memNo)
+      //이부분
+      store.action.updateRoomInfo({auth: 1})
+
       console.log('broadManager  res = ' + res)
-      store.action.updateListenTrues()
+      store.action.updateListenTrues(false)
+      return (bjno = res.data.memNo)
     } else {
       console.log('broadManager  res = ' + res)
     }
+  }
+
+  async function joinRoom() {
+    // const res = await Api.broad_join({data: {roomNo: store.roomInfo.roomNo}})
+    // if (res.result === 'success') {
+    //   if (store.roomInfo.auth < 2) store.action.updateRoomInfo(res.data)
+    // }
+    // return
   }
 
   // 강퇴 Api
@@ -150,24 +171,109 @@ export default props => {
     }
   }
 
+  // const makeDropboxBtn = () => {
+  //   const menulist = ['강제퇴장', '매니저 등록', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
+  //   return menulist.map((list, index) => {
+  //     return (
+  //       <button
+  //         key={index}
+  //         onClick={e => {
+  //           listenerStateChange(index)
+  //         }}>
+  //         {list}
+  //       </button>
+  //     )
+  //   })
+  // }
   const makeDropboxBtn = () => {
-    const menulist = ['강제퇴장', '매니저 등록', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
-    return menulist.map((list, index) => {
-      return (
-        <button
-          key={index}
-          onClick={e => {
-            listenerStateChange(index)
-          }}>
-          {list}
-        </button>
-      )
-    })
+    const listenerView = ['', '', '', '', '프로필 보기', '신고 하기']
+    const ManegerView = ['강퇴하기', '', '', '', '프로필 보기', '신고 하기']
+    const BJView = ['강제퇴장', '매니저 등록', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
+    const BJViewManeger = ['강퇴하기', '', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
+    const {selectidx} = props
+    //props.rcvData.data.user.auth
+    if (store.roomInfo.auth == 0) {
+      //청취자
+      if (store.listenerList[selectidx].auth === 0 || store.listenerList[selectidx].auth === 1) {
+        return listenerView.map((list, index) => {
+          return (
+            <button
+              key={index}
+              onClick={e => {
+                listenerStateChange(index)
+              }}
+              className={list === '' ? 'none' : ''}>
+              {list}
+            </button>
+          )
+        })
+      }
+    } else if (store.roomInfo.auth == 1) {
+      // 매니저
+      if (store.listenerList[selectidx].auth === 0) {
+        return ManegerView.map((list, index) => {
+          return (
+            <button
+              key={index}
+              onClick={e => {
+                listenerStateChange(index)
+              }}
+              className={list === '' ? 'none' : ''}>
+              {list}
+            </button>
+          )
+        })
+      } else if (store.listenerList[selectidx].auth === 1) {
+        return listenerView.map((list, index) => {
+          return (
+            <button
+              key={index}
+              onClick={e => {
+                listenerStateChange(index)
+              }}
+              className={list === '' ? 'none' : ''}>
+              {list}
+            </button>
+          )
+        })
+      }
+    } else if (store.roomInfo.auth == 3) {
+      // 매니저
+      if (store.listenerList[selectidx].auth === 0) {
+        return BJView.map((list, index) => {
+          return (
+            <button
+              key={index}
+              onClick={e => {
+                listenerStateChange(index)
+              }}>
+              {list}
+            </button>
+          )
+        })
+      } else if (store.listenerList[selectidx].auth === 1) {
+        return BJViewManeger.map((list, index) => {
+          console.log(list)
+          return (
+            <button
+              key={index}
+              onClick={e => {
+                listenerStateChange(index)
+              }}
+              className={list === '' ? 'none' : ''}>
+              {list}
+            </button>
+          )
+        })
+      }
+    }
   }
+
   //--------------------------------------------------------
   return (
     <Event>
-      <ul>{store.roomInfo.auth != 0 ? makeDropboxBtn() : ''}</ul>
+      {/* <ul>{store.roomInfo.auth != 0 ? makeDropboxBtn() : ''}</ul> */}
+      <ul>{makeDropboxBtn()}</ul>
     </Event>
   )
 }
@@ -195,6 +301,9 @@ const Event = styled.div`
       font-size: 14px;
       text-align: center;
       letter-spacing: -0.35px;
+      &.none {
+        display: none;
+      }
       &:hover {
         background-color: #f8f8f8;
       }
