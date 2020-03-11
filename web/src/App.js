@@ -85,6 +85,11 @@ export default () => {
     if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
     return ''
   })
+  //Native->REACT (authToken)
+  const nativeInfo = useMemo(() => {
+    return customHeader.isFirst
+    //console.log(customHeader.isF)
+  })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
@@ -136,14 +141,9 @@ export default () => {
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
     //-----##TEST
-
     if (isHybrid === 'Y') {
-      // const _val = sessionStorage.setItem('PLAYER_INFO')
-      // alert(_val)
-      // alert('PLAYER_INFO : ' + JSON.stringify(sessionStorage.setItem('PLAYER_INFO')))
-      //  alert(JSON.stringify(sessionStorage.setItem('PLAYER_INFO'), null, 1))
+      alert(nativeInfo)
     }
-    // sessionStorage.setItem('23동의대', 0)
   }, [])
   //---------------------------------------------------------------------
   /**
