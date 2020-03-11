@@ -149,7 +149,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   margin-bottom: 50px;
   flex-direction: column;
   align-items: center;
@@ -162,13 +162,13 @@ const MainContents = styled.div`
   }
   display: flex;
   width: 80%;
-  height: 100%;
+  /* height: 100%; */
   align-items: flex-start;
   flex-direction: column;
 `
 const Wrap = styled.div`
   display: flex;
   width: 90%;
-  height: 80%;
+  /* height: 80%; */
   justify-content: center;
 `
