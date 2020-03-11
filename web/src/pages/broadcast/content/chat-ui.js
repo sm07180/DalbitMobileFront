@@ -67,8 +67,6 @@ export default props => {
 
   let msgData = []
   const getRecvChatData = data => {
-    //총접속자 , 누적 사용자수 업데이트
-    context.action.updateBroadcastTotalInfo(data.data.conut)
     msgData = msgData.concat(data)
 
     const resulte = msgData.map((item, index) => {
@@ -82,8 +80,6 @@ export default props => {
   let top2Data = []
   const getRecvTopData = data => {
     const recvTopData = data.data.recvMsg
-
-    //console.warn('recvTopData = ' + recvTopData)
 
     if (recvTopData.position === 'top1') {
       if (data.data.cmd !== 'reqMicOn' || data.data.cmd === 'reqCalling') {
@@ -127,6 +123,11 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
+      //총접속자 , 누적 사용자수 업데이트
+      if (data.detail.data.cmd == 'connect') {
+        if (data.detail.data.count) context.action.updateBroadcastTotalInfo(data.detail.data.count)
+      }
+
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
           if (data.detail.data.cmd === 'reqRoomChangeInfo') {
