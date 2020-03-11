@@ -41,6 +41,12 @@ export default props => {
             }}>
             native-player-info
           </button>
+          <button
+            onClick={() => {
+              Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
+            }}>
+            강제쿠키
+          </button>
         </section>
         <h1>native-player-info</h1>
         <section>{JSON.stringify(Utility.getCookie('native-player-info', null, 1))}</section>
