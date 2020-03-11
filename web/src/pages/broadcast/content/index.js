@@ -69,6 +69,8 @@ export default props => {
   }
   useEffect(() => {
     //방송방 페이지는 header, footer없음.
+    // context.action.updateBroadcastTotalInfo(state)
+    // store.action.updateRoomInfo(state)
     context.action.updateState({isOnCast: true})
     return () => {
       context.action.updateState({isOnCast: false})
@@ -153,7 +155,6 @@ export default props => {
       console.log(res.message)
       return
     }
-    console.log('asdasdasdasd')
     context.action.updateBroadcastTotalInfo(res.data)
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
     //return res.data

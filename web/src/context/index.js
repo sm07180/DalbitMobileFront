@@ -161,7 +161,7 @@ const GlobalProvider = props => {
      * @breif 방들어올때,생성할때
      */
     updateBroadcastTotalInfo: obj => {
-      setBroadcastTotalInfo(obj)
+      setBroadcastTotalInfo(broadcastTotalInfo => ({...broadcastTotalInfo, ...obj}))
     },
     //방생성 후 방정보 가지고있음, 방 종료시 사라짐
     updateCastState: obj => {

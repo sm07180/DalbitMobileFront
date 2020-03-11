@@ -9,6 +9,7 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {BroadCastStore} from '../store'
+import Api from 'context/api'
 
 export default props => {
   const store = useContext(BroadCastStore)
@@ -22,11 +23,21 @@ export default props => {
       }
     })
     //Error발생시
-    if (res.result === 'fail') {
-      console.log(res.message)
-      return
+    if (res.result === 'fail' || res.result === 'success') {
+      context.action.alert({
+        // 부스트 사용완료 팝업
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: res.message
+      })
     }
   }
+  // useEffect(() => {
+  //   console.log('방정보가 수정 되어 여기에 한번 들어와야 된다. ')
+  // }, [store.roomInfo])
+
   //---------------------------------------------------------------------
   console.log('메세지 타입 = ' + props)
   if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {

@@ -1,7 +1,7 @@
 /**
  * @title 채팅 ui 컴포넌트
  */
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext, useRef, useMemo} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
 //context
@@ -14,6 +14,9 @@ import MessageType from './chat-message-type'
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
+import store from 'pages/store'
+import {BroadCastStore} from '../store'
+import {createUnionTypeAnnotation} from 'C:/Users/USER/AppData/Local/Microsoft/TypeScript/3.6/node_modules/@babel/types/lib'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -28,7 +31,7 @@ export default props => {
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
-
+  const store = useContext(BroadCastStore)
   //---------------------------------------------------------------------
   //function
   const postMessageChange = e => {
@@ -64,6 +67,8 @@ export default props => {
 
   let msgData = []
   const getRecvChatData = data => {
+    //총접속자 , 누적 사용자수 업데이트
+    context.action.updateBroadcastTotalInfo(data.data.conut)
     msgData = msgData.concat(data)
 
     const resulte = msgData.map((item, index) => {
@@ -72,7 +77,6 @@ export default props => {
 
     setComments(resulte)
   }
-
   //top 메시지 부분.. top1, top2 나누어져있음
 
   let top2Data = []
@@ -82,7 +86,7 @@ export default props => {
     //console.warn('recvTopData = ' + recvTopData)
 
     if (recvTopData.position === 'top1') {
-      if (data.data.cmd !== 'reqMicOn') {
+      if (data.data.cmd !== 'reqMicOn' || data.data.cmd === 'reqCalling') {
         const result = (
           <div className="system-msg top1">
             <span>{recvTopData.msg}</span>
@@ -125,7 +129,13 @@ export default props => {
       const recvMsg = data.detail.data.recvMsg
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {
-          getRecvChatData(data.detail)
+          if (data.detail.data.cmd === 'reqRoomChangeInfo') {
+            //console.log('방송방 수정 들어옴 = ' + data.detail.data.reqRoomChangeInfo)
+            context.action.updateBroadcastTotalInfo(data.detail.data.reqRoomChangeInfo)
+            store.action.updateRoomInfo(data.detail.data.reqRoomChangeInfo)
+          } else {
+            getRecvChatData(data.detail)
+          }
         } else {
           getRecvTopData(data.detail)
         }
@@ -143,7 +153,8 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    <Content bgImg={roomInfo.bgImg.url}>
+    // <Content bgImg={context.broadcastTotalInfo.bgImg != null ? context.broadcastTotalInfo.bgImg : roomInfo.bgImg.url}>
+    <Content bgImg={context.broadcastTotalInfo.bgImg.url !== '' ? context.broadcastTotalInfo.bgImg.url : roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
       <CommentList className="scroll" ref={chatArea}>
