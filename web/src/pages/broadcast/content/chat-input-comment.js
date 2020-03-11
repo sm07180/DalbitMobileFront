@@ -97,7 +97,7 @@ export default props => {
     } else {
       console.log('## liket res = ' + res)
 
-      context.action.updateBroadcastTotalInfo({...context.broadcastTotalInfo, ...res.data.rank, ...res.data.likes})
+      context.action.updateBroadcastTotalInfo(res.data)
       //console.log('context BroadcastTotalInfo = ' + context.broadcastTotalInfo)
       store.action.updateLike(2)
       setToggle({
@@ -188,9 +188,8 @@ export default props => {
     //Error발생시
 
     if (res.result === 'success') {
+      mediaHandler.setMuted(true)
       store.action.updateMikeState(!store.mikeState)
-      // setShortMessage(res.data)
-      // store.action.updateShortCutList(res.data)
     }
   }
   //빠른말 가져오기
