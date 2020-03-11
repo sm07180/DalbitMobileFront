@@ -80,12 +80,16 @@ export default () => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
   })
   //Native->REACT
+  alert(Utility.getCookie('native-player-info'))
   const nativeInfo = useMemo(() => {
     if (customHeader.isFirst === undefined) return {}
     //최초앱구동실행
     if (customHeader.isFirst === 'Y') {
       Utility.setCookie('native-player-info', '', -1)
     } else if (customHeader.isFirst === 'N' && Utility.getCookie('native-player-info')) {
+      if (Utility.getCookie('native-player-info') !== undefined) {
+        context.action.updateMediaPlayerStatus(true)
+      }
       return JSON.parse(Utility.getCookie('native-player-info'))
     }
     return customHeader.isFirst
@@ -106,12 +110,6 @@ export default () => {
       context.action.updateToken(res.data)
       //하이브리드일때
       if (isHybrid === 'Y') {
-        //Utility.setCookie('native-info', 'Y', null)
-        //info
-        // if (Utility.getCookie('native-info') === 'Y') {
-        //   // alert(Utility.getCookie('native-info'))
-        //   context.action.updateMediaPlayerStatus(true)
-        // }
         //active
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           Hybrid('GetLoginToken', res.data)
