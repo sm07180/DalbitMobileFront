@@ -109,7 +109,7 @@ export default props => {
     <Content>
       <div className="top-wrap">
         <div className="title-btn">
-          <h2>랭 킹</h2>
+          <h2>랭킹</h2>
           <span
             onClick={() => {
               props.history.push('/ranking')

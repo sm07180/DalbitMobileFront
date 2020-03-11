@@ -137,8 +137,13 @@ const SwiperWrap = styled.div`
   }
 
   & .swiper-container {
+    overflow: hidden;
     position: static;
     margin-top: 35px;
+    height: 190px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 140px;
+    }
   }
 
   & .swiper-button-prev,
