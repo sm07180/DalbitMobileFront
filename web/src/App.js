@@ -121,7 +121,7 @@ export default () => {
         }
       }
       //-----##TEST
-      console.log('### version 3.0')
+      console.log('### version 3.1')
 
       //모든처리완료
       setReady(true)
