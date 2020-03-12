@@ -16,9 +16,9 @@ export default props => {
   const store = useContext(BroadCastStore)
 
   //팬등록
-  async function broad_pan_insert() {
-    console.loo('팬등록 = ' + store.roomInfo)
-    const res = await Api.broad_pan_insert({
+  async function broad_fan_insert() {
+    console.log('팬등록 = ' + store.roomInfo)
+    const res = await Api.broad_fan_insert({
       data: {
         memNo: store.roomInfo.bjMemNo,
         roomNo: store.roomInfo.roomNo
@@ -126,12 +126,13 @@ export default props => {
             <b className="dj">DJ</b>BJ라디오
           </p>
           <span>
-            좋아요 감사합니다.
+            {props.data.recvMsg.msg}
+            {/* 좋아요 감사합니다.
             <br />
             {`${props.rcvData.data.user.nk} 님`}
             <br />
-            저의 팬이 되어주시겠어요?
-            <button onClick={() => broad_pan_insert()}>+팬등록</button>
+            저의 팬이 되어주시겠어요? */}
+            <button onClick={() => broad_fan_insert()}>+팬등록</button>
           </span>
         </div>
       </Message>

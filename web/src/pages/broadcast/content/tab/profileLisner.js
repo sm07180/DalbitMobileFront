@@ -39,9 +39,10 @@ export default props => {
     console.log(res)
   }
 
-  async function broad_pan_insert() {
+  //팬등록
+  async function broad_fan_insert() {
     console.loo('팬등록 = ' + store.roomInfo)
-    const res = await Api.broad_pan_insert({
+    const res = await Api.broad_fan_insert({
       data: {
         memNo: objProfileInfo.bjMemNo,
         roomNo: objProfileInfo.roomNo
@@ -59,11 +60,44 @@ export default props => {
       })
     }
   }
+  //매니저 지정 , 해제 Api
+  async function broadManager(type, obj) {
+    const methodType = type === 1 ? 'POST' : 'DELETE'
 
+    const res = await Api.broad_manager({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        memNo: obj.memNo,
+        auth: store.roomInfo.auth
+      },
+      method: methodType
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      store.action.updateRoomInfo({auth: 1})
+      store.action.updateListenTrues(false)
+      return (bjno = res.data.memNo)
+    } else {
+      console.log('broadManager  res = ' + res)
+    }
+  }
+
+  // 강퇴 Api
+  async function broadkickout(obj) {
+    const res = await Api.broad_kickout({
+      data: {
+        roomNo: store.roomInfo.roomNo,
+        blockNo: obj.memNo
+      },
+      method: 'POST'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      sc.SendMessageKickout(res)
+    }
+  }
   useEffect(() => {
-    console.log('asdasdasdasd')
     console.log(store.broadcastProfileInfo)
-
     //fetchData()
   }, [store.broadcastProfileInfo])
 
