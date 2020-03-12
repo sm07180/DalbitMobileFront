@@ -8,6 +8,8 @@ import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
+//util
+import Utility from 'components/lib/utility'
 
 export default props => {
   //context
@@ -26,11 +28,12 @@ export default props => {
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        //   Utility.setCookie('native-player-info', 'native-start', 100)
+        const _detail = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _detail, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
-      case 'native-end': //-----------------------------Native end
+      case 'native-end': //-----------------------------Native end (Android)
         context.action.updateMediaPlayerStatus(false)
         Utility.setCookie('native-player-info', '', -1)
         break
