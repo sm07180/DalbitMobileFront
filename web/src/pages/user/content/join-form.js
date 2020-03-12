@@ -24,7 +24,8 @@ const JoinForm = props => {
     loginPwdCheck: false,
     loginNickNm: false,
     birth: false,
-    term: false // 약관동의는 필수만 체크하기
+    term: false, // 약관동의는 필수만 체크하기
+    auth: false
   })
   const [validatePass, setValidatePass] = useState(false) // 유효성 모두 통과 여부. 회원가입 버튼 활성시 쓰임
   const [currentPwd, setCurrentPwd] = useState() // 비밀번호 도움 텍스트 값. html에 뿌려줄 state
@@ -32,6 +33,7 @@ const JoinForm = props => {
   const [currentNick, setCurrentNick] = useState() // 닉네임 확인 도움 텍스트 값.
   const [currentName, setCurrentName] = useState() // 이름 확인 도움 텍스트 값.
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
+  const [currentAuthBtn, setCurrentAuthBtn] = useState(true) // 인증확인 버튼
   const [imgData, setImgData] = useState()
 
   //포토서버에 올라간 디폴트 이미지
@@ -72,6 +74,8 @@ const JoinForm = props => {
     term3: 'n',
     term4: 'n',
     term5: 'n',
+    auth: '',
+    CMID: '',
     osName: context.customHeader.os,
     deviceid: context.customHeader.deviceid,
 
@@ -310,7 +314,9 @@ const JoinForm = props => {
         }
         context.action.updateLogin(true)
       } else {
-        alert(res.message)
+        context.action.alert({
+          msg: res.message
+        })
         context.action.updateLogin(false)
       }
     } //(res && res.code)
@@ -342,6 +348,39 @@ const JoinForm = props => {
         ...validate,
         ...snsJoinSetting
       })
+    }
+  }
+
+  async function fetchAuth() {
+    const resAuth = await Api.sms_request({
+      data: {
+        phoneNo: changes.loginID,
+        authType: 0
+      }
+    })
+    if (resAuth.result === 'success') {
+      console.log(resAuth)
+      setChanges({...changes, CMID: resAuth.data.CMID})
+      setCurrentAuthBtn(false)
+      //setInterval({createAuthTimer()},1000)
+    } else {
+      console.log(resAuth)
+    }
+  }
+
+  async function fetchAuthCheck() {
+    console.log('체크합니다..', changes.CMID, Number(changes.auth))
+    const resCheck = await Api.sms_check({
+      data: {
+        CMID: changes.CMID,
+        code: Number(changes.auth)
+      }
+    })
+    if (resCheck.result === 'success') {
+      console.log(resCheck)
+      setValidate({...validate, auth: true})
+    } else {
+      console.log(resCheck)
     }
   }
 
@@ -502,6 +541,18 @@ const JoinForm = props => {
     //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
 
+  //timer 만들기
+  const createAuthTimer = () => {
+    // let setTime = 300
+    // let timer = `${Math.floor(setTime / 60)}:${setTime % 60)}`
+    // document.getElementsByClassName('timer').innerHTML = timer
+    // setTime = setTime--;
+    // if (setTime < 0) {
+    //   clearInterval(tid);
+    //   alert("종료");
+    // }
+  }
+
   return (
     <>
       <FormWrap>
@@ -510,11 +561,24 @@ const JoinForm = props => {
           <>
             <PhoneAuth>
               <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
-              <button disabled={!validate.loginID}>인증요청</button>
+              <button
+                disabled={!validate.loginID}
+                onClick={() => {
+                  fetchAuth()
+                }}>
+                인증요청
+              </button>
             </PhoneAuth>
             <PhoneAuth>
-              <input type="number" placeholder="인증번호" className="auth" />
-              <button disabled={true}>인증확인</button>
+              <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
+              <span className="timer"></span>
+              <button
+                disabled={currentAuthBtn}
+                onClick={() => {
+                  fetchAuthCheck()
+                }}>
+                인증확인
+              </button>
             </PhoneAuth>
           </>
         )}
