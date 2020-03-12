@@ -114,7 +114,9 @@ export default () => {
             context.action.updateNativePlayer(cookie)
           }
           if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
-            alert(cookie)
+            cookie = JSON.parse(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
