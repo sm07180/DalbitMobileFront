@@ -348,7 +348,7 @@ const Selecter = styled.div`
     width: 230px;
     height: 230px;
     div {
-      top: -164px;
+      top: -165px;
       height: 230px;
     }
     button {
