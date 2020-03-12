@@ -2,12 +2,11 @@
  * @title 404페이지
  */
 import React, {useEffect} from 'react'
-import './style.css'
+//import './style.css'
 import styled from 'styled-components'
 //pages
 
 // import Guide from ' pages/common/layout/guide.js'
-
 export default () => {
   return (
     <>
