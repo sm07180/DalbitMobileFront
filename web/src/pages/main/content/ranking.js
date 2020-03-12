@@ -243,6 +243,10 @@ const Content = styled.div`
       }
     }
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    border-top: none;
+  }
 `
 
 const RankingWrap = styled.div`
@@ -327,10 +331,13 @@ const MobileWrap = styled.div`
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
+    height: 282px;
     .swiper-slide {
-      width: 65%;
-      height: ;
+      /* width: 65%; */
     }
+  }
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    height: 242px;
   }
 `
 
@@ -378,6 +385,13 @@ const RankingItem = styled.div`
       font-size:18px;
     }
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    h2{
+      margin-top:20px;
+      font-size:16px;
+    }
+  }
 `
 
 const ImgBox = styled.div`
@@ -407,10 +421,10 @@ const ImgBox = styled.div`
     height: 260px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    /* height: 260px; */
+    height: 200px;
   }
   @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 180px;
+    height: 140px;
   }
 `
 
@@ -458,7 +472,7 @@ const State = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
+    margin-top: 15px;
     span {
       font-size: 14px;
       background-size: 24px !important;
@@ -471,6 +485,18 @@ const State = styled.div`
     }
     span:last-child {
       padding-left: 26px;
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    span {
+      display: block;
+      width: 70px;
+      margin: 0 auto;
+      line-height: 26px;
+    }
+    span:first-child:after {
+      display: none;
     }
   }
 `
