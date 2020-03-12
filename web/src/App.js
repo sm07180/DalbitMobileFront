@@ -79,28 +79,21 @@ export default () => {
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
   })
-  // //Native->REACT
-  // const nativeInfo = useMemo(() => {
-  //   if (customHeader.isFirst === undefined) return {}
-  //   //최초앱구동실행
-  //   if (customHeader.isFirst === 'Y') {
-  //     Utility.setCookie('native-player-info', '', -1)
-  //   } else if (customHeader.isFirst === 'N') {
-  //     alert('customHeader.isFirst : ')
-  //     //  && Utility.getCookie('native-player-info') !== undefined
-  //     context.action.updateMediaPlayerStatus(true)
-  //     // return JSON.parse(Utility.getCookie('native-player-info'))
-  //   }
-  //   return customHeader.isFirst
-  // })
   //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
     const res = await Api.getToken({...obj})
     if (res.result === 'success') {
       console.table(res.data)
-      // result 성공/실패 여부상관없이,토큰없데이트
+      //#1 result 성공/실패 여부상관없이,토큰없데이트
       context.action.updateToken(res.data)
+      //#2 로그인토큰일경우 프로필업데이트
+      if (res.data.isLogin) {
+        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        if (profileInfo.result === 'success') {
+          context.action.updateProfile(profileInfo.data)
+        }
+      }
       //###--하이브리드일때
       if (isHybrid === 'Y') {
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
@@ -125,13 +118,6 @@ export default () => {
       }
       //모든처리완료
       setReady(true)
-      //------------------------로그인토큰일경우 프로필업데이트
-      if (res.data.isLogin) {
-        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-        if (profileInfo.result === 'success') {
-          context.action.updateProfile(profileInfo.data)
-        }
-      }
     } else {
       console.log('토큰에러')
     }

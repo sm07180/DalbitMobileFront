@@ -24,6 +24,8 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
+        const _detail = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _detail, 100)
         context.action.updateMediaPlayerStatus(true)
         // context.action.updateRoomInfo(event.detail)
         break
