@@ -220,16 +220,18 @@ const SwiperWrap = styled.div``
 
 const Selecter = styled.div`
   position: relative;
-  width: 440px;
-  height: 440px;
+  width: 438px;
+  height: 438px;
   margin: 0 auto;
+  z-index: 2;
   div {
     position: absolute;
-    top: -316px;
+    top: -315px;
     width: 100%;
     height: 440px;
     border-radius: 50%;
-    background-image: linear-gradient(to bottom, #feac2c 25%, rgba(254, 172, 44, 0) 91%, rgba(254, 172, 44, 0));
+    /* background-image: linear-gradient(to bottom, #feac2c 25%, rgba(254, 172, 44, 0) 91%, rgba(254, 172, 44, 0)); */
+    background: url(${IMG_SERVER}/images/api/main-slider-back.png) no-repeat center center/cover;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
