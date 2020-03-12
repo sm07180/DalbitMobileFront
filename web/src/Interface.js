@@ -26,12 +26,13 @@ export default props => {
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        //  context.action.updateNativePlayer(event.detail)
-        Utility.setCookie('native-player-info', 'native-start', 100)
+        context.action.updateNativePlayer(event.detail)
+        //   Utility.setCookie('native-player-info', 'native-start', 100)
         context.action.updateMediaPlayerStatus(true)
         break
       case 'native-end': //-----------------------------Native end
         context.action.updateMediaPlayerStatus(false)
+        Utility.setCookie('native-player-info', '', -1)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)

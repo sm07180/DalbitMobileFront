@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li,
+a {
+  list-style: none;
+  text-decoration: none;
+}
+section {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 360px;
+}
+/*로고이미지*/
+.logoImg {
+  width: 243px;
+  height: 63px;
+  background: url('https://devimage.dalbitcast.com/images/api/dalbitlogo.png') no-repeat center center / cover;
+  font-size: 0;
+}
+.errorTitle {
+  margin: 60px 0 44px 0;
+  color: #8556f6;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.7px;
+}
+.details {
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  line-height: 1.75;
+  text-align: center;
+  color: #757575;
+}
+.btn {
+  margin: 44px 0 44px 0;
+}
+.btn > a {
+  display: block;
+  padding: 16px 58px;
+  border-radius: 10px;
+  border: 1px solid #8556f6;
+  color: #8556f6;
+  font-size: 16px;
+  letter-spacing: -0.4px;
+}
+.bottomImg {
+  width: 100%;
+  height: 274.3px;
+  background: url('https://devimage.dalbitcast.com/images/api/img_noresult.png') no-repeat center center / cover;
+  font-size: 0;
+}

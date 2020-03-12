@@ -15,6 +15,7 @@ const {Provider} = BroadCastStore
 //
 const BroadCastProvider = props => {
   //state
+  const [reportIndex, setReportIndex] = useState()
   const [reportData, setReportData] = useState([])
   const [auth, setAuth] = useState()
   const [roomNumber, setRoomNumber] = useState('')
@@ -43,10 +44,10 @@ const BroadCastProvider = props => {
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
     // {id: 6, tab: '프로필'},
-    // {id: 7, tab: '신고하기'},
+    {id: 7, tab: '신고하기'}
     // {id: 8, tab: '공지사항'},
     // {id: 9, tab: '사연'},
-    {id: 10, tab: '방송수정'}
+    // {id: 10, tab: '방송수정'}
     // {id: 11, tab: '빠른 말'},
     // {id: 12, tab: '받은 선물'}
   ]
@@ -160,6 +161,9 @@ const BroadCastProvider = props => {
     updateReportData: list => {
       setReportData(list)
     },
+    updatereportIndex: num => {
+      setReportIndex(num)
+    },
     updateBroadcastProfileInfo: obj => {
       setBroadcastProfileInfo(broadcastProfileInfo => ({...broadcastProfileInfo, ...obj}))
     }
@@ -186,6 +190,7 @@ const BroadCastProvider = props => {
     sumlike,
     mikeState,
     reportData,
+    reportIndex,
     broadcastProfileInfo
   }
 

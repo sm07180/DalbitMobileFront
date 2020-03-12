@@ -29,6 +29,7 @@ export default props => {
     bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
     title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨'
   })
+  //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     if (!isHybrid()) return
@@ -36,14 +37,15 @@ export default props => {
      * @안드로이드
      */
 
-    // if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-    //   if (context.customHeader.os + '' === '1') {
-    //     // const _val = JSON.stringify(context.nativePlayer)
-    //     // setInfo(context.nativePlayer)
-    //     // Utility.setCookie('native-player-info', _val, 100)
-    //     alert('native-player-info 쿠키실행')
-    //   }
-    // }
+    if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
+      if (context.customHeader.os + '' === '1') {
+        const _val = JSON.stringify(context.nativePlayer)
+        setInfo(context.nativePlayer)
+        //alert(JSON.s)
+        Utility.setCookie('native-player-info', _val, 100)
+        //  alert('native-player-info 쿠키실행')
+      }
+    }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
   return (

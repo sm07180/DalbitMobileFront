@@ -34,9 +34,9 @@ export default props => {
             <button onClick={() => props.joinRoom(data)} />
           </div>
         )}
-        <Image img={data.bgImg.url} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
+        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
           {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
-          <img src={'https://devimage.dalbitcast.com/images/api/mini_profile.png'} width={60} height={60} />
+          {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
         <Info>
           <div className="title">
