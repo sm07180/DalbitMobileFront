@@ -22,9 +22,8 @@ export default props => {
     const _info = Utility.getCookie('native-player-info')
     if (_info === '' || _info === undefined) {
       return '쿠키정보없음'
-    } else {
-      return JSON.parse(_info)
     }
+    return JSON.parse(_info)
   })
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
