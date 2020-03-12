@@ -35,7 +35,7 @@ export default () => {
           roomNo: event.detail.roomNo,
           //   bjProfImg: event.detail.bjProfImg.thumb150x150,
           title: event.detail.title,
-          bjNickNm: event.detail.bjNickNm
+          bjNickNm: event.detail.roomNo
         }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
