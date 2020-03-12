@@ -26,10 +26,10 @@ export default () => {
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
         let _ios = {
-          roomNo: event.detail.roomNo + '',
-          bjProfImg: event.detail.bjProfImg.thumb150x150 + '',
-          title: event.detail.title + '',
-          bjNickNm: event.detail.bjNickNm + ''
+          roomNo: encodeURIComponent(event.detail.roomNo),
+          bjProfImg: encodeURIComponent(event.detail.bjProfImg.thumb150x150),
+          title: encodeURIComponent(event.detail.title),
+          bjNickNm: encodeURIComponent(event.detail.bjNickNm)
         }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
