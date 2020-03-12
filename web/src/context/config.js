@@ -4,6 +4,7 @@
  * @todo 개발모드/프로덕션모드 분기할수있게.
  */
 
+export const VERSION = '1.0'
 /**
  * @brief 서버분기
  */
