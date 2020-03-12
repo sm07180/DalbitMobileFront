@@ -72,6 +72,7 @@ export default props => {
 const Footer = styled.footer`
   display: block;
   padding-bottom: 116px;
+  background: #fff;
   text-align: center;
 
   &.on-cast {
