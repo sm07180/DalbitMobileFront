@@ -32,6 +32,7 @@ export default props => {
         break
       case 'native-end': //-----------------------------Native end
         context.action.updateMediaPlayerStatus(false)
+        Utility.setCookie('native-player-info', '', -1)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
