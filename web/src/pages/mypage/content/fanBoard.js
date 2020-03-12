@@ -127,4 +127,6 @@ const WriteArea = styled.div`
   border: 1px solid #d0d0d0;
 `
 
-const FanBoard = styled.div``
+const FanBoard = styled.div`
+  margin-top: 48px;
+`
