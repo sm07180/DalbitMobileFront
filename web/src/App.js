@@ -116,17 +116,10 @@ export default () => {
           }
           //-----@ios Session
           if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
-            if (context !== null && context !== undefined) {
-              console.log(cookie)
-              alert(cookie)
-              cookie = JSON.parse(JSON.stringify(cookie))
-              context.action.updateNativePlayer(cookie)
-              context.action.updateMediaPlayerStatus(true)
-            } else {
-              alert('중대한오류')
-            }
-
-            //context.action.updateNativePlayer(cookie)
+            cookie = JSON.parse(JSON.stringify(cookie))
+            alert(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
