@@ -1,10 +1,12 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useMemo} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 import Ranking from './ranking'
+import {BroadCastStore} from '../../store'
+
 export default props => {
   //console.log(props)
 
@@ -12,6 +14,7 @@ export default props => {
 
   //----------------------------------------------context
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)
   //------------------------------------------------
@@ -36,56 +39,68 @@ export default props => {
     console.log(res)
   }
   useEffect(() => {
-    fetchData()
+    console.log(store.broadcastProfileInfo)
+    //fetchData()
   }, [])
+  const makeContents = () => {
+    let objProfileInfo = null
+    objProfileInfo = store.broadcastProfileInfo
+    if (store.broadcastProfileInfo === null) return
 
+    //console.log(store.broadcastProfileInfo)
+    return (
+      <React.Fragment>
+        <button className="reportBtn"></button>
+        <div className="imgWrap">
+          <PIMG bg={objProfileInfo.profImg.url} />
+        </div>
+        <div className="gazeWrap">
+          <div className="gazeBar">
+            <GazeBar gaze={percent}>
+              <p>{objProfileInfo.exp}</p>
+            </GazeBar>
+          </div>
+        </div>
+        <h5 className="levelWrap">
+          {objProfileInfo.grade} / Lv.{objProfileInfo.level}
+        </h5>
+        <h5 className="nickWrap">{objProfileInfo.nickNm}</h5>
+        <h5 className="IdWrap">{roomInfo.bjStreamId}</h5>
+        <div className="fanWrap">
+          <div>
+            <div className="fanstarbox">
+              <span>팬</span>
+              <em>{validate1000(objProfileInfo.fanCnt)}</em>
+            </div>
+            <div className="fanstarbox">
+              <span>스타</span>
+              <em>{objProfileInfo.starCnt}</em>
+            </div>
+          </div>
+          <Ranking {...roomInfo} />
+        </div>
+        <div className="functionWrap">
+          <div className="managerBtn">
+            <button></button>
+            <p>매니저 해제</p>
+          </div>
+          <div className="KickBtn">
+            <button></button>
+            <p>강퇴하기</p>
+          </div>
+        </div>
+        <div className="submitWrap">
+          <button>+ 팬등록</button>
+          <button>선물하기</button>
+        </div>
+      </React.Fragment>
+    )
+  }
   //----------------------------------------
   return (
     <Container>
       <Navi title={'프로필'} />
-      <button className="reportBtn"></button>
-      <div className="imgWrap">
-        <PIMG bg={roomInfo.bjProfImg.url} />
-      </div>
-      <div className="gazeWrap">
-        <div className="gazeBar">
-          <GazeBar gaze={percent}>
-            <p>{PInfo.exp}</p>
-          </GazeBar>
-        </div>
-      </div>
-      <h5 className="levelWrap">
-        {PInfo.grade} / Lv.{PInfo.level}
-      </h5>
-      <h5 className="nickWrap">{roomInfo.bjNickNm}</h5>
-      <h5 className="IdWrap">{roomInfo.bjStreamId}</h5>
-      <div className="fanWrap">
-        <div>
-          <div className="fanstarbox">
-            <span>팬</span>
-            <em>{validate1000()}</em>
-          </div>
-          <div className="fanstarbox">
-            <span>스타</span>
-            <em>{PInfo.starCnt}</em>
-          </div>
-        </div>
-        <Ranking {...roomInfo} />
-      </div>
-      <div className="functionWrap">
-        <div className="managerBtn">
-          <button></button>
-          <p>매니저 해제</p>
-        </div>
-        <div className="KickBtn">
-          <button></button>
-          <p>강퇴하기</p>
-        </div>
-      </div>
-      <div className="submitWrap">
-        <button>+ 팬등록</button>
-        <button>선물하기</button>
-      </div>
+      {makeContents()}
     </Container>
   )
 }

@@ -36,10 +36,16 @@ export default props => {
               if (_info === '' || _info === undefined) {
                 alert('쿠키없음')
               } else {
-                alert(JSON.stringify(_info, null, 1))
+                alert(JSON.stringify(JSON.parse(_info), null, 1))
               }
             }}>
             native-player-info
+          </button>
+          <button
+            onClick={() => {
+              Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
+            }}>
+            강제쿠키
           </button>
         </section>
         <h1>native-player-info</h1>

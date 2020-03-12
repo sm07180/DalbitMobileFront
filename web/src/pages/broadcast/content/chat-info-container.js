@@ -157,7 +157,6 @@ export default props => {
           {/* 누적 청취자 수 */}
           <li>{context.broadcastTotalInfo.historyCount != '' ? context.broadcastTotalInfo.historyCount : 0}</li>
           {/* 현재 방송 좋아요 수 */}
-
           <li>{context.broadcastTotalInfo.likes !== null ? context.broadcastTotalInfo.likes : room.likes}</li>
           {/* <li>{likeCheck()}</li> */}
           {/* 방송 남은 시간 */}
@@ -180,7 +179,7 @@ export default props => {
           랭킹 (부스터 사용 표시)
           boost-off 상태 -> dj일 경우, 청취자가 좋아요를 했을경우
           boost-on 상태 -> 부스터 쓸 경우. */}
-          <li className={`rank ${boost}`}>TOP {room.rank}</li>
+          <li className={`rank ${boost}`}>TOP {context.broadcastTotalInfo.rank != '' ? context.broadcastTotalInfo.rank : room.rank}</li>
           {/* 방에 붙여진 딱지 추천, 인기, 신입 */}
           {props.isRecomm && <li className="recommend">추천</li>}
           {props.isPop && <li className="popular">인기</li>}

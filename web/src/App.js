@@ -115,7 +115,14 @@ export default () => {
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
         }
+        //---TEST
+        if (customHeader.isFirst === 'Y') {
+          Utility.setCookie('native-player-info', '', -1)
+        }
       }
+      //-----##TEST
+      console.log('### version 1.5')
+
       //모든처리완료
       setReady(true)
     } else {
@@ -132,18 +139,6 @@ export default () => {
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     fetchData({data: _customHeader})
-    //-----##TEST
-    console.log('### version 2')
-    if (isHybrid === 'Y') {
-      alert('isHybrid : ' + isHybrid + ' , isFirst : ' + customHeader.isFirst)
-      //최초앱구동실행
-      if (customHeader.isFirst === 'Y') {
-        Utility.setCookie('native-player-info', '', -1)
-      } else if (customHeader.isFirst === 'N') {
-        const _cookie = Utility.getCookie('native-player-info')
-        alert(_cookie)
-      }
-    }
   }, [])
   //---------------------------------------------------------------------
   /**

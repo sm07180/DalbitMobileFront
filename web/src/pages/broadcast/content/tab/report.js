@@ -1,56 +1,75 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
+import {BroadCastStore} from 'pages/broadcast/store'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 export default props => {
   //console.log(props.selectidx)
   //context------------------------------------------
+  const store = useContext(BroadCastStore)
   const context = useContext(Context)
+  console.log(store.reportData)
   //0.신고하기 Data state --------------------------------------
   //1.selected 초기state ---------------------------------------
   //2.버튼 active 비지빌리티--------------------------------------
   const [ReportInfo, setReportInfo] = useState(props.Info)
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
+  const btnIndex = useRef('')
   //3.버튼info 배열 --------------------------------------
   //api
   const fetchData = async () => {
     // const {roomNo} = props.location.state
     const res = await Api.member_declar({
       data: {
-        memNo: '11577931027280',
-        reason: 1
+        memNo: store.reportData.memNo,
+        reason: store.reportIndex
       }
     })
     if (res.result === 'success') {
+      console.log(res)
+      context.action.alert({
+        msg: store.reportData.nickNm + '님을 신고 하였습니다.'
+      })
+    } else {
+      context.action.alert({
+        msg: '이미 신고한 회원 입니다.'
+      })
     }
-    console.log(res)
+
     return
   }
   const BTNInfo = [
     {
-      title: '프로필 사진'
+      title: '프로필 사진',
+      id: 0
     },
     {
-      title: '음란성'
+      title: '음란성',
+      id: 1
     },
     {
-      title: '광고 및 상업성'
+      title: '광고 및 상업성',
+      id: 2
     },
     {
-      title: '욕설 및 비방성'
+      title: '욕설 및 비방성',
+      id: 3
     },
     {
-      title: '기타'
+      title: '기타',
+      id: 99
     }
   ]
   //셀렉트function-----------------------------------
   const handleSelectChange = event => {
     const value = event.target.value
+    const indexs = event.target.id
     setSelect(value)
+    store.action.updatereportIndex(indexs)
   }
   //신고하기버튼 벨리데이션 function-----------------------
   const SubmitBTNChange = () => {
@@ -64,19 +83,20 @@ export default props => {
   })
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {
-    const {title} = live
+    const {title, id} = live
     return (
-      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === title ? 'on' : ''} key={index}>
+      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === title ? 'on' : ''} key={index} id={id}>
         {title}
       </BTN>
     )
   })
+
   //------------------------------------------------------------
   return (
     <Container>
       <Navi title={'신고'} />
       <h2>
-        <span>{ReportInfo.nickNm}</span>님을 신고하시겠습니까?
+        <span>{store.reportData.nickNm}</span>님을 신고하시겠습니까?
       </h2>
       <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
 

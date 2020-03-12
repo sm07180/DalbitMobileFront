@@ -9,28 +9,33 @@ import {WIDTH_PC} from 'context/config'
 import {WIDTH_PC_S} from 'context/config'
 
 export default props => {
-  const [BroadContentInfo, setBroadContentInfo] = useState(props.BroadInfo)
+  const [BroadContentInfo, setBroadContentInfo] = useState(props.info)
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
   const arrayBroad = BroadContentInfo.map((item, index) => {
     // console.log(item)
-    const {id, title, url, people, like, category, popu, avata, name} = item
+    const {roomNo, bjProfImg, roomType, title, bjNickNm, entryCnt, likeCnt} = item
 
     return (
       //////
-      <BroadWrap key={id} {...item}>
-        <ImgWrap bg={url}></ImgWrap>
-        <Avata bg={avata}></Avata>
+      <BroadWrap
+        key={index}
+        {...item}
+        onClick={() => {
+          props.joinRoom({roomNo: roomNo})
+        }}>
+        <ImgWrap bg={bjProfImg.url}></ImgWrap>
+        {/* <Avata bg={avata}></Avata> */}
         <InfoWrap>
-          <Category>{category}</Category>
+          <Category>{roomType}</Category>
           <Title>{title}</Title>
-          <BjName>{name}</BjName>
+          <BjName>{bjNickNm}</BjName>
         </InfoWrap>
         <People>
           <Viewer></Viewer>
-          <span>{people}</span>
+          <span>{entryCnt}</span>
           <Lover></Lover>
-          <span>{like}</span>
+          <span>{likeCnt}</span>
         </People>
       </BroadWrap>
     )
@@ -64,6 +69,7 @@ const BroadWrap = styled.div`
   width: calc(100% * (1 / 8) - 2.27%);
   min-height: 360px;
   margin: 0 0 0 2.27%;
+  cursor: pointer;
   @media (max-width: ${WIDTH_PC_S}) {
     width: calc(100% * (1 / 6) - 2.27%);
   }
