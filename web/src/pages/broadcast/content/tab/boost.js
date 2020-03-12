@@ -57,17 +57,20 @@ export default props => {
         itemCnt: 1
       }
     })
-    console.log('## res - useBoost :', res)
-    store.action.initBoost(store.roomInfo.roomNo) // 부스트 사용 후 다시 조회
-    store.action.updateLike(4)
-    context.action.alert({
-      // 부스트 사용완료 팝업
-      callback: () => {
-        console.log('callback처리')
-      },
-      title: '달빛라디오',
-      msg: '부스터가 사용되었습니다.'
-    })
+    if (res.result === 'success') {
+      const stop = clearInterval(myTimer)
+      setMyTimer(stop)
+      store.action.initBoost(store.roomInfo.roomNo) // 부스트 사용 후 다시 조회
+      store.action.updateLike(4)
+      context.action.alert({
+        // 부스트 사용완료 팝업
+        callback: () => {
+          console.log('callback처리')
+        },
+        title: '달빛라디오',
+        msg: '부스터가 사용되었습니다.'
+      })
+    }
   }
   console.log('## props :', props)
   //----------------------------------------------------- components start
