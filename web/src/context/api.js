@@ -192,8 +192,9 @@ export default class API {
    * @todo
    * @param string roomNo                 //*방송방번호
    * @create 김호겸 2020.01.31
+   * @modify 황상한 2020.03.12
    */
-  static broad_notice = async obj => {
+  static broad_notice_delete = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/notice`, method: method || 'DELETE', data: data})
   }

@@ -46,8 +46,8 @@ const BroadCastProvider = props => {
     // {id: 4, tab: '선물'}
     // {id: 5, tab: '부스트'}
     // {id: 6, tab: '프로필'},
-    {id: 7, tab: '신고하기'}
-    // {id: 8, tab: '공지사항'},
+    // {id: 7, tab: '신고하기'}
+    {id: 8, tab: '공지사항'}
     // {id: 9, tab: '사연'},
     // {id: 10, tab: '방송수정'}
     // {id: 11, tab: '빠른 말'},

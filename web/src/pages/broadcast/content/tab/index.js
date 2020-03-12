@@ -84,7 +84,7 @@ export default props => {
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile2 Info={Profiledata} {...props} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
-      {currentItem.tab === '공지사항' && <Notice />}
+      {currentItem.tab === '공지사항' && <Notice {...props} />}
       {currentItem.tab === '사연' && <Story prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '방송수정' && <BroadModify {...props} />}
       {currentItem.tab === '빠른 말' && <Macro prev={state.prev} _changeItem={usePrev} />}
