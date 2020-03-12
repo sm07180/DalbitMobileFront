@@ -15,8 +15,25 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from
 export default props => {
   //---------------------------------------------------------------------
   //state
-  const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
+  //const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
+  const [slideInfo, setSlideInfo] = useState(props.Info)
+  const [currentInfo, setCurrentInfo] = useState({
+    entryCnt: '',
+    likeCnt: '',
+    title: '',
+    bjNickNm: ''
+  })
   let mainSlider = {}
+
+  //임시데이터
+  // const slideInfo = [
+  //   {
+  //     roomNo:
+  //   },
+  //   {
+
+  //   }
+  // ]
 
   const params = {
     loop: true,
@@ -25,12 +42,18 @@ export default props => {
     centeredSlides: true,
     slidesPerView: 'auto',
     on: {
-      slideChange: function() {
-        console.log('슬라이드 바뀌었을때')
-        console.log(mainSlider)
-        console.log(mainSlider.params.init)
+      slideChangeTransitionEnd: function() {
+        const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes[1].value
+        //console.log('슬라이드 바뀌었을때', slideInfo[currentIdx])
+        setCurrentInfo({
+          entryCnt: slideInfo[currentIdx].people,
+          likeCnt: slideInfo[currentIdx].like,
+          title: slideInfo[currentIdx].title,
+          bjNickNm: slideInfo[currentIdx].name
+        })
       }
-    }
+    },
+    slideActiveClass: 'main-slide-active'
   }
 
   //슬라이더 안에 슬라이드 생성
@@ -48,7 +71,7 @@ export default props => {
 
   return (
     <Content>
-      <MainSliderWrap>
+      <MainSliderWrap className="main-slider">
         <Bg></Bg>
         <SliderItem>
           {/* 실제 프로필 아이템 슬라이드 영역 */}
@@ -61,15 +84,15 @@ export default props => {
           </Swiper>
           {/* 현재 on 된 프로필 아이템 듣는사람, 좋아요 숫자 상태 */}
           <ActiveState>
-            <ProfileState type="hit">420</ProfileState>
-            <ProfileState type="like">756</ProfileState>
+            <ProfileState type="hit">{currentInfo.entryCnt}</ProfileState>
+            <ProfileState type="like">{currentInfo.likeCnt}</ProfileState>
           </ActiveState>
           {/* 현재 on 된 프로필 아이템 재생 버튼, 타이틀 등  */}
           <ActiveItem>
             <button>방송 바로가기</button>
             <span>신입 DJ</span>
-            <b>오후 잠을 깨워줄 상큼한 목소리 들어요?</b>
-            <p>★하늘하늘이에요 </p>
+            <b>{currentInfo.title}</b>
+            <p>{currentInfo.bjNickNm} </p>
           </ActiveItem>
           {/* 레코드 모양 선택 애니메이션 레이아웃 */}
           <Selecter>
@@ -133,14 +156,14 @@ const SliderItem = styled.div`
     overflow: visible;
     width: 190px;
   }
-  .swiper-slide.swiper-slide-active {
+  .swiper-slide.main-slide-active {
     position: relative;
     z-index: 1;
     p {
       display: none;
     }
   }
-  .swiper-slide.swiper-slide-active:before {
+  .swiper-slide.main-slide-active:before {
     /* display: block;
     position: absolute;
     top: -125px;
