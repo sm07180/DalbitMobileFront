@@ -7,6 +7,7 @@
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
+import qs from 'qs'
 //context
 import {Context} from 'context'
 //util
@@ -26,13 +27,13 @@ export default () => {
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
         let _ios = {
-          roomNo: encodeURIComponent(event.detail.roomNo),
-          bjProfImg: encodeURIComponent(event.detail.bjProfImg.thumb150x150),
-          title: encodeURIComponent(event.detail.title),
-          bjNickNm: encodeURIComponent(event.detail.bjNickNm)
+          roomNo: event.detail.roomNo,
+          bjProfImg: event.detail.bjProfImg.thumb150x150,
+          title: event.detail.title,
+          bjNickNm: event.detail.bjNickNm
         }
-        alert(event.detail.title)
-        _ios = JSON.stringify(_ios)
+        //  _ios = JSON.stringify(_ios)
+        _ios = qs.stringify(_ios)
         alert(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
