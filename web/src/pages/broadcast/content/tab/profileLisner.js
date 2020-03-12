@@ -48,7 +48,7 @@ export default props => {
         method: methodType
       })
     } else {
-      res = await Api.broad_fan_insert({
+      res = await Api.broad_fan_delete({
         data: {
           memNo: objProfileInfo.memNo
         },
