@@ -7,7 +7,6 @@ import styled from 'styled-components'
 //pages
 
 // import Guide from ' pages/common/layout/guide.js'
-
 export default () => {
   return (
     <>
@@ -21,7 +20,7 @@ export default () => {
             <br /> 잠시 후 다시 시도해 주시기 바랍니다.
           </li>
           <li class="btn">
-            <a href="#"></a>
+            <a onClick={() => window.location('/')}>확인</a>
           </li>
           <li class="bottomImg">하단이미지</li>
         </ul>

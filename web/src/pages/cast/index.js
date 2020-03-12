@@ -16,6 +16,10 @@ import Utility from 'components/lib/utility'
 
 export default props => {
   const context = useContext(Context)
+
+  //---------------------------------------------------------------------
+  //---------------------------------------------------------------------
+
   return (
     <Layout {...props}>
       <Content>
@@ -49,7 +53,7 @@ export default props => {
           </button>
         </section>
         <h1>native-player-info</h1>
-        <section>{JSON.stringify(Utility.getCookie('native-player-info', null, 1))}</section>
+        <section>{JSON.stringify(JSON.parse(Utility.getCookie('native-player-info')), null, 1)}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>
