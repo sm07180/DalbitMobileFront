@@ -49,7 +49,7 @@ const Child = () => {
           <span>주소</span>서울특별시 강남구 테헤란로83길 18(삼성동) 8층
         </li>
         <li>
-          <span>연락처</span>연락처
+          <span>연락처</span> 02-0000-0000
         </li>
         <li>
           <span>제휴/이벤트</span>inforex @inforex.com
@@ -87,7 +87,7 @@ const CopyRight = styled.p`
   font-style: normal;
   line-height: 1.14;
   letter-spacing: -0.35px;
-  color: grey;
+  color: #bdbdbd;
 `
 
 //---------------------------------------------------------------------
@@ -100,7 +100,7 @@ const Info = styled.ul`
     display: inline-block;
     font-size: 14px;
     line-height: 28px;
-    color: #757575;
+    color: #bdbdbd;
     span {
       padding-right: 10px;
       color: #bdbdbd;

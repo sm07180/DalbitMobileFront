@@ -10,6 +10,9 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 
+//image
+import camera from 'images/camera.svg'
+
 export default props => {
   const context = useContext(Context)
   const {profile} = context
@@ -84,12 +87,27 @@ export default props => {
           <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb88x88'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+            <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
           </ProfileImg>
           <div className="nickname">
             <NicknameInput autoComplete="off" value={nickname} onChange={changeNickname} />
           </div>
           <UserId>{`@${profile.memId}`}</UserId>
-          {/* <PasswordInput autoComplete="new-password" /> */}
+          <PasswordWrap>
+            <PasswordTextWrap>
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+              <PasswordCircle />
+            </PasswordTextWrap>
+            <PasswordRedirectBtn>
+              <Link to="">비밀번호 변경</Link>
+            </PasswordRedirectBtn>
+          </PasswordWrap>
           <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
           <GenderWrap>
             <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
@@ -171,13 +189,41 @@ const BirthDate = styled.div`
   color: #616161;
 `
 
-const PasswordInput = styled.input.attrs({type: 'password'})`
-  display: block;
-  border: 1px solid #e5e5e5;
-  padding: 16px;
+const PasswordRedirectBtn = styled.button`
+  width: 138px;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+  background-color: #9e9e9e;
+`
+
+const PasswordCircle = styled.div`
+  width: 10px;
+  height: 10px;
+  background-color: #9e9e9e;
+  border-radius: 50%;
+  margin: 0 2px;
+`
+
+const PasswordTextWrap = styled.div`
+  display: flex;
+  align-items: center;
+  width: calc(100% - 138px);
+  border: 1px solid #e0e0e0;
+  border-right: none;
+  background-color: #eee;
+  box-sizing: border-box;
+  padding-left: 18px;
+  cursor: not-allowed;
+`
+
+const PasswordWrap = styled.div`
+  display: flex;
+  flex-direction: row;
   width: 100%;
   margin-top: 20px;
 `
+
 const UserId = styled.div`
   margin-top: 20px;
   padding: 16px;
@@ -194,6 +240,7 @@ const NicknameInput = styled.input.attrs({type: 'text'})`
 `
 
 const ProfileImg = styled.div`
+  position: relative;
   margin: 0 auto;
   margin-bottom: 32px;
   border: 1px solid #8556f5;

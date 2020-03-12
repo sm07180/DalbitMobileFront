@@ -1,12 +1,9 @@
 /**
- * @title 404페이지
+ * @title error페이지
  */
-import React, {useEffect} from 'react'
-//import './style.css'
-import styled from 'styled-components'
-//pages
+import React from 'react'
+import 'styles/errorstyle.scss'
 
-// import Guide from ' pages/common/layout/guide.js'
 export default () => {
   return (
     <>
@@ -20,7 +17,7 @@ export default () => {
             <br /> 잠시 후 다시 시도해 주시기 바랍니다.
           </li>
           <li class="btn">
-            <a onClick={() => window.location('/')}>확인</a>
+            <a href="/">확인</a>
           </li>
           <li class="bottomImg">하단이미지</li>
         </ul>

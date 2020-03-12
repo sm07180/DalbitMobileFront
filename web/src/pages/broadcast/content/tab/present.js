@@ -41,6 +41,7 @@ export default props => {
 
   // 선물하기
   async function send(count, itemNo, flag) {
+    console.log('## flag :', flag)
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo,
@@ -75,9 +76,9 @@ export default props => {
     commonData()
   }, [])
 
+  console.log('## context:', context)
+  console.log('## store:', store)
   //-------------------------------------------------------- components start
-  console.log('## store : ', store)
-  console.log('## context : ', context)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />

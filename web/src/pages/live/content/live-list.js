@@ -11,6 +11,7 @@ export default props => {
   const context = useContext(Context)
   const scrollbars = useRef(null)
   const [roomType, setRoomType] = useState(context.common.roomType)
+  const [test, setTest] = useState('텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트')
 
   //------------------------------------------------------------ func start
   const handleHover = (flag, index) => {
@@ -48,7 +49,7 @@ export default props => {
                   </div>
                 )}
                 <div className="profileImg">
-                  <BgImg url={data.bjProfImg.thumb88x88}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.bjProfImg.url}></Img>}</BgImg>
+                  <BgImg url={data.bjProfImg.thumb120x120}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}</BgImg>
                 </div>
               </div>
             </div>
@@ -61,7 +62,7 @@ export default props => {
                   {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
                 </div>
                 <div className="roomTitle">{data.title}</div>
-                <div className="intro">{data.bjNickNm}</div>
+                <div className="nickName">{data.bjNickNm}</div>
               </div>
               <CountArea>
                 <div>
@@ -132,7 +133,7 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  width: 88%;
+  width: 100%;
   /* height: 100%; */
   flex-direction: column;
 
@@ -149,6 +150,10 @@ const List = styled.div`
   border-bottom-style: solid;
   border-color: #e0e0e0;
   border-width: 1px;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 140px;
+  }
 
   :hover {
     background-color: #f8f8f8;
@@ -170,6 +175,9 @@ const List = styled.div`
       align-items: center;
       z-index: 99;
       border-radius: 10px;
+      border-width: 3px;
+      border-style: solid;
+      border-color: #8556f6;
       @media (max-width: ${WIDTH_MOBILE}) {
         display: none;
       }
@@ -202,7 +210,7 @@ const List = styled.div`
     .profileImg {
       display: flex;
       width: 96px;
-      height: 100%;
+      height: 96px;
       align-items: center;
       position: relative;
       z-index: 1;
@@ -217,8 +225,8 @@ const List = styled.div`
     justify-content: space-between;
     padding: 22px 18px 22px 18px;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 11px 0px 0px 0px;
-      height: 70%;
+      padding: 15px 0px 0px 0px;
+      height: 68%;
       justify-content: space-between;
     }
 
@@ -232,7 +240,8 @@ const List = styled.div`
       letter-spacing: -0.35px;
       color: #bdbdbd;
       @media (max-width: ${WIDTH_MOBILE}) {
-        height: 20px;
+        height: 30px;
+        margin-bottom: 5px;
       }
     }
 
@@ -247,10 +256,11 @@ const List = styled.div`
       align-items: center;
       @media (max-width: ${WIDTH_MOBILE}) {
         height: 30px;
+        line-height: 0;
       }
     }
 
-    .intro {
+    .nickName {
       display: flex;
       width: 100%;
       height: 20px;
@@ -261,7 +271,8 @@ const List = styled.div`
       color: #8556f6;
       align-items: center;
       @media (max-width: ${WIDTH_MOBILE}) {
-        height: 30px;
+        height: 40px;
+        margin-top: 3px;
       }
     }
   }
@@ -283,10 +294,10 @@ const CountArea = styled.div`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 80%;
-    height: 20px;
-    padding-bottom: 0px;
+    height: 28px;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
+    padding: 0px 0px 0px 0px;
   }
 
   & > div {
@@ -319,6 +330,17 @@ const MobileWrap = styled.div`
   height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
+    margin-left: 10px;
+  }
+
+  .roomTitle {
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding-top: 0px;
+      width: 100%;
+      height: 70px;
+      overflow: hidden;
+      font-size: 15px;
+    }
   }
 `
 const Tag = styled.div`
@@ -340,6 +362,10 @@ const BgImg = styled.div`
   background: url(${props => (props.url ? props.url : '')}) no-repeat;
   border-radius: 10px;
   position: relative;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 108px;
+    height: 108px;
+  }
 `
 
 const Img = styled.div`

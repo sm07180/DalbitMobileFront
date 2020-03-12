@@ -155,6 +155,10 @@ const GlobalProvider = props => {
      */
     updateMediaPlayerStatus: status => {
       setMediaPlayerStatus(status)
+      //flase 일때 쿠키삭제
+      if (!status) {
+        Utility.setCookie('native-player-info', '', -1)
+      }
     },
     /**
      * 방송방 토큰 재생성

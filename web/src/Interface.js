@@ -6,6 +6,7 @@
  */
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import _ from 'lodash'
 //context
 import {Context} from 'context'
 //util
@@ -24,18 +25,29 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
+        let _ios = {
+          roomNo: event.detail.roomNo,
+          bjProfImg: event.detail.bjProfImg.thumb150x150,
+          title: event.detail.title,
+          bjNickNm: event.detail.bjNickNm
+        }
+        alert(JSON.stringify(_ios, null, 1))
+        _ios = JSON.stringify(_ios)
+        alert(_ios)
+        Utility.setCookie('native-player-info', _ios, 100)
+        //Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
-        // context.action.updateRoomInfo(event.detail)
+        context.action.updateNativePlayer(JSON.parse(_ios))
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        const _detail = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', _detail, 100)
+        const _android = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _android, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-end': //-----------------------------Native end (Android)
         context.action.updateMediaPlayerStatus(false)
-        Utility.setCookie('native-player-info', '', -1)
+        //Utility.setCookie('native-player-info', '', -1)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)

@@ -130,29 +130,6 @@ const Main = props => {
       like: '3,212',
       icon: 'NEW',
       avata: 'https://yt3.ggpht.com/a/AGF-l787pD6U3KAytpFmBMo7bq-g0DP0IuNCtTd-Mg=s900-c-k-c0xffffffff-no-rj-mo'
-    },
-    {
-      id: '11',
-      category: '건강/스포츠',
-      title: '제목없는 방입니다.',
-      reco: '추천',
-      popu: '인기',
-      url: 'http://image.xportsnews.com/contents/images/upload/article/2017/1016/mb_1508123227185716.jpg',
-      name: '신하균',
-      people: '222',
-      like: '3,212',
-      icon: 'NEW'
-    },
-    {
-      id: '12',
-      category: '건강/스포츠',
-      title: '아융.',
-      url: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
-      name: '이지은',
-      people: '222',
-      like: '3,212',
-      icon: 'NEW',
-      avata: 'https://qtum.or.kr/files/attach/images/528597/268/657/001/9c1e6d44ba7c805cff09d3a0636254db.png'
     }
   ]
   //---------------------------------------------------------------------
@@ -182,7 +159,19 @@ export default Main
 
 //---------------------------------------------------------------------
 // styled
-const Content = styled.div``
+const Content = styled.div`
+  background: #fff;
+  &:before {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 500px;
+    background: ${COLOR_MAIN};
+    z-index: -4;
+    content: '';
+  }
+`
 const RangkingWrap = styled.section``
 
 const SectionWrap = styled.section`

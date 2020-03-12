@@ -30,23 +30,15 @@ export default props => {
     title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨'
   })
   //---------------------------------------------------------------------
-  useEffect(() => {
-    if (!isHybrid()) return
-    let cookie = Utility.getCookie('native-player-info')
-    if (cookie === '' || cookie === undefined) return
-    cookie = JSON.parse(cookie)
-    if (context.customHeader.isFirst === 'N') {
-      context.action.updateMediaPlayerStatus(true)
-    }
-  }, [])
-  //useEffect @android
+  //useEffect
   useEffect(() => {
     if (!isHybrid()) return
     //@안드로이드
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      if (context.customHeader.os + '' === '1') {
-        setInfo(context.nativePlayer)
-      }
+      setInfo(context.nativePlayer)
+      // if (context.customHeader.os + '' === '1') {
+      //   setInfo(context.nativePlayer)
+      // }
     }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
