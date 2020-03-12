@@ -117,10 +117,10 @@ export default () => {
           //-----@ios Session
           if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
             alert(cookie)
-            cookie = JSON.parse(cookie)
-            alert(cookie)
-            //     context.action.updateMediaPlayerStatus(true)
-            //    context.action.updateNativePlayer(cookie)
+
+            cookie = JSON.parse(JSON.stringify(cookie))
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
