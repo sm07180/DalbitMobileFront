@@ -105,11 +105,16 @@ export default () => {
         //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        }
-        if (customHeader.isFirst === 'N') {
-          //-----@안드로이드 & @IOS
+        } else if (customHeader.isFirst === 'N') {
+          //-----@안드로이드
           let cookie = Utility.getCookie('native-player-info')
-          if (cookie !== '' && cookie !== undefined) {
+          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+            cookie = JSON.parse(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
+          }
+          //-----@ios
+          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
