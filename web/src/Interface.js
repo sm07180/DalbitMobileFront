@@ -32,7 +32,7 @@ export default () => {
         // _ios.title = event.detail.title
         // _ios = JSON.stringify(_ios)
 
-        const _ios = {
+        let _ios = {
           roomNo: event.detail.roomNo,
           bjProfImg: event.detail.bjProfImg.thumb150x150,
           title: event.detail.title,
