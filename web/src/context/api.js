@@ -318,9 +318,21 @@ export default class API {
    * @param string roomNo                 //*방송방 번호
    * @create 김호겸 2020.03.09
    */
-  static broad_pan_insert = async obj => {
+  static broad_fan_insert = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/pan`, method: method || 'POST', data: data})
+    return await ajax({...obj, url: url || `/broad/fan`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 방송방 팬 해제
+   * @method "DELETE""
+   * @todo
+   * @param string memNo                 //*스타회원번호
+   * @create 김호겸 2020.03.12
+   */
+  static broad_fan_delete = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/broad/fan`, method: method || 'DELETE', data: data})
   }
   //--------------------------------------------------------------------- 회원 관련
   /**

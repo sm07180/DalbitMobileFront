@@ -8,8 +8,8 @@ import _ from 'lodash'
 //context
 import {isHybrid} from 'context/hybrid'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_POINT_Y} from 'context/color'
+import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import Utility from 'components/lib/utility'
 // etc
 
@@ -20,10 +20,10 @@ export default props => {
   //context
   const context = useContext(Context)
   //useState
-  /**
-   * {roomNo,bjNickNm,title,bjProfImg}
-   */
   const [info, setInfo] = useState({
+    /**
+     * {roomNo,bjNickNm,title,bjProfImg}
+     */
     bjNickNm: 'BJ아이유😍',
     roomNo: null,
     bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
@@ -33,17 +33,10 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (!isHybrid()) return
-    /**
-     * @안드로이드
-     */
-
+    //@안드로이드
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       if (context.customHeader.os + '' === '1') {
-        const _val = JSON.stringify(context.nativePlayer)
         setInfo(context.nativePlayer)
-        //alert(JSON.s)
-        Utility.setCookie('native-player-info', _val, 100)
-        //  alert('native-player-info 쿠키실행')
       }
     }
   }, [context.nativePlayer])
@@ -78,10 +71,6 @@ export default props => {
           </div>
           <p
             onClick={() => {
-              // context.action.confirm({
-              //   callback: () => {},
-              //   msg: `방송방 다시들어가기`
-              // })
               props.update({playerNavigator: true})
             }}>
             <b>{info.bjNickNm}</b>

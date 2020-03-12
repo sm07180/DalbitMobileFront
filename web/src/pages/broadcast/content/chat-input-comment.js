@@ -109,7 +109,7 @@ export default props => {
       //   context.action.confirm({
       //     //콜백처리
       //     callback: () => {
-      //       broad_pan_insert()
+      //       broad_fan_insert()
       //     },
       //     //캔슬콜백처리
       //     cancelCallback: () => {
@@ -127,8 +127,8 @@ export default props => {
     }
   }
   //팬등록
-  async function broad_pan_insert() {
-    const res = await Api.broad_pan_insert({
+  async function broad_fan_insert() {
+    const res = await Api.broad_fan_insert({
       data: {
         memNo: store.roomInfo.bjMemNo,
         roomNo: store.roomInfo.roomNo
