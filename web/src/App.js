@@ -108,7 +108,7 @@ export default () => {
         } else if (customHeader.isFirst === 'N') {
           //-----@안드로이드
           let cookie = Utility.getCookie('native-player-info')
-          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+          if (cookie !== '' && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
