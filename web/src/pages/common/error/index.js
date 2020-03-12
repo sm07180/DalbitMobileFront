@@ -21,7 +21,7 @@ export default () => {
             <br /> 잠시 후 다시 시도해 주시기 바랍니다.
           </li>
           <li class="btn">
-            <a href="#" onclick=>확인</a>
+            <a href="#"></a>
           </li>
           <li class="bottomImg">하단이미지</li>
         </ul>
