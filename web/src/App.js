@@ -109,16 +109,16 @@ export default () => {
         if (customHeader.isFirst === 'N') {
           //-----@안드로이드 Cookie
           let cookie = Utility.getCookie('native-player-info')
-          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+          if (osName === 'Android' && cookie !== null && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
           //-----@ios Session
-          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
+          if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
             cookie = JSON.parse(cookie)
-            //  context.action.updateMediaPlayerStatus(true)
-            // context.action.updateNativePlayer(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
