@@ -127,7 +127,15 @@ export default props => {
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') context.action.updateBroadcastTotalInfo(data.detail.data.count)
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
-      //
+      // 공지사항
+      if (data.detail.data.cmd === 'reqNotice') store.action.updateNoticeMsg(recvMsg.msg)
+      // 매니저 등록 / 해제 시 적용
+      const recvauth = recvMsg.msg
+      if (data.detail.data.cmd === 'reqGrant') {
+        if (context.broadcastTotalInfo.auth < 2) {
+          context.action.updateBroadcastTotalInfo({auth: parseInt(recvauth)})
+        }
+      }
 
       if (data && data.detail) {
         if (recvMsg.position === 'chat') {

@@ -17,22 +17,24 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <>
-      <LiveBigWrap
-        onClick={() => {
-          props.joinRoom({roomNo: roomNo})
-        }}>
-        <ImgWrap bg={bjProfImg.url}>{/* <Avata bg={LiveBigInfo.avata}></Avata> */}</ImgWrap>
-        <InfoWrap>
-          <InfoTitle>{title}</InfoTitle>
-          <BjName>{bjNickNm}</BjName>
-          <People>
-            <Viewer></Viewer>
-            <Lover></Lover>
-            <span>{entryCnt}</span>
-            <span>{likeCnt}</span>
-          </People>
-        </InfoWrap>
-      </LiveBigWrap>
+      {props.info && (
+        <LiveBigWrap
+          onClick={() => {
+            props.joinRoom({roomNo: roomNo})
+          }}>
+          <ImgWrap bg={bjProfImg && bjProfImg.url}>{/* <Avata bg={LiveBigInfo.avata}></Avata> */}</ImgWrap>
+          <InfoWrap>
+            <InfoTitle>{title}</InfoTitle>
+            <BjName>{bjNickNm}</BjName>
+            <People>
+              <Viewer></Viewer>
+              <Lover></Lover>
+              <span>{entryCnt}</span>
+              <span>{likeCnt}</span>
+            </People>
+          </InfoWrap>
+        </LiveBigWrap>
+      )}
     </>
   )
 }

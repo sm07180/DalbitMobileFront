@@ -25,11 +25,18 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        let _ios = {}
-        _ios.bjNickNm = event.detail.bjNickNm
-        _ios.roomNo = event.detail.roomNo
-        _ios.bjProfImg = event.detail.bjProfImg.thumb150x150
-        _ios.title = event.detail.title
+        /*
+        roomNo: event.detail.roomNo,
+          bjProfImg: event.detail.bjProfImg.thumb150x150,
+          title: event.detail.title,
+          bjNickNm: event.detail.bjNickNm
+      */
+        let _ios = {
+          roomNo: event.detail.roomNo,
+          // bjProfImg: event.detail.roomNo,
+          title: event.detail.title,
+          bjNickNm: event.detail.roomNo
+        }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
@@ -43,7 +50,7 @@ export default () => {
         break
       case 'native-end': //-----------------------------Native end (Android)
         context.action.updateMediaPlayerStatus(false)
-        Utility.setCookie('native-player-info', '', -1)
+        //Utility.setCookie('native-player-info', '', -1)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)

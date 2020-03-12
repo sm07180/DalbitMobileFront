@@ -56,6 +56,7 @@ export default props => {
 
   //마이크 on off 기능~
   const activeMike = () => {
+    console.log('store.mikeState = ' + store.mikeState)
     broad_micOnOff(!store.mikeState)
   }
 
@@ -155,7 +156,6 @@ export default props => {
     context.action.confirm({
       //콜백처리
       callback: () => {
-        console.log('asdasdasdasd')
         const res = broad_exit(props.roomNo)
         if (res.result === 'success') {
           sc.SendMessageChatEnd(props)

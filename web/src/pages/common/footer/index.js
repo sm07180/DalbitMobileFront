@@ -30,6 +30,14 @@ export default props => {
         <Menu>
           <button
             onClick={() => {
+              context.action.alert({
+                msg: `준비중입니다.`
+              })
+            }}>
+            서비스 소개
+          </button>
+          <button
+            onClick={() => {
               context.action.updatePopup('TERMS', 'service')
             }}>
             서비스 이용약관
@@ -52,13 +60,13 @@ export default props => {
             }}>
             운영정책
           </button>
-          <button
+          {/* <button
             onClick={() => {
               context.action.updatePopup('TERMS', 'maketing')
             }}>
             마케팅 수신 동의약관
           </button>
-          <button>서비스 SNS 채널</button>
+          <button>서비스 SNS 채널</button> */}
         </Menu>
       )}
       <Info>
@@ -72,6 +80,7 @@ export default props => {
 const Footer = styled.footer`
   display: block;
   padding-bottom: 116px;
+  background: #fff;
   text-align: center;
 
   &.on-cast {
@@ -85,7 +94,7 @@ const Info = styled.ul`
     display: inline-block;
     font-size: 14px;
     line-height: 28px;
-    color: #757575;
+    color: #bdbdbd;
     span {
       padding-right: 10px;
       color: #bdbdbd;

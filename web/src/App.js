@@ -15,6 +15,7 @@
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
 import {osName} from 'react-device-detect'
+import qs from 'qs'
 //components
 import Api from 'context/api'
 //context
@@ -105,15 +106,18 @@ export default () => {
         //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        } else if (customHeader.isFirst === 'N') {
-          //-----@안드로이드
+        }
+        if (customHeader.isFirst === 'N') {
+          //-----@안드로이드 Cookie
           let cookie = Utility.getCookie('native-player-info')
-          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+          if (osName === 'Android' && cookie !== null && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
-          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
+          //-----@ios Session
+          if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
+            //            cookie = JSON.parse(JSON.stringify(cookie))
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)

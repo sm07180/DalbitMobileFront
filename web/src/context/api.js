@@ -192,8 +192,9 @@ export default class API {
    * @todo
    * @param string roomNo                 //*방송방번호
    * @create 김호겸 2020.01.31
+   * @modify 황상한 2020.03.12
    */
-  static broad_notice = async obj => {
+  static broad_notice_delete = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/notice`, method: method || 'DELETE', data: data})
   }
@@ -733,8 +734,9 @@ export default class API {
   /**
    * @brief 방송방 회원정보 조회
    * @create 황상한 2020.02.20
+   * @update 김호겸 2020.03.12   // 함수명 변경 info_view -> broad_member_profile
    */
-  static info_view = async obj => {
+  static broad_member_profile = async obj => {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
   }
@@ -825,6 +827,30 @@ export default class API {
     return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 
+  /**
+   * @brief 휴대폰 인증번호요청
+   * @method "POST"
+   * @param string phoneNo                        //휴대폰번호
+   * @param int authType                          //인증타입(0: 회원가입, 1:비밀번호변경
+   * @create 이은비 2020.03.12
+   */
+  static sms_request = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/sms`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 휴대폰 인증확인
+   * @method "POST"
+   * @param int CMID                          //인증요청ID
+   * @param int code                          //인증번호
+   * @create 이은비 2020.03.12
+   */
+  static sms_check = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/sms/auth`, method: method || 'POST', data: data})
+  }
+
   //-------------------------------------------------------------
 }
 
@@ -851,7 +877,8 @@ export const ajax = async obj => {
       },
       url: pathType + url,
       params: params,
-      data: dataType
+      data: dataType,
+      withCredentials: true
     })
 
     // table 모양 로그출력

@@ -60,8 +60,7 @@ export default props => {
     const res = await Api.broad_manager({
       data: {
         roomNo: store.roomInfo.roomNo,
-        memNo: obj.memNo,
-        auth: store.roomInfo.auth
+        memNo: obj.memNo
       },
       method: methodType
     })
@@ -106,15 +105,17 @@ export default props => {
   }
 
   async function broadProfileInfo(obj) {
-    const res = await Api.profile({
+    const res = await Api.broad_member_profile({
       params: {
-        memNo: obj.memNo
+        memNo: obj.memNo,
+        roomNo: store.roomInfo.roomNo
       },
       method: 'GET'
     })
     //Error발생시
     if (res.result === 'success') {
       console.log('## 선택 프로필 정보 res = ' + res.data)
+
       store.action.updateBroadcastProfileInfo(res.data)
     }
   }
@@ -211,7 +212,7 @@ export default props => {
     const BJViewManeger = ['강퇴하기', '', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
     const {selectidx} = props
     //props.rcvData.data.user.auth
-    if (store.roomInfo.auth == 0) {
+    if (context.broadcastTotalInfo.auth == 0) {
       //청취자
       if (store.listenerList[selectidx].auth === 0 || store.listenerList[selectidx].auth === 1) {
         return listenerView.map((list, index) => {
@@ -227,7 +228,7 @@ export default props => {
           )
         })
       }
-    } else if (store.roomInfo.auth == 1) {
+    } else if (context.broadcastTotalInfo.auth == 1) {
       // 매니저
       if (store.listenerList[selectidx].auth === 0) {
         return ManegerView.map((list, index) => {
@@ -256,7 +257,7 @@ export default props => {
           )
         })
       }
-    } else if (store.roomInfo.auth == 3) {
+    } else if (context.broadcastTotalInfo.auth == 3) {
       // 매니저
       if (store.listenerList[selectidx].auth === 0) {
         return BJView.map((list, index) => {
