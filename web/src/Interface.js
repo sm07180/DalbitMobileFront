@@ -7,7 +7,6 @@
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
-import qs from 'qs'
 //context
 import {Context} from 'context'
 //util
@@ -32,8 +31,7 @@ export default () => {
           title: event.detail.title,
           bjNickNm: event.detail.bjNickNm
         }
-        //  _ios = JSON.stringify(_ios)
-        _ios = qs.stringify(_ios)
+        _ios = JSON.stringify(_ios)
         alert(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
