@@ -877,7 +877,8 @@ export const ajax = async obj => {
       },
       url: pathType + url,
       params: params,
-      data: dataType
+      data: dataType,
+      withCredentials: true
     })
 
     // table 모양 로그출력
