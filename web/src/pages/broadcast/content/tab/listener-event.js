@@ -212,7 +212,7 @@ export default props => {
     const BJViewManeger = ['강퇴하기', '', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
     const {selectidx} = props
     //props.rcvData.data.user.auth
-    if (store.roomInfo.auth == 0) {
+    if (context.broadcastTotalInfo.auth == 0) {
       //청취자
       if (store.listenerList[selectidx].auth === 0 || store.listenerList[selectidx].auth === 1) {
         return listenerView.map((list, index) => {
@@ -228,7 +228,7 @@ export default props => {
           )
         })
       }
-    } else if (store.roomInfo.auth == 1) {
+    } else if (context.broadcastTotalInfo.auth == 1) {
       // 매니저
       if (store.listenerList[selectidx].auth === 0) {
         return ManegerView.map((list, index) => {
@@ -257,7 +257,7 @@ export default props => {
           )
         })
       }
-    } else if (store.roomInfo.auth == 3) {
+    } else if (context.broadcastTotalInfo.auth == 3) {
       // 매니저
       if (store.listenerList[selectidx].auth === 0) {
         return BJView.map((list, index) => {
