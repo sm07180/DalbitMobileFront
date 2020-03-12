@@ -827,14 +827,28 @@ export default class API {
     return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 
+  /**
+   * @brief 휴대폰 인증번호요청
+   * @method "POST"
+   * @param string phoneNo                        //휴대폰번호
+   * @param int authType                          //인증타입(0: 회원가입, 1:비밀번호변경
+   * @create 이은비 2020.03.12
+   */
   static sms_request = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/sms`, method: method || 'post', data: data})
+    return await ajax({...obj, url: url || `/sms`, method: method || 'POST', data: data})
   }
 
+  /**
+   * @brief 휴대폰 인증확인
+   * @method "POST"
+   * @param int CMID                          //인증요청ID
+   * @param int code                          //인증번호
+   * @create 이은비 2020.03.12
+   */
   static sms_check = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/sms/auth`, method: method || 'post', data: data})
+    return await ajax({...obj, url: url || `/sms/auth`, method: method || 'POST', data: data})
   }
 
   //-------------------------------------------------------------
