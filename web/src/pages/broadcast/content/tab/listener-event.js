@@ -60,8 +60,7 @@ export default props => {
     const res = await Api.broad_manager({
       data: {
         roomNo: store.roomInfo.roomNo,
-        memNo: obj.memNo,
-        auth: store.roomInfo.auth
+        memNo: obj.memNo
       },
       method: methodType
     })
@@ -106,15 +105,17 @@ export default props => {
   }
 
   async function broadProfileInfo(obj) {
-    const res = await Api.profile({
+    const res = await Api.broad_member_profile({
       params: {
-        memNo: obj.memNo
+        memNo: obj.memNo,
+        roomNo: store.roomInfo.roomNo
       },
       method: 'GET'
     })
     //Error발생시
     if (res.result === 'success') {
       console.log('## 선택 프로필 정보 res = ' + res.data)
+
       store.action.updateBroadcastProfileInfo(res.data)
     }
   }

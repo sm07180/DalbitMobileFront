@@ -27,74 +27,94 @@ export default props => {
       return Cnt
     }
   }
+  let objProfileInfo = null
+  objProfileInfo = store.broadcastProfileInfo
+
   //--------------------------------------
   //api
-  async function fetchData() {
-    const res = await Api.info_view({
-      params: {
-        memNo: '41581991354103',
-        roomNo: '91582156781600'
-      }
-    })
-    console.log(res)
-  }
 
   //팬등록
-  async function broad_fan_insert() {
-    console.loo('팬등록 = ' + store.roomInfo)
-    const res = await Api.broad_fan_insert({
-      data: {
-        memNo: objProfileInfo.bjMemNo,
-        roomNo: objProfileInfo.roomNo
-      }
-    })
-    //Error발생시
+  async function broad_fan_insert(isFan) {
+    console.log('팬등록 = ' + store.roomInfo)
+    const methodType = isFan === false ? 'POST' : 'DELETE'
+    let res
+    // 팬이 아니여서 팬등록 가능 상태
+    if (isFan) {
+      res = await Api.broad_fan_insert({
+        data: {
+          memNo: objProfileInfo.memNo,
+          roomNo: context.broadcastTotalInfo.roomNo
+        },
+        method: methodType
+      })
+    } else {
+      res = await Api.broad_fan_insert({
+        data: {
+          memNo: objProfileInfo.memNo
+        },
+        method: methodType
+      })
+    }
+
     if (res.result === 'fail' || res.result === 'success') {
       context.action.alert({
-        // 부스트 사용완료 팝업
         callback: () => {
-          console.log('callback처리')
+          //console.log('callback처리')
         },
         title: '달빛라디오',
         msg: res.message
       })
     }
   }
-  //매니저 지정 , 해제 Api
-  async function broadManager(type, obj) {
-    const methodType = type === 1 ? 'POST' : 'DELETE'
 
+  //매니저 지정 , 해제 Api
+  async function broadManager(type) {
+    const methodType = type === 1 ? 'DELETE' : 'POST'
     const res = await Api.broad_manager({
       data: {
-        roomNo: store.roomInfo.roomNo,
-        memNo: obj.memNo,
-        auth: store.roomInfo.auth
+        roomNo: context.broadcastTotalInfo.roomNo,
+        memNo: objProfileInfo.memNo
       },
       method: methodType
     })
     //Error발생시
     if (res.result === 'success') {
-      store.action.updateRoomInfo({auth: 1})
-      store.action.updateListenTrues(false)
-      return (bjno = res.data.memNo)
+      if (type === 1) {
+        store.action.updateBroadcastProfileInfo({auth: 0})
+      } else {
+        store.action.updateBroadcastProfileInfo({auth: 1})
+      }
+
+      context.action.alert({
+        //콜백처리
+        msg: `${objProfileInfo.nickNm} 님이 매니저 ${type === 1 ? '해제' : '등록'} 되었습니다.`
+      })
     } else {
       console.log('broadManager  res = ' + res)
     }
   }
 
   // 강퇴 Api
-  async function broadkickout(obj) {
+  async function broadkickout() {
     const res = await Api.broad_kickout({
       data: {
-        roomNo: store.roomInfo.roomNo,
-        blockNo: obj.memNo
+        roomNo: context.broadcastTotalInfo.roomNo,
+        blockNo: objProfileInfo.memNo
       },
       method: 'POST'
     })
     //Error발생시
     if (res.result === 'success') {
-      sc.SendMessageKickout(res)
+      context.action.alert({
+        //콜백처리
+        msg: `${objProfileInfo.nickNm} 님이 강제 퇴장 되었습니다.`
+      })
+      //sc.SendMessageKickout(res)
     }
+  }
+
+  const isFanCheck = () => {
+    if (context.broadcastTotalInfo.memNo === objProfileInfo.memNo) console.log('asdasdasd')
   }
   useEffect(() => {
     console.log(store.broadcastProfileInfo)
@@ -102,30 +122,65 @@ export default props => {
   }, [store.broadcastProfileInfo])
 
   const userTypeContents = () => {
-    if (store.broadcastProfileInfo.auth < 2) {
+    if (context.broadcastTotalInfo.auth > 1) {
       return (
         <React.Fragment>
           <div className="functionWrap">
             <div className="managerBtn">
-              <button></button>
-              <p>매니저 해제</p>
+              {/* <button onClick={() => broadManager(store.broadcastProfileInfo.auth)}></button> */}
+              <button
+                onClick={() => {
+                  context.action.confirm({
+                    //콜백처리
+                    callback: () => {
+                      broadManager(store.broadcastProfileInfo.auth)
+                    },
+                    //캔슬콜백처리
+                    cancelCallback: () => {
+                      //alert('confirm callback 취소하기')
+                    },
+                    msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'} 하시겠습니까?`
+                  })
+                }}></button>
+              <p>{store.broadcastProfileInfo.auth == 1 ? '매니저 해임' : '매니저 등록'}</p>
             </div>
             <div className="KickBtn">
-              <button></button>
+              <button
+                onClick={() => {
+                  context.action.confirm({
+                    //콜백처리
+                    callback: () => {
+                      broadkickout()
+                    },
+                    //캔슬콜백처리
+                    cancelCallback: () => {
+                      //alert('confirm callback 취소하기')
+                    },
+                    msg: `${objProfileInfo.nickNm} 님을 강제 퇴장 하시겠습니까?`
+                  })
+                }}></button>
               <p>강퇴하기</p>
             </div>
           </div>
           <div className="submitWrap">
-            <button>+ 팬등록</button>
-            <button>선물하기</button>
+            <button
+              onClick={() => {
+                broad_fan_insert(objProfileInfo.isFan)
+              }}>
+              {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
+            </button>
+            <button
+              onClick={() => {
+                broad_fan_insert()
+              }}>
+              선물하기
+            </button>
           </div>
         </React.Fragment>
       )
     }
   }
   const makeContents = () => {
-    let objProfileInfo = null
-    objProfileInfo = store.broadcastProfileInfo
     if (store.broadcastProfileInfo === null) return
 
     //console.log(store.broadcastProfileInfo)
@@ -158,7 +213,7 @@ export default props => {
               <em>{objProfileInfo.starCnt}</em>
             </div>
           </div>
-          <Ranking {...roomInfo} />
+          <Ranking {...objProfileInfo} />
         </div>
         {userTypeContents()}
       </React.Fragment>

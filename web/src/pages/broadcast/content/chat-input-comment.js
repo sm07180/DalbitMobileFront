@@ -56,6 +56,7 @@ export default props => {
 
   //마이크 on off 기능~
   const activeMike = () => {
+    console.log('store.mikeState = ' + store.mikeState)
     broad_micOnOff(!store.mikeState)
   }
 
