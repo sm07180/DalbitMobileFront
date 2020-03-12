@@ -123,15 +123,15 @@ export default () => {
           //-----@
         }
       }
-      //모든처리완료
-      setReady(true)
-      //------------------------로그인토큰일경우 프로필업데이트
       if (res.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        console.log('ppp', profileInfo)
         if (profileInfo.result === 'success') {
           context.action.updateProfile(profileInfo.data)
         }
       }
+      //모든처리완료
+      setReady(true)
     } else {
       console.log('토큰에러')
     }

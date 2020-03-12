@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+    <g id="prefix__camera" transform="translate(-.521 .24)">
+        <path id="prefix__사각형_10" d="M0 0H36V36H0z" data-name="사각형 10" transform="translate(.521 -.24)" style="opacity:0;fill:#fff"/>
+        <path id="prefix__패스_8" d="M24.145 10.919V9.091A2.337 2.337 0 0 0 21.8 6.76h-7.253A2.337 2.337 0 0 0 12.2 9.091v1.828H7.033a3.5 3.5 0 0 0-3.512 3.494v11.572a3.5 3.5 0 0 0 3.512 3.494h22.282a3.5 3.5 0 0 0 3.513-3.493V14.413a3.5 3.5 0 0 0-3.512-3.494h-5.171z" data-name="패스 8" style="fill-rule:evenodd;fill:#8556f6;stroke:#8556f6"/>
+        <path id="prefix__패스_9" d="M23.707 19.543a5.51 5.51 0 1 1-5.51-5.51 5.51 5.51 0 0 1 5.51 5.51z" data-name="패스 9" style="fill-rule:evenodd;fill:#fff"/>
+        <path id="prefix__패스_10" d="M26.969 14.091h1.378" data-name="패스 10" style="fill:#e0e0e0;stroke:#fff;stroke-linecap:round;stroke-width:3px;fill-rule:evenodd"/>
+    </g>
+</svg>
