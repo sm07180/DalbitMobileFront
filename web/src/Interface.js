@@ -31,7 +31,7 @@ export default () => {
         _ios.bjProfImg = event.detail.bjProfImg.thumb150x150
         _ios.title = event.detail.title
         _ios = JSON.stringify(_ios)
-        alert(_ios)
+
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(JSON.parse(_ios))
@@ -44,7 +44,7 @@ export default () => {
         break
       case 'native-end': //-----------------------------Native end (Android)
         context.action.updateMediaPlayerStatus(false)
-        Utility.setCookie('native-player-info', '', -1)
+        //Utility.setCookie('native-player-info', '', -1)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
