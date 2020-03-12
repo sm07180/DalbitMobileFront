@@ -20,6 +20,7 @@ export default props => {
   //useMemo
   const nativePlayerInfoCookie = useMemo(() => {
     const _cookie = Utility.getCookie('native-player-info')
+    alert(_cookie)
     if (_cookie === '' || _cookie === null || _cookie === undefined) {
       return '쿠키정보없음'
     }
@@ -41,7 +42,7 @@ export default props => {
           </button>
         </nav>
         <h1>native-player-info 쿠키</h1>
-        <section>{JSON.stringify(nativePlayerInfoCookie, null, 1)}</section>
+        {/* <section>{JSON.stringify(nativePlayerInfoCookie, null, 1)}</section> */}
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>

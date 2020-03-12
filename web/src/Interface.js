@@ -31,7 +31,6 @@ export default () => {
           title: event.detail.title,
           bjNickNm: event.detail.bjNickNm
         }
-        alert(JSON.stringify(_ios, null, 1))
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
