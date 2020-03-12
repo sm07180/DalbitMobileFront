@@ -46,11 +46,8 @@ export default props => {
             APP/TEST 이동
           </button>
         </nav>
-
         <h1>native-player-info 쿠키</h1>
         <section>{JSON.stringify(nativePlayerInfoCookie, null, 1)}</section>
-        <h1>native-player-info 세션</h1>
-        <section>{JSON.stringify(nativePlayerInfoSession, null, 1)}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>
