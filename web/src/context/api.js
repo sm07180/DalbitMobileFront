@@ -734,8 +734,9 @@ export default class API {
   /**
    * @brief 방송방 회원정보 조회
    * @create 황상한 2020.02.20
+   * @update 김호겸 2020.03.12   // 함수명 변경 info_view -> broad_member_profile
    */
-  static info_view = async obj => {
+  static broad_member_profile = async obj => {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
   }

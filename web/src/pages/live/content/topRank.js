@@ -46,7 +46,9 @@ export default props => {
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
           </div>
           <div className="roomTitle">{data.title.substring(0, 30)}</div>
+          {/* <div className="roomTitle">비오는 날, 기분이 뽀송해지는 점심 라디오,점심 라디오,점심 라디오,점심 라디오</div> */}
           <div className="nickName">{data.bjNickNm}</div>
+          {/* <div className="nickName">비오는 날, 기분이 뽀송해지는 점심 라디오</div> */}
           <CountArea>
             <Icon>
               <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
@@ -85,7 +87,7 @@ const Contents = styled.div`
   height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
-    width: 200px;
+    width: 180px;
   }
 
   .hover {
@@ -115,7 +117,6 @@ const Image = styled.div`
   background: url(${props => (props.img ? props.img : '')}) no-repeat;
   width: 180px;
   height: 180px;
-  background-color: blue;
   position: relative;
 
   & > div {
@@ -150,13 +151,19 @@ const Info = styled.div`
   height: 180px;
   align-items: center;
   margin-left: 10px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 180px;
+    height: 140px;
+    margin-left: 0px;
+  }
 
   .title {
     display: flex;
     width: 90%;
-    height: 60px;
+    height: 45px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
+      height: 160px;
     }
     font-size: 14px;
     font-weight: 600;
@@ -169,11 +176,12 @@ const Info = styled.div`
   .roomTitle {
     display: flex;
     width: 90%;
-    height: 100px;
-    padding-top: 10px;
+    height: 75px;
     @media (max-width: ${WIDTH_MOBILE}) {
+      padding-top: 0px;
       width: 100%;
-      height: 40px;
+      height: 210px;
+      overflow: hidden;
     }
     font-size: 16px;
     font-weight: 600;
@@ -185,10 +193,14 @@ const Info = styled.div`
   .nickName {
     display: flex;
     width: 90%;
-    height: 45px;
+    height: 70px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
-      height: 40px;
+      height: 140px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      align-items: center;
+      overflow: hidden;
     }
     margin-top: 15px;
     word-break: break-all;
@@ -216,10 +228,9 @@ const CountArea = styled.div`
   width: 85%;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
-    height: 35px;
+    height: 50px;
   }
-  height: 50px;
-  padding-bottom: 2px;
+  height: 30px;
   justify-content: flex-start;
   align-items: center;
 
@@ -228,6 +239,7 @@ const CountArea = styled.div`
     width: 15px;
     color: #e0e0e0;
     font-size: 12px;
+    align-items: center;
   }
 `
 const Icon = styled.div`

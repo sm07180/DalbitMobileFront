@@ -5,6 +5,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
+import useResize from 'components/hooks/useResize'
 
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -23,27 +24,21 @@ export default props => {
     title: '',
     bjNickNm: ''
   })
-  let mainSlider = {}
-
-  //임시데이터
-  // const slideInfo = [
-  //   {
-  //     roomNo:
-  //   },
-  //   {
-
-  //   }
-  // ]
+  //let mainSlider = {}
+  const [mainSlider, setMainSlider] = useState()
+  const [selecterWidth, setSelecterWidth] = useState(-220)
 
   const params = {
     loop: true,
-    spaceBetween: 14,
+    spaceBetween: 6,
     simulateTouch: true,
     centeredSlides: true,
     slidesPerView: 'auto',
     on: {
       slideChangeTransitionEnd: function() {
-        const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes[1].value
+        const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes['data-swiper-slide-index'].value
+        // console.log('currentIdxcurrentIdxcurrentIdxcurrentIdx', currentIdx)
+        //document.getElementsByClassName('select-btn').s
         //console.log('슬라이드 바뀌었을때', slideInfo[currentIdx])
         setCurrentInfo({
           entryCnt: slideInfo[currentIdx].people,
@@ -51,16 +46,39 @@ export default props => {
           title: slideInfo[currentIdx].title,
           bjNickNm: slideInfo[currentIdx].name
         })
+      },
+      slideChangeTransitionStart: function() {
+        const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes[1].value
+        const animNum = 40 + currentIdx * 11
+        // console.log(selecterWidth)
+        document.getElementsByClassName('select-btn')[0].style.transform = `rotate(${animNum}deg) translate(${selecterWidth}px)`
       }
     },
-    slideActiveClass: 'main-slide-active'
+
+    slideActiveClass: 'main-slide-active',
+    preventClicks: false,
+    preventClicksPropagation: false,
+    //preventClicks: false,
+    breakpoints: {
+      601: {
+        spaceBetween: 14
+      },
+      841: {
+        simulateTouch: false
+      }
+    }
   }
 
   //슬라이더 안에 슬라이드 생성
   const arraySlide = slideInfo.map((item, index) => {
     const {id, title, url, name, reco, category, popu, avata} = item
     return (
-      <Slide key={index}>
+      <Slide
+        key={index}
+        onClick={() => {
+          //console.log('클릭은됐는지?', mainSlider)
+          if (mainSlider) mainSlider.slideToLoop(index)
+        }}>
         <ImgBox bg={url}>
           <img src={url}></img>
         </ImgBox>
@@ -68,6 +86,22 @@ export default props => {
       </Slide>
     )
   })
+
+  //---------------------------------------------------------------------
+  //useEffect
+  // useEffect(() => {
+  //   if (window.innerWidth > 840) {
+  //     setSelecterWidth(-220)
+  //     console.log('1')
+  //   } else if (window.innerWidth <= 840 && window.innerWidth > 600) {
+  //     setSelecterWidth(-185)
+  //     console.log('2')
+  //   } else {
+  //     setSelecterWidth(-120)
+  //     console.log('3')
+  //   }
+  //   if (mainSlider) mainSlider.update()
+  // }, [useResize()])
 
   return (
     <Content>
@@ -78,7 +112,7 @@ export default props => {
           <Swiper
             {...params}
             getSwiper={e => {
-              mainSlider = e
+              setMainSlider(e)
             }}>
             {arraySlide}
           </Swiper>
@@ -97,7 +131,7 @@ export default props => {
           {/* 레코드 모양 선택 애니메이션 레이아웃 */}
           <Selecter>
             <div>
-              <button></button>
+              <button className="select-btn"></button>
             </div>
           </Selecter>
         </SliderItem>
@@ -115,6 +149,13 @@ const MainSliderWrap = styled.div`
   overflow: hidden;
   position: relative;
   height: 580px;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 382px;
+  }
 `
 
 const Bg = styled.div`
@@ -141,6 +182,20 @@ const Bg = styled.div`
     &::before {
       width: 145%;
       margin-top: -215px;
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    &::before {
+      width: 900px;
+      margin-top: -460px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    &::before {
+      width: 800px;
+      /* margin-top: -380px; */
     }
   }
 `
@@ -186,11 +241,23 @@ const SliderItem = styled.div`
       width: 160px;
     }
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin: 140px 0;
+    .swiper-container {
+      width: 100px;
+      height: 100px;
+    }
+    .swiper-slide {
+      width: 100px;
+    }
+  }
 `
 
 const Slide = styled.div`
   overflow: visible;
   text-align: center;
+  cursor: pointer;
   img {
     width: 100%;
     height: 0;
@@ -203,6 +270,16 @@ const Slide = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  &.swiper-slide-duplicate {
+    cursor: inherit;
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    p {
+      display: none;
+    }
+  }
 `
 
 const ImgBox = styled.div`
@@ -213,6 +290,9 @@ const ImgBox = styled.div`
   background: url(${props => props.bg}) no-repeat center center / cover;
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: 160px;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 100px;
   }
 `
 
@@ -234,12 +314,48 @@ const Selecter = styled.div`
     background: url(${IMG_SERVER}/images/api/main-slider-back.png) no-repeat center center/cover;
   }
 
+  button {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    border: 10px solid #fff;
+    border-radius: 50%;
+    background: ${COLOR_POINT_P};
+    box-sizing: content-box;
+    transform: rotate(40deg) translate(-220px);
+    transition: transform 0.5s ease-in-out;
+  }
+
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 386px;
-    height: 386px;
+    width: 370px;
+    height: 370px;
     div {
-      top: -271px;
-      height: 386px;
+      top: -265px;
+      height: 370px;
+    }
+    button {
+      transform: rotate(40deg) translate(-185px) !important;
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 230px;
+    height: 230px;
+    div {
+      top: -165px;
+      height: 230px;
+    }
+    button {
+      width: 10px;
+      height: 10px;
+      border: 6px solid #fff;
+      transform: rotate(48deg) translate(-115px) !important;
     }
   }
 `
@@ -286,6 +402,28 @@ const ActiveItem = styled.div`
     font-size: 20px;
     letter-spacing: -0.5px;
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    bottom: 58px;
+
+    button {
+      width: 30px;
+      height: 30px;
+      background: url(${IMG_SERVER}/images/api/ico-play.svg) no-repeat center center/ cover;
+    }
+    span {
+      display: none;
+    }
+    b {
+      margin-top: 26px;
+      font-size: 18px;
+    }
+    & > p {
+      font-size: 14px;
+    }
+  }
 `
 
 const ActiveState = styled.div`
@@ -312,10 +450,37 @@ const ProfileState = styled.p`
   font-weight: 600;
 
   & + & {
-    margin-left: 30px;
+    position: relative;
+    margin-left: 40px;
+    &:after {
+      position: absolute;
+      left: -20px;
+      top: 4px;
+      display: inline-block;
+      width: 1px;
+      height: 70px;
+      background: #febd56;
+      content: '';
+    }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     padding-top: 45px;
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding-top: 28px;
+    background-size: 30px !important;
+    font-size: 12px;
+
+    & + & {
+      margin-left: 20px;
+      &:after {
+        left: -10px;
+        top: 1px;
+        height: 38px;
+        content: '';
+      }
+    }
   }
 `
