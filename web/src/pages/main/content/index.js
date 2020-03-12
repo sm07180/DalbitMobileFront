@@ -159,7 +159,19 @@ export default Main
 
 //---------------------------------------------------------------------
 // styled
-const Content = styled.div``
+const Content = styled.div`
+  background: #fff;
+  &:before {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 500px;
+    background: ${COLOR_MAIN};
+    z-index: -4;
+    content: '';
+  }
+`
 const RangkingWrap = styled.section``
 
 const SectionWrap = styled.section`
