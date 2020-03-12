@@ -1,15 +1,24 @@
 /**
  * @title 라이브탭 컨텐츠 -refresh button
  */
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import Api from 'context/api'
+import {Context} from 'context'
+import {BroadCastStore} from 'pages/broadcast/store'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 export default props => {
+  const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //------------------------------------------------------------------
+  const reset = () => {
+    store.action.updatecategory('')
+    store.action.updateselectchange('전체')
+  }
   return (
     <>
       <Wrap>
-        <button></button>
+        <button onClick={reset}></button>
         <p>새로고침</p>
       </Wrap>
     </>
