@@ -128,7 +128,7 @@ export default props => {
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
-      if (data.detail.data.cmd === 'reqNotice') console.log('#소켓 받은 정보 - 공지사항 = ' + recvMsg.msg) //context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
+      if (data.detail.data.cmd === 'reqNotice') store.action.updateNoticeMsg(recvMsg.msg)
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
       if (data.detail.data.cmd === 'reqGrant') {
