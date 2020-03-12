@@ -1,13 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-ul,
-li,
-a {
-  list-style: none;
-  text-decoration: none;
-}
+/*error 페이지 css*/
 section {
   position: absolute;
   left: 50%;
@@ -34,6 +25,7 @@ ul {
   font-weight: 800;
   line-height: 1.07;
   letter-spacing: -0.7px;
+  transform: skew(-0.03deg);
 }
 .details {
   font-size: 16px;
@@ -41,6 +33,7 @@ ul {
   line-height: 1.75;
   text-align: center;
   color: #757575;
+  transform: skew(-0.03deg);
 }
 .btn {
   margin: 44px 0 44px 0;
@@ -53,6 +46,7 @@ ul {
   color: #8556f6;
   font-size: 16px;
   letter-spacing: -0.4px;
+  transform: skew(-0.03deg);
 }
 .bottomImg {
   width: 100%;
