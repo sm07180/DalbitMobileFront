@@ -39,11 +39,7 @@ export default props => {
      */
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       if (context.customHeader.os + '' === '1') {
-        const _val = JSON.stringify(context.nativePlayer)
         setInfo(context.nativePlayer)
-        //alert(JSON.s)
-        Utility.setCookie('native-player-info', _val, 100)
-        //  alert('native-player-info 쿠키실행')
       }
     }
   }, [context.nativePlayer])
