@@ -20,18 +20,12 @@ export default props => {
   //useMemo
   const nativePlayerInfoCookie = useMemo(() => {
     const _cookie = Utility.getCookie('native-player-info')
-    if (_cookie === '' || _cookie === undefined) {
+    if (_cookie === '' || _cookie === null || _cookie === undefined) {
       return '쿠키정보없음'
     }
     return JSON.parse(_cookie)
   })
-  const nativePlayerInfoSession = useMemo(() => {
-    const _session = sessionStorage.getItem('native-player-info')
-    if (_session === '' || _session === null || _session === undefined) {
-      return '세션정보없음'
-    }
-    return JSON.parse(_session)
-  })
+
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
 

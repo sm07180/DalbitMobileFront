@@ -105,32 +105,27 @@ export default () => {
         //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        } else if (customHeader.isFirst === 'N') {
+        }
+        if (customHeader.isFirst === 'N') {
           //-----@안드로이드 Cookie
           let cookie = Utility.getCookie('native-player-info')
-
-          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+          if (osName === 'Android' && cookie !== null && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
           //-----@ios Session
-          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
-            alert(cookie)
-            cookie = JSON.parse(cookie)
-            alert(cookie)
-            //     context.action.updateMediaPlayerStatus(true)
-            //    context.action.updateNativePlayer(cookie)
+          if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
+            alert(typeof cookie)
+            cookie = JSON.parse(JSON.stringify(cookie))
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
       }
       //모든처리완료
       setReady(true)
-      //----
-      let cookie = Utility.getCookie('native-player-info')
-      cookie = JSON.parse(cookie)
-      console.log(cookie)
     } else {
       console.log('토큰에러')
     }
