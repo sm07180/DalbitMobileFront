@@ -27,7 +27,7 @@ export default () => {
       case 'native-player-show': //---------------------Native player-show (IOS)
         let _ios = {
           roomNo: event.detail.roomNo,
-          bjProfImg: event.detail.bjProfImg.thumb150x150,
+          //   bjProfImg: event.detail.bjProfImg.thumb150x150,
           title: event.detail.title,
           bjNickNm: event.detail.bjNickNm
         }
