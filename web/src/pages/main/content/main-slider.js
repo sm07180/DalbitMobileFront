@@ -37,7 +37,7 @@ export default props => {
     on: {
       slideChangeTransitionEnd: function() {
         const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes['data-swiper-slide-index'].value
-        console.log('currentIdxcurrentIdxcurrentIdxcurrentIdx', currentIdx)
+        // console.log('currentIdxcurrentIdxcurrentIdxcurrentIdx', currentIdx)
         //document.getElementsByClassName('select-btn').s
         //console.log('슬라이드 바뀌었을때', slideInfo[currentIdx])
         setCurrentInfo({
@@ -50,7 +50,7 @@ export default props => {
       slideChangeTransitionStart: function() {
         const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes[1].value
         const animNum = 40 + currentIdx * 11
-        console.log(selecterWidth)
+        // console.log(selecterWidth)
         document.getElementsByClassName('select-btn')[0].style.transform = `rotate(${animNum}deg) translate(${selecterWidth}px)`
       }
     },
@@ -89,19 +89,19 @@ export default props => {
 
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {
-    if (window.innerWidth > 840) {
-      setSelecterWidth(-220)
-      console.log('1')
-    } else if (window.innerWidth <= 840 && window.innerWidth > 600) {
-      setSelecterWidth(-185)
-      console.log('2')
-    } else {
-      setSelecterWidth(-120)
-      console.log('3')
-    }
-    if (mainSlider) mainSlider.update()
-  }, [useResize()])
+  // useEffect(() => {
+  //   if (window.innerWidth > 840) {
+  //     setSelecterWidth(-220)
+  //     console.log('1')
+  //   } else if (window.innerWidth <= 840 && window.innerWidth > 600) {
+  //     setSelecterWidth(-185)
+  //     console.log('2')
+  //   } else {
+  //     setSelecterWidth(-120)
+  //     console.log('3')
+  //   }
+  //   if (mainSlider) mainSlider.update()
+  // }, [useResize()])
 
   return (
     <Content>
