@@ -6,6 +6,7 @@
  */
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import _ from 'lodash'
 //context
 import {Context} from 'context'
 //util
@@ -24,11 +25,16 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        alert(JSON.stringify(event.detail, null, 1))
-        const _ios = JSON.stringify(event.detail)
+        let _ios = {}
+        _ios.bjNickNm = event.detail.bjNickNm
+        _ios.roomNo = event.detail.roomNo
+        _ios.bjProfImg = event.detail.bjProfImg.thumb150x150
+        _ios.title = event.detail.title
+        _ios = JSON.stringify(_ios)
+        alert(JSON.stringify(_ios, null, 1))
         Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
-        // context.action.updateRoomInfo(event.detail)
+        context.action.updateNativePlayer(JSON.parse(_ios))
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)

@@ -1,20 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
+import {Context} from 'context'
+import Api from 'context/api'
+import {BroadCastStore} from 'pages/broadcast/store'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
+  const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   //------------------------------------------------------------------
   //0.케테고리맵..배열 호출 state---------------------------------------
   //1.셀렉트박스 visibility 체크----------------------------------------
   //2.셀렉트박스 text 변경 초기 state-----------------------------------
   const [categoryInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChange, setSelectChange] = useState(categoryInfo[0].option)
+  // const [SelectChange, setSelectChange] = useState('전체')
   //------------------------------------------------------------------
+  const [list, setList] = useState([])
   //function
   //셀렉트 버튼 토글 function
   const ToggleSelect = () => {
     if (SelectCheck === false) {
       setSelectCheck(true)
+      commonData()
     } else {
       setSelectCheck(false)
     }
@@ -22,18 +29,30 @@ export default props => {
   const AllFalse = () => {
     setSelectCheck(false)
   }
+  const commonData = async obj => {
+    const res = await Api.splash()
+    if (res.result === 'success') {
+      //context.action.updateCommon(res.data) // context에 update
+      console.log(res)
+      console.log(res.data.roomType)
+      setList(res.data.roomType)
+    }
+  }
+  // console.log(store.category)
   //------------------------------------------------------------------
   //category map
-  const categorySelect = categoryInfo.map((item, index) => {
-    const {option} = item
+  const categorySelect = list.map((item, index) => {
+    const {option, cdNm, cd} = item
+
     return (
       <p
         key={index}
         onClick={() => {
-          setSelectChange(option)
+          store.action.updateselectchange(cdNm)
           setSelectCheck(false)
+          store.action.updatecategory(cd)
         }}>
-        {option}
+        {cdNm}
       </p>
     )
   })
@@ -41,10 +60,20 @@ export default props => {
   return (
     <>
       <Select onClick={ToggleSelect}>
-        <h2>{SelectChange}</h2>
+        <h2>{store.SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
-        <div className="optionWrap">{categorySelect}</div>
+        <div className="optionWrap">
+          <p
+            onClick={() => {
+              store.action.updateselectchange('전체')
+              setSelectCheck(false)
+              store.action.updatecategory('')
+            }}>
+            전체
+          </p>
+          {categorySelect}
+        </div>
       </Option>
       <BackGround onClick={AllFalse} className={SelectCheck ? 'on' : ''} />
     </>

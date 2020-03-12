@@ -11,11 +11,13 @@ import CategoryInfo from './live-select-category'
 import Refresh from './live-refresh'
 import Api from 'context/api'
 import {broadcastLive} from 'constant/broadcast'
+import {BroadCastStore} from 'pages/broadcast/store'
 import {Context} from 'context'
 import {Scrollbars} from 'react-custom-scrollbars'
 //------------------------------------------------------------------
 export default props => {
   //context
+  const store = useContext(BroadCastStore)
   const context = useContext(Context)
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -60,37 +62,72 @@ export default props => {
       //
       if (state !== 1) return
 
-      return (
-        <LiveList key={index}>
-          <h3>[{mode}]</h3>
-          <ImgWrap bg={bgImg.url}>
-            <Sticker>
-              {reco && <Reco>{reco}</Reco>}
-              {newby && <New>{newby}</New>}
-            </Sticker>
-            {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
-          </ImgWrap>
-          <InfoWrap>
-            <Category>{broadcastLive[roomType]}</Category>
-            <Title>{title}</Title>
-            <Name>{bjNickNm}</Name>
-            <IconWrap>
-              <div>
-                <NowpeopleIcon></NowpeopleIcon>
-                <span>{entryCnt}</span>
-              </div>
-              <div>
-                <LikeIcon></LikeIcon>
-                <span>{likeCnt}</span>
-              </div>
-              <div>
-                <TotalpeopleIcon></TotalpeopleIcon>
-                <span>{entryCnt}</span>
-              </div>
-            </IconWrap>
-          </InfoWrap>
-        </LiveList>
-      )
+      if (store.category == roomType) {
+        return (
+          <LiveList key={index}>
+            <h3>[{mode}]</h3>
+            <ImgWrap bg={bgImg.url}>
+              <Sticker>
+                {reco && <Reco>{reco}</Reco>}
+                {newby && <New>{newby}</New>}
+              </Sticker>
+              {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
+            </ImgWrap>
+            <InfoWrap>
+              <Category>{broadcastLive[roomType]}</Category>
+              <Title>{title}</Title>
+              <Name>{bjNickNm}</Name>
+              <IconWrap>
+                <div>
+                  <NowpeopleIcon></NowpeopleIcon>
+                  <span>{entryCnt}</span>
+                </div>
+                <div>
+                  <LikeIcon></LikeIcon>
+                  <span>{likeCnt}</span>
+                </div>
+                <div>
+                  <TotalpeopleIcon></TotalpeopleIcon>
+                  <span>{entryCnt}</span>
+                </div>
+              </IconWrap>
+            </InfoWrap>
+          </LiveList>
+        )
+      }
+      if (store.category == '') {
+        return (
+          <LiveList key={index}>
+            <h3>[{mode}]</h3>
+            <ImgWrap bg={bgImg.url}>
+              <Sticker>
+                {reco && <Reco>{reco}</Reco>}
+                {newby && <New>{newby}</New>}
+              </Sticker>
+              {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
+            </ImgWrap>
+            <InfoWrap>
+              <Category>{broadcastLive[roomType]}</Category>
+              <Title>{title}</Title>
+              <Name>{bjNickNm}</Name>
+              <IconWrap>
+                <div>
+                  <NowpeopleIcon></NowpeopleIcon>
+                  <span>{entryCnt}</span>
+                </div>
+                <div>
+                  <LikeIcon></LikeIcon>
+                  <span>{likeCnt}</span>
+                </div>
+                <div>
+                  <TotalpeopleIcon></TotalpeopleIcon>
+                  <span>{entryCnt}</span>
+                </div>
+              </IconWrap>
+            </InfoWrap>
+          </LiveList>
+        )
+      }
     })
   }
   //------------------------------------------------------------------
@@ -292,17 +329,18 @@ const PopularInfo = {
 //셀렉트 가데이터(카테고리)
 
 const categoryInfo = [
-  {option: '건강/스포츠'},
-  {option: '일상'},
+  {option: '전체'},
+  {option: '일상/챗'},
   {option: '노래/연주'},
-  {option: '노래방'},
-  {option: '수다/채팅'},
   {option: '고민/사연'},
-  {option: '건강/스포츠'},
-  {option: '여행/힐링'},
-  {option: '외국어'},
-  {option: '책/스토리'},
+  {option: '책/힐링'},
   {option: '연애/오락'},
   {option: 'ASMR'},
+  {option: '노래방'},
+  {option: '성우'},
+  {option: '스터디'},
+  {option: '공포'},
+  {option: '먹방/요리'},
+  {option: '건강/스포츠'},
   {option: '기타'}
 ]
