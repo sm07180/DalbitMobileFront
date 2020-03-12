@@ -48,9 +48,7 @@ export default props => {
                   </div>
                 )}
                 <div className="profileImg">
-                  <BgImg url={data.bgImg.url}>
-                    <Img url={data.bjProfImg.url}></Img>
-                  </BgImg>
+                  <BgImg url={data.bjProfImg.thumb88x88}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.bjProfImg.url}></Img>}</BgImg>
                 </div>
               </div>
             </div>

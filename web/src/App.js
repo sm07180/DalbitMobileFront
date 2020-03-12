@@ -121,8 +121,6 @@ export default () => {
         }
       }
       //-----##TEST
-      console.log('### version 1.4')
-
       //모든처리완료
       setReady(true)
     } else {

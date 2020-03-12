@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
 //
+import {VERSION} from 'context/config'
 export default props => {
   //const
   const urlPc = `${IMG_SERVER}/images/api/ic_logo_normal.png`
@@ -22,11 +23,16 @@ export default props => {
         <img src={urlPc} className="pc" />
         <img src={urlMobile} className="mobile" />
         <img src={urlMobileSub} className="mobilesub" />
+        <TEST>{VERSION}</TEST>
       </Link>
     </Content>
   )
 }
 //---------------------------------------------------------------------
+const TEST = styled.span`
+  position: absolute;
+  font-size: 14px;
+`
 const Content = styled.div`
   position: fixed;
   top: 16px;

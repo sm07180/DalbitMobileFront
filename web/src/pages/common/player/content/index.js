@@ -8,8 +8,8 @@ import _ from 'lodash'
 //context
 import {isHybrid} from 'context/hybrid'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_POINT_Y} from 'context/color'
+import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import Utility from 'components/lib/utility'
 // etc
 
@@ -33,10 +33,10 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (!isHybrid()) return
+    // if (context.customHeader.isFirst === 'Y') return
     /**
      * @안드로이드
      */
-
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       if (context.customHeader.os + '' === '1') {
         const _val = JSON.stringify(context.nativePlayer)
