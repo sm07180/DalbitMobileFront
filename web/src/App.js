@@ -105,7 +105,8 @@ export default () => {
         //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        } else if (customHeader.isFirst === 'N') {
+        }
+        if (customHeader.isFirst === 'N') {
           //-----@안드로이드 & @IOS
           let cookie = Utility.getCookie('native-player-info')
           if (cookie !== '' && cookie !== undefined) {
