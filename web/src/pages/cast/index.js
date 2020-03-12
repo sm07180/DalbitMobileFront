@@ -18,12 +18,19 @@ export default props => {
   //context
   const context = useContext(Context)
   //useMemo
-  const nativePlayerInfo = useMemo(() => {
-    const _info = Utility.getCookie('native-player-info')
-    if (_info === '' || _info === undefined) {
+  const nativePlayerInfoCookie = useMemo(() => {
+    const _cookie = Utility.getCookie('native-player-info')
+    if (_cookie === '' || _cookie === undefined) {
       return '쿠키정보없음'
     }
-    return JSON.parse(_info)
+    return JSON.parse(_cookie)
+  })
+  const nativePlayerInfoSession = useMemo(() => {
+    const _session = sessionStorage.getItem('native-player-info')
+    if (_session === '' || _session === null || _session === undefined) {
+      return '세션정보없음'
+    }
+    return JSON.parse(_session)
   })
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
@@ -39,29 +46,11 @@ export default props => {
             APP/TEST 이동
           </button>
         </nav>
-        <h1>기능단위테스트</h1>
-        <section>
-          <button
-            onClick={() => {
-              const _info = Utility.getCookie('native-player-info')
-              //    const _info = JSON.parse(Utility.getCookie('native-player-info'))
-              if (_info === '' || _info === undefined) {
-                alert('쿠키없음')
-              } else {
-                alert(JSON.stringify(JSON.parse(_info), null, 1))
-              }
-            }}>
-            native-player-info
-          </button>
-          <button
-            onClick={() => {
-              Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
-            }}>
-            강제쿠키
-          </button>
-        </section>
-        <h1>native-player-info</h1>
-        <section>{JSON.stringify(nativePlayerInfo, null, 1)}</section>
+
+        <h1>native-player-info 쿠키</h1>
+        <section>{JSON.stringify(nativePlayerInfoCookie, null, 1)}</section>
+        <h1>native-player-info 세션</h1>
+        <section>{JSON.stringify(nativePlayerInfoSession, null, 1)}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>
