@@ -132,7 +132,7 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  width: 88%;
+  width: 100%;
   /* height: 100%; */
   flex-direction: column;
 

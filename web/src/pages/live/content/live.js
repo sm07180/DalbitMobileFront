@@ -55,6 +55,7 @@ export default props => {
   }, [context])
 
   //----------------------------------------------------------- components start
+  console.log('## list :', list)
   return (
     <Container>
       <TopArea>
@@ -95,7 +96,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      {props.broadList.length > 0 && <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />}
+      {props.broadList.length > 0 && props.broadList && <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />}
     </Container>
   )
 }
@@ -105,6 +106,9 @@ const Container = styled.div`
   width: 100%;
   /* height: 100%; */
   flex-direction: column;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
 `
 
 const TopArea = styled.div`
@@ -123,7 +127,7 @@ const TopArea = styled.div`
 
     .inside {
       display: flex;
-      width: 88%;
+      width: 100%;
       height: 100%;
       border-bottom-color: #8556f6;
       border-bottom-width: 1px;

@@ -10,6 +10,9 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 
+//image
+import camera from 'images/camera.svg'
+
 export default props => {
   const context = useContext(Context)
   const {profile} = context
@@ -81,15 +84,18 @@ export default props => {
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb88x88'] : ''})`}}>
+          {/* <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb88x88'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-          </ProfileImg>
+            <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+          </ProfileImg> */}
           <div className="nickname">
             <NicknameInput autoComplete="off" value={nickname} onChange={changeNickname} />
           </div>
           <UserId>{`@${profile.memId}`}</UserId>
-          {/* <PasswordInput autoComplete="new-password" /> */}
+          <div>
+            <PasswordInput autoComplete="new-password" value="abcdefgh" disabled={true} />
+          </div>
           <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
           <GenderWrap>
             <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
@@ -177,6 +183,12 @@ const PasswordInput = styled.input.attrs({type: 'password'})`
   padding: 16px;
   width: 100%;
   margin-top: 20px;
+  background-color: #eee;
+
+  &::-webkit-input-placeholder {
+    font-size: 14px;
+    user-select: none;
+  }
 `
 const UserId = styled.div`
   margin-top: 20px;
@@ -194,6 +206,7 @@ const NicknameInput = styled.input.attrs({type: 'text'})`
 `
 
 const ProfileImg = styled.div`
+  position: relative;
   margin: 0 auto;
   margin-bottom: 32px;
   border: 1px solid #8556f5;
