@@ -114,7 +114,7 @@ export default () => {
             context.action.updateNativePlayer(cookie)
           }
           //-----@ios
-          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
+          if (osName === 'iOS' && sessionStorage.getItem('native-player-info') !== '' && sessionStorage.getItem('native-player-info') !== undefined) {
             const session = sessionStorage.getItem('native-player-info')
             alert(session)
             alert(typeof JSON.parse(session))
