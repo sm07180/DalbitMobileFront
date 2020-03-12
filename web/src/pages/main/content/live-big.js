@@ -21,7 +21,7 @@ export default props => {
         onClick={() => {
           props.joinRoom({roomNo: roomNo})
         }}>
-        <ImgWrap bg={bjProfImg.url}>{/* <Avata bg={LiveBigInfo.avata}></Avata> */}</ImgWrap>
+        <ImgWrap bg={bjProfImg && bjProfImg.url}>{/* <Avata bg={LiveBigInfo.avata}></Avata> */}</ImgWrap>
         <InfoWrap>
           <InfoTitle>{title}</InfoTitle>
           <BjName>{bjNickNm}</BjName>
