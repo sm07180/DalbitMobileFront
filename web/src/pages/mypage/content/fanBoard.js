@@ -30,6 +30,8 @@ export default props => {
 
     if (lineBreakLenght >= 2) {
       target.style.height = `${lineBreakHeight * lineBreakLenght + defaultHeight}px`
+    } else {
+      target.style.height = `${2 * lineBreakHeight + defaultHeight}px`
     }
   }
 
