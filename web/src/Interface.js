@@ -33,8 +33,8 @@ export default () => {
       */
         let _ios = {
           roomNo: event.detail.roomNo,
-          bjProfImg: event.detail.roomNo,
-          title: event.detail.roomNo,
+          // bjProfImg: event.detail.roomNo,
+          title: event.detail.title,
           bjNickNm: event.detail.roomNo
         }
         _ios = JSON.stringify(_ios)
