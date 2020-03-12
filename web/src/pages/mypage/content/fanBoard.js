@@ -22,6 +22,17 @@ export default props => {
     commentSubmit()
   }
 
+  const textChange = e => {
+    const defaultHeight = 36
+    const lineBreakHeight = 14
+    const target = e.currentTarget
+    const lineBreakLenght = target.value.split('\n').length
+
+    if (lineBreakLenght >= 2) {
+      target.style.height = `${lineBreakHeight * lineBreakLenght + defaultHeight}px`
+    }
+  }
+
   return (
     <FanBoard className="fanboard">
       <WriteArea>
@@ -29,7 +40,7 @@ export default props => {
           <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
           <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontFamily: 'NanumSquareB'}}>{profile.nickNm}</div>
         </WriteAreaTop>
-        <Textarea placeholder={placeholderText} />
+        <Textarea placeholder={placeholderText} onChange={textChange} />
         <WriteAreaBottom>
           <TextCount>10 / 200</TextCount>
           <CommentSubmitBtn onClick={submitClick}>등록</CommentSubmitBtn>
@@ -76,7 +87,8 @@ const TextCount = styled.div`
   padding: 17px 20px;
   height: 50px;
   box-sizing: border-box;
-  border-top: 1px solid #d0d0d0;
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #d0d0d0;
 `
 
 const WriteAreaBottom = styled.div`
@@ -89,12 +101,11 @@ const WriteAreaBottom = styled.div`
 const Textarea = styled.textarea`
   display: block;
   width: 100%;
-  height: 50px;
-  padding: 8px;
+  height: 64px;
   resize: none;
   font-family: inherit;
-  box-sizing: border-box;
   padding: 18px 20px;
+  box-sizing: border-box;
 
   &::placeholder {
     color: #bdbdbd;
@@ -125,6 +136,7 @@ const WriteAreaTop = styled.div`
 
 const WriteArea = styled.div`
   border: 1px solid #d0d0d0;
+  border-bottom: none;
 `
 
 const FanBoard = styled.div`
