@@ -11,7 +11,7 @@ import {Context} from 'context'
 //util
 import Utility from 'components/lib/utility'
 
-export default props => {
+export default () => {
   //context
   const context = useContext(Context)
   //history

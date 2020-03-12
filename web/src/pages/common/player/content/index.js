@@ -20,23 +20,29 @@ export default props => {
   //context
   const context = useContext(Context)
   //useState
-  /**
-   * {roomNo,bjNickNm,title,bjProfImg}
-   */
   const [info, setInfo] = useState({
+    /**
+     * {roomNo,bjNickNm,title,bjProfImg}
+     */
     bjNickNm: 'BJ아이유😍',
     roomNo: null,
     bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
     title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨'
   })
   //---------------------------------------------------------------------
-  //useEffect
   useEffect(() => {
     if (!isHybrid()) return
-    // if (context.customHeader.isFirst === 'Y') return
-    /**
-     * @안드로이드
-     */
+    let cookie = Utility.getCookie('native-player-info')
+    if (cookie === '' || cookie === undefined) return
+    cookie = JSON.parse(cookie)
+    if (context.customHeader.isFirst === 'N') {
+      context.action.updateMediaPlayerStatus(true)
+    }
+  }, [])
+  //useEffect @android
+  useEffect(() => {
+    if (!isHybrid()) return
+    //@안드로이드
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       if (context.customHeader.os + '' === '1') {
         setInfo(context.nativePlayer)
@@ -74,10 +80,6 @@ export default props => {
           </div>
           <p
             onClick={() => {
-              // context.action.confirm({
-              //   callback: () => {},
-              //   msg: `방송방 다시들어가기`
-              // })
               props.update({playerNavigator: true})
             }}>
             <b>{info.bjNickNm}</b>
