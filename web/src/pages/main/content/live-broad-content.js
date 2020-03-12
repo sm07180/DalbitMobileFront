@@ -11,6 +11,22 @@ import {WIDTH_PC_S} from 'context/config'
 export default props => {
   const [BroadContentInfo, setBroadContentInfo] = useState(props.info)
   //---------------------------------------------------------------------
+  const roomTypes = {
+    '00': '일상/챗',
+    '01': '연애/오락',
+    '02': '노래/연주',
+    '03': '고민/사연',
+    '04': '책/힐링',
+    '05': '스포츠',
+    '06': 'ASMR',
+    '07': '노래방',
+    '08': '건강',
+    '09': '공포',
+    '10': '먹방',
+    '11': '성우',
+    '12': '요리',
+    '99': '기타'
+  }
   //---------------------------------------------------------------------
   const arrayBroad = BroadContentInfo.map((item, index) => {
     // console.log(item)
@@ -27,7 +43,7 @@ export default props => {
         <ImgWrap bg={bjProfImg.url}></ImgWrap>
         {/* <Avata bg={avata}></Avata> */}
         <InfoWrap>
-          <Category>{roomType}</Category>
+          <Category>{roomTypes[roomType]}</Category>
           <Title>{title}</Title>
           <BjName>{bjNickNm}</BjName>
         </InfoWrap>
