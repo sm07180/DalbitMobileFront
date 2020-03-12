@@ -125,7 +125,6 @@ export default () => {
       }
       if (res.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-        console.log('ppp', profileInfo)
         if (profileInfo.result === 'success') {
           context.action.updateProfile(profileInfo.data)
         }
