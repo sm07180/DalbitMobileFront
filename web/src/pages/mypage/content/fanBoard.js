@@ -17,6 +17,11 @@ export default props => {
   const {profile} = ctx
   const placeholderText = '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
 
+  const commentSubmit = () => {}
+  const submitClick = () => {
+    commentSubmit()
+  }
+
   return (
     <FanBoard className="fanboard">
       <WriteArea>
@@ -27,7 +32,7 @@ export default props => {
         <Textarea placeholder={placeholderText} />
         <WriteAreaBottom>
           <TextCount>10 / 200</TextCount>
-          <CommentSubmitBtn>등록</CommentSubmitBtn>
+          <CommentSubmitBtn onClick={submitClick}>등록</CommentSubmitBtn>
         </WriteAreaBottom>
       </WriteArea>
       <ListArea>
