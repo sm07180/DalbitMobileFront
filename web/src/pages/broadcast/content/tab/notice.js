@@ -103,7 +103,7 @@ export default props => {
           <Counter>{count} / 100</Counter>
         </div>
       )}
-      <div className="noticeInput">{store.noticeMsg}</div>
+      {context.broadcastTotalInfo.auth !== 3 && <div className="noticeInput">{store.noticeMsg}</div>}
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
 
       {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={fetchData}>등록하기</RegistBTN>}
