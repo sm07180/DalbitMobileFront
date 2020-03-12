@@ -28,7 +28,8 @@ export default props => {
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        //   Utility.setCookie('native-player-info', 'native-start', 100)
+        const _detail = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _detail, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
