@@ -108,18 +108,19 @@ export default () => {
         } else if (customHeader.isFirst === 'N') {
           //-----@안드로이드 Cookie
           let cookie = Utility.getCookie('native-player-info')
-          let session = sessionStorage.getItem('native-player-info')
+
           if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
             cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
           //-----@ios Session
-          if (osName === 'iOS' && session !== null && session !== undefined) {
-            const session = sessionStorage.getItem('native-player-info')
-            session = JSON.parse(session)
-            context.action.updateMediaPlayerStatus(true)
-            context.action.updateNativePlayer(session)
+          if (osName === 'iOS' && cookie !== '' && cookie !== undefined) {
+            alert(cookie)
+            cookie = JSON.parse(cookie)
+            alert(cookie)
+            //     context.action.updateMediaPlayerStatus(true)
+            //    context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
