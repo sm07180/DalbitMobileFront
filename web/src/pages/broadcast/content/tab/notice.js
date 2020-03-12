@@ -5,6 +5,8 @@ import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
+import useChange from 'components/hooks/useChange'
+
 //notice 가데이터
 const NoticeData = {
   notice: '안녕하세요. 74일차 디제이 라디오입니다.입구는 있어도 출구는 없습니다.  ♥하트+스푼은 사랑입니다♥'
@@ -12,30 +14,102 @@ const NoticeData = {
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
+  const {changes, setChanges, onChange} = useChange(update, {
+    onChange: -1,
+    notice: '안녕하세요. 74일차 디제이 라디오입니다.입구는 있어도 출구는 없습니다.  ♥하트+스푼은 사랑입니다♥'
+  })
+  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const [show, setShow] = useState(false)
+  //const [showRegist, setShowRegist] = useState(true)
+  console.log(roomInfo.roomNo)
+  const RoomNumbers = roomInfo.roomNo
+  //update
+  function update(mode) {
+    // console.log('---')
+    switch (true) {
+      case mode.onChange !== undefined:
+        //console.log(JSON.stringify(changes))
+        break
+    }
+  }
+  //useState
+  const [fetch, setFetch] = useState(null)
+  //---------------------------------------------------------------------
+  //fetch
+  async function fetchData(obj) {
+    const res = await Api.broad_notice({
+      data: {
+        roomNo: RoomNumbers,
+        notice: changes.notice
+      }
+    })
+    if (res.result === 'success') {
+      setFetch(res.data)
+      console.log(res)
+      setShow(true)
+      // setShowModify(true)
+    } else {
+      //Error발생시
+      console.log(res)
+    }
+  }
+  //딜리트
+  async function fetchDataDelete(obj) {
+    const res = await Api.broad_notice_delete({
+      data: {
+        roomNo: RoomNumbers
+      }
+    })
+    if (res.result === 'success') {
+      setFetch(res.data)
+      console.log(res)
+      setShow(false)
+      setTyping('')
+      // setShowModify(true)
+    } else {
+      //Error발생시
+      console.log(res)
+    }
+  }
+
   //0.공지사항등록 체인지 글자 스테이트-----------------------------------
   const [count, setCount] = useState(0)
+  const [typing, setTyping] = useState('')
   //텍스트아리아 벨리데이션function
   const handleChangeNotice = event => {
     const element = event.target
     const {value} = event.target
+    setChanges({...changes, notice: value})
+    setTyping(value)
     if (value.length > 100) {
       return
     }
     setCount(element.value.length)
   }
+  console.log(context.broadcastTotalInfo)
   //--------------------------------------------------------------------
   return (
     <Container>
       <Navi title={'공지사항'} />
-      <h5>*현재 방송방에서 공지할 내용을 입력하세요.</h5>
-      <div className="noticeInput">
-        <textarea onChange={handleChangeNotice} maxLength="100" placeholder="최대 100자 이내로 작성해주세요.">
-          {/* {NoticeData.notice} */}
-        </textarea>
-        <Counter>{count} / 100</Counter>
-      </div>
-      <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>
-      <RegistBTN>등록하기</RegistBTN>
+      {context.broadcastTotalInfo.auth == 3 ? <h5>*현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>*현재 방송방의 공지 사항 입니다.</h5>}
+      {context.broadcastTotalInfo.auth == 3 && (
+        <div className="noticeInput">
+          <textarea onChange={handleChangeNotice} maxLength="100" placeholder="최대 100자 이내로 작성해주세요." value={typing}>
+            {/* {NoticeData.notice} */}
+          </textarea>
+          <Counter>{count} / 100</Counter>
+        </div>
+      )}
+      <div className="noticeInput">{typing}</div>
+      {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
+
+      {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={fetchData}>등록하기</RegistBTN>}
+      {show === true && context.broadcastTotalInfo.auth == 3 && (
+        <div className="modifyWrap">
+          <DeleteBTN onClick={fetchDataDelete}>삭제하기</DeleteBTN>
+          <ModifyBTN onClick={fetchData}>수정하기</ModifyBTN>
+        </div>
+      )}
     </Container>
   )
 }
@@ -46,8 +120,9 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   background-color: #fff;
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
+  flex-wrap: wrap;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 360px;
   }
@@ -62,6 +137,7 @@ const Container = styled.div`
   & .noticeInput {
     position: relative;
     width: 100%;
+    min-height: 140px;
     padding: 20px;
     box-sizing: border-box;
     background-color: #f5f5f5;
@@ -89,6 +165,8 @@ const Container = styled.div`
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
+  & .modifyWrap {
+  }
 `
 const Counter = styled.span`
   position: absolute;
@@ -106,6 +184,30 @@ const RegistBTN = styled.button`
   padding: 15px 0;
   border-radius: 10px;
   background-color: ${COLOR_MAIN};
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  transform: skew(-0.03deg);
+`
+const DeleteBTN = styled.button`
+  width: calc(50% - 4px);
+  padding: 15px 0;
+  margin-right: 8px;
+  border-radius: 10px;
+  background-color: #fff;
+  color: ${COLOR_MAIN};
+  font-size: 16px;
+  letter-spacing: -0.4px;
+  border: 1px solid ${COLOR_MAIN};
+
+  transform: skew(-0.03deg);
+`
+const ModifyBTN = styled.button`
+  width: calc(50% - 4px);
+  padding: 15px 0;
+  border-radius: 10px;
+  background-color: ${COLOR_MAIN};
+  border: 1px solid ${COLOR_MAIN};
   color: #fff;
   font-size: 16px;
   letter-spacing: -0.4px;

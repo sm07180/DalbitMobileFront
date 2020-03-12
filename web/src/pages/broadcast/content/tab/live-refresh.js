@@ -36,6 +36,7 @@ const Wrap = styled.div`
     width: 18px;
     height: 18px;
     background: url(${IMG_SERVER}/images/api/ic_refresh.png) no-repeat center center / cover;
+    cursor: pointer;
   }
   & p {
     margin-left: 6px;
