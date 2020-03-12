@@ -127,10 +127,6 @@ export default () => {
       }
       //모든처리완료
       setReady(true)
-      //----
-      let cookie = Utility.getCookie('native-player-info')
-      cookie = JSON.parse(cookie)
-      console.log(cookie)
     } else {
       console.log('토큰에러')
     }
