@@ -190,14 +190,14 @@ const MainContents = styled.div`
   width: 100%;
   /* height: 100%; */
   /* align-items: flex-start; */
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
 `
 const Wrap = styled.div`
   display: flex;
   width: 65%;
   /* height: 80%; */
-  justify-content: center;
+  /* justify-content: center; */
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
   }

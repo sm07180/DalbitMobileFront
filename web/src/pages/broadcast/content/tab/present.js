@@ -17,16 +17,6 @@ const testData = [
   }
 ]
 
-const targetData = [
-  {
-    nickname: 'BJ라디오~~',
-    type: 0
-  },
-  {
-    nickname: '러브angel~~',
-    type: 1
-  }
-]
 
 const testBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
@@ -83,7 +73,7 @@ export default props => {
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
       {sendType == 0 ? (
-        <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} />
+        <SendItem testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} profile={context.profile}/>
       ) : (
         <SendDirect />
       )}
