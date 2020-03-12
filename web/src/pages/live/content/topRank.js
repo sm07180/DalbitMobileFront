@@ -1,6 +1,6 @@
 import React, {useMemo, useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import Swiper from 'react-id-swiper'
 import {Context} from 'context'
 
@@ -35,7 +35,7 @@ export default props => {
           </div>
         )}
         <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
-          {window.innerWidth > 600 && hover && index === selected ? <></> : <div>{index + 1}</div>}
+          {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
         <Info>
@@ -67,7 +67,7 @@ export default props => {
   console.log('## type :', type)
   return (
     <Container>
-      <Swiper width={props.width} spaceBetween={10}>
+      <Swiper width={props.width} spaceBetween={20} shouldSwiperUpdate={true}>
         {swiperValue}
       </Swiper>
     </Container>
@@ -76,7 +76,7 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  width: 90%;
+  width: 100%;
   justify-content: space-between;
 `
 const Contents = styled.div`
@@ -97,7 +97,7 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 999;
-    @media (max-width: ${WIDTH_MOBILE}) {
+    @media (max-width: ${WIDTH_TABLET}) {
       display: none;
     }
 
