@@ -35,9 +35,10 @@ export default props => {
     if (!isHybrid()) return
     //@안드로이드
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      if (context.customHeader.os + '' === '1') {
-        setInfo(context.nativePlayer)
-      }
+      setInfo(context.nativePlayer)
+      // if (context.customHeader.os + '' === '1') {
+      //   setInfo(context.nativePlayer)
+      // }
     }
   }, [context.nativePlayer])
   //---------------------------------------------------------------------
