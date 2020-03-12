@@ -79,7 +79,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 const Contents = styled.div`
   display: flex;
@@ -99,6 +99,9 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 999;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #8556f6;
     @media (max-width: ${WIDTH_TABLET}) {
       display: none;
     }
