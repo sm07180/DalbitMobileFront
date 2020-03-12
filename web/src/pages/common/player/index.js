@@ -26,6 +26,7 @@ export default props => {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         if (isHybrid()) {
           Hybrid('ExitRoom')
+          Utility.setCookie('native-player-info', '', -1)
           context.action.updateMediaPlayerStatus(false)
         } else {
           if (mediaHandler.rtcPeerConn) {
