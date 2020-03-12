@@ -100,14 +100,8 @@ export default () => {
     if (res.result === 'success') {
       console.table(res.data)
       // result 성공/실패 여부상관없이,토큰없데이트
-      if (res.data.isLogin) {
-        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-        if (profileInfo.result === 'success') {
-          context.action.updateProfile(profileInfo.data)
-        }
-      }
       context.action.updateToken(res.data)
-      //하이브리드일때
+      //###--하이브리드일때
       if (isHybrid === 'Y') {
         if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
           //active
@@ -115,14 +109,29 @@ export default () => {
         } else {
           if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
         }
-        //---TEST
+        //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
+        } else if (customHeader.isFirst === 'N') {
+          //-----@안드로이드
+          let cookie = Utility.getCookie('native-player-info')
+          if (osName === 'Android' && cookie !== '' && cookie !== undefined) {
+            cookie = JSON.parse(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
+          }
+          //-----@
         }
       }
-      //-----##TEST
       //모든처리완료
       setReady(true)
+      //------------------------로그인토큰일경우 프로필업데이트
+      if (res.data.isLogin) {
+        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        if (profileInfo.result === 'success') {
+          context.action.updateProfile(profileInfo.data)
+        }
+      }
     } else {
       console.log('토큰에러')
     }
