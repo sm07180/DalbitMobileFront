@@ -827,6 +827,16 @@ export default class API {
     return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 
+  static sms_request = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/sms`, method: method || 'post', data: data})
+  }
+
+  static sms_check = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/sms/auth`, method: method || 'post', data: data})
+  }
+
   //-------------------------------------------------------------
 }
 
