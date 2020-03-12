@@ -33,7 +33,6 @@ export default () => {
         }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
-        //Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(JSON.parse(_ios))
         break
