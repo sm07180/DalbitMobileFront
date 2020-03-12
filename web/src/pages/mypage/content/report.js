@@ -19,8 +19,8 @@ export default props => {
       <TitleWrap style={{paddingBottom: '16px'}}>
         <TitleText>리포트</TitleText>
         <div>
-          <TypeBtn>방송</TypeBtn>
-          <TypeBtn>청취</TypeBtn>
+          <TypeBtn style={{marginRight: '5px'}}>방송</TypeBtn>
+          <TypeBtn style={{marginLeft: '5px'}}>청취</TypeBtn>
         </div>
       </TitleWrap>
       <TitleWrap style={{alignItems: 'flex-end'}}>
