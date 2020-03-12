@@ -2,7 +2,7 @@
  * @file /cast/index.js
  * @brief 캐스트 페이지
  */
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useMemo, useContext, useRef} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
@@ -15,8 +15,17 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Utility from 'components/lib/utility'
 
 export default props => {
+  //context
   const context = useContext(Context)
-
+  //useMemo
+  const nativePlayerInfo = useMemo(() => {
+    const _info = Utility.getCookie('native-player-info')
+    if (_info === '' || _info === undefined) {
+      return '쿠키정보없음'
+    } else {
+      return JSON.stringify(JSON.parse(_info), null, 1)
+    }
+  })
   //---------------------------------------------------------------------
   //---------------------------------------------------------------------
 
@@ -53,7 +62,7 @@ export default props => {
           </button>
         </section>
         <h1>native-player-info</h1>
-        <section>{JSON.stringify(JSON.parse(Utility.getCookie('native-player-info')), null, 1)}</section>
+        <section>{JSON.stringify(nativePlayerInfo, null, 1)}</section>
         <h1>CustomHeader</h1>
         <section>{JSON.stringify(context.customHeader, null, 1)}</section>
         <h1>token</h1>

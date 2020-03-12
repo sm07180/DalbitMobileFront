@@ -9,8 +9,13 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-player-show', {
-      detail: {url: '/login/'}
+    new CustomEvent('native-start', {
+      detail: {
+        bjNickNm: '손완휘',
+        roomNo: '1111',
+        bjProfImg: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png',
+        title: '상쾌한 아침을 함께해요✨'
+      }
     })
   )
   return true
