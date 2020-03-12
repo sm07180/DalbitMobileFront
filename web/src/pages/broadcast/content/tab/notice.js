@@ -6,6 +6,7 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
+import {BroadCastStore} from 'pages/broadcast/store'
 
 //notice 가데이터
 const NoticeData = {
@@ -14,6 +15,7 @@ const NoticeData = {
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
+  const store = useContext(BroadCastStore)
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     notice: '안녕하세요. 74일차 디제이 라디오입니다.입구는 있어도 출구는 없습니다.  ♥하트+스푼은 사랑입니다♥'
@@ -87,6 +89,7 @@ export default props => {
     setCount(element.value.length)
   }
   console.log(context.broadcastTotalInfo)
+  console.log(store.noticeMsg)
   //--------------------------------------------------------------------
   return (
     <Container>
@@ -100,7 +103,7 @@ export default props => {
           <Counter>{count} / 100</Counter>
         </div>
       )}
-      <div className="noticeInput">{typing}</div>
+      <div className="noticeInput">{store.noticeMsg}</div>
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
 
       {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={fetchData}>등록하기</RegistBTN>}

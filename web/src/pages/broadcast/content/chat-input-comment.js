@@ -156,7 +156,6 @@ export default props => {
     context.action.confirm({
       //콜백처리
       callback: () => {
-        console.log('asdasdasdasd')
         const res = broad_exit(props.roomNo)
         if (res.result === 'success') {
           sc.SendMessageChatEnd(props)

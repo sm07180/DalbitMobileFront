@@ -637,9 +637,12 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
       logStr += 'data: ' + data + '\n'
       logStr += 'error: ' + e + '\n'
     }
-    var log = JSON.parse(data)
+    //var log = JSON.parse(data)
 
-    if (data != '#1') console.warn(logStr)
+    //if (data != '#1') console.warn(logStr)
+
+    if ((data && data === '#1') || dataObj.event === '#publish') return
+    console.warn(logStr)
   })
 
   //서버시간 수신
