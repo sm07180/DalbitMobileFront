@@ -331,13 +331,13 @@ const MobileWrap = styled.div`
     }
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 282px;
+    height: 300px;
     .swiper-slide {
       /* width: 65%; */
     }
   }
-  @media (max-width: ${WIDTH_MOBILE_S}) {
-    height: 242px;
+  @media (max-width: 480px) {
+    height: 240px;
   }
 `
 
@@ -423,7 +423,7 @@ const ImgBox = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 200px;
   }
-  @media (max-width: ${WIDTH_MOBILE_S}) {
+  @media (max-width: 480px) {
     height: 140px;
   }
 `
