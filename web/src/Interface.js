@@ -33,12 +33,13 @@ export default () => {
       */
         let _ios = {
           roomNo: event.detail.roomNo,
-          // bjProfImg: event.detail.roomNo,
+          //   bjProfImg: event.detail.bjProfImg.thumb150x150,
           title: event.detail.title,
-          bjNickNm: event.detail.roomNo
+          bjNickNm: event.detail.bjNickNm
         }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
+        alert(Utility.getCookie('native-player-info'))
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(JSON.parse(_ios))
         break
