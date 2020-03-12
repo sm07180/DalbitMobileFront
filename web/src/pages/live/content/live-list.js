@@ -62,7 +62,7 @@ export default props => {
                   {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
                 </div>
                 <div className="roomTitle">{data.title}</div>
-                <div className="intro">{data.bjNickNm}</div>
+                <div className="nickName">{data.bjNickNm}</div>
               </div>
               <CountArea>
                 <div>
@@ -240,8 +240,8 @@ const List = styled.div`
       letter-spacing: -0.35px;
       color: #bdbdbd;
       @media (max-width: ${WIDTH_MOBILE}) {
-        height: 20px;
-        margin-bottom: 2px;
+        height: 30px;
+        margin-bottom: 5px;
       }
     }
 
@@ -256,10 +256,11 @@ const List = styled.div`
       align-items: center;
       @media (max-width: ${WIDTH_MOBILE}) {
         height: 30px;
+        line-height: 0;
       }
     }
 
-    .intro {
+    .nickName {
       display: flex;
       width: 100%;
       height: 20px;
@@ -270,7 +271,8 @@ const List = styled.div`
       color: #8556f6;
       align-items: center;
       @media (max-width: ${WIDTH_MOBILE}) {
-        height: 50px;
+        height: 40px;
+        margin-top: 3px;
       }
     }
   }
@@ -292,7 +294,7 @@ const CountArea = styled.div`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 80%;
-    height: 30px;
+    height: 28px;
     justify-content: flex-start;
     align-items: center;
     padding: 0px 0px 0px 0px;
@@ -335,8 +337,9 @@ const MobileWrap = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       padding-top: 0px;
       width: 100%;
-      height: 180px;
+      height: 70px;
       overflow: hidden;
+      font-size: 15px;
     }
   }
 `
