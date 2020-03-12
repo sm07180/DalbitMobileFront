@@ -401,7 +401,7 @@ const ImgBox = styled.div`
   height: 280px;
   background: url(${props => props.url}) no-repeat center center / cover;
   text-align: left;
-  z-index: -1;
+  /* z-index: -1; */
   span {
     display: inline-block;
     padding: 0 11px;
