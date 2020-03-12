@@ -24,14 +24,14 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        const _detail = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', _detail, 100)
+        const _ios = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _ios, 100)
         context.action.updateMediaPlayerStatus(true)
         // context.action.updateRoomInfo(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        const _detail = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', _detail, 100)
+        const _android = JSON.stringify(event.detail)
+        Utility.setCookie('native-player-info', _android, 100)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
