@@ -24,7 +24,7 @@ export const BroadValidation = () => {
   const isOnAir = Boolean(context.cast_state) //-------방송중 여부확인
   const isApp = Boolean(isHybrid()) //-----------------네이티브앱 여부확인
   //--#방송중
-  alert([isLogin, isOnAir, isApp])
+  //alert([isLogin, isOnAir, isApp])
   if (isOnAir) {
     alert('방송중입니다.')
   } else {
