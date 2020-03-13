@@ -55,9 +55,7 @@ export default props => {
     } else if (e.target.name === 'phone') {
       setPhone(e.target.value)
     } else if (e.target.name === 'pay') {
-      console.log('## pay :', e.target.value)
     } else if (e.target.name === 'company') {
-      console.log('## company : ', e.target.value)
     }
   }
 
