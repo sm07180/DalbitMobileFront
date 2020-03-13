@@ -112,9 +112,27 @@ export default props => {
       //sc.SendMessageKickout(res)
     }
   }
-
-  const isFanCheck = () => {
-    if (context.broadcastTotalInfo.memNo === objProfileInfo.memNo) console.log('asdasdasd')
+  // 신고하기 Api
+  // async function broadkickout() {
+  //   const res = await Api.broad_kickout({
+  //     data: {
+  //       roomNo: context.broadcastTotalInfo.roomNo,
+  //       blockNo: objProfileInfo.memNo
+  //     },
+  //     method: 'POST'
+  //   })
+  //   //Error발생시
+  //   if (res.result === 'success') {
+  //     context.action.alert({
+  //       //콜백처리
+  //       msg: `${objProfileInfo.nickNm} 님이 강제 퇴장 되었습니다.`
+  //     })
+  //     //sc.SendMessageKickout(res)
+  //   }
+  // }
+  const goDeclaration = () => {
+    store.action.updateTab(7)
+    store.action.updateReportData({nickNm: objProfileInfo.nickNm, memNo: objProfileInfo.memNo})
   }
   useEffect(() => {
     console.log(store.broadcastProfileInfo)
@@ -186,13 +204,13 @@ export default props => {
     //console.log(store.broadcastProfileInfo)
     return (
       <React.Fragment>
-        <button className="reportBtn"></button>
+        <button className="reportBtn" onClick={() => goDeclaration()}></button>
         <div className="imgWrap">
           <PIMG bg={objProfileInfo.profImg.url} />
         </div>
         <div className="gazeWrap">
           <div className="gazeBar">
-            <GazeBar gaze={percent}>
+            <GazeBar gaze={percent} expNext={objProfileInfo}>
               <p>{objProfileInfo.exp}</p>
             </GazeBar>
           </div>
@@ -272,7 +290,7 @@ const Container = styled.div`
     }
     &:after {
       position: absolute;
-      content: '300';
+      content: ${props => props.expNext};
       right: 0;
       top: 0;
       line-height: 20px;

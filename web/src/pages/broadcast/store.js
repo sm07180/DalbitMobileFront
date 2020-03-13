@@ -161,8 +161,8 @@ const BroadCastProvider = props => {
     updateMikeState: bool => {
       setMikeState(bool)
     },
-    updateReportData: list => {
-      setReportData(list)
+    updateReportData: obj => {
+      setReportData(reportData => ({...reportData, ...obj}))
     },
     updatereportIndex: num => {
       setReportIndex(num)

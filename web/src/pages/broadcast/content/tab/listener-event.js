@@ -180,8 +180,9 @@ export default props => {
         break
       case 5: //신고하기
         res = drawListenList(props.selectidx)
-        console.log(props.selectidx)
-        store.action.updateReportData(res[props.selectidx])
+        console.log('##신고하기 res = ' + props.selectidx)
+
+        store.action.updateReportData({memNo: res[props.selectidx].memNo, nickNm: res[props.selectidx].nickNm, roomNo: store.roomInfo.roomNo})
         store.action.updateTab(7)
         break
       default:

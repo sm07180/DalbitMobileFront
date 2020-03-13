@@ -26,7 +26,8 @@ export default props => {
     const res = await Api.member_declar({
       data: {
         memNo: store.reportData.memNo,
-        reason: store.reportIndex
+        reason: store.reportIndex,
+        roomNo: store.reportData.roomNo
       }
     })
     if (res.result === 'success') {
