@@ -116,7 +116,7 @@ export default props => {
       } else {
         //하이브리드앱이 아닐때
         const {roomNo} = res.data
-        // context.action.updateBroadcastTotalInfo(res.data)
+        context.action.updateBroadcastTotalInfo(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
     }
