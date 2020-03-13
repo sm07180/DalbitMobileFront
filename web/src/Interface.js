@@ -19,7 +19,7 @@ export default () => {
   let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
-    alert(event.type)
+    // alert(event.type)
     switch (event.type) {
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
@@ -30,24 +30,29 @@ export default () => {
          * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
          */
         //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
-        let _ios = JSON.stringify(event.detail)
+        let _ios = event.detail
         alert(_ios)
-        _ios = encodeURIComponent(_ios)
-        alert(_ios)
-        Utility.setCookie('native-player-info', _ios, 100)
+        let _ios1 = decodeURIComponent(_ios)
+        alert(_ios1)
+        //_ios = encodeURIComponent(_ios)
 
-        _ios = decodeURIComponent(_ios)
-        alert(_ios)
-        _ios = JSON.parse(_ios)
-        alert(_ios)
-        _ios = JSON.stringify(_ios)
-        alert(_ios)
-        //_ios = encodeURIComponent(event.detail)
+        //_ios = JSON.stringify(_ios)
+        //  alert(_ios)
+        //console.log(_ios)
+        Utility.setCookie('native-player-info', escape(_ios), 100)
 
-        // document.cookie = 'native-player-info=' + _ios
+        //document.cookie = 'native-player-info=' + _ios + ';'
+        alert(decodeURIComponent(Utility.getCookie('native-player-info')))
+
+        // _ios = decodeURIComponent(_ios)
+        // alert(_ios)
+        // _ios = JSON.parse(_ios)
+        // alert(_ios)
+        // _ios = JSON.stringify(_ios)
+        // alert(_ios)
 
         context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(event.detail)
+        context.action.updateNativePlayer(_ios1)
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)

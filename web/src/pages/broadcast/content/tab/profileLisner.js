@@ -201,7 +201,7 @@ export default props => {
           {objProfileInfo.grade} / Lv.{objProfileInfo.level}
         </h5>
         <h5 className="nickWrap">{objProfileInfo.nickNm}</h5>
-        <h5 className="IdWrap">{roomInfo.bjStreamId}</h5>
+        <h5 className="IdWrap">{`@${objProfileInfo.memId}`}</h5>
         <div className="fanWrap">
           <div>
             <div className="fanstarbox">

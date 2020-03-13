@@ -23,7 +23,7 @@ export default props => {
     if (_cookie === '' || _cookie === null || _cookie === undefined) {
       return '쿠키정보없음'
     }
-    return JSON.parse(_cookie)
+    return _cookie
   })
 
   //---------------------------------------------------------------------

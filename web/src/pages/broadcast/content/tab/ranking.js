@@ -51,6 +51,7 @@ export default props => {
   //map
 
   const creatFanRank = () => {
+    if (room.fanRank.length < 1) return
     return room.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>
@@ -75,7 +76,7 @@ export default props => {
     <Content>
       <ul>
         <h4>팬 랭킹</h4>
-        {room.fanRank[0].profImg.url && creatFanRank()}
+        {creatFanRank()}
         <li className="people">50</li>
         {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
       </ul>
