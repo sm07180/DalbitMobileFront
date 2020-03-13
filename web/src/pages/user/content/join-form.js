@@ -427,8 +427,9 @@ const JoinForm = props => {
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       //setInterval({createAuthTimer()},1000)
       //thisTimer =
-      setThisTimer(setInterval(createAuthTimer, 1000))
+      clearInterval(thisTimer)
       setTime = 300
+      setThisTimer(setInterval(createAuthTimer, 1000))
     } else {
       console.log(resAuth)
       setCurrentAuth1(resAuth.message)
