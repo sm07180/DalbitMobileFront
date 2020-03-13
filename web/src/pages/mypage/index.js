@@ -68,16 +68,6 @@ const SubContent = styled.div`
   }
 `
 
-const ContentHeader = styled.div`
-  display: flex;
-  padding: 20px;
-  justify-content: space-between;
-
-  h1 {
-    display: inline-block;
-  }
-`
-
 const Content = styled.section`
   margin: 30px 0 100px 0;
 `

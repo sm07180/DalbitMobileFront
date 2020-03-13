@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC, WIDTH_TABLET_S} from 'context/config'
 
 // context
 import {Context} from 'context'
@@ -22,7 +22,7 @@ const myProfile = props => {
   return (
     <MyProfile>
       <ProfileImg style={{backgroundImage: `url(${profile.profImg ? profile.profImg['thumb190x190'] : ''})`}} />
-      <div style={{marginLeft: '24px', width: 'calc(100% - 180px)'}}>
+      <ContentWrap>
         <LevelWrap>
           <LevelText>LEVEL {profile.level}</LevelText>
           <LevelStatusBarWrap>
@@ -52,7 +52,7 @@ const myProfile = props => {
           <div>{profile.profMsg}</div>
           <div></div>
         </IntroduceAndFan>
-      </div>
+      </ContentWrap>
     </MyProfile>
   )
 }
@@ -94,6 +94,10 @@ const InfoConfigBtn = styled.div`
     padding: 10px 20px;
     user-select: none;
   }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
+  }
 `
 
 const InfoWrap = styled.div`
@@ -129,6 +133,22 @@ const LevelText = styled.span`
 const LevelWrap = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 20px;
+`
+
+const ContentWrap = styled.div`
+  margin-left: 24px;
+  width: calc(100% - 180px);
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 100%;
+    margin: 0 auto;
+
+    & > div {
+      display: flex;
+      justify-content: center;
+    }
+  }
 `
 
 const ProfileImg = styled.div`
@@ -137,6 +157,12 @@ const ProfileImg = styled.div`
   height: 156px;
   background-size: cover;
   background-position: center;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    width: 126px;
+    height: 126px;
+    margin: 0 auto;
+  }
 `
 
 const MyProfile = styled.div`
@@ -149,5 +175,9 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_PC}) {
     width: 90%;
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    flex-direction: column;
   }
 `
