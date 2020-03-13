@@ -45,7 +45,7 @@ export default class Utility {
       y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
       x = x.replace(/^\s+|\s+$/g, '')
       if (x == c_name) {
-        return decodeURIComponent(y)
+        return y
       }
     }
   }
