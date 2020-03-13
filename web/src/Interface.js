@@ -36,6 +36,7 @@ export default () => {
         }
         _ios = JSON.stringify(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
+        alert(event.detail)
         alert(Utility.getCookie('native-player-info'))
         //  Utility.setCookie('native-player-info', JSON.stringify({roomNo: event.detail.roomNo}), 100)
         context.action.updateMediaPlayerStatus(true)
