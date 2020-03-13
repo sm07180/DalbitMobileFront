@@ -30,8 +30,10 @@ export default () => {
          * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
          */
         const _ios = JSON.stringify(event.detail)
+        alert(_ios)
         Utility.setCookie('native-player-info', _ios, 100)
-        alert(JSON.stringify(_ios, null, 1))
+        const _cookie = Utility.getCookie('native-player-info')
+        alert(JSON.stringify(_cookie))
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
