@@ -11,7 +11,6 @@ export default props => {
   const context = useContext(Context)
   const scrollbars = useRef(null)
   const [roomType, setRoomType] = useState(context.common.roomType)
-  const [test, setTest] = useState('텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트텍스트 테스트')
 
   //------------------------------------------------------------ func start
   const handleHover = (flag, index) => {
@@ -19,18 +18,6 @@ export default props => {
     setHover(flag)
   }
 
-  // useEffect(() => {
-  //   console.log('## window.pageYOffset :', window.pageYOffset)
-  //   window.addEventListener('scroll', onScroll)
-  // }, [])
-
-  // const onScroll = e => {
-  //   console.log(e.srcElement.scrollingElement.scrollTop)
-  //   const position = e.srcElement.scrollingElement.scrollTop
-  //   if(position > 500){
-
-  //   }
-  // }
   //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
 
   //------------------------------------------------------------ components start

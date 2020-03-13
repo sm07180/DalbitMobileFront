@@ -58,11 +58,11 @@ export default props => {
           <DashBoard>
             {props.testData.guestYn === 'Y' && (
               <Target>
-                <TargetInfo targetData={props.targetData} bjNickNm={props.bjNickNm} />
+                <TargetInfo bjNickNm={props.bjNickNm} />
               </Target>
             )}
             <Level>
-              <UserLevel>LEVEL {props.testData.level}</UserLevel>
+              <UserLevel>LEVEL {props.profile.level}</UserLevel>
               <BarWrap>
                 <Bar>
                   <Exp exp={bWidth}>{percent}%</Exp>
@@ -72,7 +72,7 @@ export default props => {
             <MyItem>
               <div className="myTitle">내가 보유한 달</div>
               <div className="myItem">
-                123,123,122&nbsp;&nbsp;<button>+</button>
+            {props.profile.dalCnt}&nbsp;&nbsp;<button>+</button>
               </div>
             </MyItem>
           </DashBoard>
