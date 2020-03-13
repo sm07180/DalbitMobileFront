@@ -112,27 +112,14 @@ export default props => {
       //sc.SendMessageKickout(res)
     }
   }
-  // 신고하기 Api
-  // async function broadkickout() {
-  //   const res = await Api.broad_kickout({
-  //     data: {
-  //       roomNo: context.broadcastTotalInfo.roomNo,
-  //       blockNo: objProfileInfo.memNo
-  //     },
-  //     method: 'POST'
-  //   })
-  //   //Error발생시
-  //   if (res.result === 'success') {
-  //     context.action.alert({
-  //       //콜백처리
-  //       msg: `${objProfileInfo.nickNm} 님이 강제 퇴장 되었습니다.`
-  //     })
-  //     //sc.SendMessageKickout(res)
-  //   }
-  // }
+
   const goDeclaration = () => {
     store.action.updateTab(7)
     store.action.updateReportData({nickNm: objProfileInfo.nickNm, memNo: objProfileInfo.memNo})
+  }
+  const DeclarationBtn = () => {
+    if (objProfileInfo.auth < 2) return <button className="reportBtn" onClick={() => goDeclaration()}></button>
+    else return <></>
   }
   useEffect(() => {
     console.log(store.broadcastProfileInfo)
@@ -145,7 +132,6 @@ export default props => {
         <React.Fragment>
           <div className="functionWrap">
             <div className="managerBtn">
-              {/* <button onClick={() => broadManager(store.broadcastProfileInfo.auth)}></button> */}
               <button
                 onClick={() => {
                   context.action.confirm({
@@ -204,7 +190,7 @@ export default props => {
     //console.log(store.broadcastProfileInfo)
     return (
       <React.Fragment>
-        <button className="reportBtn" onClick={() => goDeclaration()}></button>
+        {DeclarationBtn()}
         <div className="imgWrap">
           <PIMG bg={objProfileInfo.profImg.url} />
         </div>
