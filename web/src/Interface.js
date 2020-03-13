@@ -32,18 +32,18 @@ export default () => {
         //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
         let _ios
 
-        _ios = JSON.stringify(event.detail)
-        alert(_ios)
-        console.log(_ios)
         _ios = encodeURIComponent(_ios)
         alert(_ios)
         console.log(_ios)
-        //_ios = JSON.stringify(_ios)
+        _ios = JSON.stringify(event.detail)
         alert(_ios)
         console.log(_ios)
+        //_ios = JSON.stringify(_ios)
+        //  alert(_ios)
+        //console.log(_ios)
 
-        //document.cookie = 'native-player-info=' + _ios + ';'
-        Utility.setCookie('native-player-info', _ios, 100)
+        document.cookie = 'native-player-info=' + _ios + ';'
+        //Utility.setCookie('native-player-info', _ios, 100)
 
         // _ios = decodeURIComponent(_ios)
         // alert(_ios)
