@@ -25,22 +25,19 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        /*
-        roomNo: event.detail.roomNo,
+        /**
+         * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
+         */
+        let _ios = {
+          roomNo: event.detail.roomNo,
           bjProfImg: event.detail.bjProfImg.thumb150x150,
           title: event.detail.title,
           bjNickNm: event.detail.bjNickNm
-      */
-        let _ios = {
-          roomNo: event.detail.roomNo,
-          // bjProfImg: event.detail.roomNo,
-          title: event.detail.title,
-          bjNickNm: event.detail.roomNo
         }
-        _ios = JSON.stringify(_ios)
-        Utility.setCookie('native-player-info', _ios, 100)
+        //_ios = JSON.stringify(_ios)
+        Utility.setCookie('native-player-info', JSON.stringify({roomNo: event.detail.roomNo}), 100)
         context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(JSON.parse(_ios))
+        context.action.updateNativePlayer(_ios)
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)
