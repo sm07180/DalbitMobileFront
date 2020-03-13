@@ -90,10 +90,12 @@ export default () => {
       context.action.updateToken(res.data)
       //#2 로그인토큰일경우 프로필업데이트
       if (res.data.isLogin) {
-        const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-        if (profileInfo.result === 'success') {
-          //
-          context.action.updateProfile(profileInfo.data)
+        if (location.href.indexOf('/private/') === -1) {
+          const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+          if (profileInfo.result === 'success') {
+            //
+            context.action.updateProfile(profileInfo.data)
+          }
         }
       }
       //###--하이브리드일때
