@@ -24,22 +24,19 @@ export const BroadValidation = () => {
   const isOnAir = Boolean(context.cast_state) //-------방송중 여부확인
   const isApp = Boolean(isHybrid()) //-----------------네이티브앱 여부확인
   //--#방송중
+  alert([isLogin, isOnAir, isApp])
   if (isOnAir) {
     alert('방송중입니다.')
   } else {
     //--#방송하기
-
-    //NativeApp
-    if (isApp) {
-      Hybrid('RoomMake')
-    } else {
-      //PC 및 모바일웹
-      if (isLogin) {
+    switch (isLogin) {
+      case true: //----------------로그인상태
+        if (isApp) Hybrid('RoomMake', '')
+        if (!isApp) Navi.history().push('/broadcast-setting')
+        break
+      case false: //---------------로그아웃상태
         context.action.updatePopup('LOGIN')
-        return
-      } else {
-        Navi.history().push('/broadcast-setting')
-      }
+        break
     }
   }
 }
