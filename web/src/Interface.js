@@ -34,8 +34,8 @@ export default () => {
         alert(_ios)
         _ios = encodeURIComponent(_ios)
         alert(_ios)
-        //  _ios = JSON.stringify(_ios)
-        // alert(_ios)
+        Utility.setCookie('native-player-info', _ios, 100)
+
         _ios = decodeURIComponent(_ios)
         alert(_ios)
         _ios = JSON.parse(_ios)
@@ -44,7 +44,6 @@ export default () => {
         alert(_ios)
         //_ios = encodeURIComponent(event.detail)
 
-        Utility.setCookie('native-player-info', encodeURIComponent(JSON.stringify(event.detail)), 100)
         // document.cookie = 'native-player-info=' + _ios
 
         context.action.updateMediaPlayerStatus(true)
