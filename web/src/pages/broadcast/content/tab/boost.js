@@ -65,14 +65,13 @@ export default props => {
       context.action.alert({
         // 부스트 사용완료 팝업
         callback: () => {
-          console.log('callback처리')
+          console.log('')
         },
         title: '달빛라디오',
         msg: '부스터가 사용되었습니다.'
       })
     }
   }
-  console.log('## props :', props)
   //----------------------------------------------------- components start
   return (
     <Container>

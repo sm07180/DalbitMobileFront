@@ -21,7 +21,6 @@ export default props => {
   //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
 
   //------------------------------------------------------------ components start
-  console.log('## roomType : ', roomType)
   return (
     <Container>
       {props.broadList.map((data, index) => {
@@ -173,7 +172,7 @@ const List = styled.div`
         display: flex;
         width: 24px;
         height: 24px;
-        background: url('https://devimage.dalbitcast.com/images/api/ic_play_color.png') no-repeat;
+        background: url('https://devimage.dalbitcast.com/images/api/ic_play_color_24.png') no-repeat;
         z-index: 100;
       }
     }

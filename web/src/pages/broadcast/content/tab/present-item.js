@@ -41,7 +41,6 @@ export default props => {
       setCount(count + 1)
       setItemNo(itemNo)
     }
-    console.log('## pickItem : ', 'idx: ', idx, 'count: ', count, 'itemNo :', itemNo)
   }
 
   useEffect(() => {
@@ -50,7 +49,6 @@ export default props => {
     context.action.updatePopupVisible(false)
   }, [])
   //-------------------------------------------------- components start
-  console.log('## props.common :', props.common)
   return (
     <Container>
       <MainContents>
@@ -72,7 +70,7 @@ export default props => {
             <MyItem>
               <div className="myTitle">내가 보유한 달</div>
               <div className="myItem">
-            {props.profile.dalCnt}&nbsp;&nbsp;<button>+</button>
+                {props.profile.dalCnt}&nbsp;&nbsp;<button>+</button>
               </div>
             </MyItem>
           </DashBoard>

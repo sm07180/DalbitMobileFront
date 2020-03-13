@@ -859,7 +859,7 @@ export const ajax = async obj => {
   const {url, method, data, params, authToken} = obj
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
-    const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded;charset=utf-8'
+    const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded; charset=utf-8'
     let formData = new FormData()
     if (url === '/upload' && data) {
       formData.append('file', '')
