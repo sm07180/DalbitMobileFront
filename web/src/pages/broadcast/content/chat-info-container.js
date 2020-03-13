@@ -52,6 +52,7 @@ export default props => {
   //map
 
   const creatFanRank = () => {
+    if (room.fanRank.length < 1) return <></>
     return room.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>
@@ -79,28 +80,28 @@ export default props => {
       )
     }
   }
-  const likeCheck = () => {
-    if (context.broadcastTotalInfo === null) {
-      return room.like
-    } else {
-      return context.broadcastTotalInfo.likes
-    }
-  }
+  // const likeCheck = () => {
+  //   if (context.broadcastTotalInfo === null) {
+  //     return room.like
+  //   } else {
+  //     return context.broadcastTotalInfo.likes
+  //   }
+  // }
 
-  async function goBjProfile() {
-    const res = await Api.broad_member_profile({
-      params: {
-        memNo: context.broadcastTotalInfo.bjMemNo,
-        roomNo: context.broadcastTotalInfo.roomNo
-      },
-      method: 'GET'
-    })
-    //Error발생시
-    if (res.result === 'success') {
-      store.action.updateTab(6)
-      store.action.updateBroadcastProfileInfo(res.data)
-    }
-  }
+  // async function goBjProfile() {
+  //   const res = await Api.broad_member_profile({
+  //     params: {
+  //       memNo: context.broadcastTotalInfo.bjMemNo,
+  //       roomNo: context.broadcastTotalInfo.roomNo
+  //     },
+  //     method: 'GET'
+  //   })
+  //   //Error발생시
+  //   if (res.result === 'success') {
+  //     store.action.updateTab(6)
+  //     store.action.updateBroadcastProfileInfo(res.data)
+  //   }
+  // }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -160,7 +161,7 @@ export default props => {
         </div>
         <ul>
           {/* 팬랭킹 영역 */}
-          {room.fanRank[0].profImg.url && creatFanRank()}
+          {creatFanRank()}
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
           <li className="people" onClick={() => store.action.updateTab(0)}>
             {context.broadcastTotalInfo.userCount != '' ? context.broadcastTotalInfo.userCount : 0}
