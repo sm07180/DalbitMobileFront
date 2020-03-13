@@ -116,13 +116,14 @@ export default () => {
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
-          //-----@IOS (roomNo)만연결해서 REST필요
+          //-----@iOS
           if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
-            //            cookie = JSON.parse(JSON.stringify(cookie))
-            alert(decodeURIComponent(cookie))
-            cookie = JSON.parse(decodeURIComponent(cookie))
-         //   context.action.updateMediaPlayerStatus(true)
-          //  context.action.updateNativePlayer(cookie)
+            cookie = decodeURIComponent(cookie)
+            alert(cookie)
+            cookie = JSON.parse(cookie)
+            alert(typeof cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
