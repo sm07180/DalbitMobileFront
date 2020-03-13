@@ -119,10 +119,10 @@ export default () => {
           //-----@IOS (roomNo)만연결해서 REST필요
           if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
             //            cookie = JSON.parse(JSON.stringify(cookie))
-            alert(decodeURIComponent(cookie))
+            alert(JSON.stringify(decodeURIComponent(cookie)))
             cookie = JSON.parse(decodeURIComponent(cookie))
-         //   context.action.updateMediaPlayerStatus(true)
-          //  context.action.updateNativePlayer(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
