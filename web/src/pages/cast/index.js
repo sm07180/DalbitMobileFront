@@ -19,7 +19,7 @@ export default props => {
   const context = useContext(Context)
   //useMemo
   const nativePlayerInfoCookie = useMemo(() => {
-    const _cookie = decodeURIComponent(Utility.getCookie('native-player-info'))
+    const _cookie = decodeURIComponent(JSON.parse(Utility.getCookie('native-player-info')))
     if (_cookie === '' || _cookie === null || _cookie === undefined) {
       return '쿠키정보없음'
     }
