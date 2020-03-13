@@ -13,6 +13,8 @@ import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
 // context
 import {Context} from 'context'
 
+const levelBarWidth = 176
+
 const myProfile = props => {
   const context = useContext(Context)
   const {profile} = context
@@ -24,7 +26,7 @@ const myProfile = props => {
         <LevelWrap>
           <LevelText>LEVEL {profile.level}</LevelText>
           <LevelStatusBarWrap>
-            <LevelStatus style={{width: `${profile.level}%`}}>{`${profile.level}%`}</LevelStatus>
+            <LevelStatus style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
           </LevelStatusBarWrap>
         </LevelWrap>
 
@@ -114,7 +116,7 @@ const LevelStatus = styled.div`
   box-sizing: border-box;
 `
 const LevelStatusBarWrap = styled.div`
-  width: 156px;
+  width: 176px;
   margin-left: 10px;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
