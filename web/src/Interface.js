@@ -26,17 +26,8 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        /**
-         * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
-         */
-        //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
-        let _ios = event.detail
-
-        _ios = JSON.stringify(_ios)
-        alert(_ios)
-        //console.log(_ios)
+        const _ios = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
-        alert(JSON.stringify(Utility.getCookie('native-player-info')))
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
