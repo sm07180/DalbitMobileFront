@@ -55,7 +55,6 @@ export default props => {
   }, [context])
 
   //----------------------------------------------------------- components start
-  console.log('## list :', list)
   return (
     <Container>
       <TopArea>

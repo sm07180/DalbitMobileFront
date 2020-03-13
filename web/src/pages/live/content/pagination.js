@@ -10,7 +10,6 @@ export default props => {
 
   //------------------------------------------------------------ func start
   const getData = index => {
-    console.log('index : ', index)
     setPage(index)
     props.getBroadList({params: {roomType: props.type, page: index, records: 10}}, true)
   }

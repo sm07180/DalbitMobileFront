@@ -18,7 +18,6 @@ export default props => {
 
   //빠른 말 수정/저장
   async function updateShortcut(param) {
-    console.log('param', param)
     const {orderNo, order, text} = param
     const res = await Api.member_broadcast_shortcut({
       data: {
@@ -29,7 +28,6 @@ export default props => {
       },
       method: 'POST'
     })
-    console.log('## res :', res)
     if (res.result === 'success') {
       context.action.alert({
         callback: () => {
@@ -52,13 +50,10 @@ export default props => {
       store.action.updateShortCutList(res.data)
       setShortcut(res.data)
     }
-    console.log('## member_broadcast_shortcut :', res)
   }
 
   //진입 시 빠른 말 조회
   useEffect(() => {
-    console.log('## useEffect')
-    console.log('## store.shortCutList :', store.shortCutList)
     selectShortcut()
   }, [])
 
