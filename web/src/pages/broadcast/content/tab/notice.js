@@ -49,6 +49,7 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(true)
+      console.log(context.broadcastTotalInfo)
       // setShowModify(true)
     } else {
       //Error발생시
@@ -88,7 +89,7 @@ export default props => {
     }
     setCount(element.value.length)
   }
-  console.log(context.broadcastTotalInfo)
+
   // useEffect(() => {
   //   console.log('소켓 에서 받은 공지사항 내용  = ' + store.noticeMsg)
   // }, [store.noticeMsg])
