@@ -92,6 +92,7 @@ export default () => {
       if (res.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
         if (profileInfo.result === 'success') {
+          //
           context.action.updateProfile(profileInfo.data)
         }
       }
@@ -111,18 +112,16 @@ export default () => {
           //-----@안드로이드 Cookie
           let cookie = Utility.getCookie('native-player-info')
           if (osName === 'Android' && cookie !== null && cookie !== undefined) {
-            cookie = decodeURIComponent(JSON.parse(cookie))
+            cookie = JSON.parse(cookie)
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
           //-----@IOS (roomNo)만연결해서 REST필요
           if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
             //            cookie = JSON.parse(JSON.stringify(cookie))
-            cookie = JSON.parse(cookie)
-            const {roomNo} = cookie
-
+            cookie = decodeURIComponent(JSON.parse(cookie))
             context.action.updateMediaPlayerStatus(true)
-            //  context.action.updateNativePlayer(cookie)
+            context.action.updateNativePlayer(cookie)
           }
           //-----@
         }
