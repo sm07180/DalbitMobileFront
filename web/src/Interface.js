@@ -19,7 +19,7 @@ export default () => {
   let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
-    alert(event.type)
+    // alert(event.type)
     switch (event.type) {
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
@@ -42,8 +42,8 @@ export default () => {
         alert(_ios)
         console.log(_ios)
 
-        document.cookie = 'native-player-info=' + _ios + ';'
-        // Utility.setCookie('native-player-info', _ios, 100)
+        //document.cookie = 'native-player-info=' + _ios + ';'
+        Utility.setCookie('native-player-info', _ios, 100)
 
         // _ios = decodeURIComponent(_ios)
         // alert(_ios)
