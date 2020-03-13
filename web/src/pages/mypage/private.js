@@ -15,7 +15,7 @@ export default props => {
   useEffect(() => {
     ;(async () => {
       if (!ctx.profile) {
-        const profileInfo = await Api.profile({params: {memNo: memNo}})
+        const profileInfo = await Api.profile({params: {type: 'private', memNo: memNo}})
         ctx.action.updateProfile(profileInfo.data)
       }
     })()
