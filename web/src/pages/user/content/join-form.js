@@ -40,6 +40,8 @@ const JoinForm = props => {
     check: true
   }) // 인증확인 버튼
   const [imgData, setImgData] = useState()
+  const [thisTimer, setThisTimer] = useState()
+  let setTime = 300
 
   //포토서버에 올라간 디폴트 이미지
   const defaultImage = `${PHOTO_SERVER}/profile_3/profile_n.png`
@@ -58,6 +60,19 @@ const JoinForm = props => {
       for (var i = 0; i < digits - n.length; i++) zero += '0'
     }
     return zero + n
+  }
+
+  //timer 만들기
+  //let thisTimer = null
+
+  const createAuthTimer = () => {
+    let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+    document.getElementsByClassName('timer')[0].innerHTML = timer
+    setTime--
+    if (setTime < 0) {
+      clearInterval(thisTimer)
+      setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+    }
   }
 
   //회원가입 들어온 후 gnb닫아줘야 메인으로 갔을때 제대로 열림
@@ -204,7 +219,7 @@ const JoinForm = props => {
         request: false,
         check: true
       })
-    } else {
+    } else if (loginIdVal.length < 13) {
       setValidate({
         ...validate,
         loginID: false
@@ -215,6 +230,8 @@ const JoinForm = props => {
       })
       setCurrentAuth1('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
   //---------------------------------------------------------------------
@@ -409,6 +426,9 @@ const JoinForm = props => {
       setCurrentAuth2('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       //setInterval({createAuthTimer()},1000)
+      //thisTimer =
+      setThisTimer(setInterval(createAuthTimer, 1000))
+      setTime = 300
     } else {
       console.log(resAuth)
       setCurrentAuth1(resAuth.message)
@@ -427,6 +447,8 @@ const JoinForm = props => {
       console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
     } else {
       console.log(resCheck)
       setCurrentAuth2(resCheck.message)
@@ -589,18 +611,6 @@ const JoinForm = props => {
     }
     //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
-
-  //timer 만들기
-  const createAuthTimer = () => {
-    // let setTime = 300
-    // let timer = `${Math.floor(setTime / 60)}:${setTime % 60)}`
-    // document.getElementsByClassName('timer').innerHTML = timer
-    // setTime = setTime--;
-    // if (setTime < 0) {
-    //   clearInterval(tid);
-    //   alert("종료");
-    // }
-  }
 
   return (
     <>
@@ -813,6 +823,16 @@ const PhoneAuth = styled.div`
   }
   & + & {
     margin-top: 20px;
+  }
+  .timer {
+    display: block;
+    position: absolute;
+    right: 31%;
+    color: ${COLOR_MAIN};
+    font-size: 12px;
+    line-height: 50px;
+    z-index: 3;
+    transform: skew(-0.03deg);
   }
 `
 //프로필 업로드 영역
