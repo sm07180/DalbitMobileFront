@@ -50,7 +50,7 @@ export default props => {
       console.log(res)
       setShow(true)
       console.log(context.broadcastTotalInfo)
-      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
+
       // setShowModify(true)
     } else {
       //Error발생시
@@ -68,7 +68,7 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(false)
-      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
+
       setTyping('')
       // setShowModify(true)
     } else {
@@ -97,6 +97,7 @@ export default props => {
   // }, [store.noticeMsg])
 
   console.log(store.noticeMsg)
+  console.log(context.broadcastTotalInfo.hasNotice)
 
   const listenerNotice = () => {
     if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
