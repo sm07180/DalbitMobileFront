@@ -827,6 +827,7 @@ export default class API {
     return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
   }
 
+  //------------------------------------------------------------- 인증관련
   /**
    * @brief 휴대폰 인증번호요청
    * @method "POST"
