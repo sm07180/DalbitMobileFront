@@ -44,7 +44,7 @@ export default props => {
     let methodType
     let res
 
-    methodType = methodType === 3 ? 'DELETE' : 'POST'
+    methodType = idx === 3 ? 'DELETE' : 'POST'
 
     if (idx === 1 || idx === 2) {
       //등록(1), 수정(2)
@@ -67,9 +67,9 @@ export default props => {
 
     if (res.result === 'success') {
       setFetch(res.data)
-      if (type == 1) {
+      if (idx == 1) {
         setShow(true)
-      } else if (type == 3) {
+      } else if (idx == 3) {
         setShow(false)
         setTyping('')
       }

@@ -20,6 +20,7 @@ export default props => {
   let history = useHistory()
   //console.log('방정보를 알아봅시다..', props)
   //state
+
   const [room, setRoom] = useState({
     fanRank: [
       {
@@ -199,7 +200,7 @@ export default props => {
             사연
           </button>
           {/* 클릭시 공지 탭 */}
-          <button title="공지사항" onClick={() => getNotice()}>
+          <button title="공지사항" onClick={() => getNotice()} className={context.broadcastTotalInfo.hasNotice == true ? 'on' : ''}>
             공지사항
           </button>
         </div>
@@ -437,6 +438,9 @@ const Content = styled.div`
       button:last-child {
         margin-left: 6px;
         background: url(${IMG_SERVER}/images/chat/ic_alarm.png) no-repeat center center / cover;
+      }
+      button.on:last-child {
+        background: url(${IMG_SERVER}/images/api/ic_alarm_dot.png) no-repeat center center / cover;
       }
     }
   }
