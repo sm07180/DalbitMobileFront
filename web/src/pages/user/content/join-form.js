@@ -830,7 +830,7 @@ const PhoneAuth = styled.div`
     position: absolute;
     right: 31%;
     color: ${COLOR_MAIN};
-    font-size: 12px;
+    font-size: 14px;
     line-height: 50px;
     z-index: 3;
     transform: skew(-0.03deg);

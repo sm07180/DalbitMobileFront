@@ -228,11 +228,17 @@ const User = props => {
     if (res && res.code) {
       if (res.result == 'success') {
         //성공
-        alert(res.message)
-        props.history.push('/')
+        context.action.alert({
+          callback: () => {
+            props.history.push('/')
+          },
+          msg: res.message
+        })
       } else {
         //실패
-        alert(res.message)
+        context.action.alert({
+          msg: res.message
+        })
       }
     } //(res && res.code)
   }
@@ -391,7 +397,7 @@ const PhoneAuth = styled.div`
     position: absolute;
     right: 31%;
     color: ${COLOR_MAIN};
-    font-size: 12px;
+    font-size: 14px;
     line-height: 50px;
     z-index: 3;
     transform: skew(-0.03deg);
