@@ -39,8 +39,9 @@ export default () => {
         //_ios = JSON.stringify(_ios)
         //  alert(_ios)
         //console.log(_ios)
+        Utility.setCookie('native-player-info', _ios, 100)
 
-        document.cookie = 'native-player-info=' + _ios + ';'
+        //document.cookie = 'native-player-info=' + _ios + ';'
         alert(decodeURIComponent(Utility.getCookie('native-player-info')))
 
         // _ios = decodeURIComponent(_ios)
@@ -51,7 +52,7 @@ export default () => {
         // alert(_ios)
 
         context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(event.detail)
+        context.action.updateNativePlayer(_ios1)
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)
