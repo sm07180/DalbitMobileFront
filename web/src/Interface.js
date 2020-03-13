@@ -32,8 +32,8 @@ export default () => {
         //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
         let _ios = event.detail
         alert(_ios)
-        _ios = JSON.stringify(_ios)
-        alert(_ios)
+        let _ios1 = decodeURIComponent(_ios)
+        alert(_ios1)
         //_ios = encodeURIComponent(_ios)
 
         //_ios = JSON.stringify(_ios)
