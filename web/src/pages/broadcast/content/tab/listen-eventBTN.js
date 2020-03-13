@@ -1,49 +1,22 @@
 /**
- * @title 청취자
+ * @title 청취자탭 ...버튼 (클릭 이벤트 드롭다운 팝업)
  */
 import React, {useState, useEffect, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
 import {BroadCastStore} from 'pages/broadcast/store'
-
-import API from 'context/api'
-//components--------------------------------------------------
+import Api from 'context/api'
 import Events from './listener-event'
 export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  //state
   const [eventCheck, setEventCheck] = useState(false)
-  //----------------------------------------------------------------
-  //0.매니저정보 info스테이트----------------------------------------
+  //미니드롭다운 show hide 스테이트-----------------------------------
   const [listenTrues, setListenTrues] = useState(false)
-
-  //const [listenTrues, setListenTrues] = useState(false)
-  //클릭visibility function
-  // const ToggleEvent = () => {
-  //   if (trues === false) {
-  //     setTrues(true)
-  //   } else {
-  //     setTrues(false)
-  //   }
-  // }
-
-  // //클릭 bg visibility function
-  // const AllFalse = () => {
-  //   setTrues(false)
-  // }
-
-  //----------------------------------------------------------------
-
-  //클릭 이벤트
-  // const ToggleEvent = () => {
-  //   store.action.updateListenTrues(true)
-  // }
-  // const AllFalse = () => {
-  //   store.action.updateListenTrues(false)
-  // }
-
+  //function 버튼 쇼하이드 토글
   const ToggleEvent = () => {
     if (eventCheck === false) {
       setListenTrues(true)
@@ -51,15 +24,11 @@ export default props => {
       store.action.updateListenTrues(false) || setListenTrues(false)
     }
   }
-
+  //function 백그라운드 클릭시 드롭다운 하이드
   const AllFalse = () => {
     store.action.updateListenTrues(false) || setListenTrues(false)
   }
-
   //render------------------------------------------------------------
-  //----------------------------------------------------------------
-  useEffect(() => {}, [])
-
   return (
     <Wrapper>
       <EVENTBTN value={store.listenTrues || listenTrues} onClick={() => ToggleEvent()}></EVENTBTN>
