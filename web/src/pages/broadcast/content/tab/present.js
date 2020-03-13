@@ -26,6 +26,7 @@ export default props => {
   const store = useContext(BroadCastStore)
   const [profile, setProfile] = useState()
   const [common, setCommon] = useState()
+  const [state, setState] = useState(false)
   //-------------------------------------------------------- func start
 
   // 선물하기
@@ -39,6 +40,7 @@ export default props => {
         isSecret: flag
       }
     })
+    setState(!state)
   }
 
   // 방송 프로필
@@ -67,7 +69,7 @@ export default props => {
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
       {sendType == 0 ? (
-        <SendItem testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} profile={context.profile} />
+        <SendItem testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} profile={context.profile} flag={state}/>
       ) : (
         <SendDirect />
       )}

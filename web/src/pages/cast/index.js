@@ -20,10 +20,10 @@ export default props => {
   //useMemo
   const nativePlayerInfoCookie = useMemo(() => {
     const _cookie = decodeURIComponent(Utility.getCookie('native-player-info'))
-    if (_cookie === '' || _cookie === null || _cookie === undefined) {
+    if (_cookie === '' || _cookie === null || _cookie === 'undefined' || _cookie === 'undefined') {
       return '쿠키정보없음'
     }
-    return _cookie
+    return JSON.parse(_cookie)
   })
 
   //---------------------------------------------------------------------

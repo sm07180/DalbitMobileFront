@@ -23,17 +23,38 @@ const User = props => {
   const [changes, setChanges] = useState({
     loginID: '',
     loginPwd: '',
-    loginPwdCheck: ''
+    loginPwdCheck: '',
+    auth: '',
+    CMID: ''
   })
   const [validate, setValidate] = useState({
     // 유효성 체크
     loginID: false,
     loginPwd: false,
-    loginPwdCheck: false
+    loginPwdCheck: false,
+    auth: false
   })
   const [validatePass, setValidatePass] = useState(false) // 유효성 모두 통과 여부. 회원가입 버튼 활성시 쓰임
   const [currentPwd, setCurrentPwd] = useState() // 비밀번호 도움 텍스트 값. html에 뿌려줄 state
   const [currentPwdCheck, setCurrentPwdCheck] = useState() // 비밀번호 확인 도움 텍스트 값.
+  const [currentAuth1, setCurrentAuth1] = useState() // 휴대폰인증1 텍스트값
+  const [currentAuth2, setCurrentAuth2] = useState() // 휴대폰인증2 텍스트값
+  const [currentAuthBtn, setCurrentAuthBtn] = useState({
+    request: true, //버튼 disable true
+    check: true
+  }) // 인증확인 버튼
+  const [thisTimer, setThisTimer] = useState()
+  let setTime = 300
+
+  const createAuthTimer = () => {
+    let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+    document.getElementsByClassName('timer')[0].innerHTML = timer
+    setTime--
+    if (setTime < 0) {
+      clearInterval(thisTimer)
+      setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+    }
+  }
 
   //회원가입 input onChange
   const onLoginHandleChange = e => {
@@ -49,6 +70,20 @@ const User = props => {
       validatePwd(e.target.value)
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
+    } else if (e.target.name == 'auth') {
+      if (e.target.value.length == 6) {
+        if (changes.CMID) {
+          setCurrentAuthBtn({
+            request: currentAuthBtn.request,
+            check: false
+          })
+        }
+      } else if (e.target.value.length > 6) {
+        setChanges({
+          ...changes,
+          [e.target.name]: e.target.value.slice(0, -1)
+        })
+      }
     }
   }
 
@@ -138,17 +173,34 @@ const User = props => {
       ...changes,
       loginID: loginIdVal
     })
-    if (loginIdVal.length > 10) {
+    if (loginIdVal.length >= 13) {
+      // setValidate({
+      //   ...validate,
+      //   loginID: true
+      // })
+      setCurrentAuthBtn({
+        request: false,
+        check: true
+      })
+    } else if (loginIdVal.length < 13) {
       setValidate({
         ...validate,
-        loginID: true
+        loginID: false
       })
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
+      setCurrentAuth1('')
+      document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck) {
+    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.auth) {
       setValidatePass(true)
     } else {
       setValidatePass(false)
@@ -176,13 +228,72 @@ const User = props => {
     if (res && res.code) {
       if (res.result == 'success') {
         //성공
-        alert(res.message)
-        props.history.push('/')
+        context.action.alert({
+          callback: () => {
+            props.history.push('/')
+          },
+          msg: res.message
+        })
       } else {
         //실패
-        alert(res.message)
+        context.action.alert({
+          msg: res.message
+        })
       }
     } //(res && res.code)
+  }
+
+  async function fetchAuth() {
+    const resAuth = await Api.sms_request({
+      data: {
+        phoneNo: changes.loginID,
+        authType: 0
+      }
+    })
+    if (resAuth.result === 'success') {
+      console.log(resAuth)
+      setValidate({
+        ...validate,
+        loginID: true,
+        auth: false
+      })
+      setChanges({...changes, CMID: resAuth.data.CMID})
+      // setCurrentAuthBtn({
+      //   request: true,
+      //   check: true
+      // })
+
+      setCurrentAuth1(resAuth.message)
+      setCurrentAuth2('')
+      document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
+      //setInterval({createAuthTimer()},1000)
+      //thisTimer =
+      setThisTimer(setInterval(createAuthTimer, 1000))
+      setTime = 300
+    } else {
+      console.log(resAuth)
+      setCurrentAuth1(resAuth.message)
+    }
+  }
+
+  async function fetchAuthCheck() {
+    console.log('체크합니다..', changes.CMID, Number(changes.auth))
+    const resCheck = await Api.sms_check({
+      data: {
+        CMID: changes.CMID,
+        code: Number(changes.auth)
+      }
+    })
+    if (resCheck.result === 'success') {
+      console.log(resCheck)
+      setValidate({...validate, auth: true})
+      setCurrentAuth2(resCheck.message)
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
+    } else {
+      console.log(resCheck)
+      setCurrentAuth2(resCheck.message)
+    }
   }
 
   //---------------------------------------------------------------------
@@ -192,12 +303,37 @@ const User = props => {
       <FormWrap>
         <PhoneAuth>
           <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
-          <button disabled={!validate.loginID}>인증요청</button>
+          <button
+            className="auth-btn1"
+            disabled={currentAuthBtn.request}
+            onClick={() => {
+              fetchAuth()
+            }}>
+            인증요청
+          </button>
         </PhoneAuth>
+        {currentAuth1 && (
+          <HelpText state={validate.loginID} className={validate.loginID ? 'pass' : 'help'}>
+            {currentAuth1}
+          </HelpText>
+        )}
         <PhoneAuth>
-          <input type="number" placeholder="인증번호" className="auth" />
-          <button disabled={true}>인증확인</button>
+          <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
+          <span className="timer"></span>
+          <button
+            className="auth-btn2"
+            disabled={currentAuthBtn.check}
+            onClick={() => {
+              fetchAuthCheck()
+            }}>
+            인증확인
+          </button>
         </PhoneAuth>
+        {currentAuth2 && (
+          <HelpText state={validate.auth} className={validate.auth ? 'pass' : 'help'}>
+            {currentAuth2}
+          </HelpText>
+        )}
         <InputWrap>
           <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="신규 비밀번호" />
           <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자</span>
@@ -255,6 +391,16 @@ const PhoneAuth = styled.div`
   }
   & + & {
     margin-top: 20px;
+  }
+  .timer {
+    display: block;
+    position: absolute;
+    right: 31%;
+    color: ${COLOR_MAIN};
+    font-size: 14px;
+    line-height: 50px;
+    z-index: 3;
+    transform: skew(-0.03deg);
   }
 `
 const FormWrap = styled.div`

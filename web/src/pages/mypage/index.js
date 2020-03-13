@@ -38,11 +38,6 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <ContentHeader>
-        <h1>
-          <a href="/">마이페이지</a>
-        </h1>
-      </ContentHeader>
       <Content>
         <MyProfile />
 
