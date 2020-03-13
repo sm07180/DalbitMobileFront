@@ -30,12 +30,12 @@ export default () => {
          * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
          */
         //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
-        let _ios
+        let _ios = event.detail
 
         _ios = encodeURIComponent(_ios)
         alert(_ios)
         console.log(_ios)
-        _ios = JSON.stringify(event.detail)
+        _ios = JSON.stringify(_ios)
         alert(_ios)
         console.log(_ios)
         //_ios = JSON.stringify(_ios)
