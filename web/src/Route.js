@@ -30,6 +30,7 @@ const Ranking = React.lazy(() => import('pages/ranking'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
 const Mypage = React.lazy(() => import('pages/mypage'))
+const Private = React.lazy(() => import('pages/mypage/private.js'))
 const MypageSetting = React.lazy(() => import('pages/mypage/setting.js'))
 const Search = React.lazy(() => import('pages/search'))
 //
@@ -60,6 +61,7 @@ export default () => {
         <Route path="/guide" component={Guide} />
         <Route exact path="/mypage/setting" component={MypageSetting} />
         <Route exact path="/mypage/:sub" component={Mypage} />
+        <Route exact path="/private/:memNo" component={Private} />
         <Route exact path="/app/" component={App} />
         <Route exact path="/search" component={Search} />
         <Route exact path="/errors" component={error} />
