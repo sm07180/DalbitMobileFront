@@ -37,16 +37,17 @@ export default () => {
         </button>
         <button
           onClick={() => {
-            context.action.updateGnbState('mypage')
-          }}>
-          프로필
-        </button>
-        <button
-          onClick={() => {
             context.action.updateGnbState('notice')
           }}>
           알람
         </button>
+        <button
+          onClick={() => {
+            context.action.updateGnbState('mypage')
+          }}>
+          프로필
+        </button>
+
         <button
           onClick={() => {
             context.action.updateGnbState('menu')
@@ -76,19 +77,23 @@ const GnbButton = styled.div`
   button {
     width: 48px;
     height: 48px;
-    margin: 0 5px;
+    margin: 0 10px;
     font-size: 16px;
     text-indent: -9999px;
+  }
+
+  button:last-child {
+    margin-right: 0;
   }
 
   button:nth-child(1) {
     background: url(${IMG_SERVER}/svg/ic_search_normal.svg) no-repeat center;
   }
   button:nth-child(2) {
-    background: url(${IMG_SERVER}/svg/ic_user_normal.svg) no-repeat center;
+    background: url(${IMG_SERVER}/svg/ic_alarm.svg) no-repeat center;
   }
   button:nth-child(3) {
-    background: url(${IMG_SERVER}/svg/ic_alarm.svg) no-repeat center;
+    background: url(${IMG_SERVER}/svg/ic_user_normal.svg) no-repeat center;
   }
   button:nth-child(4) {
     background: url(${IMG_SERVER}/svg/ic_menu_normal.svg) no-repeat center;

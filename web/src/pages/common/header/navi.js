@@ -119,7 +119,7 @@ const Content = styled.nav`
     padding: 9px 20px 9px 48px;
     margin-left: 12px;
     border-radius: 40px;
-    background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w.svg) no-repeat 9px 2px;
+    background: ${COLOR_MAIN} url(${IMG_SERVER}/svg/ico-cast-w-n.svg) no-repeat 9px 0;
     color: #fff;
     @media (max-width: ${WIDTH_TABLET_S}) {
       padding: 8px 20px 8px 48px;
