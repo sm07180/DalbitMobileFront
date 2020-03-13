@@ -31,9 +31,15 @@ export default () => {
          */
         const _ios = JSON.stringify(event.detail)
         alert(_ios)
-        Utility.setCookie('native-player-info', _ios, 100)
-        const _cookie = Utility.getCookie('native-player-info')
-        alert(JSON.stringify(_cookie))
+
+        // Utility.setCookie('native-player-info', _ios, 100)
+        console.clear()
+        console.log(_ios)
+        document.cookie = 'native-player-info=' + encodeURIComponent(_ios)
+        //  document.cookie = `native-player-info=${_ios};path=/;`
+
+        //     const _cookie = Utility.getCookie('native-player-info')
+        // alert(JSON.stringify(_cookie))
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
