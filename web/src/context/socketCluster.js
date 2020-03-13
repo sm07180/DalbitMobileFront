@@ -528,6 +528,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
 
 */
     //console.log(JSON.stringify(data))
+    if (data && (data === '#1' || data === '#2')) return
     var logStr = '[socket.messages]\n'
     try {
       var dataObj = JSON.parse(data)
@@ -587,7 +588,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'msg: ' + dataObj.data.data.recvMsg.msg + '\n'
         }
         //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
-        console.log('receiveMessageData')
+
         const parseData = JSON.parse(data)
         if (parseData.data.channel !== 'channel.public.dalbit') receiveMessageData(parseData)
       } else {
@@ -641,7 +642,6 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
 
     //if (data != '#1') console.warn(logStr)
 
-    if ((data && data === '#1') || dataObj.event === '#publish') return
     console.warn(logStr)
   })
 

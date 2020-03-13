@@ -15,7 +15,6 @@ export default props => {
   //-------------------------------------------------------- func start
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
-    console.log('# value', value)
     if (value.length > maxLength) {
       alert('## Max Length is 5 ##')
       return false
@@ -41,8 +40,6 @@ export default props => {
     context.action.updatePopupVisible(false)
   }, [])
   //-------------------------------------------------------- components start
-  console.log('## text : ', text)
-  console.log('## context : ', context)
   return (
     <Container>
       <Contents>

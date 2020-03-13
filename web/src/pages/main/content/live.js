@@ -240,6 +240,7 @@ export default props => {
       // }
     })
     if (res.result === 'success') {
+      if (res.data.list === undefined) return
       setTop1Data(res.data.list[0])
       setTop2Data(res.data.list[1])
       setListData(res.data.list.slice(2))

@@ -89,6 +89,10 @@ export default props => {
     setCount(element.value.length)
   }
   console.log(context.broadcastTotalInfo)
+  // useEffect(() => {
+  //   console.log('소켓 에서 받은 공지사항 내용  = ' + store.noticeMsg)
+  // }, [store.noticeMsg])
+
   console.log(store.noticeMsg)
 
   const listenerNotice = () => {

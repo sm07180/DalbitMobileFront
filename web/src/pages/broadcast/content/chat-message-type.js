@@ -41,7 +41,6 @@ export default props => {
   // }, [store.roomInfo])
 
   //---------------------------------------------------------------------
-  console.log('메세지 타입 = ' + props)
   if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
     return (
       <>

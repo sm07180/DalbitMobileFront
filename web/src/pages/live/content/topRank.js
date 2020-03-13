@@ -26,7 +26,6 @@ export default props => {
 
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
-    console.log('## props.broadList : ', props.broadList)
     return (
       <Contents key={index}>
         {index === selected && hover && (
@@ -65,8 +64,6 @@ export default props => {
     )
   })
   //-------------------------------------------------------------- components start
-  console.log('## props.type: ', props.type)
-  console.log('## type :', type)
   return (
     <Container>
       <Swiper width={props.width} spaceBetween={20} shouldSwiperUpdate={true}>
@@ -79,7 +76,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 const Contents = styled.div`
   display: flex;
@@ -99,6 +96,9 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     z-index: 999;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #8556f6;
     @media (max-width: ${WIDTH_TABLET}) {
       display: none;
     }

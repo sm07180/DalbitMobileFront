@@ -185,7 +185,6 @@ export default props => {
         records: 10
       }
     })
-    console.log('## res : ', res)
     if (res.result != 'fail') {
       setGivenData(res)
     }
@@ -194,15 +193,12 @@ export default props => {
   // 공통값 조회 - context or store로 이동 필요함
   async function commonData() {
     const res = await Api.splash({})
-    console.log('## splash :', res)
   }
 
   useEffect(() => {
     // fetchData() api 테스트 완료했지만 데이터가 없어 테스트 데이터로 바인딩
     commonData()
   }, [])
-  console.log('## givenData :', givenData)
-  console.log('## store :', store)
   //--------------------------------------------------- components start
   return (
     <Container>

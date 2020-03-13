@@ -17,17 +17,6 @@ const testData = [
   }
 ]
 
-const targetData = [
-  {
-    nickname: 'BJ라디오~~',
-    type: 0
-  },
-  {
-    nickname: '러브angel~~',
-    type: 1
-  }
-]
-
 const testBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 //-------------------------------------------------------- declare start
@@ -41,7 +30,6 @@ export default props => {
 
   // 선물하기
   async function send(count, itemNo, flag) {
-    console.log('## flag :', flag)
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo,
@@ -51,7 +39,6 @@ export default props => {
         isSecret: flag
       }
     })
-    console.log('## res :', res)
   }
 
   // 방송 프로필
@@ -59,14 +46,12 @@ export default props => {
     const res = await Api.member_info_view({
       method: 'GET'
     })
-    console.log('## present - res :', res)
     if (res.result === 'success') setProfile(res.data)
   }
 
   // 공통
   async function commonData() {
     const res = await Api.splash({})
-    console.log('## splash :', res)
     if (res.result === 'success') setCommon(res.data)
   }
 
@@ -76,14 +61,13 @@ export default props => {
     commonData()
   }, [])
 
-  console.log('## context:', context)
-  console.log('## store:', store)
   //-------------------------------------------------------- components start
+  console.log('## context :', context)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
       {sendType == 0 ? (
-        <SendItem targetData={targetData} testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} />
+        <SendItem testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={store.roomInfo.bjNickNm} profile={context.profile} />
       ) : (
         <SendDirect />
       )}

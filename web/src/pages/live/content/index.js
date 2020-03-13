@@ -17,11 +17,6 @@ let livePaging = []
 let liveType = ''
 let reload = true
 
-const Test = props => {
-  const [state, setState] = useState(props)
-  console.log('props ', props)
-  return <div>123</div>
-}
 export default props => {
   //----------------------------------------------------------- declare start
   const [list, setList] = useState([])
@@ -43,8 +38,6 @@ export default props => {
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
-      console.log('## res :', res)
       setList(false)
       return
     } else {
@@ -64,18 +57,13 @@ export default props => {
   }
 
   const mobileConcat = async obj => {
-    console.log('## store.list : ', store.list)
-
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
       console.log(res.message)
-      console.log('## res :', res)
       setList(false)
       return
     } else {
-      console.log('## res :', res)
-      console.log('## store.list : ', store.list)
       store.action.updateList([...liveList, ...res.data.list])
       setPaging(res.data.paging)
     }
@@ -87,7 +75,6 @@ export default props => {
     if (res.result === 'success') {
       context.action.updateCommon(res.data) // context에 update
     }
-    console.log('## res :', res.data)
   }
 
   //exitRoom
@@ -102,9 +89,7 @@ export default props => {
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    console.log('obj :: ', roomNo)
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-    console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
       const exit = await exitRoom(obj)
@@ -137,20 +122,17 @@ export default props => {
     //     window.scrollTo(0, 100)
     //   }
     // }
-    console.log('## store - list', store.list)
   }
 
   useEffect(() => {
     getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
-    window.addEventListener('scroll', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-    }
+    // window.addEventListener('scroll', onScroll)
+    // return () => {
+    //   window.removeEventListener('scroll', onScroll)
+    // }
   }, [])
 
-  console.log('## store.list :', store)
-  // console.log('## context :', context)
   //----------------------------------------------------------- components start
   return (
     <Container>
@@ -190,14 +172,14 @@ const MainContents = styled.div`
   width: 100%;
   /* height: 100%; */
   /* align-items: flex-start; */
-  align-items: center;
+  /* align-items: center; */
   flex-direction: column;
 `
 const Wrap = styled.div`
   display: flex;
   width: 65%;
   /* height: 80%; */
-  justify-content: center;
+  /* justify-content: center; */
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
   }

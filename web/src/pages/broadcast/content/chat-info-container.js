@@ -11,7 +11,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
+import makeContents from 'Pages/broadcast/content/tab/profileLisner'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -52,6 +52,7 @@ export default props => {
   //map
 
   const creatFanRank = () => {
+    if (room.fanRank.length < 1) return <></>
     return room.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>
@@ -79,12 +80,27 @@ export default props => {
       )
     }
   }
-  const likeCheck = () => {
-    if (context.broadcastTotalInfo === null) {
-      return room.like
-    } else {
-      return context.broadcastTotalInfo.likes
-    }
+  // const likeCheck = () => {
+  //   if (context.broadcastTotalInfo === null) {
+  //     return room.like
+  //   } else {
+  //     return context.broadcastTotalInfo.likes
+  //   }
+  // }
+
+  async function goBjProfile() {
+    store.action.updateTab(6)
+    // const res = await Api.broad_member_profile({
+    //   params: {
+    //     memNo: context.broadcastTotalInfo.bjMemNo,
+    //     roomNo: context.broadcastTotalInfo.roomNo
+    //   },
+    //   method: 'GET'
+    // })
+    // //Error발생시
+    // if (res.result === 'success') {
+    //   store.action.updateBroadcastProfileInfo(res.data)
+    // }
   }
   //---------------------------------------------------------------------
   //useEffect
@@ -136,7 +152,7 @@ export default props => {
           최소화
         </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
-        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
+        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => goBjProfile()}>
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
@@ -145,7 +161,7 @@ export default props => {
         </div>
         <ul>
           {/* 팬랭킹 영역 */}
-          {room.fanRank[0].profImg.url && creatFanRank()}
+          {creatFanRank()}
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
           <li className="people" onClick={() => store.action.updateTab(0)}>
             {context.broadcastTotalInfo.userCount != '' ? context.broadcastTotalInfo.userCount : 0}
