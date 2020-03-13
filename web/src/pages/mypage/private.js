@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
 //layout
+import Layout from 'pages/common/layout'
 
 import Api from 'context/api'
 
@@ -23,28 +24,30 @@ export default props => {
 
   if (profile) {
     return (
-      <PrivatePage>
-        <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb120x120']})`}}></ProfileImg>
-        <NickName>{profile.nickNm}</NickName>
-        <MemberId>@{profile.memId}</MemberId>
-        <FanAndStarWrap>
-          <span>팬</span>
-          <span style={{color: '#8556f6'}}>{profile.fanCnt}</span>
-          <span style={{margin: '0 10px'}}>|</span>
-          <span>스타</span>
-          <span style={{color: '#8556f6'}}>{profile.starCnt}</span>
-          <span style={{margin: '0 10px'}}>|</span>
-        </FanAndStarWrap>
-        <MsgWrap>
-          {profile.profMsg.split('\n').map((lineText, index) => {
-            return (
-              <div className="line-text" key={index}>
-                {lineText}
-              </div>
-            )
-          })}
-        </MsgWrap>
-      </PrivatePage>
+      <Layout {...props}>
+        <PrivatePage>
+          <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb120x120']})`}}></ProfileImg>
+          <NickName>{profile.nickNm}</NickName>
+          <MemberId>@{profile.memId}</MemberId>
+          <FanAndStarWrap>
+            <span>팬</span>
+            <span style={{color: '#8556f6'}}>{profile.fanCnt}</span>
+            <span style={{margin: '0 10px'}}>|</span>
+            <span>스타</span>
+            <span style={{color: '#8556f6'}}>{profile.starCnt}</span>
+            <span style={{margin: '0 10px'}}>|</span>
+          </FanAndStarWrap>
+          <MsgWrap>
+            {profile.profMsg.split('\n').map((lineText, index) => {
+              return (
+                <div className="line-text" key={index}>
+                  {lineText}
+                </div>
+              )
+            })}
+          </MsgWrap>
+        </PrivatePage>
+      </Layout>
     )
   } else {
     return <div></div>
@@ -100,5 +103,5 @@ const ProfileImg = styled.div`
 
 const PrivatePage = styled.div`
   max-width: 360px;
-  margin: 0 auto;
+  margin: 60px auto;
 `
