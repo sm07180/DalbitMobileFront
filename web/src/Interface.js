@@ -34,13 +34,13 @@ export default () => {
           title: event.detail.title,
           bjNickNm: event.detail.bjNickNm
         }
-        _ios = JSON.stringify(_ios)
-        Utility.setCookie('native-player-info', _ios, 100)
-        alert(JSON.stringify(event.detail, null, 1))
-        alert(Utility.getCookie('native-player-info'))
+        alert(JSON.alert(event.detail, null, 1))
+
+        Utility.setCookie('native-player-info', event.detail, 100)
+
         //  Utility.setCookie('native-player-info', JSON.stringify({roomNo: event.detail.roomNo}), 100)
         context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(_ios)
+        context.action.updateNativePlayer(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)
