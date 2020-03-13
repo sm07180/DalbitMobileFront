@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
+//
 import {BroadValidation} from 'pages/common/header/navi'
 
 export default () => {
