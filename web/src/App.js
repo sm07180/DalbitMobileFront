@@ -119,7 +119,8 @@ export default () => {
           }
           //-----@iOS
           if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
-            // cookie = decodeURIComponent(cookie)
+            cookie = decodeURIComponent(cookie)
+            //  decodeURIComponent(Utility.getCookie('native-player-info'))
             cookie = JSON.parse(cookie)
             alert(JSON.stringify(cookie))
             context.action.updateMediaPlayerStatus(true)
