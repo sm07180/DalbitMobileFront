@@ -159,4 +159,17 @@ export default class Utility {
     const min = parseInt((seconds % 3600) / 60)
     return `${hour}시간 ${hour}분`
   }
+  //한자리 숫자 앞에 0으로 채우기
+  //data : 채울 값 //num : 총 몇자리 수까지 표현?
+  //Utility.leadingZeros(7,2) => 07
+  static leadingZeros = (data, num) => {
+    let zero = ''
+    data = data.toString()
+    if (data.length < num) {
+      for (var i = 0; i < num - data.length; i++) {
+        zero += '0'
+      }
+    }
+    return zero + data
+  }
 }
