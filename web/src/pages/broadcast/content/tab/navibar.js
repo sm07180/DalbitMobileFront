@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 export default props => {
-  console.log('## props.prev :', props.prev)
   return (
     <Container>
       <Back onClick={() => props._changeItem(props.prev)} />

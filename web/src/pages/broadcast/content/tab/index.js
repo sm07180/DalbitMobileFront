@@ -51,7 +51,6 @@ export default props => {
 
   useEffect(() => {
     changeItem(store.tabIdx)
-    console.log('## index.js - tabContent :', store.currentTab)
   }, [store.flag])
 
   // console.log('## store: ', store)
