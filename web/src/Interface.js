@@ -35,7 +35,7 @@ export default () => {
         _ios = encodeURIComponent(_ios)
         alert(_ios)
         console.log(_ios)
-        _ios = JSON.stringify(_ios)
+
         alert(_ios)
         console.log(_ios)
         //_ios = JSON.stringify(_ios)
