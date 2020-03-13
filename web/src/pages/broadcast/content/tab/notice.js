@@ -90,11 +90,24 @@ export default props => {
   }
   console.log(context.broadcastTotalInfo)
   console.log(store.noticeMsg)
+
+  const listenerNotice = () => {
+    if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
+      return (
+        <div className="noresultWrap">
+          <img src="https://devimage.dalbitcast.com/images/api/img_noresult.png"></img>
+          <p>등록된 공지사항이 없습니다.</p>
+        </div>
+      )
+    } else if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === true) {
+      return <div className="noticeInput">{store.noticeMsg}</div>
+    }
+  }
   //--------------------------------------------------------------------
   return (
     <Container>
       <Navi title={'공지사항'} />
-      {context.broadcastTotalInfo.auth == 3 ? <h5>*현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>*현재 방송방의 공지 사항 입니다.</h5>}
+      {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
       {context.broadcastTotalInfo.auth == 3 && (
         <div className="noticeInput">
           <textarea onChange={handleChangeNotice} maxLength="100" placeholder="최대 100자 이내로 작성해주세요." value={typing}>
@@ -103,9 +116,8 @@ export default props => {
           <Counter>{count} / 100</Counter>
         </div>
       )}
-      {context.broadcastTotalInfo.auth !== 3 && <div className="noticeInput">{store.noticeMsg}</div>}
+      {listenerNotice()}
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
-
       {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={fetchData}>등록하기</RegistBTN>}
       {show === true && context.broadcastTotalInfo.auth == 3 && (
         <div className="modifyWrap">
@@ -169,6 +181,11 @@ const Container = styled.div`
     transform: skew(-0.03deg);
   }
   & .modifyWrap {
+  }
+  & .noresultWrap {
+    text-align: center;
+    transform: skew(-0.03deg);
+    color: #616161;
   }
 `
 const Counter = styled.span`
