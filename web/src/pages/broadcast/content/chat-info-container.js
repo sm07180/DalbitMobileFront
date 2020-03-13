@@ -86,6 +86,21 @@ export default props => {
       return context.broadcastTotalInfo.likes
     }
   }
+
+  async function goBjProfile() {
+    const res = await Api.broad_member_profile({
+      params: {
+        memNo: context.broadcastTotalInfo.bjMemNo,
+        roomNo: context.broadcastTotalInfo.roomNo
+      },
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      store.action.updateTab(6)
+      store.action.updateBroadcastProfileInfo(res.data)
+    }
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -136,7 +151,7 @@ export default props => {
           최소화
         </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
-        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj">
+        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => store.action.updateTab(6)}>
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
