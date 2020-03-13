@@ -41,7 +41,7 @@ export default () => {
         //console.log(_ios)
 
         document.cookie = 'native-player-info=' + _ios + ';'
-        //Utility.setCookie('native-player-info', _ios, 100)
+        alert(decodeURIComponent(Utility.getCookie('native-player-info')))
 
         // _ios = decodeURIComponent(_ios)
         // alert(_ios)
