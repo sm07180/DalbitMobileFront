@@ -122,6 +122,7 @@ export default () => {
             cookie = decodeURIComponent(cookie)
             alert(cookie)
             cookie = JSON.parse(cookie)
+            alert(JSON.stringify(cookie))
             context.action.updateMediaPlayerStatus(true)
             context.action.updateNativePlayer(cookie)
           }
