@@ -48,6 +48,10 @@ export default props => {
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
   }, [])
+
+  useEffect(() => {
+    setItem(-1)
+  },[props.flag])
   //-------------------------------------------------- components start
   return (
     <Container>

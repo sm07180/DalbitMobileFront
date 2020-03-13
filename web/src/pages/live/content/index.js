@@ -4,17 +4,18 @@ import {WIDTH_MOBILE} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
-import {Scrollbars} from 'react-custom-scrollbars'
 import {LiveStore} from '../store'
 //components
 import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
+
 //window.addEventListener 사용하면 state 가 초기화 되는 문제로 데이터들 함수 외부 변수로 사용 중
 let liveList = []
 let livePaging = []
 let liveType = ''
+let liveRank = []
 let reload = true
 
 export default props => {
@@ -26,7 +27,7 @@ export default props => {
   const [type, setType] = useState('') // roomType
   const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
-  const scrollbars = useRef(null)
+  const scroll = useRef(null)
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
@@ -35,6 +36,8 @@ export default props => {
 
   // 방송방 리스트 조회
   const getBroadList = async (obj, reload) => {
+    const {roomType} = obj.params
+    liveType = roomType
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
@@ -50,7 +53,9 @@ export default props => {
         livePaging = res.data.paging
         if (reload === undefined) {
           setRank(res.data.list.slice(0, 3)) // 상위 3명 따로 담아서 보냄
+          liveRank = res.data.list.slice(0, 3)
         }
+        console.log('## res :', res)
         setPaging(res.data.paging)
       }
     }
@@ -64,8 +69,15 @@ export default props => {
       setList(false)
       return
     } else {
-      store.action.updateList([...liveList, ...res.data.list])
-      setPaging(res.data.paging)
+      console.log('## res :', res)
+      liveList = liveList.concat(res.data.list)
+      livePaging = res.data.paging
+      store.action.updateList(liveList)
+      if (liveRank.length < 3) {
+        liveRank = liveList.slice(0, 3)
+        setRank(liveRank)
+      }
+      window.addEventListener('scroll', onScroll)
     }
   }
 
@@ -111,26 +123,28 @@ export default props => {
     return
   }
 
-  const onScroll = e => {
-    // if (window.innerWidth <= 600) {
-    //   console.log('## paging :', livePaging)
-    //   const position = window.scrollY
-    //   console.log('## position :', position)
-    //   if (position === 400) {
-    //     console.log(position)
-    //     mobileConcat({params: {roomType: type, page: livePaging.next, records: 10}})
-    //     window.scrollTo(0, 100)
-    //   }
-    // }
+  const onScroll = async e => {
+    const scrollTop = document.documentElement.scrollTop
+    const scrollHeight = document.documentElement.scrollHeight
+    const clientHeight = document.documentElement.clientHeight
+    if (livePaging.page < livePaging.totalPage) {
+      if (scrollHeight - window.innerHeight - scrollTop < 80) {
+        document.documentElement.scrollTo({top: scrollHeight * 0.2, behavior: 'smooth'})
+        window.removeEventListener('scroll', onScroll)
+        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: 10}})
+      }
+    }
   }
 
   useEffect(() => {
     getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
-    // window.addEventListener('scroll', onScroll)
-    // return () => {
-    //   window.removeEventListener('scroll', onScroll)
-    // }
+    if (innerWidth <= 600) {
+      window.addEventListener('scroll', onScroll)
+      return () => {
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
   }, [])
 
   //----------------------------------------------------------- components start
@@ -138,7 +152,7 @@ export default props => {
     <Container>
       <Title title={'라이브'} />
       <Wrap>
-        <MainContents>
+        <MainContents ref={scroll}>
           {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />}
           <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
           {!store.list && (

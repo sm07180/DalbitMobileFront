@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect, forwardRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
