@@ -15,7 +15,6 @@
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
 import {osName} from 'react-device-detect'
-import qs from 'qs'
 //components
 import Api from 'context/api'
 //context
