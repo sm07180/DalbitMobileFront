@@ -37,7 +37,7 @@ const BroadCastProvider = props => {
   const [broadcastProfileInfo, setBroadcastProfileInfo] = useState(null) // 방송방 프로필보기,
   const [category, setCategory] = useState('')
   const [SelectChange, setSelectChange] = useState('전체')
-  const [noticeMsg, setNoticeMsg] = useState(null)
+  const [noticeMsg, setNoticeMsg] = useState()
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -176,8 +176,8 @@ const BroadCastProvider = props => {
     updateselectchange: num => {
       setSelectChange(num)
     },
-    updateNoticeMsg: obj => {
-      setNoticeMsg(noticeMsg => ({...noticeMsg, ...obj}))
+    updateNoticeMsg: str => {
+      setNoticeMsg(str)
     }
   }
   //---------------------------------------------------------------------

@@ -90,17 +90,17 @@ export default props => {
 
   async function goBjProfile() {
     store.action.updateTab(6)
-    // const res = await Api.broad_member_profile({
-    //   params: {
-    //     memNo: context.broadcastTotalInfo.bjMemNo,
-    //     roomNo: context.broadcastTotalInfo.roomNo
-    //   },
-    //   method: 'GET'
-    // })
-    // //Error발생시
-    // if (res.result === 'success') {
-    //   store.action.updateBroadcastProfileInfo(res.data)
-    // }
+    const res = await Api.broad_member_profile({
+      params: {
+        memNo: context.broadcastTotalInfo.bjMemNo,
+        roomNo: context.broadcastTotalInfo.roomNo
+      },
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      store.action.updateBroadcastProfileInfo(res.data)
+    }
   }
   //---------------------------------------------------------------------
   //useEffect

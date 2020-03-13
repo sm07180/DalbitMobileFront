@@ -49,6 +49,7 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(true)
+      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
       // setShowModify(true)
     } else {
       //Error발생시
@@ -66,6 +67,7 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(false)
+      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
       setTyping('')
       // setShowModify(true)
     } else {
