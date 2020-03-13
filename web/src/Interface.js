@@ -29,8 +29,10 @@ export default () => {
         /**
          * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
          */
-        const _ios = JSON.stringify(event.detail)
-
+        let _ios = JSON.stringify(event.detail)
+        alert(_ios)
+        _ios = encodeURIComponent(_ios)
+        alert(_ios)
         // Utility.setCookie('native-player-info', _ios, 100)
 
         document.cookie = 'native-player-info=' + _ios
