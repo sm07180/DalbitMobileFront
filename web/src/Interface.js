@@ -29,16 +29,17 @@ export default () => {
         /**
          * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
          */
-        const _ios = JSON.stringify(event.detail)
+        let _ios = JSON.stringify(event.detail)
+        alert(_ios)
+        _ios = encodeURIComponent(_ios)
+        alert(_ios)
+        Utility.setCookie('native-player-info', _ios, 100)
 
-        // Utility.setCookie('native-player-info', _ios, 100)
-
-        document.cookie = 'native-player-info=' + _ios
-
-        //const _cookie = Utility.getCookie('native-player-info')
-
+        // document.cookie = 'native-player-info=' + _ios
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
+        //const _cookie = Utility.getCookie('native-player-info')
+
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)

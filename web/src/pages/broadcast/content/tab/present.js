@@ -62,6 +62,7 @@ export default props => {
   }, [])
 
   //-------------------------------------------------------- components start
+  console.log('## context :', context)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
