@@ -173,7 +173,7 @@ const ListenerMain = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: 80%;
     height: 68px;
     font-size: 14px;
     font-weight: 400;
