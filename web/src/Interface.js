@@ -19,26 +19,17 @@ export default () => {
   let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
-    alert(event.type)
+    // alert(event.type)
     switch (event.type) {
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        /**
-         * @report 쿠키파싱이잘되지않아서,roomNo받아서 다시load처리
-         */
         const _ios = JSON.stringify(event.detail)
-
-        // Utility.setCookie('native-player-info', _ios, 100)
-
-        document.cookie = 'native-player-info=' + _ios
-
-        //const _cookie = Utility.getCookie('native-player-info')
-
-        //   context.action.updateMediaPlayerStatus(true)
-        //  context.action.updateNativePlayer(event.detail)
+        Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
+        context.action.updateMediaPlayerStatus(true)
+        context.action.updateNativePlayer(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
         const _android = JSON.stringify(event.detail)

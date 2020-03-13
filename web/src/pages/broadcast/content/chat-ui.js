@@ -128,7 +128,12 @@ export default props => {
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
-      if (data.detail.data.cmd === 'reqNotice') store.action.updateNoticeMsg(recvMsg.msg)
+      if (data.detail.data.cmd === 'reqNotice') {
+        store.action.updateNoticeMsg(recvMsg.msg)
+
+        if (recvMsg.msg != '') context.action.updateBroadcastTotalInfo({hasNotice: true})
+        else context.action.updateBroadcastTotalInfo({hasNotice: false})
+      }
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
       if (data.detail.data.cmd === 'reqGrant') {
@@ -163,8 +168,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    // <Content bgImg={context.broadcastTotalInfo.bgImg != null ? context.broadcastTotalInfo.bgImg : roomInfo.bgImg.url}>
-    <Content bgImg={roomInfo.bgImg.url}>
+    <Content bgImg={context.broadcastTotalInfo.bgImg.url != null ? context.broadcastTotalInfo.bgImg.url : roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
       <CommentList className="scroll" ref={chatArea}>

@@ -33,8 +33,15 @@ const JoinForm = props => {
   const [currentNick, setCurrentNick] = useState() // 닉네임 확인 도움 텍스트 값.
   const [currentName, setCurrentName] = useState() // 이름 확인 도움 텍스트 값.
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
-  const [currentAuthBtn, setCurrentAuthBtn] = useState(true) // 인증확인 버튼
+  const [currentAuth1, setCurrentAuth1] = useState() // 휴대폰인증1 텍스트값
+  const [currentAuth2, setCurrentAuth2] = useState() // 휴대폰인증2 텍스트값
+  const [currentAuthBtn, setCurrentAuthBtn] = useState({
+    request: true, //버튼 disable true
+    check: true
+  }) // 인증확인 버튼
   const [imgData, setImgData] = useState()
+  const [thisTimer, setThisTimer] = useState()
+  let setTime = 300
 
   //포토서버에 올라간 디폴트 이미지
   const defaultImage = `${PHOTO_SERVER}/profile_3/profile_n.png`
@@ -53,6 +60,19 @@ const JoinForm = props => {
       for (var i = 0; i < digits - n.length; i++) zero += '0'
     }
     return zero + n
+  }
+
+  //timer 만들기
+  //let thisTimer = null
+
+  const createAuthTimer = () => {
+    let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+    document.getElementsByClassName('timer')[0].innerHTML = timer
+    setTime--
+    if (setTime < 0) {
+      clearInterval(thisTimer)
+      setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+    }
   }
 
   //회원가입 들어온 후 gnb닫아줘야 메인으로 갔을때 제대로 열림
@@ -100,6 +120,20 @@ const JoinForm = props => {
       validatePwd(e.target.value)
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
+    } else if (e.target.name == 'auth') {
+      if (e.target.value.length == 6) {
+        if (changes.CMID) {
+          setCurrentAuthBtn({
+            request: currentAuthBtn.request,
+            check: false
+          })
+        }
+      } else if (e.target.value.length > 6) {
+        setChanges({
+          ...changes,
+          [e.target.name]: e.target.value.slice(0, -1)
+        })
+      }
     }
   }
 
@@ -176,11 +210,28 @@ const JoinForm = props => {
       ...changes,
       loginID: loginIdVal
     })
-    if (loginIdVal.length > 10) {
+    if (loginIdVal.length >= 13) {
+      // setValidate({
+      //   ...validate,
+      //   loginID: true
+      // })
+      setCurrentAuthBtn({
+        request: false,
+        check: true
+      })
+    } else if (loginIdVal.length < 13) {
       setValidate({
         ...validate,
-        loginID: true
+        loginID: false
       })
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
+      setCurrentAuth1('')
+      document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
   //---------------------------------------------------------------------
@@ -360,11 +411,27 @@ const JoinForm = props => {
     })
     if (resAuth.result === 'success') {
       console.log(resAuth)
+      setValidate({
+        ...validate,
+        loginID: true,
+        auth: false
+      })
       setChanges({...changes, CMID: resAuth.data.CMID})
-      setCurrentAuthBtn(false)
+      // setCurrentAuthBtn({
+      //   request: true,
+      //   check: true
+      // })
+
+      setCurrentAuth1(resAuth.message)
+      setCurrentAuth2('')
+      document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       //setInterval({createAuthTimer()},1000)
+      //thisTimer =
+      setThisTimer(setInterval(createAuthTimer, 1000))
+      setTime = 300
     } else {
       console.log(resAuth)
+      setCurrentAuth1(resAuth.message)
     }
   }
 
@@ -379,8 +446,12 @@ const JoinForm = props => {
     if (resCheck.result === 'success') {
       console.log(resCheck)
       setValidate({...validate, auth: true})
+      setCurrentAuth2(resCheck.message)
+      clearInterval(thisTimer)
+      document.getElementsByClassName('timer')[0].innerHTML = ''
     } else {
       console.log(resCheck)
+      setCurrentAuth2(resCheck.message)
     }
   }
 
@@ -533,25 +604,13 @@ const JoinForm = props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.loginNickNm && validate.birth && validate.term) {
+    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.loginNickNm && validate.birth && validate.term && validate.auth) {
       setValidatePass(true)
     } else {
       setValidatePass(false)
     }
     //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
-
-  //timer 만들기
-  const createAuthTimer = () => {
-    // let setTime = 300
-    // let timer = `${Math.floor(setTime / 60)}:${setTime % 60)}`
-    // document.getElementsByClassName('timer').innerHTML = timer
-    // setTime = setTime--;
-    // if (setTime < 0) {
-    //   clearInterval(tid);
-    //   alert("종료");
-    // }
-  }
 
   return (
     <>
@@ -562,24 +621,36 @@ const JoinForm = props => {
             <PhoneAuth>
               <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
               <button
-                disabled={!validate.loginID}
+                className="auth-btn1"
+                disabled={currentAuthBtn.request}
                 onClick={() => {
                   fetchAuth()
                 }}>
                 인증요청
               </button>
             </PhoneAuth>
+            {currentAuth1 && (
+              <HelpText state={validate.loginID} className={validate.loginID ? 'pass' : 'help'}>
+                {currentAuth1}
+              </HelpText>
+            )}
             <PhoneAuth>
               <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
               <span className="timer"></span>
               <button
-                disabled={currentAuthBtn}
+                className="auth-btn2"
+                disabled={currentAuthBtn.check}
                 onClick={() => {
                   fetchAuthCheck()
                 }}>
                 인증확인
               </button>
             </PhoneAuth>
+            {currentAuth2 && (
+              <HelpText state={validate.auth} className={validate.auth ? 'pass' : 'help'}>
+                {currentAuth2}
+              </HelpText>
+            )}
           </>
         )}
         {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
@@ -752,6 +823,16 @@ const PhoneAuth = styled.div`
   }
   & + & {
     margin-top: 20px;
+  }
+  .timer {
+    display: block;
+    position: absolute;
+    right: 31%;
+    color: ${COLOR_MAIN};
+    font-size: 12px;
+    line-height: 50px;
+    z-index: 3;
+    transform: skew(-0.03deg);
   }
 `
 //프로필 업로드 영역

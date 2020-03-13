@@ -1,8 +1,9 @@
 /**
- * @title 청취자
+ * @title 청취자탭(최상위 컴포넌트)[비제이리스트,매니저리스트,청취자리스트]
  */
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
@@ -13,20 +14,11 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
 export default props => {
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
-  console.log('roomInfo = ' + roomInfo)
-
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
-  //----------------------------------------------------------------
-  //0.매니저정보 info스테이트----------------------------------------
-  //1.백그라운드 비지빌리티----------------------------------------
-  //2.비제이정보 info스테이트----------------------------------------
-  const [ManagerInfo, setManagerInfo] = useState([])
-  const [trues, setTrues] = useState(false)
-  const [BJInfo, setBJInfo] = useState(props.Info3)
   //---------------------------------------------------------------
-  //api
+  //api(리스너 리스트)
   const fetchListenList = async () => {
     const {roomNo} = props.location.state
     const res = await API.broad_listeners({
@@ -51,18 +43,17 @@ export default props => {
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
   //메니저 info맵-----------------------
-
   const drawManegerList = () => {
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, profImg, auth} = live
       const {thumb62x62} = profImg
+      //매니저  청취자 비제이 구분 auth로
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
       if (auth === 2) mode = '3'
-      //
       if (auth !== 1) return
       //----------------------------------------------------------------
       return (
@@ -71,11 +62,6 @@ export default props => {
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
-          {/* {auth === '3' && (
-            <div className="btnwrap">
-              <EventBTNS />
-            </div>
-          )} */}
           {context.token.memNo !== memNo && (
             <div className="btnwrap">
               <EventBTNS selectidx={index} />
@@ -85,21 +71,6 @@ export default props => {
       )
     })
   }
-  // const authClick = () => {
-  //   console.clear()
-
-  //   console.log(store.auth)
-  // }
-  // const authClickChange = () => {
-  //   console.clear()
-  //   console.log(' 변경')
-  //   // console.log(JSON.stringify(store.roomInfo, null, 1))
-  //   store.action.updateAuth(2)
-  //   // store.action.updateRoomInfo({auth: 1})
-  // }
-  // useEffect(() => {
-  //   //console.log('store.roomInfo.auth : ' + store.roomInfo.auth)
-  // }, [store.roomInfo.auth])
   //----------------------------------------------------------------
   //리스너 인포맵
   const drawListenList = () => {
@@ -108,13 +79,11 @@ export default props => {
       let mode = '해당사항없음'
       const {nickNm, memNo, profImg, auth} = live
       const {thumb62x62} = profImg
-
       //----------------------------------------------------------------
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
       if (auth === 3) mode = '3'
-      //
       if (auth !== 0) return
       return (
         <ListenList key={index}>
@@ -122,29 +91,6 @@ export default props => {
           <ManagerImg bg={thumb62x62} />
           <StreamID>{memNo}</StreamID>
           <NickName>{nickNm}</NickName>
-          {/* {auth === '3' ||
-            (auth === '1' && (
-              <div className="btnwrap">
-                <EventBTNS />
-              </div>
-            ))} */}
-          {/* <p>
-            <button
-              onClick={() => {
-                authClick()
-              }}>
-              현재
-            </button>{' '}
-          </p>
-          <p>
-            <button
-              onClick={() => {
-                authClickChange()
-              }}>
-              변경
-            </button>
-          </p> */}
-
           {context.token.memNo !== memNo && <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>}
         </ListenList>
       )
@@ -209,7 +155,7 @@ const DJList = styled.div`
   width: 100%;
   padding: 4px;
   margin-top: 4px;
-  background-color: #8555f6;
+  background-color: ${COLOR_MAIN};
   border-radius: 24px;
   & h2 {
     max-width: 70px;
@@ -253,14 +199,13 @@ const DJList = styled.div`
     content: 'DJ';
   }
 `
-
 // const ManagerList = styled.div`
 //   position: relative;
 //   width: 100%;
 //   display: flex;
 //   padding: 4px;
 //   margin-top: 4px;
-//   border: 1px solid #8555f6;
+//   border: 1px solid ${COLOR_MAIN};
 //   border-radius: 24px;
 // `
 const ManagerImg = styled.div`
@@ -284,7 +229,7 @@ const StreamID = styled.h4`
   max-width: 100px;
   height: 36px;
   margin-left: 10px;
-  color: #8555f6;
+  color: ${COLOR_MAIN};
   line-height: 36px;
   font-size: 14px;
   font-weight: 600;
@@ -321,7 +266,6 @@ const ListenWrap = styled.div`
     font-size: 0;
   }
 `
-
 const ListenList = styled.div`
   width: 100%;
   position: relative;
@@ -339,31 +283,5 @@ const ListenList = styled.div`
   }
   & .authClass {
     font-size: 0;
-  }
-`
-//이벤트버튼
-const EVENTBTN = styled.button`
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  width: 36px;
-  height: 36px;
-  transform: translateY(-50%);
-  background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
-  outline: none;
-`
-//클릭 배경 가상요소
-const BackGround = styled.div`
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
-  background-color: transparent;
-  &.on {
-    display: block;
-    z-index: 2;
   }
 `

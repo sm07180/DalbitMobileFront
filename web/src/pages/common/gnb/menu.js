@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Link, NavLink} from 'react-router-dom'
 
 //context
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -75,17 +75,19 @@ export default props => {
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>
             </StartBtn>
             {makeNavi()}
-            <button
-              className="mobile"
-              onClick={() => {
-                context.action.alert({
-                  //콜백처리
-                  callback: () => {},
-                  msg: `현재 준비중입니다.`
-                })
-              }}>
-              달빛라디오 앱 설치하기
-            </button>
+            {!isHybrid() && (
+              <button
+                className="mobile"
+                onClick={() => {
+                  context.action.alert({
+                    //콜백처리
+                    callback: () => {},
+                    msg: `현재 준비중입니다.`
+                  })
+                }}>
+                달빛라디오 앱 설치하기
+              </button>
+            )}
           </CONTENT>
         </NoticeWrap>
       </Gnb>

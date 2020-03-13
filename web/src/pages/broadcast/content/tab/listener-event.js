@@ -1,5 +1,5 @@
 /**
- * @title 클릭 event
+ * @title 청취자탭 클릭 event(드롭다운 메뉴 내 역활별 ui 및 기능)
  */
 import React, {useEffect, useState, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -7,15 +7,13 @@ import styled from 'styled-components'
 import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
 import {Context} from 'context'
-
+//soket
 const sc = require('context/socketCluster')
-
 export default props => {
-  //const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  //context
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
-  //console.log(roomInfo)
-  //const {state} = props.roomInfo
+  ///////////////////////////////////
   let selectlistener = ''
   let res = ''
 
