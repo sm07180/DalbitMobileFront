@@ -102,6 +102,21 @@ export default props => {
       store.action.updateBroadcastProfileInfo(res.data)
     }
   }
+
+  async function getNotice() {
+    store.action.updateTab(8)
+    const res = await Api.broad_notice({
+      params: {
+        roomNo: context.broadcastTotalInfo.roomNo
+      },
+      method: 'GET'
+    })
+    //Error발생시
+    if (res.result === 'success') {
+      store.action.updateNoticeMsg(res.data.notice)
+    }
+  }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -184,7 +199,7 @@ export default props => {
             사연
           </button>
           {/* 클릭시 공지 탭 */}
-          <button title="공지사항" onClick={() => store.action.updateTab(8)}>
+          <button title="공지사항" onClick={() => getNotice()}>
             공지사항
           </button>
         </div>

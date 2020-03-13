@@ -38,39 +38,41 @@ export default props => {
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
   //fetch
-  async function fetchData(obj) {
-    const res = await Api.broad_notice({
-      data: {
-        roomNo: RoomNumbers,
-        notice: changes.notice
-      }
-    })
-    if (res.result === 'success') {
-      setFetch(res.data)
-      console.log(res)
-      setShow(true)
-      console.log(context.broadcastTotalInfo)
 
-      // setShowModify(true)
-    } else {
-      //Error발생시
-      console.log(res)
+  async function NoticeChange(idx) {
+    //idx (1- 등록 , 2- 수정 , 3-삭제)
+    let methodType
+    let res
+
+    methodType = methodType === 3 ? 'DELETE' : 'POST'
+
+    if (idx === 1 || idx === 2) {
+      //등록(1), 수정(2)
+      res = await Api.broad_notice({
+        data: {
+          roomNo: RoomNumbers,
+          notice: changes.notice
+        },
+        method: 'POST'
+      })
+    } else if (idx === 3) {
+      // 삭제(3)
+      res = await Api.broad_notice({
+        data: {
+          roomNo: RoomNumbers
+        },
+        method: methodType
+      })
     }
-  }
-  //딜리트
-  async function fetchDataDelete(obj) {
-    const res = await Api.broad_notice_delete({
-      data: {
-        roomNo: RoomNumbers
-      }
-    })
+
     if (res.result === 'success') {
       setFetch(res.data)
-      console.log(res)
-      setShow(false)
-
-      setTyping('')
-      // setShowModify(true)
+      if (type == 1) {
+        setShow(true)
+      } else if (type == 3) {
+        setShow(false)
+        setTyping('')
+      }
     } else {
       //Error발생시
       console.log(res)
@@ -126,11 +128,11 @@ export default props => {
       )}
       {listenerNotice()}
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
-      {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={fetchData}>등록하기</RegistBTN>}
+      {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>}
       {show === true && context.broadcastTotalInfo.auth == 3 && (
         <div className="modifyWrap">
-          <DeleteBTN onClick={fetchDataDelete}>삭제하기</DeleteBTN>
-          <ModifyBTN onClick={fetchData}>수정하기</ModifyBTN>
+          <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
+          <ModifyBTN onClick={() => NoticeChange(2)}>수정하기</ModifyBTN>
         </div>
       )}
     </Container>
