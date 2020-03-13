@@ -1,15 +1,14 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
-import {Link, NavLink} from 'react-router-dom'
-
+import {NavLink} from 'react-router-dom'
 //context
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 //component
 import Gnb from './gnb-layout'
+import {BroadValidation} from 'pages/common/header/navi'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -55,21 +54,22 @@ export default props => {
               key="broadcast"
               onClick={event => {
                 event.preventDefault()
-                //Hybird App이 아닐때
-                if (!context.cast_state) {
-                  if (context.customHeader.os === '3') {
-                    console.log(props)
-                    if (context && context.token && !context.token.isLogin) {
-                      context.action.updatePopup('LOGIN')
-                      //alert('로그인필요')
-                      //props.history.push('/login')
-                      return
-                    }
-                    props.history.push('/broadcast-setting')
-                  } else {
-                    Hybrid('RoomMake', '')
-                  }
-                }
+                BroadValidation()
+                // //Hybird App이 아닐때
+                // if (!context.cast_state) {
+                //   if (context.customHeader.os === '3') {
+                //     console.log(props)
+                //     if (context && context.token && !context.token.isLogin) {
+                //       context.action.updatePopup('LOGIN')
+                //       //alert('로그인필요')
+                //       //props.history.push('/login')
+                //       return
+                //     }
+                //     props.history.push('/broadcast-setting')
+                //   } else {
+                //     Hybrid('RoomMake', '')
+                //   }
+                // }
                 context.action.updateGnbVisible(false)
               }}>
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>

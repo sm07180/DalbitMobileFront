@@ -10,21 +10,53 @@ import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
-import {COLOR_WHITE, COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {osName, browserName} from 'react-device-detect'
+import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //
-export default props => {
+/**
+ * @title 방송하기 유효성체크
+ */
+export const BroadValidation = () => {
+  //context
+  const context = Navi.context()
+  //Boolean
+  const isLogin = Boolean(context.token.isLogin) //----로그인 여부확인
+  const isOnAir = Boolean(context.cast_state) //-------방송중 여부확인
+  const isApp = Boolean(isHybrid()) //-----------------네이티브앱 여부확인
+  //--#방송중
+  if (isOnAir) {
+    alert('방송중입니다.')
+  } else {
+    //--#방송하기
+
+    //NativeApp
+    if (isApp) {
+      Hybrid('RoomMake')
+    } else {
+      //PC 및 모바일웹
+      if (isLogin) {
+        context.action.updatePopup('LOGIN')
+        return
+      } else {
+        Navi.history().push('/broadcast-setting')
+      }
+    }
+  }
+}
+const Navi = props => {
   //---------------------------------------------------------------------
+  //context
+  const context = useContext(Context)
+  Navi.context = () => context
+  Navi.history = () => props.history
   //data
   const info = [
     {title: '라이브', url: '/live'},
     {title: '캐스트', url: '/cast'},
     {title: '랭킹', url: '/ranking'}
-    // {title: '방송하기', url: '/broadcast-setting'}
   ]
-  //context
-  const context = useContext(Context)
+
+  //---------------------------------------------------------------------
   //makeMenu
   const makeNavi = () => {
     //라이브,스토어,이벤트 메뉴
@@ -51,19 +83,7 @@ export default props => {
         key="broadcast"
         onClick={event => {
           event.preventDefault()
-          if (!context.cast_state) {
-            //하이브리드앱
-            if (isHybrid()) {
-              Hybrid('RoomMake')
-            } else {
-              if (context && context.token && !context.token.isLogin) {
-                //로그인 팝업레이어실행
-                context.action.updatePopup('LOGIN')
-                return
-              }
-              props.history.push('/broadcast-setting')
-            }
-          }
+          BroadValidation()
         }}>
         <span>{context.cast_state ? '방송중' : '방송하기'}</span>
       </button>
@@ -75,6 +95,7 @@ export default props => {
   //---------------------------------------------------------------------
   return <Content className={`${props.type}`}>{makeNavi()}</Content>
 }
+export default Navi
 //---------------------------------------------------------------------
 const Content = styled.nav`
   display: block;

@@ -4,28 +4,34 @@
  * @todo 반응형으로 처리되어야함
  */
 
-import React, {useEffect, useContext} from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
-//
+import {BroadValidation} from 'pages/common/header/navi'
+
 export default () => {
   //context
   const context = useContext(Context)
-  //const
-  const url = `${IMG_SERVER}/images/api/ic_logo_normal.png`
   //---------------------------------------------------------------------
   return (
     <Content>
       {/* 모바일 헤더에서만 보이는 방송하기 nav링크 */}
       <MobileButton className="mobilecast">
-        <NavLink title="방송하기" to="/broadcast" exact>
+        <button
+          onClick={event => {
+            event.preventDefault()
+            BroadValidation()
+          }}>
+          <span>{context.cast_state ? '방송중' : '방송하기'}</span>
+        </button>
+
+        {/* <NavLink title="방송하기" to="/broadcast" exact>
           <span>방송하기</span>
-        </NavLink>
+        </NavLink> */}
       </MobileButton>
       {/* 헤더 우측에 gnb버튼 4가지 고정 */}
       <GnbButton>
@@ -147,7 +153,7 @@ const MobileButton = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin: 3px 7px 0 0;
     vertical-align: top;
-    a {
+    button {
       display: inline-block;
       padding: 0 14px;
       border-radius: 36px;
