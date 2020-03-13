@@ -28,8 +28,8 @@ export default class Utility {
     if (exdays !== null) {
       exdate.setDate(exdate.getDate() + Number(exdays))
     }
-    const c_value = decodeURIComponent(value) + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = decodeURIComponent(c_name) + '=' + c_value + ';path=/;Secure;Domain=dalbitcast.com'
+    const c_value = value + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
+    document.cookie = c_name + '=' + c_value + ';path=/;Secure;Domain=dalbitcast.com'
   }
   /**
    * @brief 쿠키가져오기
@@ -45,7 +45,7 @@ export default class Utility {
       y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
       x = x.replace(/^\s+|\s+$/g, '')
       if (x == c_name) {
-        return decodeURIComponent(y)
+        return y
       }
     }
   }
