@@ -31,7 +31,7 @@ export default () => {
          */
         //  let _ios = JSON.stringify(encodeURIComponent(event.detail))
         let _ios = event.detail
-
+        _ios = JSON.stringify(_ios)
         _ios = encodeURIComponent(_ios)
         alert(_ios)
         console.log(_ios)
