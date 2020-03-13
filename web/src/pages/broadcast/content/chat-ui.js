@@ -163,8 +163,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    // <Content bgImg={context.broadcastTotalInfo.bgImg != null ? context.broadcastTotalInfo.bgImg : roomInfo.bgImg.url}>
-    <Content bgImg={roomInfo.bgImg.url}>
+    <Content bgImg={context.broadcastTotalInfo.bgImg.url != null ? context.broadcastTotalInfo.bgImg.url : roomInfo.bgImg.url}>
       {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
       <CommentList className="scroll" ref={chatArea}>

@@ -11,7 +11,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
+import makeContents from 'Pages/broadcast/content/tab/profileLisner'
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -88,20 +88,20 @@ export default props => {
   //   }
   // }
 
-  // async function goBjProfile() {
-  //   const res = await Api.broad_member_profile({
-  //     params: {
-  //       memNo: context.broadcastTotalInfo.bjMemNo,
-  //       roomNo: context.broadcastTotalInfo.roomNo
-  //     },
-  //     method: 'GET'
-  //   })
-  //   //Error발생시
-  //   if (res.result === 'success') {
-  //     store.action.updateTab(6)
-  //     store.action.updateBroadcastProfileInfo(res.data)
-  //   }
-  // }
+  async function goBjProfile() {
+    store.action.updateTab(6)
+    // const res = await Api.broad_member_profile({
+    //   params: {
+    //     memNo: context.broadcastTotalInfo.bjMemNo,
+    //     roomNo: context.broadcastTotalInfo.roomNo
+    //   },
+    //   method: 'GET'
+    // })
+    // //Error발생시
+    // if (res.result === 'success') {
+    //   store.action.updateBroadcastProfileInfo(res.data)
+    // }
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -152,7 +152,7 @@ export default props => {
           최소화
         </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
-        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => store.action.updateTab(6)}>
+        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => goBjProfile()}>
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
