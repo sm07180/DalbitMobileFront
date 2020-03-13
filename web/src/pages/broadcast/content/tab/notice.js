@@ -49,6 +49,8 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(true)
+      console.log(context.broadcastTotalInfo)
+      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
       // setShowModify(true)
     } else {
       //Error발생시
@@ -66,6 +68,7 @@ export default props => {
       setFetch(res.data)
       console.log(res)
       setShow(false)
+      context.action.updateBroadcastTotalInfo(res.data.hasNotice)
       setTyping('')
       // setShowModify(true)
     } else {
@@ -88,7 +91,7 @@ export default props => {
     }
     setCount(element.value.length)
   }
-  console.log(context.broadcastTotalInfo)
+
   // useEffect(() => {
   //   console.log('소켓 에서 받은 공지사항 내용  = ' + store.noticeMsg)
   // }, [store.noticeMsg])

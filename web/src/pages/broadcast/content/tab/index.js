@@ -25,12 +25,12 @@ import PresentGiven from './present-given'
 import Navi from './navibar'
 
 export default props => {
+  //RoomInfomation(context)
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [state, setState] = useState({
     prev: '청취자',
     next: '청취자'
   })
-  //console.log(props)
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -52,8 +52,6 @@ export default props => {
   useEffect(() => {
     changeItem(store.tabIdx)
   }, [store.flag])
-
-  // console.log('## store: ', store)
   return (
     <>
       {/* 탭버튼 */}
@@ -75,9 +73,9 @@ export default props => {
         })}
       </Tab>
       {/* 탭컨텐츠영역 */}
-      {currentItem.tab === '청취자' && <LiveListener {...props} Info={ManegerInfo} Info3={BJInfo} />}
+      {currentItem.tab === '청취자' && <LiveListener {...props} />}
       {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} {...props} />}
-      {currentItem.tab === '라이브' && <Live Info={LiveInfo} {...props} />}
+      {currentItem.tab === '라이브' && <Live {...props} />}
       {currentItem.tab === '충전' && <Charge prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '선물' && <Present prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '부스트' && <Boost />}
@@ -133,64 +131,6 @@ const Tab = styled.div`
     outline: none;
   }
 `
-//------------------------------------------------------------------
-//탭 셀렉트 배열
-
-const tabContent = [
-  {
-    id: 0,
-    tab: '청취자'
-  },
-  {
-    id: 1,
-    tab: '게스트'
-  },
-  {
-    id: 2,
-    tab: '라이브'
-  },
-  // {
-  //   id: 3,
-  //   tab: '충전'
-  // },
-  {
-    id: 4,
-    tab: '선물'
-  }
-  // {
-  //   id: 5,
-  //   tab: '부스트'
-  // },
-  // {
-  //   id: 6,
-  //   tab: '프로필'
-  // },
-  // {
-  //   id: 7,
-  //   tab: '신고하기'
-  // },
-  // {
-  //   id: 8,
-  //   tab: '공지사항'
-  // },
-  // {
-  //   id: 9,
-  //   tab: '사연'
-  // },
-  // ,
-  // {
-  //   id: 10,
-  //   tab: '방송수정'
-  // },
-  // {
-  //   id: 11,
-  //   tab: '빠른 말'
-  // },
-  // {
-  //   id: 12,
-  //   tab: '받은선물'
-  // }
-]
 //data------------------------------------------------------------------
 //라이브 가데이터
 const LiveInfo = [
