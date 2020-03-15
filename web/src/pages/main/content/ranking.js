@@ -345,14 +345,14 @@ const MobileWrap = styled.div`
 
 const RankingItem = styled.div`
   /* width: 32.3%; */
-  width:19.12%
+  width: 19.12%;
   text-align: center;
-  cursor:pointer;
+  cursor: pointer;
 
-  & + &{
-    margin-left:1.1%;
+  & + & {
+    margin-left: 1.1%;
     @media (max-width: ${WIDTH_PC_S}) {
-      margin:0;
+      margin: 0;
     }
   }
 
@@ -377,21 +377,21 @@ const RankingItem = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    p{
-      width:40px;
-      font-size:20px;
-      line-height:40px;
+    p {
+      width: 40px;
+      font-size: 20px;
+      line-height: 40px;
     }
-    h2{
-      margin-top:25px;
-      font-size:18px;
+    h2 {
+      margin-top: 25px;
+      font-size: 18px;
     }
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {
-    h2{
-      margin-top:20px;
-      font-size:16px;
+    h2 {
+      margin-top: 20px;
+      font-size: 16px;
     }
   }
 `
