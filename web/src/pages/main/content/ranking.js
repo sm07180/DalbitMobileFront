@@ -3,6 +3,7 @@
  * @brief 메인 라이브, 캐스트 리스트 component
  */
 import React, {useState, useEffect} from 'react'
+import _ from 'lodash'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
@@ -30,7 +31,8 @@ export default props => {
         records: 5
       }
     })
-    if (resDj.result === 'success') {
+    //undefined 방어코드추가, resDj.data.list===undefined 일수있음
+    if (resDj.result === 'success' && _.hasIn(resDj, 'data.list')) {
       setDjInfo(resDj.data.list)
       sswiper.update()
     } else {
@@ -44,7 +46,7 @@ export default props => {
         records: 5
       }
     })
-    if (resfan.result === 'success') {
+    if (resfan.result === 'success' && _.hasIn(resDj, 'data.list')) {
       setFanInfo(resfan.data.list)
       sswiper.update()
     } else {
