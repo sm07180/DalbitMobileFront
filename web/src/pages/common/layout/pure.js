@@ -90,7 +90,7 @@ const CloseButton = styled.button`
   }
 `
 const Logo = styled.div`
-  margin: 60px 0 50px 0;
+  padding: 60px 0 50px 0;
   text-align: center;
 `
 const Container = styled.div`
