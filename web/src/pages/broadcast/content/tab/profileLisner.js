@@ -195,11 +195,13 @@ export default props => {
           <PIMG bg={objProfileInfo.profImg.url} />
         </div>
         <div className="gazeWrap">
+          <span>0</span>
           <div className="gazeBar">
             <GazeBar gaze={percent} expNext={objProfileInfo}>
               <p>{objProfileInfo.exp}</p>
             </GazeBar>
           </div>
+          <span>9999</span>
         </div>
         <h5 className="levelWrap">
           {objProfileInfo.grade} / Lv.{objProfileInfo.level}
@@ -260,11 +262,16 @@ const Container = styled.div`
   }
   .gazeWrap {
     position: relative;
+    display: flex;
     width: 100%;
     margin-top: 5px;
     color: #bdbdbd;
     font-size: 14px;
-    &:before {
+
+    & span {
+      line-height:20px;
+    }
+    /* &:before {
       position: absolute;
       width: 25px;
       left: 0;
@@ -273,15 +280,15 @@ const Container = styled.div`
       line-height: 1.6;
       text-align: right;
       transform: skew(-0.03deg);
-    }
-    &:after {
+    } */
+    /* &:after {
       position: absolute;
       content: ${props => props.expNext};
       right: 0;
       top: 0;
       line-height: 20px;
       transform: skew(-0.03deg);
-    }
+    } */
   }
   .gazeBar {
     position: relative;
