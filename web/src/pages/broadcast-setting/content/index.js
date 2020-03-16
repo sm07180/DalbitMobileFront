@@ -195,9 +195,10 @@ export default props => {
           /**
            * @todos 소켓연결필요
            */
-          props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
           context.action.updateBroadcastTotalInfo(res.data)
+          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+
+          props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
         } else {
           console.warn(res.message)
         }

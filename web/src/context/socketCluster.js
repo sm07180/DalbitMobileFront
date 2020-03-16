@@ -92,7 +92,8 @@ export const scConnection = obj => {
         PACKET_SEND_CHAT_END: 'chatEnd', //BJ/채팅종료
         PACKET_SEND_REQKICKOUT: 'reqKickOut', //강퇴
         PACKET_SEND_REQGIFDAL: 'reqGiftDal', //달선물
-        PACKET_SEND_REQGRANT: 'reqGrant' //매니저 지정 / 해제
+        PACKET_SEND_REQGRANT: 'reqGrant', //매니저 지정 / 해제
+        PACKET_SEND_REQROOMCHANGETIME: 'reqRoomChangeTime' //채팅방 방송시간 변경
       },
       recv: {
         PACKET_RECV_CHAT: 'chat', //채팅 메세지
@@ -851,6 +852,13 @@ export const SendMessageReqGrant = objChatInfo => {
   sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_REQKICKOUT, params, objChatInfo.managerType)
 }
 
+export const SendMessageReqRoomChangeTime = objChatInfo => {
+  const params = {
+    memNo: ''
+  }
+  console.log('sendMessage = ' + JSON.stringify(params))
+  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_REQKICKOUT, params, objChatInfo.date)
+}
 export const sendMessageJson = function(cmd, params, msg) {
   if (cmd == /*'login'*/ socketConfig.packet.send.PACKET_SEND_LOGIN) {
     return {
@@ -889,6 +897,12 @@ export const sendMessageJson = function(cmd, params, msg) {
       sendMsg: msg //''
     }
   } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_REQGRANT) {
+    return {
+      cmd: cmd,
+      chat: params, //self
+      sendMsg: msg //''
+    }
+  } else if (cmd == /*'chat'*/ socketConfig.packet.send.PACKET_SEND_REQROOMCHANGETIME) {
     return {
       cmd: cmd,
       chat: params, //self
