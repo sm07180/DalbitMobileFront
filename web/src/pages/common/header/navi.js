@@ -47,7 +47,6 @@ export const BroadValidation = () => {
             console.log(res)
             //진행중인 방송이 있습니다.
             if (_.hasIn(res.data, 'state') && res.data.state === 5) {
-              console.log(res)
               context.action.confirm({
                 //---------------------------방송재게
                 callback: () => {
@@ -65,7 +64,7 @@ export const BroadValidation = () => {
                         sc.socketClusterBinding(res.data.roomNo, context)
                         context.action.updateBroadcastTotalInfo(res.data)
                         if (isApp) {
-                          //  Hybrid('RoomMake', '')
+                          Hybrid('ReconnectRoom', res.data)
                         } else {
                           Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
                         }
