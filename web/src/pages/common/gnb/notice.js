@@ -29,7 +29,7 @@ export default props => {
             <ICON></ICON>
             <Title>알림사항</Title>
           </Nheader>
-          <CONTENT>{arrayNotice}</CONTENT>
+          {/* <CONTENT>{arrayNotice}</CONTENT> */}
         </NoticeWrap>
       </Gnb>
     </>

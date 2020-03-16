@@ -12,11 +12,12 @@ export default props => {
   const [list, setPosts] = useState([])
   //방송리스트 map
   const [listM, setPostsM] = useState([])
+  const [show, setShow] = useState(false)
   //맴버리스트 map
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
   //온체이지 글자
-  const [show, setShow] = useState(false)
+
   //검색결과
   const [query, setQuery] = useState('')
 

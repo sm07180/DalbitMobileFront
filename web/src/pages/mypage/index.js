@@ -47,10 +47,10 @@ export default props => {
         <SubContent>
           <Switch>
             <Route exact path="/mypage/notice" component={Ready} />
-            <Route exact path="/mypage/fanboard" component={FanBoard} />
-            <Route exact path="/mypage/cast" component={Cast} />
-            <Route exact path="/mypage/wallet" component={Wallet} />
-            <Route exact path="/mypage/report" component={Report} />
+            <Route exact path="/mypage/fanboard" component={Ready} />
+            <Route exact path="/mypage/cast" component={Ready} />
+            <Route exact path="/mypage/wallet" component={Ready} />
+            <Route exact path="/mypage/report" component={Ready} />
             <Route exact path="/mypage/alert" component={Ready} />
             <Route exact path="/mypage/bcsetting" component={Ready} />
             <Redirect to="/error" />

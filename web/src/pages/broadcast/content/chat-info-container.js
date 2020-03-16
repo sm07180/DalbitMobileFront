@@ -125,8 +125,6 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    //timer.startTimer()
-    startTimer()
     setRoom({
       ...room,
       ...props
