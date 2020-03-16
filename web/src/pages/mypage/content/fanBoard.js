@@ -17,6 +17,9 @@ export default props => {
   const {profile} = ctx
   const placeholderText = '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
 
+  const [comment, setComment] = useState('')
+  const MaxCommentLength = 200
+
   const commentSubmit = () => {}
   const submitClick = () => {
     commentSubmit()
@@ -27,6 +30,9 @@ export default props => {
     const lineBreakHeight = 14
     const target = e.currentTarget
     const lineBreakLenght = target.value.split('\n').length
+
+    if (target.value.length > MaxCommentLength) return
+    setComment(target.value)
 
     if (lineBreakLenght >= 2) {
       target.style.height = `${lineBreakHeight * lineBreakLenght + defaultHeight}px`
@@ -42,9 +48,9 @@ export default props => {
           <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
           <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontFamily: 'NanumSquareB'}}>{profile.nickNm}</div>
         </WriteAreaTop>
-        <Textarea placeholder={placeholderText} onChange={textChange} />
+        <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
         <WriteAreaBottom>
-          <TextCount>10 / 200</TextCount>
+          <TextCount>{`${comment.length} / ${MaxCommentLength}`}</TextCount>
           <CommentSubmitBtn onClick={submitClick}>등록</CommentSubmitBtn>
         </WriteAreaBottom>
       </WriteArea>
