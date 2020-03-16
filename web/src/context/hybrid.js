@@ -35,6 +35,7 @@ export const isHybrid = () => {
  */
 export const Hybrid = (func, info) => {
   if (!isHybrid()) return
+  alert('osName ' + osName)
   switch (osName) {
     case 'Windows':
       //console.log('Windows버젼입니다')
