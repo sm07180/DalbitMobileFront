@@ -26,6 +26,7 @@ import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
+import Ready from './content/ready.js'
 //
 
 export default props => {
@@ -45,7 +46,7 @@ export default props => {
 
         <SubContent>
           <Switch>
-            <Route exact path="/mypage/notice" component={Notice} />
+            <Route exact path="/mypage/notice" component={Ready} />
             <Route exact path="/mypage/fanboard" component={FanBoard} />
             <Route exact path="/mypage/cast" component={Cast} />
             <Route exact path="/mypage/wallet" component={Wallet} />

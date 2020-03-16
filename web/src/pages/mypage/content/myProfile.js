@@ -87,6 +87,10 @@ const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: none;
+  }
 `
 
 const ProfileMsg = styled.div`
