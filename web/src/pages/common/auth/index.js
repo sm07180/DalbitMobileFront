@@ -52,9 +52,10 @@ export default props => {
       <Content {...props} update={update} />
       <button
         onClick={() => {
+          context.action.updatePopupVisible(false)
           Utility.setCookie('native-player-info', 'new_win-GetLoginTokenNewWin', 100)
         }}>
-        TEST
+        닫기
       </button>
     </React.Fragment>
   )

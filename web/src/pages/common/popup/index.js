@@ -143,6 +143,7 @@ const Wrap = styled.div`
     right: -12px;
     background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
     text-indent: -9999px;
+    cursor: pointer;
   }
 `
 const Background = styled.div`
