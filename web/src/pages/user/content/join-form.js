@@ -303,6 +303,7 @@ const JoinForm = props => {
       resultImg = defaultImagePath
     } else {
       //이미지가 등록되었다면 이미지 업로드 후 path 받아서 세팅
+
       const resUpload = await Api.image_upload({
         data: {
           file: '',
@@ -350,8 +351,37 @@ const JoinForm = props => {
     if (res && res.code) {
       if (res.code == 0) {
         //alert(res.message)
-        props.history.push('/') //회원가입 완료 후 authToken, memNo 넘겨주기
-        context.action.updateToken(res.data)
+        context.action.alert({
+          callback: () => {
+            async function fetchLogin() {
+              const resLogin = await Api.member_login({
+                data: {
+                  memType: changes.memType,
+                  memId: loginID,
+                  memPwd: changes.loginPwd
+                }
+              })
+              if (resLogin && resLogin.code) {
+                if (resLogin.code == 0) {
+                  //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
+                  props.update({loginSuccess: resLogin.data})
+                  Api.profile({params: {memNo: resLogin.data.memNo}}).then(profileInfo => {
+                    if (profileInfo.result === 'success') {
+                      context.action.updateProfile(profileInfo.data)
+                    }
+                  })
+                  props.history.push('/') //회원가입 완료 후 authToken, memNo 넘겨주기
+                  context.action.updateToken(res.data)
+                } else {
+                  console.log(resLogin)
+                }
+              }
+            }
+            fetchLogin()
+          },
+          msg: '회원가입 완료되었습니다.'
+        })
+
         // context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
         //일단 이미지랑 닉네임 여기서 넘겨줌. 나중에 조회로 바꿀수있게 하고 지울것.
         // context.action.updateState({
@@ -360,7 +390,10 @@ const JoinForm = props => {
         // })
         //@hybrid
         if (isHybrid()) {
-          alert('앱내 회원가입완료')
+          //alert('앱내 회원가입완료')
+          context.action.alert({
+            msg: '앱내 회원가입완료'
+          })
           Hybrid('GetLoginToken', res.data)
         }
         context.action.updateLogin(true)
