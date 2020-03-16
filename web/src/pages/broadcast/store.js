@@ -37,7 +37,9 @@ const BroadCastProvider = props => {
   const [broadcastProfileInfo, setBroadcastProfileInfo] = useState(null) // 방송방 프로필보기,
   const [category, setCategory] = useState('')
   const [SelectChange, setSelectChange] = useState('전체')
-  const [noticeMsg, setNoticeMsg] = useState()
+  const [noticeMsg, setNoticeMsg] = useState('')
+
+  const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -138,6 +140,7 @@ const BroadCastProvider = props => {
       if (num === 6) setCurrentTab(defaultArr.concat({id: num, tab: '프로필'}))
       if (num === 7) setCurrentTab(defaultArr.concat({id: num, tab: '신고하기'}))
       if (num === 8) setCurrentTab(defaultArr.concat({id: num, tab: '공지사항'}))
+
       if (num === 9) setCurrentTab(defaultArr.concat({id: num, tab: '사연'}))
       if (num === 10) setCurrentTab(defaultArr.concat({id: num, tab: '방송수정'}))
       if (num === 11) setCurrentTab(defaultArr.concat({id: num, tab: '빠른 말'}))
@@ -161,8 +164,8 @@ const BroadCastProvider = props => {
     updateMikeState: bool => {
       setMikeState(bool)
     },
-    updateReportData: obj => {
-      setReportData(reportData => ({...reportData, ...obj}))
+    updateReportData: list => {
+      setReportData(list)
     },
     updatereportIndex: num => {
       setReportIndex(num)
@@ -178,6 +181,9 @@ const BroadCastProvider = props => {
     },
     updateNoticeMsg: str => {
       setNoticeMsg(str)
+    },
+    updateBroadTimer: str => {
+      setBroadTimer(str)
     }
   }
   //---------------------------------------------------------------------
@@ -206,7 +212,8 @@ const BroadCastProvider = props => {
     broadcastProfileInfo,
     category,
     SelectChange,
-    noticeMsg
+    noticeMsg,
+    broadTimer
   }
 
   return <Provider value={value}>{props.children}</Provider>

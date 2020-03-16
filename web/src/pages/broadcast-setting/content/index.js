@@ -328,13 +328,14 @@ export default props => {
               <ProfileUpload imgUrl={url}>
                 <label htmlFor="profileImg">
                   <div className={url ? 'on' : 'off'}>
-                    <div></div>
+                    <div>
+                      <UploadWrap className={url ? 'on' : 'off'}>
+                        <IconWrapper>
+                          <Icon className={url ? 'on' : 'off'}></Icon>
+                        </IconWrapper>
+                      </UploadWrap>
+                    </div>
                   </div>
-                  <UploadWrap className={url ? 'on' : 'off'}>
-                    <IconWrapper>
-                      <Icon className={url ? 'on' : 'off'}></Icon>
-                    </IconWrapper>
-                  </UploadWrap>
                 </label>
                 <input
                   type="file"
@@ -373,7 +374,10 @@ export default props => {
                   return
                 }
                 if (!audioPass) {
-                  return alert('오디오 인풋이 하나도 안되었습니다.')
+                  //return alert('오디오 인풋이 하나도 안되었습니다.')
+                  return context.action.alert({
+                    msg: '오디오 인풋이 하나도 안되었습니다.'
+                  })
                 }
                 if (audioStream) {
                   audioStream.getTracks().forEach(track => {
@@ -411,7 +415,7 @@ const Header = styled.div`
 `
 const Wrap = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   padding-top: 50px;
 `
 const BroadDetail = styled.div`
@@ -587,7 +591,7 @@ const ProfileUpload = styled.div`
     display: block;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
     cursor: pointer;
 
     div {
@@ -600,9 +604,9 @@ const ProfileUpload = styled.div`
 const UploadWrap = styled.span`
   display: block;
   position: absolute;
-  bottom: 0;
+  top: 50%;
   width: 100%;
-  height: 100%;
+  height: auto;
 
   transform: skew(-0.03deg);
   &:after {
@@ -611,16 +615,12 @@ const UploadWrap = styled.span`
     content: '';
   }
   &.on {
+    top: calc(100% - 80px);
     height: 80px;
     background-color: rgba(0, 0, 0, 0.5);
   }
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
+
   & span {
-    float: left;
     line-height: 48px;
     font-size: 12px;
     letter-spacing: -0.3px;
@@ -716,7 +716,7 @@ const CopyrightIcon = styled.div`
 const CreateBtn = styled.button`
   width: 100%;
   height: 50px;
-  margin-bottom: 218px;
+  margin-bottom: 142px;
   outline: none;
   background-color: #bdbdbd;
   color: #fff;

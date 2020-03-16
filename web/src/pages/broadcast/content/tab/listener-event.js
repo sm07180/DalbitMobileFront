@@ -72,7 +72,7 @@ export default props => {
 
       console.log('broadManager  res = ' + res)
       store.action.updateListenTrues(false)
-      return (bjno = res.data.memNo)
+      //return (bjno = res.data.memNo)
     } else {
       console.log('broadManager  res = ' + res)
     }

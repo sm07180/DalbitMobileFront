@@ -42,7 +42,13 @@ export default props => {
         e.target.value = ''
       } else {
         e.target.value = ''
-        alert('비회원은 채팅에 참여 하실수 없습니다.')
+        //alert('비회원은 채팅에 참여 하실수 없습니다.')
+        context.action.alert({
+          callback: () => {
+            context.action.updatePopup('LOGIN')
+          },
+          msg: '비회원은 채팅에 참여 하실수 없습니다.'
+        })
       }
     }
   }
@@ -129,10 +135,11 @@ export default props => {
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
       if (data.detail.data.cmd === 'reqNotice') {
-        store.action.updateNoticeMsg(recvMsg.msg)
-
-        if (recvMsg.msg != '') context.action.updateBroadcastTotalInfo({hasNotice: true})
+        if (recvMsg.msg !== '') context.action.updateBroadcastTotalInfo({hasNotice: true})
         else context.action.updateBroadcastTotalInfo({hasNotice: false})
+
+        store.action.updateNoticeMsg(recvMsg.msg)
+        console.log(store.noticeMsg)
       }
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
@@ -143,7 +150,8 @@ export default props => {
       }
 
       if (data && data.detail) {
-        if (recvMsg.position === 'chat') {
+        if (recvMsg.position === undefined || recvMsg.position === 'chat') {
+          //팬퇴장 일때 position 값이 비어 있어서 top2 영역에 들어갔었다. 버그 임
           if (data.detail.data.cmd === 'reqRoomChangeInfo') {
             //console.log('방송방 수정 들어옴 = ' + data.detail.data.reqRoomChangeInfo)
             context.action.updateBroadcastTotalInfo(data.detail.data.reqRoomChangeInfo)

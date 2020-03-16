@@ -5,6 +5,8 @@ import {BroadCastStore} from '../../store'
 import Api from 'context/api'
 import Util from '../../util/broadcast-util'
 // import PopUp from '../../../components/ui/pop-mic'
+import * as broadTimer from 'pages/broadcast/content/tab/timer'
+import * as sc from 'context/socketCluster'
 
 const testData = [
   {
@@ -60,6 +62,7 @@ export default props => {
     if (res.result === 'success') {
       const stop = clearInterval(myTimer)
       setMyTimer(stop)
+      broadTimer.addTimer(1800) //부스터 사용 ( 30분 연장 )
       store.action.initBoost(store.roomInfo.roomNo) // 부스트 사용 후 다시 조회
       store.action.updateLike(4)
       context.action.alert({

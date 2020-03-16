@@ -30,8 +30,15 @@ export default props => {
       return (
         <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
           <LinkLi
-            onClick={() => {
-              context.action.updateGnbVisible(false)
+            onClick={event => {
+              if (_url == '/cast' || _url == '/ranking' || _url == '/store' || _url == '/event' || _url == '/store?고객센터' || _url == '/store?설정') {
+                event.preventDefault()
+                context.action.alert({
+                  msg: '서비스 준비중입니다.'
+                })
+              } else {
+                context.action.updateGnbVisible(false)
+              }
             }}>
             <span>{_title}</span>
           </LinkLi>
@@ -82,7 +89,7 @@ export default props => {
                   context.action.alert({
                     //콜백처리
                     callback: () => {},
-                    msg: `현재 준비중입니다.`
+                    msg: `서비스 준비중입니다.`
                   })
                 }}>
                 달빛라디오 앱 설치하기

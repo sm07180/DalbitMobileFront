@@ -14,7 +14,6 @@ import Utility from 'components/lib/utility'
 //import KakaoLogin from 'react-kakao-login'
 //import NaverLogin from 'react-naver-login'
 //import FacebookLogin from 'react-facebook-login'
-import {osName, browserName} from 'react-device-detect'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -84,10 +83,14 @@ export default props => {
         loginPwd = typeof obj !== 'undefiend' ? obj.pwd : ''
 
         if (typeof loginId === 'undefined' || !loginId) {
-          alert('휴대폰번호를 입력해 주세요')
+          context.action.alert({
+            msg: '휴대폰번호를 입력해 주세요'
+          })
           return
         } else if (typeof loginPwd === 'undefined' || !loginPwd) {
-          alert('비밀번호를 입력해 주세요')
+          context.action.alert({
+            msg: '비밀번호를 입력해 주세요'
+          })
           return
         }
         break
@@ -140,32 +143,35 @@ export default props => {
           }
         })
       } else {
-        context.action.updatePopupVisible(false)
-        context.action.updateLogin(false)
-        let result = confirm(res.message)
-        if (props.history) {
-          switch (ostype) {
-            case 'g':
-              break
-            default:
-          }
-          if (result) {
-            props.history.push('/user/join', loginInfo)
-          } else {
-            if (ostype === 'n') {
-              localStorage.removeItem('com.naver.nid.access_token')
-              localStorage.removeItem('com.naver.nid.oauth.state_token')
+        context.action.alert({
+          msg: res.message
+        })
+        // context.action.updatePopupVisible(false)
+        // context.action.updateLogin(false)
+        // let result = confirm(res.message)
+        // if (props.history) {
+        //   switch (ostype) {
+        //     case 'g':
+        //       break
+        //     default:
+        //   }
+        //   if (result) {
+        //     props.history.push('/user/join', loginInfo)
+        //   } else {
+        //     if (ostype === 'n') {
+        //       localStorage.removeItem('com.naver.nid.access_token')
+        //       localStorage.removeItem('com.naver.nid.oauth.state_token')
 
-              // Utility.removeCookie('NID_AUT', '', -1)
-              // Utility.removeCookie('NID_JKL', '', -1)
-              // Utility.removeCookie('NID_SES', '', -1)
-              // Utility.removeCookie('NNB', '', -1)
-            }
+        //       // Utility.removeCookie('NID_AUT', '', -1)
+        //       // Utility.removeCookie('NID_JKL', '', -1)
+        //       // Utility.removeCookie('NID_SES', '', -1)
+        //       // Utility.removeCookie('NNB', '', -1)
+        //     }
 
-            //props.history.push('/')
-            //alert('회원가입 실패 메인이동')
-          }
-        }
+        //     //props.history.push('/')
+        //     //alert('회원가입 실패 메인이동')
+        //   }
+        // }
       }
       //alert(res.message)
     } else {
@@ -362,7 +368,13 @@ export default props => {
         로그인
       </LoginSubmit>
       <ButtonArea>
-        <input type="checkbox" id="keeplogin" />
+        <input
+          type="checkbox"
+          id="keeplogin"
+          onClick={() => {
+            props.update({saveLogin: event.target.checked})
+          }}
+        />
         <label htmlFor="keeplogin">로그인 유지</label>
         <div>
           <button
@@ -447,7 +459,7 @@ export default props => {
 
 //---------------------------------------------------------------------
 const Logo = styled.div`
-  margin: 60px 0 50px 0;
+  padding: 60px 0 50px 0;
   text-align: center;
 `
 const LoginWrap = styled.div``

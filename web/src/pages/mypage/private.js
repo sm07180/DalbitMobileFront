@@ -26,7 +26,7 @@ export default props => {
     return (
       <Layout {...props}>
         <PrivatePage>
-          <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb120x120']})`}}></ProfileImg>
+          <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb150x150']})`}}></ProfileImg>
           <NickName>{profile.nickNm}</NickName>
           <MemberId>@{profile.memId}</MemberId>
           <FanAndStarWrap>

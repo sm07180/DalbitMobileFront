@@ -335,6 +335,17 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/fan`, method: method || 'DELETE', data: data})
   }
+  /**
+   * @brief 진행중인 방송방 확인
+   * @method "GET""
+   * @todo
+   * @param string roomNo                 //*방번호
+   * @create 손완휘 2020.03.16
+   */
+  static broad_check = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/check`, method: method || 'GET', params: params})
+  }
   //--------------------------------------------------------------------- 회원 관련
   /**
    * @brief 토큰조회
@@ -850,6 +861,20 @@ export default class API {
   static sms_check = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/sms/auth`, method: method || 'POST', data: data})
+  }
+
+  //-------------------------------------------------------------
+
+  /**
+   * @brief 회원 알림 내용 보기
+   * @method "GET"
+   * @param int page                             //페이지번호
+   * @param int records                          //페이지당 리스트 수
+   * @create 이은비 2020.03.16
+   */
+  static my_notification = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notification`, method: method || 'GET', params: params})
   }
 
   //-------------------------------------------------------------

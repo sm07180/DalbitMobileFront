@@ -163,7 +163,7 @@ export default props => {
     // 방 소켓 연결
     console.log('방소켓 연결 해라 ')
     if (props.location.state.auth === 3) {
-      console.clear()
+      //console.clear()
       getReToken(props.location.state.roomNo)
       sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {

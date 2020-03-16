@@ -15,6 +15,7 @@ const sc = require('context/socketCluster')
 
 //component
 import LottieLoader from 'components/module/lottieLoader'
+import * as timer from 'pages/broadcast/content/tab/timer'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -165,6 +166,7 @@ export default props => {
         history.push('/')
         context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
+        timer.stopTimer() //방송 시간 멈춤
       },
       //캔슬콜백처리
       cancelCallback: () => {
