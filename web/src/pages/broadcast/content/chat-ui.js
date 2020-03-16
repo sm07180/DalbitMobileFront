@@ -42,7 +42,13 @@ export default props => {
         e.target.value = ''
       } else {
         e.target.value = ''
-        alert('비회원은 채팅에 참여 하실수 없습니다.')
+        //alert('비회원은 채팅에 참여 하실수 없습니다.')
+        context.action.alert({
+          callback: () => {
+            context.action.updatePopup('LOGIN')
+          },
+          msg: '비회원은 채팅에 참여 하실수 없습니다.'
+        })
       }
     }
   }

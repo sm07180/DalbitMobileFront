@@ -68,10 +68,26 @@ const CloseButton = styled.button`
   position: absolute;
   right: 30px;
   top: 30px;
+  width: 30px;
+  height: 30px;
   display: inline-block;
-  padding: 10px;
-  background: #000;
-  color: #fff;
+  text-indent: -9999px;
+  &:before,
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    content: ' ';
+    height: 30px;
+    width: 1px;
+    background-color: #959595;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
 `
 const Logo = styled.div`
   margin: 60px 0 50px 0;

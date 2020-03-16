@@ -2,7 +2,7 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useMemo, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
@@ -43,7 +43,7 @@ export default props => {
       </button>
     )
   }
-  //useEffect
+  //useEffect Native
   useEffect(() => {
     if (!isHybrid()) return
     //@Native
@@ -51,7 +51,7 @@ export default props => {
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
-  //useEffect
+  //useEffect React
   useEffect(() => {
     if (isHybrid()) return
     //@PC
@@ -66,6 +66,7 @@ export default props => {
       })
     }
   }, [context.roomInfo])
+
   //---------------------------------------------------------------------
   return (
     <MediaPlayerWrap>
@@ -105,9 +106,9 @@ export default props => {
         </div>
         {!isHybrid() && (
           <div className="state">
-            <span>85</span>
-            <span>85</span>
-            <span>11</span>
+            <span>{_.hasIn(context.broadcastTotalInfo, 'userCount') && context.broadcastTotalInfo.userCount}</span>
+            <span>{_.hasIn(context.broadcastTotalInfo, 'historyCount') && context.broadcastTotalInfo.historyCount}</span>
+            <span>{_.hasIn(context.broadcastTotalInfo, 'likes') && context.broadcastTotalInfo.likes}</span>
           </div>
         )}
         {/* 닫기버튼 */}

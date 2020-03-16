@@ -5,7 +5,7 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import LiveList from './live-list'
 export default props => {
   //----------------------------------------------------------- declare start
-  const [sort1, setSort1] = useState('랭킹')
+  const [sort1, setSort1] = useState('전체')
   const [sort2, setSort2] = useState('방송주제')
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
@@ -69,7 +69,7 @@ export default props => {
                 <Icon onClick={() => drop1()}></Icon> {/*이미지 아직 업로드 전이라 다른 이미지로 대체*/}
                 {open1 && (
                   <DropDown>
-                    <li onClick={() => searchLive(1, '랭킹')}>랭킹</li>
+                    <li onClick={() => searchLive(1, '전체')}>전체</li>
                     <li onClick={() => searchLive(1, '추천')}>추천</li>
                     <li onClick={() => searchLive(1, '인기')}>인기</li>
                     <li onClick={() => searchLive(1, '신입')}>신입</li>

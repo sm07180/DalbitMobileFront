@@ -34,12 +34,15 @@ export default props => {
           //앱에서호출되는 로그인팝업
           if (_href.indexOf('/login') !== -1) {
             Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
-            // Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
           } else {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)
           }
         }
+        break
+      case mode.saveLogin !== undefined: //------------------------로그인유지
+        const isSave = Boolean(mode.saveLogin)
+        console.log(isSave)
         break
       default:
         break
@@ -50,13 +53,6 @@ export default props => {
   return (
     <React.Fragment>
       <Content {...props} update={update} />
-      <button
-        onClick={() => {
-          context.action.updatePopupVisible(false)
-          Utility.setCookie('native-player-info', 'new_win-GetLoginTokenNewWin', 100)
-        }}>
-        닫기
-      </button>
     </React.Fragment>
   )
 }

@@ -4,15 +4,18 @@
  * @todo 반응형으로 처리되어야함
  */
 import React, {useEffect, useContext} from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
+import _ from 'lodash'
 //context
-import Utility from 'components/lib/utility'
+import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-//
+//socket
+const sc = require('context/socketCluster')
+
 /**
  * @title 방송하기 유효성체크
  */
@@ -23,26 +26,96 @@ export const BroadValidation = () => {
   const isLogin = Boolean(context.token.isLogin) //----로그인 여부확인
   const isOnAir = Boolean(context.cast_state) //-------방송중 여부확인
   const isApp = Boolean(isHybrid()) //-----------------네이티브앱 여부확인
-  //--#방송중
+  //--#1:방송중체크
   //alert([isLogin, isOnAir, isApp])
   if (isOnAir) {
-    alert('방송중입니다.')
-  } else {
-    //--#방송하기
-    switch (isLogin) {
-      case true: //----------------로그인상태
-        if (isApp) {
-          Hybrid('RoomMake', '')
-          //     context.action.updateCastState(true)
+    context.action.alert({
+      msg: `방송중입니다.`
+    })
+    return
+  }
+  //--#방송하기
+  switch (isLogin) {
+    case true: //----------------로그인상태
+      //--#2:이미지체크
+      if (_.hasIn(context.profile, 'profImg.path') && context.profile.profImg.path !== '') {
+        const {path} = context.profile.profImg
+        //fetch
+        async function fetchData(obj) {
+          const res = await Api.broad_check({...obj})
+          if (res.result === 'success') {
+            console.log(res)
+            //진행중인 방송이 있습니다.
+            if (_.hasIn(res.data, 'state') && res.data.state === 5) {
+              context.action.confirm({
+                //---------------------------방송재게
+                callback: () => {
+                  setTimeout(() => {
+                    async function getReToken(obj) {
+                      const res = await Api.broadcast_reToken({data: {...obj}})
+                      //Error발생시
+                      if (res.result === 'fail') {
+                        console.log(res.message)
+                        props.history.push('/')
+                        return
+                      }
+                      //정상리토큰
+                      if (res.result === 'success') {
+                        sc.socketClusterBinding(res.data.roomNo, context)
+                        context.action.updateBroadcastTotalInfo(res.data)
+                        if (isApp) {
+                          Hybrid('ReconnectRoom', res.data)
+                        } else {
+                          Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
+                        }
+                        return
+                      }
+                      //return res.data
+                    }
+                    getReToken(res.data)
+                  }, 10)
+                },
+                //---------------------------방송종료
+                cancelCallback: () => {
+                  setTimeout(() => {
+                    async function exitRoom(obj) {
+                      const res = await Api.broad_exit({data: {...obj}})
+                      if (res.result === 'success') {
+                        context.action.alert({
+                          msg: res.message
+                        })
+                      }
+                    }
+                    exitRoom(res.data)
+                  }, 10)
+                },
+                msg: res.message,
+                buttonText: {
+                  left: '방송종료',
+                  right: '방송하기'
+                }
+              })
+            }
+          } else {
+            alert('유효성체크를 할수 없습니다. Api.broad_check')
+          }
         }
-        if (!isApp) Navi.history().push('/broadcast-setting')
-        break
-      case false: //---------------로그아웃상태
-        context.action.updatePopup('LOGIN')
-        break
-    }
+        fetchData()
+      } else {
+        //프로필이미지 없음
+        alert('프로필이미지등록이 필요합니다')
+        return
+        //화면이동
+      }
+      if (isApp) Hybrid('RoomMake', '')
+      if (!isApp) Navi.history().push('/broadcast-setting')
+      break
+    case false: //---------------로그아웃상태
+      context.action.updatePopup('LOGIN')
+      break
   }
 }
+
 const Navi = props => {
   //---------------------------------------------------------------------
   //context
@@ -71,7 +144,14 @@ const Navi = props => {
           exact
           activeClassName="on"
           onClick={event => {
-            window.firebase.analytics().logEvent(`${_title}-GNB-CLICK`)
+            if (_url == '/cast' || _url == '/ranking') {
+              event.preventDefault()
+              context.action.alert({
+                msg: '서비스 준비중입니다.'
+              })
+            } else {
+              window.firebase.analytics().logEvent(`${_title}-GNB-CLICK`)
+            }
           }}>
           <span>{_title}</span>
         </NavLink>
