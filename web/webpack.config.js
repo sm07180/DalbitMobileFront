@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -110,6 +111,19 @@ module.exports = (_, options) => {
         key: fs.readFileSync(path.resolve(__dirname, 'key/privkey.pem')),
         cert: fs.readFileSync(path.resolve(__dirname, 'key/fullchain.pem'))
       }
+    }
+
+    config.optimization = {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true
+            }
+          }
+        })
+      ]
     }
 
     config.output.path = path.resolve(__dirname)
