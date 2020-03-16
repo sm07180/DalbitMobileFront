@@ -23,10 +23,11 @@ export default props => {
 
   //api
 
-  const fetch = async () => {
+  const fetch = async num => {
+    //num 1 : 전일, 2: 주간(일~토)
     const resDj = await Api.get_dj_ranking({
       params: {
-        rankType: 1,
+        rankType: num,
         page: 1,
         records: 5
       }
@@ -36,12 +37,13 @@ export default props => {
       setDjInfo(resDj.data.list)
       sswiper.update()
     } else {
+      fetch(2)
       console.log('실패', resDj.result)
     }
 
     const resfan = await Api.get_fan_ranking({
       params: {
-        rankType: 1,
+        rankType: num,
         page: 1,
         records: 5
       }
@@ -104,7 +106,7 @@ export default props => {
   useEffect(() => {}, [])
 
   useEffect(() => {
-    if (sswiper) fetch()
+    if (sswiper) fetch(1)
   }, [sswiper])
 
   return (
