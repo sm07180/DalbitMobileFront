@@ -32,6 +32,7 @@ export const BroadValidation = () => {
     switch (isLogin) {
       case true: //----------------로그인상태
         if (isApp) {
+          alert('native RoomMake 실행: ')
           Hybrid('RoomMake', '')
           //     context.action.updateCastState(true)
         }

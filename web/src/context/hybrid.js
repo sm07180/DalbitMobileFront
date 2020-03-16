@@ -44,6 +44,7 @@ export const Hybrid = (func, info) => {
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
         webkit.messageHandlers[func].postMessage('')
+        alert(JSON.stringify(webkit.messageHandlers[func]))
       } else {
         webkit.messageHandlers[func].postMessage(info)
       }
