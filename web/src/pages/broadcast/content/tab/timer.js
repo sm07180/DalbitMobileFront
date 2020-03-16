@@ -59,12 +59,12 @@ export const pauseTimer = () => {
 export const startTimer = () => {
   if (startFlag) return
   console.log('방송 시간차 = ' + getTimeStamp())
-  timeloop()
   time = getTimeStamp()
   console.warn('타이머 시작')
   if (time >= BcEndTime) return
   startFlag = true
   pauseFlag = false
+  timeloop()
 }
 // 타이머 종료 기능 함수
 export const stopTimer = () => {
