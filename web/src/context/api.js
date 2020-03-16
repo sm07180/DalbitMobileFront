@@ -335,6 +335,17 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/fan`, method: method || 'DELETE', data: data})
   }
+  /**
+   * @brief 진행중인 방송방 확인
+   * @method "GET""
+   * @todo
+   * @param string roomNo                 //*방번호
+   * @create 손완휘 2020.03.16
+   */
+  static broad_check = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/check`, method: method || 'GET', params: params})
+  }
   //--------------------------------------------------------------------- 회원 관련
   /**
    * @brief 토큰조회
