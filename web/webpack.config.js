@@ -112,13 +112,25 @@ module.exports = (_, options) => {
       }
     }
 
-    config.plugins.push(new webpack.HotModuleReplacementPlugin())
     config.output.path = path.resolve(__dirname)
     config.output.publicPath = '/'
+
+    config.plugins.push(new webpack.HotModuleReplacementPlugin())
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      })
+    )
   } else {
     config.plugins.push(
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
+      })
+    )
+
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       })
     )
   }

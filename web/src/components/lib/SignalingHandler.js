@@ -1,4 +1,5 @@
-const audioSocketUrl = 'wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'
+const audioSocketUrl = __WEBRTC_SOCKET_URL
+console.log('audio socket url', audioSocketUrl)
 
 export default class SignalingHandler {
   constructor(debug) {
