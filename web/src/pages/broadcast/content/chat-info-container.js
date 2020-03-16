@@ -57,11 +57,12 @@ export default props => {
   //map
 
   const creatFanRank = () => {
-    if (room.fanRank.length < 1) return <></>
+    const roomInfo = context.broadcastTotalInfo.fanRank ? context.broadcastTotalInfo.fanRank : room.fanRank
+    if (room.fanRank === undefined || room.fanRank.length < 1) return <></>
     return room.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>
-          <Figure src={item.profImg.url} title={item.nickNm}>
+          <Figure src={item.profImg.url} title={item.nickNm} onClick={() => goBjProfile({...item, isBj: false})}>
             <img src={item.profImg.url} alt={item.nickNm} />
           </Figure>
         </li>
@@ -92,12 +93,18 @@ export default props => {
   //     return context.broadcastTotalInfo.likes
   //   }
   // }
-
-  async function goBjProfile() {
+  let userTypeMemNo = ''
+  async function goBjProfile(obj) {
     store.action.updateTab(6)
+
+    if (obj.isBj) {
+      userTypeMemNo = context.broadcastTotalInfo.bjMemNo
+    } else {
+      userTypeMemNo = obj.memNo
+    }
     const res = await Api.broad_member_profile({
       params: {
-        memNo: context.broadcastTotalInfo.bjMemNo,
+        memNo: userTypeMemNo,
         roomNo: context.broadcastTotalInfo.roomNo
       },
       method: 'GET'
@@ -172,7 +179,7 @@ export default props => {
           최소화
         </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
-        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => goBjProfile()}>
+        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => goBjProfile({isBj: true})}>
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
@@ -194,7 +201,6 @@ export default props => {
           <li>{context.broadcastTotalInfo.historyCount != '' ? context.broadcastTotalInfo.historyCount : 0}</li>
           {/* 현재 방송 좋아요 수 */}
           <li>{context.broadcastTotalInfo.likes !== null ? context.broadcastTotalInfo.likes : room.likes}</li>
-          {/* <li>{likeCheck()}</li> */}
           {/* 방송 남은 시간 */}
           {props.auth === 3 && (
             <li>

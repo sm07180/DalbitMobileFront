@@ -126,63 +126,81 @@ export default props => {
     //fetchData()
   }, [store.broadcastProfileInfo])
 
+  const managerStatusChange = () => {
+    //if (context.broadcastTotalInfo.auth == 1 && context.broadcastTotalInfo.auth == 1) return
+    if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
+    if (context.broadcastTotalInfo.auth === 1 && objProfileInfo.auth <= 1) return //같은 매니저 이거나 선택자가 청취자 일때
+    return (
+      <React.Fragment>
+        <div className="managerBtn">
+          <button
+            onClick={() => {
+              context.action.confirm({
+                //콜백처리
+                callback: () => {
+                  broadManager(store.broadcastProfileInfo.auth)
+                },
+                //캔슬콜백처리
+                cancelCallback: () => {
+                  //alert('confirm callback 취소하기')
+                },
+                msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'} 하시겠습니까?`
+              })
+            }}></button>
+          <p>{store.broadcastProfileInfo.auth == 1 ? '매니저 해임' : '매니저 등록'}</p>
+        </div>
+      </React.Fragment>
+    )
+  }
+  const makeKickout = () => {
+    if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
+
+    return (
+      <React.Fragment>
+        <div className="functionWrap">
+          {managerStatusChange()}
+          <div className="KickBtn">
+            <button
+              onClick={() => {
+                context.action.confirm({
+                  //콜백처리
+                  callback: () => {
+                    broadkickout()
+                  },
+                  //캔슬콜백처리
+                  cancelCallback: () => {
+                    //alert('confirm callback 취소하기')
+                  },
+                  msg: `${objProfileInfo.nickNm} 님을 강제 퇴장 하시겠습니까?`
+                })
+              }}></button>
+            <p>강퇴하기</p>
+          </div>
+        </div>
+      </React.Fragment>
+    )
+  }
   const userTypeContents = () => {
-    if (context.broadcastTotalInfo.auth > 1) {
-      return (
-        <React.Fragment>
-          <div className="functionWrap">
-            <div className="managerBtn">
-              <button
-                onClick={() => {
-                  context.action.confirm({
-                    //콜백처리
-                    callback: () => {
-                      broadManager(store.broadcastProfileInfo.auth)
-                    },
-                    //캔슬콜백처리
-                    cancelCallback: () => {
-                      //alert('confirm callback 취소하기')
-                    },
-                    msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'} 하시겠습니까?`
-                  })
-                }}></button>
-              <p>{store.broadcastProfileInfo.auth == 1 ? '매니저 해임' : '매니저 등록'}</p>
-            </div>
-            <div className="KickBtn">
-              <button
-                onClick={() => {
-                  context.action.confirm({
-                    //콜백처리
-                    callback: () => {
-                      broadkickout()
-                    },
-                    //캔슬콜백처리
-                    cancelCallback: () => {
-                      //alert('confirm callback 취소하기')
-                    },
-                    msg: `${objProfileInfo.nickNm} 님을 강제 퇴장 하시겠습니까?`
-                  })
-                }}></button>
-              <p>강퇴하기</p>
-            </div>
-          </div>
-          <div className="submitWrap">
-            <button
-              onClick={() => {
-                broad_fan_insert(objProfileInfo.isFan)
-              }}>
-              {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
-            </button>
-            <button
-              onClick={() => {
-                broad_fan_insert()
-              }}>
-              선물하기
-            </button>
-          </div>
-        </React.Fragment>
-      )
-    }
+    if (objProfileInfo.auth > 2) return // 본인 정보랑 같거나 프로필이 본인꺼 일때
+    return (
+      <React.Fragment>
+        {makeKickout()}
+        <div className="submitWrap">
+          <button
+            onClick={() => {
+              broad_fan_insert(objProfileInfo.isFan)
+            }}>
+            {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
+          </button>
+          <button
+            onClick={() => {
+              broad_fan_insert()
+            }}>
+            선물하기
+          </button>
+        </div>
+      </React.Fragment>
+    )
   }
   const makeContents = () => {
     if (store.broadcastProfileInfo === null) return
@@ -195,13 +213,13 @@ export default props => {
           <PIMG bg={objProfileInfo.profImg.url} />
         </div>
         <div className="gazeWrap">
-          <span>0</span>
+          <span>{objProfileInfo.expBegin}</span>
           <div className="gazeBar">
             <GazeBar gaze={percent} expNext={objProfileInfo}>
               <p>{objProfileInfo.exp}</p>
             </GazeBar>
           </div>
-          <span>9999</span>
+          <span>{objProfileInfo.expNext}</span>
         </div>
         <h5 className="levelWrap">
           {objProfileInfo.grade} / Lv.{objProfileInfo.level}
