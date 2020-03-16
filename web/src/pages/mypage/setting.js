@@ -187,6 +187,7 @@ const BirthDate = styled.div`
   background-color: #eee;
   box-sizing: border-box;
   color: #616161;
+  cursor: not-allowed;
 `
 
 const PasswordRedirectBtn = styled.button`
@@ -231,6 +232,7 @@ const UserId = styled.div`
   box-sizing: border-box;
   color: #616161;
   letter-spacing: -0.4px;
+  cursor: not-allowed;
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
