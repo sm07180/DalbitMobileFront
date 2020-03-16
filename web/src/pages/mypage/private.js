@@ -11,13 +11,13 @@ import {Context} from 'context'
 export default props => {
   const ctx = useContext(Context)
   const {memNo} = props.match.params
-  const {profile} = ctx
+  const [profile, setProfile] = useState(null)
 
   useEffect(() => {
     ;(async () => {
-      if (!ctx.profile) {
+      if (!profile) {
         const profileInfo = await Api.profile({params: {type: 'private', memNo: memNo}})
-        ctx.action.updateProfile(profileInfo.data)
+        setProfile(profileInfo.data)
       }
     })()
   }, [])
