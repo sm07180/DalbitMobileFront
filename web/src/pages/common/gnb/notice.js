@@ -1,14 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
+import Api from 'context/api'
 
 //component
+import {Context} from 'context'
 import Gnb from './gnb-layout'
 
 export default props => {
   //---------------------------------------------------------------------
-  const [notice, setNotice] = useState(props.NoticeInfo)
+  const context = new useContext(Context)
+  const [notice, setNotice] = useState([])
+  const [result, setResult] = useState() //1 : 알림이 없습니다 //2 : 로그인이 필요합니다
+
+  //---------------------------------------------------------------------
+  //map
   const arrayNotice = notice.map((item, index) => {
     const {id, title, url} = item
     return (
@@ -21,6 +28,33 @@ export default props => {
       </InfoWrap>
     )
   })
+
+  async function fetchData(obj) {
+    const res = await Api.my_notification({
+      params: {
+        page: 1,
+        records: 10
+      }
+    })
+    if (res.result === 'success') {
+      if (res.data == undefined) {
+        setResult(1)
+      } else {
+        setNotice(res.data.list)
+      }
+    } else if (res.result === 'fail' && res.code === '-1') {
+      setResult(2)
+    } else {
+      console.log('오류', res)
+    }
+  }
+
+  //---------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
     <>
       <Gnb>
@@ -29,7 +63,19 @@ export default props => {
             <ICON></ICON>
             <Title>알림사항</Title>
           </Nheader>
-          {/* <CONTENT>{arrayNotice}</CONTENT> */}
+          <CONTENT>
+            {arrayNotice && result == 2 ? (
+              <p
+                className="result login"
+                onClick={() => {
+                  context.action.updatePopup('LOGIN')
+                }}>
+                로그인이 필요합니다.
+              </p>
+            ) : (
+              <p className="result">알림이 없습니다.</p>
+            )}
+          </CONTENT>
         </NoticeWrap>
       </Gnb>
     </>
@@ -80,6 +126,16 @@ const CONTENT = styled.div`
   }
   @media (max-width: ${WIDTH_MOBILE_S}) {
     height: calc(100vh - 64px);
+  }
+
+  .result {
+    font-size: 16px;
+    color: #555;
+    transform: skew(-0.03deg);
+
+    &.login {
+      cursor: pointer;
+    }
   }
 `
 const InfoWrap = styled.div`

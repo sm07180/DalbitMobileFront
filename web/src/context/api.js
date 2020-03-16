@@ -864,6 +864,20 @@ export default class API {
   }
 
   //-------------------------------------------------------------
+
+  /**
+   * @brief 회원 알림 내용 보기
+   * @method "GET"
+   * @param int page                             //페이지번호
+   * @param int records                          //페이지당 리스트 수
+   * @create 이은비 2020.03.16
+   */
+  static my_notification = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notification`, method: method || 'GET', params: params})
+  }
+
+  //-------------------------------------------------------------
 }
 
 //ajax
