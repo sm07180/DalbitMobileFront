@@ -67,7 +67,7 @@ export const BroadValidation = () => {
                         if (isApp) {
                           //  Hybrid('RoomMake', '')
                         } else {
-                          Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`)
+                          Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
                         }
                         return
                       }
