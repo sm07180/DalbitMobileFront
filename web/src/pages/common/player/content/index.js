@@ -54,7 +54,7 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (isHybrid()) return
-    //@Native
+    //@PC
     if (context.roomInfo !== null && context.roomInfo !== undefined) {
       const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = context.roomInfo
       setInfo({
@@ -103,11 +103,13 @@ export default props => {
             <span>{info.title}</span>
           </p>
         </div>
-        <div className="state">
-          <span>85</span>
-          <span>85</span>
-          <span>11</span>
-        </div>
+        {!isHybrid() && (
+          <div className="state">
+            <span>85</span>
+            <span>85</span>
+            <span>11</span>
+          </div>
+        )}
         {/* 닫기버튼 */}
         {makeCloseBtn()}
       </MediaPlayer>
