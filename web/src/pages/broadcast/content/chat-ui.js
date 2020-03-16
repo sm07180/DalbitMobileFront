@@ -150,7 +150,8 @@ export default props => {
       }
 
       if (data && data.detail) {
-        if (recvMsg.position === 'chat') {
+        if (recvMsg.position === undefined || recvMsg.position === 'chat') {
+          //팬퇴장 일때 position 값이 비어 있어서 top2 영역에 들어갔었다. 버그 임
           if (data.detail.data.cmd === 'reqRoomChangeInfo') {
             //console.log('방송방 수정 들어옴 = ' + data.detail.data.reqRoomChangeInfo)
             context.action.updateBroadcastTotalInfo(data.detail.data.reqRoomChangeInfo)
