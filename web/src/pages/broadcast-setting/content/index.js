@@ -465,7 +465,7 @@ const BarWrap = styled.div`
 const MicVolumeONBar = styled.div`
   /* width: ${props => props.volume}%; */
   width:0%;
-  height: auto;
+  height: 100%;
   background-color: #fdad2b;
   border-radius: 50px;
   transition: ease-in 0.1s;
