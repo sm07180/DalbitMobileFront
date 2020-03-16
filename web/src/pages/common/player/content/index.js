@@ -46,14 +46,26 @@ export default props => {
   //useEffect
   useEffect(() => {
     if (!isHybrid()) return
-    //@안드로이드
+    //@Native
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       setInfo(context.nativePlayer)
-      // if (context.customHeader.os + '' === '1') {
-      //   setInfo(context.nativePlayer)
-      // }
     }
   }, [context.nativePlayer])
+  //useEffect
+  useEffect(() => {
+    if (isHybrid()) return
+    //@Native
+    if (context.roomInfo !== null && context.roomInfo !== undefined) {
+      const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = context.roomInfo
+      setInfo({
+        bjNickNm: bjNickNm,
+        roomNo: roomNo,
+        bjProfImg: bjProfImg.thumb150x150,
+        title: title,
+        auth: auth
+      })
+    }
+  }, [context.roomInfo])
   //---------------------------------------------------------------------
   return (
     <MediaPlayerWrap>
@@ -94,7 +106,7 @@ export default props => {
         <div className="state">
           <span>85</span>
           <span>85</span>
-          <span>850</span>
+          <span>11</span>
         </div>
         {/* 닫기버튼 */}
         {makeCloseBtn()}
