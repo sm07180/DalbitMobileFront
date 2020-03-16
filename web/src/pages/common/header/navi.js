@@ -145,7 +145,14 @@ const Navi = props => {
           exact
           activeClassName="on"
           onClick={event => {
-            window.firebase.analytics().logEvent(`${_title}-GNB-CLICK`)
+            if (_url == '/cast' || _url == '/ranking') {
+              event.preventDefault()
+              context.action.alert({
+                msg: '서비스 준비중입니다.'
+              })
+            } else {
+              window.firebase.analytics().logEvent(`${_title}-GNB-CLICK`)
+            }
           }}>
           <span>{_title}</span>
         </NavLink>
