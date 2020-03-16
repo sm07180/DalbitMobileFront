@@ -195,10 +195,9 @@ export default props => {
           /**
            * @todos 소켓연결필요
            */
-          context.action.updateBroadcastTotalInfo(res.data)
-          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-
           props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+          context.action.updateBroadcastTotalInfo(res.data)
         } else {
           console.warn(res.message)
         }
@@ -329,12 +328,14 @@ export default props => {
               <ProfileUpload imgUrl={url}>
                 <label htmlFor="profileImg">
                   <div className={url ? 'on' : 'off'}>
-                    <div></div>
+                    <div>
+                      <UploadWrap className={url ? 'on' : 'off'}>
+                        <IconWrapper>
+                          <Icon className={url ? 'on' : 'off'}></Icon>
+                        </IconWrapper>
+                      </UploadWrap>
+                    </div>
                   </div>
-
-                  <IconWrapper>
-                    <Icon className={url ? 'on' : 'off'}></Icon>
-                  </IconWrapper>
                 </label>
                 <input
                   type="file"
@@ -600,7 +601,7 @@ const ProfileUpload = styled.div`
 const UploadWrap = styled.span`
   display: block;
   position: absolute;
-  bottom: 0;
+  top: 50%;
   width: 100%;
   height: auto;
 
@@ -611,16 +612,12 @@ const UploadWrap = styled.span`
     content: '';
   }
   &.on {
+    top: calc(100% - 80px);
     height: 80px;
     background-color: rgba(0, 0, 0, 0.5);
   }
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
+
   & span {
-    float: left;
     line-height: 48px;
     font-size: 12px;
     letter-spacing: -0.3px;
