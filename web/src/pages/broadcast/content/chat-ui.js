@@ -129,10 +129,11 @@ export default props => {
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
       if (data.detail.data.cmd === 'reqNotice') {
-        store.action.updateNoticeMsg(recvMsg.msg)
-
-        if (recvMsg.msg != '') context.action.updateBroadcastTotalInfo({hasNotice: true})
+        if (recvMsg.msg !== '') context.action.updateBroadcastTotalInfo({hasNotice: true})
         else context.action.updateBroadcastTotalInfo({hasNotice: false})
+
+        store.action.updateNoticeMsg(recvMsg.msg)
+        console.log(store.noticeMsg)
       }
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg

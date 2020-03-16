@@ -330,11 +330,10 @@ export default props => {
                   <div className={url ? 'on' : 'off'}>
                     <div></div>
                   </div>
-                  <UploadWrap className={url ? 'on' : 'off'}>
-                    <IconWrapper>
-                      <Icon className={url ? 'on' : 'off'}></Icon>
-                    </IconWrapper>
-                  </UploadWrap>
+
+                  <IconWrapper>
+                    <Icon className={url ? 'on' : 'off'}></Icon>
+                  </IconWrapper>
                 </label>
                 <input
                   type="file"
@@ -411,7 +410,7 @@ const Header = styled.div`
 `
 const Wrap = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   padding-top: 50px;
 `
 const BroadDetail = styled.div`
@@ -464,7 +463,7 @@ const BarWrap = styled.div`
 const MicVolumeONBar = styled.div`
   /* width: ${props => props.volume}%; */
   width:0%;
-  height: 100%;
+  height: auto;
   background-color: #fdad2b;
   border-radius: 50px;
   transition: ease-in 0.1s;
@@ -587,7 +586,7 @@ const ProfileUpload = styled.div`
     display: block;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
     cursor: pointer;
 
     div {
@@ -602,7 +601,7 @@ const UploadWrap = styled.span`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 100%;
+  height: auto;
 
   transform: skew(-0.03deg);
   &:after {

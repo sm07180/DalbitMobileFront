@@ -8,26 +8,21 @@ import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 import {BroadCastStore} from 'pages/broadcast/store'
 
-//notice 가데이터
-const NoticeData = {
-  notice: '안녕하세요. 74일차 디제이 라디오입니다.입구는 있어도 출구는 없습니다.  ♥하트+스푼은 사랑입니다♥'
-}
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
-    notice: '안녕하세요. 74일차 디제이 라디오입니다.입구는 있어도 출구는 없습니다.  ♥하트+스푼은 사랑입니다♥'
+    notice: ''
   })
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [show, setShow] = useState(false)
   //const [showRegist, setShowRegist] = useState(true)
-  console.log(roomInfo.roomNo)
+
   const RoomNumbers = roomInfo.roomNo
   //update
   function update(mode) {
-    // console.log('---')
     switch (true) {
       case mode.onChange !== undefined:
         //console.log(JSON.stringify(changes))
@@ -66,41 +61,45 @@ export default props => {
     }
 
     if (res.result === 'success') {
-      setFetch(res.data)
-      if (idx == 1) {
+      // setFetch(res.data)
+      if (idx == 1 || idx == 2) {
         setShow(true)
+        store.action.updateNoticeMsg(changes.notice)
+        context.action.alert({
+          //콜백처리
+          Callback: () => {},
+          msg: '공지사항이 등록되었습니다.'
+        })
       } else if (idx == 3) {
         setShow(false)
+        store.action.updateNoticeMsg(changes.notice)
         setTyping('')
+        context.action.alert({
+          //콜백처리
+          Callback: () => {},
+          msg: '공지사항이 삭제되었습니다.'
+        })
       }
     } else {
       //Error발생시
-      console.log(res)
     }
   }
 
   //0.공지사항등록 체인지 글자 스테이트-----------------------------------
-  const [count, setCount] = useState(0)
-  const [typing, setTyping] = useState('')
+  const [count, setCount] = useState(store.noticeMsg.length)
+  const [typing, setTyping] = useState(store.noticeMsg)
   //텍스트아리아 벨리데이션function
   const handleChangeNotice = event => {
-    const element = event.target
     const {value} = event.target
-    setChanges({...changes, notice: value})
+    const element = event.target
     setTyping(value)
+    setChanges({...changes, notice: value})
     if (value.length > 100) {
       return
     }
     setCount(element.value.length)
   }
-
-  // useEffect(() => {
-  //   console.log('소켓 에서 받은 공지사항 내용  = ' + store.noticeMsg)
-  // }, [store.noticeMsg])
-
-  console.log(store.noticeMsg)
-  console.log(context.broadcastTotalInfo.hasNotice)
-
+  //리스너뷰
   const listenerNotice = () => {
     if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
       return (
@@ -113,28 +112,47 @@ export default props => {
       return <div className="noticeInput">{store.noticeMsg}</div>
     }
   }
-  //--------------------------------------------------------------------
-  return (
-    <Container>
-      <Navi title={'공지사항'} />
-      {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
-      {context.broadcastTotalInfo.auth == 3 && (
+  //버튼
+  const buttonfunc = () => {
+    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg === '') return <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>
+    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg !== '')
+      return (
+        <div className="modifyWrap">
+          <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
+          <ModifyBTN onClick={() => NoticeChange(2)}>수정하기</ModifyBTN>
+        </div>
+      )
+    if (show === true && context.broadcastTotalInfo.auth == 3)
+      return (
+        <div className="modifyWrap">
+          <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
+          <ModifyBTN onClick={() => NoticeChange(2)}>수정하기</ModifyBTN>
+        </div>
+      )
+  }
+  //텍스트아리아
+  const textareafunc = () => {
+    if ((context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === false) || (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === true))
+      return (
         <div className="noticeInput">
           <textarea onChange={handleChangeNotice} maxLength="100" placeholder="최대 100자 이내로 작성해주세요." value={typing}>
             {/* {NoticeData.notice} */}
           </textarea>
           <Counter>{count} / 100</Counter>
         </div>
-      )}
+      )
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////////
+  //--------------------------------------------------------------------
+  return (
+    <Container>
+      <Navi title={'공지사항'} />
+      {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
+      {textareafunc()}
       {listenerNotice()}
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
-      {show === false && context.broadcastTotalInfo.auth == 3 && <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>}
-      {show === true && context.broadcastTotalInfo.auth == 3 && (
-        <div className="modifyWrap">
-          <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
-          <ModifyBTN onClick={() => NoticeChange(2)}>수정하기</ModifyBTN>
-        </div>
-      )}
+      {buttonfunc()}
     </Container>
   )
 }
