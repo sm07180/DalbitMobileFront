@@ -92,7 +92,9 @@ const timeloop = () => {
 
   if (startFlag) {
     timer = setInterval(function() {
-      if (!addFlag) time++
+      //   if (!addFlag) {
+      //     //if (time > 1) time++
+      //   }
 
       min = Math.floor(time / 60)
       hour = Math.floor(min / 60)
@@ -110,12 +112,12 @@ const timeloop = () => {
       // 타이머 종료 조건을 건다.
       if (time >= BcEndTime) {
         stopTimer()
-        return th + ':' + tm + ':' + ts
+        return
       }
+      time++
       addFlag = false
       console.log(th + ':' + tm + ':' + ts)
       store.action.updateBroadTimer(th + ':' + tm + ':' + ts)
-      return th + ':' + tm + ':' + ts
     }, 1000)
   } else {
     return '00' + ':' + '00' + ':' + '00'
@@ -128,7 +130,7 @@ const Timer = props => {
   Timer.context = () => context
   Timer.store = () => store
   useEffect(() => {
-    startTimer()
+    //startTimer()
   }, [])
 
   return (

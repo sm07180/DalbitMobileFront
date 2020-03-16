@@ -166,8 +166,7 @@ export default props => {
         history.push('/')
         context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
-
-        timer.stopTimer()
+        timer.stopTimer() //방송 시간 멈춤
       },
       //캔슬콜백처리
       cancelCallback: () => {
