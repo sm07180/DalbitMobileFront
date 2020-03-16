@@ -168,6 +168,7 @@ const GlobalProvider = props => {
       setBroadcastTotalInfo(broadcastTotalInfo => ({...broadcastTotalInfo, ...obj}))
     },
     //방생성 후 방정보 가지고있음, 방 종료시 사라짐
+    //Bool변경중
     updateCastState: obj => {
       setCastState(obj)
     },
