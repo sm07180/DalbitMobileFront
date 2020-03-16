@@ -49,8 +49,16 @@ const myProfile = props => {
         </CountingWrap>
 
         <IntroduceAndFan>
-          <div>{profile.profMsg}</div>
-          <div></div>
+          <ProfileMsg>{profile.profMsg}</ProfileMsg>
+          <FanListWrap>
+            {profile.fanRank.map((fan, index) => {
+              return (
+                <FanRank key={index} style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}>
+                  <Link to={`/private/${fan.memNo}`} />
+                </FanRank>
+              )
+            })}
+          </FanListWrap>
         </IntroduceAndFan>
       </ContentWrap>
     </MyProfile>
@@ -58,6 +66,36 @@ const myProfile = props => {
 }
 
 export default myProfile
+
+const FanRank = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin: 0 2px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  & > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+`
+
+const FanListWrap = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`
+
+const ProfileMsg = styled.div`
+  display: flex;
+  align-items: center;
+  color: #616161;
+  letter-spacing: -0.35px;
+  font-size: 14px;
+`
 
 const IntroduceAndFan = styled.div`
   display: flex;

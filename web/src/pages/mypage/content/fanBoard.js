@@ -50,7 +50,10 @@ export default props => {
         </WriteAreaTop>
         <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
         <WriteAreaBottom>
-          <TextCount>{`${comment.length} / ${MaxCommentLength}`}</TextCount>
+          <TextCount>
+            <span style={{color: '#424242'}}>{`${comment.length}`}</span>
+            <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
+          </TextCount>
           <CommentSubmitBtn onClick={submitClick}>등록</CommentSubmitBtn>
         </WriteAreaBottom>
       </WriteArea>
