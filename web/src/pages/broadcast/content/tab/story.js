@@ -73,6 +73,14 @@ export default props => {
         msg: '사연이 등록되었습니다.'
       })
       selectStoryList()
+    } else if (res.code === '-4') {
+      context.action.alert({
+        callback: () => {
+          console.log()
+        },
+        title: '달빛라디오',
+        msg: res.message
+      })
     }
   }
 
@@ -96,7 +104,6 @@ export default props => {
       refresh()
     }
   }, [])
-  console.log('## context.token.memNo :', context.token.memNo)
   //----------------------------------------------- components start
   return (
     <Container>
@@ -121,7 +128,7 @@ export default props => {
                         <div>{data.nickNm}</div>
                       </div>
                       <div>
-                        <span>{Util.format(data.writeDt)}</span> {/* date format 함수 */}
+                        <span>{Util.format(data.writeDt)}</span>
                         <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
                       </div>
                     </UserInfo>
@@ -140,15 +147,43 @@ export default props => {
               <p>채팅창에 쓰기 어려운 내용을 등록해보세요.</p>
             </div>
             <div className="noticeInput">
-              <textarea onChange={handleChangeInput} maxLength={100}>
-                {/* {NoticeData.notice} */}
-              </textarea>
+              <textarea onChange={handleChangeInput} maxLength={100}></textarea>
               <Counter>{count} / 100</Counter>
             </div>
           </ListenerMain>
           <LButton title={'등록하기'} background={'#8556f6'} clickEvent={() => writeStory()} />
         </>
       )}
+      {/* <DjMain>
+        <div className="topBar">
+          <div className="refresh">
+            <button onClick={() => refresh()} />
+            <span>{now}</span>
+          </div>
+          <Count>사연수 : {store.storyList.list ? store.storyList.paging.total : 0}개</Count>
+        </div>
+        <Scrollbars ref={scrollbars} style={{height: '100%'}} autoHide>
+          {store.storyList.list &&
+            store.storyList.list.map((data, idx) => {
+              return (
+                <Contents key={idx}>
+                  <UserInfo>
+                    <div>
+                      <Img width={40} height={40} src={data.profImg.thumb62x62} marginRight={8} />
+                      <div>{data.nickNm}</div>
+                    </div>
+                    <div>
+                      <span>{Util.format(data.writeDt)}</span>
+                      <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
+                    </div>
+                  </UserInfo>
+                  <Story value={data.contents} disabled />
+                  <hr />
+                </Contents>
+              )
+            })}
+        </Scrollbars>
+      </DjMain> */}
     </Container>
   )
 }

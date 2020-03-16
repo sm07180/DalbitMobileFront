@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //-------------------------------------------------- declare start
@@ -19,15 +20,11 @@ export default props => {
   //-------------------------------------------------- func start
 
   const widthCalc = () => {
-    // expNext 필요 경험치 150
+    // expNext 필요 경험치 150 exp
     // exp 현재 경험치 50
     // 퍼센트 계산함수
-    if (props.testData != undefined) {
-      const maxExp = props.testData.exp + props.testData.expNext
-      const percent = Math.floor((props.testData.exp / maxExp) * 100)
-      const barWidth = (236 * percent) / 100
-
-      setPercent(percent)
+    if (props.profile != undefined) {
+      const barWidth = (236 * props.profile.expRate) / 100
       setWidth(barWidth)
     }
   }
@@ -44,14 +41,18 @@ export default props => {
   }
 
   useEffect(() => {
-    widthCalc()
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
   }, [])
 
   useEffect(() => {
+    widthCalc()
+  }, [props.profile])
+
+  useEffect(() => {
     setItem(-1)
-  },[props.flag])
+  }, [props.flag])
+  console.log('## props.profile :', props.profile)
   //-------------------------------------------------- components start
   return (
     <Container>
@@ -64,17 +65,17 @@ export default props => {
               </Target>
             )}
             <Level>
-              <UserLevel>LEVEL {props.profile.level}</UserLevel>
+              <UserLevel>LEVEL {props.profile != undefined && props.profile.level}</UserLevel>
               <BarWrap>
                 <Bar>
-                  <Exp exp={bWidth}>{percent}%</Exp>
+                  <Exp exp={bWidth}>{props.profile != undefined && props.profile.expRate}%</Exp>
                 </Bar>
               </BarWrap>
             </Level>
             <MyItem>
               <div className="myTitle">내가 보유한 달</div>
               <div className="myItem">
-                {props.profile.dalCnt}&nbsp;&nbsp;<button>+</button>
+                {Utility.addComma(props.profile != undefined && props.profile.dalCnt)}&nbsp;&nbsp;<button>+</button>
               </div>
             </MyItem>
           </DashBoard>
