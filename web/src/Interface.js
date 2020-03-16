@@ -39,7 +39,8 @@ export default () => {
         break
       case 'native-end': //-----------------------------Native end (Android)
         context.action.updateMediaPlayerStatus(false)
-        //Utility.setCookie('native-player-info', '', -1)
+        //방송종료
+        context.action.updateCastState(false))
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
