@@ -34,11 +34,12 @@ export default props => {
     })
     //undefined 방어코드추가, resDj.data.list===undefined 일수있음
     if (resDj.result === 'success' && _.hasIn(resDj, 'data.list')) {
+      //console.log(resDj)
       setDjInfo(resDj.data.list)
       sswiper.update()
     } else {
       fetch(2)
-      console.log('실패', resDj.result)
+      //console.log('실패', resDj.result)
     }
 
     const resfan = await Api.get_fan_ranking({
@@ -52,7 +53,7 @@ export default props => {
       setFanInfo(resfan.data.list)
       sswiper.update()
     } else {
-      console.log('실패', resfan.result)
+      //console.log('실패', resfan.result)
     }
   }
 
@@ -88,8 +89,8 @@ export default props => {
           <h2>{item.nickNm}</h2>
           {type == 'dj' && (
             <State>
-              <span>500</span>
-              <span>1200</span>
+              <span>{item.listeners}</span>
+              <span>{item.likes}</span>
             </State>
           )}
         </RankingItem>
@@ -447,7 +448,7 @@ const State = styled.div`
 
   span:first-child {
     padding-left: 44px;
-    background: url(${IMG_SERVER}/images/api/ic_moon_y@2x.png) no-repeat left center;
+    background: url(${IMG_SERVER}/images/api/ic_people_y@2x.png) no-repeat left center;
     background-size: 36px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding-left: 29px;
