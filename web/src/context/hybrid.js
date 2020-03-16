@@ -6,9 +6,24 @@
  * @todo      : context.customHeader.os 를 1,2를 체크해서 복합적으로 구현
  *
  */
-import {osName, browserName} from 'react-device-detect'
 import Api from 'context/api'
 //---------------------------------------------------------------------
+/**
+ *
+ * @brief 하이브리드앱 안드로이드/IOS체크
+ *
+ */
+export const osName = () => {
+  const customHeader = JSON.parse(Api.customHeader)
+  if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
+    const element = document.getElementById('customHeader')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
+      const val = JSON.parse(element.value)
+      return val.os + ''
+    }
+  }
+  return ''
+}
 /**
  *
  * @brief 하이브리드앱 여부체크확인
@@ -35,25 +50,25 @@ export const isHybrid = () => {
  */
 export const Hybrid = (func, info) => {
   if (!isHybrid()) return
-  switch (osName) {
-    case 'Windows':
+  switch (osName()) {
+    case '':
       //console.log('Windows버젼입니다')
       break
-    case 'iOS':
+    case '1':
+      if (window.android[func] === null || window.android[func] === undefined) return
+      if (info === '' || info === null || info === undefined) {
+        window.android[func]()
+      } else {
+        window.android[func](JSON.stringify(info))
+      }
+      break
+    case '2':
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
         webkit.messageHandlers[func].postMessage('')
       } else {
         webkit.messageHandlers[func].postMessage(info)
-      }
-      break
-    case 'Android':
-      if (window.android[func] === null || window.android[func] === undefined) return
-      if (info === '' || info === null || info === undefined) {
-        window.android[func]()
-      } else {
-        window.android[func](JSON.stringify(info))
       }
       break
     default:

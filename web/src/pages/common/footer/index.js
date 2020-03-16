@@ -28,14 +28,14 @@ export default props => {
     <Footer className={context.state.isOnCast ? 'on-cast' : 'off-cast'}>
       {show && (
         <Menu>
-          <button
+          {/* <button
             onClick={() => {
               context.action.alert({
                 msg: `준비중입니다.`
               })
             }}>
             서비스 소개
-          </button>
+          </button> */}
           <button
             onClick={() => {
               context.action.updatePopup('TERMS', 'service')

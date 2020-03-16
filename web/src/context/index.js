@@ -5,7 +5,7 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useEffect, useState, createContext, useMemo} from 'react'
+import React, {useState, createContext} from 'react'
 //context
 import API from 'context/api'
 import Utility from 'components/lib/utility'
@@ -167,9 +167,13 @@ const GlobalProvider = props => {
     updateBroadcastTotalInfo: obj => {
       setBroadcastTotalInfo(broadcastTotalInfo => ({...broadcastTotalInfo, ...obj}))
     },
-    //방생성 후 방정보 가지고있음, 방 종료시 사라짐
-    updateCastState: obj => {
-      setCastState(obj)
+    //
+    /**
+     * 방생성 후 방정보 가지고있음, 방 종료시 사라짐
+     * @param {roomNo} string
+     */
+    updateCastState: str => {
+      setCastState(str)
     },
     //공통코드 live 진입 시 context에 저장  * /splash api 참조 *
     updateCommon: obj => {

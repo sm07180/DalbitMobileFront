@@ -123,10 +123,10 @@ const GnbButton = styled.div`
       background: url(${IMG_SERVER}/svg/ic_search_normal_w.svg) no-repeat center / cover;
     }
     button:nth-child(2) {
-      background: url(${IMG_SERVER}/svg/ic_user_normal_w.svg) no-repeat center / cover;
+      background: url(${IMG_SERVER}/svg/ic_alarm_w.svg) no-repeat center / cover;
     }
     button:nth-child(3) {
-      background: url(${IMG_SERVER}/svg/ic_alarm_w.svg) no-repeat center / cover;
+      background: url(${IMG_SERVER}/svg/ic_user_normal_w.svg) no-repeat center / cover;
     }
     button:nth-child(4) {
       background: url(${IMG_SERVER}/svg/ic_menu_normal_w.svg) no-repeat center / cover;

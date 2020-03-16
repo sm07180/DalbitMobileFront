@@ -105,7 +105,7 @@ export default props => {
               <PasswordCircle />
             </PasswordTextWrap>
             <PasswordRedirectBtn>
-              <Link to="">비밀번호 변경</Link>
+              <Link to="/user/password">비밀번호 변경</Link>
             </PasswordRedirectBtn>
           </PasswordWrap>
           <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>

@@ -31,7 +31,10 @@ export const BroadValidation = () => {
     //--#방송하기
     switch (isLogin) {
       case true: //----------------로그인상태
-        if (isApp) Hybrid('RoomMake', '')
+        if (isApp) {
+          Hybrid('RoomMake', '')
+          //     context.action.updateCastState(true)
+        }
         if (!isApp) Navi.history().push('/broadcast-setting')
         break
       case false: //---------------로그아웃상태

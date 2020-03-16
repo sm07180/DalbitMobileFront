@@ -46,9 +46,8 @@
     "uuid": "^3.4.0"
   },
   "scripts": {
-    "dev": "webpack && node jspGenerator.js",
+    "dev": "webpack --env=dev && node jspGenerator.js",
     "deploy": "webpack --env=deploy && node jspGenerator.js",
-    "prod": "webpack --env=deploy --mode production && node jspGenerator.js",
     "real": "webpack --env=deploy --mode production && node jspGenerator.js",
     "start": "webpack-dev-server --mode development"
   },

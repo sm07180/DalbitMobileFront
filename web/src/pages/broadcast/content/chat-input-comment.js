@@ -164,8 +164,7 @@ export default props => {
         //window.location.replace('https://' + window.location.hostname)
         sc.socketClusterDestory(true)
         history.push('/')
-
-        context.action.updateCastState(false) //gnb 방송중-방송종료 표시 상태값
+        context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
         mediaHandler.stop()
 
         timer.stopTimer()

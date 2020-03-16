@@ -3,11 +3,12 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const fs = require('fs')
 
-module.exports = (env, options) => {
+module.exports = (_, options) => {
+  const {env, mode} = options
+
   const config = {
     entry: {
       app: './src/index.js',
@@ -78,9 +79,24 @@ module.exports = (env, options) => {
     resolve: {
       extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
-    }
+    },
+
+    plugins: [
+      new HtmlWebPackPlugin({
+        template: './public/index.html', // public/index.html 파일을 읽는다.
+        filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
+        chunks: ['app'],
+        showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
+      }),
+      new HtmlWebPackPlugin({
+        template: './public/html/login.html',
+        filename: 'login.html',
+        chunks: ['login']
+      }),
+      new CopyWebpackPlugin([{from: './public/static'}])
+    ]
   }
-  if (options.mode === 'development') {
+  if (mode === 'development') {
     config.devtool = 'source-map'
     config.devServer = {
       hot: true,
@@ -95,52 +111,28 @@ module.exports = (env, options) => {
         cert: fs.readFileSync(path.resolve(__dirname, 'key/fullchain.pem'))
       }
     }
-    config.plugins = [
-      new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebPackPlugin({
-        template: './public/index.html', // public/index.html 파일을 읽는다.
-        filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-        chunks: ['app'],
-        showErrors: true // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
-      }),
-      new HtmlWebPackPlugin({
-        template: './public/html/login.html',
-        filename: 'login.html',
-        chunks: ['login']
-      }),
-      new MiniCssExtractPlugin({
-        filename: 'style.css'
-      }),
-      new CopyWebpackPlugin([{from: './public/static'}])
-    ]
 
-    config.output = {
-      path: path.resolve(__dirname),
-      publicPath: '/',
-      filename: '[name].[hash].js',
-      chunkFilename: '[name].[chunkhash].js'
-    }
+    config.output.path = path.resolve(__dirname)
+    config.output.publicPath = '/'
+
+    config.plugins.push(new webpack.HotModuleReplacementPlugin())
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      })
+    )
   } else {
-    config.plugins = [
+    config.plugins.push(
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
-      }),
-      new HtmlWebPackPlugin({
-        template: './public/index.html', // public/index.html 파일을 읽는다.
-        filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-        chunks: ['app'],
-        showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
-      }),
-      new HtmlWebPackPlugin({
-        template: './public/html/login.html',
-        filename: 'login.html',
-        chunks: ['login']
-      }),
-      new CopyWebpackPlugin([{from: './public/static'}])
-    ]
-    // if (options.env !== 'deploy') {
-    //   config.plugins.push(new BundleAnalyzerPlugin())
-    // }
+      })
+    )
+
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
+      })
+    )
   }
 
   return config
