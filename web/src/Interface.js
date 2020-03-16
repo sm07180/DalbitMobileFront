@@ -30,7 +30,6 @@ export default () => {
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
         }
-
         const _ios = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
         context.action.updateMediaPlayerStatus(true)
