@@ -713,7 +713,7 @@ const CopyrightIcon = styled.div`
 const CreateBtn = styled.button`
   width: 100%;
   height: 50px;
-  margin-bottom: 218px;
+  margin-bottom: 142px;
   outline: none;
   background-color: #bdbdbd;
   color: #fff;
