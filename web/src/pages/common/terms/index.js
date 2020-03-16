@@ -42,7 +42,9 @@ export default props => {
   }
 
   const scrollOnUpdate = () => {
-    termsArea.current.children[0].children[0].style.maxHeight = `calc(${document.getElementsByClassName('round')[0].offsetHeight}px - 41px)`
+    if (document.getElementsByClassName('round')[0]) {
+      termsArea.current.children[0].children[0].style.maxHeight = `calc(${document.getElementsByClassName('round')[0].offsetHeight}px - 41px)`
+    }
   }
 
   //useEffect
@@ -63,6 +65,12 @@ export default props => {
 const Terms = styled.div`
   & > div > div > div {
     padding: 10px 25px;
+
+    * {
+      text-align: justify;
+      color: #424242;
+      transform: skew(-0.03deg);
+    }
   }
   & > div > div:nth-child(2) {
     display: none;
@@ -70,48 +78,28 @@ const Terms = styled.div`
   h2 {
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    color: #000;
+    border-bottom: 1px solid #e0e0e0;
+    color: #424242;
     font-size: 24px;
     font-weight: 400;
   }
+
   h3 {
-    margin: 24px 0 14px 0;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 16px;
     color: #424242;
-    font-size: 14px;
     font-weight: 600;
   }
-  p {
-    font-size: 12px;
-    line-height: 22px;
-    text-align: justify;
-    transform: skew(-0.03deg);
-  }
-  p.main {
-    margin-bottom: 40px;
-    color: #424242;
-  }
-  p.sub {
-    color: #9e9e9e;
 
-    span {
-      display: inline-block;
-    }
-    span.depth1 {
-      margin-top: 20px;
-      padding-left: 10px;
-    }
-    span.depth2 {
-      margin-top: 15px;
-      padding-left: 20px;
-    }
-    span.depth3 {
-      margin-top: 10px;
-      padding-left: 30px;
-    }
-    span.depth4 {
-      margin-top: 5px;
-      padding-left: 40px;
-    }
+  p {
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  li {
+    font-size: 14px;
+    line-height: 22px;
   }
 `

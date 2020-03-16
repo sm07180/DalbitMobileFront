@@ -766,7 +766,7 @@ const JoinForm = props => {
               </label>
               <button
                 onClick={() => {
-                  context.action.updatePopup('TERMS', 'youthProtection')
+                  context.action.updatePopup('TERMS', 'youthProtect')
                 }}>
                 자세히 보기
               </button>
@@ -783,7 +783,7 @@ const JoinForm = props => {
                 자세히 보기
               </button>
             </div>
-            <div>
+            {/* <div>
               <input type="checkbox" name="term5" id="term5" checked={changes.term5 == 'y' ? true : false} value={termHandle(changes.term5)} onChange={termCheckHandle} />
               <label htmlFor="term5">
                 <span>[선택]</span>마케팅 정보 제공 동의
@@ -794,7 +794,7 @@ const JoinForm = props => {
                 }}>
                 자세히 보기
               </button>
-            </div>
+            </div> */}
           </CheckBox>
         </CheckWrap>
         <Button onClick={() => fetchData()} disabled={!validatePass}>
@@ -939,7 +939,8 @@ const CheckWrap = styled.div`
   border: 1px solid #e0e0e0;
   transition: height 0.5s ease-in-out;
   &.on {
-    height: 303px;
+    /* height: 303px; */
+    height: 253px;
   }
   div {
     position: relative;
