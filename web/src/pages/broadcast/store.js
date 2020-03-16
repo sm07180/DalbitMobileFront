@@ -39,6 +39,8 @@ const BroadCastProvider = props => {
   const [SelectChange, setSelectChange] = useState('전체')
   const [noticeMsg, setNoticeMsg] = useState('')
 
+  const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
+
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
@@ -179,6 +181,9 @@ const BroadCastProvider = props => {
     },
     updateNoticeMsg: str => {
       setNoticeMsg(str)
+    },
+    updateBroadTimer: str => {
+      setBroadTimer(str)
     }
   }
   //---------------------------------------------------------------------
@@ -207,7 +212,8 @@ const BroadCastProvider = props => {
     broadcastProfileInfo,
     category,
     SelectChange,
-    noticeMsg
+    noticeMsg,
+    broadTimer
   }
 
   return <Provider value={value}>{props.children}</Provider>

@@ -12,6 +12,10 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import makeContents from 'Pages/broadcast/content/tab/profileLisner'
+
+//import * as timer from 'pages/broadcast/content/tab/timer'
+import Timer, {startTimer} from 'pages/broadcast/content/tab/timer'
+
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -121,6 +125,8 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
+    //timer.startTimer()
+    startTimer()
     setRoom({
       ...room,
       ...props
@@ -192,7 +198,11 @@ export default props => {
           <li>{context.broadcastTotalInfo.likes !== null ? context.broadcastTotalInfo.likes : room.likes}</li>
           {/* <li>{likeCheck()}</li> */}
           {/* 방송 남은 시간 */}
-          {props.auth === 3 && <li>00:30:00</li>}
+          {props.auth === 3 && (
+            <li>
+              <Timer></Timer>
+            </li>
+          )}
         </ul>
         <div>
           {/* 새클릭시 사연 탭 */}
