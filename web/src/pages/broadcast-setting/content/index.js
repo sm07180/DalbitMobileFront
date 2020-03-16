@@ -374,7 +374,10 @@ export default props => {
                   return
                 }
                 if (!audioPass) {
-                  return alert('오디오 인풋이 하나도 안되었습니다.')
+                  //return alert('오디오 인풋이 하나도 안되었습니다.')
+                  return context.action.alert({
+                    msg: '오디오 인풋이 하나도 안되었습니다.'
+                  })
                 }
                 if (audioStream) {
                   audioStream.getTracks().forEach(track => {
