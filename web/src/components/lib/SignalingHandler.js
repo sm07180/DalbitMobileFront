@@ -1,5 +1,4 @@
 const audioSocketUrl = __WEBRTC_SOCKET_URL
-console.log('audio socket url', audioSocketUrl)
 
 export default class SignalingHandler {
   constructor(debug) {
