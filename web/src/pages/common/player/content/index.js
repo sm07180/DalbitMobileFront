@@ -2,7 +2,7 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useMemo, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context

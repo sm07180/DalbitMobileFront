@@ -14,7 +14,6 @@ import Utility from 'components/lib/utility'
 //import KakaoLogin from 'react-kakao-login'
 //import NaverLogin from 'react-naver-login'
 //import FacebookLogin from 'react-facebook-login'
-import {osName, browserName} from 'react-device-detect'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -362,7 +361,13 @@ export default props => {
         로그인
       </LoginSubmit>
       <ButtonArea>
-        <input type="checkbox" id="keeplogin" />
+        <input
+          type="checkbox"
+          id="keeplogin"
+          onClick={() => {
+            props.update({saveLogin: event.target.checked})
+          }}
+        />
         <label htmlFor="keeplogin">로그인 유지</label>
         <div>
           <button
