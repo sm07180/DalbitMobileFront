@@ -167,10 +167,13 @@ const GlobalProvider = props => {
     updateBroadcastTotalInfo: obj => {
       setBroadcastTotalInfo(broadcastTotalInfo => ({...broadcastTotalInfo, ...obj}))
     },
-    //방생성 후 방정보 가지고있음, 방 종료시 사라짐
-    //Bool변경중
-    updateCastState: obj => {
-      setCastState(obj)
+    //
+    /**
+     * 방생성 후 방정보 가지고있음, 방 종료시 사라짐
+     * @param {roomNo} string
+     */
+    updateCastState: str => {
+      setCastState(str)
     },
     //공통코드 live 진입 시 context에 저장  * /splash api 참조 *
     updateCommon: obj => {
