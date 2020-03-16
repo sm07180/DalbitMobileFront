@@ -84,7 +84,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <SettingWrap>
-          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb88x88'] : ''})`}}>
+          <ProfileImg style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`}}>
             <label htmlFor="profileImg" />
             <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
             <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />

@@ -71,7 +71,7 @@ export default props => {
                 {context.token.isLogin ? (
                   <>
                     <Link to="/mypage/setting" style={{display: 'inline-block'}} onClick={() => context.action.updateGnbVisible(false)}>
-                      <PIMG bg={profile && profile.profImg['thumb120x120']} />
+                      <PIMG bg={profile && profile.profImg['thumb292x292']} />
                     </Link>
                     <NoLoginTitle>
                       <h4>{profile && profile.nickNm}</h4>
