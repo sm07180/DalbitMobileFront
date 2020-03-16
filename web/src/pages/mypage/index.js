@@ -51,8 +51,8 @@ export default props => {
             <Route exact path="/mypage/cast" component={Cast} />
             <Route exact path="/mypage/wallet" component={Wallet} />
             <Route exact path="/mypage/report" component={Report} />
-            <Route exact path="/mypage/alert" component={Alert} />
-            <Route exact path="/mypage/bcsetting" component={BroadcastSetting} />
+            <Route exact path="/mypage/alert" component={Ready} />
+            <Route exact path="/mypage/bcsetting" component={Ready} />
             <Redirect to="/error" />
           </Switch>
         </SubContent>
