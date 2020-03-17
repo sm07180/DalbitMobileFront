@@ -268,13 +268,20 @@ export default props => {
         await infiniteAudioChecker()
       } else {
         drawId = true
+        // context.action.alert({
+        //   msg: element,
+        //   title: '마이크 연결 에러!',
+        //   callback: () => {
+        //     props.history.push('/')
+        //     context.action.alert({visible: false})
+        //   }
+        // })
         context.action.alert({
-          msg: element,
-          title: '마이크 연결 에러!',
+          //콜백처리
           callback: () => {
             props.history.push('/')
-            context.action.alert({visible: false})
-          }
+          },
+          msg: '마이크 연결 에러!.'
         })
       }
     })()

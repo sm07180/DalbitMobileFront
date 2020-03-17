@@ -125,6 +125,10 @@ export default props => {
         context.action.updateBroadcastTotalInfo(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
+    } else {
+      context.action.alert({
+        msg: `${res.message}`
+      })
     }
     return
   }
