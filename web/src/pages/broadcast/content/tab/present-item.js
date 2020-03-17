@@ -51,6 +51,8 @@ export default props => {
 
   useEffect(() => {
     setItem(-1)
+    setCount(0)
+    setItemNo(-1)
   }, [props.flag])
   //-------------------------------------------------- components start
   return (
@@ -60,14 +62,14 @@ export default props => {
           <DashBoard>
             {props.testData.guestYn === 'Y' && (
               <Target>
-                <TargetInfo bjNickNm={props.bjNickNm} />
+                <TargetInfo bjNickNm={props.bjNickNm} profile={context.broadcastTotalInfo.bjProfImg.thumb62x62} />
               </Target>
             )}
             <Level>
               <UserLevel>LEVEL {props.profile != undefined && props.profile.level}</UserLevel>
               <BarWrap>
                 <Bar>
-                  <Exp exp={bWidth}>{props.profile != undefined && props.profile.expRate}%</Exp>
+                  <Exp exp={props.profile != undefined && props.profile.expRate}>{props.profile != undefined && props.profile.expRate}%</Exp>
                 </Bar>
               </BarWrap>
             </Level>
@@ -136,7 +138,7 @@ const TargetInfo = props => {
       <Dj>
         {/* {idx !== state && <Cover></Cover>} */}
         <Profile>
-          <img src="https://devimage.dalbitcast.com/images/api/guest@2x.png" width={36} height={36} />
+          <img src={props.profile} width={36} height={36} />
           <Tag>DJ</Tag>
         </Profile>
         <DjInfo>
@@ -229,7 +231,9 @@ const Bar = styled.div`
 `
 const Exp = styled.div`
   display: flex;
-  width: ${props => (props.exp ? props.exp + 'px' : '0px')};
+  min-width: 10%;
+  width: ${props => (props.exp ? props.exp + '%' : '0%')};
+  /* width: 100%; */
   border-radius: 10px;
   background-color: #8556f6;
   margin-left: 0px;
@@ -407,6 +411,10 @@ const Profile = styled.div`
   width: 50px;
   height: 50px;
   align-items: center;
+
+  & > img {
+    border-radius: 75px;
+  }
 `
 
 const Picked = styled.div`

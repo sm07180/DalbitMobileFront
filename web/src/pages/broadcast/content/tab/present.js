@@ -31,6 +31,15 @@ export default props => {
 
   // 선물하기
   async function send(count, itemNo, flag) {
+    if (itemNo < 0) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        title: '달빛라디오',
+        msg: '아이템을 선택해 주세요'
+      })
+    }
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo,
@@ -65,7 +74,6 @@ export default props => {
   }, [])
 
   //-------------------------------------------------------- components start
-  console.log('## profile :', profile)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
