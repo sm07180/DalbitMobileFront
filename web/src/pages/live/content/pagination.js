@@ -11,18 +11,18 @@ export default props => {
   //------------------------------------------------------------ func start
   const getData = index => {
     setPage(index)
-    props.getBroadList({params: {roomType: props.type, page: index, records: 10}}, true)
+    props.getBroadList({params: {roomType: props.type, page: index, records: 10, searchType: props.searchType}}, true)
   }
 
   const prev = () => {
     if (page === 1) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10}}, true)
+    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10, searchType: props.searchType}}, true)
     setPage(page - 1)
   }
 
   const next = () => {
     if (page === props.paging.totalPage) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10}}, true)
+    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10, searchType: props.searchType}}, true)
     setPage(page + 1)
   }
 

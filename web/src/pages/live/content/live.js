@@ -5,39 +5,55 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import LiveList from './live-list'
 export default props => {
   //----------------------------------------------------------- declare start
-  const [sort1, setSort1] = useState('전체')
+  const [sort1, setSort1] = useState('0')
+  const [drop, setDrop] = useState('전체')
   const [sort2, setSort2] = useState('방송주제')
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
-  const [open3, setOpen3] = useState(false)
   const context = useContext(Context)
   const [list, setList] = useState([{cd: '', cdNm: '전체'}])
+  const [searchType, setSearchType] = useState([
+    {index: 0, type: '전체'},
+    {index: 1, type: '추천'},
+    {index: 2, type: '인기'},
+    {index: 3, type: '신입'}
+  ])
   //----------------------------------------------------------- func start
 
   // dropDown button
   const drop1 = () => {
     setOpen1(!open1)
     setOpen2(false)
-    setOpen3(false)
   }
 
   // dropDown button
   const drop2 = () => {
     setOpen1(false)
     setOpen2(!open2)
-    setOpen3(false)
   }
 
   // dropDown 선택 시 데이터 가져와야함
   const searchLive = (index, data) => {
-    if (index === 1) setSort1(data.cdNm)
+    if (index === 1) {
+      setSort1(data)
+      setDrop(data.type)
+      const params = {
+        roomType: props.type,
+        page: 1,
+        records: 10,
+        searchType: data.index
+      }
+      props.setSearchType(data.index)
+      props.getBroadList({params})
+    }
 
     if (index === 2) {
       setSort2(data.cdNm)
       const params = {
         roomType: data.cd,
         page: 1,
-        records: 10
+        records: 10,
+        searchType: props.searchType
       }
       props.setType(data.cd)
       props.getBroadList({params}) // 조회 function call
@@ -45,7 +61,6 @@ export default props => {
 
     setOpen1(false)
     setOpen2(false)
-    setOpen3(false)
   }
 
   useEffect(() => {
@@ -65,14 +80,17 @@ export default props => {
             </span>
             <Sort>
               <div className="dropDown">
-                <span>{sort1}</span>
+                <span>{drop}</span>
                 <Icon onClick={() => drop1()}></Icon>
                 {open1 && (
                   <DropDown>
-                    <li onClick={() => searchLive(1, '전체')}>전체</li>
-                    <li onClick={() => searchLive(1, '추천')}>추천</li>
-                    <li onClick={() => searchLive(1, '인기')}>인기</li>
-                    <li onClick={() => searchLive(1, '신입')}>신입</li>
+                    {searchType.map((data, index) => {
+                      return (
+                        <li onClick={() => searchLive(1, data)} key={index}>
+                          {data.type}
+                        </li>
+                      )
+                    })}
                   </DropDown>
                 )}
               </div>
