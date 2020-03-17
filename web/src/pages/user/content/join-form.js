@@ -122,6 +122,8 @@ const JoinForm = props => {
       validatePwd(e.target.value)
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
+    } else if (e.target.name == 'loginNickNm') {
+      validateNick(e.target.value)
     } else if (e.target.name == 'auth') {
       setChanges({
         ...changes,
@@ -254,6 +256,43 @@ const JoinForm = props => {
       document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
+
+  const validateNick = nickEntered => {
+    setChanges({
+      ...changes,
+      loginNickNm: nickEntered
+    })
+    let nm = nickEntered
+    console.log('changes.loginNickNm.length', changes.loginNickNm)
+    let nmVal = {loginNickNm: false}
+    if (nickEntered.length == 0) {
+      setValidate({
+        ...validate,
+        loginNickNm: false
+      })
+      setCurrentNick('')
+    } else {
+      if (nm.length > 1 && nm.length < 21) {
+        if (fetchNickData(nm)) {
+          nmVal = {...nmVal, loginNickNm: true}
+          console.log('nmVal', nmVal)
+          setCurrentNick('사용 가능한 닉네임 입니다.')
+        } else {
+          setCurrentNick('닉네임 중복입니다.')
+        }
+      } else if (nm.length < 2) {
+        setCurrentNick('최소 2자 이상 입력해주세요.')
+      } else if (nm.length > 20) {
+        setCurrentNick('최대 20자 까지 입력이 가능합니다.')
+      }
+    }
+    console.log('?')
+    setValidate({
+      ...validate,
+      ...nmVal
+    })
+  }
+
   //---------------------------------------------------------------------
   // input file에서 이미지 업로드했을때 파일객체 dataURL로 값 셋팅
   function uploadSingleFile(e) {
@@ -305,10 +344,6 @@ const JoinForm = props => {
   // @todo 약관 동의 하나씩 모두 체크, 체크해제 했을때 전체 동의 체크 작동
   const termCheckHandle = e => {
     onLoginHandleChange(e)
-    // if(changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y') {
-    //   console.log('모두 체크, 혹은 체크 해제 되었습니다')
-    //   selectAllTerm()
-    // }
   }
 
   //---------------------------------------------------------------------
@@ -535,56 +570,15 @@ const JoinForm = props => {
   }
 
   useEffect(() => {
-    let nm = changes.loginNickNm
-    console.log('changes.loginNickNm.length', changes.loginNickNm)
-    let nmVal = {loginNickNm: false}
-    if (changes.loginNickNm.length == 0) {
-      setValidate({
-        ...validate,
-        loginNickNm: false
-      })
-      setCurrentNick('')
-    } else {
-      if (nm.length > 1 && nm.length < 21) {
-        if (fetchNickData(nm)) {
-          nmVal = {...nmVal, loginNickNm: true}
-          console.log('nmVal', nmVal)
-          setCurrentNick('사용 가능한 닉네임 입니다.')
-        } else {
-          setCurrentNick('닉네임 중복입니다.')
-        }
-      } else if (nm.length < 2) {
-        setCurrentNick('최소 2자 이상 입력해주세요.')
-      } else if (nm.length > 20) {
-        setCurrentNick('최대 20자 까지 입력이 가능합니다.')
-      }
-    }
-    console.log('?')
-    setValidate({
-      ...validate,
-      nmVal
-    })
-  }, [changes.loginNickNm])
-
-  useEffect(() => {
     console.log(JSON.stringify(validate, null, 1))
   }, [validate])
 
   useEffect(() => {
     console.log(JSON.stringify(changes, null, 1))
-    //약관 동의 유효성 체크
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
-      setValidate({
-        ...validate,
-        term: true
-      })
-      validateSetting = {...validateSetting, term: true}
+      setAllTerm(true)
     } else {
-      setValidate({
-        ...validate,
-        term: false
-      })
-      validateSetting = {...validateSetting, term: false}
+      setAllTerm(false)
     }
     if (!(changes.memType == 'p')) {
       //validateNickNm(changes.loginNickNm)
