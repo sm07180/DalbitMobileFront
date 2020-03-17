@@ -79,32 +79,47 @@ export default props => {
       </RequestList>
     )
   })
+  // 게스트 기능 전 임시 함수
+  const makeContent = () => {
+    return (
+      <div className="noresultWrap">
+        <img src="https://devimage.dalbitcast.com/images/api/img_noresult.png"></img>
+        <p>준비중입니다.</p>
+      </div>
+    )
+  }
+  // 이 함수는 3.20 일 이후 기능 추가되면 살리는 함수
+  const makeContectReal = () => {
+    return (
+      <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+        <GuestWrap>
+          <Title>방송 참여 중 게스트</Title>
+          <DJList>
+            <ImgArea bg={GuestInfo.url} />
+            <h5>{GuestInfo.bjNickNm}</h5>
+            <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
+            {/* {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
+            임시로 백그라운트 클릭이나 소규모 팝업생성했었는데 컨텍스트 레이어팝업 확정된거같아 이벤트 뺴놓습니다
+            (이벤트 주는 구조정도 참고 하시면 될거같습니다.)
+            <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} /> */}
+          </DJList>
+        </GuestWrap>
+        <GuestWrap>
+          <Title>초대한 게스트</Title>
+          {InviteMap}
+        </GuestWrap>
+        <GuestWrap>
+          <Title>게스트 요청 청취자</Title>
+          <ListenWrap>{RequestMap}</ListenWrap>
+        </GuestWrap>
+      </Scrollbars>
+    )
+  }
   //render-------------------------------------------------------
   return (
     <>
       <Wrapper onWheel={handleOnWheel} ref={settingArea}>
-        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
-          <GuestWrap>
-            <Title>방송 참여 중 게스트</Title>
-            <DJList>
-              <ImgArea bg={GuestInfo.url} />
-              <h5>{GuestInfo.bjNickNm}</h5>
-              <CancelEventGuest value={BTNcheck} onClick={ToggleGuest}></CancelEventGuest>
-              {/* {BTNcheck && <CancelEvent onClick={AllFalse} value={GuestInfo.bjNickNm} />}
-              임시로 백그라운트 클릭이나 소규모 팝업생성했었는데 컨텍스트 레이어팝업 확정된거같아 이벤트 뺴놓습니다
-              (이벤트 주는 구조정도 참고 하시면 될거같습니다.)
-              <BackGround onClick={AllFalse} className={BTNcheck === true ? 'on' : ''} /> */}
-            </DJList>
-          </GuestWrap>
-          <GuestWrap>
-            <Title>초대한 게스트</Title>
-            {InviteMap}
-          </GuestWrap>
-          <GuestWrap>
-            <Title>게스트 요청 청취자</Title>
-            <ListenWrap>{RequestMap}</ListenWrap>
-          </GuestWrap>
-        </Scrollbars>
+        {makeContent()}
       </Wrapper>
     </>
   )

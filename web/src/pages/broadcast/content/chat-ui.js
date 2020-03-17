@@ -144,7 +144,7 @@ export default props => {
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
       if (data.detail.data.cmd === 'reqGrant') {
-        if (context.broadcastTotalInfo.auth < 2) {
+        if (context.profile.memNo === data.detail.data.chat.memNo) {
           context.action.updateBroadcastTotalInfo({auth: parseInt(recvauth)})
         }
       }

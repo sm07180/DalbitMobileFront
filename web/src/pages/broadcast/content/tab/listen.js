@@ -113,7 +113,7 @@ export default props => {
             <DJList>
               <ManagerImg bg={roomInfo.bjProfImg.url} />
               {/* <h2>{`@${roomInfo.memNo}`}</h2> */}
-              <h2>{roomInfo.bjMemId}</h2>
+              <h2>{`@${roomInfo.bjMemId}`}</h2>
               <h5>{roomInfo.bjNickNm}</h5>
             </DJList>
           </LiveWrap>
