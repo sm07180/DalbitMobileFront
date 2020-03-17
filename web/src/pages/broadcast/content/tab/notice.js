@@ -175,15 +175,17 @@ const Container = styled.div`
     font-size: 14px;
     font-weight: normal;
     letter-spacing: -0.35px;
+    text-align: center;
     transform: skew(-0.03deg);
   }
   & .noticeInput {
     position: relative;
     width: 100%;
-    min-height: 140px;
+    min-height: 180px;
     padding: 20px;
     box-sizing: border-box;
     background-color: #f5f5f5;
+    border-radius: 10px;
     & textarea {
       display: block;
       border: none;

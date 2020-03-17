@@ -26,10 +26,12 @@ export default props => {
     })
     if (res.result === 'success') {
       const {list} = res.data
+
       store.action.updateListenerList(list)
     }
     return
   }
+
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -75,6 +77,7 @@ export default props => {
   //리스너 인포맵
   const drawListenList = () => {
     if (store.listenerList === null) return
+
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, profImg, auth} = live
