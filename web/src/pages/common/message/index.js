@@ -45,6 +45,6 @@ const Message = styled.section`
   left: 0;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 120;
 `

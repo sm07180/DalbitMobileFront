@@ -26,7 +26,7 @@ export default props => {
   const context = useContext(Context)
   const store = useContext(LiveStore)
   const [type, setType] = useState('') // roomType
-  const [searchType , setSearchType] = useState('0') // searchType
+  const [searchType, setSearchType] = useState('0') // searchType
   const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
   const scroll = useRef(null)
@@ -99,8 +99,9 @@ export default props => {
     const res = await Api.broad_exit({data: {...obj}})
     if (res.result === 'success') {
       return res
+    } else {
     }
-    alert(res.message)
+    //alert(res.message)
   }
 
   //joinRoom
@@ -158,7 +159,7 @@ export default props => {
       <Wrap>
         <MainContents ref={scroll}>
           {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />}
-          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType}/>
+          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType} />
           {!store.list && (
             <NoResult>
               <NoImg />
