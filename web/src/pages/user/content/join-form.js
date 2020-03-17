@@ -11,7 +11,9 @@ import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
 
-const JoinForm = props => {
+let intervalId = null
+
+export default props => {
   //context
   const context = useContext(Context)
   //useState
@@ -41,6 +43,7 @@ const JoinForm = props => {
   }) // 인증확인 버튼
   const [imgData, setImgData] = useState()
   const [thisTimer, setThisTimer] = useState()
+  const [timeText, setTimeText] = useState()
   let setTime = 300
 
   //포토서버에 올라간 디폴트 이미지
@@ -60,19 +63,6 @@ const JoinForm = props => {
       for (var i = 0; i < digits - n.length; i++) zero += '0'
     }
     return zero + n
-  }
-
-  //timer 만들기
-  //let thisTimer = null
-
-  const createAuthTimer = () => {
-    let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
-    document.getElementsByClassName('timer')[0].innerHTML = timer
-    setTime--
-    if (setTime < 0) {
-      clearInterval(thisTimer)
-      setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
-    }
   }
 
   //회원가입 들어온 후 gnb닫아줘야 메인으로 갔을때 제대로 열림
@@ -252,7 +242,7 @@ const JoinForm = props => {
       })
       setCurrentAuth1('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
-      clearInterval(thisTimer)
+      clearInterval(intervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
@@ -508,9 +498,21 @@ const JoinForm = props => {
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       //setInterval({createAuthTimer()},1000)
       //thisTimer =
-      clearInterval(thisTimer)
+      clearInterval(intervalId)
       setTime = 300
-      setThisTimer(setInterval(createAuthTimer, 1000))
+
+      intervalId = setInterval(() => {
+        let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+        //document.getElementsByClassName('timer')[0].innerHTML = timer
+        setTimeText(timer)
+        setTime--
+        if (setTime < 0) {
+          clearInterval(intervalId)
+          setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+        }
+      }, 1000)
+
+      // setThisTimer(createAuthTimer)
     } else {
       console.log(resAuth)
       setCurrentAuth1(resAuth.message)
@@ -529,7 +531,8 @@ const JoinForm = props => {
       console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
-      clearInterval(thisTimer)
+      let clear = clearInterval(intervalId)
+      setThisTimer(clear)
       document.getElementsByClassName('timer')[0].innerHTML = ''
     } else {
       console.log(resCheck)
@@ -568,10 +571,6 @@ const JoinForm = props => {
       })
     }
   }
-
-  useEffect(() => {
-    console.log(JSON.stringify(validate, null, 1))
-  }, [validate])
 
   useEffect(() => {
     console.log(JSON.stringify(changes, null, 1))
@@ -651,8 +650,13 @@ const JoinForm = props => {
     } else {
       setValidatePass(false)
     }
-    //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('remove join from')
+  //   }
+  // })
 
   return (
     <>
@@ -678,7 +682,7 @@ const JoinForm = props => {
             )}
             <PhoneAuth>
               <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
-              <span className="timer"></span>
+              <span className="timer">{timeText}</span>
               <button
                 className="auth-btn2"
                 disabled={currentAuthBtn.check}
@@ -847,7 +851,6 @@ const JoinForm = props => {
   )
 }
 
-export default JoinForm
 //---------------------------------------------------------------------
 //styled
 //핸드폰 인증 영역
