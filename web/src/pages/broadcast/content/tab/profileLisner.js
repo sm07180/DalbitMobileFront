@@ -177,6 +177,16 @@ export default props => {
       </React.Fragment>
     )
   }
+  //선물 하기
+  const goGiftSend = () => {
+    //store.action.updateTab(4) 선물하기 탭 이동
+    context.action.alert({
+      callback: () => {
+        return
+      },
+      msg: '서비스 준비중입니다.'
+    })
+  }
   const userTypeContents = () => {
     if (objProfileInfo.auth > 2) return // 본인 정보랑 같거나 프로필이 본인꺼 일때
     return (
@@ -189,7 +199,7 @@ export default props => {
             }}>
             {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
           </button>
-          <button>선물하기</button>
+          <button onClick={() => goGiftSend()}>선물하기</button>
         </div>
       </React.Fragment>
     )
@@ -443,6 +453,7 @@ const PIMG = styled.div`
 const GazeBar = styled.div`
   position: absolute;
   width: calc(${props => props.gaze}%);
+  min-width: 15%;
   background-color: #8556f6;
   border-radius: 10px;
   & p {
