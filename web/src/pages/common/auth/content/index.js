@@ -330,9 +330,7 @@ export default props => {
     if (blank_pattern != -1) {
       value = value.substring(0, value.length - 1)
     }
-    if (!(e.keyCode >= 37 && e.keyCode <= 40)) {
-      value = value.replace(/[^a-z0-9]/gi, '')
-    }
+    value = value.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, '')
     setChanges({...changes, pwd: value})
   }
 
