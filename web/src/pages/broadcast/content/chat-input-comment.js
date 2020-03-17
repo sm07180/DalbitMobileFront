@@ -151,7 +151,7 @@ export default props => {
       cancelCallback: () => {
         //alert('confirm callback 취소하기')
       },
-      msg: '방송을 종료 하시겠습니까?'
+      msg: `방송을 ${props.auth === 3 ? '종료' : '나가기'} 하시겠습니까?`
     })
   }
 

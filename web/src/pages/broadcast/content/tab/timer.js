@@ -96,7 +96,7 @@ const timeloop = () => {
       //   if (!addFlag) {
       //     //if (time > 1) time++
       //   }
-      console.log('time = ' + time)
+      //console.log('time = ' + time)
       min = Math.floor(time / 60)
       hour = Math.floor(min / 60)
       sec = time % 60
@@ -109,7 +109,7 @@ const timeloop = () => {
       if (tm < 10) tm = '0' + min
       if (ts < 10) ts = '0' + sec
 
-      console.log('타이머 시간 = ' + time)
+      //console.log('타이머 시간 = ' + time)
       // 타이머 종료 조건을 건다.
       if (time >= BcEndTime) {
         stopTimer()
@@ -117,7 +117,7 @@ const timeloop = () => {
       }
       time++
       addFlag = false
-      console.log(th + ':' + tm + ':' + ts)
+      //console.log(th + ':' + tm + ':' + ts)
       store.action.updateBroadTimer(th + ':' + tm + ':' + ts)
     }, 1000)
   } else {

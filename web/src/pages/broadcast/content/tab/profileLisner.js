@@ -37,43 +37,20 @@ export default props => {
   async function broad_fan_change(isFan) {
     console.log('팬등록 = ' + store.roomInfo)
     const methodType = isFan === false ? 'POST' : 'DELETE'
-    let res
     // 팬이 아니여서 팬등록 가능 상태
-    if (isFan) {
-      // res = await Api.fan_change({
-      //   data: {
-      //     memNo: context.broadcastTotalInfo.bjMemNo
-      //   },
-      //   method: methodType
-      // })
-      res = await Api.broad_fan_insert({
-        data: {
-          memNo: objProfileInfo.memNo,
-          //memNo: context.broadcastTotalInfo.bjMemNo,
-          roomNo: context.broadcastTotalInfo.roomNo
-        },
-        method: methodType
-      })
-    } else {
-      // res = await Api.fan_change({
-      //   data: {
-      //     memNo: context.broadcastTotalInfo.bjMemNo
-      //   },
-      //   method: methodType
-      // })
-      res = await Api.broad_fan_delete({
-        data: {
-          memNo: objProfileInfo.memNo
-          //memNo: context.broadcastTotalInfo.bjMemNo
-        },
-        method: methodType
-      })
-    }
+    const res = await Api.broad_fan_insert({
+      data: {
+        memNo: objProfileInfo.memNo,
+        //memNo: context.broadcastTotalInfo.bjMemNo,
+        roomNo: context.broadcastTotalInfo.roomNo
+      },
+      method: methodType
+    })
     if (res.result === 'success') {
       if (methodType === 'POST') {
-        store.updateBroadcastProfileInfo({isFan: true})
+        store.action.updateBroadcastProfileInfo({isFan: true})
       } else {
-        store.updateBroadcastProfileInfo({isFan: true})
+        store.action.updateBroadcastProfileInfo({isFan: false})
       }
     }
     context.action.alert({
@@ -138,6 +115,7 @@ export default props => {
     if (objProfileInfo.auth < 2) return <button className="reportBtn" onClick={() => goDeclaration()}></button>
     else return <></>
   }
+
   useEffect(() => {
     console.log(store.broadcastProfileInfo)
     //fetchData()
@@ -204,13 +182,20 @@ export default props => {
         <div className="submitWrap">
           <button
             onClick={() => {
-              broad_fan_insert(objProfileInfo.isFan)
+              broad_fan_change(objProfileInfo.isFan)
             }}>
             {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
           </button>
           <button
             onClick={() => {
-              broad_fan_insert()
+              context.action.alert({
+                callback: () => {
+                  //console.log('callback처리')
+                },
+                msg: '서비스 준비중입니다.'
+              })
+
+              //broad_fan_change(objProfileInfo.isFan)
             }}>
             선물하기
           </button>

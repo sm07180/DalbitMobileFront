@@ -329,6 +329,7 @@ export default class API {
    * @method "DELETE""
    * @todo
    * @param string memNo                 //*스타회원번호
+   * @param string roomNo                 //*방송방 번호
    * @create 김호겸 2020.03.12
    */
   static broad_fan_delete = async obj => {

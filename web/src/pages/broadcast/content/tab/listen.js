@@ -47,7 +47,7 @@ export default props => {
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
-      const {nickNm, memNo, profImg, auth} = live
+      const {nickNm, memNo, memId, profImg, auth} = live
       const {thumb62x62} = profImg
       //매니저  청취자 비제이 구분 auth로
       if (auth === 0) mode = '0'
@@ -60,7 +60,7 @@ export default props => {
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>
           <ManagerImg bg={thumb62x62} />
-          <StreamID>{memNo}</StreamID>
+          <StreamID>{`@${memId}`}</StreamID>
           <NickName>{nickNm}</NickName>
           {context.token.memNo !== memNo && (
             <div className="btnwrap">
@@ -77,7 +77,7 @@ export default props => {
     if (store.listenerList === null) return
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
-      const {nickNm, memNo, profImg, auth} = live
+      const {nickNm, memNo, memId, profImg, auth} = live
       const {thumb62x62} = profImg
       //----------------------------------------------------------------
       if (auth === 0) mode = '0'
@@ -89,7 +89,7 @@ export default props => {
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>
           <ManagerImg bg={thumb62x62} />
-          <StreamID>{memNo}</StreamID>
+          <StreamID>{`@${memId}`}</StreamID>
           <NickName>{nickNm}</NickName>
           {context.token.memNo !== memNo && <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>}
         </ListenList>
@@ -109,7 +109,8 @@ export default props => {
             <Title>방송 DJ</Title>
             <DJList>
               <ManagerImg bg={roomInfo.bjProfImg.url} />
-              <h2>{roomInfo.bjStreamId}</h2>
+              {/* <h2>{`@${roomInfo.memNo}`}</h2> */}
+              <h2>{roomInfo.memNo}</h2>
               <h5>{roomInfo.bjNickNm}</h5>
             </DJList>
           </LiveWrap>
