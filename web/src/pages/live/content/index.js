@@ -86,6 +86,7 @@ export default props => {
     if (res.result === 'success') {
       console.log('## res - common : ', res)
       context.action.updateCommon(res.data) // context에 update
+      getBroadList({params: {roomType: type, page: page, records: 10}})
     }
   }
 
@@ -138,7 +139,6 @@ export default props => {
 
   useEffect(() => {
     commonData()
-    getBroadList({params: {roomType: type, page: page, records: 10}})
     if (innerWidth <= 600) {
       window.addEventListener('scroll', onScroll)
       return () => {

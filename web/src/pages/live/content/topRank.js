@@ -66,7 +66,7 @@ export default props => {
   //-------------------------------------------------------------- components start
   return (
     <Container>
-      <Swiper width={props.width} spaceBetween={20} shouldSwiperUpdate={true}>
+      <Swiper width={props.width} height={200} spaceBetween={20} shouldSwiperUpdate={true}>
         {swiperValue}
       </Swiper>
     </Container>
@@ -76,12 +76,12 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
+  height: 200px;
   justify-content: flex-start;
 `
 const Contents = styled.div`
   display: flex;
   width: 400px;
-  height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
     width: 180px;
