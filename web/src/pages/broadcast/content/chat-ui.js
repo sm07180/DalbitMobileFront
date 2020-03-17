@@ -168,6 +168,11 @@ export default props => {
     })
   }, [])
 
+  if (!context.broadcastTotalInfo) {
+    props.history.push('/')
+    return <div></div>
+  }
+
   useEffect(() => {
     if (!checkMove) {
       scrollbars.current.scrollToBottom()
