@@ -49,10 +49,11 @@ const Child = () => {
           <span>주소</span>서울특별시 강남구 테헤란로83길 18(삼성동) 8층
         </li>
         <li>
-          <span>연락처</span> 02-0000-0000
+          <span>연락처</span> 1522-0251
         </li>
         <li>
-          <span>제휴/이벤트</span>inforex @inforex.com
+          <span>제휴/이벤트</span>
+          <a href="mailto:help@dalbitcast.com">help@dalbitcast.com</a>
         </li>
       </Info>
     </InfoWrap>

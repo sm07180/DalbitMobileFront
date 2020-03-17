@@ -186,19 +186,7 @@ export default props => {
             }}>
             {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
           </button>
-          <button
-            onClick={() => {
-              context.action.alert({
-                callback: () => {
-                  //console.log('callback처리')
-                },
-                msg: '서비스 준비중입니다.'
-              })
-
-              //broad_fan_change(objProfileInfo.isFan)
-            }}>
-            선물하기
-          </button>
+          <button>선물하기</button>
         </div>
       </React.Fragment>
     )
