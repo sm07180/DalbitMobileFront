@@ -480,25 +480,15 @@ export default class API {
   }
 
   /**
-   * @brief 팬 등록
-   * @method "POST"
+   * @brief 팬 등록,해제
+   * @method "POST","DELETE"
    * @param string    memNo             //*스타회원번호
    * @create 김호겸 2020.01.15
+   * @update 김호겸 2020.03.17
    */
-  static pan_register = async obj => {
+  static fan_change = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/pan`, method: method || 'POST', data: data})
-  }
-
-  /**
-   * @brief 팬 해제
-   * @method "DELETE"
-   * @param string    memNo             //*스타회원번호
-   * @create 김호겸 2020.01.15
-   */
-  static pan_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/pan`, method: method || 'DELETE', data: data})
+    return await ajax({...obj, url: url || `/mypage/fan`, method: method || 'POST', data: data})
   }
 
   /**
