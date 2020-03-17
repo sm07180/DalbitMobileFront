@@ -192,14 +192,15 @@ export default props => {
       setFetch(res.data)
       if (res) {
         if (res.code == 0) {
+          console.log('room_create revData = ' + res.data)
+          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+          context.action.updateBroadcastTotalInfo(res.data)
           /**
            * @todos 소켓연결필요
            */
           props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
-          context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
-          context.action.updateBroadcastTotalInfo(res.data)
         } else {
-          console.warn(res.message)
+          // console.warn(res.message)
         }
       }
     } else {

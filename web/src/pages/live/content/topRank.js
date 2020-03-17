@@ -39,7 +39,7 @@ export default props => {
         </Image>
         <Info>
           <div className="title">
-            <div>{context.common.roomType && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
+            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
             {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
             {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
@@ -66,7 +66,7 @@ export default props => {
   //-------------------------------------------------------------- components start
   return (
     <Container>
-      <Swiper width={props.width} spaceBetween={20} shouldSwiperUpdate={true}>
+      <Swiper width={props.width} height={200} spaceBetween={20} shouldSwiperUpdate={true}>
         {swiperValue}
       </Swiper>
     </Container>
@@ -76,12 +76,15 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
+  height: 200px;
   justify-content: flex-start;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 320px;
+  }
 `
 const Contents = styled.div`
   display: flex;
   width: 400px;
-  height: 100%;
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
     width: 180px;

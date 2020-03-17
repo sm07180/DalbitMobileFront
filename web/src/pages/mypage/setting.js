@@ -28,7 +28,20 @@ export default props => {
   const profileImageUpload = e => {
     const target = e.currentTarget
     let reader = new FileReader()
+    const file = target.files[0]
+    const fileName = file.name
+    const fileSplited = fileName.split('.')
+    const fileExtension = fileSplited.pop()
+    const extValidator = ext => {
+      const list = ['jpg', 'jpeg', 'png']
+      return list.includes(ext)
+    }
+    if (!extValidator(fileExtension)) {
+      return alert('jpg, png 만 사용 가능합니다.')
+    }
+
     reader.readAsDataURL(target.files[0])
+
     reader.onload = async () => {
       if (reader.result) {
         const res = await Api.image_upload({

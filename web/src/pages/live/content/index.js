@@ -55,7 +55,6 @@ export default props => {
           setRank(res.data.list.slice(0, 3)) // 상위 3명 따로 담아서 보냄
           liveRank = res.data.list.slice(0, 3)
         }
-        console.log('## res :', res)
         setPaging(res.data.paging)
       }
     }
@@ -85,7 +84,9 @@ export default props => {
   const commonData = async obj => {
     const res = await Api.splash({})
     if (res.result === 'success') {
+      console.log('## res - common : ', res)
       context.action.updateCommon(res.data) // context에 update
+      getBroadList({params: {roomType: type, page: page, records: 10}})
     }
   }
 
@@ -137,7 +138,6 @@ export default props => {
   }
 
   useEffect(() => {
-    getBroadList({params: {roomType: type, page: page, records: 10}})
     commonData()
     if (innerWidth <= 600) {
       window.addEventListener('scroll', onScroll)

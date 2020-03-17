@@ -100,32 +100,11 @@ export default props => {
       console.log('## liket res = ' + res)
 
       context.action.updateBroadcastTotalInfo(res.data)
-      //console.log('context BroadcastTotalInfo = ' + context.broadcastTotalInfo)
       store.action.updateLike(2)
       setToggle({
         ...toggle,
         like: true
       })
-      // 좋아요 누른 후 10초 뒤에 팬등록 팝업 실행
-      // setTimeout(() => {
-      //   context.action.confirm({
-      //     //콜백처리
-      //     callback: () => {
-      //       broad_fan_insert()
-      //     },
-      //     //캔슬콜백처리
-      //     cancelCallback: () => {
-      //       //alert('confirm callback 취소하기')
-      //     },
-      //     buttonText: {
-      //       right: '+팬등록'
-      //     },
-      //     msg: `${store.roomInfo.nk} 님 좋아요 감사합니다.
-      //     저의 팬이 되어주시겠어요?`
-      //   })
-      // }, 1000)
-
-      //clearTimeout()
     }
   }
   //팬등록
@@ -206,6 +185,7 @@ export default props => {
   }
   async function broad_Link() {
     console.log(JSON.stringify(props))
+
     const res = await Api.broad_link({
       params: {
         link: store.roomInfo.link
@@ -220,6 +200,10 @@ export default props => {
     }
   }
   const broadcastLink = e => {
+    context.action.alert({
+      msg: '서비스 준비중입니다.'
+    })
+    return
     broad_Link()
   }
   const Commandlist = () => {
