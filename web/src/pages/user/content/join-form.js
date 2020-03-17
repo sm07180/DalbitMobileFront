@@ -501,6 +501,10 @@ export default props => {
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       clearInterval(intervalId)
       setTime = 300
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
 
       intervalId = setInterval(() => {
         let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
@@ -509,6 +513,10 @@ export default props => {
         if (setTime < 0) {
           clearInterval(intervalId)
           setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+          setCurrentAuthBtn({
+            request: false,
+            check: true
+          })
         }
       }, 1000)
 
