@@ -13,12 +13,14 @@ import Api from 'context/api'
 import {broadcastLive} from 'constant/broadcast'
 import {BroadCastStore} from 'pages/broadcast/store'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
 //------------------------------------------------------------------
 export default props => {
   //context
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
+  const history = useHistory()
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
   const scrollbars = useRef(null) // 스크롤 영역 선택자
@@ -52,8 +54,11 @@ export default props => {
   const makeContents = () => {
     if (fetch === null) return
     return fetch.list.map((live, index) => {
-      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg} = live
+      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo} = live
       let mode = '해당사항없음'
+      //console.log(roomNo)
+
+      //
       if (state === 1) mode = '1'
       if (state === 2) mode = '2'
       if (state === 3) mode = '3'

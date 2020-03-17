@@ -429,7 +429,7 @@ const ProfileUpload = styled.div`
     display: block;
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
     cursor: pointer;
 
     div {
@@ -442,9 +442,9 @@ const ProfileUpload = styled.div`
 const UploadWrap = styled.span`
   display: block;
   position: absolute;
-  bottom: 0;
+  top: 50%;
   width: 100%;
-  height: 100%;
+  height: auto;
 
   transform: skew(-0.03deg);
   &:after {
@@ -453,6 +453,7 @@ const UploadWrap = styled.span`
     content: '';
   }
   &.on {
+    top: calc(100% - 80px);
     height: 80px;
     background-color: rgba(0, 0, 0, 0.5);
   }

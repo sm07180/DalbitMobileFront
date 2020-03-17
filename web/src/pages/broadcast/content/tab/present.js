@@ -31,6 +31,15 @@ export default props => {
 
   // 선물하기
   async function send(count, itemNo, flag) {
+    if (itemNo < 0) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        title: '달빛라디오',
+        msg: '아이템을 선택해 주세요'
+      })
+    }
     const res = await Api.send_gift({
       data: {
         roomNo: store.roomInfo.roomNo,
@@ -40,16 +49,26 @@ export default props => {
         isSecret: flag
       }
     })
-    if (res.result === 'success') broadProfile()
+    if (res.result === 'success') {
+      // 프로필 업데이트 profile api에는 dalRate가 없어서 member_info_view 조회함 profile에 dalRate 추가 후 profile 만 호출하도록 변경해야 함
+      broadProfile()
+      // 선물 보내고 context.profile 업데이트
+      const profile = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profile.result === 'success') {
+        context.action.updateProfile(profile.data)
+      }
+    }
     setState(!state)
   }
 
-  // 방송 프로필
+  //방송 프로필
   const broadProfile = async () => {
     const res = await Api.member_info_view({
       method: 'GET'
     })
-    if (res.result === 'success') setProfile(res.data)
+    if (res.result === 'success') {
+      setProfile(res.data)
+    }
   }
 
   // 공통
@@ -65,7 +84,6 @@ export default props => {
   }, [])
 
   //-------------------------------------------------------- components start
-  console.log('## profile :', profile)
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />

@@ -11,7 +11,6 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import makeContents from 'Pages/broadcast/content/tab/profileLisner'
 
 //import * as timer from 'pages/broadcast/content/tab/timer'
 import Timer from 'pages/broadcast/content/tab/timer'

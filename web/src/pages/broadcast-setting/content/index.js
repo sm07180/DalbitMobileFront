@@ -548,7 +548,7 @@ const SubjectWrap = styled.div`
 
 const PictureRegist = styled.div`
   width: 100%;
-  margin-top: 50px;
+  margin-top: 36px;
   & h2 {
     position: relative;
     margin-bottom: 18px;

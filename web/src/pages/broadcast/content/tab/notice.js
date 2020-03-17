@@ -147,7 +147,7 @@ export default props => {
   //--------------------------------------------------------------------
   return (
     <Container>
-      <Navi title={'공지사항'} />
+      <Navi title={'공지사항'} prev={props.prev} _changeItem={props._changeItem} />
       {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
       {textareafunc()}
       {listenerNotice()}
@@ -175,15 +175,17 @@ const Container = styled.div`
     font-size: 14px;
     font-weight: normal;
     letter-spacing: -0.35px;
+    text-align: center;
     transform: skew(-0.03deg);
   }
   & .noticeInput {
     position: relative;
     width: 100%;
-    min-height: 140px;
+    min-height: 180px;
     padding: 20px;
     box-sizing: border-box;
     background-color: #f5f5f5;
+    border-radius: 10px;
     & textarea {
       display: block;
       border: none;
