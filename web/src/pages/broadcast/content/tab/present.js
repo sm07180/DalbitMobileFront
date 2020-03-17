@@ -49,16 +49,26 @@ export default props => {
         isSecret: flag
       }
     })
-    if (res.result === 'success') broadProfile()
+    if (res.result === 'success') {
+      // 프로필 업데이트 profile api에는 dalRate가 없어서 member_info_view 조회함 profile에 dalRate 추가 후 profile 만 호출하도록 변경해야 함
+      broadProfile()
+      // 선물 보내고 context.profile 업데이트
+      const profile = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profile.result === 'success') {
+        context.action.updateProfile(profile.data)
+      }
+    }
     setState(!state)
   }
 
-  // 방송 프로필
+  //방송 프로필
   const broadProfile = async () => {
     const res = await Api.member_info_view({
       method: 'GET'
     })
-    if (res.result === 'success') setProfile(res.data)
+    if (res.result === 'success') {
+      setProfile(res.data)
+    }
   }
 
   // 공통
