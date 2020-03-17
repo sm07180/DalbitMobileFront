@@ -199,7 +199,7 @@ export default props => {
           context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
           context.action.updateBroadcastTotalInfo(res.data)
         } else {
-          console.warn(res.message)
+          // console.warn(res.message)
         }
       }
     } else {
