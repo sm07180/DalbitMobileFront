@@ -8,7 +8,7 @@
  * @param {title} string               //상단제목없으면 노출안됨
  * @param {msg} string(html)           //메시지영역 노출 (html or)
  */
-import React, {useMemo, useContext} from 'react'
+import React, {useMemo, useRef, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
@@ -23,6 +23,8 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  //useRef
+  const refBtn = useRef(null)
   //--hooks
   const confirm = useClick(update, {callback: 'confirm'})
   const cancel = useClick(update, {callback: 'cancel'})
@@ -61,6 +63,10 @@ export default props => {
         break
     }
   }
+  //useEffect
+  useEffect(() => {
+    refBtn.current.focus()
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Alert>
@@ -72,7 +78,7 @@ export default props => {
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
       </div>
       <div className="wrap-btn">
-        <button className="cancel" {...cancel}>
+        <button ref={refBtn} className="cancel" {...cancel}>
           {cancelText}
         </button>
         <button className="confirm" {...confirm}>

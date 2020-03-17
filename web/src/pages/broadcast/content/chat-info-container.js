@@ -79,17 +79,7 @@ export default props => {
       )
     } else {
       return (
-        <button
-          className="invite"
-          onClick={
-            () => store.action.updateTab(1)
-            // context.action.alert({
-            //   callback: () => {
-            //     //console.log('callback처리')
-            //   },
-            //   msg: '서비스 준비중입니다.'
-            // })
-          }>
+        <button className="invite" onClick={() => store.action.updateTab(1)}>
           {props.auth == 3 ? '게스트 초대' : '게스트 신청'}
         </button>
       )

@@ -360,8 +360,7 @@ export default class API {
    */
 
   static getToken = async obj => {
-    const {url, method, authToken, data} = obj || {}
-    return await ajax({...obj, url: url || `/token`, method: method || 'GET', data: data})
+    return await ajax({url: `/token`, method: 'GET'})
   }
 
   /**

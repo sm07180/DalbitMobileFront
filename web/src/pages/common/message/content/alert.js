@@ -7,7 +7,7 @@
  * @param {title} string               //상단제목없으면 노출안됨
  * @param {msg} string(html)           //메시지영역 노출 (html or)
  */
-import React, {useContext} from 'react'
+import React, {useRef, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import {IMG_SERVER} from 'context/config'
@@ -21,6 +21,8 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  //useRef
+  const refBtn = useRef(null)
   //--hooks
   const cancel = useClick(update, {visible: false})
   const confirm = useClick(update, {callback: 'confirm'})
@@ -42,6 +44,10 @@ export default props => {
         break
     }
   }
+  //useEffect
+  useEffect(() => {
+    refBtn.current.focus()
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Alert>
@@ -55,7 +61,13 @@ export default props => {
         {context.message.msg && <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>}
       </div>
       <div className="wrap-btn">
-        <button className="confirm" {...confirm}>
+        <button
+          ref={refBtn}
+          className="confirm"
+          {...confirm}
+          onKeyPress={event => {
+            console.log(event)
+          }}>
           확인
         </button>
       </div>

@@ -123,7 +123,7 @@ const JoinForm = props => {
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
     } else if (e.target.name == 'loginNickNm') {
-      validateNick(e.target.value)
+      validateNick(e.target.value.replace(/(\s*)/g, ''))
     } else if (e.target.name == 'auth') {
       setChanges({
         ...changes,
@@ -258,11 +258,11 @@ const JoinForm = props => {
   }
 
   const validateNick = nickEntered => {
+    let nm = nickEntered
     setChanges({
       ...changes,
-      loginNickNm: nickEntered
+      loginNickNm: nm
     })
-    let nm = nickEntered
     console.log('changes.loginNickNm.length', changes.loginNickNm)
     let nmVal = {loginNickNm: false}
     if (nickEntered.length == 0) {
@@ -713,7 +713,7 @@ const JoinForm = props => {
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
-          <input autoComplete="off" type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
+          <input autoComplete="off" type="text" name="loginNickNm" value={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
           <span className={validate.loginNickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
           {currentNick && (
             <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>

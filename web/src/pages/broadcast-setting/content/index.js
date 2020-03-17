@@ -377,7 +377,8 @@ export default props => {
                 if (!audioPass) {
                   //return alert('오디오 인풋이 하나도 안되었습니다.')
                   return context.action.alert({
-                    msg: '오디오 인풋이 하나도 안되었습니다.'
+                    msg: `마이크 연결이 되어있지 않습니다.
+                    마이크 연결상태를 확인 바랍니다.`
                   })
                 }
                 if (audioStream) {

@@ -75,8 +75,10 @@ export default props => {
     if (res.result === 'success') {
       if (type === 1) {
         store.action.updateBroadcastProfileInfo({auth: 0})
+        //if (objProfileInfo.memNo === context.broadcastTotalInfo.bjMemNo) context.action.updateBroadcastTotalInfo({auth: 0})
       } else {
         store.action.updateBroadcastProfileInfo({auth: 1})
+        //if (objProfileInfo.memNo === context.broadcastTotalInfo.bjMemNo) context.action.updateBroadcastTotalInfo({auth: 1})
       }
 
       context.action.alert({
@@ -124,6 +126,7 @@ export default props => {
   const managerStatusChange = () => {
     if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
     if (context.broadcastTotalInfo.auth === 1 && objProfileInfo.auth <= 1) return //같은 매니저 이거나 선택자가 청취자 일때
+    if (context.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
     return (
       <React.Fragment>
         <div className="managerBtn">
@@ -148,7 +151,7 @@ export default props => {
   }
   const makeKickout = () => {
     if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
-
+    if (context.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
     return (
       <React.Fragment>
         <div className="functionWrap">
@@ -235,7 +238,7 @@ export default props => {
   //----------------------------------------
   return (
     <Container>
-      <Navi title={'프로필'} />
+      <Navi title={'프로필'} prev={props.prev} _changeItem={props._changeItem} />
       {makeContents()}
     </Container>
   )
