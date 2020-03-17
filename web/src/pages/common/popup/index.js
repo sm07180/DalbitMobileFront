@@ -95,6 +95,8 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  padding-left: 25px;
+  padding-right: 25px;
   align-items: center;
   justify-content: center;
   z-index: 100;

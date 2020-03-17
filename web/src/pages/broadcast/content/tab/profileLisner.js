@@ -238,7 +238,7 @@ export default props => {
   //----------------------------------------
   return (
     <Container>
-      <Navi title={'프로필'} />
+      <Navi title={'프로필'} prev={props.prev} _changeItem={props._changeItem} />
       {makeContents()}
     </Container>
   )

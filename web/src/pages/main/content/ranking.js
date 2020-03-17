@@ -2,19 +2,23 @@
  * @file /content/context-list.js
  * @brief 메인 라이브, 캐스트 리스트 component
  */
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
 //context
+import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 //components
 
 export default props => {
+  //context
+  const context = new useContext(Context)
+
   //state
   const [rankingType, setRankingType] = useState('dj')
   const [djInfo, setDjInfo] = useState([])
@@ -74,13 +78,16 @@ export default props => {
   const createSlide = (array, type) => {
     return array.map((item, index) => {
       const rankClass = `nth${item.rank}`
-
       return (
         <RankingItem
           key={index}
           className={rankClass}
           onClick={() => {
-            props.history.push('/')
+            if (context.token.isLogin) {
+              props.history.push(`/private/${item.memNo}`)
+            } else {
+              context.action.updatePopup('LOGIN')
+            }
           }}>
           <ImgBox url={item.profImg.url}>
             <img src={item.profImg.url}></img>

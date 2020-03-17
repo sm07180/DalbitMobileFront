@@ -15,6 +15,7 @@ import Pagination from './pagination'
 let liveList = []
 let livePaging = []
 let liveType = ''
+let liveSearchType = ''
 let liveRank = []
 let reload = true
 
@@ -25,6 +26,7 @@ export default props => {
   const context = useContext(Context)
   const store = useContext(LiveStore)
   const [type, setType] = useState('') // roomType
+  const [searchType , setSearchType] = useState('0') // searchType
   const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
   const scroll = useRef(null)
@@ -36,8 +38,9 @@ export default props => {
 
   // 방송방 리스트 조회
   const getBroadList = async (obj, reload) => {
-    const {roomType} = obj.params
+    const {roomType, searchType} = obj.params
     liveType = roomType
+    liveSearchType = searchType
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
@@ -48,6 +51,7 @@ export default props => {
         // code === "0" >> 데이터 없음
         store.action.updateList(false) // 데이터가 없을 때 false // store.list 가 false 일때 pagination, live-list 안보여줌
       } else {
+        console.log('## res.data : ', res.data)
         store.action.updateList(res.data.list)
         liveList = res.data.list
         livePaging = res.data.paging
@@ -86,7 +90,7 @@ export default props => {
     if (res.result === 'success') {
       console.log('## res - common : ', res)
       context.action.updateCommon(res.data) // context에 update
-      getBroadList({params: {roomType: type, page: page, records: 10}})
+      getBroadList({params: {roomType: type, page: page, records: 10, searchType: searchType}})
     }
   }
 
@@ -132,7 +136,7 @@ export default props => {
       if (scrollHeight - window.innerHeight - scrollTop < 80) {
         document.documentElement.scrollTo({top: scrollHeight * 0.2, behavior: 'smooth'})
         window.removeEventListener('scroll', onScroll)
-        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: 10}})
+        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: 10, searchType: liveSearchType}})
       }
     }
   }
@@ -154,7 +158,7 @@ export default props => {
       <Wrap>
         <MainContents ref={scroll}>
           {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />}
-          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} />
+          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType}/>
           {!store.list && (
             <NoResult>
               <NoImg />
@@ -163,7 +167,7 @@ export default props => {
           )}
         </MainContents>
       </Wrap>
-      {window.innerWidth > 600 && store.list && <Pagination paging={paging} getBroadList={getBroadList} type={type} />}
+      {window.innerWidth > 600 && store.list && <Pagination paging={paging} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />}
     </Container>
   )
 }

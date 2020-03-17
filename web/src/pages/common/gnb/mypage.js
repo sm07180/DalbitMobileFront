@@ -55,7 +55,6 @@ export default props => {
       )
     })
   }
-
   //---------------------------------------------------------------------
   return (
     <>
@@ -156,6 +155,7 @@ export default props => {
                             context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                             context.action.updateProfile(null)
                           } else {
+                            //Error 및 "result":"fail" 에러메시지
                             context.action.alert({
                               msg: res.message
                             })

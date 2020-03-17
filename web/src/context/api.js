@@ -360,8 +360,7 @@ export default class API {
    */
 
   static getToken = async obj => {
-    const {url, method, authToken, data} = obj || {}
-    return await ajax({...obj, url: url || `/token`, method: method || 'GET', data: data})
+    return await ajax({url: `/token`, method: 'GET'})
   }
 
   /**
@@ -469,14 +468,6 @@ export default class API {
 
   static profile_edit = async obj => {
     const {url, method, memember, data} = obj || {}
-    const {gender, nickNm, birth} = data
-    if (!gender) {
-      return alert('gender is empty')
-    } else if (!nickNm) {
-      return alert('nickNm is empty')
-    } else if (!birth) {
-      return alert('birth is empty')
-    }
     return await ajax({...obj, url: url || `/mypage/profile`, method: method || 'POST', data: data})
   }
 

@@ -68,7 +68,6 @@ const GlobalProvider = props => {
     updateToken: obj => {
       const {authToken} = obj
       API.setAuthToken(authToken)
-      //Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken(obj)
     },
