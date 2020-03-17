@@ -426,7 +426,9 @@ export default class SignalingHandler {
             const {definition} = format
             if (definition === 'play_started') {
             } else if (definition === 'play_finished' || definition === 'publish_finished') {
-              this.stop()
+              if (!this.rtcPeerConn) {
+                this.stop()
+              }
             }
             break
           }
