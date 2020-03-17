@@ -155,6 +155,10 @@ export default props => {
                             context.action.updateGnbVisible(false)
                             context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                             context.action.updateProfile(null)
+                          } else {
+                            context.action.alert({
+                              msg: res.message
+                            })
                           }
                         }
                         fetchData()

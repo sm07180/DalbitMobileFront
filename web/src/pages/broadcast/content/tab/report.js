@@ -46,23 +46,23 @@ export default props => {
   const BTNInfo = [
     {
       title: '프로필 사진',
-      id: 0
-    },
-    {
-      title: '음란성',
       id: 1
     },
     {
-      title: '광고 및 상업성',
+      title: '음란성',
       id: 2
     },
     {
-      title: '욕설 및 비방성',
+      title: '광고 및 상업성',
       id: 3
     },
     {
+      title: '욕설 및 비방성',
+      id: 4
+    },
+    {
       title: '기타',
-      id: 99
+      id: 5
     }
   ]
   //셀렉트function-----------------------------------
