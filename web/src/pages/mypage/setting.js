@@ -92,7 +92,6 @@ export default props => {
     setProfileMsg(profile.profMsg)
     setPhotoPath(profile.profImg.path)
   }, [])
-
   return (
     <Layout {...props}>
       <Content>
