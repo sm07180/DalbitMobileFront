@@ -231,7 +231,7 @@ const Bar = styled.div`
 `
 const Exp = styled.div`
   display: flex;
-  min-width: 10%;
+  min-width: 15%;
   width: ${props => (props.exp ? props.exp + '%' : '0%')};
   /* width: 100%; */
   border-radius: 10px;
