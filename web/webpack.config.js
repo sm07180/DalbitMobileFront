@@ -113,19 +113,6 @@ module.exports = (_, options) => {
       }
     }
 
-    config.optimization = {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true
-            }
-          }
-        })
-      ]
-    }
-
     config.output.path = path.resolve(__dirname)
     config.output.publicPath = '/'
 
@@ -147,6 +134,19 @@ module.exports = (_, options) => {
         __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       })
     )
+
+    config.optimization = {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true
+            }
+          }
+        })
+      ]
+    }
   }
 
   return config
