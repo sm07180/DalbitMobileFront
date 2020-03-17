@@ -17,7 +17,11 @@ export default props => {
     ;(async () => {
       if (!profile) {
         const profileInfo = await Api.profile({params: {type: 'private', memNo: memNo}})
-        setProfile(profileInfo.data)
+        if (profileInfo.result === 'success') {
+          setProfile(profileInfo.data)
+        } else {
+          props.history.push('/')
+        }
       }
     })()
   }, [])
