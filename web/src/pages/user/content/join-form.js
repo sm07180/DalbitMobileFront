@@ -701,6 +701,7 @@ const JoinForm = props => {
               uploadSingleFile(e)
             }}
           />
+          <p className="img-text">방송 진행을 위해 프로필 등록이 필요합니다.</p>
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
@@ -871,7 +872,7 @@ const PhoneAuth = styled.div`
 `
 //프로필 업로드 영역
 const ProfileUpload = styled.div`
-  margin: 40px 0 30px 0;
+  margin: 40px 0 35px 0;
   text-align: center;
   input {
     position: absolute;
@@ -916,6 +917,14 @@ const ProfileUpload = styled.div`
       background: url(${IMG_SERVER}/svg/ico-camera.svg) no-repeat center / cover;
       text-indent: -9999px;
     }
+  }
+
+  .img-text{
+    padding-top:18px;
+    font-size:12px;
+    color:#feac2c;
+    text-align:center;
+    transform:skew(-0.03deg);
   }
 `
 //성별 선택 라디오 박스 영역
