@@ -169,7 +169,7 @@ export default props => {
     } else {
       document.addEventListener('keydown', function(e) {
         const keyCode = e.keyCode
-        console.log('pushed key ' + e.key)
+        //console.log('pushed key ' + e.key)
         if (e.key == 'F5') {
           reloadRoom(props.location.state.roomNo)
         } else {
