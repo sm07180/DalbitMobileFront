@@ -33,11 +33,11 @@ export default props => {
   //const
   const {state} = props.location
   //useMemo
-  // const info = useMemo(() => {
-  //   store.action.updateRoomInfo(state)
-  //   context.action.updateRoomInfo(state)
-  //   return state
-  // })
+  const info = useMemo(() => {
+    store.action.updateRoomInfo(state)
+    context.action.updateRoomInfo(state)
+    return state
+  })
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
   const [resizeCheck, setResizeCheck] = useState(false)
