@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Route, Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -21,6 +21,8 @@ export default props => {
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
 
+  const nicknameReference = useRef()
+
   if (!profile) {
     props.history.push('/')
   }
@@ -36,8 +38,15 @@ export default props => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
+
     if (!extValidator(fileExtension)) {
-      return alert('jpg, png 만 사용 가능합니다.')
+      return context.action.alert({
+        msg: 'jpg, png 이미지만 사용 가능합니다.',
+        title: '',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
 
     reader.readAsDataURL(target.files[0])
@@ -53,6 +62,14 @@ export default props => {
         if (res.result === 'success') {
           setTempPhoto(reader.result)
           setPhotoPath(res.data.path)
+        } else {
+          context.action.alert({
+            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+            title: '',
+            callback: () => {
+              context.action.alert({visible: false})
+            }
+          })
         }
       }
     }
@@ -60,7 +77,10 @@ export default props => {
 
   const changeNickname = e => {
     const {currentTarget} = e
-    setNickname(currentTarget.value)
+    if (currentTarget.value.length > 20) {
+      return
+    }
+    setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
   const changeMsg = e => {
@@ -69,6 +89,18 @@ export default props => {
   }
 
   const saveUpload = async () => {
+    if (!nickname) {
+      return context.action.alert({
+        msg: '닉네임을 입력해주세요.',
+        callback: () => {
+          context.action.alert({visible: false})
+          if (nicknameReference.current) {
+            nicknameReference.current.focus()
+          }
+        }
+      })
+    }
+
     const data = {
       gender: profile.gender,
       nickNm: nickname,
@@ -83,7 +115,13 @@ export default props => {
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile(res.data)
-      return alert('저장되었습니다.')
+      return context.action.alert({
+        msg: '저장되었습니다.',
+        title: '',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
 
@@ -102,7 +140,7 @@ export default props => {
             <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
           </ProfileImg>
           <div className="nickname">
-            <NicknameInput autoComplete="off" value={nickname} onChange={changeNickname} />
+            <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
           </div>
           <UserId>{`@${profile.memId}`}</UserId>
           <PasswordWrap>
