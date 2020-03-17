@@ -86,7 +86,7 @@ const JoinForm = props => {
     loginNickNm: '',
     loginName: '',
     birth: '',
-    gender: 'm',
+    gender: 'n',
     image: '',
     memType: 'p',
     term1: 'n',
@@ -108,19 +108,25 @@ const JoinForm = props => {
   //회원가입 input onChange
   const onLoginHandleChange = e => {
     //대소문자 구분없음, 소문자만 입력
+    console.log('e.targete.targete.targete.target', e.target.defaultChecked)
     if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
       e.target.value = e.target.value.toLowerCase()
+      setChanges({
+        ...changes,
+        [e.target.name]: e.target.value
+      })
     }
-    setChanges({
-      ...changes,
-      [e.target.name]: e.target.value
-    })
+
     //유효성검사
     if (e.target.name == 'loginPwd') {
       validatePwd(e.target.value)
     } else if (e.target.name == 'loginID') {
       validateID(e.target.value)
     } else if (e.target.name == 'auth') {
+      setChanges({
+        ...changes,
+        [e.target.name]: e.target.value
+      })
       if (e.target.value.length == 6) {
         if (changes.CMID) {
           setCurrentAuthBtn({
@@ -134,6 +140,20 @@ const JoinForm = props => {
           [e.target.name]: e.target.value.slice(0, -1)
         })
       }
+    } else if (e.target.name == 'gender') {
+      let thisGender = e.target.value
+      if (e.target.defaultChecked) {
+        thisGender = 'n'
+      }
+      setChanges({
+        ...changes,
+        [e.target.name]: thisGender
+      })
+    } else {
+      setChanges({
+        ...changes,
+        [e.target.name]: e.target.value
+      })
     }
   }
 
@@ -406,8 +426,7 @@ const JoinForm = props => {
     } //(res && res.code)
   }
 
-  let snsJoinSetting = {}
-
+  let validateSetting = {}
   async function fetchNickData() {
     const resNick = await Api.nickName_check({
       params: {
@@ -417,21 +436,15 @@ const JoinForm = props => {
     if (resNick) {
       if (resNick.result === 'success') {
         if (resNick.code == '1') {
-          snsJoinSetting = {...snsJoinSetting, loginNickNm: true}
-          setCurrentNick('사용 가능한 닉네임 입니다.')
+          return 1
         }
       } else if (resNick.result === 'fail') {
         if (resNick.code == '0') {
-          snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
-          setCurrentNick('닉네임 중복입니다.')
+          return 0
         } else {
           console.log('중복체크 실패', resNick)
         }
       }
-      setValidate({
-        ...validate,
-        ...snsJoinSetting
-      })
     }
   }
 
@@ -524,37 +537,38 @@ const JoinForm = props => {
   useEffect(() => {
     let nm = changes.loginNickNm
     console.log('changes.loginNickNm.length', changes.loginNickNm)
+    let nmVal = {loginNickNm: false}
     if (changes.loginNickNm.length == 0) {
-      // setValidate({
-      //   ...validate,
-      //   loginNickNm: false
-      // })
-      snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
+      setValidate({
+        ...validate,
+        loginNickNm: false
+      })
       setCurrentNick('')
     } else {
       if (nm.length > 1 && nm.length < 21) {
-        fetchNickData(nm)
+        if (fetchNickData(nm)) {
+          nmVal = {...nmVal, loginNickNm: true}
+          console.log('nmVal', nmVal)
+          setCurrentNick('사용 가능한 닉네임 입니다.')
+        } else {
+          setCurrentNick('닉네임 중복입니다.')
+        }
       } else if (nm.length < 2) {
-        // setValidate({
-        //   ...validate,
-        //   loginNickNm: false
-        // })
-        snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
         setCurrentNick('최소 2자 이상 입력해주세요.')
       } else if (nm.length > 20) {
-        // setValidate({
-        //   ...validate,
-        //   loginNickNm: false
-        // })
-        snsJoinSetting = {...snsJoinSetting, loginNickNm: false}
         setCurrentNick('최대 20자 까지 입력이 가능합니다.')
       }
     }
+    console.log('?')
     setValidate({
       ...validate,
-      ...snsJoinSetting
+      nmVal
     })
   }, [changes.loginNickNm])
+
+  useEffect(() => {
+    console.log(JSON.stringify(validate, null, 1))
+  }, [validate])
 
   useEffect(() => {
     console.log(JSON.stringify(changes, null, 1))
@@ -564,18 +578,18 @@ const JoinForm = props => {
         ...validate,
         term: true
       })
-      snsJoinSetting = {...snsJoinSetting, term: true}
+      validateSetting = {...validateSetting, term: true}
     } else {
       setValidate({
         ...validate,
         term: false
       })
-      snsJoinSetting = {...snsJoinSetting, term: false}
+      validateSetting = {...validateSetting, term: false}
     }
     if (!(changes.memType == 'p')) {
       //validateNickNm(changes.loginNickNm)
-      snsJoinSetting = {
-        ...snsJoinSetting,
+      validateSetting = {
+        ...validateSetting,
         loginID: true,
         loginPwd: true,
         loginPwdCheck: true
@@ -583,7 +597,7 @@ const JoinForm = props => {
       setValidate(
         {
           ...validate,
-          ...snsJoinSetting
+          ...validateSetting
         }
         //
       )
@@ -626,7 +640,7 @@ const JoinForm = props => {
         ...validate,
         birth: true
       })
-      snsJoinSetting = {...snsJoinSetting, birth: true}
+      validateSetting = {...validateSetting, birth: true}
     } else {
       setCurrentBirth('17세 이상만 가입 가능합니다.')
       setValidate({
@@ -706,7 +720,7 @@ const JoinForm = props => {
         {/* 닉네임 */}
         <InputWrap type="닉네임">
           <input autoComplete="off" type="text" name="loginNickNm" defaultValue={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
-          <span className={validate.loginNickNm ? 'off' : 'on'}>2~10자</span>
+          <span className={validate.loginNickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
           {currentNick && (
             <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>
               {currentNick}
@@ -724,7 +738,7 @@ const JoinForm = props => {
         {changes.memType == 'p' && (
           <InputWrap>
             <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
-            <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자</span>
+            <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
                 {currentPwd}
@@ -748,11 +762,11 @@ const JoinForm = props => {
         {/* 성별 */}
         <GenderRadio>
           <label htmlFor="genderMale" className={changes.gender == 'm' ? 'on' : 'off'}>
-            <input type="radio" name="gender" id="genderMale" value="m" defaultChecked={changes.gender === 'm'} onChange={onLoginHandleChange} />
+            <input type="checkbox" name="gender" id="genderMale" value="m" defaultChecked={changes.gender === 'm'} onChange={onLoginHandleChange} />
             남자
           </label>
           <label htmlFor="genderFemale" className={changes.gender == 'f' ? 'on' : 'off'}>
-            <input type="radio" name="gender" id="genderFemale" value="f" defaultChecked={changes.gender === 'f'} onChange={onLoginHandleChange} />
+            <input type="checkbox" name="gender" id="genderFemale" value="f" defaultChecked={changes.gender === 'f'} onChange={onLoginHandleChange} />
             여자
           </label>
         </GenderRadio>
@@ -949,10 +963,10 @@ const GenderRadio = styled.div`
       outline: none;
       -webkit-appearance: none;
     }
-    input:checked {
+    &.on input {
       color: ${COLOR_MAIN};
     }
-    input:checked::after {
+    &.on input::after {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -1037,10 +1051,11 @@ const CheckWrap = styled.div`
   }
   & > div:first-child > button {
     background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
+    transform: rotate(180deg);
     /* transition: transform 0.3s ease-in-out; */
 
     &.on {
-      transform: rotate(180deg);
+      transform: rotate(0deg);
     }
   }
   & > div:first-child {
@@ -1066,7 +1081,7 @@ const CheckBox = styled.div`
       color: #ec455f;
     }
     &:last-child span {
-      color: #bdbdbd;
+      /* color: #bdbdbd; */
     }
   }
   button {
