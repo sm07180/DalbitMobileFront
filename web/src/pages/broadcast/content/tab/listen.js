@@ -26,12 +26,12 @@ export default props => {
     })
     if (res.result === 'success') {
       const {list} = res.data
-
       store.action.updateListenerList(list)
     }
+
     return
   }
-
+  console.log(props)
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -58,6 +58,7 @@ export default props => {
       if (auth === 2) mode = '3'
       if (auth !== 1) return
       //----------------------------------------------------------------
+
       return (
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>

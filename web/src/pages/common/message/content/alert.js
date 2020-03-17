@@ -51,7 +51,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <Close {...cancel}>
+      <Close {...cancel} {...confirm}>
         <img src={`${IMG_SERVER}/images/common/ic_close_m@2x.png`} />
       </Close>
       <div className="wrap-message">
