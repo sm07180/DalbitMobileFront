@@ -3,7 +3,6 @@ import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
 import {Context} from 'context'
 import styled from 'styled-components'
-import main from 'pages/main'
 
 let time = 0
 let hour = 0
@@ -18,6 +17,7 @@ let BcEndTime = 7200 //방송방 기본 시간 ( 2시간 -> 7200)
 
 const getTimeStamp = () => {
   const context = Timer.context()
+  console.log('recv 방송 시간 = ' + context.broadcastTotalInfo.startDt)
   const broadcastStTime = context.broadcastTotalInfo.startDt
 
   var year = broadcastStTime.substring(0, 4)
@@ -59,12 +59,13 @@ export const pauseTimer = () => {
 export const startTimer = () => {
   if (startFlag) return
   console.log('방송 시간차 = ' + getTimeStamp())
+  startFlag = true
+  timeloop()
   time = getTimeStamp()
   console.warn('타이머 시작')
   if (time >= BcEndTime) return
-  startFlag = true
+
   pauseFlag = false
-  timeloop()
 }
 // 타이머 종료 기능 함수
 export const stopTimer = () => {
@@ -95,7 +96,7 @@ const timeloop = () => {
       //   if (!addFlag) {
       //     //if (time > 1) time++
       //   }
-
+      console.log('time = ' + time)
       min = Math.floor(time / 60)
       hour = Math.floor(min / 60)
       sec = time % 60
@@ -130,7 +131,7 @@ const Timer = props => {
   Timer.context = () => context
   Timer.store = () => store
   useEffect(() => {
-    //startTimer()
+    startTimer()
   }, [])
 
   return (

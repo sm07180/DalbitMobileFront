@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import makeContents from 'Pages/broadcast/content/tab/profileLisner'
 
 //import * as timer from 'pages/broadcast/content/tab/timer'
-import Timer, {startTimer} from 'pages/broadcast/content/tab/timer'
+import Timer from 'pages/broadcast/content/tab/timer'
 
 export default props => {
   //---------------------------------------------------------------------
