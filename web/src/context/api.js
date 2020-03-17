@@ -21,7 +21,8 @@ useEffect(() => {
 
 import axios from 'axios'
 import qs from 'qs'
-//component
+//context
+import {Global} from 'App'
 import {API_SERVER, PHOTO_SERVER} from 'context/config'
 
 // export const authToken = () => {
@@ -876,11 +877,12 @@ export const ajax = async obj => {
       formData.append('uploadType', data.uploadType)
     }
     const dataType = url === '/upload' ? formData : qs.stringify(data)
+
     let res = await axios({
       method: method,
       headers: {
-        authToken: API.authToken || '',
-        'custom-header': API.customHeader || '',
+        authToken: Global().authToken || '',
+        'custom-header': Global().customHeader || '',
         'content-type': contentType
       },
       url: pathType + url,

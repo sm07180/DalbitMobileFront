@@ -3,6 +3,7 @@
  * @brief 환경설정값
  * @todo 개발모드/프로덕션모드 분기할수있게.
  */
+//---------------------------------------------------------------------
 
 export const VERSION = ''
 /**
@@ -31,3 +32,4 @@ export const WIDTH_TABLET = '1024px'
 export const WIDTH_TABLET_S = '840px' //디자인 시안 사이즈
 export const WIDTH_MOBILE = '600px'
 export const WIDTH_MOBILE_S = '360px' //디자인 시안 사이즈
+//---------------------------------------------------------------------

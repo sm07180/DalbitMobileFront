@@ -5,7 +5,7 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useState, createContext} from 'react'
+import React, {useState, useContext, createContext} from 'react'
 //context
 import API from 'context/api'
 import Utility from 'components/lib/utility'
@@ -55,7 +55,7 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
-      API.setCustomHeader(JSON.stringify(obj))
+      //@삭제 API.setCustomHeader(JSON.stringify(obj))
       //Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
       Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
@@ -68,7 +68,7 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       const {authToken} = obj
-      API.setAuthToken(authToken)
+      //@삭제 API.setAuthToken(authToken)
       Utility.setCookie('authToken', '', -1)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken(obj)
