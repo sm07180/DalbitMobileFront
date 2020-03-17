@@ -52,7 +52,6 @@ export default props => {
   useEffect(() => {
     setItem(-1)
   }, [props.flag])
-  console.log('## props.profile :', props.profile)
   //-------------------------------------------------- components start
   return (
     <Container>

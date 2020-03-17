@@ -16,7 +16,6 @@ export default props => {
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
     if (value.length > maxLength) {
-      alert('## Max Length is 5 ##')
       return false
     }
 

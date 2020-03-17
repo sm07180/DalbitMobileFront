@@ -147,7 +147,7 @@ export default props => {
   //--------------------------------------------------------------------
   return (
     <Container>
-      <Navi title={'공지사항'} />
+      <Navi title={'공지사항'} prev={props.prev} _changeItem={props._changeItem} />
       {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
       {textareafunc()}
       {listenerNotice()}
