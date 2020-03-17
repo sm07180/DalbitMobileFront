@@ -103,7 +103,19 @@ export const BroadValidation = () => {
         fetchData()
       } else {
         //프로필이미지 없음
-        alert('프로필이미지등록이 필요합니다')
+        context.action.confirm({
+          //콜백처리
+          callback: () => {
+            //
+            Navi.history().push('/mypage/setting')
+          },
+          // title: '회원가입 완료입니다.',
+          msg: '프로필 이미지 등록이 필요합니다',
+          buttonText: {
+            left: '취소',
+            right: '프로필 이미지등록'
+          }
+        })
         return
         //화면이동
       }

@@ -469,14 +469,6 @@ export default class API {
 
   static profile_edit = async obj => {
     const {url, method, memember, data} = obj || {}
-    const {gender, nickNm, birth} = data
-    if (!gender) {
-      return alert('gender is empty')
-    } else if (!nickNm) {
-      return alert('nickNm is empty')
-    } else if (!birth) {
-      return alert('birth is empty')
-    }
     return await ajax({...obj, url: url || `/mypage/profile`, method: method || 'POST', data: data})
   }
 
