@@ -200,7 +200,7 @@ export default props => {
            */
           props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
         } else {
-          console.warn(res.message)
+          // console.warn(res.message)
         }
       }
     } else {
