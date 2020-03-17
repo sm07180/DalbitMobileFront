@@ -33,15 +33,15 @@ export default props => {
   //const
   const {state} = props.location
   //useMemo
-  const info = useMemo(() => {
-    store.action.updateRoomInfo(state)
-    context.action.updateRoomInfo(state)
-    return state
-  })
+  // const info = useMemo(() => {
+  //   store.action.updateRoomInfo(state)
+  //   context.action.updateRoomInfo(state)
+  //   return state
+  // })
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
   const [resizeCheck, setResizeCheck] = useState(false)
-  const [myTimer, setMyTimer] = useState()
+  // const [myTimer, setMyTimer] = useState()
 
   const hostRole = 3
   // const guestRole = ?
@@ -51,7 +51,7 @@ export default props => {
   const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, auth} = state
+  const {bjStreamId, auth} = context.broadcastTotalInfo
 
   const startPlayer = () => {
     if (auth === hostRole) {
