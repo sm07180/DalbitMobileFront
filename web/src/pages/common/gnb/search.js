@@ -11,38 +11,15 @@ import {WIDTH_MOBILE, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S} from 'context/co
 
 export default props => {
   const context = useContext(Context)
-  const [searchtext, setPosts] = useState([])
-  //
-  async function fetchData() {
-    const res = await API.live_search({
-      params: {
-        search: search,
-        page: 1,
-        records: 10
-      }
-    })
-    if (res.result === 'success') {
-      console.log(res)
-      setPosts(res.data.list)
-    }
-    console.log(res)
-  }
-  // const queryString = useMemo(() => {
-  //   if (props.location.search === undefined) return ''
-  //   return qs.parse(props.location.search, {ignoreQueryPrefix: true})
-  // })
+
   const ClickLink = async () => {
     if (search === '') {
       return
     }
-    //window.location.href = `/search?query=${search}`
-    //props.history.push(`/search?query=${search}`)
-    //props.history.push('/search' + '?query=' + search)
+
     props.history.push(`/search?query=${search}`)
     context.action.updateGnbVisible(false)
-    window.location.reload()
   }
-
   const [search, setSearch] = useState('')
   const handleChange = event => {
     setSearch(event.target.value)
@@ -53,10 +30,8 @@ export default props => {
       return
     }
     if (e.keyCode === 13) {
-      //window.location.href = `/search?query=${search}`
       props.history.push(`/search?query=${search}`)
       context.action.updateGnbVisible(false)
-      window.location.reload()
     }
   }
   //---------------------------------------------------------------------

@@ -38,7 +38,9 @@ export default () => {
       <GnbButton>
         <button
           onClick={() => {
-            context.action.updateGnbState('search')
+            if (location.href.indexOf('/search') === -1) {
+              context.action.updateGnbState('search')
+            }
           }}>
           검색
         </button>

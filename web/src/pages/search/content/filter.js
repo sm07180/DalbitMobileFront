@@ -1,14 +1,20 @@
+/**
+ * @title 검색페이지
+ */
 import React, {useState, useContext, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
-import API from 'context/api'
+import Api from 'context/api'
 import NoResult from './noResult'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {isHybrid, Hybrid} from 'context/hybrid'
+//global
+import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
+  //---------------------------------------------------------------------
+  //context
   const context = useContext(Context)
-  //////////////////////////////////////////////////////////////
-
+  //state
   const [list, setPosts] = useState([])
   //방송리스트 map
   const [listM, setPostsM] = useState([])
@@ -17,34 +23,13 @@ export default props => {
   const [filter, setFilter] = useState('')
   const [filterM, setFilterM] = useState('')
   //온체이지 글자
-
-  //검색결과
   const [query, setQuery] = useState('')
-
-  //qs
-
-  /////////////////////////////////////////////////////////////
   //초기 qs검색 api호출및 필터 벨류 저장
-  const prevQueryRef = useRef('')
-  useEffect(() => {
-    //const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
-    //console.log(props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1])
-    const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
-    console.log(props.history.location.search)
-    //props.history.push(`/search?query=${search}`)
-    // const qs = props.history.split('?')[1] && decodeURIComponent(props.history.split('?')[1].split('=')[1])
-    if (prevQueryRef.current !== qs) {
-      setFilter(qs)
-      setFilterM(qs)
-      prevQueryRef.current = qs
-    }
-    ShowClick()
-  }, [query])
+  //---------------------------------------------------------------------
   //검색 api호출및 필터 벨류 저장
   async function fetchData() {
-    //const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
     const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
-    const res = await API.live_search({
+    const res = await Api.live_search({
       params: {
         search: filter || qs,
         page: 1,
@@ -58,7 +43,7 @@ export default props => {
         setShow(true)
       }
     }
-    const resMember = await API.member_search({
+    const resMember = await Api.member_search({
       params: {
         search: filter || qs,
         page: 1,
@@ -68,7 +53,7 @@ export default props => {
     if (resMember.result === 'success') {
       if (resMember.data) {
         setPostsM(resMember.data.list)
-
+        console.log(resMember.data.list.memNo)
         setShow(true)
       }
     }
@@ -77,7 +62,52 @@ export default props => {
       setShow(false)
     }
   }
+  //---------------------------------------------------------------------
+  const prevQueryRef = useRef('')
+  useEffect(() => {
+    const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
+    if (prevQueryRef.current !== qs) {
+      setFilter(qs)
+      setFilterM(qs)
+      prevQueryRef.current = qs
+    }
+    ShowClick()
+  }, [query])
 
+  //exitRoom
+  async function exitRoom(roomNo) {
+    const res = await Api.broad_exit({data: {roomNo: roomNo}})
+    if (res.result === 'success') {
+      return res
+    }
+    alert(res.message)
+  }
+  //joinRoom
+  async function joinRoom(roomNo) {
+    const res = await Api.broad_join({data: {roomNo: roomNo}})
+
+    console.log(res)
+    //Error발생시 (방이 입장되어 있을때)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
+      const exit = await exitRoom(roomNo)
+      if (exit.result === 'success') joinRoom(roomNo)
+    }
+    //Error발생시 (종료된 방송)
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
+    //정상진입이거나,방탈퇴이후성공일경우
+    if (res.result === 'success') {
+      if (isHybrid()) {
+        Hybrid('RoomJoin', res.data)
+      } else {
+        //하이브리드앱이 아닐때
+        const {roomNo} = res.data
+        context.action.updateBroadcastTotalInfo(res.data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+      }
+    }
+    return
+  }
+  //function
   const ShowClick = () => {
     setPosts([])
     setPostsM([])
@@ -94,14 +124,11 @@ export default props => {
       fetchData()
     }
   }
-
-  /////////////////////////////////////////////////맵
-
   const ShowFilter2 = listM.map((item, index) => {
     if (filterM.length > 1) {
       if (item.nickNm.toLocaleLowerCase().includes(filterM.toLocaleLowerCase())) {
         return (
-          <MemberWrap key={index}>
+          <MemberWrap key={index} onClick={() => props.history.push(`/private/${item.memNo}`)}>
             <Mimg bg={item.profImg.url}></Mimg>
             <InfoBox>
               <div className="id">{item.memId}</div>
@@ -120,17 +147,20 @@ export default props => {
   const ShowFilter = list.map((item, index) => {
     if (filter.length > 1) {
       if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
-        const {nickNm, memNo, profImg, auth, title} = item
+        const {nickNm, memNo, profImg, auth, title, roomNo} = item
         const {thumb62x62} = profImg
         let mode = '해당사항없음'
         // if (auth === 0) mode = '0'
         // if (auth === 1) mode = '1'
         // if (auth === 2) mode = '2'
         // if (auth === 2) mode = '3'
-        // //
         // if (auth !== 1) return
         return (
-          <ListWrap key={index}>
+          <ListWrap
+            key={index}
+            onClick={() => {
+              joinRoom(roomNo)
+            }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>
               <Thumb thumb={thumb62x62} />
@@ -333,7 +363,7 @@ const Icon = styled.button`
   background: url('https://devimage.dalbitcast.com/svg/ic_search_normal.svg');
 `
 
-const ListWrap = styled.div`
+const ListWrap = styled.button`
   width: calc(14.28% - 25px);
   margin-bottom: 37px;
   margin-right: 29px;
@@ -437,7 +467,7 @@ const InfoWrap = styled.div`
     }
   }
 `
-///
+///////////////////////////////////////
 const MemberWrap = styled.div`
   display: flex;
   position: relative;
