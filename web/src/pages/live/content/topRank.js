@@ -79,7 +79,7 @@ const Container = styled.div`
   height: 200px;
   justify-content: flex-start;
   @media (max-width: ${WIDTH_MOBILE}) {
-    height: 100%;
+    height: 320px;
   }
 `
 const Contents = styled.div`
