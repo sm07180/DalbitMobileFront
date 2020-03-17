@@ -38,7 +38,7 @@ export default props => {
       setDjInfo(resDj.data.list)
       sswiper.update()
     } else {
-      fetch(2)
+      // fetch(2)
       //console.log('실패', resDj.result)
     }
 
