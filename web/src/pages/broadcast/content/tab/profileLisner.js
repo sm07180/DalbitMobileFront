@@ -34,37 +34,54 @@ export default props => {
   //api
 
   //팬등록
-  async function broad_fan_insert(isFan) {
+  async function broad_fan_change(isFan) {
     console.log('팬등록 = ' + store.roomInfo)
     const methodType = isFan === false ? 'POST' : 'DELETE'
     let res
     // 팬이 아니여서 팬등록 가능 상태
     if (isFan) {
+      // res = await Api.fan_change({
+      //   data: {
+      //     memNo: context.broadcastTotalInfo.bjMemNo
+      //   },
+      //   method: methodType
+      // })
       res = await Api.broad_fan_insert({
         data: {
           memNo: objProfileInfo.memNo,
+          //memNo: context.broadcastTotalInfo.bjMemNo,
           roomNo: context.broadcastTotalInfo.roomNo
         },
         method: methodType
       })
     } else {
+      // res = await Api.fan_change({
+      //   data: {
+      //     memNo: context.broadcastTotalInfo.bjMemNo
+      //   },
+      //   method: methodType
+      // })
       res = await Api.broad_fan_delete({
         data: {
           memNo: objProfileInfo.memNo
+          //memNo: context.broadcastTotalInfo.bjMemNo
         },
         method: methodType
       })
     }
-
-    if (res.result === 'fail' || res.result === 'success') {
-      context.action.alert({
-        callback: () => {
-          //console.log('callback처리')
-        },
-        title: '달빛라디오',
-        msg: res.message
-      })
+    if (res.result === 'success') {
+      if (methodType === 'POST') {
+        store.updateBroadcastProfileInfo({isFan: true})
+      } else {
+        store.updateBroadcastProfileInfo({isFan: true})
+      }
     }
+    context.action.alert({
+      callback: () => {
+        //console.log('callback처리')
+      },
+      msg: res.message
+    })
   }
 
   //매니저 지정 , 해제 Api
@@ -127,7 +144,6 @@ export default props => {
   }, [store.broadcastProfileInfo])
 
   const managerStatusChange = () => {
-    //if (context.broadcastTotalInfo.auth == 1 && context.broadcastTotalInfo.auth == 1) return
     if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
     if (context.broadcastTotalInfo.auth === 1 && objProfileInfo.auth <= 1) return //같은 매니저 이거나 선택자가 청취자 일때
     return (
@@ -215,8 +231,8 @@ export default props => {
         <div className="gazeWrap">
           <span>{objProfileInfo.expBegin}</span>
           <div className="gazeBar">
-            <GazeBar gaze={percent} expNext={objProfileInfo}>
-              <p>{objProfileInfo.exp}</p>
+            <GazeBar gaze={objProfileInfo.expRate} expNext={objProfileInfo}>
+              <p>{`${objProfileInfo.expRate}%`}</p>
             </GazeBar>
           </div>
           <span>{objProfileInfo.expNext}</span>
@@ -450,7 +466,7 @@ const PIMG = styled.div`
 
 const GazeBar = styled.div`
   position: absolute;
-  width: calc(${props => props.gaze} * 100%);
+  width: calc(${props => props.gaze}%);
   background-color: #8556f6;
   border-radius: 10px;
   & p {
