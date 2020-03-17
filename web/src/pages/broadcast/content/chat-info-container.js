@@ -57,7 +57,7 @@ export default props => {
 
   const creatFanRank = () => {
     const roomInfo = context.broadcastTotalInfo.fanRank ? context.broadcastTotalInfo.fanRank : room.fanRank
-    if (room.fanRank === undefined || room.fanRank.length < 1) return <></>
+    if (roomInfo.length < 1) return <></>
     return room.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>

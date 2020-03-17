@@ -127,7 +127,10 @@ export default props => {
       }
     })
     if (uploaded && uploaded.result !== 'success') {
-      alert('Photo upload failed!')
+      context.action.alert({
+        msg: 'Photo upload failed!',
+        title: '이미지 업로드 오류'
+      })
     } else {
       setPhotoPath(uploaded.data.path)
     }

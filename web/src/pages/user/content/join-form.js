@@ -217,33 +217,39 @@ export default props => {
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    let rgEx = /(01[016789])[-](\d{4}|\d{3})[-]\d{4}$/g
     const loginIdVal = Utility.phoneAddHypen(idEntered)
     setChanges({
       ...changes,
       loginID: loginIdVal
     })
-    if (loginIdVal.length >= 13) {
-      // setValidate({
-      //   ...validate,
-      //   loginID: true
-      // })
-      setCurrentAuthBtn({
-        request: false,
-        check: true
-      })
-    } else if (loginIdVal.length < 13) {
-      setValidate({
-        ...validate,
-        loginID: false
-      })
-      setCurrentAuthBtn({
-        request: true,
-        check: true
-      })
-      setCurrentAuth1('')
-      document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
-      clearInterval(intervalId)
-      document.getElementsByClassName('timer')[0].innerHTML = ''
+    if (!(loginIdVal == undefined)) {
+      if (loginIdVal.length >= 12) {
+        // setValidate({
+        //   ...validate,
+        //   loginID: true
+        // })
+        if (!rgEx.test(loginIdVal)) {
+          setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
+        }
+        setCurrentAuthBtn({
+          request: false,
+          check: true
+        })
+      } else if (loginIdVal.length < 12) {
+        setValidate({
+          ...validate,
+          loginID: false
+        })
+        setCurrentAuthBtn({
+          request: true,
+          check: true
+        })
+        setCurrentAuth1('')
+        document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
+        clearInterval(intervalId)
+        document.getElementsByClassName('timer')[0].innerHTML = ''
+      }
     }
   }
 
@@ -319,6 +325,7 @@ export default props => {
         term4: 'y',
         term5: 'y'
       })
+      setValidate({...validate, term: true})
     } else {
       setChanges({
         ...changes,
@@ -328,6 +335,7 @@ export default props => {
         term4: 'n',
         term5: 'n'
       })
+      setValidate({...validate, term: false})
     }
   }
 
@@ -488,27 +496,27 @@ export default props => {
         auth: false
       })
       setChanges({...changes, CMID: resAuth.data.CMID})
-      // setCurrentAuthBtn({
-      //   request: true,
-      //   check: true
-      // })
-
       setCurrentAuth1(resAuth.message)
       setCurrentAuth2('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
-      //setInterval({createAuthTimer()},1000)
-      //thisTimer =
       clearInterval(intervalId)
       setTime = 300
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
 
       intervalId = setInterval(() => {
         let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
-        //document.getElementsByClassName('timer')[0].innerHTML = timer
         setTimeText(timer)
         setTime--
         if (setTime < 0) {
           clearInterval(intervalId)
           setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+          setCurrentAuthBtn({
+            request: false,
+            check: true
+          })
         }
       }, 1000)
 
@@ -573,12 +581,19 @@ export default props => {
   }
 
   useEffect(() => {
+    console.log(JSON.stringify(validate, null, 1))
+  }, [validate])
+
+  useEffect(() => {
     console.log(JSON.stringify(changes, null, 1))
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
+      setValidate({...validate, term: true})
     } else {
       setAllTerm(false)
+      setValidate({...validate, term: false})
     }
+
     if (!(changes.memType == 'p')) {
       //validateNickNm(changes.loginNickNm)
       validateSetting = {
