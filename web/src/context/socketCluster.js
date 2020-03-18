@@ -58,22 +58,24 @@ export const socketClusterDestory = (destorySocket, destoryChannel) => {
   }
 }
 
+const broadSocketUrl = __BROADCAST_SOCKET_URL
+
 export const scConnection = obj => {
   const setServiceConfig = () => {
     socketConfig.socketServerPort = 8000
-    socketConfig.socketServerHost = 'devsv1.dalbitcast.com'
+    socketConfig.socketServerHost = broadSocketUrl
     //socketConfig.socketServerHost = 'sv.dalbitcast.com'   //실제 서비스 도메인
     socketConfig.socketServerSecure = true
-    socketConfig.restServer = 'https://devsv1.dalbitcast.com:8000'
+    socketConfig.restServer = 'https://' + broadSocketUrl + ':8000'
     //socketConfig.restServer = 'https://sv.dalbitcast.com:8000'
   }
   //socket 설정
   socketConfig = {
-    socketServerPort: 8001,
+    socketServerPort: 8000,
     socketServerHost: '121.134.5.158',
     socketServerSecure: false, //true=https
 
-    restServer: 'http://121.134.5.158:8001', //RESTful Server
+    restServer: 'http://121.134.5.158:8000', //RESTful Server
 
     locale: {
       ko_KR: 'koKR',
