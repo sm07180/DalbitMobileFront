@@ -39,8 +39,8 @@ export default props => {
   // if (context.broadcastTotalInfo.userCount != store.listenerList.length) {
   //   fetchListenList()
   // }
-  console.log(context.broadcastTotalInfo.userCount)
-  console.log(store.listenerList.length)
+  // console.log(context.broadcastTotalInfo.userCount)
+  // console.log(store.listenerList.length)
   useEffect(() => {
     fetchListenList()
     // if (context.broadcastTotalInfo.userCount !== store.listenerList.length) {
@@ -128,7 +128,6 @@ export default props => {
   //리스너 인포맵
   const drawListenList = () => {
     if (store.listenerList === null) return
-    console.log(store.listenerList)
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, memId, profImg, auth} = live
