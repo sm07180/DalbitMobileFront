@@ -7,9 +7,29 @@ const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 
+const ENV_URL = {
+  dev: {
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://devapi2.dalbitcast.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitcast.com')
+  },
+  stage: {
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5000/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://devapi.dalbitcast.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitcast.com')
+  },
+  real: {
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5000/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://api.dalbitcast.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitcast.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitcast.com')
+  }
+}
+
 module.exports = (_, options) => {
   const {env, mode} = options
-
   const config = {
     entry: {
       app: './src/index.js',
@@ -52,7 +72,6 @@ module.exports = (_, options) => {
         },
         {
           test: /\.scss$/,
-          //use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],  // css 파일 단독 파일로 추출하고 싶을때 사용
           use: ['style-loader', 'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
@@ -62,7 +81,6 @@ module.exports = (_, options) => {
           test: /\.(jpe?g|png|gif|svg|ico)$/,
           loader: 'url-loader',
           options: {
-            //name: '[name].[ext]?[hash]',
             publicPath: './dist',
             name: 'images/[name].[ext]',
             limit: 10000, // 10kb
@@ -94,7 +112,14 @@ module.exports = (_, options) => {
         filename: 'login.html',
         chunks: ['login']
       }),
-      new CopyWebpackPlugin([{from: './public/static'}])
+      new CopyWebpackPlugin([{from: './public/static'}]),
+
+      new webpack.DefinePlugin({
+        __WEBRTC_SOCKET_URL: ENV_URL[env]['WEBRTC_SOCKET_URL'],
+        __API_SERVER_URL: ENV_URL[env]['API_SERVER_URL'],
+        __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
+        __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL']
+      })
     ]
   }
   if (mode === 'development') {
@@ -117,21 +142,10 @@ module.exports = (_, options) => {
     config.output.publicPath = '/'
 
     config.plugins.push(new webpack.HotModuleReplacementPlugin())
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
-      })
-    )
   } else {
     config.plugins.push(
       new CleanWebpackPlugin({
         cleanAfterEveryBuildPatterns: ['./dist']
-      })
-    )
-
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket')
       })
     )
 
