@@ -106,9 +106,10 @@ export default props => {
 
   //joinRoom
   async function joinRoom(obj) {
+    console.log('## 123')
     const {roomNo} = obj
-    if (context.roomInfo !== null) {
-      if (context.roomInfo.roomNo === roomNo) props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
+    if (context.roomInfo !== null && context.roomInfo.roomNo === roomNo) {
+      props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
       return
     }
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
