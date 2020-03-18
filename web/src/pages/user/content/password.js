@@ -371,13 +371,14 @@ const Content = styled.div`
   margin: 30px auto 100px auto;
 
   @media (max-width: ${WIDTH_TABLET}) {
-    width: 90%;
+    width: 100%;
   }
 `
 //---------------------------------------------------------------------
 //styled
 const Title = styled.h2`
-  padding: 20px 0;
+  margin-top: -20px;
+  padding: 0 0 0 20px 0;
   color: ${COLOR_MAIN};
   font-size: 28px;
   text-align: center;
@@ -447,9 +448,10 @@ const InputWrap = styled.div`
   input + span {
     position: absolute;
     top: 19px;
-    right: 12px;
+    right: 10px;
     color: #bdbdbd;
     font-size: 12px;
+    letter-spacing: -0.5px;
     transform: skew(-0.03deg);
 
     &.off {

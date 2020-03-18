@@ -64,6 +64,13 @@ export default props => {
   //좋아요~!
   const activeLike = () => {
     console.log('store.like')
+    context.action.alert({
+      //콜백처리
+      callback: () => {
+        return
+      },
+      msg: '좋아요는 방송청취 1분 후에 가능합니다.'
+    })
 
     if (store.like == 1) {
       broad_likes(store.roomInfo.roomNo)
@@ -86,19 +93,7 @@ export default props => {
     //Error발생시
     if (res.result === 'fail') {
       store.action.updateLike(3)
-      context.action.alert({
-        // 좋아요 중복 사용 알림 팝업
-        callback: () => {
-          console.log('callback처리')
-        },
-        title: '달빛라디오',
-        msg: res.message
-      })
-      //console.log(res.message)
-      return
     } else {
-      console.log('## liket res = ' + res)
-
       context.action.updateBroadcastTotalInfo(res.data)
       store.action.updateLike(2)
       setToggle({
@@ -106,6 +101,11 @@ export default props => {
         like: true
       })
     }
+    context.action.alert({
+      // 좋아요 중복 사용 알림 팝업
+      callback: () => {},
+      msg: res.message
+    })
   }
   //팬등록
   async function broad_fan_insert() {

@@ -4,7 +4,7 @@
  * @todo 반응형으로 처리되어야함
  * @update contextAPI 연동
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import styled from 'styled-components'
 //hooks
 import useChange from 'components/hooks/useChange'
@@ -32,6 +32,14 @@ export default props => {
   //context
   const context = useContext(Context)
   //useState
+  const saveLogin = useMemo(() => {
+    let cookie = Utility.getCookie('saveLogin')
+    if (cookie !== undefined && cookie !== '') return true
+
+    return false
+  })
+
+  //const [saveLogin, setSaveLogin] = useState(false)
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: '', pwd: ''})
@@ -122,7 +130,7 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-        props.update({loginSuccess: res.data})
+        props.update({loginSuccess: res.data, changes: changes})
         // 20200220 - 김호겸 이부분에서 roomNo 값 ,즉 비회원이고 방에 들어갔다가 login 할 경우 방번호를 넣어주어야 한다.추후 처리 예정
         let pathUrl = ''
         let UserRoomNo = ''
@@ -276,6 +284,16 @@ export default props => {
       fetchData({...changes}, 'p')
     }
   }
+  //자동로그인
+  useEffect(() => {
+    let cookie = Utility.getCookie('saveLogin')
+    if (cookie !== undefined && cookie !== '') {
+      cookie = JSON.parse(decodeURIComponent(cookie))
+      setChanges({...changes, ...cookie})
+
+      console.log(cookie)
+    }
+  }, [])
   useEffect(() => {
     // var naverLogin = new naver.LoginWithNaverId({
     //   clientId: 'WK0ohRsfYc9aBhZkyApJ',
@@ -369,8 +387,9 @@ export default props => {
         <input
           type="checkbox"
           id="keeplogin"
+          defaultChecked={saveLogin}
           onClick={() => {
-            props.update({saveLogin: event.target.checked})
+            props.update({saveLogin: event.target.checked, changes: changes})
           }}
         />
         <label htmlFor="keeplogin">로그인 유지</label>
