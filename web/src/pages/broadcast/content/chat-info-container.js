@@ -49,7 +49,7 @@ export default props => {
   })
   //부스트 상태값. 기본값은 방장인지 아닌지만 판단함
   const [boost, setBoost] = useState(props.auth == 3 ? 'boost-off' : '')
-
+  const [likeTimer, setLikeTimer] = useState() //  좋아요 타이머체크
   //const
 
   //---------------------------------------------------------------------
@@ -135,13 +135,25 @@ export default props => {
       ...room,
       ...props
     })
+    likeCheckTimer()
   }, [])
 
-  // useEffect(() => {
-  //   console.clear()
-  //   // console.log('방정보가 수정 되어 여기에 한번 들어와야 된다. ')
-  //   // console.log('context.broadcastTotalInfo.title = ' + context.broadcastTotalInfo.title)
-  // }, [context.broadcastTotalInfo.historyCount, context.broadcastTotalInfo.userCount])
+  // 방 입장후 좋아요 타이머 체크 함수
+  const likeCheckTimer = () => {
+    if (props.auth === 3) return
+    const stop = clearInterval(likeTimer)
+    setLikeTimer(stop)
+    let myTime = 0
+    const interval = setInterval(() => {
+      myTime++
+      if (myTime === 60) {
+        console.log('좋아요 기능 활성화 ')
+        clearInterval(interval) // 부스트 시간이 끝나면 stop
+        store.action.updateLike(1)
+      }
+    }, 1000)
+    setLikeTimer(interval)
+  }
 
   //좋아요~부스트단계 바뀔시마다 셋팅해줘야할것들.. top랭크 영역표시 클래스 조절하기
   useEffect(() => {

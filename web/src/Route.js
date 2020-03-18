@@ -33,6 +33,7 @@ const Mypage = React.lazy(() => import('pages/mypage'))
 const Private = React.lazy(() => import('pages/mypage/private.js'))
 const MypageSetting = React.lazy(() => import('pages/mypage/setting.js'))
 const Search = React.lazy(() => import('pages/search'))
+const TestPage = React.lazy(() => import('pages/testpage'))
 //
 const error = React.lazy(() => import('pages/common/error'))
 const NotFoundPage = React.lazy(() => import('pages/common/error'))
@@ -62,7 +63,7 @@ export default () => {
 
         <Route exact path="/search" component={Search} />
         <Route exact path="/errors" component={error} />
-        {/* <Route exact path="/livePub" component={LivePub} /> */}
+        <Route exact path="/testpage" component={TestPage} />
         {/* navigator */}
         <Route exact path="/navigator" component={Navigator} />
         {/* 페이지가없을경우 404로 이동 */}

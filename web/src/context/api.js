@@ -877,10 +877,6 @@ export const ajax = async obj => {
       formData.append('uploadType', data.uploadType)
     }
     const dataType = url === '/upload' ? formData : qs.stringify(data)
-    /*
-      authToken: Global().authToken || '',
-        'custom-header': Global().customHeader || '',
-  */
     let res = await axios({
       method: method,
       headers: {
