@@ -31,7 +31,6 @@ export default props => {
 
     return
   }
-  console.log(props)
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자

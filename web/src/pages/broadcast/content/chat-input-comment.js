@@ -64,6 +64,13 @@ export default props => {
   //좋아요~!
   const activeLike = () => {
     console.log('store.like')
+    context.action.alert({
+      //콜백처리
+      callback: () => {
+        return
+      },
+      msg: '좋아요는 방송청취 1분 후에 가능합니다.'
+    })
 
     if (store.like == 1) {
       broad_likes(store.roomInfo.roomNo)
