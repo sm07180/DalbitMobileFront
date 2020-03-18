@@ -44,6 +44,7 @@ export default props => {
   const [imgData, setImgData] = useState()
   const [thisTimer, setThisTimer] = useState()
   const [timeText, setTimeText] = useState()
+  const [pickerState, setPickerState] = useState(false)
   let setTime = 300
 
   //포토서버에 올라간 디폴트 이미지
@@ -554,7 +555,7 @@ export default props => {
 
   useEffect(() => {
     //이미지 값 비었을 경우 기본 프로필 이미지 셋팅
-    //state 시점차이때문에 birth와 image를 처음 동시에 셋팅해주어야함, 그렇지 않으면 하나는 계속 빈값으로 엎어쳐진다.
+    //state 시점차이때문에 birth와 image를 처음 동시에 셋팅해주어야함, 그렇지 않으면 하나는 계속 빈값으로 엎어쳐진다ㅠㅠ
     let firstSetting = {}
     if (!changes.image && !changes.birth) {
       firstSetting = {birth: dateDefault, image: defaultImage}
@@ -574,6 +575,7 @@ export default props => {
   }, [])
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
   const pickerOnChange = value => {
+    console.log('엥;;', changes.birth)
     if (!changes.birth) {
       dateDefault = value
     } else {
@@ -643,7 +645,10 @@ export default props => {
 
   //생년월일 바뀔때마다 유효성
   useEffect(() => {
+    console.log('changes.birthchanges.birth', changes.birth)
+
     let year = changes.birth.slice(0, 4)
+
     //현재 날짜 일때는 -17 한 년도로 년도만 바꿔치기 해주고 -> datepicker 에서 셋팅해줌
     // 체인지 됐을때는 17세 이상만 가입가능하다고 하기
     if (year <= dateYear) {
@@ -653,12 +658,23 @@ export default props => {
         birth: true
       })
       validateSetting = {...validateSetting, birth: true}
+      //setPickerState(true)
     } else {
-      setCurrentBirth('17세 이상만 가입 가능합니다.')
-      setValidate({
-        ...validate,
-        birth: false
-      })
+      if (changes.birth == date) {
+        setCurrentBirth('')
+        setValidate({
+          ...validate,
+          birth: false
+        })
+        setPickerState(false)
+      } else {
+        setCurrentBirth('17세 이상만 가입 가능합니다.')
+        setValidate({
+          ...validate,
+          birth: false
+        })
+        setPickerState(true)
+      }
     }
   }, [changes.birth])
 
@@ -754,14 +770,14 @@ export default props => {
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
           <InputWrap>
-            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" maxLength="20"/>
+            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" maxLength="20" />
             <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
                 {currentPwd}
               </HelpText>
             )}
-            <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20"/>
+            <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20" />
             {currentPwdCheck && (
               <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
                 {currentPwdCheck}
@@ -770,7 +786,8 @@ export default props => {
           </InputWrap>
         )}
         {/* 생년월일 */}
-        <Datepicker text="생년월일" name="birth" value={changes.birth} change={pickerOnChange} />
+        <Datepicker text="생년월일" name="birth" value={changes.birth} change={pickerOnChange} placeholder="생년월일" pickerState={pickerState} />
+        {/* <span className={[`holder ${pickerState ? 'off' : 'on'}`]}>생년월일</span> */}
         {currentBirth && (
           <HelpText state={validate.birth} className={validate.birth ? 'pass' : 'help'}>
             {currentBirth}
@@ -1112,6 +1129,26 @@ const JoinText = styled.p`
 
 const FormWrap = styled.div`
   margin: 40px 0;
+  /* span.holder {
+    display: block;
+    position: relative;
+    width: 116px;
+    margin-top: -49px;
+    margin-left: 1px;
+    padding-right: 40px;
+    line-height: 48px;
+    z-index: 1;
+    padding-left: 16px;
+    color: #616161;
+    transform: skew(-0.03deg);
+    background: #fff;
+    &.off {
+      display: none;
+    }
+  }
+  &.holder-off span.holder {
+    display: none;
+  } */
 `
 
 const Label = styled.div``
