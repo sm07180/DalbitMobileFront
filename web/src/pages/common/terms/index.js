@@ -64,7 +64,7 @@ export default props => {
 //styled
 const Terms = styled.div`
   & > div > div > div {
-    padding: 10px 25px;
+    padding: 10px 25px 35px 25px;
 
     * {
       text-align: justify;
@@ -101,5 +101,11 @@ const Terms = styled.div`
   li {
     font-size: 14px;
     line-height: 22px;
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    & > div > div > div {
+      padding: 5px 20px 30px 20px;
+    }
   }
 `
