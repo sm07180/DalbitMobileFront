@@ -732,7 +732,7 @@ export default props => {
               uploadSingleFile(e)
             }}
           />
-          <p className="img-text">방송 진행을 위해 프로필 등록이 필요합니다.</p>
+          <p className="img-text">프로필 사진을 등록해주세요!</p>
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
