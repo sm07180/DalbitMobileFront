@@ -95,6 +95,9 @@ export const BroadValidation = () => {
                   right: '방송하기'
                 }
               })
+            } else {
+              if (isApp) Hybrid('RoomMake', '')
+              if (!isApp) Navi.history().push('/broadcast-setting')
             }
           } else {
             alert('유효성체크를 할수 없습니다. Api.broad_check')
@@ -116,11 +119,7 @@ export const BroadValidation = () => {
             right: '프로필 이미지등록'
           }
         })
-        return
-        //화면이동
       }
-      if (isApp) Hybrid('RoomMake', '')
-      if (!isApp) Navi.history().push('/broadcast-setting')
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
