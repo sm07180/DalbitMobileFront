@@ -15,7 +15,8 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //layout
 import Layout from 'pages/common/layout'
 
-const User = props => {
+let inervalId = null
+export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -44,14 +45,18 @@ const User = props => {
     check: true
   }) // 인증확인 버튼
   const [thisTimer, setThisTimer] = useState()
-  let setTime = 300
+  let setTime = 10
 
   const createAuthTimer = () => {
     let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
     document.getElementsByClassName('timer')[0].innerHTML = timer
     setTime--
     if (setTime < 0) {
-      clearInterval(thisTimer)
+      clearInterval(inervalId)
+      setCurrentAuthBtn({
+        request: false,
+        check: true
+      })
       setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
     }
   }
@@ -266,10 +271,14 @@ const User = props => {
       setCurrentAuth1(resAuth.message)
       setCurrentAuth2('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
       //setInterval({createAuthTimer()},1000)
       //thisTimer =
-      setThisTimer(setInterval(createAuthTimer, 1000))
-      setTime = 300
+      inervalId = setInterval(createAuthTimer, 1000)
+      setTime = 10
     } else {
       console.log(resAuth)
       setCurrentAuth1(resAuth.message)
@@ -336,7 +345,7 @@ const User = props => {
         )}
         <InputWrap>
           <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="신규 비밀번호" />
-          <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자</span>
+          <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
           {currentPwd && (
             <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
               {currentPwd}
@@ -356,7 +365,6 @@ const User = props => {
     </Content>
   )
 }
-export default User
 
 const Content = styled.div`
   width: 400px;
