@@ -198,7 +198,7 @@ export default props => {
       })
       setCurrentAuth1('')
       document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
-      clearInterval(thisTimer)
+      clearInterval(inervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
     }
   }
@@ -297,7 +297,7 @@ export default props => {
       console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
-      clearInterval(thisTimer)
+      clearInterval(inervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
     } else {
       console.log(resCheck)
