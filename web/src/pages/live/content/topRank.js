@@ -9,20 +9,13 @@ export default props => {
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
   const context = useContext(Context)
-  const [roomType, setRoomType] = useState([])
-  const [type, setType] = useState('')
+  // const [roomType, setRoomType] = useState([])
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
     setSelected(index)
     setHover(flag)
   }
-
-  useEffect(() => {
-    if (context.common !== undefined) {
-      setRoomType(context.common.roomType)
-    }
-  }, [])
 
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
