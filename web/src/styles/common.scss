@@ -415,3 +415,45 @@ table {
   width: 100%;
   table-layout: fixed;
 }
+
+/*datepicker*/
+.MuiPickersToolbar-toolbar {
+  background: $COLOR_MAIN;
+}
+.MuiPickersToolbarText-toolbarBtnSelected,
+.MuiPickersToolbarText-toolbarTxt {
+  font-size: 16px;
+}
+.MuiPickersDay-daySelected,
+.MuiPickersDay-daySelected:hover {
+  background: $COLOR_MAIN;
+}
+
+.MuiTypography-colorPrimary,
+.MuiButton-textPrimary {
+  color: $COLOR_MAIN !important;
+}
+
+.MuiTypography-root.MuiPickersToolbarText-toolbarTxt.MuiTypography-subtitle1 {
+  font-size: 24px;
+  margin-top: -5px;
+  color: #fff !important;
+}
+.MuiTypography-root.MuiPickersToolbarText-toolbarTxt.MuiTypography-subtitle1::after {
+  position: absolute;
+  right: -17px;
+  top: 9px;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid #fff;
+  border-top: 1px solid #fff;
+  content: '';
+  transform: rotate(45deg);
+}
+
+.MuiPickersDay-current {
+  color: $COLOR_MAIN;
+}
+.MuiPickersDay-daySelected {
+  color: #fff;
+}

@@ -12,6 +12,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 
 let intervalId = null
+let pickerHolder = false
 
 export default props => {
   //context
@@ -652,13 +653,16 @@ export default props => {
     //현재 날짜 일때는 -17 한 년도로 년도만 바꿔치기 해주고 -> datepicker 에서 셋팅해줌
     // 체인지 됐을때는 17세 이상만 가입가능하다고 하기
     if (year <= dateYear) {
-      setCurrentBirth('')
-      setValidate({
-        ...validate,
-        birth: true
-      })
-      validateSetting = {...validateSetting, birth: true}
-      //setPickerState(true)
+      console.log('pickerHolder', pickerHolder)
+      if (pickerHolder) {
+        setCurrentBirth('')
+        setValidate({
+          ...validate,
+          birth: true
+        })
+        validateSetting = {...validateSetting, birth: true}
+        setPickerState(true)
+      }
     } else {
       if (changes.birth == date) {
         setCurrentBirth('')
@@ -667,6 +671,7 @@ export default props => {
           birth: false
         })
         setPickerState(false)
+        pickerHolder = true
       } else {
         setCurrentBirth('17세 이상만 가입 가능합니다.')
         setValidate({
@@ -674,6 +679,7 @@ export default props => {
           birth: false
         })
         setPickerState(true)
+        pickerHolder = true
       }
     }
   }, [changes.birth])
