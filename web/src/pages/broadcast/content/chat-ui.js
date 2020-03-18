@@ -129,7 +129,7 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
-      console.log(recvMsg)
+      // console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') context.action.updateBroadcastTotalInfo(data.detail.data.count)
       //랭킹,좋아요 수
