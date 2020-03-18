@@ -230,7 +230,7 @@ export default props => {
 const Content = styled.section`
   position: relative;
   width: 1210px;
-  height: 100%;
+  height: auto;
   margin: 2.5vh auto 0 auto;
   &:after {
     clear: both;
