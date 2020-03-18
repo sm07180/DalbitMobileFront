@@ -11,6 +11,14 @@ export default class Utility {
    * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *
    */
+  static locale = () => {
+    return (navigator.language || navigator.userLanguage).substr(0, 2)
+  }
+  /**
+   * @brief nl2br
+   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
+   *
+   */
   static nl2br = text => {
     //return <div dangerouslySetInnerHTML={{__html: body}} />
     return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
