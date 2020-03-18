@@ -217,14 +217,14 @@ export default props => {
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
-    let rgEx = /(01[016789])[-](\d{4}|\d{3})[-]\d{4}$/g
+    let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
     const loginIdVal = Utility.phoneAddHypen(idEntered)
     setChanges({
       ...changes,
       loginID: loginIdVal
     })
     if (!(loginIdVal == undefined)) {
-      if (loginIdVal.length >= 12) {
+      if (loginIdVal.length >= 13) {
         // setValidate({
         //   ...validate,
         //   loginID: true
@@ -754,14 +754,14 @@ export default props => {
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
           <InputWrap>
-            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" />
+            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" maxLength="20"/>
             <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
                 {currentPwd}
               </HelpText>
             )}
-            <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" />
+            <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20"/>
             {currentPwdCheck && (
               <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
                 {currentPwdCheck}
