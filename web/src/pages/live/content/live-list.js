@@ -42,7 +42,7 @@ export default props => {
             <MobileWrap>
               <div className="content">
                 <div className="title">
-                  {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}
+                  {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}
                   {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
                   {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
                   {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}

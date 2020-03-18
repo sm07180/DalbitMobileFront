@@ -38,13 +38,13 @@ export default props => {
     selectStoryList()
   }
 
-  //사연조회
+  //사연조회 scroll paging 해야함
   const selectStoryList = async () => {
     const res = await Api.broad_story({
       params: {
         roomNo: store.roomInfo.roomNo,
         page: 1,
-        records: 10
+        records: 100
       },
       method: 'GET'
     })

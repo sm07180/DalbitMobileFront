@@ -33,7 +33,7 @@ export default props => {
         </Image>
         <Info>
           <div className="title">
-            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div>
+            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}</div>
             {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
             {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
