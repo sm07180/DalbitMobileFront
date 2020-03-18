@@ -140,6 +140,7 @@ export default props => {
 
   // 방 입장후 좋아요 타이머 체크 함수
   const likeCheckTimer = () => {
+    if (props.auth === 3) return
     const stop = clearInterval(likeTimer)
     setLikeTimer(stop)
     let myTime = 0
