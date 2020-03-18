@@ -45,7 +45,7 @@ export default props => {
     check: true
   }) // 인증확인 버튼
   const [thisTimer, setThisTimer] = useState()
-  let setTime = 10
+  let setTime = 300
 
   const createAuthTimer = () => {
     let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
@@ -278,7 +278,7 @@ export default props => {
       //setInterval({createAuthTimer()},1000)
       //thisTimer =
       inervalId = setInterval(createAuthTimer, 1000)
-      setTime = 10
+      setTime = 300
     } else {
       console.log(resAuth)
       setCurrentAuth1(resAuth.message)
