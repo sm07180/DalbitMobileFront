@@ -18,8 +18,8 @@ import {osName} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
-import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
+import {Hybrid} from 'context/hybrid'
 //components
 import Utility from 'components/lib/utility'
 import Route from './Route'
@@ -27,10 +27,11 @@ import Interface from './Interface'
 // socketCluster 연결
 import SocketCluster from 'context/socketCluster'
 
-export default () => {
+const App = () => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  App.context = () => context
   //useState
   const [ready, setReady] = useState(false)
   //SERVER->REACT (커스텀헤더)
@@ -155,4 +156,13 @@ export default () => {
       {ready && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
+}
+export default App
+//---------------------------------------------------------------------
+/**
+ * @title 글로벌변수
+ * @example const context=useContext(Context) 와 동일
+ */
+export const Global = () => {
+  return App.context()
 }

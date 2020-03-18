@@ -104,7 +104,7 @@ export default props => {
         <Info>
           <p>부스트 사용시, 방송방 순위를</p>
           <p>빠르게 올릴수 있습니다.</p>
-          <Point active={testData[0].activeType === 'Y' ? 'active' : ''}>30분 동안 인기도(좋아요) +10상승</Point>
+          <Point active={store.boostList.boostCnt > 0 ? 'active' : ''}>30분 동안 인기도(좋아요) +10상승</Point>
         </Info>
         <UseBoost onClick={() => useBoost()}>
           부스터 사용(
