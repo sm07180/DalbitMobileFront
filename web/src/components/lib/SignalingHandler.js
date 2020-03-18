@@ -437,7 +437,7 @@ export default class SignalingHandler {
           }
           case 'error': {
             const {definition} = format
-            alert(JSON.stringify(definition))
+            // alert(JSON.stringify(definition))
             this.closePeerConnection()
             break
           }
