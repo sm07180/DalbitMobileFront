@@ -75,12 +75,9 @@ export default props => {
     if (res.result === 'success') {
       if (type === 1) {
         store.action.updateBroadcastProfileInfo({auth: 0})
-        //if (objProfileInfo.memNo === context.broadcastTotalInfo.bjMemNo) context.action.updateBroadcastTotalInfo({auth: 0})
       } else {
         store.action.updateBroadcastProfileInfo({auth: 1})
-        //if (objProfileInfo.memNo === context.broadcastTotalInfo.bjMemNo) context.action.updateBroadcastTotalInfo({auth: 1})
       }
-
       context.action.alert({
         //콜백처리
         msg: `${objProfileInfo.nickNm} 님이 매니저 ${type === 1 ? '해제' : '등록'} 되었습니다.`
