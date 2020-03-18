@@ -503,9 +503,10 @@ export default props => {
         auth: false
       })
       setChanges({...changes, CMID: resAuth.data.CMID})
-      setCurrentAuth1(resAuth.message)
+      setCurrentAuth1('인증번호 요청이 완료되었습니다.')
+      document.getElementsByName('loginID')[0].disabled = true
       setCurrentAuth2('')
-      document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
+      //document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       clearInterval(intervalId)
       setTime = 300
       setCurrentAuthBtn({
@@ -519,9 +520,10 @@ export default props => {
         setTime--
         if (setTime < 0) {
           clearInterval(intervalId)
-          setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+          setCurrentAuth2('인증시간이 초과되었습니다.')
+          document.getElementsByName('auth')[0].disabled = true
           setCurrentAuthBtn({
-            request: false,
+            request: true,
             check: true
           })
         }
@@ -535,7 +537,6 @@ export default props => {
   }
 
   async function fetchAuthCheck() {
-    console.log('체크합니다..', changes.CMID, Number(changes.auth))
     const resCheck = await Api.sms_check({
       data: {
         CMID: changes.CMID,
@@ -548,9 +549,10 @@ export default props => {
       setCurrentAuth2(resCheck.message)
       clearInterval(intervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
+      document.getElementsByName('auth')[0].disabled = true
     } else {
       console.log(resCheck)
-      setCurrentAuth2(resCheck.message)
+      setCurrentAuth2('인증번호(가) 일치하지 않습니다.')
     }
   }
 
