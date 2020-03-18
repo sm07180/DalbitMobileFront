@@ -41,6 +41,8 @@ const BroadCastProvider = props => {
 
   const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
   const [rolecheck, setRoleCheck] = useState('')
+  const [liveSortList, setLiveSortList] = useState(null) // 방송방 라이브 정렬 리스트
+
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
@@ -187,6 +189,9 @@ const BroadCastProvider = props => {
     },
     updateRoleCheck: str => {
       setRoleCheck(str)
+    },
+    updateLiveSortList: obj => {
+      setLiveSortList(liveSortList => ({...liveSortList, ...obj}))
     }
   }
   //---------------------------------------------------------------------
@@ -217,7 +222,8 @@ const BroadCastProvider = props => {
     SelectChange,
     noticeMsg,
     broadTimer,
-    rolecheck
+    rolecheck,
+    liveSortList
   }
 
   return <Provider value={value}>{props.children}</Provider>

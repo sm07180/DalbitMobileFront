@@ -1,20 +1,25 @@
 /**
  * @title 라이브탭 인기순 셀렉트박스 컴포넌트
  */
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
+import {BroadCastStore} from 'pages/broadcast/store'
+import Api from 'context/api'
+
 export default props => {
   //0.인기순..배열 호출 state-------------------------------------------
   //1.셀렉트박스 visibility 체크----------------------------------------
   //2.셀렉트박스 text 변경 초기 state-----------------------------------
   const [PopularInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChange, setSelectChange] = useState(PopularInfo.option1)
+  const [SelectChange, setSelectChange] = useState('전체')
+  const [list, setList] = useState([])
+  const store = useContext(BroadCastStore)
   //------------------------------------------------------------------
   //function
   //셀렉트 버튼 토글 function
-  const ToggleSelect = () => {
+  const ToggleSelect = idx => {
     if (SelectCheck === false) {
       setSelectCheck(true)
     } else {
@@ -25,6 +30,30 @@ export default props => {
   const AllFalse = () => {
     setSelectCheck(false)
   }
+  const popularSelect = PopularInfo.map((item, index) => {
+    return (
+      <p
+        key={index}
+        onClick={() => {
+          setSelectChange(item.option)
+          setSelectCheck(false)
+          getBroadList({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
+        }}>
+        {item.option}
+      </p>
+    )
+  })
+
+  async function getBroadList(obj) {
+    const res = await Api.broad_list({...obj})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    } else {
+      store.action.updateLiveSortList(res.data)
+    }
+  }
   //------------------------------------------------------------------
   return (
     <>
@@ -32,22 +61,7 @@ export default props => {
         <h2>{SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
-        <div className="optionWrap">
-          <p
-            onClick={() => {
-              setSelectChange(PopularInfo.option1)
-              setSelectCheck(false)
-            }}>
-            {PopularInfo.option1}
-          </p>
-          <p
-            onClick={() => {
-              setSelectChange(PopularInfo.option2)
-              setSelectCheck(false)
-            }}>
-            {PopularInfo.option2}
-          </p>
-        </div>
+        <div className="optionWrap">{popularSelect}</div>
       </Option>
       <BackGround onClick={AllFalse} className={SelectCheck ? 'on' : ''} />
     </>

@@ -36,8 +36,8 @@ export default props => {
       console.log(res.message)
       return
     }
-    console.log(res.data)
     setFetch(res.data)
+    store.action.updateLiveSortList(res.data)
   }
 
   //라이브 마우스 스크롤
@@ -52,9 +52,10 @@ export default props => {
 
   //라이브 맵------------------------------------------------------------------------------------------------------
   const makeContents = () => {
-    if (fetch === null) return
-    return fetch.list.map((live, index) => {
-      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo} = live
+    let sortlist = store.liveSortList
+    if (sortlist === null) return
+    return sortlist.list.map((live, index) => {
+      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo, gstProfImg} = live
       let mode = '해당사항없음'
       //console.log(roomNo)
 
@@ -71,12 +72,12 @@ export default props => {
         return (
           <LiveList key={index}>
             <h3>[{mode}]</h3>
-            <ImgWrap bg={bgImg.url}>
+            <ImgWrap bg={bjProfImg.url}>
               <Sticker>
                 {reco && <Reco>{reco}</Reco>}
                 {newby && <New>{newby}</New>}
               </Sticker>
-              {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
+              {gstProfImg && <Thumb thumb={gstProfImg.thumb62x62} />}
             </ImgWrap>
             <InfoWrap>
               <Category>{broadcastLive[roomType]}</Category>
@@ -104,12 +105,12 @@ export default props => {
         return (
           <LiveList key={index}>
             <h3>[{mode}]</h3>
-            <ImgWrap bg={bgImg.url}>
+            <ImgWrap bg={bjProfImg.url}>
               <Sticker>
                 {reco && <Reco>{reco}</Reco>}
                 {newby && <New>{newby}</New>}
               </Sticker>
-              {bjProfImg && <Thumb thumb={bjProfImg.thumb62x62} />}
+              {gstProfImg && <Thumb thumb={gstProfImg.thumb62x62} />}
             </ImgWrap>
             <InfoWrap>
               <Category>{broadcastLive[roomType]}</Category>
@@ -138,8 +139,12 @@ export default props => {
   //------------------------------------------------------------------
   useEffect(() => {
     //방송방 리스트
-    getBroadList({params: {roomType: '', page: 1, records: 100}})
+    getBroadList({params: {roomType: '', page: 1, records: 100, searchType: 0}})
   }, [])
+  useEffect(() => {
+    //방송방 리스트
+    makeContents()
+  }, [store.liveSortList])
   //------------------------------------------------------------------
   return (
     <Wrapper>
@@ -326,10 +331,7 @@ const TotalpeopleIcon = styled.em`
 `
 //data---------------------------------------------------------------
 //셀렉트 가데이터(포푸러)
-const PopularInfo = {
-  option1: '인기순',
-  option2: '추천순'
-}
+const PopularInfo = [{option: '전체'}, {option: '추천'}, {option: '인기'}, {option: '신입'}]
 
 //셀렉트 가데이터(카테고리)
 

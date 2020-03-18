@@ -101,10 +101,12 @@ export default class API {
    * @brief 방송방 리스트 (익명 로그인일때 프로시저 memLogin:0 추가)
    * @method "GET"
    * @todo
-   * @param int roomType                //*방주제
-   * @param int page                    //*페이지번호
-   * @param int records                 //*페이지당 리스트 개수
+   * @param int roomType                //방주제
+   * @param int page                    //페이지번호
+   * @param int records                 //페이지당 리스트 개수
+   * @param string searchType           //-1,0 or null:전체,1:추천,2:인기,3:신입
    * @create 김호겸 2020.01.31
+   * @update 김호겸 2020.03.18
    */
   static broad_list = async obj => {
     const {url, method, data} = obj || {}

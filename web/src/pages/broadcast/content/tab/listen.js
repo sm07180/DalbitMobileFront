@@ -92,7 +92,6 @@ export default props => {
   //리스너 인포맵
   const drawListenList = () => {
     if (store.listenerList === null) return
-    console.log(store.listenerList)
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, memId, profImg, auth} = live
