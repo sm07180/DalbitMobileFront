@@ -173,33 +173,44 @@ export default props => {
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    let rgEx = /(01[016789])[-](\d{4}|\d{3})[-]\d{4}$/g
     const loginIdVal = Utility.phoneAddHypen(idEntered)
     setChanges({
       ...changes,
       loginID: loginIdVal
     })
-    if (loginIdVal.length >= 13) {
-      // setValidate({
-      //   ...validate,
-      //   loginID: true
-      // })
-      setCurrentAuthBtn({
-        request: false,
-        check: true
-      })
-    } else if (loginIdVal.length < 13) {
-      setValidate({
-        ...validate,
-        loginID: false
-      })
-      setCurrentAuthBtn({
-        request: true,
-        check: true
-      })
-      setCurrentAuth1('')
-      document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
-      clearInterval(inervalId)
-      document.getElementsByClassName('timer')[0].innerHTML = ''
+    if (!(loginIdVal == undefined)) {
+      if (loginIdVal.length >= 13) {
+        // setValidate({
+        //   ...validate,
+        //   loginID: true
+        // })
+        if (!rgEx.test(loginIdVal)) {
+          setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
+          setCurrentAuthBtn({
+            request: true,
+            check: true
+          })
+        } else {
+          setCurrentAuthBtn({
+            request: false,
+            check: true
+          })
+        }
+      } else if (loginIdVal.length < 12) {
+        setValidate({
+          ...validate,
+          loginID: false
+        })
+        setCurrentAuthBtn({
+          request: true,
+          check: true
+        })
+        setCurrentAuth1('')
+        document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
+        clearInterval(inervalId)
+        document.getElementsByClassName('timer')[0].innerHTML = ''
+      }
     }
   }
 
