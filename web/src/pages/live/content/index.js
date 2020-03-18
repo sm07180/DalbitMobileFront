@@ -33,7 +33,6 @@ export default props => {
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
-  const [test, setTest] = useState('test')
   //----------------------------------------------------------- func start
 
   // 방송방 리스트 조회
@@ -64,6 +63,7 @@ export default props => {
     }
   }
 
+  //scroll paging
   const mobileConcat = async obj => {
     const res = await Api.broad_list({...obj})
     //Error발생시
@@ -125,6 +125,10 @@ export default props => {
         context.action.updateBroadcastTotalInfo(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
+    } else {
+      context.action.alert({
+        msg: `${res.message}`
+      })
     }
     return
   }
@@ -132,7 +136,6 @@ export default props => {
   const onScroll = async e => {
     const scrollTop = document.documentElement.scrollTop
     const scrollHeight = document.documentElement.scrollHeight
-    const clientHeight = document.documentElement.clientHeight
     if (livePaging.page < livePaging.totalPage) {
       if (scrollHeight - window.innerHeight - scrollTop < 80) {
         document.documentElement.scrollTo({top: scrollHeight * 0.2, behavior: 'smooth'})
@@ -157,9 +160,9 @@ export default props => {
     <Container>
       <Title title={'라이브'} />
       <Wrap>
-        <MainContents ref={scroll}>
+        <MainContents>
           {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />}
-          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType} />
+          {store.list && <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType} />}
           {!store.list && (
             <NoResult>
               <NoImg />

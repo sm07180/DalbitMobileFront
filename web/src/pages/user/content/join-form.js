@@ -539,8 +539,7 @@ export default props => {
       console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
-      let clear = clearInterval(intervalId)
-      setThisTimer(clear)
+      clearInterval(intervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
     } else {
       console.log(resCheck)

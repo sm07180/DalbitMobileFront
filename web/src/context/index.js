@@ -5,7 +5,7 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useState, createContext} from 'react'
+import React, {useState, useContext, createContext} from 'react'
 //context
 import API from 'context/api'
 import Utility from 'components/lib/utility'

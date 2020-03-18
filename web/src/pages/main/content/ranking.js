@@ -124,7 +124,10 @@ export default props => {
           <h2>랭킹</h2>
           <span
             onClick={() => {
-              props.history.push('/ranking')
+              //props.history.push('/ranking')
+              context.action.alert({
+                msg: '서비스 준비중입니다.'
+              })
             }}>
             더보기
           </span>

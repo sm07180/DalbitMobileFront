@@ -30,7 +30,7 @@ const BroadCastProvider = props => {
   const [storyList, setStoryList] = useState([])
   const [story, setStory] = useState([])
   const [tabIdx, setTabIdx] = useState(0)
-  const [like, setLike] = useState(1) // 채팅방 하단 좋아요 버튼 단계 1~4
+  const [like, setLike] = useState(0) // 채팅방 하단 좋아요 버튼 단계 1~4
   const [sumlike, setSumLike] = useState(0) // 채팅방 좋아요 누적수
   const [ListenerSelect, setListenerSelect] = useState({}) // 청취자 탭에서 선택한 유저 정보
   const [mikeState, setMikeState] = useState(true) // 마이크상태. 기본 값 켜있음 true

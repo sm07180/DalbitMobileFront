@@ -148,6 +148,22 @@ export default props => {
           context.action.updateBroadcastTotalInfo({auth: parseInt(recvauth)})
         }
       }
+      // 강퇴 , 금칙어 강퇴
+      const recvkickoutMsg = data.detail.data.reqKickOut
+      if (data.detail.data.cmd === 'reqKickOut' || data.detail.data.cmd === 'reqBanWord') {
+        //강퇴 당하는 사람이 본인이면
+        if (data.detail.data.reqKickOut.revMemNo === context.token.memNo) {
+          context.action.updateMediaPlayerStatus(false) //플레이어 remove
+          context.action.alert({
+            callback: () => {
+              props.history.push('/')
+            },
+            msg: `${recvkickoutMsg.sndMemNk} 님이 
+            ${recvkickoutMsg.revMemNk} 님을 
+            강퇴 처리 하였습니다.`
+          })
+        }
+      }
 
       if (data && data.detail) {
         if (recvMsg.position === undefined || recvMsg.position === 'chat') {
