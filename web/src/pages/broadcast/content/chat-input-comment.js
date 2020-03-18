@@ -257,6 +257,15 @@ export default props => {
       }
     }
   }
+
+  const goPresent = () => {
+    context.action.alert({
+      //콜백처리
+      callback: () => {},
+      msg: '서비스 중입니다.'
+    })
+    //store.action.updateTab(4)
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -266,11 +275,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <div
-        className="present"
-        onClick={() => {
-          store.action.updateTab(4)
-        }}>
+      <div className="present" onClick={() => goPresent()}>
         <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
       </div>
 

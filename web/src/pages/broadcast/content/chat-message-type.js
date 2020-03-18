@@ -31,7 +31,6 @@ export default props => {
         callback: () => {
           console.log('callback처리')
         },
-        title: '달빛라디오',
         msg: res.message
       })
     }
