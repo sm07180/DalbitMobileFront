@@ -55,7 +55,7 @@ export default props => {
     let sortlist = store.liveSortList
     if (sortlist === null) return
     return sortlist.list.map((live, index) => {
-      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo, gstProfImg} = live
+      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo, gstProfImg, searchType} = live
       let mode = '해당사항없음'
       //console.log(roomNo)
 
@@ -136,6 +136,7 @@ export default props => {
       }
     })
   }
+  console.log(store.liveSortList)
   //------------------------------------------------------------------
   useEffect(() => {
     //방송방 리스트

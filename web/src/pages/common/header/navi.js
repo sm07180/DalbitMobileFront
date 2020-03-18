@@ -44,7 +44,6 @@ export const BroadValidation = () => {
         async function fetchData(obj) {
           const res = await Api.broad_check({...obj})
           if (res.result === 'success') {
-            console.log(res)
             //진행중인 방송이 있습니다.
             if (_.hasIn(res.data, 'state') && res.data.state === 5) {
               context.action.confirm({
@@ -112,8 +111,7 @@ export const BroadValidation = () => {
             //
             Navi.history().push('/mypage/setting')
           },
-          // title: '회원가입 완료입니다.',
-          msg: '프로필 이미지 등록이 필요합니다',
+          msg: '프로필 이미지를 넣어주세요',
           buttonText: {
             left: '취소',
             right: '프로필 이미지등록'

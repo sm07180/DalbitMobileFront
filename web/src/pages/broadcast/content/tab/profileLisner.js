@@ -371,6 +371,7 @@ const Container = styled.div`
   }
   .functionWrap {
     display: flex;
+    justify-content:center;
     margin-top: 10px;
     width: 100%;
     & .managerBtn {

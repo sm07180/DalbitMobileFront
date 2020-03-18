@@ -38,9 +38,9 @@ export default props => {
   //   console.log(store.rolecheck.data)
   // }
 
-  console.log(store.rolecheck.data)
-  console.log(context.broadcastTotalInfo.userCount)
-  console.log(store.listenerList.length)
+  // console.log(store.rolecheck.data)
+  // console.log(context.broadcastTotalInfo.userCount)
+  // console.log(store.listenerList.length)
   useEffect(() => {
     fetchListenList()
   }, [])
@@ -175,7 +175,7 @@ const DJList = styled.div`
   background-color: ${COLOR_MAIN};
   border-radius: 24px;
   & h2 {
-    max-width: 70px;
+    min-width: 100px;
     height: 36px;
     margin-left: 10px;
     color: #fff;
@@ -189,14 +189,18 @@ const DJList = styled.div`
   }
 
   & h5 {
+    width: 140px;
     height: 36px;
-    margin-left: 36px;
     color: #fff;
+    margin-left: 30px;
     line-height: 36px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &:after {
     display: block;
@@ -243,7 +247,7 @@ const Title = styled.h4`
   transform: skew(-0.03deg);
 `
 const StreamID = styled.h4`
-  max-width: 100px;
+  min-width: 100px;
   height: 36px;
   margin-left: 10px;
   color: ${COLOR_MAIN};
@@ -256,14 +260,18 @@ const StreamID = styled.h4`
   text-overflow: ellipsis;
 `
 const NickName = styled.h4`
+  max-width: 140px;
   height: 36px;
-  margin-left: 36px;
+  margin-left: 30px;
   color: #424242;
   line-height: 36px;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 const ListenWrap = styled.div`
   z-index: 4;

@@ -3,6 +3,7 @@
  */
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
@@ -84,7 +85,7 @@ export default props => {
     return (
       <div className="noresultWrap">
         <img src="https://devimage.dalbitcast.com/images/api/img_noresult.png"></img>
-        <p>준비중입니다.</p>
+        <p>서비스 준비중입니다.</p>
       </div>
     )
   }
@@ -131,6 +132,17 @@ const Wrapper = styled.div`
   & .scrollCustom {
     & > div:nth-child(3) {
       width: 10px !important;
+    }
+  }
+  .noresultWrap {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    p {
+      transform: skew(-0.03deg);
+      text-align: center;
+      margin: 20px 0;
     }
   }
 `
