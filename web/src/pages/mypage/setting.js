@@ -17,6 +17,7 @@ export default props => {
   const context = useContext(Context)
   const {profile} = context
   const [nickname, setNickname] = useState('')
+  const [gender, setGender] = useState(null)
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
@@ -83,6 +84,10 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
+  const changeGender = type => {
+    setGender(type)
+  }
+
   const changeMsg = e => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
@@ -102,7 +107,7 @@ export default props => {
     }
 
     const data = {
-      gender: profile.gender,
+      gender: gender,
       nickNm: nickname,
       birth: profile.birth,
       profMsg: profileMsg
@@ -129,6 +134,7 @@ export default props => {
     setNickname(profile.nickNm)
     setProfileMsg(profile.profMsg)
     setPhotoPath(profile.profImg.path)
+    setGender(profile.gender)
   }, [])
   return (
     <Layout {...props}>
@@ -160,8 +166,12 @@ export default props => {
           </PasswordWrap>
           <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
           <GenderWrap>
-            <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
-            <GenderTab className={profile.gender === 'w' ? '' : 'off'}>여자</GenderTab>
+            <GenderTab className={gender === 'm' ? '' : 'off'} onClick={() => setGender('m')}>
+              남자
+            </GenderTab>
+            <GenderTab className={gender === 'f' ? '' : 'off'} onClick={() => setGender('f')}>
+              여자
+            </GenderTab>
           </GenderWrap>
 
           <GenderAlertMsg>* 생년월일과 성별 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
@@ -220,7 +230,12 @@ const GenderTab = styled.div`
   user-select: none;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
+  background-color: #8556f6;
+  color: #fff;
+  cursor: pointer;
+
   &.off {
+    color: #616161;
     border: none;
     background-color: #eee;
   }
