@@ -231,11 +231,16 @@ export default props => {
         // })
         if (!rgEx.test(loginIdVal)) {
           setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
+          setCurrentAuthBtn({
+            request: true,
+            check: true
+          })
+        } else {
+          setCurrentAuthBtn({
+            request: false,
+            check: true
+          })
         }
-        setCurrentAuthBtn({
-          request: false,
-          check: true
-        })
       } else if (loginIdVal.length < 12) {
         setValidate({
           ...validate,

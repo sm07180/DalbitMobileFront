@@ -46,7 +46,7 @@ const App = () => {
         os: _os,
         locale: 'temp_KR',
         deviceId: Utility.createUUID(),
-        language: 'ko',
+        language: Utility.locale(),
         deviceToken: 'make_custom_header'
       }
       return info
@@ -60,7 +60,7 @@ const App = () => {
     if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
       let temp = JSON.parse(cookie)
       temp.appVersion = '1.0.1'
-      temp.locale = 'KR'
+      temp.locale = Utility.locale()
       return temp
     }
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
