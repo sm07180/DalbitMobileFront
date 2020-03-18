@@ -248,7 +248,7 @@ export default props => {
           callback: () => {
             props.history.push('/')
           },
-          msg: res.message
+          msg: '비밀번호 변경(을) 성공하였습니다.'
         })
       } else {
         //실패
