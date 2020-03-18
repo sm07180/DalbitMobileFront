@@ -114,9 +114,17 @@ export default props => {
       if (exit.result === 'success') joinRoom(obj)
     }
     //Error발생시 (종료된 방송)
-    if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
+    //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
+    if (res.result === 'fail') {
+      context.action.alert({
+        msg: `${res.message}`
+      })
+      return true
+    }
     //정상진입이거나,방탈퇴이후성공일경우
     if (res.result === 'success') {
+      console.clear()
+      console.log(res)
       if (isHybrid()) {
         Hybrid('RoomJoin', res.data)
       } else {
@@ -125,10 +133,6 @@ export default props => {
         context.action.updateBroadcastTotalInfo(res.data)
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
-    } else {
-      context.action.alert({
-        msg: `${res.message}`
-      })
     }
     return
   }
