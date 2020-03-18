@@ -106,10 +106,25 @@ export default props => {
 
   //joinRoom
   async function joinRoom(obj) {
-    console.log('## 123')
     const {roomNo} = obj
-    if (context.roomInfo !== null && context.roomInfo.roomNo === roomNo) {
-      props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
+    if (context.roomInfo !== null) {
+      if (context.roomInfo.roomNo === roomNo) {
+        props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
+      } else {
+        const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
+        if (res.result === 'success') {
+          console.clear()
+          console.log(res)
+          if (isHybrid()) {
+            Hybrid('RoomJoin', res.data)
+          } else {
+            //하이브리드앱이 아닐때
+            const {roomNo} = res.data
+            context.action.updateBroadcastTotalInfo(res.data)
+            props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+          }
+        }
+      }
       return
     }
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
