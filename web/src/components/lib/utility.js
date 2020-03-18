@@ -7,6 +7,14 @@
 //---------------------------------------------------------------------
 export default class Utility {
   /**
+   * @brief 언어설정
+   * @code Utility.locale() example 'ko'
+   *
+   */
+  static locale = () => {
+    return (navigator.language || navigator.userLanguage).substr(0, 2)
+  }
+  /**
    * @brief nl2br
    * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *

@@ -64,14 +64,15 @@ export default props => {
   //좋아요~!
   const activeLike = () => {
     console.log('store.like')
-    context.action.alert({
-      //콜백처리
-      callback: () => {
-        return
-      },
-      msg: '좋아요는 방송청취 1분 후에 가능합니다.'
-    })
-
+    if (store.like == 0) {
+      context.action.alert({
+        //콜백처리
+        callback: () => {
+          return
+        },
+        msg: '좋아요는 방송청취 1분 후에 가능합니다.'
+      })
+    }
     if (store.like == 1) {
       broad_likes(store.roomInfo.roomNo)
     } else if (store.like == 2) {
@@ -256,6 +257,15 @@ export default props => {
       }
     }
   }
+
+  const goPresent = () => {
+    context.action.alert({
+      //콜백처리
+      callback: () => {},
+      msg: '서비스 중입니다.'
+    })
+    //store.action.updateTab(4)
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -265,11 +275,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <div
-        className="present"
-        onClick={() => {
-          store.action.updateTab(4)
-        }}>
+      <div className="present" onClick={() => goPresent()}>
         <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
       </div>
 
