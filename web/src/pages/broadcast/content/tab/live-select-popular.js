@@ -10,7 +10,8 @@ export default props => {
   //2.셀렉트박스 text 변경 초기 state-----------------------------------
   const [PopularInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChange, setSelectChange] = useState(PopularInfo.option1)
+  const [SelectChange, setSelectChange] = useState('전체')
+  const [list, setList] = useState([])
   //------------------------------------------------------------------
   //function
   //셀렉트 버튼 토글 function
@@ -25,6 +26,29 @@ export default props => {
   const AllFalse = () => {
     setSelectCheck(false)
   }
+  const popularSelect = PopularInfo.map((item, index) => {
+    return (
+      <p
+        key={index}
+        onClick={() => {
+          setSelectChange(item.option)
+          setSelectCheck(false)
+          commonData()
+        }}>
+        {item.option}
+      </p>
+    )
+  })
+
+  const commonData = async obj => {
+    const res = await Api.splash()
+    if (res.result === 'success') {
+      //context.action.updateCommon(res.data) // context에 update
+      console.log(res)
+      console.log(res.data.roomType)
+      setList(res.data.roomType)
+    }
+  }
   //------------------------------------------------------------------
   return (
     <>
@@ -32,22 +56,7 @@ export default props => {
         <h2>{SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
-        <div className="optionWrap">
-          <p
-            onClick={() => {
-              setSelectChange(PopularInfo.option1)
-              setSelectCheck(false)
-            }}>
-            {PopularInfo.option1}
-          </p>
-          <p
-            onClick={() => {
-              setSelectChange(PopularInfo.option2)
-              setSelectCheck(false)
-            }}>
-            {PopularInfo.option2}
-          </p>
-        </div>
+        <div className="optionWrap">{popularSelect}</div>
       </Option>
       <BackGround onClick={AllFalse} className={SelectCheck ? 'on' : ''} />
     </>
