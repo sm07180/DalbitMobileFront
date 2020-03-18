@@ -207,7 +207,7 @@ export default props => {
   const makeDropboxBtn = () => {
     const listenerView = ['', '', '', '', '프로필 보기', '신고 하기']
     const ManegerView = ['강퇴하기', '', '', '', '프로필 보기', '신고 하기']
-    const BJView = ['강제퇴장', '매니저 등록', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
+    const BJView = ['강제퇴장', '매니저 등록', '', '게스트 초대', '프로필 보기', '신고하기']
     const BJViewManeger = ['강퇴하기', '', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
     const {selectidx} = props
     //props.rcvData.data.user.auth
@@ -257,7 +257,7 @@ export default props => {
         })
       }
     } else if (context.broadcastTotalInfo.auth == 3) {
-      // 매니저
+      // BJ
       if (store.listenerList[selectidx].auth === 0) {
         return BJView.map((list, index) => {
           return (
@@ -265,7 +265,8 @@ export default props => {
               key={index}
               onClick={e => {
                 listenerStateChange(index)
-              }}>
+              }}
+              className={list === '' ? 'none' : ''}>
               {list}
             </button>
           )
