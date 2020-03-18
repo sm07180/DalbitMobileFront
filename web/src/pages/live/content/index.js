@@ -107,6 +107,10 @@ export default props => {
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
+    if (context.roomInfo !== null) {
+      if (context.roomInfo.roomNo === roomNo) props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
+      return
+    }
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
