@@ -62,8 +62,10 @@ export const scConnection = obj => {
   const setServiceConfig = () => {
     socketConfig.socketServerPort = 8000
     socketConfig.socketServerHost = 'devsv1.dalbitcast.com'
+    //socketConfig.socketServerHost = 'sv.dalbitcast.com'   //실제 서비스 도메인
     socketConfig.socketServerSecure = true
     socketConfig.restServer = 'https://devsv1.dalbitcast.com:8000'
+    //socketConfig.restServer = 'https://sv.dalbitcast.com:8000'
   }
   //socket 설정
   socketConfig = {

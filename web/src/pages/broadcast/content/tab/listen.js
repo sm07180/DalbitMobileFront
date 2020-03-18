@@ -17,6 +17,8 @@ export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
+  const prevCountRef = useRef()
+
   //---------------------------------------------------------------
   //api(리스너 리스트)
   const fetchListenList = async () => {
@@ -26,12 +28,60 @@ export default props => {
     })
     if (res.result === 'success') {
       const {list} = res.data
+
       store.action.updateListenerList(list)
     }
 
     return
   }
-  console.log(props)
+
+  // fetchListenList()
+  // if (context.broadcastTotalInfo.userCount != store.listenerList.length) {
+  //   fetchListenList()
+  // }
+  console.log(context.broadcastTotalInfo.userCount)
+  console.log(store.listenerList.length)
+  useEffect(() => {
+    fetchListenList()
+    // if (context.broadcastTotalInfo.userCount !== store.listenerList.length) {
+    //   fetchListenList()
+    // }
+  }, [])
+  // for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
+  //   store.action.updateListenerList(store.listenerList)
+  // }
+  // for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
+  //   store.action.updateListenerList(store.listenerList)
+  // }
+  // const [count, setCount] = useState(context.broadcastTotalInfo.userCount)
+
+  // useEffect(() => {
+  //   prevCountRef.current = count
+  // })
+  // const prevCount = prevCountRef.current
+  // console.log(count)
+  // console.log(prevCount)
+  // useEffect(() => {
+  //   // if (store.listenerList.current !== store.listenerList) {
+  //   //   console.log('찍어')
+  //   //   fetchListenList()
+  //   // }
+  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
+  //     fetchListenList()
+  //   }
+  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
+  //     fetchListenList()
+  //   }
+  //   fetchListenList()
+  // }, [])
+  // useEffect(
+  //   function() {
+  //     localStorage.setItem('ss', store.listenerList)
+  //   },
+  //   [store.listenerList]
+  // )
+  // console.log(context.broadcastTotalInfo)
+  // console.log(context.broadcastTotalInfo.userCount)
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -78,7 +128,7 @@ export default props => {
   //리스너 인포맵
   const drawListenList = () => {
     if (store.listenerList === null) return
-
+    console.log(store.listenerList)
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, memId, profImg, auth} = live
@@ -101,9 +151,7 @@ export default props => {
     })
   }
   //-------------------------------------------------------------------------
-  useEffect(() => {
-    fetchListenList()
-  }, [])
+
   //render--------------------------------------------------------------------
   return (
     <>
