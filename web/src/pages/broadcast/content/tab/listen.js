@@ -34,54 +34,17 @@ export default props => {
 
     return
   }
-
-  // fetchListenList()
-  // if (context.broadcastTotalInfo.userCount != store.listenerList.length) {
-  //   fetchListenList()
+  // if (store.rolecheck.data.cmd == 'connect' || store.rolecheck.data.cmd == 'disconnect') {
+  //   console.log(store.rolecheck.data)
   // }
+
+  console.log(store.rolecheck.data)
   console.log(context.broadcastTotalInfo.userCount)
   console.log(store.listenerList.length)
   useEffect(() => {
     fetchListenList()
-    // if (context.broadcastTotalInfo.userCount !== store.listenerList.length) {
-    //   fetchListenList()
-    // }
   }, [])
-  // for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
-  //   store.action.updateListenerList(store.listenerList)
-  // }
-  // for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
-  //   store.action.updateListenerList(store.listenerList)
-  // }
-  // const [count, setCount] = useState(context.broadcastTotalInfo.userCount)
 
-  // useEffect(() => {
-  //   prevCountRef.current = count
-  // })
-  // const prevCount = prevCountRef.current
-  // console.log(count)
-  // console.log(prevCount)
-  // useEffect(() => {
-  //   // if (store.listenerList.current !== store.listenerList) {
-  //   //   console.log('찍어')
-  //   //   fetchListenList()
-  //   // }
-  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
-  //     fetchListenList()
-  //   }
-  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
-  //     fetchListenList()
-  //   }
-  //   fetchListenList()
-  // }, [])
-  // useEffect(
-  //   function() {
-  //     localStorage.setItem('ss', store.listenerList)
-  //   },
-  //   [store.listenerList]
-  // )
-  // console.log(context.broadcastTotalInfo)
-  // console.log(context.broadcastTotalInfo.userCount)
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -102,6 +65,7 @@ export default props => {
       const {nickNm, memNo, memId, profImg, auth} = live
       const {thumb62x62} = profImg
       //매니저  청취자 비제이 구분 auth로
+
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
@@ -139,6 +103,7 @@ export default props => {
       if (auth === 2) mode = '2'
       if (auth === 3) mode = '3'
       if (auth !== 0) return
+
       return (
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>
