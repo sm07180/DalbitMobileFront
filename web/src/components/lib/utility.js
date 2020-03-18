@@ -7,8 +7,8 @@
 //---------------------------------------------------------------------
 export default class Utility {
   /**
-   * @brief nl2br
-   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
+   * @brief 언어설정
+   * @code Utility.locale() example 'ko'
    *
    */
   static locale = () => {
