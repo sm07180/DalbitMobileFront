@@ -19,20 +19,18 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //date 셋팅
-  let date = new Date()
-  date.setFullYear(date.getFullYear() - 17)
+  // let date = new Date()
+  // date.setFullYear(date.getFullYear() - 17)
   //useState
-  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
+  //최신날짜로 했던거 바꾸기
+  //const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
+  const [selectedDate, setSelectedDate] = useState()
 
   //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {
     setSelectedDate(date)
     props.change(moment(date).format('YYYYMMDD'))
   }
-  useEffect(() => {
-    handleDateChange(selectedDate)
-  }, [props.value])
-
   useEffect(() => {
     handleDateChange(selectedDate)
   }, [props.value])
@@ -44,9 +42,20 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
-      <DatepickerWrap>
+      <DatepickerWrap className={props.pickerState ? 'holder-off' : 'holder-on'}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker format="YYYY-MM-DD" margin="normal" id="date-picker-inline" name="birth" label={props.text} value={selectedDate} onChange={handleDateChange} />
+          <DatePicker
+            disableFuture
+            format="YYYY-MM-DD"
+            margin="normal"
+            id="date-picker-inline"
+            name="birth"
+            label={props.text}
+            value={selectedDate}
+            onChange={handleDateChange}
+            placeholder={props.placeholder}
+          />
+          <span className="holder">{props.placeholder}</span>
         </MuiPickersUtilsProvider>
       </DatepickerWrap>
     </StylesProvider>
@@ -54,6 +63,7 @@ export default props => {
 }
 
 const DatepickerWrap = styled.div`
+  position: relative;
   .MuiFormControl-root {
     width: 100%;
     margin: 0;
@@ -80,5 +90,28 @@ const DatepickerWrap = styled.div`
   .MuiInputBase-input.MuiInput-input {
     background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 96% center;
     background-size: 24px;
+    color: rgba(0, 0, 0, 0);
+  }
+  &.holder-on .MuiInputBase-input.MuiInput-input {
+    color: rgba(0, 0, 0, 0);
+  }
+  &.holder-off .MuiInputBase-input.MuiInput-input {
+    color: #616161;
+  }
+  span.holder {
+    display: inline-block;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    padding-right: 40px;
+    line-height: 48px;
+    z-index: -1;
+    padding-left: 16px;
+    color: #616161;
+    transform: skew(-0.03deg);
+    background: #fff;
+  }
+  &.holder-off span.holder {
+    display: none;
   }
 `
