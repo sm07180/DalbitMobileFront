@@ -96,10 +96,7 @@ export default props => {
             <Figure url={info.bjProfImg}></Figure>
             <em></em>
           </div>
-          <p
-            onClick={() => {
-              props.update({playerNavigator: true})
-            }}>
+          <p>
             <b>{info.bjNickNm}</b>
             <span>{info.title}</span>
           </p>
@@ -111,6 +108,13 @@ export default props => {
             <span>{_.hasIn(context.broadcastTotalInfo, 'likes') && context.broadcastTotalInfo.likes}</span>
           </div>
         )}
+        <button
+          className="enter-btn"
+          onClick={() => {
+            props.update({playerNavigator: true})
+          }}>
+          방송방 재진입
+        </button>
         {/* 닫기버튼 */}
         {makeCloseBtn()}
       </MediaPlayer>
@@ -262,6 +266,15 @@ const MediaPlayer = styled.div`
     text-indent: -9999px;
   }
 
+  .enter-btn {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 93%;
+    height: 100%;
+    text-indent: -9999px;
+  }
+
   @media (min-width: ${WIDTH_TABLET_S}) {
     .close:hover {
       animation: rotate-center 0.5s ease-in-out both;
@@ -292,6 +305,10 @@ const MediaPlayer = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     padding: 12px 22px;
+    .enter-btn {
+      width: 85%;
+    }
+
     .equalizer {
       height: 29px;
       margin-right: 10px;
