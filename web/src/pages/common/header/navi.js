@@ -334,14 +334,14 @@ const Content = styled.nav`
     }
   }
   /* 모바일 메인 nav 간격 조정, 520이하부터 일정한 간격으로 떨어지게 */
-  @media (max-width: 520px) {
+  /* @media (max-width: 520px) {
     display: flex;
     justify-content: space-around;
     a {
       margin: 0;
       padding: 6px;
     }
-  }
+  } */
   @media screen and (min-width: ${WIDTH_PC}) {
     a:hover {
       font-weight: bold;
