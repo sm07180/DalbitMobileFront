@@ -167,7 +167,7 @@ export default props => {
   }
   useEffect(() => {
     if (!authValue) {
-    } else if (props.location.state.auth === hostRole) {
+    } else if (authValue === hostRole) {
       getReToken(props.location.state.roomNo)
       sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {
