@@ -48,7 +48,7 @@ const Wrapper = styled.div`
 const EVENTBTN = styled.button`
   position: absolute;
   right: 16px;
-  top: 0;
+  top: -1px;
   width: 36px;
   height: 36px;
   transform: translateY(-50%);

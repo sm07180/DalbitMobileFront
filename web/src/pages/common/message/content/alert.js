@@ -109,6 +109,7 @@ const Alert = styled.section`
     letter-spacing: -0.35px;
     word-break: break-all;
     text-align: center;
+    transform: skew(-0.03deg);
   }
 
   /* 버튼 */

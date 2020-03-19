@@ -119,6 +119,7 @@ const List = styled.div`
       border-width: 3px;
       border-style: solid;
       border-color: #8556f6;
+
       @media (max-width: ${WIDTH_MOBILE}) {
         display: none;
       }

@@ -204,7 +204,7 @@ const People = styled.div`
       height: 16px;
       margin-right: 32px;
       font-size: 12px;
-      text-align: left;
+      text-align: center;
     }
   }
 
