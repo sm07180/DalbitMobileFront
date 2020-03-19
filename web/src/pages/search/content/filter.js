@@ -170,7 +170,6 @@ export default props => {
   const ShowFilter = list.map((item, index) => {
     if (filter.length > 1) {
       if (item.title.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) {
-        console.log('실어보낼께~~~~', item)
         const {nickNm, memNo, profImg, auth, title, roomNo} = item
         const {thumb62x62} = profImg
         let mode = '해당사항없음'
