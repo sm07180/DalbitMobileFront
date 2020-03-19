@@ -26,7 +26,6 @@ export default async function roomCheck(roomNo, ctx) {
     })
   } else if (result === 'success') {
     return data
-  } else {
-    return null
   }
+  return null
 }
