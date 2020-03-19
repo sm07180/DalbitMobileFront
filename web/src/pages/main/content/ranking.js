@@ -38,11 +38,11 @@ export default props => {
     })
     //undefined 방어코드추가, resDj.data.list===undefined 일수있음
     if (resDj.result === 'success' && _.hasIn(resDj, 'data.list')) {
-      //setDjInfo(resDj.data.list)
+      setDjInfo(resDj.data.list)
       if (sswiper) sswiper.update()
     } else {
       // fetch(2)
-      console.log('실패', resDj.result)
+      console.log('실패', resDj)
     }
 
     const resfan = await Api.get_fan_ranking({
@@ -53,10 +53,10 @@ export default props => {
       }
     })
     if (resfan.result === 'success' && _.hasIn(resDj, 'data.list')) {
-      //setFanInfo(resfan.data.list)
+      setFanInfo(resfan.data.list)
       if (sswiper) sswiper.update()
     } else {
-      //console.log('실패', resfan.result)
+      console.log('실패', resfan)
     }
   }
 
