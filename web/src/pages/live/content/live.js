@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect, forwardRef} from 'react'
 import styled from 'styled-components'
+import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import LiveList from './live-list'
@@ -263,5 +264,5 @@ const Icon = styled.button`
   display: flex;
   width: 36px;
   height: 36px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_arrow_down.png');
+  background: url(${IMG_SERVER}/images/api/ic_arrow_down.png);
 `

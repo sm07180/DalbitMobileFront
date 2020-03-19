@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import Swiper from 'react-id-swiper'
 import {Context} from 'context'
-
+import {IMG_SERVER} from 'context/config'
 export default props => {
   //-------------------------------------------------------------- declare start
   const [hover, setHover] = useState(false)
@@ -44,12 +44,12 @@ export default props => {
           {/* <div className="nickName">비오는 날, 기분이 뽀송해지는 점심 라디오</div> */}
           <CountArea>
             <Icon>
-              <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+              <img src={'https://image.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
               &nbsp;&nbsp;{data.entryCnt}
             </Icon>
             <span>|</span>
             <Icon>
-              <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+              <img src={'https://image.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
               &nbsp;&nbsp;{data.likeCnt}
             </Icon>
           </CountArea>
@@ -102,7 +102,7 @@ const Contents = styled.div`
 
     & > button {
       display: flex;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_play_color.png') no-repeat;
+      background: url(${IMG_SERVER}/images/api/ic_play_color.png) no-repeat;
       width: 48px;
       height: 48px;
     }

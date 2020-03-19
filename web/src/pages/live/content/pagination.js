@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
-
+import {IMG_SERVER} from 'context/config'
 // 페이징 임시적으로 구현
 export default props => {
   //------------------------------------------------------------ declare start
@@ -134,7 +134,7 @@ const Left = styled.button`
     display: flex;
     width: 10px;
     height: 18px;
-    background: url('https://devimage.dalbitcast.com/images/api/left.png') no-repeat;
+    background: url(${IMG_SERVER}/images/api/left.png) no-repeat;
   }
 `
 const Right = styled.button`
@@ -148,7 +148,7 @@ const Right = styled.button`
     display: flex;
     width: 10px;
     height: 18px;
-    background: url('https://devimage.dalbitcast.com/images/api/right.png') no-repeat;
+    background: url(${IMG_SERVER}/images/api/right.png) no-repeat;
   }
 `
 const Page = styled.button`

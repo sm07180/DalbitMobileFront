@@ -2,7 +2,6 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
-
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import NoResult from './noResult'
@@ -173,7 +172,7 @@ const Wrap = styled.div`
         width: 36px;
         height: 36px;
         margin-left: 10px;
-        background: url('https://devimage.dalbitcast.com/images/api/ico_plus_p.png');
+        background: url(${IMG_SERVER}/images/api/ico_plus_p.png);
       }
     }
   }
@@ -211,7 +210,7 @@ const Icon = styled.button`
   display: flex;
   width: 36px;
   height: 36px;
-  background: url('https://devimage.dalbitcast.com/svg/ic_search_normal.svg') no-repeat center center / cover;
+  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg') no-repeat center center / cover;
 `
 
 const ListWrap = styled.div`
@@ -302,7 +301,7 @@ const InfoWrap = styled.div`
       width: 24px;
       height: 24px;
       margin-right: 6px;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_headphone_s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ic_headphone_s.png) no-repeat center center / cover;
     }
     & strong {
       float: left;
@@ -314,7 +313,7 @@ const InfoWrap = styled.div`
       letter-spacing: -0.35px;
     }
     & .like {
-      background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ico-like-g-s.png) no-repeat center center / cover;
     }
   }
 `
@@ -346,7 +345,7 @@ const MemberWrap = styled.div`
     right: 10px;
     width: 36px;
     height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_live.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_live.png) no-repeat center center / cover;
   }
 `
 const Mimg = styled.div`

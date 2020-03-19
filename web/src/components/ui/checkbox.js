@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import {WIDTH_MOBILE} from 'context/config'
-import styled from 'styled-components'
 
+import styled from 'styled-components'
+import {IMG_SERVER} from 'context/config'
 export default props => {
   const [check, setCheck] = useState(false)
   const ToggleCheck = () => {
@@ -28,9 +28,9 @@ const CheckWrap = styled.div`
     border: none;
     outline: none;
     cursor: pointer;
-    background: #fff url('https://devimage.dalbitcast.com/images/api/ico-checkbox-off.png') no-repeat center center / cover;
+    background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
     &.on {
-      background: #8556f6 url('http://hwangsh.com/img/ico-checkbox-on.png') no-repeat center center / cover;
+      background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
     }
   }
 `

@@ -14,8 +14,8 @@ export default props => {
       <Main>
         <Title>몰래 온 선물</Title>
         <Info>
-          <img src={'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'} width={48} height={48} />
-          <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication_p@2x.png'} width={18} height={18} />
+          <img src={'https://image.dalbitcast.com/images/api/ic_moon4@2x.png'} width={48} height={48} />
+          <img src={'https://image.dalbitcast.com/images/api/ic_multiplication_p@2x.png'} width={18} height={18} />
           10
         </Info>
         <Contents>

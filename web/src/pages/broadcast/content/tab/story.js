@@ -124,7 +124,7 @@ export default props => {
                   <Contents key={idx}>
                     <UserInfo>
                       <div>
-                        <Img width={40} height={40} src={'https://devimage.dalbitcast.com/images/api/profile_test5.jpg'} marginRight={8} />
+                        <Img width={40} height={40} src={'https://image.dalbitcast.com/images/api/profile_test5.jpg'} marginRight={8} />
                         <div>{data.nickNm}</div>
                       </div>
                       <div>
@@ -283,7 +283,7 @@ const DjMain = styled.div`
       width: 18px;
       height: 18px;
       margin-right: 6px;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_refresh.png') no-repeat;
+      background: url('https://image.dalbitcast.com/images/api/ic_refresh.png') no-repeat;
     }
 
     & > span {

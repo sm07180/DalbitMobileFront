@@ -2,6 +2,7 @@ import React, {useState, useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
 
 export default props => {
@@ -53,12 +54,12 @@ export default props => {
               <CountArea>
                 <div>
                   <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                    <img src={'https://image.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
                     &nbsp;&nbsp;{data.entryCnt}
                   </Icon>
                   <span>|</span>
                   <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                    <img src={'https://image.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
                     &nbsp;&nbsp;{data.likeCnt}
                   </Icon>
                 </div>
@@ -126,7 +127,7 @@ const List = styled.div`
         display: flex;
         width: 24px;
         height: 24px;
-        background: url('https://devimage.dalbitcast.com/images/api/ic_play_color_24.png') no-repeat;
+        background: url(${IMG_SERVER}/images/api/ic_play_color_24.png) no-repeat;
         z-index: 100;
       }
     }
