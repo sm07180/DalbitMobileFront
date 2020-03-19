@@ -1,7 +1,7 @@
 import {isHybrid, Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 
-export default async function roomCheck(roomNo) {
+export default async function roomCheck(roomNo, ctx) {
   const res = await Api.broad_join({data: {roomNo}})
   const {code, result, data} = res
   if (code === '-4') {

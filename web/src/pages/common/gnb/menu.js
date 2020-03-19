@@ -62,21 +62,6 @@ export default props => {
               onClick={event => {
                 event.preventDefault()
                 BroadValidation()
-                // //Hybird App이 아닐때
-                // if (!context.cast_state) {
-                //   if (context.customHeader.os === '3') {
-                //     console.log(props)
-                //     if (context && context.token && !context.token.isLogin) {
-                //       context.action.updatePopup('LOGIN')
-                //       //alert('로그인필요')
-                //       //props.history.push('/login')
-                //       return
-                //     }
-                //     props.history.push('/broadcast-setting')
-                //   } else {
-                //     Hybrid('RoomMake', '')
-                //   }
-                // }
                 context.action.updateGnbVisible(false)
               }}>
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>
