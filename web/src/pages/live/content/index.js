@@ -94,6 +94,8 @@ export default props => {
     const {roomNo} = obj
     const data = await roomCheck(roomNo, context)
 
+    console.log(data)
+
     if (data) {
       if (isHybrid()) {
         Hybrid('RoomJoin', data)

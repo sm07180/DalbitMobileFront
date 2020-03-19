@@ -9,11 +9,17 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 // etc
 import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
+import qs from 'query-string'
 
 export default props => {
   //---------------------------------------------------------------------
   //context
+
   const context = useContext(Context)
+  const {broadcastTotalInfo} = context
+  const roomInfo = broadcastTotalInfo
+
+  const {roomNo} = qs.parse(location.search)
   const {mediaHandler, mediaPlayerStatus} = context
   //useMemo
   const visible = useMemo(() => {
@@ -37,8 +43,8 @@ export default props => {
         if (isHybrid()) {
           Hybrid('EnterRoom', '')
         } else {
-          const {roomNo} = context.roomInfo
-          props.history.push('/broadcast/' + '?roomNo=' + roomNo, context.roomInfo)
+          const {roomNo} = roomInfo
+          props.history.push('/broadcast/' + '?roomNo=' + roomNo, roomInfo)
         }
         break
       default:
