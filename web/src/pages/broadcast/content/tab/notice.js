@@ -7,20 +7,24 @@ import Api from 'context/api'
 import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 import {BroadCastStore} from 'pages/broadcast/store'
+import qs from 'query-string'
 
 export default props => {
   //context------------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  const {broadcastTotalInfo} = context
+  const roomInfo = broadcastTotalInfo
+  const {roomNo} = qs.parse(location.search)
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
     notice: ''
   })
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  //const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [show, setShow] = useState(false)
   //const [showRegist, setShowRegist] = useState(true)
 
-  const RoomNumbers = roomInfo.roomNo
+  const RoomNumbers = roomNo
   //update
   function update(mode) {
     switch (true) {

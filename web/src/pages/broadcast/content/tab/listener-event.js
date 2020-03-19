@@ -7,12 +7,15 @@ import styled from 'styled-components'
 import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
 import {Context} from 'context'
+import qs from 'query-string'
 //soket
 const sc = require('context/socketCluster')
 export default props => {
   //context
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
+  const {broadcastTotalInfo} = context
+  const {roomNo} = qs.parse(location.search)
   ///////////////////////////////////
   let selectlistener = ''
   let res = ''
@@ -21,7 +24,7 @@ export default props => {
   async function broadListenListReload() {
     const res = await Api.broad_listeners({
       params: {
-        roomNo: store.roomInfo.roomNo
+        roomNo: roomNo
       }
     })
     if (res.result === 'success') {
@@ -78,7 +81,7 @@ export default props => {
     const res = await Api.broad_member_profile({
       params: {
         memNo: obj.memNo,
-        roomNo: store.roomInfo.roomNo
+        roomNo: roomNo
       },
       method: 'GET'
     })
@@ -154,7 +157,7 @@ export default props => {
         res = drawListenList(props.selectidx)
         console.log('##신고하기 res = ' + props.selectidx)
 
-        store.action.updateReportData({memNo: res[props.selectidx].memNo, nickNm: res[props.selectidx].nickNm, roomNo: store.roomInfo.roomNo})
+        store.action.updateReportData({memNo: res[props.selectidx].memNo, nickNm: res[props.selectidx].nickNm, roomNo: roomNo})
         store.action.updateTab(7)
         break
       default:

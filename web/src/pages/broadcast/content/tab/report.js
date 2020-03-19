@@ -6,12 +6,15 @@ import {BroadCastStore} from 'pages/broadcast/store'
 import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
+import qs from 'query-string'
 export default props => {
   //console.log(props.selectidx)
   //context------------------------------------------
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
-  console.log(store.reportData)
+  //console.log(store.reportData)
+  const {broadcastTotalInfo} = context
+  const {roomNo} = qs.parse(location.search)
   //0.신고하기 Data state --------------------------------------
   //1.selected 초기state ---------------------------------------
   //2.버튼 active 비지빌리티--------------------------------------

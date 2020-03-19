@@ -6,12 +6,15 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 import Ranking from './ranking'
+import qs from 'query-string'
 export default props => {
   //console.log(props)
 
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //----------------------------------------------context
   const context = useContext(Context)
+  const {broadcastTotalInfo} = context
+  const {roomNo} = qs.parse(location.search)
   //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)
   //------------------------------------------------

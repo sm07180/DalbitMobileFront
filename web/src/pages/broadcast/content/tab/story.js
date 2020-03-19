@@ -8,6 +8,7 @@ import {Img} from './profileImg'
 import Util from '../../util/broadcast-util'
 import {BroadCastStore} from '../../store'
 import Api from 'context/api'
+import qs from 'query-string'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
@@ -20,7 +21,9 @@ export default props => {
   const scrollbars = useRef(null)
   const [now, setNow] = useState()
   //----------------------------------------------- func start
-
+  const {broadcastTotalInfo} = context
+  const {roomNo} = qs.parse(location.search)
+  console.log(roomNo)
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
 
@@ -43,7 +46,7 @@ export default props => {
   const selectStoryList = async () => {
     const res = await Api.broad_story({
       params: {
-        roomNo: store.roomInfo.roomNo,
+        roomNo: roomNo,
         page: 1,
         records: 100
       },
@@ -59,7 +62,7 @@ export default props => {
   const writeStory = async () => {
     const res = await Api.broad_story({
       data: {
-        roomNo: store.roomInfo.roomNo,
+        roomNo: roomNo,
         contents: text
       },
       method: 'POST'
@@ -89,7 +92,7 @@ export default props => {
   const deleteStory = async param => {
     const res = await Api.broad_story({
       data: {
-        roomNo: store.roomInfo.roomNo,
+        roomNo: roomNo,
         storyIdx: param
       },
       method: 'DELETE'
@@ -108,8 +111,8 @@ export default props => {
   //----------------------------------------------- components start
   return (
     <Container>
-      <Navi title={context.token.memNo === store.roomInfo.bjMemNo ? '등록 사연' : '사연'} prev={props.prev} _changeItem={props._changeItem} />
-      {context.token.memNo === store.roomInfo.bjMemNo ? (
+      <Navi title={context.token.memNo === broadcastTotalInfo.bjMemNo ? '등록 사연' : '사연'} prev={props.prev} _changeItem={props._changeItem} />
+      {context.token.memNo === broadcastTotalInfo.bjMemNo ? (
         <DjMain>
           <div className="topBar">
             <div className="refresh">
