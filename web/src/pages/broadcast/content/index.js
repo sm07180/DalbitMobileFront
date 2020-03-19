@@ -13,6 +13,7 @@ import Api from 'context/api'
 
 //etc
 import roomCheck from 'components/lib/roomCheck.js'
+import qs from 'query-string'
 
 //components
 import useResize from 'components/hooks/useResize'
@@ -21,11 +22,9 @@ import ChatUI from './chat-ui'
 const sc = require('context/socketCluster')
 import SideContent from './tab'
 
-//pages
-// import Guide from ' pages/common/layout/guide.js'
-
 let audioStartInterval = null
 let getBoradInfo = false
+const {roomNo} = qs.parse(location.search)
 
 export default props => {
   //---------------------------------------------------------------------
@@ -49,12 +48,10 @@ export default props => {
   const hostRole = 3
   // const guestRole = ?
   const listenerRole = 0
-
   //---------------------------------------------------------------------
   if (!broadcastTotalInfo && !getBoradInfo) {
     ;(async () => {
       getBoradInfo = true
-      const roomNo = location.href.split('?')[1].split('=')[1]
       const data = await roomCheck(roomNo, context, () => {
         props.history.push('/')
       })
@@ -153,9 +150,10 @@ export default props => {
       props.history.push('/')
       return
     }
-    sc.socketClusterBinding(res.data.roomNo, context)
+    sc.socketClusterBinding(roomNo, context)
     context.action.updateBroadcastTotalInfo(res.data)
   }
+
   async function reloadRoom(roomNo) {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     //Error발생시
@@ -165,23 +163,22 @@ export default props => {
     context.action.updateBroadcastTotalInfo(res.data)
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
   }
+
   useEffect(() => {
-    if (!authValue) {
+    if (authValue === null) {
     } else if (authValue === hostRole) {
-      getReToken(props.location.state.roomNo)
-      sc.socketClusterBinding(props.location.state.roomNo, context)
+      getReToken(roomNo)
     } else {
       document.addEventListener('keydown', function(e) {
         if (e.key == 'F5') {
-          reloadRoom(props.location.state.roomNo)
+          reloadRoom(roomNo)
         } else {
         }
         return () => document.removeEventListener('keydown')
       })
-      if (props && props.location.state) {
-        sc.socketClusterBinding(props.location.state.roomNo, context)
-      }
     }
+    console.log('connecdfdfdf')
+    sc.socketClusterBinding(roomNo, context)
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
     if (window.innerWidth <= 840) {

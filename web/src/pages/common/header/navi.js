@@ -116,7 +116,7 @@ export const BroadValidation = () => {
                     }
                     //정상리토큰
                     if (res.result === 'success') {
-                      sc.socketClusterBinding(res.data.roomNo, context)
+                      // sc.socketClusterBinding(res.data.roomNo, context)
                       context.action.updateBroadcastTotalInfo(res.data)
                       if (isApp) {
                         Hybrid('ReconnectRoom', res.data)
