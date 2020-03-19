@@ -10,8 +10,6 @@ export default props => {
   //-------------------------------------------------------------- declare start
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
-  const context = useContext(Context)
-  // const [roomType, setRoomType] = useState([])
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
