@@ -24,7 +24,7 @@ export default props => {
     return (
       <Contents key={index}>
         {index === selected && hover && (
-          <div className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
             <button />
           </div>
         )}
