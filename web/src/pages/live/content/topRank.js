@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import Swiper from 'react-id-swiper'
 import {Context} from 'context'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //-------------------------------------------------------------- declare start
@@ -33,7 +34,7 @@ export default props => {
         </Image>
         <Info>
           <div className="title">
-            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}</div>
+            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(Utility.leadingZeros(data.roomType.toString(), 2))].cdNm}</div>
             {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
             {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
