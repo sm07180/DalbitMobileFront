@@ -124,7 +124,7 @@ export default props => {
             // title: '달빛라디오',
             msg: res.message
           })
-        } else if (res.code === -3) {
+        } else if (res.code === '-3') {
           // 종료된 방송
           context.action.alert({
             callback: () => {
@@ -171,7 +171,7 @@ export default props => {
         // title: '달빛라디오',
         msg: res.message
       })
-    } else if (res.code === -3) {
+    } else if (res.code === -'3') {
       // 종료된 방송
       context.action.alert({
         callback: () => {
