@@ -136,24 +136,24 @@ export default props => {
       //총접속자 , 누적 사용자수 업데이트
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
         context.action.updateBroadcastTotalInfo(data.detail.data.count)
-        if (data.detail.data.cmd == 'connect') {
-          //fetchListenList()
-          if (data.detail.data.user.memNo !== context.token.memNo) {
-            listenerlist.push({
-              nickNm: data.detail.data.user.nk,
-              memNo: data.detail.data.user.memNo,
-              auth: data.detail.data.user.auth,
-              profImg: {thumb62x62: data.detail.data.user.image},
-              memId: data.detail.data.user.userid
-            })
+        // if (data.detail.data.cmd == 'connect') {
+        //   //fetchListenList()
+        //   if (data.detail.data.user.memNo !== context.token.memNo) {
+        //     listenerlist.push({
+        //       nickNm: data.detail.data.user.nk,
+        //       memNo: data.detail.data.user.memNo,
+        //       auth: data.detail.data.user.auth,
+        //       profImg: {thumb62x62: data.detail.data.user.image},
+        //       memId: data.detail.data.user.userid
+        //     })
 
-            setlistenerlist(listenerlist)
-            store.action.updateListenerList(listenerlist)
-          }
-        } else {
-          //disconnect
-          listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)
-        }
+        //     setlistenerlist(listenerlist)
+        //     store.action.updateListenerList(listenerlist)
+        //   }
+        // } else {
+        //   //disconnect
+        //   listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)
+        // }
       }
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
