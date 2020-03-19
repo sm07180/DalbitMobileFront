@@ -11,10 +11,6 @@ import {BroadCastProvider} from './store'
 //components
 import Content from './content'
 //
-import Api from 'context/api'
-
-let getBoradInfo = false
-
 export default props => {
   const ctx = useContext(Context)
   //---------------------------------------------------------------------
