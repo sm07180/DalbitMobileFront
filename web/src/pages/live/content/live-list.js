@@ -90,7 +90,7 @@ const List = styled.div`
   border-bottom-style: solid;
   border-color: #e0e0e0;
   border-width: 1px;
-
+  z-index: -1;
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 140px;
   }
@@ -250,6 +250,7 @@ const CountArea = styled.div`
   & > div {
     display: flex;
     align-items: center;
+    z-index: -1;
   }
 
   & > div > span {

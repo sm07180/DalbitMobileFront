@@ -100,7 +100,7 @@ const Container = styled.div`
     height: 60%;
     justify-content: center;
     align-items: flex-end;
-
+    z-index: -1;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 80%;
     }
@@ -112,6 +112,7 @@ const Container = styled.div`
     height: 100%;
     align-items: center;
     justify-content: center;
+
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 90%;
     }
