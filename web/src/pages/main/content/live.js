@@ -36,9 +36,9 @@ export default props => {
       // }
     })
     if (res.result === 'success') {
-      setTop1Data(res.data.list[0])
-      setTop2Data(res.data.list[1])
-      setListData(res.data.list.slice(2))
+      // setTop1Data(res.data.list[0])
+      // setTop2Data(res.data.list[1])
+      // setListData(res.data.list.slice(2))
     } else {
       console.log('실패', res)
     }
@@ -242,14 +242,18 @@ const NoResult = styled.div`
     margin-top: 30px;
 
     @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 `
 
 const NoImg = styled.div`
   display: flex;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
   width: 299px;
   height: 227px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+    height: 198;
+  }
 `

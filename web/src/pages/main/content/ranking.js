@@ -38,7 +38,7 @@ export default props => {
     })
     //undefined 방어코드추가, resDj.data.list===undefined 일수있음
     if (resDj.result === 'success' && _.hasIn(resDj, 'data.list')) {
-      setDjInfo(resDj.data.list)
+      //setDjInfo(resDj.data.list)
       if (sswiper) sswiper.update()
     } else {
       // fetch(2)
@@ -53,7 +53,7 @@ export default props => {
       }
     })
     if (resfan.result === 'success' && _.hasIn(resDj, 'data.list')) {
-      setFanInfo(resfan.data.list)
+      //setFanInfo(resfan.data.list)
       if (sswiper) sswiper.update()
     } else {
       //console.log('실패', resfan.result)
@@ -531,7 +531,7 @@ const NoResult = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100% !important;
 
   & > span {
     display: flex;
@@ -547,14 +547,19 @@ const NoResult = styled.div`
     margin-top: 30px;
 
     @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 20px;
+      font-size: 18px;
+      margin-top: 20px;
     }
   }
 `
 
 const NoImg = styled.div`
   display: flex;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
   width: 299px;
   height: 227px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+    height: 198;
+  }
 `
