@@ -7,7 +7,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import NoResult from './noResult'
 import {isHybrid, Hybrid} from 'context/hybrid'
-import {IMG_SERVER} from 'context/config'
+
 //global
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
