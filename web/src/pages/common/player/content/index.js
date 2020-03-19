@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import Utility from 'components/lib/utility'
+import qs from 'query-string'
 // etc
 
 // image
@@ -19,6 +20,9 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const {broadcastTotalInfo} = context
+  const roomInfo = broadcastTotalInfo
+  const {roomNo} = qs.parse(location.search)
   //useState
   const [info, setInfo] = useState({
     /**
@@ -56,7 +60,7 @@ export default props => {
     if (isHybrid()) return
     //@PC
     if (context.roomInfo !== null && context.roomInfo !== undefined) {
-      const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = context.roomInfo
+      const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = roomInfo
       setInfo({
         bjNickNm: bjNickNm,
         roomNo: roomNo,
