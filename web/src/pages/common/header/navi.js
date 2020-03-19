@@ -157,7 +157,7 @@ export const BroadValidation = () => {
         } else {
           //요청회원 아님
           context.action.alert({
-            msg: `Api.broad_check Error`
+            msg: res.message
           })
         }
       }
