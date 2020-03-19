@@ -147,6 +147,7 @@ export default props => {
     const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
+      context.action.updateMediaPlayerStatus(false) //플레이어 remove
       props.history.push('/')
       return
     }
