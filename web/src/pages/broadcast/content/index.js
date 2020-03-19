@@ -12,7 +12,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Api from 'context/api'
 
 //etc
-import joinRoom from 'components/lib/joinRoom.js'
+import roomCheck from 'components/lib/roomCheck.js'
 
 //components
 import useResize from 'components/hooks/useResize'
