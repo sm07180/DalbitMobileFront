@@ -19,7 +19,6 @@ let livePaging = []
 let liveType = ''
 let liveSearchType = ''
 let liveRank = []
-let reload = true
 
 export default props => {
   //----------------------------------------------------------- declare start
@@ -31,7 +30,6 @@ export default props => {
   const [searchType, setSearchType] = useState('0') // searchType
   const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
-  const scroll = useRef(null)
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })

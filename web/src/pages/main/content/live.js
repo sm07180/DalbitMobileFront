@@ -49,35 +49,6 @@ export default props => {
     alert(res.message)
   }
 
-  //joinRoom
-  // async function joinRoom(obj) {
-  //   const {roomNo} = obj
-  //   const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-  //   //Error발생시 (방이 입장되어 있을때)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-  //     const exit = await exitRoom(obj)
-  //     if (exit.result === 'success') joinRoom(obj)
-  //   }
-  //   //Error발생시 (종료된 방송)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
-  //   //정상진입이거나,방탈퇴이후성공일경우
-  //   if (res.result === 'success') {
-  //     if (isHybrid()) {
-  //       Hybrid('RoomJoin', res.data)
-  //     } else {
-  //       //하이브리드앱이 아닐때
-  //       const {roomNo} = res.data
-  //       context.action.updateBroadcastTotalInfo(res.data)
-  //       history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-  //     }
-  //   } else {
-  //     context.action.alert({
-  //       msg: res.message
-  //     })
-  //   }
-  //   return
-  // }
-
   const joinRoom = obj => {
     const {roomNo} = obj
     history.push(`/broadcast?roomNo=${roomNo}`)

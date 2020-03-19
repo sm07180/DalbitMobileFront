@@ -14,6 +14,7 @@ import Api from 'context/api'
 //etc
 import roomCheck from 'components/lib/roomCheck.js'
 import qs from 'query-string'
+import {isHybrid, Hybrid} from 'context/hybrid'
 
 //components
 import useResize from 'components/hooks/useResize'
@@ -56,7 +57,11 @@ export default props => {
         props.history.push('/live')
       })
       if (data) {
-        context.action.updateBroadcastTotalInfo(data)
+        if (isHybrid()) {
+          Hybrid('RoomJoin', data)
+        } else {
+          context.action.updateBroadcastTotalInfo(data)
+        }
       }
     })()
   }
