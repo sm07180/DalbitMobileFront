@@ -60,8 +60,6 @@ export default props => {
     }
   }
 
-  fetch(1)
-
   let rankingSlider = {}
   const params = {
     slidesPerView: 'auto',
@@ -122,7 +120,7 @@ export default props => {
 
   //useEffect
   useEffect(() => {
-    //fetch(1)
+    fetch(1)
   }, [])
 
   useEffect(() => {

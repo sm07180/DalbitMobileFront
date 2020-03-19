@@ -4,6 +4,7 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //------------------------------------------------------------ declare start
@@ -43,7 +44,7 @@ export default props => {
             <MobileWrap>
               <div className="content">
                 <div className="title">
-                  {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}
+                  {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(Utility.leadingZeros(data.roomType.toString()))].cdNm}
                   {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
                   {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
                   {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}

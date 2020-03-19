@@ -16,6 +16,7 @@ const ENV_URL = {
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitcast.com')
   },
   stage: {
+    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitcast.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5000/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitcast.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
