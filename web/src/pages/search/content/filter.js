@@ -30,6 +30,25 @@ export default props => {
   const [query, setQuery] = useState('')
   //초기 qs검색 api호출및 필터 벨류 저장
   //---------------------------------------------------------------------
+
+  const roomTypes = {
+    '00': '일상/챗',
+    '01': '연애/오락',
+    '02': '노래/연주',
+    '03': '고민/사연',
+    '04': '책/힐링',
+    '05': '스포츠',
+    '06': 'ASMR',
+    '07': '노래방',
+    '08': '건강',
+    '09': '공포',
+    '10': '먹방',
+    '11': '성우',
+    '12': '요리',
+    '99': '기타'
+  }
+
+  //---------------------------------------------------------------------
   //검색 api호출및 필터 벨류 저장
   async function fetchData() {
     const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
@@ -168,9 +187,9 @@ export default props => {
             }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>
-              <Thumb thumb={thumb62x62} />
+              {/* <Thumb thumb={thumb62x62} /> */}
             </Img>
-            <em>{title}</em>
+            {/* <em>{title}</em> */}
             <h2>{title}</h2>
             <h3>{nickNm}</h3>
             <InfoWrap>
@@ -372,6 +391,7 @@ const ListWrap = styled.button`
   width: calc(14.28% - 25px);
   margin-bottom: 37px;
   margin-right: 29px;
+  text-align: left;
   &:nth-child(7n) {
     margin-right: 0px;
   }
@@ -411,6 +431,8 @@ const ListWrap = styled.button`
     font-style: normal;
     font-size: 14px;
     letter-spacing: -0.35px;
+    line-height: 1.4;
+    word-break: break-all;
   }
   & h2 {
     margin-top: 18px;
@@ -418,12 +440,16 @@ const ListWrap = styled.button`
     font-size: 16px;
     font-weight: normal;
     letter-spacing: -0.4px;
+    line-height: 1.4;
+    word-break: break-all;
   }
   & h3 {
     margin-top: 12px;
     color: #8556f6;
     font-size: 14px;
     letter-spacing: -0.35px;
+    line-height: 1.4;
+    word-break: break-all;
   }
 `
 const Img = styled.div`

@@ -10,8 +10,6 @@ export default props => {
   //-------------------------------------------------------------- declare start
   const [hover, setHover] = useState(false)
   const [selected, setSelected] = useState()
-  const context = useContext(Context)
-  // const [roomType, setRoomType] = useState([])
 
   //-------------------------------------------------------------- func start
   const handleHover = (flag, index) => {
@@ -19,16 +17,20 @@ export default props => {
     setHover(flag)
   }
 
+  const clickJoinRoom = (event, data) => {
+    props.joinRoom(data)
+  }
+
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
     return (
       <Contents key={index}>
         {index === selected && hover && (
-          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={e => clickJoinRoom(e, data)}>
             <button />
           </div>
         )}
-        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
+        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={e => clickJoinRoom(e, data)}>
           {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
