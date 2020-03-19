@@ -1,17 +1,22 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useMemo, useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
+import {isHybrid, Hybrid} from 'context/hybrid'
 //layout
 import Layout from 'pages/common/layout'
-
 import Api from 'context/api'
-
 import {Context} from 'context'
 
 export default props => {
   const ctx = useContext(Context)
   const {memNo} = props.match.params
   const [profile, setProfile] = useState(null)
+
+  const isNavigator = useMemo(() => {
+    return isHybrid()
+    // if (props.location.state === undefined) return false
+    // if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
+  })
 
   useEffect(() => {
     ;(async () => {
@@ -30,6 +35,15 @@ export default props => {
     return (
       <Layout {...props}>
         <PrivatePage>
+          {/* 닫기버튼 */}
+          {!isNavigator && (
+            <CloseButton
+              onClick={() => {
+                Hybrid('CloseLayerPopup', '')
+              }}>
+              닫기
+            </CloseButton>
+          )}
           <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb150x150']})`}}></ProfileImg>
           <NickName>{profile.nickNm}</NickName>
           <MemberId>@{profile.memId}</MemberId>
@@ -57,6 +71,32 @@ export default props => {
     return <div></div>
   }
 }
+
+const CloseButton = styled.button`
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-indent: -9999px;
+  &:before,
+  &:after {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    content: ' ';
+    height: 30px;
+    width: 1px;
+    background-color: #959595;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+`
 
 const MsgWrap = styled.div`
   display: block;
