@@ -37,12 +37,14 @@ const BroadCastProvider = props => {
   const [broadcastProfileInfo, setBroadcastProfileInfo] = useState(null) // 방송방 프로필보기,
   const [category, setCategory] = useState('')
   const [SelectChange, setSelectChange] = useState('전체')
+  const [selectPopular, setSelectPopular] = useState('전체')
   const [noticeMsg, setNoticeMsg] = useState('')
 
   const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
   const [rolecheck, setRoleCheck] = useState('')
   const [liveSortList, setLiveSortList] = useState(null) // 방송방 라이브 정렬 리스트
-  const [listenerUpdate, setListenerUpdate] = useState([]) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
+  const [listenerUpdate, setListenerUpdate] = useState(null) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
+  const [resetZero, setResetZero] = useState(0)
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -184,6 +186,9 @@ const BroadCastProvider = props => {
     updateselectchange: num => {
       setSelectChange(num)
     },
+    updateselectPopular: str => {
+      setSelectPopular(str)
+    },
     updateNoticeMsg: str => {
       setNoticeMsg(str)
     },
@@ -198,6 +203,9 @@ const BroadCastProvider = props => {
     },
     updateListenerUpdate: obj => {
       setListenerUpdate(listenerUpdate => ({...listenerUpdate, ...obj}))
+    },
+    updateResetZero: obj => {
+      setResetZero(resetZero => ({...resetZero, ...obj}))
     }
   }
   //---------------------------------------------------------------------
@@ -230,7 +238,9 @@ const BroadCastProvider = props => {
     broadTimer,
     rolecheck,
     liveSortList,
-    listenerUpdate
+    listenerUpdate,
+    resetZero,
+    selectPopular
   }
 
   return <Provider value={value}>{props.children}</Provider>

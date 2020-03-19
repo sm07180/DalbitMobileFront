@@ -14,7 +14,10 @@ export default props => {
   const reset = () => {
     store.action.updatecategory('')
     store.action.updateselectchange('전체')
+    store.action.updateResetZero({params: {roomType: store.category, page: 1, records: 100, searchType: 0}})
+    store.action.updateselectPopular('전체')
   }
+
   return (
     <>
       <Wrap>

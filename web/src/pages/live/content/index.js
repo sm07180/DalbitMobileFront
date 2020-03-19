@@ -69,11 +69,9 @@ export default props => {
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
       setList(false)
       return
     } else {
-      console.log('## res :', res)
       liveList = liveList.concat(res.data.list)
       livePaging = res.data.paging
       store.action.updateList(liveList)

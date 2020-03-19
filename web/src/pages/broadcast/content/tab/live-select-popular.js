@@ -11,11 +11,12 @@ export default props => {
   //0.인기순..배열 호출 state-------------------------------------------
   //1.셀렉트박스 visibility 체크----------------------------------------
   //2.셀렉트박스 text 변경 초기 state-----------------------------------
+  const store = useContext(BroadCastStore)
+  const [list, setList] = useState([])
   const [PopularInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChange, setSelectChange] = useState('전체')
-  const [list, setList] = useState([])
-  const store = useContext(BroadCastStore)
+  const [SelectChange, setSelectChange] = useState(store.selectPopular)
+
   //------------------------------------------------------------------
   //function
   //셀렉트 버튼 토글 function
@@ -38,6 +39,7 @@ export default props => {
           setSelectChange(item.option)
           setSelectCheck(false)
           getBroadList({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
+          store.action.updateResetZero({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
         }}>
         {item.option}
       </p>
