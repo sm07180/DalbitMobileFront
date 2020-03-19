@@ -55,7 +55,7 @@ export default props => {
     ;(async () => {
       getBoradInfo = true
       const roomNo = location.href.split('?')[1].split('=')[1]
-      const data = await roomCheck(roomNo)
+      const data = await roomCheck(roomNo, context)
       if (data) {
         context.action.updateBroadcastTotalInfo(data)
       }

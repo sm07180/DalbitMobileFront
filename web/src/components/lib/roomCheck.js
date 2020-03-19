@@ -12,6 +12,18 @@ export default async function roomCheck(roomNo, ctx) {
         return roomJoin.data
       }
     }
+  } else if (code === '-2') {
+    ctx.action.alert({
+      msg: 'BJ가 없습니다.'
+    })
+  } else if (code === '-3') {
+    ctx.action.alert({
+      msg: '종료된 방송입니다.'
+    })
+  } else if (code === '-5') {
+    ctx.action.alert({
+      msg: '입장이 제한되었습니다.'
+    })
   } else if (result === 'success') {
     return data
   } else {
