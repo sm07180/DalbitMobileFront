@@ -8,6 +8,7 @@ import {Img} from './profileImg'
 import Util from '../../util/broadcast-util'
 import {BroadCastStore} from '../../store'
 import Api from 'context/api'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
   //----------------------------------------------- declare start
@@ -124,7 +125,7 @@ export default props => {
                   <Contents key={idx}>
                     <UserInfo>
                       <div>
-                        <Img width={40} height={40} src={'https://image.dalbitcast.com/images/api/profile_test5.jpg'} marginRight={8} />
+                        <Img width={40} height={40} src={`${IMG_SERVER}/images/api/profile_test5.jpg`} marginRight={8} />
                         <div>{data.nickNm}</div>
                       </div>
                       <div>
@@ -283,7 +284,7 @@ const DjMain = styled.div`
       width: 18px;
       height: 18px;
       margin-right: 6px;
-      background: url('https://image.dalbitcast.com/images/api/ic_refresh.png') no-repeat;
+      background: url('${IMG_SERVER}/images/api/ic_refresh.png') no-repeat;
     }
 
     & > span {

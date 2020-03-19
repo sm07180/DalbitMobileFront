@@ -104,7 +104,7 @@ export default props => {
     if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
       return (
         <div className="noresultWrap">
-          <img src="https://image.dalbitcast.com/images/api/img_noresult.png"></img>
+          <img src={`${IMG_SERVER}/images/api/img_noresult.png`}></img>
           <p>등록된 공지사항이 없습니다.</p>
         </div>
       )

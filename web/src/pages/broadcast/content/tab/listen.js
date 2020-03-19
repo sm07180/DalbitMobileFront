@@ -12,17 +12,20 @@ import Events from './listener-event'
 import EventBTNS from './listen-eventBTN'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
+import qs from 'query-string'
+
 export default props => {
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
-  const prevCountRef = useRef()
+
+  const {roomNo} = qs.parse(location.parse)
+  const {broadcastTotalInfo} = context
+  const roomInfo = broadcastTotalInfo
 
   //---------------------------------------------------------------
   //api(리스너 리스트)
   const fetchListenList = async () => {
-    const {roomNo} = props.location.state
     const res = await API.broad_listeners({
       params: {roomNo}
     })

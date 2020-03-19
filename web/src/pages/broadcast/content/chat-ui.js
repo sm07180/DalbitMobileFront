@@ -26,21 +26,22 @@ export default props => {
   const [comments, setComments] = useState([]) //기본 채팅창에 들어가는 메시지들
   const [top1Msg, setTop1Msg] = useState([]) // 채팅창 상단 top1메시지
   const [top2Msg, setTop2Msg] = useState([]) // 채팅창 상단 top2메시지
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   const [child, setChild] = useState() // 메세지 children
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
   const store = useContext(BroadCastStore)
-  const [listenerlist, setlistenerlist] = useState([])
+
+  const {broadcastTotalInfo} = context
+  const roomInfo = broadcastTotalInfo
   //---------------------------------------------------------------------
   //function
   const postMessageChange = e => {
     //context
     if (e.target.value && e.key == 'Enter') {
       if (context.token.isLogin) {
-        sc.SendMessageChat({...props.location.state, msg: e.target.value})
+        sc.SendMessageChat({...broadcastTotalInfo, msg: e.target.value})
         e.target.value = ''
       } else {
         e.target.value = ''

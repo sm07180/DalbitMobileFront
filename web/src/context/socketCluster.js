@@ -761,9 +761,6 @@ export const receiveMessageData = recvData => {
 // }
 
 export const socketClusterBinding = (channel, Info) => {
-  //새로고침시 문제가 됨 .....
-  //socketClusterDestory(false, channel)
-
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {

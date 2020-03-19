@@ -40,28 +40,10 @@ export const BroadValidation = () => {
       //fetch
       async function fetchData(obj) {
         const res = await Api.broad_check({...obj})
+        console.log(res)
         if (res.result === 'success') {
-          if (res.code === '1') {
-            //방송중
-            context.action.alert({
-              msg: `${res.message}`
-            })
-            return true
-          } else if (res.code === '2') {
-            //비정상된 방이 있음
-            context.action.alert({
-              msg: `${res.message}`
-            })
-            return true
-          } else if (res.code === '-1') {
-            //요청회원 아님
-            context.action.alert({
-              msg: `${res.message}`
-            })
-            return true
-          }
-          //진행중인 방송이 있습니다.
-          if (_.hasIn(res.data, 'state') && res.data.state === 5) {
+          if (res.code === '1' || res.code === '2') {
+            //방송중,비정상된 방이 있음
             context.action.confirm({
               //---------------------------방송재게
               callback: () => {
@@ -110,6 +92,64 @@ export const BroadValidation = () => {
                 right: '방송하기'
               }
             })
+            return true
+          } else if (res.code === '-1') {
+            //요청회원 아님
+            context.action.alert({
+              msg: `${res.message}`
+            })
+            return true
+          }
+          //진행중인 방송이 있습니다.
+          if (_.hasIn(res.data, 'state') && res.data.state === 5) {
+            context.action.confirm({
+              //---------------------------방송재게
+              callback: () => {
+                setTimeout(() => {
+                  async function getReToken(obj) {
+                    const res = await Api.broadcast_reToken({data: {...obj}})
+                    //Error발생시
+                    if (res.result === 'fail') {
+                      console.log(res.message)
+                      props.history.push('/')
+                      return
+                    }
+                    //정상리토큰
+                    if (res.result === 'success') {
+                      // sc.socketClusterBinding(res.data.roomNo, context)
+                      context.action.updateBroadcastTotalInfo(res.data)
+                      if (isApp) {
+                        Hybrid('ReconnectRoom', res.data)
+                      } else {
+                        Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
+                      }
+                      return
+                    }
+                    //return res.data
+                  }
+                  getReToken(res.data)
+                }, 10)
+              },
+              //---------------------------방송종료
+              cancelCallback: () => {
+                setTimeout(() => {
+                  async function exitRoom(obj) {
+                    const res = await Api.broad_exit({data: {...obj}})
+                    if (res.result === 'success') {
+                      context.action.alert({
+                        msg: res.message
+                      })
+                    }
+                  }
+                  exitRoom(res.data)
+                }, 10)
+              },
+              msg: res.message,
+              buttonText: {
+                left: '방송종료',
+                right: '방송하기'
+              }
+            })
           } else {
             if (isApp) Hybrid('RoomMake', '')
             if (!isApp) Navi.history().push('/broadcast-setting')
@@ -117,7 +157,7 @@ export const BroadValidation = () => {
         } else {
           //요청회원 아님
           context.action.alert({
-            msg: `Api.broad_check Error`
+            msg: res.message
           })
         }
       }

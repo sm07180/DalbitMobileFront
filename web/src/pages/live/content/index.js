@@ -101,7 +101,7 @@ export default props => {
         Hybrid('RoomJoin', data)
       } else {
         context.action.updateBroadcastTotalInfo(data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`, data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`)
       }
     }
   }

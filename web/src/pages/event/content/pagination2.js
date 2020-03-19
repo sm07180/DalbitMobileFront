@@ -210,7 +210,7 @@ const Icon = styled.button`
   display: flex;
   width: 36px;
   height: 36px;
-  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg') no-repeat center center / cover;
+  background: url(${IMG_SERVER}/svg/ic_search_normal.svg) no-repeat center center / cover;
 `
 
 const ListWrap = styled.div`

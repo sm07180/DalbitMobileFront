@@ -89,7 +89,7 @@ export default props => {
                   <ItemInfo key={idx} onClick={() => pickItem(idx, data.itemNo)}>
                     {item == idx && (
                       <Picked>
-                        <img src={'https://image.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
+                        <img src={`${IMG_SERVER}/images/api/ic_multiplication@2x.png`} width={18} height={18} /> {count}
                       </Picked>
                     )}
                     <ItemBox>
@@ -97,7 +97,7 @@ export default props => {
                         <img src={data.thumbs} width={70} height={70} />
                       </ItemImg>
                       <Icon active={idx === item ? 'active' : ''}>
-                        <img src={'https://image.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
+                        <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={18} height={18} />
                         {data.cost}
                       </Icon>
                     </ItemBox>

@@ -7,6 +7,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import NoResult from './noResult'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import {useHistory} from 'react-router-dom'
 
 //global
 import {COLOR_MAIN} from 'context/color'
@@ -15,6 +16,8 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const history = useHistory()
+
   //state
   const [list, setPosts] = useState([])
   //방송리스트 map
@@ -160,7 +163,8 @@ export default props => {
           <ListWrap
             key={index}
             onClick={() => {
-              joinRoom(roomNo)
+              //joinRoom(roomNo)
+              props.history.push(`/broadcast?roomNo=${roomNo}`)
             }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>
@@ -329,7 +333,7 @@ const Wrap = styled.div`
         width: 36px;
         height: 36px;
         margin-left: 10px;
-        background: url('https://image.dalbitcast.com/images/api/ico_plus_p.png');
+        background: url('${IMG_SERVER}/images/api/ico_plus_p.png');
       }
     }
   }
@@ -361,7 +365,7 @@ const Icon = styled.button`
   display: flex;
   width: 48px;
   height: 48px;
-  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg');
+  background: url('${IMG_SERVER}/svg/ic_search_normal.svg');
 `
 
 const ListWrap = styled.button`

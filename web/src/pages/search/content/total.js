@@ -196,7 +196,7 @@ const Icon = styled.button`
   display: flex;
   width: 48px;
   height: 48px;
-  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg');
+  background: url('${IMG_SERVER}/svg/ic_search_normal.svg');
 `
 
 const ListWrap = styled.div`

@@ -135,9 +135,9 @@ const Timer = props => {
   }, [])
 
   return (
-    <div id="time" className="time">
+    <span id="time" className="time">
       {store.broadTimer}
-    </div>
+    </span>
   )
 }
 export default Timer
