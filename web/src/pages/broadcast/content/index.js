@@ -55,7 +55,9 @@ export default props => {
     ;(async () => {
       getBoradInfo = true
       const roomNo = location.href.split('?')[1].split('=')[1]
-      const data = await roomCheck(roomNo, context)
+      const data = await roomCheck(roomNo, context, () => {
+        props.history.push('/')
+      })
       if (data) {
         context.action.updateBroadcastTotalInfo(data)
       }
@@ -148,37 +150,28 @@ export default props => {
     const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
       props.history.push('/')
       return
     }
-    //sc.socketClusterBinding(res.data.roomNo, res.data)
     sc.socketClusterBinding(res.data.roomNo, context)
     context.action.updateBroadcastTotalInfo(res.data)
-    //return res.data
   }
   async function reloadRoom(roomNo) {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
-      console.log(res.message)
       return
     }
     context.action.updateBroadcastTotalInfo(res.data)
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
-    //return res.data
   }
   useEffect(() => {
-    // 방 소켓 연결
-    console.log('방소켓 연결 해라 ')
-    if (props.location.state.auth === 3) {
-      //console.clear()
+    if (!authValue) {
+    } else if (props.location.state.auth === hostRole) {
       getReToken(props.location.state.roomNo)
       sc.socketClusterBinding(props.location.state.roomNo, context)
     } else {
       document.addEventListener('keydown', function(e) {
-        const keyCode = e.keyCode
-        //console.log('pushed key ' + e.key)
         if (e.key == 'F5') {
           reloadRoom(props.location.state.roomNo)
         } else {
@@ -186,11 +179,7 @@ export default props => {
         return () => document.removeEventListener('keydown')
       })
       if (props && props.location.state) {
-        // if (props.location.state.auth == 0) {
-        //   reloadRoom(props.location.state.roomNo)
-        // } else {
         sc.socketClusterBinding(props.location.state.roomNo, context)
-        //}
       }
     }
 
@@ -198,7 +187,7 @@ export default props => {
     if (window.innerWidth <= 840) {
       setIsSideOn(false)
     }
-  }, [])
+  }, [authValue])
 
   //방송방 리사이즈시
   //pc->모바일은 탭닫음 //모바일->pc는 탭열림
