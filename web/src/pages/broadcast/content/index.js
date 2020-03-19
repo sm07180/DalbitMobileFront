@@ -59,6 +59,7 @@ export default props => {
       if (data) {
         if (isHybrid()) {
           Hybrid('RoomJoin', data)
+          props.history.goBack()
         } else {
           context.action.updateBroadcastTotalInfo(data)
         }
