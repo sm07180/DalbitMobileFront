@@ -52,7 +52,7 @@ export default () => {
         //(BJ)일경우 방송하기:방송중
         context.action.updateCastState(null)
         //종료시
-        alert(JSON.stringify(event.detail))
+        // alert(JSON.stringify(event.detail))
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
