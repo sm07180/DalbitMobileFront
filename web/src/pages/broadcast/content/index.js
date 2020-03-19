@@ -53,7 +53,7 @@ export default props => {
     ;(async () => {
       getBoradInfo = true
       const data = await roomCheck(roomNo, context, () => {
-        props.history.push('/')
+        props.history.push('/live')
       })
       if (data) {
         context.action.updateBroadcastTotalInfo(data)
