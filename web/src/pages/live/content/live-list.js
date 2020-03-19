@@ -106,6 +106,7 @@ const List = styled.div`
     align-items: center;
 
     .hoverWrap {
+      cursor: pointer;
       display: flex;
       width: 96px;
       height: 96px;
