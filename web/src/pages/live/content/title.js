@@ -33,5 +33,6 @@ const Container = styled.div`
     font-weight: 600;
     line-height: 0.86;
     letter-spacing: -0.7px;
+    transform: skew(-0.03deg);
   }
 `

@@ -171,7 +171,7 @@ const TopArea = styled.div`
       font-weight: 600;
       letter-spacing: -0.6px;
       color: #8556f6;
-
+      transform: skew(-0.03deg);
       & > span {
         font-weight: 800;
       }
@@ -208,6 +208,7 @@ const Sort = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
+    transform: skew(-0.03deg);
     & > span {
       padding-left: 10px;
     }
@@ -243,7 +244,7 @@ const DropDown = styled.ul`
   line-height: 2.13;
   letter-spacing: -0.4px;
   color: #878787;
-
+  transform: skew(-0.03deg);
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
