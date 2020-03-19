@@ -233,6 +233,7 @@ const DropDown = styled.ul`
   /* height: 116px; */
   position: absolute;
   top: 38px;
+  left: -1px;
   z-index: 11;
   background: #fff;
   border-style: solid;

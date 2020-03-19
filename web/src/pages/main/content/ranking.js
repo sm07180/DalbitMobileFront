@@ -561,6 +561,6 @@ const NoImg = styled.div`
   height: 227px;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 90%;
-    height: 198;
+    height: 198px;
   }
 `
