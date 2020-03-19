@@ -59,7 +59,7 @@ export default props => {
   useEffect(() => {
     if (isHybrid()) return
     //@PC
-    if (context.roomInfo !== null && context.roomInfo !== undefined) {
+    if (roomInfo !== null && roomInfo !== undefined) {
       const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = roomInfo
       setInfo({
         bjNickNm: bjNickNm,
@@ -69,7 +69,7 @@ export default props => {
         auth: auth
       })
     }
-  }, [context.roomInfo])
+  }, [roomInfo])
 
   //---------------------------------------------------------------------
   return (
