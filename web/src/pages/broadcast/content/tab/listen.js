@@ -13,13 +13,11 @@ import EventBTNS from './listen-eventBTN'
 import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
 import qs from 'query-string'
-
+const {roomNo} = qs.parse(location.search)
 export default props => {
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
-
-  const {roomNo} = qs.parse(location.parse)
   const {broadcastTotalInfo} = context
   const roomInfo = broadcastTotalInfo
 
