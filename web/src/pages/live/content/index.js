@@ -151,7 +151,14 @@ export default props => {
       return
     }
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-    //Error발생시 (방이 입장되어 있을때)
+
+    //나이가 제한되었습니다
+    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.no.age') {
+      context.action.alert({
+        msg: res.message
+      })
+      return
+    }
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
       const exit = await exitRoom(obj)
       if (exit.result === 'success') joinRoom(obj)
