@@ -89,14 +89,14 @@ export default props => {
         <BoostImgArea>
           {store.boostList.boostCnt !== 0 ? (
             <>
-              <img src="https://image.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
+              <img src={`${IMG_SERVER}/images/api/boost_inactive@2x.png`} width={200} height={160} />
               <TimeActive>
                 {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
               </TimeActive>
             </>
           ) : (
             <>
-              <img src="https://image.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
+              <img src={`${IMG_SERVER}/images/api/boost_inactive@2x.png`} width={200} height={160} />
               <TimeInactive>30:00</TimeInactive>
             </>
           )}
@@ -109,7 +109,7 @@ export default props => {
         </Info>
         <UseBoost onClick={() => useBoost()}>
           부스터 사용(
-          <img src="https://image.dalbitcast.com/images/api/ic_moon_s@2x.png" width={18} height={18} />x 15)
+          <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={18} height={18} />x 15)
         </UseBoost>
       </Contents>
     </Container>

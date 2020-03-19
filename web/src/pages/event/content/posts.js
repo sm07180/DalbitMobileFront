@@ -89,66 +89,66 @@ const runningEInfo = [
   {
     title: '표현하지 못한 마음, 이렇게 표현해요!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event1.png'
+    url: `${IMG_SERVER}/images/api/event1.png`
   },
   {
     title: '검사 라디오 모험가 여러분들의 사연을 모집합니다!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event2.png'
+    url: `${IMG_SERVER}/images/api/event2.png`
   },
   {
     title: '달빛 보이스 콘테스트!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '검사 라디오 모험가 여러분들의 사연을 모집합니다!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event4.png'
+    url: `${IMG_SERVER}/images/api/event4.png`
   },
   {
     title: '커피 한 잔의 여유 이벤트!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event1.png'
+    url: `${IMG_SERVER}/images/api/event1.png`
   },
   {
     title: '달빛의 꿈꾸는 라디오!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event2.png'
+    url: `${IMG_SERVER}/images/api/event2.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   },
   {
     title: '달빛송 달빛들아 달빛송 만들어줘!',
     date: '2020.02.11 ~ 2020.04.11',
-    url: 'https://image.dalbitcast.com/images/api/event3.png'
+    url: `${IMG_SERVER}/images/api/event3.png`
   }
 ]

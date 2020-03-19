@@ -84,7 +84,7 @@ export default props => {
   const makeContent = () => {
     return (
       <div className="noresultWrap">
-        <img src="https://image.dalbitcast.com/images/api/img_noresult.png"></img>
+        <img src={`${IMG_SERVER}/images/api/img_noresult.png`}></img>
         <p>서비스 준비중입니다.</p>
       </div>
     )

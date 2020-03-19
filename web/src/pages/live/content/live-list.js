@@ -53,12 +53,12 @@ export default props => {
               <CountArea>
                 <div>
                   <Icon>
-                    <img src={'https://image.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                    <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
                     &nbsp;&nbsp;{data.entryCnt}
                   </Icon>
                   <span>|</span>
                   <Icon>
-                    <img src={'https://image.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                    <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
                     &nbsp;&nbsp;{data.likeCnt}
                   </Icon>
                 </div>
