@@ -38,12 +38,11 @@ export default props => {
     })
     //undefined 방어코드추가, resDj.data.list===undefined 일수있음
     if (resDj.result === 'success' && _.hasIn(resDj, 'data.list')) {
-      //console.log(resDj)
       setDjInfo(resDj.data.list)
-      sswiper.update()
+      if (sswiper) sswiper.update()
     } else {
       // fetch(2)
-      //console.log('실패', resDj.result)
+      console.log('실패', resDj.result)
     }
 
     const resfan = await Api.get_fan_ranking({
@@ -55,11 +54,13 @@ export default props => {
     })
     if (resfan.result === 'success' && _.hasIn(resDj, 'data.list')) {
       setFanInfo(resfan.data.list)
-      sswiper.update()
+      if (sswiper) sswiper.update()
     } else {
       //console.log('실패', resfan.result)
     }
   }
+
+  fetch(1)
 
   let rankingSlider = {}
   const params = {
@@ -76,33 +77,42 @@ export default props => {
 
   //map
   const createSlide = (array, type) => {
-    return array.map((item, index) => {
-      const rankClass = `nth${item.rank}`
+    if (array == undefined || array == false) {
       return (
-        <RankingItem
-          key={index}
-          className={rankClass}
-          onClick={() => {
-            if (context.token.isLogin) {
-              props.history.push(`/private/${item.memNo}`)
-            } else {
-              context.action.updatePopup('LOGIN')
-            }
-          }}>
-          <ImgBox url={item.profImg.url}>
-            <img src={item.profImg.url}></img>
-            <p>{item.rank}</p>
-          </ImgBox>
-          <h2>{item.nickNm}</h2>
-          {type == 'dj' && (
-            <State>
-              <span>{item.listeners}</span>
-              <span>{item.likes}</span>
-            </State>
-          )}
-        </RankingItem>
+        <NoResult>
+          <NoImg />
+          <span>조회된 결과가 없습니다.</span>
+        </NoResult>
       )
-    })
+    } else {
+      return array.map((item, index) => {
+        const rankClass = `nth${item.rank}`
+        return (
+          <RankingItem
+            key={index}
+            className={rankClass}
+            onClick={() => {
+              if (context.token.isLogin) {
+                props.history.push(`/private/${item.memNo}`)
+              } else {
+                context.action.updatePopup('LOGIN')
+              }
+            }}>
+            <ImgBox url={item.profImg.url}>
+              <img src={item.profImg.url}></img>
+              <p>{item.rank}</p>
+            </ImgBox>
+            <h2>{item.nickNm}</h2>
+            {type == 'dj' && (
+              <State>
+                <span>{item.listeners}</span>
+                <span>{item.likes}</span>
+              </State>
+            )}
+          </RankingItem>
+        )
+      })
+    }
   }
 
   //function
@@ -111,10 +121,12 @@ export default props => {
   }
 
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    //fetch(1)
+  }, [])
 
   useEffect(() => {
-    if (sswiper) fetch(1)
+    //if (sswiper) fetch(1)
   }, [sswiper])
 
   return (
@@ -514,4 +526,37 @@ const State = styled.div`
       display: none;
     }
   }
+`
+
+const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  & > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 282px;
+    height: 26px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+    color: #616161;
+    margin-top: 30px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 20px;
+    }
+  }
+`
+
+const NoImg = styled.div`
+  display: flex;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  width: 299px;
+  height: 227px;
 `
