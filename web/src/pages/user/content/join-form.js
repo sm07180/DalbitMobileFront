@@ -369,7 +369,6 @@ export default props => {
 
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
   const pickerOnChange = value => {
-    console.log('값을받았을까?', value)
     if (!changes.birth) {
       dateDefault = value
     } else {

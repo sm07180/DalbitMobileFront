@@ -26,7 +26,6 @@ export default props => {
   //최신날짜로 했던거 바꾸기
   const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
   //const [selectedDate, setSelectedDate] = useState(props.value)
-  console.log('props.valueprops.valueprops.value', props.value)
 
   //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {
