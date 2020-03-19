@@ -54,40 +54,6 @@ export default props => {
   //
   //exitRoom
 
-  // async function exitRoom(roomNos) {
-  //   const res = await Api.broad_exit({data: {roomNo: roomNos}})
-  //   if (res.result === 'success') {
-  //     return res
-  //   }
-  //   alert(res.message)
-  // }
-  // //joinRoom
-  // async function joinRoom(roomNo, roomNos) {
-  //   const res = await Api.broad_join({data: {roomNo: roomNo}})
-
-  //   console.log(res)
-  //   //Error발생시 (방이 입장되어 있을때)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-  //     const exit = await exitRoom(roomNos)
-  //     if (exit.result === 'success') joinRoom(roomNo)
-  //   }
-  //   //Error발생시 (종료된 방송)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
-  //   //정상진입이거나,방탈퇴이후성공일경우
-  //   if (res.result === 'success') {
-  //     if (isHybrid()) {
-  //       Hybrid('RoomJoin', res.data)
-  //     } else {
-  //       //하이브리드앱이 아닐때
-  //       const {roomNo} = res.data
-  //       context.action.updateBroadcastTotalInfo(res.data)
-  //       history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-  //     }
-  //   }
-  //   return
-  // }
-
-  // console.log(store.liveSortList)
   //라이브 맵------------------------------------------------------------------------------------------------------
   const makeContents = () => {
     let sortlist = store.liveSortList
