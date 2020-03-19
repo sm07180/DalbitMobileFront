@@ -36,9 +36,9 @@ export default props => {
       // }
     })
     if (res.result === 'success') {
-      // setTop1Data(res.data.list[0])
-      // setTop2Data(res.data.list[1])
-      // setListData(res.data.list.slice(2))
+      setTop1Data(res.data.list[0])
+      setTop2Data(res.data.list[1])
+      setListData(res.data.list.slice(2))
     } else {
       console.log('실패', res)
     }
