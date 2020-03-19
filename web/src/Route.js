@@ -42,7 +42,12 @@ const Live = React.lazy(() => import('pages/live'))
 
 export default () => {
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense
+      fallback={
+        <div className="loading">
+          <span></span>
+        </div>
+      }>
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/broadcast" component={BroadCast} />
