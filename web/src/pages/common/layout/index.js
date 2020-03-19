@@ -23,21 +23,7 @@ import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 
 const Layout = props => {
-  //context
-  const ctx = useContext(Context)
-  //initalize
   const {children} = props
-
-  // if (!ctx.broadcastTotalInfo && !getBoradInfo) {
-  //   ;(async () => {
-  //     getBoradInfo = true
-  //     const roomNo = location.href.split('?')[1].split('=')[1]
-  //     const res = await Api.broad_join({data: {roomNo: roomNo}})
-  //     if (res.result === 'success') {
-  //       ctx.action.updateBroadcastTotalInfo(res.data)
-  //     }
-  //   })()
-  // }
 
   //---------------------------------------------------------------------
   return (
