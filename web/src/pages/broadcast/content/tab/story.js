@@ -69,7 +69,7 @@ export default props => {
         callback: () => {
           console.log('callback처리')
         },
-        title: '달빛라디오',
+        // title: '달빛라디오',
         msg: '사연이 등록되었습니다.'
       })
       selectStoryList()
@@ -78,7 +78,7 @@ export default props => {
         callback: () => {
           console.log()
         },
-        title: '달빛라디오',
+        // title: '달빛라디오',
         msg: res.message
       })
     }

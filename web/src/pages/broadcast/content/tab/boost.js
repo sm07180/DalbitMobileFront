@@ -70,7 +70,7 @@ export default props => {
         callback: () => {
           console.log('')
         },
-        title: '달빛라디오',
+        // title: '달빛라디오',
         msg: '부스터가 사용되었습니다.'
       })
     }
