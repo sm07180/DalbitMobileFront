@@ -15,7 +15,6 @@ import {BroadCastStore} from 'pages/broadcast/store'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
-import {isHybrid, Hybrid} from 'context/hybrid'
 
 //------------------------------------------------------------------
 export default props => {
@@ -27,7 +26,6 @@ export default props => {
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
   const scrollbars = useRef(null) // 스크롤 영역 선택자
   //0.배열Info State--------------------------------------------------
-  const [broadList, setBroadList] = useState(null)
   const [fetch, setFetch] = useState(null)
   //------------------------------------------------------------------
   //fetch
@@ -52,53 +50,13 @@ export default props => {
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
   //
-  //exitRoom
-
-  // async function exitRoom(roomNos) {
-  //   const res = await Api.broad_exit({data: {roomNo: roomNos}})
-  //   if (res.result === 'success') {
-  //     return res
-  //   }
-  //   alert(res.message)
-  // }
-  // //joinRoom
-  // async function joinRoom(roomNo, roomNos) {
-  //   const res = await Api.broad_join({data: {roomNo: roomNo}})
-
-  //   console.log(res)
-  //   //Error발생시 (방이 입장되어 있을때)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-  //     const exit = await exitRoom(roomNos)
-  //     if (exit.result === 'success') joinRoom(roomNo)
-  //   }
-  //   //Error발생시 (종료된 방송)
-  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
-  //   //정상진입이거나,방탈퇴이후성공일경우
-  //   if (res.result === 'success') {
-  //     if (isHybrid()) {
-  //       Hybrid('RoomJoin', res.data)
-  //     } else {
-  //       //하이브리드앱이 아닐때
-  //       const {roomNo} = res.data
-  //       context.action.updateBroadcastTotalInfo(res.data)
-  //       history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-  //     }
-  //   }
-  //   return
-  // }
-
-  // console.log(store.liveSortList)
   //라이브 맵------------------------------------------------------------------------------------------------------
-  const makeContents = () => {
+  const makeContents = obj => {
     let sortlist = store.liveSortList
     if (sortlist === null) return
     return sortlist.list.map((live, index) => {
-      const roomNos = context.roomInfo.roomNo
-      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo, gstProfImg} = live
+      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, roomNo, bjProfImg, gstProfImg} = live
       let mode = '해당사항없음'
-      //console.log(roomNo)
-
-      //
       if (state === 1) mode = '1'
       if (state === 2) mode = '2'
       if (state === 3) mode = '3'
@@ -107,7 +65,7 @@ export default props => {
       //
       if (state !== 1) return
 
-      if (store.category == roomType && context.roomInfo.roomNo !== roomNo) {
+      if (store.category == roomType && props.roomNo !== roomNo) {
         return (
           <LiveList
             key={index}
@@ -146,7 +104,7 @@ export default props => {
           </LiveList>
         )
       }
-      if (store.category == '' && context.roomInfo.roomNo !== roomNo) {
+      if (store.category == '' && props.roomNo !== roomNo) {
         return (
           <LiveList
             key={index}
@@ -195,6 +153,7 @@ export default props => {
   }, [])
   useEffect(() => {
     //방송방 리스트
+    //makeContents({params: {roomType: '', page: 1, records: 100, searchType: index}})
     makeContents()
   }, [store.liveSortList])
   //------------------------------------------------------------------
@@ -393,8 +352,8 @@ const categoryInfo = [
   {option: '일상/챗'},
   {option: '노래/연주'},
   {option: '고민/사연'},
-  {option: '연애/오락'},
   {option: '책/힐링'},
+  {option: '연애/오락'},
   {option: 'ASMR'},
   {option: '노래방'},
   {option: '성우'},

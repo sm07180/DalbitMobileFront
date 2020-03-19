@@ -25,7 +25,6 @@ import PresentGiven from './present-given'
 
 export default props => {
   //RoomInfomation(context)
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [state, setState] = useState({
     prev: '청취자',
     next: '청취자'
@@ -34,6 +33,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
+  const {broadcastTotalInfo} = context
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
   const {currentItem, changeItem} = useTabs(0, store.currentTab)
@@ -72,17 +72,17 @@ export default props => {
         })}
       </Tab>
       {/* 탭컨텐츠영역 */}
-      {currentItem.tab === '청취자' && <LiveListener {...props} />}
+      {currentItem.tab === '청취자' && <LiveListener {...broadcastTotalInfo} />}
       {currentItem.tab === '게스트' && <LiveGuest Info={ManegerInfo} Info2={ListenInfo} Info3={GuestInfo} {...props} />}
-      {currentItem.tab === '라이브' && <Live {...props} />}
+      {currentItem.tab === '라이브' && <Live {...broadcastTotalInfo} />}
       {currentItem.tab === '충전' && <Charge prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '선물' && <Present prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '부스트' && <Boost />}
       {currentItem.tab === '프로필' && <Profile2 Info={Profiledata} {...props} prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
-      {currentItem.tab === '공지사항' && <Notice {...props} prev={state.prev} _changeItem={usePrev} />}
+      {currentItem.tab === '공지사항' && <Notice {...broadcastTotalInfo} prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '사연' && <Story prev={state.prev} _changeItem={usePrev} />}
-      {currentItem.tab === '방송수정' && <BroadModify {...props} />}
+      {currentItem.tab === '방송수정' && <BroadModify {...broadcastTotalInfo} />}
       {currentItem.tab === '빠른 말' && <Macro prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '받은선물' && <PresentGiven prev={state.prev} _changeItem={usePrev} />}
     </>
