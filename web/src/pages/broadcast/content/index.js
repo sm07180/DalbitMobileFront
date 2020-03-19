@@ -73,20 +73,21 @@ export default props => {
 
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
+  const [authValue, setAuthValue] = useState(null)
 
   const startPlayer = () => {
-    // if (auth === hostRole) {
-    //   setPublishStatus(true)
-    // } else if (auth === listenerRole) {
-    //   setPlayStatus(true)
-    // }
+    if (authValue === hostRole) {
+      setPublishStatus(true)
+    } else if (authValue === listenerRole) {
+      setPlayStatus(true)
+    }
   }
   const stopPlayer = () => {
-    // if (auth === hostRole) {
-    //   setPublishStatus(false)
-    // } else if (auth === listenerRole) {
-    //   setPlayStatus(false)
-    // }
+    if (authValue === hostRole) {
+      setPublishStatus(false)
+    } else if (authValue === listenerRole) {
+      setPlayStatus(false)
+    }
   }
   useEffect(() => {
     context.action.updateState({isOnCast: true})
@@ -99,6 +100,7 @@ export default props => {
   useEffect(() => {
     if (mediaHandler && broadcastTotalInfo) {
       const {bjStreamId, auth} = broadcastTotalInfo
+      setAuthValue(auth)
 
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
