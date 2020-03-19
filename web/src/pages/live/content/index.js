@@ -11,6 +11,7 @@ import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
+import roomCheck from 'components/lib/roomCheck.js'
 
 //window.addEventListener 사용하면 state 가 초기화 되는 문제로 데이터들 함수 외부 변수로 사용 중
 let liveList = []
@@ -94,30 +95,16 @@ export default props => {
       getBroadList({params: {roomType: type, page: page, records: 10, searchType: searchType}})
     }
   }
-
-  //exitRoom
-  async function exitRoom(obj) {
-    const res = await Api.broad_exit({data: {...obj}})
-    if (res.result === 'success') {
-      return res
-    } else {
-    }
-    //alert(res.message)
-  }
-
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    const res = await Api.broad_join({data: {roomNo}})
-    if (res.result === 'success') {
-      if (isHybrid()) {
-        Hybrid('RoomJoin', res.data)
-      } else {
-        //하이브리드앱이 아닐때
-        const {roomNo} = res.data
-        context.action.updateBroadcastTotalInfo(res.data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-      }
+    const data = await roomCheck(roomNo)
+
+    if (isHybrid()) {
+      Hybrid('RoomJoin', data)
+    } else {
+      context.action.updateBroadcastTotalInfo(data)
+      props.history.push(`/broadcast?roomNo=${roomNo}`, data)
     }
   }
 
