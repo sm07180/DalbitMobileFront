@@ -26,41 +26,36 @@ export default props => {
   }
   //---------------------------------------------------------------------
 
-  const createBroad = () => {
-    BroadContentInfo.map((item, index) => {
-      // console.log(item)
-      const {roomNo, bjProfImg, roomType, title, bjNickNm, entryCnt, likeCnt} = item
-
-      return (
-        //////
-        <BroadWrap
-          key={index}
-          {...item}
-          onClick={() => {
-            props.joinRoom({roomNo: roomNo})
-          }}>
-          <ImgWrap bg={bjProfImg.url}></ImgWrap>
-          {/* <Avata bg={avata}></Avata> */}
-          <InfoWrap>
-            <Category>{roomTypes[roomType]}</Category>
-            <Title>{title}</Title>
-            <BjName>{bjNickNm}</BjName>
-          </InfoWrap>
-          <People>
-            <Viewer></Viewer>
-            <span>{entryCnt}</span>
-            <Lover></Lover>
-            <span>{likeCnt}</span>
-          </People>
-        </BroadWrap>
-      )
-    })
-  }
-
   return (
     <>
       <Flex>
-        <div>{BroadContentInfo && createBroad()}</div>
+        <div>
+          {BroadContentInfo.map((item, index) => {
+            const {roomNo, bjProfImg, roomType, title, bjNickNm, entryCnt, likeCnt} = item
+            return (
+              <BroadWrap
+                key={index}
+                {...item}
+                onClick={() => {
+                  props.joinRoom({roomNo: roomNo})
+                }}>
+                <ImgWrap bg={bjProfImg.url}></ImgWrap>
+                {/* <Avata bg={avata}></Avata> */}
+                <InfoWrap>
+                  <Category>{roomTypes[roomType]}</Category>
+                  <Title>{title}</Title>
+                  <BjName>{bjNickNm}</BjName>
+                </InfoWrap>
+                <People>
+                  <Viewer></Viewer>
+                  <span>{entryCnt}</span>
+                  <Lover></Lover>
+                  <span>{likeCnt}</span>
+                </People>
+              </BroadWrap>
+            )
+          })}
+        </div>
       </Flex>
     </>
   )
