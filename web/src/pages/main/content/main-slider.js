@@ -269,6 +269,7 @@ const Slide = styled.div`
     color: #bdbdbd;
     white-space: nowrap;
     text-overflow: ellipsis;
+    transform: skew(-0.03deg);
   }
 
   &.swiper-slide-duplicate {
@@ -389,6 +390,7 @@ const ActiveItem = styled.div`
     font-weight: 600;
     font-size: 14px;
     line-height: 28px;
+    transform: skew(-0.03deg);
   }
   b {
     margin-top: 18px;
@@ -449,7 +451,7 @@ const ProfileState = styled.p`
   color: #fff;
   font-size: 16px;
   font-weight: 600;
-
+  transform: skew(-0.03deg);
   & + & {
     position: relative;
     margin-left: 40px;

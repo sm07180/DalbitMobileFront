@@ -231,6 +231,7 @@ const Container = styled.div`
     letter-spacing: -0.5px;
     text-align: center;
     color: #424242;
+    transform: skew(-0.03deg);
   }
 
   .subTitle {
@@ -247,6 +248,7 @@ const Container = styled.div`
     border-bottom-width: 1px;
     align-items: center;
     justify-content: space-between;
+    transform: skew(-0.03deg);
   }
 `
 
@@ -273,6 +275,7 @@ const Info = styled.div`
     font-style: normal;
     line-height: 1.43;
     letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
   }
 
   .goods {
@@ -282,6 +285,7 @@ const Info = styled.div`
     letter-spacing: -0.35px;
     text-align: center;
     color: #424242;
+    transform: skew(-0.03deg);
   }
 
   .price {
@@ -291,10 +295,12 @@ const Info = styled.div`
     letter-spacing: -0.45px;
     text-align: center;
     color: #ec455f;
+    transform: skew(-0.03deg);
   }
   .price > span {
     font-size: 14px;
     letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
   }
 `
 const InfoWrap = styled.div`
@@ -340,6 +346,7 @@ const ItemBox = styled.button`
   letter-spacing: -0.35px;
   color: ${props => (props.active ? '#8556f6' : '#616161')};
   margin-bottom: 8px;
+  transform: skew(-0.03deg);
 `
 const ItemArea = styled.div`
   display: flex;
@@ -363,6 +370,7 @@ const NoticeArea = styled.div`
   letter-spacing: -0.3px;
   text-align: left;
   color: #9e9e9e;
+  transform: skew(-0.03deg);
 
   .circle {
     display: flex;
@@ -379,6 +387,7 @@ const NoticeArea = styled.div`
     letter-spacing: -0.18px;
     color: #fff;
     margin-right: 4px;
+    transform: skew(-0.03deg);
   }
 
   .notice {
@@ -439,7 +448,7 @@ const DepositInfo = styled.div`
       line-height: 1.43;
       letter-spacing: -0.35px;
       color: #616161;
-
+      transform: skew(-0.03deg);
       & > input {
         width: 232px;
         height: 40px;
@@ -452,6 +461,7 @@ const DepositInfo = styled.div`
         font-weight: 400;
         line-height: 1.43;
         letter-spacing: -0.35px;
+        transform: skew(-0.03deg);
       }
     }
   }
@@ -466,6 +476,7 @@ const DepositInfo = styled.div`
     line-height: 1.43;
     letter-spacing: -0.35px;
     color: #616161;
+    transform: skew(-0.03deg);
 
     & > span {
       display: flex;
@@ -505,6 +516,7 @@ const DepositInfo = styled.div`
           font-weight: 400;
           line-height: 1.43;
           letter-spacing: -0.35px;
+          transform: skew(-0.03deg);
         }
       }
     }
@@ -543,6 +555,7 @@ const Event = styled.div`
       font-size: 14px;
       text-align: center;
       letter-spacing: -0.35px;
+      transform: skew(-0.03deg);
       &:hover {
         background-color: #f8f8f8;
       }
@@ -570,7 +583,7 @@ const Select = styled.button`
   justify-content: space-between;
   justify-content: ${props => (props.active ? 'space-between' : 'center')};
   padding: 0px 3px 0px 3px;
-
+  transform: skew(-0.03deg);
   & > div {
     display: flex;
     background: url(${IMG_SERVER}/images/api/ico_selectdown_g_s.png);

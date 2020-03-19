@@ -161,6 +161,7 @@ const Container = styled.div`
     color: #616161;
     justify-content: center;
     align-items: flex-end;
+    transform: skew(-0.03deg);
   }
 `
 const Main = styled.div`
@@ -181,6 +182,7 @@ const Main = styled.div`
     line-height: 1.5;
     letter-spacing: -0.35px;
     color: #616161;
+    transform: skew(-0.03deg);
   }
 
   .macro {
@@ -219,6 +221,7 @@ const MacroArea = styled.div`
     line-height: 1.5;
     letter-spacing: -0.35px;
     color: #424242;
+    transform: skew(-0.03deg);
   }
 
   .value {
@@ -239,6 +242,7 @@ const MacroArea = styled.div`
     letter-spacing: -0.35px;
     color: #424242;
     padding: 10px 15px 10px 15px;
+    transform: skew(-0.03deg);
   }
 `
 
@@ -269,6 +273,7 @@ const EditMain = styled.div`
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: -0.35px;
+  transform: skew(-0.03deg);
 
   .editTitle {
     display: flex;
@@ -282,6 +287,7 @@ const EditMain = styled.div`
     font-weight: 400;
     line-height: 1.25;
     letter-spacing: -0.4px;
+    transform: skew(-0.03deg);
   }
 
   & > textarea {
@@ -297,6 +303,7 @@ const EditMain = styled.div`
     line-height: 1.43;
     letter-spacing: -0.35px;
     text-align: left;
+    transform: skew(-0.03deg);
   }
 `
 const SaveButton = styled.button`
@@ -315,6 +322,7 @@ const SaveButton = styled.button`
   border-radius: 13px;
   justify-content: center;
   align-items: center;
+  transform: skew(-0.03deg);
 `
 const TextArea = styled.textarea`
   width: 100%;

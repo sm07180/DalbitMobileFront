@@ -26,7 +26,7 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: auto;
   flex-direction: column;
   align-items: center;
 `

@@ -82,6 +82,7 @@ const Container = styled.div`
 const Contents = styled.div`
   display: flex;
   width: 400px;
+
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-direction: column;
     width: 180px;
@@ -99,6 +100,7 @@ const Contents = styled.div`
     border-style: solid;
     border-width: 3px;
     border-color: #8556f6;
+
     @media (max-width: ${WIDTH_TABLET}) {
       display: none;
     }
