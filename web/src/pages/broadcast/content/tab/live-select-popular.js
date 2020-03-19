@@ -1,9 +1,12 @@
 /**
  * @title 라이브탭 인기순 셀렉트박스 컴포넌트
  */
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
+import {BroadCastStore} from 'pages/broadcast/store'
+import Api from 'context/api'
+
 export default props => {
   //0.인기순..배열 호출 state-------------------------------------------
   //1.셀렉트박스 visibility 체크----------------------------------------
@@ -12,10 +15,11 @@ export default props => {
   const [SelectCheck, setSelectCheck] = useState(false)
   const [SelectChange, setSelectChange] = useState('전체')
   const [list, setList] = useState([])
+  const store = useContext(BroadCastStore)
   //------------------------------------------------------------------
   //function
   //셀렉트 버튼 토글 function
-  const ToggleSelect = () => {
+  const ToggleSelect = idx => {
     if (SelectCheck === false) {
       setSelectCheck(true)
     } else {
@@ -33,20 +37,21 @@ export default props => {
         onClick={() => {
           setSelectChange(item.option)
           setSelectCheck(false)
-          commonData()
+          getBroadList({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
         }}>
         {item.option}
       </p>
     )
   })
 
-  const commonData = async obj => {
-    const res = await Api.splash()
-    if (res.result === 'success') {
-      //context.action.updateCommon(res.data) // context에 update
-      console.log(res)
-      console.log(res.data.roomType)
-      setList(res.data.roomType)
+  async function getBroadList(obj) {
+    const res = await Api.broad_list({...obj})
+    //Error발생시
+    if (res.result === 'fail') {
+      console.log(res.message)
+      return
+    } else {
+      store.action.updateLiveSortList(res.data)
     }
   }
   //------------------------------------------------------------------

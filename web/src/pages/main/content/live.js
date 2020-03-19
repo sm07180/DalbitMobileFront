@@ -196,7 +196,7 @@ const Stitle = styled.div`
     float: left;
     width: 36px;
     height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ico-more-p.png') no-repeat center center / cover;
+    background: url('${IMG_SERVER}/images/api/ico-more-p.png') no-repeat center center / cover;
     font-size: 0;
     @media (max-width: ${WIDTH_MOBILE}) {
       float: right;

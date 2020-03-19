@@ -54,10 +54,11 @@ export default props => {
     if (setTime < 0) {
       clearInterval(inervalId)
       setCurrentAuthBtn({
-        request: false,
+        request: true,
         check: true
       })
-      setCurrentAuth2('인증시간이 초과되었습니다. 인증을 다시 받아주세요.')
+      document.getElementsByName('auth')[0].disabled = true
+      setCurrentAuth2('인증시간이 초과되었습니다.')
     }
   }
 
@@ -279,9 +280,10 @@ export default props => {
       //   check: true
       // })
 
-      setCurrentAuth1(resAuth.message)
+      setCurrentAuth1('인증번호 요청이 완료되었습니다.')
+      document.getElementsByName('loginID')[0].disabled = true
       setCurrentAuth2('')
-      document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
+      //document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       setCurrentAuthBtn({
         request: true,
         check: true
@@ -310,9 +312,10 @@ export default props => {
       setCurrentAuth2(resCheck.message)
       clearInterval(inervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
+      document.getElementsByName('auth')[0].disabled = true
     } else {
       console.log(resCheck)
-      setCurrentAuth2(resCheck.message)
+      setCurrentAuth2('인증번호(가) 일치하지 않습니다.')
     }
   }
 
@@ -355,14 +358,14 @@ export default props => {
           </HelpText>
         )}
         <InputWrap>
-          <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="신규 비밀번호" maxLength="20"/>
+          <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="신규 비밀번호" maxLength="20" />
           <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
           {currentPwd && (
             <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
               {currentPwd}
             </HelpText>
           )}
-          <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20"/>
+          <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20" />
           {currentPwdCheck && (
             <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
               {currentPwdCheck}

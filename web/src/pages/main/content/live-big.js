@@ -218,7 +218,7 @@ const Viewer = styled.div`
   height: 48px;
   width: 48px;
   margin-right: 28.8px;
-  background: url('https://devimage.dalbitcast.com/images/api/ico-hit-w-l.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ico-hit-w-l.png') no-repeat center center / cover;
   &:after {
     display: block;
     position: absolute;
@@ -246,7 +246,7 @@ const Lover = styled.div`
   float: left;
   width: 48px;
   height: 48px;
-  background: url('https://devimage.dalbitcast.com/images/api/ico-like-p-l.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ico-like-p-l.png') no-repeat center center / cover;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 24px;
     height: 24px;

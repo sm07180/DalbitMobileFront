@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Footer from '.'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 export default props => {
   const [show, setShow] = useState(true)
   const ToggleBtn = () => {
@@ -72,13 +75,12 @@ const Wrap = styled.div`
 const Logo = styled.div`
   flex-basis: 71.56%;
   height: 31px;
-  background: url('https://devimage.dalbitcast.com/images/api/footerlogo.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/footerlogo.png') no-repeat center center / cover;
 `
 const Button = styled.button`
   flex-basis: 17.64%;
   height: 36px;
-  background: url(${props => (props.value === true ? 'https://devimage.dalbitcast.com/images/api/arrow-top.png' : 'https://devimage.dalbitcast.com/images/api/ico-down.png')}) no-repeat center center /
-    cover;
+  background: url(${props => (props.value === true ? `${IMG_SERVER}/images/api/arrow-top.png` : `${IMG_SERVER}/images/api/ico-down.png`)}) no-repeat center center / cover;
 `
 const CopyRight = styled.p`
   margin-top: 40px;

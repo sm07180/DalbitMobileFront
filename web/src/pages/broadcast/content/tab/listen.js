@@ -34,54 +34,17 @@ export default props => {
 
     return
   }
-
-  // fetchListenList()
-  // if (context.broadcastTotalInfo.userCount != store.listenerList.length) {
-  //   fetchListenList()
+  // if (store.rolecheck.data.cmd == 'connect' || store.rolecheck.data.cmd == 'disconnect') {
+  //   console.log(store.rolecheck.data)
   // }
+
+  // console.log(store.rolecheck.data)
   // console.log(context.broadcastTotalInfo.userCount)
   // console.log(store.listenerList.length)
   useEffect(() => {
     fetchListenList()
-    // if (context.broadcastTotalInfo.userCount !== store.listenerList.length) {
-    //   fetchListenList()
-    // }
   }, [])
-  // for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
-  //   store.action.updateListenerList(store.listenerList)
-  // }
-  // for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
-  //   store.action.updateListenerList(store.listenerList)
-  // }
-  // const [count, setCount] = useState(context.broadcastTotalInfo.userCount)
 
-  // useEffect(() => {
-  //   prevCountRef.current = count
-  // })
-  // const prevCount = prevCountRef.current
-  // console.log(count)
-  // console.log(prevCount)
-  // useEffect(() => {
-  //   // if (store.listenerList.current !== store.listenerList) {
-  //   //   console.log('찍어')
-  //   //   fetchListenList()
-  //   // }
-  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; --i) {
-  //     fetchListenList()
-  //   }
-  //   for (var i = context.broadcastTotalInfo.userCount; i > 0; ++i) {
-  //     fetchListenList()
-  //   }
-  //   fetchListenList()
-  // }, [])
-  // useEffect(
-  //   function() {
-  //     localStorage.setItem('ss', store.listenerList)
-  //   },
-  //   [store.listenerList]
-  // )
-  // console.log(context.broadcastTotalInfo)
-  // console.log(context.broadcastTotalInfo.userCount)
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -102,6 +65,7 @@ export default props => {
       const {nickNm, memNo, memId, profImg, auth} = live
       const {thumb62x62} = profImg
       //매니저  청취자 비제이 구분 auth로
+
       if (auth === 0) mode = '0'
       if (auth === 1) mode = '1'
       if (auth === 2) mode = '2'
@@ -138,6 +102,7 @@ export default props => {
       if (auth === 2) mode = '2'
       if (auth === 3) mode = '3'
       if (auth !== 0) return
+
       return (
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>
@@ -210,7 +175,7 @@ const DJList = styled.div`
   background-color: ${COLOR_MAIN};
   border-radius: 24px;
   & h2 {
-    max-width: 70px;
+    min-width: 100px;
     height: 36px;
     margin-left: 10px;
     color: #fff;
@@ -224,14 +189,18 @@ const DJList = styled.div`
   }
 
   & h5 {
+    width: 140px;
     height: 36px;
-    margin-left: 36px;
     color: #fff;
+    margin-left: 30px;
     line-height: 36px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &:after {
     display: block;
@@ -278,7 +247,7 @@ const Title = styled.h4`
   transform: skew(-0.03deg);
 `
 const StreamID = styled.h4`
-  max-width: 100px;
+  min-width: 100px;
   height: 36px;
   margin-left: 10px;
   color: ${COLOR_MAIN};
@@ -291,14 +260,18 @@ const StreamID = styled.h4`
   text-overflow: ellipsis;
 `
 const NickName = styled.h4`
+  max-width: 140px;
   height: 36px;
-  margin-left: 36px;
+  margin-left: 30px;
   color: #424242;
   line-height: 36px;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 const ListenWrap = styled.div`
   z-index: 4;
