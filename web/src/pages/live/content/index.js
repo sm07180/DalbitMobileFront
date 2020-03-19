@@ -5,6 +5,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {LiveStore} from '../store'
+import {IMG_SERVER} from 'context/config'
 //components
 import Title from './title'
 import TopRank from './topRank'
@@ -312,7 +313,7 @@ const NoResult = styled.div`
 
 const NoImg = styled.div`
   display: flex;
-  background: url('https://devimage.dalbitcast.com/images/api/img_noresult.png') no-repeat;
+  background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat;
   width: 299px;
   height: 227px;
 `

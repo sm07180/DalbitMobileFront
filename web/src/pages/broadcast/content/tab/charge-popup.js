@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {BotButton} from './bot-button'
 import {Scrollbars} from 'react-custom-scrollbars'
 import SuccessPopup from './charge-success-popup'
-
+import {IMG_SERVER} from 'context/config'
 const testData = [
   {
     id: 0,
@@ -573,7 +573,7 @@ const Select = styled.button`
 
   & > div {
     display: flex;
-    background: url('https://devimage.dalbitcast.com/images/api/ico_selectdown_g_s.png');
+    background: url(${IMG_SERVER}/images/api/ico_selectdown_g_s.png);
     width: 22px;
     height: 22px;
   }

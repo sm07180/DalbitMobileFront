@@ -5,6 +5,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import Api from 'context/api'
 import {Context} from 'context'
 import {BroadCastStore} from '../../store'
+import {IMG_SERVER} from 'context/config'
 
 const totalCnt = 42
 const totalGold = 7800
@@ -390,7 +391,7 @@ const Img = styled.div`
   height: 40px;
   border-radius: 75px;
   margin-right: 5px;
-  background: url('https://devimage.dalbitcast.com/images/api/guest@2x.png') no-repeat;
+  background: url(${IMG_SERVER}/images/api/guest@2x.png) no-repeat;
 `
 const Secret = styled.div`
   display: flex;

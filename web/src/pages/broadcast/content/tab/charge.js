@@ -7,32 +7,32 @@ const testMoon = [
   {
     name: 30,
     price: '3,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
     price: '10,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
     price: '30,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
     price: '50,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
     price: '100,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
     price: '300,000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 
@@ -40,32 +40,32 @@ const testStar = [
   {
     name: 30,
     price: '50',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon1@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon1@2x.png'
   },
   {
     name: 100,
     price: '166',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon2@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon2@2x.png'
   },
   {
     name: 300,
     price: '500',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon3@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon3@2x.png'
   },
   {
     name: 500,
     price: '833',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon4@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon4@2x.png'
   },
   {
     name: 1000,
     price: '1666',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon5@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon5@2x.png'
   },
   {
     name: 3000,
     price: '5000',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/ic_moon6@2x.png'
+    imgUrl: 'https://image.dalbitcast.com/images/api/ic_moon6@2x.png'
   }
 ]
 // 충전하기 현재 (2020-03-04) API 없음
@@ -131,7 +131,7 @@ export default props => {
                 </GoodsName>
               </GoodsInfo>
               <Price active={idx === goodsState ? 'active' : ''} state={choice}>
-                {choice === 'star' && <img src="https://devimage.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
+                {choice === 'star' && <img src="https://image.dalbitcast.com/images/api/ic_star_s@2x.png" width={18} height={18} />}
                 {goods.price}
                 {choice === 'moon' && '원'}
               </Price>

@@ -7,6 +7,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import NoResult from './noResult'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import {IMG_SERVER} from 'context/config'
 //global
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -328,7 +329,7 @@ const Wrap = styled.div`
         width: 36px;
         height: 36px;
         margin-left: 10px;
-        background: url('https://devimage.dalbitcast.com/images/api/ico_plus_p.png');
+        background: url('https://image.dalbitcast.com/images/api/ico_plus_p.png');
       }
     }
   }
@@ -360,7 +361,7 @@ const Icon = styled.button`
   display: flex;
   width: 48px;
   height: 48px;
-  background: url('https://devimage.dalbitcast.com/svg/ic_search_normal.svg');
+  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg');
 `
 
 const ListWrap = styled.button`
@@ -451,7 +452,7 @@ const InfoWrap = styled.div`
       width: 24px;
       height: 24px;
       margin-right: 6px;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_headphone_s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ic_headphone_s.png) no-repeat center center / cover;
     }
     & strong {
       float: left;
@@ -463,7 +464,7 @@ const InfoWrap = styled.div`
       letter-spacing: -0.35px;
     }
     & .like {
-      background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ico-like-g-s.png) no-repeat center center / cover;
     }
   }
 `
@@ -495,7 +496,7 @@ const MemberWrap = styled.div`
     right: 10px;
     width: 36px;
     height: 36px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_live.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_live.png) no-repeat center center / cover;
   }
 `
 const Mimg = styled.div`

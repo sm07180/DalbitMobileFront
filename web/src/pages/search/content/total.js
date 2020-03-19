@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import API from 'context/api'
-
+import {IMG_SERVER} from 'context/config'
 export default props => {
   let {setValue} = props
 
@@ -164,7 +164,7 @@ const Wrap = styled.div`
         width: 36px;
         height: 36px;
         margin-left: 10px;
-        background: url('https://devimage.dalbitcast.com/images/api/ico_plus_p.png');
+        background: url(${IMG_SERVER}/images/api/ico_plus_p.png);
       }
     }
   }
@@ -196,7 +196,7 @@ const Icon = styled.button`
   display: flex;
   width: 48px;
   height: 48px;
-  background: url('https://devimage.dalbitcast.com/svg/ic_search_normal.svg');
+  background: url('https://image.dalbitcast.com/svg/ic_search_normal.svg');
 `
 
 const ListWrap = styled.div`
@@ -255,7 +255,7 @@ const InfoWrap = styled.div`
       width: 24px;
       height: 24px;
       margin-right: 6px;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_headphone_s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ic_headphone_s.png) no-repeat center center / cover;
     }
     & strong {
       float: left;
@@ -267,7 +267,7 @@ const InfoWrap = styled.div`
       letter-spacing: -0.35px;
     }
     & .like {
-      background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/ico-like-g-s.png) no-repeat center center / cover;
     }
   }
 `
