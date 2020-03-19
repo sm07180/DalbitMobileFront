@@ -41,6 +41,25 @@ export const BroadValidation = () => {
       async function fetchData(obj) {
         const res = await Api.broad_check({...obj})
         if (res.result === 'success') {
+          if (res.code === '1') {
+            //방송중
+            context.action.alert({
+              msg: `${res.message}`
+            })
+            return true
+          } else if (res.code === '2') {
+            //비정상된 방이 있음
+            context.action.alert({
+              msg: `${res.message}`
+            })
+            return true
+          } else if (res.code === '-1') {
+            //요청회원 아님
+            context.action.alert({
+              msg: `${res.message}`
+            })
+            return true
+          }
           //진행중인 방송이 있습니다.
           if (_.hasIn(res.data, 'state') && res.data.state === 5) {
             context.action.confirm({
@@ -96,7 +115,10 @@ export const BroadValidation = () => {
             if (!isApp) Navi.history().push('/broadcast-setting')
           }
         } else {
-          alert('유효성체크를 할수 없습니다. Api.broad_check')
+          //요청회원 아님
+          context.action.alert({
+            msg: `Api.broad_check Error`
+          })
         }
       }
       fetchData()
