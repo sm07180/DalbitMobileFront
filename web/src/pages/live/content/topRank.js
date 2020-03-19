@@ -135,6 +135,7 @@ const Image = styled.div`
     letter-spacing: -0.6px;
     color: #fff;
     border-bottom-right-radius: 15px;
+    transform: skew(-0.03deg);
   }
 
   & > img {
@@ -172,11 +173,12 @@ const Info = styled.div`
     letter-spacing: -0.35px;
     align-items: center;
     color: #bdbdbd;
+    transform: skew(-0.03deg);
   }
 
   .roomTitle {
     display: flex;
-    width: 90%;
+
     height: 75px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding-top: 0px;
@@ -189,6 +191,7 @@ const Info = styled.div`
     letter-spacing: -0.4px;
     word-break: break-all;
     line-height: 1.5;
+    transform: skew(-0.03deg);
   }
 
   .nickName {
@@ -210,6 +213,7 @@ const Info = styled.div`
     line-height: 1.43;
     letter-spacing: -0.35px;
     color: #8556f6;
+    transform: skew(-0.03deg);
   }
 `
 const Tag = styled.div`
@@ -223,6 +227,7 @@ const Tag = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: 4px;
+  transform: skew(-0.03deg);
 `
 const CountArea = styled.div`
   display: flex;
@@ -241,6 +246,7 @@ const CountArea = styled.div`
     color: #e0e0e0;
     font-size: 12px;
     align-items: center;
+    transform: skew(-0.03deg);
   }
 `
 const Icon = styled.div`
@@ -252,4 +258,5 @@ const Icon = styled.div`
   font-weight: 400;
   letter-spacing: -0.35px;
   color: #9e9e9e;
+  transform: skew(-0.03deg);
 `

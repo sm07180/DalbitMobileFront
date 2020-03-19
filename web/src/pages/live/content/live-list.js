@@ -144,6 +144,7 @@ const List = styled.div`
       letter-spacing: -0.4px;
       color: #9e9e9e;
       position: relative;
+      transform: skew(-0.03deg);
       @media (max-width: ${WIDTH_MOBILE}) {
         display: none;
       }
@@ -165,6 +166,7 @@ const List = styled.div`
     height: 100%;
     justify-content: space-between;
     padding: 22px 18px 22px 18px;
+    transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       padding: 15px 0px 0px 0px;
       height: 68%;
@@ -180,6 +182,7 @@ const List = styled.div`
       line-height: 1.43;
       letter-spacing: -0.35px;
       color: #bdbdbd;
+      transform: skew(-0.03deg);
       @media (max-width: ${WIDTH_MOBILE}) {
         height: 30px;
         margin-bottom: 5px;
@@ -195,6 +198,7 @@ const List = styled.div`
       line-height: 1.5;
       letter-spacing: -0.4px;
       align-items: center;
+      transform: skew(-0.03deg);
       @media (max-width: ${WIDTH_MOBILE}) {
         height: 30px;
         line-height: 0;
@@ -211,6 +215,7 @@ const List = styled.div`
       letter-spacing: -0.35px;
       color: #8556f6;
       align-items: center;
+      transform: skew(-0.03deg);
       @media (max-width: ${WIDTH_MOBILE}) {
         height: 40px;
         margin-top: 3px;
@@ -252,6 +257,7 @@ const CountArea = styled.div`
     color: #e0e0e0;
     font-size: 12px;
     margin-right: 3px;
+    transform: skew(-0.03deg);
     justify-content: center;
   }
 `
@@ -264,6 +270,7 @@ const Icon = styled.div`
   font-weight: 400;
   letter-spacing: -0.35px;
   color: #9e9e9e;
+  transform: skew(-0.03deg);
 `
 const MobileWrap = styled.div`
   display: flex;
@@ -296,6 +303,7 @@ const Tag = styled.div`
   align-items: center;
   margin-left: 4px;
   margin-top: 1px;
+  transform: skew(-0.03deg);
 `
 const BgImg = styled.div`
   width: 96px;

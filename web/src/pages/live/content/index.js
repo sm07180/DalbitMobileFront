@@ -202,7 +202,7 @@ const NoResult = styled.div`
     letter-spacing: -0.6px;
     color: #616161;
     margin-top: 30px;
-
+    transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       font-size: 20px;
     }
