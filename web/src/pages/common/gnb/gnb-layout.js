@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
-import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -69,7 +69,7 @@ const Close = styled.button`
   right: 10px;
   width: 40px;
   height: 40px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ic_close.png') no-repeat center center / cover;
   @media (max-width: ${WIDTH_MOBILE_S}) {
     top: 10px;
     right: 8px;

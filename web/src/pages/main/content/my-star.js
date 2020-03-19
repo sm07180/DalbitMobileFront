@@ -160,11 +160,11 @@ const SwiperWrap = styled.div`
   }
   & .swiper-button-prev {
     left: calc(50% + 22px);
-    background: url('https://devimage.dalbitcast.com/images/api/ico-prev.png') no-repeat center center / cover;
+    background: url('${IMG_SERVER}/images/api/ico-prev.png') no-repeat center center / cover;
   }
   & .swiper-button-next {
     left: calc(50% + 94px);
-    background: url('https://devimage.dalbitcast.com/images/api/ico-next.png') no-repeat center center / cover;
+    background: url('${IMG_SERVER}/images/api/ico-next.png') no-repeat center center / cover;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -214,7 +214,7 @@ const ToggleBtn = styled.div`
   left: calc(50% + 58px);
   width: 36px;
   height: 36px;
-  background: url('https://devimage.dalbitcast.com/images/api/ico-stop.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ico-stop.png') no-repeat center center / cover;
   cursor: pointer;
   z-index: 2;
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -379,11 +379,11 @@ const Viewer = styled.div`
   float: left;
   width: 24px;
   height: 24px;
-  background: url('https://devimage.dalbitcast.com/images/api/hit-g-s.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/hit-g-s.png') no-repeat center center / cover;
 `
 const Lover = styled.div`
   float: left;
   width: 24px;
   height: 24px;
-  background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ico-like-g-s.png') no-repeat center center / cover;
 `

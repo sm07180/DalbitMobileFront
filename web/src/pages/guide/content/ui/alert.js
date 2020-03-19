@@ -3,6 +3,9 @@
  */
 import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //context
 import {Context} from 'context'
 
@@ -36,7 +39,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = 'https://devimage.dalbitcast.com/images/api/ic_logo_normal.png'
+              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <ol><li>ol-li tab 타입1</li><li>타입1</li></ol>`
@@ -85,7 +88,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = 'https://devimage.dalbitcast.com/images/api/ic_logo_normal.png'
+              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <a href="https://devwww2.dalbitcast.com/" target="_blank">개발사이트로 이동</a>
@@ -111,7 +114,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = 'https://devimage.dalbitcast.com/images/api/ic_logo_normal.png'
+              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <a href="https://devwww2.dalbitcast.com/" target="_blank">개발사이트로 이동</a>

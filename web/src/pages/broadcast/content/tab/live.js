@@ -15,6 +15,8 @@ import {BroadCastStore} from 'pages/broadcast/store'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {isHybrid, Hybrid} from 'context/hybrid'
+
 //------------------------------------------------------------------
 export default props => {
   //context
@@ -49,12 +51,49 @@ export default props => {
     //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
+  //
+  //exitRoom
 
+  // async function exitRoom(roomNos) {
+  //   const res = await Api.broad_exit({data: {roomNo: roomNos}})
+  //   if (res.result === 'success') {
+  //     return res
+  //   }
+  //   alert(res.message)
+  // }
+  // //joinRoom
+  // async function joinRoom(roomNo, roomNos) {
+  //   const res = await Api.broad_join({data: {roomNo: roomNo}})
+
+  //   console.log(res)
+  //   //Error발생시 (방이 입장되어 있을때)
+  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
+  //     const exit = await exitRoom(roomNos)
+  //     if (exit.result === 'success') joinRoom(roomNo)
+  //   }
+  //   //Error발생시 (종료된 방송)
+  //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
+  //   //정상진입이거나,방탈퇴이후성공일경우
+  //   if (res.result === 'success') {
+  //     if (isHybrid()) {
+  //       Hybrid('RoomJoin', res.data)
+  //     } else {
+  //       //하이브리드앱이 아닐때
+  //       const {roomNo} = res.data
+  //       context.action.updateBroadcastTotalInfo(res.data)
+  //       history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+  //     }
+  //   }
+  //   return
+  // }
+
+  // console.log(store.liveSortList)
   //라이브 맵------------------------------------------------------------------------------------------------------
   const makeContents = () => {
     let sortlist = store.liveSortList
     if (sortlist === null) return
     return sortlist.list.map((live, index) => {
+      const roomNos = context.roomInfo.roomNo
       const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, bjProfImg, roomNo, gstProfImg} = live
       let mode = '해당사항없음'
       //console.log(roomNo)
@@ -68,9 +107,15 @@ export default props => {
       //
       if (state !== 1) return
 
-      if (store.category == roomType) {
+      if (store.category == roomType && context.roomInfo.roomNo !== roomNo) {
         return (
-          <LiveList key={index}>
+          <LiveList
+            key={index}
+            // onClick={() => {
+            //   exitRoom(roomNos)
+            //   joinRoom(roomNo)
+            // }}
+          >
             <h3>[{mode}]</h3>
             <ImgWrap bg={bjProfImg.url}>
               <Sticker>
@@ -101,9 +146,15 @@ export default props => {
           </LiveList>
         )
       }
-      if (store.category == '') {
+      if (store.category == '' && context.roomInfo.roomNo !== roomNo) {
         return (
-          <LiveList key={index}>
+          <LiveList
+            key={index}
+            // onClick={() => {
+            //   exitRoom(roomNos)
+            //   joinRoom(roomNo)
+            // }}
+          >
             <h3>[{mode}]</h3>
             <ImgWrap bg={bjProfImg.url}>
               <Sticker>
@@ -136,6 +187,7 @@ export default props => {
       }
     })
   }
+  //console.log(store.liveSortList)
   //------------------------------------------------------------------
   useEffect(() => {
     //방송방 리스트
@@ -186,13 +238,14 @@ const LiveWrap = styled.div`
   }
 `
 
-const LiveList = styled.div`
+const LiveList = styled.a`
   display: flex;
   width: 362px;
   padding: 0px 20px 20px 11px;
   margin-bottom: 20px;
   box-sizing: border-box;
   border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
   & h3 {
     font-size: 0;
   }

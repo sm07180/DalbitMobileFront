@@ -4,9 +4,9 @@ import {Context} from 'context'
 import API from 'context/api'
 
 //context
-
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {WIDTH_MOBILE, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //component
 
 export default props => {
@@ -114,7 +114,7 @@ const SearchWrap = styled.div`
     right: 8px;
     width: 48px;
     height: 48px;
-    background: url('https://devimage.dalbitcast.com/images/api/search6.png') no-repeat center center / cover;
+    background: url('${IMG_SERVER}/images/api/search6.png') no-repeat center center / cover;
     transform: translateY(-50%);
     cursor: pointer;
     @media (max-width: ${WIDTH_MOBILE}) {
@@ -129,7 +129,7 @@ const Close = styled.button`
   right: 10px;
   width: 48px;
   height: 48px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_close.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ic_close.png') no-repeat center center / cover;
   @media (max-width: ${WIDTH_MOBILE}) {
     top: 10px;
     right: 8px;
