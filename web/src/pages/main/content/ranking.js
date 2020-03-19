@@ -24,6 +24,7 @@ export default props => {
   const [djInfo, setDjInfo] = useState([])
   const [fanInfo, setFanInfo] = useState([])
   const [sswiper, updateSwiper] = useState(false)
+  const [check, setCheck] = useState(false)
 
   //api
 
@@ -77,7 +78,7 @@ export default props => {
   const createSlide = (array, type) => {
     if (array == undefined || array == false) {
       return (
-        <NoResult>
+        <NoResult className={check}>
           <NoImg />
           <span>조회된 결과가 없습니다.</span>
         </NoResult>
@@ -120,11 +121,11 @@ export default props => {
 
   //useEffect
   useEffect(() => {
-    fetch(1)
+    //fetch(1)
   }, [])
 
   useEffect(() => {
-    //if (sswiper) fetch(1)
+    if (sswiper) fetch(1)
   }, [sswiper])
 
   return (
