@@ -36,7 +36,7 @@ export default props => {
       <Layout {...props}>
         <PrivatePage>
           {/* 닫기버튼 */}
-          {!isNavigator && (
+          {isNavigator && (
             <CloseButton
               onClick={() => {
                 Hybrid('CloseLayerPopup', '')
