@@ -52,7 +52,6 @@ export default props => {
         // code === "0" >> 데이터 없음
         store.action.updateList(false) // 데이터가 없을 때 false // store.list 가 false 일때 pagination, live-list 안보여줌
       } else {
-        console.log('## res.data : ', res.data)
         store.action.updateList(res.data.list)
         liveList = res.data.list
         livePaging = res.data.paging
@@ -90,7 +89,6 @@ export default props => {
   const commonData = async obj => {
     const res = await Api.splash({})
     if (res.result === 'success') {
-      console.log('## res - common : ', res)
       context.action.updateCommon(res.data) // context에 update
       getBroadList({params: {roomType: type, page: page, records: 10, searchType: searchType}})
     }
