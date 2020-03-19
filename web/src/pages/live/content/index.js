@@ -112,10 +112,7 @@ export default props => {
         props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
       } else {
         const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-        if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-          const exit = await exitRoom(obj)
-          if (exit.result === 'success') joinRoom(obj)
-        }
+
         if (res.result === 'success') {
           console.clear()
           console.log(res)
@@ -126,6 +123,20 @@ export default props => {
             const {roomNo} = res.data
             context.action.updateBroadcastTotalInfo(res.data)
             props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+          }
+        } else {
+          if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
+            const exit = await exitRoom(obj)
+            if (exit.result === 'success') {
+              joinRoom(obj)
+            } else {
+              context.action.alert({
+                msg: exit.message
+              })
+            }
+            context.action.alert({
+              msg: res.message
+            })
           }
         }
       }
