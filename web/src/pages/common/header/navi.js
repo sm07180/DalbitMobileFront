@@ -115,7 +115,10 @@ export const BroadValidation = () => {
             if (!isApp) Navi.history().push('/broadcast-setting')
           }
         } else {
-          alert('유효성체크를 할수 없습니다. Api.broad_check')
+          //요청회원 아님
+          context.action.alert({
+            msg: `Api.broad_check Error`
+          })
         }
       }
       fetchData()
