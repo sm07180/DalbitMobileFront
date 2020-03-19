@@ -61,7 +61,7 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_join = async obj => {
-    const {url, method, data} = obj || {}
+    const {data} = obj || {}
     return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
   /**
@@ -72,7 +72,7 @@ export default class API {
    * @create 손완휘 2020.02.06
    */
   static broad_exit = async obj => {
-    const {url, method, data} = obj || {}
+    const {data} = obj || {}
     return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
   }
   /**
