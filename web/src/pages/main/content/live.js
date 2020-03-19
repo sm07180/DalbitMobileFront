@@ -30,7 +30,7 @@ export default props => {
   const fetch = async () => {
     const res = await Api.broad_list({
       // params: {
-      //   roomType: 1,
+      //   roomType: 999,
       //   page: 1,
       //   records: 5
       // }
@@ -40,6 +40,7 @@ export default props => {
       setTop2Data(res.data.list[1])
       setListData(res.data.list.slice(2))
     } else {
+      console.log('실패', res)
     }
   }
 
@@ -54,11 +55,8 @@ export default props => {
 
   //joinRoom
   async function joinRoom(obj) {
-    console.log('objobjobjobjobjobj', obj)
     const {roomNo} = obj
-    console.log('obj :: ', roomNo)
     const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-    console.log('roomNo = ' + roomNo)
     //Error발생시 (방이 입장되어 있을때)
     if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
       const exit = await exitRoom(obj)
@@ -84,6 +82,27 @@ export default props => {
     joinRoom(roomNum)
   }
 
+  const createList = () => {
+    if (!top1Data) {
+      return (
+        <NoResult>
+          <NoImg />
+          <span>조회된 결과가 없습니다.</span>
+        </NoResult>
+      )
+    } else {
+      return (
+        <>
+          <LiveCastBigWrap>
+            <LiveCastBig info={top1Data} joinRoom={liveJoinRoom} />
+            <LiveCastBig info={top2Data} joinRoom={liveJoinRoom} />
+          </LiveCastBigWrap>
+          <BroadContent info={listData} joinRoom={liveJoinRoom} className="brContent"></BroadContent>
+        </>
+      )
+    }
+  }
+
   useEffect(() => {
     fetch()
   }, [])
@@ -102,15 +121,7 @@ export default props => {
             </span>
           </div>
         </div>
-        {listData && (
-          <>
-            <LiveCastBigWrap>
-              <LiveCastBig info={top1Data} joinRoom={liveJoinRoom} />
-              <LiveCastBig info={top2Data} joinRoom={liveJoinRoom} />
-            </LiveCastBigWrap>
-            <BroadContent info={listData} joinRoom={liveJoinRoom} className="brContent"></BroadContent>
-          </>
-        )}
+        {createList()}
       </Content>
     </>
   )
@@ -208,4 +219,37 @@ const SelectWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
+`
+
+const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  & > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 282px;
+    height: 26px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+    color: #616161;
+    margin-top: 30px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 20px;
+    }
+  }
+`
+
+const NoImg = styled.div`
+  display: flex;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  width: 299px;
+  height: 227px;
 `

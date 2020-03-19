@@ -17,23 +17,6 @@ export default props => {
   let selectlistener = ''
   let res = ''
 
-  //신고하기
-  // async function broadListenListReload() {
-  //   const res = await Api.member_declar({
-  //     data: {
-  //       memNo: store.roomInfo.roomNo,
-  //       reason : ,
-  //       cont :
-
-  //     }
-  //   })
-  //   if (res.result === 'success') {
-  //     const {list} = res.data
-  //     store.action.updateListenerList(list)
-  //   }
-  //   return
-  // }
-
   //방송방 청취자 리스트 조회  Api
   async function broadListenListReload() {
     const res = await Api.broad_listeners({
@@ -47,10 +30,7 @@ export default props => {
     }
     return
   }
-  setInterval(() => {
-    //console.log(store.roomInfo.auth)
-    //console.log()
-  }, 5000)
+
   //매니저 지정 , 해제 Api
   async function broadManager(type, obj) {
     const methodType = type === 1 ? 'POST' : 'DELETE'
@@ -76,14 +56,6 @@ export default props => {
     } else {
       console.log('broadManager  res = ' + res)
     }
-  }
-
-  async function joinRoom() {
-    // const res = await Api.broad_join({data: {roomNo: store.roomInfo.roomNo}})
-    // if (res.result === 'success') {
-    //   if (store.roomInfo.auth < 2) store.action.updateRoomInfo(res.data)
-    // }
-    // return
   }
 
   // 강퇴 Api
@@ -190,20 +162,6 @@ export default props => {
     }
   }
 
-  // const makeDropboxBtn = () => {
-  //   const menulist = ['강제퇴장', '매니저 등록', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
-  //   return menulist.map((list, index) => {
-  //     return (
-  //       <button
-  //         key={index}
-  //         onClick={e => {
-  //           listenerStateChange(index)
-  //         }}>
-  //         {list}
-  //       </button>
-  //     )
-  //   })
-  // }
   const makeDropboxBtn = () => {
     const listenerView = ['', '', '', '', '프로필 보기', '신고 하기']
     const ManegerView = ['강퇴하기', '', '', '', '프로필 보기', '신고 하기']

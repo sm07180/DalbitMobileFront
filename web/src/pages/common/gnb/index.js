@@ -6,6 +6,9 @@ import React, {useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //components
 import GnbSearch from './search'
 import GnbMypage from './mypage'
@@ -37,7 +40,7 @@ export default props => {
     {id: 9, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
     {id: 10, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'}
   ]
-  const LoginInfo = {id: 1, name: '내 고유 ID', title: '떠오르는 아침 햇살', url: 'https://devimage.dalbitcast.com/images/api/profileLogin.png'}
+  const LoginInfo = {id: 1, name: '내 고유 ID', title: '떠오르는 아침 햇살', url: `${IMG_SERVER}/images/api/profileLogin.png`}
 
   //---------------------------------------------------------------------
   //context

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -103,7 +104,7 @@ const ICON = styled.div`
   float: left;
   width: 36px;
   height: 36px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_alarm.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ic_alarm.png') no-repeat center center / cover;
 `
 const Title = styled.h2`
   float: left;

@@ -19,7 +19,6 @@ export default () => {
   let history = useHistory()
   //---------------------------------------------------------------------
   function update(event) {
-    // alert(event.type)
     switch (event.type) {
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
@@ -46,12 +45,14 @@ export default () => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
-      case 'native-end': //-----------------------------Native end (Android)
+      case 'native-end': //-----------------------------Native end (Android&iOS)
         context.action.updateMediaPlayerStatus(false)
         //방송종료
         context.action.updateCastState(false)
         //(BJ)일경우 방송하기:방송중
         context.action.updateCastState(null)
+        //종료시
+        // alert(JSON.stringify(event.detail))
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)

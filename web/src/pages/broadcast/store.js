@@ -42,6 +42,7 @@ const BroadCastProvider = props => {
   const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
   const [rolecheck, setRoleCheck] = useState('')
   const [liveSortList, setLiveSortList] = useState(null) // 방송방 라이브 정렬 리스트
+  const [listenerUpdate, setListenerUpdate] = useState(null) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
 
   const arr = [
     {id: 0, tab: '청취자'},
@@ -103,8 +104,10 @@ const BroadCastProvider = props => {
     updateRoomNumber: num => {
       setRoomNumber(num)
     },
+
     updateListenerList: list => {
       setListenerList(list)
+      //setListenerList(listenerList => ({...listenerList, ...obj}))
     },
 
     updateManagerList: list => {
@@ -192,6 +195,9 @@ const BroadCastProvider = props => {
     },
     updateLiveSortList: obj => {
       setLiveSortList(liveSortList => ({...liveSortList, ...obj}))
+    },
+    updateListenerUpdate: obj => {
+      setListenerUpdate(listenerUpdate => ({...listenerUpdate, ...obj}))
     }
   }
   //---------------------------------------------------------------------
@@ -223,7 +229,8 @@ const BroadCastProvider = props => {
     noticeMsg,
     broadTimer,
     rolecheck,
-    liveSortList
+    liveSortList,
+    listenerUpdate
   }
 
   return <Provider value={value}>{props.children}</Provider>

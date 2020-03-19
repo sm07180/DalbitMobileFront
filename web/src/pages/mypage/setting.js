@@ -174,7 +174,7 @@ export default props => {
             </GenderTab>
           </GenderWrap>
 
-          <GenderAlertMsg>* 생년월일과 성별 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
+          <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
 
           <div className="msg-wrap">
             <MsgTitle>프로필 메세지</MsgTitle>

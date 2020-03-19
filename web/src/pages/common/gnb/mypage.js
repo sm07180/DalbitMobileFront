@@ -2,12 +2,13 @@
  *
  */
 import React, {useState, useEffect, useContext, useMemo} from 'react'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, PHOTO_SERVER, WIDTH_MOBILE_S, WIDTH_TABLET_S} from 'context/config'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
 //component
 import Gnb from './gnb-layout'
 import {Link, NavLink} from 'react-router-dom'
@@ -213,7 +214,7 @@ const ICON = styled.div`
   width: 36px;
   height: 36px;
   margin-right: 10px;
-  background: url('https://devimage.dalbitcast.com/images/api/ic_user_normal.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ic_user_normal.png') no-repeat center center / cover;
 `
 const Title = styled.h2`
   float: left;
@@ -432,7 +433,7 @@ const LinkLi = styled.div`
     right: 0;
     width: 24px;
     height: 24px;
-    background: url('https://devimage.dalbitcast.com/images/api/ic_arrow_right_color_s.png') no-repeat center center / cover;
+    background: url('${IMG_SERVER}/images/api/ic_arrow_right_color_s.png') no-repeat center center / cover;
     transform: translateY(-50%);
     content: '';
   }

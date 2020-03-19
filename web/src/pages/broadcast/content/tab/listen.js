@@ -31,20 +31,42 @@ export default props => {
 
       store.action.updateListenerList(list)
     }
-
     return
   }
-  // if (store.rolecheck.data.cmd == 'connect' || store.rolecheck.data.cmd == 'disconnect') {
-  //   console.log(store.rolecheck.data)
-  // }
-
-  // console.log(store.rolecheck.data)
-  // console.log(context.broadcastTotalInfo.userCount)
-  // console.log(store.listenerList.length)
   useEffect(() => {
     fetchListenList()
   }, [])
 
+  // const userCheck = () => {
+  //   console.log('sdasdadasds')
+
+  //   switch (auth) {
+  //     case 0:
+  //       //drawListenList(store.listenerUpdate)
+  //       break
+  //     case 1:
+  //       //drawManegerList(store.listenerUpdate)
+  //       break
+  //     default:
+  //       break
+  //   }
+  // }
+  // useEffect(() => {
+  //   //userCheck()
+  //   //if(store.listenerList.length === 0 ) return
+  //   //store.listenerList.splice(0, 1, store.listenerUpdate)
+
+  //   console.log('청취자 업데이트를 해라 ')
+  //   //store.listenerList.push(store.listenerUpdate)
+  //   userCheck()
+  // }, [store.listenerUpdate])
+
+  useEffect(() => {
+    //if (store.listenerList.length == 0) return
+    //drawListenList()
+    console.log('청취자 update')
+    //drawListenList()
+  }, [store.listenerList])
   //---------------------------------------------------------------
   // 마우스 스크롤
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자
@@ -59,7 +81,7 @@ export default props => {
   }
   //메니저 info맵-----------------------
   const drawManegerList = () => {
-    if (store.listenerList === null) return
+    if (store.listenerList === null || store.listenerList.length == 0) return
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, memId, profImg, auth} = live
@@ -91,7 +113,14 @@ export default props => {
   //----------------------------------------------------------------
   //리스너 인포맵
   const drawListenList = () => {
-    if (store.listenerList === null) return
+    //store.listenerList.splice(0, 1, obj)
+    //if (obj) store.action.updateListenerList(obj)
+    // if (obj && store.listenerList.length == 0) {
+    //   store.action.updateListenerList(obj)
+    //   console.log('청취자 추가 ')
+    // }
+    //if (store.listenerList === null) return
+
     return store.listenerList.map((live, index) => {
       let mode = '해당사항없음'
       const {nickNm, memNo, memId, profImg, auth} = live
@@ -103,6 +132,18 @@ export default props => {
       if (auth === 3) mode = '3'
       if (auth !== 0) return
 
+      // if (obj) {
+      //   if (obj.memNo === memNo) {
+      //     if (obj.state > 0) {
+      //       //퇴장이나 강퇴 상태 -> 리스트에서 삭제
+      //       console.log('삭제 시켜라 ')
+      //       store.listenerList.splice(index, 1)
+      //     } else {
+      //       //입장 -> 리스트에 추가
+      //       //store.listenerList.
+      //     }
+      //   }
+      // }
       return (
         <ListenList key={index}>
           <p className="authClass">[{mode}]</p>
