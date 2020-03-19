@@ -15,7 +15,7 @@ export default props => {
   const [list, setList] = useState([])
   const [PopularInfo, setPopularInfo] = useState(props.Info)
   const [SelectCheck, setSelectCheck] = useState(false)
-  const [SelectChange, setSelectChange] = useState(store.selectPopular)
+  const [SelectChange, setSelectChange] = useState('전체')
 
   //------------------------------------------------------------------
   //function
@@ -40,6 +40,7 @@ export default props => {
           setSelectCheck(false)
           getBroadList({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
           store.action.updateResetZero({params: {roomType: store.category, page: 1, records: 100, searchType: index}})
+          store.action.updateselectPopular(item.option)
         }}>
         {item.option}
       </p>
@@ -56,11 +57,12 @@ export default props => {
       store.action.updateLiveSortList(res.data)
     }
   }
+
   //------------------------------------------------------------------
   return (
     <>
       <Select onClick={ToggleSelect}>
-        <h2>{SelectChange}</h2>
+        <h2>{store.selectPopular === '전체' ? store.selectPopular : SelectChange}</h2>
       </Select>
       <Option value={SelectCheck} className={SelectCheck ? 'on' : ''}>
         <div className="optionWrap">{popularSelect}</div>

@@ -300,7 +300,8 @@ const Tag = styled.div`
 const BgImg = styled.div`
   width: 96px;
   height: 96px;
-  background: url(${props => (props.url ? props.url : '')}) no-repeat;
+  background-image: url(${props => props.url});
+  background-repeat: no-repeat;
   border-radius: 10px;
   position: relative;
   @media (max-width: ${WIDTH_MOBILE}) {

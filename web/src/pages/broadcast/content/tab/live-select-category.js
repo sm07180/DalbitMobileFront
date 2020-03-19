@@ -33,8 +33,8 @@ export default props => {
     const res = await Api.splash()
     if (res.result === 'success') {
       //context.action.updateCommon(res.data) // context에 update
-      console.log(res)
-      console.log(res.data.roomType)
+      //console.log(res)
+      //console.log(res.data.roomType)
       setList(res.data.roomType)
     }
   }

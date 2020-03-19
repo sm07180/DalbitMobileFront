@@ -37,7 +37,7 @@ const BroadCastProvider = props => {
   const [broadcastProfileInfo, setBroadcastProfileInfo] = useState(null) // 방송방 프로필보기,
   const [category, setCategory] = useState('')
   const [SelectChange, setSelectChange] = useState('전체')
-  const [selectPopular, setSelectPopular] = useState('전체')
+  const [selectPopular, setSelectPopular] = useState('')
   const [noticeMsg, setNoticeMsg] = useState('')
 
   const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
