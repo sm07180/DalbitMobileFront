@@ -79,13 +79,3 @@ const BackGround = styled.div`
     z-index: 2;
   }
 `
-// const EVENTBTN = styled.button`
-//   position: absolute;
-//   right: 16px;
-//   top: 50%;
-//   width: 36px;
-//   height: 36px;
-//   transform: translateY(-50%);
-//   background: url('https://devimage.dalbitcast.com/images/api/ic_more.png') no-repeat center center / cover;
-//   outline: none;
-// `

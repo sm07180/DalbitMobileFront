@@ -61,8 +61,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_join = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/join`, method: method || 'POST', data: data})
+    const {data} = obj || {}
+    return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
   /**
    * @brief 방송방 나가기
@@ -72,8 +72,8 @@ export default class API {
    * @create 손완휘 2020.02.06
    */
   static broad_exit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/exit`, method: method || 'DELETE', data: data})
+    const {data} = obj || {}
+    return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
   }
   /**
    * @brief 방송방 정보수정

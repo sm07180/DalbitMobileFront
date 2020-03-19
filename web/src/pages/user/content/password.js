@@ -313,6 +313,10 @@ export default props => {
       clearInterval(inervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
       document.getElementsByName('auth')[0].disabled = true
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
     } else {
       console.log(resCheck)
       setCurrentAuth2('인증번호(가) 일치하지 않습니다.')

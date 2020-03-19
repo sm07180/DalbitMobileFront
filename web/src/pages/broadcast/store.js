@@ -42,7 +42,7 @@ const BroadCastProvider = props => {
   const [broadTimer, setBroadTimer] = useState('00:00:00') // 방송방 타이머
   const [rolecheck, setRoleCheck] = useState('')
   const [liveSortList, setLiveSortList] = useState(null) // 방송방 라이브 정렬 리스트
-  const [listenerUpdate, setListenerUpdate] = useState(null) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
+  const [listenerUpdate, setListenerUpdate] = useState([]) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
 
   const arr = [
     {id: 0, tab: '청취자'},

@@ -89,7 +89,7 @@ export default props => {
                   <ItemInfo key={idx} onClick={() => pickItem(idx, data.itemNo)}>
                     {item == idx && (
                       <Picked>
-                        <img src={'https://devimage.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
+                        <img src={'https://image.dalbitcast.com/images/api/ic_multiplication@2x.png'} width={18} height={18} /> {count}
                       </Picked>
                     )}
                     <ItemBox>
@@ -97,7 +97,7 @@ export default props => {
                         <img src={data.thumbs} width={70} height={70} />
                       </ItemImg>
                       <Icon active={idx === item ? 'active' : ''}>
-                        <img src={'https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
+                        <img src={'https://image.dalbitcast.com/images/api/ic_moon_s@2x.png'} width={18} height={18} />
                         {data.cost}
                       </Icon>
                     </ItemBox>
@@ -125,7 +125,7 @@ const TargetInfo = props => {
           <Dj onClick={() => setState(idx)} active={idx === state ? 'active' : ''} key={idx}>
             {idx !== state && <Cover></Cover>}
             <Profile>
-              <img src="https://devimage.dalbitcast.com/images/api/guest@2x.png" width={36} height={36} />
+              <img src="" width={36} height={36} />
 
               <Tag target={data.type}>{data.type === 0 ? 'DJ' : '게스트'}</Tag>
             </Profile>

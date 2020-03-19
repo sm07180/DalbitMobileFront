@@ -36,7 +36,7 @@ export default props => {
         callback: () => {
           return
         },
-        title: '달빛라디오',
+        // title: '달빛라디오',
         msg: '아이템을 선택해 주세요'
       })
     }

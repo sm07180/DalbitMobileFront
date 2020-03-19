@@ -21,9 +21,7 @@ export default props => {
   const context = useContext(Context)
 
   //state
-  const [top1Data, setTop1Data] = useState()
-  const [top2Data, setTop2Data] = useState()
-  const [listData, setListData] = useState()
+  const [fetchData, setFetchData] = useState()
 
   //api
 
@@ -36,9 +34,7 @@ export default props => {
       // }
     })
     if (res.result === 'success') {
-      setTop1Data(res.data.list[0])
-      setTop2Data(res.data.list[1])
-      setListData(res.data.list.slice(2))
+      setFetchData(res.data)
     } else {
       console.log('실패', res)
     }
@@ -74,6 +70,10 @@ export default props => {
         context.action.updateBroadcastTotalInfo(res.data)
         history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
     }
     return
   }
@@ -83,7 +83,7 @@ export default props => {
   }
 
   const createList = () => {
-    if (!top1Data) {
+    if (!fetchData) {
       return (
         <NoResult>
           <NoImg />
@@ -94,10 +94,10 @@ export default props => {
       return (
         <>
           <LiveCastBigWrap>
-            <LiveCastBig info={top1Data} joinRoom={liveJoinRoom} />
-            <LiveCastBig info={top2Data} joinRoom={liveJoinRoom} />
+            <LiveCastBig info={fetchData.list[0]} joinRoom={liveJoinRoom} />
+            <LiveCastBig info={fetchData.list[1]} joinRoom={liveJoinRoom} />
           </LiveCastBigWrap>
-          <BroadContent info={listData} joinRoom={liveJoinRoom} className="brContent"></BroadContent>
+          <BroadContent info={fetchData.list.slice(2)} joinRoom={liveJoinRoom} className="brContent"></BroadContent>
         </>
       )
     }
@@ -242,14 +242,18 @@ const NoResult = styled.div`
     margin-top: 30px;
 
     @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 20px;
+      font-size: 18px;
     }
   }
 `
 
 const NoImg = styled.div`
   display: flex;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
   width: 299px;
   height: 227px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+    height: 198;
+  }
 `

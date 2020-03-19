@@ -24,6 +24,7 @@ export default props => {
   const [djInfo, setDjInfo] = useState([])
   const [fanInfo, setFanInfo] = useState([])
   const [sswiper, updateSwiper] = useState(false)
+  const [check, setCheck] = useState(false)
 
   //api
 
@@ -42,7 +43,7 @@ export default props => {
       if (sswiper) sswiper.update()
     } else {
       // fetch(2)
-      console.log('실패', resDj.result)
+      console.log('실패', resDj)
     }
 
     const resfan = await Api.get_fan_ranking({
@@ -56,7 +57,7 @@ export default props => {
       setFanInfo(resfan.data.list)
       if (sswiper) sswiper.update()
     } else {
-      //console.log('실패', resfan.result)
+      console.log('실패', resfan)
     }
   }
 
@@ -77,7 +78,7 @@ export default props => {
   const createSlide = (array, type) => {
     if (array == undefined || array == false) {
       return (
-        <NoResult>
+        <NoResult className={check}>
           <NoImg />
           <span>조회된 결과가 없습니다.</span>
         </NoResult>
@@ -120,11 +121,11 @@ export default props => {
 
   //useEffect
   useEffect(() => {
-    fetch(1)
+    //fetch(1)
   }, [])
 
   useEffect(() => {
-    //if (sswiper) fetch(1)
+    if (sswiper) fetch(1)
   }, [sswiper])
 
   return (
@@ -531,7 +532,7 @@ const NoResult = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100% !important;
 
   & > span {
     display: flex;
@@ -547,14 +548,19 @@ const NoResult = styled.div`
     margin-top: 30px;
 
     @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 20px;
+      font-size: 18px;
+      margin-top: 20px;
     }
   }
 `
 
 const NoImg = styled.div`
   display: flex;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
   width: 299px;
   height: 227px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+    height: 198;
+  }
 `

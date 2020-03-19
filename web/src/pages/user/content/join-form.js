@@ -12,7 +12,8 @@ import Api from 'context/api'
 import {Context} from 'context'
 
 let intervalId = null
-let pickerHolder = false
+let pickerHolder = true
+let nickCheckState = false
 
 export default props => {
   //context
@@ -45,7 +46,8 @@ export default props => {
   const [imgData, setImgData] = useState()
   const [thisTimer, setThisTimer] = useState()
   const [timeText, setTimeText] = useState()
-  const [pickerState, setPickerState] = useState(false)
+  const [pickerState, setPickerState] = useState(true)
+  const [nickCheck, setNickSheck] = useState()
   let setTime = 300
 
   //포토서버에 올라간 디폴트 이미지
@@ -100,7 +102,6 @@ export default props => {
   //회원가입 input onChange
   const onLoginHandleChange = e => {
     //대소문자 구분없음, 소문자만 입력
-    console.log('e.targete.targete.targete.target', e.target.defaultChecked)
     if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
       e.target.value = e.target.value.toLowerCase()
       setChanges({
@@ -116,6 +117,10 @@ export default props => {
       validateID(e.target.value)
     } else if (e.target.name == 'loginNickNm') {
       validateNick(e.target.value.replace(/(\s*)/g, ''))
+      // setChanges({
+      //   ...changes,
+      //   [e.target.name]: e.target.value.replace(/(\s*)/g, '')
+      // })
     } else if (e.target.name == 'auth') {
       setChanges({
         ...changes,
@@ -260,15 +265,14 @@ export default props => {
     }
   }
 
-  const validateNick = nickEntered => {
+  const validateNick = async nickEntered => {
     let nm = nickEntered
     setChanges({
       ...changes,
       loginNickNm: nm
     })
-    console.log('changes.loginNickNm.length', changes.loginNickNm)
     let nmVal = {loginNickNm: false}
-    if (nickEntered.length == 0) {
+    if (changes.loginNickNm.length == 0) {
       setValidate({
         ...validate,
         loginNickNm: false
@@ -276,20 +280,32 @@ export default props => {
       setCurrentNick('')
     } else {
       if (nm.length > 1 && nm.length < 21) {
-        if (fetchNickData(nm)) {
-          nmVal = {...nmVal, loginNickNm: true}
-          console.log('nmVal', nmVal)
-          setCurrentNick('사용 가능한 닉네임 입니다.')
-        } else {
-          setCurrentNick('닉네임 중복입니다.')
+        const resNick = await Api.nickName_check({
+          params: {
+            nickNm: nickEntered
+          }
+        })
+        if (resNick) {
+          if (resNick.result === 'success') {
+            if (resNick.code == '1') {
+              nmVal = {...nmVal, loginNickNm: true}
+              setCurrentNick('사용 가능한 닉네임 입니다.')
+            }
+          } else if (resNick.result === 'fail') {
+            if (resNick.code == '0') {
+              setCurrentNick('닉네임 중복입니다.')
+            } else {
+              console.log('중복체크 실패', resNick)
+            }
+          }
         }
+        ///////////////////////////////////
       } else if (nm.length < 2) {
         setCurrentNick('최소 2자 이상 입력해주세요.')
       } else if (nm.length > 20) {
         setCurrentNick('최대 20자 까지 입력이 가능합니다.')
       }
     }
-    console.log('?')
     setValidate({
       ...validate,
       ...nmVal
@@ -351,10 +367,50 @@ export default props => {
     onLoginHandleChange(e)
   }
 
+  //datepicker에서 올려준 값 받아서 birth 바로 변경하기
+  const pickerOnChange = value => {
+    if (!changes.birth) {
+      dateDefault = value
+    } else {
+      validateBirth(value)
+    }
+  }
+
+  const validateBirth = value => {
+    //생년월일 바뀔때마다 유효성
+    let year = value.slice(0, 4)
+
+    if (year == '') {
+      //console.log('빈값')
+    } else if (year <= dateYear || value == date) {
+      setCurrentBirth('')
+      setValidate({
+        ...validate,
+        birth: true
+      })
+      if (pickerHolder) {
+        pickerHolder = false
+        setPickerState(true)
+      } else {
+        setPickerState(false)
+      }
+    } else {
+      if (pickerHolder) {
+        pickerHolder = false
+      }
+      setCurrentBirth('17세 이상만 가입 가능합니다.')
+      setValidate({
+        ...validate,
+        birth: false
+      })
+      setPickerState(false)
+    }
+  }
+
   //---------------------------------------------------------------------
   //fetchData
   async function fetchData() {
-    console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
+    //console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
     //이미지가 기본 이미지면 image_upload를 날리지 않는다.
     let resultImg = ''
 
@@ -476,13 +532,14 @@ export default props => {
     if (resNick) {
       if (resNick.result === 'success') {
         if (resNick.code == '1') {
-          return 1
+          setNickSheck(resNick.code)
         }
       } else if (resNick.result === 'fail') {
         if (resNick.code == '0') {
-          return 0
+          setNickSheck(resNick.code)
         } else {
           console.log('중복체크 실패', resNick)
+          setNickSheck('2')
         }
       }
     }
@@ -496,7 +553,6 @@ export default props => {
       }
     })
     if (resAuth.result === 'success') {
-      console.log(resAuth)
       setValidate({
         ...validate,
         loginID: true,
@@ -531,7 +587,6 @@ export default props => {
 
       // setThisTimer(createAuthTimer)
     } else {
-      console.log(resAuth)
       setCurrentAuth1(resAuth.message)
     }
   }
@@ -544,14 +599,16 @@ export default props => {
       }
     })
     if (resCheck.result === 'success') {
-      console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
       clearInterval(intervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
       document.getElementsByName('auth')[0].disabled = true
+      setCurrentAuthBtn({
+        request: true,
+        check: true
+      })
     } else {
-      console.log(resCheck)
       setCurrentAuth2('인증번호(가) 일치하지 않습니다.')
     }
   }
@@ -576,25 +633,13 @@ export default props => {
       ...firstSetting
     })
   }, [])
-  //datepicker에서 올려준 값 받아서 birth 바로 변경하기
-  const pickerOnChange = value => {
-    console.log('엥;;', changes.birth)
-    if (!changes.birth) {
-      dateDefault = value
-    } else {
-      setChanges({
-        ...changes,
-        birth: value
-      })
-    }
-  }
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(validate, null, 1))
+  // }, [validate])
 
   useEffect(() => {
-    console.log(JSON.stringify(validate, null, 1))
-  }, [validate])
-
-  useEffect(() => {
-    console.log(JSON.stringify(changes, null, 1))
+    //console.log(JSON.stringify(changes, null, 1))
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
       setValidate({...validate, term: true})
@@ -645,46 +690,6 @@ export default props => {
       }
     }
   }, [changes.loginPwdCheck, changes.loginPwd])
-
-  //생년월일 바뀔때마다 유효성
-  useEffect(() => {
-    console.log('changes.birthchanges.birth', changes.birth)
-
-    let year = changes.birth.slice(0, 4)
-
-    //현재 날짜 일때는 -17 한 년도로 년도만 바꿔치기 해주고 -> datepicker 에서 셋팅해줌
-    // 체인지 됐을때는 17세 이상만 가입가능하다고 하기
-    if (year <= dateYear) {
-      console.log('pickerHolder', pickerHolder)
-      if (pickerHolder) {
-        setCurrentBirth('')
-        setValidate({
-          ...validate,
-          birth: true
-        })
-        validateSetting = {...validateSetting, birth: true}
-        setPickerState(true)
-      }
-    } else {
-      if (changes.birth == date) {
-        setCurrentBirth('')
-        setValidate({
-          ...validate,
-          birth: false
-        })
-        setPickerState(false)
-        pickerHolder = true
-      } else {
-        setCurrentBirth('17세 이상만 가입 가능합니다.')
-        setValidate({
-          ...validate,
-          birth: false
-        })
-        setPickerState(true)
-        pickerHolder = true
-      }
-    }
-  }, [changes.birth])
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
@@ -760,7 +765,7 @@ export default props => {
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
-          <input autoComplete="off" type="text" name="loginNickNm" value={changes.loginNickNm} onChange={onLoginHandleChange} placeholder="닉네임" />
+          <input autoComplete="off" type="text" name="loginNickNm" value={changes.loginNickNm} /*onBlur={validateNick}*/ onChange={onLoginHandleChange} placeholder="닉네임" />
           <span className={validate.loginNickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
           {currentNick && (
             <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>

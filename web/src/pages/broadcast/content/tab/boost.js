@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {BroadCastStore} from '../../store'
 import Api from 'context/api'
+import {IMG_SERVER} from 'context/config'
 import Util from '../../util/broadcast-util'
 // import PopUp from '../../../components/ui/pop-mic'
 import * as broadTimer from 'pages/broadcast/content/tab/timer'
@@ -70,7 +71,7 @@ export default props => {
         callback: () => {
           console.log('')
         },
-        title: '달빛라디오',
+        // title: '달빛라디오',
         msg: '부스터가 사용되었습니다.'
       })
     }
@@ -88,14 +89,14 @@ export default props => {
         <BoostImgArea>
           {store.boostList.boostCnt !== 0 ? (
             <>
-              <img src="https://devimage.dalbitcast.com/images/api/boost_active@2x.png" width={200} height={160} />
+              <img src="https://image.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
               <TimeActive>
                 {store.boostList.boostCnt}개 사용중 &nbsp;<span>|</span>&nbsp; {store.timer}
               </TimeActive>
             </>
           ) : (
             <>
-              <img src="https://devimage.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
+              <img src="https://image.dalbitcast.com/images/api/boost_inactive@2x.png" width={200} height={160} />
               <TimeInactive>30:00</TimeInactive>
             </>
           )}
@@ -108,7 +109,7 @@ export default props => {
         </Info>
         <UseBoost onClick={() => useBoost()}>
           부스터 사용(
-          <img src="https://devimage.dalbitcast.com/images/api/ic_moon_s@2x.png" width={18} height={18} />x 15)
+          <img src="https://image.dalbitcast.com/images/api/ic_moon_s@2x.png" width={18} height={18} />x 15)
         </UseBoost>
       </Contents>
     </Container>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
-
+import {IMG_SERVER} from 'context/config'
 export default props => {
   return (
     <Container>
@@ -36,5 +36,5 @@ const Back = styled.button`
   margin-left: 0px;
   width: 20px;
   height: 20px;
-  background: url('https://devimage.dalbitcast.com/images/api/arrow_left.svg') no-repeat center;
+  background: url(${IMG_SERVER}/images/api/arrow_left.svg) no-repeat center;
 `

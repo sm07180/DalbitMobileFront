@@ -17,6 +17,7 @@ import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
 import store from 'pages/store'
 import {BroadCastStore} from '../store'
+import Api from 'context/api'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -32,6 +33,7 @@ export default props => {
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
   const store = useContext(BroadCastStore)
+  const [listenerlist, setlistenerlist] = useState([])
   //---------------------------------------------------------------------
   //function
   const postMessageChange = e => {
@@ -129,24 +131,29 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
+      var recvArr = []
       // console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
         context.action.updateBroadcastTotalInfo(data.detail.data.count)
-        // if (data.detail.data.cmd == 'connect') {
-        //   if (data.detail.data.user.auth < 3) {
-        //     if (store.listenerList.length == 0) {
-        //       //store.listenerList.splice(0, 1, data.detail.data.user)
-        //       store.action.updateListenerList(data.detail.data.user)
-        //     } else {
-        //       //       store.listenerList.push(data.detail.data.user)
-        //     }
-        //   }
-        // } else {
-        //   store.listenerList.splice(data.detail.data.user.memNo, 1) //
-        // }
+        if (data.detail.data.cmd == 'connect') {
+          //fetchListenList()
+          if (data.detail.data.user.memNo !== context.token.memNo) {
+            listenerlist.push({
+              nickNm: data.detail.data.user.nk,
+              memNo: data.detail.data.user.memNo,
+              auth: data.detail.data.user.auth,
+              profImg: {thumb62x62: data.detail.data.user.image},
+              memId: data.detail.data.user.userid
+            })
 
-        store.action.updateListenerUpdate(data.detail.data.user) // 입,퇴장시 청취자 목록 업데이트
+            setlistenerlist(listenerlist)
+            store.action.updateListenerList(listenerlist)
+          }
+        } else {
+          //disconnect
+          listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)
+        }
       }
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
@@ -171,7 +178,7 @@ export default props => {
         //강퇴 당하는 사람이 본인이면
 
         if (data.detail.data.reqKickOut.revMemNo === context.token.memNo) {
-          //store.action.updateListenerUpdate(data.detail.data.user)    //강퇴 처리시 청취자 목록 업데이트
+          store.action.updateListenerUpdate(data.detail.data.user) //강퇴 처리시 청취자 목록 업데이트
           context.action.updateMediaPlayerStatus(false) //플레이어 remove
           context.action.alert({
             callback: () => {
@@ -193,7 +200,7 @@ export default props => {
             store.action.updateRoomInfo(data.detail.data.reqRoomChangeInfo)
           } else {
             getRecvChatData(data.detail)
-            store.action.updateRoleCheck(data.detail)
+            //store.action.updateRoleCheck(data.detail)
           }
         } else {
           getRecvTopData(data.detail)

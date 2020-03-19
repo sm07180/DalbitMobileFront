@@ -12,6 +12,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Api from 'context/api'
 
 //etc
+import roomCheck from 'components/lib/roomCheck.js'
 
 //components
 import useResize from 'components/hooks/useResize'
@@ -24,6 +25,7 @@ import SideContent from './tab'
 // import Guide from ' pages/common/layout/guide.js'
 
 let audioStartInterval = null
+let getBoradInfo = false
 
 export default props => {
   //---------------------------------------------------------------------
@@ -41,36 +43,45 @@ export default props => {
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
   const [resizeCheck, setResizeCheck] = useState(false)
-  // const [myTimer, setMyTimer] = useState()
+
+  const {mediaHandler, broadcastTotalInfo} = context
 
   const hostRole = 3
   // const guestRole = ?
   const listenerRole = 0
+
+  //---------------------------------------------------------------------
+  if (!broadcastTotalInfo && !getBoradInfo) {
+    ;(async () => {
+      getBoradInfo = true
+      const roomNo = location.href.split('?')[1].split('=')[1]
+      const data = await roomCheck(roomNo)
+      if (data) {
+        context.action.updateBroadcastTotalInfo(data)
+      }
+    })()
+  }
   //---------------------------------------------------------------------
 
-  const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, auth} = context.broadcastTotalInfo
+  const [authValue, setAuthValue] = useState(null)
 
   const startPlayer = () => {
-    if (auth === hostRole) {
+    if (authValue === hostRole) {
       setPublishStatus(true)
-    } else if (auth === listenerRole) {
+    } else if (authValue === listenerRole) {
       setPlayStatus(true)
     }
   }
   const stopPlayer = () => {
-    if (auth === hostRole) {
+    if (authValue === hostRole) {
       setPublishStatus(false)
-    } else if (auth === listenerRole) {
+    } else if (authValue === listenerRole) {
       setPlayStatus(false)
     }
   }
   useEffect(() => {
-    //방송방 페이지는 header, footer없음.
-    // context.action.updateBroadcastTotalInfo(state)
-    // store.action.updateRoomInfo(state)
     context.action.updateState({isOnCast: true})
     return () => {
       context.action.updateState({isOnCast: false})
@@ -79,7 +90,10 @@ export default props => {
 
   // Media Handle Logic
   useEffect(() => {
-    if (mediaHandler) {
+    if (mediaHandler && broadcastTotalInfo) {
+      const {bjStreamId, auth} = broadcastTotalInfo
+      setAuthValue(auth)
+
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
         if (mediaHandler.streamId !== bjStreamId) {
@@ -129,11 +143,6 @@ export default props => {
   }, [mediaHandler])
 
   //---------------------------------------------------------------------
-
-  //makeContents
-  const makeContents = () => {
-    return JSON.stringify(state, null, 4)
-  }
 
   async function getReToken(roomNo) {
     const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
@@ -205,24 +214,26 @@ export default props => {
   }, [useResize()])
   //---------------------------------------------------------------------
   return (
-    <Content className={isSideOn ? 'side-on' : 'side-off'}>
-      <Chat>
-        {/* 채팅방 영역 */}
-        <ChatUI {...props} />
-      </Chat>
-      <SideBTN
-        onClick={() => {
-          setTimeout(() => {
-            setIsSideOn(!isSideOn)
-          }, 100)
-        }}>
-        사이드 영역 열고 닫기
-      </SideBTN>
-      <Side>
-        {/* side content 영역 */}
-        <SideContent {...props}>{/* <Charge /> */}</SideContent>
-      </Side>
-    </Content>
+    broadcastTotalInfo && (
+      <Content className={isSideOn ? 'side-on' : 'side-off'}>
+        <Chat>
+          {/* 채팅방 영역 */}
+          <ChatUI {...props} />
+        </Chat>
+        <SideBTN
+          onClick={() => {
+            setTimeout(() => {
+              setIsSideOn(!isSideOn)
+            }, 100)
+          }}>
+          사이드 영역 열고 닫기
+        </SideBTN>
+        <Side>
+          {/* side content 영역 */}
+          <SideContent {...props}>{/* <Charge /> */}</SideContent>
+        </Side>
+      </Content>
+    )
   )
 }
 //---------------------------------------------------------------------

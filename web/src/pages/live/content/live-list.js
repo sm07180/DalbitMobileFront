@@ -2,7 +2,9 @@ import React, {useState, useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //------------------------------------------------------------ declare start
@@ -18,8 +20,6 @@ export default props => {
     setHover(flag)
   }
 
-  //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
-
   //------------------------------------------------------------ components start
   return (
     <Container>
@@ -31,7 +31,7 @@ export default props => {
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
-                    <button onClick={() => props.joinRoom(data)}></button>
+                    <button></button>
                   </div>
                 )}
                 <div className="profileImg">
@@ -42,7 +42,7 @@ export default props => {
             <MobileWrap>
               <div className="content">
                 <div className="title">
-                  {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}
+                  {/* {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm} */}
                   {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
                   {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
                   {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
@@ -53,12 +53,12 @@ export default props => {
               <CountArea>
                 <div>
                   <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+                    <img src={'https://image.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
                     &nbsp;&nbsp;{data.entryCnt}
                   </Icon>
                   <span>|</span>
                   <Icon>
-                    <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+                    <img src={'https://image.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
                     &nbsp;&nbsp;{data.likeCnt}
                   </Icon>
                 </div>
@@ -106,6 +106,7 @@ const List = styled.div`
     align-items: center;
 
     .hoverWrap {
+      cursor: pointer;
       display: flex;
       width: 96px;
       height: 96px;
@@ -126,7 +127,7 @@ const List = styled.div`
         display: flex;
         width: 24px;
         height: 24px;
-        background: url('https://devimage.dalbitcast.com/images/api/ic_play_color_24.png') no-repeat;
+        background: url(${IMG_SERVER}/images/api/ic_play_color_24.png) no-repeat;
         z-index: 100;
       }
     }

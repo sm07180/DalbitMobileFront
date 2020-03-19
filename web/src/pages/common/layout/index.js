@@ -23,10 +23,8 @@ import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 
 const Layout = props => {
-  //context
-  const context = useContext(Context)
-  //initalize
   const {children} = props
+
   //---------------------------------------------------------------------
   return (
     <Container>

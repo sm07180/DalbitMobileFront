@@ -5,11 +5,13 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {LiveStore} from '../store'
+import {IMG_SERVER} from 'context/config'
 //components
 import Title from './title'
 import TopRank from './topRank'
 import Live from './live'
 import Pagination from './pagination'
+import roomCheck from 'components/lib/roomCheck.js'
 
 //window.addEventListener 사용하면 state 가 초기화 되는 문제로 데이터들 함수 외부 변수로 사용 중
 let liveList = []
@@ -93,83 +95,17 @@ export default props => {
       getBroadList({params: {roomType: type, page: page, records: 10, searchType: searchType}})
     }
   }
-
-  //exitRoom
-  async function exitRoom(obj) {
-    const res = await Api.broad_exit({data: {...obj}})
-    if (res.result === 'success') {
-      return res
-    } else {
-    }
-    //alert(res.message)
-  }
-
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    if (context.roomInfo !== null) {
-      if (context.roomInfo.roomNo === roomNo) {
-        props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
-      } else {
-        const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
+    const data = await roomCheck(roomNo)
 
-        if (res.result === 'success') {
-          console.clear()
-          console.log(res)
-          if (isHybrid()) {
-            Hybrid('RoomJoin', res.data)
-          } else {
-            //하이브리드앱이 아닐때
-            const {roomNo} = res.data
-            context.action.updateBroadcastTotalInfo(res.data)
-            props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-          }
-        } else {
-          if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-            const exit = await exitRoom(obj)
-            if (exit.result === 'success') {
-              joinRoom(obj)
-            } else {
-              context.action.alert({
-                msg: exit.message
-              })
-            }
-            context.action.alert({
-              msg: res.message
-            })
-          }
-        }
-      }
-      return
+    if (isHybrid()) {
+      Hybrid('RoomJoin', data)
+    } else {
+      context.action.updateBroadcastTotalInfo(data)
+      props.history.push(`/broadcast?roomNo=${roomNo}`, data)
     }
-    const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-    //Error발생시 (방이 입장되어 있을때)
-    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-      const exit = await exitRoom(obj)
-      if (exit.result === 'success') joinRoom(obj)
-    }
-    //Error발생시 (종료된 방송)
-    //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
-    // if (res.result === 'fail') {
-    //   context.action.alert({
-    //     msg: `${res.message}`
-    //   })
-    //   return true
-    // }
-    //정상진입이거나,방탈퇴이후성공일경우
-    if (res.result === 'success') {
-      console.clear()
-      console.log(res)
-      if (isHybrid()) {
-        Hybrid('RoomJoin', res.data)
-      } else {
-        //하이브리드앱이 아닐때
-        const {roomNo} = res.data
-        context.action.updateBroadcastTotalInfo(res.data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-      }
-    }
-    return
   }
 
   const onScroll = async e => {
@@ -279,7 +215,7 @@ const NoResult = styled.div`
 
 const NoImg = styled.div`
   display: flex;
-  background: url('https://devimage.dalbitcast.com/images/api/img_noresult.png') no-repeat;
+  background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat;
   width: 299px;
   height: 227px;
 `

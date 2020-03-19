@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import Swiper from 'react-id-swiper'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
+import Utility from 'components/lib/utility'
 
 export default props => {
   //-------------------------------------------------------------- declare start
@@ -19,21 +21,20 @@ export default props => {
 
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
-    console.log('## context.common.roomType : ', context.common.roomType)
     return (
       <Contents key={index}>
         {index === selected && hover && (
-          <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-            <button onClick={() => props.joinRoom(data)} />
+          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+            <button />
           </div>
         )}
-        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
+        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
           {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
         <Info>
           <div className="title">
-            <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType.toString())].cdNm}</div>
+            {/* <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div> */}
             {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
             {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
@@ -44,12 +45,12 @@ export default props => {
           {/* <div className="nickName">비오는 날, 기분이 뽀송해지는 점심 라디오</div> */}
           <CountArea>
             <Icon>
-              <img src={'https://devimage.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
+              <img src={'https://image.dalbitcast.com/images/api/ic_headphone_s.png'} width={24} height={24} />
               &nbsp;&nbsp;{data.entryCnt}
             </Icon>
             <span>|</span>
             <Icon>
-              <img src={'https://devimage.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
+              <img src={'https://image.dalbitcast.com/images/api/ic_hearts_s.png'} width={24} height={24} />
               &nbsp;&nbsp;{data.likeCnt}
             </Icon>
           </CountArea>
@@ -102,7 +103,7 @@ const Contents = styled.div`
 
     & > button {
       display: flex;
-      background: url('https://devimage.dalbitcast.com/images/api/ic_play_color.png') no-repeat;
+      background: url(${IMG_SERVER}/images/api/ic_play_color.png) no-repeat;
       width: 48px;
       height: 48px;
     }
@@ -115,6 +116,7 @@ const Image = styled.div`
   width: 180px;
   height: 180px;
   position: relative;
+  cursor: pointer;
 
   & > div {
     display: flex;
