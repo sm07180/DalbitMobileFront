@@ -19,12 +19,13 @@ import {StylesProvider} from '@material-ui/core/styles'
 export default props => {
   //---------------------------------------------------------------------
   //date 셋팅
-  // let date = new Date()
-  // date.setFullYear(date.getFullYear() - 17)
+  let date = new Date()
+  date.setFullYear(date.getFullYear() - 17)
+  //console.log('datedatedatedate', date)
   //useState
   //최신날짜로 했던거 바꾸기
-  //const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
-  const [selectedDate, setSelectedDate] = useState()
+  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
+  //const [selectedDate, setSelectedDate] = useState(props.value)
 
   //console.log('props.value = ' + selectedDate)
   const handleDateChange = date => {
@@ -35,6 +36,11 @@ export default props => {
     handleDateChange(selectedDate)
   }, [props.value])
 
+  let maxDate = new Date()
+  maxDate.setFullYear(maxDate.getFullYear() - 17)
+  maxDate.setMonth(12)
+  maxDate.setDate(0)
+
   //console.log('selectedDate', selectedDate)
   //---------------------------------------------------------------------
   //캘린더 한글화
@@ -42,7 +48,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
-      <DatepickerWrap className={props.pickerState ? 'holder-off' : 'holder-on'}>
+      <DatepickerWrap className={props.pickerState ? 'holder-on' : 'holder-off'}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             disableFuture
@@ -54,6 +60,7 @@ export default props => {
             value={selectedDate}
             onChange={handleDateChange}
             placeholder={props.placeholder}
+            maxDate={maxDate}
           />
           <span className="holder">{props.placeholder}</span>
         </MuiPickersUtilsProvider>

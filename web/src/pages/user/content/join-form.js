@@ -12,7 +12,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 
 let intervalId = null
-let pickerHolder = false
+let pickerHolder = true
 let nickCheckState = false
 
 export default props => {
@@ -46,7 +46,7 @@ export default props => {
   const [imgData, setImgData] = useState()
   const [thisTimer, setThisTimer] = useState()
   const [timeText, setTimeText] = useState()
-  const [pickerState, setPickerState] = useState(false)
+  const [pickerState, setPickerState] = useState(true)
   const [nickCheck, setNickSheck] = useState()
   let setTime = 300
 
@@ -367,6 +367,46 @@ export default props => {
     onLoginHandleChange(e)
   }
 
+  //datepicker에서 올려준 값 받아서 birth 바로 변경하기
+  const pickerOnChange = value => {
+    if (!changes.birth) {
+      dateDefault = value
+    } else {
+      validateBirth(value)
+    }
+  }
+
+  const validateBirth = value => {
+    //생년월일 바뀔때마다 유효성
+    let year = value.slice(0, 4)
+
+    if (year == '') {
+      //console.log('빈값')
+    } else if (year <= dateYear || value == date) {
+      setCurrentBirth('')
+      setValidate({
+        ...validate,
+        birth: true
+      })
+      if (pickerHolder) {
+        pickerHolder = false
+        setPickerState(true)
+      } else {
+        setPickerState(false)
+      }
+    } else {
+      if (pickerHolder) {
+        pickerHolder = false
+      }
+      setCurrentBirth('17세 이상만 가입 가능합니다.')
+      setValidate({
+        ...validate,
+        birth: false
+      })
+      setPickerState(false)
+    }
+  }
+
   //---------------------------------------------------------------------
   //fetchData
   async function fetchData() {
@@ -593,17 +633,6 @@ export default props => {
       ...firstSetting
     })
   }, [])
-  //datepicker에서 올려준 값 받아서 birth 바로 변경하기
-  const pickerOnChange = value => {
-    if (!changes.birth) {
-      dateDefault = value
-    } else {
-      setChanges({
-        ...changes,
-        birth: value
-      })
-    }
-  }
 
   // useEffect(() => {
   //   console.log(JSON.stringify(validate, null, 1))
@@ -661,43 +690,6 @@ export default props => {
       }
     }
   }, [changes.loginPwdCheck, changes.loginPwd])
-
-  //생년월일 바뀔때마다 유효성
-  useEffect(() => {
-    let year = changes.birth.slice(0, 4)
-
-    //현재 날짜 일때는 -17 한 년도로 년도만 바꿔치기 해주고 -> datepicker 에서 셋팅해줌
-    // 체인지 됐을때는 17세 이상만 가입가능하다고 하기
-    if (year <= dateYear) {
-      if (pickerHolder) {
-        setCurrentBirth('')
-        setValidate({
-          ...validate,
-          birth: true
-        })
-        validateSetting = {...validateSetting, birth: true}
-        setPickerState(true)
-      }
-    } else {
-      if (changes.birth == date) {
-        setCurrentBirth('')
-        setValidate({
-          ...validate,
-          birth: false
-        })
-        setPickerState(false)
-        pickerHolder = true
-      } else {
-        setCurrentBirth('17세 이상만 가입 가능합니다.')
-        setValidate({
-          ...validate,
-          birth: false
-        })
-        setPickerState(true)
-        pickerHolder = true
-      }
-    }
-  }, [changes.birth])
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {

@@ -33,7 +33,7 @@ export default props => {
               <div>
                 {index == seleted && hover && (
                   <div className="hoverWrap">
-                    <button onClick={() => props.joinRoom(data)}></button>
+                    <button></button>
                   </div>
                 )}
                 <div className="profileImg">

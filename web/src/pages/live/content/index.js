@@ -108,92 +108,8 @@ export default props => {
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    if (context.roomInfo !== null) {
-      if (context.roomInfo.roomNo === roomNo) {
-        props.history.push(`/broadcast?roomNo=${roomNo}`, context.roomInfo)
-      } else {
-        const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-        if (res.messageKey === 'broadcast.room.join.already') {
-          const exit = await exitRoom(obj)
-          if (exit.result === 'success') joinRoom(obj)
-        } else if (res.code === '-5') {
-          // 입장제한
-          context.action.alert({
-            callback: () => {
-              console.log('')
-            },
-            // title: '달빛라디오',
-            msg: res.message
-          })
-        } else if (res.code === '-3') {
-          // 종료된 방송
-          context.action.alert({
-            callback: () => {
-              console.log('')
-            },
-            // title: '달빛라디오',
-            msg: res.message
-          })
-        }
-
-        if (res.result === 'success') {
-          console.clear()
-          console.log(res)
-          if (isHybrid()) {
-            Hybrid('RoomJoin', res.data)
-          } else {
-            //하이브리드앱이 아닐때
-            const {roomNo} = res.data
-            context.action.updateBroadcastTotalInfo(res.data)
-            props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
-          }
-        }
-      }
-      return
-    }
-    const res = await Api.broad_join({data: {roomNo: obj.roomNo}})
-
-    //나이가 제한되었습니다
-    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.no.age') {
-      context.action.alert({
-        msg: res.message
-      })
-      return
-    }
-    if (res.result === 'fail' && res.messageKey === 'broadcast.room.join.already') {
-      const exit = await exitRoom(obj)
-      if (exit.result === 'success') joinRoom(obj)
-    } else if (res.code === '-5') {
-      // 입장제한
-      context.action.alert({
-        callback: () => {
-          console.log('')
-        },
-        // title: '달빛라디오',
-        msg: res.message
-      })
-    } else if (res.code === -'3') {
-      // 종료된 방송
-      context.action.alert({
-        callback: () => {
-          console.log('')
-        },
-        // title: '달빛라디오',
-        msg: res.message
-      })
-    }
-    //Error발생시 (종료된 방송)
-    //   if (res.result === 'fail' && res.messageKey === 'broadcast.room.end') alert(res.message)
-    // if (res.result === 'fail') {
-    //   context.action.alert({
-    //     msg: `${res.message}`
-    //   })
-    //   return true
-    // }
-    //정상진입이거나,방탈퇴이후성공일경우
+    const res = await Api.broad_join({data: {roomNo}})
     if (res.result === 'success') {
-      console.clear()
-      console.log(res)
       if (isHybrid()) {
         Hybrid('RoomJoin', res.data)
       } else {
@@ -203,7 +119,6 @@ export default props => {
         props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
       }
     }
-    return
   }
 
   const onScroll = async e => {

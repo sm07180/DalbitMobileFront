@@ -21,15 +21,14 @@ export default props => {
 
   // 상단에 노출할 3개의 데이터
   const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
-    console.log('## context.common.roomType : ', context.common.roomType)
     return (
       <Contents key={index}>
         {index === selected && hover && (
-          <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-            <button onClick={() => props.joinRoom(data)} />
+          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+            <button />
           </div>
         )}
-        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
+        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
           {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
@@ -117,6 +116,7 @@ const Image = styled.div`
   width: 180px;
   height: 180px;
   position: relative;
+  cursor: pointer;
 
   & > div {
     display: flex;
