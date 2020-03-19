@@ -20,8 +20,6 @@ export default props => {
     setHover(flag)
   }
 
-  //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
-
   //------------------------------------------------------------ components start
   return (
     <Container>
@@ -108,6 +106,7 @@ const List = styled.div`
     align-items: center;
 
     .hoverWrap {
+      cursor: pointer;
       display: flex;
       width: 96px;
       height: 96px;
