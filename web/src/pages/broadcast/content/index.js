@@ -12,6 +12,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Api from 'context/api'
 
 //etc
+import joinRoom from 'components/lib/joinRoom.js'
 
 //components
 import useResize from 'components/hooks/useResize'
@@ -54,18 +55,9 @@ export default props => {
     ;(async () => {
       getBoradInfo = true
       const roomNo = location.href.split('?')[1].split('=')[1]
-      const res = await Api.broad_join({data: {roomNo}})
-      const {code, result} = res
-      if (code === '-4') {
-        const roomExit = await Api.broad_exit({data: {roomNo}})
-        if (roomExit.result === 'success') {
-          const roomJoin = await Api.broad_join({data: {roomNo}})
-          if (roomJoin.result === 'success') {
-            context.action.updateBroadcastTotalInfo(roomJoin.data)
-          }
-        }
-      } else if (res.result === 'success') {
-        context.action.updateBroadcastTotalInfo(res.data)
+      const data = await joinRoom(roomNo)
+      if (data) {
+        context.action.updateBroadcastTotalInfo(data)
       }
     })()
   }

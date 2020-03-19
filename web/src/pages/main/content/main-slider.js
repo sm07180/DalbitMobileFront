@@ -315,6 +315,7 @@ const Selecter = styled.div`
   }
 
   button {
+    display: none;
     overflow: hidden;
     position: absolute;
     top: 0;
