@@ -94,26 +94,15 @@ export default props => {
   //joinRoom
   async function joinRoom(obj) {
     const {roomNo} = obj
-    //const data = await roomCheck(roomNo)
-    const res = await Api.broad_join({data: {roomNo}})
-    if (res.result === 'success') {
+    const data = await roomCheck(roomNo, context)
+
+    if (data) {
       if (isHybrid()) {
-        if (res.data == null || res.data == undefined) {
-          Hybrid('RoomJoin', '')
-        } else {
-          Hybrid('RoomJoin', res.data)
-        }
+        Hybrid('RoomJoin', data)
       } else {
-        context.action.updateBroadcastTotalInfo(res.data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+        context.action.updateBroadcastTotalInfo(data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`, data)
       }
-    } else {
-      context.action.alert({
-        callback: () => {
-          props.history.push('/live')
-        },
-        msg: res.message
-      })
     }
   }
 
