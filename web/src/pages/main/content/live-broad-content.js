@@ -3,11 +3,8 @@
  */
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE} from 'context/config'
-import {WIDTH_TABLET_S} from 'context/config'
-import {WIDTH_PC} from 'context/config'
-import {WIDTH_PC_S} from 'context/config'
-
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
   const [BroadContentInfo, setBroadContentInfo] = useState(props.info)
   //---------------------------------------------------------------------
@@ -189,11 +186,11 @@ const Viewer = styled.div`
   float: left;
   height: 24px;
   width: 24px;
-  background: url('https://devimage.dalbitcast.com/images/api/hit-g-s.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/hit-g-s.png') no-repeat center center / cover;
 `
 const Lover = styled.div`
   float: left;
   height: 24px;
   width: 24px;
-  background: url('https://devimage.dalbitcast.com/images/api/ico-like-g-s.png') no-repeat center center / cover;
+  background: url('${IMG_SERVER}/images/api/ico-like-g-s.png') no-repeat center center / cover;
 `
