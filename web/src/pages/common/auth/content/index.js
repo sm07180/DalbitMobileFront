@@ -565,7 +565,7 @@ const SocialLogin = styled.div`
 const SnsGoogleLogion = styled.button`
   padding: 10px 34px 10px 50px;
   border: 1px solid #e5e5e5;
-  background: #fff url(https://devimage.dalbitcast.com/svg/ico-google.svg) no-repeat -1px -3px;
+  background: #fff url(${IMG_SERVER}/svg/ico-google.svg) no-repeat -1px -3px;
   color: #757575;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
