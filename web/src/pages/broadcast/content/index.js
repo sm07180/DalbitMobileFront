@@ -147,6 +147,7 @@ export default props => {
     const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
     //Error발생시
     if (res.result === 'fail') {
+      // const roomExit = await Api.broad_exit({data: {roomNo}})
       props.history.push('/')
       return
     }
