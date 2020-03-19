@@ -184,7 +184,6 @@ export default props => {
         return () => document.removeEventListener('keydown')
       })
     }
-    console.log('connecdfdfdf')
     sc.socketClusterBinding(roomNo, context)
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
