@@ -131,7 +131,23 @@ export default props => {
       const recvMsg = data.detail.data.recvMsg
       console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
-      if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') context.action.updateBroadcastTotalInfo(data.detail.data.count)
+      if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
+        context.action.updateBroadcastTotalInfo(data.detail.data.count)
+        // if (data.detail.data.cmd == 'connect') {
+        //   if (data.detail.data.user.auth < 3) {
+        //     if (store.listenerList.length == 0) {
+        //       //store.listenerList.splice(0, 1, data.detail.data.user)
+        //       store.action.updateListenerList(data.detail.data.user)
+        //     } else {
+        //       //       store.listenerList.push(data.detail.data.user)
+        //     }
+        //   }
+        // } else {
+        //   store.listenerList.splice(data.detail.data.user.memNo, 1) //
+        // }
+
+        store.action.updateListenerUpdate(data.detail.data.user) // 입,퇴장시 청취자 목록 업데이트
+      }
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
@@ -153,7 +169,9 @@ export default props => {
       const recvkickoutMsg = data.detail.data.reqKickOut
       if (data.detail.data.cmd === 'reqKickOut' || data.detail.data.cmd === 'reqBanWord') {
         //강퇴 당하는 사람이 본인이면
+
         if (data.detail.data.reqKickOut.revMemNo === context.token.memNo) {
+          //store.action.updateListenerUpdate(data.detail.data.user)    //강퇴 처리시 청취자 목록 업데이트
           context.action.updateMediaPlayerStatus(false) //플레이어 remove
           context.action.alert({
             callback: () => {
