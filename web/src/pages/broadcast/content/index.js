@@ -75,18 +75,18 @@ export default props => {
   const [playStatus, setPlayStatus] = useState(false)
 
   const startPlayer = () => {
-    if (auth === hostRole) {
-      setPublishStatus(true)
-    } else if (auth === listenerRole) {
-      setPlayStatus(true)
-    }
+    // if (auth === hostRole) {
+    //   setPublishStatus(true)
+    // } else if (auth === listenerRole) {
+    //   setPlayStatus(true)
+    // }
   }
   const stopPlayer = () => {
-    if (auth === hostRole) {
-      setPublishStatus(false)
-    } else if (auth === listenerRole) {
-      setPlayStatus(false)
-    }
+    // if (auth === hostRole) {
+    //   setPublishStatus(false)
+    // } else if (auth === listenerRole) {
+    //   setPlayStatus(false)
+    // }
   }
   useEffect(() => {
     context.action.updateState({isOnCast: true})
