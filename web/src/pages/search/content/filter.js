@@ -7,6 +7,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import NoResult from './noResult'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import {useHistory} from 'react-router-dom'
 
 //global
 import {COLOR_MAIN} from 'context/color'
@@ -15,6 +16,8 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const history = useHistory()
+
   //state
   const [list, setPosts] = useState([])
   //방송리스트 map
@@ -160,7 +163,8 @@ export default props => {
           <ListWrap
             key={index}
             onClick={() => {
-              joinRoom(roomNo)
+              //joinRoom(roomNo)
+              props.history.push(`/broadcast?roomNo=${roomNo}`)
             }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>
