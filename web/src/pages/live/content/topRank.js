@@ -24,11 +24,11 @@ export default props => {
     return (
       <Contents key={index}>
         {index === selected && hover && (
-          <div className="hover" onMouseLeave={() => handleHover(false, index)}>
-            <button onClick={() => props.joinRoom(data)} />
+          <div className="hover" onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+            <button />
           </div>
         )}
-        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={() => props.joinRoom(data)}>
+        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1}>
           {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
           {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
         </Image>
@@ -116,6 +116,7 @@ const Image = styled.div`
   width: 180px;
   height: 180px;
   position: relative;
+  cursor: pointer;
 
   & > div {
     display: flex;
