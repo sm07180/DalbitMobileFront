@@ -20,8 +20,6 @@ export default props => {
     setHover(flag)
   }
 
-  //  roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm << roomType 매핑 함수
-
   //------------------------------------------------------------ components start
   return (
     <Container>
