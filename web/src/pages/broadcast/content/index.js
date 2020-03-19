@@ -213,8 +213,8 @@ export default props => {
     }
   }, [useResize()])
   //---------------------------------------------------------------------
-  return (
-    broadcastTotalInfo && (
+  if (broadcastTotalInfo) {
+    return (
       <Content className={isSideOn ? 'side-on' : 'side-off'}>
         <Chat>
           {/* 채팅방 영역 */}
@@ -234,7 +234,9 @@ export default props => {
         </Side>
       </Content>
     )
-  )
+  } else {
+    return <div></div>
+  }
 }
 //---------------------------------------------------------------------
 

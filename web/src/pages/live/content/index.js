@@ -96,11 +96,13 @@ export default props => {
     const {roomNo} = obj
     const data = await roomCheck(roomNo, context)
 
-    if (isHybrid()) {
-      Hybrid('RoomJoin', data)
-    } else {
-      context.action.updateBroadcastTotalInfo(data)
-      props.history.push(`/broadcast?roomNo=${roomNo}`, data)
+    if (data) {
+      if (isHybrid()) {
+        Hybrid('RoomJoin', data)
+      } else {
+        context.action.updateBroadcastTotalInfo(data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`, data)
+      }
     }
   }
 
