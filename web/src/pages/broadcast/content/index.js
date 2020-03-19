@@ -24,6 +24,7 @@ import SideContent from './tab'
 // import Guide from ' pages/common/layout/guide.js'
 
 let audioStartInterval = null
+let getBoradInfo = false
 
 export default props => {
   //---------------------------------------------------------------------
@@ -41,17 +42,37 @@ export default props => {
   //useState
   const [isSideOn, setIsSideOn] = useState(true)
   const [resizeCheck, setResizeCheck] = useState(false)
-  // const [myTimer, setMyTimer] = useState()
+
+  const {mediaHandler, broadcastTotalInfo} = context
 
   const hostRole = 3
   // const guestRole = ?
   const listenerRole = 0
+
+  //---------------------------------------------------------------------
+  if (!broadcastTotalInfo && !getBoradInfo) {
+    ;(async () => {
+      getBoradInfo = true
+      const roomNo = location.href.split('?')[1].split('=')[1]
+      const res = await Api.broad_join({data: {roomNo}})
+      const {code, result} = res
+      if (code === '-4') {
+        const roomExit = await Api.broad_exit({data: {roomNo}})
+        if (roomExit.result === 'success') {
+          const roomJoin = await Api.broad_join({data: {roomNo}})
+          if (roomJoin.result === 'success') {
+            context.action.updateBroadcastTotalInfo(roomJoin.data)
+          }
+        }
+      } else if (res.result === 'success') {
+        context.action.updateBroadcastTotalInfo(res.data)
+      }
+    })()
+  }
   //---------------------------------------------------------------------
 
-  const {mediaHandler} = context
   const [publishStatus, setPublishStatus] = useState(false)
   const [playStatus, setPlayStatus] = useState(false)
-  const {bjStreamId, auth} = context.broadcastTotalInfo
 
   const startPlayer = () => {
     if (auth === hostRole) {
@@ -68,9 +89,6 @@ export default props => {
     }
   }
   useEffect(() => {
-    //방송방 페이지는 header, footer없음.
-    // context.action.updateBroadcastTotalInfo(state)
-    // store.action.updateRoomInfo(state)
     context.action.updateState({isOnCast: true})
     return () => {
       context.action.updateState({isOnCast: false})
@@ -79,7 +97,9 @@ export default props => {
 
   // Media Handle Logic
   useEffect(() => {
-    if (mediaHandler) {
+    if (mediaHandler && broadcastTotalInfo) {
+      const {bjStreamId, auth} = broadcastTotalInfo
+
       // 이미 방송이 연결되어 있을 때
       if (mediaHandler.rtcPeerConn) {
         if (mediaHandler.streamId !== bjStreamId) {
@@ -129,11 +149,6 @@ export default props => {
   }, [mediaHandler])
 
   //---------------------------------------------------------------------
-
-  //makeContents
-  const makeContents = () => {
-    return JSON.stringify(state, null, 4)
-  }
 
   async function getReToken(roomNo) {
     const res = await Api.broadcast_reToken({data: {roomNo: roomNo}})
@@ -205,24 +220,26 @@ export default props => {
   }, [useResize()])
   //---------------------------------------------------------------------
   return (
-    <Content className={isSideOn ? 'side-on' : 'side-off'}>
-      <Chat>
-        {/* 채팅방 영역 */}
-        <ChatUI {...props} />
-      </Chat>
-      <SideBTN
-        onClick={() => {
-          setTimeout(() => {
-            setIsSideOn(!isSideOn)
-          }, 100)
-        }}>
-        사이드 영역 열고 닫기
-      </SideBTN>
-      <Side>
-        {/* side content 영역 */}
-        <SideContent {...props}>{/* <Charge /> */}</SideContent>
-      </Side>
-    </Content>
+    broadcastTotalInfo && (
+      <Content className={isSideOn ? 'side-on' : 'side-off'}>
+        <Chat>
+          {/* 채팅방 영역 */}
+          <ChatUI {...props} />
+        </Chat>
+        <SideBTN
+          onClick={() => {
+            setTimeout(() => {
+              setIsSideOn(!isSideOn)
+            }, 100)
+          }}>
+          사이드 영역 열고 닫기
+        </SideBTN>
+        <Side>
+          {/* side content 영역 */}
+          <SideContent {...props}>{/* <Charge /> */}</SideContent>
+        </Side>
+      </Content>
+    )
   )
 }
 //---------------------------------------------------------------------

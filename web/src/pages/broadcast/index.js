@@ -16,27 +16,9 @@ import Api from 'context/api'
 let getBoradInfo = false
 
 export default props => {
-  //context
   const ctx = useContext(Context)
-  //const
-  if (!ctx.broadcastTotalInfo && !getBoradInfo) {
-    ;(async () => {
-      getBoradInfo = true
-      const roomNo = location.href.split('?')[1].split('=')[1]
-      const res = await Api.broad_join({data: {roomNo: roomNo}})
-      if (res.result === 'success') {
-        ctx.action.updateBroadcastTotalInfo(res.data)
-      }
-    })()
-  }
-
   //---------------------------------------------------------------------
-  /**
-   * @
-   */
-  function setRoute() {
-    return <Content {...props} />
-  }
+
   //useEffect
   useEffect(() => {
     const {state} = props.location
@@ -46,6 +28,12 @@ export default props => {
     }
   }, [])
   //---------------------------------------------------------------------
-  return <BroadCastProvider>{ctx.broadcastTotalInfo && <Layout {...props}>{setRoute()}</Layout>}</BroadCastProvider>
+  return (
+    <BroadCastProvider>
+      <Layout {...props}>
+        <Content {...props} />
+      </Layout>
+    </BroadCastProvider>
+  )
 }
 //---------------------------------------------------------------------

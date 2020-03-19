@@ -62,7 +62,7 @@ export default class API {
    */
   static broad_join = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/join`, method: method || 'POST', data: data})
+    return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
   /**
    * @brief 방송방 나가기
@@ -73,7 +73,7 @@ export default class API {
    */
   static broad_exit = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/exit`, method: method || 'DELETE', data: data})
+    return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
   }
   /**
    * @brief 방송방 정보수정
