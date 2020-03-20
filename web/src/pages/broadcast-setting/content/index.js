@@ -22,13 +22,6 @@ let drawId = null
 
 export default props => {
   const context = useContext(Context)
-
-  //context
-  //context 얼러트창 text
-  const element = `
-  <div>마이크 연결이 안되어있습니다.</div>
-  `
-
   //hooks-usechange
   const {changes, setChanges, onChange} = useChange(update, {
     onChange: -1,
@@ -159,11 +152,11 @@ export default props => {
   useEffect(() => {
     let value = false
     if (changes.welcomMsg.length > 10 && changes.welcomMsg.length < 101) {
-      if (changes.welcomMsg.length > 0 && changes.title.length < 21) {
-        if (changes.bgImg !== '') {
-          value = true
-        }
+      if (changes.title.length > 2 && changes.title.length < 21) {
+        value = true
       }
+    } else {
+      value = false
     }
     setBActive(value)
   }, [changes])
@@ -177,7 +170,8 @@ export default props => {
   //fetch
 
   async function fetchData() {
-    if (photoPath && !fetch) {
+    if (BActive === false) return
+    if (photoPath && !fetch && BActive === true) {
       setChanges({...changes, bgImg: photoPath})
 
       const res = await Api.broad_create({
@@ -191,24 +185,44 @@ export default props => {
           entryType: changes.entryType
         }
       })
-
+      console.log(res.data)
       setFetch(res.data)
       if (res) {
         if (res.code == 0) {
           console.log('room_create revData = ' + res.data)
           context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
           context.action.updateBroadcastTotalInfo(res.data)
-          /**
-           * @todos 소켓연결필요
-           */
           props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
         } else {
-          // console.warn(res.message)
         }
       }
     } else {
-      //Error발생시
-      console.log('방생성실패')
+      if (!photoPath && !fetch && BActive === true) {
+        setChanges({...changes})
+        const res = await Api.broad_create({
+          data: {
+            roomType: changes.roomType,
+            title: changes.title,
+            bgImg: '',
+            bgImgRacy: 3,
+            welcomMsg: changes.welcomMsg,
+            notice: '',
+            entryType: changes.entryType
+          }
+        })
+        setFetch(res.data)
+        if (res) {
+          if (res.code == 0) {
+            console.log('room_create revData = ' + res.data)
+            context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
+            context.action.updateBroadcastTotalInfo(res.data)
+            props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
+          } else {
+          }
+        }
+      } else {
+        //Error발생시
+      }
     }
   }
 
@@ -268,14 +282,6 @@ export default props => {
         await infiniteAudioChecker()
       } else {
         drawId = true
-        // context.action.alert({
-        //   msg: element,
-        //   title: '마이크 연결 에러!',
-        //   callback: () => {
-        //     props.history.push('/')
-        //     context.action.alert({visible: false})
-        //   }
-        // })
         context.action.alert({
           //콜백처리
           callback: () => {
@@ -380,6 +386,7 @@ export default props => {
             </BroadWelcome>
             <CopyrightIcon />
             <CreateBtn
+              value={BActive}
               onClick={() => {
                 if (!audioStream) {
                   return
@@ -397,10 +404,11 @@ export default props => {
                   })
                   audioStream = null
                 }
-                fetchData({...changes})
               }}
-              value={BActive}
-              className={BActive === true && audioPass ? 'on' : ''}>
+              className={BActive === true && audioPass ? 'on' : ''}
+              onClick={() => {
+                fetchData({...changes})
+              }}>
               방송하기
             </CreateBtn>
           </BroadDetail>

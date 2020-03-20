@@ -20,7 +20,7 @@ export default props => {
 
   //------------------------------------------------------------ components start
   return (
-    <div>
+    <Wrapper>
       {props.broadList.map((data, index) => {
         return (
           <List key={index} onClick={() => props.joinRoom(data)}>
@@ -58,10 +58,13 @@ export default props => {
           </List>
         )
       })}
-    </div>
+    </Wrapper>
   )
 }
-
+const Wrapper = styled.div`
+  min-height: 380px;
+  margin-bottom: 60px;
+`
 const List = styled.div`
   display: flex;
   width: 100%;

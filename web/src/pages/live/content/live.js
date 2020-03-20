@@ -101,6 +101,7 @@ export default props => {
                 {open2 && (
                   <DropDown>
                     {list.map((data, index) => {
+                      if (index > 14) return
                       return (
                         <li onClick={() => searchLive(2, data)} key={index}>
                           {data.cdNm}
