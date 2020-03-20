@@ -4,21 +4,40 @@ import styled from 'styled-components'
 // component
 import List from '../component/notice/list.js'
 import Paging from '../component/notice/paging.js'
+import WritePage from '../component/notice/writePage.js'
 
 // image
 import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 
 const Notice = () => {
+  const [writeStatus, setWriteStatus] = useState('off')
+
+  const writeStatusHandler = () => {
+    if (writeStatus === 'off') {
+      setWriteStatus('on')
+    } else if (writeStatus === 'on') {
+      setWriteStatus('off')
+    }
+  }
+
   return (
-    <div>
+    <>
       <TopWrap>
         <TitleText>방송국 공지</TitleText>
-        <WriteBtn>공지 작성하기</WriteBtn>
+        <WriteBtn className={writeStatus} onClick={writeStatusHandler}>
+          공지 작성하기
+        </WriteBtn>
       </TopWrap>
-      <List noticeList={[1, 2, 3, 4]} />
-      <Paging pages={[1, 2, 3, 4]} />
-    </div>
+      {writeStatus === 'off' ? (
+        <>
+          <List noticeList={[1, 2, 3, 4]} />
+          <Paging pages={[1, 2, 3, 4]} />
+        </>
+      ) : (
+        <WritePage />
+      )}
+    </>
   )
 }
 
@@ -40,6 +59,16 @@ const WriteBtn = styled.button`
     height: 16px;
     background-repeat: no-repeat;
     background-image: url(${pen});
+  }
+
+  &.on {
+    color: #fff;
+    border-color: #bdbdbd;
+    background-color: #bdbdbd;
+
+    &::after {
+      background-image: url(${WhitePen});
+    }
   }
 `
 const TitleText = styled.span`
