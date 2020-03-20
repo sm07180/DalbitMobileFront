@@ -5,14 +5,22 @@ import styled from 'styled-components'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
 
 const List = props => {
+  const {noticeList} = props
+
   return (
-    <ListStyled>
-      <TitleWrap>추천 DJ 신청 접수 안내</TitleWrap>
-      <TimeWrap>
-        <Time>2020 01.14 11:30</Time>
-        <ArrowDownBtn />
-      </TimeWrap>
-    </ListStyled>
+    <ListWrap>
+      {noticeList.map((list, index) => {
+        return (
+          <ListStyled key={index}>
+            <TitleWrap>추천 DJ 신청 접수 안내</TitleWrap>
+            <TimeWrap>
+              <Time>2020 01.14 11:30</Time>
+              <ArrowDownBtn />
+            </TimeWrap>
+          </ListStyled>
+        )
+      })}
+    </ListWrap>
   )
 }
 
@@ -55,4 +63,10 @@ const ListStyled = styled.div`
   height: 47px;
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
+  user-select: none;
+
+  &:active {
+    background-color: #efefef;
+  }
 `
+const ListWrap = styled.div``

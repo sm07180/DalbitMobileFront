@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 // component
 import List from '../component/notice/list.js'
+import Paging from '../component/notice/paging.js'
 
 // image
 import pen from 'images/pen.svg'
@@ -14,11 +15,8 @@ const Notice = () => {
         <TitleText>방송국 공지</TitleText>
         <WriteBtn>공지 작성하기</WriteBtn>
       </TopWrap>
-      <div>
-        {[1, 2, 3, 4].map((value, index) => {
-          return <List key={index} />
-        })}
-      </div>
+      <List noticeList={[1, 2, 3, 4]} />
+      <Paging numbers={[1, 2, 3, 4]} />
     </div>
   )
 }
