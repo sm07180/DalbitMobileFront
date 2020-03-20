@@ -279,7 +279,7 @@ export default props => {
         <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
       </div>
 
-      <input type="text" placeholder="대화를 입력해주세요." onKeyPress={props.onKeyPress} />
+      <input type="text" autoComplete="off" placeholder="대화를 입력해주세요." onKeyPress={props.onKeyPress} />
       <div className="btn-wrap">
         {/* 좋아요-부스터버튼, 마이크 버튼 */}
         {creatLikeBoost()}
