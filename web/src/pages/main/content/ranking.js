@@ -314,7 +314,7 @@ const RankingWrap = styled.div`
         height: 28px;
       }
     } */
-  }
+  
   .nth1 p {
     background: ${COLOR_MAIN};
   }
