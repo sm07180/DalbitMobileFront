@@ -15,13 +15,16 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
+import qs from 'query-string'
 export default props => {
   const context = useContext(Context)
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const {roomNo} = qs.parse(location.search)
+  const {broadcastTotalInfo} = context
+
   //기존이미지 패스및 룸넘버 변수화
-  console.log(roomInfo.bgImg.path)
-  const RoomNumbers = roomInfo.roomNo
-  const DelImg = roomInfo.bgImg.path
+
+  const RoomNumbers = roomNo
+  const DelImg = broadcastTotalInfo.bgImg.path
   //console.log(RoomNumbers)
   //console.log(RoomNumbers)
   //ref

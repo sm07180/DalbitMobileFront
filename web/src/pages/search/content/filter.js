@@ -183,7 +183,7 @@ export default props => {
             key={index}
             onClick={() => {
               //joinRoom(roomNo)
-              props.history.push(`/broadcast?roomNo=${roomNo}`)
+              // props.history.push(`/broadcast?roomNo=${roomNo}`)
             }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>

@@ -172,6 +172,12 @@ const Content = styled.div`
     z-index: -4;
     content: '';
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    &:before {
+      height: 200px;
+    }
+  }
 `
 const RangkingWrap = styled.section``
 

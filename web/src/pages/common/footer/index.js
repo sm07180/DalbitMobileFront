@@ -83,7 +83,7 @@ const Footer = styled.footer`
   padding-bottom: 116px;
   background: #fff;
   text-align: center;
-  z-index: -1;
+
   &.on-cast {
     display: none;
   }
