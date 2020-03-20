@@ -23,10 +23,10 @@ export default props => {
     <div>
       {props.broadList.map((data, index) => {
         return (
-          <List key={index}>
+          <List key={index} onClick={() => props.joinRoom(data)}>
             <div className="profile">
               <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
-              <div className="profileImg" onClick={() => props.joinRoom(data)}>
+              <div className="profileImg">
                 <BgImg url={data.bjProfImg.thumb120x120}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}</BgImg>
               </div>
             </div>
@@ -62,15 +62,6 @@ export default props => {
   )
 }
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
-  }
-`
 const List = styled.div`
   display: flex;
   width: 100%;
@@ -79,7 +70,9 @@ const List = styled.div`
   border-bottom-style: solid;
   border-color: #e0e0e0;
   border-width: 1px;
+  cursor: pointer;
   z-index: -1;
+
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 140px;
   }
