@@ -209,6 +209,7 @@ const Sort = styled.div`
     justify-content: space-between;
     position: relative;
     transform: skew(-0.03deg);
+    z-index: 1;
     & > span {
       padding-left: 10px;
     }

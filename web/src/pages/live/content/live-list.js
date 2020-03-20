@@ -145,7 +145,7 @@ const List = styled.div`
       height: 96px;
       align-items: center;
       position: relative;
-      z-index: 1;
+      z-index: 0;
       cursor: pointer;
     }
   }
