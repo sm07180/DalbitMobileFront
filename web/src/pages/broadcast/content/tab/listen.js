@@ -25,7 +25,9 @@ export default props => {
   //api(리스너 리스트)
   const fetchListenList = async () => {
     const res = await API.broad_listeners({
-      params: {roomNo}
+      params: {
+        roomNo: context.broadcastTotalInfo.roomNo
+      }
     })
     if (res.result === 'success') {
       const {list} = res.data
@@ -35,6 +37,7 @@ export default props => {
     return
   }
   useEffect(() => {
+    console.log('1')
     fetchListenList()
   }, [])
 

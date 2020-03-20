@@ -304,6 +304,8 @@ const BgImg = styled.div`
   background-repeat: no-repeat;
   border-radius: 10px;
   position: relative;
+  background-position: center;
+
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 108px;
     height: 108px;

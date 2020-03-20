@@ -24,7 +24,7 @@ export default props => {
   async function broadListenListReload() {
     const res = await Api.broad_listeners({
       params: {
-        roomNo: roomNo
+        roomNo: context.broadcastTotalInfo.roomNo
       }
     })
     if (res.result === 'success') {
