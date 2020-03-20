@@ -5,13 +5,13 @@ import arrowLeftImg from '../images/NoticeArrowLeft.svg'
 import arrowRightImg from '../images/NoticeArrowRight.svg'
 
 const Paging = props => {
-  const {numbers} = props
+  const {pages} = props
 
   return (
     <PagingWrap>
       <ArrowBtn className="left" />
-      {numbers.map((value, index) => (
-        <NumberBtn key={index}>{value}</NumberBtn>
+      {pages.map((numbering, index) => (
+        <NumberBtn key={index}>{numbering}</NumberBtn>
       ))}
       <ArrowBtn className="right" />
     </PagingWrap>

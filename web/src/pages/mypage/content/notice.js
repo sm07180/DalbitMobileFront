@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 // component
@@ -7,6 +7,7 @@ import Paging from '../component/notice/paging.js'
 
 // image
 import pen from 'images/pen.svg'
+import WhitePen from '../component/images/WhitePen.svg'
 
 const Notice = () => {
   return (
@@ -16,7 +17,7 @@ const Notice = () => {
         <WriteBtn>공지 작성하기</WriteBtn>
       </TopWrap>
       <List noticeList={[1, 2, 3, 4]} />
-      <Paging numbers={[1, 2, 3, 4]} />
+      <Paging pages={[1, 2, 3, 4]} />
     </div>
   )
 }
