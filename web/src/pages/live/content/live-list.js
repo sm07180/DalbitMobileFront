@@ -11,8 +11,6 @@ export default props => {
   const [hover, setHover] = useState(false)
   const [seleted, setSelected] = useState()
   const context = useContext(Context)
-  const scrollbars = useRef(null)
-  const [roomType, setRoomType] = useState(context.common.roomType)
 
   //------------------------------------------------------------ func start
   const handleHover = (flag, index) => {
@@ -22,21 +20,14 @@ export default props => {
 
   //------------------------------------------------------------ components start
   return (
-    <Container>
+    <div>
       {props.broadList.map((data, index) => {
         return (
-          <List key={index} onMouseEnter={() => handleHover(true, index)} onMouseLeave={() => handleHover(false, index)} onClick={() => props.joinRoom(data)}>
+          <List key={index}>
             <div className="profile">
               <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
-              <div>
-                {index == seleted && hover && (
-                  <div className="hoverWrap">
-                    <button></button>
-                  </div>
-                )}
-                <div className="profileImg">
-                  <BgImg url={data.bjProfImg.thumb120x120}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}</BgImg>
-                </div>
+              <div className="profileImg" onClick={() => props.joinRoom(data)}>
+                <BgImg url={data.bjProfImg.thumb120x120}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}</BgImg>
               </div>
             </div>
             <MobileWrap>
@@ -67,19 +58,17 @@ export default props => {
           </List>
         )
       })}
-    </Container>
+    </div>
   )
 }
 
 const Container = styled.div`
   display: flex;
   width: 100%;
-  /* height: 100%; */
   flex-direction: column;
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
-    /* height: 100%; */
   }
 `
 const List = styled.div`
@@ -90,7 +79,7 @@ const List = styled.div`
   border-bottom-style: solid;
   border-color: #e0e0e0;
   border-width: 1px;
-
+  z-index: -1;
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 140px;
   }
@@ -157,6 +146,7 @@ const List = styled.div`
       align-items: center;
       position: relative;
       z-index: 1;
+      cursor: pointer;
     }
   }
 
@@ -250,6 +240,7 @@ const CountArea = styled.div`
   & > div {
     display: flex;
     align-items: center;
+    z-index: -1;
   }
 
   & > div > span {
