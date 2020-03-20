@@ -180,7 +180,8 @@ const Info = styled.div`
 
   .roomTitle {
     display: flex;
-
+    width: 90%;
+    text-align: left;
     height: 75px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding-top: 0px;

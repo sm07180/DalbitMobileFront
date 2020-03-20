@@ -87,7 +87,7 @@ const Main = props => {
       people: '772',
       like: '1,212',
       icon: 'HOT',
-      avata: 'http://www.nbnnews.co.kr/news/photo/201904/259849_311550_480.jpg'
+      avata: 'https://www.nbnnews.co.kr/news/photo/201904/259849_311550_480.jpg'
     },
     {
       id: '7',
