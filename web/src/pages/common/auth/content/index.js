@@ -152,7 +152,8 @@ export default props => {
         })
       } else {
         context.action.alert({
-          msg: res.message
+          title: res.messageKey !== undefined && res.messageKey,
+          msg: res.message !== undefined && res.message
         })
         // context.action.updatePopupVisible(false)
         // context.action.updateLogin(false)
@@ -183,7 +184,11 @@ export default props => {
       }
       //alert(res.message)
     } else {
-      console.error('서버에서 결과 코드가 안내려옴')
+      context.action.alert({
+        title: res.messageKey !== undefined && res.messageKey,
+        msg: res.message !== undefined && res.message
+      })
+      //  console.error('서버에서 결과 코드가 안내려옴')
       context.action.updateLogin(false)
     }
   }
