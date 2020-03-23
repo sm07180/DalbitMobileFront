@@ -16,6 +16,7 @@ const sc = require('context/socketCluster')
 //component
 import LottieLoader from 'components/module/lottieLoader'
 import * as timer from 'pages/broadcast/content/tab/timer'
+import Volumebar from 'pages/broadcast/content/tab/volumebar'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -288,7 +289,9 @@ export default props => {
           볼륨조정
         </button>
         <ul className={`volume-box ${toggle.volume ? 'on' : 'off'}`}>
-          <li>볼륨조절바여기있어요~~ 여기에 넣어주세요~~</li>
+          <li>
+            <Volumebar></Volumebar>
+          </li>
         </ul>
         {/* 빠른말버튼 */}
         <button name="quick" className={`quick ${toggle.quick ? 'on' : 'off'}`} title="빠른말" onClick={activeMenu}>
@@ -414,13 +417,13 @@ const Content = styled.div`
         display: block;
       }
       &.volume-box {
-        bottom: 53px;
+        /* bottom: 53px;
         right: 102px;
         width: 22px;
         height: 106px;
         border-radius: 25px;
         background: #000;
-        text-indent: -9999px;
+        text-indent: -9999px; */
       }
       &.quick-box,
       &.menu-box {
@@ -494,7 +497,7 @@ const Content = styled.div`
         right: 10px;
       }
       ul.volume-box {
-        right: 81px;
+        right: 153px;
         bottom: 46px;
       }
     }

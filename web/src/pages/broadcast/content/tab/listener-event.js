@@ -30,6 +30,7 @@ export default props => {
     if (res.result === 'success') {
       const {list} = res.data
       store.action.updateListenerList(list)
+      if (list.length > 0) store.action.updateListenerUpdate(list)
     }
     return
   }

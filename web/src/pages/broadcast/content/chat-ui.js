@@ -28,6 +28,7 @@ export default props => {
   const [top2Msg, setTop2Msg] = useState([]) // 채팅창 상단 top2메시지
   const [checkMove, setCheckMove] = useState(false) // 채팅창 스크롤이 생긴 후 최초로 스크롤 움직였는지 감지
   const [child, setChild] = useState() // 메세지 children
+  const [listenerlist, setlistenerlist] = useState([])
   //ref
   const chatArea = useRef(null) // 채팅창 스크롤 영역 선택자
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -98,6 +99,7 @@ export default props => {
           </div>
         )
         setTop1Msg(result)
+
         document.getElementsByClassName('system-msg top1')[0].style.visibility = 'visible'
       } else {
         document.getElementsByClassName('system-msg top1')[0].style.visibility = 'hidden'
@@ -126,35 +128,53 @@ export default props => {
       setTop2Msg(result)
     }
   }
-
+  useEffect(() => {
+    console.log('처음 조회 하고 받은 데이터 = ' + store.ListenerUpdate)
+  }, [store.ListenerUpdate])
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
-      var recvArr = []
+      const aaa = []
       // console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
-        context.action.updateBroadcastTotalInfo(data.detail.data.count)
-        // if (data.detail.data.cmd == 'connect') {
-        //   //fetchListenList()
-        //   if (data.detail.data.user.memNo !== context.token.memNo) {
-        //     listenerlist.push({
-        //       nickNm: data.detail.data.user.nk,
-        //       memNo: data.detail.data.user.memNo,
-        //       auth: data.detail.data.user.auth,
-        //       profImg: {thumb62x62: data.detail.data.user.image},
-        //       memId: data.detail.data.user.userid
-        //     })
-
-        //     setlistenerlist(listenerlist)
-        //     store.action.updateListenerList(listenerlist)
-        //   }
-        // } else {
-        //   //disconnect
-        //   listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)
+        // if (store.listenerUpdate > 0) {
+        //   listenerlist = listenerlist.push(store.listenerUpdate)
         // }
+        context.action.updateBroadcastTotalInfo(data.detail.data.count)
+        if (data.detail.data.cmd == 'connect') {
+          if (data.detail.data.user.memNo !== context.token.memNo) {
+            listenerlist.push({
+              nickNm: data.detail.data.user.nk,
+              memNo: data.detail.data.user.memNo,
+              auth: data.detail.data.user.auth,
+              profImg: {thumb62x62: data.detail.data.user.image},
+              memId: data.detail.data.user.userid
+            })
+            //listenerlist.concat(...listenerlist,)
+
+            setlistenerlist(listenerlist)
+            //store.action.updateListenerUpdate(listenerlist)
+            store.action.updateListenerList(listenerlist)
+          } else {
+            listenerlist.push({
+              nickNm: data.detail.data.user.nk,
+              memNo: data.detail.data.user.memNo,
+              auth: data.detail.data.user.auth,
+              profImg: {thumb62x62: data.detail.data.user.image},
+              memId: data.detail.data.user.userid
+            })
+            if (context.broadcastTotalInfo.auth < 3) {
+              setlistenerlist(listenerlist)
+              store.action.updateListenerList(listenerlist)
+            }
+          }
+        } else {
+          //disconnect
+          listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)
+        }
       }
       //랭킹,좋아요 수
       if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
