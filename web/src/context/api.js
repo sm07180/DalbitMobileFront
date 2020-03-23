@@ -109,6 +109,7 @@ export default class API {
    * @update 김호겸 2020.03.18
    */
   static broad_list = async params => {
+    console.log('params', params)
     return await ajax({params, url: `/broad/list`, method: 'GET'})
   }
 

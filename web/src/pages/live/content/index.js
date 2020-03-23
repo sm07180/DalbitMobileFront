@@ -29,6 +29,7 @@ export default props => {
   const [searchType, setSearchType] = useState('0') // searchType
   const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
+
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
   })
@@ -38,11 +39,8 @@ export default props => {
   //----------------------------------------------------------- func start
 
   // 방송방 리스트 조회
-  const getBroadList = async obj => {
-    const {roomType, searchType} = obj.params
-    liveType = roomType
-    liveSearchType = searchType
-
+  const getBroadList = async () => {
+    const obj = {params: {roomType: type, page: page, records: 10, searchType: searchType}}
     const res = await Api.broad_list({...obj})
 
     if (res.result === 'success') {
@@ -86,16 +84,6 @@ export default props => {
   }
 
   useEffect(() => {
-    ;(async () => {
-      const {result, paging, list} = await getBroadList({params: {roomType: type, page: page, records: 10, searchType: searchType}})
-      if (result) {
-        store.action.updateList(list)
-      } else {
-        // result -> false
-        store.action.updateList(false)
-      }
-    })()
-
     // if (innerWidth <= 600) {
     //   window.addEventListener('scroll', onScroll)
     //   return () => {
@@ -104,7 +92,18 @@ export default props => {
     // }
   }, [])
 
-  //joinRoom
+  useEffect(() => {
+    ;(async () => {
+      const {result, paging, list} = await getBroadList()
+      if (result) {
+        store.action.updateList(list)
+      } else {
+        // result -> false
+        store.action.updateList(false)
+      }
+    })()
+  }, [searchType])
+
   async function joinRoom(obj) {
     const {roomNo} = obj
     const data = await roomCheck(roomNo, context)
@@ -125,9 +124,9 @@ export default props => {
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          <TopRank broadList={store.list} joinRoom={joinRoom} setType={setType} paging={paging} width={width} type={type} />
+          <TopRank broadList={list} joinRoom={joinRoom} width={width} />
           <Live
-            broadList={store.list}
+            broadList={list}
             joinRoom={joinRoom}
             getBroadList={getBroadList}
             setType={setType}

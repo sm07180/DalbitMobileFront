@@ -44,8 +44,8 @@ export default props => {
         records: 10,
         searchType: data.index
       }
-      props.setSearchType(data.index)
-      props.getBroadList({params})
+      props.setSearchType(String(data.index))
+      // props.getBroadList({params})
     }
 
     if (index === 2) {
@@ -57,7 +57,7 @@ export default props => {
         searchType: props.searchType
       }
       props.setType(data.cd)
-      props.getBroadList({params}) // 조회 function call
+      // props.getBroadList({params}) // 조회 function call
     }
 
     setOpen1(false)
@@ -77,7 +77,7 @@ export default props => {
         <div className="sort">
           <div className="inside">
             <span>
-              실시간<span>&nbsp;LIVE</span>
+              <span>실시간 LIVE</span>
             </span>
             <Sort>
               <div className="dropDown">
