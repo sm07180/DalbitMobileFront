@@ -40,6 +40,10 @@ export default class SignalingHandler {
     // about socket info
     this.intervalId = null
     this.wSocketInit()
+
+    //audioVolume
+    let audioSource = null
+    let audioDestination = null
   }
 
   async setType(type) {
@@ -84,6 +88,31 @@ export default class SignalingHandler {
   setContext(context) {
     this.context = context
   }
+  //오디오 볼륨 생성
+  setAudioVolumeMake() {
+    if (!this.audioStream) {
+      return
+    }
+    const AudioContext = window.AudioContext || window.webkitAudioContext
+    let audioContext = new AudioContext()
+
+    let gainNode = audioContext.createGain()
+    audioSource = audioContext.createMediaStreamSource(this.audioStream)
+    audioDestination = audioContext.createMediaStreamDestination()
+    audioSource.connect(gainNode)
+    gainNode.connect(audioDestination)
+    audioVolume = gainNode.gain.value
+    //console.log('초기 볼륨 크기 = ' + audioVolume)
+  }
+  getAudioVolume = () => {
+    //console.log('getAudioVolume = ' + this.audioTag.volume)
+    return this.audioTag.volume
+  }
+  setAudioVolume = value => {
+    if (Number(value) > 1 || Number(value) < 0) return
+    //console.log('볼륨 크기 = ' + value)
+    if (this.audioTag) this.audioTag.volume = value
+  }
 
   async detectAudioDevice() {
     const devices = await navigator.mediaDevices.enumerateDevices()
@@ -114,6 +143,11 @@ export default class SignalingHandler {
       .getUserMedia(constraint)
       .then(stream => {
         this.audioStream = stream
+        this.audioTag.srcObject = stream
+      })
+      .then(() => {
+        //오디오 볼륨
+        setAudioVolumeMake()
       })
       .catch(e => {
         if (String(e).indexOf('Permission') !== -1) {

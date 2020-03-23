@@ -2,7 +2,8 @@ import React, {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import {Slider} from '@material-ui/core'
 import {withStyles, makeStyles} from '@material-ui/core/styles'
-import * as audioVolumeHandler from 'Components/lib/AudioVolume'
+//import * as audioVolumeHandler from 'components/lib/audioVolume'
+import SignalingHandler from 'components/lib/SignalingHandler'
 /**
  * volume state
  */
@@ -58,11 +59,11 @@ const Volumebar = withStyles({
 export default props => {
   const classes = useStyles()
   const [value, setValue] = useState(1)
-
+  let volumeHandler = new SignalingHandler()
   // 볼륨 크기
   const handleChange = (event, newValue) => {
-    console.log(newValue)
-    audioVolumeHandler.setAudioVolume(newValue)
+    volumeHandler.setAudioVolume(newValue)
+    //audioVolumeHandler.setAudioVolume(newValue)
     setValue(newValue)
   }
 
@@ -76,7 +77,16 @@ export default props => {
     <>
       <div className={classes.root}>
         <div className={classes.margin}>
-          <Volumebar value={value} min={0} step={0.1} max={1} orientation="vertical" defaultValue={1} onChange={handleChange} aria-labelledby="vertical-slider" />
+          <Volumebar
+            value={value}
+            min={0}
+            step={0.1}
+            max={1}
+            orientation="vertical"
+            defaultValue={1}
+            onChange={handleChange}
+            aria-labelledby="vertical-slider"
+          />
         </div>
       </div>
     </>
