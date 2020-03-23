@@ -10,47 +10,20 @@ export default props => {
   //------------------------------------------------------------ func start
   const getData = index => {
     setPage(index)
-    props.getBroadList({params: {roomType: props.type, page: index, records: 10, searchType: props.searchType}}, true)
   }
 
   const prev = () => {
-    if (page === 1) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.prev, records: 10, searchType: props.searchType}}, true)
     setPage(page - 1)
   }
 
   const next = () => {
-    if (page === props.paging.totalPage) return
-    props.getBroadList({params: {roomType: props.type, page: props.paging.next, records: 10, searchType: props.searchType}}, true)
     setPage(page + 1)
   }
 
-  useEffect(() => {
-    if (props.paging !== undefined) {
-      let arr = []
-
-      // // pc 페이징 10개씩
-      // if ((props.paging.page - 1) % 10 === 0) {
-      //   arr = []
-      //   let j = props.paging.page
-      //   for (j; j <= props.paging.totalPage; j++) {
-      //     arr.push(j)
-      //   }
-      //   setIterator(arr)
-      // } else if (props.paging.page % 10 === 0) {
-      //   arr = []
-      //   let k = props.paging.page - 9
-      //   for (k; k <= props.paging.totalPage; k++) {
-      //     arr.push(k)
-      //   }
-      //   setIterator(arr)
-      // }
-    }
-  }, [props.paging])
+  useEffect(() => {}, [])
 
   useEffect(() => {
     setPage(1)
-    // setIterator([''])
   }, [props.type])
 
   //------------------------------------------------------------ components start
@@ -58,21 +31,6 @@ export default props => {
     <Container>
       <Left onClick={() => prev()} />
       {/* <div className="page"> */}
-      {/* {window.innerWidth > 600
-              ? iterator.slice(0, 10).map((data, index) => {
-                  return (
-                    <Page key={index} onClick={() => getData(data)} active={page === data ? 'active' : ''}>
-                      {props.paging !== undefined && data}
-                    </Page>
-                  )
-                })
-              : iterator.slice(0, 5).map((data, index) => {
-                  return (
-                    <Page key={index} onClick={() => getData(data)} active={page === data ? 'active' : ''}>
-                      {props.paging !== undefined && data}
-                    </Page>
-                  )
-                })} */}
       {/* </div> */}
       <Right onClick={() => next()} />
     </Container>

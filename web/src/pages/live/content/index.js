@@ -20,15 +20,18 @@ let liveType = ''
 let liveSearchType = ''
 let liveRank = []
 
+const RECORDS = 10
+
 export default props => {
   //----------------------------------------------------------- declare start
-  const [paging, setPaging] = useState()
   const context = useContext(Context)
   const store = useContext(LiveStore)
   const [type, setType] = useState('') // roomType
   const [searchType, setSearchType] = useState('0') // searchType
-  const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
+
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(null)
 
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
@@ -40,7 +43,7 @@ export default props => {
 
   // 방송방 리스트 조회
   const getBroadList = async () => {
-    const obj = {params: {roomType: type, page: page, records: 10, searchType: searchType}}
+    const obj = {params: {roomType: type, page: page, records: RECORDS, searchType: searchType}}
     const res = await Api.broad_list({...obj})
 
     if (res.result === 'success') {
@@ -78,7 +81,7 @@ export default props => {
       if (scrollHeight - window.innerHeight - scrollTop < 80) {
         document.documentElement.scrollTo({top: scrollHeight * 0.2, behavior: 'smooth'})
         window.removeEventListener('scroll', onScroll)
-        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: 10, searchType: liveSearchType}})
+        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: RECORDS, searchType: liveSearchType}})
       }
     }
   }
@@ -130,7 +133,7 @@ export default props => {
             joinRoom={joinRoom}
             getBroadList={getBroadList}
             setType={setType}
-            paging={paging}
+            // paging={paging}
             type={type}
             searchType={searchType}
             setSearchType={setSearchType}
@@ -145,7 +148,7 @@ export default props => {
         </MainContents>
       </Wrap>
       {window.innerWidth > 600 && list && (
-        <Pagination paging={paging} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />
+        <Pagination paging={page} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />
       )}
     </Container>
   )

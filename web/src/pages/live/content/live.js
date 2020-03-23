@@ -101,7 +101,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />
+      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} />
     </Container>
   )
 }

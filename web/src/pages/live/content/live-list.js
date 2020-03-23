@@ -26,9 +26,7 @@ export default props => {
           return (
             <List key={index} onClick={() => props.joinRoom(data)}>
               <div className="profile">
-                <div className="rank">
-                  {props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}
-                </div>
+                <div className="rank">{index + 1}</div>
                 <div className="profileImg">
                   <BgImg url={data.bjProfImg.thumb120x120}>
                     {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}
