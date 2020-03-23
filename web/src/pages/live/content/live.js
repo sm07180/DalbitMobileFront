@@ -8,10 +8,13 @@ export default props => {
   //----------------------------------------------------------- declare start
   const [sort1, setSort1] = useState('0')
   const [drop, setDrop] = useState('전체')
+
   const [sort2, setSort2] = useState('방송주제')
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
+
   const context = useContext(Context)
+
   const [list, setList] = useState([{cd: '', cdNm: '전체'}])
   const [searchType, setSearchType] = useState([
     {index: 0, type: '전체'},
@@ -68,7 +71,7 @@ export default props => {
             <Sort>
               <div className="dropDown" onClick={() => drop1()}>
                 <span>{drop}</span>
-                <Icon></Icon>
+                <Icon />
                 {open1 && (
                   <DropDown>
                     {searchType.map((data, index) => {
@@ -83,7 +86,7 @@ export default props => {
               </div>
               <div className="dropDown" onClick={() => drop2()}>
                 <span>{sort2}</span>
-                <Icon></Icon>
+                <Icon />
                 {open2 && (
                   <DropDown>
                     {list.map((data, index) => {

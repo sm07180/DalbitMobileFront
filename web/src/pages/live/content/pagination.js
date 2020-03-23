@@ -9,29 +9,27 @@ export default props => {
 
   //------------------------------------------------------------ func start
   const getData = index => {
-    setPage(index)
+    // setPage(index)
   }
 
   const prev = () => {
-    setPage(page - 1)
+    // setPage(page - 1)
   }
 
   const next = () => {
-    setPage(page + 1)
+    // setPage(page + 1)
   }
 
   useEffect(() => {}, [])
 
   useEffect(() => {
-    setPage(1)
+    // setPage(1)
   }, [props.type])
 
   //------------------------------------------------------------ components start
   return (
     <Container>
       <Left onClick={() => prev()} />
-      {/* <div className="page"> */}
-      {/* </div> */}
       <Right onClick={() => next()} />
     </Container>
   )
@@ -42,12 +40,6 @@ const Container = styled.div`
   margin: 40px 0;
   width: 100%;
   justify-content: center;
-
-  .page {
-    display: flex;
-    height: 36px;
-    justify-content: space-between;
-  }
 `
 const Left = styled.button`
   display: flex;
@@ -73,22 +65,4 @@ const Right = styled.button`
   background-position: center;
 `
 
-const Page = styled.button`
-  display: flex;
-  width: 36px;
-  height: 36px;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 8px;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 2.14;
-  letter-spacing: -0.35px;
-  margin: 0px 2px 0px 2px;
-
-  border-color: ${props => (props.active ? 'none' : '#e0e0e0')};
-  background: ${props => (props.active ? '#8556f6' : '#fff')};
-  color: ${props => (props.active ? '#fff' : '#bdbdbd')};
-`
+const Page = styled.button``

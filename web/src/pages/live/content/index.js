@@ -133,7 +133,6 @@ export default props => {
             joinRoom={joinRoom}
             getBroadList={getBroadList}
             setType={setType}
-            // paging={paging}
             type={type}
             searchType={searchType}
             setSearchType={setSearchType}
