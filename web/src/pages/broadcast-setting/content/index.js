@@ -1,12 +1,11 @@
 /**
- * @file chat.js
+ * @file broadcast-setting.js
  * @brief 방송세팅
  */
 import React, {useMemo, useEffect, useContext, useState, useCallback} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
-//context
 //import {Context} from 'pages/live/store'
 import {Context} from 'context'
 //hooks
@@ -16,10 +15,8 @@ import Api from 'context/api'
 //etc
 import getDecibel from 'components/lib/getDecibel.js'
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
-//
 let audioStream = null
 let drawId = null
-
 export default props => {
   const context = useContext(Context)
   //hooks-usechange
@@ -32,7 +29,6 @@ export default props => {
     bgImg: '',
     title: ''
   })
-
   //update
   function update(mode) {
     switch (true) {
@@ -66,7 +62,7 @@ export default props => {
       }
       return zero + n
     }
-
+    //방송주제
     return info.map((list, index) => {
       let idx = leadingZeros(index, 2)
       return (
@@ -81,7 +77,6 @@ export default props => {
       )
     })
   }
-
   //글자수제한
   const [count, setCount] = useState(0)
   const [count2, setCount2] = useState(0)
@@ -104,12 +99,9 @@ export default props => {
     setCount2(element.value.length)
     setChanges({...changes, welcomMsg: value})
   }
-
   // 이미지 업로드 관련
-  //useState
   const [url, setUrl] = useState(null)
   const [photoPath, setPhotoPath] = useState(null)
-
   const photoUploadCallback = async obj => {
     const uploaded = await Api.image_upload({
       data: {
@@ -160,11 +152,7 @@ export default props => {
     }
     setBActive(value)
   }, [changes])
-
-  //---------------------------------------------------------------------
-  //context
-
-  //useState
+  //--------------------------------------------------------------------
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
   //fetch
@@ -292,7 +280,7 @@ export default props => {
       }
     })()
   }
-
+  //----------------------------------------------------------------------------------------
   useEffect(() => {
     return () => {
       if (drawId) {
@@ -303,12 +291,6 @@ export default props => {
       }
     }
   }, [])
-
-  /*
-   *
-   * @returns
-   */
-
   //---------------------------------------------------------------------
   return (
     <>
