@@ -115,7 +115,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      {props.broadList.length > 0 && props.broadList && <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />}
+      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />
     </Container>
   )
 }
@@ -123,8 +123,8 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  /* height: 100%; */
   flex-direction: column;
+
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
@@ -190,9 +190,6 @@ const Sort = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
     height: 80%;
-    /* border-bottom-color: #8556f6;
-    border-bottom-width: 1px;
-    border-bottom-style: solid; */
   }
 
   .dropDown {

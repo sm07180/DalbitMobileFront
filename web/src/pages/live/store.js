@@ -33,7 +33,7 @@ const LiveProvider = props => {
      * @return void
      */
     updateList: list => {
-      setList({...list})
+      setList(list)
     }
   }
   //---------------------------------------------------------------------
