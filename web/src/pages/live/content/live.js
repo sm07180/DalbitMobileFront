@@ -8,10 +8,13 @@ export default props => {
   //----------------------------------------------------------- declare start
   const [sort1, setSort1] = useState('0')
   const [drop, setDrop] = useState('전체')
+
   const [sort2, setSort2] = useState('방송주제')
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
+
   const context = useContext(Context)
+
   const [list, setList] = useState([{cd: '', cdNm: '전체'}])
   const [searchType, setSearchType] = useState([
     {index: 0, type: '전체'},
@@ -66,9 +69,9 @@ export default props => {
               <span>실시간 LIVE</span>
             </span>
             <Sort>
-              <div className="dropDown">
+              <div className="dropDown" onClick={() => drop1()}>
                 <span>{drop}</span>
-                <Icon onClick={() => drop1()}></Icon>
+                <Icon />
                 {open1 && (
                   <DropDown>
                     {searchType.map((data, index) => {
@@ -81,9 +84,9 @@ export default props => {
                   </DropDown>
                 )}
               </div>
-              <div className="dropDown">
+              <div className="dropDown" onClick={() => drop2()}>
                 <span>{sort2}</span>
-                <Icon onClick={() => drop2()}></Icon>
+                <Icon />
                 {open2 && (
                   <DropDown>
                     {list.map((data, index) => {
@@ -101,7 +104,7 @@ export default props => {
           </div>
         </div>
       </TopArea>
-      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} paging={props.paging} />
+      <LiveList broadList={props.broadList} joinRoom={props.joinRoom} />
     </Container>
   )
 }
@@ -194,6 +197,9 @@ const Sort = styled.div`
     position: relative;
     transform: skew(-0.03deg);
     z-index: 1;
+    cursor: pointer;
+    user-select: none;
+
     & > span {
       padding-left: 10px;
     }
@@ -215,7 +221,6 @@ const DropDown = styled.ul`
   display: flex;
   flex-direction: column;
   width: 136px;
-  /* height: 116px; */
   position: absolute;
   top: 38px;
   left: -1px;
@@ -231,6 +236,7 @@ const DropDown = styled.ul`
   letter-spacing: -0.4px;
   color: #878787;
   transform: skew(-0.03deg);
+
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
@@ -241,6 +247,8 @@ const DropDown = styled.ul`
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+
     :hover {
       background-color: #f8f8f8;
       color: #8556f6;

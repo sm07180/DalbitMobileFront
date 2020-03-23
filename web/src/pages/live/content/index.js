@@ -20,15 +20,18 @@ let liveType = ''
 let liveSearchType = ''
 let liveRank = []
 
+const RECORDS = 10
+
 export default props => {
   //----------------------------------------------------------- declare start
-  const [paging, setPaging] = useState()
   const context = useContext(Context)
   const store = useContext(LiveStore)
   const [type, setType] = useState('') // roomType
   const [searchType, setSearchType] = useState('0') // searchType
-  const [page, setPage] = useState(1)
   const [rank, setRank] = useState([])
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPageNumber, setTotalPageNumber] = useState(null)
 
   const width = useMemo(() => {
     return window.innerWidth >= 600 ? 400 : 200
@@ -36,11 +39,9 @@ export default props => {
 
   const {list} = store
 
-  //----------------------------------------------------------- func start
-
   // 방송방 리스트 조회
   const getBroadList = async () => {
-    const obj = {params: {roomType: type, page: page, records: 10, searchType: searchType}}
+    const obj = {params: {roomType: type, page: currentPage, records: RECORDS, searchType: searchType}}
     const res = await Api.broad_list({...obj})
 
     if (res.result === 'success') {
@@ -54,7 +55,8 @@ export default props => {
   }
 
   //scroll paging
-  const mobileConcat = async obj => {
+  const mobileConcat = async () => {
+    const obj = {params: {roomType: type, page: currentPage, records: RECORDS, searchType: searchType}}
     const res = await Api.broad_list({...obj})
     //Error발생시
     if (res.result === 'fail') {
@@ -78,18 +80,18 @@ export default props => {
       if (scrollHeight - window.innerHeight - scrollTop < 80) {
         document.documentElement.scrollTo({top: scrollHeight * 0.2, behavior: 'smooth'})
         window.removeEventListener('scroll', onScroll)
-        mobileConcat({params: {roomType: liveType, page: livePaging.next, records: 10, searchType: liveSearchType}})
+        mobileConcat()
       }
     }
   }
 
   useEffect(() => {
-    // if (innerWidth <= 600) {
-    //   window.addEventListener('scroll', onScroll)
-    //   return () => {
-    //     window.removeEventListener('scroll', onScroll)
-    //   }
-    // }
+    if (innerWidth <= 600) {
+      window.addEventListener('scroll', onScroll)
+      return () => {
+        window.removeEventListener('scroll', onScroll)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -97,12 +99,14 @@ export default props => {
       const {result, paging, list} = await getBroadList()
       if (result) {
         store.action.updateList(list)
+        const {total} = paging
+        setTotalPageNumber(total)
       } else {
         // result -> false
         store.action.updateList(false)
       }
     })()
-  }, [searchType])
+  }, [currentPage, searchType])
 
   async function joinRoom(obj) {
     const {roomNo} = obj
@@ -130,7 +134,6 @@ export default props => {
             joinRoom={joinRoom}
             getBroadList={getBroadList}
             setType={setType}
-            paging={paging}
             type={type}
             searchType={searchType}
             setSearchType={setSearchType}
@@ -144,7 +147,7 @@ export default props => {
           )}
         </MainContents>
       </Wrap>
-      {/* {window.innerWidth > 600 && store.list && <Pagination paging={paging} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />} */}
+      {list && <Pagination current={currentPage} total={totalPageNumber} records={RECORDS} setCurrentPage={setCurrentPage} />}
     </Container>
   )
 }
