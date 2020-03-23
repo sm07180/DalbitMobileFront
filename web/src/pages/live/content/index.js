@@ -144,7 +144,9 @@ export default props => {
           )}
         </MainContents>
       </Wrap>
-      {/* {window.innerWidth > 600 && store.list && <Pagination paging={paging} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />} */}
+      {window.innerWidth > 600 && list && (
+        <Pagination paging={paging} getBroadList={getBroadList} type={type} searchType={searchType} setSearchType={setSearchType} />
+      )}
     </Container>
   )
 }

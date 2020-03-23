@@ -65,9 +65,7 @@ export default props => {
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
-  margin-bottom: 60px;
-`
+const Wrapper = styled.div``
 const List = styled.div`
   display: flex;
   width: 100%;

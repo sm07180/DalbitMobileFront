@@ -6,7 +6,6 @@ import {IMG_SERVER} from 'context/config'
 export default props => {
   //------------------------------------------------------------ declare start
   const [page, setPage] = useState(1)
-  const [iterator, setIterator] = useState([])
 
   //------------------------------------------------------------ func start
   const getData = index => {
@@ -30,40 +29,36 @@ export default props => {
     if (props.paging !== undefined) {
       let arr = []
 
-      // pc 페이징 10개씩
-      if ((props.paging.page - 1) % 10 === 0) {
-        arr = []
-        let j = props.paging.page
-        for (j; j <= props.paging.totalPage; j++) {
-          arr.push(j)
-        }
-        setIterator(arr)
-      } else if (props.paging.page % 10 === 0) {
-        arr = []
-        let k = props.paging.page - 9
-        for (k; k <= props.paging.totalPage; k++) {
-          arr.push(k)
-        }
-        setIterator(arr)
-      }
+      // // pc 페이징 10개씩
+      // if ((props.paging.page - 1) % 10 === 0) {
+      //   arr = []
+      //   let j = props.paging.page
+      //   for (j; j <= props.paging.totalPage; j++) {
+      //     arr.push(j)
+      //   }
+      //   setIterator(arr)
+      // } else if (props.paging.page % 10 === 0) {
+      //   arr = []
+      //   let k = props.paging.page - 9
+      //   for (k; k <= props.paging.totalPage; k++) {
+      //     arr.push(k)
+      //   }
+      //   setIterator(arr)
+      // }
     }
   }, [props.paging])
 
   useEffect(() => {
     setPage(1)
-    setIterator([''])
+    // setIterator([''])
   }, [props.type])
 
   //------------------------------------------------------------ components start
   return (
     <Container>
-      <div className="wrap">
-        <div className="pagination">
-          <Left onClick={() => prev()}>
-            <div></div>
-          </Left>
-          <div className="page">
-            {window.innerWidth > 600
+      <Left onClick={() => prev()} />
+      {/* <div className="page"> */}
+      {/* {window.innerWidth > 600
               ? iterator.slice(0, 10).map((data, index) => {
                   return (
                     <Page key={index} onClick={() => getData(data)} active={page === data ? 'active' : ''}>
@@ -77,46 +72,18 @@ export default props => {
                       {props.paging !== undefined && data}
                     </Page>
                   )
-                })}
-          </div>
-          <Right onClick={() => next()}>
-            <div></div>
-          </Right>
-        </div>
-      </div>
+                })} */}
+      {/* </div> */}
+      <Right onClick={() => next()} />
     </Container>
   )
 }
 
 const Container = styled.div`
   display: flex;
+  margin: 40px 0;
   width: 100%;
-  height: 200px;
   justify-content: center;
-
-  .wrap {
-    display: flex;
-    width: 60%;
-    height: 60%;
-    justify-content: center;
-    align-items: flex-end;
-    z-index: -1;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      width: 80%;
-    }
-  }
-
-  .pagination {
-    display: flex;
-    width: 40%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      width: 90%;
-    }
-  }
 
   .page {
     display: flex;
@@ -129,14 +96,12 @@ const Left = styled.button`
   width: 30px;
   height: 30px;
   justify-content: center;
+  align-items: center;
   margin-right: 5px;
-
-  & > div {
-    display: flex;
-    width: 10px;
-    height: 18px;
-    background: url(${IMG_SERVER}/images/api/left.png) no-repeat;
-  }
+  cursor: pointer;
+  background: url(${IMG_SERVER}/images/api/left.png);
+  background-repeat: no-repeat;
+  background-position: center;
 `
 const Right = styled.button`
   display: flex;
@@ -144,20 +109,17 @@ const Right = styled.button`
   height: 30px;
   justify-content: center;
   margin-left: 5px;
-
-  & > div {
-    display: flex;
-    width: 10px;
-    height: 18px;
-    background: url(${IMG_SERVER}/images/api/right.png) no-repeat;
-  }
+  cursor: pointer;
+  background-image: url(${IMG_SERVER}/images/api/right.png);
+  background-repeat: no-repeat;
+  background-position: center;
 `
+
 const Page = styled.button`
   display: flex;
   width: 36px;
   height: 36px;
   border-style: solid;
-  /* border-color: #e0e0e0; */
   border-width: 1px;
   border-radius: 8px;
   align-items: center;
@@ -166,7 +128,6 @@ const Page = styled.button`
   font-weight: 400;
   line-height: 2.14;
   letter-spacing: -0.35px;
-  /* color: #bdbdbd; */
   margin: 0px 2px 0px 2px;
 
   border-color: ${props => (props.active ? 'none' : '#e0e0e0')};
