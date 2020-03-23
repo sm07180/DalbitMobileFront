@@ -1,6 +1,6 @@
 /**
  * @file store.js
- * @brief 라이브 사용되는 context API
+ * @brief 고객센터 context API
  * @author 손완휘
  * @code 
   import React, {useContext, useState} from 'react'
@@ -10,7 +10,7 @@
 import React, {useState, createContext} from 'react'
 //Context
 const CustomerStore = createContext()
-const {Provider} = LiveStore
+const {Provider} = CustomerStore
 //
 const CustomerProvider = props => {
   //state

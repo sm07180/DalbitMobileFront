@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
-import API from 'context/api'
+import {CustomerStore} from '../store'
 import {Context} from 'context'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -10,33 +10,43 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Banner from './banner'
 import Tab from './tab'
 
-export default props => {
-  //---------------------------------------------------------------------
-  //---------------------------------------------------------------------
+const Index = props => {
   //---------------------------------------------------------------------
   //context
-  const context = useContext(Context)
-
-  //update
-  function update(mode) {
-    switch (mode) {
+  const store = useContext(CustomerStore)
+  Index.store = store
+  //Store = Index.store
+  //---------------------------------------------------------------------
+  //makeContents
+  const makeContents = () => {
+    switch (store.menuCode) {
+      case 'notice': //------------------------레이어팝업(alert & system)
+        return <h1>notice</h1>
+      case 'faq':
+        return <h1>faq</h1>
+      case '1on1':
+        return <h1>1on1</h1>
+      case 'broadcast_guide':
+        return <h1>broadcast_guide</h1>
     }
   }
-  //useEffect
-  useEffect(() => {
-    console.log('test')
-  }, [])
   //---------------------------------------------------------------------
   return (
-    <>
-      <Container>
-        <h1>고객센터</h1>
-        <Banner />
-        {/* 탭설정 */}
-        <Tab update={update} />
-      </Container>
-    </>
+    <Container>
+      <h1>고객센터</h1>
+      <Banner />
+      {/* 탭설정 */}
+      <Tab />
+      {/* 컨텐츠설정 */}
+      {makeContents()}
+    </Container>
   )
+}
+export default Index
+//---------------------------------------------------------------------
+//context
+export const Store = () => {
+  return Index.store
 }
 //---------------------------------------------------------------------
 const Container = styled.div`

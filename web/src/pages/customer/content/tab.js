@@ -8,63 +8,58 @@ import React, {useState, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+//context
+import {Store} from './index'
 
 export default props => {
   //----------------------------------------------------------------------------
-
-  const {currentItem, changeItem} = useTab(0, tabInfo)
-
+  //info
+  const tabInfo = [
+    {
+      id: 0,
+      tab: '공지사항',
+      type: 'notice',
+      content: <h1>dd</h1>
+    },
+    {
+      id: 1,
+      tab: 'FAQ',
+      type: 'faq',
+      content: 'i am the content of the section2'
+    },
+    {
+      id: 2,
+      tab: '1:1 문의',
+      type: '1on1',
+      content: 'i am the content of the section1'
+    },
+    {
+      id: 3,
+      tab: '방송 가이드',
+      type: 'broadcast_guide',
+      content: 'i am the content of the section1'
+    }
+  ]
+  //makeContents
+  const makeContents = () => {
+    if (tabInfo === null) return
+    return tabInfo.map((list, index) => {
+      const {tab, type} = list
+      return (
+        <button onClick={() => Store().action.updateCode(type)} key={index}>
+          {tab}
+        </button>
+      )
+    })
+  }
+  //----------------------------------------------------------------------------
   return (
     <Wrap>
-      <div>
-        {tabInfo.map((section, index) => (
-          <button onClick={() => changeItem(index)} className={currentItem.id === index ? 'on' : ''} key={index}>
-            {section.tab}
-          </button>
-        ))}
-      </div>
-      {currentItem.content}
+      <div>{makeContents()}</div>
     </Wrap>
   )
 }
-
-//style
-//----------------------------------------------------------------------------
-const useTab = (initialTab, allTabs) => {
-  if (!allTabs || !Array.isArray(allTabs)) {
-    return
-  }
-  const [currentIndex, setCurrentIndex] = useState(initialTab)
-  return {
-    currentItem: allTabs[currentIndex],
-    changeItem: setCurrentIndex
-  }
-}
-const tabInfo = [
-  {
-    id: 0,
-    tab: '공지사항',
-    content: <h1>dd</h1>
-  },
-  {
-    id: 1,
-    tab: 'FAQ',
-    content: 'i am the content of the section2'
-  },
-  {
-    id: 2,
-    tab: '1:1 문의',
-    content: 'i am the content of the section1'
-  },
-  {
-    id: 3,
-    tab: '방송 가이드',
-    content: 'i am the content of the section1'
-  }
-]
-//styled
 //--------------------------------------------------------------------
-
 const Wrap = styled.div`
   & > div {
     display: flex;
