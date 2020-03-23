@@ -157,6 +157,7 @@ export const BroadValidation = () => {
         } else {
           //요청회원 아님
           context.action.alert({
+            title: res.messageKey,
             msg: res.message
           })
         }
