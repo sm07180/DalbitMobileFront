@@ -22,44 +22,52 @@ export default props => {
   }
 
   // 상단에 노출할 3개의 데이터
-  const swiperValue = props.broadList.slice(0, 3).map((data, index) => {
-    return (
-      <Contents key={index}>
-        {index === selected && hover && (
-          <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={e => clickJoinRoom(e, data)}>
-            <button />
-          </div>
-        )}
-        <Image img={data.bjProfImg.thumb190x190} onMouseEnter={() => handleHover(true, index)} rank={index + 1} onClick={e => clickJoinRoom(e, data)}>
-          {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
-          {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <img src={data.gstProfImg.thumb62x62} width={60} height={60} />}
-        </Image>
-        <Info>
-          <div className="title">
-            {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
-            {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
-            {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
-          </div>
-          <div className="roomTitle">{data.title.substring(0, 30)}</div>
-          <div className="nickName">{data.bjNickNm}</div>
-          <CountArea>
-            <Icon>
-              <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
-              &nbsp;&nbsp;{data.entryCnt}
-            </Icon>
-            <span>|</span>
-            <Icon>
-              <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
-              &nbsp;&nbsp;{data.likeCnt}
-            </Icon>
-          </CountArea>
-        </Info>
-      </Contents>
-    )
-  })
+  const swiperValue =
+    Array.isArray(props.broadList) &&
+    props.broadList.slice(0, 3).map((data, index) => {
+      return (
+        <Contents key={index}>
+          {index === selected && hover && (
+            <div style={{cursor: 'pointer'}} className="hover" onMouseLeave={() => handleHover(false, index)} onClick={e => clickJoinRoom(e, data)}>
+              <button />
+            </div>
+          )}
+          <Image
+            img={data.bjProfImg.thumb190x190}
+            onMouseEnter={() => handleHover(true, index)}
+            rank={index + 1}
+            onClick={e => clickJoinRoom(e, data)}>
+            {window.innerWidth > 1024 && hover && index === selected ? <></> : <div>{index + 1}</div>}
+            {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && (
+              <img src={data.gstProfImg.thumb62x62} width={60} height={60} />
+            )}
+          </Image>
+          <Info>
+            <div className="title">
+              {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+              {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+              {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+            </div>
+            <div className="roomTitle">{data.title.substring(0, 30)}</div>
+            <div className="nickName">{data.bjNickNm}</div>
+            <CountArea>
+              <Icon>
+                <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
+                &nbsp;&nbsp;{data.entryCnt}
+              </Icon>
+              <span>|</span>
+              <Icon>
+                <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
+                &nbsp;&nbsp;{data.likeCnt}
+              </Icon>
+            </CountArea>
+          </Info>
+        </Contents>
+      )
+    })
   //-------------------------------------------------------------- components start
   return (
-    <Container>
+    <Container style={{minHeight: Array.isArray(props.broadList) ? '200px' : ''}}>
       <Swiper width={props.width} height={200} spaceBetween={20} shouldSwiperUpdate={true}>
         {swiperValue}
       </Swiper>
@@ -70,7 +78,6 @@ export default props => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 200px;
   justify-content: flex-start;
   @media (max-width: ${WIDTH_MOBILE}) {
     height: 320px;
