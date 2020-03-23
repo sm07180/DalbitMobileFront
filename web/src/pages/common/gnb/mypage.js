@@ -163,7 +163,7 @@ export default props => {
                           }
                         }
                         fetchData()
-                      }, 0)
+                      }, 50)
                     },
                     msg: `로그아웃 하시겠습니까?`
                   })

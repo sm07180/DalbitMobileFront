@@ -40,7 +40,6 @@ export const BroadValidation = () => {
       //fetch
       async function fetchData(obj) {
         const res = await Api.broad_check({...obj})
-        console.log(res)
         if (res.result === 'success') {
           if (res.code === '1' || res.code === '2') {
             //방송중,비정상된 방이 있음
