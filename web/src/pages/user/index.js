@@ -8,10 +8,12 @@ import styled from 'styled-components'
 //context
 import {WIDTH_TABLET} from 'context/config'
 //layout
-import Layout from 'pages/common/layout/pure'
+import PureLayout from 'pages/common/layout/pure'
+import Layout from 'pages/common/layout/index'
 //components
 import Join from './content/join-form'
 import Password from './content/password'
+import SelfAuth from './content/selfAuth'
 import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
@@ -26,9 +28,23 @@ const User = props => {
   function userRoute() {
     switch (title) {
       case 'join': //회원가입
-        return <Join {...props} update={update} />
+        return (
+          <PureLayout>
+            <Join {...props} update={update} />
+          </PureLayout>
+        )
       case 'password': //비밀번호찾기
-        return <Password {...props} />
+        return (
+          <PureLayout>
+            <Password {...props} />
+          </PureLayout>
+        )
+      case 'selfAuth': //비밀번호찾기
+        return (
+          <Layout {...props}>
+            <SelfAuth {...props} />
+          </Layout>
+        )
       default:
         return (
           <Common>
@@ -81,7 +97,7 @@ const User = props => {
   }
 
   //---------------------------------------------------------------------
-  return <Layout>{userRoute()}</Layout>
+  return userRoute()
 }
 export default User
 //---------------------------------------------------------------------
