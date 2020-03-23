@@ -10,6 +10,7 @@ import useResize from 'components/hooks/useResize'
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
+import main from '..'
 
 //components
 
@@ -58,13 +59,12 @@ export default props => {
     slideActiveClass: 'main-slide-active',
     preventClicks: false,
     preventClicksPropagation: false,
-    //preventClicks: false,
     breakpoints: {
       601: {
         spaceBetween: 14
       },
       841: {
-        simulateTouch: false
+        simulateTouch: true
       }
     }
   }
@@ -73,12 +73,7 @@ export default props => {
   const arraySlide = slideInfo.map((item, index) => {
     const {id, title, url, name, reco, category, popu, avata} = item
     return (
-      <Slide
-        key={index}
-        onClick={() => {
-          //console.log('클릭은됐는지?', mainSlider)
-          if (mainSlider) mainSlider.slideToLoop(index)
-        }}>
+      <Slide key={index}>
         <ImgBox bg={url}>
           <img src={url}></img>
         </ImgBox>
@@ -89,6 +84,19 @@ export default props => {
 
   //---------------------------------------------------------------------
   //useEffect
+  useEffect(() => {
+    if (mainSlider) {
+      const obj = document.getElementsByClassName('swiper-slide')
+      for (let index = 0; index < obj.length; index++) {
+        const element = obj[index]
+        console.log('elementelementelementelement', element)
+        element.addEventListener('click', function() {
+          mainSlider.slideTo(index)
+        })
+      }
+    }
+  }, [mainSlider])
+
   // useEffect(() => {
   //   if (window.innerWidth > 840) {
   //     setSelecterWidth(-220)

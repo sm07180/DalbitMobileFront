@@ -39,6 +39,8 @@ const error = React.lazy(() => import('pages/common/error'))
 const NotFoundPage = React.lazy(() => import('pages/common/error'))
 //live pub
 const Live = React.lazy(() => import('pages/live'))
+//customer-service
+const Customer = React.lazy(() => import('pages/customer'))
 
 export default () => {
   return (
@@ -65,8 +67,8 @@ export default () => {
         <Route exact path="/mypage/setting" component={MypageSetting} />
         <Route exact path="/mypage/:sub" component={Mypage} />
         <Route exact path="/private/:memNo" component={Private} />
-
         <Route exact path="/search" component={Search} />
+        <Route exact path="/customer" component={Customer} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
         {/* navigator */}

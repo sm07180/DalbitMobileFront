@@ -108,9 +108,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    * @update 김호겸 2020.03.18
    */
-  static broad_list = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/list`, method: method || 'GET', data: data})
+  static broad_list = async params => {
+    return await ajax({params, url: `/broad/list`, method: 'GET'})
   }
 
   /**
@@ -750,9 +749,8 @@ export default class API {
    * @brief 공통정보 조회하기
    * @create 최우정 2020.02.26
    */
-  static splash = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({url: url || '/splash', method: method || 'GET'})
+  static splash = async () => {
+    return await ajax({url: '/splash', method: 'GET'})
   }
 
   /**
@@ -892,10 +890,6 @@ export const ajax = async obj => {
       withCredentials: true
     })
 
-    // table 모양 로그출력
-    //console.table(res.data)
-    // string 로그출력
-    //console.log(JSON.stringify(res.data, null, 1))
     return res.data
   } catch (error) {
     errorMsg(error)

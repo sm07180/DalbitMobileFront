@@ -20,51 +20,50 @@ export default props => {
 
   //------------------------------------------------------------ components start
   return (
-    <Wrapper>
-      {props.broadList.map((data, index) => {
-        return (
-          <List key={index} onClick={() => props.joinRoom(data)}>
-            <div className="profile">
-              <div className="rank">{props.paging !== undefined && props.paging.page > 1 ? (props.paging.page - 1) * props.paging.records + (index + 1) : index + 1}</div>
-              <div className="profileImg">
-                <BgImg url={data.bjProfImg.thumb120x120}>{data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}</BgImg>
-              </div>
-            </div>
-            <MobileWrap>
-              <div className="content">
-                <div className="title">
-                  {/* {context.common.roomType !== undefined && roomType[roomType.map(x => x.cd).indexOf(data.roomType)].cdNm} */}
-                  {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
-                  {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
-                  {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+    <Wrapper style={{minHeight: Array.isArray(props.broadList) ? '450px' : ''}}>
+      {Array.isArray(props.broadList) &&
+        props.broadList.map((data, index) => {
+          return (
+            <List key={index} onClick={() => props.joinRoom(data)}>
+              <div className="profile">
+                <div className="rank">{index + 1}</div>
+                <div className="profileImg">
+                  <BgImg url={data.bjProfImg.thumb120x120}>
+                    {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}
+                  </BgImg>
                 </div>
-                <div className="roomTitle">{data.title}</div>
-                <div className="nickName">{data.bjNickNm}</div>
               </div>
-              <CountArea>
-                <div>
-                  <Icon>
-                    <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
-                    &nbsp;&nbsp;{data.entryCnt}
-                  </Icon>
-                  <span>|</span>
-                  <Icon>
-                    <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
-                    &nbsp;&nbsp;{data.likeCnt}
-                  </Icon>
+              <MobileWrap>
+                <div className="content">
+                  <div className="title">
+                    {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                    {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                    {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+                  </div>
+                  <div className="roomTitle">{data.title}</div>
+                  <div className="nickName">{data.bjNickNm}</div>
                 </div>
-              </CountArea>
-            </MobileWrap>
-          </List>
-        )
-      })}
+                <CountArea>
+                  <div>
+                    <Icon>
+                      <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
+                      <span>{data.entryCnt}</span>
+                    </Icon>
+                    <span>|</span>
+                    <Icon>
+                      <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
+                      <span>{data.likeCnt}</span>
+                    </Icon>
+                  </div>
+                </CountArea>
+              </MobileWrap>
+            </List>
+          )
+        })}
     </Wrapper>
   )
 }
-const Wrapper = styled.div`
-  min-height: 380px;
-  margin-bottom: 60px;
-`
+const Wrapper = styled.div``
 const List = styled.div`
   display: flex;
   width: 100%;
@@ -76,12 +75,8 @@ const List = styled.div`
   cursor: pointer;
   z-index: -1;
 
-  @media (max-width: ${WIDTH_MOBILE}) {
-    height: 140px;
-  }
-
   :hover {
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
   }
 
   .profile {
@@ -215,11 +210,14 @@ const List = styled.div`
     width: 20%;
     height: 100%;
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 140px;
+  }
 `
 const CountArea = styled.div`
   display: flex;
   width: 30%;
-  /* height: 100%; */
   padding-bottom: 22px;
   justify-content: flex-end;
   align-items: flex-end;

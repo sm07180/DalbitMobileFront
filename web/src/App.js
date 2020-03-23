@@ -79,59 +79,67 @@ const App = () => {
   //isHybrid체크
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
-  })
-  //---------------------------------------------------------------------
+  }) //---------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
-    const res = await Api.getToken()
-    if (res.result === 'success') {
-      console.table(res.data)
-      //#1 result 성공/실패 여부상관없이,토큰없데이트
-      context.action.updateToken(res.data)
-      //#2 로그인토큰일경우 프로필업데이트
-      if (res.data.isLogin) {
-        if (location.href.indexOf('/private/') === -1) {
-          const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-          if (profileInfo.result === 'success') {
-            //
-            context.action.updateProfile(profileInfo.data)
+    // common data
+    const commonData = await Api.splash()
+    if (commonData.result === 'success') {
+      context.action.updateCommon(commonData.data)
+      const res = await Api.getToken()
+      if (res.result === 'success') {
+        console.table(res.data)
+        //#1 result 성공/실패 여부상관없이,토큰없데이트
+        context.action.updateToken(res.data)
+        //#2 로그인토큰일경우 프로필업데이트
+        if (res.data.isLogin) {
+          if (location.href.indexOf('/private/') === -1) {
+            const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+            if (profileInfo.result === 'success') {
+              //
+              context.action.updateProfile(profileInfo.data)
+            }
           }
         }
+        //###--하이브리드일때
+        if (isHybrid === 'Y') {
+          if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
+            //active
+            Hybrid('GetLoginToken', res.data)
+          } else {
+            if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
+          }
+          //최초앱 기동할때만적용
+          if (customHeader.isFirst === 'Y') {
+            Utility.setCookie('native-player-info', '', -1)
+          }
+          if (customHeader.isFirst === 'N') {
+            //-----@안드로이드 Cookie
+            let cookie = Utility.getCookie('native-player-info')
+            if (osName === 'Android' && cookie !== null && cookie !== undefined) {
+              cookie = JSON.parse(cookie)
+              context.action.updateMediaPlayerStatus(true)
+              context.action.updateNativePlayer(cookie)
+            }
+            //-----@iOS
+            if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
+              cookie = decodeURIComponent(cookie)
+              cookie = JSON.parse(cookie)
+              context.action.updateMediaPlayerStatus(true)
+              context.action.updateNativePlayer(cookie)
+            }
+            //-----@
+          }
+        }
+        //모든처리완료
+        setReady(true)
+      } else {
+        //토큰에러
+        context.action.alert({
+          title: res.messageKey,
+          msg: res.message
+        })
       }
-      //###--하이브리드일때
-      if (isHybrid === 'Y') {
-        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
-          //active
-          Hybrid('GetLoginToken', res.data)
-        } else {
-          if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
-        }
-        //최초앱 기동할때만적용
-        if (customHeader.isFirst === 'Y') {
-          Utility.setCookie('native-player-info', '', -1)
-        }
-        if (customHeader.isFirst === 'N') {
-          //-----@안드로이드 Cookie
-          let cookie = Utility.getCookie('native-player-info')
-          if (osName === 'Android' && cookie !== null && cookie !== undefined) {
-            cookie = JSON.parse(cookie)
-            context.action.updateMediaPlayerStatus(true)
-            context.action.updateNativePlayer(cookie)
-          }
-          //-----@iOS
-          if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
-            cookie = decodeURIComponent(cookie)
-            cookie = JSON.parse(cookie)
-            context.action.updateMediaPlayerStatus(true)
-            context.action.updateNativePlayer(cookie)
-          }
-          //-----@
-        }
-      }
-      //모든처리완료
-      setReady(true)
-    } else {
-      console.log('토큰에러')
     }
   }
   //---------------------------------------------------------------------
