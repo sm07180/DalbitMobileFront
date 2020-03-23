@@ -29,41 +29,41 @@ export default props => {
                 <div className="rank">{index + 1}</div>
                 <div className="profileImg">
                   <BgImg url={data.bjProfImg.thumb120x120}>
-                    {data.gstProfImg.thumb62x62 != '' && data.gstProfImg.thumb62x62 != null && <Img url={data.gstProfImg.thumb62x62}></Img>}
+                    <Img url={data.gstProfImg.thumb62x62} />
                   </BgImg>
                 </div>
               </div>
-              <MobileWrap>
-                <div className="content">
-                  <div className="title">
-                    {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
-                    {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
-                    {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
-                  </div>
-                  <div className="roomTitle">{data.title}</div>
-                  <div className="nickName">{data.bjNickNm}</div>
+
+              <div className="content">
+                <div className="title">
+                  {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+                  {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+                  {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
                 </div>
-                <CountArea>
-                  <div>
-                    <Icon>
-                      <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
-                      <span>{data.entryCnt}</span>
-                    </Icon>
-                    <span>|</span>
-                    <Icon>
-                      <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
-                      <span>{data.likeCnt}</span>
-                    </Icon>
-                  </div>
-                </CountArea>
-              </MobileWrap>
+                <div className="roomTitle">{data.title}</div>
+                <div className="nickName">{data.bjNickNm}</div>
+              </div>
+
+              {/* <CountArea>
+                <Icon>
+                  <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
+                  <span>{data.entryCnt}</span>
+                </Icon>
+                <span>|</span>
+                <Icon>
+                  <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
+                  <span>{data.likeCnt}</span>
+                </Icon>
+              </CountArea> */}
             </List>
           )
         })}
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div``
+
 const List = styled.div`
   display: flex;
   width: 100%;
@@ -74,10 +74,6 @@ const List = styled.div`
   border-width: 1px;
   cursor: pointer;
   z-index: -1;
-
-  :hover {
-    /* background-color: #f8f8f8; */
-  }
 
   .profile {
     display: flex;
@@ -144,11 +140,12 @@ const List = styled.div`
   .content {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     height: 100%;
     justify-content: space-between;
     padding: 22px 18px 22px 18px;
     transform: skew(-0.03deg);
+
     @media (max-width: ${WIDTH_MOBILE}) {
       padding: 15px 0px 0px 0px;
       height: 68%;
@@ -216,12 +213,10 @@ const List = styled.div`
   }
 `
 const CountArea = styled.div`
+  position: absolute;
   display: flex;
-  width: 30%;
-  padding-bottom: 22px;
   justify-content: flex-end;
   align-items: flex-end;
-  padding-right: 20px;
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 80%;
@@ -258,25 +253,7 @@ const Icon = styled.div`
   color: #9e9e9e;
   transform: skew(-0.03deg);
 `
-const MobileWrap = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    flex-direction: column;
-    margin-left: 10px;
-  }
 
-  .roomTitle {
-    @media (max-width: ${WIDTH_MOBILE}) {
-      padding-top: 0px;
-      width: 100%;
-      height: 70px;
-      overflow: hidden;
-      font-size: 15px;
-    }
-  }
-`
 const Tag = styled.div`
   height: 16px;
   background: ${props => (props.bgColor ? props.bgColor : '')};
