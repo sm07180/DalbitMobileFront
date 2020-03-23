@@ -47,12 +47,12 @@ export default props => {
                   <div>
                     <Icon>
                       <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
-                      &nbsp;&nbsp;{data.entryCnt}
+                      <span>{data.entryCnt}</span>
                     </Icon>
                     <span>|</span>
                     <Icon>
                       <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
-                      &nbsp;&nbsp;{data.likeCnt}
+                      <span>{data.likeCnt}</span>
                     </Icon>
                   </div>
                 </CountArea>
@@ -75,12 +75,8 @@ const List = styled.div`
   cursor: pointer;
   z-index: -1;
 
-  @media (max-width: ${WIDTH_MOBILE}) {
-    height: 140px;
-  }
-
   :hover {
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
   }
 
   .profile {
@@ -214,11 +210,14 @@ const List = styled.div`
     width: 20%;
     height: 100%;
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    height: 140px;
+  }
 `
 const CountArea = styled.div`
   display: flex;
   width: 30%;
-  /* height: 100%; */
   padding-bottom: 22px;
   justify-content: flex-end;
   align-items: flex-end;
