@@ -36,15 +36,12 @@ export default props => {
         </Image>
         <Info>
           <div className="title">
-            {/* <div>{context.common.roomType != undefined && context.common.roomType[context.common.roomType.map(x => x.cd).indexOf(data.roomType)].cdNm}</div> */}
             {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
             {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
             {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
           </div>
           <div className="roomTitle">{data.title.substring(0, 30)}</div>
-          {/* <div className="roomTitle">비오는 날, 기분이 뽀송해지는 점심 라디오,점심 라디오,점심 라디오,점심 라디오</div> */}
           <div className="nickName">{data.bjNickNm}</div>
-          {/* <div className="nickName">비오는 날, 기분이 뽀송해지는 점심 라디오</div> */}
           <CountArea>
             <Icon>
               <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />

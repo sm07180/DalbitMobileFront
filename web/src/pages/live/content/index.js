@@ -53,25 +53,6 @@ export default props => {
       }
     }
     return null
-
-    // //Error발생시
-    // if (res.result === 'fail') {
-    //   return
-    // } else {
-    //   if (res.code === '0') {
-    //     // code === "0" >> 데이터 없음
-    //     store.action.updateList(false) // 데이터가 없을 때 false // store.list 가 false 일때 pagination, live-list 안보여줌
-    //   } else {
-    //     store.action.updateList(res.data.list)
-    //     liveList = res.data.list
-    //     livePaging = res.data.paging
-    //     if (reload === undefined) {
-    //       setRank(res.data.list.slice(0, 3)) // 상위 3명 따로 담아서 보냄
-    //       liveRank = res.data.list.slice(0, 3)
-    //     }
-    //     setPaging(res.data.paging)
-    //   }
-    // }
   }
 
   //scroll paging
@@ -89,21 +70,6 @@ export default props => {
         setRank(liveRank)
       }
       window.addEventListener('scroll', onScroll)
-    }
-  }
-
-  //joinRoom
-  async function joinRoom(obj) {
-    const {roomNo} = obj
-    const data = await roomCheck(roomNo, context)
-
-    if (data) {
-      if (isHybrid()) {
-        Hybrid('RoomJoin', data)
-      } else {
-        context.action.updateBroadcastTotalInfo(data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`)
-      }
     }
   }
 
@@ -138,14 +104,38 @@ export default props => {
     // }
   }, [])
 
+  //joinRoom
+  async function joinRoom(obj) {
+    const {roomNo} = obj
+    const data = await roomCheck(roomNo, context)
+
+    if (data) {
+      if (isHybrid()) {
+        Hybrid('RoomJoin', data)
+      } else {
+        context.action.updateBroadcastTotalInfo(data)
+        props.history.push(`/broadcast?roomNo=${roomNo}`)
+      }
+    }
+  }
+
   //----------------------------------------------------------- components start
   return (
     <Container>
       <Title title={'라이브'} />
       <Wrap>
         <MainContents>
-          {/* {rank.length > 0 && <TopRank broadList={rank} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} width={width} type={type} />} */}
-          <Live broadList={store.list} joinRoom={joinRoom} getBroadList={getBroadList} setType={setType} paging={paging} type={type} searchType={searchType} setSearchType={setSearchType} />
+          <TopRank broadList={store.list} joinRoom={joinRoom} setType={setType} paging={paging} width={width} type={type} />
+          <Live
+            broadList={store.list}
+            joinRoom={joinRoom}
+            getBroadList={getBroadList}
+            setType={setType}
+            paging={paging}
+            type={type}
+            searchType={searchType}
+            setSearchType={setSearchType}
+          />
 
           {!Array.isArray(store.list) && (
             <NoResult>
