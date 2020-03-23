@@ -108,9 +108,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    * @update 김호겸 2020.03.18
    */
-  static broad_list = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/list`, method: method || 'GET', data: data})
+  static broad_list = async params => {
+    return await ajax({params, url: `/broad/list`, method: 'GET'})
   }
 
   /**
@@ -892,10 +891,6 @@ export const ajax = async obj => {
       withCredentials: true
     })
 
-    // table 모양 로그출력
-    //console.table(res.data)
-    // string 로그출력
-    //console.log(JSON.stringify(res.data, null, 1))
     return res.data
   } catch (error) {
     errorMsg(error)
