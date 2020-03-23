@@ -38,26 +38,12 @@ export default props => {
     if (index === 1) {
       setSort1(data)
       setDrop(data.type)
-      const params = {
-        roomType: props.type,
-        page: 1,
-        records: 10,
-        searchType: data.index
-      }
       props.setSearchType(String(data.index))
-      // props.getBroadList({params})
     }
 
     if (index === 2) {
       setSort2(data.cdNm)
-      const params = {
-        roomType: data.cd,
-        page: 1,
-        records: 10,
-        searchType: props.searchType
-      }
-      props.setType(data.cd)
-      // props.getBroadList({params}) // 조회 function call
+      props.setType(String(data.cd))
     }
 
     setOpen1(false)
