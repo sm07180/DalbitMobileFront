@@ -33,7 +33,7 @@ export default props => {
   if (_.hasIn(props.location.state, 'type')) {
     authType = props.location.state.type
   } else {
-    authType = 'default'
+    authType = 'cast'
   }
 
   //---------------------------------------------------------------------
@@ -113,12 +113,15 @@ export default props => {
         <br />
         인증 이후에는 필요하지 않습니다.
       </p>
-      <form name="authForm" method="post" id="authForm" target="KMCISWindow" action="https://www.kmcert.com/kmcis/web/kmcisReq.jsp">
+
+      <button onClick={authClick}>휴대폰 본인인증</button>
+
+      <form name="authForm" method="post" id="authForm" target="KMCISWindow">
+        <span>TEST</span>
         <input type="text" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
         <input type="text" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
         <input type="text" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
       </form>
-      <button onClick={authClick}>휴대폰 본인인증</button>
     </Content>
   )
 }
@@ -126,17 +129,45 @@ export default props => {
 //---------------------------------------------------------------------
 //styled
 const Content = styled.div`
-  margin: 30px auto 100px auto;
+  margin: 100px auto 100px auto;
+  padding-top: 50px;
+  width: 95%;
+  background: url(${IMG_SERVER}/images/api/cont_logo@2x.png) no-repeat center top;
+  background-size: 50px;
   text-align: center;
 
+  h4 {
+    padding-top: 40px;
+    color: ${COLOR_MAIN};
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 34px;
+  }
+  p {
+    padding-top: 60px;
+    padding-bottom: 340px;
+    background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat center bottom 50px;
+    color: #424242;
+    font-size: 16px;
+    line-height: 24px;
+    transform: skew(-0.03deg);
+  }
+
   form {
-    /* display: none; */
+    display: none;
+    margin-top: 40px;
+    input {
+      display: block;
+      margin: 10px auto;
+      width: 328px !important;
+    }
   }
 
   button {
-    width: 220px;
-    line-height: 50px;
+    width: 328px;
+    border-radius: 5px;
     background: ${COLOR_MAIN};
     color: #fff;
+    line-height: 48px;
   }
 `

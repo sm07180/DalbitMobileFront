@@ -8,11 +8,17 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import Layout from 'pages/common/layout'
 import Content from './content'
+//Context
+import {CustomerProvider} from './store'
 
 export default props => {
+  //---------------------------------------------------------------------
+
   return (
     <Layout {...props}>
-      <Content {...props} />
+      <CustomerProvider>
+        <Content {...props} />
+      </CustomerProvider>
     </Layout>
   )
 }

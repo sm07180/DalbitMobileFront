@@ -32,6 +32,10 @@ export default props => {
   const params = {
     loop: true,
     spaceBetween: 6,
+    loop: true,
+    autoplay: {
+      delay: 3000
+    },
     simulateTouch: true,
     centeredSlides: true,
     slidesPerView: 'auto',
