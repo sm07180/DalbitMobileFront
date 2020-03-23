@@ -89,7 +89,6 @@ export default props => {
       const obj = document.getElementsByClassName('swiper-slide')
       for (let index = 0; index < obj.length; index++) {
         const element = obj[index]
-        console.log('elementelementelementelement', element)
         element.addEventListener('click', function() {
           mainSlider.slideTo(index)
         })

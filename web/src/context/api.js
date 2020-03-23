@@ -846,6 +846,38 @@ export default class API {
     return await ajax({...obj, url: url || `/sms/auth`, method: method || 'POST', data: data})
   }
 
+  /**
+   * @brief 본인인증 여부 체크
+   * @method "GET"
+   * @create 이은비 2020.03.23
+   */
+  static self_auth_check = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/self/auth/check`, method: method || 'GET'})
+  }
+
+  /**
+   * @brief 본인인증 여부 체크
+   * @method "POST"
+   * @create 이은비 2020.03.23
+   */
+  static self_auth_req = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/self/auth/req`, method: method || 'POST'})
+  }
+
+  /**
+   * @brief 본인인증 확인 및 DB저장
+   * @method "POST"
+   * @param String rec_cert                          //결과수신 DATA ex) afsdgo;alemwuvrotiaumvailvmuliauvr
+   * @param String certNum                           //수신한 요청번호 ex) 645822347125215
+   * @create 이은비 2020.03.23
+   */
+  static self_auth_res = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/self/auth/res`, method: method || 'POST', data: data})
+  }
+
   //-------------------------------------------------------------
 
   /**
