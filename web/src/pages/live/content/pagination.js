@@ -4,32 +4,34 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 import {IMG_SERVER} from 'context/config'
 // 페이징 임시적으로 구현
 export default props => {
-  //------------------------------------------------------------ declare start
-  const [page, setPage] = useState(1)
-
-  //------------------------------------------------------------ func start
-  const getData = index => {
-    // setPage(index)
-  }
+  const {current, total, records} = props
 
   const prev = () => {
-    // setPage(page - 1)
+    if (total <= records) return
   }
 
   const next = () => {
-    // setPage(page + 1)
+    if (total <= records) return
+  }
+
+  const clickPageBtn = pageIdx => {
+    if (total <= records) return
+    props.setCurrentPage(pageIdx)
   }
 
   useEffect(() => {}, [])
-
-  useEffect(() => {
-    // setPage(1)
-  }, [props.type])
 
   //------------------------------------------------------------ components start
   return (
     <Container>
       <Left onClick={() => prev()} />
+      {[...Array(Math.ceil(total / records)).keys()].map(value => {
+        return (
+          <Page key={value} className={current === value + 1 ? 'active' : ''} onClick={() => clickPageBtn(value + 1)}>
+            {value + 1}
+          </Page>
+        )
+      })}
       <Right onClick={() => next()} />
     </Container>
   )
@@ -40,6 +42,7 @@ const Container = styled.div`
   margin: 40px 0;
   width: 100%;
   justify-content: center;
+  align-items: center;
 `
 const Left = styled.button`
   display: flex;
@@ -47,7 +50,7 @@ const Left = styled.button`
   height: 30px;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 4px;
   cursor: pointer;
   background: url(${IMG_SERVER}/images/api/left.png);
   background-repeat: no-repeat;
@@ -58,11 +61,24 @@ const Right = styled.button`
   width: 30px;
   height: 30px;
   justify-content: center;
-  margin-left: 5px;
+  margin-left: 4px;
   cursor: pointer;
   background-image: url(${IMG_SERVER}/images/api/right.png);
   background-repeat: no-repeat;
   background-position: center;
 `
 
-const Page = styled.button``
+const Page = styled.button`
+  color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  margin: 0 4px;
+
+  &.active {
+    color: #fff;
+    border-color: #8556f6;
+    background-color: #8556f6;
+  }
+`
