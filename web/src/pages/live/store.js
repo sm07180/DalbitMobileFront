@@ -14,7 +14,6 @@ const {Provider} = LiveStore
 //
 const LiveProvider = props => {
   //state
-  const [state, setState] = useState({code: 'test'})
   const [menuCode, setMenuCode] = useState('')
   const [list, setList] = useState([])
   //---------------------------------------------------------------------
@@ -33,18 +32,12 @@ const LiveProvider = props => {
      * @param object $obj
      * @return void
      */
-    //updateState
-    updateState: obj => {
-      setState(state => ({...state, ...obj}))
-    },
-
-    updateList: obj => {
-      // setList(list => [...list, ...obj])
-      setList(obj)
+    updateList: list => {
+      setList({...list})
     }
   }
   //---------------------------------------------------------------------
-  const value = {state, menuCode, action, list}
+  const value = {menuCode, action, list}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {LiveStore, LiveProvider}

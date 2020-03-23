@@ -131,7 +131,11 @@ const App = () => {
       //모든처리완료
       setReady(true)
     } else {
-      console.log('토큰에러')
+      //토큰에러
+      context.action.alert({
+        title: res.messageKey,
+        msg: res.message
+      })
     }
   }
   //---------------------------------------------------------------------
