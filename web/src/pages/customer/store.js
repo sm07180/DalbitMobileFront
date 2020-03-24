@@ -17,6 +17,7 @@ const CustomerProvider = props => {
   const [menuCode, setMenuCode] = useState('notice')
   const [list, setList] = useState([])
   const [noticePage, setNoticePage] = useState('')
+  const [faqPage, setFaqPage] = useState('')
   //---------------------------------------------------------------------
   const action = {
     /**
@@ -39,10 +40,14 @@ const CustomerProvider = props => {
 
     updatenoticePage: num => {
       setNoticePage(num)
+    },
+
+    updatefaqPage: num => {
+      setFaqPage(num)
     }
   }
   //---------------------------------------------------------------------
-  const value = {menuCode, action, list, noticePage}
+  const value = {menuCode, action, list, noticePage, faqPage}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {CustomerStore, CustomerProvider}
