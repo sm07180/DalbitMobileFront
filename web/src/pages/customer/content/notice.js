@@ -15,7 +15,6 @@ import Pagination from './pagination'
 export default props => {
   return (
     <>
-      {window.location.pathname === '/customer' && <SocketCluster />}
       <Pagination perPage={10} />
     </>
   )
