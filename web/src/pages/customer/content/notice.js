@@ -91,7 +91,9 @@ function Pagination(props) {
   }, [noticeNum])
   //--------------------------------------------------------
   useEffect(() => {
-    NoticeUrl()
+    if (Store().noticePage !== '') {
+      NoticeUrl()
+    }
   }, [Store().noticePage])
 
   //--------------------------------------------------------
@@ -186,6 +188,7 @@ const List = styled.section`
 
 const Detail = styled.section`
   display: block;
+  margin-top: 40px;
   border-top: 1px solid ${COLOR_MAIN};
   & > header {
     display: flex;
