@@ -76,7 +76,7 @@ function Pagination(props) {
             return (
               <div key={index}>
                 {noticeType === noticeNum && (
-                  <TableWrap onClick={(() => history.push(`/customer?${noticeIdx}`), Store().action.updatenoticePage(noticeIdx))}>
+                  <TableWrap onClick={(() => history.push(`/customer/${noticeIdx}`), Store().action.updatenoticePage(noticeIdx))}>
                     <dt>
                       {noticeType === 1 ? '공지사항' : ''}
                       {noticeType === 2 ? '이벤트' : ''}
