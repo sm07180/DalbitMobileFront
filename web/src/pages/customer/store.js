@@ -37,8 +37,8 @@ const CustomerProvider = props => {
       setList({...list})
     },
 
-    updatenoticePage: str => {
-      setNoticePage(str)
+    updatenoticePage: num => {
+      setNoticePage(num)
     }
   }
   //---------------------------------------------------------------------
