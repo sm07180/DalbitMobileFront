@@ -2,7 +2,7 @@
  * @file /user/content/selfAuth.js
  * @brief 본인인증 페이지
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -12,8 +12,13 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
+let inervalId = null
+
 export default props => {
   //---------------------------------------------------------------------
+  //State
+  const [authState, setAuthState] = useState(false)
+
   //context
   const context = useContext(Context)
   const authText = {
@@ -40,7 +45,14 @@ export default props => {
   //본인인증 여부 체크. 테스트용
   async function authCheck() {
     const res = await Api.self_auth_check({})
-    console.log(res)
+    if (res.result == 'success' && res.code == '1') {
+      setAuthState(true)
+      clearInterval(inervalId)
+    } else if (res.result == 'fail' && !(res.code == '0')) {
+      context.action.alert({
+        msg: res.message
+      })
+    }
   }
 
   //본인인증모듈 호출
@@ -61,7 +73,7 @@ export default props => {
       KMCIS_window = window.open(
         '',
         'KMCISWindow',
-        'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+        'width=425, height=690, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
       )
 
       if (KMCIS_window == null) {
@@ -72,9 +84,9 @@ export default props => {
       }
       document.authForm.target = 'KMCISWindow'
     }
-    console.log('???', document.authForm)
     document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
     document.authForm.submit()
+    inervalId = setInterval(authCheck, 1000)
   }
 
   async function authReq() {
@@ -96,31 +108,46 @@ export default props => {
 
   function authClick() {
     authReq()
-    // const openpop = window.open(
-    //   'https://devm-herbione.dalbitcast.com/user/selfAuthRes',
-    //   'KMCISWindow',
-    //   'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
-    // )
   }
 
   //---------------------------------------------------------------------
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    return () => {
+      clearInterval(inervalId)
+    }
+  }, [])
 
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h4>{authText[authType][0]} 본인인증 절차가 필요합니다.</h4>
-      <p>
-        본인인증은 {authText[authType][1]} 필요합니다.
-        <br />
-        인증 이후에는 필요하지 않습니다.
-      </p>
+      {authState ? (
+        <>
+          <h4>본인 인증이 완료되었습니다.</h4>
+          <br />
+          <br />
+          <br />
+          <button
+            onClick={() => {
+              props.history.goBack()
+            }}>
+            완료
+          </button>
+        </>
+      ) : (
+        <>
+          <h4>{authText[authType][0]} 본인인증 절차가 필요합니다.</h4>
+          <p>
+            본인인증은 {authText[authType][1]} 필요합니다.
+            <br />
+            인증 이후에는 필요하지 않습니다.
+          </p>
 
-      <button onClick={authClick}>휴대폰 본인인증</button>
+          <button onClick={authClick}>휴대폰 본인인증</button>
+        </>
+      )}
 
       <form name="authForm" method="post" id="authForm" target="KMCISWindow">
-        <span>TEST</span>
         <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
         <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
         <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
@@ -157,7 +184,7 @@ const Content = styled.div`
   }
 
   form {
-    display: none;
+    /* display: none; */
     margin-top: 40px;
     input {
       display: block;
