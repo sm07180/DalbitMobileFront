@@ -73,7 +73,7 @@ export default props => {
       KMCIS_window = window.open(
         '',
         'KMCISWindow',
-        'width=425, height=680, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+        'width=425, height=690, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
       )
 
       if (KMCIS_window == null) {
