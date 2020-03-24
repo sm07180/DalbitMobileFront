@@ -14,7 +14,7 @@ const {Provider} = CustomerStore
 //
 const CustomerProvider = props => {
   //state
-  const [menuCode, setMenuCode] = useState('notice')
+  const [menuCode, setMenuCode] = useState('personal')
   const [list, setList] = useState([])
   const [noticePage, setNoticePage] = useState('')
   //---------------------------------------------------------------------

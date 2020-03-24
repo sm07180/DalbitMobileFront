@@ -3,27 +3,62 @@
  * @brief 공지사항탭 컨텐츠
  *
  */
-import React, {useState, useRef} from 'react'
+import React, {useState, useContext} from 'react'
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN} from 'context/color'
-
+//hooks
+import useChange from 'components/hooks/useChange'
 //context
-//component
-
+import {IMG_SERVER} from 'context/config'
+import {Context} from 'context'
+import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
+//
 export default props => {
+  //--------------------------------------------------------------------------
+  //context
+  const context = useContext(Context)
+  //hooks
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  //useState
+  const [isOpen, setIsOpen] = useState(false)
+  //--------------------------------------------------------------------------
+
+  //update
+  function update(mode) {
+    switch (true) {
+      case mode.onChange !== undefined:
+        console.log(JSON.stringify(changes))
+        break
+    }
+  }
+  //--------------------------------------------------------------------------
   return (
     <Content>
       <dl>
         <dt>문의 유형 선택</dt>
-        {/* 문의 유형 선택// */}
-        <dd></dd>
+        <dd>
+          <SelectBox className={isOpen ? 'on' : ''}>
+            <div className="wrap">
+              <label htmlFor="allTerm">선택하세요</label>
+              <button
+                className={isOpen ? 'on' : 'off'}
+                onClick={() => {
+                  setIsOpen(!isOpen)
+                }}>
+                펼치기
+              </button>
+            </div>
+            <button>1</button>
+            <button>1</button>
+            <button>1</button>
+          </SelectBox>
+        </dd>
       </dl>
       <dl>
         <dt>E-mail</dt>
-        {/* E-mail */}
         <dd>
-          <input type="text" placeholder="이메일 주소" />
+          <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
         </dd>
         <dd>
           <p>※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
@@ -31,24 +66,21 @@ export default props => {
       </dl>
       <dl>
         <dt>제목</dt>
-        {/* 제목// */}
         <dd>
-          <input type="text" placeholder="내용을 입력해 주세요." />
+          <input type="text" placeholder="내용을 입력해 주세요." name="title" onChange={onChange} />
         </dd>
       </dl>
       <dl>
         <dt>내용</dt>
-        {/* 내용// */}
         <dd>
-          <textarea name="" id="" cols="30" rows="10" value="12" placeholder="내용을 입력해 주세요." />
+          <textarea name="" id="" cols="30" rows="10" placeholder="내용을 입력해 주세요." name="content" onChange={onChange} />
         </dd>
       </dl>
       <dl>
         <dt>첨부파일</dt>
-        {/* 첨부파일// */}
         <dd>
           <p>
-            <input type="file" />
+            <input type="file" name="file" onChange={onChange} />
           </p>
           <p>※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
         </dd>
@@ -60,7 +92,6 @@ export default props => {
     </Content>
   )
 }
-
 //style
 //----------------------------------------------------------------------------
 const Content = styled.div`
@@ -121,8 +152,76 @@ const Content = styled.div`
     display: block;
     width: 100%;
     padding: 12px 10px;
+    font-size: 14px;
     border: solid 1px #e0e0e0;
     background-color: #ffffff;
     box-sizing: border-box;
+  }
+`
+
+const SelectBox = styled.div`
+  width: 354px;
+  overflow: hidden;
+  position: relative;
+  height: 52px;
+  border: 1px solid #e0e0e0;
+  transition: height 0.5s ease-in-out;
+  &.on {
+    /* 높이조절 */
+    height: 253px;
+  }
+  .wrap {
+    position: relative;
+    & input {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      margin: 0 15px 0 0;
+      appearance: none;
+      border: none;
+      outline: none;
+      /* cursor: pointer; */
+      background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
+      &:checked {
+        background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+      }
+      &:after {
+        position: absolute;
+        top: 20px;
+        right: 8px;
+        color: #bdbdbd;
+        font-size: 12px;
+        font-weight: 600;
+      }
+    }
+    * {
+      line-height: 24px;
+      vertical-align: top;
+    }
+    button {
+      position: absolute;
+      right: 13px;
+      top: 13px;
+      width: 24px;
+      height: 24px;
+      text-indent: -9999px;
+    }
+
+    label {
+      display: inline-block;
+      transform: skew(-0.03deg);
+    }
+  }
+  & > div:first-child > button {
+    background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
+    transform: rotate(180deg);
+    /* transition: transform 0.3s ease-in-out; */
+
+    &.on {
+      transform: rotate(0deg);
+    }
+  }
+  & > div:first-child {
+    padding: 13px;
   }
 `
