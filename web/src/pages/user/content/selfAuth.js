@@ -45,12 +45,13 @@ export default props => {
   //본인인증 여부 체크. 테스트용
   async function authCheck() {
     const res = await Api.self_auth_check({})
-    console.log('본인인증여부체크', res)
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
       clearInterval(inervalId)
-    } else {
-      console.log('실패', res)
+    } else if (res.result == 'fail' && !(res.code == '0')) {
+      context.action.alert({
+        msg: res.message
+      })
     }
   }
 
@@ -72,7 +73,7 @@ export default props => {
       KMCIS_window = window.open(
         '',
         'KMCISWindow',
-        'width=425, height=680, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+        'width=425, height=690, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
       )
 
       if (KMCIS_window == null) {
