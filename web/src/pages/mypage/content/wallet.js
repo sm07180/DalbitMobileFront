@@ -6,6 +6,7 @@ import {Context} from 'context'
 
 // component
 import Paging from 'components/ui/paging.js'
+import List from '../component/wallet/list.js'
 
 // static
 import coinIcon from 'images/ic_moon_l@2x.png'
@@ -31,7 +32,16 @@ export default props => {
         <CoinChargeBtn>충전하기</CoinChargeBtn>
       </CoinCountingView>
 
-      <Paging prevClickEvent={() => {}} nextClickEvent={() => {}} btnClickEvent={() => {}} totalPage={3} currentPage={1} currentIdx={1} />
+      <List />
+
+      <Paging
+        prevClickEvent={() => {}}
+        nextClickEvent={() => {}}
+        btnClickEvent={() => {}}
+        totalPage={3}
+        currentPage={1}
+        currentIdx={1}
+      />
     </div>
   )
 }
