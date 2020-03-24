@@ -45,12 +45,13 @@ export default props => {
   //본인인증 여부 체크. 테스트용
   async function authCheck() {
     const res = await Api.self_auth_check({})
-    console.log('본인인증여부체크', res)
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
       clearInterval(inervalId)
-    } else {
-      console.log('실패', res)
+    } else if (res.result == 'fail' && !(res.code == '0')) {
+      context.action.alert({
+        msg: res.message
+      })
     }
   }
 
