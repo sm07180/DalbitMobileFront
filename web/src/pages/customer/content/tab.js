@@ -18,26 +18,22 @@ export default props => {
     {
       id: 0,
       tab: '공지사항',
-      type: 'notice',
-      content: <h1>dd</h1>
+      type: 'notice'
     },
     {
       id: 1,
       tab: 'FAQ',
-      type: 'faq',
-      content: 'i am the content of the section2'
+      type: 'faq'
     },
     {
       id: 2,
       tab: '1:1 문의',
-      type: '1on1',
-      content: 'i am the content of the section1'
+      type: '1on1'
     },
     {
       id: 3,
       tab: '방송 가이드',
-      type: 'broadcast_guide',
-      content: 'i am the content of the section1'
+      type: 'broadcast_guide'
     }
   ]
   //makeContents
@@ -46,7 +42,7 @@ export default props => {
     return tabInfo.map((list, index) => {
       const {tab, type} = list
       return (
-        <button onClick={() => Store().action.updateCode(type)} key={index}>
+        <button onClick={() => Store().action.updateCode(type)} key={index} className={Store().menuCode === type ? 'on' : ''}>
           {tab}
         </button>
       )
