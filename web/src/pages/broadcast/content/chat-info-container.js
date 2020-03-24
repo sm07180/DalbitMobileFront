@@ -244,7 +244,7 @@ export default props => {
         </ul>
         <div>
           {/* 방장일경우 게스트 초대 버튼, 청취자일경우 게스트 신청 버튼, 게스트가 있을경우 게스트 프로필 노출  */}
-          {creatGuest()}
+          {/* {creatGuest()}  3월 31일 이후 open */}    
         </div>
       </div>
     </Content>

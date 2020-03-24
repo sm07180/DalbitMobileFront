@@ -110,7 +110,7 @@ export default class SignalingHandler {
   }
   setAudioVolume = value => {
     if (Number(value) > 1 || Number(value) < 0) return
-    //console.log('볼륨 크기 = ' + value)
+    console.log('볼륨 크기 = ' + value)
     if (this.audioTag) this.audioTag.volume = value
   }
 

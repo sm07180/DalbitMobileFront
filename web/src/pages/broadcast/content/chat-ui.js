@@ -120,7 +120,11 @@ export default props => {
           }, item.time * 1000)
         }
         return (
-          <TipMsg className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`} key={index} level={item.level} id={`index${index}`}>
+          <TipMsg
+            className={`system-msg top2 ${item.level == 4 ? 'tip' : ''}`}
+            key={index}
+            level={item.level}
+            id={`index${index}`}>
             <span>{item.msg}</span>
           </TipMsg>
         )
@@ -129,7 +133,7 @@ export default props => {
     }
   }
   useEffect(() => {
-    console.log('처음 조회 하고 받은 데이터 = ' + store.ListenerUpdate)
+    //console.log('처음 조회 하고 받은 데이터 = ' + store.ListenerUpdate)
   }, [store.ListenerUpdate])
   //---------------------------------------------------------------------
   //useEffect
@@ -244,7 +248,13 @@ export default props => {
       {/* 상단 정보 영역 */}
       <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
       <CommentList className="scroll" ref={chatArea}>
-        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} onScrollStop={handleOnWheel} autoHide>
+        <Scrollbars
+          ref={scrollbars}
+          autoHeight
+          autoHeightMax={'100%'}
+          onUpdate={scrollOnUpdate}
+          onScrollStop={handleOnWheel}
+          autoHide>
           {comments}
         </Scrollbars>
       </CommentList>
