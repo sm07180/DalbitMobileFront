@@ -147,7 +147,7 @@ export default props => {
           )}
         </MainContents>
       </Wrap>
-      {list && <Pagination current={currentPage} total={totalPageNumber} records={RECORDS} setCurrentPage={setCurrentPage} />}
+      {list && list.length > 0 && <Pagination current={currentPage} total={totalPageNumber} records={RECORDS} setCurrentPage={setCurrentPage} />}
     </Container>
   )
 }
