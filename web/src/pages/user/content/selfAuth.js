@@ -95,12 +95,12 @@ export default props => {
   }
 
   function authClick() {
-    //authReq()
-    const openpop = window.open(
-      'https://devm-herbione.dalbitcast.com/user/selfAuthRes',
-      'KMCISWindow',
-      'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
-    )
+    authReq()
+    // const openpop = window.open(
+    //   'https://devm-herbione.dalbitcast.com/user/selfAuthRes',
+    //   'KMCISWindow',
+    //   'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+    // )
   }
 
   //---------------------------------------------------------------------
