@@ -892,7 +892,16 @@ export default class API {
     return await ajax({...obj, url: url || `/mypage/notification`, method: method || 'GET', params: params})
   }
 
-  //-------------------------------------------------------------
+  //-------------------------------------------------------------고객센터
+  /**
+   * @brief 고객센터 공지사항 목록 조회
+   * @method "GET"
+   * @create 황상한 2020.03.24
+   */
+  static notice_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/center/notice`, method: method || 'GET', params: params})
+  }
 }
 
 //ajax

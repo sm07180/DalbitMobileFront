@@ -17,7 +17,7 @@ const sc = require('context/socketCluster')
 import LottieLoader from 'components/module/lottieLoader'
 import * as timer from 'pages/broadcast/content/tab/timer'
 import Volumebar from 'pages/broadcast/content/tab/volumebar'
-
+//const Volumebar = React.lazy(() => import('pages/broadcast/content/tab/volumebar'));
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -260,12 +260,12 @@ export default props => {
   }
 
   const goPresent = () => {
-    context.action.alert({
-      //콜백처리
-      callback: () => {},
-      msg: '서비스 중입니다.'
-    })
-    //store.action.updateTab(4)
+    // context.action.alert({
+    //   //콜백처리
+    //   callback: () => {},
+    //   msg: '서비스 중입니다.'
+    // })
+    store.action.updateTab(4)
   }
   //---------------------------------------------------------------------
   //useEffect
@@ -393,6 +393,9 @@ const Content = styled.div`
     }
     &.volume {
       background: url(${IMG_SERVER}/images/chat/ic_volume.png) no-repeat center center / cover;
+      &.off {
+        background: url(${IMG_SERVER}/images/chat/ic_volume.png) no-repeat center center / cover;
+      }
     }
     &.quick {
       background: url(${IMG_SERVER}/images/chat/ic_message.png) no-repeat center center / cover;
