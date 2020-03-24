@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
+import Api from 'context/api'
+
 // context
 import {Context} from 'context'
 
@@ -13,13 +15,50 @@ import coinIcon from 'images/ic_moon_l@2x.png'
 
 export default props => {
   const ctx = useContext(Context)
+  const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
+  const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+  const [page, setPage] = useState(1)
+  const [records, setRecords] = useState(null)
+
+  const [listDetailed, setListDetailed] = useState([])
+
+  const changeCoinTypeClick = type => {
+    setCoinType(type)
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      const response = await Api.mypage_wallet_inquire({
+        coinType,
+        walletType,
+        page,
+        records
+      })
+
+      if (response.result === 'success') {
+        const {list} = response.data
+        setListDetailed(list)
+      }
+    })()
+  }, [coinType])
+
   return (
     <div>
       <TitleWrap>
         <span className="text">내 지갑</span>
         <div>
-          <CoinTypeBtn style={{marginRight: '5px'}}>달</CoinTypeBtn>
-          <CoinTypeBtn style={{marginLeft: '5px'}}>별</CoinTypeBtn>
+          <CoinTypeBtn
+            className={coinType === 'dal' ? 'active' : ''}
+            style={{marginRight: '5px'}}
+            onClick={() => changeCoinTypeClick('dal')}>
+            달
+          </CoinTypeBtn>
+          <CoinTypeBtn
+            className={coinType === 'byeol' ? 'active' : ''}
+            style={{marginLeft: '5px'}}
+            onClick={() => changeCoinTypeClick('byeol')}>
+            별
+          </CoinTypeBtn>
         </div>
       </TitleWrap>
 
@@ -32,7 +71,7 @@ export default props => {
         <CoinChargeBtn>충전하기</CoinChargeBtn>
       </CoinCountingView>
 
-      <List />
+      <List type={coinType} data={listDetailed} />
 
       <Paging
         prevClickEvent={() => {}}

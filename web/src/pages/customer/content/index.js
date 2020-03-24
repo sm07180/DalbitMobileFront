@@ -19,7 +19,7 @@ const Index = props => {
   const makeContents = () => {
     switch (store.menuCode) {
       case 'notice': //------------------------공지사항
-        return <Notice />
+        return <Notice perPage={10} />
       case 'faq': //---------------------------FAQ
         return <h1>faq</h1>
       case 'personal': //----------------------1:1문의
