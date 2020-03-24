@@ -2,32 +2,30 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {CustomerStore} from '../store'
-import {Context} from 'context'
-
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //components
 import Banner from './banner'
 import Tab from './tab'
 import Notice from './notice'
+import Personal from './personal'
+//
 const Index = props => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
   Index.store = store
-  //Store = Index.store
   //---------------------------------------------------------------------
   //makeContents
   const makeContents = () => {
     switch (store.menuCode) {
-      case 'notice': //------------------------레이어팝업(alert & system)
+      case 'notice': //------------------------공지사항
         return <Notice />
-      case 'faq':
+      case 'faq': //---------------------------FAQ
         return <h1>faq</h1>
-      case '1on1':
-        return <h1>1on1</h1>
-      case 'broadcast_guide':
-        return <h1>broadcast_guide</h1>
+      case 'personal': //----------------------1:1문의
+        return <Personal />
+      case 'broadcast_guide': //---------------방송 가이드(미정)
+        return <h1>미정_감출것인지</h1>
     }
   }
   //---------------------------------------------------------------------
@@ -44,7 +42,9 @@ const Index = props => {
 }
 export default Index
 //---------------------------------------------------------------------
-//context
+/**
+ * @title 스토어객체
+ */
 export const Store = () => {
   return Index.store
 }

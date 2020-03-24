@@ -28,7 +28,7 @@ export default props => {
     {
       id: 2,
       tab: '1:1 문의',
-      type: '1on1'
+      type: 'personal'
     },
     {
       id: 3,
