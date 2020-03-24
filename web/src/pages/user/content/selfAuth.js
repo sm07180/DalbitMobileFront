@@ -4,15 +4,13 @@
  */
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import Api, {ajax} from 'context/api'
+import Api from 'context/api'
 
 //context
 import _ from 'lodash'
-import Utility from 'components/lib/utility'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {AST_ObjectKeyVal} from 'terser'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -63,7 +61,7 @@ export default props => {
       KMCIS_window = window.open(
         '',
         'KMCISWindow',
-        'width=425, height=550, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+        'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
       )
 
       if (KMCIS_window == null) {
@@ -98,6 +96,11 @@ export default props => {
 
   function authClick() {
     authReq()
+    // const openpop = window.open(
+    //   'https://devm-herbione.dalbitcast.com/user/selfAuthRes',
+    //   'KMCISWindow',
+    //   'width=425, height=630, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+    // )
   }
 
   //---------------------------------------------------------------------
@@ -118,9 +121,9 @@ export default props => {
 
       <form name="authForm" method="post" id="authForm" target="KMCISWindow">
         <span>TEST</span>
-        <input type="text" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
-        <input type="text" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
-        <input type="text" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
+        <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
+        <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
+        <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
       </form>
     </Content>
   )

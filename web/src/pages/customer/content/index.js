@@ -9,7 +9,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //components
 import Banner from './banner'
 import Tab from './tab'
-
+import Notice from './notice'
 const Index = props => {
   //---------------------------------------------------------------------
   //context
@@ -21,7 +21,7 @@ const Index = props => {
   const makeContents = () => {
     switch (store.menuCode) {
       case 'notice': //------------------------레이어팝업(alert & system)
-        return <h1>notice</h1>
+        return <Notice />
       case 'faq':
         return <h1>faq</h1>
       case '1on1':

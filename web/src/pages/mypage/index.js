@@ -49,7 +49,7 @@ export default props => {
             <Route exact path="/mypage/notice" component={Notice} />
             <Route exact path="/mypage/fanboard" component={FanBoard} />
             <Route exact path="/mypage/cast" component={Ready} />
-            <Route exact path="/mypage/wallet" component={Ready} />
+            <Route exact path="/mypage/wallet" component={Wallet} />
             <Route exact path="/mypage/report" component={Ready} />
             <Route exact path="/mypage/alert" component={Ready} />
             <Route exact path="/mypage/bcsetting" component={Ready} />
