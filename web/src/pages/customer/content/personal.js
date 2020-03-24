@@ -8,6 +8,7 @@ import React, {useState, useContext} from 'react'
 import styled from 'styled-components'
 import {COLOR_MAIN} from 'context/color'
 //hooks
+import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
 import {IMG_SERVER} from 'context/config'
@@ -17,8 +18,10 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 export default props => {
   //--------------------------------------------------------------------------
   //context
-  const context = useContext(Context)
+
   //hooks
+  const cancel = useClick(update, {cancel: '취소'})
+  const submit = useClick(update, {submit: '문의하기'})
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
   //useState
   const [isOpen, setIsOpen] = useState(false)
@@ -27,7 +30,13 @@ export default props => {
   //update
   function update(mode) {
     switch (true) {
-      case mode.onChange !== undefined:
+      case mode.cancel !== undefined: //------------------------------취소
+        alert('취소')
+        break
+      case mode.submit !== undefined: //------------------------------문의하기
+        alert(JSON.stringify(changes, null, 1))
+        break
+      case mode.onChange !== undefined: //------------------------------상태변화
         console.log(JSON.stringify(changes))
         break
     }
@@ -86,8 +95,12 @@ export default props => {
         </dd>
       </dl>
       <div className="in_wrap">
-        <button className="cancel">취소</button>
-        <button className="submit">문의하기</button>
+        <button {...cancel} className="cancel">
+          취소
+        </button>
+        <button {...submit} className="submit">
+          문의하기
+        </button>
       </div>
     </Content>
   )
@@ -153,6 +166,8 @@ const Content = styled.div`
     width: 100%;
     padding: 12px 10px;
     font-size: 14px;
+    font-family: inherit;
+    font-size: inherit;
     border: solid 1px #e0e0e0;
     background-color: #ffffff;
     box-sizing: border-box;
