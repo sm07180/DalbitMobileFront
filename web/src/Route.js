@@ -7,6 +7,7 @@ import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 //
 import Navigator from './pages/navigator'
+import newBroadcast from 'pages/newBroadcast'
 /**
  * 하이브리드 앱연동을 문제발생,lazy로딩 x
  */
@@ -26,7 +27,6 @@ const Login = React.lazy(() => import('pages/login'))
 const User = React.lazy(() => import('pages/user'))
 const Cast = React.lazy(() => import('pages/cast'))
 const Ranking = React.lazy(() => import('pages/ranking'))
-// const Live = React.lazy(() => import('pages/live_backup'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
 const Mypage = React.lazy(() => import('pages/mypage'))
@@ -54,7 +54,6 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
-        <Route exact path="/broadcast/:title" component={BroadCast} />
         <Route exact path="/cast" component={Cast} />
         <Route exact path="/ranking" component={Ranking} />
         <Route exact path="/user" component={User} />
