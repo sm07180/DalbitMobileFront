@@ -6,16 +6,20 @@ import {IMG_SERVER} from 'context/config'
 const defaultPageLength = 10
 
 export default props => {
-  const {prevClickEvent, nextClickEvent, btnClickEvent, totalPage, currentPage} = props
+  const {prevClickEvent, nextClickEvent, btnClickEvent, totalPage, currentPage, currentIdx} = props
 
   if (totalPage === undefined) {
     throw new Error('Need a total page')
   } else if (currentPage === undefined) {
     throw new Error('Need a current page')
+  } else if (currentIdx === undefined) {
+    throw new Error('Need a current idx')
   } else if (prevClickEvent === undefined) {
     throw new Error('Need a prev click event')
   } else if (nextClickEvent === undefined) {
     throw new Error('Need a next click event')
+  } else if (btnClickEvent === undefined) {
+    throw new Error('Need a btn click event')
   }
 
   const numberOfBtn = totalPage > defaultPageLength ? [...Array(defaultPageLength).keys()] : [...Array(totalPage).keys()]
@@ -34,7 +38,7 @@ export default props => {
     <Container>
       <Left onClick={prev} />
       {numberOfBtn.map(value => (
-        <Page key={value} onClick={targetEvent} className={currentPage === value + 1 ? 'active' : ''}>
+        <Page key={value} onClick={targetEvent} className={currentIdx === value + 1 ? 'active' : ''}>
           {value + 1}
         </Page>
       ))}

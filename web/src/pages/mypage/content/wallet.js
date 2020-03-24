@@ -31,7 +31,7 @@ export default props => {
         <CoinChargeBtn>충전하기</CoinChargeBtn>
       </CoinCountingView>
 
-      <Paging prevClickEvent={() => {}} nextClickEvent={() => {}} btnClickEvent={() => {}} totalPage={3} currentPage={1} />
+      <Paging prevClickEvent={() => {}} nextClickEvent={() => {}} btnClickEvent={() => {}} totalPage={3} currentPage={1} currentIdx={1} />
     </div>
   )
 }
