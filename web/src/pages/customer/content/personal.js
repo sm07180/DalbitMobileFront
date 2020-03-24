@@ -6,29 +6,29 @@
 import React, {useState, useRef} from 'react'
 //styled-component
 import styled from 'styled-components'
+import {COLOR_MAIN} from 'context/color'
+
 //context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //component
-import Pagination from './pagination'
 
 export default props => {
   return (
-    <>
-      <Pagination perPage={10} />
-    </>
+    <Content>
+      <dl>
+        <dt>문의 유형 선택</dt>
+        <dd>222</dd>
+      </dl>
+    </Content>
   )
 }
 //style
 //----------------------------------------------------------------------------
 //style
 //----------------------------------------------------------------------------
-const Wrap = styled.div``
-
-const dataSet = [
-  {
-    type: '공지사항',
-    name: '추천 DJ 신청 접수 안내',
-    date: '2020.01.14  11:30'
+const Content = styled.div`
+  margin-top: 25px;
+  border-top: 1px solid ${COLOR_MAIN};
+  & dl {
+    width: 100%;
   }
-]
+`
