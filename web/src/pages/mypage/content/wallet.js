@@ -4,6 +4,9 @@ import styled from 'styled-components'
 // context
 import {Context} from 'context'
 
+// component
+import Paging from 'components/ui/paging.js'
+
 // static
 import coinIcon from 'images/ic_moon_l@2x.png'
 
@@ -22,23 +25,43 @@ export default props => {
       <CoinCountingView>
         <CoinCurrentStatus>
           <span className="text">현재 보유 달:</span>
-          <img src={coinIcon} style={{width: '44px'}} />
+          <img className="coin-img" src={coinIcon} style={{width: '44px'}} />
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
         <CoinChargeBtn>충전하기</CoinChargeBtn>
       </CoinCountingView>
+
+      <Paging prevClickEvent={() => {}} nextClickEvent={() => {}} btnClickEvent={() => {}} totalPage={3} currentPage={1} />
     </div>
   )
 }
 
 const CoinChargeBtn = styled.button`
+  padding: 16px 44px;
+  color: #fff;
   background-color: #8556f6;
+  border-radius: 10px;
 `
 
 const CoinCurrentStatus = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
+  user-select: none;
+
+  .text {
+    color: #9e9e9e;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+  }
+  .coin-img {
+    margin-left: 20px;
+  }
+  .current-value {
+    color: #8556f6;
+    font-size: 28px;
+    letter-spacing: -0.7px;
+  }
 `
 
 const CoinCountingView = styled.div`
