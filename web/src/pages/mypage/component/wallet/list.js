@@ -4,11 +4,15 @@ import styled from 'styled-components'
 export default props => {
   const {type} = props
 
+  const returnCoinText = t => {
+    return t === 'dal' ? '달' : '별'
+  }
+
   return (
     <ListContainer>
       <TopArea>
         <span className="title">
-          <span className="main">달 상세내역</span>
+          <span className="main">{`${returnCoinText(type)} 상세내역`}</span>
           <span className="sub">(최근 6개월)</span>
         </span>
       </TopArea>
@@ -17,15 +21,15 @@ export default props => {
         <div className="list title">
           <span className="how-to-get">구분</span>
           <span className="detail">내역</span>
-          <span className="type">달</span>
+          <span className="type">{returnCoinText(type)}</span>
           <span className="date">날짜</span>
         </div>
         {[1, 2, 3, 4, 5, 6].map((value, index) => {
           return (
             <div className="list" key={index}>
               <span className="how-to-get">구매</span>
-              <span className="detail">달 직접 구매</span>
-              <span className="type">달 100</span>
+              <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
+              <span className="type">{`${returnCoinText(type)} 100`}</span>
               <span className="date">2020.03.11 11:32</span>
             </div>
           )

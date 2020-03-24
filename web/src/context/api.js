@@ -551,6 +551,19 @@ export default class API {
   }
 
   /**
+   * @breif 내지갑 달 내역 조회
+   * @method "GET"
+   * @param number    walletType(O)
+   * @param number    page(X)
+   * @param number    records(X)
+   * @created 박송원 2020.03.24
+   */
+  static mypage_wallet_inquire = async params => {
+    const {coinType} = params
+    return await ajax({url: `/mypage/${coinType}`, method: 'GET', params})
+  }
+
+  /**
    * @brief 회원 차단하기
    * @method "POST"
    * @param string    memNo             //*차단회원번호
