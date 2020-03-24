@@ -140,7 +140,6 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
-      const aaa = []
       // console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
       if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
