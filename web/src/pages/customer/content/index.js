@@ -27,6 +27,8 @@ const Index = props => {
         return <Personal />
       case 'broadcast_guide': //---------------방송 가이드(미정)
         return <h1>미정_감출것인지</h1>
+      default:
+        break
     }
   }
   //---------------------------------------------------------------------
