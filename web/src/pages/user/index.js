@@ -14,6 +14,7 @@ import Layout from 'pages/common/layout/index'
 import Join from './content/join-form'
 import Password from './content/password'
 import SelfAuth from './content/selfAuth'
+import SelfAuthRes from './content/selfAuthRes'
 import Api from 'context/api'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
@@ -39,11 +40,17 @@ const User = props => {
             <Password {...props} />
           </PureLayout>
         )
-      case 'selfAuth': //비밀번호찾기
+      case 'selfAuth': //본인인증 요청
         return (
           <Layout {...props}>
             <SelfAuth {...props} />
           </Layout>
+        )
+      case 'selfAuthRes': //본인인증 결과
+        return (
+          <PureLayout {...props}>
+            <SelfAuthRes {...props} />
+          </PureLayout>
         )
       default:
         return (

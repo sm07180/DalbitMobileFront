@@ -857,7 +857,7 @@ export default class API {
   }
 
   /**
-   * @brief 본인인증 여부 체크
+   * @brief 본인인증 요청
    * @method "POST"
    * @create 이은비 2020.03.23
    */
