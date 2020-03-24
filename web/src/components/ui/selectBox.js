@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 export default props => {
-  const {boxList, onChangeEvent} = props
+  const {boxList, onChangeEvent, inlineStyling} = props
+  const [selectedIdx, setSelectedIdx] = useState(0)
 
   const selectBoxList = value => {
     onChangeEvent(value)
@@ -13,23 +14,26 @@ export default props => {
   }
 
   return (
-    <SelectBox>
-      {boxList.map((value, index) => {
+    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}}>
+      <Selected></Selected>
+      {boxList.map((instance, index) => {
         return (
-          <div className="box-list" onClick={() => selectBoxList(value)}>
-            {value}
+          <div className="box-list" key={index} onClick={() => selectBoxList(instance.value)}>
+            {instance.text}
           </div>
         )
       })}
-    </SelectBox>
+    </SelectBoxWrap>
   )
 }
 
-const SelectBox = styled.div`
-  position: absolute;
+const Selected = styled.div`
   width: 136px;
   padding: 11px;
   box-sizing: border-box;
+  border: 1px solid #8556f6;
+  z-index: 100;
+  cursor: pointer;
 
   .box-list {
     color: #757575;
@@ -39,4 +43,8 @@ const SelectBox = styled.div`
       background-color: #f8f8f8;
     }
   }
+`
+
+const SelectBoxWrap = styled.div`
+  position: absolute;
 `

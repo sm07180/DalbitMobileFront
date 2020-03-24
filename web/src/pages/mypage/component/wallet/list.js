@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
+import SelectBox from 'components/ui/selectBox.js'
+
 export default props => {
   const {type} = props
 
@@ -10,6 +12,7 @@ export default props => {
 
   return (
     <ListContainer>
+      <SelectBox boxList={[{value: '', text: '전체'}]} inlineStyling={{right: 0, top: 0}} />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(type)} 상세내역`}</span>
