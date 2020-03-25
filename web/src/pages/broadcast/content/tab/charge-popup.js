@@ -1,9 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useContext} from 'react'
 import styled from 'styled-components'
 import {BotButton} from './bot-button'
 import {Scrollbars} from 'react-custom-scrollbars'
 import SuccessPopup from './charge-success-popup'
 import {IMG_SERVER} from 'context/config'
+import {Context} from 'context'
+import _ from 'lodash'
 const testData = [
   {
     id: 0,
@@ -38,6 +40,8 @@ const receiptData = [
   }
 ]
 export default props => {
+  const context = useContext(Context)
+  console.log('팝업props', context.popup_code[1])
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
   const scrollbars = useRef(null)
@@ -144,12 +148,13 @@ export default props => {
                 <div className="subTitle">구매 내역</div>
                 <div>
                   <div>결제상품</div>
-                  <div className="goods">달&nbsp;100</div>
+                  <div className="goods">{_.hasIn(context.popup_code[1], 'name') ? context.popup_code[1].name : '달 100'}</div>
                 </div>
                 <div>
                   <div>결제금액</div>
                   <div className="price">
-                    10,000<span>원</span>
+                    {_.hasIn(context.popup_code[1], 'price') ? context.popup_code[1].price : '1,000'}
+                    <span>원</span>
                   </div>
                 </div>
               </Info>
@@ -168,7 +173,7 @@ export default props => {
                 </ItemArea>
               </Payment>
             </PaymentWrap>
-            {charge === 2 && (
+            {/* {charge === 2 && (
               <DepositInfo>
                 <div className="depositTitle">
                   <div className="subTitle">무통장 입금</div>
@@ -178,12 +183,18 @@ export default props => {
                   </div>
                   <div className="info">
                     <div>전화번호</div>
-                    <input placeholder="입금 정보 문자메시지 전송(선택사항)" onChange={handleChange} name="phone" value={phone} type="number" />
+                    <input
+                      placeholder="입금 정보 문자메시지 전송(선택사항)"
+                      onChange={handleChange}
+                      name="phone"
+                      value={phone}
+                      type="number"
+                    />
                   </div>
                 </div>
                 {receipt()}
               </DepositInfo>
-            )}
+            )} */}
             <NoticeArea>
               <div className="noticeTitle">
                 <div className="circle">!</div>
@@ -200,8 +211,22 @@ export default props => {
             </NoticeArea>
             <ButtonArea>
               <div>
-                <BotButton width={150} height={48} background={'#fff'} color={'#8556f6'} borderColor={'#8556f6'} title={'취소하기'} />
-                <BotButton width={150} height={48} background={charge != -1 ? '#8556f6' : '#bdbdbd'} color={'#fff'} title={'충전하기'} clickEvent={doCharge} />
+                <BotButton
+                  width={150}
+                  height={48}
+                  background={'#fff'}
+                  color={'#8556f6'}
+                  borderColor={'#8556f6'}
+                  title={'취소하기'}
+                />
+                <BotButton
+                  width={150}
+                  height={48}
+                  background={charge != -1 ? '#8556f6' : '#bdbdbd'}
+                  color={'#fff'}
+                  title={'충전하기'}
+                  clickEvent={doCharge}
+                />
               </div>
             </ButtonArea>
           </>
@@ -410,7 +435,7 @@ const ButtonArea = styled.div`
   height: 48px;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
 
   & > div {
     display: flex;

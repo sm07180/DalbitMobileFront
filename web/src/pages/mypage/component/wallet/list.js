@@ -4,15 +4,22 @@ import styled from 'styled-components'
 import SelectBox from 'components/ui/selectBox.js'
 
 export default props => {
-  const {type} = props
+  const {type, data} = props
 
   const returnCoinText = t => {
     return t === 'dal' ? '달' : '별'
   }
 
+  const selectBoxData = [
+    {value: '', text: '전체'},
+    {value: '', text: '구매'},
+    {value: '', text: '선물'},
+    {value: '', text: '교환'}
+  ]
+
   return (
     <ListContainer>
-      <SelectBox boxList={[{value: '', text: '전체'}]} inlineStyling={{right: 0, top: 0}} />
+      <SelectBox boxList={selectBoxData} onChangeEvent={() => {}} inlineStyling={{right: 0, top: 0}} />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(type)} 상세내역`}</span>

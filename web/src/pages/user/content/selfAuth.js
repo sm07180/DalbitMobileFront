@@ -86,7 +86,7 @@ export default props => {
     }
     document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
     document.authForm.submit()
-    //inervalId = setInterval(authCheck, 1000)
+    inervalId = setInterval(authCheck, 1000)
   }
 
   async function authReq() {
