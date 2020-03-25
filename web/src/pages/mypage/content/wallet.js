@@ -11,12 +11,15 @@ import Paging from 'components/ui/paging.js'
 import List from '../component/wallet/list.js'
 
 // static
-import coinIcon from 'images/ic_moon_l@2x.png'
+import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
+import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 
 export default props => {
   const ctx = useContext(Context)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+  const [searching, setSearching] = useState(true)
+
   const [page, setPage] = useState(1)
   const [records, setRecords] = useState(null)
 
@@ -26,7 +29,17 @@ export default props => {
     setCoinType(type)
   }
 
+  const returnCoinText = t => {
+    return t === 'dal' ? '달' : '별'
+  }
+
+  const returnCoinImg = t => {
+    return t === 'dal' ? dalCoinIcon : byeolCoinIcon
+  }
+
   useEffect(() => {
+    // searching ...
+    setSearching(true)
     ;(async () => {
       const response = await Api.mypage_wallet_inquire({
         coinType,
@@ -37,10 +50,15 @@ export default props => {
 
       if (response.result === 'success') {
         const {list} = response.data
-        setListDetailed(list)
+        if (list.length) {
+          setListDetailed(list)
+        } else {
+          setListDetailed(false)
+        }
+        setSearching(false)
       }
     })()
-  }, [coinType])
+  }, [coinType, walletType])
 
   return (
     <div>
@@ -64,23 +82,41 @@ export default props => {
 
       <CoinCountingView>
         <CoinCurrentStatus>
-          <span className="text">현재 보유 달:</span>
-          <img className="coin-img" src={coinIcon} style={{width: '44px'}} />
+          <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
+          <img className="coin-img" src={returnCoinImg(coinType)} style={{width: '44px'}} />
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
-        <CoinChargeBtn>충전하기</CoinChargeBtn>
+
+        <div>
+          {coinType === 'dal' ? (
+            <CoinChargeBtn>충전하기</CoinChargeBtn>
+          ) : (
+            <>
+              <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
+              <CoinChargeBtn>환전하기</CoinChargeBtn>
+            </>
+          )}
+        </div>
       </CoinCountingView>
 
-      <List type={coinType} data={listDetailed} />
-
-      <Paging
-        prevClickEvent={() => {}}
-        nextClickEvent={() => {}}
-        btnClickEvent={() => {}}
-        totalPage={3}
-        currentPage={1}
-        currentIdx={1}
+      <List
+        searching={searching}
+        type={coinType}
+        data={listDetailed}
+        returnCoinText={returnCoinText}
+        setWalletType={setWalletType}
       />
+
+      {Array.isArray(listDetailed) && listDetailed.length > 0 && (
+        <Paging
+          prevClickEvent={() => {}}
+          nextClickEvent={() => {}}
+          btnClickEvent={() => {}}
+          totalPage={3}
+          currentPage={1}
+          currentIdx={1}
+        />
+      )}
     </div>
   )
 }
@@ -90,6 +126,16 @@ const CoinChargeBtn = styled.button`
   color: #fff;
   background-color: #8556f6;
   border-radius: 10px;
+  width: 150px;
+  box-sizing: border-box;
+  font-size: 16px;
+
+  &.white-btn {
+    border: 1px solid #8556f6;
+    background-color: #fff;
+    color: #8556f6;
+    margin-right: 12px;
+  }
 `
 
 const CoinCurrentStatus = styled.div`
@@ -118,6 +164,7 @@ const CoinCountingView = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 118px;
   padding: 30px;
   box-sizing: border-box;
 `

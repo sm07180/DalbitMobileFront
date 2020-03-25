@@ -3,6 +3,7 @@ import styled from 'styled-components'
 //context
 import {CustomerStore} from '../store'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import useResize from 'components/hooks/useResize'
 //components
 import Banner from './banner'
 import Tab from './tab'
@@ -15,14 +16,22 @@ const Index = props => {
   //context
   const store = useContext(CustomerStore)
   Index.store = store
+  //resize page func
+  useEffect(() => {
+    if (window.innerWidth <= 600) {
+      Store().action.updateCountPage(6)
+    } else if (window.innerWidth > 600) {
+      Store().action.updateCountPage(10)
+    }
+  }, [useResize()])
   //---------------------------------------------------------------------
   //makeContents
   const makeContents = () => {
     switch (store.menuCode) {
       case 'notice': //------------------------공지사항
-        return <Notice perPage={10} />
+        return <Notice perPage={Store().page} />
       case 'faq': //---------------------------FAQ
-        return <Faq perPage={10} />
+        return <Faq perPage={Store().page} />
       case 'personal': //----------------------1:1문의
         return <Personal />
       case 'broadcast_guide': //---------------방송 가이드(미정)
@@ -60,7 +69,7 @@ const Container = styled.div`
     text-align: center;
     color: ${COLOR_MAIN};
     font-size: 28px;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.7px;
   }
   @media (max-width: 1240px) {

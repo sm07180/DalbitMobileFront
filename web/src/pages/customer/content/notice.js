@@ -8,25 +8,60 @@ import React, {useState, useContext, useEffect} from 'react'
 import {Store} from './index'
 import {Context} from 'context'
 import Api from 'context/api'
+import useClick from 'components/hooks/useClick'
+import useChange from 'components/hooks/useChange'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {useHistory} from 'react-router-dom'
 //styled component
 import styled from 'styled-components'
-//----------------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////
 function Pagination(props) {
+  //update
+  function update(mode, e) {
+    switch (true) {
+      case mode.onChange !== undefined: //----------------------------상태변화
+        if (changes.value === '전체') {
+          setNoticeNum(0)
+        }
+        if (changes.value === '공지사항') {
+          setNoticeNum(1)
+        }
+        if (changes.value === '이벤트') {
+          setNoticeNum(2)
+        }
+        break
+      case mode.downDown !== undefined: //----------------------------문의유형선택
+        setIsOpen(false)
+        setChanges({
+          ...changes,
+          type: mode.downDown,
+          value: mode.downDown
+        })
+
+        break
+    }
+  }
   //context
   const context = useContext(Context)
   const history = useHistory()
+  const {changes, setChanges, onChange} = useChange(update, {type: '전체', onChange: -1, value: '전체'})
+  //hooks
+  const dropDown1 = useClick(update, {downDown: '전체'})
+  const dropDown2 = useClick(update, {downDown: '공지사항'})
+  const dropDown3 = useClick(update, {downDown: '이벤트'})
+  const [isOpen, setIsOpen] = useState(false)
   //notice state
   const [noticeList, setNoticeList] = useState([])
   const [noticeDetail, setNoticeDetail] = useState([])
   const [noticeNum, setNoticeNum] = useState(0)
+  const [PageChange, setPageChange] = useState(0)
   //page state
   const [page, setPage] = useState(1)
   const {perPage} = props
   const details = Store().noticePage.noticeIdx
   //page func
-  const pageStart = page != 1 ? perPage * page - 10 : 0
+  const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = noticeList.slice(pageStart, pageEnd)
   const amountPages = Math.round(noticeList.length / perPage)
@@ -37,6 +72,10 @@ function Pagination(props) {
     for (var i = a; i <= b; ++i) yield i
   }
   const numberPages = Array.from(range(a, b))
+
+  //----------------------------------------------------------
+
+  //
   //api----공지사항리스트
   async function fetchData() {
     const res = await Api.notice_list({
@@ -61,7 +100,6 @@ function Pagination(props) {
       }
     })
     if (res.result === 'success') {
-      //console.log(res.data)
       setNoticeDetail(res.data)
     } else if (res.result === 'fail') {
       console.log(res)
@@ -85,6 +123,7 @@ function Pagination(props) {
       fetchData2()
     }
   }
+
   //--------------------------------------------------------
   useEffect(() => {
     fetchData()
@@ -102,7 +141,11 @@ function Pagination(props) {
       <List className={Store().noticePage !== '' ? 'on' : ''}>
         {/* 컨텐츠 : 게시판 스타일 */}
         <ContentInfo>
-          <h2>전체</h2>
+          <h2>
+            {noticeNum === 0 ? '전체' : ''}
+            {noticeNum === 1 ? '공지사항' : ''}
+            {noticeNum === 2 ? '이벤트' : ''}
+          </h2>
           <h3>{noticeList.length}</h3>
           <div className="category">
             <button onClick={typeActive} value="0" className={noticeNum === 0 ? 'on' : ''}>
@@ -115,6 +158,30 @@ function Pagination(props) {
               이벤트
             </button>
           </div>
+          <SelectBox className={isOpen ? 'on' : ''}>
+            <div className="wrap">
+              <label htmlFor="allTerm">{changes.type}</label>
+              <button
+                className={isOpen ? 'on' : 'off'}
+                onClick={() => {
+                  setIsOpen(!isOpen)
+                }}>
+                펼치기
+              </button>
+            </div>
+            {/* DropDown메뉴 */}
+            <div className="dropDown">
+              <a href="#1" {...dropDown1}>
+                전체
+              </a>
+              <a href="#2" {...dropDown2}>
+                공지사항
+              </a>
+              <a href="#3" {...dropDown3}>
+                이벤트
+              </a>
+            </div>
+          </SelectBox>
         </ContentInfo>
 
         <PageWrap>
@@ -190,11 +257,16 @@ const Detail = styled.section`
   display: block;
   margin-top: 40px;
   border-top: 1px solid ${COLOR_MAIN};
+
   & > header {
     display: flex;
     justify-content: space-between;
     padding: 16px 20px;
     background-color: #f5f5f5;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
     & span:nth-child(1) {
       font-size: 14px;
       font-weight: 600;
@@ -202,6 +274,7 @@ const Detail = styled.section`
       transform: skew(-0.03deg);
     }
     & span:nth-child(2) {
+      margin-top: 8px;
       font-size: 12px;
       color: #bdbdbd;
     }
@@ -232,6 +305,9 @@ const PageWrap = styled.div`
   border-top: 1px solid ${COLOR_MAIN};
   & dl {
     width: 100%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-top: 16px;
   }
 `
 const PageNumber = styled.nav`
@@ -269,28 +345,43 @@ const TableWrap = styled.div`
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 0;
   cursor: pointer;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    flex-wrap: wrap;
+  }
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
     font-size: 14px;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
   }
   & dd {
     width: calc(100% - 240px);
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+    }
   }
   & dd:last-child {
     width: 120px;
     font-size: 12px;
     color: #bdbdbd;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      margin-top: 8px;
+      width: 100%;
+    }
   }
 `
 
 const ContentInfo = styled.div`
   margin-top: 40px;
+  position: relative;
+
   &:after {
     content: '';
     clear: both;
@@ -300,6 +391,7 @@ const ContentInfo = styled.div`
     display: inline-block;
     font-size: 20px;
     color: ${COLOR_MAIN};
+    line-height: 42px;
   }
   & h3 {
     display: inline-block;
@@ -308,7 +400,11 @@ const ContentInfo = styled.div`
     margin-left: 10px;
   }
   & .category {
+    display: block;
     float: right;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
     & button {
       padding: 11px 20px;
       margin-right: 4px;
@@ -319,5 +415,76 @@ const ContentInfo = styled.div`
         border: 1px solid ${COLOR_MAIN};
       }
     }
+  }
+`
+const SelectBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 140px;
+  overflow: hidden;
+  z-index: 11;
+  border: 1px solid ${COLOR_MAIN};
+  @media (max-width: ${WIDTH_MOBILE}) {
+    display: block;
+  }
+  .dropDown {
+    a {
+      display: block;
+      font-size: 14px;
+      padding: 12px;
+      border-top: 1px solid ${COLOR_MAIN};
+      color: #878787;
+      display: none;
+      background-color: white;
+      z-index: 11;
+    }
+    a:hover {
+      color: ${COLOR_MAIN};
+      background-color: #f8f8f8;
+    }
+  }
+  &.on {
+    /* 높이조절 */
+    /* height: 253px; */
+    a {
+      display: block;
+    }
+  }
+  .wrap {
+    position: relative;
+
+    * {
+      line-height: 24px;
+      vertical-align: top;
+    }
+    button {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 36px;
+      height: 36px;
+      text-indent: -9999px;
+    }
+
+    label {
+      display: inline-block;
+      font-size: 14px !important;
+      color: ${COLOR_MAIN};
+      transform: skew(-0.03deg);
+    }
+  }
+  & > div:first-child > button {
+    background: url(https://devimage.dalbitcast.com/images/api/ic_arrow_down_purple.png) no-repeat center;
+    transform: rotate(0deg);
+    /* transition: transform 0.3s ease-in-out; */
+
+    &.on {
+      transform: rotate(180deg);
+    }
+  }
+  & > div:first-child {
+    padding: 8.5px 12px 8.5px 12px;
   }
 `

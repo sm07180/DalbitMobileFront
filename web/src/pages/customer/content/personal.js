@@ -4,6 +4,8 @@
  *
  */
 import React, {useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
+
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN} from 'context/color'
@@ -11,18 +13,24 @@ import {COLOR_MAIN} from 'context/color'
 import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
-import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 //
 export default props => {
   //--------------------------------------------------------------------------
   //context
-
+  const context = useContext(Context)
+  const history = useHistory()
   //hooks
+  const dropDown1 = useClick(update, {downDown: '기능문의'})
+  const dropDown2 = useClick(update, {downDown: '환불문의'})
+  const dropDown3 = useClick(update, {downDown: '라이브 방송문의'})
+  const dropDown4 = useClick(update, {downDown: '서비스제휴'})
+  const dropDown5 = useClick(update, {downDown: '기타'})
+  //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {type: '선택하세요', onChange: -1})
   //useState
   const [isOpen, setIsOpen] = useState(false)
   //--------------------------------------------------------------------------
@@ -31,14 +39,42 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.cancel !== undefined: //------------------------------취소
-        alert('취소')
+        context.action.alert({
+          msg: '취소되었습니다.'
+        })
         break
       case mode.submit !== undefined: //------------------------------문의하기
-        alert(JSON.stringify(changes, null, 1))
+        context.action.alert({
+          msg: '문의내용이 접수되었습니다.\n메인페이지로 이동합니다.',
+          callback: () => {
+            history.push('/')
+          }
+        })
+        console.log(JSON.stringify(changes, null, 1))
         break
-      case mode.onChange !== undefined: //------------------------------상태변화
+      case mode.onChange !== undefined: //----------------------------상태변화
         console.log(JSON.stringify(changes))
         break
+      case mode.downDown !== undefined: //----------------------------문의유형선택
+        setIsOpen(false)
+        setChanges({
+          ...changes,
+          type: mode.downDown
+        })
+        break
+    }
+  }
+  // input file에서 이미지 업로드했을때 파일객체 dataURL로 값 셋팅
+  function uploadSingleFile(e) {
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = function() {
+      if (reader.result) {
+        setChanges({
+          ...changes,
+          image: reader.result
+        })
+      }
     }
   }
   //--------------------------------------------------------------------------
@@ -49,7 +85,7 @@ export default props => {
         <dd>
           <SelectBox className={isOpen ? 'on' : ''}>
             <div className="wrap">
-              <label htmlFor="allTerm">선택하세요</label>
+              <label htmlFor="allTerm">{changes.type}</label>
               <button
                 className={isOpen ? 'on' : 'off'}
                 onClick={() => {
@@ -58,9 +94,24 @@ export default props => {
                 펼치기
               </button>
             </div>
-            <button>1</button>
-            <button>1</button>
-            <button>1</button>
+            {/* DropDown메뉴 */}
+            <div className="dropDown">
+              <a href="#1" {...dropDown1}>
+                기능문의
+              </a>
+              <a href="#2" {...dropDown2}>
+                환불문의
+              </a>
+              <a href="#3" {...dropDown3}>
+                라이브 방송문의
+              </a>
+              <a href="#4" {...dropDown4}>
+                서비스제휴
+              </a>
+              <a href="#5" {...dropDown5}>
+                기타
+              </a>
+            </div>
           </SelectBox>
         </dd>
       </dl>
@@ -88,9 +139,23 @@ export default props => {
       <dl>
         <dt>첨부파일</dt>
         <dd>
-          <p>
-            <input type="file" name="file" onChange={onChange} />
-          </p>
+          {/* 이미지첨부파일 */}
+          <ImgUploader>
+            <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.image} />
+            <label htmlFor="imgUpload">
+              <span>찾아보기</span>
+            </label>
+            <input
+              type="file"
+              name="imgUpload"
+              id="imgUpload"
+              accept=".gif, .jpg, .png"
+              onChange={e => {
+                uploadSingleFile(e)
+              }}
+            />
+          </ImgUploader>
+
           <p>※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
         </dd>
       </dl>
@@ -148,24 +213,40 @@ const Content = styled.div`
       text-align: left;
       color: ${COLOR_MAIN};
       transform: skew(-0.03deg);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 12px;
+      }
     }
     dd {
       display: inline-block;
       padding-left: 130px;
       width: 100%;
       transform: skew(-0.03deg);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        position: relative;
+        display: block;
+        padding-left: 0;
+        width: 100%;
+      }
       p {
         padding: 10px 1px;
         transform: skew(-0.03deg);
+        @media (max-width: ${WIDTH_MOBILE}) {
+          font-size: 12px;
+        }
       }
     }
   }
   textarea,
-  input {
+  input[type='text'] {
     display: block;
     width: 100%;
     padding: 12px 10px;
-    font-size: 14px;
+    font-size: 14px !important;
     font-family: inherit;
     font-size: inherit;
     border: solid 1px #e0e0e0;
@@ -173,14 +254,24 @@ const Content = styled.div`
     box-sizing: border-box;
   }
 `
-
 const SelectBox = styled.div`
-  width: 354px;
+  width: 200px;
   overflow: hidden;
   position: relative;
   height: 52px;
   border: 1px solid #e0e0e0;
   transition: height 0.5s ease-in-out;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
+  .dropDown {
+    a {
+      display: block;
+      font-size: 14px;
+      padding: 10px;
+      border-top: 1px solid #e0e0e0;
+    }
+  }
   &.on {
     /* 높이조절 */
     height: 253px;
@@ -224,6 +315,7 @@ const SelectBox = styled.div`
 
     label {
       display: inline-block;
+      font-size: 14px !important;
       transform: skew(-0.03deg);
     }
   }
@@ -238,5 +330,29 @@ const SelectBox = styled.div`
   }
   & > div:first-child {
     padding: 13px;
+  }
+`
+const ImgUploader = styled.div`
+  position: relative;
+  width: 100%;
+  padding-right: 130px;
+  box-sizing: border-box;
+  text-align: left;
+  #imgUpload {
+    display: none;
+  }
+
+  #imgUploadTxt {
+    display: block;
+  }
+  label {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: inline-block;
+    padding: 9px 25px;
+    color: ${COLOR_MAIN};
+    border-radius: 8px;
+    border: 1px solid ${COLOR_MAIN};
   }
 `

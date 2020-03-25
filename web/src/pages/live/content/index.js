@@ -6,6 +6,7 @@ import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {LiveStore} from '../store'
 import {IMG_SERVER} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 //components
 import Title from './title'
 import TopRank from './topRank'
@@ -124,7 +125,7 @@ export default props => {
   //----------------------------------------------------------- components start
   return (
     <Container>
-      <Title title={'라이브'} />
+      <h2>라이브</h2>
       <Wrap>
         <MainContents>
           <TopRank broadList={list} joinRoom={joinRoom} width={width} />
@@ -159,6 +160,14 @@ const Container = styled.div`
   margin-bottom: 2%;
   flex-direction: column;
   align-items: center;
+
+  & > h2 {
+    padding: 40px 0 70px 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: ${COLOR_MAIN};
+    text-align: center;
+  }
 `
 
 const MainContents = styled.div`

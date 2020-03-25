@@ -9,7 +9,8 @@ const BotButton = props => {
       color={props.color}
       onClick={props.clickEvent ? () => props.clickEvent() : console.log()}
       width={props.width}
-      heigth={props.heigth}>
+      heigth={props.heigth}
+      disabled={props.disabled}>
       {props.title}
     </Button>
   )
@@ -17,7 +18,12 @@ const BotButton = props => {
 
 const LButton = props => {
   return (
-    <LongButton background={props.background} borderColor={props.borderColor} color={props.color} onClick={props.clickEvent ? () => props.clickEvent() : console.log()} width={props.width}>
+    <LongButton
+      background={props.background}
+      borderColor={props.borderColor}
+      color={props.color}
+      onClick={props.clickEvent ? () => props.clickEvent() : console.log()}
+      width={props.width}>
       {props.title}
     </LongButton>
   )

@@ -54,6 +54,13 @@ export default () => {
         //종료시
         // alert(JSON.stringify(event.detail))
         break
+      case 'react-debug': //-------------------------GNB 열기
+        const detail = event.detail
+        /**
+         * @example debug({title:'타이틀내용',msg:'메시지내용'})
+         */
+        context.action.alert(detail)
+        break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
         break
@@ -74,6 +81,7 @@ export default () => {
     document.addEventListener('native-start', update) //진행중
     document.addEventListener('native-end', update) //진행중
     /*----react----*/
+    document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
     return () => {
@@ -83,6 +91,7 @@ export default () => {
       document.removeEventListener('native-start', update) //진행중
       document.removeEventListener('native-end', update) //진행중
       /*----react----*/
+      document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
     }

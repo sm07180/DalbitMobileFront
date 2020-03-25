@@ -943,6 +943,65 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/center/faq/detail`, method: method || 'GET', params: params})
   }
+
+  //-------------------------------------------------------------스토어, 결제
+  /**
+   * @brief 스토어 구매상품 목록
+   * @method "GET"
+   * @create 이은비 2020.03.24
+   */
+  static store_list = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/store`, method: method || 'GET'})
+  }
+
+  /**
+   * @brief 신용카드 결제요청
+   * @method "POST"
+   * @param String Prdtnm                              //상품명 (50byte 이하)
+   * @param String Prdtprice                           //요청금액(10byte 이하)
+   * @create 이은비 2020.03.25
+   */
+  static pay_card = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/card`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 휴대폰 결제요청
+   * @method "POST"
+   * @param String Prdtnm                              //상품명 (50byte 이하)
+   * @param String Prdtprice                           //요청금액(10byte 이하)
+   * @create 이은비 2020.03.25
+   */
+  static pay_phone = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/phone`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 가상계좌 결제요청(무통장입금)
+   * @method "POST"
+   * @param String Prdtnm                              //상품명 (50byte 이하)
+   * @param String Prdtprice                           //요청금액(10byte 이하)
+   * @create 이은비 2020.03.25
+   */
+  static pay_virtual = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/virtual`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 실시간 계좌이체 결제요청
+   * @method "POST"
+   * @param String Prdtnm                              //상품명 (50byte 이하)
+   * @param String Prdtprice                           //요청금액(10byte 이하)
+   * @create 이은비 2020.03.25
+   */
+  static pay_bank = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/bank`, method: method || 'POST', data: data})
+  }
 }
 
 //ajax

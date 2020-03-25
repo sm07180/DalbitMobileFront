@@ -3,16 +3,21 @@ import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
 
-export default props => {
-  const {type} = props
+import {IMG_SERVER} from 'context/config'
 
-  const returnCoinText = t => {
-    return t === 'dal' ? '달' : '별'
-  }
+export default props => {
+  const {searching, type, data, returnCoinText, setWalletType} = props
+
+  const selectBoxData = [
+    {value: 0, text: '전체'},
+    {value: 1, text: '구매'},
+    {value: 2, text: '선물'},
+    {value: 3, text: '교환'}
+  ]
 
   return (
     <ListContainer>
-      <SelectBox boxList={[{value: '', text: '전체'}]} inlineStyling={{right: 0, top: 0}} />
+      <SelectBox boxList={selectBoxData} onChangeEvent={setWalletType} inlineStyling={{right: 0, top: 0}} />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(type)} 상세내역`}</span>
@@ -27,20 +32,43 @@ export default props => {
           <span className="type">{returnCoinText(type)}</span>
           <span className="date">날짜</span>
         </div>
-        {[1, 2, 3, 4, 5, 6].map((value, index) => {
-          return (
-            <div className="list" key={index}>
-              <span className="how-to-get">구매</span>
-              <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
-              <span className="type">{`${returnCoinText(type)} 100`}</span>
-              <span className="date">2020.03.11 11:32</span>
-            </div>
-          )
-        })}
+
+        {searching ? (
+          <SearchList>
+            {[...Array(10).keys()].map(idx => (
+              <div className="search-list" key={idx} />
+            ))}
+          </SearchList>
+        ) : Array.isArray(data) ? (
+          [1, 2, 3, 4, 5, 6].map((value, index) => {
+            return (
+              <div className="list" key={index}>
+                <span className="how-to-get">구매</span>
+                <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
+                <span className="type">{`${returnCoinText(type)} 100`}</span>
+                <span className="date">2020.03.11 11:32</span>
+              </div>
+            )
+          })
+        ) : (
+          <div className="no-list">
+            <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
+            <div>검색 결과가 없습니다.</div>
+          </div>
+        )}
       </ListWrap>
     </ListContainer>
   )
 }
+
+const SearchList = styled.div`
+  .search-list {
+    height: 40px;
+    border-radius: 8px;
+    background-color: #eee;
+    margin: 8px 0;
+  }
+`
 
 const ListWrap = styled.div`
   .list {
@@ -98,6 +126,18 @@ const ListWrap = styled.div`
       .date {
         color: #8556f6;
       }
+    }
+  }
+
+  .no-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 400px;
+
+    img {
+      display: block;
     }
   }
 `

@@ -9,14 +9,56 @@ import {Store} from './index'
 import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+//hooks
+import useClick from 'components/hooks/useClick'
+import useChange from 'components/hooks/useChange'
 //styled component
 import styled from 'styled-components'
 //----------------------------------------------------------
-function Pagination(props) {
+
+function Faq(props) {
+  function update(mode, e) {
+    switch (true) {
+      case mode.onChange !== undefined: //----------------------------상태변화
+        if (changes.value === '전체') {
+          setfaqNum(0)
+        }
+        if (changes.value === '일반') {
+          setfaqNum(1)
+        }
+        if (changes.value === '방송') {
+          setfaqNum(2)
+        }
+        if (changes.value === '결제') {
+          setfaqNum(3)
+        }
+        if (changes.value === '기타') {
+          setfaqNum(4)
+        }
+        break
+      case mode.downDown !== undefined: //----------------------------문의유형선택
+        setIsOpen(false)
+        setChanges({
+          ...changes,
+          type: mode.downDown,
+          value: mode.downDown
+        })
+
+        break
+    }
+  }
   //context
   const context = useContext(Context)
-
-  //notice state
+  const {changes, setChanges, onChange} = useChange(update, {type: '전체', onChange: -1, value: '전체'})
+  //hooks
+  const dropDown1 = useClick(update, {downDown: '전체'})
+  const dropDown2 = useClick(update, {downDown: '일반'})
+  const dropDown3 = useClick(update, {downDown: '방송'})
+  const dropDown4 = useClick(update, {downDown: '결제'})
+  const dropDown5 = useClick(update, {downDown: '기타'})
+  const [isOpen, setIsOpen] = useState(false)
+  //faq state
   const [faqList, setFaqList] = useState([])
   const [faqDetail, setFaqDetail] = useState([])
   const [faqNum, setfaqNum] = useState(0)
@@ -25,7 +67,7 @@ function Pagination(props) {
   const {perPage} = props
   const details = Store().faqPage
   //page func
-  const pageStart = page != 1 ? perPage * page - 10 : 0
+  const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = faqList.slice(pageStart, pageEnd)
   const amountPages = Math.round(faqList.length / perPage)
@@ -111,7 +153,13 @@ function Pagination(props) {
     <>
       {/* 컨텐츠 : 게시판 스타일 */}
       <ContentInfo>
-        <h2>전체</h2>
+        <h2>
+          {faqNum === 0 ? '전체' : ''}
+          {faqNum === 1 ? '일반' : ''}
+          {faqNum === 2 ? '방송' : ''}
+          {faqNum === 3 ? '결제' : ''}
+          {faqNum === 4 ? '기타' : ''}
+        </h2>
         <h3>{faqList.length}</h3>
         <div className="category">
           <button value="0" className={faqNum === 0 ? 'on' : ''} onClick={typeActive}>
@@ -130,6 +178,36 @@ function Pagination(props) {
             기타
           </button>
         </div>
+        <SelectBox className={isOpen ? 'on' : ''}>
+          <div className="wrap">
+            <label htmlFor="allTerm">{changes.type}</label>
+            <button
+              className={isOpen ? 'on' : 'off'}
+              onClick={() => {
+                setIsOpen(!isOpen)
+              }}>
+              펼치기
+            </button>
+          </div>
+          {/* DropDown메뉴 */}
+          <div className="dropDown">
+            <a href="#1" {...dropDown1}>
+              전체
+            </a>
+            <a href="#2" {...dropDown2}>
+              일반
+            </a>
+            <a href="#3" {...dropDown3}>
+              방송
+            </a>
+            <a href="#3" {...dropDown4}>
+              결제
+            </a>
+            <a href="#3" {...dropDown5}>
+              기타
+            </a>
+          </div>
+        </SelectBox>
       </ContentInfo>
 
       <PageWrap>
@@ -210,7 +288,7 @@ function Pagination(props) {
     </>
   )
 }
-export default Pagination
+export default Faq
 //styled------------------------------------------------------------------------------------------------------------------
 const Detail = styled.section`
   opacity: 0;
@@ -223,6 +301,7 @@ const Detail = styled.section`
     color: #424242;
     transform: skew(-0.03deg);
     & span {
+      display: inline-block;
       margin-right: 4px;
       width: 16px;
       height: 16px;
@@ -230,8 +309,15 @@ const Detail = styled.section`
       color: #fff;
       text-align: center;
       border-radius: 50%;
+      @media (max-width: ${WIDTH_MOBILE}) {
+        margin-right: 6px;
+      }
     }
     & p {
+      width: calc(100% - 44px);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: calc(100% - 46px);
+      }
     }
   }
   &.on {
@@ -239,6 +325,9 @@ const Detail = styled.section`
     height: auto;
     padding: 30px 0 30px 120px;
     transition: padding-top 0.6s ease;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding: 30px 0 30px 0px;
+    }
   }
 `
 
@@ -247,6 +336,9 @@ const PageWrap = styled.div`
   border-top: 1px solid ${COLOR_MAIN};
   & dl {
     width: 100%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-top: 18px;
   }
 `
 const PageNumber = styled.nav`
@@ -284,22 +376,39 @@ const TableWrap = styled.div`
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 0;
   cursor: pointer;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    position: relative;
+    flex-wrap: wrap;
+  }
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
     font-size: 14px;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+    }
   }
   & dd {
     width: calc(100% - 144px);
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+      margin-top: 8px;
+    }
   }
   & dd:last-child {
     width: 24px;
     height: 24px;
     background: url('https://devimage.dalbitcast.com/images/api/ico-prevmy.png') no-repeat center center/cover;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
   & span {
     display: inline-block;
@@ -310,6 +419,9 @@ const TableWrap = styled.div`
     color: #fff;
     text-align: center;
     border-radius: 50%;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      margin-right: 6px;
+    }
   }
   &.on {
     border-bottom: none;
@@ -318,6 +430,7 @@ const TableWrap = styled.div`
 
 const ContentInfo = styled.div`
   margin-top: 40px;
+  position: relative;
   &:after {
     content: '';
     clear: both;
@@ -327,6 +440,7 @@ const ContentInfo = styled.div`
     display: inline-block;
     font-size: 20px;
     color: ${COLOR_MAIN};
+    line-height: 40px;
   }
   & h3 {
     display: inline-block;
@@ -335,7 +449,11 @@ const ContentInfo = styled.div`
     margin-left: 10px;
   }
   & .category {
+    display: block;
     float: right;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
     & button {
       padding: 11px 20px;
       margin-right: 4px;
@@ -346,5 +464,73 @@ const ContentInfo = styled.div`
         border: 1px solid ${COLOR_MAIN};
       }
     }
+  }
+`
+
+const SelectBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  width: 140px;
+  overflow: hidden;
+  z-index: 11;
+  border: 1px solid ${COLOR_MAIN};
+  @media (max-width: ${WIDTH_MOBILE}) {
+    display: block;
+  }
+  .dropDown {
+    a {
+      display: block;
+      font-size: 14px;
+      padding: 12px;
+      border-top: 1px solid ${COLOR_MAIN};
+      color: #424242;
+      display: none;
+    }
+  }
+  &.on {
+    /* 높이조절 */
+    /* height: 253px; */
+    a {
+      display: block;
+      background-color: white;
+      z-index: 11;
+    }
+  }
+  .wrap {
+    position: relative;
+
+    * {
+      line-height: 24px;
+      vertical-align: top;
+    }
+    button {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      width: 36px;
+      height: 36px;
+      text-indent: -9999px;
+    }
+
+    label {
+      display: inline-block;
+      font-size: 14px !important;
+      color: ${COLOR_MAIN};
+      transform: skew(-0.03deg);
+    }
+  }
+  & > div:first-child > button {
+    background: url(https://devimage.dalbitcast.com/images/api/ic_arrow_down_purple.png) no-repeat center;
+    transform: rotate(0deg);
+    /* transition: transform 0.3s ease-in-out; */
+
+    &.on {
+      transform: rotate(180deg);
+    }
+  }
+  & > div:first-child {
+    padding: 8.5px 12px 8.5px 12px;
   }
 `

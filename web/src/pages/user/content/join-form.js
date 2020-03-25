@@ -6,7 +6,16 @@ import Utility from 'components/lib/utility'
 import Datepicker from './style-datepicker'
 //import Button from './style-button'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, PHOTO_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {
+  IMG_SERVER,
+  PHOTO_SERVER,
+  WIDTH_PC,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_TABLET_S,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S
+} from 'context/config'
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -693,7 +702,15 @@ export default props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.loginNickNm && validate.birth && validate.term && validate.auth) {
+    if (
+      validate.loginID &&
+      validate.loginPwd &&
+      validate.loginPwdCheck &&
+      validate.loginNickNm &&
+      validate.birth &&
+      validate.term &&
+      validate.auth
+    ) {
       setValidatePass(true)
     } else {
       setValidatePass(false)
@@ -713,7 +730,15 @@ export default props => {
         {changes.memType == 'p' && (
           <>
             <PhoneAuth>
-              <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
+              <input
+                type="tel"
+                name="loginID"
+                value={changes.loginID}
+                onChange={onLoginHandleChange}
+                placeholder="휴대폰 번호"
+                className="auth"
+                maxLength="13"
+              />
               <button
                 className="auth-btn1"
                 disabled={currentAuthBtn.request}
@@ -729,7 +754,14 @@ export default props => {
               </HelpText>
             )}
             <PhoneAuth>
-              <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
+              <input
+                type="number"
+                name="auth"
+                placeholder="인증번호"
+                className="auth"
+                value={changes.auth}
+                onChange={onLoginHandleChange}
+              />
               <span className="timer">{timeText}</span>
               <button
                 className="auth-btn2"
@@ -765,7 +797,14 @@ export default props => {
         </ProfileUpload>
         {/* 닉네임 */}
         <InputWrap type="닉네임">
-          <input autoComplete="off" type="text" name="loginNickNm" value={changes.loginNickNm} /*onBlur={validateNick}*/ onChange={onLoginHandleChange} placeholder="닉네임" />
+          <input
+            autoComplete="off"
+            type="text"
+            name="loginNickNm"
+            value={changes.loginNickNm}
+            /*onBlur={validateNick}*/ onChange={onLoginHandleChange}
+            placeholder="닉네임"
+          />
           <span className={validate.loginNickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
           {currentNick && (
             <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>
@@ -783,14 +822,29 @@ export default props => {
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
           <InputWrap>
-            <input autoComplete="new-password" type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="비밀번호" maxLength="20" />
+            <input
+              autoComplete="new-password"
+              type="password"
+              name="loginPwd"
+              value={changes.loginPwd}
+              onChange={onLoginHandleChange}
+              placeholder="비밀번호"
+              maxLength="20"
+            />
             <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
             {currentPwd && (
               <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
                 {currentPwd}
               </HelpText>
             )}
-            <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20" />
+            <input
+              type="password"
+              name="loginPwdCheck"
+              defaultValue={changes.loginPwdCheck}
+              onChange={onLoginHandleChange}
+              placeholder="비밀번호 확인"
+              maxLength="20"
+            />
             {currentPwdCheck && (
               <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
                 {currentPwdCheck}
@@ -799,7 +853,14 @@ export default props => {
           </InputWrap>
         )}
         {/* 생년월일 */}
-        <Datepicker text="생년월일" name="birth" value={changes.birth} change={pickerOnChange} placeholder="생년월일" pickerState={pickerState} />
+        <Datepicker
+          text="생년월일"
+          name="birth"
+          value={changes.birth}
+          change={pickerOnChange}
+          placeholder="생년월일"
+          pickerState={pickerState}
+        />
         {/* <span className={[`holder ${pickerState ? 'off' : 'on'}`]}>생년월일</span> */}
         {currentBirth && (
           <HelpText state={validate.birth} className={validate.birth ? 'pass' : 'help'}>
@@ -809,18 +870,33 @@ export default props => {
         {/* 성별 */}
         <GenderRadio>
           <label htmlFor="genderMale" className={changes.gender == 'm' ? 'on' : 'off'}>
-            <input type="checkbox" name="gender" id="genderMale" value="m" defaultChecked={changes.gender === 'm'} onChange={onLoginHandleChange} />
+            <input
+              type="checkbox"
+              name="gender"
+              id="genderMale"
+              value="m"
+              defaultChecked={changes.gender === 'm'}
+              onChange={onLoginHandleChange}
+            />
             남자
           </label>
           <label htmlFor="genderFemale" className={changes.gender == 'f' ? 'on' : 'off'}>
-            <input type="checkbox" name="gender" id="genderFemale" value="f" defaultChecked={changes.gender === 'f'} onChange={onLoginHandleChange} />
+            <input
+              type="checkbox"
+              name="gender"
+              id="genderFemale"
+              value="f"
+              defaultChecked={changes.gender === 'f'}
+              onChange={onLoginHandleChange}
+            />
             여자
           </label>
         </GenderRadio>
         {/* 약관동의 */}
         <CheckWrap className={boxState ? 'on' : ''}>
           <div>
-            <input type="checkbox" name="allTerm" id="allTerm" checked={allTerm} onChange={selectAllTerm} /> <label htmlFor="allTerm">약관 전체 동의</label>
+            <input type="checkbox" name="allTerm" id="allTerm" checked={allTerm} onChange={selectAllTerm} />{' '}
+            <label htmlFor="allTerm">약관 전체 동의</label>
             <button
               className={boxState ? 'on' : 'off'}
               onClick={() => {
@@ -831,7 +907,14 @@ export default props => {
           </div>
           <CheckBox>
             <div>
-              <input type="checkbox" name="term1" id="term1" checked={changes.term1 == 'y' ? true : false} value={termHandle(changes.term1)} onChange={termCheckHandle} />
+              <input
+                type="checkbox"
+                name="term1"
+                id="term1"
+                checked={changes.term1 == 'y' ? true : false}
+                value={termHandle(changes.term1)}
+                onChange={termCheckHandle}
+              />
               <label htmlFor="term1">
                 <span>[필수]</span>서비스 이용약관 동의(필수)
               </label>
@@ -843,7 +926,14 @@ export default props => {
               </button>
             </div>
             <div>
-              <input type="checkbox" name="term2" id="term2" checked={changes.term2 == 'y' ? true : false} value={termHandle(changes.term2)} onChange={termCheckHandle} />
+              <input
+                type="checkbox"
+                name="term2"
+                id="term2"
+                checked={changes.term2 == 'y' ? true : false}
+                value={termHandle(changes.term2)}
+                onChange={termCheckHandle}
+              />
               <label htmlFor="term2">
                 <span>[필수]</span>개인정보 취급방침
               </label>
@@ -855,7 +945,14 @@ export default props => {
               </button>
             </div>
             <div>
-              <input type="checkbox" name="term3" id="term3" checked={changes.term3 == 'y' ? true : false} value={termHandle(changes.term3)} onChange={termCheckHandle} />
+              <input
+                type="checkbox"
+                name="term3"
+                id="term3"
+                checked={changes.term3 == 'y' ? true : false}
+                value={termHandle(changes.term3)}
+                onChange={termCheckHandle}
+              />
               <label htmlFor="term3">
                 <span>[필수]</span>청소년 보호정책
               </label>
@@ -867,7 +964,14 @@ export default props => {
               </button>
             </div>
             <div>
-              <input type="checkbox" name="term4" id="term4" checked={changes.term4 == 'y' ? true : false} value={termHandle(changes.term4)} onChange={termCheckHandle} />
+              <input
+                type="checkbox"
+                name="term4"
+                id="term4"
+                checked={changes.term4 == 'y' ? true : false}
+                value={termHandle(changes.term4)}
+                onChange={termCheckHandle}
+              />
               <label htmlFor="term4">
                 <span>[필수]</span>운영정책
               </label>
