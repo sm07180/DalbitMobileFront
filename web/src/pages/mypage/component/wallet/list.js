@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
 
+import {IMG_SERVER} from 'context/config'
+
 export default props => {
   const {searching, type, data, returnCoinText, setWalletType} = props
 
@@ -37,7 +39,7 @@ export default props => {
               <div className="search-list" key={idx} />
             ))}
           </SearchList>
-        ) : (
+        ) : Array.isArray(data) ? (
           [1, 2, 3, 4, 5, 6].map((value, index) => {
             return (
               <div className="list" key={index}>
@@ -48,6 +50,10 @@ export default props => {
               </div>
             )
           })
+        ) : (
+          <div className="no-list">
+            <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
+          </div>
         )}
       </ListWrap>
     </ListContainer>
@@ -120,6 +126,10 @@ const ListWrap = styled.div`
         color: #8556f6;
       }
     }
+  }
+
+  .no-list {
+    text-align: center;
   }
 `
 
