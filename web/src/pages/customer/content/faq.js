@@ -484,9 +484,15 @@ const SelectBox = styled.div`
       display: block;
       font-size: 14px;
       padding: 12px;
-      border-top: 1px solid ${COLOR_MAIN};
-      color: #424242;
+
+      color: #878787;
       display: none;
+      background-color: white;
+      z-index: 11;
+    }
+    a:hover {
+      color: ${COLOR_MAIN};
+      background-color: #f8f8f8;
     }
   }
   &.on {
@@ -494,8 +500,6 @@ const SelectBox = styled.div`
     /* height: 253px; */
     a {
       display: block;
-      background-color: white;
-      z-index: 11;
     }
   }
   .wrap {
