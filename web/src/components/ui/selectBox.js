@@ -12,7 +12,7 @@ export default props => {
     throw new Error('Need a on change event function')
   }
 
-  const selectBoxList = value => {
+  const selectBoxList = (value, idx) => {
     onChangeEvent(value)
     setSelectedIdx(value)
   }
@@ -40,7 +40,7 @@ export default props => {
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
           return (
-            <div className="box-list" key={index} onMouseDown={() => selectBoxList(instance.value)}>
+            <div className="box-list" key={index} onMouseDown={() => selectBoxList(instance.value, index)}>
               {instance.text}
             </div>
           )

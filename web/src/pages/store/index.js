@@ -42,7 +42,7 @@ export default props => {
     if (list) {
       return list.map((item, index) => {
         return (
-          <div key={item.storeNo} appleStoreId={item.appleStoreId}>
+          <div key={item.storeNo} applestoreid={item.appleStoreId}>
             <img src={item.img}></img>
             <p>{item.storeNm}</p>
             <p>{Utility.addComma(item.price)}원</p>
