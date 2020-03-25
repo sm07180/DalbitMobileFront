@@ -96,8 +96,14 @@ const App = () => {
           if (location.href.indexOf('/private/') === -1) {
             const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
             if (profileInfo.result === 'success') {
-              //
               context.action.updateProfile(profileInfo.data)
+              //본인인증여부업데이트
+              const selfAuth = await Api.self_auth_check({})
+              if (selfAuth.result == 'success') {
+                context.action.updateState({selfAuth: true})
+              } else {
+                context.action.updateState({selfAuth: false})
+              }
             }
           }
         }
