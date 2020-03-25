@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 // static
-import coinIcon from 'images/ic_moon_l@2x.png'
+// import coinIcon from 'images/ic_moon_l@2x.png'
 
 export default props => {
   const ctx = useContext(Context)
@@ -22,7 +22,7 @@ export default props => {
       <CoinCountingView>
         <CoinCurrentStatus>
           <span className="text">현재 보유 달:</span>
-          <img src={coinIcon} style={{width: '44px'}} />
+          {/* <img src={coinIcon} style={{width: '44px'}} /> */}
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
         <CoinChargeBtn>충전하기</CoinChargeBtn>

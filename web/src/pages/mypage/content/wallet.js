@@ -11,7 +11,8 @@ import Paging from 'components/ui/paging.js'
 import List from '../component/wallet/list.js'
 
 // static
-import coinIcon from 'images/ic_moon_l@2x.png'
+import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
+import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 
 export default props => {
   const ctx = useContext(Context)
@@ -28,6 +29,10 @@ export default props => {
 
   const returnCoinText = t => {
     return t === 'dal' ? '달' : '별'
+  }
+
+  const returnCoinImg = t => {
+    return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
 
   useEffect(() => {
@@ -69,7 +74,7 @@ export default props => {
       <CoinCountingView>
         <CoinCurrentStatus>
           <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
-          <img className="coin-img" src={coinIcon} style={{width: '44px'}} />
+          <img className="coin-img" src={returnCoinImg(coinType)} style={{width: '44px'}} />
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
         <CoinChargeBtn>충전하기</CoinChargeBtn>
