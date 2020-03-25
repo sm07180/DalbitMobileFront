@@ -28,7 +28,7 @@ export default props => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data)
+      setList(res.data.list)
     } else {
       context.action.alert({
         msg: res.message
@@ -71,7 +71,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <h2>스토어</h2>
-        {setList ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
+        {list ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
       </Content>
     </Layout>
   )
