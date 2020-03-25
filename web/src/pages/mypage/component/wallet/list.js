@@ -4,11 +4,7 @@ import styled from 'styled-components'
 import SelectBox from 'components/ui/selectBox.js'
 
 export default props => {
-  const {type, data} = props
-
-  const returnCoinText = t => {
-    return t === 'dal' ? '달' : '별'
-  }
+  const {type, data, returnCoinText} = props
 
   const selectBoxData = [
     {value: 0, text: '전체'},

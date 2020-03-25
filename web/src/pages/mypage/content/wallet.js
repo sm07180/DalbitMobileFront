@@ -26,6 +26,10 @@ export default props => {
     setCoinType(type)
   }
 
+  const returnCoinText = t => {
+    return t === 'dal' ? '달' : '별'
+  }
+
   useEffect(() => {
     ;(async () => {
       const response = await Api.mypage_wallet_inquire({
@@ -64,14 +68,14 @@ export default props => {
 
       <CoinCountingView>
         <CoinCurrentStatus>
-          <span className="text">현재 보유 달:</span>
+          <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
           <img className="coin-img" src={coinIcon} style={{width: '44px'}} />
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
         <CoinChargeBtn>충전하기</CoinChargeBtn>
       </CoinCountingView>
 
-      <List type={coinType} data={listDetailed} />
+      <List type={coinType} data={listDetailed} returnCoinText={returnCoinText} />
 
       <Paging
         prevClickEvent={() => {}}
