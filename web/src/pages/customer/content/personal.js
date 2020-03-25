@@ -20,9 +20,9 @@ export default props => {
   //context
 
   //hooks
-  const cancel = useClick(update, {cancel: '취소'})
+  const cancel = useClick(update, {cancel: '취소1111111'})
   const submit = useClick(update, {submit: '문의하기'})
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, onChange} = useChange(update, {onChange: -1})
   //useState
   const [isOpen, setIsOpen] = useState(false)
   //--------------------------------------------------------------------------
@@ -31,7 +31,8 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.cancel !== undefined: //------------------------------취소
-        alert('취소')
+        alert(mode.cancel)
+
         break
       case mode.submit !== undefined: //------------------------------문의하기
         alert(JSON.stringify(changes, null, 1))

@@ -9,14 +9,15 @@ import {Store} from './index'
 import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //styled component
 import styled from 'styled-components'
 //----------------------------------------------------------
-function Pagination(props) {
+function Faq(props) {
   //context
   const context = useContext(Context)
 
-  //notice state
+  //faq state
   const [faqList, setFaqList] = useState([])
   const [faqDetail, setFaqDetail] = useState([])
   const [faqNum, setfaqNum] = useState(0)
@@ -46,7 +47,7 @@ function Pagination(props) {
       }
     })
     if (res.result === 'success') {
-      //console.log(res.data.list)
+      console.log(res.data.list)
       setFaqList(res.data.list)
     } else if (res.result === 'fail') {
       console.log(res)
@@ -210,7 +211,7 @@ function Pagination(props) {
     </>
   )
 }
-export default Pagination
+export default Faq
 //styled------------------------------------------------------------------------------------------------------------------
 const Detail = styled.section`
   opacity: 0;
@@ -223,6 +224,7 @@ const Detail = styled.section`
     color: #424242;
     transform: skew(-0.03deg);
     & span {
+      display: inline-block;
       margin-right: 4px;
       width: 16px;
       height: 16px;
@@ -230,8 +232,15 @@ const Detail = styled.section`
       color: #fff;
       text-align: center;
       border-radius: 50%;
+      @media (max-width: ${WIDTH_MOBILE}) {
+        margin-right: 6px;
+      }
     }
     & p {
+      width: calc(100% - 44px);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: calc(100% - 46px);
+      }
     }
   }
   &.on {
@@ -239,6 +248,9 @@ const Detail = styled.section`
     height: auto;
     padding: 30px 0 30px 120px;
     transition: padding-top 0.6s ease;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      padding: 30px 0 30px 0px;
+    }
   }
 `
 
@@ -284,22 +296,39 @@ const TableWrap = styled.div`
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 0;
   cursor: pointer;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    position: relative;
+    flex-wrap: wrap;
+  }
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
     font-size: 14px;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+    }
   }
   & dd {
     width: calc(100% - 144px);
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+      margin-top: 8px;
+    }
   }
   & dd:last-child {
     width: 24px;
     height: 24px;
     background: url('https://devimage.dalbitcast.com/images/api/ico-prevmy.png') no-repeat center center/cover;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
   & span {
     display: inline-block;
@@ -310,6 +339,9 @@ const TableWrap = styled.div`
     color: #fff;
     text-align: center;
     border-radius: 50%;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      margin-right: 6px;
+    }
   }
   &.on {
     border-bottom: none;
