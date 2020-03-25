@@ -331,11 +331,11 @@ const PageNumber = styled.nav`
     }
     &.next {
       border: none;
-      background: url('https://devimage.dalbitcast.com/images/api/Layer.png') no-repeat center center / 8.9px 17.7px;
+      background: url(${IMG_SERVER}/images/api/Layer.png) no-repeat center center / 8.9px 17.7px;
     }
     &.prev {
       border: none;
-      background: url('https://devimage.dalbitcast.com/images/api/Layerleft.png') no-repeat center center / 8.9px 17.7px;
+      background: url(${IMG_SERVER}/images/api/Layerleft.png) no-repeat center center / 8.9px 17.7px;
     }
   }
 `
@@ -476,7 +476,7 @@ const SelectBox = styled.div`
     }
   }
   & > div:first-child > button {
-    background: url(https://devimage.dalbitcast.com/images/api/ic_arrow_down_purple.png) no-repeat center;
+    background: url(${IMG_SERVER}/images/api/ic_arrow_down_purple.png) no-repeat center;
     transform: rotate(0deg);
     /* transition: transform 0.3s ease-in-out; */
 

@@ -77,14 +77,14 @@ const Slide = styled.a`
 const slideInfo = [
   {
     name: '슬라이드1',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/customerBanner1.png'
+    imgUrl: `${IMG_SERVER}/images/api/customerBanner1.png`
   },
   {
     name: '슬라이드2',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/customerBanner1.png'
+    imgUrl: `${IMG_SERVER}/images/api/customerBanner1.png`
   },
   {
     name: '슬라이드3',
-    imgUrl: 'https://devimage.dalbitcast.com/images/api/customerBanner1.png'
+    imgUrl: `${IMG_SERVER}/images/api/customerBanner1.png`
   }
 ]
