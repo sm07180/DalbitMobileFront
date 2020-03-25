@@ -934,6 +934,23 @@ export default class API {
   static store_list = async obj => {
     const {url, method} = obj || {}
     return await ajax({...obj, url: url || `/store`, method: method || 'GET'})
+  /**
+   * @brief 고객센터 FAQ 리스트
+   * @method "GET"
+   * @create 황상한 2020.03.24
+   */
+  static faq_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/center/faq`, method: method || 'GET', params: params})
+  }
+  /**
+   * @brief 고객센터 FAQ 상세 내용 조회
+   * @method "GET"
+   * @create 황상한 2020.03.24
+   */
+  static faq_list_detail = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/center/faq/detail`, method: method || 'GET', params: params})
   }
 }
 

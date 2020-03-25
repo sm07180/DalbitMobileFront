@@ -7,6 +7,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Banner from './banner'
 import Tab from './tab'
 import Notice from './notice'
+import Faq from './faq'
 import Personal from './personal'
 //
 const Index = props => {
@@ -21,11 +22,13 @@ const Index = props => {
       case 'notice': //------------------------공지사항
         return <Notice perPage={10} />
       case 'faq': //---------------------------FAQ
-        return <h1>faq</h1>
+        return <Faq perPage={10} />
       case 'personal': //----------------------1:1문의
         return <Personal />
       case 'broadcast_guide': //---------------방송 가이드(미정)
         return <h1>미정_감출것인지</h1>
+      default:
+        break
     }
   }
   //---------------------------------------------------------------------
