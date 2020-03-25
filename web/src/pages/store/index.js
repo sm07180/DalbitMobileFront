@@ -12,6 +12,7 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
+import Utility from 'components/lib/utility'
 
 //components
 //
@@ -44,8 +45,13 @@ export default props => {
           <div key={item.storeNo} appleStoreId={item.appleStoreId}>
             <img src={item.img}></img>
             <p>{item.storeNm}</p>
-            <p>{item.price}</p>
-            <button>구매</button>
+            <p>{Utility.addComma(item.price)}원</p>
+            <button
+              onClick={() => {
+                context.action.updatePopup('CHARGE')
+              }}>
+              구매
+            </button>
           </div>
         )
       })
@@ -101,6 +107,9 @@ const List = styled.div`
       padding-bottom: 5px;
       color: #555;
       transform: skew(-0.03deg);
+    }
+    p + p {
+      padding-top: 8px;
     }
     button {
       margin: 10px 0 5px 0;

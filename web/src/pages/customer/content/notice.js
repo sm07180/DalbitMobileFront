@@ -9,11 +9,14 @@ import {Store} from './index'
 import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {useHistory} from 'react-router-dom'
+
 //styled component
 import styled from 'styled-components'
 //----------------------------------------------------------
 function Pagination(props) {
+  const {type} = props
   //context
   const context = useContext(Context)
   const history = useHistory()
@@ -26,7 +29,7 @@ function Pagination(props) {
   const {perPage} = props
   const details = Store().noticePage.noticeIdx
   //page func
-  const pageStart = page != 1 ? perPage * page - 10 : 0
+  const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = noticeList.slice(pageStart, pageEnd)
   const amountPages = Math.round(noticeList.length / perPage)
@@ -269,23 +272,36 @@ const TableWrap = styled.div`
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 0;
   cursor: pointer;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    flex-wrap: wrap;
+  }
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
     font-size: 14px;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
   }
   & dd {
     width: calc(100% - 240px);
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 100%;
+    }
   }
   & dd:last-child {
     width: 120px;
     font-size: 12px;
     color: #bdbdbd;
     transform: skew(-0.03deg);
+    @media (max-width: ${WIDTH_MOBILE}) {
+      margin-top: 8px;
+      width: 100%;
+    }
   }
 `
 
@@ -300,6 +316,7 @@ const ContentInfo = styled.div`
     display: inline-block;
     font-size: 20px;
     color: ${COLOR_MAIN};
+    line-height: 42px;
   }
   & h3 {
     display: inline-block;
