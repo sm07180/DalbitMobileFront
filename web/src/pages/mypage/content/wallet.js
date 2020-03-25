@@ -87,7 +87,7 @@ export default props => {
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
 
-        <div>
+        {/* <div>
           {coinType === 'dal' ? (
             <CoinChargeBtn>충전하기</CoinChargeBtn>
           ) : (
@@ -96,13 +96,13 @@ export default props => {
               <CoinChargeBtn>환전하기</CoinChargeBtn>
             </>
           )}
-        </div>
+        </div> */}
       </CoinCountingView>
 
       <List
         searching={searching}
         type={coinType}
-        data={listDetailed}
+        walletData={listDetailed}
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}
       />

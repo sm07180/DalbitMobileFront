@@ -75,7 +75,14 @@ export default props => {
     <Layout {...props}>
       <Content>
         <h2>스토어</h2>
-        {list ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
+        {list ? (
+          <List>{creatList()}</List>
+        ) : (
+          <NoResult>
+            <NoImg />
+            <span>조회된 결과가 없습니다.</span>
+          </NoResult>
+        )}
       </Content>
     </Layout>
   )
@@ -93,6 +100,10 @@ const Content = styled.section`
     font-weight: 600;
     color: ${COLOR_MAIN};
     text-align: center;
+  }
+
+  @media (max-width: 1480px) {
+    width: 95%;
   }
 `
 
@@ -125,5 +136,50 @@ const List = styled.div`
       background: ${COLOR_MAIN};
       color: #fff;
     }
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    flex-wrap: wrap;
+    div {
+      width: 30%;
+    }
+  }
+`
+
+const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 60px;
+
+  & > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 282px;
+    height: 26px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+    color: #616161;
+    margin-top: 30px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 18px;
+    }
+  }
+`
+
+const NoImg = styled.div`
+  display: flex;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
+  width: 299px;
+  height: 227px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 90%;
+    height: 198;
   }
 `
