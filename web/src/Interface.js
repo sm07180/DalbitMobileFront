@@ -57,7 +57,7 @@ export default () => {
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
-         * @example debug({title:'타이틀내용',msg:'메시지내용'})
+         * @example debug({title:'타이틀내용',msg:'메시지내용', callback: () => { alert('test')      }})
          */
         context.action.alert(detail)
         break

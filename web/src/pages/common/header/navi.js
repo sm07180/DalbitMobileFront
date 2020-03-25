@@ -69,7 +69,7 @@ export const BroadValidation = () => {
                     //return res.data
                   }
                   getReToken(res.data)
-                }, 10)
+                }, 100)
               },
               //---------------------------방송종료
               cancelCallback: () => {
