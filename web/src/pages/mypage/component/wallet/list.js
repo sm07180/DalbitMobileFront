@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SelectBox from 'components/ui/selectBox.js'
 
 export default props => {
-  const {type, data, returnCoinText} = props
+  const {searching, type, data, returnCoinText} = props
 
   const selectBoxData = [
     {value: 0, text: '전체'},
@@ -30,20 +30,38 @@ export default props => {
           <span className="type">{returnCoinText(type)}</span>
           <span className="date">날짜</span>
         </div>
-        {[1, 2, 3, 4, 5, 6].map((value, index) => {
-          return (
-            <div className="list" key={index}>
-              <span className="how-to-get">구매</span>
-              <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
-              <span className="type">{`${returnCoinText(type)} 100`}</span>
-              <span className="date">2020.03.11 11:32</span>
-            </div>
-          )
-        })}
+
+        {searching ? (
+          <SearchList>
+            {[...Array(10).keys()].map(idx => (
+              <div className="search-list" key={idx} />
+            ))}
+          </SearchList>
+        ) : (
+          [1, 2, 3, 4, 5, 6].map((value, index) => {
+            return (
+              <div className="list" key={index}>
+                <span className="how-to-get">구매</span>
+                <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
+                <span className="type">{`${returnCoinText(type)} 100`}</span>
+                <span className="date">2020.03.11 11:32</span>
+              </div>
+            )
+          })
+        )}
       </ListWrap>
     </ListContainer>
   )
 }
+
+const SearchList = styled.div`
+  .search-list {
+    height: 40px;
+    border-radius: 8px;
+    background-color: #eee;
+    margin: 8px 0;
+  }
+`
 
 const ListWrap = styled.div`
   .list {
@@ -52,7 +70,7 @@ const ListWrap = styled.div`
     align-items: center;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
-    height: 47px;
+    min-height: 47px;
     user-select: none;
 
     .how-to-get {
