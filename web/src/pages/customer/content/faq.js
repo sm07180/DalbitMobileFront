@@ -362,11 +362,11 @@ const PageNumber = styled.nav`
     }
     &.next {
       border: none;
-      background: url('https://devimage.dalbitcast.com/images/api/Layer.png') no-repeat center center / 8.9px 17.7px;
+      background: url(${IMG_SERVER}/images/api/Layer.png) no-repeat center center / 8.9px 17.7px;
     }
     &.prev {
       border: none;
-      background: url('https://devimage.dalbitcast.com/images/api/Layerleft.png') no-repeat center center / 8.9px 17.7px;
+      background: url(${IMG_SERVER}/images/api/Layerleft.png) no-repeat center center / 8.9px 17.7px;
     }
   }
 `
@@ -402,7 +402,8 @@ const TableWrap = styled.div`
   & dd:last-child {
     width: 24px;
     height: 24px;
-    background: url('https://devimage.dalbitcast.com/images/api/ico-prevmy.png') no-repeat center center/cover;
+    background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
+
     @media (max-width: ${WIDTH_MOBILE}) {
       position: absolute;
       right: 0;
@@ -526,7 +527,7 @@ const SelectBox = styled.div`
     }
   }
   & > div:first-child > button {
-    background: url(https://devimage.dalbitcast.com/images/api/ic_arrow_down_purple.png) no-repeat center;
+    background: url(${IMG_SERVER}/images/api/ic_arrow_down_purple.png) no-repeat center;
     transform: rotate(0deg);
     /* transition: transform 0.3s ease-in-out; */
 
