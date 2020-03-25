@@ -50,7 +50,11 @@ export default props => {
 
       if (response.result === 'success') {
         const {list} = response.data
-        setListDetailed(list)
+        if (list.length) {
+          setListDetailed(list)
+        } else {
+          setListDetailed(false)
+        }
         setSearching(false)
       }
     })()
