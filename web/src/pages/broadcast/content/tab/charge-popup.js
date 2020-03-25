@@ -5,6 +5,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import SuccessPopup from './charge-success-popup'
 import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
+import _ from 'lodash'
 const testData = [
   {
     id: 0,
@@ -147,12 +148,12 @@ export default props => {
                 <div className="subTitle">구매 내역</div>
                 <div>
                   <div>결제상품</div>
-                  <div className="goods">{context.popup_code[1].name}</div>
+                  <div className="goods">{_.hasIn(context.popup_code[1], 'name') ? context.popup_code[1].name : '달 100'}</div>
                 </div>
                 <div>
                   <div>결제금액</div>
                   <div className="price">
-                    {context.popup_code[1].price}
+                    {_.hasIn(context.popup_code[1], 'price') ? context.popup_code[1].price : '1,000'}
                     <span>원</span>
                   </div>
                 </div>
