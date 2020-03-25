@@ -27,7 +27,6 @@ export const BroadValidation = () => {
   const isOnAir = Boolean(context.cast_state) //-------방송중 여부확인
   const isApp = Boolean(isHybrid()) //-----------------네이티브앱 여부확인
   //--#1:방송중체크
-  //alert([isLogin, isOnAir, isApp])
   if (isOnAir) {
     context.action.alert({
       msg: `방송중입니다.`
@@ -127,7 +126,7 @@ export const BroadValidation = () => {
                     //return res.data
                   }
                   getReToken(res.data)
-                }, 10)
+                }, 100)
               },
               //---------------------------방송종료
               cancelCallback: () => {
