@@ -11,10 +11,10 @@ export default props => {
   }
 
   const selectBoxData = [
-    {value: '', text: '전체'},
-    {value: '', text: '구매'},
-    {value: '', text: '선물'},
-    {value: '', text: '교환'}
+    {value: 0, text: '전체'},
+    {value: 1, text: '구매'},
+    {value: 2, text: '선물'},
+    {value: 3, text: '교환'}
   ]
 
   return (
