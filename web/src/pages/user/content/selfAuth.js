@@ -48,7 +48,7 @@ export default props => {
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
       //clearInterval(inervalId)
-    } else if (res.result == 'fail' && !(res.code == '0')) {
+    } else {
       context.action.alert({
         msg: res.message
       })
