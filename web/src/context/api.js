@@ -925,6 +925,17 @@ export default class API {
     return await ajax({...obj, url: url || `/center/notice/detail`, method: method || 'GET', params: params})
   }
 
+  //-------------------------------------------------------------스토어
+  /**
+   * @brief 스토어 구매상품 목록
+   * @method "GET"
+   * @create 이은비 2020.03.24
+   */
+  static store_list = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/store`, method: method || 'GET'})
+  }
+
   /**
    * @brief 고객센터 FAQ 리스트
    * @method "GET"
