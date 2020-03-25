@@ -107,14 +107,16 @@ export default props => {
         setWalletType={setWalletType}
       />
 
-      <Paging
-        prevClickEvent={() => {}}
-        nextClickEvent={() => {}}
-        btnClickEvent={() => {}}
-        totalPage={3}
-        currentPage={1}
-        currentIdx={1}
-      />
+      {Array.isArray(listDetailed) && listDetailed.length > 0 && (
+        <Paging
+          prevClickEvent={() => {}}
+          nextClickEvent={() => {}}
+          btnClickEvent={() => {}}
+          totalPage={3}
+          currentPage={1}
+          currentIdx={1}
+        />
+      )}
     </div>
   )
 }
