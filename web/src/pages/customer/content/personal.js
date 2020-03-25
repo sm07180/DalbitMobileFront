@@ -29,7 +29,7 @@ export default props => {
   const dropDown3 = useClick(update, {downDown: '라이브 방송문의'})
   const dropDown4 = useClick(update, {downDown: '서비스제휴'})
   const dropDown5 = useClick(update, {downDown: '기타'})
-
+  //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
   const {changes, setChanges, onChange} = useChange(update, {type: '선택하세요', onChange: -1})
@@ -59,12 +59,10 @@ export default props => {
         break
       case mode.downDown !== undefined: //----------------------------문의유형선택
         setIsOpen(false)
-
         setChanges({
           ...changes,
           type: mode.downDown
         })
-        //  console.log(JSON.stringify(changes))
         break
     }
   }
