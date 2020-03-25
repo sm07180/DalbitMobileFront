@@ -261,6 +261,9 @@ const SelectBox = styled.div`
   height: 52px;
   border: 1px solid #e0e0e0;
   transition: height 0.5s ease-in-out;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 100%;
+  }
   .dropDown {
     a {
       display: block;

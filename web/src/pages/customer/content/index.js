@@ -69,7 +69,7 @@ const Container = styled.div`
     text-align: center;
     color: ${COLOR_MAIN};
     font-size: 28px;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: -0.7px;
   }
   @media (max-width: 1240px) {

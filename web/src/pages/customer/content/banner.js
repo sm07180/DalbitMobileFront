@@ -47,6 +47,9 @@ const Wrap = styled.div`
     width: 100%;
     height: 120px;
   }
+  & .swiper-wrapper {
+    height: auto;
+  }
   & .swiper-pagination {
     position: static;
     margin-top: 20px;
