@@ -943,6 +943,15 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/center/faq/detail`, method: method || 'GET', params: params})
   }
+  /**
+   * @brief 고객센터 1:1문의하기 작성
+   * @method "POST"
+   * @create 손완휘 2020.03.25
+   */
+  static center_qna_add = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/center/qna/add`, method: method || 'POST', data: data})
+  }
 
   //-------------------------------------------------------------스토어, 결제
   /**

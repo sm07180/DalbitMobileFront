@@ -3,7 +3,7 @@
  * @brief 공지사항탭 컨텐츠
  *
  */
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //styled-component
@@ -13,6 +13,7 @@ import {COLOR_MAIN} from 'context/color'
 import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
+import Api from 'context/api'
 import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
 //
@@ -22,19 +23,33 @@ export default props => {
   const context = useContext(Context)
   const history = useHistory()
   //hooks
-  const dropDown1 = useClick(update, {downDown: '기능문의'})
-  const dropDown2 = useClick(update, {downDown: '환불문의'})
-  const dropDown3 = useClick(update, {downDown: '라이브 방송문의'})
-  const dropDown4 = useClick(update, {downDown: '서비스제휴'})
-  const dropDown5 = useClick(update, {downDown: '기타'})
+  const dropDown1 = useClick(update, {downDown: 1, questionName: '회원정보'}) //회원정보
+  const dropDown2 = useClick(update, {downDown: 2, questionName: '방송'}) //방송
+  const dropDown3 = useClick(update, {downDown: 3, questionName: '청취'}) //청취
+  const dropDown4 = useClick(update, {downDown: 4, questionName: '결제'}) //결제
+  const dropDown5 = useClick(update, {downDown: 5, questionName: '건의'}) //건의
+  const dropDown6 = useClick(update, {downDown: 6, questionName: '장애/버그'}) //장애/버그
+  const dropDown7 = useClick(update, {downDown: 7, questionName: '선물/아이'}) //선물/아이
   //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
-  const {changes, setChanges, onChange} = useChange(update, {type: '선택하세요', onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {questionName: '선택하세요', onChange: -1})
   //useState
   const [isOpen, setIsOpen] = useState(false)
   //--------------------------------------------------------------------------
-
+  //fetch
+  async function fetchData(obj) {
+    console.log(JSON.stringify(obj, null, 1))
+    const res = await Api.center_qna_add({...obj})
+    if (res.result === 'fail') {
+      context.action.alert({
+        title: res.messageKey,
+        msg: res.message
+      })
+    } else if (res.result === 'success') {
+    }
+    console.log(res)
+  }
   //update
   function update(mode) {
     switch (true) {
@@ -44,22 +59,17 @@ export default props => {
         })
         break
       case mode.submit !== undefined: //------------------------------문의하기
-        context.action.alert({
-          msg: '문의내용이 접수되었습니다.\n메인페이지로 이동합니다.',
-          callback: () => {
-            history.push('/')
-          }
-        })
-        console.log(JSON.stringify(changes, null, 1))
+        fetchData({data: changes})
         break
       case mode.onChange !== undefined: //----------------------------상태변화
-        console.log(JSON.stringify(changes))
+        //console.log(JSON.stringify(changes))
         break
       case mode.downDown !== undefined: //----------------------------문의유형선택
         setIsOpen(false)
         setChanges({
           ...changes,
-          type: mode.downDown
+          questionType: mode.downDown,
+          questionName: mode.questionName
         })
         break
     }
@@ -72,11 +82,13 @@ export default props => {
       if (reader.result) {
         setChanges({
           ...changes,
-          image: reader.result
+          questionFile: reader.result
         })
       }
     }
   }
+  //useEffect
+  useEffect(() => {}, [])
   //--------------------------------------------------------------------------
   return (
     <Content>
@@ -85,7 +97,7 @@ export default props => {
         <dd>
           <SelectBox className={isOpen ? 'on' : ''}>
             <div className="wrap">
-              <label htmlFor="allTerm">{changes.type}</label>
+              <label htmlFor="allTerm">{changes.questionName}</label>
               <button
                 className={isOpen ? 'on' : 'off'}
                 onClick={() => {
@@ -97,19 +109,25 @@ export default props => {
             {/* DropDown메뉴 */}
             <div className="dropDown">
               <a href="#1" {...dropDown1}>
-                기능문의
+                회원정보
               </a>
               <a href="#2" {...dropDown2}>
-                환불문의
+                방송
               </a>
               <a href="#3" {...dropDown3}>
-                라이브 방송문의
+                청취
               </a>
               <a href="#4" {...dropDown4}>
-                서비스제휴
+                결제
               </a>
               <a href="#5" {...dropDown5}>
-                기타
+                건의
+              </a>
+              <a href="#6" {...dropDown6}>
+                장애/버그
+              </a>
+              <a href="#7" {...dropDown7}>
+                선물/아이
               </a>
             </div>
           </SelectBox>
@@ -133,7 +151,7 @@ export default props => {
       <dl>
         <dt>내용</dt>
         <dd>
-          <textarea name="" id="" cols="30" rows="10" placeholder="내용을 입력해 주세요." name="content" onChange={onChange} />
+          <textarea name="" id="" cols="30" rows="10" placeholder="내용을 입력해 주세요." name="contents" onChange={onChange} />
         </dd>
       </dl>
       <dl>
@@ -141,7 +159,7 @@ export default props => {
         <dd>
           {/* 이미지첨부파일 */}
           <ImgUploader>
-            <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.image} />
+            <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.questionFile} />
             <label htmlFor="imgUpload">
               <span>찾아보기</span>
             </label>
@@ -274,7 +292,7 @@ const SelectBox = styled.div`
   }
   &.on {
     /* 높이조절 */
-    height: 253px;
+    height: 274px;
   }
   .wrap {
     position: relative;
