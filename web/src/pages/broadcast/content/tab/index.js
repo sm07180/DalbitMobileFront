@@ -13,8 +13,7 @@ import LiveListener from './listen'
 import LiveGuest from './guest'
 import Charge from './charge'
 import Present from './present'
-import Profile from './profile'
-import Profile2 from './profileLisner'
+import Profile from './profileLisner'
 import Boost from './boost'
 import Report from './report'
 import Notice from './notice'
@@ -22,6 +21,7 @@ import Story from './story'
 import Macro from './macro'
 import BroadModify from './broad-setting-modify'
 import PresentGiven from './present-given'
+import {display} from '@material-ui/system'
 
 export default props => {
   //RoomInfomation(context)
@@ -78,13 +78,13 @@ export default props => {
       {currentItem.tab === '충전' && <Charge prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '선물' && <Present prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '부스트' && <Boost />}
-      {currentItem.tab === '프로필' && <Profile2 Info={Profiledata} {...props} prev={state.prev} _changeItem={usePrev} />}
+      {currentItem.tab === '프로필' && <Profile Info={Profiledata} {...props} prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '신고하기' && <Report Info={Reportdata} />}
       {currentItem.tab === '공지사항' && <Notice {...broadcastTotalInfo} prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '사연' && <Story prev={state.prev} _changeItem={usePrev} />}
       {currentItem.tab === '방송수정' && <BroadModify {...broadcastTotalInfo} />}
       {currentItem.tab === '빠른 말' && <Macro prev={state.prev} _changeItem={usePrev} />}
-      {currentItem.tab === '받은선물' && <PresentGiven prev={state.prev} _changeItem={usePrev} />}
+      {currentItem.tab === '받은 선물' && <PresentGiven {...broadcastTotalInfo} prev={state.prev} _changeItem={usePrev} />}
     </>
   )
 }
@@ -137,7 +137,8 @@ const LiveInfo = [
     category: '일상',
     title: '포근한 아침 라디오입니다.',
     name: '★하늘하늘이에요',
-    bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
+    bg:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
     reco: '추천',
     newby: '신입',
     nowpeople: 85,
@@ -170,7 +171,8 @@ const LiveInfo = [
     category: '일상',
     title: '포근한 아침 라디오입니다.',
     name: '★하늘하늘이에요',
-    bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
+    bg:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
     reco: '추천',
     newby: '신입',
     nowpeople: 85,
@@ -183,7 +185,8 @@ const LiveInfo = [
     category: '일상',
     title: '포근한 아침 라디오입니다.',
     name: '★하늘하늘이에요',
-    bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
+    bg:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
     reco: '추천',
     newby: '신입',
     nowpeople: 85,
@@ -196,7 +199,8 @@ const LiveInfo = [
     category: '일상',
     title: '포근한 아침 라디오입니다.',
     name: '★하늘하늘이에요',
-    bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
+    bg:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
     reco: '추천',
     newby: '신입',
     nowpeople: 85,
@@ -209,7 +213,8 @@ const LiveInfo = [
     category: '일상',
     title: '포근한 아침 라디오입니다.',
     name: '★하늘하늘이에요',
-    bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
+    bg:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg',
     reco: '추천',
     newby: '신입',
     nowpeople: 85,
@@ -223,7 +228,8 @@ const LiveInfo = [
 const BJInfo = {
   bjMemNo: '@gdgerg',
   bjNickNm: '하늘에서 비가와요~',
-  url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+  url:
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
 }
 //Guest가데이터
 const GuestInfo = {
@@ -236,12 +242,14 @@ const ManegerInfo = [
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '하늘에서 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '눈바람 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   }
 ]
 //리스너가데이터
@@ -270,42 +278,50 @@ const ListenInfo = [
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '하늘에서 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@kfc43',
     bjNickNm: '하늘에서 눈이와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '하늘에서 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@kfc43',
     bjNickNm: '하늘에서 눈이와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '하늘에서 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@kfc43',
     bjNickNm: '하늘에서 눈이와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@gdgerg',
     bjNickNm: '하늘에서 비가와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@kfc43',
     bjNickNm: '하늘에서 눈이와요~',
-    url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
+    url:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg/290px-%EC%9C%A0%EC%95%84%EC%9D%B8_Yoo_Ah-in_20190103.jpg'
   },
   {
     bjMemNo: '@gdgerg',
@@ -425,7 +441,8 @@ const ListenInfo = [
 ]
 //프로필 데이터
 const Profiledata = {
-  profImg: 'https://lh3.googleusercontent.com/proxy/RmQV5QRjLDB43l5YJsC7Nx6of4OF-x9eFdV2P9CjfAFNvbgqiorz7O586gPrL9VjP1sWdv4afuKU7uujFuB3wE6Ryi92f4h-Q430XDGmPfuvzcw3KIycLu5f',
+  profImg:
+    'https://lh3.googleusercontent.com/proxy/RmQV5QRjLDB43l5YJsC7Nx6of4OF-x9eFdV2P9CjfAFNvbgqiorz7O586gPrL9VjP1sWdv4afuKU7uujFuB3wE6Ryi92f4h-Q430XDGmPfuvzcw3KIycLu5f',
   exp: 140,
   grade: '골드',
   level: 31,

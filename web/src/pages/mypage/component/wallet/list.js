@@ -3,6 +3,8 @@ import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
 
+import {IMG_SERVER} from 'context/config'
+
 export default props => {
   const {searching, type, data, returnCoinText, setWalletType} = props
 
@@ -37,7 +39,7 @@ export default props => {
               <div className="search-list" key={idx} />
             ))}
           </SearchList>
-        ) : (
+        ) : Array.isArray(data) ? (
           [1, 2, 3, 4, 5, 6].map((value, index) => {
             return (
               <div className="list" key={index}>
@@ -48,6 +50,11 @@ export default props => {
               </div>
             )
           })
+        ) : (
+          <div className="no-list">
+            <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
+            <div>검색 결과가 없습니다.</div>
+          </div>
         )}
       </ListWrap>
     </ListContainer>
@@ -70,7 +77,7 @@ const ListWrap = styled.div`
     align-items: center;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
-    min-height: 47px;
+    height: 47px;
     user-select: none;
 
     .how-to-get {
@@ -119,6 +126,18 @@ const ListWrap = styled.div`
       .date {
         color: #8556f6;
       }
+    }
+  }
+
+  .no-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 400px;
+
+    img {
+      display: block;
     }
   }
 `

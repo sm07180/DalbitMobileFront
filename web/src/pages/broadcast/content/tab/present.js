@@ -6,7 +6,7 @@ import SendDirect from './present-direct'
 import SendItem from './present-item.js'
 import Api from 'context/api'
 import {Context} from 'context'
-import {BroadCastStore} from '../../store'
+import {BroadCastStore} from 'pages/broadcast/store'
 
 const testData = [
   {
@@ -42,8 +42,8 @@ export default props => {
     }
     const res = await Api.send_gift({
       data: {
-        roomNo: store.roomInfo.roomNo,
-        memNo: store.roomInfo.bjMemNo,
+        roomNo: context.broadcastTotalInfo.roomNo,
+        memNo: context.broadcastTotalInfo.bjMemNo,
         itemNo: itemNo,
         itemCnt: count,
         isSecret: flag
@@ -57,6 +57,10 @@ export default props => {
       if (profile.result === 'success') {
         context.action.updateProfile(profile.data)
       }
+      // context.action.alert({
+      //   msg: res.message,
+      //   callback: () => {}
+      // })
     }
     setState(!state)
   }
@@ -67,7 +71,9 @@ export default props => {
       method: 'GET'
     })
     if (res.result === 'success') {
-      setProfile(res.data)
+      console.log('방송 프로필 = ' + res.data)
+      store.action.updateBroadcastProfileInfo(res.data)
+      //setProfile(res.data)
     }
   }
 
@@ -79,6 +85,7 @@ export default props => {
 
   //선물하기 진입 시 필요데이터 조회
   useEffect(() => {
+    setProfile(store.broadcastProfileInfo)
     broadProfile()
     commonData()
   }, [])
@@ -87,10 +94,19 @@ export default props => {
   return (
     <Container>
       <Navi title={'선물'} prev={props.prev} _changeItem={props._changeItem} />
-      {sendType == 0 ? (
-        <SendItem testData={testData[0]} testBox={testBox} _sendType={setSendType} profile={profile} send={send} common={common} bjNickNm={context.broadcastTotalInfo.bjNickNm} flag={state} />
+      {store.giftSendType == 0 ? (
+        <SendItem
+          // testData={testData[0]}
+          // testBox={testBox}
+          _sendType={setSendType}
+          profile={store.broadcastProfileInfo}
+          send={send}
+          common={common}
+          bjNickNm={context.broadcastTotalInfo.bjNickNm}
+          flag={state}
+        />
       ) : (
-        <SendDirect />
+        <SendDirect profile={store.broadcastProfileInfo} />
       )}
     </Container>
   )

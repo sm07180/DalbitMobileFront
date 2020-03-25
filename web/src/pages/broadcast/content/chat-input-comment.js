@@ -85,7 +85,6 @@ export default props => {
   const activeBoost = () => {
     store.action.updateTab(5)
     //부스트 탭 열린 후 부스트 사용에 따른 분기처리.
-    store.action.updateTab(5)
   }
 
   //좋아요 보내기
@@ -140,14 +139,15 @@ export default props => {
       callback: () => {
         const res = broad_exit(props.roomNo)
         if (res.result === 'success') {
+          sc.socketClusterDestory(true)
           sc.SendMessageChatEnd(props)
+          context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+          mediaHandler.stop()
+          timer.stopTimer() //방송 시간 멈춤
+          history.push('/')
+        } else {
+          console.log(res.message)
         }
-        //window.location.replace('https://' + window.location.hostname)
-        sc.socketClusterDestory(true)
-        history.push('/')
-        context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
-        mediaHandler.stop()
-        timer.stopTimer() //방송 시간 멈춤
       },
       //캔슬콜백처리
       cancelCallback: () => {
@@ -259,13 +259,13 @@ export default props => {
     }
   }
 
-  const goPresent = () => {
+  const goRecvPresent = () => {
     // context.action.alert({
     //   //콜백처리
     //   callback: () => {},
     //   msg: '서비스 중입니다.'
     // })
-    store.action.updateTab(4)
+    store.action.updateTab(12)
   }
   //---------------------------------------------------------------------
   //useEffect
@@ -276,7 +276,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <div className="present" onClick={() => goPresent()}>
+      <div className="present" onClick={() => goRecvPresent()}>
         <LottieLoader path={`${IMG_SERVER}/ani/lottie/chat-present.json`} width={50} height={46} loop={true}></LottieLoader>
       </div>
 
