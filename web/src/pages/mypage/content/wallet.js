@@ -18,6 +18,8 @@ export default props => {
   const ctx = useContext(Context)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+  const [searching, setSearching] = useState(true)
+
   const [page, setPage] = useState(1)
   const [records, setRecords] = useState(null)
 
@@ -36,6 +38,8 @@ export default props => {
   }
 
   useEffect(() => {
+    // searching ...
+    setSearching(true)
     ;(async () => {
       const response = await Api.mypage_wallet_inquire({
         coinType,
@@ -47,9 +51,10 @@ export default props => {
       if (response.result === 'success') {
         const {list} = response.data
         setListDetailed(list)
+        setSearching(false)
       }
     })()
-  }, [coinType])
+  }, [coinType, walletType])
 
   return (
     <div>
@@ -90,7 +95,13 @@ export default props => {
         </div>
       </CoinCountingView>
 
-      <List type={coinType} data={listDetailed} returnCoinText={returnCoinText} />
+      <List
+        searching={searching}
+        type={coinType}
+        data={listDetailed}
+        returnCoinText={returnCoinText}
+        setWalletType={setWalletType}
+      />
 
       <Paging
         prevClickEvent={() => {}}

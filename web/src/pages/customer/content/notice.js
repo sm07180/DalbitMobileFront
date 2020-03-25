@@ -257,6 +257,7 @@ const Detail = styled.section`
   display: block;
   margin-top: 40px;
   border-top: 1px solid ${COLOR_MAIN};
+
   & > header {
     display: flex;
     justify-content: space-between;
@@ -304,6 +305,9 @@ const PageWrap = styled.div`
   border-top: 1px solid ${COLOR_MAIN};
   & dl {
     width: 100%;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-top: 16px;
   }
 `
 const PageNumber = styled.nav`
@@ -431,8 +435,14 @@ const SelectBox = styled.div`
       font-size: 14px;
       padding: 12px;
       border-top: 1px solid ${COLOR_MAIN};
-      color: #424242;
+      color: #878787;
       display: none;
+      background-color: white;
+      z-index: 11;
+    }
+    a:hover {
+      color: ${COLOR_MAIN};
+      background-color: #f8f8f8;
     }
   }
   &.on {
@@ -440,8 +450,6 @@ const SelectBox = styled.div`
     /* height: 253px; */
     a {
       display: block;
-      background-color: white;
-      z-index: 11;
     }
   }
   .wrap {

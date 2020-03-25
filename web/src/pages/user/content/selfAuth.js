@@ -12,8 +12,6 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-let inervalId = null
-
 export default props => {
   //---------------------------------------------------------------------
   //State
@@ -47,7 +45,6 @@ export default props => {
     const res = await Api.self_auth_check({})
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
-      //clearInterval(inervalId)
       context.action.updateState({selfAuth: true})
     } else {
       context.action.alert({
@@ -87,9 +84,9 @@ export default props => {
     }
     document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
     document.authForm.submit()
-    //inervalId = setInterval(authCheck, 1000)
   }
 
+  //인증 요청
   async function authReq() {
     const res = await Api.self_auth_req({})
     if (res.result == 'success' && res.code == 0) {
@@ -107,10 +104,12 @@ export default props => {
     }
   }
 
+  //인증 요청 버튼
   function authClick() {
     authReq()
   }
 
+  //서버로부터 결과 받은 후 처리
   function updateDispatch(event) {
     console.log(event)
 
@@ -129,7 +128,6 @@ export default props => {
   useEffect(() => {
     document.addEventListener('self-auth', updateDispatch)
     return () => {
-      //clearInterval(inervalId)
       document.removeEventListener('self-auth', updateDispatch)
     }
   }, [])
