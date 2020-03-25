@@ -68,6 +68,7 @@ export default () => {
         <Route exact path="/private/:memNo" component={Private} />
         <Route exact path="/search" component={Search} />
         <Route exact path="/customer" component={Customer} />
+        <Route exact path="/customer/:num" component={Customer} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
         {/* navigator */}

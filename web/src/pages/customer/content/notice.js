@@ -119,7 +119,7 @@ function Pagination(props) {
     const index = Store().noticePage.noticeIdx
 
     if (index !== '') {
-      history.push(`/customer?${index}`)
+      history.push(`/customer/${index}`)
       fetchData2()
     }
   }
