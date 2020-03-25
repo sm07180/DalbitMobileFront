@@ -116,7 +116,7 @@ const Wrap = styled.div`
   }
 
   &.round {
-    width: 450px;
+    width: 480px;
     padding: 30px 0;
     height: 80%;
     max-height: auto;
