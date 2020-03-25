@@ -28,7 +28,7 @@ export default props => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data)
+      setList(res.data.list)
     } else {
       context.action.alert({
         msg: res.message
@@ -42,7 +42,7 @@ export default props => {
     if (list) {
       return list.map((item, index) => {
         return (
-          <div key={item.storeNo} appleStoreId={item.appleStoreId}>
+          <div key={item.storeNo} applestoreid={item.appleStoreId}>
             <img src={item.img}></img>
             <p>{item.storeNm}</p>
             <p>{Utility.addComma(item.price)}원</p>
@@ -71,7 +71,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <h2>스토어</h2>
-        {setList ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
+        {list ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
       </Content>
     </Layout>
   )
