@@ -38,6 +38,8 @@ export default props => {
   }
 
   useEffect(() => {
+    // searching ...
+    setSearching(true)
     ;(async () => {
       const response = await Api.mypage_wallet_inquire({
         coinType,
@@ -52,7 +54,7 @@ export default props => {
         setSearching(false)
       }
     })()
-  }, [coinType])
+  }, [coinType, walletType])
 
   return (
     <div>
@@ -93,7 +95,13 @@ export default props => {
         </div>
       </CoinCountingView>
 
-      <List searching={searching} type={coinType} data={listDetailed} returnCoinText={returnCoinText} />
+      <List
+        searching={searching}
+        type={coinType}
+        data={listDetailed}
+        returnCoinText={returnCoinText}
+        setWalletType={setWalletType}
+      />
 
       <Paging
         prevClickEvent={() => {}}

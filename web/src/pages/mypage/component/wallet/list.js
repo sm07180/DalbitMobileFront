@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import SelectBox from 'components/ui/selectBox.js'
 
 export default props => {
-  const {searching, type, data, returnCoinText} = props
+  const {searching, type, data, returnCoinText, setWalletType} = props
 
   const selectBoxData = [
     {value: 0, text: '전체'},
@@ -15,7 +15,7 @@ export default props => {
 
   return (
     <ListContainer>
-      <SelectBox boxList={selectBoxData} onChangeEvent={() => {}} inlineStyling={{right: 0, top: 0}} />
+      <SelectBox boxList={selectBoxData} onChangeEvent={setWalletType} inlineStyling={{right: 0, top: 0}} />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(type)} 상세내역`}</span>
