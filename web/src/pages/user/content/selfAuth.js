@@ -47,8 +47,8 @@ export default props => {
     const res = await Api.self_auth_check({})
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
-      clearInterval(inervalId)
-    } else if (res.result == 'fail' && !(res.code == '0')) {
+      //clearInterval(inervalId)
+    } else {
       context.action.alert({
         msg: res.message
       })
@@ -86,7 +86,7 @@ export default props => {
     }
     document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
     document.authForm.submit()
-    inervalId = setInterval(authCheck, 1000)
+    //inervalId = setInterval(authCheck, 1000)
   }
 
   async function authReq() {
@@ -110,11 +110,25 @@ export default props => {
     authReq()
   }
 
+  function updateDispatch(event) {
+    console.log(event)
+
+    if (event.detail.result == 'success' && event.detail.code == '1') {
+      authCheck()
+    } else {
+      context.action.alert({
+        msg: event.detail.message
+      })
+    }
+  }
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
+    document.addEventListener('self-auth', updateDispatch)
     return () => {
-      clearInterval(inervalId)
+      //clearInterval(inervalId)
+      document.removeEventListener('self-auth', updateDispatch)
     }
   }, [])
 
