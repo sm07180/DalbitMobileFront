@@ -53,6 +53,7 @@ export default props => {
         ) : (
           <div className="no-list">
             <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
+            <div>검색 결과가 없습니다.</div>
           </div>
         )}
       </ListWrap>
@@ -76,7 +77,7 @@ const ListWrap = styled.div`
     align-items: center;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
-    min-height: 47px;
+    height: 47px;
     user-select: none;
 
     .how-to-get {
@@ -129,7 +130,15 @@ const ListWrap = styled.div`
   }
 
   .no-list {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 400px;
+
+    img {
+      display: block;
+    }
   }
 `
 

@@ -138,7 +138,9 @@ export default props => {
                 cancelCallback: () => {
                   //alert('confirm callback 취소하기')
                 },
-                msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'} 하시겠습니까?`
+                msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${
+                  store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'
+                } 하시겠습니까?`
               })
             }}></button>
           <p>{store.broadcastProfileInfo.auth == 1 ? '매니저 해임' : '매니저 등록'}</p>
@@ -176,13 +178,8 @@ export default props => {
   }
   //선물 하기
   const goGiftSend = () => {
+    store.action.updateGiftSendType(1)
     store.action.updateTab(4) //선물하기 탭 이동
-    // context.action.alert({
-    //   callback: () => {
-    //     return
-    //   },
-    //   msg: '서비스 준비중입니다.'
-    // })
   }
   const userTypeContents = () => {
     if (objProfileInfo.auth > 2) return // 본인 정보랑 같거나 프로필이 본인꺼 일때
