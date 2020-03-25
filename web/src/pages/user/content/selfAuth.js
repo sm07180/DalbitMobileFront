@@ -114,13 +114,13 @@ export default props => {
   function updateDispatch(event) {
     console.log(event)
 
-    if (event.detail.result == 'success' && event.detail.code == '1') {
+    if (event.detail.result == 'success' && event.detail.code == '0') {
       authCheck()
     } else {
-      alert(JSON.stringify(event.detail, null, 1))
-      // context.action.alert({
-      //   msg: event.detail.message
-      // })
+      //alert(JSON.stringify(event.detail, null, 1))
+      context.action.alert({
+        msg: event.detail.message
+      })
     }
   }
 
