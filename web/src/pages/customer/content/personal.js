@@ -37,8 +37,24 @@ export default props => {
         alert(JSON.stringify(changes, null, 1))
         break
       case mode.onChange !== undefined: //------------------------------상태변화
-        console.log(JSON.stringify(changes))
+        //  console.log(JSON.stringify(changes))
         break
+    }
+  }
+  // input file에서 이미지 업로드했을때 파일객체 dataURL로 값 셋팅
+  function uploadSingleFile(e) {
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = function() {
+      // console.log('reader', reader)
+      // console.log('reader.', reader.result)
+      if (reader.result) {
+        setChanges({
+          ...changes,
+          image: reader.result
+        })
+      } else {
+      }
     }
   }
   //--------------------------------------------------------------------------
@@ -88,9 +104,23 @@ export default props => {
       <dl>
         <dt>첨부파일</dt>
         <dd>
-          <p>
-            <input type="file" name="file" onChange={onChange} />
-          </p>
+          {/* 이미지첨부파일 */}
+          <ImgUploader>
+            <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.image} />
+            <label htmlFor="imgUpload">
+              <span>찾아보기</span>
+            </label>
+            <input
+              type="file"
+              name="imgUpload"
+              id="imgUpload"
+              accept=".gif, .jpg, .png"
+              onChange={e => {
+                uploadSingleFile(e)
+              }}
+            />
+          </ImgUploader>
+
           <p>※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
         </dd>
       </dl>
@@ -173,7 +203,6 @@ const Content = styled.div`
     box-sizing: border-box;
   }
 `
-
 const SelectBox = styled.div`
   width: 354px;
   overflow: hidden;
@@ -238,5 +267,29 @@ const SelectBox = styled.div`
   }
   & > div:first-child {
     padding: 13px;
+  }
+`
+const ImgUploader = styled.div`
+  position: relative;
+  width: 100%;
+  padding-right: 130px;
+  box-sizing: border-box;
+  text-align: left;
+  #imgUpload {
+    display: none;
+  }
+
+  #imgUploadTxt {
+    display: block;
+  }
+  label {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: inline-block;
+    padding: 9px 25px;
+    color: ${COLOR_MAIN};
+    border-radius: 8px;
+    border: 1px solid ${COLOR_MAIN};
   }
 `
