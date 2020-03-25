@@ -53,6 +53,9 @@ const Wrap = styled.div`
   & .swiper-pagination {
     position: static;
     margin-top: 20px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      margin-top: 10px;
+    }
   }
   & .swiper-pagination-bullet {
     width: 11px;

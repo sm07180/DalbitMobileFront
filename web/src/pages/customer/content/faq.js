@@ -338,7 +338,7 @@ const PageWrap = styled.div`
     width: 100%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 45px;
+    margin-top: 18px;
   }
 `
 const PageNumber = styled.nav`
@@ -440,6 +440,7 @@ const ContentInfo = styled.div`
     display: inline-block;
     font-size: 20px;
     color: ${COLOR_MAIN};
+    line-height: 40px;
   }
   & h3 {
     display: inline-block;
