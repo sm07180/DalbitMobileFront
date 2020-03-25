@@ -8,66 +8,67 @@ import styled from 'styled-components'
 import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
+import Api from 'context/api'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import _ from 'lodash'
+import Utility from 'components/lib/utility'
+
 //components
 //
 export default props => {
-  const context = useContext(Context)
   //---------------------------------------------------------------------
+  const context = useContext(Context)
+
+  //useState
+  const [list, setList] = useState(false)
+
+  //---------------------------------------------------------------------
+
+  async function getStoreList() {
+    const res = await Api.store_list({})
+    if (res.result === 'success' && _.hasIn(res, 'data')) {
+      setList(res.data)
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  //---------------------------------------------------------------------
+  //map
+  const creatList = () => {
+    if (list) {
+      return list.map((item, index) => {
+        return (
+          <div key={item.storeNo} appleStoreId={item.appleStoreId}>
+            <img src={item.img}></img>
+            <p>{item.storeNm}</p>
+            <p>{Utility.addComma(item.price)}원</p>
+            <button
+              onClick={() => {
+                context.action.updatePopup('CHARGE')
+              }}>
+              구매
+            </button>
+          </div>
+        )
+      })
+    }
+  }
+
   //useEffect
   useEffect(() => {
     //context.action.updateMediaPlayerStatus(true)
+    getStoreList()
   }, [])
   //---------------------------------------------------------------------
   return (
     <Layout {...props}>
       <Content>
-        <div>
-          <button
-            onClick={() => {
-              context.action.alert({
-                //콜백처리
-                callback: () => {
-                  console.log('----callback 예제')
-                },
-                title: '로그인에러!',
-                msg: `메시지내용입니다메시지내용입니다메시지내용입니다메시지내용입니다메시지내용입니다. \n2줄메시지내용입니다.`
-              })
-            }}>
-            Alert
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              context.action.alert({
-                //콜백처리
-                callback: () => {
-                  console.log('callback처리')
-                },
-                title: '로그인에러!',
-                msg: '<ol><li>타입1</li><li>타입1</li></ol>'
-              })
-            }}>
-            Alert
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              context.action.confirm({
-                //콜백처리
-                callback: () => {
-                  console.log('confirm처리')
-                },
-                cancelCallback: () => {
-                  console.log('cancel콜백')
-                },
-                msg: 'confirm'
-              })
-            }}>
-            Confirm
-          </button>
-        </div>
+        <h2>스토어</h2>
+        {setList ? <List>{creatList()}</List> : <p>list 없어요!!</p>}
       </Content>
     </Layout>
   )
@@ -76,13 +77,46 @@ export default props => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
+  width: 1464px;
   min-height: 300px;
-  background: #e1e1e1;
-  button {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px;
-    background: #ff0000;
-    color: #fff;
+  margin: 0 auto;
+  padding: 40px 0 100px 0;
+  h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: ${COLOR_MAIN};
+    text-align: center;
+  }
+`
+
+const List = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  padding-top: 70px;
+  div {
+    width: 15%;
+    padding: 15px;
+    border: 1px solid #eee;
+    text-align: center;
+    img {
+      width: 80%;
+      margin-bottom: 15px;
+    }
+    p {
+      padding-bottom: 5px;
+      color: #555;
+      transform: skew(-0.03deg);
+    }
+    p + p {
+      padding-top: 8px;
+    }
+    button {
+      margin: 10px 0 5px 0;
+      padding: 10px 30px;
+      border-radius: 5px;
+      background: ${COLOR_MAIN};
+      color: #fff;
+    }
   }
 `
