@@ -48,10 +48,14 @@ export default props => {
             <p>{Utility.addComma(item.price)}원</p>
             <button
               onClick={() => {
-                context.action.updatePopup('CHARGE', {
-                  name: item.storeNm,
-                  price: Utility.addComma(item.price)
-                })
+                if (context.token.isLogin) {
+                  context.action.updatePopup('CHARGE', {
+                    name: item.storeNm,
+                    price: Utility.addComma(item.price)
+                  })
+                } else {
+                  context.action.updatePopup('LOGIN')
+                }
               }}>
               구매
             </button>
