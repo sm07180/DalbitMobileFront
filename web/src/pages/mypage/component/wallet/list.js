@@ -6,7 +6,7 @@ import SelectBox from 'components/ui/selectBox.js'
 import {IMG_SERVER} from 'context/config'
 
 export default props => {
-  const {searching, type, data, returnCoinText, setWalletType} = props
+  const {searching, type, walletData, returnCoinText, setWalletType} = props
 
   const selectBoxData = [
     {value: 0, text: '전체'},
@@ -39,8 +39,8 @@ export default props => {
               <div className="search-list" key={idx} />
             ))}
           </SearchList>
-        ) : Array.isArray(data) ? (
-          [1, 2, 3, 4, 5, 6].map((value, index) => {
+        ) : Array.isArray(walletData) ? (
+          walletData.map((value, index) => {
             return (
               <div className="list" key={index}>
                 <span className="how-to-get">구매</span>

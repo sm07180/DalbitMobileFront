@@ -119,7 +119,7 @@ function Pagination(props) {
     const index = Store().noticePage.noticeIdx
 
     if (index !== '') {
-      history.push(`/customer?${index}`)
+      history.push(`/customer/${index}`)
       fetchData2()
     }
   }
@@ -434,7 +434,7 @@ const SelectBox = styled.div`
       display: block;
       font-size: 14px;
       padding: 12px;
-      border-top: 1px solid ${COLOR_MAIN};
+
       color: #878787;
       display: none;
       background-color: white;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import styled from 'styled-components'
 
 import Api from 'context/api'
@@ -18,6 +18,7 @@ export default props => {
   const ctx = useContext(Context)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+  const [totalCoin, setTotalCoin] = useState(null)
   const [searching, setSearching] = useState(true)
 
   const [page, setPage] = useState(1)
@@ -40,6 +41,7 @@ export default props => {
   useEffect(() => {
     // searching ...
     setSearching(true)
+    setTotalCoin(null)
     ;(async () => {
       const response = await Api.mypage_wallet_inquire({
         coinType,
@@ -49,7 +51,13 @@ export default props => {
       })
 
       if (response.result === 'success') {
-        const {list} = response.data
+        const {list, dalTotCnt, byeolTotCnt} = response.data
+        if (coinType === 'dal') {
+          setTotalCoin(dalTotCnt)
+        } else if (coinType === 'byeol') {
+          setTotalCoin(byeolTotCnt)
+        }
+
         if (list.length) {
           setListDetailed(list)
         } else {
@@ -84,10 +92,10 @@ export default props => {
         <CoinCurrentStatus>
           <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
           <img className="coin-img" src={returnCoinImg(coinType)} style={{width: '44px'}} />
-          <span className="current-value">20,520</span>
+          <span className="current-value">{totalCoin !== null && Number(totalCoin).toLocaleString()}</span>
         </CoinCurrentStatus>
 
-        <div>
+        {/* <div>
           {coinType === 'dal' ? (
             <CoinChargeBtn>충전하기</CoinChargeBtn>
           ) : (
@@ -96,13 +104,13 @@ export default props => {
               <CoinChargeBtn>환전하기</CoinChargeBtn>
             </>
           )}
-        </div>
+        </div> */}
       </CoinCountingView>
 
       <List
         searching={searching}
         type={coinType}
-        data={listDetailed}
+        walletData={listDetailed}
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}
       />
