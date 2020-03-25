@@ -53,7 +53,7 @@ export default props => {
         console.log(JSON.stringify(changes, null, 1))
         break
       case mode.onChange !== undefined: //----------------------------상태변화
-        //  console.log(JSON.stringify(changes))
+        console.log(JSON.stringify(changes))
         break
       case mode.downDown !== undefined: //----------------------------문의유형선택
         setIsOpen(false)

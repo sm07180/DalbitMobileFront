@@ -31,7 +31,7 @@ const Index = props => {
       case 'notice': //------------------------공지사항
         return <Notice perPage={Store().page} />
       case 'faq': //---------------------------FAQ
-        return <Faq perPage={10} />
+        return <Faq perPage={Store().page} />
       case 'personal': //----------------------1:1문의
         return <Personal />
       case 'broadcast_guide': //---------------방송 가이드(미정)
