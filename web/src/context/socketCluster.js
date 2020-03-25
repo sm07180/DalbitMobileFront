@@ -6,7 +6,9 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
+import {setSesstionStorage, getSesstionStorage} from 'components/lib/sesstionStorageCtl'
 
+import {Global} from 'App'
 const SocketClusterClient = require('socketcluster-client')
 //socket object
 let socket = null
@@ -187,9 +189,11 @@ export const scConnection = obj => {
   //const HeaderObj = context.customHeader
 
   socketClusterDestory(true)
-
   let options = {
-    path: '/socketcluster/?data=' + JSON.stringify({authToken: obj.token.authToken, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
+    path:
+      '/socketcluster/?data=' +
+      // JSON.stringify({authToken: obj.token.authToken, memNo: obj.token.memNo, locale: obj.customHeader.locale}),
+      JSON.stringify({authToken: obj.token.authToken, memNo: obj.token.memNo, locale: Global().customHeader.locale}),
     //path: '/socketcluster/',
     port: socketConfig.socketServerPort,
     hostname: socketConfig.socketServerHost,
@@ -219,6 +223,7 @@ export const scConnection = obj => {
   }
   console.table(options)
   socket = SocketClusterClient.connect(options)
+
   console.log('소켓 연결 시도 ')
 
   socket.on(socketConfig.event.socket.CONNECT /*'connect'*/, function(status) {
@@ -226,6 +231,7 @@ export const scConnection = obj => {
       if (window.location.pathname === '/') {
         // public 채널로 입장
         socketClusterBinding('channel.public.dalbit')
+        //setSesstionStorage('socketClusterInfo', options)
       }
     }
 
@@ -761,6 +767,7 @@ export const receiveMessageData = recvData => {
 // }
 
 export const socketClusterBinding = (channel, Info) => {
+  console.log(socket)
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
@@ -802,7 +809,9 @@ export const socketClusterBinding = (channel, Info) => {
 export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
     socket.subscribe(channelObjName)
+    //if (channelObjName === 'channel.public.dalbit') setSesstionStorage('isSocketCluster', {connected: true})
     console.log(channelObjName + '채널 입장')
+
     return channelObj
     //console.log('채널 입장')
   }
@@ -833,7 +842,12 @@ export const SendMessageChatEnd = objChatInfo => {
     memNo: ''
   }
   console.log('sendMessage = ' + JSON.stringify(params))
-  sendMessage.socket(objChatInfo.roomNo, socketConfig.packet.send.PACKET_SEND_CHAT_END, params, objChatInfo.auth === 3 ? 'bjOut' : 'roomOut')
+  sendMessage.socket(
+    objChatInfo.roomNo,
+    socketConfig.packet.send.PACKET_SEND_CHAT_END,
+    params,
+    objChatInfo.auth === 3 ? 'bjOut' : 'roomOut'
+  )
 }
 //강퇴
 export const SendMessageKickout = objChatInfo => {

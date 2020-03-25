@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {BotButton} from './bot-button'
 import {Context} from 'context'
+import Api from 'context/api'
 
 const testData = [20, 50, 100, 500, 1000]
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
@@ -34,6 +35,42 @@ export default props => {
     setSend(true)
   }
 
+  // 선물하기
+  async function giftSend(count, itemNo, flag) {
+    if (itemNo < 0) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        // title: '달빛라디오',
+        msg: '아이템을 선택해 주세요'
+      })
+    }
+    const res = await Api.send_gift({
+      data: {
+        roomNo: context.broadcastTotalInfo.roomNo,
+        memNo: context.broadcastTotalInfo.bjMemNo,
+        itemNo: itemNo,
+        itemCnt: count,
+        isSecret: flag
+      }
+    })
+    if (res.result === 'success') {
+      // 프로필 업데이트 profile api에는 dalRate가 없어서 member_info_view 조회함 profile에 dalRate 추가 후 profile 만 호출하도록 변경해야 함
+      // broadProfile()
+      // // 선물 보내고 context.profile 업데이트
+      // const profile = await Api.profile({params: {memNo: context.token.memNo}})
+      // if (profile.result === 'success') {
+      //   context.action.updateProfile(profile.data)
+      // }
+      // context.action.alert({
+      //   msg: res.message,
+      //   callback: () => {}
+      // })
+    }
+    //setState(!state)
+  }
+
   useEffect(() => {
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
@@ -44,13 +81,13 @@ export default props => {
       <Contents>
         <div>
           <p>
-            <span>솜사탕사탕사탕</span> 님에게
+            <span>{props.profile.nickNm}</span> 님에게
           </p>
           <p>루비를 선물하시겠습니까?</p>
         </div>
       </Contents>
       <MyPoint>
-        <div>보유 달 &nbsp;120</div>
+        <div>{`보유 달 ${props.profile.dalCnt}`} </div>
       </MyPoint>
       <Select>
         {testData.map((data, idx) => {
@@ -62,12 +99,31 @@ export default props => {
         })}
       </Select>
       <TextArea>
-        <PointInput placeholder="직접 입력" type="number" maxLength="5" value={text} onChange={handleChangeInput} onClick={() => _active('input')} active={active ? 'active' : ''} />
+        <PointInput
+          placeholder="직접 입력"
+          type="number"
+          maxLength="5"
+          value={text}
+          onChange={handleChangeInput}
+          onClick={() => _active('input')}
+          active={active ? 'active' : ''}
+        />
         <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
       <ButtonArea>
-        <BotButton title={'충전하기'} borderColor={'#8556f6'} color={'#8556f6'} clickEvent={() => context.action.updatePopupVisible(true)} />
-        <BotButton title={'선물하기'} borderColor={'#bdbdbd'} background={send ? '#8556f6' : '#bdbdbd'} color={'#fff'} />
+        <BotButton
+          title={'충전하기'}
+          borderColor={'#8556f6'}
+          color={'#8556f6'}
+          clickEvent={() => context.action.updatePopupVisible(true)}
+        />
+        <BotButton
+          title={'선물하기'}
+          borderColor={'#bdbdbd'}
+          background={send ? '#8556f6' : '#bdbdbd'}
+          color={'#fff'}
+          onClick={() => giftSend()}
+        />
       </ButtonArea>
     </Container>
   )

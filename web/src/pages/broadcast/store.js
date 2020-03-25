@@ -45,17 +45,18 @@ const BroadCastProvider = props => {
   const [liveSortList, setLiveSortList] = useState(null) // 방송방 라이브 정렬 리스트
   const [listenerUpdate, setListenerUpdate] = useState([]) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
   const [resetZero, setResetZero] = useState(0)
+  const [giftSendType, setGiftSendType] = useState(0) // 방송방에서 프로필뷰에서 선물하기(1) ,그 외 (0)
 
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
-    {id: 2, tab: '라이브'},
+    {id: 2, tab: '라이브'}
     // {id: 3, tab: '충전'},
     // {id: 4, tab: '선물'},
     // {id: 5, tab: '부스트'},
     // {id: 6, tab: '프로필'},
     // {id: 7, tab: '신고하기'},
-    {id: 8, tab: '공지사항'}
+    // {id: 8, tab: '공지사항'},
     // {id: 9, tab: '사연'},
     // {id: 10, tab: '방송수정'},
     // {id: 11, tab: '빠른 말'},
@@ -207,6 +208,9 @@ const BroadCastProvider = props => {
     },
     updateResetZero: obj => {
       setResetZero(resetZero => ({...resetZero, ...obj}))
+    },
+    updateGiftSendType: num => {
+      setGiftSendType(num)
     }
   }
   //---------------------------------------------------------------------
@@ -241,7 +245,8 @@ const BroadCastProvider = props => {
     liveSortList,
     listenerUpdate,
     resetZero,
-    selectPopular
+    selectPopular,
+    giftSendType
   }
 
   return <Provider value={value}>{props.children}</Provider>
