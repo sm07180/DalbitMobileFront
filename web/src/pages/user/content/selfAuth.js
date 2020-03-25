@@ -36,7 +36,7 @@ export default props => {
   if (_.hasIn(props.location.state, 'type')) {
     authType = props.location.state.type
   } else {
-    authType = 'cast'
+    authType = 'default'
   }
 
   //---------------------------------------------------------------------

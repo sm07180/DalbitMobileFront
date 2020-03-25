@@ -75,7 +75,19 @@ export default props => {
 
   const doCharge = () => {
     // 충전하기 api 통신 후 success 받으면 화면 전환 or 이니시스 모듈 페이지 리다이렉트
-    setConfirm(true)
+    // 본인인증 되어있는 상태인지 먼저 확인
+    // console.log('본인인증여부확인', context.state.selfAuth)
+    // console.log('props.history', props.history)
+    if (context.state.selfAuth) {
+      //결제 api 붙이면되고
+      console.log('결제')
+    } else {
+      context.action.updatePopupVisible(false)
+      props.history.push('/user/selfAuth', {
+        type: 'charge'
+      })
+    }
+    //setConfirm(true)
   }
 
   // 무통장입금 - 현금영수증 Component
@@ -217,11 +229,15 @@ export default props => {
                   color={'#8556f6'}
                   borderColor={'#8556f6'}
                   title={'취소하기'}
+                  clickEvent={() => {
+                    context.action.updatePopupVisible(false)
+                  }}
                 />
                 <BotButton
                   width={150}
                   height={48}
                   background={charge != -1 ? '#8556f6' : '#bdbdbd'}
+                  disabled={charge != -1 ? false : true}
                   color={'#fff'}
                   title={'충전하기'}
                   clickEvent={doCharge}

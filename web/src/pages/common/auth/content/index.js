@@ -148,6 +148,13 @@ export default props => {
         Api.profile({params: {memNo: res.data.memNo}}).then(profileInfo => {
           if (profileInfo.result === 'success') {
             context.action.updateProfile(profileInfo.data)
+            Api.self_auth_check({}).then(checkInfo => {
+              if (checkInfo.result == 'success') {
+                context.action.updateState({selfAuth: true})
+              } else {
+                context.action.updateState({selfAuth: false})
+              }
+            })
           }
         })
       } else {
@@ -380,7 +387,14 @@ export default props => {
           autoFocus
           maxLength={13}
         />
-        <input type="password" name="pwd" placeholder="비밀번호" onChange={pwdValidateHandle} value={changes.pwd} onKeyPress={() => pwdEnterkeyHandle(event)} />
+        <input
+          type="password"
+          name="pwd"
+          placeholder="비밀번호"
+          onChange={pwdValidateHandle}
+          value={changes.pwd}
+          onKeyPress={() => pwdEnterkeyHandle(event)}
+        />
       </LoginInput>
       <LoginSubmit
         onClick={() => {
