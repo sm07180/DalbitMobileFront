@@ -4,7 +4,7 @@ import styled, {keyframes} from 'styled-components'
 export default props => {
   const {boxList, onChangeEvent, inlineStyling} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
-  const [opened, setOpened] = useState(false)
+  const [opened, setOpened] = useState(null)
 
   if (boxList === undefined) {
     throw new Error("Need a box list in select box -> exam: ([{value: '', text: ''}....])")
@@ -15,29 +15,32 @@ export default props => {
   const selectBoxList = value => {
     onChangeEvent(value)
     setSelectedIdx(value)
+  }
+
+  const selectBlurEvent = () => {
     setOpened(false)
   }
 
-  const windowClickEvent = e => {
-    const target = e.currentTarget
-    console.log(target)
-    // setOpened(false)
-  }
+  const selectedClassName = opened ? 'open' : ''
+  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
-    window.addEventListener('click', windowClickEvent)
-    return () => {
-      window.removeEventListener('click', windowClickEvent)
-    }
+    return () => {}
   }, [])
 
   return (
     <SelectBoxWrap style={inlineStyling ? inlineStyling : {}}>
-      <Selected onClick={() => setOpened(opened ? false : true)}>{boxList[selectedIdx].text}</Selected>
-      <SelectListWrap className={opened ? 'open' : 'close'}>
+      <Selected
+        className={selectedClassName}
+        tabIndex={0}
+        onClick={() => setOpened(opened ? false : true)}
+        onBlur={selectBlurEvent}>
+        {boxList[selectedIdx].text}
+      </Selected>
+      <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
           return (
-            <div className="box-list" key={index} onClick={() => selectBoxList(instance.value)}>
+            <div className="box-list" key={index} onMouseDown={() => selectBoxList(instance.value)}>
               {instance.text}
             </div>
           )
@@ -62,13 +65,13 @@ const selectListFadeOut = keyframes`
     opacity: 1;
     transform: translateY(0);
   }
-  90% {
+  99% {
     opacity: 0;
     transform: translateY(-10px);
   }
   100% {
-    transform: scale(0);
     height: 0;
+    transform: scale(0);
   }
 `
 
@@ -88,6 +91,10 @@ const SelectListWrap = styled.div`
     animation-name: ${selectListFadeOut};
   }
 
+  &.init {
+    display: none;
+  }
+
   .box-list {
     padding: 11px 10px;
     color: #757575;
@@ -103,12 +110,51 @@ const SelectListWrap = styled.div`
 `
 
 const Selected = styled.div`
+  position: relative;
   width: 136px;
   padding: 11px 10px;
   box-sizing: border-box;
   border: 1px solid #8556f6;
   font-size: 16px;
   color: #8556f6;
+  outline: none;
+
+  &.open {
+    &::before {
+      transform: rotate(135deg);
+    }
+    &::after {
+      transform: rotate(-135deg);
+    }
+  }
+
+  &::before {
+    position: absolute;
+    content: '';
+    width: 12px;
+    height: 2px;
+    top: 20px;
+    right: 20px;
+    background-color: #8556f6;
+    transform: rotate(45deg);
+    transition-property: transform;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
+
+  &::after {
+    position: absolute;
+    content: '';
+    width: 12px;
+    height: 2px;
+    top: 20px;
+    right: 12px;
+    background-color: #8556f6;
+    transform: rotate(-45deg);
+    transition-property: transform;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+  }
 `
 
 const SelectBoxWrap = styled.div`
