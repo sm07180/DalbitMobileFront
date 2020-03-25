@@ -48,6 +48,7 @@ export default props => {
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
       //clearInterval(inervalId)
+      context.action.updateState({selfAuth: true})
     } else {
       context.action.alert({
         msg: res.message
@@ -116,9 +117,10 @@ export default props => {
     if (event.detail.result == 'success' && event.detail.code == '1') {
       authCheck()
     } else {
-      context.action.alert({
-        msg: event.detail.message
-      })
+      alert(JSON.stringify(event.detail, null, 1))
+      // context.action.alert({
+      //   msg: event.detail.message
+      // })
     }
   }
 
