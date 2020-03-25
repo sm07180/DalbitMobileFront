@@ -13,10 +13,8 @@ import {COLOR_MAIN} from 'context/color'
 import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
-
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
-import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 //
 export default props => {
   //--------------------------------------------------------------------------
@@ -215,24 +213,40 @@ const Content = styled.div`
       text-align: left;
       color: ${COLOR_MAIN};
       transform: skew(-0.03deg);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        position: relative;
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        font-size: 12px;
+      }
     }
     dd {
       display: inline-block;
       padding-left: 130px;
       width: 100%;
       transform: skew(-0.03deg);
+      @media (max-width: ${WIDTH_MOBILE}) {
+        position: relative;
+        display: block;
+        padding-left: 0;
+        width: 100%;
+      }
       p {
         padding: 10px 1px;
         transform: skew(-0.03deg);
+        @media (max-width: ${WIDTH_MOBILE}) {
+          font-size: 12px;
+        }
       }
     }
   }
   textarea,
-  input {
+  input[type='text'] {
     display: block;
     width: 100%;
     padding: 12px 10px;
-    font-size: 14px;
+    font-size: 14px !important;
     font-family: inherit;
     font-size: inherit;
     border: solid 1px #e0e0e0;
@@ -250,6 +264,7 @@ const SelectBox = styled.div`
   .dropDown {
     a {
       display: block;
+      font-size: 14px;
       padding: 10px;
       border-top: 1px solid #e0e0e0;
     }
@@ -297,6 +312,7 @@ const SelectBox = styled.div`
 
     label {
       display: inline-block;
+      font-size: 14px !important;
       transform: skew(-0.03deg);
     }
   }
