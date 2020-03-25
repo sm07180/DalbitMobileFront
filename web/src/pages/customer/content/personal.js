@@ -4,6 +4,8 @@
  *
  */
 import React, {useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
+
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN} from 'context/color'
@@ -11,6 +13,7 @@ import {COLOR_MAIN} from 'context/color'
 import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
+
 import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
@@ -18,11 +21,18 @@ import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
 export default props => {
   //--------------------------------------------------------------------------
   //context
-
+  const context = useContext(Context)
+  const history = useHistory()
   //hooks
+  const dropDown1 = useClick(update, {downDown: '기능문의'})
+  const dropDown2 = useClick(update, {downDown: '환불문의'})
+  const dropDown3 = useClick(update, {downDown: '라이브 방송문의'})
+  const dropDown4 = useClick(update, {downDown: '서비스제휴'})
+  const dropDown5 = useClick(update, {downDown: '기타'})
+
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {type: '선택하세요', onChange: -1})
   //useState
   const [isOpen, setIsOpen] = useState(false)
   //--------------------------------------------------------------------------
@@ -31,12 +41,29 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.cancel !== undefined: //------------------------------취소
-        alert('취소')
+        context.action.alert({
+          msg: '취소되었습니다.'
+        })
         break
       case mode.submit !== undefined: //------------------------------문의하기
-        alert(JSON.stringify(changes, null, 1))
+        context.action.alert({
+          msg: '문의내용이 접수되었습니다.\n메인페이지로 이동합니다.',
+          callback: () => {
+            history.push('/')
+          }
+        })
+        console.log(JSON.stringify(changes, null, 1))
         break
-      case mode.onChange !== undefined: //------------------------------상태변화
+      case mode.onChange !== undefined: //----------------------------상태변화
+        //  console.log(JSON.stringify(changes))
+        break
+      case mode.downDown !== undefined: //----------------------------문의유형선택
+        setIsOpen(false)
+
+        setChanges({
+          ...changes,
+          type: mode.downDown
+        })
         //  console.log(JSON.stringify(changes))
         break
     }
@@ -46,14 +73,11 @@ export default props => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
     reader.onload = function() {
-      // console.log('reader', reader)
-      // console.log('reader.', reader.result)
       if (reader.result) {
         setChanges({
           ...changes,
           image: reader.result
         })
-      } else {
       }
     }
   }
@@ -65,7 +89,7 @@ export default props => {
         <dd>
           <SelectBox className={isOpen ? 'on' : ''}>
             <div className="wrap">
-              <label htmlFor="allTerm">선택하세요</label>
+              <label htmlFor="allTerm">{changes.type}</label>
               <button
                 className={isOpen ? 'on' : 'off'}
                 onClick={() => {
@@ -74,9 +98,24 @@ export default props => {
                 펼치기
               </button>
             </div>
-            <button>1</button>
-            <button>1</button>
-            <button>1</button>
+            {/* DropDown메뉴 */}
+            <div className="dropDown">
+              <a href="#1" {...dropDown1}>
+                기능문의
+              </a>
+              <a href="#2" {...dropDown2}>
+                환불문의
+              </a>
+              <a href="#3" {...dropDown3}>
+                라이브 방송문의
+              </a>
+              <a href="#4" {...dropDown4}>
+                서비스제휴
+              </a>
+              <a href="#5" {...dropDown5}>
+                기타
+              </a>
+            </div>
           </SelectBox>
         </dd>
       </dl>
@@ -204,12 +243,19 @@ const Content = styled.div`
   }
 `
 const SelectBox = styled.div`
-  width: 354px;
+  width: 200px;
   overflow: hidden;
   position: relative;
   height: 52px;
   border: 1px solid #e0e0e0;
   transition: height 0.5s ease-in-out;
+  .dropDown {
+    a {
+      display: block;
+      padding: 10px;
+      border-top: 1px solid #e0e0e0;
+    }
+  }
   &.on {
     /* 높이조절 */
     height: 253px;
