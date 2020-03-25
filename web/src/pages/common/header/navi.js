@@ -178,8 +178,9 @@ const Navi = props => {
   //data
   const info = [
     {title: '라이브', url: '/live'},
+    {title: '스토어', url: '/store'}
     // {title: '캐스트', url: '/cast'},
-    {title: '랭킹', url: '/ranking'}
+    //{title: '랭킹', url: '/ranking'}
   ]
 
   //---------------------------------------------------------------------

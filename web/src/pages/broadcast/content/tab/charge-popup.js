@@ -41,7 +41,6 @@ const receiptData = [
 ]
 export default props => {
   const context = useContext(Context)
-  console.log('팝업props', context.popup_code[1])
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
   const scrollbars = useRef(null)

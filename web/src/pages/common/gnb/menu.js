@@ -17,9 +17,9 @@ export default props => {
   const info = [
     {title: '라이브', url: '/live'},
     // {title: '캐스트', url: '/cast'},
-    {title: '랭킹', url: '/ranking'},
+    //{title: '랭킹', url: '/ranking'},
     {title: '스토어', url: '/store'},
-    {title: '이벤트', url: '/event'},
+    //{title: '이벤트', url: '/event'},
     {title: '고객센터', url: '/customer/'},
     {title: '설정', url: '/store?설정'}
   ]
@@ -31,14 +31,7 @@ export default props => {
         <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
           <LinkLi
             onClick={event => {
-              if (
-                _url == '/cast' ||
-                _url == '/ranking' ||
-                _url == '/store' ||
-                _url == '/event' ||
-                _url == '/customer' ||
-                _url == '/store?설정'
-              ) {
+              if (_url == '/cast' || _url == '/ranking' || _url == '/event' || _url == '/customer' || _url == '/store?설정') {
                 event.preventDefault()
                 context.action.alert({
                   msg: '서비스 준비중입니다.'
