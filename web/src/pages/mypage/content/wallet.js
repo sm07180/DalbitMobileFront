@@ -77,7 +77,17 @@ export default props => {
           <img className="coin-img" src={returnCoinImg(coinType)} style={{width: '44px'}} />
           <span className="current-value">20,520</span>
         </CoinCurrentStatus>
-        <CoinChargeBtn>충전하기</CoinChargeBtn>
+
+        <div>
+          {coinType === 'dal' ? (
+            <CoinChargeBtn>충전하기</CoinChargeBtn>
+          ) : (
+            <>
+              <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
+              <CoinChargeBtn>환전하기</CoinChargeBtn>
+            </>
+          )}
+        </div>
       </CoinCountingView>
 
       <List type={coinType} data={listDetailed} returnCoinText={returnCoinText} />
@@ -99,6 +109,16 @@ const CoinChargeBtn = styled.button`
   color: #fff;
   background-color: #8556f6;
   border-radius: 10px;
+  width: 150px;
+  box-sizing: border-box;
+  font-size: 16px;
+
+  &.white-btn {
+    border: 1px solid #8556f6;
+    background-color: #fff;
+    color: #8556f6;
+    margin-right: 12px;
+  }
 `
 
 const CoinCurrentStatus = styled.div`
@@ -127,6 +147,7 @@ const CoinCountingView = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 118px;
   padding: 30px;
   box-sizing: border-box;
 `
