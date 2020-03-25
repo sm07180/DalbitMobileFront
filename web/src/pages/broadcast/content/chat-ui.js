@@ -148,32 +148,31 @@ export default props => {
         // }
         context.action.updateBroadcastTotalInfo(data.detail.data.count)
         if (data.detail.data.cmd == 'connect') {
-          if (data.detail.data.user.memNo !== context.token.memNo) {
-            listenerlist.push({
-              nickNm: data.detail.data.user.nk,
-              memNo: data.detail.data.user.memNo,
-              auth: data.detail.data.user.auth,
-              profImg: {thumb62x62: data.detail.data.user.image},
-              memId: data.detail.data.user.userid
-            })
-            //listenerlist.concat(...listenerlist,)
-
-            setlistenerlist(listenerlist)
-            //store.action.updateListenerUpdate(listenerlist)
-            store.action.updateListenerList(listenerlist)
-          } else {
-            listenerlist.push({
-              nickNm: data.detail.data.user.nk,
-              memNo: data.detail.data.user.memNo,
-              auth: data.detail.data.user.auth,
-              profImg: {thumb62x62: data.detail.data.user.image},
-              memId: data.detail.data.user.userid
-            })
-            if (context.broadcastTotalInfo.auth < 3) {
-              setlistenerlist(listenerlist)
-              store.action.updateListenerList(listenerlist)
-            }
-          }
+          // if (data.detail.data.user.memNo !== context.token.memNo) {
+          //   listenerlist.push({
+          //     nickNm: data.detail.data.user.nk,
+          //     memNo: data.detail.data.user.memNo,
+          //     auth: data.detail.data.user.auth,
+          //     profImg: {thumb62x62: data.detail.data.user.image},
+          //     memId: data.detail.data.user.userid
+          //   })
+          //   //listenerlist.concat(...listenerlist,)
+          //   setlistenerlist(listenerlist)
+          //   //store.action.updateListenerUpdate(listenerlist)
+          //   store.action.updateListenerList(listenerlist)
+          // } else {
+          //   listenerlist.push({
+          //     nickNm: data.detail.data.user.nk,
+          //     memNo: data.detail.data.user.memNo,
+          //     auth: data.detail.data.user.auth,
+          //     profImg: {thumb62x62: data.detail.data.user.image},
+          //     memId: data.detail.data.user.userid
+          //   })
+          //   if (context.broadcastTotalInfo.auth < 3) {
+          //     setlistenerlist(listenerlist)
+          //     store.action.updateListenerList(listenerlist)
+          //   }
+          // }
         } else {
           //disconnect
           listenerlist.splice(listenerlist.indexOf({memNo: data.detail.data.user.memNo}), 1)

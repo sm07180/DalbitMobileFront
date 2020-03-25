@@ -4,10 +4,12 @@ import {Context} from 'context'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility from 'components/lib/utility'
+import {BroadCastStore} from 'pages/broadcast/store'
 
 export default props => {
   //-------------------------------------------------- declare start
   const context = useContext(Context)
+
   const [bWidth, setWidth] = useState()
   const [tData, setTData] = useState([])
   const [item, setItem] = useState(-1)
@@ -16,7 +18,7 @@ export default props => {
   const [percent, setPercent] = useState(0)
   const [itemNo, setItemNo] = useState(-1)
   const scrollbars = useRef(null)
-
+  const store = useContext(BroadCastStore)
   //-------------------------------------------------- func start
 
   const widthCalc = () => {
@@ -60,16 +62,18 @@ export default props => {
       <MainContents>
         <LevelInfo>
           <DashBoard>
-            {props.testData.guestYn === 'Y' && (
-              <Target>
-                <TargetInfo bjNickNm={props.bjNickNm} profile={context.broadcastTotalInfo.bjProfImg.thumb62x62} />
-              </Target>
-            )}
+            {/* {props.testData.guestYn === 'Y' && ( */}
+            <Target>
+              <TargetInfo profile={context.broadcastTotalInfo} />
+            </Target>
+            {/* )} */}
             <Level>
               <UserLevel>LEVEL {props.profile != undefined && props.profile.level}</UserLevel>
               <BarWrap>
                 <Bar>
-                  <Exp exp={props.profile != undefined && props.profile.expRate}>{props.profile != undefined && props.profile.expRate}%</Exp>
+                  <Exp exp={props.profile != undefined && props.profile.expRate}>
+                    {props.profile != undefined && props.profile.expRate}%
+                  </Exp>
                 </Bar>
               </BarWrap>
             </Level>
@@ -138,11 +142,11 @@ const TargetInfo = props => {
       <Dj>
         {/* {idx !== state && <Cover></Cover>} */}
         <Profile>
-          <img src={props.profile} width={36} height={36} />
-          <Tag>DJ</Tag>
+          <img src={props.profile.bjProfImg.url} width={36} height={36} />
+          {props.profile.auth > 0 && <Tag>{props.profile.auth === 2 ? 'Guest' : props.profile.auth === 3 ? 'Dj' : ''}</Tag>}
         </Profile>
         <DjInfo>
-          <div>{props.bjNickNm}</div>
+          <div>{props.profile.nickNm}</div>
         </DjInfo>
       </Dj>
     </>
@@ -377,8 +381,8 @@ const DjImg = styled.div`
 const Tag = styled.div`
   display: flex;
   height: 14px;
-  /* background-color: ${props => (props.target === 0 ? '#8555f6' : '#ec455f')}; */
-  background:#8555f6;
+  background-color: ${props => (props.auth === 3 ? '#8555f6' : props.auth === 2 ? '#ec455f' : props.auth === 1 ? '#fdad2b' : '')};
+  /* background:#8555f6; */
   width: 36px;
   border-radius: 10px;
   color: #ffffff;

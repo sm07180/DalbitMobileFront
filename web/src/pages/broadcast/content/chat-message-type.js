@@ -40,7 +40,12 @@ export default props => {
   // }, [store.roomInfo])
 
   //---------------------------------------------------------------------
-  if (props.data.cmd === 'reqBcStart' || props.data.cmd === 'reqWelcome' || props.data.cmd === 'chatEnd' || props.data.cmd === 'bjEnd') {
+  if (
+    props.data.cmd === 'reqBcStart' ||
+    props.data.cmd === 'reqWelcome' ||
+    props.data.cmd === 'chatEnd' ||
+    props.data.cmd === 'bjEnd'
+  ) {
     return (
       <>
         <Message className="guide">
@@ -66,7 +71,15 @@ export default props => {
         <figure></figure>
         <div>
           <p>
-            {props.data.user.auth == 3 ? <b className="dj">DJ</b> : props.data.user.auth == 2 ? <b className="guest">게스트</b> : props.data.user.auth == 1 ? <b className="manager">매니저</b> : <></>}
+            {props.data.user.auth == 3 ? (
+              <b className="dj">DJ</b>
+            ) : props.data.user.auth == 2 ? (
+              <b className="guest">게스트</b>
+            ) : props.data.user.auth == 1 ? (
+              <b className="manager">매니저</b>
+            ) : (
+              <></>
+            )}
             {props.data.user.nk}
           </p>
 
@@ -84,7 +97,10 @@ export default props => {
     )
   } else if (props.data.cmd === 'reqGiftImg') {
     return (
-      <Message className="comment present" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+      <Message
+        className="comment present"
+        profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}
+        itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
         <figure></figure>
         <div>
           <p>
@@ -117,7 +133,10 @@ export default props => {
     )
   } else if (props.data.cmd === 'reqGoodFirst') {
     return (
-      <Message className="comment action" profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`} itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+      <Message
+        className="comment action"
+        profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}
+        itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
         <figure></figure>
         <div>
           <p>

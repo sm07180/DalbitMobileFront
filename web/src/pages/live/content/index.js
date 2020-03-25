@@ -111,7 +111,6 @@ export default props => {
   async function joinRoom(obj) {
     const {roomNo} = obj
     const data = await roomCheck(roomNo, context)
-
     if (data) {
       if (isHybrid()) {
         Hybrid('RoomJoin', data)
@@ -147,7 +146,9 @@ export default props => {
           )}
         </MainContents>
       </Wrap>
-      {list && list.length > 0 && <Pagination current={currentPage} total={totalPageNumber} records={RECORDS} setCurrentPage={setCurrentPage} />}
+      {list && list.length > 0 && (
+        <Pagination current={currentPage} total={totalPageNumber} records={RECORDS} setCurrentPage={setCurrentPage} />
+      )}
     </Container>
   )
 }
