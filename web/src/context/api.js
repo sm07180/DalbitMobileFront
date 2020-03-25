@@ -934,6 +934,8 @@ export default class API {
   static store_list = async obj => {
     const {url, method} = obj || {}
     return await ajax({...obj, url: url || `/store`, method: method || 'GET'})
+  }
+
   /**
    * @brief 고객센터 FAQ 리스트
    * @method "GET"
