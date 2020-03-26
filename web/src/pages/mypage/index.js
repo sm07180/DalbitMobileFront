@@ -38,12 +38,13 @@ export default props => {
   }
 
   const navigationList = [
-    {type: 'notice', component: Notice},
-    {type: 'fanboard', component: FanBoard},
-    {type: 'cast', component: Cast},
-    {type: 'wallet', component: Wallet},
-    {type: 'report', component: Report},
-    {type: 'alert', component: Alert}
+    {type: 'notice', component: Notice, txt: '공지사항'},
+    // {type: 'fanboard', component: FanBoard, txt: '팬 보드'},
+    // {type: 'cast', component: Cast, txt: '캐스트'},
+    {type: 'wallet', component: Wallet, txt: '내 지갑'}
+    // {type: 'report', component: Report, txt: '리포트'},
+    // {type: 'alert', component: Alert, txt: '알림'},
+    // {type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
 
   return (
@@ -51,17 +52,14 @@ export default props => {
       <Content>
         <MyProfile />
 
-        <Navigation />
+        <Navigation list={navigationList} />
 
         <SubContent>
           <Switch>
-            <Route exact path="/mypage/notice" component={Notice} />
-            <Route exact path="/mypage/fanboard" component={FanBoard} />
-            <Route exact path="/mypage/cast" component={Ready} />
-            <Route exact path="/mypage/wallet" component={Wallet} />
-            <Route exact path="/mypage/report" component={Ready} />
-            <Route exact path="/mypage/alert" component={Ready} />
-            <Route exact path="/mypage/bcsetting" component={Ready} />
+            {navigationList.map(value => {
+              const {type, component} = value
+              return <Route exact path={`/mypage/${type}`} component={component} key={type} />
+            })}
             <Redirect to="/error" />
           </Switch>
         </SubContent>
