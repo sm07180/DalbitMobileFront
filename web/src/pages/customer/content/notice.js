@@ -110,6 +110,21 @@ function Notice(props) {
       setNoticeNum(2)
     }
   }
+  //date format
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+  const detailDate = () => {
+    if (noticeDetail.writeDt !== undefined) {
+      timeFormat(noticeDetail.writeDt)
+      return timeFormat(noticeDetail.writeDt)
+    }
+  }
+  detailDate()
   //--------------------------------------------------------
   useEffect(() => {
     fetchData()
@@ -164,7 +179,7 @@ function Notice(props) {
                         {noticeType === 2 ? '이벤트' : ''}
                       </dt>
                       <dd>{title}</dd>
-                      <dd>{writeDt}</dd>
+                      <dd>{timeFormat(writeDt)}</dd>
                     </TableWrap>
                   )}
                   {noticeNum === 0 && (
@@ -174,7 +189,7 @@ function Notice(props) {
                         {noticeType === 2 ? '이벤트' : ''}
                       </dt>
                       <dd>{title}</dd>
-                      <dd>{writeDt}</dd>
+                      <dd>{timeFormat(writeDt)}</dd>
                     </TableWrap>
                   )}
                 </div>
@@ -199,7 +214,7 @@ function Notice(props) {
       <Detail className={Store().noticePage === '' ? 'on' : ''}>
         <header>
           <span>{noticeDetail.title}</span>
-          <span>{noticeDetail.writeDt}</span>
+          <span>{detailDate()}</span>
         </header>
         <div>
           <p>{noticeDetail.contents}</p>
