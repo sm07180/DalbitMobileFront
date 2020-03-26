@@ -1,23 +1,29 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 
 import {IMG_SERVER} from 'context/config'
 
 export default props => {
   const {setPage, records, totalPage, currentPage} = props
-  const MaxPageNumber = useMemo(() => Math.ceil(totalPage / records), [totalPage])
-  const shareByRecords = useMemo(() => Math.ceil(currentPage / records), [currentPage])
-  console.log('share', shareByRecords, totalPage)
 
-  if (records === undefined) {
+  if (setPage === undefined) {
+    throw new Error('Need a setPage func')
+  } else if (records === undefined) {
     throw new Error('Need a records')
   } else if (totalPage === undefined) {
-    throw new Error('Need a total page')
+    throw new Error('Need a totalPage')
   } else if (currentPage === undefined) {
-    throw new Error('Need a current page')
-  } else if (setPage === undefined) {
-    throw new Error('Need a setPage func')
+    throw new Error('Need a currentPage')
   }
+
+  const removedLastDigitPageNumber = useMemo(() => Math.floor(currentPage / records) * records, [currentPage])
+  const NumberOfPageBtn = useMemo(() => {
+    if (totalPage < removedLastDigitPageNumber + records) {
+      return totalPage % records
+    } else {
+      return records
+    }
+  }, [totalPage])
 
   const changePage = pageNumber => {
     if (currentPage !== pageNumber) {
@@ -30,7 +36,7 @@ export default props => {
     }
   }
   const next = () => {
-    if (currentPage < MaxPageNumber) {
+    if (currentPage < totalPage) {
       changePage(currentPage + 1)
     }
   }
@@ -38,12 +44,17 @@ export default props => {
   return (
     <Container>
       <Left onClick={prev} />
-      {[...Array(MaxPageNumber < records ? MaxPageNumber : records).keys()].map(value => (
-        <Page
-          key={value}
-          onClick={() => changePage(currentPage + value)}
-          className={currentPage === value + 1 ? 'active' : ''}></Page>
-      ))}
+      {[...Array(NumberOfPageBtn).keys()].map(value => {
+        const pageNumber = removedLastDigitPageNumber + value + 1
+        return (
+          <Page
+            key={value}
+            onClick={() => changePage(pageNumber)} // !!!
+            className={currentPage == pageNumber ? 'active' : ''}>
+            {pageNumber}
+          </Page>
+        )
+      })}
       <Right onClick={next} />
     </Container>
   )
@@ -87,6 +98,7 @@ const Page = styled.button`
   width: 36px;
   height: 36px;
   margin: 0 4px;
+  user-select: none;
 
   &.active {
     color: #fff;

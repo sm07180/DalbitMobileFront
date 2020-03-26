@@ -40,8 +40,7 @@ export default props => {
         <li>개인정보 자동 수집 장치의 설치/운영 및 거부에 관한 사항</li>
         <li>개인정보관리책임자 및 담당자의 연락처</li>
       </ol>
-      <br />
-      <br />
+
       <ol className="depth1">
         <li>
           수집하고 있는 회원의 개인정보
@@ -248,8 +247,7 @@ export default props => {
           회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다.
         </li>
       </ol>
-      <br />
-      <br />
+
       <p>
         개인정보 보호 책임자
         <br />
@@ -258,7 +256,7 @@ export default props => {
         소속 : 콘텐츠사업부 부장 <br />
         연락처: 02-2052-5900
         <br />
-        E-mail : help@dalbitcast.com
+        E-mail : help@dalbitlive.com
         <br />
         <br />
         기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.

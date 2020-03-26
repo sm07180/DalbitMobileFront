@@ -56,7 +56,7 @@ const Child = () => {
         </li>
         <li>
           <span>제휴/이벤트</span>
-          <a href="mailto:help@dalbitcast.com">help@dalbitcast.com</a>
+          <a href="mailto:help@dalbitcast.com">help@dalbitlive.com</a>
         </li>
       </Info>
     </InfoWrap>
@@ -80,7 +80,9 @@ const Logo = styled.div`
 const Button = styled.button`
   flex-basis: 17.64%;
   height: 36px;
-  background: url(${props => (props.value === true ? `${IMG_SERVER}/images/api/arrow-top.png` : `${IMG_SERVER}/images/api/ico-down.png`)}) no-repeat center center / cover;
+  background: url(${props =>
+      props.value === true ? `${IMG_SERVER}/images/api/arrow-top.png` : `${IMG_SERVER}/images/api/ico-down.png`})
+    no-repeat center center / cover;
 `
 const CopyRight = styled.p`
   margin-top: 40px;

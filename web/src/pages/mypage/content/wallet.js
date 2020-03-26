@@ -15,7 +15,6 @@ import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 
 export default props => {
-  const ctx = useContext(Context)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
   const [totalCoin, setTotalCoin] = useState(null)
@@ -61,8 +60,8 @@ export default props => {
 
         if (list.length) {
           if (paging) {
-            const {total} = paging
-            setTotalPageNumber(total)
+            const {totalPage} = paging
+            setTotalPageNumber(totalPage)
           }
           setListDetailed(list)
         } else {
@@ -114,7 +113,7 @@ export default props => {
 
       <List
         searching={searching}
-        type={coinType}
+        coinType={coinType}
         walletData={listDetailed}
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}
