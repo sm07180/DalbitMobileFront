@@ -33,8 +33,7 @@ export default props => {
   const ctx = useContext(Context)
   const {profile} = ctx
   if (!profile) {
-    props.history.push('/')
-    return <div></div>
+    return props.history.push('/')
   }
 
   const navigationList = [
