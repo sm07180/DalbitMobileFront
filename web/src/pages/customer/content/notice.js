@@ -8,54 +8,31 @@ import React, {useState, useContext, useEffect} from 'react'
 import {Store} from './index'
 import {Context} from 'context'
 import Api from 'context/api'
-import useClick from 'components/hooks/useClick'
-import useChange from 'components/hooks/useChange'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {useHistory} from 'react-router-dom'
 //styled component
 import styled from 'styled-components'
-////////////////////////////////////////////////////////////////////////////////////
-function Pagination(props) {
-  //update
-  function update(mode, e) {
-    switch (true) {
-      case mode.onChange !== undefined: //----------------------------상태변화
-        if (changes.value === '전체') {
-          setNoticeNum(0)
-        }
-        if (changes.value === '공지사항') {
-          setNoticeNum(1)
-        }
-        if (changes.value === '이벤트') {
-          setNoticeNum(2)
-        }
-        break
-      case mode.downDown !== undefined: //----------------------------문의유형선택
-        setIsOpen(false)
-        setChanges({
-          ...changes,
-          type: mode.downDown,
-          value: mode.downDown
-        })
+//ui
+import SelectBoxs from 'components/ui/selectBox.js'
 
-        break
-    }
-  }
+////////////////////////////////////////////////////////////////////////////////////
+function Notice(props) {
+  const selectBoxData = [
+    {value: 0, text: '전체'},
+    {value: 1, text: '공지사항'},
+    {value: 2, text: '이벤트'}
+  ]
+
   //context
   const context = useContext(Context)
   const history = useHistory()
-  const {changes, setChanges, onChange} = useChange(update, {type: '전체', onChange: -1, value: '전체'})
-  //hooks
-  const dropDown1 = useClick(update, {downDown: '전체'})
-  const dropDown2 = useClick(update, {downDown: '공지사항'})
-  const dropDown3 = useClick(update, {downDown: '이벤트'})
-  const [isOpen, setIsOpen] = useState(false)
+
   //notice state
   const [noticeList, setNoticeList] = useState([])
   const [noticeDetail, setNoticeDetail] = useState([])
   const [noticeNum, setNoticeNum] = useState(0)
-  const [PageChange, setPageChange] = useState(0)
+
   //page state
   const [page, setPage] = useState(1)
   const {perPage} = props
@@ -123,7 +100,16 @@ function Pagination(props) {
       fetchData2()
     }
   }
-
+  //set type select
+  const setType = value => {
+    if (value === 0) {
+      setNoticeNum(0)
+    } else if (value === 1) {
+      setNoticeNum(1)
+    } else if (value === 2) {
+      setNoticeNum(2)
+    }
+  }
   //--------------------------------------------------------
   useEffect(() => {
     fetchData()
@@ -158,30 +144,9 @@ function Pagination(props) {
               이벤트
             </button>
           </div>
-          <SelectBox className={isOpen ? 'on' : ''}>
-            <div className="wrap">
-              <label htmlFor="allTerm">{changes.type}</label>
-              <button
-                className={isOpen ? 'on' : 'off'}
-                onClick={() => {
-                  setIsOpen(!isOpen)
-                }}>
-                펼치기
-              </button>
-            </div>
-            {/* DropDown메뉴 */}
-            <div className="dropDown">
-              <a href="#1" {...dropDown1}>
-                전체
-              </a>
-              <a href="#2" {...dropDown2}>
-                공지사항
-              </a>
-              <a href="#3" {...dropDown3}>
-                이벤트
-              </a>
-            </div>
-          </SelectBox>
+          <div className="m-catecory">
+            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
+          </div>
         </ContentInfo>
 
         <PageWrap>
@@ -244,7 +209,7 @@ function Pagination(props) {
     </>
   )
 }
-export default Pagination
+export default Notice
 //styled------------------------------------------------------------------------------------------------------------------
 const List = styled.section`
   display: block;
@@ -416,75 +381,11 @@ const ContentInfo = styled.div`
       }
     }
   }
-`
-const SelectBox = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: none;
-  width: 140px;
-  overflow: hidden;
-  z-index: 11;
-  border: 1px solid ${COLOR_MAIN};
-  @media (max-width: ${WIDTH_MOBILE}) {
-    display: block;
-  }
-  .dropDown {
-    a {
-      display: block;
-      font-size: 14px;
-      padding: 12px;
 
-      color: #878787;
-      display: none;
-      background-color: white;
-      z-index: 11;
-    }
-    a:hover {
-      color: ${COLOR_MAIN};
-      background-color: #f8f8f8;
-    }
-  }
-  &.on {
-    /* 높이조절 */
-    /* height: 253px; */
-    a {
+  & .m-catecory {
+    display: none;
+    @media (max-width: ${WIDTH_MOBILE}) {
       display: block;
     }
-  }
-  .wrap {
-    position: relative;
-
-    * {
-      line-height: 24px;
-      vertical-align: top;
-    }
-    button {
-      position: absolute;
-      right: 2px;
-      top: 2px;
-      width: 36px;
-      height: 36px;
-      text-indent: -9999px;
-    }
-
-    label {
-      display: inline-block;
-      font-size: 14px !important;
-      color: ${COLOR_MAIN};
-      transform: skew(-0.03deg);
-    }
-  }
-  & > div:first-child > button {
-    background: url(${IMG_SERVER}/images/api/ic_arrow_down_purple.png) no-repeat center;
-    transform: rotate(0deg);
-    /* transition: transform 0.3s ease-in-out; */
-
-    &.on {
-      transform: rotate(180deg);
-    }
-  }
-  & > div:first-child {
-    padding: 8.5px 12px 8.5px 12px;
   }
 `

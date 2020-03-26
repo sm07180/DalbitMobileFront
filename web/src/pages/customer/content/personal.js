@@ -15,8 +15,20 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
-//
+//ui
+import SelectBoxs from 'components/ui/selectBox.js'
 export default props => {
+  const [faqNum, setfaqNum] = useState('')
+  const selectBoxData = [
+    {value: 0, text: '선택하세요'},
+    {value: 1, text: '회원정보'},
+    {value: 2, text: '방송'},
+    {value: 3, text: '청취'},
+    {value: 4, text: '결제'},
+    {value: 5, text: '건의'},
+    {value: 6, text: '장애/버그'},
+    {value: 7, text: '선물/아이'}
+  ]
   //--------------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -124,15 +136,21 @@ export default props => {
       }
     }
   }
+  //set type select
+  const setType = value => {}
+  //
   //useEffect
   useEffect(() => {}, [])
   //--------------------------------------------------------------------------
   return (
-    <Content>
+    <Content
+      onClick={() => {
+        setIsOpen(!isOpen)
+      }}>
       <dl>
         <dt>문의 유형 선택</dt>
         <dd>
-          <SelectBox className={isOpen ? 'on' : ''}>
+          {/* <SelectBox className={isOpen ? 'on' : ''}>
             <div className="wrap">
               <label htmlFor="allTerm">{changes.questionName}</label>
               <button
@@ -142,9 +160,9 @@ export default props => {
                 }}>
                 펼치기
               </button>
-            </div>
-            {/* DropDown메뉴 */}
-            <div className="dropDown">
+            </div> */}
+          {/* DropDown메뉴 */}
+          {/* <div className="dropDown">
               <a href="#1" {...dropDown1}>
                 회원정보
               </a>
@@ -167,7 +185,16 @@ export default props => {
                 선물/아이
               </a>
             </div>
-          </SelectBox>
+          </SelectBox> */}
+          <Select
+            className={isOpen ? 'on' : 'off'}
+            onClick={() => {
+              setIsOpen(!isOpen)
+            }}>
+            <div className="selectwrap">
+              <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
+            </div>
+          </Select>
         </dd>
       </dl>
       <dl>
@@ -308,7 +335,43 @@ const Content = styled.div`
     background-color: #ffffff;
     box-sizing: border-box;
   }
+  & .selectwrap {
+    position: relative;
+    & > div:nth-child(1) {
+      position: relative;
+    }
+    & > div {
+      width: 328px;
+    }
+    & > div > div {
+      width: 328px;
+      color: #616161;
+      border-color: #e0e0e0 !important;
+
+      :after {
+        background-color: #e0e0e0;
+      }
+      :before {
+        background-color: #e0e0e0;
+      }
+    }
+  }
+  & > {
+  }
 `
+const Select = styled.div`
+  width: 328px;
+  overflow: hidden;
+  position: relative;
+  height: 52px;
+  transition: height 0.5s ease-in-out;
+  z-index: 12;
+  &.on {
+    /* 높이조절 */
+    height: 378px;
+  }
+`
+
 const SelectBox = styled.div`
   width: 200px;
   overflow: hidden;
