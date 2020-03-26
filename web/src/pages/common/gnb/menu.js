@@ -77,7 +77,7 @@ export default props => {
                     msg: `서비스 준비중입니다.`
                   })
                 }}>
-                달빛라디오 앱 설치하기
+                달빛라이브 앱 설치하기
               </button>
             )}
           </CONTENT>
