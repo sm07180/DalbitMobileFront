@@ -21,7 +21,7 @@ export default props => {
     {title: '스토어', url: '/store'},
     //{title: '이벤트', url: '/event'},
     {title: '고객센터', url: '/customer/'},
-    {title: '설정', url: '/store?설정'}
+    {title: '설정', url: '/setting'}
   ]
   const makeNavi = () => {
     return info.map((list, idx) => {
