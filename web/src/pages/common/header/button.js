@@ -128,16 +128,16 @@ const GnbButton = styled.div`
       width: 43px;
       height: 43px;
     }
-    button:nth-child(1) {
+    button.type1 {
       background: url(${IMG_SERVER}/svg/ic_search_normal_w.svg) no-repeat center / cover;
     }
-    button:nth-child(2) {
+    button.type2 {
       background: url(${IMG_SERVER}/svg/ic_alarm_w.svg) no-repeat center / cover;
     }
-    button:nth-child(3) {
+    button.type3 {
       background: url(${IMG_SERVER}/svg/ic_user_normal_w.svg) no-repeat center / cover;
     }
-    button:nth-child(4) {
+    button.type4 {
       background: url(${IMG_SERVER}/svg/ic_menu_normal_w.svg) no-repeat center / cover;
     }
   }
