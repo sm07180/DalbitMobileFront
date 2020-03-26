@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -13,23 +12,25 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = new useContext(Context)
+  //useState
+  const [fetch, setFetch] = useState(null)
   const [notice, setNotice] = useState([])
   const [result, setResult] = useState() //1 : 알림이 없습니다 //2 : 로그인이 필요합니다
 
   //---------------------------------------------------------------------
   //map
-  const arrayNotice = notice.map((item, index) => {
-    const {id, title, url} = item
-    return (
-      <InfoWrap key={index}>
-        <IMG bg={url}></IMG>
-        <TALK>
-          {title}
-          <span>13시간 전</span>
-        </TALK>
-      </InfoWrap>
-    )
-  })
+  // const arrayNotice = fetch.map((item, index) => {
+  //   const {id, title, url} = item
+  //   return (
+  //     <InfoWrap key={index}>
+  //       <IMG bg={url}></IMG>
+  //       <TALK>
+  //         {title}
+  //         <span>13시간 전</span>
+  //       </TALK>
+  //     </InfoWrap>
+  //   )
+  // })
 
   async function fetchData(obj) {
     const res = await Api.my_notification({
@@ -38,19 +39,34 @@ export default props => {
         records: 10
       }
     })
+    console.log(res)
     if (res.result === 'success') {
-      if (res.data == undefined) {
-        setResult(1)
-      } else {
-        setNotice(res.data.list)
-      }
-    } else if (res.result === 'fail' && res.code === '-1') {
-      setResult(2)
-    } else {
-      console.log('오류', res)
+      setFetch(res.data.list)
+      // if (res.data == undefined) {
+      //   setResult(1)
+      // } else {
+      //   setNotice(res.data.list)
+      // }
+    } else if (res.result === 'fail') {
+      //에러메시지
+      context.action.alert({
+        title: res.messageKey,
+        msg: res.message
+      })
     }
   }
-
+  //makeContents
+  const makeContents = () => {
+    if (fetch === null) return '알림이 없습니다.'
+    return fetch.map((item, index) => {
+      const {id, contents, url} = item
+      return (
+        <InfoWrap key={index}>
+          <TALK>{contents}</TALK>
+        </InfoWrap>
+      )
+    })
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
@@ -66,7 +82,8 @@ export default props => {
             <Title>알림사항</Title>
           </Nheader>
           <CONTENT>
-            {arrayNotice && result == 2 ? (
+            {makeContents()}
+            {/* {arrayNotice && result == 2 ? (
               <p
                 className="result login"
                 onClick={() => {
@@ -76,7 +93,7 @@ export default props => {
               </p>
             ) : (
               <p className="result">알림이 없습니다.</p>
-            )}
+            )} */}
           </CONTENT>
         </NoticeWrap>
       </Gnb>
