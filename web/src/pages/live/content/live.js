@@ -155,7 +155,7 @@ const TopArea = styled.div`
 
     & > div > span {
       display: flex;
-      width: 119px;
+      width: 140px;
       height: 26px;
       font-size: 24px;
       font-weight: 600;
