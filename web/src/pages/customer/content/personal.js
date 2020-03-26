@@ -1,11 +1,10 @@
 /**
- * @file notice.js
- * @brief 공지사항탭 컨텐츠
+ * @file 1:1문의
+ * @brief 1:1 문의
  *
  */
 import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN} from 'context/color'
@@ -47,6 +46,9 @@ export default props => {
         msg: res.message
       })
     } else if (res.result === 'success') {
+      context.action.alert({
+        msg: res.message
+      })
     }
     console.log(res)
   }
@@ -68,7 +70,7 @@ export default props => {
         setIsOpen(false)
         setChanges({
           ...changes,
-          questionType: mode.downDown,
+          qnaType: mode.downDown,
           questionName: mode.questionName
         })
         break
@@ -76,14 +78,49 @@ export default props => {
   }
   // input file에서 이미지 업로드했을때 파일객체 dataURL로 값 셋팅
   function uploadSingleFile(e) {
+    const target = e.currentTarget
     let reader = new FileReader()
-    reader.readAsDataURL(e.target.files[0])
-    reader.onload = function() {
+    const file = target.files[0]
+    const fileName = file.name
+    const fileSplited = fileName.split('.')
+    const fileExtension = fileSplited.pop()
+    //
+    const extValidator = ext => {
+      const list = ['jpg', 'jpeg', 'png']
+      return list.includes(ext)
+    }
+    if (!extValidator(fileExtension)) {
+      return context.action.alert({
+        msg: 'jpg, png 이미지만 사용 가능합니다.',
+        title: '',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
+    reader.readAsDataURL(target.files[0])
+    reader.onload = async () => {
       if (reader.result) {
-        setChanges({
-          ...changes,
-          questionFile: reader.result
+        const res = await Api.image_upload({
+          data: {
+            dataURL: reader.result,
+            uploadType: 'qna'
+          }
         })
+        if (res.result === 'success') {
+          setChanges({
+            ...changes,
+            questionFile: res.data.path
+          })
+        } else {
+          context.action.alert({
+            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+            title: '',
+            callback: () => {
+              context.action.alert({visible: false})
+            }
+          })
+        }
       }
     }
   }
@@ -167,7 +204,7 @@ export default props => {
               type="file"
               name="imgUpload"
               id="imgUpload"
-              accept=".gif, .jpg, .png"
+              accept="image/jpg, image/jpeg, image/png"
               onChange={e => {
                 uploadSingleFile(e)
               }}

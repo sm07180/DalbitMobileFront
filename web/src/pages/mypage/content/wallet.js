@@ -21,10 +21,10 @@ export default props => {
   const [totalCoin, setTotalCoin] = useState(null)
   const [searching, setSearching] = useState(true)
 
+  const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
+  const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-  const [records, setRecords] = useState(null)
-
-  const [listDetailed, setListDetailed] = useState([])
+  const records = 10
 
   const changeCoinTypeClick = type => {
     setCoinType(type)
@@ -51,7 +51,8 @@ export default props => {
       })
 
       if (response.result === 'success') {
-        const {list, dalTotCnt, byeolTotCnt} = response.data
+        const {list, dalTotCnt, byeolTotCnt, paging} = response.data
+
         if (coinType === 'dal') {
           setTotalCoin(dalTotCnt)
         } else if (coinType === 'byeol') {
@@ -59,6 +60,10 @@ export default props => {
         }
 
         if (list.length) {
+          if (paging) {
+            const {total} = paging
+            setTotalPageNumber(total)
+          }
           setListDetailed(list)
         } else {
           setListDetailed(false)
@@ -66,7 +71,7 @@ export default props => {
         setSearching(false)
       }
     })()
-  }, [coinType, walletType])
+  }, [coinType, walletType, page])
 
   return (
     <div>
@@ -116,14 +121,7 @@ export default props => {
       />
 
       {Array.isArray(listDetailed) && listDetailed.length > 0 && (
-        <Paging
-          prevClickEvent={() => {}}
-          nextClickEvent={() => {}}
-          btnClickEvent={() => {}}
-          totalPage={3}
-          currentPage={1}
-          currentIdx={1}
-        />
+        <Paging setPage={setPage} records={records} totalPage={totalPageNumber} currentPage={page} />
       )}
     </div>
   )

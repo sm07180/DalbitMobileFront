@@ -14,7 +14,7 @@ export default props => {
 
   const selectBoxList = (value, idx) => {
     onChangeEvent(value)
-    setSelectedIdx(value)
+    setSelectedIdx(idx)
   }
 
   const selectBlurEvent = () => {
@@ -40,7 +40,11 @@ export default props => {
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
           return (
-            <div className="box-list" key={index} onMouseDown={() => selectBoxList(instance.value, index)}>
+            <div
+              className="box-list"
+              key={index}
+              onMouseDown={() => selectBoxList(instance.value, index)}
+              onTouchStart={() => selectBoxList(instance.value, index)}>
               {instance.text}
             </div>
           )

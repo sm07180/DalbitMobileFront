@@ -4,7 +4,7 @@
  * @todo 반응형으로 처리되어야함
  */
 import React, {useEffect, useContext} from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
@@ -15,7 +15,7 @@ import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //socket
 const sc = require('context/socketCluster')
-
+let history
 /**
  * @title 방송하기 유효성체크
  */
@@ -160,7 +160,14 @@ export const BroadValidation = () => {
           })
         }
       }
-      fetchData()
+      //본인인증 체크 후 fetchData 진행
+      if (context.state.selfAuth) {
+        fetchData()
+      } else {
+        history.push('/user/selfAuth', {
+          type: 'cast'
+        })
+      }
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
@@ -172,6 +179,7 @@ const Navi = props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  history = useHistory()
   Navi.context = () => context
   Navi.history = () => props.history
   //data
