@@ -133,7 +133,7 @@ export default props => {
       <div className="top-wrap">
         <div className="title-btn">
           <h2>랭킹</h2>
-          <span
+          {/* <span
             onClick={() => {
               //props.history.push('/ranking')
               context.action.alert({
@@ -141,7 +141,7 @@ export default props => {
               })
             }}>
             더보기
-          </span>
+          </span> */}
         </div>
         <div className="change-btn">
           <button name="dj" className={`${rankingType == 'dj' ? 'on' : 'off'}`} onClick={handleTypeChange}>
