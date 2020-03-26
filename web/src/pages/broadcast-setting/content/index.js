@@ -53,7 +53,22 @@ export default props => {
     })
   }
   const makeRadios = () => {
-    const info = ['일상/챗', ' 연애/오락', '노래/연주', '고민/사연', '책/힐링', '스포츠', 'ASMR', '노래방', '건강', '공포', '먹방', '성우', '요리', '기타']
+    const info = [
+      '일상/챗',
+      ' 연애/오락',
+      '노래/연주',
+      '고민/사연',
+      '책/힐링',
+      '스포츠',
+      'ASMR',
+      '노래방',
+      '건강',
+      '공포',
+      '먹방',
+      '성우',
+      '요리',
+      '기타'
+    ]
     let leadingZeros = (n, digits) => {
       var zero = ''
       n = n.toString()
@@ -180,6 +195,7 @@ export default props => {
           console.log('room_create revData = ' + res.data)
           context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
           context.action.updateBroadcastTotalInfo(res.data)
+          context.action.updateReloadType(2)
           props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
         } else {
         }
@@ -204,6 +220,7 @@ export default props => {
             console.log('room_create revData = ' + res.data)
             context.action.updateCastState(res.data.roomNo) //헤더 방송중-방송하기표현
             context.action.updateBroadcastTotalInfo(res.data)
+            context.action.updateReloadType(2)
             props.history.push('/broadcast/' + '?roomNo=' + res.data.roomNo, res.data)
           } else {
           }

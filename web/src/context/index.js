@@ -39,6 +39,8 @@ const GlobalProvider = props => {
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   const [common, setCommon] = useState() //공통코드
   const [search, setSearch] = useState('')
+  const [roomReady, setRoomReady] = useState(false)
+  const [reloadType, setReloadType] = useState(0)
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -182,6 +184,12 @@ const GlobalProvider = props => {
     },
     updateSearch: str => {
       setSearch(str)
+    },
+    updateRoomReady: bool => {
+      setRoomReady(bool)
+    },
+    updateReloadType: num => {
+      setReloadType(num)
     }
   }
   //---------------------------------------------------------------------
@@ -205,7 +213,9 @@ const GlobalProvider = props => {
     cast_state,
     common,
     search,
-    action
+    action,
+    roomReady,
+    reloadType
   }
   return <Provider value={value}>{props.children}</Provider>
 }

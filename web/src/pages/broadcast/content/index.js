@@ -19,6 +19,7 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 //components
 import useResize from 'components/hooks/useResize'
 import ChatUI from './chat-ui'
+import {setSesstionStorage, getSesstionStorage} from 'components/lib/sesstionStorageCtl'
 
 const sc = require('context/socketCluster')
 import SideContent from './tab'
@@ -50,22 +51,22 @@ export default props => {
   // const guestRole = ?
   const listenerRole = 0
   //---------------------------------------------------------------------
-  if (!broadcastTotalInfo && !getBoradInfo) {
-    ;(async () => {
-      getBoradInfo = true
-      const data = await roomCheck(roomNo, context, () => {
-        props.history.push('/live')
-      })
-      if (data) {
-        if (isHybrid()) {
-          Hybrid('RoomJoin', data)
-          props.history.goBack()
-        } else {
-          context.action.updateBroadcastTotalInfo(data)
-        }
-      }
-    })()
-  }
+  // if (!broadcastTotalInfo && !getBoradInfo) {
+  //   ;(async () => {
+  //     getBoradInfo = true
+  //     const data = await roomCheck(roomNo, context, () => {
+  //       props.history.push('/live')
+  //     })
+  //     if (data) {
+  //       if (isHybrid()) {
+  //         Hybrid('RoomJoin', data)
+  //         props.history.goBack()
+  //       } else {
+  //         context.action.updateBroadcastTotalInfo(data)
+  //       }
+  //     }
+  //   })()
+  // }
   //---------------------------------------------------------------------
 
   const [publishStatus, setPublishStatus] = useState(false)
@@ -183,18 +184,27 @@ export default props => {
   useEffect(() => {
     if (authValue === null) {
     } else if (authValue === hostRole) {
-      getReToken(roomNo)
+      //getReToken(roomNo)            //20200326 - 김호겸 -> 방생성 후 reToken 받으면서 해당 방이 꺼지면서 플레이어가 생기지만 플레이어 누르면 죽어버림
     } else {
       document.addEventListener('keydown', function(e) {
         if (e.key == 'F5') {
-          reloadRoom(roomNo)
+          //reloadRoom(roomNo)
         } else {
         }
         return () => document.removeEventListener('keydown')
       })
     }
     console.log('방송방 진입해서 private chennel 입장 ')
-    sc.socketClusterBinding(context.broadcastTotalInfo.roomNo, context)
+    if (context.broadcastTotalInfo === null || context.broadcastTotalInfo === undefined) {
+      const aaa = getSesstionStorage('userInfo')
+      if (aaa) {
+        console.log(aaa)
+        sc.socketClusterBinding(aaa.roomNo)
+      }
+    } else {
+      sc.socketClusterBinding(context.broadcastTotalInfo.roomNo)
+    }
+
     //connect()
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
