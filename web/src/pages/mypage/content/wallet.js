@@ -24,7 +24,7 @@ export default props => {
   const [page, setPage] = useState(1)
   const [records, setRecords] = useState(null)
 
-  const [listDetailed, setListDetailed] = useState([])
+  const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
 
   const changeCoinTypeClick = type => {
     setCoinType(type)
