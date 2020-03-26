@@ -53,19 +53,25 @@ export default props => {
     } else {
       console.log(code)
       sessionStorage.clear()
-      // if (code === '-2' ) {
-      //   console.log(ctx.roomReady)
-      //   ctx.action.updateRoomReady(false)
-      //   props.history.goBack()
-      // } else {
-      if (code === '-2' || code === '-3' || code === '-4' || code === '-5')
+      if (code === '-4') {
+        // const roomExit = await Api.broad_exit(obj)
+        // if (roomExit.result === 'success') {
+        //   const resRoomJoin = await Api.broad_join(obj)
+        //   if (roomJoin.result === 'success') {
+        //     return roomJoin.data
+        //   }
+        // }
+        //   console.log(ctx.roomReady)
+        //   ctx.action.updateRoomReady(false)
+        //   props.history.goBack()
+      } else if (code === '-2' || code === '-3' || code === '-5') {
         ctx.action.alert({
           callback: () => {
             props.history.goBack()
           },
           msg: message
         })
-      // }
+      }
     }
   }
 
