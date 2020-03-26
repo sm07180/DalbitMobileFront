@@ -41,6 +41,8 @@ const NotFoundPage = React.lazy(() => import('pages/common/error'))
 const Live = React.lazy(() => import('pages/live'))
 //customer-service
 const Customer = React.lazy(() => import('pages/customer'))
+//setting
+const Setting = React.lazy(() => import('pages/setting'))
 
 export default () => {
   return (
@@ -69,6 +71,7 @@ export default () => {
         <Route exact path="/search" component={Search} />
         <Route exact path="/customer" component={Customer} />
         <Route exact path="/customer/:num" component={Customer} />
+        <Route exact path="/setting" component={Setting} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
         {/* navigator */}

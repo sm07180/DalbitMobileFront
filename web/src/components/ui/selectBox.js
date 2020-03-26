@@ -105,7 +105,7 @@ const SelectListWrap = styled.div`
     font-size: 16px;
     background-color: #fff;
     box-sizing: border-box;
-
+    transform: skew(-0.03deg);
     &:hover {
       color: #8556f6;
       background-color: #f8f8f8;
@@ -165,4 +165,5 @@ const SelectBoxWrap = styled.div`
   position: absolute;
   cursor: pointer;
   user-select: none;
+  z-index: 11;
 `

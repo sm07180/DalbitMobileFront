@@ -10,54 +10,23 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-//hooks
-import useClick from 'components/hooks/useClick'
-import useChange from 'components/hooks/useChange'
 //styled component
 import styled from 'styled-components'
+//ui
+import SelectBoxs from 'components/ui/selectBox.js'
 //----------------------------------------------------------
 
 function Faq(props) {
-  function update(mode, e) {
-    switch (true) {
-      case mode.onChange !== undefined: //----------------------------상태변화
-        if (changes.value === '전체') {
-          setfaqNum(0)
-        }
-        if (changes.value === '일반') {
-          setfaqNum(1)
-        }
-        if (changes.value === '방송') {
-          setfaqNum(2)
-        }
-        if (changes.value === '결제') {
-          setfaqNum(3)
-        }
-        if (changes.value === '기타') {
-          setfaqNum(4)
-        }
-        break
-      case mode.downDown !== undefined: //----------------------------문의유형선택
-        setIsOpen(false)
-        setChanges({
-          ...changes,
-          type: mode.downDown,
-          value: mode.downDown
-        })
+  const selectBoxData = [
+    {value: 0, text: '전체'},
+    {value: 1, text: '일반'},
+    {value: 2, text: '방송'},
+    {value: 3, text: '결제'},
+    {value: 4, text: '기타'}
+  ]
 
-        break
-    }
-  }
   //context
   const context = useContext(Context)
-  const {changes, setChanges, onChange} = useChange(update, {type: '전체', onChange: -1, value: '전체'})
-  //hooks
-  const dropDown1 = useClick(update, {downDown: '전체'})
-  const dropDown2 = useClick(update, {downDown: '일반'})
-  const dropDown3 = useClick(update, {downDown: '방송'})
-  const dropDown4 = useClick(update, {downDown: '결제'})
-  const dropDown5 = useClick(update, {downDown: '기타'})
-  const [isOpen, setIsOpen] = useState(false)
   //faq state
   const [faqList, setFaqList] = useState([])
   const [faqDetail, setFaqDetail] = useState([])
@@ -138,6 +107,21 @@ function Faq(props) {
       Store().action.updatefaqPage('')
     }
   }
+
+  //set type select
+  const setType = value => {
+    if (value === 0) {
+      setfaqNum(0)
+    } else if (value === 1) {
+      setfaqNum(1)
+    } else if (value === 2) {
+      setfaqNum(2)
+    } else if (value === 3) {
+      setfaqNum(3)
+    } else if (value === 4) {
+      setfaqNum(4)
+    }
+  }
   //--------------------------------------------------------
   useEffect(() => {
     fetchData()
@@ -178,36 +162,9 @@ function Faq(props) {
             기타
           </button>
         </div>
-        <SelectBox className={isOpen ? 'on' : ''}>
-          <div className="wrap">
-            <label htmlFor="allTerm">{changes.type}</label>
-            <button
-              className={isOpen ? 'on' : 'off'}
-              onClick={() => {
-                setIsOpen(!isOpen)
-              }}>
-              펼치기
-            </button>
-          </div>
-          {/* DropDown메뉴 */}
-          <div className="dropDown">
-            <a href="#1" {...dropDown1}>
-              전체
-            </a>
-            <a href="#2" {...dropDown2}>
-              일반
-            </a>
-            <a href="#3" {...dropDown3}>
-              방송
-            </a>
-            <a href="#3" {...dropDown4}>
-              결제
-            </a>
-            <a href="#3" {...dropDown5}>
-              기타
-            </a>
-          </div>
-        </SelectBox>
+        <div className="m-catecory">
+          <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
+        </div>
       </ContentInfo>
 
       <PageWrap>
@@ -466,76 +423,10 @@ const ContentInfo = styled.div`
       }
     }
   }
-`
-
-const SelectBox = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: none;
-  width: 140px;
-  overflow: hidden;
-  z-index: 11;
-  border: 1px solid ${COLOR_MAIN};
-  @media (max-width: ${WIDTH_MOBILE}) {
-    display: block;
-  }
-  .dropDown {
-    a {
-      display: block;
-      font-size: 14px;
-      padding: 12px;
-
-      color: #878787;
-      display: none;
-      background-color: white;
-      z-index: 11;
-    }
-    a:hover {
-      color: ${COLOR_MAIN};
-      background-color: #f8f8f8;
-    }
-  }
-  &.on {
-    /* 높이조절 */
-    /* height: 253px; */
-    a {
+  & .m-catecory {
+    display: none;
+    @media (max-width: ${WIDTH_MOBILE}) {
       display: block;
     }
-  }
-  .wrap {
-    position: relative;
-
-    * {
-      line-height: 24px;
-      vertical-align: top;
-    }
-    button {
-      position: absolute;
-      right: 2px;
-      top: 2px;
-      width: 36px;
-      height: 36px;
-      text-indent: -9999px;
-    }
-
-    label {
-      display: inline-block;
-      font-size: 14px !important;
-      color: ${COLOR_MAIN};
-      transform: skew(-0.03deg);
-    }
-  }
-  & > div:first-child > button {
-    background: url(${IMG_SERVER}/images/api/ic_arrow_down_purple.png) no-repeat center;
-    transform: rotate(0deg);
-    /* transition: transform 0.3s ease-in-out; */
-
-    &.on {
-      transform: rotate(180deg);
-    }
-  }
-  & > div:first-child {
-    padding: 8.5px 12px 8.5px 12px;
   }
 `
