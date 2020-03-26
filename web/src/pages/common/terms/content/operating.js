@@ -399,10 +399,12 @@ const Content = styled.div`
   }
   ol.depth4 {
     margin-left: -15px;
+    counter-reset: depth4;
     li {
       color: #616161;
     }
     li:before {
+      counter-increment: depth4;
       left: 4px;
       content: '-';
     }
