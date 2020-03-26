@@ -61,8 +61,8 @@ export default props => {
 
         if (list.length) {
           if (paging) {
-            const {total} = paging
-            setTotalPageNumber(total)
+            const {totalPage} = paging
+            setTotalPageNumber(totalPage)
           }
           setListDetailed(list)
         } else {
