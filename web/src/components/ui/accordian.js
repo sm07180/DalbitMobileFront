@@ -41,7 +41,7 @@ const Wrap = styled.section`
   & .accordion {
     color: #444;
     cursor: pointer;
-    padding: 18px;
+    padding: 18px 10px;
     display: flex;
     align-items: center;
     border-bottom: solid 1px #f5f5f5;
