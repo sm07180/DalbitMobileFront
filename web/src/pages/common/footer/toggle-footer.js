@@ -14,7 +14,7 @@ export default props => {
     if (props.Ftype === 'mainFooter') {
       setShow(true)
     } else {
-      setShow(false)
+      setShow(true)
     }
   }
   useEffect(() => {
