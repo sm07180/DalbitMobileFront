@@ -49,15 +49,14 @@ export default props => {
           </SearchList>
         ) : Array.isArray(walletData) ? (
           walletData.map((data, index) => {
-            console.log(data)
-            const {contents, walletType, dalCnt, byeolCnt, updatedDt} = data
+            const {contents, walletType, dalCnt, byeolCnt, updateDt} = data
 
             return (
               <div className="list" key={index}>
                 <span className={`how-to-get type-${walletType}`}>{selectWalletTypeData[walletType]['text']}</span>
                 <span className="detail">{contents}</span>
                 <span className="type">{`${returnCoinText(coinType)} ${dalCnt !== undefined ? dalCnt : byeolCnt}`}</span>
-                <span className="date">{timeFormat(data.updateDt)}</span>
+                <span className="date">{timeFormat(updateDt)}</span>
               </div>
             )
           })

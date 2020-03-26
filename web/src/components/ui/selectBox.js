@@ -165,5 +165,4 @@ const SelectBoxWrap = styled.div`
   position: absolute;
   cursor: pointer;
   user-select: none;
-  z-index: 11;
 `

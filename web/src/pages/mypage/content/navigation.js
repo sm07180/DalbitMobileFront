@@ -3,27 +3,18 @@ import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
+import {WIDTH_PC} from 'context/config'
 
 export default props => {
-  const category = true
-    ? [
-        {txt: '공지사항', route: 'notice'},
-        {txt: '팬 보드', route: 'fanboard'},
-        {txt: '캐스트', route: 'cast'},
-        {txt: '내 지갑', route: 'wallet'},
-        {txt: '리포트', route: 'report'},
-        {txt: '알림', route: 'alert'},
-        {txt: '방송 설정', route: 'bcsetting'}
-      ]
-    : [{}]
+  const {list} = props
 
   return (
     <Navigation>
-      {category.map((bundle, index) => {
+      {list.map((bundle, index) => {
+        const {type, txt} = bundle
         return (
-          <NavLink to={`/mypage/${bundle.route}`} activeClassName="active" key={index}>
-            <TabText>{bundle.txt}</TabText>
+          <NavLink to={`/mypage/${type}`} activeClassName="active" key={index}>
+            <TabText>{txt}</TabText>
           </NavLink>
         )
       })}
