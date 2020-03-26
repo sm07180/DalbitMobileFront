@@ -6,22 +6,27 @@ import SuccessPopup from './charge-success-popup'
 import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import _ from 'lodash'
-const testData = [
+import Api from 'context/api'
+const chargeData = [
   {
     id: 0,
-    type: '신용카드 결제'
+    type: '신용카드 결제',
+    fetch: 'pay_card'
   },
   {
     id: 1,
-    type: '휴대폰 결제'
+    type: '휴대폰 결제',
+    fetch: 'pay_phone'
   },
   {
     id: 2,
-    type: '무통장 입금(계좌이체)'
+    type: '무통장 입금(계좌이체)',
+    fetch: 'pay_virtual'
   },
   {
     id: 3,
-    type: '실시간 계좌이체'
+    type: '실시간 계좌이체',
+    fetch: 'pay_bank'
   }
 ]
 
@@ -74,20 +79,15 @@ export default props => {
   }
 
   const doCharge = () => {
-    // 충전하기 api 통신 후 success 받으면 화면 전환 or 이니시스 모듈 페이지 리다이렉트
-    // 본인인증 되어있는 상태인지 먼저 확인
-    // console.log('본인인증여부확인', context.state.selfAuth)
-    // console.log('props.history', props.history)
     if (context.state.selfAuth) {
-      //결제 api 붙이면되고
-      console.log('결제')
+      console.log('결제 아이디', chargeData[charge].fetch)
+      payFetch()
     } else {
       context.action.updatePopupVisible(false)
       props.history.push('/user/selfAuth', {
         type: 'charge'
       })
     }
-    //setConfirm(true)
   }
 
   // 무통장입금 - 현금영수증 Component
@@ -145,6 +145,51 @@ export default props => {
     )
   }
 
+  //--------------------------------------------------------
+  //fetch
+
+  async function payFetch() {
+    const type = chargeData[charge].fetch
+    const obj = {
+      data: {
+        Prdtnm: context.popup_code[1].name,
+        Prdtprice: context.popup_code[1].price
+      }
+    }
+    let res = null
+    switch (type) {
+      case 'pay_card':
+        res = await Api.pay_card({...obj})
+        break
+      case 'pay_phone':
+        res = await Api.pay_phone({...obj})
+        break
+      case 'pay_virtual':
+        res = await Api.pay_virtual({...obj})
+        break
+      case 'pay_bank':
+        res = await Api.pay_bank({...obj})
+        break
+
+      default:
+        break
+    }
+
+    if (!_.hasIn(res, 'result')) {
+      if (res.result === 'sucess' && _.hasIn(res, 'data')) {
+        console.log('res성공', res)
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    } else {
+      context.action.alert({
+        msg: `${res.status} ${res.error} ${res.message}`
+      })
+    }
+  }
+
   //-------------------------------------------------------- components start
   return (
     <Container>
@@ -174,7 +219,7 @@ export default props => {
               <Payment>
                 <div className="subTitle">결제수단</div>
                 <ItemArea>
-                  {testData.map((data, idx) => {
+                  {chargeData.map((data, idx) => {
                     return (
                       <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
                         {data.type}
