@@ -126,10 +126,10 @@ export default props => {
   //----------------------------------------------------------- components start
   return (
     <Container>
-      <h2>라이브</h2>
+      {/* <h2>라이브</h2> */}
       <Wrap>
         <MainContents>
-          <TopRank broadList={list} joinRoom={joinRoom} width={width} />
+          {/* <TopRank broadList={list} joinRoom={joinRoom} width={width} /> */}
           <Live
             broadList={list}
             joinRoom={joinRoom}

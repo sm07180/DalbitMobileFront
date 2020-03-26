@@ -11,6 +11,7 @@ import Gnb from './gnb-layout'
 
 export default props => {
   //---------------------------------------------------------------------
+  //context
   const context = new useContext(Context)
   const [notice, setNotice] = useState([])
   const [result, setResult] = useState() //1 : 알림이 없습니다 //2 : 로그인이 필요합니다

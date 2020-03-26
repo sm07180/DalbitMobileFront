@@ -31,7 +31,7 @@ export default props => {
         <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
           <LinkLi
             onClick={event => {
-              if (_url == '/cast' || _url == '/ranking' || _url == '/event' || _url == '/customer' || _url == '/store?설정') {
+              if (_url == '/cast' || _url == '/ranking' || _url == '/event' || _url == '/customer') {
                 event.preventDefault()
                 context.action.alert({
                   msg: '서비스 준비중입니다.'
