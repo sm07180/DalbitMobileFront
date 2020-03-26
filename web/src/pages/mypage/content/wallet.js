@@ -114,7 +114,7 @@ export default props => {
 
       <List
         searching={searching}
-        type={coinType}
+        coinType={coinType}
         walletData={listDetailed}
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}

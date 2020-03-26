@@ -6,21 +6,29 @@ import SelectBox from 'components/ui/selectBox.js'
 import {IMG_SERVER} from 'context/config'
 
 export default props => {
-  const {searching, type, walletData, returnCoinText, setWalletType} = props
+  const {searching, coinType, walletData, returnCoinText, setWalletType} = props
 
-  const selectBoxData = [
+  const selectWalletTypeData = [
     {value: 0, text: '전체'},
     {value: 1, text: '구매'},
     {value: 2, text: '선물'},
     {value: 3, text: '교환'}
   ]
 
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
   return (
     <ListContainer>
-      <SelectBox boxList={selectBoxData} onChangeEvent={setWalletType} inlineStyling={{right: 0, top: 0}} />
+      <SelectBox boxList={selectWalletTypeData} onChangeEvent={setWalletType} inlineStyling={{right: 0, top: 0}} />
       <TopArea>
         <span className="title">
-          <span className="main">{`${returnCoinText(type)} 상세내역`}</span>
+          <span className="main">{`${returnCoinText(coinType)} 상세내역`}</span>
           <span className="sub">(최근 6개월)</span>
         </span>
       </TopArea>
@@ -29,7 +37,7 @@ export default props => {
         <div className="list title">
           <span className="how-to-get">구분</span>
           <span className="detail">내역</span>
-          <span className="type">{returnCoinText(type)}</span>
+          <span className="type">{returnCoinText(coinType)}</span>
           <span className="date">날짜</span>
         </div>
 
@@ -40,13 +48,16 @@ export default props => {
             ))}
           </SearchList>
         ) : Array.isArray(walletData) ? (
-          walletData.map((value, index) => {
+          walletData.map((data, index) => {
+            console.log(data)
+            const {contents, walletType, dalCnt, byeolCnt, updatedDt} = data
+
             return (
               <div className="list" key={index}>
-                <span className="how-to-get">구매</span>
-                <span className="detail">{`${type === 'dal' ? '달' : '별'} 직접 구매`}</span>
-                <span className="type">{`${returnCoinText(type)} 100`}</span>
-                <span className="date">2020.03.11 11:32</span>
+                <span className={`how-to-get type-${walletType}`}>{selectWalletTypeData[walletType]['text']}</span>
+                <span className="detail">{contents}</span>
+                <span className="type">{`${returnCoinText(coinType)} ${dalCnt !== undefined ? dalCnt : byeolCnt}`}</span>
+                <span className="date">{timeFormat(data.updateDt)}</span>
               </div>
             )
           })
@@ -86,9 +97,22 @@ const ListWrap = styled.div`
       border-radius: 15px;
       padding: 6px 16px;
       font-size: 14px;
+
+      &.type-1 {
+        color: #feac2c;
+        border-color: #feac2c;
+      }
+      &.type-2 {
+        color: #e84d6f;
+        border-color: #e84d6f;
+      }
+      &.type-3 {
+        color: #8556f6;
+        border-color: #8556f6;
+      }
     }
     .detail {
-      width: calc(100% - 350px);
+      width: calc(100% - 400px);
       text-align: left;
       box-sizing: border-box;
       padding-left: 20px;
@@ -100,9 +124,10 @@ const ListWrap = styled.div`
       width: 164px;
       color: #424242;
       font-size: 14px;
+      font-weight: bold;
     }
     .date {
-      width: 120px;
+      width: 170px;
       font-size: 14px;
       color: #bdbdbd;
     }
