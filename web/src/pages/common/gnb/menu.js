@@ -67,7 +67,7 @@ export default props => {
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>
             </StartBtn>
             {makeNavi()}
-            {!isHybrid() && (
+            {/* {!isHybrid() && (
               <button
                 className="mobile"
                 onClick={() => {
@@ -79,7 +79,7 @@ export default props => {
                 }}>
                 달빛라이브 앱 설치하기
               </button>
-            )}
+            )} */}
           </CONTENT>
         </NoticeWrap>
       </Gnb>
