@@ -188,24 +188,27 @@ export default props => {
     } else {
       document.addEventListener('keydown', function(e) {
         if (e.key == 'F5') {
-          //reloadRoom(roomNo)
+          setSesstionStorage('isReloadSocket', {reconnected: false})
         } else {
         }
         return () => document.removeEventListener('keydown')
       })
     }
     console.log('방송방 진입해서 private chennel 입장 ')
-    if (context.broadcastTotalInfo === null || context.broadcastTotalInfo === undefined) {
-      const aaa = getSesstionStorage('userInfo')
-      if (aaa) {
-        console.log(aaa)
-        sc.socketClusterBinding(aaa.roomNo)
-      }
-    } else {
-      sc.socketClusterBinding(context.broadcastTotalInfo.roomNo)
-    }
-
-    //connect()
+    const pathUrl = window.location.search
+    let UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
+    sc.socketClusterBinding(UserRoomNo)
+    // if (context.broadcastTotalInfo === null || context.broadcastTotalInfo === undefined) {
+    //   const aaa = getSesstionStorage('userInfo')
+    //   if (aaa) {
+    //     console.log(aaa)
+    //     console.log('socketClusterBinding3 = ' + aaa.roomNo)
+    //     sc.socketClusterBinding(aaa.roomNo)
+    //   }
+    // } else {
+    //   console.log('socketClusterBinding2 = ' + context.broadcastTotalInfo.roomNo)
+    //   sc.socketClusterBinding(context.broadcastTotalInfo.roomNo)
+    // }
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
     if (window.innerWidth <= 840) {

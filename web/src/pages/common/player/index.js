@@ -44,6 +44,7 @@ export default props => {
           Hybrid('EnterRoom', '')
         } else {
           const {roomNo} = roomInfo
+          context.action.updateReloadType(3)
           props.history.push('/broadcast/' + '?roomNo=' + roomNo, roomInfo)
         }
         break

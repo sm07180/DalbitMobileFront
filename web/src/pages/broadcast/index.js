@@ -29,6 +29,7 @@ export default props => {
     const conect = await sc.socketClusterBinding(roomNo)
   }
   async function fetchData(obj) {
+    console.clear()
     console.log('join')
     const resRoomJoin = await Api.broad_join(obj) //방입장
     const {code, result, data, message} = resRoomJoin
@@ -57,12 +58,13 @@ export default props => {
       //   ctx.action.updateRoomReady(false)
       //   props.history.goBack()
       // } else {
-      //   ctx.action.alert({
-      //     callback: () => {
-      //       props.history.goBack()
-      //     },
-      //     msg: message
-      //   })
+      if (code === '-2' || code === '-3' || code === '-4' || code === '-5')
+        ctx.action.alert({
+          callback: () => {
+            props.history.goBack()
+          },
+          msg: message
+        })
       // }
     }
   }
@@ -90,7 +92,11 @@ export default props => {
     }
     if (ctx.reloadType == 0) {
       //reload 방지
-      fetchData({data: {roomNo}})
+      if (props.history.action === 'POP') {
+        setReadyRoom(true)
+      } else {
+        fetchData({data: {roomNo}})
+      }
     } else {
       setReadyRoom(true)
     }

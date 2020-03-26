@@ -791,6 +791,7 @@ export const socketClusterBinding = async (channel, Info) => {
         publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
       } else {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        console.log('privateChannelHandle = ' + channel)
       }
     } else {
       console.warn('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
