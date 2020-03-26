@@ -124,37 +124,65 @@ export default props => {
     return res
   }
   //방나가기
-  async function broad_exit(roomNo) {
-    const res = await Api.broad_exit({data: {roomNo: roomNo}})
-    //Error발생시
-    if (res.result === 'fail') {
+  // async function broad_exit(roomNo) {
+  //   const res = await Api.broad_exit({data: {roomNo: roomNo}})
+  //   //Error발생시
+  //   if (res.result === 'fail') {
+  //     console.log(res.message)
+  //     return
+  //   }
+  //   return res
+  // }
+  async function broadcastOff() {
+    // qs 문제가 발생
+    let pathUrl = window.location.search
+    let UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
+    const res = await Api.broad_exit({data: {roomNo: UserRoomNo}})
+    if (res.result === 'success') {
+      context.action.confirm({
+        callback: () => {
+          if (res.result === 'success') {
+            //sc.socketClusterDestory(true)
+            sc.SendMessageChatEnd(props)
+            context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+            mediaHandler.stop()
+            timer.stopTimer() //방송 시간 멈춤
+            history.goBack()
+          } else {
+            //Error 및 "result":"fail" 에러메시지
+            console.log(res.message)
+          }
+        },
+        //콜백처리
+        // callback: () => {
+        //   const res = await broad_exit(props.roomNo)
+        //   if (res.result === 'success') {
+        //     sc.socketClusterDestory(true)
+        //     sc.SendMessageChatEnd(props)
+        //     context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+        //     mediaHandler.stop()
+        //     timer.stopTimer() //방송 시간 멈춤
+        //     history.push('/')
+        //   } else {
+        //     console.log(res.message)
+        //   }
+        // },
+        //캔슬콜백처리
+        cancelCallback: () => {
+          //alert('confirm callback 취소하기')
+        },
+        msg: `방송을 ${props.auth === 3 ? '종료' : '나가기'} 하시겠습니까?`
+      })
+      //sc.socketClusterDestory(true)
+      // sc.SendMessageChatEnd(props)
+      // context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+      // mediaHandler.stop()
+      // timer.stopTimer() //방송 시간 멈춤
+      // history.push('/')
+    } else {
+      //Error 및 "result":"fail" 에러메시지
       console.log(res.message)
-      return
     }
-    return res
-  }
-  const broadcastOff = e => {
-    context.action.confirm({
-      //콜백처리
-      callback: () => {
-        const res = broad_exit(props.roomNo)
-        if (res.result === 'success') {
-          sc.socketClusterDestory(true)
-          sc.SendMessageChatEnd(props)
-          context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
-          mediaHandler.stop()
-          timer.stopTimer() //방송 시간 멈춤
-          history.push('/')
-        } else {
-          console.log(res.message)
-        }
-      },
-      //캔슬콜백처리
-      cancelCallback: () => {
-        //alert('confirm callback 취소하기')
-      },
-      msg: `방송을 ${props.auth === 3 ? '종료' : '나가기'} 하시겠습니까?`
-    })
   }
 
   //마이크 on off

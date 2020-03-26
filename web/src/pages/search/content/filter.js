@@ -51,7 +51,8 @@ export default props => {
   //---------------------------------------------------------------------
   //검색 api호출및 필터 벨류 저장
   async function fetchData() {
-    const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
+    const qs =
+      props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
     const res = await Api.live_search({
       params: {
         search: filter || qs,
@@ -88,7 +89,8 @@ export default props => {
   //---------------------------------------------------------------------
   const prevQueryRef = useRef('')
   useEffect(() => {
-    const qs = props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
+    const qs =
+      props.history.location.search.split('?')[1] && decodeURIComponent(props.history.location.search.split('?')[1]).split('=')[1]
     if (prevQueryRef.current !== qs) {
       setFilter(qs)
       setFilterM(qs)
@@ -99,7 +101,7 @@ export default props => {
 
   //exitRoom
   async function exitRoom(roomNo) {
-    const res = await Api.broad_exit({data: {roomNo: roomNo}})
+    const res = await Api.broad_exit({data: {roomNo}})
     if (res.result === 'success') {
       return res
     }
@@ -107,7 +109,7 @@ export default props => {
   }
   //joinRoom
   async function joinRoom(roomNo) {
-    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    const res = await Api.broad_join({data: {roomNo}})
 
     console.log(res)
     //Error발생시 (방이 입장되어 있을때)
@@ -217,7 +219,11 @@ export default props => {
   return (
     <Wrap>
       <SearchBar>
-        <input value={(filter, filterM)} onKeyDown={searchOnKeyDown} onChange={e => (setFilter(e.target.value), setFilterM(e.target.value), setShow(false))} />
+        <input
+          value={(filter, filterM)}
+          onKeyDown={searchOnKeyDown}
+          onChange={e => (setFilter(e.target.value), setFilterM(e.target.value), setShow(false))}
+        />
         <Icon
           onClick={() => {
             ShowClick()
