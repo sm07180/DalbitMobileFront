@@ -13,8 +13,8 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {VERSION} from 'context/config'
 export default props => {
   //const
-  const urlPc = `${IMG_SERVER}/images/api/ic_logo_normal.png`
-  const urlMobile = `${IMG_SERVER}/images/api/ic_logo_normal_w.png`
+  const urlPc = `${IMG_SERVER}/images/api/logo_p_l.png`
+  const urlMobile = `${IMG_SERVER}/images/api/logo_w_l.png`
   const urlMobileSub = `${IMG_SERVER}/images/api/ic_logo_mobile_w.png`
   //---------------------------------------------------------------------
   return (

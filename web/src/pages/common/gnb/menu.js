@@ -21,7 +21,7 @@ export default props => {
     {title: '스토어', url: '/store'},
     //{title: '이벤트', url: '/event'},
     {title: '고객센터', url: '/customer/'},
-    {title: '설정', url: '/store?설정'}
+    {title: '설정', url: '/setting'}
   ]
   const makeNavi = () => {
     return info.map((list, idx) => {
@@ -31,7 +31,7 @@ export default props => {
         <NavLink title={_title} key={idx} to={_url} exact activeClassName="on">
           <LinkLi
             onClick={event => {
-              if (_url == '/cast' || _url == '/ranking' || _url == '/event' || _url == '/customer' || _url == '/store?설정') {
+              if (_url == '/cast' || _url == '/ranking' || _url == '/event' || _url == '/customer') {
                 event.preventDefault()
                 context.action.alert({
                   msg: '서비스 준비중입니다.'
@@ -67,7 +67,7 @@ export default props => {
               <h2>{context.cast_state ? '방송중' : '방송하기'}</h2>
             </StartBtn>
             {makeNavi()}
-            {!isHybrid() && (
+            {/* {!isHybrid() && (
               <button
                 className="mobile"
                 onClick={() => {
@@ -77,9 +77,9 @@ export default props => {
                     msg: `서비스 준비중입니다.`
                   })
                 }}>
-                달빛라디오 앱 설치하기
+                달빛라이브 앱 설치하기
               </button>
-            )}
+            )} */}
           </CONTENT>
         </NoticeWrap>
       </Gnb>

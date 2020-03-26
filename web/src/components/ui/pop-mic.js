@@ -8,7 +8,10 @@ export default props => {
   return (
     <>
       <MicCheckWrap>
-        <CheckDetail>달빛 라디오는 별도의 프로그램 설치 없이 방송이 가능한 실시간 오디오 스트리밍 플랫폼 입니다. 따라서 방송을 시작하시기 전 마이크 권한 설정을 확인해주시길 바랍니다.</CheckDetail>
+        <CheckDetail>
+          달빛 라이브는 별도의 프로그램 설치 없이 방송이 가능한 실시간 오디오 스트리밍 플랫폼 입니다. 따라서 방송을 시작하시기 전
+          마이크 권한 설정을 확인해주시길 바랍니다.
+        </CheckDetail>
         <CheckWarnning>마이크 연결이 되어있지 않은 사용자는 방송을 시작 할 수 없습니다.</CheckWarnning>
       </MicCheckWrap>
 
