@@ -64,7 +64,7 @@ export default props => {
         //   console.log(ctx.roomReady)
         //   ctx.action.updateRoomReady(false)
         //   props.history.goBack()
-      } else if (code === '-2' || code === '-3' || code === '-5') {
+      } else if (code === '-2' || code === '-3' || code === '-5' || code === '-6') {
         ctx.action.alert({
           callback: () => {
             props.history.goBack()
