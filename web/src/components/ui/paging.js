@@ -25,16 +25,6 @@ export default props => {
     }
   }, [totalPage])
 
-  if (records === undefined) {
-    throw new Error('Need a records')
-  } else if (totalPage === undefined) {
-    throw new Error('Need a total page')
-  } else if (currentPage === undefined) {
-    throw new Error('Need a current page')
-  } else if (setPage === undefined) {
-    throw new Error('Need a setPage func')
-  }
-
   const changePage = pageNumber => {
     if (currentPage !== pageNumber) {
       setPage(pageNumber)
@@ -108,6 +98,7 @@ const Page = styled.button`
   width: 36px;
   height: 36px;
   margin: 0 4px;
+  user-select: none;
 
   &.active {
     color: #fff;
