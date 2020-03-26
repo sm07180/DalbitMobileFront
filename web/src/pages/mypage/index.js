@@ -37,6 +37,15 @@ export default props => {
     return <div></div>
   }
 
+  const navigationList = [
+    {type: 'notice', component: Notice},
+    {type: 'fanboard', component: FanBoard},
+    {type: 'cast', component: Cast},
+    {type: 'wallet', component: Wallet},
+    {type: 'report', component: Report},
+    {type: 'alert', component: Alert}
+  ]
+
   return (
     <Layout {...props}>
       <Content>
