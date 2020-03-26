@@ -1,47 +1,70 @@
-import React, {useState, useEffect} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 
 import {IMG_SERVER} from 'context/config'
 
-const defaultPageLength = 10
-
 export default props => {
-  const {prevClickEvent, nextClickEvent, btnClickEvent, totalPage, currentPage, currentIdx} = props
+  const {setPage, records, totalPage, currentPage} = props
 
-  if (totalPage === undefined) {
+  if (setPage === undefined) {
+    throw new Error('Need a setPage func')
+  } else if (records === undefined) {
+    throw new Error('Need a records')
+  } else if (totalPage === undefined) {
+    throw new Error('Need a totalPage')
+  } else if (currentPage === undefined) {
+    throw new Error('Need a currentPage')
+  }
+
+  const removedLastDigitPageNumber = useMemo(() => Math.floor(currentPage / records) * records, [currentPage])
+  const NumberOfPageBtn = useMemo(() => {
+    if (totalPage < removedLastDigitPageNumber + records) {
+      return totalPage % records
+    } else {
+      return records
+    }
+  }, [totalPage])
+
+  if (records === undefined) {
+    throw new Error('Need a records')
+  } else if (totalPage === undefined) {
     throw new Error('Need a total page')
   } else if (currentPage === undefined) {
     throw new Error('Need a current page')
-  } else if (currentIdx === undefined) {
-    throw new Error('Need a current idx')
-  } else if (prevClickEvent === undefined) {
-    throw new Error('Need a prev click event')
-  } else if (nextClickEvent === undefined) {
-    throw new Error('Need a next click event')
-  } else if (btnClickEvent === undefined) {
-    throw new Error('Need a btn click event')
+  } else if (setPage === undefined) {
+    throw new Error('Need a setPage func')
   }
 
-  const numberOfBtn = totalPage > defaultPageLength ? [...Array(defaultPageLength).keys()] : [...Array(totalPage).keys()]
-
+  const changePage = pageNumber => {
+    if (currentPage !== pageNumber) {
+      setPage(pageNumber)
+    }
+  }
   const prev = () => {
-    prevClickEvent()
+    if (currentPage !== 1) {
+      changePage(currentPage - 1)
+    }
   }
   const next = () => {
-    nextClickEvent()
-  }
-  const targetEvent = () => {
-    btnClickEvent()
+    if (currentPage < totalPage) {
+      changePage(currentPage + 1)
+    }
   }
 
   return (
     <Container>
       <Left onClick={prev} />
-      {numberOfBtn.map(value => (
-        <Page key={value} onClick={targetEvent} className={currentIdx === value + 1 ? 'active' : ''}>
-          {value + 1}
-        </Page>
-      ))}
+      {[...Array(NumberOfPageBtn).keys()].map(value => {
+        const pageNumber = removedLastDigitPageNumber + value + 1
+        return (
+          <Page
+            key={value}
+            onClick={() => changePage(pageNumber)} // !!!
+            className={currentPage == pageNumber ? 'active' : ''}>
+            {pageNumber}
+          </Page>
+        )
+      })}
       <Right onClick={next} />
     </Container>
   )

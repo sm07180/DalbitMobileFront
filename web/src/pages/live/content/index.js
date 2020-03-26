@@ -111,15 +111,16 @@ export default props => {
 
   async function joinRoom(obj) {
     const {roomNo} = obj
-    const data = await roomCheck(roomNo, context)
-    if (data) {
-      if (isHybrid()) {
-        Hybrid('RoomJoin', data)
-      } else {
-        context.action.updateBroadcastTotalInfo(data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`)
-      }
-    }
+    props.history.push(`/broadcast?roomNo=${roomNo}`)
+    // const data = await roomCheck(roomNo, context)
+    // if (data) {
+    //   if (isHybrid()) {
+    //     Hybrid('RoomJoin', data)
+    //   } else {
+    //     context.action.updateBroadcastTotalInfo(data)
+    //     props.history.push(`/broadcast?roomNo=${roomNo}`)
+    //   }
+    // }
   }
 
   //----------------------------------------------------------- components start

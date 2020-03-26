@@ -172,6 +172,14 @@ export default props => {
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
   }
 
+  async function connect() {
+    const {roomNo} = context.broadcastTotalInfo
+    const res = await sc.socketClusterBinding(roomNo, context)
+    if (res.channels.roomNo.state === 'subscribed') {
+      console.log('채널에 입장이 잘된 ')
+    }
+  }
+
   useEffect(() => {
     if (authValue === null) {
     } else if (authValue === hostRole) {
@@ -186,7 +194,8 @@ export default props => {
       })
     }
     console.log('방송방 진입해서 private chennel 입장 ')
-    sc.socketClusterBinding(roomNo, context)
+    sc.socketClusterBinding(context.broadcastTotalInfo.roomNo, context)
+    //connect()
 
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
     if (window.innerWidth <= 840) {
