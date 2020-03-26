@@ -13,25 +13,10 @@ import {Context} from 'context'
 import Content from './content'
 //
 export default props => {
-  const context = useContext(Context)
-
-  //본인인증체크여부
-  if (!context.state.selfAuth) {
-    props.history.push('/user/selfAuth', {
-      type: 'cast'
-    })
-  }
-
   return (
-    <>
-      {context.state.selfAuth ? (
-        <Layout {...props}>
-          <Content {...props} />
-        </Layout>
-      ) : (
-        <></>
-      )}
-    </>
+    <Layout {...props}>
+      <Content {...props} />
+    </Layout>
   )
 }
 //---------------------------------------------------------------------
