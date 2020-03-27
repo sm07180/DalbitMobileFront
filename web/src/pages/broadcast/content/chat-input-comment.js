@@ -35,7 +35,7 @@ export default props => {
     like: false
   })
   const [shortMessage, setShortMessage] = useState(null)
-
+  let loginCheckMsg = '로그인 후 사용 가능 합니다.'
   //---------------------------------------------------------------------
   //function
 
@@ -66,12 +66,15 @@ export default props => {
   const activeLike = () => {
     console.log('store.like')
     if (store.like == 0) {
+      if (props.auth > 0) {
+        loginCheckMsg = '좋아요는 방송청취 1분 후에 가능합니다.'
+      }
       context.action.alert({
         //콜백처리
         callback: () => {
           return
         },
-        msg: '좋아요는 방송청취 1분 후에 가능합니다.'
+        msg: loginCheckMsg
       })
     }
     if (store.like == 1) {
@@ -201,11 +204,15 @@ export default props => {
     }
   }
   const broadcastLink = e => {
-    context.action.alert({
-      msg: '서비스 준비중입니다.'
-    })
-    return
-    broad_Link()
+    if (props.auth == 0) {
+      context.action.alert({
+        //콜백처리
+        callback: () => {},
+        msg: loginCheckMsg
+      })
+    }
+
+    //broad_Link()
   }
   const Commandlist = () => {
     const info = ['인사', '박수', '감사']
@@ -226,7 +233,15 @@ export default props => {
     const list = store.shortCutList
 
     if (list && idx) {
-      sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
+      if (props.auth > 0) {
+        sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
+      } else {
+        context.action.alert({
+          //콜백처리
+          callback: () => {},
+          msg: loginCheckMsg
+        })
+      }
     }
   }
 
@@ -264,7 +279,26 @@ export default props => {
     //   callback: () => {},
     //   msg: '서비스 중입니다.'
     // })
-    store.action.updateTab(12)
+    if (props.auth == 0) {
+      context.action.alert({
+        //콜백처리
+        callback: () => {},
+        msg: loginCheckMsg
+      })
+    } else {
+      store.action.updateTab(12)
+    }
+  }
+  const actionSetting = () => {
+    if (props.auth == 0) {
+      context.action.alert({
+        //콜백처리
+        callback: () => {},
+        msg: loginCheckMsg
+      })
+    } else {
+      store.action.updateTab(11)
+    }
   }
   //---------------------------------------------------------------------
   //useEffect
@@ -298,7 +332,7 @@ export default props => {
         </button>
         <ul className={`quick-box ${toggle.quick ? 'on' : 'off'}`}>
           {Commandlist()}
-          <li onClick={() => store.action.updateTab(11)}>세팅</li>
+          <li onClick={actionSetting}>세팅</li>
         </ul>
         {/* 기타메뉴 버튼 */}
         <button name="menu" className={`menu ${toggle.menu ? 'on' : 'off'}`} title="기타메뉴" onClick={activeMenu}>
