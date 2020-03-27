@@ -20,6 +20,7 @@ const Main = props => {
   const context = useContext(Context)
   //useState
   const [fetch, setFetch] = useState(null)
+  const [fetch1, setFetch1] = useState(null)
   //임시 데이터
   const slideInfo = [
     {
@@ -35,25 +36,35 @@ const Main = props => {
       icon: 'BEST'
     }
   ]
+  //---------------------------------------------------------------------
 
-  //fetch
+  //fetch (메인상단)
+  async function fetchData1() {
+    const res = await Api.recommand({})
+    if (res.result === 'success') {
+      setFetch1(res.data)
+      // setFetch1(res.data.list)
+    }
+    //   console.log(res)
+  }
+  //fetch (내 스타 영역.. 로그인시에만 보여줌)
   async function fetchData(obj) {
     const res = await Api.my_dj({...obj})
     if (res.result === 'success') {
       setFetch(res.data.list)
     }
-    console.log(res)
   }
-
   //---------------------------------------------------------------------
   useEffect(() => {
+    //내 스타 영역.. 로그인시에만 보여줌
     fetchData()
+    fetchData1()
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content {...props}>
       {/* 메인 최상단 슬라이드 */}
-      <MainSlider Info={slideInfo} />
+      <MainSlider Info={fetch1} />
       {/* 스타 랭킹 영역 */}
       <RangkingWrap>
         <StarRangking {...props} />

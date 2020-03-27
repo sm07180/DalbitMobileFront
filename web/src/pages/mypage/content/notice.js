@@ -45,9 +45,8 @@ const Notice = () => {
       if (response.result === 'success') {
         const {list, paging} = response.data
         if (paging) {
-          const {total} = paging
-          console.log('total', total)
-          // setTotalPageNumber(total)
+          const {totalPage} = paging
+          setTotalPageNumber(totalPage)
         }
         setListDetailed(list)
       }
@@ -89,7 +88,7 @@ const Notice = () => {
         )}
       </ListWrap>
 
-      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={1} currentPage={page} />}
+      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />}
 
       {/* <GlobalWriteBtn>
         <div className="inner" />

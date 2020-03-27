@@ -691,6 +691,16 @@ export default class API {
     return await ajax({...obj, url: url || `/my/dj`, method: method || 'GET', params: params})
   }
   /**
+   * @brief recommand
+   * @method "GET"
+   * @create 손완휘 2020.03.27
+   */
+  static recommand = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/recommand`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 회원 방송방 빠른말 저장하기
    * @method "POST"
    * @param string order_1                  //*첫번째 명령

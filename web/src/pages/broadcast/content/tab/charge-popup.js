@@ -180,8 +180,8 @@ export default props => {
       Object.keys(res.data).forEach(key => {
         ft.append(makeHiddenInput(key, res.data[key]))
       })
-      console.log(ft)
       MCASH_PAYMENT(ft)
+      ft.innerHTML = ''
     } else {
       context.action.alert({
         msg: res.message
