@@ -76,10 +76,10 @@ const Index = props => {
         <button className="otherbtn" onClick={() => history.push(`/secession`)}>
           회원탈퇴
         </button>
-        <button className="otherbtn">
+        {/* <button className="otherbtn">
           버전관리
           <span>현재 버전 1.1.20</span>
-        </button>
+        </button>  */}
       </div>
     </Container>
   )

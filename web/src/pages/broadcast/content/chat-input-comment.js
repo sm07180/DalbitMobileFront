@@ -142,11 +142,13 @@ export default props => {
       context.action.confirm({
         callback: () => {
           if (res.result === 'success') {
-            //sc.socketClusterDestory(true)
+            sessionStorage.clear()
             sc.SendMessageChatEnd(props)
             context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+            context.action.updateBroadcastTotalInfo(null)
             mediaHandler.stop()
             timer.stopTimer() //방송 시간 멈춤
+            sc.socketClusterDestory(false, UserRoomNo)
             history.goBack()
           } else {
             //Error 및 "result":"fail" 에러메시지
@@ -198,7 +200,7 @@ export default props => {
     //Error발생시
 
     if (res.result === 'success') {
-      mediaHandler.setMuted(true)
+      mediaHandler.setMuted(!isMic)
       store.action.updateMikeState(!store.mikeState)
     }
   }

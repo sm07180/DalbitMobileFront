@@ -14,7 +14,7 @@ export default props => {
     if (props.Ftype === 'mainFooter') {
       setShow(true)
     } else {
-      setShow(false)
+      setShow(true)
     }
   }
   useEffect(() => {
@@ -56,7 +56,7 @@ const Child = () => {
         </li>
         <li>
           <span>제휴/이벤트</span>
-          <a href="mailto:help@dalbitcast.com">help@dalbitlive.com</a>
+          <a href="mailto:help@dalbitlive.com">help@dalbitlive.com</a>
         </li>
       </Info>
     </InfoWrap>

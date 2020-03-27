@@ -68,9 +68,9 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log('I only run when the component first mounts')
+    //console.log('I only run when the component first mounts')
     return () => {
-      console.log('I run when the component is unmounted')
+      //console.log('I run when the component is unmounted')
     }
   }, [])
   return (

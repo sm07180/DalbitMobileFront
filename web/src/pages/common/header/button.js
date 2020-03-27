@@ -4,8 +4,10 @@
  * @todo 반응형으로 처리되어야함
  */
 
-import React, {useContext} from 'react'
+import React, {useMemo, useContext, useState, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
+import _ from 'lodash'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
@@ -17,6 +19,27 @@ import {BroadValidation} from 'pages/common/header/navi'
 export default () => {
   //context
   const context = useContext(Context)
+  //useState
+  let isOpen = false
+  //history
+  let history = useHistory()
+  //useMemo
+  const isLogin = useMemo(() => {
+    return _.hasIn(context, 'token.isLogin') ? context.token.isLogin : false
+  })
+  function hashchange(event) {
+    console.log(context.gnb_state)
+    alert('1')
+  }
+  //---------------------------------------------------------------------
+
+  useEffect(() => {
+    //BackButton
+    window.onpopstate = function(event) {
+      context.action.updateGnbVisible(false)
+      //console.log('location: ' + document.location + ', state: ' + JSON.stringify(event.state))
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
@@ -29,37 +52,42 @@ export default () => {
           }}>
           <span>{context.cast_state ? '방송중' : '방송하기'}</span>
         </button>
-
-        {/* <NavLink title="방송하기" to="/broadcast" exact>
-          <span>방송하기</span>
-        </NavLink> */}
       </MobileButton>
       {/* 헤더 우측에 gnb버튼 4가지 고정 */}
       <GnbButton>
         <button
+          className="type1"
           onClick={() => {
             if (location.href.indexOf('/search') === -1) {
               context.action.updateGnbState('search')
+              history.push(`${history.location.pathname}#gnbOpen`)
             }
           }}>
           검색
         </button>
+        {isLogin && (
+          <button
+            className="type2"
+            onClick={() => {
+              context.action.updateGnbState('notice')
+              history.push(`${history.location.pathname}#gnbOpen`)
+            }}>
+            알람
+          </button>
+        )}
         <button
-          onClick={() => {
-            context.action.updateGnbState('notice')
-          }}>
-          알람
-        </button>
-        <button
+          className="type3"
           onClick={() => {
             context.action.updateGnbState('mypage')
+            history.push(`${history.location.pathname}#gnbOpen`)
           }}>
           프로필
         </button>
-
         <button
+          className="type4"
           onClick={() => {
             context.action.updateGnbState('menu')
+            history.push(`${history.location.pathname}#gnbOpen`)
           }}>
           메뉴
         </button>
@@ -67,6 +95,7 @@ export default () => {
     </Content>
   )
 }
+
 //---------------------------------------------------------------------
 const Content = styled.div`
   position: absolute;
@@ -95,16 +124,16 @@ const GnbButton = styled.div`
     margin-right: 0;
   }
 
-  button:nth-child(1) {
+  button.type1 {
     background: url(${IMG_SERVER}/svg/ic_search_normal.svg) no-repeat center;
   }
-  button:nth-child(2) {
+  button.type2 {
     background: url(${IMG_SERVER}/svg/ic_alarm.svg) no-repeat center;
   }
-  button:nth-child(3) {
+  button.type3 {
     background: url(${IMG_SERVER}/svg/ic_user_normal.svg) no-repeat center;
   }
-  button:nth-child(4) {
+  button.type4 {
     background: url(${IMG_SERVER}/svg/ic_menu_normal.svg) no-repeat center;
   }
 
@@ -121,16 +150,16 @@ const GnbButton = styled.div`
       width: 43px;
       height: 43px;
     }
-    button:nth-child(1) {
+    button.type1 {
       background: url(${IMG_SERVER}/svg/ic_search_normal_w.svg) no-repeat center / cover;
     }
-    button:nth-child(2) {
+    button.type2 {
       background: url(${IMG_SERVER}/svg/ic_alarm_w.svg) no-repeat center / cover;
     }
-    button:nth-child(3) {
+    button.type3 {
       background: url(${IMG_SERVER}/svg/ic_user_normal_w.svg) no-repeat center / cover;
     }
-    button:nth-child(4) {
+    button.type4 {
       background: url(${IMG_SERVER}/svg/ic_menu_normal_w.svg) no-repeat center / cover;
     }
   }

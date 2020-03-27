@@ -37,7 +37,7 @@ const App = () => {
   App.context = () => context
   //useState
   const [ready, setReady] = useState(false)
-  const [socketClusterReady, setSocketClusterReady] = useState(true)
+  const [socketClusterReady, setSocketClusterReady] = useState(false)
 
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
@@ -144,6 +144,14 @@ const App = () => {
         }
         //모든처리완료
         setReady(true)
+        console.log(setReady)
+        const aaa = getSesstionStorage('isReloadSocket')
+
+        if (getSesstionStorage('isReloadSocket') != '') {
+          setSocketClusterReady(false)
+        } else {
+          setSocketClusterReady(true)
+        }
         //if (getSesstionStorage('isSocketCluster') === '') {
         //sc.scConnection({token: res.data})
 
@@ -203,7 +211,7 @@ const App = () => {
       {ready && <Interface />}
       {ready && <Route />}
       {/* {socketClusterReady && window.location.pathname === '/' && <SocketCluster />} */}
-      {ready && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
+      {socketClusterReady && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }

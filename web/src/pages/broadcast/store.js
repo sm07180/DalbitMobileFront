@@ -46,7 +46,7 @@ const BroadCastProvider = props => {
   const [listenerUpdate, setListenerUpdate] = useState([]) //방송방 입장 퇴장 강퇴 등등 청취자 리스트 변경에 대한 상태값
   const [resetZero, setResetZero] = useState(0)
   const [giftSendType, setGiftSendType] = useState(0) // 방송방에서 프로필뷰에서 선물하기(1) ,그 외 (0)
-
+  const [roomReady, setRoomReady] = useState(false)
   const arr = [
     {id: 0, tab: '청취자'},
     {id: 1, tab: '게스트'},
@@ -211,6 +211,9 @@ const BroadCastProvider = props => {
     },
     updateGiftSendType: num => {
       setGiftSendType(num)
+    },
+    updateRoomReady: bool => {
+      setRoomReady(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -246,7 +249,8 @@ const BroadCastProvider = props => {
     listenerUpdate,
     resetZero,
     selectPopular,
-    giftSendType
+    giftSendType,
+    roomReady
   }
 
   return <Provider value={value}>{props.children}</Provider>

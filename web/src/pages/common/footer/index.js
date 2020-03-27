@@ -80,7 +80,7 @@ export default props => {
 const Footer = styled.footer`
   position: relative;
   display: block;
-  padding-bottom: 116px;
+  padding-bottom: 40px;
   background: #fff;
   text-align: center;
 
@@ -106,7 +106,7 @@ const Info = styled.ul`
   }
 `
 const Menu = styled.div`
-  margin-bottom: 63px;
+  margin-bottom: 0;
   border-top: 1px solid #8556f6;
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 0;

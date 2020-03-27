@@ -254,6 +254,8 @@ export const scConnection = obj => {
     logStr += 'channel: ' + channelname + '\n'
     logStr += 'data: ' + JSON.stringify(data) + '\n'
     console.warn(logStr)
+    sendMessageData('SUBSCRIBE')
+    //Global().action.updateRoomReady(true)
   })
   ///// subscribeFail 구독(채팅방입장) 실패
   ///// 동 이벤트는 channelObj.on(socketConfig.event.channel.SUBSCRIBEFAIL,..) 채널의 subscribeFail 이벤트 발생후 발생됨
@@ -263,7 +265,14 @@ export const scConnection = obj => {
     var logStr = '[socket.subscribeFail]\n'
     logStr += 'channel: ' + channelname + '\n'
     logStr += 'message: ' + message + '\n'
+    //socketClusterBinding(broadcastTotalInfo.roomNo)
     console.warn(logStr)
+    //Global().action.updateRoomReady(false)
+    sendMessageData('SUBSCRIBEFAIL')
+    // var intervalID = setTimeout(() => {
+    //   socket.subscribe(channelname)
+    // }, 500);
+
     //$('#socketLabel').html(socketConfig.event.socket.SUBSCRIBEFAIL)
   })
 
@@ -599,7 +608,7 @@ sendMessage socket: {"cmd":"chat","chat":{"memNo":""},"msg":"11111111111111"}
           logStr += 'msg: ' + dataObj.data.data.recvMsg.msg + '\n'
         }
         //if(JSON.parse(data).event === '#publish' || JSON.parse(data).event === '#publish')
-
+        console.log()
         const parseData = JSON.parse(data)
         if (parseData.data.channel !== 'channel.public.dalbit') receiveMessageData(parseData)
       } else {
@@ -753,7 +762,10 @@ export const receiveMessageData = recvData => {
     document.dispatchEvent(destroyEvent)
   }
 }
-
+export const sendMessageData = state => {
+  const destroyEvent = new CustomEvent('socketSendData2', {detail: state})
+  document.dispatchEvent(destroyEvent)
+}
 // export async function retoken(obj) {
 //   const {rooomNo} = obj
 //   const res = await Api.broadcast_reToken({data: {roomNo: rooomNo}})
@@ -766,8 +778,9 @@ export const receiveMessageData = recvData => {
 //   console.log(res.data)
 // }
 
-export const socketClusterBinding = (channel, Info) => {
+export const socketClusterBinding = async (channel, Info) => {
   console.log(socket)
+
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
@@ -778,12 +791,16 @@ export const socketClusterBinding = (channel, Info) => {
         publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
       } else {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        console.log('privateChannelHandle = ' + channel)
       }
     } else {
       console.warn('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
+
       if (window.location.pathname !== '/' && channel) {
         setTimeout(() => {
-          privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+          if (socket.state !== 'open') {
+            privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+          }
         }, 500)
       }
     }
@@ -808,11 +825,31 @@ export const socketClusterBinding = (channel, Info) => {
 
 export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
-    socket.subscribe(channelObjName)
-    //if (channelObjName === 'channel.public.dalbit') setSesstionStorage('isSocketCluster', {connected: true})
-    console.log(channelObjName + '채널 입장')
+    const res = socket.subscribe(channelObjName)
+    setTimeout(() => {
+      if (res.state === 'subscribed') {
+        console.log(channelObjName + '채널 입장')
+        return channelObj
+      } else {
+        console.log('privete 채널 재시도 ')
+        socket.subscribe(channelObjName)
+      }
+      clearTimeout(res)
+    }, 100)
 
-    return channelObj
+    // if (res.state === 'subscribed') {
+    //   console.log(channelObjName + '채널 입장')
+    //   return channelObj
+    // } else {
+    //   console.log(res.state)
+    // }
+    // console.log(channelObjName + '채널 입장')
+    // return channelObj
+    //if (res.state === ) console.log(res)
+    //if (channelObjName === 'channel.public.dalbit') setSesstionStorage('isSocketCluster', {connected: true})
+    //console.log(channelObjName + '채널 입장')
+    //if (res.state === 'pending') socket.subscribe(channelObjName)
+    //return channelObj
     //console.log('채널 입장')
   }
 }
