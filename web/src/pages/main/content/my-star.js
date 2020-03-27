@@ -10,9 +10,13 @@ import ContentBox from './my-star-contentBox'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
+import {useHistory} from 'react-router-dom'
+
 export default props => {
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const [sswiper, updateSwiper] = useState(true)
+  //history
+  let history = useHistory()
 
   //ref
   const prev = useRef(null) // 채팅창 스크롤 영역 선택자
@@ -103,6 +107,7 @@ export default props => {
         <Slide
           key={index}
           onClick={() => {
+            history.push(`/broadcast?roomNo=${roomNo}`)
             //alert('test')
             //props.history.push('')
           }}>
