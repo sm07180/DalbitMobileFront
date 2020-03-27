@@ -183,6 +183,7 @@ const LevelWrap = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  height: 16px;
 
   @media (max-width: ${WIDTH_MOBILE}) {
     align-items: center;

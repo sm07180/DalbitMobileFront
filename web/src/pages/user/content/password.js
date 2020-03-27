@@ -254,7 +254,7 @@ export default props => {
     const resAuth = await Api.sms_request({
       data: {
         phoneNo: changes.loginID,
-        authType: 0
+        authType: 1
       }
     })
     if (resAuth.result === 'success') {
