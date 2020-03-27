@@ -23,7 +23,7 @@ import axios from 'axios'
 import qs from 'qs'
 //context
 import {Global} from 'App'
-import {API_SERVER, PHOTO_SERVER} from 'context/config'
+import {API_SERVER, PHOTO_SERVER, PAY_SERVER} from 'context/config'
 
 // export const authToken = () => {
 //   const context = useContext(Context)
@@ -691,6 +691,16 @@ export default class API {
     return await ajax({...obj, url: url || `/my/dj`, method: method || 'GET', params: params})
   }
   /**
+   * @brief recommand
+   * @method "GET"
+   * @create 손완휘 2020.03.27
+   */
+  static recommand = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/recommand`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 회원 방송방 빠른말 저장하기
    * @method "POST"
    * @param string order_1                  //*첫번째 명령
@@ -1047,7 +1057,7 @@ export default class API {
 export const ajax = async obj => {
   const {url, method, data, params, authToken} = obj
   try {
-    const pathType = url === '/upload' ? PHOTO_SERVER : API_SERVER
+    const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : API_SERVER
     const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded; charset=utf-8'
     let formData = new FormData()
     if (url === '/upload' && data) {

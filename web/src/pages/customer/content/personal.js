@@ -18,7 +18,6 @@ import {Context} from 'context'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 export default props => {
-  const [faqNum, setfaqNum] = useState('')
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
     {value: 1, text: '회원정보'},
@@ -29,6 +28,7 @@ export default props => {
     {value: 6, text: '장애/버그'},
     {value: 7, text: '선물/아이'}
   ]
+  //console.log(faqNum)
   //--------------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -44,19 +44,39 @@ export default props => {
   //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
-  const {changes, setChanges, onChange} = useChange(update, {questionName: '선택하세요', onChange: -1})
+
+  const {changes, setChanges, onChange, onChangeEvent} = useChange(update, {qnaType: faqNum, onChange: -1})
+  const [faqNum, setfaqNum] = useState('')
+
   //useState
-  const [isOpen, setIsOpen] = useState(false)
+
   //--------------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
     console.log(JSON.stringify(obj, null, 1))
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
-      context.action.alert({
-        title: res.messageKey,
-        msg: res.message
-      })
+      if (obj.data.email === undefined || obj.data.email === '') {
+        context.action.alert({
+          title: '이메일 형식',
+          msg: '이메일 형식을 확인해 주세요'
+        })
+      } else if (obj.data.title === undefined || obj.data.title === '') {
+        context.action.alert({
+          title: '제목',
+          msg: '제목을 입력해 주세요'
+        })
+      } else if (obj.data.contents === undefined || obj.data.contents === '') {
+        context.action.alert({
+          title: '내용',
+          msg: '내용을 입력해 주세요'
+        })
+      } else if (obj.data.qnaType === '') {
+        context.action.alert({
+          title: '문의 유형 선택',
+          msg: '문의 유형을 선택해 주세요'
+        })
+      }
     } else if (res.result === 'success') {
       context.action.alert({
         msg: res.message
@@ -78,13 +98,8 @@ export default props => {
       case mode.onChange !== undefined: //----------------------------상태변화
         //console.log(JSON.stringify(changes))
         break
-      case mode.downDown !== undefined: //----------------------------문의유형선택
-        setIsOpen(false)
-        setChanges({
-          ...changes,
-          qnaType: mode.downDown,
-          questionName: mode.questionName
-        })
+      case onChangeEvent !== undefined: //----------------------------상태변화
+        //console.log(JSON.stringify(changes))
         break
     }
   }
@@ -103,7 +118,7 @@ export default props => {
     }
     if (!extValidator(fileExtension)) {
       return context.action.alert({
-        msg: 'jpg, png 이미지만 사용 가능합니다.',
+        msg: 'gif,jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
           context.action.alert({visible: false})
@@ -136,66 +151,27 @@ export default props => {
       }
     }
   }
-  //set type select
-  const setType = value => {}
-  //
-  //useEffect
-  useEffect(() => {}, [])
+  //func 타입체크
+  const typeActive = value => {
+    setfaqNum(value)
+  }
+  useEffect(() => {
+    setChanges({...changes, qnaType: faqNum})
+  }, [faqNum])
+
   //--------------------------------------------------------------------------
   return (
-    <Content
-      onClick={() => {
-        setIsOpen(!isOpen)
-      }}>
+    <Content>
       <dl>
         <dt>문의 유형 선택</dt>
-        <dd>
-          {/* <SelectBox className={isOpen ? 'on' : ''}>
-            <div className="wrap">
-              <label htmlFor="allTerm">{changes.questionName}</label>
-              <button
-                className={isOpen ? 'on' : 'off'}
-                onClick={() => {
-                  setIsOpen(!isOpen)
-                }}>
-                펼치기
-              </button>
-            </div> */}
-          {/* DropDown메뉴 */}
-          {/* <div className="dropDown">
-              <a href="#1" {...dropDown1}>
-                회원정보
-              </a>
-              <a href="#2" {...dropDown2}>
-                방송
-              </a>
-              <a href="#3" {...dropDown3}>
-                청취
-              </a>
-              <a href="#4" {...dropDown4}>
-                결제
-              </a>
-              <a href="#5" {...dropDown5}>
-                건의
-              </a>
-              <a href="#6" {...dropDown6}>
-                장애/버그
-              </a>
-              <a href="#7" {...dropDown7}>
-                선물/아이
-              </a>
-            </div>
-          </SelectBox> */}
-          <Select
-            className={isOpen ? 'on' : 'off'}
-            onClick={() => {
-              setIsOpen(!isOpen)
-            }}>
-            <div className="selectwrap">
-              <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
-            </div>
-          </Select>
-        </dd>
+        <Select>
+          <SelectBoxs
+            type={'remove-init-data'}
+            boxList={selectBoxData}
+            onChangeEvent={typeActive}
+            inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
+          />
+        </Select>
       </dl>
       <dl>
         <dt>E-mail</dt>
@@ -286,6 +262,15 @@ const Content = styled.div`
     width: 100%;
     padding: 16px 0;
     border-bottom: 1px solid #e0e0e0;
+    :first-child {
+      display: flex;
+      & dt {
+        position: static;
+      }
+      @media (max-width: ${WIDTH_MOBILE}) {
+        flex-wrap: wrap;
+      }
+    }
     dt {
       position: absolute;
       width: 130px;
@@ -304,6 +289,7 @@ const Content = styled.div`
       }
     }
     dd {
+      position: relative;
       display: inline-block;
       padding-left: 130px;
       width: 100%;
@@ -335,121 +321,32 @@ const Content = styled.div`
     background-color: #ffffff;
     box-sizing: border-box;
   }
-  & .selectwrap {
-    position: relative;
-    & > div:nth-child(1) {
-      position: relative;
-    }
-    & > div {
-      width: 328px;
-    }
-    & > div > div {
-      width: 328px;
-      color: #616161;
-      border-color: #e0e0e0 !important;
-
-      :after {
-        background-color: #e0e0e0;
-      }
-      :before {
-        background-color: #e0e0e0;
-      }
-    }
-  }
-  & > {
-  }
 `
 const Select = styled.div`
+  height: 42px;
   width: 328px;
-  overflow: hidden;
-  position: relative;
-  height: 52px;
-  transition: height 0.5s ease-in-out;
-  z-index: 12;
-  &.on {
-    /* 높이조절 */
-    height: 378px;
-  }
-`
-
-const SelectBox = styled.div`
-  width: 200px;
-  overflow: hidden;
-  position: relative;
-  height: 52px;
-  border: 1px solid #e0e0e0;
-  transition: height 0.5s ease-in-out;
+  z-index: 8;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
-  .dropDown {
-    a {
-      display: block;
+  > div {
+    width: 100%;
+    > div {
+      width: 100%;
+      border: solid 1px #e0e0e0;
+
+      color: #616161;
       font-size: 14px;
-      padding: 10px;
-      border-top: 1px solid #e0e0e0;
-    }
-  }
-  &.on {
-    /* 높이조절 */
-    height: 274px;
-  }
-  .wrap {
-    position: relative;
-    & input {
-      position: relative;
-      width: 24px;
-      height: 24px;
-      margin: 0 15px 0 0;
-      appearance: none;
-      border: none;
-      outline: none;
-      /* cursor: pointer; */
-      background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
-      &:checked {
-        background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+      :before {
+        background-color: #757575;
       }
-      &:after {
-        position: absolute;
-        top: 20px;
-        right: 8px;
-        color: #bdbdbd;
-        font-size: 12px;
-        font-weight: 600;
+      :after {
+        background-color: #757575;
       }
     }
-    * {
-      line-height: 24px;
-      vertical-align: top;
-    }
-    button {
-      position: absolute;
-      right: 13px;
-      top: 13px;
-      width: 24px;
-      height: 24px;
-      text-indent: -9999px;
-    }
-
-    label {
-      display: inline-block;
-      font-size: 14px !important;
-      transform: skew(-0.03deg);
-    }
-  }
-  & > div:first-child > button {
-    background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
-    transform: rotate(180deg);
-    /* transition: transform 0.3s ease-in-out; */
-
-    &.on {
-      transform: rotate(0deg);
-    }
-  }
-  & > div:first-child {
-    padding: 13px;
   }
 `
+
 const ImgUploader = styled.div`
   position: relative;
   width: 100%;
