@@ -66,7 +66,7 @@ export default props => {
   const activeLike = () => {
     console.log('store.like = ' + store.like)
     if (store.like == 0) {
-      if (props.auth > 0) {
+      if (context.token.isLogin) {
         loginCheckMsg = '좋아요는 방송청취 1분 후에 가능합니다.'
       }
       context.action.alert({
@@ -205,10 +205,13 @@ export default props => {
     }
   }
   const broadcastLink = e => {
-    if (props.auth == 0) {
+    if (context.token.isLogin) {
+    } else {
       context.action.alert({
         //콜백처리
-        callback: () => {},
+        callback: () => {
+          return
+        },
         msg: loginCheckMsg
       })
     }
@@ -234,7 +237,7 @@ export default props => {
     const list = store.shortCutList
 
     if (list && idx) {
-      if (props.auth > 0) {
+      if (context.token.isLogin) {
         sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
       } else {
         context.action.alert({
@@ -275,30 +278,25 @@ export default props => {
   }
 
   const goRecvPresent = () => {
-    // context.action.alert({
-    //   //콜백처리
-    //   callback: () => {},
-    //   msg: '서비스 중입니다.'
-    // })
-    if (props.auth == 0) {
+    if (context.token.isLogin) {
+      store.action.updateTab(12)
+    } else {
       context.action.alert({
         //콜백처리
         callback: () => {},
         msg: loginCheckMsg
       })
-    } else {
-      store.action.updateTab(12)
     }
   }
   const actionSetting = () => {
-    if (props.auth == 0) {
+    if (context.token.isLogin) {
+      store.action.updateTab(11)
+    } else {
       context.action.alert({
         //콜백처리
         callback: () => {},
         msg: loginCheckMsg
       })
-    } else {
-      store.action.updateTab(11)
     }
   }
   //---------------------------------------------------------------------
