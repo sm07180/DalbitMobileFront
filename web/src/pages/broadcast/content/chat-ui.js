@@ -100,7 +100,9 @@ export default props => {
         )
         setTop1Msg(result)
 
-        document.getElementsByClassName('system-msg top1')[0].style.visibility = 'visible'
+        setTimeout(() => {
+          document.getElementsByClassName('system-msg top1')[0].style.visibility = 'visible'
+        }, 100)
       } else {
         document.getElementsByClassName('system-msg top1')[0].style.visibility = 'hidden'
       }

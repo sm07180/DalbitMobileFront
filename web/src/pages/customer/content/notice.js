@@ -162,7 +162,7 @@ function Notice(props) {
             </button>
           </div>
           <div className="m-catecory">
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 11}} />
+            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 8}} />
           </div>
         </ContentInfo>
 
@@ -268,6 +268,9 @@ const Detail = styled.section`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    & img {
+      width: 100% !important;
+    }
   }
   & > button {
     display: block;
