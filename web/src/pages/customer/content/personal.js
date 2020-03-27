@@ -18,7 +18,6 @@ import {Context} from 'context'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 export default props => {
- 
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
     {value: 1, text: '회원정보'},
@@ -45,23 +44,39 @@ export default props => {
   //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
-  
-  const {changes, setChanges, onChange,onChangeEvent} = useChange(update, {qnaType: faqNum, onChange: -1})
+
+  const {changes, setChanges, onChange, onChangeEvent} = useChange(update, {qnaType: faqNum, onChange: -1})
   const [faqNum, setfaqNum] = useState('')
 
   //useState
-  const [isOpen, setIsOpen] = useState(false)
-  
+
   //--------------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
     console.log(JSON.stringify(obj, null, 1))
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
-      context.action.alert({
-        title: res.messageKey,
-        msg: res.message
-      })
+      if (obj.data.email === undefined || obj.data.email === '') {
+        context.action.alert({
+          title: '이메일 형식',
+          msg: '이메일 형식을 확인해 주세요'
+        })
+      } else if (obj.data.title === undefined || obj.data.title === '') {
+        context.action.alert({
+          title: '제목',
+          msg: '제목을 입력해 주세요'
+        })
+      } else if (obj.data.contents === undefined || obj.data.contents === '') {
+        context.action.alert({
+          title: '내용',
+          msg: '내용을 입력해 주세요'
+        })
+      } else if (obj.data.qnaType === '') {
+        context.action.alert({
+          title: '문의 유형 선택',
+          msg: '문의 유형을 선택해 주세요'
+        })
+      }
     } else if (res.result === 'success') {
       context.action.alert({
         msg: res.message
@@ -83,10 +98,9 @@ export default props => {
       case mode.onChange !== undefined: //----------------------------상태변화
         //console.log(JSON.stringify(changes))
         break
-        case onChangeEvent !== undefined: //----------------------------상태변화
+      case onChangeEvent !== undefined: //----------------------------상태변화
         //console.log(JSON.stringify(changes))
         break
-        
     }
   }
   // input file에서 이미지 업로드했을때 파일객체 dataURL로 값 셋팅
@@ -104,7 +118,7 @@ export default props => {
     }
     if (!extValidator(fileExtension)) {
       return context.action.alert({
-        msg: 'jpg, png 이미지만 사용 가능합니다.',
+        msg: 'gif,jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
           context.action.alert({visible: false})
@@ -140,26 +154,21 @@ export default props => {
   //func 타입체크
   const typeActive = value => {
     setfaqNum(value)
-    
   }
   useEffect(() => {
-    setChanges({...changes,qnaType: faqNum})
+    setChanges({...changes, qnaType: faqNum})
   }, [faqNum])
-
 
   //--------------------------------------------------------------------------
   return (
-    <Content
-     >
+    <Content>
       <dl>
         <dt>문의 유형 선택</dt>
         <Select>
           <SelectBoxs
             type={'remove-init-data'}
             boxList={selectBoxData}
-            onChangeEvent={
-              typeActive
-            }
+            onChangeEvent={typeActive}
             inlineStyling={{left: 0, top: 0, zIndex: 13, position: 'static', width: '100%'}}
           />
         </Select>
