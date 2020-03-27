@@ -9,7 +9,7 @@
 /**
  *
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -25,6 +25,11 @@ import Message from 'pages/common/message'
 const Layout = props => {
   const {children} = props
 
+  //
+  const isCustomer = useMemo(() => {
+    return window.location.href.indexOf('/customer') === -1 ? false : true
+  })
+  console.log(isCustomer)
   //---------------------------------------------------------------------
   return (
     <Container>
@@ -36,7 +41,7 @@ const Layout = props => {
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      <Footer Ftype="mainFooter" />
+      {isCustomer && <Footer Ftype="mainFooter" />}
       {/* (방송방)Player */}
       <Player {...props} />
       {/* 레이어팝업 */}
