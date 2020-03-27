@@ -66,6 +66,9 @@ export default props => {
         console.log(res.data.list)
         setShow(true)
       }
+      if (res.message === '검색 결과 없습니다.') {
+        setShow(false)
+      }
     }
     const resMember = await Api.member_search({
       params: {
@@ -79,6 +82,9 @@ export default props => {
         setPostsM(resMember.data.list)
         console.log(resMember.data.list.memNo)
         setShow(true)
+      }
+      if (resMember.message === '검색 결과 없습니다.') {
+        setShow(false)
       }
     }
 

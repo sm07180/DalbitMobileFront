@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout'
-import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
+import {WIDTH_MOBILE} from 'context/config'
 
 //context
 import Api from 'context/api'
@@ -338,6 +338,10 @@ const ProfileImg = styled.div`
 const SettingWrap = styled.div`
   width: 394px;
   margin: 0 auto;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    width: 320px;
+  }
 `
 
 const Content = styled.section`
