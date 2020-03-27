@@ -25,9 +25,6 @@ export default props => {
   //---------------------------------------------------------------------
   const [readyRoom, setReadyRoom] = useState(false)
   const {roomNo} = qs.parse(location.search) //라우터로 들어올때 방번호
-  async function socketConnect() {
-    const conect = await sc.socketClusterBinding(roomNo)
-  }
   async function fetchData(obj) {
     console.clear()
     console.log('join')
