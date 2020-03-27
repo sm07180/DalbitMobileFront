@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {useHistory} from 'react-router-dom'
 
 //components
 import GnbSearch from './search'
@@ -50,6 +51,9 @@ export default props => {
   //context
   const context = useContext(Context)
 
+  //history
+  let history = useHistory()
+
   //GNB메뉴 타입 4가지 만들기
   function makeGnbType() {
     switch (context.gnb_state) {
@@ -77,6 +81,7 @@ export default props => {
         className={context.gnb_visible ? 'on' : 'off'}
         onClick={() => {
           context.action.updateGnbVisible(false)
+          history.push(`${history.location.pathname}`)
         }}></Dim>
       {makeGnbType()}
     </>
