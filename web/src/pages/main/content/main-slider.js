@@ -72,23 +72,39 @@ export default props => {
   }
 
   //슬라이더 안에 슬라이드 생성
-  const arraySlide = slideInfo.map((item, index) => {
-    const {id, title, url, name, reco, category, popu, avata} = item
-    return (
-      <Slide key={index}>
-        <ImgBox bg={url}>
-          <img src={url}></img>
-        </ImgBox>
-        <p>{title}</p>
-      </Slide>
-    )
-  })
-
+  // const arraySlide = slideInfo.map((item, index) => {
+  //   const {id, title, url, name, reco, category, popu, avata} = item
+  //   return (
+  //     <Slide key={index}>
+  //       <ImgBox bg={url}>
+  //         <img src={url}></img>
+  //       </ImgBox>
+  //       <p>{title}</p>
+  //     </Slide>
+  //   )
+  // })
+  const makeContents = () => {
+    if (props.Info === null) return
+    console.log(props.Info)
+    const cont = props.Info.map((item, index) => {
+      const {id, title, url, profImg, nickNm, category, popu, avata} = item
+      return (
+        <Slide key={index}>
+          <ImgBox bg={profImg.thumb336x336}>
+            <img src={profImg.thumb336x336}></img>
+          </ImgBox>
+          <p>{nickNm}</p>
+        </Slide>
+      )
+    })
+    return [cont, cont, cont]
+  }
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     if (mainSlider) {
       const obj = document.getElementsByClassName('swiper-slide')
+      console.log(obj)
       for (let index = 0; index < obj.length; index++) {
         const element = obj[index]
         element.addEventListener('click', function() {
@@ -97,20 +113,6 @@ export default props => {
       }
     }
   }, [mainSlider])
-
-  // useEffect(() => {
-  //   if (window.innerWidth > 840) {
-  //     setSelecterWidth(-220)
-  //     console.log('1')
-  //   } else if (window.innerWidth <= 840 && window.innerWidth > 600) {
-  //     setSelecterWidth(-185)
-  //     console.log('2')
-  //   } else {
-  //     setSelecterWidth(-120)
-  //     console.log('3')
-  //   }
-  //   if (mainSlider) mainSlider.update()
-  // }, [useResize()])
 
   return (
     <Content>
@@ -121,9 +123,12 @@ export default props => {
           <Swiper
             {...params}
             getSwiper={e => {
+              //   makeContents()
               setMainSlider(e)
             }}>
-            {arraySlide}
+            {makeContents()}
+
+            {/* {arraySlide} */}
           </Swiper>
           {/* 현재 on 된 프로필 아이템 듣는사람, 좋아요 숫자 상태 */}
           <ActiveState>
