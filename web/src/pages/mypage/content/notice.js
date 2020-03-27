@@ -88,7 +88,7 @@ const Notice = () => {
         )}
       </ListWrap>
 
-      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={1} currentPage={page} />}
+      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />}
 
       {/* <GlobalWriteBtn>
         <div className="inner" />

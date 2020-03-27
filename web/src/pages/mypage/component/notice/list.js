@@ -18,6 +18,10 @@ const List = props => {
     return `${date} ${time}`
   }
 
+  useEffect(() => {
+    setOpened(false)
+  }, [title])
+
   return (
     <div>
       <ListStyled onClick={() => setOpened(opened ? false : true)}>
