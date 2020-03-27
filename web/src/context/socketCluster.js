@@ -779,7 +779,7 @@ export const sendMessageData = state => {
 // }
 
 export const socketClusterBinding = async (channel, Info) => {
-  console.log(socket)
+  console.log('socket 유무 = ' + socket)
 
   if (socket != null) {
     if (socket.state === 'open') {
@@ -811,14 +811,10 @@ export const socketClusterBinding = async (channel, Info) => {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }
     } else {
-      //  console.warn('소켓 null')
       if (Info) scConnection(Info)
       setTimeout(() => {
         privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }, 500)
-      // if (socket.state === 'open') {
-
-      // }
     }
   }
 }

@@ -38,7 +38,6 @@ export default props => {
     return
   }
   useEffect(() => {
-    console.log('1')
     fetchListenList()
   }, [])
 
@@ -113,7 +112,9 @@ export default props => {
           <ManagerImg bg={thumb62x62} />
           <StreamID>{`@${memId}`}</StreamID>
           <NickName>{nickNm}</NickName>
-          {context.token.memNo !== memNo && <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>}
+          {context.token.memNo !== memNo && (
+            <div className="btnwrap">{roomInfo.memNo != memNo && <EventBTNS selectidx={index} />}</div>
+          )}
         </ListenList>
       )
     })
@@ -124,7 +125,13 @@ export default props => {
   return (
     <>
       <Wrapper onWheel={handleOnWheel} ref={settingArea}>
-        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+        <Scrollbars
+          ref={scrollbars}
+          autoHeight
+          autoHeightMax={'100%'}
+          onUpdate={scrollOnUpdate}
+          autoHide
+          className="scrollCustom">
           <LiveWrap>
             <Title>방송 DJ</Title>
             <DJList>
