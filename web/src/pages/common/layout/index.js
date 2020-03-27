@@ -29,7 +29,6 @@ const Layout = props => {
   const isCustomer = useMemo(() => {
     return window.location.href.indexOf('/customer') === -1 ? false : true
   })
-  console.log(isCustomer)
   //---------------------------------------------------------------------
   return (
     <Container>
