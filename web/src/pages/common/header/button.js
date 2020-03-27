@@ -4,7 +4,8 @@
  * @todo 반응형으로 처리되어야함
  */
 
-import React, {useMemo, useContext} from 'react'
+import React, {useMemo, useContext, useState, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
@@ -18,10 +19,27 @@ import {BroadValidation} from 'pages/common/header/navi'
 export default () => {
   //context
   const context = useContext(Context)
+  //useState
+  let isOpen = false
+  //history
+  let history = useHistory()
   //useMemo
   const isLogin = useMemo(() => {
     return _.hasIn(context, 'token.isLogin') ? context.token.isLogin : false
   })
+  function hashchange(event) {
+    console.log(context.gnb_state)
+    alert('1')
+  }
+  //---------------------------------------------------------------------
+
+  useEffect(() => {
+    //BackButton
+    window.onpopstate = function(event) {
+      context.action.updateGnbVisible(false)
+      //console.log('location: ' + document.location + ', state: ' + JSON.stringify(event.state))
+    }
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
@@ -42,6 +60,7 @@ export default () => {
           onClick={() => {
             if (location.href.indexOf('/search') === -1) {
               context.action.updateGnbState('search')
+              history.push(`${history.location.pathname}#gnbOpen`)
             }
           }}>
           검색
@@ -51,15 +70,16 @@ export default () => {
             className="type2"
             onClick={() => {
               context.action.updateGnbState('notice')
+              history.push(`${history.location.pathname}#gnbOpen`)
             }}>
             알람
           </button>
         )}
-
         <button
           className="type3"
           onClick={() => {
             context.action.updateGnbState('mypage')
+            history.push(`${history.location.pathname}#gnbOpen`)
           }}>
           프로필
         </button>
@@ -67,6 +87,7 @@ export default () => {
           className="type4"
           onClick={() => {
             context.action.updateGnbState('menu')
+            history.push(`${history.location.pathname}#gnbOpen`)
           }}>
           메뉴
         </button>
@@ -74,6 +95,7 @@ export default () => {
     </Content>
   )
 }
+
 //---------------------------------------------------------------------
 const Content = styled.div`
   position: absolute;

@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {useHistory} from 'react-router-dom'
+
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -10,6 +12,8 @@ export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  //history
+  let history = useHistory()
   //initalize
   const {children} = props
   //ref
@@ -26,6 +30,7 @@ export default props => {
           <Close
             onClick={() => {
               context.action.updateGnbVisible(false)
+              history.push(`${history.location.pathname}`)
             }}></Close>
           <Wrap>{children}</Wrap>
         </Scrollbars>
