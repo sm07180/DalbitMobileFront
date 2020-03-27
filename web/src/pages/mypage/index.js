@@ -32,8 +32,15 @@ import Ready from './content/ready.js'
 export default props => {
   const ctx = useContext(Context)
   const {profile} = ctx
+
+  useEffect(() => {
+    if (!profile) {
+      props.history.push('/')
+    }
+  }, [])
+
   if (!profile) {
-    return props.history.push('/')
+    return <></>
   }
 
   const navigationList = [

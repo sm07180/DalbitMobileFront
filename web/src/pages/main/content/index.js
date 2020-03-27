@@ -38,7 +38,8 @@ const Main = props => {
       id: '2',
       category: '책/스토리',
       title: '오후를 밝혀줄 빛',
-      url: 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99A2AC3E5D15A5F629',
+      url:
+        'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99A2AC3E5D15A5F629',
       name: '누운별',
       people: '1,230',
       like: '4,110',
@@ -143,11 +144,11 @@ const Main = props => {
         <StarRangking {...props} />
       </RangkingWrap>
       {/* 내 스타 영역.. 로그인시에만 보여줌 */}
-      {context.token.isLogin && (
+      {/* {context.token.isLogin && (
         <SectionWrap>
           <MyStar Info={slideInfo} />
         </SectionWrap>
-      )}
+      )} */}
 
       {/* 라이브 list 영역, 캐스트 list 영역 */}
       <SectionWrap>

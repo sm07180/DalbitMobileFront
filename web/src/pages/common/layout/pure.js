@@ -19,6 +19,7 @@ const Layout = props => {
   const context = useContext(Context)
   //initalize
   const {children} = props
+
   // ~~/navigator/?router=/login 형태로 넘어올때
   const isNavigator = useMemo(() => {
     return isHybrid()
@@ -27,9 +28,7 @@ const Layout = props => {
   })
   //---------------------------------------------------------------------
 
-  useEffect(() => {
-    console.log(isNavigator)
-  }, [])
+  useEffect(() => {}, [])
   //---------------------------------------------------------------------
   return (
     <Container className="pure">
