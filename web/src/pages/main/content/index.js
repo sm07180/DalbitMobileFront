@@ -45,10 +45,13 @@ const Main = props => {
     let data = []
 
     fetch1.map((list, idx) => {
-      console.log(list)
       let obj = {}
       obj.roomNo = list.roomNo
-      obj.title = list.nickNm
+      obj.memNo = list.memNo
+      obj.listeners = list.listeners
+      obj.likes = list.likes
+      obj.title = list.title
+      obj.nickNm = list.nickNm
       obj.url = list.profImg.thumb336x336
       data[idx] = obj
     })
@@ -72,7 +75,7 @@ const Main = props => {
         <StarRangking {...props} />
       </RangkingWrap>
       {/* 내 스타 영역.. 로그인시에만 보여줌 */}
-      {context.token.isLogin && (
+      {context.token.isLogin && fetch !== null && fetch.length !== 0 && (
         <SectionWrap>
           <MyStar Info={fetch} />
         </SectionWrap>

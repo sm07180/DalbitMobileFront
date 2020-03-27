@@ -45,10 +45,10 @@ export default props => {
         //document.getElementsByClassName('select-btn').s
         //console.log('슬라이드 바뀌었을때', slideInfo[currentIdx])
         setCurrentInfo({
-          entryCnt: slideInfo[currentIdx].people,
-          likeCnt: slideInfo[currentIdx].like,
+          entryCnt: slideInfo[currentIdx].listeners,
+          likeCnt: slideInfo[currentIdx].likes,
           title: slideInfo[currentIdx].title,
-          bjNickNm: slideInfo[currentIdx].name
+          bjNickNm: slideInfo[currentIdx].nickNm
         })
       },
       slideChangeTransitionStart: function() {
@@ -77,7 +77,7 @@ export default props => {
 
   //슬라이더 안에 슬라이드 생성
   const arraySlide = slideInfo.map((item, index) => {
-    const {id, title, url, name, reco, category, popu, roomNo, memNo} = item
+    const {id, title, url, nickNm, reco, category, popu, roomNo, memNo} = item
     return (
       <Slide
         key={index}
@@ -92,6 +92,7 @@ export default props => {
         <ImgBox bg={url}>
           <img src={url}></img>
         </ImgBox>
+        <p>{nickNm}</p>
         <p>{title}</p>
       </Slide>
     )
@@ -148,7 +149,7 @@ export default props => {
             <button>방송 바로가기</button>
             <span>신입 DJ</span>
             <b>{currentInfo.title}</b>
-            <p>{currentInfo.bjNickNm} </p>
+            <p>{currentInfo.nickNm} </p>
           </ActiveItem>
           {/* 레코드 모양 선택 애니메이션 레이아웃 */}
           <Selecter>
