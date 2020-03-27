@@ -103,7 +103,8 @@ export default props => {
         <Slide
           key={index}
           onClick={() => {
-            alert('test')
+            //alert('test')
+            //props.history.push('')
           }}>
           <ContentBox {...item}>
             <ImgBox bg={item.bjProfImg.thumb292x292}>

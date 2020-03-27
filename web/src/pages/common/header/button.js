@@ -61,6 +61,8 @@ export default () => {
             if (location.href.indexOf('/search') === -1) {
               context.action.updateGnbState('search')
               document.body.classList.add('on')
+              const _url = history.location.pathname + history.location.search
+              history.push(`${_url}#gnbOpen`)
             }
           }}>
           검색
@@ -71,6 +73,8 @@ export default () => {
             onClick={() => {
               context.action.updateGnbState('notice')
               document.body.classList.add('on')
+              const _url = history.location.pathname + history.location.search
+              history.push(`${_url}#gnbOpen`)
             }}>
             알람
           </button>
@@ -80,6 +84,8 @@ export default () => {
           onClick={() => {
             context.action.updateGnbState('mypage')
             document.body.classList.add('on')
+            const _url = history.location.pathname + history.location.search
+            history.push(`${_url}#gnbOpen`)
           }}>
           프로필
         </button>
@@ -88,6 +94,8 @@ export default () => {
           onClick={() => {
             context.action.updateGnbState('menu')
             document.body.classList.add('on')
+            const _url = history.location.pathname + history.location.search
+            history.push(`${_url}#gnbOpen`)
           }}>
           메뉴
         </button>
