@@ -143,7 +143,9 @@ export default props => {
           locale: Utility.locale(),
           roomNo: UserRoomNo
         }
-        sc.sendMessage.login(scLoginInfo)
+        if (UserRoomNo != '') {
+          sc.sendMessage.login(scLoginInfo)
+        }
 
         Api.profile({params: {memNo: res.data.memNo}}).then(profileInfo => {
           if (profileInfo.result === 'success') {
