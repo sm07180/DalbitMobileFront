@@ -64,7 +64,7 @@ export default props => {
 
   //좋아요~!
   const activeLike = () => {
-    console.log('store.like')
+    console.log('store.like = ' + store.like)
     if (store.like == 0) {
       if (props.auth > 0) {
         loginCheckMsg = '좋아요는 방송청취 1분 후에 가능합니다.'

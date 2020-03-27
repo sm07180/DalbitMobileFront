@@ -39,7 +39,7 @@ export default props => {
 
           setReadyRoom(false)
           Hybrid('RoomJoin', data)
-          history.goBack()
+          props.history.goBack()
           //setTimeout(() => {
           //  Hybrid('RoomJoin', data)
           //}, 100)
@@ -49,6 +49,7 @@ export default props => {
           // console.log('resSocketConnect = ' + resSocketConnect)
           setReadyRoom(true)
           ctx.action.updateBroadcastTotalInfo(data)
+          ctx.action.updateRoomInfo(data)
           setSesstionStorage('userInfo', data)
           // store.action.updateRoomReady(true)
           //ctx.action.updateRoomReady(true)
