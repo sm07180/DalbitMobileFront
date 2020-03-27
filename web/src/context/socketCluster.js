@@ -780,41 +780,43 @@ export const sendMessageData = state => {
 
 export const socketClusterBinding = async (channel, Info) => {
   console.log('socket 유무 = ' + socket)
-
-  if (socket != null) {
-    if (socket.state === 'open') {
-      if (channel == '') {
-        alert('채널이 없습니다.')
-        return
-      }
-      if (window.location.pathname === '/') {
-        publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
+  const socketState = await socket.state
+  if (socketState === 'open') {
+    if (socket != null) {
+      if (socket.state === 'open') {
+        if (channel == '') {
+          alert('채널이 없습니다.')
+          return
+        }
+        if (window.location.pathname === '/') {
+          publicChannelHandle = socketChannelBinding(publicChannelHandle, channel)
+        } else {
+          privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+          console.log('privateChannelHandle = ' + channel)
+        }
       } else {
-        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
-        console.log('privateChannelHandle = ' + channel)
+        console.warn('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
+
+        if (window.location.pathname !== '/' && channel) {
+          setTimeout(() => {
+            if (socket.state !== 'open') {
+              privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+            }
+          }, 500)
+        }
       }
     } else {
-      console.warn('소켓 상태 = ' + socket.state + ',' + channel + privateChannelHandle)
-
-      if (window.location.pathname !== '/' && channel) {
+      //socket = socketReload
+      if (socket != null) {
+        if (window.location.pathname !== '/') {
+          privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        }
+      } else {
+        if (Info) scConnection(Info)
         setTimeout(() => {
-          if (socket.state !== 'open') {
-            privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
-          }
+          privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
         }, 500)
       }
-    }
-  } else {
-    //socket = socketReload
-    if (socket != null) {
-      if (window.location.pathname !== '/') {
-        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
-      }
-    } else {
-      if (Info) scConnection(Info)
-      setTimeout(() => {
-        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
-      }, 500)
     }
   }
 }
