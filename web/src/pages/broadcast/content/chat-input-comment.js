@@ -78,7 +78,7 @@ export default props => {
       })
     }
     if (store.like == 1) {
-      broad_likes(store.roomInfo.roomNo)
+      broad_likes(context.broadcastTotalInfo.roomNo)
     } else if (store.like == 2) {
       store.action.updateLike(3)
     }
