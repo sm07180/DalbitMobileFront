@@ -1,5 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+
+import Api from 'context/api'
+
+// context
+import {Context} from 'context'
 
 // component
 import List from '../component/notice/list.js'
@@ -13,7 +18,13 @@ import WhitePen from '../component/images/WhitePen.svg'
 import {WIDTH_MOBILE} from 'context/config'
 
 const Notice = () => {
+  const ctx = useContext(Context)
   const [writeStatus, setWriteStatus] = useState('off')
+  const [searching, setSearching] = useState(true)
+
+  const [listDetailed, setListDetailed] = useState([])
+  const [totalPageNumber, setTotalPageNumber] = useState(null)
+  const [page, setPage] = useState(1)
 
   const writeStatusHandler = () => {
     if (writeStatus === 'off') {
@@ -23,27 +34,50 @@ const Notice = () => {
     }
   }
 
+  useEffect(() => {
+    ;(async () => {
+      const {memNo} = ctx.profile
+      const params = {
+        memNo,
+        page,
+        records: 10
+      }
+      const response = Api.mypage_notice_inquire(params)
+      if (response.result === 'success') {
+        if (list.length) {
+          if (paging) {
+            // const {totalPage} = paging
+            // setTotalPageNumber(totalPage)
+          }
+          setListDetailed(list)
+        } else {
+          setListDetailed(false)
+        }
+      }
+    })()
+  }, [page])
+
   return (
     <>
       <TopWrap>
         <TitleText>방송국 공지</TitleText>
-        <WriteBtn className={writeStatus} onClick={writeStatusHandler}>
+        {/* <WriteBtn className={writeStatus} onClick={writeStatusHandler}>
           공지 작성하기
-        </WriteBtn>
+        </WriteBtn> */}
       </TopWrap>
-      {writeStatus === 'off' ? (
+      {/* {writeStatus === 'off' ? (
         <>
           <List noticeList={[1, 2, 3, 4]} />
         </>
       ) : (
         <WritePage />
-      )}
+      )} */}
 
-      <Paging setPage={() => {}} records={10} totalPage={4} currentPage={1} />
+      <Paging setPage={setPage} totalPage={1} currentPage={page} />
 
-      <GlobalWriteBtn>
+      {/* <GlobalWriteBtn>
         <div className="inner" />
-      </GlobalWriteBtn>
+      </GlobalWriteBtn> */}
     </>
   )
 }

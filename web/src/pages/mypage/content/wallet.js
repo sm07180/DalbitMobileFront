@@ -24,7 +24,6 @@ export default props => {
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-  const records = 10
 
   const changeCoinTypeClick = type => {
     setCoinType(type)
@@ -47,7 +46,7 @@ export default props => {
         coinType,
         walletType,
         page,
-        records
+        recrods: 10
       })
 
       if (response.result === 'success') {
@@ -121,7 +120,7 @@ export default props => {
       />
 
       {Array.isArray(listDetailed) && listDetailed.length > 0 && (
-        <Paging setPage={setPage} records={records} totalPage={totalPageNumber} currentPage={page} />
+        <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
       )}
     </div>
   )

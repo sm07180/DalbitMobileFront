@@ -551,7 +551,19 @@ export default class API {
   }
 
   /**
-   * @breif 내지갑 달 내역 조회
+   * 마이페이지 공지사항 조회
+   * @method "GET"
+   * @param string    memNo(O)
+   * @param number    page(X)
+   * @param number    records(X)
+   * @created 박송원 2020.03.27
+   */
+  static mypage_notice_inquire = async params => {
+    return await ajax({url: `/mypage/notice`, method: 'GET', params})
+  }
+
+  /**
+   * @breif 마이페이지 지갑 내역 조회
    * @method "GET"
    * @param number    walletType(O)
    * @param number    page(X)
