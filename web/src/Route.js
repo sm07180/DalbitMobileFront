@@ -74,6 +74,7 @@ export default () => {
         <Route exact path="/customer/:num" component={Customer} />
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
+        <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
         {/* 페이지가없을경우 404로 이동 */}

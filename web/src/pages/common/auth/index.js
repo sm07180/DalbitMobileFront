@@ -63,7 +63,7 @@ export default props => {
         onClick={() => {
           context.action.updatePopupVisible(false)
         }}>
-        팝업닫기
+        close
       </button>
       <Content {...props} update={update} />
     </React.Fragment>

@@ -6,6 +6,7 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 import useResize from 'components/hooks/useResize'
+import {useHistory} from 'react-router-dom'
 
 //context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -14,6 +15,8 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from
 
 export default props => {
   //---------------------------------------------------------------------
+  //history
+  let history = useHistory()
   //state
   //const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
   const [slideInfo, setSlideInfo] = useState(props.Info)
@@ -30,13 +33,10 @@ export default props => {
   const params = {
     loop: true,
     spaceBetween: 6,
-    loop: true,
+    loop: false,
     autoplay: {
       delay: 3000
     },
-    simulateTouch: true,
-    centeredSlides: true,
-    slidesPerView: 'auto',
     on: {
       slideChangeTransitionEnd: function() {
         const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes['data-swiper-slide-index'].value
@@ -57,6 +57,9 @@ export default props => {
         document.getElementsByClassName('select-btn')[0].style.transform = `rotate(${animNum}deg) translate(${selecterWidth}px)`
       }
     },
+    simulateTouch: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
 
     slideActiveClass: 'main-slide-active',
     preventClicks: false,
@@ -72,39 +75,27 @@ export default props => {
   }
 
   //슬라이더 안에 슬라이드 생성
-  // const arraySlide = slideInfo.map((item, index) => {
-  //   const {id, title, url, name, reco, category, popu, avata} = item
-  //   return (
-  //     <Slide key={index}>
-  //       <ImgBox bg={url}>
-  //         <img src={url}></img>
-  //       </ImgBox>
-  //       <p>{title}</p>
-  //     </Slide>
-  //   )
-  // })
-  const makeContents = () => {
-    if (props.Info === null) return
-    console.log(props.Info)
-    const cont = props.Info.map((item, index) => {
-      const {id, title, url, profImg, nickNm, category, popu, avata} = item
-      return (
-        <Slide key={index}>
-          <ImgBox bg={profImg.thumb336x336}>
-            <img src={profImg.thumb336x336}></img>
-          </ImgBox>
-          <p>{nickNm}</p>
-        </Slide>
-      )
-    })
-    return [cont, cont, cont]
-  }
+  const arraySlide = slideInfo.map((item, index) => {
+    const {id, title, url, name, reco, category, popu, roomNo, avata} = item
+    return (
+      <Slide
+        key={index}
+        onClick={() => {
+          history.push(`broadcast?roomNo=${roomNo}`)
+        }}>
+        <ImgBox bg={url}>
+          <img src={url}></img>
+        </ImgBox>
+        <p>{title}</p>
+      </Slide>
+    )
+  })
+
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
     if (mainSlider) {
       const obj = document.getElementsByClassName('swiper-slide')
-      console.log(obj)
       for (let index = 0; index < obj.length; index++) {
         const element = obj[index]
         element.addEventListener('click', function() {
@@ -113,6 +104,20 @@ export default props => {
       }
     }
   }, [mainSlider])
+
+  // useEffect(() => {
+  //   if (window.innerWidth > 840) {
+  //     setSelecterWidth(-220)
+  //     console.log('1')
+  //   } else if (window.innerWidth <= 840 && window.innerWidth > 600) {
+  //     setSelecterWidth(-185)
+  //     console.log('2')
+  //   } else {
+  //     setSelecterWidth(-120)
+  //     console.log('3')
+  //   }
+  //   if (mainSlider) mainSlider.update()
+  // }, [useResize()])
 
   return (
     <Content>
@@ -123,12 +128,9 @@ export default props => {
           <Swiper
             {...params}
             getSwiper={e => {
-              //   makeContents()
               setMainSlider(e)
             }}>
-            {makeContents()}
-
-            {/* {arraySlide} */}
+            {arraySlide}
           </Swiper>
           {/* 현재 on 된 프로필 아이템 듣는사람, 좋아요 숫자 상태 */}
           <ActiveState>
@@ -318,7 +320,7 @@ const Selecter = styled.div`
   width: 438px;
   height: 438px;
   margin: 0 auto;
-  z-index: 2;
+  z-index: 0;
   div {
     position: absolute;
     top: -315px;

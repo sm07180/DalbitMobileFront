@@ -268,6 +268,9 @@ const Detail = styled.section`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    & img {
+      width: 100% !important;
+    }
   }
   & > button {
     display: block;

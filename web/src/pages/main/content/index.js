@@ -28,12 +28,180 @@ const Main = props => {
       reco: '추천',
       popu: '인기',
       category: '노래/연주',
-      title: '이 밤을 신나게 보내요',
-      url: 'https://t1.daumcdn.net/cfile/tistory/99DC6A385CC11E5A26',
+      title: '💙24시간 설레는 봄과 음악이냥👀',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162229077508.jpeg?336x336',
       name: '끝날 때까지 끝난게 아닌 인연을 위해',
       people: '1,860',
       like: '5,200',
-      icon: 'BEST'
+      roomNo: '91585293778993'
+    },
+    {
+      id: '2',
+      reco: '추천',
+      popu: '인기',
+      category: '봄바람 휘날리며 꽃냄새가 향긋!',
+      title: '*~!달빛냥이!~*',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162511568731.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585293922745'
+    },
+    {
+      id: '31',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327143603199453.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585294933832'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/bg_3/roombg_200310_1.jpg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299358701'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '책을 읽다 예쁜문구를 만나셨다면',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299392943'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '💙24시간 설레는 봄과 음악이냥👀',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162229077508.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585293778993'
+    },
+    {
+      id: '2',
+      reco: '추천',
+      popu: '인기',
+      category: '봄바람 휘날리며 꽃냄새가 향긋!',
+      title: '*~!달빛냥이!~*',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162511568731.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585293922745'
+    },
+    {
+      id: '31',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327143603199453.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585294933832'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/bg_3/roombg_200310_1.jpg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299358701'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '책을 읽다 예쁜문구를 만나셨다면',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299392943'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '💙24시간 설레는 봄과 음악이냥👀',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162229077508.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585293778993'
+    },
+    {
+      id: '2',
+      reco: '추천',
+      popu: '인기',
+      category: '봄바람 휘날리며 꽃냄새가 향긋!',
+      title: '*~!달빛냥이!~*',
+      url: 'https://photo.dalbitlive.com/bg_0/20608099200/20200327162511568731.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585293922745'
+    },
+    {
+      id: '31',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327143603199453.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585294933832'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '이 밤을 신나게 보내요',
+      url: 'https://photo.dalbitlive.com/bg_3/roombg_200310_1.jpg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299358701'
+    },
+    {
+      id: '1',
+      reco: '추천',
+      popu: '인기',
+      category: '노래/연주',
+      title: '책을 읽다 예쁜문구를 만나셨다면',
+      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336',
+      name: '끝날 때까지 끝난게 아닌 인연을 위해',
+      people: '1,860',
+      like: '5,200',
+      roomNo: '91585299392943'
     }
   ]
   //---------------------------------------------------------------------
@@ -42,6 +210,7 @@ const Main = props => {
   async function fetchData1() {
     const res = await Api.recommand({})
     if (res.result === 'success') {
+      console.log(res)
       setFetch1(res.data)
       // setFetch1(res.data.list)
     }
@@ -64,7 +233,7 @@ const Main = props => {
   return (
     <Content {...props}>
       {/* 메인 최상단 슬라이드 */}
-      <MainSlider Info={fetch1} />
+      <MainSlider Info={slideInfo} />
       {/* 스타 랭킹 영역 */}
       <RangkingWrap>
         <StarRangking {...props} />
