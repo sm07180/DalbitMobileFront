@@ -48,7 +48,10 @@ const Main = props => {
       console.log(list)
       let obj = {}
       obj.roomNo = list.roomNo
-      obj.title = list.nickNm
+      obj.listeners = list.listeners
+      obj.likes = list.likes
+      obj.title = list.title
+      obj.nickNm = list.nickNm
       obj.url = list.profImg.thumb336x336
       data[idx] = obj
     })
