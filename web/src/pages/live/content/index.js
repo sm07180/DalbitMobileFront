@@ -43,7 +43,7 @@ export default props => {
   // 방송방 리스트 조회
   const getBroadList = async () => {
     const obj = {params: {roomType: type, page: currentPage, records: RECORDS, searchType: searchType}}
-    const res = await Api.broad_list({...obj})
+    const res = await Api.broad_list(obj)
 
     if (res.result === 'success') {
       if (res.data.list.length) {
