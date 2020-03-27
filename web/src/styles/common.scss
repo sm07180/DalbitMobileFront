@@ -487,3 +487,11 @@ table {
 .MuiPickersDay-daySelected {
   color: #fff;
 }
+
+@media (max-width: 840px) {
+  body.on {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+  }
+}

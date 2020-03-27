@@ -31,6 +31,7 @@ export default props => {
             onClick={() => {
               context.action.updateGnbVisible(false)
               history.push(`${history.location.pathname}`)
+              document.body.classList.remove('on')
             }}></Close>
           <Wrap>{children}</Wrap>
         </Scrollbars>
