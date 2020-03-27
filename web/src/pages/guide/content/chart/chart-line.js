@@ -75,7 +75,7 @@ export default class LineDemo extends Component {
   render() {
     return (
       <ChartWrap>
-        <h2>달빛라디오:라인형차트</h2>
+        <h2>달빛라이브:라인형차트</h2>
         <Line ref="chart" data={data} />
       </ChartWrap>
     )

@@ -17,7 +17,7 @@ export default class LineDemo extends Component {
   render() {
     return (
       <ChartWrap>
-        <h2>달빛라디오:도넛차트</h2>
+        <h2>달빛라이브:도넛차트</h2>
         <Doughnut ref="chart" data={data} />
       </ChartWrap>
     )
