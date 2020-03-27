@@ -86,14 +86,15 @@ export default props => {
   }
 
   const doCharge = () => {
-    if (context.state.selfAuth) {
-      payFetch()
-    } else {
-      context.action.updatePopupVisible(false)
-      props.history.push('/user/selfAuth', {
-        type: 'charge'
-      })
-    }
+    // if (context.state.selfAuth) {
+    //   payFetch()
+    // } else {
+    //   context.action.updatePopupVisible(false)
+    //   props.history.push('/user/selfAuth', {
+    //     type: 'charge'
+    //   })
+    // }
+    payFetch()
   }
 
   // 무통장입금 - 현금영수증 Component
