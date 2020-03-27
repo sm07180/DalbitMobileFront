@@ -7,6 +7,7 @@ import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import _ from 'lodash'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 const chargeData = [
   {
     id: 0,
@@ -44,11 +45,17 @@ const receiptData = [
     type: '지출증빙용'
   }
 ]
+
+function payRequest(obj) {
+  //아래와 같이 ext_inc_comm.js에 선언되어 있는 함수를 호출
+  MCASH_PAYMENT(obj)
+}
 export default props => {
   const context = useContext(Context)
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
   const scrollbars = useRef(null)
+  const formTag = useRef()
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [useage, setUseage] = useState(0)
@@ -80,7 +87,6 @@ export default props => {
 
   const doCharge = () => {
     if (context.state.selfAuth) {
-      console.log('결제 아이디', chargeData[charge].fetch)
       payFetch()
     } else {
       context.action.updatePopupVisible(false)
@@ -156,36 +162,29 @@ export default props => {
         Prdtprice: context.popup_code[1].price
       }
     }
-    let res = null
-    switch (type) {
-      case 'pay_card':
-        res = await Api.pay_card({...obj})
-        break
-      case 'pay_phone':
-        res = await Api.pay_phone({...obj})
-        break
-      case 'pay_virtual':
-        res = await Api.pay_virtual({...obj})
-        break
-      case 'pay_bank':
-        res = await Api.pay_bank({...obj})
-        break
+    const res = await Api[type]({...obj})
 
-      default:
-        break
-    }
+    if (res.result == 'success' && _.hasIn(res, 'data')) {
+      const {current} = formTag
+      let ft = current
 
-    if (!_.hasIn(res, 'result')) {
-      if (res.result === 'sucess' && _.hasIn(res, 'data')) {
-        console.log('res성공', res)
-      } else {
-        context.action.alert({
-          msg: res.message
-        })
+      const makeHiddenInput = (key, value) => {
+        const input = document.createElement('input')
+        input.setAttribute('type', 'hidden')
+        input.setAttribute('name', key)
+        input.setAttribute('id', key)
+        input.setAttribute('value', value)
+        return input
       }
+
+      Object.keys(res.data).forEach(key => {
+        ft.append(makeHiddenInput(key, res.data[key]))
+      })
+      console.log(ft)
+      MCASH_PAYMENT(ft)
     } else {
       context.action.alert({
-        msg: `${res.status} ${res.error} ${res.message}`
+        msg: res.message
       })
     }
   }
@@ -193,6 +192,7 @@ export default props => {
   //-------------------------------------------------------- components start
   return (
     <Container>
+      <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
       <Scrollbars ref={scrollbars} style={{height: '649px'}} autoHide>
         {confirm ? (
           <SuccessPopup />
@@ -209,7 +209,7 @@ export default props => {
                 <div>
                   <div>결제금액</div>
                   <div className="price">
-                    {_.hasIn(context.popup_code[1], 'price') ? context.popup_code[1].price : '1,000'}
+                    {_.hasIn(context.popup_code[1], 'price') ? Utility.addComma(context.popup_code[1].price) : '1,000'}
                     <span>원</span>
                   </div>
                 </div>

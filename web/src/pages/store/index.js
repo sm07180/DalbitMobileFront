@@ -56,7 +56,7 @@ export default props => {
                 setSelected({
                   num: index,
                   name: item.storeNm,
-                  price: Utility.addComma(item.price)
+                  price: item.price
                 })
               }
             }}>
