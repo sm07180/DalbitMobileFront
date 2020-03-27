@@ -198,8 +198,8 @@ const App = () => {
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
-    alert('받아온 customHeader = ' + JSON.stringify(customHeader))
-    alert('받아온 isHybrid = ' + isHybrid)
+    //alert('받아온 customHeader = ' + JSON.stringify(customHeader))
+    //alert('받아온 isHybrid = ' + isHybrid)
 
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)

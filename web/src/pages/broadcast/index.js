@@ -38,7 +38,7 @@ export default props => {
       console.log('방입장  = ' + data)
       if (data) {
         if (isHybrid()) {
-          alert('hybrid')
+          //alert('hybrid')
 
           setReadyRoom(false)
           Hybrid('RoomJoin', data)
@@ -47,7 +47,7 @@ export default props => {
           //  Hybrid('RoomJoin', data)
           //}, 100)
         } else {
-          alert('no hybrid')
+          //alert('no hybrid')
           //const resSocketConnect = sc.socketClusterBinding(roomNo, ctx)
           // console.log('resSocketConnect = ' + resSocketConnect)
           setReadyRoom(true)
