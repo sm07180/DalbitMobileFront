@@ -15,14 +15,13 @@ import Paging from 'components/ui/paging.js'
 import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 
-import {WIDTH_MOBILE} from 'context/config'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
 const Notice = () => {
   const ctx = useContext(Context)
   const [writeStatus, setWriteStatus] = useState('off')
-  const [searching, setSearching] = useState(true)
 
-  const [listDetailed, setListDetailed] = useState([])
+  const [listDetailed, setListDetailed] = useState('search')
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
 
@@ -42,17 +41,15 @@ const Notice = () => {
         page,
         records: 10
       }
-      const response = Api.mypage_notice_inquire(params)
+      const response = await Api.mypage_notice_inquire(params)
       if (response.result === 'success') {
-        if (list.length) {
-          if (paging) {
-            // const {totalPage} = paging
-            // setTotalPageNumber(totalPage)
-          }
-          setListDetailed(list)
-        } else {
-          setListDetailed(false)
+        const {list, paging} = response.data
+        if (paging) {
+          const {total} = paging
+          console.log('total', total)
+          // setTotalPageNumber(total)
         }
+        setListDetailed(list)
       }
     })()
   }, [page])
@@ -60,11 +57,12 @@ const Notice = () => {
   return (
     <>
       <TopWrap>
-        <TitleText>방송국 공지</TitleText>
+        <div className="title">방송국 공지</div>
         {/* <WriteBtn className={writeStatus} onClick={writeStatusHandler}>
           공지 작성하기
         </WriteBtn> */}
       </TopWrap>
+
       {/* {writeStatus === 'off' ? (
         <>
           <List noticeList={[1, 2, 3, 4]} />
@@ -73,7 +71,25 @@ const Notice = () => {
         <WritePage />
       )} */}
 
-      <Paging setPage={setPage} totalPage={1} currentPage={page} />
+      <ListWrap>
+        {Array.isArray(listDetailed) ? (
+          listDetailed.length > 0 ? (
+            listDetailed.map((list, idx) => {
+              const {isTop, title, contents, writeDt} = list
+              return <List key={idx} isTop={isTop} title={title} contents={contents} writeDt={writeDt} />
+            })
+          ) : (
+            <div className="no-list">
+              <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
+              <div>검색 결과가 없습니다.</div>
+            </div>
+          )
+        ) : (
+          <div className="search" />
+        )}
+      </ListWrap>
+
+      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={1} currentPage={page} />}
 
       {/* <GlobalWriteBtn>
         <div className="inner" />
@@ -142,10 +158,18 @@ const WriteBtn = styled.button`
     display: none;
   }
 `
-const TitleText = styled.span`
-  color: #8556f6;
-  font-size: 20px;
-  letter-spacing: -0.5px;
+
+const ListWrap = styled.div`
+  .search {
+    min-height: 200px;
+  }
+
+  .no-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 `
 
 const TopWrap = styled.div`
@@ -156,6 +180,12 @@ const TopWrap = styled.div`
   justify-content: space-between;
   margin-top: 54px;
   padding-bottom: 16px;
+
+  .title {
+    color: #8556f6;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+  }
 `
 
 export default Notice
