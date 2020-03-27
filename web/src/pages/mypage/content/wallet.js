@@ -13,7 +13,7 @@ import List from '../component/wallet/list.js'
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
-import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
+import {WIDTH_MOBILE} from 'context/config'
 
 export default props => {
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'

@@ -3,12 +3,14 @@ import styled from 'styled-components'
 
 // component
 import List from '../component/notice/list.js'
-import Paging from '../component/notice/paging.js'
 import WritePage from '../component/notice/writePage.js'
+import Paging from 'components/ui/paging.js'
 
 // image
 import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
+
+import {WIDTH_MOBILE} from 'context/config'
 
 const Notice = () => {
   const [writeStatus, setWriteStatus] = useState('off')
@@ -32,14 +34,45 @@ const Notice = () => {
       {writeStatus === 'off' ? (
         <>
           <List noticeList={[1, 2, 3, 4]} />
-          <Paging pages={[1, 2, 3, 4]} />
         </>
       ) : (
         <WritePage />
       )}
+
+      <Paging setPage={() => {}} records={10} totalPage={4} currentPage={1} />
+
+      <GlobalWriteBtn>
+        <div className="inner" />
+      </GlobalWriteBtn>
     </>
   )
 }
+
+const GlobalWriteBtn = styled.button`
+  display: none;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 22px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #8556f6;
+
+    .inner {
+      width: 27px;
+      height: 27px;
+      background-image: url(${WhitePen});
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  }
+`
 
 const WriteBtn = styled.button`
   position: relative;
@@ -69,6 +102,10 @@ const WriteBtn = styled.button`
     &::after {
       background-image: url(${WhitePen});
     }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    display: none;
   }
 `
 const TitleText = styled.span`
