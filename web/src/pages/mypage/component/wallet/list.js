@@ -128,7 +128,7 @@ const ListWrap = styled.div`
       color: #616161;
 
       @media (max-width: ${WIDTH_MOBILE}) {
-        width: calc(100% - 134px);
+        width: calc(100% - 144px);
       }
     }
     .type {
@@ -138,7 +138,7 @@ const ListWrap = styled.div`
       font-weight: bold;
 
       @media (max-width: ${WIDTH_MOBILE}) {
-        width: 40px;
+        width: 50px;
       }
     }
     .date {
@@ -201,12 +201,20 @@ const TopArea = styled.div`
       color: #8556f6;
       font-size: 20px;
       letter-spacing: -0.5px;
+
+      @media (max-width: ${WIDTH_MOBILE}) {
+        font-size: 18px;
+      }
     }
     .sub {
       margin-left: 4px;
       color: #757575;
       font-size: 14px;
       letter-spacing: -0.35px;
+
+      @media (max-width: ${WIDTH_MOBILE}) {
+        font-size: 12px;
+      }
     }
   }
 `
