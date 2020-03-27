@@ -29,7 +29,11 @@ export default props => {
     {id: 10, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'}
   ]
   const MenuInfo = [
-    {id: 1, title: '해롱해롱해요', url: 'https://www.city.kr/files/attach/images/164/023/751/004/0370b36693077e678e52244fbadea4d2.jpg'},
+    {
+      id: 1,
+      title: '해롱해롱해요',
+      url: 'https://www.city.kr/files/attach/images/164/023/751/004/0370b36693077e678e52244fbadea4d2.jpg'
+    },
     {id: 2, title: '하늘에서 비가와요~', url: 'https://newsimg.sedaily.com/2019/03/29/1VGS0VWD74_1.jpg'},
     {id: 3, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
     {id: 4, title: '하늘에서 비가와요~', url: 'https://img.gqkorea.co.kr/gq/2018/12/style_5c1af11a0c4bf.jpg'},
@@ -67,7 +71,44 @@ export default props => {
     return
   }
   //---------------------------------------------------------------------
-  return <>{makeGnbType()}</>
+  return (
+    <>
+      <Dim
+        className={context.gnb_visible ? 'on' : 'off'}
+        onClick={() => {
+          context.action.updateGnbVisible(false)
+        }}
+        onTouchStart={() => {
+          context.action.updateGnbVisible(false)
+        }}></Dim>
+      {makeGnbType()}
+    </>
+  )
 }
 //---------------------------------------------------------------------
 //styled
+const Dim = styled.div`
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10;
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    display: block;
+    /* transition: visibility 0s, opacity 0.1s linear; */
+
+    &.on {
+      visibility: visible;
+      opacity: 1;
+    }
+    &.off {
+      visibility: hidden;
+      opacity: 0;
+    }
+  }
+`
