@@ -75,7 +75,7 @@ const Main = props => {
         <StarRangking {...props} />
       </RangkingWrap>
       {/* 내 스타 영역.. 로그인시에만 보여줌 */}
-      {context.token.isLogin && (
+      {context.token.isLogin && fetch !== null && fetch.length !== 0 && (
         <SectionWrap>
           <MyStar Info={fetch} />
         </SectionWrap>
