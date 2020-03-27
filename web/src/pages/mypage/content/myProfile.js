@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET_S} from 'context/config'
+import {WIDTH_PC, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
 
 // context
 import {Context} from 'context'
@@ -26,14 +26,21 @@ const myProfile = props => {
         <LevelWrap>
           <LevelText>LEVEL {profile.level}</LevelText>
           <LevelStatusBarWrap>
-            <LevelStatus style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
+            <LevelStatus
+              style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
           </LevelStatusBarWrap>
         </LevelWrap>
 
         <InfoWrap>
           <div>
             <span style={{color: '#424242', fontSize: '24px'}}>{profile.nickNm}</span>
-            <span style={{marginLeft: '6px', verticalAlign: 'text-bottom', color: '#bdbdbd', fontSize: '14px'}}>{`@${profile.memId}`}</span>
+            <span
+              style={{
+                marginLeft: '6px',
+                verticalAlign: 'text-bottom',
+                color: '#bdbdbd',
+                fontSize: '14px'
+              }}>{`@${profile.memId}`}</span>
           </div>
           <InfoConfigBtn>
             <Link to="/mypage/setting">내 정보 관리</Link>
@@ -176,6 +183,10 @@ const LevelWrap = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    align-items: center;
+  }
 `
 
 const ContentWrap = styled.div`
