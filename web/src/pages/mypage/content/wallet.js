@@ -13,6 +13,7 @@ import List from '../component/wallet/list.js'
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
 export default props => {
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
@@ -95,7 +96,7 @@ export default props => {
       <CoinCountingView>
         <CoinCurrentStatus>
           <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
-          <img className="coin-img" src={returnCoinImg(coinType)} style={{width: '44px'}} />
+          <img className="coin-img" src={returnCoinImg(coinType)} />
           <span className="current-value">{totalCoin !== null && Number(totalCoin).toLocaleString()}</span>
         </CoinCurrentStatus>
 
@@ -153,14 +154,28 @@ const CoinCurrentStatus = styled.div`
     color: #9e9e9e;
     font-size: 16px;
     letter-spacing: -0.4px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
   }
   .coin-img {
+    width: 44px;
     margin-left: 20px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 36px;
+      margin-left: 0;
+    }
   }
   .current-value {
     color: #8556f6;
     font-size: 28px;
     letter-spacing: -0.7px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 20px;
+    }
   }
 `
 
@@ -172,6 +187,11 @@ const CoinCountingView = styled.div`
   height: 118px;
   padding: 30px;
   box-sizing: border-box;
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding: 20px 16px;
+    height: 80px;
+  }
 `
 
 const CoinTypeBtn = styled.button`

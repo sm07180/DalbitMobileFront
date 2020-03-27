@@ -15,6 +15,8 @@ import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
+//components
+import Utility from 'components/lib/utility'
 
 ////////////////////////////////////////////////////////////////////////////////////
 function Notice(props) {
@@ -217,7 +219,7 @@ function Notice(props) {
           <span>{detailDate()}</span>
         </header>
         <div>
-          <p>{noticeDetail.contents}</p>
+          <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
         </div>
         <button onClick={GoNotice}>목록보기</button>
       </Detail>

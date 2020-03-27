@@ -218,7 +218,7 @@ function Faq(props) {
                     <Detail className={Store().faqPage === faqIdx ? 'on' : ''}>
                       <div>
                         <span>A</span>
-                        <p>{faqDetail.answer}</p>
+                        <p dangerouslySetInnerHTML={{__html: faqDetail.answer}}></p>
                       </div>
                     </Detail>
                   </>
