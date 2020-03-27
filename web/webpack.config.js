@@ -13,21 +13,24 @@ const ENV_URL = {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi2.dalbitcast.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitcast.com')
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitcast.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
   },
   stage: {
     BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitcast.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitcast.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitcast.com')
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitcast.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
   },
   real: {
     BROADCAST_SOCKET_URL: JSON.stringify('sv.dalbitcast.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://api.dalbitcast.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitcast.com')
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitcast.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
   }
 }
 
@@ -122,7 +125,8 @@ module.exports = (_, options) => {
         __WEBRTC_SOCKET_URL: ENV_URL[env]['WEBRTC_SOCKET_URL'],
         __API_SERVER_URL: ENV_URL[env]['API_SERVER_URL'],
         __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
-        __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL']
+        __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL'],
+        __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL']
       })
     ]
   }
