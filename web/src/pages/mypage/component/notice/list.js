@@ -25,7 +25,10 @@ const List = props => {
   return (
     <div>
       <ListStyled onClick={() => setOpened(opened ? false : true)}>
-        <TitleWrap className={isTop ? 'is-top' : ''}>{title}</TitleWrap>
+        <TitleWrap className={isTop ? 'is-top' : ''}>
+          <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
+          <span className="text">{title}</span>
+        </TitleWrap>
         <TimeWrap>
           <Time>{timeFormat(writeDt)}</Time>
           <ArrowDownBtn />
@@ -74,6 +77,11 @@ const TitleWrap = styled.div`
     color: #8556f6;
     font-size: 14px;
     letter-spacing: -0.35px;
+  }
+
+  .text {
+    font-weight: bold;
+    margin-left: 6px;
   }
 `
 
