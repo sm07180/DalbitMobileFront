@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 export default props => {
-  const {boxList, onChangeEvent, inlineStyling, className} = props
+  const {boxList, onChangeEvent, inlineStyling, className, type} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [opened, setOpened] = useState(null)
 
@@ -39,6 +39,9 @@ export default props => {
       </Selected>
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
+          if (type === 'remove-init-data' && index === 0) {
+            return
+          }
           return (
             <div
               className="box-list"

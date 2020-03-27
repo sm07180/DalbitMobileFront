@@ -21,6 +21,52 @@ const Index = props => {
 
   const store = useContext(SettingStore)
   Index.store = store
+  const check = () => {
+    if (context.token.isLogin === true) {
+      context.action.confirm({
+        //콜백처리
+        callback: () => {
+          setTimeout(() => {
+            async function fetchData(obj) {
+              const res = await Api.member_logout({data: context.token.authToken})
+              if (res.result === 'success') {
+                //로그아웃성공
+                //쿠키삭제
+                Utility.setCookie('custom-header', '', -1)
+                // alert(JSON.stringify(res.data, null, 1))
+                Hybrid('GetLogoutToken', res.data)
+                context.action.updateToken(res.data)
+                localStorage.removeItem('com.naver.nid.access_token')
+                localStorage.removeItem('com.naver.nid.oauth.state_token')
+                props.history.push('/')
+                context.action.updateGnbVisible(false)
+                context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
+                context.action.updateProfile(null)
+              } else {
+                //Error 및 "result":"fail" 에러메시지
+                context.action.alert({
+                  msg: res.message
+                })
+              }
+            }
+            fetchData()
+          }, 50)
+        },
+        msg: `로그아웃 하시겠습니까?`
+      })
+    } else if (context.token.isLogin === false) {
+      context.action.updatePopup('LOGIN')
+    }
+  }
+
+  const checklogin = () => {
+    if (context.token.isLogin === true) {
+      history.push(`/secession`)
+    } else if (context.token.isLogin === false) {
+      context.action.updatePopup('LOGIN')
+    }
+  }
+
   //---------------------------------------------------------------------
   return (
     <Container>
@@ -32,48 +78,15 @@ const Index = props => {
             <Use />
           </Accordion>
         </div>
-
+        {/* if (context.token.isLogin === false) {
+    context.action.updatePopup('LOGIN') */}
         {/* <Accordion title="로그아웃" content="3" />
         <Accordion title="회원 탈퇴" content="4" />
         <Accordion title="버전관리" content="5" /> */}
-        <button
-          className="otherbtn"
-          onClick={() => {
-            context.action.confirm({
-              //콜백처리
-              callback: () => {
-                setTimeout(() => {
-                  async function fetchData(obj) {
-                    const res = await Api.member_logout({data: context.token.authToken})
-                    if (res.result === 'success') {
-                      //로그아웃성공
-                      //쿠키삭제
-                      Utility.setCookie('custom-header', '', -1)
-                      // alert(JSON.stringify(res.data, null, 1))
-                      Hybrid('GetLogoutToken', res.data)
-                      context.action.updateToken(res.data)
-                      localStorage.removeItem('com.naver.nid.access_token')
-                      localStorage.removeItem('com.naver.nid.oauth.state_token')
-                      props.history.push('/')
-                      context.action.updateGnbVisible(false)
-                      context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
-                      context.action.updateProfile(null)
-                    } else {
-                      //Error 및 "result":"fail" 에러메시지
-                      context.action.alert({
-                        msg: res.message
-                      })
-                    }
-                  }
-                  fetchData()
-                }, 50)
-              },
-              msg: `로그아웃 하시겠습니까?`
-            })
-          }}>
+        <button className="otherbtn" onClick={() => check()}>
           로그아웃
         </button>
-        <button className="otherbtn" onClick={() => history.push(`/secession`)}>
+        <button className="otherbtn" onClick={() => checklogin()}>
           회원탈퇴
         </button>
         {/* <button className="otherbtn">
