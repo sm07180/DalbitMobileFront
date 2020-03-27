@@ -39,7 +39,7 @@ export default props => {
 
           setReadyRoom(false)
           Hybrid('RoomJoin', data)
-          //history.goBack()
+          history.goBack()
           //setTimeout(() => {
           //  Hybrid('RoomJoin', data)
           //}, 100)
