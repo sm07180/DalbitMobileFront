@@ -20,11 +20,12 @@ export default props => {
   //state
   //const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
   const [slideInfo, setSlideInfo] = useState(props.Info)
+  console.log('props.Infoprops.Info', props.Info)
   const [currentInfo, setCurrentInfo] = useState({
-    entryCnt: '',
-    likeCnt: '',
-    title: '',
-    bjNickNm: ''
+    entryCnt: props.Info[4].people,
+    likeCnt: props.Info[4].like,
+    title: props.Info[4].title,
+    bjNickNm: props.Info[4].name
   })
   //let mainSlider = {}
   const [mainSlider, setMainSlider] = useState()
@@ -37,6 +38,7 @@ export default props => {
     autoplay: {
       delay: 3000
     },
+    initialSlide: 5,
     on: {
       slideChangeTransitionEnd: function() {
         const currentIdx = document.getElementsByClassName('main-slide-active')[0].attributes['data-swiper-slide-index'].value
@@ -80,6 +82,7 @@ export default props => {
     return (
       <Slide
         key={index}
+        data-swiper-slide-index={index}
         onClick={() => {
           history.push(`broadcast?roomNo=${roomNo}`)
         }}>
