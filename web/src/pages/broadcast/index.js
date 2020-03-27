@@ -49,7 +49,7 @@ export default props => {
           // console.log('resSocketConnect = ' + resSocketConnect)
           setReadyRoom(true)
           ctx.action.updateBroadcastTotalInfo(data)
-          ctx.action.updateRoomInfo(data)
+          store.action.updateRoomInfo(data)
           setSesstionStorage('userInfo', data)
           // store.action.updateRoomReady(true)
           //ctx.action.updateRoomReady(true)
