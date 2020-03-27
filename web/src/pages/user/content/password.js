@@ -12,9 +12,6 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-//layout
-import Layout from 'pages/common/layout'
-
 let inervalId = null
 export default props => {
   //---------------------------------------------------------------------
@@ -222,18 +219,11 @@ export default props => {
     } else {
       setValidatePass(false)
     }
-    //console.log(JSON.stringify(validate, null, 1))
   }, [validate])
-
-  //useEffect
-  useEffect(() => {
-    console.log(JSON.stringify(changes, null, 1))
-  }, [changes])
 
   //---------------------------------------------------------------------
   //fetchData
   async function fetchData() {
-    console.log('버튼 클릭 후 props= ' + JSON.stringify(changes))
     const loginID = changes.loginID.replace(/-/g, '')
     const res = await Api.password_modify({
       data: {
@@ -241,7 +231,7 @@ export default props => {
         memPwd: changes.loginPwd
       }
     })
-    console.log('REST 결과값 = ' + JSON.stringify(res))
+
     if (res && res.code) {
       if (res.result == 'success') {
         //성공
@@ -268,38 +258,30 @@ export default props => {
       }
     })
     if (resAuth.result === 'success') {
-      console.log(resAuth)
       setValidate({
         ...validate,
         loginID: true,
         auth: false
       })
       setChanges({...changes, CMID: resAuth.data.CMID})
-      // setCurrentAuthBtn({
-      //   request: true,
-      //   check: true
-      // })
 
       setCurrentAuth1('인증번호 요청이 완료되었습니다.')
       document.getElementsByName('loginID')[0].disabled = true
       setCurrentAuth2('')
-      //document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
+
       setCurrentAuthBtn({
         request: true,
         check: true
       })
-      //setInterval({createAuthTimer()},1000)
-      //thisTimer =
+
       inervalId = setInterval(createAuthTimer, 1000)
       setTime = 300
     } else {
-      console.log(resAuth)
       setCurrentAuth1(resAuth.message)
     }
   }
 
   async function fetchAuthCheck() {
-    console.log('체크합니다..', changes.CMID, Number(changes.auth))
     const resCheck = await Api.sms_check({
       data: {
         CMID: changes.CMID,
@@ -307,7 +289,6 @@ export default props => {
       }
     })
     if (resCheck.result === 'success') {
-      console.log(resCheck)
       setValidate({...validate, auth: true})
       setCurrentAuth2(resCheck.message)
       clearInterval(inervalId)
@@ -318,7 +299,6 @@ export default props => {
         check: true
       })
     } else {
-      console.log(resCheck)
       setCurrentAuth2('인증번호(가) 일치하지 않습니다.')
     }
   }
@@ -329,7 +309,15 @@ export default props => {
       <Title>비밀번호 변경</Title>
       <FormWrap>
         <PhoneAuth>
-          <input type="tel" name="loginID" value={changes.loginID} onChange={onLoginHandleChange} placeholder="휴대폰 번호" className="auth" maxLength="13" />
+          <input
+            type="tel"
+            name="loginID"
+            value={changes.loginID}
+            onChange={onLoginHandleChange}
+            placeholder="휴대폰 번호"
+            className="auth"
+            maxLength="13"
+          />
           <button
             className="auth-btn1"
             disabled={currentAuthBtn.request}
@@ -345,7 +333,14 @@ export default props => {
           </HelpText>
         )}
         <PhoneAuth>
-          <input type="number" name="auth" placeholder="인증번호" className="auth" value={changes.auth} onChange={onLoginHandleChange} />
+          <input
+            type="number"
+            name="auth"
+            placeholder="인증번호"
+            className="auth"
+            value={changes.auth}
+            onChange={onLoginHandleChange}
+          />
           <span className="timer"></span>
           <button
             className="auth-btn2"
@@ -362,14 +357,28 @@ export default props => {
           </HelpText>
         )}
         <InputWrap>
-          <input type="password" name="loginPwd" value={changes.loginPwd} onChange={onLoginHandleChange} placeholder="신규 비밀번호" maxLength="20" />
+          <input
+            type="password"
+            name="loginPwd"
+            value={changes.loginPwd}
+            onChange={onLoginHandleChange}
+            placeholder="신규 비밀번호"
+            maxLength="20"
+          />
           <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
           {currentPwd && (
             <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
               {currentPwd}
             </HelpText>
           )}
-          <input type="password" name="loginPwdCheck" defaultValue={changes.loginPwdCheck} onChange={onLoginHandleChange} placeholder="비밀번호 확인" maxLength="20" />
+          <input
+            type="password"
+            name="loginPwdCheck"
+            defaultValue={changes.loginPwdCheck}
+            onChange={onLoginHandleChange}
+            placeholder="비밀번호 확인"
+            maxLength="20"
+          />
           {currentPwdCheck && (
             <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
               {currentPwdCheck}
