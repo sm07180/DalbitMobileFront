@@ -383,7 +383,20 @@ export default props => {
                 <Counter>{count2} / 100</Counter>
               </div>
             </BroadWelcome>
-            <CopyrightIcon />
+            <CopyrightIcon
+              onClick={() =>
+                context.action.alert({
+                  //콜백처리
+                  msg: `저작권자의 허락을 받지 않고
+                저작재산권 또는 저작인격권을
+                침해하는 방법으로 저작물을
+                이용하는 행위를 할 경우,
+                저작권법 136조 제1항 제1호
+                위반으로 형사처벌 대상이 될 수
+                있습니다.`
+                })
+              }
+            />
             <CreateBtn
               value={BActive}
               onClick={() => {

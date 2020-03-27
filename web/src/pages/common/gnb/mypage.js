@@ -22,7 +22,9 @@ export default props => {
   const {profile} = context
   //useState
   //useMemo
-
+  // if (_url == '/setting' && context.token.isLogin === false) {
+  //   context.action.updatePopup('LOGIN')
+  // }
   //data
   const info = [
     {title: '내 정보 관리', url: '/mypage/setting'},

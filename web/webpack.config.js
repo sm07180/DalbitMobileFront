@@ -14,7 +14,7 @@ const ENV_URL = {
     API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com')
   },
   stage: {
     BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitlive.com'),
@@ -22,7 +22,7 @@ const ENV_URL = {
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com')
   },
   real: {
     BROADCAST_SOCKET_URL: JSON.stringify('sv.dalbitlive.com'),
@@ -30,7 +30,7 @@ const ENV_URL = {
     API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com')
   }
 }
 
