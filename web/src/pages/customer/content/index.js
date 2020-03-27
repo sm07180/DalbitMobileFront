@@ -44,7 +44,7 @@ const Index = props => {
   return (
     <Container>
       <h1>고객센터</h1>
-      <Banner />
+      {/* <Banner /> */}
       {/* 탭설정 */}
       <Tab />
       {/* 컨텐츠설정 */}
