@@ -8,7 +8,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
-
+import {useHistory} from 'react-router-dom'
 //ui
 import Accordion from 'components/ui/accordian'
 import Use from './use'
@@ -17,6 +17,8 @@ const Index = props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const history = useHistory()
+
   const store = useContext(SettingStore)
   Index.store = store
   //---------------------------------------------------------------------
@@ -71,7 +73,9 @@ const Index = props => {
           }}>
           로그아웃
         </button>
-        <button className="otherbtn">회원탈퇴</button>
+        <button className="otherbtn" onClick={() => history.push(`/secession`)}>
+          회원탈퇴
+        </button>
         <button className="otherbtn">
           버전관리
           <span>현재 버전 1.1.20</span>

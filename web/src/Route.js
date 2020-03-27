@@ -43,7 +43,8 @@ const Live = React.lazy(() => import('pages/live'))
 const Customer = React.lazy(() => import('pages/customer'))
 //setting
 const Setting = React.lazy(() => import('pages/setting'))
-
+//secession
+const Secession = React.lazy(() => import('pages/secession'))
 export default () => {
   return (
     <React.Suspense
@@ -72,6 +73,7 @@ export default () => {
         <Route exact path="/customer" component={Customer} />
         <Route exact path="/customer/:num" component={Customer} />
         <Route exact path="/setting" component={Setting} />
+        <Route exact path="/secession" component={Secession} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
         {/* navigator */}

@@ -952,6 +952,16 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/center/qna/add`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief 고객센터 1:1문의하기 작성
+   * @method "POST"
+   * @create 손완휘 2020.03.25
+   */
+  //------------------------------------------------------회원 탈퇴
+  static info_secsseion = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/member/withdrawal`, method: method || 'POST', data: data})
+  }
 
   //-------------------------------------------------------------스토어, 결제
   /**
