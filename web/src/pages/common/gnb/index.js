@@ -77,9 +77,6 @@ export default props => {
         className={context.gnb_visible ? 'on' : 'off'}
         onClick={() => {
           context.action.updateGnbVisible(false)
-        }}
-        onTouchStart={() => {
-          context.action.updateGnbVisible(false)
         }}></Dim>
       {makeGnbType()}
     </>
