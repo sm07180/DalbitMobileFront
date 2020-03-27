@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 export default props => {
-  const {boxList, onChangeEvent, inlineStyling} = props
+  const {boxList, onChangeEvent, inlineStyling, className} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [opened, setOpened] = useState(null)
 
@@ -29,7 +29,7 @@ export default props => {
   }, [])
 
   return (
-    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}}>
+    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? className : ''}>
       <Selected
         className={selectedClassName}
         tabIndex={0}

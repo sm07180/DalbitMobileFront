@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
 
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
 export default props => {
   const {searching, coinType, walletData, returnCoinText, setWalletType} = props
@@ -25,7 +25,7 @@ export default props => {
 
   return (
     <ListContainer>
-      <SelectBox boxList={selectWalletTypeData} onChangeEvent={setWalletType} inlineStyling={{right: 0, top: 0}} />
+      <SelectBox className="mypage-wallet-select-box" boxList={selectWalletTypeData} onChangeEvent={setWalletType} />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(coinType)} 상세내역`}</span>
@@ -97,6 +97,14 @@ const ListWrap = styled.div`
       padding: 6px 16px;
       font-size: 14px;
 
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: 34px;
+        padding: 2px 4px;
+        font-size: 12px;
+        border-radius: 12px;
+        color: #fff;
+      }
+
       &.type-1 {
         color: #feac2c;
         border-color: #feac2c;
@@ -118,17 +126,31 @@ const ListWrap = styled.div`
       font-size: 14px;
       letter-spacing: -0.35px;
       color: #616161;
+
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: calc(100% - 134px);
+      }
     }
     .type {
       width: 164px;
       color: #424242;
       font-size: 14px;
       font-weight: bold;
+
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: 40px;
+      }
     }
     .date {
       width: 170px;
       font-size: 14px;
       color: #bdbdbd;
+
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: 60px;
+        height: 16px;
+        font-size: 12px;
+      }
     }
 
     &.title {
@@ -146,6 +168,9 @@ const ListWrap = styled.div`
         text-align: center;
         padding-left: 0;
       }
+
+      .how-to-get,
+      .detail,
       .type,
       .date {
         color: #8556f6;
@@ -189,4 +214,13 @@ const TopArea = styled.div`
 const ListContainer = styled.div`
   position: relative;
   margin-top: 40px;
+
+  .mypage-wallet-select-box {
+    top: 0;
+    right: 0;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      top: -8px;
+    }
+  }
 `
