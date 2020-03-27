@@ -279,7 +279,12 @@ export default props => {
 
   const goRecvPresent = () => {
     if (context.token.isLogin) {
-      store.action.updateTab(12)
+      //방장인 경우 받은 선물 탭으로 이동
+      if (context.broadcastTotalInfo.auth != 3) {
+        store.action.updateTab(4)
+      } else {
+        store.action.updateTab(12)
+      }
     } else {
       context.action.alert({
         //콜백처리
