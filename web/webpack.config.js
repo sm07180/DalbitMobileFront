@@ -9,28 +9,28 @@ const fs = require('fs')
 
 const ENV_URL = {
   dev: {
-    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitcast.com'),
-    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi2.dalbitcast.com'),
-    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitcast.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
+    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitlive.com'),
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
   },
   stage: {
-    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitcast.com'),
-    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi.dalbitcast.com'),
-    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitcast.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
+    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitlive.com'),
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
   },
   real: {
-    BROADCAST_SOCKET_URL: JSON.stringify('sv.dalbitcast.com'),
-    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitcast.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://api.dalbitcast.com'),
-    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitcast.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitcast.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitcast.com/')
+    BROADCAST_SOCKET_URL: JSON.stringify('sv.dalbitlive.com'),
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
+    STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitlive.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com/')
   }
 }
 
