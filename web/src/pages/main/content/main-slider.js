@@ -20,7 +20,6 @@ export default props => {
   //state
   //const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
   const [slideInfo, setSlideInfo] = useState(props.Info)
-  console.log('props.Infoprops.Info', props.Info)
   const [currentInfo, setCurrentInfo] = useState({
     entryCnt: props.Info[4].people,
     likeCnt: props.Info[4].like,
