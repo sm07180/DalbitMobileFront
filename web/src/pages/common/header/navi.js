@@ -162,13 +162,14 @@ export const BroadValidation = () => {
         }
       }
       //본인인증 체크 후 fetchData 진행
-      if (context.state.selfAuth) {
-        fetchData()
-      } else {
-        history.push('/user/selfAuth', {
-          type: 'cast'
-        })
-      }
+      // if (context.state.selfAuth) {
+      //   fetchData()
+      // } else {
+      //   history.push('/user/selfAuth', {
+      //     type: 'cast'
+      //   })
+      // }
+      fetchData()
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
