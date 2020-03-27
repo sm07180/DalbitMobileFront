@@ -14,7 +14,7 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
-import {osName} from 'react-device-detect'
+import {osName, isAndroid, isIOS, isIPad13, isIPhone13, isTablet} from 'react-device-detect'
 //components
 import Api from 'context/api'
 //context
@@ -43,6 +43,15 @@ const App = () => {
   const customHeader = useMemo(() => {
     //makeCustomHeader
     const makeCustomHeader = () => {
+      const check = {
+        osName: osName,
+        isAndroid: isAndroid,
+        isIOS: isIOS,
+        isIPad13: isIPad13,
+        isIPhone13: isIPhone13,
+        isTablet: isTablet
+      }
+      //alert('check= ' + check)
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
       if (osName === 'Android') _os = '1'
@@ -114,6 +123,7 @@ const App = () => {
         }
         //###--하이브리드일때
         if (isHybrid === 'Y') {
+          //alert('osName = ' + osName)
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
             //active
             Hybrid('GetLoginToken', res.data)
@@ -127,13 +137,15 @@ const App = () => {
           if (customHeader.isFirst === 'N') {
             //-----@안드로이드 Cookie
             let cookie = Utility.getCookie('native-player-info')
-            if (osName === 'Android' && cookie !== null && cookie !== undefined) {
+            //if (osName === customHeader.os==='1' && cookie !== null && cookie !== undefined) {
+            if (customHeader.os + '' === '1' && cookie !== null && cookie !== undefined) {
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)
               context.action.updateNativePlayer(cookie)
             }
             //-----@iOS
-            if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
+            //if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
+            if (customHeader.os + '' === '2' && cookie !== null && cookie !== undefined) {
               cookie = decodeURIComponent(cookie)
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)

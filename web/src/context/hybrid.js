@@ -31,14 +31,18 @@ export const osName = () => {
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
+  //alert('Api.customHeader = ' + Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
   if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
     //<textarea id="customHeader" > 2중체크
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const val = JSON.parse(element.value)
-      if (val.os + '' === '1' || val.os + '' === '2') return true
-    }
+    // const element = document.getElementById('customHeader')
+    // if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
+    //   const val = JSON.parse(element.value)
+    //   if (val.os + '' === '1' || val.os + '' === '2') return true
+    // } else {
+    //   alert('custom noting ')
+    // }
+    return true
   }
   return false
 }
@@ -55,6 +59,7 @@ export const Hybrid = (func, info) => {
       //console.log('Windows버젼입니다')
       break
     case '1':
+      alert('안드로이드 푸쉬 = ' + func + ',' + 'data = ' + info)
       if (window.android[func] === null || window.android[func] === undefined) return
       if (info === '' || info === null || info === undefined) {
         window.android[func]()
@@ -63,6 +68,7 @@ export const Hybrid = (func, info) => {
       }
       break
     case '2':
+      alert('IOS 푸쉬 = ' + func + ',' + 'data = ' + info)
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함

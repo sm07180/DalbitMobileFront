@@ -38,9 +38,16 @@ export default props => {
       console.log('방입장  = ' + data)
       if (data) {
         if (isHybrid()) {
+          alert('hybrid')
+
+          setReadyRoom(false)
           Hybrid('RoomJoin', data)
-          history.goBack()
+          //history.goBack()
+          //setTimeout(() => {
+          //  Hybrid('RoomJoin', data)
+          //}, 100)
         } else {
+          alert('no hybrid')
           //const resSocketConnect = sc.socketClusterBinding(roomNo, ctx)
           // console.log('resSocketConnect = ' + resSocketConnect)
           setReadyRoom(true)
@@ -51,20 +58,8 @@ export default props => {
         }
       }
     } else {
-      console.log(code)
       sessionStorage.clear()
-      if (code === '-4') {
-        // const roomExit = await Api.broad_exit(obj)
-        // if (roomExit.result === 'success') {
-        //   const resRoomJoin = await Api.broad_join(obj)
-        //   if (roomJoin.result === 'success') {
-        //     return roomJoin.data
-        //   }
-        // }
-        //   console.log(ctx.roomReady)
-        //   ctx.action.updateRoomReady(false)
-        //   props.history.goBack()
-      } else if (code === '-2' || code === '-3' || code === '-5' || code === '-6') {
+      if (code === '-1' || code === '-2' || code === '-3' || code === '-4' || code === '-5' || code === '-6') {
         ctx.action.alert({
           callback: () => {
             props.history.goBack()
@@ -106,7 +101,7 @@ export default props => {
     } else {
       setReadyRoom(true)
     }
-
+    console.log(isHybrid())
     // if (getSesstionStorage('userInfo')) {
     //   //setReadyRoom(true)
     //   ctx.action.updateRoomReady(true)
