@@ -169,7 +169,7 @@ export default props => {
             type={'remove-init-data'}
             boxList={selectBoxData}
             onChangeEvent={typeActive}
-            inlineStyling={{left: 0, top: 0, zIndex: 13, position: 'static', width: '100%'}}
+            inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
           />
         </Select>
       </dl>
@@ -325,7 +325,7 @@ const Content = styled.div`
 const Select = styled.div`
   height: 42px;
   width: 328px;
-  z-index: 12;
+  z-index: 8;
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
   }
