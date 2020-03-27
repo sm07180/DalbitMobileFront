@@ -36,14 +36,14 @@ export default props => {
       <Layout {...props}>
         <PrivatePage>
           {/* 닫기버튼 */}
-          {isNavigator && (
+          {/* {isNavigator && (
             <CloseButton
               onClick={() => {
                 Hybrid('CloseLayerPopup', '')
               }}>
               닫기
             </CloseButton>
-          )}
+          )} */}
           <ProfileImg style={{backgroundImage: `url(${profile.profImg['thumb150x150']})`}}></ProfileImg>
           <NickName>{profile.nickNm}</NickName>
           <MemberId>@{profile.memId}</MemberId>
