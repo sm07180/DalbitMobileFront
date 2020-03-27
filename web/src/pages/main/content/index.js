@@ -22,349 +22,15 @@ const Main = props => {
   const [fetch, setFetch] = useState(null)
   const [fetch1, setFetch1] = useState(null)
   //임시 데이터
-  const slideInfo = [
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    },
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    },
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    },
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    },
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    },
-    {
-      roomNo: '91585299358701',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: 'ㅡㅡㅡㅡㅡㅡㅡ',
-      people: 17,
-      like: 0,
-      name: '수다수달(\u003e_\u003c)/',
-      url: 'https://photo.dalbitlive.com/profile_0/20606976000/20200326170947263044.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301052106',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '🌹🌹🌹24시간 음악이나 들알까?',
-      people: 8,
-      like: 1,
-      name: '🎉😝pqpq😝🎉',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327163023563511.jpeg?336x336'
-    },
-    {
-      roomNo: '91585301233729',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '책과함께  힐링해요~!!',
-      people: 6,
-      like: 1,
-      name: '11100000008',
-      url: 'https://photo.dalbitlive.com/profile_0/20608099200/20200327164138046799.jpeg?336x336'
-    },
-    {
-      roomNo: '91585300740523',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '😊하리보의 24시간 음악방송💕',
-      people: 6,
-      like: 0,
-      name: '하리보',
-      url: 'https://photo.dalbitlive.com/profile_0/20608052400/20200327090700525559.png?336x336'
-    },
-    {
-      roomNo: '91585301623808',
-      reco: '추천',
-      popu: '인기',
-      category: '노래/연주',
-      title: '이불밖은 위험한 음악 플레이리스트!!',
-      people: 3,
-      like: 0,
-      name: '이불밖은위험해🛌🛌',
-      url: 'https://photo.dalbitlive.com/profile_0/20605806000/20200325093555014050.jpeg?336x336'
-    }
-  ]
+
   //---------------------------------------------------------------------
 
   //fetch (메인상단)
   async function fetchData1() {
-    const res = await Api.recommand({})
+    const res = await Api.recommand()
     if (res.result === 'success') {
-      console.log(res)
       setFetch1(res.data)
-      // setFetch1(res.data.list)
     }
-    //   console.log(res)
   }
   //fetch (내 스타 영역.. 로그인시에만 보여줌)
   async function fetchData(obj) {
@@ -372,6 +38,21 @@ const Main = props => {
     if (res.result === 'success') {
       setFetch(res.data.list)
     }
+  }
+  const makeSlider = () => {
+    if (fetch1 === null) return
+    //데이터가공
+    let data = []
+
+    fetch1.map((list, idx) => {
+      let obj = {}
+      obj.roomNo = list.memNo
+      obj.title = list.nickNm
+      obj.url = list.profImg.thumb336x336
+      data[idx] = obj
+    })
+    const obj = data.concat(data).concat(data)
+    return <MainSlider Info={obj} />
   }
   //---------------------------------------------------------------------
   useEffect(() => {
@@ -383,7 +64,8 @@ const Main = props => {
   return (
     <Content {...props}>
       {/* 메인 최상단 슬라이드 */}
-      <MainSlider Info={slideInfo} />
+      {makeSlider()}
+
       {/* 스타 랭킹 영역 */}
       <RangkingWrap>
         <StarRangking {...props} />
