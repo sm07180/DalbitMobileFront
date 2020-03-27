@@ -172,7 +172,8 @@ export default props => {
     //Error발생시
 
     if (res.result === 'success') {
-      mediaHandler.setMuted(!isMic)
+      //mediaHandler.setMuted(!isMic)
+      mediaHandler.setMuted(true)
       store.action.updateMikeState(!store.mikeState)
     }
   }
