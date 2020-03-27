@@ -23,6 +23,7 @@ export default Checkbox
 
 const Wrap = styled.div`
   padding: 21px 10px;
+
   @media (max-width: ${WIDTH_MOBILE}) {
     padding: 21px 16px;
   }
@@ -30,6 +31,7 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
     @media (max-width: ${WIDTH_MOBILE}) {
       font-size: 14px;
     }
@@ -40,7 +42,7 @@ const Wrap = styled.div`
     width: 24px;
     height: 24px;
     background: url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center/ cover;
-
+    cursor: pointer;
     &.on {
       background: url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center/ cover;
     }
