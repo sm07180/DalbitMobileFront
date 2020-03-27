@@ -56,7 +56,8 @@ export default props => {
       }
     } else {
       sessionStorage.clear()
-      if (code === '-1' || code === '-2' || code === '-3' || code === '-4' || code === '-5' || code === '-6') {
+      //참여 성공(0) ,회원 아닐시(-1),해당방 미존재(-2),종료된 방송(-3),이미 참여(-4),입장 제한(-5),나이 제한(-6)
+      if (code !== '-1') {
         ctx.action.alert({
           callback: () => {
             props.history.goBack()

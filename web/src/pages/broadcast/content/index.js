@@ -173,14 +173,6 @@ export default props => {
     props.history.push('/broadcast/' + '?roomNo=' + roomNo)
   }
 
-  async function connect() {
-    const {roomNo} = context.broadcastTotalInfo
-    const res = await sc.socketClusterBinding(roomNo, context)
-    if (res.channels.roomNo.state === 'subscribed') {
-      console.log('채널에 입장이 잘된 ')
-    }
-  }
-
   useEffect(() => {
     if (authValue === null) {
     } else if (authValue === hostRole) {
