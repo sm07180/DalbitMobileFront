@@ -46,7 +46,7 @@ const Main = props => {
 
     fetch1.map((list, idx) => {
       let obj = {}
-      obj.roomNo = list.memNo
+      obj.roomNo = list.roomNo
       obj.title = list.nickNm
       obj.url = list.profImg.thumb336x336
       data[idx] = obj
