@@ -43,19 +43,13 @@ const App = () => {
   const customHeader = useMemo(() => {
     //makeCustomHeader
     const makeCustomHeader = () => {
-      const check = {
-        osName: osName,
-        isAndroid: isAndroid,
-        isIOS: isIOS,
-        isIPad13: isIPad13,
-        isIPhone13: isIPhone13,
-        isTablet: isTablet
-      }
-      //alert('check= ' + check)
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
       if (osName === 'Android') _os = '1'
       if (osName === 'iOS') _os = '2'
+      if (isAndroid) _os = '1'
+      if (isIPad13) _os = '2'
+
       const info = {
         os: _os,
         locale: 'temp_KR',
@@ -69,11 +63,13 @@ const App = () => {
     //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
     const element = document.getElementById('customHeader')
     if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
+
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
       let temp = JSON.parse(cookie)
       temp.appVersion = '1.0.1'
+
       temp.locale = Utility.locale()
       return temp
     }
@@ -202,6 +198,9 @@ const App = () => {
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
+    alert('받아온 customHeader = ' + JSON.stringify(customHeader))
+    alert('받아온 isHybrid = ' + isHybrid)
+
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
 

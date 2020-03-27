@@ -33,6 +33,7 @@ export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
   //alert('Api.customHeader = ' + Api.customHeader)
   //하이브리드앱 아닐경우 예외처리
+  alert('customHeader.os = ' + customHeader.os + '')
   if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
     //<textarea id="customHeader" > 2중체크
     // const element = document.getElementById('customHeader')

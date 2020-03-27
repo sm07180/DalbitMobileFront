@@ -140,7 +140,7 @@ export default props => {
         const scLoginInfo = {
           authToken: res.data.authToken,
           memNo: res.data.memNo,
-          locale: 'koKR',
+          locale: Utility.locale(),
           roomNo: UserRoomNo
         }
         sc.sendMessage.login(scLoginInfo)

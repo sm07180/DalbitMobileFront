@@ -143,7 +143,7 @@ export default props => {
         callback: () => {
           if (res.result === 'success') {
             sessionStorage.clear()
-            sc.SendMessageChatEnd(props)
+            //sc.SendMessageChatEnd(props)
             context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
             context.action.updateBroadcastTotalInfo(null)
             mediaHandler.stop()
