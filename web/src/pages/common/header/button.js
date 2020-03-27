@@ -60,7 +60,9 @@ export default () => {
           onClick={() => {
             if (location.href.indexOf('/search') === -1) {
               context.action.updateGnbState('search')
-              history.push(`${history.location.pathname}#gnbOpen`)
+              document.body.classList.add('on')
+              const _url = history.location.pathname + history.location.search
+              history.push(`${_url}#gnbOpen`)
             }
           }}>
           검색
@@ -70,7 +72,9 @@ export default () => {
             className="type2"
             onClick={() => {
               context.action.updateGnbState('notice')
-              history.push(`${history.location.pathname}#gnbOpen`)
+              document.body.classList.add('on')
+              const _url = history.location.pathname + history.location.search
+              history.push(`${_url}#gnbOpen`)
             }}>
             알람
           </button>
@@ -79,7 +83,9 @@ export default () => {
           className="type3"
           onClick={() => {
             context.action.updateGnbState('mypage')
-            history.push(`${history.location.pathname}#gnbOpen`)
+            document.body.classList.add('on')
+            const _url = history.location.pathname + history.location.search
+            history.push(`${_url}#gnbOpen`)
           }}>
           프로필
         </button>
@@ -87,7 +93,9 @@ export default () => {
           className="type4"
           onClick={() => {
             context.action.updateGnbState('menu')
-            history.push(`${history.location.pathname}#gnbOpen`)
+            document.body.classList.add('on')
+            const _url = history.location.pathname + history.location.search
+            history.push(`${_url}#gnbOpen`)
           }}>
           메뉴
         </button>
