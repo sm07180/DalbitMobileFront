@@ -7,7 +7,6 @@ import _ from 'lodash'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
-
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -16,6 +15,8 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 //components
 
 export default props => {
+  //---------------------------------------------------------------------
+
   //context
   const context = new useContext(Context)
 
@@ -27,7 +28,7 @@ export default props => {
   const [check, setCheck] = useState(false)
 
   //api
-
+  //---------------------------------------------------------------------
   const fetch = async num => {
     //num 1 : 전일, 2: 주간(일~토)
     const resDj = await Api.get_dj_ranking({
@@ -118,16 +119,11 @@ export default props => {
   const handleTypeChange = e => {
     setRankingType(e.target.name)
   }
-
-  //useEffect
-  useEffect(() => {
-    //fetch(1)
-  }, [])
-
+  //---------------------------------------------------------------------
   useEffect(() => {
     if (sswiper) fetch(1)
   }, [sswiper])
-
+  //---------------------------------------------------------------------
   return (
     <Content>
       <div className="top-wrap">

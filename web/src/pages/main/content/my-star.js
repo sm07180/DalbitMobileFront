@@ -64,34 +64,71 @@ export default props => {
     //   prevEl: '.swiper-button-prev'
     // }
   }
-  const arraySlide = slideInfo.map((item, index) => {
-    const {id, title, url, name, reco, category, popu, avata, people, like} = item
-    //-----------------------------------------------------------------------
-    return (
-      <Slide key={index}>
-        <ContentBox {...item}>
-          <ImgBox bg={url}>
-            <IconBox>
-              {reco && <Reco>{reco}</Reco>}
-              {popu && <Popu>{popu}</Popu>}
-            </IconBox>
-            {avata && <Avata bg={avata}></Avata>}
-          </ImgBox>
-          <Info>
-            <Category>{category}</Category>
-            <Title>{title}</Title>
-            <Name>{name}</Name>
-            <People>
-              <Viewer></Viewer>
-              <span>{people}</span>
-              <Lover></Lover>
-              <span>{like}</span>
-            </People>
-          </Info>
-        </ContentBox>
-      </Slide>
-    )
-  })
+  // const arraySlide = slideInfo.map((item, index) => {
+  //   const {id, title, url, name, reco, category, popu, avata, people, like} = item
+  //   //-----------------------------------------------------------------------
+  //   return (
+  //     <Slide key={index}>
+  //       <ContentBox {...item}>
+  //         <ImgBox bg={url}>
+  //           <IconBox>
+  //             {reco && <Reco>{reco}</Reco>}
+  //             {popu && <Popu>{popu}</Popu>}
+  //           </IconBox>
+  //           {avata && <Avata bg={avata}></Avata>}
+  //         </ImgBox>
+  //         <Info>
+  //           <Category>{category}</Category>
+  //           <Title>{title}</Title>
+  //           <Name>{name}</Name>
+  //           <People>
+  //             <Viewer></Viewer>
+  //             <span>{people}</span>
+  //             <Lover></Lover>
+  //             <span>{like}</span>
+  //           </People>
+  //         </Info>
+  //       </ContentBox>
+  //     </Slide>
+  //   )
+  // })
+
+  const makeContents = () => {
+    if (props.Info === null) return
+    return props.Info.map((item, index) => {
+      console.log(item)
+      const {roomNo, title, url, bjNickNm, reco, category, popu, avata, entryCnt, likeCnt} = item
+      //-----------------------------------------------------------------------
+      return (
+        <Slide
+          key={index}
+          onClick={() => {
+            alert('test')
+          }}>
+          <ContentBox {...item}>
+            <ImgBox bg={item.bjProfImg.thumb292x292}>
+              <IconBox>
+                {reco && <Reco>{reco}</Reco>}
+                {popu && <Popu>{popu}</Popu>}
+              </IconBox>
+              {avata && <Avata bg={avata}></Avata>}
+            </ImgBox>
+            <Info>
+              <Category>{category}</Category>
+              <Title>{title}</Title>
+              <Name>{bjNickNm}</Name>
+              <People>
+                <Viewer></Viewer>
+                <span>{entryCnt}</span>
+                <Lover></Lover>
+                <span>{likeCnt}</span>
+              </People>
+            </Info>
+          </ContentBox>
+        </Slide>
+      )
+    })
+  }
   //////////////////////////////////////////////////
   return (
     <>
@@ -111,7 +148,7 @@ export default props => {
           </SliderControl>
         </div>
         <Swiper {...params} getSwiper={updateSwiper}>
-          {arraySlide}
+          {makeContents()}
         </Swiper>
       </SwiperWrap>
     </>

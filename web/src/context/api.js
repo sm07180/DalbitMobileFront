@@ -681,7 +681,15 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'GET', data: data})
   }
-
+  /**
+   * @brief 마이 DJ 조회
+   * @method "GET"
+   * @create 손완휘 2020.03.27
+   */
+  static my_dj = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/my/dj`, method: method || 'GET', params: params})
+  }
   /**
    * @brief 회원 방송방 빠른말 저장하기
    * @method "POST"

@@ -60,7 +60,6 @@ export default () => {
           onClick={() => {
             if (location.href.indexOf('/search') === -1) {
               context.action.updateGnbState('search')
-              history.push(`${history.location.pathname}#gnbOpen`)
               document.body.classList.add('on')
             }
           }}>
@@ -71,7 +70,6 @@ export default () => {
             className="type2"
             onClick={() => {
               context.action.updateGnbState('notice')
-              history.push(`${history.location.pathname}#gnbOpen`)
               document.body.classList.add('on')
             }}>
             알람
@@ -81,7 +79,6 @@ export default () => {
           className="type3"
           onClick={() => {
             context.action.updateGnbState('mypage')
-            history.push(`${history.location.pathname}#gnbOpen`)
             document.body.classList.add('on')
           }}>
           프로필
@@ -90,7 +87,6 @@ export default () => {
           className="type4"
           onClick={() => {
             context.action.updateGnbState('menu')
-            history.push(`${history.location.pathname}#gnbOpen`)
             document.body.classList.add('on')
           }}>
           메뉴
