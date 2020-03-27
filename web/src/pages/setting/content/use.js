@@ -53,7 +53,7 @@ export default props => {
             [전문보기]
           </button>
         </div>
-        <div className="btn-wrap">
+        {/* <div className="btn-wrap">
           <div>마케팅 수신동의</div>
           <button
             onClick={() => {
@@ -61,7 +61,7 @@ export default props => {
             }}>
             [전문보기]
           </button>
-        </div>
+        </div> */}
       </Wrap>
     </>
   )
