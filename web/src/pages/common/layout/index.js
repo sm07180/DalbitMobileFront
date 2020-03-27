@@ -9,7 +9,7 @@
 /**
  *
  */
-import React, {useMemo} from 'react'
+import React, {useMemo, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -24,14 +24,14 @@ import Message from 'pages/common/message'
 
 const Layout = props => {
   const {children} = props
-
+  const context = useContext(Context)
   //
   const isCustomer = useMemo(() => {
     return window.location.href.indexOf('/customer') === -1 ? false : true
   })
   //---------------------------------------------------------------------
   return (
-    <Container>
+    <Container className={context.gnb_visible ? 'on' : 'off'}>
       {/* 헤더설정 */}
       <Header {...props} />
       {/* global navigation */}
@@ -83,4 +83,10 @@ const Container = styled.div`
   /* main.sub {
     
   } */
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    &.on {
+      position: fixed;
+    }
+  }
 `
