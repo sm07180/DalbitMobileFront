@@ -77,13 +77,17 @@ export default props => {
 
   //슬라이더 안에 슬라이드 생성
   const arraySlide = slideInfo.map((item, index) => {
-    const {id, title, url, name, reco, category, popu, roomNo, avata} = item
+    const {id, title, url, name, reco, category, popu, roomNo, memNo} = item
     return (
       <Slide
         key={index}
         data-swiper-slide-index={index}
         onClick={() => {
-          history.push(`broadcast?roomNo=${roomNo}`)
+          if (roomNo === '') {
+            history.push(`/private/${memNo}`)
+          } else {
+            history.push(`broadcast?roomNo=${roomNo}`)
+          }
         }}>
         <ImgBox bg={url}>
           <img src={url}></img>

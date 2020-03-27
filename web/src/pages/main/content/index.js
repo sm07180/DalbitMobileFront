@@ -45,6 +45,7 @@ const Main = props => {
     let data = []
 
     fetch1.map((list, idx) => {
+      console.log(list)
       let obj = {}
       obj.roomNo = list.roomNo
       obj.title = list.nickNm
