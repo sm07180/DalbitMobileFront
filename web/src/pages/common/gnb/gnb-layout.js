@@ -30,7 +30,8 @@ export default props => {
           <Close
             onClick={() => {
               context.action.updateGnbVisible(false)
-              history.push(`${history.location.pathname}`)
+              const _url = history.location.pathname + history.location.search
+              history.push(`${_url}`)
               document.body.classList.remove('on')
             }}></Close>
           <Wrap>{children}</Wrap>

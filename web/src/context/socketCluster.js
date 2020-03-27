@@ -825,17 +825,20 @@ export const socketClusterBinding = async (channel, Info) => {
 
 export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
-    const res = socket.subscribe(channelObjName)
-    setTimeout(() => {
-      if (res.state === 'subscribed') {
-        console.log(channelObjName + '채널 입장')
-        return channelObj
-      } else {
-        console.log('privete 채널 재시도 ')
-        socket.subscribe(channelObjName)
-      }
-      clearTimeout(res)
-    }, 100)
+    socket.subscribe(channelObjName)
+    console.log(channelObjName + '채널 입장')
+    return channelObj
+
+    // setTimeout(() => {
+    //   if (res.state === 'subscribed') {
+    //     console.log(channelObjName + '채널 입장')
+    //     return channelObj
+    //   } else {
+    //     console.log('privete 채널 재시도 ')
+    //     socket.subscribe(channelObjName)
+    //   }
+    //   clearTimeout(res)
+    // }, 100)
 
     // if (res.state === 'subscribed') {
     //   console.log(channelObjName + '채널 입장')

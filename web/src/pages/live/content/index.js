@@ -110,6 +110,7 @@ export default props => {
   }, [currentPage, searchType])
 
   async function joinRoom(obj) {
+    //console.log('asdasdadads')
     const {roomNo} = obj
     props.history.push(`/broadcast?roomNo=${roomNo}`)
     // const data = await roomCheck(roomNo, context)

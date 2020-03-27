@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 // component
 import List from '../component/notice/list.js'
-import Paging from '../component/notice/paging.js'
 import WritePage from '../component/notice/writePage.js'
 
 // image

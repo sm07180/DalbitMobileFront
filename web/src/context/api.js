@@ -551,7 +551,19 @@ export default class API {
   }
 
   /**
-   * @breif 내지갑 달 내역 조회
+   * 마이페이지 공지사항 조회
+   * @method "GET"
+   * @param string    memNo(O)
+   * @param number    page(X)
+   * @param number    records(X)
+   * @created 박송원 2020.03.27
+   */
+  static mypage_notice_inquire = async params => {
+    return await ajax({url: `/mypage/notice`, method: 'GET', params})
+  }
+
+  /**
+   * @breif 마이페이지 지갑 내역 조회
    * @method "GET"
    * @param number    walletType(O)
    * @param number    page(X)
@@ -669,7 +681,15 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'GET', data: data})
   }
-
+  /**
+   * @brief 마이 DJ 조회
+   * @method "GET"
+   * @create 손완휘 2020.03.27
+   */
+  static my_dj = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/my/dj`, method: method || 'GET', params: params})
+  }
   /**
    * @brief 회원 방송방 빠른말 저장하기
    * @method "POST"
