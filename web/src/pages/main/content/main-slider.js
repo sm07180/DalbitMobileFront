@@ -21,10 +21,10 @@ export default props => {
   //const [slideInfo, setSlideInfo] = useState(props.Info.concat(props.Info))
   const [slideInfo, setSlideInfo] = useState(props.Info)
   const [currentInfo, setCurrentInfo] = useState({
-    entryCnt: props.Info[4].people,
-    likeCnt: props.Info[4].like,
+    entryCnt: props.Info[4].listeners,
+    likeCnt: props.Info[4].likes,
     title: props.Info[4].title,
-    bjNickNm: props.Info[4].name
+    bjNickNm: props.Info[4].nickNm
   })
   //let mainSlider = {}
   const [mainSlider, setMainSlider] = useState()
@@ -93,7 +93,6 @@ export default props => {
           <img src={url}></img>
         </ImgBox>
         <p>{nickNm}</p>
-        <p>{title}</p>
       </Slide>
     )
   })
@@ -149,7 +148,7 @@ export default props => {
             <button>방송 바로가기</button>
             <span>신입 DJ</span>
             <b>{currentInfo.title}</b>
-            <p>{currentInfo.nickNm} </p>
+            <p>{currentInfo.bjNickNm} </p>
           </ActiveItem>
           {/* 레코드 모양 선택 애니메이션 레이아웃 */}
           <Selecter>
