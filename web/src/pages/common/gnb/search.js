@@ -45,7 +45,13 @@ export default props => {
             context.action.updateGnbVisible(false)
           }}></Close>
         <SearchWrap>
-          <input type="text" placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요" value={search} onChange={handleChange} onKeyDown={searchOnKeyDown} />
+          <input
+            type="text"
+            placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요"
+            value={search}
+            onChange={handleChange}
+            onKeyDown={searchOnKeyDown}
+          />
           <button onClick={ClickLink}></button>
         </SearchWrap>
       </Gnb>
@@ -64,7 +70,7 @@ const Gnb = styled.div`
   height: 144px;
   background: ${COLOR_MAIN};
   z-index: 11;
-  transition: top 0.5s ease-in-out;
+  transition: top 0.4s ease-in-out;
   &.on {
     top: 0;
   }
