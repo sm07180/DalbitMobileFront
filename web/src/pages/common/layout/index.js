@@ -9,7 +9,7 @@
 /**
  *
  */
-import React, {useMemo} from 'react'
+import React, {useMemo, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -24,11 +24,12 @@ import Message from 'pages/common/message'
 
 const Layout = props => {
   const {children} = props
-
+  const context = useContext(Context)
   //
   const isCustomer = useMemo(() => {
     return window.location.href.indexOf('/customer') === -1 ? false : true
   })
+
   //---------------------------------------------------------------------
   return (
     <Container>

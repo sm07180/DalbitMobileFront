@@ -3,25 +3,25 @@ import styled from 'styled-components'
 
 import {IMG_SERVER} from 'context/config'
 
+const PageBtnMaxLength = 10
+
 export default props => {
-  const {setPage, records, totalPage, currentPage} = props
+  const {setPage, totalPage, currentPage} = props
 
   if (setPage === undefined) {
     throw new Error('Need a setPage func')
-  } else if (records === undefined) {
-    throw new Error('Need a records')
   } else if (totalPage === undefined) {
     throw new Error('Need a totalPage')
   } else if (currentPage === undefined) {
     throw new Error('Need a currentPage')
   }
 
-  const removedLastDigitPageNumber = useMemo(() => Math.floor(currentPage / records) * records, [currentPage])
+  const removedLastDigitPageNumber = useMemo(() => Math.floor(currentPage / PageBtnMaxLength) * PageBtnMaxLength, [currentPage])
   const NumberOfPageBtn = useMemo(() => {
-    if (totalPage < removedLastDigitPageNumber + records) {
-      return totalPage % records
+    if (totalPage < removedLastDigitPageNumber + PageBtnMaxLength) {
+      return totalPage % PageBtnMaxLength
     } else {
-      return records
+      return PageBtnMaxLength
     }
   }, [totalPage])
 

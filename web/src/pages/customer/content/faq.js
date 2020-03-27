@@ -163,7 +163,7 @@ function Faq(props) {
           </button>
         </div>
         <div className="m-catecory">
-          <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
+          <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 11}} />
         </div>
       </ContentInfo>
 
@@ -217,7 +217,7 @@ function Faq(props) {
                     </TableWrap>
                     <Detail className={Store().faqPage === faqIdx ? 'on' : ''}>
                       <div>
-                        <span>A</span>
+                        <span class="icon">A</span>
                         <p dangerouslySetInnerHTML={{__html: faqDetail.answer}}></p>
                       </div>
                     </Detail>
@@ -257,7 +257,7 @@ const Detail = styled.section`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
-    & span {
+    & .icon {
       display: inline-block;
       margin-right: 4px;
       width: 16px;
@@ -273,7 +273,7 @@ const Detail = styled.section`
     & p {
       width: calc(100% - 44px);
       @media (max-width: ${WIDTH_MOBILE}) {
-        width: calc(100% - 46px);
+        width: 92%;
       }
     }
   }
@@ -295,7 +295,7 @@ const PageWrap = styled.div`
     width: 100%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 18px;
+    margin-top: 16px;
   }
 `
 const PageNumber = styled.nav`
@@ -351,9 +351,11 @@ const TableWrap = styled.div`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+
     @media (max-width: ${WIDTH_MOBILE}) {
-      width: 100%;
+      width: 92%;
       margin-top: 8px;
+      line-height: 1.4;
     }
   }
   & dd:last-child {
@@ -398,7 +400,7 @@ const ContentInfo = styled.div`
     display: inline-block;
     font-size: 20px;
     color: ${COLOR_MAIN};
-    line-height: 40px;
+    line-height: 42px;
   }
   & h3 {
     display: inline-block;
