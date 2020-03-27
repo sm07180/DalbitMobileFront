@@ -107,7 +107,7 @@ const Container = styled.div`
 `
 const Wrap = styled.div`
   position: relative;
-  width: 500px;
+  width: 520px;
   padding: 50px 40px;
   background: #fff;
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -116,7 +116,7 @@ const Wrap = styled.div`
   }
 
   &.round {
-    width: 480px;
+    width: 500px;
     padding: 30px 0;
     height: 80%;
     max-height: auto;

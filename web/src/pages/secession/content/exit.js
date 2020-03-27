@@ -6,12 +6,16 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import Api from 'context/api'
 import {Context} from 'context'
 import Checkbox from './checkbox'
+import {useHistory} from 'react-router-dom'
+import {Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 
 //
 const Exit = props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const history = useHistory()
   //---------------------------------------------------------------------
   const reducer = (state, action) => ({...state, ...action})
   const [state, setState] = useReducer(reducer, initialState)
@@ -23,10 +27,29 @@ const Exit = props => {
     })
 
     if (res.result === 'success') {
-      console.log(res)
-      context.action.alert({
-        msg: res.message
-      })
+      //console.log(res)
+      async function secfun(obj) {
+        const res = await Api.member_logout({data: context.token.authToken})
+        if (res.result === 'success') {
+          //로그아웃성공
+          //쿠키삭제
+          Utility.setCookie('custom-header', '', -1)
+          Hybrid('GetLogoutToken', res.data)
+          context.action.updateToken(res.data)
+          localStorage.removeItem('com.naver.nid.access_token')
+          localStorage.removeItem('com.naver.nid.oauth.state_token')
+          context.action.updateGnbVisible(false)
+          context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
+          context.action.updateProfile(null)
+          context.action.alert({
+            msg: '회원 탈퇴가 완료 되었습니다.',
+            callback: () => {
+              history.push(`/`)
+            }
+          })
+        }
+      }
+      secfun()
     } else {
       console.log(res)
       context.action.alert({
