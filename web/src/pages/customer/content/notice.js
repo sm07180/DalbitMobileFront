@@ -162,7 +162,7 @@ function Notice(props) {
             </button>
           </div>
           <div className="m-catecory">
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0}} />
+            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 11}} />
           </div>
         </ContentInfo>
 
@@ -354,8 +354,9 @@ const TableWrap = styled.div`
     color: #bdbdbd;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
+      width: 90%;
       margin-top: 8px;
-      width: 100%;
+      line-height: 1.4;
     }
   }
 `

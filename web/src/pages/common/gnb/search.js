@@ -43,6 +43,7 @@ export default props => {
         <Close
           onClick={() => {
             context.action.updateGnbVisible(false)
+            setSearch('')
           }}></Close>
         <SearchWrap>
           <input
