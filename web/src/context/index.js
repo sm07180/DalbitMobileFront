@@ -113,6 +113,7 @@ const GlobalProvider = props => {
     },
     //GNB 열고 닫기
     updateGnbVisible: bool => {
+      if (!bool) document.body.classList.remove('on')
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
