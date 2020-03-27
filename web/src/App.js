@@ -144,7 +144,6 @@ const App = () => {
         }
         //모든처리완료
         setReady(true)
-        console.log(setReady)
         const aaa = getSesstionStorage('isReloadSocket')
 
         if (getSesstionStorage('isReloadSocket') != '') {
