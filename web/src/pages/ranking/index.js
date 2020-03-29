@@ -8,16 +8,20 @@ import styled from 'styled-components'
 import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
-import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {RankingProvider} from './store'
+//pages
+import Contents from './content'
 
 export default props => {
+  //context
   const context = useContext(Context)
+
   return (
-    <Layout {...props}>
-      <Content>랭킹</Content>
-    </Layout>
+    <RankingProvider>
+      <Layout {...props}>
+        <Contents />
+      </Layout>
+    </RankingProvider>
   )
 }
 
