@@ -38,7 +38,21 @@ const App = () => {
 
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
-    //makeCustomHeader
+    //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
+    const element = document.getElementById('customHeader')
+    if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
+
+    //#2 쿠키로부터 'custom-header' 설정
+    const cookie = Utility.getCookie('custom-header')
+    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
+      let temp = JSON.parse(cookie)
+      temp.appVersion = '1.0.1'
+
+      temp.locale = Utility.locale()
+      return temp
+    }
+
+    //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     const makeCustomHeader = () => {
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
@@ -56,21 +70,6 @@ const App = () => {
       }
       return info
     }
-    //---------------------------------------------
-    //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
-
-    //#2 쿠키로부터 'custom-header' 설정
-    const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
-      let temp = JSON.parse(cookie)
-      temp.appVersion = '1.0.1'
-
-      temp.locale = Utility.locale()
-      return temp
-    }
-    //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
 
