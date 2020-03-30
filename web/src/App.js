@@ -34,7 +34,6 @@ const App = () => {
   //useState
   const [ready, setReady] = useState(false)
 
-  //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
@@ -68,14 +67,9 @@ const App = () => {
 
   let authToken = Utility.getCookie('authToken')
 
-  //isHybrid체크
-  const isHybrid = useMemo(() => {
-    return customHeader.isFirst !== undefined ? 'Y' : 'N'
-  })
+  const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'))
 
-  //fetch
-  async function fetchData(obj) {
-    // common data
+  async function fetchData() {
     const commonData = await Api.splash()
     if (commonData.result === 'success') {
       context.action.updateCommon(commonData.data)
@@ -83,10 +77,8 @@ const App = () => {
       const res = await Api.getToken()
       if (res.result === 'success') {
         console.table(res.data)
-        //#1 result 성공/실패 여부상관없이,토큰없데이트
         context.action.updateToken(res.data)
 
-        //#2 로그인토큰일경우 프로필업데이트
         if (res.data.isLogin) {
           if (location.href.indexOf('/private/') === -1) {
             const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
@@ -126,6 +118,7 @@ const App = () => {
             //-----@
           }
         }
+
         //모든처리완료
         setReady(true)
       } else {
@@ -147,13 +140,10 @@ const App = () => {
 
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
-    // 소켓은 토큰 받고 실행
+
     fetchData()
   }, [])
-  //---------------------------------------------------------------------
-  /**
-   * @brief 정보체크이후 최종완료된 상태에서 Interface,Route진행
-   */
+
   return (
     <React.Fragment>
       {ready && <Interface />}
@@ -163,7 +153,7 @@ const App = () => {
   )
 }
 export default App
-//---------------------------------------------------------------------
+
 /**
  * @title 글로벌변수
  * @example const context=useContext(Context) 와 동일
