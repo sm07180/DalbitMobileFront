@@ -34,6 +34,7 @@ const GnbWrap = styled.div`
   width: 100%;
   height: 48px;
   background-color: #fff;
+  z-index: 20;
 
   .icon-wrap {
     display: flex;
@@ -41,6 +42,7 @@ const GnbWrap = styled.div`
 
     .icon {
       display: block;
+      width: 36px;
     }
   }
 
