@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_store_l_p" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:none;stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px}.prefix__cls-3{fill:#eee}
+        </style>
+    </defs>
+    <path id="prefix__사각형_824" d="M0 0H48V48H0z" data-name="사각형 824" style="fill:none"/>
+    <g id="prefix__그룹_10376" data-name="그룹 10376" transform="translate(10 13)">
+        <path id="prefix__사각형_607" d="M0 0H25.641V18.539H0z" class="prefix__cls-2" data-name="사각형 607" transform="translate(1.011 3.629)"/>
+        <path id="prefix__사각형_608" d="M0 0h5.533v3.389a2.766 2.766 0 0 1-2.767 2.766A2.766 2.766 0 0 1 0 3.389V0z" class="prefix__cls-3" data-name="사각형 608" transform="translate(0 3.528)"/>
+        <path id="prefix__사각형_609" d="M0 0h5.533v3.389a2.766 2.766 0 0 1-2.767 2.766A2.766 2.766 0 0 1 0 3.389V0z" class="prefix__cls-3" data-name="사각형 609" transform="translate(5.533 3.528)"/>
+        <path id="prefix__사각형_610" d="M0 0h5.533v3.389a2.766 2.766 0 0 1-2.767 2.766A2.766 2.766 0 0 1 0 3.389V0z" class="prefix__cls-3" data-name="사각형 610" transform="translate(11.065 3.528)"/>
+        <path id="prefix__사각형_611" d="M0 0h5.533v3.389a2.766 2.766 0 0 1-2.767 2.766A2.766 2.766 0 0 1 0 3.389V0z" class="prefix__cls-3" data-name="사각형 611" transform="translate(16.598 3.528)"/>
+        <path id="prefix__사각형_612" d="M0 0h5.533v3.389a2.766 2.766 0 0 1-2.767 2.766A2.766 2.766 0 0 1 0 3.389V0z" class="prefix__cls-3" data-name="사각형 612" transform="translate(22.13 3.528)"/>
+        <path id="prefix__사각형_613" d="M0 0H5.533V7.632H0z" class="prefix__cls-2" data-name="사각형 613" transform="translate(11.065 14.536)"/>
+        <path id="prefix__패스_4158" d="M72.157 71.38h-4.845l-1.719 3.528h5.533z" class="prefix__cls-2" data-name="패스 4158" transform="translate(-65.594 -71.38)"/>
+        <path id="prefix__패스_4159" d="M77.137 71.38h-4.845l-1.031 3.528h5.533z" class="prefix__cls-2" data-name="패스 4159" transform="translate(-65.728 -71.38)"/>
+        <path id="prefix__패스_4160" d="M82.116 71.38h-4.845l-.344 3.528h5.533z" class="prefix__cls-2" data-name="패스 4160" transform="translate(-65.862 -71.38)"/>
+        <path id="prefix__패스_4161" d="M87.087 71.38h-4.845l.344 3.528h5.533z" class="prefix__cls-2" data-name="패스 4161" transform="translate(-65.988 -71.38)"/>
+        <path id="prefix__패스_4162" d="M92.05 71.38h-4.845l1.031 3.528h5.533z" class="prefix__cls-2" data-name="패스 4162" transform="translate(-66.106 -71.38)"/>
+    </g>
+</svg>
