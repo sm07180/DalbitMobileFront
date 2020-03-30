@@ -794,8 +794,8 @@ export const socketClusterBinding = async (channel, Info) => {
     scState = 'nothing'
   }
   if (!isSocketConnected) {
-    alert('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
-    return false
+    //alert('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
+    //return false
   }
   socketClusterDestory(false, channel)
 

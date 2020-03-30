@@ -36,10 +36,20 @@ export default props => {
           Hybrid('ExitRoom')
           context.action.updateMediaPlayerStatus(false)
         } else {
-          if (mediaHandler.rtcPeerConn) {
-            mediaHandler.stop()
+          const beforeRoomNo = localStorage.getItem(currentRoomNo)
+          if (beforeRoomNo) {
+            if (mediaHandler.rtcPeerConn) {
+              mediaHandler.stop()
+            }
+
+            ;(async () => {
+              const res = await Api.broad_exit({data: {beforeRoomNo}})
+              if (res.result === 'success') {
+                sc.socketClusterDestory(false, beforeRoomNo)
+                //return res
+              }
+            })()
           }
-          sc.socketClusterDestory(false, roomNo)
         }
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
