@@ -84,6 +84,7 @@ function Faq(props) {
    */
   const typeActive = e => {
     const number = parseInt(e.target.value)
+    setPage(1)
     setfaqNum(number)
   }
   /**
@@ -193,8 +194,8 @@ function Faq(props) {
                     </TableWrap>
                     <Detail className={Store().faqPage === faqIdx ? 'on' : ''}>
                       <div>
-                        <span>A</span>
-                        <p>{faqDetail.answer}</p>
+                        <span class="icon">A</span>
+                        <p dangerouslySetInnerHTML={{__html: faqDetail.answer}}></p>
                       </div>
                     </Detail>
                   </>
