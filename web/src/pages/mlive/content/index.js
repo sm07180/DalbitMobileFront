@@ -31,8 +31,6 @@ const Index = props => {
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       if (windowBottom >= docHeight) {
-        console.log(Index.store.currentPage + '')
-
         Index.store.action.updateCurrentPage(Index.store.currentPage + 1)
         //        store.action
       } else {

@@ -53,6 +53,7 @@ export default props => {
             inlineStyling={{zIndex: '1', backgrond: '#fff'}}
             boxList={searchType}
             onChangeEvent={value => {
+              Store().action.updateCurrentPage(1)
               Store().action.updateSearchType(value)
             }}
           />
@@ -63,6 +64,7 @@ export default props => {
             inlineStyling={{zIndex: '1', backgrond: '#fff'}}
             boxList={roomType}
             onChangeEvent={value => {
+              Store().action.updateCurrentPage(1)
               Store().action.updateRoomType(value)
             }}
           />
