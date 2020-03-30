@@ -34,7 +34,7 @@ const Content = styled.div`
   display: block;
   padding-left: 16px;
   padding-right: 16px;
-  background: #eee;
+
   box-sizing: border-box;
 `
 //---------------------------------------------------------------------

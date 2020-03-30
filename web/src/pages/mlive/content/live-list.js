@@ -8,10 +8,8 @@ import Utility from 'components/lib/utility'
 
 export default props => {
   //------------------------------------------------------------ declare start
-  const [hover, setHover] = useState(false)
-  const [seleted, setSelected] = useState()
-  const context = useContext(Context)
-
+  const {data} = props
+  console.log(data)
   //------------------------------------------------------------ func start
   const handleHover = (flag, index) => {
     setSelected(index)
@@ -20,170 +18,89 @@ export default props => {
 
   //------------------------------------------------------------ components start
   return (
-    <Wrapper style={{minHeight: Array.isArray(props.broadList) ? '450px' : ''}}>
-      {Array.isArray(props.broadList) &&
-        props.broadList.map((data, index) => {
-          return (
-            <List key={index} onClick={() => props.joinRoom(data)}>
-              <div className="profile">
-                <div className="rank">{index + 1}</div>
-                <div className="profileImg">
-                  <BgImg url={data.bjProfImg.thumb120x120}>
-                    <Img url={data.gstProfImg.thumb62x62} />
-                  </BgImg>
-                </div>
-              </div>
+    <List
+      onClick={() => {
+        props.update({selectList: data})
+      }}>
+      <div className="profile">
+        <BgImg url={data.bjProfImg.thumb120x120}>
+          <Img url={data.gstProfImg.thumb62x62} />
+        </BgImg>
+      </div>
 
-              <div className="content">
-                <div className="title">
-                  {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
-                  {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
-                  {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
-                </div>
-                <div className="roomTitle">{data.title}</div>
-                <div className="nickName">{data.bjNickNm}</div>
-              </div>
-
-              {/* <CountArea>
-                <Icon>
-                  <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
-                  <span>{data.entryCnt}</span>
-                </Icon>
-                <span>|</span>
-                <Icon>
-                  <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
-                  <span>{data.likeCnt}</span>
-                </Icon>
-              </CountArea> */}
-            </List>
-          )
-        })}
-    </Wrapper>
+      <div className="content">
+        <div className="title">
+          <h2>고민/사연</h2>
+          {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
+          {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
+          {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}
+        </div>
+        <div className="roomTitle">{data.title}</div>
+        <div className="nickName">{data.bjNickNm}</div>
+        <CountArea>
+          <Icon>
+            <img src={`${IMG_SERVER}/images/api/ic_headphone_s.png`} width={24} height={24} />
+            &nbsp;&nbsp;{data.entryCnt}
+          </Icon>
+          <span>|</span>
+          <Icon>
+            <img src={`${IMG_SERVER}/images/api/ic_hearts_s.png`} width={24} height={24} />
+            &nbsp;&nbsp;{data.likeCnt}
+          </Icon>
+        </CountArea>
+      </div>
+    </List>
   )
 }
-
-const Wrapper = styled.div``
-
-const List = styled.div`
+//------------------------------------------------------------ components start
+const List = styled.a`
   display: flex;
   width: 100%;
-  height: 120px;
+  padding: 18px 0;
   align-items: center;
-  border-bottom-style: solid;
-  border-color: #e0e0e0;
-  border-width: 1px;
-  cursor: pointer;
-  z-index: -1;
-
+  border-bottom: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  /* 프로필영역 */
   .profile {
-    display: flex;
-    width: 164px;
-    height: 100%;
-    align-items: center;
+    margin-right: 16px;
 
-    .hoverWrap {
-      cursor: pointer;
-      display: flex;
-      width: 96px;
-      height: 96px;
-      background-color: rgba(133, 86, 246, 0.5);
-      position: absolute;
-      justify-content: center;
-      align-items: center;
-      z-index: 99;
-      border-radius: 10px;
-      border-width: 3px;
-      border-style: solid;
-      border-color: #8556f6;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        display: none;
-      }
-
-      & > button {
-        display: flex;
-        width: 24px;
-        height: 24px;
-        background: url(${IMG_SERVER}/images/api/ic_play_color_24.png) no-repeat;
-        z-index: 100;
-      }
-    }
-
-    .rank {
-      display: flex;
-      width: 68px;
-      height: 100%;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.5;
-      letter-spacing: -0.4px;
-      color: #9e9e9e;
-      position: relative;
-      transform: skew(-0.03deg);
-      @media (max-width: ${WIDTH_MOBILE}) {
-        display: none;
-      }
-    }
     .profileImg {
       display: flex;
-      width: 96px;
-      height: 96px;
+      width: 108px;
+      height: 108px;
       align-items: center;
       position: relative;
       z-index: 0;
       cursor: pointer;
     }
   }
-
+  /* 컨텐츠영역 */
   .content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    justify-content: space-between;
-    padding: 22px 18px 22px 18px;
     transform: skew(-0.03deg);
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 15px 0px 0px 0px;
-      height: 68%;
-      justify-content: space-between;
-    }
-
     .title {
       display: flex;
       width: 100%;
-      height: 15px;
+      margin-bottom: 4px;
       font-size: 14px;
       font-weight: 600;
       line-height: 1.43;
       letter-spacing: -0.35px;
       color: #bdbdbd;
-      transform: skew(-0.03deg);
-      @media (max-width: ${WIDTH_MOBILE}) {
-        height: 30px;
-        margin-bottom: 5px;
+      h2 {
+        display: inline-block;
+        margin-right: 5px;
+        color: #dbdbdb;
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: -0.35px;
       }
     }
-
-    .rootTitle {
-      display: flex;
-      width: 100%;
-      height: 20px;
+    .roomTitle {
+      display: block;
+      margin-bottom: 11px;
       font-size: 16px;
-      font-weight: 400;
-      line-height: 1.5;
-      letter-spacing: -0.4px;
-      align-items: center;
-      transform: skew(-0.03deg);
-      @media (max-width: ${WIDTH_MOBILE}) {
-        height: 30px;
-        line-height: 0;
-      }
     }
-
     .nickName {
       display: flex;
       width: 100%;
@@ -195,57 +112,30 @@ const List = styled.div`
       color: #8556f6;
       align-items: center;
       transform: skew(-0.03deg);
-      @media (max-width: ${WIDTH_MOBILE}) {
-        height: 40px;
-        margin-top: 3px;
-      }
     }
-  }
-
-  .cntArea {
-    display: flex;
-    width: 20%;
-    height: 100%;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    height: 140px;
   }
 `
 const CountArea = styled.div`
-  position: absolute;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  width: 85%;
 
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 80%;
-    height: 28px;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0px 0px 0px 0px;
-  }
+  height: 30px;
+  justify-content: flex-start;
+  align-items: center;
 
-  & > div {
-    display: flex;
-    align-items: center;
-    z-index: -1;
-  }
-
-  & > div > span {
+  & > span {
     display: flex;
     width: 15px;
     color: #e0e0e0;
     font-size: 12px;
-    margin-right: 3px;
+    align-items: center;
     transform: skew(-0.03deg);
-    justify-content: center;
   }
 `
 const Icon = styled.div`
   display: flex;
   align-items: center;
-  width: 80px;
+  width: 75px;
   height: 24px;
   font-size: 14px;
   font-weight: 400;
