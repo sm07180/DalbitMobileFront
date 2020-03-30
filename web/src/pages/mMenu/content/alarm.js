@@ -7,7 +7,9 @@ import Header from '../component/header.js'
 export default props => {
   return (
     <div>
-      <Header></Header>
+      <Header>
+        <div className="category-text">알림사항</div>
+      </Header>
     </div>
   )
 }

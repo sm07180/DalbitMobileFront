@@ -29,6 +29,13 @@ const Header = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    .category-text {
+      color: #000;
+      font-size: 18px;
+      letter-spacing: -0.45px;
+      font-weight: bold;
+    }
   }
 
   .close-btn {
