@@ -24,16 +24,22 @@ import Datepicker from './datepicker'
 import moment from 'moment'
 //
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-// import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-////////
 
 let pickerHolder = true
-const iconInfo = {
+const broadInfo = {
   mic: [mic, '방송'],
   moon: [moon, '받은별'],
   heart: [heart, '좋아요'],
   clock: [clock, '청취자']
 }
+
+const listenInfo = {
+  mic: [mic, '청취'],
+  moon: [moon, '달 선물'],
+  heart: [heart, '받은 별'],
+  clock: [clock, '게스트 참여 시간']
+}
+
 const selectBoxData = [
   {value: 0, text: '방송'},
   {value: 1, text: '청취'}
@@ -41,34 +47,20 @@ const selectBoxData = [
 
 export default props => {
   const context = useContext(Context)
-  const [active, setActive] = useState(0)
-  const [selectType, setSelectType] = useState(0)
-
-  const setType = value => {
-    setSelectType(value)
-    console.log(selectType)
-  }
   const ctx = useContext(Context)
-  const detialTabList = ['방송일자', '방송시작', '청취종료', '받은별', '좋아요', '최다 청취자', '방송 최고순위']
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //state
   const [validate, setValidate] = useState({
-    // 유효성 체크
     pickdata: false
   })
-  const [currentPickdata, setCurrentPickdata] = useState() // 생년월일 확인 도움 텍스트 값
-
+  const [active, setActive] = useState(0)
+  const [selectType, setSelectType] = useState(0)
+  const [btnTrue, setBtnTrue] = useState(false)
+  const [currentPickdata, setCurrentPickdata] = useState()
   const [pickerState, setPickerState] = useState(true)
   const [broadData, setBroadData] = useState([])
+  const [listenData, setListenData] = useState([])
   const [showingpage, setShowingpage] = useState(false)
-  //////////////////////api
-  // const ShowDate =()=> {
-  //   if () {
-
-  //   }else if () {
-
-  //   }
-  // }
-  console.log(broadData)
+  //api
   async function fetchData() {
     const res = await Api.report_broad({
       params: {
@@ -81,12 +73,35 @@ export default props => {
     })
     if (res.result === 'success') {
       setBroadData(res.data.list)
+      if (res.message !== '방송내역 없습니다.' && res.data.list.length > 9) {
+        setBtnTrue(true)
+      }
       console.log(res)
     } else if (res.result === 'fail') {
       console.log(res)
     }
   }
-
+  //
+  async function fetchDataListen() {
+    const res = await Api.report_listen({
+      params: {
+        dateType: active,
+        startDt: dateprev,
+        endDt: datenext,
+        page: 1,
+        records: 10
+      }
+    })
+    if (res.result === 'success') {
+      setListenData(res.data.list)
+      if (res.message !== '방송내역 없습니다.' && res.data.list.length > 9) {
+        setBtnTrue(true)
+      }
+      console.log(res)
+    } else if (res.result === 'fail') {
+      console.log(res)
+    }
+  }
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
@@ -121,10 +136,8 @@ export default props => {
   }
 
   const validateBirth = value => {
-    //생년월일 바뀔때마다 유효성
     let year = value.slice(0, 4)
     if (year == '') {
-      //console.log('빈값')
     } else if (year <= dateYear || value == date) {
       setCurrentPickdata('')
       setValidate({
@@ -148,7 +161,7 @@ export default props => {
       setPickerState(false)
     }
   }
-
+  //-------------------------
   useEffect(() => {
     let firstSetting = {}
     if (!changes.pickdata) {
@@ -161,35 +174,16 @@ export default props => {
       ...firstSetting
     })
   }, [])
-
-  const more = () => {
-    async function fetchData() {
-      const res = await Api.report_broad({
-        params: {
-          dateType: active,
-          startDt: dateprev,
-          endDt: datenext,
-          page: 1,
-          records: 10
-        }
-      })
-      if (res.result === 'success') {
-        setBroadData(res.data.list)
-        console.log(res)
-      } else if (res.result === 'fail') {
-        console.log(res)
-      }
-    }
-    fetchData()
+  //----------------------------
+  // 셀렉트 타입
+  const setType = value => {
+    setSelectType(value)
+    setBtnTrue(false)
   }
   return (
     <Report>
       <TitleWrap style={{paddingBottom: '25px'}}>
         <TitleText>리포트</TitleText>
-        {/* <div>
-          <TypeBtn style={{marginRight: '5px'}}>방송</TypeBtn>
-          <TypeBtn style={{marginLeft: '5px'}}>청취</TypeBtn>
-        </div> */}
         <SelectWrap>
           <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
         </SelectWrap>
@@ -229,35 +223,48 @@ export default props => {
               pickerState={pickerState}
             />
           </section>
+          {selectType === 0 && (
+            <button className="search" onClick={fetchData}>
+              검색
+            </button>
+          )}
 
-          <button className="search" onClick={fetchData}>
-            검색
-          </button>
+          {selectType === 1 && (
+            <button className="search" onClick={fetchDataListen}>
+              검색
+            </button>
+          )}
         </div>
       </div>
       <TitleWrap>
-        <TitleText>방송요약</TitleText>
+        {selectType === 0 && <TitleText>방송요약</TitleText>}
+        {selectType === 1 && <TitleText>청취요약</TitleText>}
         <TitleSubMsg>데이터는 최대 6개월까지 검색 가능합니다.</TitleSubMsg>
       </TitleWrap>
 
       <BroadcastShort>
-        {Object.keys(iconInfo).map((section, index) => {
-          return (
-            // <ShortSection key={index}>
-            //   <SectionIcon style={{backgroundImage: `url(${iconInfo[section][0]})`}} />
-            //   <div>
-            //     <div>0</div>
-            //     <div>{iconInfo[section][1]}</div>
-            //   </div>
-            // </ShortSection>
-            <ShortSection key={index}>
-              <div>
-                <div>{iconInfo[section][1]}</div>
-                <div className="count">0</div>
-              </div>
-            </ShortSection>
-          )
-        })}
+        {selectType === 0 &&
+          Object.keys(broadInfo).map((section, index) => {
+            return (
+              <ShortSection key={index}>
+                <div>
+                  <div>{broadInfo[section][1]}</div>
+                  <div className="count">0</div>
+                </div>
+              </ShortSection>
+            )
+          })}
+        {selectType === 1 &&
+          Object.keys(listenInfo).map((section, index) => {
+            return (
+              <ShortSection key={index}>
+                <div>
+                  <div>{listenInfo[section][1]}</div>
+                  <div className="count">0</div>
+                </div>
+              </ShortSection>
+            )
+          })}
       </BroadcastShort>
 
       <TitleWrap>
@@ -270,46 +277,80 @@ export default props => {
             return <DetailTableTab key={index}>{text}</DetailTableTab>
           })}
         </DetailTableNav> */}
-
         <div>
-          {broadData.map((value, idx) => {
-            return (
-              <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
-                <div>
-                  <span>방송일자</span> <span>{value.broadDt}</span>
-                </div>
-                <div>
-                  <span>방송시작 </span>
-                  <span>{value.startDt}</span>
-                </div>
-                <div>
-                  <span> 방송종료 </span>
-                  <span>{value.endDt}</span>
-                </div>
-                <div>
-                  <span>받은별 </span>
-                  <span>{value.byeolCnt}</span>
-                </div>
-                <div>
-                  <span> 좋아요</span> <span>{value.likes}</span>
-                </div>
-                <div>
-                  <span> 최다 청취자</span> <span>{value.listenerCnt}</span>
-                </div>
-                <div>
-                  <span>방송 최고 순위</span>
-                  <span>{value.rank}</span>
-                </div>
-              </MobileDetailTab>
-            )
-          })}
+          {selectType === 0 &&
+            broadData.map((value, idx) => {
+              return (
+                <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
+                  <div>
+                    <span>방송일자</span> <span>{value.broadDt}</span>
+                  </div>
+                  <div>
+                    <span>방송시작 </span>
+                    <span>{value.startDt}</span>
+                  </div>
+                  <div>
+                    <span> 방송종료 </span>
+                    <span>{value.endDt}</span>
+                  </div>
+                  <div>
+                    <span>받은별 </span>
+                    <span>{value.byeolCnt}</span>
+                  </div>
+                  <div>
+                    <span> 좋아요</span> <span>{value.likes}</span>
+                  </div>
+                  <div>
+                    <span> 최다 청취자</span> <span>{value.listenerCnt}</span>
+                  </div>
+                  <div>
+                    <span>방송 최고 순위</span>
+                    <span>{value.rank}</span>
+                  </div>
+                </MobileDetailTab>
+              )
+            })}
+
+          {selectType === 1 &&
+            listenData.map((value, idx) => {
+              return (
+                <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
+                  <div>
+                    <span>청취시간</span> <span>{value.listenDt}</span>
+                  </div>
+                  <div>
+                    <span>청취종료</span>
+                    <span>{value.endDt}</span>
+                  </div>
+                  <div>
+                    <span>방송방 (DJ)</span>
+                    <span>{value.bjNickNm}</span>
+                  </div>
+                  <div>
+                    <span>선물내역 </span>
+                    <span>{value.giftDalCnt}</span>
+                  </div>
+                  <div>
+                    <span>받은 내역</span> <span>{value.byeolCnt}</span>
+                  </div>
+                  <div>
+                    <span>게스트</span> <span>{value.isGuest}</span>
+                  </div>
+                  {/* <div>
+                    <span>방송 최고 순위</span>
+                    <span>{value.rank}</span>
+                  </div> */}
+                </MobileDetailTab>
+              )
+            })}
         </div>
       </DetailTable>
-
-      <Submit onClick={() => setShowingpage(true)} className={showingpage === true ? 'disable' : ''}>
-        <span>더보기</span>
-        <em></em>
-      </Submit>
+      {btnTrue === true && (
+        <Submit onClick={() => setShowingpage(true)} className={showingpage === true ? 'disable' : ''}>
+          <span>더보기</span>
+          <em></em>
+        </Submit>
+      )}
     </Report>
   )
 }
