@@ -14,7 +14,8 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
-import {osName, isAndroid, isIOS, isIPad13, isIPhone13, isTablet} from 'react-device-detect'
+import {osName, isAndroid, isIPad13} from 'react-device-detect'
+
 //components
 import Api from 'context/api'
 //context
@@ -35,7 +36,7 @@ const App = () => {
   const [ready, setReady] = useState(false)
 
   const customHeader = useMemo(() => {
-    //#2 쿠키로부터 'custom-header' 설정
+    //# 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
       let temp = JSON.parse(cookie)
@@ -44,7 +45,7 @@ const App = () => {
       return temp
     }
 
-    //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
+    //# 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     const makeCustomHeader = () => {
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
