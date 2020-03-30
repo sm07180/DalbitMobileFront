@@ -233,14 +233,16 @@ export default props => {
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
-    let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
-    const loginIdVal = Utility.phoneAddHypen(idEntered)
+    //let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
+    let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
+    //const loginIdVal = Utility.phoneAddHypen(idEntered)
+    const loginIdVal = idEntered
     setChanges({
       ...changes,
       loginID: loginIdVal
     })
     if (!(loginIdVal == undefined)) {
-      if (loginIdVal.length >= 13) {
+      if (loginIdVal.length >= 11) {
         // setValidate({
         //   ...validate,
         //   loginID: true
@@ -731,7 +733,7 @@ export default props => {
                 onChange={onLoginHandleChange}
                 placeholder="휴대폰 번호"
                 className="auth"
-                maxLength="13"
+                maxLength="11"
               />
               <button
                 className="auth-btn1"
