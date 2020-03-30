@@ -27,7 +27,7 @@ export default props => {
         <img src={Setting} />
       </Header>
       <div>
-        {navList.map(data => {
+        {/* {navList.map(data => {
           const {value, txt} = data
           return (
             <NavBtnWrap>
@@ -35,7 +35,7 @@ export default props => {
               <div className="text">{txt}</div>
             </NavBtnWrap>
           )
-        })}
+        })} */}
       </div>
     </div>
   )
