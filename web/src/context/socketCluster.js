@@ -754,8 +754,8 @@ export const receiveMessageData = recvData => {
   console.log('서버로 부터 받은 데이터 = ' + recvData)
   if (recvData && recvData.data.channel !== 'channel.public.dalbit' && recvData.data.data.cmd === 'chatEnd') {
     if (recvData.data.data.recvMsg.msg === 'bjOut') {
-      socketClusterDestory(false, recvData.data.channel)
-      window.location.replace('https://' + window.location.hostname)
+      //socketClusterDestory(false, recvData.data.channel)
+      //window.location.replace('https://' + window.location.hostname)
     }
   }
   if (recvData && recvData.data.channel !== 'channel.public.dalbit') {
@@ -797,7 +797,8 @@ export const socketClusterBinding = async (channel, Info) => {
     //alert('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
     //return false
   }
-  socketClusterDestory(false, channel)
+  //소켓 리로드 시 문제가 된다.
+  //socketClusterDestory(false, channel)
 
   if (socket != null) {
     if (socket.state === 'open') {

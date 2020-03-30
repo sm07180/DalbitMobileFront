@@ -243,24 +243,28 @@ export default props => {
   }, [child])
 
   //---------------------------------------------------------------------
-  return (
-    <Content bgImg={context.broadcastTotalInfo.bgImg.url != null ? context.broadcastTotalInfo.bgImg.url : roomInfo.bgImg.url}>
-      {/* 상단 정보 영역 */}
-      <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
-      <CommentList className="scroll" ref={chatArea}>
-        <Scrollbars
-          ref={scrollbars}
-          autoHeight
-          autoHeightMax={'100%'}
-          onUpdate={scrollOnUpdate}
-          onScrollStop={handleOnWheel}
-          autoHide>
-          {comments}
-        </Scrollbars>
-      </CommentList>
-      <InputComment {...roomInfo} onKeyPress={postMessageChange} />
-    </Content>
-  )
+  if (context.broadcastTotalInfo) {
+    return (
+      <Content bgImg={context.broadcastTotalInfo.bgImg.url != null ? context.broadcastTotalInfo.bgImg.url : roomInfo.bgImg.url}>
+        {/* 상단 정보 영역 */}
+        <InfoContainer {...roomInfo} top1Msg={top1Msg} top2Msg={top2Msg} />
+        <CommentList className="scroll" ref={chatArea}>
+          <Scrollbars
+            ref={scrollbars}
+            autoHeight
+            autoHeightMax={'100%'}
+            onUpdate={scrollOnUpdate}
+            onScrollStop={handleOnWheel}
+            autoHide>
+            {comments}
+          </Scrollbars>
+        </CommentList>
+        <InputComment {...roomInfo} onKeyPress={postMessageChange} />
+      </Content>
+    )
+  } else {
+    ;<div></div>
+  }
 }
 
 //---------------------------------------------------------------------
