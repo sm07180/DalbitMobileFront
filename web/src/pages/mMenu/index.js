@@ -3,15 +3,20 @@ import {Switch, Route, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
+import Profile from './content/profile.js'
+import Search from './content/search.js'
+import Alarm from './content/alarm.js'
 
 export default props => {
-  const categoryList = {
-    nav: {type: 'nav', component: Nav},
-    profile: {type: 'profile', component: ''},
-    alarm: {type: 'alarm', component: ''},
-    search: {type: 'search', component: ''}
-  }
-  const {category} = useParams()
+  const categoryList = [
+    {type: 'nav', component: Nav},
+    {type: 'profile', component: ''},
+    {type: 'alarm', component: ''},
+    {type: 'search', component: ''}
+  ]
+  // const {category} = useParams()
+  // console.log('category', category)
+
   return (
     <MenuWrap>
       <Switch>
