@@ -9,6 +9,7 @@ import Layout from 'pages/common/layout'
 import {LiveProvider} from './store'
 //components
 //pages
+import Gnb from 'pages/common/newGnb'
 import Content from './content'
 //
 export default props => {
@@ -21,9 +22,9 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <LiveProvider>
-      <Layout {...props}>
-        <Content {...props} />
-      </Layout>
+      {/* GNB */}
+      <Gnb />
+      <Content {...props} />
     </LiveProvider>
   )
 }

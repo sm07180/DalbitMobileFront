@@ -2,7 +2,7 @@
  * @file /mlive/index.js
  * @brief 라이브방송
  */
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import Api from 'context/api'
@@ -12,23 +12,27 @@ import {COLOR_MAIN} from 'context/color'
 //components
 import List from './live-list'
 //
-export default () => {
+const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //useState
+
   //-----------------------------------------------------------
   // 방송방 리스트 조회
-  const getBroadList = async () => {
+  const getBroadList = async mode => {
     const obj = {
-      params: {records: 10, roomType: Store().type, page: Store().currentPage, searchType: Store().searchType}
+      params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
+    console.log(obj)
     const res = await Api.broad_list(obj)
     if (res.result === 'success') {
-      Store().action.updateBroadList(res.data)
-      //   if (res.data.list.length) {
-      //     return {result: true, ...res.data}
-      //   } else {
-      //     return {result: false}
-      //   }
+      //APPEND
+      if (mode !== undefined && mode.type === 'append') {
+        const result = {paging: res.data.paging, list: [...Store().broadList.list, ...res.data.list]}
+        Store().action.updateBroadList(result)
+      } else {
+        Store().action.updateBroadList(res.data)
+      }
     } else {
       context.action.alert({
         title: res.messageKey,
@@ -36,12 +40,13 @@ export default () => {
       })
     }
   }
+  //connect
+
   //update
   function update(mode) {
-    console.log(mode)
-    switch (mode) {
+    switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
-        console.log(mode)
+        alert(JSON.stringify(mode.selectList, null, 1))
         break
       default:
         break
@@ -54,16 +59,20 @@ export default () => {
     const result = list.map((list, idx) => {
       return <List key={idx} data={list} update={update} />
     })
-    return result
+    return [result]
   }
   //---------------------------------------------------------------------
   useEffect(() => {
+    getBroadList({type: 'append'})
+  }, [Store().currentPage])
+  //
+  useEffect(() => {
     getBroadList()
-  }, [])
+  }, [Store().searchType, Store().roomType])
   //---------------------------------------------------------------------
   return <Content>{makeContents()}</Content>
 }
-
+export default LiveIndex
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;

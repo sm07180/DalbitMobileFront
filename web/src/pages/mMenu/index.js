@@ -10,9 +10,9 @@ import Alarm from './content/alarm.js'
 export default props => {
   const categoryList = [
     {type: 'nav', component: Nav},
-    {type: 'profile', component: ''},
-    {type: 'alarm', component: ''},
-    {type: 'search', component: ''}
+    {type: 'profile', component: Profile},
+    {type: 'alarm', component: Alarm},
+    {type: 'search', component: Search}
   ]
   // const {category} = useParams()
   // console.log('category', category)
