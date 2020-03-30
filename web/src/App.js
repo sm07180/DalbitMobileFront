@@ -36,10 +36,6 @@ const App = () => {
 
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
-    //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
-
     //#2 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
