@@ -23,6 +23,7 @@ import newMain from './pages/newMain'
 //pages
 /*-common-*/
 const Main = React.lazy(() => import('pages/main'))
+const MobileMenu = React.lazy(() => import('pages/mMenu'))
 const BroadCast = React.lazy(() => import('pages/broadcast'))
 const BroadCastSetting = React.lazy(() => import('pages/broadcast-setting'))
 const Guide = React.lazy(() => import('pages/guide'))
@@ -61,6 +62,7 @@ export default () => {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/new" component={newMain} />
+        <Route exact path="/menu/:category" component={MobileMenu} />
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
         <Route exact path="/cast" component={Cast} />

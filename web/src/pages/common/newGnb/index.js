@@ -7,18 +7,51 @@ import Search from './static/ic_search.svg'
 import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
+import Mic from './static/ic_mike_w.svg'
 
 export default props => {
+  const [logoChange, setLogoChange] = useState(false)
+
+  const reLoad = () => {
+    window.location.reload()
+  }
+  const moveToMenu = category => {
+    window.location.href = `/menu/${category}`
+  }
+  const scrollEvent = () => {
+    const gnbHeight = 48
+
+    if (!logoChange && window.scrollY >= gnbHeight) {
+      setLogoChange(true)
+    } else if (logoChange && window.scrollY < gnbHeight) {
+      setLogoChange(false)
+    }
+  }
+
+  useEffect(() => {
+    window.removeEventListener('scroll', scrollEvent)
+    window.addEventListener('scroll', scrollEvent)
+    return () => {
+      window.removeEventListener('scroll', scrollEvent)
+    }
+  }, [logoChange])
+
   return (
     <GnbWrap>
       <div className="icon-wrap">
-        <img className="icon" src={Search} />
-        <img className="icon" src={Alarm} />
+        <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+        <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
       </div>
-      <img className="logo" src={Logo} />
+      {logoChange ? (
+        <div className="mic-btn">
+          <img src={Mic} />
+        </div>
+      ) : (
+        <img className="logo" src={Logo} onClick={reLoad} />
+      )}
       <div className="icon-wrap">
-        <img className="icon" src={My} />
-        <img className="icon" src={Menu} />
+        <img className="icon" src={My} onClick={() => moveToMenu('profile')} />
+        <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} />
       </div>
     </GnbWrap>
   )
@@ -49,5 +82,15 @@ const GnbWrap = styled.div`
   .logo {
     display: block;
     width: 110px;
+  }
+
+  .mic-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 82px;
+    height: 40px;
+    border-radius: 21px;
+    background-color: #8556f6;
   }
 `

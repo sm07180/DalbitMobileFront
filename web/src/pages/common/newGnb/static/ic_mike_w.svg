@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_mike_w" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:none;stroke:#fff;stroke-linejoin:round;stroke-width:1.5px}.prefix__cls-3{fill:#fff;stroke-linecap:round}
+        </style>
+    </defs>
+    <g id="prefix__ic_broadcastng" transform="translate(-305.769 -475.329)">
+        <path id="prefix__사각형_449" d="M0 0H36V36H0z" data-name="사각형 449" transform="translate(305.769 475.329)" style="fill:none"/>
+        <g id="prefix__그룹_10753" data-name="그룹 10753" transform="translate(-.455 -.453)">
+            <ellipse id="prefix__타원_2" cx="5.858" cy="1.932" class="prefix__cls-2" data-name="타원 2" rx="5.858" ry="1.932" transform="translate(318.627 502.765)"/>
+            <rect id="prefix__사각형_448" width="9.44" height="17.298" class="prefix__cls-2" data-name="사각형 448" rx="4.72" transform="translate(319.765 481.783)"/>
+            <path id="prefix__선_60" d="M0 0L12.12 0" class="prefix__cls-3" data-name="선 60" transform="translate(318.224 490.432)"/>
+            <path id="prefix__선_61" d="M0 0L0 4.643" class="prefix__cls-3" data-name="선 61" transform="translate(324.514 499.567)"/>
+        </g>
+    </g>
+</svg>

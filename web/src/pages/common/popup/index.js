@@ -162,7 +162,6 @@ const Wrap = styled.div`
     cursor: pointer;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    &.charge,
     &.square {
       & > button {
         top: 18px;
@@ -185,6 +184,26 @@ const Wrap = styled.div`
         }
         &:after {
           transform: rotate(-45deg);
+        }
+      }
+    }
+    &.charge {
+      & > button {
+        top: 15px;
+        left: 4%;
+        width: 30px;
+        height: 30px;
+        z-index: 10;
+        &:before {
+          position: absolute;
+          left: 11px;
+          top: 8px;
+          width: 10px;
+          height: 10px;
+          border-left: 2px solid #757575;
+          border-top: 2px solid #757575;
+          transform: rotate(-45deg);
+          content: '';
         }
       }
     }
