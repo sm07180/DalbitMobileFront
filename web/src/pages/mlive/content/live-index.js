@@ -27,7 +27,7 @@ const LiveIndex = () => {
     const res = await Api.broad_list(obj)
     if (res.result === 'success') {
       //APPEND
-      if (mode !== undefined && mode.type === 'append') {
+      if (mode !== undefined && mode.type === 'append' && Store().broadList.list !== undefined) {
         const result = {paging: res.data.paging, list: [...Store().broadList.list, ...res.data.list]}
         Store().action.updateBroadList(result)
       } else {
@@ -57,6 +57,10 @@ const LiveIndex = () => {
     if (Store().broadList === null) return
     const {list, paging} = Store().broadList
     const result = list.map((list, idx) => {
+      //roomType
+      //    if (Store().roomType !== '' && Store().roomType !== list.roomTyp) return
+      //  if (Store().searchType !== -1 && Store().searchType !== list.roomTyp) return
+
       return <List key={idx} data={list} update={update} />
     })
     return [result]

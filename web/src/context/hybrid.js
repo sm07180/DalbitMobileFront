@@ -4,6 +4,7 @@
  * @ios       : webkit.messageHandlers.GetLoginToken.postMessage(res.data) -> Hybrid('GetLoginToken', res.data)
  * @android   : window.android.GetLoginToken(JSON.stringify(res.data)) -> Hybrid('GetLoginToken', res.data)
  * @todo      : context.customHeader.os 를 1,2를 체크해서 복합적으로 구현
+ * @notice    : isHybrid , Hybrid 수정하지말것!
  *
  */
 import Api from 'context/api'
