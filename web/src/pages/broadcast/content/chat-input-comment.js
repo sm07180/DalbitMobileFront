@@ -137,11 +137,9 @@ export default props => {
       console.log(res.message)
       return
     } else {
-      sessionStorage.clear()
-      //sc.SendMessageChatEnd(props)
+      localStorage.clear()
       context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
       context.action.updateBroadcastTotalInfo(null)
-      //sc.socketClusterDestory(false, UserRoomNo)
       mediaHandler.stop()
       timer.stopTimer() //방송 시간 멈춤
       history.goBack()

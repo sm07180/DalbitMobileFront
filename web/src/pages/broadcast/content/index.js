@@ -174,39 +174,28 @@ export default props => {
   }
 
   useEffect(() => {
-    if (authValue === null) {
-    } else if (authValue === hostRole) {
-      //getReToken(roomNo)            //20200326 - 김호겸 -> 방생성 후 reToken 받으면서 해당 방이 꺼지면서 플레이어가 생기지만 플레이어 누르면 죽어버림
-    } else {
-      document.addEventListener('keydown', function(e) {
-        if (e.key == 'F5') {
-          setSesstionStorage('isReloadSocket', {reconnected: false})
-        } else {
-        }
-        return () => document.removeEventListener('keydown')
-      })
-    }
+    // if (authValue === null) {
+    // } else if (authValue === hostRole) {
+    //   //getReToken(roomNo)            //20200326 - 김호겸 -> 방생성 후 reToken 받으면서 해당 방이 꺼지면서 플레이어가 생기지만 플레이어 누르면 죽어버림
+    // } else {
+    //   document.addEventListener('keydown', function(e) {
+    //     if (e.key == 'F5') {
+    //       setSesstionStorage('isReloadSocket', {reconnected: false})
+    //     } else {
+    //     }
+    //     return () => document.removeEventListener('keydown')
+    //   })
+    // }
     console.log('방송방 진입해서 private chennel 입장 ')
     const pathUrl = window.location.search
     let UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
-    sc.socketClusterBinding(UserRoomNo)
-    // if (context.broadcastTotalInfo === null || context.broadcastTotalInfo === undefined) {
-    //   const aaa = getSesstionStorage('userInfo')
-    //   if (aaa) {
-    //     console.log(aaa)
-    //     console.log('socketClusterBinding3 = ' + aaa.roomNo)
-    //     sc.socketClusterBinding(aaa.roomNo)
-    //   }
-    // } else {
-    //   console.log('socketClusterBinding2 = ' + context.broadcastTotalInfo.roomNo)
-    //   sc.socketClusterBinding(context.broadcastTotalInfo.roomNo)
-    // }
-
+    sc.socketClusterBinding(UserRoomNo, context)
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
     if (window.innerWidth <= 840) {
       setIsSideOn(false)
     }
-  }, [authValue])
+    // }, [authValue])
+  }, [])
 
   //방송방 리사이즈시
   //pc->모바일은 탭닫음 //모바일->pc는 탭열림
@@ -221,30 +210,30 @@ export default props => {
     }
   }, [useResize()])
   //---------------------------------------------------------------------
-  if (broadcastTotalInfo) {
-    return (
-      <Content className={isSideOn ? 'side-on' : 'side-off'}>
-        <Chat>
-          {/* 채팅방 영역 */}
-          <ChatUI {...props} />
-        </Chat>
-        <SideBTN
-          onClick={() => {
-            setTimeout(() => {
-              setIsSideOn(!isSideOn)
-            }, 100)
-          }}>
-          사이드 영역 열고 닫기
-        </SideBTN>
-        <Side>
-          {/* side content 영역 */}
-          <SideContent {...props}>{/* <Charge /> */}</SideContent>
-        </Side>
-      </Content>
-    )
-  } else {
-    return <div></div>
-  }
+  //if (broadcastTotalInfo) {
+  return (
+    <Content className={isSideOn ? 'side-on' : 'side-off'}>
+      <Chat>
+        {/* 채팅방 영역 */}
+        <ChatUI {...props} />
+      </Chat>
+      <SideBTN
+        onClick={() => {
+          setTimeout(() => {
+            setIsSideOn(!isSideOn)
+          }, 100)
+        }}>
+        사이드 영역 열고 닫기
+      </SideBTN>
+      <Side>
+        {/* side content 영역 */}
+        <SideContent {...props}>{/* <Charge /> */}</SideContent>
+      </Side>
+    </Content>
+  )
+  // } else {
+  //   return <div></div>
+  // }
 }
 //---------------------------------------------------------------------
 

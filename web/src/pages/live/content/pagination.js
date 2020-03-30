@@ -26,7 +26,6 @@ export default props => {
     <Container>
       <Left onClick={() => prev()} />
       {[...Array(Math.ceil(total / records)).keys()].map(value => {
-        console.log('value', value)
         return (
           <Page key={value} className={current === value + 1 ? 'active' : ''} onClick={() => clickPageBtn(value + 1)}>
             {value + 1}

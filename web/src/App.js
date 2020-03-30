@@ -25,10 +25,7 @@ import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
 // socketCluster 연결
-// const sc = require('context/socketCluster')
 import SocketCluster from 'context/socketCluster'
-//Sesstion Storage 관리
-import {setSesstionStorage, getSesstionStorage} from 'components/lib/sesstionStorageCtl'
 
 const App = () => {
   //---------------------------------------------------------------------
@@ -37,7 +34,7 @@ const App = () => {
   App.context = () => context
   //useState
   const [ready, setReady] = useState(false)
-  const [socketClusterReady, setSocketClusterReady] = useState(false)
+  //const [socketClusterReady, setSocketClusterReady] = useState(false)
 
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
@@ -152,19 +149,6 @@ const App = () => {
         }
         //모든처리완료
         setReady(true)
-        const aaa = getSesstionStorage('isReloadSocket')
-
-        if (getSesstionStorage('isReloadSocket') != '') {
-          setSocketClusterReady(false)
-        } else {
-          setSocketClusterReady(true)
-        }
-        //if (getSesstionStorage('isSocketCluster') === '') {
-        //sc.scConnection({token: res.data})
-
-        // } else {
-        //   if (window.location.pathname !== '/') return
-        // }
       } else {
         //토큰에러
         context.action.alert({
@@ -174,25 +158,6 @@ const App = () => {
       }
     }
   }
-  // const isSocketConnect = () => {
-  //   if (getSesstionStorage('isSocketCluster') !== '' || window.location.pathname !== '/') return
-  //   // if (window.location.pathname !== '/') {
-  //   //   setSocketClusterReady(false)
-  //   // }
-
-  //   return (
-  //     <React.Fragment>
-  //       <SocketCluster />
-  //     </React.Fragment>
-  //   )
-  //   // if (getSesstionStorage('isSocketCluster') == '') {
-  //   //   setSocketClusterReady(true)
-  //   //   return <SocketCluster />
-  //   // } else {
-  //   //   setSocketClusterReady(false)
-  //   //   return ''
-  //   // }
-  // }
   //---------------------------------------------------------------------
   //useEffect token
   useEffect(() => {
@@ -207,10 +172,7 @@ const App = () => {
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     // 소켓은 토큰 받고 실행
-
     fetchData({data: _customHeader})
-
-    //if (window.location.pathname !== '/') setSocketClusterReady(false)
   }, [])
   //---------------------------------------------------------------------
   /**
@@ -221,7 +183,7 @@ const App = () => {
       {ready && <Interface />}
       {ready && <Route />}
       {/* {socketClusterReady && window.location.pathname === '/' && <SocketCluster />} */}
-      {socketClusterReady && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
+      {ready && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }

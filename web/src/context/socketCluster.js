@@ -824,6 +824,7 @@ export const socketClusterBinding = async (channel, Info) => {
 export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
     socket.subscribe(channelObjName)
+
     console.log(channelObjName + '채널 입장')
     return channelObj
 
