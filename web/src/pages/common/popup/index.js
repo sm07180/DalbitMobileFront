@@ -134,7 +134,7 @@ const Wrap = styled.div`
       width: 340px;
       max-height: 90%;
       padding: 0;
-      height: auto;
+      height: 666px;
     }
 
     @media (max-width: ${WIDTH_MOBILE}) {
