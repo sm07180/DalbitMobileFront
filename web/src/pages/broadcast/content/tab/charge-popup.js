@@ -86,15 +86,18 @@ export default props => {
   }
 
   const doCharge = () => {
-    // if (context.state.selfAuth) {
-    //   payFetch()
-    // } else {
-    //   context.action.updatePopupVisible(false)
-    //   props.history.push('/user/selfAuth', {
-    //     type: 'charge'
-    //   })
-    // }
-    payFetch()
+    async function fetchSelfAuth() {
+      const selfAuth = await Api.self_auth_check({})
+      if (selfAuth.result == 'success') {
+        payFetch()
+      } else {
+        context.action.updatePopupVisible(false)
+        props.history.push('/user/selfAuth', {
+          type: 'cast'
+        })
+      }
+    }
+    fetchSelfAuth()
   }
 
   // 무통장입금 - 현금영수증 Component

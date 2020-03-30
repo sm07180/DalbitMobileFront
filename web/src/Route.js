@@ -8,6 +8,9 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 //
 import Navigator from './pages/navigator'
 import newBroadcast from 'pages/newBroadcast'
+
+import newMain from './pages/newMain'
+
 /**
  * 하이브리드 앱연동을 문제발생,lazy로딩 x
  */
@@ -57,6 +60,7 @@ export default () => {
       }>
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/new" component={newMain} />
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
         <Route exact path="/cast" component={Cast} />
