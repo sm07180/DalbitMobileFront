@@ -3,6 +3,7 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect} from 'react'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 // components
@@ -20,9 +21,15 @@ export default props => {
       <SubMain>
         <div className="gnb">
           <div className="left-side">
-            <div className="tab">라이브</div>
-            <div className="tab">랭킹</div>
-            <div className="tab">스토어</div>
+            <div className="tab">
+              <Link to={'/mlive'}>라이브</Link>
+            </div>
+            <div className="tab">
+              <Link to={'/ranking'}>랭킹</Link>
+            </div>
+            <div className="tab">
+              <Link to={'/store'}>스토어</Link>
+            </div>
           </div>
           <div className="right-side">
             <div className="btn">방송하기</div>
@@ -51,14 +58,19 @@ const SubMain = styled.div`
       flex-direction: row;
 
       .tab {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         height: 36px;
         color: #fff;
         font-size: 16px;
         letter-spacing: -0.4px;
         padding: 0 8px;
+
+        a {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
 
