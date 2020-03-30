@@ -32,7 +32,10 @@ export default props => {
     //alert('roomNo = ' + roomNo)
     if (result === 'success') {
       console.log('방입장  = ' + data)
-
+      ctx.action.updateBroadcastTotalInfo(data)
+      ctx.action.updateRoomInfo(data)
+      const TotalInfo = JSON.stringify(data)
+      localStorage.setItem('BroadTotalInfo', TotalInfo)
       if (data) {
         if (isHybrid()) {
           //alert('hybrid')
@@ -45,7 +48,6 @@ export default props => {
           }
         } else {
           //alert('no hybrid')
-          ctx.action.updateBroadcastTotalInfo(data)
 
           setReadyRoom(true)
         }
