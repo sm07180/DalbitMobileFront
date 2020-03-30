@@ -119,7 +119,7 @@ export default props => {
     //     Hybrid('RoomJoin', data)
     //   } else {
     //     context.action.updateBroadcastTotalInfo(data)
-    //     props.history.push(`/broadcast?roomNo=${roomNo}`)
+    //     props.history.push(`/broadcast/?roomNo=${roomNo}`)
     //   }
     // }
   }

@@ -130,7 +130,7 @@ export default props => {
         //하이브리드앱이 아닐때
         const {roomNo} = res.data
         context.action.updateBroadcastTotalInfo(res.data)
-        props.history.push(`/broadcast?roomNo=${roomNo}`, res.data)
+        props.history.push(`/broadcast/?roomNo=${roomNo}`, res.data)
       }
     }
     return
@@ -188,7 +188,7 @@ export default props => {
             key={index}
             onClick={() => {
               //joinRoom(roomNo)
-              // props.history.push(`/broadcast?roomNo=${roomNo}`)
+              // props.history.push(`/broadcast/?roomNo=${roomNo}`)
             }}>
             {/* <p className="authClass">[{mode}]</p> */}
             <Img className="imgwrap" bg={profImg.url}>

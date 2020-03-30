@@ -47,6 +47,7 @@ export default props => {
               const res = await Api.broad_exit({data: {beforeRoomNo}})
               if (res.result === 'success') {
                 sc.socketClusterDestory(false, beforeRoomNo)
+                localStorage.clear()
                 //return res
               }
             })()

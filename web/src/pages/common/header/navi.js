@@ -62,7 +62,7 @@ export const BroadValidation = () => {
                       if (isApp) {
                         Hybrid('ReconnectRoom', res.data)
                       } else {
-                        Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
+                        Navi.history().push(`/broadcast/?roomNo=${obj.roomNo}`, res.data)
                       }
                       return
                     }
@@ -120,7 +120,7 @@ export const BroadValidation = () => {
                       if (isApp) {
                         Hybrid('ReconnectRoom', res.data)
                       } else {
-                        Navi.history().push(`/broadcast?roomNo=${obj.roomNo}`, res.data)
+                        Navi.history().push(`/broadcast/?roomNo=${obj.roomNo}`, res.data)
                       }
                       return
                     }

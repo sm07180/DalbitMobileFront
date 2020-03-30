@@ -144,6 +144,9 @@ const App = () => {
     Api.setAuthToken(authToken)
 
     // Renew all initial data
+    const storageTotalInfoObj = JSON.parse(localStorage.getItem('BroadTotalInfo'))
+    if (storageTotalInfoObj != '') context.action.updateBroadcastTotalInfo(storageTotalInfoObj)
+
     fetchData()
   }, [])
 
