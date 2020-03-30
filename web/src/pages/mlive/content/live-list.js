@@ -1,21 +1,29 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
+import React, {useMemo, useState, useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
-import {WIDTH_MOBILE, WIDTH_TABLET} from 'context/config'
-import {Context} from 'context'
+//context
+import {WIDTH_MOBILE} from 'context/config'
 import {IMG_SERVER} from 'context/config'
-import {Scrollbars} from 'react-custom-scrollbars'
-import Utility from 'components/lib/utility'
 
 export default props => {
   //------------------------------------------------------------ declare start
   const {data} = props
-  //console.log(data)
-  //------------------------------------------------------------ func start
-  const handleHover = (flag, index) => {
-    setSelected(index)
-    setHover(flag)
-  }
-
+  const roomType = useMemo(() => {
+    if (data.roomType === '') return '전체'
+    if (data.roomType === '00') return '일상/챗'
+    if (data.roomType === '01') return '노래/연주'
+    if (data.roomType === '02') return '고민/사연'
+    if (data.roomType === '03') return '연애/오락'
+    if (data.roomType === '04') return '책/힐링'
+    if (data.roomType === '05') return 'ASMR'
+    if (data.roomType === '06') return '노래방'
+    if (data.roomType === '07') return '성우'
+    if (data.roomType === '08') return '스터디'
+    if (data.roomType === '09') return '공포'
+    if (data.roomType === '10') return '먹방/요리'
+    if (data.roomType === '11') return '건강/스포츠'
+    if (data.roomType === '99') return '전체'
+    return '기타'
+  })
   //------------------------------------------------------------ components start
   return (
     <List
@@ -30,7 +38,7 @@ export default props => {
 
       <div className="content">
         <div className="title">
-          <h2>고민/사연</h2>
+          <h2>{roomType}</h2>
           {data.isRecomm && <Tag bgColor={'#8555f6'}>추천</Tag>}
           {data.isPop && <Tag bgColor={'#ec455f'}>인기</Tag>}
           {data.isNew && <Tag bgColor={'#fdad2b'}>신입</Tag>}

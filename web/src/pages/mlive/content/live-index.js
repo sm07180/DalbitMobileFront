@@ -2,7 +2,7 @@
  * @file /mlive/index.js
  * @brief 라이브방송
  */
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import Api from 'context/api'
@@ -15,21 +15,24 @@ import List from './live-list'
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //useState
 
   //-----------------------------------------------------------
   // 방송방 리스트 조회
-  const getBroadList = async () => {
+  const getBroadList = async mode => {
     const obj = {
       params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
+    console.log(obj)
     const res = await Api.broad_list(obj)
     if (res.result === 'success') {
-      Store().action.updateBroadList(res.data)
-      //   if (res.data.list.length) {
-      //     return {result: true, ...res.data}
-      //   } else {
-      //     return {result: false}
-      //   }
+      //APPEND
+      if (mode !== undefined && mode.type === 'append') {
+        const result = {paging: res.data.paging, list: [...Store().broadList.list, ...res.data.list]}
+        Store().action.updateBroadList(result)
+      } else {
+        Store().action.updateBroadList(res.data)
+      }
     } else {
       context.action.alert({
         title: res.messageKey,
@@ -41,13 +44,9 @@ const LiveIndex = () => {
 
   //update
   function update(mode) {
-    console.log(mode)
-    switch (mode) {
+    switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
-        console.log(mode)
-        break
-      case mode.listReload !== undefined: //-------------reload
-        console.log(mode)
+        alert(JSON.stringify(mode.selectList, null, 1))
         break
       default:
         break
@@ -60,9 +59,13 @@ const LiveIndex = () => {
     const result = list.map((list, idx) => {
       return <List key={idx} data={list} update={update} />
     })
-    return result
+    return [result]
   }
   //---------------------------------------------------------------------
+  useEffect(() => {
+    getBroadList({type: 'append'})
+  }, [Store().currentPage])
+  //
   useEffect(() => {
     getBroadList()
   }, [Store().searchType, Store().roomType])

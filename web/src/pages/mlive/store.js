@@ -33,6 +33,12 @@ const LiveProvider = props => {
     /**
      * @brief roomType타입변경
      */
+    appendBroadList: obj => {
+      setBroadList({...broadList, ...obj})
+    },
+    /**
+     * @brief roomType타입변경
+     */
     updateRoomType: (num = 0) => {
       setRoomType(num)
     },

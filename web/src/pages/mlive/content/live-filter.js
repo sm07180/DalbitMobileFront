@@ -77,7 +77,7 @@ const Content = styled.div`
   & > h1 {
     display: block;
     margin-top: 24px;
-    padding-bottom: 14px;
+    padding-bottom: 4px;
     font-size: 28px;
     font-weight: 600;
     color: ${COLOR_MAIN};
