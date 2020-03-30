@@ -36,15 +36,8 @@ const App = () => {
   const [ready, setReady] = useState(false)
 
   const customHeader = useMemo(() => {
-    const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined) {
-      let jsonPared = JSON.parse(cookie)
-      jsonPared.appVersion = '1.0.1'
-      jsonPared.locale = Utility.locale()
-      return jsonPared
-    }
-
     const tempCustomHeaderTag = document.getElementById('customHeader')
+    // native app case
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonPared = JSON.parse(tempCustomHeaderTag.value)
       jsonParsed.nativeApp = true
@@ -52,6 +45,14 @@ const App = () => {
       jsonPared.locale = Utility.locale()
       return jsonPared
     } else {
+      const cookie = Utility.getCookie('custom-header')
+      if (cookie !== undefined) {
+        let jsonPared = JSON.parse(cookie)
+        jsonPared.appVersion = '1.0.1'
+        jsonPared.locale = Utility.locale()
+        return jsonPared
+      }
+
       return {
         os: '3',
         locale: 'temp_KR',
