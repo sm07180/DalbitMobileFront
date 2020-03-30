@@ -36,7 +36,7 @@ export default props => {
           Hybrid('ExitRoom')
           context.action.updateMediaPlayerStatus(false)
         } else {
-          const beforeRoomNo = localStorage.getItem(currentRoomNo)
+          const beforeRoomNo = localStorage.getItem('currentRoomNo')
           console.log('beforeRoomNo = ' + beforeRoomNo)
 
           if (mediaHandler.rtcPeerConn) {
