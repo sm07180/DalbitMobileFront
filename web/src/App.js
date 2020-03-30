@@ -36,37 +36,35 @@ const App = () => {
   const [ready, setReady] = useState(false)
 
   const customHeader = useMemo(() => {
-    //# 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
+
     if (cookie !== undefined) {
       let jsonPared = JSON.parse(cookie)
       jsonPared.appVersion = '1.0.1'
       jsonPared.locale = Utility.locale()
       return jsonPared
-    }
-
-    const makeCustomHeader = () => {
-      //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
-      let _os = '3'
-      if (osName === 'Android') _os = '1'
-      if (osName === 'iOS') _os = '2'
-      if (isAndroid) _os = '1'
-      if (isIPad13) _os = '2'
-
-      const info = {
-        os: _os,
-        locale: 'temp_KR',
-        deviceId: Utility.createUUID(),
-        language: Utility.locale(),
-        deviceToken: 'make_custom_header'
+    } else {
+      const tempCustomHeaderTag = document.getElementById('customHeader')
+      if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
+        let jsonPared = JSON.parse(cookie)
+        jsonPared.appVersion = '1.0.1'
+        jsonPared.locale = Utility.locale()
+        return jsonPared
       }
-      return info
     }
-    return makeCustomHeader()
+
+    const info = {
+      os: '1',
+      locale: 'temp_KR',
+      deviceId: Utility.createUUID(),
+      language: Utility.locale(),
+      deviceToken: 'make_custom_header'
+    }
+    return info
   }, [])
 
   const authToken = Utility.getCookie('authToken')
-  const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'))
+  const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'), [customHeader])
 
   async function fetchData() {
     const commonData = await Api.splash()
