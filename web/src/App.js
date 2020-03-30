@@ -28,13 +28,11 @@ import Interface from './Interface'
 import SocketCluster from 'context/socketCluster'
 
 const App = () => {
-  //---------------------------------------------------------------------
-  //context
   const context = useContext(Context)
   App.context = () => context
+
   //useState
   const [ready, setReady] = useState(false)
-  //const [socketClusterReady, setSocketClusterReady] = useState(false)
 
   //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
@@ -47,7 +45,6 @@ const App = () => {
     if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
       let temp = JSON.parse(cookie)
       temp.appVersion = '1.0.1'
-
       temp.locale = Utility.locale()
       return temp
     }
@@ -105,7 +102,6 @@ const App = () => {
 
         //###--하이브리드일때
         if (isHybrid === 'Y') {
-          //alert('osName = ' + osName)
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
             //active
             Hybrid('GetLoginToken', res.data)
@@ -119,14 +115,12 @@ const App = () => {
           if (customHeader.isFirst === 'N') {
             //-----@안드로이드 Cookie
             let cookie = Utility.getCookie('native-player-info')
-            //if (osName === customHeader.os==='1' && cookie !== null && cookie !== undefined) {
             if (customHeader.os + '' === '1' && cookie !== null && cookie !== undefined) {
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)
               context.action.updateNativePlayer(cookie)
             }
             //-----@iOS
-            //if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
             if (customHeader.os + '' === '2' && cookie !== null && cookie !== undefined) {
               cookie = decodeURIComponent(cookie)
               cookie = JSON.parse(cookie)
@@ -152,14 +146,13 @@ const App = () => {
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
-
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
 
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
     // 소켓은 토큰 받고 실행
-    fetchData({data: _customHeader})
+    fetchData()
   }, [])
   //---------------------------------------------------------------------
   /**
@@ -169,7 +162,6 @@ const App = () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {/* {socketClusterReady && window.location.pathname === '/' && <SocketCluster />} */}
       {ready && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
