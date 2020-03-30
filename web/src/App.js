@@ -39,18 +39,18 @@ const App = () => {
     const tempCustomHeaderTag = document.getElementById('customHeader')
     // native app case
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
-      let jsonPared = JSON.parse(tempCustomHeaderTag.value)
+      let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
       jsonParsed.nativeApp = true
-      jsonPared.appVersion = '1.0.1'
-      jsonPared.locale = Utility.locale()
-      return jsonPared
+      jsonParsed.appVersion = '1.0.1'
+      jsonParsed.locale = Utility.locale()
+      return jsonParsed
     } else {
       const cookie = Utility.getCookie('custom-header')
       if (cookie !== undefined) {
-        let jsonPared = JSON.parse(cookie)
-        jsonPared.appVersion = '1.0.1'
-        jsonPared.locale = Utility.locale()
-        return jsonPared
+        let jsonParsed = JSON.parse(cookie)
+        jsonParsed.appVersion = '1.0.1'
+        jsonParsed.locale = Utility.locale()
+        return jsonParsed
       }
 
       return {
