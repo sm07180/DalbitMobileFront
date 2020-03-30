@@ -31,7 +31,7 @@ export default props => {
   return (
     <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? className : ''}>
       <Selected
-        className={selectedClassName}
+        className={`options ${selectedClassName}`}
         tabIndex={0}
         onClick={() => setOpened(opened ? false : true)}
         onBlur={selectBlurEvent}>

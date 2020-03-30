@@ -9,7 +9,7 @@ import Utility from 'components/lib/utility'
 export default props => {
   //------------------------------------------------------------ declare start
   const {data} = props
-  console.log(data)
+  //console.log(data)
   //------------------------------------------------------------ func start
   const handleHover = (flag, index) => {
     setSelected(index)

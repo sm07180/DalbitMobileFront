@@ -12,14 +12,15 @@ import {COLOR_MAIN} from 'context/color'
 //components
 import List from './live-list'
 //
-export default () => {
+const LiveIndex = () => {
   //context
   const context = useContext(Context)
+
   //-----------------------------------------------------------
   // 방송방 리스트 조회
   const getBroadList = async () => {
     const obj = {
-      params: {records: 10, roomType: Store().type, page: Store().currentPage, searchType: Store().searchType}
+      params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
     const res = await Api.broad_list(obj)
     if (res.result === 'success') {
@@ -36,11 +37,16 @@ export default () => {
       })
     }
   }
+  //connect
+
   //update
   function update(mode) {
     console.log(mode)
     switch (mode) {
       case mode.selectList !== undefined: //-------------아이템선택
+        console.log(mode)
+        break
+      case mode.listReload !== undefined: //-------------reload
         console.log(mode)
         break
       default:
@@ -59,11 +65,11 @@ export default () => {
   //---------------------------------------------------------------------
   useEffect(() => {
     getBroadList()
-  }, [])
+  }, [Store().searchType, Store().roomType])
   //---------------------------------------------------------------------
   return <Content>{makeContents()}</Content>
 }
-
+export default LiveIndex
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
