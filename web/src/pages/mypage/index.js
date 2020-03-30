@@ -66,7 +66,6 @@ export default props => {
               const {type, component} = value
               return <Route exact path={`/mypage/${type}`} component={component} key={type} />
             })}
-            <Redirect to="/error" />
           </Switch>
         </SubContent>
       </Content>
