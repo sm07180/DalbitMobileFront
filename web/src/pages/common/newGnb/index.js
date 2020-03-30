@@ -9,16 +9,23 @@ import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
 
 export default props => {
+  const reLoad = () => {
+    window.location.reload()
+  }
+  const moveToMenu = () => {
+    window.location.href = '/menu/nav'
+  }
+
   return (
     <GnbWrap>
       <div className="icon-wrap">
         <img className="icon" src={Search} />
         <img className="icon" src={Alarm} />
       </div>
-      <img className="logo" src={Logo} />
+      <img className="logo" src={Logo} onClick={reLoad} />
       <div className="icon-wrap">
         <img className="icon" src={My} />
-        <img className="icon" src={Menu} />
+        <img className="icon" src={Menu} onClick={moveToMenu} />
       </div>
     </GnbWrap>
   )
