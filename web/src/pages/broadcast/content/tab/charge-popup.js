@@ -234,7 +234,6 @@ export default props => {
       document.removeEventListener('store-pay', updateDispatch)
     }
   }, [])
-
   //-------------------------------------------------------- components start
   return (
     <Container ref={area}>
