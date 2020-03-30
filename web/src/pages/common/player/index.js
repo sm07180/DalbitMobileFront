@@ -3,6 +3,7 @@
  * @code context.action.updateMediaPlayerStatus(true)
  */
 import React, {useMemo, useEffect, useContext} from 'react'
+import _ from 'lodash'
 //context
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
@@ -23,7 +24,7 @@ export default props => {
   const {mediaHandler, mediaPlayerStatus} = context
   //useMemo
   const visible = useMemo(() => {
-    if (props.location.search.indexOf('roomNo') !== -1) return false
+    if (_.hasIn(props, 'location.search') && props.location.search.indexOf('roomNo') !== -1) return false
     return true
   })
   //---------------------------------------------------------------------

@@ -45,7 +45,6 @@ export default props => {
     const res = await Api.self_auth_check({})
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
-      context.action.updateState({selfAuth: true})
     } else {
       context.action.alert({
         msg: res.message
@@ -213,5 +212,29 @@ const Content = styled.div`
     background: ${COLOR_MAIN};
     color: #fff;
     line-height: 48px;
+  }
+
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin: 40px auto;
+    h4 {
+      width: 250px;
+      margin: 0 auto;
+      padding-top: 30px;
+      font-size: 20px;
+      line-height: 28px;
+      word-break: keep-all;
+    }
+    p {
+      padding-bottom: 169px;
+      padding-top: 20px;
+      background-size: 200px;
+      background-position-y: bottom;
+      font-size: 14px;
+    }
+    button {
+      max-width: 328px;
+      width: 100%;
+      margin-top: 15px;
+    }
   }
 `

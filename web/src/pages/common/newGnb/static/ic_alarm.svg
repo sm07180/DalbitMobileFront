@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_alarm" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#757575;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_445" d="M0 0H36V36H0z" data-name="사각형 445" style="fill:none"/>
+    <g id="prefix__그룹_9466" data-name="그룹 9466" transform="translate(9.667 8)">
+        <path id="prefix__패스_4093" d="M10.6 19.181h11.62a.942.942 0 0 0 .787-1.582l-2.017-2.025v-5.119a5.55 5.55 0 0 0-3.706-5.183C12.708 3.6 8.343 6.583 8.343 10.481v5.093L6.327 17.6a.942.942 0 0 0 .787 1.582h3.609" class="prefix__cls-2" data-name="패스 4093" transform="translate(-6.056 -4.798)"/>
+        <path id="prefix__패스_4094" d="M9.3 15.845a4.033 4.033 0 1 0 7.889 0" class="prefix__cls-2" data-name="패스 4094" transform="translate(-4.638 -1.462)"/>
+    </g>
+</svg>

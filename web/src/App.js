@@ -73,47 +73,37 @@ const App = () => {
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
-  //SERVER->REACT (authToken)
-  const authToken = useMemo(() => {
-    //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
-    const element = document.getElementById('authToken')
-    if (element !== null && typeof element.value === 'string' && element.value !== '') return element.value
-    //#2 쿠키로부터 'custom-header' 설정
-    const cookie = Utility.getCookie('authToken')
-    if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
-    return ''
-  })
+
+  let authToken = Utility.getCookie('authToken')
+
   //isHybrid체크
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
-  }) //---------------------------------------------------------------------
+  })
+
   //fetch
   async function fetchData(obj) {
     // common data
     const commonData = await Api.splash()
     if (commonData.result === 'success') {
       context.action.updateCommon(commonData.data)
+
       const res = await Api.getToken()
       if (res.result === 'success') {
         console.table(res.data)
         //#1 result 성공/실패 여부상관없이,토큰없데이트
         context.action.updateToken(res.data)
+
         //#2 로그인토큰일경우 프로필업데이트
         if (res.data.isLogin) {
           if (location.href.indexOf('/private/') === -1) {
             const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
             if (profileInfo.result === 'success') {
               context.action.updateProfile(profileInfo.data)
-              //본인인증여부업데이트
-              const selfAuth = await Api.self_auth_check({})
-              if (selfAuth.result == 'success') {
-                context.action.updateState({selfAuth: true})
-              } else {
-                context.action.updateState({selfAuth: false})
-              }
             }
           }
         }
+
         //###--하이브리드일때
         if (isHybrid === 'Y') {
           //alert('osName = ' + osName)
@@ -163,8 +153,6 @@ const App = () => {
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
-    //alert('받아온 customHeader = ' + JSON.stringify(customHeader))
-    //alert('받아온 isHybrid = ' + isHybrid)
 
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)

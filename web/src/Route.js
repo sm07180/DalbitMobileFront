@@ -8,6 +8,9 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 //
 import Navigator from './pages/navigator'
 import newBroadcast from 'pages/newBroadcast'
+
+import newMain from './pages/newMain'
+
 /**
  * 하이브리드 앱연동을 문제발생,lazy로딩 x
  */
@@ -39,6 +42,8 @@ const error = React.lazy(() => import('pages/common/error'))
 const NotFoundPage = React.lazy(() => import('pages/common/error'))
 //live pub
 const Live = React.lazy(() => import('pages/live'))
+//native live
+const mLive = React.lazy(() => import('pages/mlive'))
 //customer-service
 const Customer = React.lazy(() => import('pages/customer'))
 //setting
@@ -55,6 +60,7 @@ export default () => {
       }>
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/new" component={newMain} />
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
         <Route exact path="/cast" component={Cast} />
@@ -63,6 +69,7 @@ export default () => {
         <Route exact path="/user/:title" component={User} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/live" component={Live} />
+        <Route exact path="/mlive" component={mLive} />
         <Route exact path="/store" component={Store} />
         <Route exact path="/event" component={Event} />
         <Route path="/guide" component={Guide} />

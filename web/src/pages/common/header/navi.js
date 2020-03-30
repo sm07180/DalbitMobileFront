@@ -169,7 +169,17 @@ export const BroadValidation = () => {
       //     type: 'cast'
       //   })
       // }
-      fetchData()
+      async function fetchSelfAuth() {
+        const selfAuth = await Api.self_auth_check({})
+        if (selfAuth.result == 'success') {
+          fetchData()
+        } else {
+          history.push('/user/selfAuth', {
+            type: 'cast'
+          })
+        }
+      }
+      fetchSelfAuth()
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
