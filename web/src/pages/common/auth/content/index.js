@@ -375,12 +375,12 @@ export default props => {
           name="phone"
           placeholder="전화번호"
           onChange={e => {
-            const value = Utility.phoneAddHypen(event.target.value)
-            setChanges({...changes, phone: value})
+            //const value = Utility.phoneAddHypen(event.target.value)
+            setChanges({...changes, phone: event.target.value})
           }}
           value={changes.phone}
           autoFocus
-          maxLength={13}
+          maxLength={11}
         />
         <input
           type="password"
