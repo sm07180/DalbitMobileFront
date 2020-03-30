@@ -13,10 +13,10 @@ const SocketClusterClient = require('socketcluster-client')
 //socket object
 let socket = null
 
-//public subscribe object
+// //public subscribe object
 let publicChannelHandle = null
 
-//private subscribe object
+// //private subscribe object
 let privateChannelHandle = null
 
 const isServiceConfig = true
@@ -34,6 +34,7 @@ export const socketClusterDestory = (destorySocket, destoryChannel) => {
         publicChannelHandle = null
       }
     } else {
+      //if (destoryChannel) privateChannelHandle = destoryChannel
       if (privateChannelHandle != null) {
         privateChannelHandle.unsubscribe()
         privateChannelHandle.destroy()
@@ -782,6 +783,22 @@ export const socketClusterBinding = async (channel, Info) => {
   console.log('socket 유무 = ' + socket)
   // const socketState = await socket.state
   // if (socketState === 'open') {
+  var isSocketConnected = false
+  var scState = ''
+  try {
+    scState = socket.getState() || 'nothing' //connecting, open, closed
+    if (scState == 'open') {
+      isSocketConnected = true
+    }
+  } catch (e) {
+    scState = 'nothing'
+  }
+  if (!isSocketConnected) {
+    alert('socket 서버 접속이 되지 않았습니다. (접속상태:' + scState + ')')
+    return false
+  }
+  socketClusterDestory(false, channel)
+
   if (socket != null) {
     if (socket.state === 'open') {
       if (channel == '') {
@@ -809,12 +826,12 @@ export const socketClusterBinding = async (channel, Info) => {
     //socket = socketReload
     if (socket != null) {
       if (window.location.pathname !== '/') {
-        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        var privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }
     } else {
       if (Info) scConnection(Info)
       setTimeout(() => {
-        privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
+        var privateChannelHandle = socketChannelBinding(privateChannelHandle, channel)
       }, 500)
     }
   }
@@ -823,37 +840,49 @@ export const socketClusterBinding = async (channel, Info) => {
 
 export const socketChannelBinding = (channelObj, channelObjName) => {
   if (channelObj == null) {
-    socket.subscribe(channelObjName)
+    channelObj = socket.subscribe(channelObjName)
 
-    console.log(channelObjName + '채널 입장')
-    return channelObj
+    channelObj.on(socketConfig.event.channel.SUBSCRIBE /*'subscribe'*/, function(channel) {
+      //console.log('[channel:subscribe]\nchannel: ' + channel)
+      //channelLabelWrite(channelObjName, socketConfig.event.socket.SUBSCRIBE)
+    })
 
-    // setTimeout(() => {
-    //   if (res.state === 'subscribed') {
-    //     console.log(channelObjName + '채널 입장')
-    //     return channelObj
-    //   } else {
-    //     console.log('privete 채널 재시도 ')
-    //     socket.subscribe(channelObjName)
-    //   }
-    //   clearTimeout(res)
-    // }, 100)
+    ///// subscribeFail 구독(채팅방입장) 실패
+    ///// 동 이벤트는 발생후, 동일하게 socket.on(socketConfig.event.socket.SUBSCRIBEFAIL,..) 이벤트도 발생됨
+    channelObj.on(socketConfig.event.channel.SUBSCRIBEFAIL /*'subscribeFail'*/, function(err, channelName) {
+      //console.log('[channel:subscribeFail]\nchannel: ' + channelName + '\nerror: ' + err)
+      //channelLabelWrite(channelObjName, socketConfig.event.socket.SUBSCRIBEFAIL)
+    })
 
-    // if (res.state === 'subscribed') {
-    //   console.log(channelObjName + '채널 입장')
-    //   return channelObj
-    // } else {
-    //   console.log(res.state)
-    // }
-    // console.log(channelObjName + '채널 입장')
-    // return channelObj
-    //if (res.state === ) console.log(res)
-    //if (channelObjName === 'channel.public.dalbit') setSesstionStorage('isSocketCluster', {connected: true})
-    //console.log(channelObjName + '채널 입장')
-    //if (res.state === 'pending') socket.subscribe(channelObjName)
-    //return channelObj
-    //console.log('채널 입장')
+    channelObj.on(socketConfig.event.channel.DROPOUT /*'dropOut'*/, function(err, data) {
+      //console.log('[channel:dropOut]\nchannel: ' + channelObjName + '\ndata: ' + data + '\nerror: ' + err)
+      //channelLabelWrite(channelObjName, socketConfig.event.socket.DROPOUT)
+    })
+
+    ///// channel unsubscribe
+    ///// 동 이벤트는 발생후, 동일하게 socket.on(socketConfig.event.socket.UNSUBSCRIBE,..) 이벤트도 발생됨
+    channelObj.on(socketConfig.event.channel.UNSUBSCRIBE /*'unsubscribe'*/, function(data) {
+      //console.log('[channel:unsubscribe]\nchannel: ' + channelObjName + '\ndata: ' + data)
+      //channelLabelWrite(channelObjName, socketConfig.event.socket.UNSUBSCRIBE)
+    })
+
+    ///// channel subscribe 상태 변경
+    ///// 동 이벤트는 발생후, 동일하게 socket.on(socketConfig.event.socket.SUBSCRIBESTATECHANGE,..) 이벤트도 발생됨
+    channelObj.on(socketConfig.event.channel.SUBSCRIBESTATECHANGE /*'subscribeStateChange'*/, function(data) {
+      //console.log('[channel:subscribeStateChange]\nchannel: ' + channelObjName + '\ndata: ' + JSON.stringify(data))
+      //channelLabelWrite(channelObjName, socketConfig.event.socket.SUBSCRIBESTATECHANGE)
+    })
+
+    /////메세지 수신
+    channelObj.watch(function(data) {
+      try {
+        //console.log('[channel:watch]\nchannel: ' + channelObjName + '\ndata: ' + JSON.stringify(data))
+      } catch (e) {}
+
+      //writeChatMessage(channelObjName, data)
+    })
   }
+  return (privateChannelHandle = channelObj)
 }
 export const scDestory = () => {
   console.log('해제 전 소켓 상태 = ' + socket.getState())
@@ -964,6 +993,90 @@ export const sendMessageJson = function(cmd, params, msg) {
     }
   }
 }
+
+export const writeChatMessage = (channelName, data) => {
+  var st = 0
+  var userCount = 0
+  var historyCount = 0
+  //var dataUserTid = '';
+  var dataUserMno = ''
+  var dataUserId = ''
+  var dataUserNk = ''
+  var dataUserSex = ''
+  var dataUserAge = ''
+  var dataUserLevel = ''
+  var dataMsgText = ''
+  if (data.user != undefined) {
+    channelName = channelName || ''
+    dataUserMno = data.user.memNo || ''
+    dataUserId = data.user.id || ''
+    dataUserNk = data.user.nk || ''
+    dataUserSex = data.user.sex || ''
+    dataUserAge = data.user.age || ''
+    dataUserLevel = data.user.level || ''
+  }
+  if (dataUserMno != '') {
+    switch (data.cmd) {
+      case socketConfig.packet.recv.PACKET_RECV_CONNECT:
+        try {
+          dataMsgText = data.msg
+        } catch (e) {
+          dataMsgText = ''
+        }
+        userCount = data.connect.userCount || 0
+        historyCount = data.connect.historyCount || 0
+        dataMsgText = dataMsgText + ' [총접속인원] ' + userCount + ' [총누적인원] ' + historyCount
+        break
+      case socketConfig.packet.recv.PACKET_RECV_DISCONNECT:
+        try {
+          dataMsgText = data.msg
+        } catch (e) {
+          dataMsgText = ''
+        }
+        userCount = data.disconnect.userCount || 0
+        historyCount = data.disconnect.historyCount || 0
+        dataMsgText = dataMsgText + ' [총접속인원] ' + userCount + ' [총누적인원] ' + historyCount
+        break
+      case socketConfig.packet.recv.PACKET_RECV_CHAT:
+        try {
+          dataMsgText = data.msg
+        } catch (e) {
+          dataMsgText = ''
+        }
+        break
+      case socketConfig.packet.recv.PACKET_RECV_EMIT:
+        try {
+          dataMsgText = data.msg
+        } catch (e) {
+          dataMsgText = ''
+        }
+        break
+      case socketConfig.packet.recv.PACKET_RECV_CHAT_END:
+        try {
+          dataMsgText = data.msg
+        } catch (e) {
+          dataMsgText = ''
+        }
+        scocketClusterDestory(false, channelName)
+        if (dataMsgText == socketConfig.command.CHATROOM_OUT_BJ /*'bjOut'*/) {
+          dataMsgText += ' -> BJ방나감 -> 구독해제(채팅방종료)'
+        } else if (dataMsgText == socketConfig.command.CHATROOM_OUT /*'roomOut'*/) {
+          dataMsgText += ' - 방종료 -> 구독해제(채팅방종료)'
+        } else if (dataMsgText == socketConfig.command.CHATROOM_OUT_END /*'roomExpectedOut'*/) {
+          dataMsgText += ' - 방종료 -> 방송가능시간초과(서버) -> 구독해제(채팅방종료)'
+        } else if (dataMsgText == socketConfig.command.CHATROOM_OUT_END_BJ /*'roomExceptionOut'*/) {
+          dataMsgText += ' -> BJ방나감 -> BJ재접속가능시간초과(서버) -> 구독해제(채팅방종료)'
+        }
+        break
+    }
+    if (dataMsgText != '') {
+      st = parseInt($('.messages').scrollTop(), 10)
+      $('#messages-list').append($('<li>').text('[' + channelName + '] ' + dataUserNk + ' : ' + dataMsgText))
+      $('.messages').scrollTop(st + 10000)
+    }
+  }
+}
+
 export const sendMessage = {
   handle: function(handle, type, param, msg) {
     // param.memNo = $('#partnerNo').val();
@@ -1093,7 +1206,8 @@ export default props => {
     loginInfo = context
     //console.warn('소켓 처음 연결 = ' + loginInfo.isLogin ? '로그인' : '비로그인' + '회원')
     //console.log('소켓 연결 토큰 값 = ' + JSON.stringify(loginInfo))
-
+    // let publicChannelHandle = null
+    // let privateChannelHandle = null
     scConnection(loginInfo)
   }, [])
 
