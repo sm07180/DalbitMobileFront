@@ -57,9 +57,10 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
-      API.setCustomHeader(JSON.stringify(obj))
+      const stringified = JSON.stringify(obj)
+      API.setCustomHeader(stringified)
       Utility.setCookie('custom-header', '', -1)
-      Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
+      Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
     },
     /**

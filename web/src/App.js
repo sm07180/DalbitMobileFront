@@ -37,51 +37,52 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const cookie = Utility.getCookie('custom-header')
-
     if (cookie !== undefined) {
       let jsonPared = JSON.parse(cookie)
       jsonPared.appVersion = '1.0.1'
       jsonPared.locale = Utility.locale()
       return jsonPared
-    } else {
-      const tempCustomHeaderTag = document.getElementById('customHeader')
-      if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
-        let jsonPared = JSON.parse(tempCustomHeaderTag.value)
-        jsonPared.appVersion = '1.0.1'
-        jsonPared.locale = Utility.locale()
-        return jsonPared
-      }
     }
 
-    return {
-      os: '3',
-      locale: 'temp_KR',
-      deviceId: Utility.createUUID(),
-      language: Utility.locale(),
-      deviceToken: 'make_custom_header'
+    const tempCustomHeaderTag = document.getElementById('customHeader')
+    if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
+      let jsonPared = JSON.parse(tempCustomHeaderTag.value)
+      jsonParsed.nativeApp = true
+      jsonPared.appVersion = '1.0.1'
+      jsonPared.locale = Utility.locale()
+      return jsonPared
+    } else {
+      return {
+        os: '3',
+        locale: 'temp_KR',
+        deviceId: Utility.createUUID(),
+        language: Utility.locale(),
+        deviceToken: 'make_custom_header'
+      }
     }
   }, [])
 
   const authToken = useMemo(() => {
     const cookie = Utility.getCookie('authToken')
-    if (cookie === undefined) {
-      const tempAuthTokenTag = document.getElementById('authToken')
-      if (tempAuthTokenTag && tempAuthTokenTag.value) {
-        return tempAuthTokenTag.value
-      }
+    if (cookie !== undefined) {
+      return cookie
     }
-  }, [])
 
-  const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'), [customHeader])
+    const tempAuthTokenTag = document.getElementById('authToken')
+    if (tempAuthTokenTag && tempAuthTokenTag.value) {
+      return tempAuthTokenTag.value
+    }
+    return ''
+  }, [])
 
   async function fetchData() {
     const commonData = await Api.splash()
     if (commonData.result === 'success') {
       context.action.updateCommon(commonData.data)
 
+      // Renew token
       const res = await Api.getToken()
       if (res.result === 'success') {
-        console.table(res.data)
         context.action.updateToken(res.data)
 
         if (res.data.isLogin) {
@@ -93,34 +94,34 @@ const App = () => {
           }
         }
 
-        //###--하이브리드일때
-        if (isHybrid === 'Y') {
+        // *** Native App case
+        if (customHeader.nativeApp) {
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
-            //active
             Hybrid('GetLoginToken', res.data)
           } else {
-            if (res.data.authToken !== authToken) Hybrid('GetLoginToken', res.data)
+            if (res.data.authToken !== authToken) {
+              Hybrid('GetLoginToken', res.data)
+            }
           }
+
           //최초앱 기동할때만적용
           if (customHeader.isFirst === 'Y') {
             Utility.setCookie('native-player-info', '', -1)
-          }
-          if (customHeader.isFirst === 'N') {
+          } else if (customHeader.isFirst === 'N') {
             //-----@안드로이드 Cookie
             let cookie = Utility.getCookie('native-player-info')
-            if (customHeader.os + '' === '1' && cookie !== null && cookie !== undefined) {
+            if (customHeader.os === '1' && cookie !== null && cookie !== undefined) {
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)
               context.action.updateNativePlayer(cookie)
             }
             //-----@iOS
-            if (customHeader.os + '' === '2' && cookie !== null && cookie !== undefined) {
+            if (customHeader.os === '2' && cookie !== null && cookie !== undefined) {
               cookie = decodeURIComponent(cookie)
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)
               context.action.updateNativePlayer(cookie)
             }
-            //-----@
           }
         }
 
@@ -138,14 +139,10 @@ const App = () => {
   //---------------------------------------------------------------------
   //useEffect token
   useEffect(() => {
-    //#1 customHeader
-    const _customHeader = {...customHeader, isHybrid: isHybrid}
-    context.action.updateCustomHeader(_customHeader)
-    console.table(_customHeader)
-
-    //#2 authToken 토큰업데이트
+    context.action.updateCustomHeader(customHeader)
     Api.setAuthToken(authToken)
 
+    // Renew all initial data
     fetchData()
   }, [])
 
@@ -153,7 +150,7 @@ const App = () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {ready && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
+      {ready && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }
