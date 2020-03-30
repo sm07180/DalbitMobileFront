@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_rank_l_p" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_823" d="M0 0H48V48H0z" data-name="사각형 823" style="fill:none"/>
+    <g id="prefix__그룹_10757" data-name="그룹 10757" transform="translate(-266.209 -163.262)">
+        <path id="prefix__패스_4152" d="M175.153 69.128H162.2V79.65a3.985 3.985 0 0 0 2.161 3.542 3.984 3.984 0 0 1 2.161 3.542v1.554h4.309v-1.553a3.983 3.983 0 0 1 2.161-3.542 3.983 3.983 0 0 0 2.161-3.542z" class="prefix__cls-2" data-name="패스 4152" transform="translate(121.594 105.134)"/>
+        <path id="prefix__사각형_604" d="M0 0H11.189V6.948H0z" class="prefix__cls-2" data-name="사각형 604" transform="translate(284.677 193.419)"/>
+        <path id="prefix__선_96" d="M0 0L4.411 0" data-name="선 96" transform="translate(288.066 196.893)" style="fill:#fff;stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px"/>
+        <path id="prefix__사각형_605" d="M0 0h4.587v10.253A4.587 4.587 0 0 1 0 5.667V0z" class="prefix__cls-2" data-name="사각형 605" transform="translate(279.209 174.262)"/>
+        <path id="prefix__사각형_606" d="M4.587 0v10.253H0V4.587A4.587 4.587 0 0 1 4.587 0z" class="prefix__cls-2" data-name="사각형 606" transform="rotate(180 150.667 92.258)"/>
+    </g>
+</svg>
