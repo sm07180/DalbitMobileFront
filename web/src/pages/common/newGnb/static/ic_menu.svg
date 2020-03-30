@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_menu" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#757575;stroke-linecap:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_237" d="M0 0H36V36H0z" data-name="사각형 237" style="fill:none"/>
+    <path id="prefix__선_92" d="M0 0L17.778 0" class="prefix__cls-2" data-name="선 92" transform="translate(8.833 11.889)"/>
+    <path id="prefix__선_93" d="M0 0L17.778 0" class="prefix__cls-2" data-name="선 93" transform="translate(8.833 18.556)"/>
+    <path id="prefix__선_94" d="M0 0L17.778 0" class="prefix__cls-2" data-name="선 94" transform="translate(8.833 25.222)"/>
+</svg>
