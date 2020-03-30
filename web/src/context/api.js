@@ -362,7 +362,7 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
 
-  static getToken = async obj => {
+  static getToken = async () => {
     return await ajax({url: `/token`, method: 'GET'})
   }
 
