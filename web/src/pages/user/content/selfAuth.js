@@ -24,6 +24,7 @@ export default props => {
     charge: ['유료결제를 위해', '최초 결제 시'],
     cast: ['방송 개설을 위해', '최초 방송방 개설 시']
   }
+
   let authType = ''
   const [formState, setFormState] = useState({
     tr_cert: '',
@@ -36,6 +37,8 @@ export default props => {
   } else {
     authType = 'default'
   }
+
+  const url = authType == 'cast' ? '/broadcast-setting' : authType == 'charge' ? '/store' : '/'
 
   //---------------------------------------------------------------------
   //fetchData
@@ -87,7 +90,11 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const res = await Api.self_auth_req({})
+    const res = await Api.self_auth_req({
+      params: {
+        returnUrl: url
+      }
+    })
     if (res.result == 'success' && res.code == 0) {
       console.log(res)
       setFormState({
@@ -114,6 +121,7 @@ export default props => {
 
     if (event.detail.result == 'success' && event.detail.code == '0') {
       authCheck()
+      url = event.detail.url
     } else {
       //alert(JSON.stringify(event.detail, null, 1))
       context.action.alert({
@@ -142,7 +150,8 @@ export default props => {
           <br />
           <button
             onClick={() => {
-              props.history.goBack()
+              //props.history.goBack()
+              props.history.push(url)
             }}>
             완료
           </button>
