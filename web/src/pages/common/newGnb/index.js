@@ -13,7 +13,7 @@ export default props => {
   const [logoChange, setLogoChange] = useState(false)
 
   const reLoad = () => {
-    window.location.reload()
+    window.location.href = '/new'
   }
   const moveToMenu = category => {
     window.location.href = `/menu/${category}`
