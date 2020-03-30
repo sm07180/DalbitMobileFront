@@ -76,31 +76,27 @@ const App = () => {
     //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
   })
-  //SERVER->REACT (authToken)
-  const authToken = useMemo(() => {
-    //#1 id="authToken" 읽을수없는경우,고정값으로생성 @param:string
-    const element = document.getElementById('authToken')
-    if (element !== null && typeof element.value === 'string' && element.value !== '') return element.value
-    //#2 쿠키로부터 'custom-header' 설정
-    const cookie = Utility.getCookie('authToken')
-    if (cookie !== undefined && cookie !== '' && cookie !== null) return cookie
-    return ''
-  })
+
+  let authToken = Utility.getCookie('authToken')
+
   //isHybrid체크
   const isHybrid = useMemo(() => {
     return customHeader.isFirst !== undefined ? 'Y' : 'N'
-  }) //---------------------------------------------------------------------
+  })
+
   //fetch
   async function fetchData(obj) {
     // common data
     const commonData = await Api.splash()
     if (commonData.result === 'success') {
       context.action.updateCommon(commonData.data)
+
       const res = await Api.getToken()
       if (res.result === 'success') {
         console.table(res.data)
         //#1 result 성공/실패 여부상관없이,토큰없데이트
         context.action.updateToken(res.data)
+
         //#2 로그인토큰일경우 프로필업데이트
         if (res.data.isLogin) {
           if (location.href.indexOf('/private/') === -1) {
@@ -110,6 +106,7 @@ const App = () => {
             }
           }
         }
+
         //###--하이브리드일때
         if (isHybrid === 'Y') {
           //alert('osName = ' + osName)
@@ -167,32 +164,11 @@ const App = () => {
       }
     }
   }
-  // const isSocketConnect = () => {
-  //   if (getSesstionStorage('isSocketCluster') !== '' || window.location.pathname !== '/') return
-  //   // if (window.location.pathname !== '/') {
-  //   //   setSocketClusterReady(false)
-  //   // }
 
-  //   return (
-  //     <React.Fragment>
-  //       <SocketCluster />
-  //     </React.Fragment>
-  //   )
-  //   // if (getSesstionStorage('isSocketCluster') == '') {
-  //   //   setSocketClusterReady(true)
-  //   //   return <SocketCluster />
-  //   // } else {
-  //   //   setSocketClusterReady(false)
-  //   //   return ''
-  //   // }
-  // }
-  //---------------------------------------------------------------------
   //useEffect token
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
-    //alert('받아온 customHeader = ' + JSON.stringify(customHeader))
-    //alert('받아온 isHybrid = ' + isHybrid)
 
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
@@ -202,8 +178,6 @@ const App = () => {
     // 소켓은 토큰 받고 실행
 
     fetchData({data: _customHeader})
-
-    //if (window.location.pathname !== '/') setSocketClusterReady(false)
   }, [])
   //---------------------------------------------------------------------
   /**
