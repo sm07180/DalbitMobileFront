@@ -73,7 +73,7 @@ const GlobalProvider = props => {
       API.setAuthToken(authToken)
       Utility.setCookie('authToken', '', -1)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-      setToken(obj)
+      setToken({...obj})
     },
     /**
      * @brief 입장한방, 생성한방 정보업데이트

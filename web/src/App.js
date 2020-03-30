@@ -46,7 +46,7 @@ const App = () => {
     } else {
       const tempCustomHeaderTag = document.getElementById('customHeader')
       if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
-        let jsonPared = JSON.parse(cookie)
+        let jsonPared = JSON.parse(tempCustomHeaderTag.value)
         jsonPared.appVersion = '1.0.1'
         jsonPared.locale = Utility.locale()
         return jsonPared
@@ -62,7 +62,16 @@ const App = () => {
     }
   }, [])
 
-  const authToken = Utility.getCookie('authToken')
+  const authToken = useMemo(() => {
+    const cookie = Utility.getCookie('authToken')
+    if (cookie === undefined) {
+      const tempAuthTokenTag = document.getElementById('authToken')
+      if (tempAuthTokenTag && tempAuthTokenTag.value) {
+        return tempAuthTokenTag.value
+      }
+    }
+  }, [])
+
   const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'), [customHeader])
 
   async function fetchData() {
