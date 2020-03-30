@@ -45,7 +45,6 @@ export default props => {
     const res = await Api.self_auth_check({})
     if (res.result == 'success' && res.code == '1') {
       setAuthState(true)
-      context.action.updateState({selfAuth: true})
     } else {
       context.action.alert({
         msg: res.message
