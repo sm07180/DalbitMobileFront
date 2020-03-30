@@ -59,8 +59,6 @@ export const Hybrid = (func, info) => {
   //switch (osName()) {
   switch (customHeader.os) {
     case '':
-      //console.log('Windows버젼입니다')
-      //alert('Widows')
       break
     case '1':
       //alert('안드로이드 푸쉬 = ' + func + ',' + 'data = ' + info)
