@@ -4,7 +4,14 @@
  */
 import React, {useContext, useEffect} from 'react'
 
+// components
+import Gnb from '../common/newGnb'
+
 export default props => {
   useEffect(() => {}, [])
-  return <div>new main</div>
+  return (
+    <div>
+      <Gnb />
+    </div>
+  )
 }
