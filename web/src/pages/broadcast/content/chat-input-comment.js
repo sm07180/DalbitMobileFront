@@ -142,6 +142,7 @@ export default props => {
       context.action.updateBroadcastTotalInfo(null)
       mediaHandler.stop()
       timer.stopTimer() //방송 시간 멈춤
+      sc.socketClusterDestory(false, UserRoomNo)
       history.goBack()
     }
     //return res

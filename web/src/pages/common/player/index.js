@@ -11,6 +11,7 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
 import qs from 'query-string'
+const sc = require('context/socketCluster') //socketCluster
 
 export default props => {
   //---------------------------------------------------------------------
@@ -38,6 +39,7 @@ export default props => {
           if (mediaHandler.rtcPeerConn) {
             mediaHandler.stop()
           }
+          sc.socketClusterDestory(false, roomNo)
         }
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동

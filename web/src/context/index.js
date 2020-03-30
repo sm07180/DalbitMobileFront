@@ -57,9 +57,10 @@ const GlobalProvider = props => {
      * @param string deviceToken             // 디바이스토큰
      */
     updateCustomHeader: obj => {
-      API.setCustomHeader(JSON.stringify(obj))
+      const stringified = JSON.stringify(obj)
+      API.setCustomHeader(stringified)
       Utility.setCookie('custom-header', '', -1)
-      Utility.setCookie('custom-header', JSON.stringify(obj), DAY_COOKIE_PERIOD)
+      Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
       setCustomHeader(obj)
     },
     /**
@@ -73,7 +74,7 @@ const GlobalProvider = props => {
       API.setAuthToken(authToken)
       Utility.setCookie('authToken', '', -1)
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-      setToken(obj)
+      setToken({...obj})
     },
     /**
      * @brief 입장한방, 생성한방 정보업데이트

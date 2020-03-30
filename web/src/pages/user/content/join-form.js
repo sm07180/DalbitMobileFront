@@ -507,12 +507,6 @@ export default props => {
           msg: '회원가입 완료되었습니다.'
         })
 
-        // context.action.updateState(res.data) //회원정보 조회할수있게 memNo넘겼지만.. 조회안됨
-        //일단 이미지랑 닉네임 여기서 넘겨줌. 나중에 조회로 바꿀수있게 하고 지울것.
-        // context.action.updateState({
-        //   nickNm: changes.loginNickNm,
-        //   profImg: resultImg
-        // })
         //@hybrid
         if (isHybrid()) {
           //alert('앱내 회원가입완료')

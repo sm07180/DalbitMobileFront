@@ -84,7 +84,7 @@ export default () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/errors" component={error} />
         <Route exact path="/testpage" component={TestPage} />
-        {/* 페이지가없을경우 404로 이동 */}
+        {/* 페이지가 없을경우 500 error page */}
         <Route path="/error" component={NotFoundPage} />
         <Redirect to="/error" />
       </Switch>
