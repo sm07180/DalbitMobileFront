@@ -54,7 +54,7 @@ const App = () => {
     }
 
     const info = {
-      os: '1',
+      os: '3',
       locale: 'temp_KR',
       deviceId: Utility.createUUID(),
       language: Utility.locale(),
