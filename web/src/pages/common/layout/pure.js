@@ -65,8 +65,8 @@ export default Layout
 //---------------------------------------------------------------------
 const CloseButton = styled.button`
   position: absolute;
-  right: 30px;
-  top: 30px;
+  right: 8px;
+  top: 18px;
   width: 30px;
   height: 30px;
   display: inline-block;

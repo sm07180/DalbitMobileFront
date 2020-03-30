@@ -19,7 +19,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 
 const sc = require('context/socketCluster')
 //import FacebookLogin from 'pages/common/auth/fbAuth'
@@ -398,15 +398,15 @@ export default props => {
         로그인
       </LoginSubmit>
       <ButtonArea>
-        <input
+        {/* <input
           type="checkbox"
           id="keeplogin"
           defaultChecked={saveLogin}
           onClick={() => {
             props.update({saveLogin: event.target.checked, changes: changes})
           }}
-        />
-        <label htmlFor="keeplogin">로그인 유지</label>
+        /> */}
+        {/* <label htmlFor="keeplogin">로그인 유지</label> */}
         <div>
           <button
             onClick={() => {
@@ -493,18 +493,26 @@ const Logo = styled.div`
   padding: 0 0 50px 0;
   text-align: center;
 `
-const LoginWrap = styled.div``
+const LoginWrap = styled.div`
+  @media (max-width: ${WIDTH_MOBILE}) {
+  }
+`
 
 const LoginInput = styled.div`
   input {
     width: 100%;
     border: 1px solid #e5e5e5;
     font-size: 16px;
-    line-height: 56px;
+    line-height: 54px;
     text-indent: 18px;
   }
   input + input {
     margin-top: 14px;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    input + input {
+      margin-top: 12px;
+    }
   }
 `
 const LoginSubmit = styled.button`
@@ -515,6 +523,10 @@ const LoginSubmit = styled.button`
   font-size: 20px;
   font-weight: bold;
   line-height: 64px;
+  @media (max-width: ${WIDTH_MOBILE}) {
+    margin-top: 12px;
+    line-height: 56px;
+  }
 `
 
 const ButtonArea = styled.div`
@@ -528,8 +540,10 @@ const ButtonArea = styled.div`
   }
   div {
     float: right;
+    line-height: 24px;
     button {
       color: ${COLOR_MAIN};
+      letter-spacing: -0.4px;
     }
     button + button::before {
       display: inline-block;
@@ -552,6 +566,12 @@ const ButtonArea = styled.div`
     background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
     &:checked {
       background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+    }
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    label {
+      padding-left: 0;
+      letter-spacing: -0.5px;
     }
   }
 `
