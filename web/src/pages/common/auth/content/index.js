@@ -398,15 +398,15 @@ export default props => {
         로그인
       </LoginSubmit>
       <ButtonArea>
-        <input
+        {/* <input
           type="checkbox"
           id="keeplogin"
           defaultChecked={saveLogin}
           onClick={() => {
             props.update({saveLogin: event.target.checked, changes: changes})
           }}
-        />
-        <label htmlFor="keeplogin">로그인 유지</label>
+        /> */}
+        {/* <label htmlFor="keeplogin">로그인 유지</label> */}
         <div>
           <button
             onClick={() => {

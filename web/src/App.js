@@ -65,7 +65,7 @@ const App = () => {
     return makeCustomHeader()
   }, [])
 
-  let authToken = Utility.getCookie('authToken')
+  const authToken = Utility.getCookie('authToken')
   const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'))
 
   async function fetchData() {
