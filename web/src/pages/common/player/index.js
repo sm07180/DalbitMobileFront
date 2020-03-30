@@ -37,11 +37,12 @@ export default props => {
           context.action.updateMediaPlayerStatus(false)
         } else {
           const beforeRoomNo = localStorage.getItem(currentRoomNo)
-          if (beforeRoomNo) {
-            if (mediaHandler.rtcPeerConn) {
-              mediaHandler.stop()
-            }
+          console.log('beforeRoomNo = ' + beforeRoomNo)
 
+          if (mediaHandler.rtcPeerConn) {
+            mediaHandler.stop()
+          }
+          if (beforeRoomNo) {
             ;(async () => {
               const res = await Api.broad_exit({data: {beforeRoomNo}})
               if (res.result === 'success') {
