@@ -35,7 +35,7 @@ export default props => {
 
       if (data) {
         if (isHybrid()) {
-          alert('hybrid')
+          //alert('hybrid')
 
           Hybrid('RoomJoin', data)
           setReadyRoom(false)
@@ -44,7 +44,7 @@ export default props => {
             props.history.goBack()
           }
         } else {
-          alert('no hybrid')
+          //alert('no hybrid')
           ctx.action.updateBroadcastTotalInfo(data)
 
           setReadyRoom(true)
@@ -55,7 +55,7 @@ export default props => {
       //참여 성공(0) ,회원 아닐시(-1),해당방 미존재(-2),종료된 방송(-3),이미 참여(-4),입장 제한(-5),나이 제한(-6)
       if (code !== '-1') {
         if (code === '-4') {
-          alert('code = ' + code)
+          //alert('code = ' + code)
           if (isHybrid()) {
             //alert('EnterRoom')
             setReadyRoom(false)
