@@ -351,6 +351,18 @@ export default class API {
     return await ajax({...obj, url: url || `/broad/check`, method: method || 'GET', params: params})
   }
   //--------------------------------------------------------------------- 회원 관련
+
+  /**
+   * @brief 마이페이지 리포트 방송내역 조회
+   * @method "GET""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.03.30
+   */
+  static report_broad = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/report/broad`, method: method || 'GET', params: params})
+  }
   /**
    * @brief 토큰조회
    * @method "GET"

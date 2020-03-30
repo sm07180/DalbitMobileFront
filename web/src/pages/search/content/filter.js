@@ -29,6 +29,7 @@ export default props => {
   //온체이지 글자
   const [query, setQuery] = useState('')
   //초기 qs검색 api호출및 필터 벨류 저장
+  const [record, setRecord] = useState(6)
   //---------------------------------------------------------------------
 
   const roomTypes = {
@@ -57,38 +58,34 @@ export default props => {
       params: {
         search: filter || qs,
         page: 1,
-        records: 10
+        records: record
       }
     })
     if (res.result === 'success') {
-      if (res.data) {
+      if (res.data && res.message !== '검색 결과 없습니다.') {
         setPosts(res.data.list)
-        console.log(res.data.list)
+        //console.log(res)
         setShow(true)
-      }
-      if (res.message === '검색 결과 없습니다.') {
-        setShow(false)
       }
     }
     const resMember = await Api.member_search({
       params: {
         search: filter || qs,
         page: 1,
-        records: 10
+        records: record
       }
     })
     if (resMember.result === 'success') {
-      if (resMember.data) {
+      if (resMember.data && resMember.message !== '검색 결과 없습니다.') {
         setPostsM(resMember.data.list)
-        console.log(resMember.data.list.memNo)
         setShow(true)
-      }
-      if (resMember.message === '검색 결과 없습니다.') {
-        setShow(false)
       }
     }
 
     if (resMember.result === 'fail' && res.result === 'fail') {
+      setShow(false)
+    }
+    if (res.data && res.message === '검색 결과 없습니다.' && resMember.data && resMember.message === '검색 결과 없습니다.') {
       setShow(false)
     }
   }
