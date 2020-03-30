@@ -38,14 +38,13 @@ const App = () => {
   const customHeader = useMemo(() => {
     //# 쿠키로부터 'custom-header' 설정
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
-      let temp = JSON.parse(cookie)
-      temp.appVersion = '1.0.1'
-      temp.locale = Utility.locale()
-      return temp
+    if (cookie !== undefined) {
+      let jsonPared = JSON.parse(cookie)
+      jsonPared.appVersion = '1.0.1'
+      jsonPared.locale = Utility.locale()
+      return jsonPared
     }
 
-    //# 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     const makeCustomHeader = () => {
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
@@ -64,10 +63,9 @@ const App = () => {
       return info
     }
     return makeCustomHeader()
-  })
+  }, [])
 
   let authToken = Utility.getCookie('authToken')
-
   const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'))
 
   async function fetchData() {
