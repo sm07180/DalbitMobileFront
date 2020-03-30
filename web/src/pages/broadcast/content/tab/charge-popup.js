@@ -359,9 +359,6 @@ const Info = styled.div`
 
     color: #616161;
     font-size: 14px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.43;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
