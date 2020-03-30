@@ -11,6 +11,8 @@ import Gnb from '../common/newGnb'
 
 // static
 import Mic from './static/ic_mike.svg'
+import PlayIcon from './static/ic_play.svg'
+import PlusIcon from './static/ic_circle_plus.svg'
 
 export default props => {
   useEffect(() => {}, [])
@@ -36,9 +38,50 @@ export default props => {
           </div>
         </div>
       </SubMain>
+
+      <Content>
+        <div className="section"></div>
+        <div className="section">
+          <div className="title-wrap">
+            <div className="title">
+              <div className="txt">실시간 LIVE</div>
+              <img className="icon live" src={PlayIcon} />
+            </div>
+            <img className="plus-icon" src={PlusIcon} />
+          </div>
+        </div>
+      </Content>
     </MainWrap>
   )
 }
+
+const Content = styled.div`
+  .section {
+    margin-top: 22px;
+    padding: 0 16px;
+
+    .title-wrap {
+      display: flex;
+      flex-direction: row;
+
+      .title {
+        .txt {
+          color: #424242;
+          font-size: 18px;
+          font-weight: bold;
+          letter-spacing: -0.36px;
+        }
+        .icon {
+          &.live {
+            display: block;
+            width: 16px;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+`
 
 const SubMain = styled.div`
   height: 310px;
