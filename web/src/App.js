@@ -53,14 +53,13 @@ const App = () => {
       }
     }
 
-    const info = {
+    return {
       os: '3',
       locale: 'temp_KR',
       deviceId: Utility.createUUID(),
       language: Utility.locale(),
       deviceToken: 'make_custom_header'
     }
-    return info
   }, [])
 
   const authToken = Utility.getCookie('authToken')
