@@ -72,14 +72,18 @@ export default props => {
   }
 
   function chargeClick() {
-    if (context.token.isLogin) {
-      context.action.updatePopup('CHARGE', {
-        name: selected.name,
-        price: selected.price
-      })
-    } else {
-      context.action.updatePopup('LOGIN')
-    }
+    // if (context.token.isLogin) {
+    //   context.action.updatePopup('CHARGE', {
+    //     name: selected.name,
+    //     price: selected.price
+    //   })
+    // } else {
+    //   context.action.updatePopup('LOGIN')
+    // }
+    context.action.updatePopup('CHARGE', {
+      name: selected.name,
+      price: selected.price
+    })
   }
 
   //useEffect
