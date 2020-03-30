@@ -14,7 +14,8 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
-import {osName, isAndroid, isIOS, isIPad13, isIPhone13, isTablet} from 'react-device-detect'
+import {osName, isAndroid, isIPad13} from 'react-device-detect'
+
 //components
 import Api from 'context/api'
 //context
@@ -28,17 +29,22 @@ import Interface from './Interface'
 import SocketCluster from 'context/socketCluster'
 
 const App = () => {
-  //---------------------------------------------------------------------
-  //context
   const context = useContext(Context)
   App.context = () => context
+
   //useState
   const [ready, setReady] = useState(false)
-  //const [socketClusterReady, setSocketClusterReady] = useState(false)
 
-  //SERVER->REACT (커스텀헤더)
   const customHeader = useMemo(() => {
-    //makeCustomHeader
+    //# 쿠키로부터 'custom-header' 설정
+    const cookie = Utility.getCookie('custom-header')
+    if (cookie !== undefined) {
+      let jsonPared = JSON.parse(cookie)
+      jsonPared.appVersion = '1.0.1'
+      jsonPared.locale = Utility.locale()
+      return jsonPared
+    }
+
     const makeCustomHeader = () => {
       //#3-1 하이브리드앱이 아닌 모바일웹 or PC 접속
       let _os = '3'
@@ -56,34 +62,13 @@ const App = () => {
       }
       return info
     }
-    //---------------------------------------------
-    //#1 서버에서 id="customHeader" 값을 넘겨받는다. @param:object
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) return JSON.parse(element.value)
-
-    //#2 쿠키로부터 'custom-header' 설정
-    const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined && cookie !== 'null' && typeof JSON.parse(cookie) === 'object') {
-      let temp = JSON.parse(cookie)
-      temp.appVersion = '1.0.1'
-
-      temp.locale = Utility.locale()
-      return temp
-    }
-    //#3 서버에서 내려주는 id="customHeader" 읽을수없는경우,고정값으로생성
     return makeCustomHeader()
-  })
+  }, [])
 
-  let authToken = Utility.getCookie('authToken')
+  const authToken = Utility.getCookie('authToken')
+  const isHybrid = useMemo(() => (customHeader.isFirst !== undefined ? 'Y' : 'N'))
 
-  //isHybrid체크
-  const isHybrid = useMemo(() => {
-    return customHeader.isFirst !== undefined ? 'Y' : 'N'
-  })
-
-  //fetch
-  async function fetchData(obj) {
-    // common data
+  async function fetchData() {
     const commonData = await Api.splash()
     if (commonData.result === 'success') {
       context.action.updateCommon(commonData.data)
@@ -91,10 +76,8 @@ const App = () => {
       const res = await Api.getToken()
       if (res.result === 'success') {
         console.table(res.data)
-        //#1 result 성공/실패 여부상관없이,토큰없데이트
         context.action.updateToken(res.data)
 
-        //#2 로그인토큰일경우 프로필업데이트
         if (res.data.isLogin) {
           if (location.href.indexOf('/private/') === -1) {
             const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
@@ -106,7 +89,6 @@ const App = () => {
 
         //###--하이브리드일때
         if (isHybrid === 'Y') {
-          //alert('osName = ' + osName)
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
             //active
             Hybrid('GetLoginToken', res.data)
@@ -120,14 +102,12 @@ const App = () => {
           if (customHeader.isFirst === 'N') {
             //-----@안드로이드 Cookie
             let cookie = Utility.getCookie('native-player-info')
-            //if (osName === customHeader.os==='1' && cookie !== null && cookie !== undefined) {
             if (customHeader.os + '' === '1' && cookie !== null && cookie !== undefined) {
               cookie = JSON.parse(cookie)
               context.action.updateMediaPlayerStatus(true)
               context.action.updateNativePlayer(cookie)
             }
             //-----@iOS
-            //if (osName === 'iOS' && cookie !== null && cookie !== undefined) {
             if (customHeader.os + '' === '2' && cookie !== null && cookie !== undefined) {
               cookie = decodeURIComponent(cookie)
               cookie = JSON.parse(cookie)
@@ -137,6 +117,7 @@ const App = () => {
             //-----@
           }
         }
+
         //모든처리완료
         setReady(true)
       } else {
@@ -153,30 +134,25 @@ const App = () => {
   useEffect(() => {
     //#1 customHeader
     const _customHeader = {...customHeader, isHybrid: isHybrid}
-
     context.action.updateCustomHeader(_customHeader)
     console.table(_customHeader)
 
     //#2 authToken 토큰업데이트
     Api.setAuthToken(authToken)
-    // 소켓은 토큰 받고 실행
-    fetchData({data: _customHeader})
+
+    fetchData()
   }, [])
-  //---------------------------------------------------------------------
-  /**
-   * @brief 정보체크이후 최종완료된 상태에서 Interface,Route진행
-   */
+
   return (
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {/* {socketClusterReady && window.location.pathname === '/' && <SocketCluster />} */}
       {ready && isHybrid === 'N' && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }
 export default App
-//---------------------------------------------------------------------
+
 /**
  * @title 글로벌변수
  * @example const context=useContext(Context) 와 동일

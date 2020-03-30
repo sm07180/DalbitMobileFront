@@ -39,35 +39,6 @@ export default class Utility {
     const c_value = value + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
     document.cookie = c_name + '=' + c_value + ';path=/;Secure;Domain=dalbitlive.com'
   }
-  /**
-   * @brief 쿠키가져오기
-   * @param string    c_name            //*쿠키의 key(키)
-   * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
-   *
-   */
-  static getCookie = c_name => {
-    let i, x, y
-    let ARRcookies = document.cookie.split(';')
-    for (i = 0; i < ARRcookies.length; i++) {
-      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='))
-      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
-      x = x.replace(/^\s+|\s+$/g, '')
-      if (x == c_name) {
-        return y
-      }
-    }
-  }
-  /**
-   * @brief 쿠키 삭제
-   * @param string    c_name            //*쿠키의 key(키)
-   * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
-   *
-   */
-  static removeCookie = c_name => {
-    console.log('removeCookie = ' + c_name)
-    //Utility.setCookie(c_name, '', -1)
-    document.removeCookie()
-  }
 
   /**
    * @brief 쿠키가져오기
@@ -76,17 +47,16 @@ export default class Utility {
    *
    */
   static getCookie = c_name => {
-    let i, x, y
-    let ARRcookies = document.cookie.split(';')
-    for (i = 0; i < ARRcookies.length; i++) {
-      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='))
-      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1)
-      x = x.replace(/^\s+|\s+$/g, '')
-      if (x == c_name) {
-        return unescape(y)
-      }
-    }
+    const splited = document.cookie.split('; ')
+    const cookies = {}
+    splited.forEach(bundle => {
+      const [key, value] = bundle.split('=')
+      cookies[key] = value
+    })
+
+    return cookies[c_name]
   }
+
   //* make UUID
   static createUUID = () => {
     var dt = new Date().getTime()

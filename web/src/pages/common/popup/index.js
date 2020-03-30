@@ -61,7 +61,7 @@ export default props => {
 
   useEffect(() => {
     if (context.popup_code[0] == 'TERMS') {
-      setLayout('round')
+      setLayout('round terms')
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
     } else {
@@ -104,6 +104,10 @@ const Container = styled.div`
   & .logo {
     margin-top: 0;
   }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding: 0;
+  }
 `
 const Wrap = styled.div`
   position: relative;
@@ -111,8 +115,9 @@ const Wrap = styled.div`
   padding: 50px 40px;
   background: #fff;
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 90%;
-    padding: 40px 5%;
+    width: 100%;
+    height: 100%;
+    padding: 60px 5%;
   }
 
   &.round {
@@ -130,7 +135,16 @@ const Wrap = styled.div`
       max-height: 90%;
       padding: 0;
       height: auto;
-      @media (max-width: ${WIDTH_MOBILE_S}) {
+    }
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      &.charge {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+      }
+      &.terms {
         width: 90%;
       }
     }
@@ -146,6 +160,34 @@ const Wrap = styled.div`
     background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
     text-indent: -9999px;
     cursor: pointer;
+  }
+  @media (max-width: ${WIDTH_MOBILE}) {
+    &.charge,
+    &.square {
+      & > button {
+        top: 18px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        z-index: 10;
+        &:before,
+        &:after {
+          position: absolute;
+          top: 0;
+          left: 15px;
+          content: ' ';
+          height: 30px;
+          width: 1px;
+          background-color: #959595;
+        }
+        &:before {
+          transform: rotate(45deg);
+        }
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+    }
   }
 `
 const Background = styled.div`
