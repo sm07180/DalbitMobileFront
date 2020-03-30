@@ -12,20 +12,20 @@ export default props => {
   const reLoad = () => {
     window.location.reload()
   }
-  const moveToMenu = () => {
-    window.location.href = '/menu/nav'
+  const moveToMenu = category => {
+    window.location.href = `/menu/${category}`
   }
 
   return (
     <GnbWrap>
       <div className="icon-wrap">
-        <img className="icon" src={Search} />
-        <img className="icon" src={Alarm} />
+        <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+        <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
       </div>
       <img className="logo" src={Logo} onClick={reLoad} />
       <div className="icon-wrap">
-        <img className="icon" src={My} />
-        <img className="icon" src={Menu} onClick={moveToMenu} />
+        <img className="icon" src={My} onClick={() => moveToMenu('profile')} />
+        <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} />
       </div>
     </GnbWrap>
   )
