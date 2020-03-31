@@ -42,8 +42,8 @@ const headTagIndex = strFinalTemplate.indexOf('<head>')
 const headTagLength = '<head>'.length
 const splitedFront = strFinalTemplate.slice(0, headTagIndex + headTagLength)
 const splitedBack = strFinalTemplate.slice(headTagIndex + headTagLength)
-
-strFinalTemplate = splitedFront + defaultIPChekcer + splitedBack
+const docType = '<!DOCTYPE html>'
+strFinalTemplate = docType + splitedFront + defaultIPChekcer + splitedBack
 
 fs.writeFileSync('./dist/layout.jsp', defaultJSPInitString)
 fs.appendFileSync('./dist/layout.jsp', strFinalTemplate)
