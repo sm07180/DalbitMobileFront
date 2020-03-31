@@ -12,7 +12,6 @@ import {Context} from 'context'
 import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
-import TopScrollBtn from './component/top_scroll_btn.js'
 
 // static
 import Mic from './static/ic_mike.svg'
@@ -104,7 +103,6 @@ export default props => {
           </div>
         </div>
       </Content>
-      <TopScrollBtn />
     </MainWrap>
   )
 }
