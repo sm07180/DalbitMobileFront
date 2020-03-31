@@ -41,6 +41,8 @@ const App = () => {
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
       jsonParsed.nativeApp = true
+      //백엔드요청
+      jsonParsed.isHybrid = 'Y'
       jsonParsed.appVersion = '1.0.1'
       jsonParsed.locale = Utility.locale()
       return jsonParsed
@@ -56,6 +58,7 @@ const App = () => {
       return {
         os: '3',
         locale: 'temp_KR',
+        isHybrid: 'N',
         deviceId: Utility.createUUID(),
         language: Utility.locale(),
         deviceToken: 'make_custom_header'
