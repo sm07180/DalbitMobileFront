@@ -15,6 +15,8 @@ function usePrevious(value) {
 }
 
 export default props => {
+  const {list} = props
+
   return list.map((list, idx) => {
     const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
 
