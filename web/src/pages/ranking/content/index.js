@@ -18,6 +18,7 @@ import Figure from './Figure'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['전일', '주간', '월간']
+let currentPage = 1
 
 export default props => {
   //---------------------------------------------------------------------
@@ -28,6 +29,8 @@ export default props => {
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(1)
   const [list, setList] = useState(false)
+  const [nextList, setNextList] = useState(false)
+  const [moreState, setMoreState] = useState(false)
 
   //---------------------------------------------------------------------
   //map
@@ -38,6 +41,7 @@ export default props => {
           key={index}
           className={rankType == item ? 'on' : 'off'}
           onClick={() => {
+            currentPage = 1
             setRankType(item)
             fetch(item, dateType)
           }}>
@@ -54,6 +58,7 @@ export default props => {
           key={index}
           className={dateType == index ? 'on' : 'off'}
           onClick={() => {
+            currentPage = 1
             setDateType(index)
             fetch(rankType, index)
           }}>
@@ -80,13 +85,14 @@ export default props => {
   }
   //---------------------------------------------------------------------
   //fetch
-  async function fetch(type, dateType) {
+  async function fetch(type, dateType, next) {
     let res = ''
+    currentPage = next ? ++currentPage : currentPage
     if (type == 'dj') {
       res = await Api.get_dj_ranking({
         params: {
           rankType: dateType,
-          page: 1,
+          page: currentPage,
           records: 10
         }
       })
@@ -94,17 +100,24 @@ export default props => {
       res = await Api.get_fan_ranking({
         params: {
           rankType: dateType,
-          page: 1,
+          page: currentPage,
           records: 10
         }
       })
     }
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
+      //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
       if (res.data.list == false) {
-        //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
-        setList(false)
+        if (!next) setList(false)
+        setMoreState(false)
       } else {
-        setList(res.data.list)
+        if (next) {
+          setMoreState(true)
+          setNextList(res.data.list)
+        } else {
+          setList(res.data.list)
+          fetch(type, dateType, 'next')
+        }
       }
     } else {
       context.action.alert({
@@ -113,9 +126,17 @@ export default props => {
     }
   }
 
+  const showMoreList = () => {
+    setList(list.concat(nextList))
+    fetch(rankType, dateType, 'next')
+  }
+
   //---------------------------------------------------------------------
   useEffect(() => {
     fetch(rankType, dateType)
+    return () => {
+      currentPage = 1
+    }
   }, [])
 
   //---------------------------------------------------------------------
@@ -133,6 +154,15 @@ export default props => {
         <NoResult>
           <span>조회된 결과가 없습니다.</span>
         </NoResult>
+      )}
+      {moreState && (
+        <button
+          className="more-btn"
+          onClick={() => {
+            showMoreList()
+          }}>
+          더보기
+        </button>
       )}
     </Contents>
   )
@@ -239,6 +269,31 @@ const Contents = styled.div`
         white-space: nowrap;
         transform: skew(-0.03deg);
       }
+    }
+  }
+
+  .more-btn {
+    display: block;
+    position: relative;
+    width: 113px;
+    margin: 40px auto;
+    padding-right: 28px;
+    border: 1px solid #e0e0e0;
+    border-radius: 46px;
+    color: #616161;
+    font-size: 14px;
+    line-height: 46px;
+    &:after {
+      display: block;
+      position: absolute;
+      right: 24px;
+      top: 11px;
+      width: 12px;
+      height: 12px;
+      border-left: 2px solid ${COLOR_MAIN};
+      border-top: 2px solid ${COLOR_MAIN};
+      transform: rotate(-135deg);
+      content: '';
     }
   }
 

@@ -382,6 +382,28 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/mypage/report/listen`, method: method || 'GET', params: params})
   }
+  /**
+   * @brief 마이페이지 팬보드 목록 조회
+   * @method "GET""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.03.31
+   */
+  static mypage_fanboard_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board`, method: method || 'GET', params: params})
+  }
+  /**
+   * @brief 마이페이지 팬보드 댓글 등록
+   * @method "POST""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.03.31
+   */
+  static mypage_fanboard_upload = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', params: data})
+  }
 
   /**
    * @brief 토큰조회

@@ -62,7 +62,6 @@ export default props => {
   const [showingpage, setShowingpage] = useState(false)
   const [broadtotal, setbroadtotal] = useState([])
   const [listentotal, setlistentotal] = useState([])
-
   //api
   async function fetchData() {
     const res = await Api.report_broad({

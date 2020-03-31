@@ -46,7 +46,7 @@ export default props => {
                 Store().action.updateCurrentPage(1)
                 Store().action.updateSearchType(_val)
               }}>
-              <option value="-1">전체</option>
+              <option value="-1">전체1</option>
               <option value="1">추천</option>
               <option value="2">인기</option>
               <option value="3">신입</option>
@@ -136,31 +136,31 @@ const Content = styled.div`
   section {
     position: relative;
     display: block;
-    height: 40px;
+    padding: 10px 0;
     border-radius: 20px;
+    line-height: 17px;
     background-color: #f5f5f5;
     .reload {
       display: inline-block;
+      margin-left: 10px;
       color: #bdbdbd;
       font-size: 14px;
-      i {
-        display: inline-block;
-        padding: 10px;
-      }
     }
     .in_wrap {
       position: absolute;
       top: 50%;
       right: 0%;
       transform: translateY(-50%);
+      select {
+        display: inline-block;
+        padding: 10px;
+      }
     }
     .wrapper {
       display: inline-block;
-      margin-right: 10px;
-      > * {
+      i {
         display: inline-block;
-        padding-right: 5px;
-        text-align: middle;
+        padding: 10px 0;
       }
     }
     select {
