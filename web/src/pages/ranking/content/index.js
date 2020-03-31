@@ -316,7 +316,7 @@ const Contents = styled.div`
       }
     }
     .my-rank {
-      padding: 15px 0;
+      padding: 15px 5px;
       h3 {
         flex-basis: 42px;
         height: 65px;
