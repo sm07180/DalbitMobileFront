@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -13,13 +13,40 @@ import Gnb from '../common/newGnb'
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
+import TopScrollIcon from './static/ic_circle_top.svg'
+
+import Api from 'context/api'
+
+// components
+import LiveList from './component/livelist.js'
 
 export default props => {
-  useEffect(() => {}, [])
+  const [liveList, setLiveList] = useState([])
+  const [topBtnStatus, setTopBtnStatus] = useState(false)
+
+  const handleTopBtnStatus = status => {
+    setTopBtnStatus(status)
+  }
+
+  const scrollToTop = () => {
+    if (topBtnStatus && window.scrollY) {
+      window.scrollTo(0, 0)
+    }
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      const response = await Api.broad_list()
+      if (response.result === 'success') {
+        const {list} = response.data
+        setLiveList(list)
+      }
+    })()
+  }, [])
 
   return (
     <MainWrap>
-      <Gnb />
+      <Gnb handleTopBtnStatus={handleTopBtnStatus} />
       <SubMain>
         <div className="gnb">
           <div className="left-side">
@@ -46,7 +73,9 @@ export default props => {
               <div className="txt">디제이 랭킹</div>
               <div className="txt">팬 랭킹</div>
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/ranking">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
           </div>
         </div>
         <div className="section">
@@ -55,13 +84,33 @@ export default props => {
               <div className="txt">실시간 LIVE</div>
               <img className="icon live" src={PlayIcon} />
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/mlive">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
+          </div>
+
+          <div className="content-wrap">
+            <LiveList list={liveList} />
           </div>
         </div>
       </Content>
+      <TopScrollBtn onClick={scrollToTop} topBtnStatus={topBtnStatus} />
     </MainWrap>
   )
 }
+
+const TopScrollBtn = styled.button`
+  display: ${props => (props.topBtnStatus ? 'block' : 'none')};
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url(${TopScrollIcon});
+`
 
 const Content = styled.div`
   .section {
@@ -92,6 +141,9 @@ const Content = styled.div`
           }
         }
       }
+    }
+
+    .content-wrap {
     }
   }
 `

@@ -20,11 +20,14 @@ export default props => {
   }
   const scrollEvent = () => {
     const gnbHeight = 48
+    const {handleTopBtnStatus} = props
 
     if (!logoChange && window.scrollY >= gnbHeight) {
       setLogoChange(true)
+      handleTopBtnStatus(true)
     } else if (logoChange && window.scrollY < gnbHeight) {
       setLogoChange(false)
+      handleTopBtnStatus(false)
     }
   }
 

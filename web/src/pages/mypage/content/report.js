@@ -60,6 +60,9 @@ export default props => {
   const [broadData, setBroadData] = useState([])
   const [listenData, setListenData] = useState([])
   const [showingpage, setShowingpage] = useState(false)
+  const [broadtotal, setbroadtotal] = useState([])
+  const [listentotal, setlistentotal] = useState([])
+
   //api
   async function fetchData() {
     const res = await Api.report_broad({
@@ -73,8 +76,12 @@ export default props => {
     })
     if (res.result === 'success') {
       setBroadData(res.data.list)
+      setbroadtotal(res.data)
       if (res.message !== '방송내역 없습니다.' && res.data.list.length > 9) {
         setBtnTrue(true)
+      }
+      if (res.message === '방송내역 없습니다.') {
+        setbroadtotal([])
       }
       console.log(res)
     } else if (res.result === 'fail') {
@@ -93,9 +100,13 @@ export default props => {
       }
     })
     if (res.result === 'success') {
+      setlistentotal(res.data)
       setListenData(res.data.list)
-      if (res.message !== '방송내역 없습니다.' && res.data.list.length > 9) {
+      if (res.message !== '청취내역 없습니다.' && res.data.list.length > 9) {
         setBtnTrue(true)
+      }
+      if (res.message === '청취내역 없습니다.') {
+        setlistentotal([])
       }
       console.log(res)
     } else if (res.result === 'fail') {
@@ -174,12 +185,53 @@ export default props => {
       ...firstSetting
     })
   }, [])
+
+  useEffect(() => {
+    setBtnTrue(false)
+    setBroadData([])
+    setListenData([])
+    setlistentotal([])
+    setbroadtotal([])
+  }, [active])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setActive(0)
+    }, 10)
+  }, [])
   //----------------------------
   // 셀렉트 타입
   const setType = value => {
     setSelectType(value)
     setBtnTrue(false)
+    setActive(0)
   }
+  //date format
+  const dateFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} `
+  }
+
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${time} `
+  }
+  const timeFormatSumurry = strFormatFromServer => {
+    let time = strFormatFromServer.slice(0, 5)
+    time = [time.slice(0, 1), time.slice(1, 3), time.slice(3)].join(':')
+    return `${time} `
+  }
+
+  function numberFormat(inputNumber) {
+    return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
   return (
     <Report>
       <TitleWrap style={{paddingBottom: '25px'}}>
@@ -249,18 +301,35 @@ export default props => {
               <ShortSection key={index}>
                 <div>
                   <div>{broadInfo[section][1]}</div>
-                  <div className="count">0</div>
+                  <div className="count">
+                    {broadInfo[section][1] === '방송' &&
+                      broadtotal.length !== 0 &&
+                      timeFormatSumurry(String(broadtotal.broadcastTime))}
+                    {broadInfo[section][1] === '받은별' &&
+                      broadtotal.length !== 0 &&
+                      numberFormat(String(broadtotal.byeolTotCnt))}
+                    {broadInfo[section][1] === '좋아요' && broadtotal.length !== 0 && numberFormat(String(broadtotal.goodTotCnt))}
+                    {broadInfo[section][1] === '청취자' &&
+                      broadtotal.length !== 0 &&
+                      numberFormat(String(broadtotal.listenerTotCnt))}
+                  </div>
                 </div>
               </ShortSection>
             )
           })}
         {selectType === 1 &&
           Object.keys(listenInfo).map((section, index) => {
+            const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
             return (
               <ShortSection key={index}>
                 <div>
                   <div>{listenInfo[section][1]}</div>
-                  <div className="count">0</div>
+                  <div className="count">
+                    {listenInfo[section][1] === '청취' && listentotal.length !== 0 && timeFormatSumurry(String(listeningTime))}
+                    {listenInfo[section][1] === '달 선물' && listentotal.length !== 0 && numberFormat(String(giftDalTotCnt))}
+                    {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
+                    {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
+                  </div>
                 </div>
               </ShortSection>
             )
@@ -272,36 +341,31 @@ export default props => {
       </TitleWrap>
 
       <DetailTable>
-        {/* <DetailTableNav>
-          {detialTabList.map((text, index) => {
-            return <DetailTableTab key={index}>{text}</DetailTableTab>
-          })}
-        </DetailTableNav> */}
         <div>
           {selectType === 0 &&
             broadData.map((value, idx) => {
               return (
                 <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
                   <div>
-                    <span>방송일자</span> <span>{value.broadDt}</span>
+                    <span>방송일자</span> <span>{dateFormat(value.broadDt)}</span>
                   </div>
                   <div>
                     <span>방송시작 </span>
-                    <span>{value.startDt}</span>
+                    <span>{timeFormat(value.startDt)}</span>
                   </div>
                   <div>
                     <span> 방송종료 </span>
-                    <span>{value.endDt}</span>
+                    <span>{timeFormat(value.endDt)}</span>
                   </div>
                   <div>
                     <span>받은별 </span>
-                    <span>{value.byeolCnt}</span>
+                    <span>{numberFormat(value.byeolCnt)}</span>
                   </div>
                   <div>
-                    <span> 좋아요</span> <span>{value.likes}</span>
+                    <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
                   </div>
                   <div>
-                    <span> 최다 청취자</span> <span>{value.listenerCnt}</span>
+                    <span>최다 청취자</span> <span>{numberFormat(value.listenerCnt)}</span>
                   </div>
                   <div>
                     <span>방송 최고 순위</span>
@@ -316,30 +380,27 @@ export default props => {
               return (
                 <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
                   <div>
-                    <span>청취시간</span> <span>{value.listenDt}</span>
+                    <span>청취시작</span> <span>{timeFormat(value.listenDt)}</span>
                   </div>
                   <div>
                     <span>청취종료</span>
-                    <span>{value.endDt}</span>
+                    <span>{timeFormat(value.endDt)}</span>
                   </div>
                   <div>
-                    <span>방송방 (DJ)</span>
-                    <span>{value.bjNickNm}</span>
+                    <span>방송방(DJ)</span>
+                    <span style={{color: '#8556f6'}}>{value.bjNickNm}</span>
                   </div>
                   <div>
-                    <span>선물내역 </span>
-                    <span>{value.giftDalCnt}</span>
+                    <span>선물내역(달)</span>
+                    <span>{numberFormat(value.giftDalCnt)}</span>
                   </div>
                   <div>
-                    <span>받은 내역</span> <span>{value.byeolCnt}</span>
+                    <span>받은내역(별)</span>
+                    <span>{numberFormat(value.byeolCnt)}</span>
                   </div>
                   <div>
-                    <span>게스트</span> <span>{value.isGuest}</span>
+                    <span>게스트</span> <span>{value.isGuest === false ? '-' : value.isGuest}</span>
                   </div>
-                  {/* <div>
-                    <span>방송 최고 순위</span>
-                    <span>{value.rank}</span>
-                  </div> */}
                 </MobileDetailTab>
               )
             })}
@@ -367,7 +428,13 @@ const MobileDetailTab = styled.div`
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
     & span {
-      width: 50%;
+      :nth-child(1) {
+        width: 90px;
+        margin-right: 30px;
+      }
+      :nth-child(2) {
+        width: calc(100% - 120px);
+      }
     }
   }
   &.disable {
