@@ -15,13 +15,20 @@ import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 import HeartIcon from './static/ic_heart_s_g.svg'
 import HeadphoneIcon from './static/ic_headphones_s.svg'
+import TopScrollIcon from './static/ic_circle_top.svg'
 
 import Api from 'context/api'
 
 import {broadcastLive} from 'constant/broadcast.js'
+import {isPipelineTopicExpression} from '@babel/types'
 
 export default props => {
   const [liveList, setLiveList] = useState([])
+  const [topBtnStatus, setTopBtnStatus] = useState(false)
+
+  const handleTopBtnStatus = status => {
+    setTopBtnStatus(status)
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -35,7 +42,7 @@ export default props => {
 
   return (
     <MainWrap>
-      <Gnb />
+      <Gnb handleTopBtnStatus={handleTopBtnStatus} />
       <SubMain>
         <div className="gnb">
           <div className="left-side">
@@ -106,9 +113,22 @@ export default props => {
           </div>
         </div>
       </Content>
+      {topBtnStatus && <TopScrollBtn />}
     </MainWrap>
   )
 }
+
+const TopScrollBtn = styled.button`
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url(${TopScrollIcon});
+`
 
 const LiveList = styled.div`
   display: flex;
