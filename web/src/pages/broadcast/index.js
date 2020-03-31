@@ -14,14 +14,14 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {BroadCastStore} from './store'
-import {appendToMemberExpression} from 'C:/Users/USER/AppData/Local/Microsoft/TypeScript/3.6/node_modules/@babel/types/lib'
+import * as timer from 'pages/broadcast/content/tab/timer'
 
 const sc = require('context/socketCluster') //socketCluster
 
 export default props => {
   const ctx = useContext(Context)
   const store = useContext(BroadCastStore)
-
+  const {mediaHandler} = ctx
   //---------------------------------------------------------------------
   const [readyRoom, setReadyRoom] = useState(false)
   const {roomNo} = qs.parse(location.search) //라우터로 들어올때 방번호
@@ -44,6 +44,10 @@ export default props => {
         const {code, result, data, message} = resExitRoom
         if (result === 'success') {
           localStorage.clear()
+          sc.socketClusterDestory(false, beforeRoomNo)
+          context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+          context.action.updateBroadcastTotalInfo(null)
+          mediaHandler.stop()
 
           const resRoomJoin = await Api.broad_join(obj) //방입장
           const {code, result, data, message} = resRoomJoin
