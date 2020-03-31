@@ -38,7 +38,7 @@ export default props => {
 
   async function playercloseExitRoom() {
     const beforeRoomNo = localStorage.getItem('currentRoomNo')
-    if (beforeRoomNo != '' && beforeRoomNo !== undefined) {
+    if (beforeRoomNo != '' || beforeRoomNo != null) {
       const res = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
       if (res.result === 'success') {
         sc.socketClusterDestory(false, beforeRoomNo)
