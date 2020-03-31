@@ -6,193 +6,110 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
+import {Context} from 'context'
+
 // components
+import Layout from 'pages/common/layout/new_index.js'
 import Gnb from '../common/newGnb'
+import Recommend from './component/recommend.js'
+import LiveList from './component/livelist.js'
 
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
-import HeartIcon from './static/ic_heart_s_g.svg'
-import HeadphoneIcon from './static/ic_headphones_s.svg'
-import TopScrollIcon from './static/ic_circle_top.svg'
 
 import Api from 'context/api'
 
-import {broadcastLive} from 'constant/broadcast.js'
-import {isPipelineTopicExpression} from '@babel/types'
-
 export default props => {
+  const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
-  const [topBtnStatus, setTopBtnStatus] = useState(false)
-
-  const handleTopBtnStatus = status => {
-    setTopBtnStatus(status)
-  }
+  const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
     ;(async () => {
-      const response = await Api.broad_list()
-      if (response.result === 'success') {
-        const {list} = response.data
+      const initData = await Api.main_init_data()
+      if (initData.result === 'success') {
+        const {djRank, fanRank, recommend, myStar} = initData.data
+        setInitData({
+          recommend,
+          djRank,
+          fanRank,
+          myStar
+        })
+      }
+    })()
+    ;(async () => {
+      const broadcastList = await Api.broad_list()
+      if (broadcastList.result === 'success') {
+        const {list} = broadcastList.data
         setLiveList(list)
       }
     })()
   }, [])
 
   return (
-    <MainWrap>
-      <Gnb handleTopBtnStatus={handleTopBtnStatus} />
-      <SubMain>
-        <div className="gnb">
-          <div className="left-side">
-            <div className="tab">
-              <Link to={'/mlive'}>라이브</Link>
+    <Layout {...props}>
+      <MainWrap>
+        <Gnb />
+        <SubMain>
+          <div className="gnb">
+            <div className="left-side">
+              <div className="tab">
+                <Link to={'/mlive'}>라이브</Link>
+              </div>
+              <div className="tab">
+                <Link to={'/ranking'}>랭킹</Link>
+              </div>
+              <div className="tab">
+                <Link to={'/store'}>스토어</Link>
+              </div>
             </div>
-            <div className="tab">
-              <Link to={'/ranking'}>랭킹</Link>
-            </div>
-            <div className="tab">
-              <Link to={'/store'}>스토어</Link>
+            <div className="right-side">
+              <div className="btn">방송하기</div>
             </div>
           </div>
-          <div className="right-side">
-            <div className="btn">방송하기</div>
-          </div>
-        </div>
-      </SubMain>
+          <Recommend list={initData.recommend} />
+        </SubMain>
 
-      <Content>
-        <div className="section">
-          <div className="title-wrap">
-            <div className="title">
-              <div className="txt">디제이 랭킹</div>
-              <div className="txt">팬 랭킹</div>
+        <Content>
+          <div className="section">
+            <div className="title-wrap">
+              <div className="title">
+                <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
+                  디제이 랭킹
+                </div>
+                <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
+                  팬 랭킹
+                </div>
+              </div>
+              <Link to="/ranking">
+                <img className="plus-icon" src={PlusIcon} />
+              </Link>
             </div>
-            <Link to="/ranking">
-              <img className="plus-icon" src={PlusIcon} />
-            </Link>
+
+            <div className="content-wrap"></div>
           </div>
-        </div>
-        <div className="section">
-          <div className="title-wrap">
-            <div className="title">
-              <div className="txt">실시간 LIVE</div>
-              <img className="icon live" src={PlayIcon} />
+          <div className="section">
+            <div className="title-wrap">
+              <div className="title">
+                <div className="txt">실시간 LIVE</div>
+                <img className="icon live" src={PlayIcon} />
+              </div>
+              <Link to="/mlive">
+                <img className="plus-icon" src={PlusIcon} />
+              </Link>
             </div>
-            <Link to="/mlive">
-              <img className="plus-icon" src={PlusIcon} />
-            </Link>
-          </div>
 
-          <div className="content-wrap">
-            {liveList.map((list, idx) => {
-              const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
-
-              return (
-                <LiveList key={`live-${idx}`} bgImg={bgImg['thumb150x150']}>
-                  <div className="broadcast-img" />
-                  <div className="broadcast-content">
-                    <div className="title">{title}</div>
-                    <div className="nickname">{bjNickNm}</div>
-                    <div className="detail">
-                      <div className="broadcast-type">{broadcastLive[roomType]}</div>
-                      <div className="value">
-                        <img src={HeartIcon} />
-                        <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
-                      </div>
-                      <div className="value">
-                        <img src={HeadphoneIcon} />
-                        <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
-                </LiveList>
-              )
-            })}
+            <div className="content-wrap">
+              <LiveList list={liveList} />
+            </div>
           </div>
-        </div>
-      </Content>
-      {topBtnStatus && <TopScrollBtn />}
-    </MainWrap>
+        </Content>
+      </MainWrap>
+    </Layout>
   )
 }
-
-const TopScrollBtn = styled.button`
-  position: fixed;
-  bottom: 30px;
-  right: 10px;
-  width: 36px;
-  height: 36px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-image: url(${TopScrollIcon});
-`
-
-const LiveList = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 10px 0;
-
-  .broadcast-img {
-    width: 72px;
-    height: 72px;
-    border-radius: 26px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-image: url(${props => props.bgImg});
-    background-color: #eee;
-  }
-
-  .broadcast-content {
-    margin-left: 16px;
-
-    & > div {
-      margin: 5px 0;
-    }
-
-    .title {
-      color: #424242;
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: -0.35px;
-    }
-    .nickname {
-      color: #757575;
-      font-size: 12px;
-      letter-spacing: -0.3px;
-    }
-    .detail {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .broadcast-type {
-        color: #8556f6;
-        font-size: 11px;
-        letter-spacing: -0.28px;
-        margin-right: 10px;
-      }
-      .value {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        margin-left: 6px;
-        color: #bdbdbd;
-        font-size: 11px;
-        letter-spacing: -0.28px;
-
-        img {
-          display: block;
-          margin-right: 2px;
-        }
-      }
-    }
-  }
-`
 
 const Content = styled.div`
   .section {
@@ -214,6 +131,14 @@ const Content = styled.div`
           font-size: 18px;
           font-weight: bold;
           letter-spacing: -0.36px;
+
+          &.in-active {
+            color: #bdbdbd;
+          }
+
+          &:nth-child(2) {
+            margin-left: 10px;
+          }
         }
         .icon {
           &.live {
@@ -223,9 +148,6 @@ const Content = styled.div`
           }
         }
       }
-    }
-
-    .content-wrap {
     }
   }
 `

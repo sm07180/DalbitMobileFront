@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_refresh" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#bdbdbd;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <path id="prefix__사각형_318" d="M0 0H18V18H0z" data-name="사각형 318" style="fill:transparent;opacity:.39;isolation:isolate"/>
+    <g id="prefix__그룹_174" data-name="그룹 174" transform="translate(-81.745 -526.687)">
+        <g id="prefix__그룹_172" data-name="그룹 172">
+            <path id="prefix__선_78" d="M0.121 2.487L0 0" class="prefix__cls-2" data-name="선 78" transform="translate(94.577 530.438)"/>
+            <path id="prefix__선_79" d="M2.487 0L0 0.121" class="prefix__cls-2" data-name="선 79" transform="translate(94.573 530.319)"/>
+            <path id="prefix__패스_476" d="M89.315 542.028a6.5 6.5 0 0 0 5.261-11.589" class="prefix__cls-2" data-name="패스 476"/>
+        </g>
+        <g id="prefix__그룹_173" data-name="그룹 173">
+            <path id="prefix__선_80" d="M0 0L0.121 2.487" class="prefix__cls-2" data-name="선 80" transform="translate(86.794 538.45)"/>
+            <path id="prefix__선_81" d="M0 0.121L2.487 0" class="prefix__cls-2" data-name="선 81" transform="translate(84.431 540.935)"/>
+            <path id="prefix__패스_477" d="M92.176 529.346a6.5 6.5 0 0 0-5.261 11.59" class="prefix__cls-2" data-name="패스 477"/>
+        </g>
+    </g>
+</svg>

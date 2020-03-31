@@ -17,11 +17,14 @@ import List from './live-list'
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //useState
+  const [clicked, setClicked] = useState(false)
   //interface
   LiveIndex.context = context
   //-----------------------------------------------------------
   // 방송방 리스트 조회
   const getBroadList = async mode => {
+    console.log('--')
     const obj = {
       params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
@@ -29,7 +32,6 @@ const LiveIndex = () => {
     if (res.result === 'success') {
       //APPEND
       if (mode !== undefined && mode.type === 'append' && _.hasIn(Store().broadList, 'list')) {
-        console.log(res.data)
         const result = {paging: {...res.data.paging}, list: [...Store().broadList.list, ...res.data.list]}
         Store().action.updateBroadList(result)
       } else {
@@ -69,7 +71,7 @@ const LiveIndex = () => {
   //
   useEffect(() => {
     getBroadList()
-  }, [Store().searchType, Store().roomType])
+  }, [Store().searchType, Store().roomType, Store().reload])
   //---------------------------------------------------------------------
   return <Content>{makeContents()}</Content>
 }
@@ -88,16 +90,12 @@ export const RoomJoin = roomNo => {
         msg: res.message
       })
     } else if (res.result === 'success') {
-      console.log(res)
       //성공일때
-      Hybrid('RoomJoin', res.data)
+      const {data} = res
+      Hybrid('RoomJoin', data)
     }
   }
   fetchData()
 }
 //---------------------------------------------------------------------
-const Content = styled.div`
-  display: block;
-  margin-top: 16px;
-  border-top: 1px solid ${COLOR_MAIN};
-`
+const Content = styled.div``

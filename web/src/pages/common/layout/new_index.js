@@ -8,7 +8,7 @@ import Gnb from 'pages/common/newGnb'
 import Player from 'pages/common/player'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
-
+import TopScrollBtn from 'pages/newMain/component/top_scroll_btn.js'
 const Layout = props => {
   const {children} = props
   //---------------------------------------------------------------------
@@ -16,6 +16,8 @@ const Layout = props => {
     <React.Fragment>
       {/* GNB */}
       <Gnb />
+      {/* 탑버튼 */}
+      <TopScrollBtn />
       <article>{children}</article>
       {/* (방송방)Player */}
       {/* <Player {...props} /> */}

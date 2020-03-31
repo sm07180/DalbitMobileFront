@@ -10,47 +10,160 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import _ from 'lodash'
 
 //component
 import RankList from './rankList'
 import Figure from './Figure'
 
-//
+const rankArray = ['dj', 'fan']
+const dateArray = ['전일', '주간', '월간']
+let currentPage = 1
+
 export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-  /**
-   *
-   * @returns
-   */
+
+  //state
+  const [rankType, setRankType] = useState('dj')
+  const [dateType, setDateType] = useState(1)
+  const [list, setList] = useState(false)
+  const [nextList, setNextList] = useState(false)
+  const [moreState, setMoreState] = useState(false)
+
+  //---------------------------------------------------------------------
+  //map
+  const createRankButton = () => {
+    return rankArray.map((item, index) => {
+      return (
+        <button
+          key={index}
+          className={rankType == item ? 'on' : 'off'}
+          onClick={() => {
+            currentPage = 1
+            setRankType(item)
+            fetch(item, dateType)
+          }}>
+          {item == 'dj' ? '달D랭킹' : '팬랭킹'}
+        </button>
+      )
+    })
+  }
+  const createDateButton = () => {
+    return dateArray.map((item, index) => {
+      ++index
+      return (
+        <button
+          key={index}
+          className={dateType == index ? 'on' : 'off'}
+          onClick={() => {
+            currentPage = 1
+            setDateType(index)
+            fetch(rankType, index)
+          }}>
+          {item}
+        </button>
+      )
+    })
+  }
+
+  const creatMyRank = () => {
+    const {profImg, level, nickNm, memNo} = context.profile
+    return (
+      <div className="my-rank">
+        <h3>
+          <span>100</span>
+        </h3>
+        <Figure url={profImg.url} memNo={memNo} />
+        <div>
+          <strong>Lv {level}</strong>
+          <p>{nickNm}</p>
+        </div>
+      </div>
+    )
+  }
+  //---------------------------------------------------------------------
+  //fetch
+  async function fetch(type, dateType, next) {
+    let res = ''
+    currentPage = next ? ++currentPage : currentPage
+    if (type == 'dj') {
+      res = await Api.get_dj_ranking({
+        params: {
+          rankType: dateType,
+          page: currentPage,
+          records: 10
+        }
+      })
+    } else if (type == 'fan') {
+      res = await Api.get_fan_ranking({
+        params: {
+          rankType: dateType,
+          page: currentPage,
+          records: 10
+        }
+      })
+    }
+    if (res.result === 'success' && _.hasIn(res, 'data.list')) {
+      //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
+      if (res.data.list == false) {
+        if (!next) setList(false)
+        setMoreState(false)
+      } else {
+        if (next) {
+          setMoreState(true)
+          setNextList(res.data.list)
+        } else {
+          setList(res.data.list)
+          fetch(type, dateType, 'next')
+        }
+      }
+    } else {
+      context.action.alert({
+        msg: res.massage
+      })
+    }
+  }
+
+  const showMoreList = () => {
+    setList(list.concat(nextList))
+    fetch(rankType, dateType, 'next')
+  }
+
+  //---------------------------------------------------------------------
+  useEffect(() => {
+    fetch(rankType, dateType)
+    return () => {
+      currentPage = 1
+    }
+  }, [])
 
   //---------------------------------------------------------------------
   return (
     <Contents>
       <h2>랭킹</h2>
       <div className="filter">
-        <div className="rank-type">
-          <button>달D랭킹</button>
-          <button>팬랭킹</button>
-        </div>
-        <div className="date-type">
-          <button>전일</button>
-          <button>주간</button>
-          <button>월간</button>
-        </div>
+        <div className="rank-type">{createRankButton()}</div>
+        <div className="date-type">{createDateButton()}</div>
       </div>
-      <div className="my-rank">
-        <h3>
-          <span>100</span>
-        </h3>
-        <Figure url="https://www.mbcsportsplus.com/data/board/attach/2019/09/20190922103929_fklrgnkf.jpg" />
-        <div>
-          <strong>Lv 300</strong>
-          <p>트와이스 😎 feel special</p>
-        </div>
-      </div>
-      <RankList />
+      {context.profile && creatMyRank()}
+      {list ? (
+        <RankList list={list} />
+      ) : (
+        <NoResult>
+          <span>조회된 결과가 없습니다.</span>
+        </NoResult>
+      )}
+      {moreState && (
+        <button
+          className="more-btn"
+          onClick={() => {
+            showMoreList()
+          }}>
+          더보기
+        </button>
+      )}
     </Contents>
   )
 }
@@ -67,6 +180,42 @@ const Contents = styled.div`
     font-weight: 600;
     color: ${COLOR_MAIN};
     text-align: center;
+  }
+
+  /* 상단 filter 버튼들 */
+  .filter {
+    display: flex;
+    justify-content: space-between;
+    & > div {
+      button {
+        line-height: 40px;
+      }
+      &.rank-type button {
+        color: #bdbdbd;
+        font-size: 20px;
+        &.on {
+          color: #424242;
+          font-weight: 800;
+        }
+      }
+      &.rank-type button + button {
+        margin-left: 15px;
+      }
+      &.date-type button {
+        width: 68px;
+        border: 1px solid #e5e5e5;
+        border-radius: 40px;
+        color: #757575;
+
+        &.on {
+          border-color: ${COLOR_MAIN};
+          color: ${COLOR_MAIN};
+        }
+      }
+      &.date-type button + button {
+        margin-left: 6px;
+      }
+    }
   }
 
   /* 내 랭킹 */
@@ -99,6 +248,53 @@ const Contents = styled.div`
         z-index: -1;
       }
     }
+
+    div {
+      overflow: hidden;
+      width: calc(100% - 200px);
+      padding: 15px 0 13px 0;
+      strong {
+        display: inline-block;
+        color: ${COLOR_MAIN};
+        font-size: 16px;
+        font-weight: 800;
+        transform: skew(-0.03deg);
+      }
+      p {
+        overflow: hidden;
+        width: 100%;
+        margin-top: 10px;
+        line-height: 24px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transform: skew(-0.03deg);
+      }
+    }
+  }
+
+  .more-btn {
+    display: block;
+    position: relative;
+    width: 113px;
+    margin: 40px auto;
+    padding-right: 28px;
+    border: 1px solid #e0e0e0;
+    border-radius: 46px;
+    color: #616161;
+    font-size: 14px;
+    line-height: 46px;
+    &:after {
+      display: block;
+      position: absolute;
+      right: 24px;
+      top: 11px;
+      width: 12px;
+      height: 12px;
+      border-left: 2px solid ${COLOR_MAIN};
+      border-top: 2px solid ${COLOR_MAIN};
+      transform: rotate(-135deg);
+      content: '';
+    }
   }
 
   @media (max-width: 1260px) {
@@ -109,6 +305,76 @@ const Contents = styled.div`
     h2 {
       padding-bottom: 26px;
       font-size: 24px;
+    }
+    .filter {
+      & > div {
+        button {
+          line-height: 30px;
+        }
+        &.rank-type button {
+          font-size: 16px;
+        }
+        &.date-type button {
+          width: 48px;
+          font-size: 14px;
+        }
+      }
+    }
+    .my-rank {
+      padding: 15px 0;
+      h3 {
+        flex-basis: 42px;
+        height: 65px;
+        line-height: 65px;
+        background-size: 30px !important;
+        span {
+          width: 24px;
+          line-height: 24px;
+          font-size: 10px;
+        }
+      }
+
+      div {
+        width: calc(100% - 125px);
+        padding: 11px 0 9px 0;
+        strong {
+          font-size: 14px;
+        }
+        p {
+          margin-top: 2px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+`
+
+const NoResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100% !important;
+  margin-top:60px;
+  padding-top:230px;
+  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center top;
+
+  & > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 282px;
+    height: 26px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+    color: #616161;
+    margin-top: 30px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 18px;
+      margin-top: 20px;
     }
   }
 `
