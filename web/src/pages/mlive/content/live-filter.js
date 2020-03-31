@@ -34,10 +34,10 @@ export default props => {
           새로고침
         </button>
         <div className="in_wrap">
-          <i>
-            <img src={Arrow} />
-          </i>
           <span className="wrapper">
+            <i>
+              <img src={Arrow} />
+            </i>
             <select
               className="search"
               name="searchType"
@@ -46,7 +46,7 @@ export default props => {
                 Store().action.updateCurrentPage(1)
                 Store().action.updateSearchType(_val)
               }}>
-              <option value="-1">전체3</option>
+              <option value="-1">전체</option>
               <option value="1">추천</option>
               <option value="2">인기</option>
               <option value="3">신입</option>
@@ -82,36 +82,6 @@ export default props => {
           </span>
         </div>
       </section>
-      <div className="in_wrap">
-        {/* 추천/인기/신입 */}
-        {/* <select>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
-        <section className="type1">
-          <SelectBox
-            inlineStyling={{zIndex: '1', backgrond: '#fff'}}
-            boxList={searchType}
-            onChangeEvent={value => {
-              Store().action.updateCurrentPage(1)
-              Store().action.updateSearchType(value)
-            }}
-          />
-        </section> */}
-        {/* 일상/챗 */}
-        {/* <section className="type2">
-          <SelectBox
-            inlineStyling={{zIndex: '1', backgrond: '#fff'}}
-            boxList={roomType}
-            onChangeEvent={value => {
-              Store().action.updateCurrentPage(1)
-              Store().action.updateRoomType(value)
-            }}
-          />
-        </section> */}
-      </div>
     </Content>
   )
 }
@@ -149,15 +119,14 @@ const Content = styled.div`
     .in_wrap {
       position: absolute;
       top: 50%;
-      right: 0%;
-      transform: translateY(-50%);
+      right: 0;
+      transform: translatey(-50%);
       select {
         display: inline-block;
         padding: 10px;
       }
     }
     .wrapper {
-      display: inline-block;
       i {
         display: inline-block;
         padding: 10px 0;
