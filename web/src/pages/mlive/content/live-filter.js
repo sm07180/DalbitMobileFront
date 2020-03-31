@@ -136,8 +136,9 @@ const Content = styled.div`
   section {
     position: relative;
     display: block;
-    height: 40px;
+    padding: 1px 0;
     border-radius: 20px;
+    line-height: 17px;
     background-color: #f5f5f5;
     .reload {
       display: inline-block;
