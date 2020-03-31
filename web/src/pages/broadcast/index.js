@@ -44,9 +44,9 @@ export default props => {
         const {code, result, data, message} = resExitRoom
         if (result === 'success') {
           localStorage.clear()
-          sc.socketClusterDestory(false, beforeRoomNo)
-          context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
-          context.action.updateBroadcastTotalInfo(null)
+          //sc.socketClusterDestory(false, beforeRoomNo)
+          // context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+          // context.action.updateBroadcastTotalInfo(null)
           mediaHandler.stop()
 
           const resRoomJoin = await Api.broad_join(obj) //방입장
