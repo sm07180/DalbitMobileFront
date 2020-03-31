@@ -6,8 +6,12 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
+import {Context} from 'context'
+
 // components
 import Gnb from '../common/newGnb'
+import Recommend from './component/recommend.js'
+import LiveList from './component/livelist.js'
 
 // static
 import Mic from './static/ic_mike.svg'
@@ -17,22 +21,16 @@ import TopScrollIcon from './static/ic_circle_top.svg'
 
 import Api from 'context/api'
 
-// components
-import Recommend from './component/recommend.js'
-import LiveList from './component/livelist.js'
-
 export default props => {
+  const globalCtx = useContext(Context)
+  const {logoChange} = globalCtx
+
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
-  const [topBtnStatus, setTopBtnStatus] = useState(false)
-
-  const handleTopBtnStatus = status => {
-    setTopBtnStatus(status)
-  }
 
   const scrollToTop = () => {
-    if (topBtnStatus && window.scrollY) {
+    if (logoChange && window.scrollY) {
       window.scrollTo(0, 0)
     }
   }
@@ -60,7 +58,7 @@ export default props => {
 
   return (
     <MainWrap>
-      <Gnb handleTopBtnStatus={handleTopBtnStatus} />
+      <Gnb />
       <SubMain>
         <div className="gnb">
           <div className="left-side">
@@ -115,13 +113,13 @@ export default props => {
           </div>
         </div>
       </Content>
-      <TopScrollBtn onClick={scrollToTop} topBtnStatus={topBtnStatus} />
+      <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} />
     </MainWrap>
   )
 }
 
 const TopScrollBtn = styled.button`
-  display: ${props => (props.topBtnStatus ? 'block' : 'none')};
+  display: ${props => (props.logoChange ? 'block' : 'none')};
   position: fixed;
   bottom: 30px;
   right: 10px;
