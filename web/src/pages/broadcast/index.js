@@ -38,8 +38,7 @@ export default props => {
       localStorage.setItem('BroadTotalInfo', TotalInfo)
       if (data) {
         if (isHybrid()) {
-          alert('hybrid')
-          alert('data = ' + data)
+          alert('hybrid = ' + data)
           Hybrid('RoomJoin', data)
           setReadyRoom(false)
           if (window.location.pathname !== '/') {

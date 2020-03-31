@@ -44,10 +44,8 @@ export const isHybrid = () => {
     // } else {
     //   alert('custom noting ')
     // }
-    alert('isHybrid = true')
     return true
   }
-  alert('isHybrid = false')
   return false
 }
 /**
@@ -58,7 +56,6 @@ export const isHybrid = () => {
  */
 export const Hybrid = (func, info) => {
   const customHeader = JSON.parse(Api.customHeader)
-  alert('customHeader.os = ' + customHeader.os)
   if (!isHybrid()) return
   //switch (osName()) {
   switch (customHeader.os) {
