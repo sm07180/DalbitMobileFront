@@ -57,13 +57,14 @@ export default props => {
         if (code === '-4') {
           //alert('code = ' + code)
           if (isHybrid()) {
-            //alert('EnterRoom')
             setReadyRoom(false)
-            //Hybrid('EnterRoom', '')
-            //   //props.history.goBack()
+            ctx.action.alert({
+              callback: () => {
+                props.history.goBack()
+              },
+              msg: message
+            })
           } else {
-            //   alert('asdasdasdasd')
-            //   context.action.updateReloadType(3)
             setReadyRoom(true)
             props.history.push('/broadcast/' + '?roomNo=' + roomNo)
           }
