@@ -70,6 +70,8 @@ const LiveIndex = () => {
   }
   //---------------------------------------------------------------------
   useEffect(() => {
+    //현재페이지가 1이면 append하지않음
+    if (Store().currentPage === 1) return
     getBroadList({type: 'append'})
   }, [Store().currentPage])
   //
