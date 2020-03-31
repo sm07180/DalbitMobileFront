@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import Utility from 'components/lib/utility'
 import qs from 'query-string'
 const sc = require('context/socketCluster') //socketCluster
+import Api from 'context/api'
 // etc
 
 // image
