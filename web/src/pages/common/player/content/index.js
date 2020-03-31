@@ -46,6 +46,8 @@ export default props => {
         alert('exit sucess')
         sc.socketClusterDestory(false, beforeRoomNo)
         localStorage.clear()
+      } else {
+        alert('fail')
       }
     }
   }
