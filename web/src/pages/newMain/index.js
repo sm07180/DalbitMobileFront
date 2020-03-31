@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 // components
+import Layout from 'pages/common/layout/new_index.js'
 import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
@@ -47,63 +48,65 @@ export default props => {
   }, [])
 
   return (
-    <MainWrap>
-      <Gnb />
-      <SubMain>
-        <div className="gnb">
-          <div className="left-side">
-            <div className="tab">
-              <Link to={'/mlive'}>라이브</Link>
-            </div>
-            <div className="tab">
-              <Link to={'/ranking'}>랭킹</Link>
-            </div>
-            <div className="tab">
-              <Link to={'/store'}>스토어</Link>
-            </div>
-          </div>
-          <div className="right-side">
-            <div className="btn">방송하기</div>
-          </div>
-        </div>
-        <Recommend list={initData.recommend} />
-      </SubMain>
-
-      <Content>
-        <div className="section">
-          <div className="title-wrap">
-            <div className="title">
-              <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
-                디제이 랭킹
+    <Layout {...props}>
+      <MainWrap>
+        <Gnb />
+        <SubMain>
+          <div className="gnb">
+            <div className="left-side">
+              <div className="tab">
+                <Link to={'/mlive'}>라이브</Link>
               </div>
-              <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
-                팬 랭킹
+              <div className="tab">
+                <Link to={'/ranking'}>랭킹</Link>
+              </div>
+              <div className="tab">
+                <Link to={'/store'}>스토어</Link>
               </div>
             </div>
-            <Link to="/ranking">
-              <img className="plus-icon" src={PlusIcon} />
-            </Link>
-          </div>
-
-          <div className="content-wrap"></div>
-        </div>
-        <div className="section">
-          <div className="title-wrap">
-            <div className="title">
-              <div className="txt">실시간 LIVE</div>
-              <img className="icon live" src={PlayIcon} />
+            <div className="right-side">
+              <div className="btn">방송하기</div>
             </div>
-            <Link to="/mlive">
-              <img className="plus-icon" src={PlusIcon} />
-            </Link>
           </div>
+          <Recommend list={initData.recommend} />
+        </SubMain>
 
-          <div className="content-wrap">
-            <LiveList list={liveList} />
+        <Content>
+          <div className="section">
+            <div className="title-wrap">
+              <div className="title">
+                <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
+                  디제이 랭킹
+                </div>
+                <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
+                  팬 랭킹
+                </div>
+              </div>
+              <Link to="/ranking">
+                <img className="plus-icon" src={PlusIcon} />
+              </Link>
+            </div>
+
+            <div className="content-wrap"></div>
           </div>
-        </div>
-      </Content>
-    </MainWrap>
+          <div className="section">
+            <div className="title-wrap">
+              <div className="title">
+                <div className="txt">실시간 LIVE</div>
+                <img className="icon live" src={PlayIcon} />
+              </div>
+              <Link to="/mlive">
+                <img className="plus-icon" src={PlusIcon} />
+              </Link>
+            </div>
+
+            <div className="content-wrap">
+              <LiveList list={liveList} />
+            </div>
+          </div>
+        </Content>
+      </MainWrap>
+    </Layout>
   )
 }
 
