@@ -10,7 +10,7 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import {Store} from './index'
-import {COLOR_MAIN} from 'context/color'
+import NoResult from 'components/ui/noResult'
 //components
 import List from './live-list'
 //
@@ -57,10 +57,15 @@ const LiveIndex = () => {
   //makeContents
   const makeContents = () => {
     if (Store().broadList === null) return
+    let result
     const {list, paging} = Store().broadList
-    const result = list.map((list, idx) => {
-      return <List key={idx} data={list} update={update} />
-    })
+    if (list.length === 0) {
+      return <NoResult />
+    } else {
+      result = list.map((list, idx) => {
+        return <List key={idx} data={list} update={update} />
+      })
+    }
     return [result]
   }
   //---------------------------------------------------------------------

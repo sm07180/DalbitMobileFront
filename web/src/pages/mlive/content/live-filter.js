@@ -34,7 +34,7 @@ export default props => {
           새로고침
         </button>
         <div className="in_wrap">
-          <span className="wrapper">
+          <span className="wrapper ">
             <i>
               <img src={Arrow} />
             </i>
@@ -143,6 +143,9 @@ const Content = styled.div`
       line-height: 1.14;
       letter-spacing: -0.35px;
       background: transparent;
+      &.search {
+        margin-right: 10px;
+      }
     }
   }
 `
