@@ -85,18 +85,16 @@ export default props => {
     if (beforeRoomNo != null) {
       const resExitRoom = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
       const {code, result, data, message} = resExitRoom
-      if (result === 'success') {
-        joinRoom(obj)
-      } else {
-        ctx.action.alert({
-          callback: () => {},
-          msg: message
-        })
-      }
-    } else {
-      joinRoom(obj)
+      // if (result === 'success') {
+      //joinRoom(obj)
+      // } else {
+      //   ctx.action.alert({
+      //     callback: () => {},
+      //     msg: message
+      //   })
+      // }
     }
-
+    joinRoom(obj)
     //이전 방을 Exit 하지 않고 방송방을 진입하려고 할때 이전 룸 정보를 체크 해야 한다.
     // alert('beforeRoomNo = ' + beforeRoomNo)
     // if (beforeRoomNo !== '' || beforeRoomNo !== null) {
