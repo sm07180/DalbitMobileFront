@@ -12,6 +12,7 @@ import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import Utility from 'components/lib/utility'
 import qs from 'query-string'
+const sc = require('context/socketCluster') //socketCluster
 // etc
 
 // image
@@ -34,6 +35,17 @@ export default props => {
     title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨',
     auth: 0
   })
+
+  async function playercloseExitRoom() {
+    const beforeRoomNo = localStorage.getItem('currentRoomNo')
+    if (beforeRoomNo != '' && beforeRoomNo !== undefined) {
+      const res = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
+      if (res.result === 'success') {
+        sc.socketClusterDestory(false, beforeRoomNo)
+        localStorage.clear()
+      }
+    }
+  }
   //---------------------------------------------------------------------
   const makeCloseBtn = () => {
     if (info.auth === 3) return
@@ -41,6 +53,7 @@ export default props => {
       <button
         className="close"
         onClick={() => {
+          playercloseExitRoom()
           props.update({playerClose: true})
         }}>
         닫기
