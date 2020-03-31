@@ -24,7 +24,6 @@ const LiveIndex = () => {
   //-----------------------------------------------------------
   // 방송방 리스트 조회
   const getBroadList = async mode => {
-    console.log('--')
     const obj = {
       params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }

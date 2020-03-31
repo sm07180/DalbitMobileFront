@@ -34,10 +34,10 @@ export default props => {
           새로고침
         </button>
         <div className="in_wrap">
+          <i>
+            <img src={Arrow} />
+          </i>
           <span className="wrapper">
-            <i>
-              <img src={Arrow} />
-            </i>
             <select
               className="search"
               name="searchType"
@@ -46,7 +46,7 @@ export default props => {
                 Store().action.updateCurrentPage(1)
                 Store().action.updateSearchType(_val)
               }}>
-              <option value="-1">전체1</option>
+              <option value="-1">전체3</option>
               <option value="1">추천</option>
               <option value="2">인기</option>
               <option value="3">신입</option>
