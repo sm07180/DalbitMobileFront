@@ -29,7 +29,7 @@ export default props => {
   }, [])
 
   return (
-    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? className : ''}>
+    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? `wrapper ${className}` : 'wrapper'}>
       <Selected
         className={`options ${selectedClassName}`}
         tabIndex={0}

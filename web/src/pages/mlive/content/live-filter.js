@@ -90,11 +90,23 @@ const Content = styled.div`
     display: block;
     width: 100%;
     padding-bottom: 45px;
-
     box-sizing: border-box;
+
+    /* 드롭다운메뉴CSS정리 */
     section {
       display: inline-block;
-      width: 50%;
+      width: 48%;
+      box-sizing: border-box;
+      text-align: left;
+      &.type1 {
+        margin-right: 2%;
+      }
+      .wrapper {
+        width: 48%;
+        .options {
+          width: 100%;
+        }
+      }
     }
     &:after {
       display: block;
