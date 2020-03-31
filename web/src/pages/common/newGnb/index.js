@@ -67,6 +67,7 @@ const GnbWrap = styled.div`
   width: 100%;
   height: 48px;
   background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
 
   .icon-wrap {

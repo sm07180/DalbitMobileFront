@@ -2,7 +2,7 @@ import React, {useMemo, useState, useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import {IMG_SERVER} from 'context/config'
-// static image
+//static image
 import Listen from '../static/ic_headphones_s.svg'
 import Like from '../static/ic_heart_s_g.svg'
 

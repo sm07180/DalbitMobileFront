@@ -12,7 +12,11 @@ import Api from 'context/api'
 import SelectBox from 'components/ui/selectBox'
 import {GetBroadList} from './live-index'
 //pages
-//
+
+//static image
+import Reload from '../static/ic_refresh.svg'
+import Like from '../static/ic_heart_s_g.svg'
+
 export default props => {
   //랭킹
   const searchType = useMemo(() => {
@@ -46,8 +50,28 @@ export default props => {
   return (
     <Content>
       <h1>실시간 LIVE</h1>
+      <section>
+        <span>
+          <i>
+            <img src={Reload} />
+          </i>
+          새로고침
+        </span>
+        <select name="searchType">
+          <option value="-1">전체</option>
+          <option value="1">추천</option>
+          <option value="2">인기</option>
+          <option value="3">신입</option>
+        </select>
+      </section>
       <div className="in_wrap">
         {/* 추천/인기/신입 */}
+        {/* <select>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+        </select>
         <section className="type1">
           <SelectBox
             inlineStyling={{zIndex: '1', backgrond: '#fff'}}
@@ -57,9 +81,9 @@ export default props => {
               Store().action.updateSearchType(value)
             }}
           />
-        </section>
+        </section> */}
         {/* 일상/챗 */}
-        <section className="type2">
+        {/* <section className="type2">
           <SelectBox
             inlineStyling={{zIndex: '1', backgrond: '#fff'}}
             boxList={roomType}
@@ -68,7 +92,7 @@ export default props => {
               Store().action.updateRoomType(value)
             }}
           />
-        </section>
+        </section> */}
       </div>
     </Content>
   )
@@ -79,11 +103,21 @@ const Content = styled.div`
   & > h1 {
     display: block;
     margin-top: 24px;
-    padding-bottom: 4px;
-    font-size: 28px;
-    font-weight: 600;
-    color: ${COLOR_MAIN};
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.17;
+    letter-spacing: -0.36px;
     text-align: left;
+    color: #424242;
+  }
+  section {
+    display: block;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #f5f5f5;
   }
   .in_wrap {
     position: relative;

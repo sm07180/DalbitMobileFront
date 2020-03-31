@@ -47,14 +47,8 @@ const LiveIndex = () => {
   function update(mode) {
     switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
-        if (!clicked) {
-          setClicked(true)
-          setTimeout(() => {
-            setClicked(false)
-          }, 2000)
-          const {roomNo} = mode.selectList
-          RoomJoin(roomNo + '')
-        }
+        const {roomNo} = mode.selectList
+        RoomJoin(roomNo + '')
         break
       default:
         break
@@ -89,7 +83,6 @@ export default LiveIndex
 export const RoomJoin = roomNo => {
   async function fetchData() {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(JSON.stringify(res, null, 1))
     if (res.result === 'fail') {
       LiveIndex.context.action.alert({
         title: res.messageKey,
