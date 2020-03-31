@@ -210,7 +210,7 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-
+    alert(JSON.stringify(event))
     if (event.detail.result == 'success' && event.detail.code == '0') {
       setConfirmData({
         ...event.detail,
