@@ -22,6 +22,7 @@ import {broadcastLive} from 'constant/broadcast.js'
 
 export default props => {
   const [liveList, setLiveList] = useState([])
+
   useEffect(() => {
     ;(async () => {
       const response = await Api.broad_list()
@@ -61,7 +62,9 @@ export default props => {
               <div className="txt">디제이 랭킹</div>
               <div className="txt">팬 랭킹</div>
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/ranking">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
           </div>
         </div>
         <div className="section">
@@ -70,12 +73,13 @@ export default props => {
               <div className="txt">실시간 LIVE</div>
               <img className="icon live" src={PlayIcon} />
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/mlive">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
           </div>
 
           <div className="content-wrap">
             {liveList.map((list, idx) => {
-              console.log('list', list)
               const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
 
               return (
@@ -88,11 +92,11 @@ export default props => {
                       <div className="broadcast-type">{broadcastLive[roomType]}</div>
                       <div className="value">
                         <img src={HeartIcon} />
-                        <span>{likeCnt.toLocaleString()}</span>
+                        <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
                       </div>
                       <div className="value">
                         <img src={HeadphoneIcon} />
-                        <span>{entryCnt.toLocaleString()}</span>
+                        <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
