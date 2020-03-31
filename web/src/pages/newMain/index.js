@@ -18,9 +18,11 @@ import TopScrollIcon from './static/ic_circle_top.svg'
 import Api from 'context/api'
 
 // components
+import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 
 export default props => {
+  const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
   const [topBtnStatus, setTopBtnStatus] = useState(false)
@@ -39,7 +41,12 @@ export default props => {
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
-        const {djRank, fanRank, recommended} = initData.data
+        const {djRank, fanRank, recommend} = initData.data
+        setInitData({
+          recommend,
+          djRank,
+          fanRank
+        })
       }
     })()
     ;(async () => {
@@ -71,6 +78,7 @@ export default props => {
             <div className="btn">방송하기</div>
           </div>
         </div>
+        <Recommend list={initData.recommend} />
       </SubMain>
 
       <Content>
