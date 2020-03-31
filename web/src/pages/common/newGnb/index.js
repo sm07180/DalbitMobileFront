@@ -1,5 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
+
+import {Context} from 'context'
 
 // static image
 import Logo from './static/logo@2x.png'
@@ -10,7 +12,8 @@ import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_mike_w.svg'
 
 export default props => {
-  const [logoChange, setLogoChange] = useState(false)
+  const globalCtx = useContext(Context)
+  const {logoChange} = globalCtx
 
   const reLoad = () => {
     window.location.href = '/new'
@@ -20,14 +23,11 @@ export default props => {
   }
   const scrollEvent = () => {
     const gnbHeight = 48
-    const {handleTopBtnStatus} = props
 
     if (!logoChange && window.scrollY >= gnbHeight) {
-      setLogoChange(true)
-      handleTopBtnStatus(true)
+      globalCtx.action.updateLogoChange(true)
     } else if (logoChange && window.scrollY < gnbHeight) {
-      setLogoChange(false)
-      handleTopBtnStatus(false)
+      globalCtx.action.updateLogoChange(false)
     }
   }
 

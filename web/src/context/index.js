@@ -41,6 +41,8 @@ const GlobalProvider = props => {
   const [search, setSearch] = useState('')
   const [roomReady, setRoomReady] = useState(false)
   const [reloadType, setReloadType] = useState(0)
+
+  const [logoChange, setLogoChange] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -192,6 +194,9 @@ const GlobalProvider = props => {
     },
     updateReloadType: num => {
       setReloadType(num)
+    },
+    updateLogoChange: status => {
+      setLogoChange(status)
     }
   }
   //---------------------------------------------------------------------
@@ -217,7 +222,8 @@ const GlobalProvider = props => {
     search,
     action,
     roomReady,
-    reloadType
+    reloadType,
+    logoChange
   }
   return <Provider value={value}>{props.children}</Provider>
 }

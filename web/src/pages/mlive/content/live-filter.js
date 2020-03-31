@@ -25,7 +25,6 @@ export default props => {
       <section>
         <button
           onClick={() => {
-            //alert('reload')
             Store().action.updateReload()
           }}
           className="reload">

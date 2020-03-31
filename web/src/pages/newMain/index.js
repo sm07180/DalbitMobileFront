@@ -6,36 +6,25 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
+import {Context} from 'context'
+
 // components
 import Gnb from '../common/newGnb'
+import Recommend from './component/recommend.js'
+import LiveList from './component/livelist.js'
+import TopScrollBtn from './component/top_scroll_btn.js'
 
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
-import TopScrollIcon from './static/ic_circle_top.svg'
 
 import Api from 'context/api'
-
-// components
-import Recommend from './component/recommend.js'
-import LiveList from './component/livelist.js'
 
 export default props => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
-  const [topBtnStatus, setTopBtnStatus] = useState(false)
-
-  const handleTopBtnStatus = status => {
-    setTopBtnStatus(status)
-  }
-
-  const scrollToTop = () => {
-    if (topBtnStatus && window.scrollY) {
-      window.scrollTo(0, 0)
-    }
-  }
 
   useEffect(() => {
     ;(async () => {
@@ -60,7 +49,7 @@ export default props => {
 
   return (
     <MainWrap>
-      <Gnb handleTopBtnStatus={handleTopBtnStatus} />
+      <Gnb />
       <SubMain>
         <div className="gnb">
           <div className="left-side">
@@ -115,23 +104,10 @@ export default props => {
           </div>
         </div>
       </Content>
-      <TopScrollBtn onClick={scrollToTop} topBtnStatus={topBtnStatus} />
+      <TopScrollBtn />
     </MainWrap>
   )
 }
-
-const TopScrollBtn = styled.button`
-  display: ${props => (props.topBtnStatus ? 'block' : 'none')};
-  position: fixed;
-  bottom: 30px;
-  right: 10px;
-  width: 36px;
-  height: 36px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-image: url(${TopScrollIcon});
-`
 
 const Content = styled.div`
   .section {

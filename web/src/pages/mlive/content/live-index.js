@@ -70,7 +70,7 @@ const LiveIndex = () => {
   //
   useEffect(() => {
     getBroadList()
-  }, [Store().searchType, Store().roomType])
+  }, [Store().searchType, Store().roomType, Store().reload])
   //---------------------------------------------------------------------
   return <Content>{makeContents()}</Content>
 }
