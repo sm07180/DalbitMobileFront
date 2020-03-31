@@ -38,8 +38,6 @@ export default props => {
     authType = 'default'
   }
 
-  const url = authType == 'cast' ? '/broadcast-setting' : authType == 'charge' ? '/store' : '/'
-
   //---------------------------------------------------------------------
   //fetchData
 
@@ -90,11 +88,7 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const res = await Api.self_auth_req({
-      params: {
-        returnUrl: url
-      }
-    })
+    const res = await Api.self_auth_req({})
     if (res.result == 'success' && res.code == 0) {
       console.log(res)
       setFormState({
@@ -118,10 +112,8 @@ export default props => {
   //서버로부터 결과 받은 후 처리
   function updateDispatch(event) {
     console.log(event)
-
     if (event.detail.result == 'success' && event.detail.code == '0') {
       authCheck()
-      url = event.detail.url
     } else {
       //alert(JSON.stringify(event.detail, null, 1))
       context.action.alert({
@@ -150,8 +142,7 @@ export default props => {
           <br />
           <button
             onClick={() => {
-              //props.history.goBack()
-              props.history.push(url)
+              props.history.goBack()
             }}>
             완료
           </button>
