@@ -27,7 +27,7 @@ export default props => {
               <Link to={'/mlive'}>라이브</Link>
             </div>
             <div className="tab">
-              <Link to={'/ranking'}>랭킹</Link>
+              <Link to={'/mrank'}>랭킹</Link>
             </div>
             <div className="tab">
               <Link to={'/store'}>스토어</Link>
@@ -63,8 +63,13 @@ const Content = styled.div`
     .title-wrap {
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
 
       .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
         .txt {
           color: #424242;
           font-size: 18px;
