@@ -33,6 +33,8 @@ export const BroadValidation = () => {
     })
     return
   }
+  alert('isLogin ' + isLogin)
+  alert('isApp ' + isApp)
   //--#방송하기
   switch (isLogin) {
     case true: //----------------로그인상태
@@ -169,17 +171,17 @@ export const BroadValidation = () => {
       //     type: 'cast'
       //   })
       // }
-      async function fetchSelfAuth() {
-        const selfAuth = await Api.self_auth_check({})
-        if (selfAuth.result == 'success') {
-          fetchData()
-        } else {
-          history.push('/user/selfAuth', {
-            type: 'cast'
-          })
-        }
-      }
-      fetchSelfAuth()
+      // async function fetchSelfAuth() {
+      //   const selfAuth = await Api.self_auth_check({})
+      //   if (selfAuth.result == 'success') {
+      //     fetchData()
+      //   } else {
+      //     history.push('/user/selfAuth', {
+      //       type: 'cast'
+      //     })
+      //   }
+      // }
+      // fetchSelfAuth()
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
