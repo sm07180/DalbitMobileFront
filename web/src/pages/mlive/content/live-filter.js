@@ -136,32 +136,31 @@ const Content = styled.div`
   section {
     position: relative;
     display: block;
-    padding: 1px 0;
+    padding: 10px 0;
     border-radius: 20px;
     line-height: 17px;
     background-color: #f5f5f5;
     .reload {
       display: inline-block;
+      margin-left: 10px;
       color: #bdbdbd;
       font-size: 14px;
-      i {
-        display: inline-block;
-        padding: 10px;
-      }
     }
     .in_wrap {
       position: absolute;
       top: 50%;
       right: 0%;
       transform: translateY(-50%);
+      select {
+        display: inline-block;
+        padding: 10px;
+      }
     }
     .wrapper {
       display: inline-block;
       margin-right: 10px;
       > * {
         display: inline-block;
-        padding-right: 5px;
-        text-align: middle;
       }
     }
     select {
