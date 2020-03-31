@@ -39,6 +39,7 @@ export default props => {
   async function playercloseExitRoom() {
     const beforeRoomNo = localStorage.getItem('currentRoomNo')
     alert('플레이어 종료 =' + beforeRoomNo)
+    alert('type = ' + typeof beforeRoomNo)
     if (beforeRoomNo != '' || beforeRoomNo != null) {
       const res = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
       if (res.result === 'success') {
