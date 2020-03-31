@@ -13,13 +13,12 @@ import Gnb from '../common/newGnb'
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
-import HeartIcon from './static/ic_heart_s_g.svg'
-import HeadphoneIcon from './static/ic_headphones_s.svg'
 import TopScrollIcon from './static/ic_circle_top.svg'
 
 import Api from 'context/api'
 
-import {broadcastLive} from 'constant/broadcast.js'
+// components
+import LiveList from './component/livelist.js'
 
 export default props => {
   const [liveList, setLiveList] = useState([])
@@ -91,7 +90,8 @@ export default props => {
           </div>
 
           <div className="content-wrap">
-            {liveList.map((list, idx) => {
+            <LiveList list={liveList} />
+            {/* {liveList.map((list, idx) => {
               const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
 
               return (
@@ -114,7 +114,7 @@ export default props => {
                   </div>
                 </LiveList>
               )
-            })}
+            })} */}
           </div>
         </div>
       </Content>
@@ -133,70 +133,6 @@ const TopScrollBtn = styled.button`
   background-position: center;
   background-size: cover;
   background-image: url(${TopScrollIcon});
-`
-
-const LiveList = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 10px 0;
-
-  .broadcast-img {
-    width: 72px;
-    height: 72px;
-    border-radius: 26px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-image: url(${props => props.bgImg});
-    background-color: #eee;
-  }
-
-  .broadcast-content {
-    margin-left: 16px;
-
-    & > div {
-      margin: 5px 0;
-    }
-
-    .title {
-      color: #424242;
-      font-size: 14px;
-      font-weight: bold;
-      letter-spacing: -0.35px;
-    }
-    .nickname {
-      color: #757575;
-      font-size: 12px;
-      letter-spacing: -0.3px;
-    }
-    .detail {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .broadcast-type {
-        color: #8556f6;
-        font-size: 11px;
-        letter-spacing: -0.28px;
-        margin-right: 10px;
-      }
-      .value {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        margin-left: 6px;
-        color: #bdbdbd;
-        font-size: 11px;
-        letter-spacing: -0.28px;
-
-        img {
-          display: block;
-          margin-right: 2px;
-        }
-      }
-    }
-  }
 `
 
 const Content = styled.div`
