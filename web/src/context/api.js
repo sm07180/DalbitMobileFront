@@ -97,6 +97,11 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/broad/edit`, method: method || 'POST', data: data})
   }
+
+  static main_init_data = async () => {
+    return await ajax({url: '/main', method: 'GET'})
+  }
+
   /**
    * @brief 방송방 리스트 (익명 로그인일때 프로시저 memLogin:0 추가)
    * @method "GET"

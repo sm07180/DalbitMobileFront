@@ -22,6 +22,7 @@ import LiveList from './component/livelist.js'
 
 export default props => {
   const [liveList, setLiveList] = useState([])
+  const [rankType, setRankType] = useState('dj') // type: dj, fan
   const [topBtnStatus, setTopBtnStatus] = useState(false)
 
   const handleTopBtnStatus = status => {
@@ -36,9 +37,15 @@ export default props => {
 
   useEffect(() => {
     ;(async () => {
-      const response = await Api.broad_list()
-      if (response.result === 'success') {
-        const {list} = response.data
+      const initData = await Api.main_init_data()
+      if (initData.result === 'success') {
+        const {djRank, fanRank, recommended} = initData.data
+      }
+    })()
+    ;(async () => {
+      const broadcastList = await Api.broad_list()
+      if (broadcastList.result === 'success') {
+        const {list} = broadcastList.data
         setLiveList(list)
       }
     })()
@@ -70,13 +77,19 @@ export default props => {
         <div className="section">
           <div className="title-wrap">
             <div className="title">
-              <div className="txt">디제이 랭킹</div>
-              <div className="txt">팬 랭킹</div>
+              <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
+                디제이 랭킹
+              </div>
+              <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
+                팬 랭킹
+              </div>
             </div>
             <Link to="/ranking">
               <img className="plus-icon" src={PlusIcon} />
             </Link>
           </div>
+
+          <div className="content-wrap"></div>
         </div>
         <div className="section">
           <div className="title-wrap">
@@ -132,6 +145,14 @@ const Content = styled.div`
           font-size: 18px;
           font-weight: bold;
           letter-spacing: -0.36px;
+
+          &.in-active {
+            color: #bdbdbd;
+          }
+
+          &:nth-child(2) {
+            margin-left: 10px;
+          }
         }
         .icon {
           &.live {
@@ -141,9 +162,6 @@ const Content = styled.div`
           }
         }
       }
-    }
-
-    .content-wrap {
     }
   }
 `
