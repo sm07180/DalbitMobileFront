@@ -46,7 +46,7 @@ export default props => {
                 Store().action.updateCurrentPage(1)
                 Store().action.updateSearchType(_val)
               }}>
-              <option value="-1">전체</option>
+              <option value="-1">전체1</option>
               <option value="1">추천</option>
               <option value="2">인기</option>
               <option value="3">신입</option>
@@ -158,9 +158,9 @@ const Content = styled.div`
     }
     .wrapper {
       display: inline-block;
-      margin-right: 10px;
-      > * {
+      i {
         display: inline-block;
+        padding: 10px 0;
       }
     }
     select {
