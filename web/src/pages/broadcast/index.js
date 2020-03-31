@@ -83,7 +83,7 @@ export default props => {
     const beforeRoomNo = localStorage.getItem('currentRoomNo') //이전 방 번호
 
     if (beforeRoomNo != null) {
-      const resExitRoom = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
+      if (beforeRoomNo !== obj.roomNo) await Api.broad_exit({data: {roomNo: beforeRoomNo}})
       const {code, result, data, message} = resExitRoom
       // if (result === 'success') {
       //joinRoom(obj)
