@@ -14,6 +14,7 @@ const {Provider} = LiveStore
 //
 const LiveProvider = props => {
   //state
+  const [reload, setReload] = useState(0)
   const [broadList, setBroadList] = useState(null) // 방송방리스트
   const [roomType, setRoomType] = useState('') // roomType
   const [searchType, setSearchType] = useState(-1) // searchType
@@ -26,6 +27,12 @@ const LiveProvider = props => {
   const action = {
     /**
      * @brief roomType타입변경
+     */
+    updateReload: () => {
+      setReload(reload + 1)
+    },
+    /**
+     * @brief 방송방리스트 변경
      */
     updateBroadList: obj => {
       setBroadList(obj)
@@ -56,7 +63,7 @@ const LiveProvider = props => {
     }
   }
   //---------------------------------------------------------------------
-  const value = {broadList, roomType, searchType, currentPage, totalPageNumber, menuCode, action, list}
+  const value = {reload, broadList, roomType, searchType, currentPage, totalPageNumber, menuCode, action, list}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {LiveStore, LiveProvider}
