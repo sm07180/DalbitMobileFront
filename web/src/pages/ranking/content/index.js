@@ -15,6 +15,7 @@ import _ from 'lodash'
 //component
 import RankList from './rankList'
 import Figure from './Figure'
+import NoResult from 'components/ui/noResult'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['전일', '주간', '월간']
@@ -148,13 +149,7 @@ export default props => {
         <div className="date-type">{createDateButton()}</div>
       </div>
       {context.profile && creatMyRank()}
-      {list ? (
-        <RankList list={list} />
-      ) : (
-        <NoResult>
-          <span>조회된 결과가 없습니다.</span>
-        </NoResult>
-      )}
+      {list ? <RankList list={list} /> : <NoResult />}
       {moreState && (
         <button
           className="more-btn"
@@ -345,36 +340,6 @@ const Contents = styled.div`
           font-size: 14px;
         }
       }
-    }
-  }
-`
-
-const NoResult = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100% !important;
-  margin-top:60px;
-  padding-top:230px;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center top;
-
-  & > span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 282px;
-    height: 26px;
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.6px;
-    color: #616161;
-    margin-top: 30px;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 18px;
-      margin-top: 20px;
     }
   }
 `
