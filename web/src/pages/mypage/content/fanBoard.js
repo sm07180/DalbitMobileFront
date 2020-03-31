@@ -8,21 +8,61 @@ import styled from 'styled-components'
 
 // context
 import {Context} from 'context'
+import Api from 'context/api'
 
 //layout
-import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
-
+import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 export default props => {
   const ctx = useContext(Context)
+  const context = useContext(Context)
   const {profile} = ctx
-  const placeholderText = '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
-
+  const placeholderText =
+    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
+  //state
   const [comment, setComment] = useState('')
   const MaxCommentLength = 200
+  const [fanTotal, setFanTotal] = useState([])
+  //api
+  async function fetchDataList() {
+    const res = await Api.mypage_fanboard_list({
+      params: {
+        memNo: profile.memNo,
+        page: 1,
+        records: 1000
+      }
+    })
+    if (res.result === 'success') {
+      console.log(res)
+      setFanTotal(res.data.list)
+    } else if (res.result === 'fail') {
+      console.log(res)
+    }
+  }
 
+  async function fetchDataUpload() {
+    const res = await Api.mypage_fanboard_upload({
+      data: {
+        memNo: profile.memNo,
+        depth: 1,
+        content: comment
+      }
+    })
+    if (res.result === 'success') {
+      console.log(res)
+    } else if (res.result === 'fail') {
+      console.log(res)
+    }
+  }
+
+  useEffect(() => {
+    fetchDataList()
+  }, [])
+  /////////////////////
   const commentSubmit = () => {}
   const submitClick = () => {
     commentSubmit()
+    fetchDataUpload()
   }
 
   const textChange = e => {
@@ -46,7 +86,9 @@ export default props => {
       <WriteArea>
         <WriteAreaTop>
           <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
-          <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontFamily: 'NanumSquareB'}}>{profile.nickNm}</div>
+          <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontFamily: 'NanumSquareB'}}>
+            {profile.nickNm}
+          </div>
         </WriteAreaTop>
         <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
         <WriteAreaBottom>
@@ -60,8 +102,28 @@ export default props => {
       <ListArea>
         <ListTitle>
           <span>게시글</span>
-          <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>362</span>
+          <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{fanTotal.length}</span>
         </ListTitle>
+        {fanTotal.map((item, index) => {
+          const {profImg, nickNm, writeDt, writerNo, contents, replyCnt} = item
+          return (
+            <CommentBox key={index}>
+              <div className="titlewrap">
+                <Imgbox bg={profImg.thumb62x62} />
+                <div>
+                  <span>{nickNm}</span>
+                  <span>{writerNo}</span>
+                  <span>{writeDt}</span>
+                </div>
+                <button></button>
+              </div>
+              <div className="content">{contents}</div>
+              <button className="reply">
+                답글 <span>{replyCnt}</span>
+              </button>
+            </CommentBox>
+          )
+        })}
       </ListArea>
     </FanBoard>
   )
@@ -149,7 +211,88 @@ const WriteArea = styled.div`
   border: 1px solid #d0d0d0;
   border-bottom: none;
 `
-
+//mother
 const FanBoard = styled.div`
   margin-top: 48px;
+`
+const CommentBox = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #eeeeee;
+  & .titlewrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    div:nth-child(2) {
+      display: flex;
+      flex-wrap: wrap;
+      width: calc(100% - 88px);
+      span:nth-child(1) {
+        display: block;
+        max-width: 60.56%;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #424242;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.35px;
+        transform: skew(-0.03deg);
+        line-height: 1.43;
+        margin-right: 4px;
+      }
+      span:nth-child(2) {
+        display: block;
+        width: calc(39.44% - 4px);
+        color: ${COLOR_MAIN};
+        font-size: 12px;
+        line-height: 1.8;
+        letter-spacing: -0.03px;
+        transform: skew(-0.03deg);
+      }
+      span:nth-child(3) {
+        display: block;
+        width: 100%;
+        margin-top: 6px;
+        color: #9e9e9e;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        transform: skew(-0.03deg);
+      }
+    }
+
+    button {
+      display: block;
+      width: 36px;
+      height: 36px;
+      background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
+    }
+  }
+  .content {
+    width: 100%;
+    margin: 16px 0;
+    font-size: 14px;
+    color: #424242;
+    line-height: 1.57;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+  }
+  .reply {
+    display: block;
+    width: 61px;
+    height: 28px;
+    margin-bottom: 12px;
+    border: solid 1px #e0e0e0;
+    font-size: 14px;
+    color: #424242;
+    transform: skew(-0.03deg);
+    > span {
+      color: ${COLOR_MAIN};
+    }
+  }
+`
+const Imgbox = styled.div`
+  width: 32px;
+  height: 32px;
+  background: url(${props => props.bg}) no-repeat center center / cover;
 `
