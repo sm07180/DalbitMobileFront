@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -13,9 +13,25 @@ import Gnb from '../common/newGnb'
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
+import HeartIcon from './static/ic_heart_s_g.svg'
+import HeadphoneIcon from './static/ic_headphones_s.svg'
+
+import Api from 'context/api'
+
+import {broadcastLive} from 'constant/broadcast.js'
 
 export default props => {
-  useEffect(() => {}, [])
+  const [liveList, setLiveList] = useState([])
+
+  useEffect(() => {
+    ;(async () => {
+      const response = await Api.broad_list()
+      if (response.result === 'success') {
+        const {list} = response.data
+        setLiveList(list)
+      }
+    })()
+  }, [])
 
   return (
     <MainWrap>
@@ -46,7 +62,9 @@ export default props => {
               <div className="txt">디제이 랭킹</div>
               <div className="txt">팬 랭킹</div>
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/ranking">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
           </div>
         </div>
         <div className="section">
@@ -55,13 +73,106 @@ export default props => {
               <div className="txt">실시간 LIVE</div>
               <img className="icon live" src={PlayIcon} />
             </div>
-            <img className="plus-icon" src={PlusIcon} />
+            <Link to="/mlive">
+              <img className="plus-icon" src={PlusIcon} />
+            </Link>
+          </div>
+
+          <div className="content-wrap">
+            {liveList.map((list, idx) => {
+              const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
+
+              return (
+                <LiveList key={`live-${idx}`} bgImg={bgImg['thumb150x150']}>
+                  <div className="broadcast-img" />
+                  <div className="broadcast-content">
+                    <div className="title">{title}</div>
+                    <div className="nickname">{bjNickNm}</div>
+                    <div className="detail">
+                      <div className="broadcast-type">{broadcastLive[roomType]}</div>
+                      <div className="value">
+                        <img src={HeartIcon} />
+                        <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
+                      </div>
+                      <div className="value">
+                        <img src={HeadphoneIcon} />
+                        <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                </LiveList>
+              )
+            })}
           </div>
         </div>
       </Content>
     </MainWrap>
   )
 }
+
+const LiveList = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+
+  .broadcast-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 26px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url(${props => props.bgImg});
+    background-color: #eee;
+  }
+
+  .broadcast-content {
+    margin-left: 16px;
+
+    & > div {
+      margin: 5px 0;
+    }
+
+    .title {
+      color: #424242;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: -0.35px;
+    }
+    .nickname {
+      color: #757575;
+      font-size: 12px;
+      letter-spacing: -0.3px;
+    }
+    .detail {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .broadcast-type {
+        color: #8556f6;
+        font-size: 11px;
+        letter-spacing: -0.28px;
+        margin-right: 10px;
+      }
+      .value {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-left: 6px;
+        color: #bdbdbd;
+        font-size: 11px;
+        letter-spacing: -0.28px;
+
+        img {
+          display: block;
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+`
 
 const Content = styled.div`
   .section {
@@ -92,6 +203,9 @@ const Content = styled.div`
           }
         }
       }
+    }
+
+    .content-wrap {
     }
   }
 `
