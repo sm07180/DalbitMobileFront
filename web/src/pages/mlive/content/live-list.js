@@ -23,7 +23,7 @@ export default props => {
     if (data.roomType === '11') return '건강/스포츠'
     if (data.roomType === '99') return '전체'
     return '기타'
-  })
+  }, [])
   //------------------------------------------------------------ components start
   return (
     <List
@@ -68,6 +68,12 @@ const List = styled.a`
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
   box-sizing: border-box;
+  /* 모바일일때 hover */
+  @media (hover: hover) {
+    &:hover {
+      background: #f8f8f8;
+    }
+  }
   /* 프로필영역 */
   .profile {
     margin-right: 16px;

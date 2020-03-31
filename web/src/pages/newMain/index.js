@@ -27,7 +27,7 @@ export default props => {
               <Link to={'/mlive'}>라이브</Link>
             </div>
             <div className="tab">
-              <Link to={'/mrank'}>랭킹</Link>
+              <Link to={'/ranking'}>랭킹</Link>
             </div>
             <div className="tab">
               <Link to={'/store'}>스토어</Link>
@@ -40,7 +40,15 @@ export default props => {
       </SubMain>
 
       <Content>
-        <div className="section"></div>
+        <div className="section">
+          <div className="title-wrap">
+            <div className="title">
+              <div className="txt">디제이 랭킹</div>
+              <div className="txt">팬 랭킹</div>
+            </div>
+            <img className="plus-icon" src={PlusIcon} />
+          </div>
+        </div>
         <div className="section">
           <div className="title-wrap">
             <div className="title">

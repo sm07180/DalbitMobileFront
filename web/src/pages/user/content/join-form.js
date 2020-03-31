@@ -78,9 +78,6 @@ export default props => {
     return zero + n
   }
 
-  //회원가입 들어온 후 gnb닫아줘야 메인으로 갔을때 제대로 열림
-  context.action.updateGnbVisible(false)
-
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
     loginID: '',
@@ -619,6 +616,7 @@ export default props => {
   }
 
   useEffect(() => {
+    context.action.updateGnbVisible(false)
     //이미지 값 비었을 경우 기본 프로필 이미지 셋팅
     //state 시점차이때문에 birth와 image를 처음 동시에 셋팅해주어야함, 그렇지 않으면 하나는 계속 빈값으로 엎어쳐진다ㅠㅠ
     let firstSetting = {}
@@ -1207,6 +1205,17 @@ const CheckWrap = styled.div`
   & > div:first-child {
     padding: 13px;
   }
+
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    div {
+      & input {
+        margin: 0 8px 0 0;
+      }
+      label {
+        letter-spacing: -1px;
+      }
+    }
+  }
 `
 const CheckBox = styled.div`
   overflow: hidden;
@@ -1319,6 +1328,13 @@ const InputWrap = styled.div`
 
     &.off {
       display: none;
+    }
+  }
+
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    input + span {
+      right: 8px;
+      letter-spacing: -1px;
     }
   }
 `

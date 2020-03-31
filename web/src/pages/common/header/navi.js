@@ -164,25 +164,18 @@ export const BroadValidation = () => {
         }
       }
       //본인인증 체크 후 fetchData 진행
-      // if (context.state.selfAuth) {
-      //   fetchData()
-      // } else {
-      //   history.push('/user/selfAuth', {
-      //     type: 'cast'
-      //   })
-      // }
-      // async function fetchSelfAuth() {
-      //   const selfAuth = await Api.self_auth_check({})
-      //   if (selfAuth.result == 'success') {
-      //     fetchData()
-      //   } else {
-      //     history.push('/user/selfAuth', {
-      //       type: 'cast'
-      //     })
-      //   }
-      // }
-      // fetchSelfAuth()
-      fetchData()
+      async function fetchSelfAuth() {
+        const selfAuth = await Api.self_auth_check({})
+        if (selfAuth.result == 'success') {
+          fetchData()
+        } else {
+          history.push('/user/selfAuth', {
+            type: 'cast'
+          })
+        }
+      }
+      fetchSelfAuth()
+      //fetchData()
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')
