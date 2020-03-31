@@ -388,7 +388,7 @@ export default props => {
                   </div>
                   <div>
                     <span>방송방(DJ)</span>
-                    <span>{value.bjNickNm}</span>
+                    <span style={{color: '#8556f6'}}>{value.bjNickNm}</span>
                   </div>
                   <div>
                     <span>선물내역(달)</span>
