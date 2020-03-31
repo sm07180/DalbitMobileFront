@@ -6,6 +6,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
+import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import {Store} from './index'
@@ -17,7 +18,7 @@ const LiveIndex = () => {
   //context
   const context = useContext(Context)
   //interface
-  //LiveIndex.context = context
+  LiveIndex.context = context
   //-----------------------------------------------------------
   // 방송방 리스트 조회
   const getBroadList = async mode => {
@@ -45,20 +46,7 @@ const LiveIndex = () => {
     switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
         const {roomNo} = mode.selectList
-
-        async function fetchData() {
-          const res = await Api.broad_join({data: {roomNo: roomNo}})
-          if (res.result === 'fail') {
-            console.log(context.action.alert)
-            context.action.alert({
-              title: res.messageKey,
-              msg: res.message
-            })
-          }
-        }
-        fetchData()
-
-        // RoomJoin(roomNo + '')
+        RoomJoin(roomNo + '')
         break
       default:
         break
@@ -86,33 +74,29 @@ const LiveIndex = () => {
 }
 export default LiveIndex
 //---------------------------------------------------------------------
+/**
+ * @title 방송방입장
+ * @param {roomNo} string
+ */
+export const RoomJoin = roomNo => {
+  async function fetchData() {
+    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    if (res.result === 'fail') {
+      LiveIndex.context.action.alert({
+        title: res.messageKey,
+        msg: res.message
+      })
+    } else if (res.result === 'success') {
+      console.log(res)
+      //성공일때
+      Hybrid('RoomJoin', res.data)
+    }
+  }
+  fetchData()
+}
+//---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
   margin-top: 16px;
   border-top: 1px solid ${COLOR_MAIN};
 `
-//---------------------------------------------------------------------
-/**
- *
- * @param {roomNo} string 룸넘버
- */
-export const RoomJoin = roomNo => {
-  console.log(LiveIndex.context)
-  const context = LiveIndex.context
-  LiveIndex.context.action.alert({
-    title: '1',
-    msg: '2'
-  })
-
-  async function fetchData() {
-    const res = await Api.broad_join({data: {roomNo: roomNo}})
-    if (res.result === 'fail') {
-    }
-    context.action.alert({
-      title: res.messageKey,
-      msg: res.message
-    })
-    console.log(res)
-  }
-  fetchData()
-}
