@@ -5,9 +5,13 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
+
+//context
+import {Context} from 'context'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
+  const context = useContext(Context)
   let history = useHistory()
   const {url, name, memNo} = props
   //---------------------------------------------------------------------
@@ -18,7 +22,11 @@ export default props => {
           url={url}
           className="figure"
           onClick={() => {
-            history.push(`/private/${memNo}`)
+            if (context.token.isLogin) {
+              history.push(`/private/${memNo}`)
+            } else {
+              context.action.updatePopup('LOGIN')
+            }
           }}>
           <img src={url} alt={name} />
         </Figure>
