@@ -63,6 +63,7 @@ const Profile = styled.span`
   font-family: sans-serif;
   background-color: #bdbdbd;
   background-image: url(${props => props.url});
+  background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
 `
