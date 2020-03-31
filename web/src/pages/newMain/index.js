@@ -30,11 +30,12 @@ export default props => {
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
-        const {djRank, fanRank, recommend} = initData.data
+        const {djRank, fanRank, recommend, myStar} = initData.data
         setInitData({
           recommend,
           djRank,
-          fanRank
+          fanRank,
+          myStar
         })
       }
     })()
