@@ -10,6 +10,7 @@ import {Context} from 'context'
 import List from '../component/notice/list.js'
 import WritePage from '../component/notice/writePage.js'
 import Paging from 'components/ui/paging.js'
+import NoResult from 'components/ui/noResult'
 
 // image
 import pen from 'images/pen.svg'
@@ -78,10 +79,7 @@ const Notice = () => {
               return <List key={idx} isTop={isTop} title={title} contents={contents} writeDt={writeDt} />
             })
           ) : (
-            <div className="no-list">
-              <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
-              <div>검색 결과가 없습니다.</div>
-            </div>
+            <NoResult />
           )
         ) : (
           <div className="search" />
@@ -161,13 +159,6 @@ const WriteBtn = styled.button`
 const ListWrap = styled.div`
   .search {
     min-height: 200px;
-  }
-
-  .no-list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
   }
 `
 
