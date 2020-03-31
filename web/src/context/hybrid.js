@@ -58,7 +58,8 @@ export const Hybrid = (func, info) => {
   const customHeader = JSON.parse(Api.customHeader)
   if (!isHybrid()) return
   //switch (osName()) {
-  switch (customHeader.os) {
+  const os = customHeader.os + ''
+  switch (os) {
     case '':
       break
     case '1':

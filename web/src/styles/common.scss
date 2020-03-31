@@ -360,6 +360,7 @@ input[type='number'] {
 input {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
+  border-radius: 0;
 }
 
 /*기본 input text, number의 style 가이드 방송화면에선 적용 안됨.*/
@@ -437,6 +438,7 @@ input:-webkit-autofill:active input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-transition: background-color 9999s ease-out;
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-text-fill-color: inherit !important;
 }
 
@@ -494,4 +496,25 @@ table {
     position: relative;
     height: 100%;
   }
+}
+
+@media (max-width: 360px) {
+  input[type='text']::placeholder,
+  input[type='password']::placeholder,
+  input[type='number']::placeholder,
+  input[type='tel']::placeholder {
+    letter-spacing: -0.8px;
+  }
+}
+
+@media (max-width: 330px) {
+  // .off-cast + main,
+  // .pure {
+  //   input[type='text'],
+  //   input[type='password'],
+  //   input[type='number'],
+  //   input[type='tel'] {
+  //     padding: 0 10px;
+  //   }
+  // }
 }
