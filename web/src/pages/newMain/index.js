@@ -31,7 +31,6 @@ export default props => {
 
   const scrollToTop = () => {
     if (topBtnStatus && window.scrollY) {
-      console.log(window.scrollY)
       window.scrollTo(0, 0)
     }
   }
