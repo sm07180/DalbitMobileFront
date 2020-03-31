@@ -94,12 +94,13 @@ export default props => {
           </div>
         </div>
       </Content>
-      {topBtnStatus && <TopScrollBtn onClick={scrollToTop} />}
+      <TopScrollBtn onClick={scrollToTop} topBtnStatus={topBtnStatus} />
     </MainWrap>
   )
 }
 
 const TopScrollBtn = styled.button`
+  display: ${props => (props.topBtnStatus ? 'block' : 'none')};
   position: fixed;
   bottom: 30px;
   right: 10px;

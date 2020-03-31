@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 
 import {broadcastLive} from 'constant/broadcast.js'
@@ -6,13 +6,21 @@ import {broadcastLive} from 'constant/broadcast.js'
 import HeartIcon from '../static/ic_heart_s_g.svg'
 import HeadphoneIcon from '../static/ic_headphones_s.svg'
 
+function usePrevious(value) {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
+
 export default props => {
-  return props.list.map((list, idx) => {
+  return list.map((list, idx) => {
     const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
 
     return (
-      <LiveList key={`live-${idx}`} bgImg={bgImg['thumb150x150']}>
-        <div className="broadcast-img" />
+      <LiveList key={`live-${idx}`}>
+        <div className="broadcast-img" style={{backgroundImage: `url(${bgImg['thumb150x150']})`}} />
         <div className="broadcast-content">
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
@@ -46,7 +54,6 @@ const LiveList = styled.div`
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.bgImg});
     background-color: #eee;
   }
 
