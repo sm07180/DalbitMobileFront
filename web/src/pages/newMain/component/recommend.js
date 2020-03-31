@@ -8,6 +8,10 @@ import Swiper from 'react-id-swiper'
 
 export default props => {
   const {list} = props
+  const params = {
+    slidesPerView: 7
+    // spaceBetween: 30
+  }
 
   return (
     <RecommendWrap>
@@ -18,6 +22,19 @@ export default props => {
           <span>{list ? `/ ${list.length}` : ''}</span>
         </div>
       </div>
+      {list && (
+        <Swiper className="swiper-wrap" {...params}>
+          {list.slice(0, 3).map((broadcast, idx) => {
+            const {profImg, nickNm, title} = broadcast
+            // console.log(profImg)
+            return (
+              <div className="b-list" key={`b-${idx}`}>
+                <img width={50} src={profImg['thumb62x62']} />
+              </div>
+            )
+          })}
+        </Swiper>
+      )}
     </RecommendWrap>
   )
 }
@@ -55,5 +72,10 @@ const RecommendWrap = styled.div`
         margin-right: 4px;
       }
     }
+  }
+
+  .swiper-wrapper {
+    display: flex;
+    justify-content: space-around;
   }
 `
