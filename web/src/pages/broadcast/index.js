@@ -39,12 +39,13 @@ export default props => {
       if (data) {
         if (isHybrid()) {
           alert('hybrid = ' + data)
-          Hybrid('RoomJoin', data)
-          setReadyRoom(false)
+          const res = await Hybrid('RoomJoin', data)
+
           if (window.location.pathname !== '/') {
             // 메인에서 방송방으로 접근시 예외 처리
             props.history.goBack()
           }
+          setReadyRoom(false)
         } else {
           alert('no hybrid')
 
