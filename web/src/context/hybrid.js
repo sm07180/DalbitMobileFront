@@ -56,17 +56,14 @@ export const isHybrid = () => {
  */
 export const Hybrid = (func, info) => {
   const customHeader = JSON.parse(Api.customHeader)
-  alert(isHybrid())
   if (!isHybrid()) return
-  alert('customHeader.os = ' + customHeader.os)
   //switch (osName()) {
   const os = customHeader.os + ''
-  alert('os = ' + os)
   switch (os) {
     case '':
       break
     case '1':
-      alert('안드로이드 푸쉬 = ' + func + ',' + 'data = ' + info)
+      //alert('안드로이드 푸쉬 = ' + func + ',' + 'data = ' + info)
       if (window.android[func] === null || window.android[func] === undefined) return
       if (info === '' || info === null || info === undefined) {
         window.android[func]()
@@ -75,7 +72,7 @@ export const Hybrid = (func, info) => {
       }
       break
     case '2':
-      alert('IOS 푸쉬 = ' + func + ',' + 'data = ' + info)
+      //alert('IOS 푸쉬 = ' + func + ',' + 'data = ' + info)
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
