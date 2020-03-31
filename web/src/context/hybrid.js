@@ -61,6 +61,7 @@ export const Hybrid = (func, info) => {
   alert('customHeader.os = ' + customHeader.os)
   //switch (osName()) {
   const os = customHeader.os + ''
+  alert('os = ' + os)
   switch (os) {
     case '':
       break
