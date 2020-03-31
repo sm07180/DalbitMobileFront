@@ -20,7 +20,6 @@ import TopScrollIcon from './static/ic_circle_top.svg'
 import Api from 'context/api'
 
 import {broadcastLive} from 'constant/broadcast.js'
-import {isPipelineTopicExpression} from '@babel/types'
 
 export default props => {
   const [liveList, setLiveList] = useState([])
