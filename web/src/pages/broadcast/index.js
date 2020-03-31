@@ -25,10 +25,8 @@ export default props => {
   //---------------------------------------------------------------------
   const [readyRoom, setReadyRoom] = useState(false)
   const {roomNo} = qs.parse(location.search) //라우터로 들어올때 방번호
-  async function fetchData(obj) {
-    console.clear()
-    console.log('join')
-    const beforeRoomNo = localStorage.getItem('currentRoomNo') //이전 방 번호
+
+  async function joinRoom(obj) {
     const resRoomJoin = await Api.broad_join(obj) //방입장
     const {code, result, data, message} = resRoomJoin
     if (result === 'success') {
@@ -78,6 +76,27 @@ export default props => {
         }
       }
     }
+  }
+  async function fetchData(obj) {
+    console.clear()
+    console.log('join')
+    const beforeRoomNo = localStorage.getItem('currentRoomNo') //이전 방 번호
+
+    if (beforeRoomNo != null) {
+      const resExitRoom = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
+      const {code, result, data, message} = resExitRoom
+      if (result === 'success') {
+        joinRoom(obj)
+      } else {
+        ctx.action.alert({
+          callback: () => {},
+          msg: message
+        })
+      }
+    } else {
+      joinRoom(obj)
+    }
+
     //이전 방을 Exit 하지 않고 방송방을 진입하려고 할때 이전 룸 정보를 체크 해야 한다.
     // alert('beforeRoomNo = ' + beforeRoomNo)
     // if (beforeRoomNo !== '' || beforeRoomNo !== null) {
