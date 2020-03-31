@@ -39,7 +39,7 @@ export default props => {
       if (data) {
         if (isHybrid()) {
           alert('hybrid')
-
+          alert('data = ' + data)
           Hybrid('RoomJoin', data)
           setReadyRoom(false)
           if (window.location.pathname !== '/') {
