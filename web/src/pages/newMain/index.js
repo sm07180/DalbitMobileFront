@@ -29,6 +29,12 @@ export default props => {
     setTopBtnStatus(status)
   }
 
+  const scrollToTop = () => {
+    if (topBtnStatus && window.scrollY) {
+      window.scrollTo(0, 0)
+    }
+  }
+
   useEffect(() => {
     ;(async () => {
       const response = await Api.broad_list()
@@ -112,7 +118,7 @@ export default props => {
           </div>
         </div>
       </Content>
-      {topBtnStatus && <TopScrollBtn />}
+      {topBtnStatus && <TopScrollBtn onClick={scrollToTop} />}
     </MainWrap>
   )
 }
