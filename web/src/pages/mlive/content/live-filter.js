@@ -99,7 +99,7 @@ const Content = styled.div`
       box-sizing: border-box;
       text-align: left;
       &.type1 {
-        margin-right: 2%;
+        margin-right: 4%;
       }
       .wrapper {
         width: 48%;

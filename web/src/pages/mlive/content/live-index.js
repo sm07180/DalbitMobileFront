@@ -29,7 +29,8 @@ const LiveIndex = () => {
     if (res.result === 'success') {
       //APPEND
       if (mode !== undefined && mode.type === 'append' && _.hasIn(Store().broadList, 'list')) {
-        const result = {paging: res.data.paging, list: [...Store().broadList.list, ...res.data.list]}
+        console.log(res.data)
+        const result = {paging: {...res.data.paging}, list: [...Store().broadList.list, ...res.data.list]}
         Store().action.updateBroadList(result)
       } else {
         Store().action.updateBroadList(res.data)
