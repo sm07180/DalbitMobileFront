@@ -125,6 +125,11 @@ const LiveList = styled.div`
 
   .broadcast-content {
     margin-left: 16px;
+
+    & > div {
+      margin: 5px 0;
+    }
+
     .title {
       color: #424242;
       font-size: 14px;
@@ -155,6 +160,11 @@ const LiveList = styled.div`
         color: #bdbdbd;
         font-size: 11px;
         letter-spacing: -0.28px;
+
+        img {
+          display: block;
+          margin-right: 2px;
+        }
       }
     }
   }
