@@ -30,7 +30,6 @@ export default props => {
   })
   //---------------------------------------------------------------------
   function update(mode) {
-    alert('isHybrid = ' + isHybrid())
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         if (isHybrid()) {
