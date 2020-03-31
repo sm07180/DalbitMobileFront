@@ -33,8 +33,8 @@ export const BroadValidation = () => {
     })
     return
   }
-  alert('isLogin ' + isLogin)
-  alert('isApp ' + isApp)
+  // alert('isLogin ' + isLogin)
+  // alert('isApp ' + isApp)
   //--#방송하기
   switch (isLogin) {
     case true: //----------------로그인상태
@@ -182,6 +182,7 @@ export const BroadValidation = () => {
       //   }
       // }
       // fetchSelfAuth()
+      fetchData()
       break
     case false: //---------------로그아웃상태
       context.action.updatePopup('LOGIN')

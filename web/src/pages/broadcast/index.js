@@ -38,7 +38,7 @@ export default props => {
       localStorage.setItem('BroadTotalInfo', TotalInfo)
       if (data) {
         if (isHybrid()) {
-          //alert('hybrid')
+          alert('hybrid')
 
           Hybrid('RoomJoin', data)
           setReadyRoom(false)
@@ -47,7 +47,7 @@ export default props => {
             props.history.goBack()
           }
         } else {
-          //alert('no hybrid')
+          alert('no hybrid')
 
           setReadyRoom(true)
         }
