@@ -38,6 +38,20 @@ export default props => {
     authType = 'default'
   }
 
+  let url = ''
+
+  switch (authType) {
+    case 'charge':
+      url = '/store'
+      break
+    case 'cast':
+      url = '/broadcast-setting'
+      break
+    default:
+      url = '/'
+      break
+  }
+
   //---------------------------------------------------------------------
   //fetchData
 
@@ -90,7 +104,6 @@ export default props => {
   async function authReq() {
     const res = await Api.self_auth_req({})
     if (res.result == 'success' && res.code == 0) {
-      console.log(res)
       setFormState({
         tr_cert: res.data.tr_cert,
         tr_url: res.data.tr_url,
@@ -111,7 +124,6 @@ export default props => {
 
   //서버로부터 결과 받은 후 처리
   function updateDispatch(event) {
-    console.log(event)
     if (event.detail.result == 'success' && event.detail.code == '0') {
       authCheck()
     } else {
@@ -142,7 +154,8 @@ export default props => {
           <br />
           <button
             onClick={() => {
-              props.history.goBack()
+              //props.history.goBack()
+              props.history.push(url)
             }}>
             완료
           </button>
