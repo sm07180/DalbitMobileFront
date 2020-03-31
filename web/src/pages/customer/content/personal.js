@@ -13,10 +13,11 @@ import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
 import Api from 'context/api'
-import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE} from 'context/config'
+import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
+import use from 'pages/setting/content/use'
 export default props => {
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
@@ -47,7 +48,7 @@ export default props => {
 
   const {changes, setChanges, onChange, onChangeEvent} = useChange(update, {qnaType: faqNum, onChange: -1})
   const [faqNum, setfaqNum] = useState('')
-
+  const [imgurls, setImgurl] = useState('파일선택')
   //useState
 
   //--------------------------------------------------------------------------
@@ -79,7 +80,10 @@ export default props => {
       }
     } else if (res.result === 'success') {
       context.action.alert({
-        msg: res.message
+        msg: '1:1문의를 접수하였습니다.',
+        callback: () => {
+          history.push(`/`)
+        }
       })
     }
     console.log(res)
@@ -159,6 +163,21 @@ export default props => {
     setChanges({...changes, qnaType: faqNum})
   }, [faqNum])
 
+  console.log(imgurls)
+
+  useEffect(() => {
+    setImgurl('파일선택')
+  }, [])
+
+  useEffect(() => {
+    if (changes.questionFile !== undefined && imgurls === '파일선택') {
+      setImgurl(changes.questionFile)
+    } else if (changes.questionFile !== undefined && imgurls !== '파일선택') {
+      setImgurl(changes.questionFile)
+    }
+  }, [changes.questionFile])
+
+  // } else if (changes.questionFile !== undefined) {
   //--------------------------------------------------------------------------
   return (
     <Content>
@@ -179,7 +198,7 @@ export default props => {
           <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
         </dd>
         <dd>
-          <p>※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
+          <p className="infoupload">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
         </dd>
       </dl>
       <dl>
@@ -198,23 +217,27 @@ export default props => {
         <dt>첨부파일</dt>
         <dd>
           {/* 이미지첨부파일 */}
+
           <ImgUploader>
-            <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.questionFile} />
-            <label htmlFor="imgUpload">
-              <span>찾아보기</span>
-            </label>
-            <input
-              type="file"
-              name="imgUpload"
-              id="imgUpload"
-              accept="image/jpg, image/jpeg, image/png"
-              onChange={e => {
-                uploadSingleFile(e)
-              }}
-            />
+            <div className="textinput">
+              <p className="urltext">{imgurls}</p>
+              <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.questionFile} />
+              <label htmlFor="imgUpload">
+                <span>찾아보기</span>
+              </label>
+              <input
+                type="file"
+                name="imgUpload"
+                id="imgUpload"
+                accept="image/jpg, image/jpeg, image/png"
+                onChange={e => {
+                  uploadSingleFile(e)
+                }}
+              />
+            </div>
           </ImgUploader>
 
-          <p>※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
+          <p className="infoupload">※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
         </dd>
       </dl>
       <div className="in_wrap">
@@ -246,6 +269,9 @@ const Content = styled.div`
       border: solid 1px #8556f6;
       background-color: #ffffff;
       margin: 4px;
+      @media (max-width: ${WIDTH_MOBILE_S}) {
+        width: 124px;
+      }
     }
     .cancel {
       color: ${COLOR_MAIN};
@@ -300,8 +326,10 @@ const Content = styled.div`
         padding-left: 0;
         width: 100%;
       }
-      p {
-        padding: 10px 1px;
+      .infoupload {
+        padding: 10px 1px 0 0;
+        color: #616161;
+        font-size: 14px;
         transform: skew(-0.03deg);
         @media (max-width: ${WIDTH_MOBILE}) {
           font-size: 12px;
@@ -309,6 +337,7 @@ const Content = styled.div`
       }
     }
   }
+
   textarea,
   input[type='text'] {
     display: block;
@@ -350,24 +379,41 @@ const Select = styled.div`
 const ImgUploader = styled.div`
   position: relative;
   width: 100%;
-  padding-right: 130px;
+  padding-right: 110px;
   box-sizing: border-box;
   text-align: left;
+  .urltext {
+    width: 100%;
+    background-color: #f5f5f5;
+    font-size: 14px;
+    color: #bdbdbd;
+    transform: skew(-0.03deg);
+    padding: 12px 0 12px 10px !important;
+    letter-spacing: -0.42px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 12px;
+      padding: 12px 0 12px 6px !important;
+    }
+  }
   #imgUpload {
     display: none;
   }
 
   #imgUploadTxt {
-    display: block;
+    display: none;
   }
   label {
     position: absolute;
-    top: 5px;
+    top: 0px;
     right: 0;
     display: inline-block;
-    padding: 9px 25px;
+    padding: 10px 25px;
     color: ${COLOR_MAIN};
     border-radius: 8px;
     border: 1px solid ${COLOR_MAIN};
+    max-width: 110px;
+    font-size: 14px;
   }
 `

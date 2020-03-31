@@ -327,8 +327,10 @@ const Content = styled.div`
   }
   ol.depth3 {
     margin-left: -15px;
+
     li {
       color: #616161;
+      text-align: left !important;
     }
     li:before {
       left: 4px;
