@@ -17,6 +17,8 @@ import List from './live-list'
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //useState
+  const [clicked, setClicked] = useState(false)
   //interface
   LiveIndex.context = context
   //-----------------------------------------------------------
@@ -29,7 +31,6 @@ const LiveIndex = () => {
     if (res.result === 'success') {
       //APPEND
       if (mode !== undefined && mode.type === 'append' && _.hasIn(Store().broadList, 'list')) {
-        console.log(res.data)
         const result = {paging: {...res.data.paging}, list: [...Store().broadList.list, ...res.data.list]}
         Store().action.updateBroadList(result)
       } else {
@@ -46,8 +47,14 @@ const LiveIndex = () => {
   function update(mode) {
     switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
-        const {roomNo} = mode.selectList
-        RoomJoin(roomNo + '')
+        if (!clicked) {
+          setClicked(true)
+          setTimeout(() => {
+            setClicked(false)
+          }, 2000)
+          const {roomNo} = mode.selectList
+          RoomJoin(roomNo + '')
+        }
         break
       default:
         break
@@ -82,22 +89,19 @@ export default LiveIndex
 export const RoomJoin = roomNo => {
   async function fetchData() {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log(JSON.stringify(res, null, 1))
     if (res.result === 'fail') {
       LiveIndex.context.action.alert({
         title: res.messageKey,
         msg: res.message
       })
     } else if (res.result === 'success') {
-      console.log(res)
       //성공일때
-      Hybrid('RoomJoin', res.data)
+      const {data} = res
+      Hybrid('RoomJoin', data)
     }
   }
   fetchData()
 }
 //---------------------------------------------------------------------
-const Content = styled.div`
-  display: block;
-  margin-top: 16px;
-  border-top: 1px solid ${COLOR_MAIN};
-`
+const Content = styled.div``
