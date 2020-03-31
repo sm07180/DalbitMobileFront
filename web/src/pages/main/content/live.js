@@ -51,7 +51,7 @@ export default props => {
 
   const joinRoom = obj => {
     const {roomNo} = obj
-    history.push(`/broadcast?roomNo=${roomNo}`)
+    history.push(`/broadcast/?roomNo=${roomNo}`)
   }
 
   const liveJoinRoom = roomNum => {

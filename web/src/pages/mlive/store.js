@@ -16,7 +16,7 @@ const LiveProvider = props => {
   //state
   const [broadList, setBroadList] = useState(null) // 방송방리스트
   const [roomType, setRoomType] = useState('') // roomType
-  const [searchType, setSearchType] = useState('0') // searchType
+  const [searchType, setSearchType] = useState(-1) // searchType
   const [currentPage, setCurrentPage] = useState(1) //현재페이지
   const [totalPageNumber, setTotalPageNumber] = useState(null)
 

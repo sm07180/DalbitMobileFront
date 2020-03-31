@@ -30,26 +30,15 @@ export default props => {
   })
   //---------------------------------------------------------------------
   function update(mode) {
+    alert('isHybrid = ' + isHybrid())
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         if (isHybrid()) {
           Hybrid('ExitRoom')
           context.action.updateMediaPlayerStatus(false)
         } else {
-          const beforeRoomNo = localStorage.getItem('currentRoomNo')
-          console.log('beforeRoomNo = ' + beforeRoomNo)
-
           if (mediaHandler.rtcPeerConn) {
             mediaHandler.stop()
-          }
-          if (beforeRoomNo) {
-            ;(async () => {
-              const res = await Api.broad_exit({data: {beforeRoomNo}})
-              if (res.result === 'success') {
-                sc.socketClusterDestory(false, beforeRoomNo)
-                //return res
-              }
-            })()
           }
         }
         break

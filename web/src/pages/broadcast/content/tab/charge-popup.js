@@ -210,7 +210,6 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-    alert(JSON.stringify(event.detail, null, 1))
 
     if (event.detail.result == 'success' && event.detail.code == '0') {
       setConfirmData({
@@ -234,7 +233,6 @@ export default props => {
       document.removeEventListener('store-pay', updateDispatch)
     }
   }, [])
-
   //-------------------------------------------------------- components start
   return (
     <Container ref={area}>

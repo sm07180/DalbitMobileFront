@@ -138,12 +138,13 @@ export default props => {
       return
     } else {
       localStorage.clear()
+
       context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
       context.action.updateBroadcastTotalInfo(null)
       mediaHandler.stop()
       timer.stopTimer() //방송 시간 멈춤
+      history.push('/live')
       sc.socketClusterDestory(false, UserRoomNo)
-      history.goBack()
     }
     //return res
   }

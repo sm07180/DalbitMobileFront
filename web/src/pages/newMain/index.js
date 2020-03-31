@@ -11,6 +11,8 @@ import Gnb from '../common/newGnb'
 
 // static
 import Mic from './static/ic_mike.svg'
+import PlayIcon from './static/ic_play.svg'
+import PlusIcon from './static/ic_circle_plus.svg'
 
 export default props => {
   useEffect(() => {}, [])
@@ -25,7 +27,7 @@ export default props => {
               <Link to={'/mlive'}>라이브</Link>
             </div>
             <div className="tab">
-              <Link to={'/ranking'}>랭킹</Link>
+              <Link to={'/mrank'}>랭킹</Link>
             </div>
             <div className="tab">
               <Link to={'/store'}>스토어</Link>
@@ -36,9 +38,55 @@ export default props => {
           </div>
         </div>
       </SubMain>
+
+      <Content>
+        <div className="section"></div>
+        <div className="section">
+          <div className="title-wrap">
+            <div className="title">
+              <div className="txt">실시간 LIVE</div>
+              <img className="icon live" src={PlayIcon} />
+            </div>
+            <img className="plus-icon" src={PlusIcon} />
+          </div>
+        </div>
+      </Content>
     </MainWrap>
   )
 }
+
+const Content = styled.div`
+  .section {
+    margin-top: 22px;
+    padding: 0 16px;
+
+    .title-wrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .txt {
+          color: #424242;
+          font-size: 18px;
+          font-weight: bold;
+          letter-spacing: -0.36px;
+        }
+        .icon {
+          &.live {
+            display: block;
+            width: 16px;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+`
 
 const SubMain = styled.div`
   height: 310px;

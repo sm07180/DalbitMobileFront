@@ -64,14 +64,15 @@ const App = () => {
   }, [])
 
   const authToken = useMemo(() => {
-    const cookie = Utility.getCookie('authToken')
-    if (cookie !== undefined) {
-      return cookie
-    }
-
     const tempAuthTokenTag = document.getElementById('authToken')
+    // native app case
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
+    } else {
+      const cookie = Utility.getCookie('authToken')
+      if (cookie !== undefined) {
+        return cookie
+      }
     }
     return ''
   }, [])
@@ -144,6 +145,9 @@ const App = () => {
     Api.setAuthToken(authToken)
 
     // Renew all initial data
+    const storageTotalInfoObj = JSON.parse(localStorage.getItem('BroadTotalInfo'))
+    if (storageTotalInfoObj != '') context.action.updateBroadcastTotalInfo(storageTotalInfoObj)
+
     fetchData()
   }, [])
 
