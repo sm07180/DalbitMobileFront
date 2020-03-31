@@ -43,6 +43,8 @@ export default props => {
         const resExitRoom = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
         const {code, result, data, message} = resExitRoom
         if (result === 'success') {
+          localStorage.clear()
+
           const resRoomJoin = await Api.broad_join(obj) //방입장
           const {code, result, data, message} = resRoomJoin
           if (result === 'success') {
