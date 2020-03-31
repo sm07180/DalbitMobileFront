@@ -91,30 +91,6 @@ export default props => {
 
           <div className="content-wrap">
             <LiveList list={liveList} />
-            {/* {liveList.map((list, idx) => {
-              const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
-
-              return (
-                <LiveList key={`live-${idx}`} bgImg={bgImg['thumb150x150']}>
-                  <div className="broadcast-img" />
-                  <div className="broadcast-content">
-                    <div className="title">{title}</div>
-                    <div className="nickname">{bjNickNm}</div>
-                    <div className="detail">
-                      <div className="broadcast-type">{broadcastLive[roomType]}</div>
-                      <div className="value">
-                        <img src={HeartIcon} />
-                        <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
-                      </div>
-                      <div className="value">
-                        <img src={HeadphoneIcon} />
-                        <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </div>
-                </LiveList>
-              )
-            })} */}
           </div>
         </div>
       </Content>
