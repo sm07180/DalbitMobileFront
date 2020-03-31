@@ -54,6 +54,7 @@ export default props => {
       }
       localStorage.setItem('currentRoomNo', roomNo)
     } else {
+      alert('code = ' + code)
       //참여 성공(0) ,회원 아닐시(-1),해당방 미존재(-2),종료된 방송(-3),이미 참여(-4),입장 제한(-5),나이 제한(-6)
       if (code !== '-1') {
         if (code === '-4') {
@@ -61,7 +62,7 @@ export default props => {
           if (isHybrid()) {
             //alert('EnterRoom')
             setReadyRoom(false)
-            Hybrid('EnterRoom', '')
+            //Hybrid('EnterRoom', '')
             //   //props.history.goBack()
           } else {
             //   alert('asdasdasdasd')
