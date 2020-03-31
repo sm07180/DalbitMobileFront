@@ -80,7 +80,7 @@ export default props => {
     // }
     //이전 방을 Exit 하지 않고 방송방을 진입하려고 할때 이전 룸 정보를 체크 해야 한다.
     alert('beforeRoomNo = ' + beforeRoomNo)
-    if (beforeRoomNo !== '') {
+    if (beforeRoomNo !== '' || beforeRoomNo !== null) {
       // 이전방과 현재 접속하려는 방이 방정보가 같으면
       alert('room = ' + room)
       if (room === beforeRoomNo) {
