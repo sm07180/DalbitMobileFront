@@ -1,17 +1,14 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
+// component
+import Swiper from 'components/ui/swiper.js'
+
 // static
 import LiveIcon from '../static/ic_live.svg'
 
-import Swiper from 'react-id-swiper'
-
 export default props => {
-  const {list} = props
-  const params = {
-    slidesPerView: 7
-    // spaceBetween: 30
-  }
+  let {list} = props
 
   return (
     <RecommendWrap>
@@ -22,19 +19,20 @@ export default props => {
           <span>{list ? `/ ${list.length}` : ''}</span>
         </div>
       </div>
-      {list && (
-        <Swiper className="swiper-wrap" {...params}>
-          {list.slice(0, 3).map((broadcast, idx) => {
+
+      <Swiper slideList={list}>
+        {list &&
+          list.map((broadcast, idx) => {
             const {profImg, nickNm, title} = broadcast
-            // console.log(profImg)
-            return (
-              <div className="b-list" key={`b-${idx}`}>
-                <img width={50} src={profImg['thumb62x62']} />
-              </div>
-            )
+            return <div className="b-list" key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}} />
           })}
-        </Swiper>
-      )}
+      </Swiper>
+
+      {/* <div className="swiper-wrap">
+        <div className="wrapper">
+          
+        </div>
+      </div> */}
     </RecommendWrap>
   )
 }
@@ -72,10 +70,5 @@ const RecommendWrap = styled.div`
         margin-right: 4px;
       }
     }
-  }
-
-  .swiper-wrapper {
-    display: flex;
-    justify-content: space-around;
   }
 `
