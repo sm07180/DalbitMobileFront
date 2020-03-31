@@ -123,7 +123,7 @@ const Content = styled.div`
       transform: translatey(-50%);
       select {
         display: inline-block;
-        padding: 10px;
+        padding: 10px 10px 10px 5px;
       }
     }
     .wrapper {
@@ -142,7 +142,7 @@ const Content = styled.div`
       font-style: normal;
       line-height: 1.14;
       letter-spacing: -0.35px;
-      background: #f5f5f5;
+      background: transparent;
     }
   }
 `

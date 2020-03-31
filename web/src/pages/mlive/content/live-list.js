@@ -71,6 +71,12 @@ const Profile = styled.span`
 const Info = styled.div`
   box-sizing: border-box;
   padding-left: 88px;
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   > h1 {
     display: block;
     padding: 6px 0;
