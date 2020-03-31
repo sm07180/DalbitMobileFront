@@ -18,6 +18,7 @@ import InputComment from './chat-input-comment'
 import store from 'pages/store'
 import {BroadCastStore} from '../store'
 import Api from 'context/api'
+import {isHybrid, Hybrid} from 'context/hybrid'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -34,7 +35,7 @@ export default props => {
   const scrollbars = useRef(null) // 채팅창 스크롤 영역 선택자
   const store = useContext(BroadCastStore)
 
-  const {broadcastTotalInfo} = context
+  const {mediaHandler, broadcastTotalInfo} = context
   const roomInfo = broadcastTotalInfo
   //---------------------------------------------------------------------
   //function
@@ -142,14 +143,26 @@ export default props => {
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
       const recvMsg = data.detail.data.recvMsg
+      const cmd = data.detail.data.cmd
+
+      if (cmd === 'chatEnd') {
+        if (data.detail.data.chatEnd.type === 'bjOut') {
+          if (!isHybrid()) {
+            Api.broad_exit({data: {roomNo: data.detail.channel}})
+            mediaHandler.stop()
+            sc.socketClusterDestory(false, context)
+            props.history.goBack()
+          }
+        }
+      }
       // console.log(recvMsg)
       //총접속자 , 누적 사용자수 업데이트
-      if (data.detail.data.cmd == 'connect' || data.detail.data.cmd == 'disconnect') {
+      if (cmd == 'connect' || cmd == 'disconnect') {
         // if (store.listenerUpdate > 0) {
         //   listenerlist = listenerlist.push(store.listenerUpdate)
         // }
         context.action.updateBroadcastTotalInfo(data.detail.data.count)
-        if (data.detail.data.cmd == 'connect') {
+        if (cmd == 'connect') {
           // if (data.detail.data.user.memNo !== context.token.memNo) {
           //   listenerlist.push({
           //     nickNm: data.detail.data.user.nk,
@@ -181,9 +194,9 @@ export default props => {
         }
       }
       //랭킹,좋아요 수
-      if (data.detail.data.cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
+      if (cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
       // 공지사항
-      if (data.detail.data.cmd === 'reqNotice') {
+      if (cmd === 'reqNotice') {
         if (recvMsg.msg !== '') context.action.updateBroadcastTotalInfo({hasNotice: true})
         else context.action.updateBroadcastTotalInfo({hasNotice: false})
 
@@ -192,14 +205,14 @@ export default props => {
       }
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
-      if (data.detail.data.cmd === 'reqGrant') {
+      if (cmd === 'reqGrant') {
         if (context.profile.memNo === data.detail.data.chat.memNo) {
           context.action.updateBroadcastTotalInfo({auth: parseInt(recvauth)})
         }
       }
       // 강퇴 , 금칙어 강퇴
       const recvkickoutMsg = data.detail.data.reqKickOut
-      if (data.detail.data.cmd === 'reqKickOut' || data.detail.data.cmd === 'reqBanWord') {
+      if (cmd === 'reqKickOut' || cmd === 'reqBanWord') {
         //강퇴 당하는 사람이 본인이면
 
         if (data.detail.data.reqKickOut.revMemNo === context.token.memNo) {
