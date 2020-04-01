@@ -91,16 +91,53 @@ export const RoomJoin = roomNo => {
   async function fetchData() {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     if (res.result === 'fail') {
-      console.log(JSON.stringify(res, null, 1))
-      LiveIndex.context.action.alert({
-        title: res.messageKey,
-        msg: res.message
-      })
+      switch (res.code) {
+        case '-4': //----------------------------이미 참가 되어있습니다
+          LiveIndex.context.action.confirm({
+            callback: () => {
+              //강제방송종료
+              RoomExit(roomNo + '')
+            },
+            buttonText: {
+              left: '취소',
+              right: '강제종료'
+            },
+            title: res.messageKey,
+            msg: res.message
+          })
+          break
+        default:
+          LiveIndex.context.action.alert({
+            title: res.messageKey,
+            msg: res.message
+          })
+          break
+      }
+      //--
     } else if (res.result === 'success') {
       //성공일때
       const {data} = res
       console.log(JSON.stringify(data, null, 1))
       Hybrid('RoomJoin', data)
+    }
+  }
+  fetchData()
+}
+/**
+ * @title 방송방종료
+ * @param {roomNo} string
+ */
+export const RoomExit = roomNo => {
+  async function fetchData() {
+    const res = await Api.broad_exit({data: {roomNo: roomNo}})
+    if (res.result === 'fail') {
+      LiveIndex.context.action.alert({
+        title: res.messageKey,
+        msg: res.message
+      })
+      return null
+    } else if (res.result === 'success') {
+      return res
     }
   }
   fetchData()
