@@ -188,10 +188,11 @@ export default props => {
         {makeKickout()}
         <div className="submitWrap">
           <button
+            className={objProfileInfo.isFan === true ? 'on' : ''}
             onClick={() => {
               broad_fan_change(objProfileInfo.isFan)
             }}>
-            {objProfileInfo.isFan === false ? '+팬등록' : '팬해제'}
+            {objProfileInfo.isFan === false ? '+팬등록' : '팬'}
           </button>
           <button onClick={() => goGiftSend()}>선물하기</button>
         </div>
@@ -421,16 +422,24 @@ const Container = styled.div`
       width: 50%;
       padding: 15px 0 15px 0;
       border-radius: 10px;
-      background-color: #8556f6;
-      color: #fff;
+      border: 1px solid #bdbdbd;
+      /* background-color: #8556f6; */
+      background-color: #fff;
+      /* color: #fff; */
+      color: #9e9e9e;
       font-size: 16px;
       transform: skew(-0.03deg);
-    }
-    & button:first-child {
       margin-right: 8px;
-      border: 1px solid #bdbdbd;
-      background-color: #fff;
-      color: #9e9e9e;
+    }
+    & button:last-child {
+      margin-right: 8px;
+      border: 1px solid #8556f6;
+      color: #fff;
+      background-color: #8556f6;
+    }
+    & .on {
+      border: 1px solid #8556f6;
+      color: #8556f6;
     }
   }
 `
