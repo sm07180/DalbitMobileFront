@@ -43,7 +43,9 @@ export default props => {
       const res = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
       if (res.result === 'success') {
         if (isHybrid()) {
+          alert(' hybrid')
         } else {
+          alert('no hybrid')
           sc.socketClusterDestory(false, beforeRoomNo)
           localStorage.clear()
         }
