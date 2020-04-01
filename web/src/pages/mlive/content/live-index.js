@@ -91,6 +91,7 @@ export const RoomJoin = roomNo => {
   async function fetchData() {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     if (res.result === 'fail') {
+      console.log(JSON.stringify(res, null, 1))
       LiveIndex.context.action.alert({
         title: res.messageKey,
         msg: res.message
@@ -98,6 +99,7 @@ export const RoomJoin = roomNo => {
     } else if (res.result === 'success') {
       //성공일때
       const {data} = res
+      console.log(JSON.stringify(data, null, 1))
       Hybrid('RoomJoin', data)
     }
   }
