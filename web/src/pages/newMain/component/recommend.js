@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 // component
@@ -27,7 +27,14 @@ export default props => {
         <Swiper>
           {list.map((broadcast, idx) => {
             const {profImg, nickNm, title} = broadcast
-            return <div className="b-list" key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}} />
+            return (
+              <div
+                className="slide"
+                key={`b-${idx}`}
+                onClick={() => console.log('idx ' + idx)}
+                style={{backgroundImage: `url(${profImg['thumb88x88']})`}}
+              />
+            )
           })}
         </Swiper>
       )}
@@ -36,6 +43,12 @@ export default props => {
 }
 
 const RecommendWrap = styled.div`
+  .dalbit-swiper {
+    .slide {
+      margin: 0 5px;
+    }
+  }
+
   .selected-wrap {
     position: relative;
     height: 120px;

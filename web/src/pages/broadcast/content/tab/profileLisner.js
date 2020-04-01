@@ -32,16 +32,10 @@ export default props => {
 
   //--------------------------------------
   //api
-
-  //팬등록
-  async function broad_fan_change(isFan) {
-    console.log('팬등록 = ' + store.roomInfo)
-    const methodType = isFan === false ? 'POST' : 'DELETE'
-    // 팬이 아니여서 팬등록 가능 상태
+  async function broadFanChangeFetch(methodType) {
     const res = await Api.broad_fan_insert({
       data: {
         memNo: objProfileInfo.memNo,
-        //memNo: context.broadcastTotalInfo.bjMemNo,
         roomNo: context.broadcastTotalInfo.roomNo
       },
       method: methodType
@@ -52,13 +46,34 @@ export default props => {
       } else {
         store.action.updateBroadcastProfileInfo({isFan: false})
       }
+
+      context.action.alert({
+        callback: () => {
+          //console.log('callback처리')
+        },
+        msg: res.message
+      })
     }
-    context.action.alert({
-      callback: () => {
-        //console.log('callback처리')
-      },
-      msg: res.message
-    })
+  }
+
+  //팬등록
+  function broad_fan_change(isFan) {
+    console.log('팬등록 = ' + store.roomInfo)
+    const methodType = isFan === false ? 'POST' : 'DELETE'
+    // 팬이 아니여서 팬등록 가능 상태
+    if (isFan === true) {
+      context.action.confirm({
+        //콜백처리
+        callback: () => {
+          broadFanChangeFetch(methodType)
+        },
+        //캔슬콜백처리
+        cancelCallback: () => {},
+        msg: `${objProfileInfo.nickNm} 님의 팬을 취소하시겠습니까?`
+      })
+    } else {
+      broadFanChangeFetch(methodType)
+    }
   }
 
   //매니저 지정 , 해제 Api
