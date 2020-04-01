@@ -98,10 +98,6 @@ export const RoomJoin = roomNo => {
               //강제방송종료
               RoomExit(roomNo + '')
             },
-            buttonText: {
-              left: '취소',
-              right: '강제종료'
-            },
             title: res.messageKey,
             msg: res.message
           })
@@ -117,7 +113,8 @@ export const RoomJoin = roomNo => {
     } else if (res.result === 'success') {
       //성공일때
       const {data} = res
-      console.log(JSON.stringify(data, null, 1))
+      // console.log(JSON.stringify(data, null, 1))
+      // alert('실행')
       Hybrid('RoomJoin', data)
     }
   }
@@ -135,9 +132,9 @@ export const RoomExit = roomNo => {
         title: res.messageKey,
         msg: res.message
       })
-      return null
     } else if (res.result === 'success') {
-      return res
+      console.log(res)
+      RoomJoin(roomNo + '')
     }
   }
   fetchData()
