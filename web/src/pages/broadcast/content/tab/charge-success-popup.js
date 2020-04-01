@@ -87,6 +87,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
+  min-height: 486px;
   margin: 0 auto;
   margin-top: 33px;
 

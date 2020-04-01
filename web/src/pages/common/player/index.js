@@ -33,6 +33,7 @@ export default props => {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         if (isHybrid()) {
+          alert('Hybrid ExitRoom')
           Hybrid('ExitRoom')
           context.action.updateMediaPlayerStatus(false)
         } else {

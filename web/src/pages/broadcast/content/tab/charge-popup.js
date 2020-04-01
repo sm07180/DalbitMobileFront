@@ -202,7 +202,7 @@ export default props => {
     let thisHeight = ''
     if (document.getElementsByClassName('round')[0]) {
       if (window.innerWidth > 600) {
-        thisHeight = 666
+        thisHeight = 683
       } else {
         thisHeight = document.getElementsByClassName('round')[0].offsetHeight
       }
@@ -212,8 +212,8 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-    alert(JSON.stringify(event.detail))
-    alert('payType', payType)
+    // alert(JSON.stringify(event.detail))
+    // alert('payType', payType)
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,
