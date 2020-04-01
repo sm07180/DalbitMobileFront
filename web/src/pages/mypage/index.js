@@ -9,7 +9,8 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout'
-import {WIDTH_PC, WIDTH_TABLET} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 //context
 import Api from 'context/api'
@@ -44,13 +45,13 @@ export default props => {
   }
 
   const navigationList = [
-    // {type: 'notice', component: Notice, txt: '공지사항'},
+    //{type: 'notice', component: Notice, txt: '공지사항'},
     {type: 'fanboard', component: FanBoard, txt: '팬 보드'},
     // {type: 'cast', component: Cast, txt: '캐스트'},
     {type: 'wallet', component: Wallet, txt: '내 지갑'},
     {type: 'report', component: Report, txt: '리포트'}
     // {type: 'alert', component: Alert, txt: '알림'},
-    // {type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
+    //{type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
 
   return (
@@ -75,12 +76,12 @@ export default props => {
 
 const SubContent = styled.div`
   margin: 0 auto;
-
-  @media (max-width: ${WIDTH_PC}) {
-    width: 90%;
-  }
 `
 
 const Content = styled.section`
-  margin: 30px 0 100px 0;
+  margin: 30px auto 100px auto;
+  width: 1210px;
+  @media (max-width: 1260px) {
+    width: 95%;
+  }
 `

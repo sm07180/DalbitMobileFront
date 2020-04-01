@@ -59,9 +59,4 @@ const Navigation = styled.div`
       }
     }
   }
-
-  @media (max-width: ${WIDTH_PC}) {
-    width: 90%;
-    margin: 0 auto;
-  }
 `
