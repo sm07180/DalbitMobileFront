@@ -14,9 +14,7 @@ export default props => {
   const wrapperRef = useRef()
 
   const setInitClosureVariable = () => {
-    if (autoIntervalId !== null) {
-      clearIntervalId(autoIntervalId)
-    }
+    clearAutoSlideInterval()
 
     touchStartX = null
     touchEndX = null
@@ -26,32 +24,9 @@ export default props => {
     intervalBIdx = null
   }
 
-  const touchStartEvent = e => {
-    const swiperNode = swiperRef.current
-    const wrapperNode = wrapperRef.current
+  const oneStepSlide = direction => {
+    clearAutoSlideInterval()
 
-    if (wrapperNode.clientWidth <= swiperNode.clientWidth) {
-      touchStartStatus = false
-      return
-    }
-
-    touchStartStatus = true
-    touchStartX = e.touches[0].clientX
-  }
-  const touchMoveEvent = e => {
-    touchEndX = e.touches[0].clientX
-  }
-  const touchEndEvent = e => {
-    if (!touchEndX || !touchStartStatus || swiping) {
-      return
-    }
-
-    const diff = touchEndX - touchStartX
-    const minDiffSize = Math.abs(diff) < 80
-
-    if (minDiffSize) {
-      return
-    }
     const childrenLength = props.children.length
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
@@ -59,11 +34,9 @@ export default props => {
     const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
     let moveSize = null
 
-    if (diff > 0) {
-      // right swipe
+    if (direction === 'right') {
       moveSize = centerMoveSize + moveBaseUnit
-    } else {
-      // left swipe
+    } else if (direction === 'left') {
       moveSize = centerMoveSize - moveBaseUnit
     }
 
@@ -73,7 +46,7 @@ export default props => {
 
     setTimeout(() => {
       wrapperNode.classList.remove('animate')
-      if (diff > 0) {
+      if (direction === 'right') {
         // right swipe
         const l_child = wrapperNode.lastChild
         const cloned = l_child.cloneNode(true)
@@ -84,7 +57,7 @@ export default props => {
 
         l_child.removeEventListener('click', clickSwipEvent)
         wrapperNode.removeChild(l_child)
-      } else {
+      } else if (direction === 'left') {
         // left swipe
         const f_child = wrapperNode.firstChild
         const cloned = f_child.cloneNode(true)
@@ -102,33 +75,63 @@ export default props => {
       onSwipe(bIdx)
 
       wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
-      swiping = false
       touchStartX = null
       touchEndX = null
+      swiping = false
+
+      autoSlideInterval()
     }, 300)
   }
 
-  const touchCancelEvent = () => {}
-
   const autoSlideInterval = () => {
+    autoIntervalId = setInterval(() => {
+      oneStepSlide('left')
+    }, 3000)
+  }
+
+  const clearAutoSlideInterval = () => {
     if (autoIntervalId !== null) {
-      clearIntervalId(autoIntervalId)
+      clearInterval(autoIntervalId)
+      autoIntervalId = null
     }
+  }
+
+  const touchStartEvent = e => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
 
-    autoIntervalId = setInterval(() => {
-      if (intervalBIdx !== null) {
-        const childrenLength = props.children.length
-        intervalBIdx = intervalBIdx + 1
+    if (wrapperNode.clientWidth <= swiperNode.clientWidth) {
+      touchStartStatus = false
+      return
+    }
 
-        if (intervalBIdx === childrenLength) {
-          intervalBIdx = 0
-        }
-        onSwipe(intervalBIdx)
-      }
-    }, 3000)
+    touchStartStatus = true
+    touchStartX = e.touches[0].clientX
   }
+  const touchMoveEvent = e => {
+    touchEndX = e.touches[0].clientX
+  }
+
+  const touchEndEvent = e => {
+    if (!touchEndX || !touchStartStatus || swiping) {
+      return
+    }
+
+    const diff = touchEndX - touchStartX
+    const minDiffSize = Math.abs(diff) < 80
+
+    if (minDiffSize) {
+      return
+    }
+
+    if (diff > 0) {
+      oneStepSlide('right')
+    } else {
+      oneStepSlide('left')
+    }
+  }
+
+  const touchCancelEvent = () => {}
 
   const initialSwipperWrapperStyle = () => {
     const swiperNode = swiperRef.current
