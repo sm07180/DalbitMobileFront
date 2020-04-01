@@ -151,10 +151,11 @@ export default props => {
             Api.broad_exit({data: {roomNo: data.detail.channel}})
             mediaHandler.stop()
             sc.socketClusterDestory(false, context)
-            props.history.goBack()
 
             context.action.alert({
-              callback: () => {},
+              callback: () => {
+                props.history.goBack()
+              },
               msg: recvMsg
             })
           }
