@@ -114,7 +114,7 @@ const Alert = styled.section`
   }
   /* 메시지 */
   .msg {
-    padding: 62px 63px;
+    padding: 62px 20px;
     font-size: 16px;
     line-height: 1.71;
     letter-spacing: -0.35px;
