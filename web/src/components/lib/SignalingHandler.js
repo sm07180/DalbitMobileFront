@@ -229,8 +229,8 @@ export default class SignalingHandler {
   }
 
   setMuted(status) {
-    if (this.audioTag) {
-      this.audioTag.muted = status
+    if (this.audioStream) {
+      this.audioStream.getTracks()[0].enabled = status
     }
   }
 
