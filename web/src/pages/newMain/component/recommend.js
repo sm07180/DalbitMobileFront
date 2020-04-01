@@ -2,7 +2,7 @@ import React, {useEffect, useState, useLayoutEffect} from 'react'
 import styled from 'styled-components'
 
 // component
-import Swiper from 'components/ui/swiper.js'
+import CustomSwiper from 'components/ui/swiper.js'
 
 // static
 import LiveIcon from '../static/ic_live.svg'
@@ -17,6 +17,12 @@ export default props => {
 
   const selectBroadcast = idx => {
     setSelectedBIdx(idx)
+  }
+
+  const clickSwipEvent = e => {
+    const target = e.currentTarget
+    const bIdx = Number(target.getAttribute('data-idx'))
+    selectBroadcast(bIdx)
   }
 
   useEffect(() => {
@@ -37,14 +43,14 @@ export default props => {
         </div>
       </div>
       {list && (
-        <Swiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx}>
+        <CustomSwiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx} clickSwipEvent={clickSwipEvent}>
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (
               <div className="slide" data-idx={idx} key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}} />
             )
           })}
-        </Swiper>
+        </CustomSwiper>
       )}
       <div className="selected-title">{selectedBIdx !== null ? list[selectedBIdx]['title'] : ''}</div>
       <div className="selected-nickname">{selectedBIdx !== null ? list[selectedBIdx]['nickNm'] : ''}</div>

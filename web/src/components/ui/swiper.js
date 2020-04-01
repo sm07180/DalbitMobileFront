@@ -7,7 +7,7 @@ let swiping = false
 let touchStartStatus = false
 
 export default props => {
-  const {onSwipe} = props
+  const {onSwipe, selectedBIdx, clickSwipEvent} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -63,18 +63,26 @@ export default props => {
         const l_child = wrapperNode.lastChild
         const cloned = l_child.cloneNode(true)
         const f_child = wrapperNode.firstChild
+
+        cloned.addEventListener('click', clickSwipEvent)
         wrapperNode.insertBefore(cloned, f_child)
+
+        l_child.removeEventListener('click', clickSwipEvent)
         wrapperNode.removeChild(l_child)
       } else {
         // left swipe
-        const f_Child = wrapperNode.firstChild
-        const cloned = f_Child.cloneNode(true)
+        const f_child = wrapperNode.firstChild
+        const cloned = f_child.cloneNode(true)
+
+        cloned.addEventListener('click', clickSwipEvent)
         wrapperNode.appendChild(cloned)
-        wrapperNode.removeChild(f_Child)
+
+        f_child.removeEventListener('click', clickSwipEvent)
+        wrapperNode.removeChild(f_child)
       }
 
       const centerNodeIdx = Math.floor(childrenLength / 2)
-      const targetNode = wrapperNode.children[centerNodeIdx]
+      const targetNode = wrapperNode.childNodes[centerNodeIdx]
       const bIdx = Number(targetNode.getAttribute('data-idx'))
       onSwipe(bIdx)
 
@@ -96,13 +104,26 @@ export default props => {
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }
 
+  const setAllSlideClickEvent = () => {
+    const wrapperNode = wrapperRef.current
+    wrapperNode.childNodes.forEach(child => {
+      child.addEventListener('click', clickSwipEvent)
+    })
+  }
+
   useEffect(() => {
     initialSwipperWrapperStyle()
     window.addEventListener('resize', initialSwipperWrapperStyle)
+
+    setAllSlideClickEvent()
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
     }
   }, [])
+
+  useEffect(() => {
+    console.log('df', selectedBIdx)
+  }, [selectedBIdx])
 
   return (
     <Swiper
