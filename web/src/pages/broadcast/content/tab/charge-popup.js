@@ -51,6 +51,8 @@ function payRequest(obj) {
   //아래와 같이 ext_inc_comm.js에 선언되어 있는 함수를 호출
   MCASH_PAYMENT(obj)
 }
+
+let payType = ''
 export default props => {
   const context = useContext(Context)
   //-------------------------------------------------------- declare start
@@ -162,14 +164,14 @@ export default props => {
   //fetch
 
   async function payFetch() {
-    const type = chargeData[charge].fetch
+    payType = chargeData[charge].fetch
     const obj = {
       data: {
         Prdtnm: context.popup_code[1].name,
         Prdtprice: context.popup_code[1].price
       }
     }
-    const res = await Api[type]({...obj})
+    const res = await Api[payType]({...obj})
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
       const {current} = formTag
@@ -210,13 +212,14 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-    alert(JSON.stringify(event.detail))
+    // alert(JSON.stringify(event.detail))
+    // alert('payType', payType)
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,
         itemName: context.popup_code[1].name,
         price: context.popup_code[1].price,
-        type: chargeData[charge].fetch
+        type: payType
       })
       setConfirm(true)
     } else {

@@ -10,6 +10,10 @@ import LiveIcon from '../static/ic_live.svg'
 export default props => {
   let {list} = props
 
+  if (Array.isArray(list) && list.length % 2 === 0) {
+    list.pop()
+  }
+
   return (
     <RecommendWrap>
       <div className="selected-wrap">
@@ -19,20 +23,14 @@ export default props => {
           <span>{list ? `/ ${list.length}` : ''}</span>
         </div>
       </div>
-
-      <Swiper slideList={list}>
-        {list &&
-          list.map((broadcast, idx) => {
+      {list && (
+        <Swiper>
+          {list.map((broadcast, idx) => {
             const {profImg, nickNm, title} = broadcast
             return <div className="b-list" key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}} />
           })}
-      </Swiper>
-
-      {/* <div className="swiper-wrap">
-        <div className="wrapper">
-          
-        </div>
-      </div> */}
+        </Swiper>
+      )}
     </RecommendWrap>
   )
 }
