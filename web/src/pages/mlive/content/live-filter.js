@@ -35,10 +35,8 @@ export default props => {
         </button>
         <div className="in_wrap">
           <span className="wrapper type1">
-            <i>
-              <img src={Arrow} />
-            </i>
             <select
+              dir="rtl"
               className="search"
               name="searchType"
               onChange={() => {
@@ -51,12 +49,13 @@ export default props => {
               <option value="2">인기</option>
               <option value="3">신입</option>
             </select>
-          </span>
-          <span className="wrapper type2">
             <i>
               <img src={Arrow} />
             </i>
+          </span>
+          <span className="wrapper type2">
             <select
+              dir="rtl"
               className="room"
               name="roomType"
               defaultValue={Store().roomType}
@@ -80,6 +79,9 @@ export default props => {
               <option value="11">건강/스포츠</option>
               <option value="99">기타</option>
             </select>
+            <i>
+              <img src={Arrow} />
+            </i>
           </span>
         </div>
       </section>
@@ -117,15 +119,19 @@ const Content = styled.div`
       margin-left: 10px;
       color: #bdbdbd;
       font-size: 14px;
+      i {
+        display: inline-block;
+        padding-right: 5px;
+      }
     }
     .in_wrap {
       position: absolute;
       top: 50%;
-      right: 0;
+      right: 5%;
       transform: translatey(-50%);
       select {
         display: inline-block;
-        padding: 10px 10px 10px 5px;
+        padding: 5px;
       }
     }
     .wrapper {
@@ -145,9 +151,6 @@ const Content = styled.div`
       line-height: 1.14;
       letter-spacing: -0.35px;
       background: transparent;
-      &.search {
-        margin-right: 20px;
-      }
     }
   }
 `
