@@ -19,27 +19,31 @@ export default props => {
 
   //context
   const context = useContext(Context)
-  const authText = {
-    default: ['', '최초 한번'],
-    charge: ['유료결제를 위해', '최초 결제 시'],
-    cast: ['방송 개설을 위해', '최초 방송방 개설 시']
-  }
 
-  let authType = ''
+  //formData
   const [formState, setFormState] = useState({
     tr_cert: '',
     tr_url: '',
     tr_add: ''
   })
 
+  //인증타입 설정
+  let authType = ''
   if (_.hasIn(props.location.state, 'type')) {
     authType = props.location.state.type
   } else {
     authType = 'default'
   }
 
-  let url = ''
+  //인증 타입에 따른 본인인증 페이지 텍스트
+  const authText = {
+    default: ['', '최초 한번'],
+    charge: ['유료결제를 위해', '최초 결제 시'],
+    cast: ['방송 개설을 위해', '최초 방송방 개설 시']
+  }
 
+  //인증 완료 후 갈 화면 url
+  let url = ''
   switch (authType) {
     case 'charge':
       url = '/store'
@@ -55,7 +59,7 @@ export default props => {
   //---------------------------------------------------------------------
   //fetchData
 
-  //본인인증 여부 체크. 테스트용
+  //본인인증 여부 체크
   async function authCheck() {
     const res = await Api.self_auth_check({})
     if (res.result == 'success' && res.code == '1') {
@@ -154,7 +158,6 @@ export default props => {
           <br />
           <button
             onClick={() => {
-              //props.history.goBack()
               props.history.push(url)
             }}>
             완료
