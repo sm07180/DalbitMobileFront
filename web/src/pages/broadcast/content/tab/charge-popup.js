@@ -202,7 +202,7 @@ export default props => {
     let thisHeight = ''
     if (document.getElementsByClassName('round')[0]) {
       if (window.innerWidth > 600) {
-        thisHeight = 666
+        thisHeight = 683
       } else {
         thisHeight = document.getElementsByClassName('round')[0].offsetHeight
       }
