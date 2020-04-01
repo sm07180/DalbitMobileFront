@@ -100,7 +100,7 @@ const Alert = styled.section`
   }
   /* 메시지 */
   .msg {
-    padding: 62px 63px;
+    padding: 62px 20px;
     font-size: 16px;
     font-weight: normal;
     font-stretch: normal;

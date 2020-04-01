@@ -17,8 +17,6 @@ import List from './live-list'
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
-  //useState
-  const [clicked, setClicked] = useState(false)
   //interface
   LiveIndex.context = context
   //-----------------------------------------------------------
