@@ -77,7 +77,6 @@ const Profile = styled.span`
 const Info = styled.div`
   box-sizing: border-box;
   padding-left: 88px;
-  user-drag: none;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-drag: none;
