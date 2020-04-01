@@ -1,25 +1,86 @@
 import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
 
-export default props => {
-  console.log('props', props)
+let touchStartX = null
+let touchEndX = null
+let swiping = false
 
+export default props => {
   const swiperRef = useRef()
   const wrapperRef = useRef()
-  const [swiperStyle, setSwiperStyle] = useState(0)
+
+  const touchStartEvent = e => {
+    touchStartX = e.touches[0].clientX
+  }
+  const touchMoveEvent = e => {
+    touchEndX = e.touches[0].clientX
+  }
+  const touchEndEvent = e => {
+    const diff = touchEndX - touchStartX
+    const minDiffSize = Math.abs(diff) < 80
+
+    if (swiping || minDiffSize) {
+      return
+    }
+    const childrenLength = props.children.length
+    const swiperNode = swiperRef.current
+    const wrapperNode = wrapperRef.current
+    const moveBaseUnit = wrapperNode.clientWidth / childrenLength
+    const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
+    let moveSize = null
+
+    if (diff > 0) {
+      // right swipe
+      moveSize = centerMoveSize + moveBaseUnit
+    } else {
+      // left swipe
+      moveSize = centerMoveSize - moveBaseUnit
+    }
+
+    swiping = true
+    wrapperNode.classList.add('animate')
+    wrapperNode.style.transform = `translate3d(${moveSize}px, 0, 0)`
+
+    setTimeout(() => {
+      wrapperNode.classList.remove('animate')
+      if (diff > 0) {
+        // right swipe
+        const l_child = wrapperNode.lastChild
+        const cloned = l_child.cloneNode(true)
+        const f_child = wrapperNode.firstChild
+        wrapperNode.insertBefore(cloned, f_child)
+        wrapperNode.removeChild(l_child)
+      } else {
+        // left swipe
+        const f_Child = wrapperNode.firstChild
+        const cloned = f_Child.cloneNode(true)
+        wrapperNode.appendChild(cloned)
+        wrapperNode.removeChild(f_Child)
+      }
+
+      wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+      swiping = false
+    }, 500)
+  }
+  const touchCancelEvent = () => {}
 
   useEffect(() => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
+    const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
 
-    setSwiperStyle({
-      swiperHeight: wrapperNode.clientHeight + 'px',
-      wrapperTransform: `translate3d(${(swiperNode.clientWidth - wrapperNode.clientWidth) / 2}px, 0, 0)`
-    })
+    swiperNode.style.height = `${wrapperNode.clientHeight}px`
+    wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }, [])
 
   return (
-    <Swiper swiperStyle={swiperStyle} ref={swiperRef}>
+    <Swiper
+      className="dalbit-swiper"
+      ref={swiperRef}
+      onTouchStart={touchStartEvent}
+      onTouchMove={touchMoveEvent}
+      onTouchEnd={touchEndEvent}
+      onTouchCancel={touchCancelEvent}>
       <div className="wrapper" ref={wrapperRef}>
         {props.children}
       </div>
@@ -30,24 +91,24 @@ export default props => {
 const Swiper = styled.div`
   position: relative;
   overflow: hidden;
-  height: ${props => props.swiperStyle.swiperHeight};
 
   .wrapper {
     position: absolute;
     display: flex;
     flex-direction: row;
-    transform: ${props => props.swiperStyle.wrapperTransform};
+    padding: 10px 0;
+
+    &.animate {
+      transition: transform 0.3s;
+    }
 
     .slide {
-    }
-    .b-list {
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       border-radius: 50%;
       width: 48px;
       height: 48px;
-      margin: 0 5px;
       background-color: #eee;
     }
   }
