@@ -212,8 +212,8 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-    alert(JSON.stringify(event.detail))
-    alert('payType', payType)
+    // alert(JSON.stringify(event.detail))
+    // alert('payType', payType)
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,
