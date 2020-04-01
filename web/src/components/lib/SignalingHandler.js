@@ -143,11 +143,11 @@ export default class SignalingHandler {
       .getUserMedia(constraint)
       .then(stream => {
         this.audioStream = stream
-        this.audioTag.srcObject = stream
+        //this.audioTag.srcObject = stream
       })
       .then(() => {
         //오디오 볼륨
-        setAudioVolumeMake()
+        //setAudioVolumeMake()
       })
       .catch(e => {
         if (String(e).indexOf('Permission') !== -1) {
