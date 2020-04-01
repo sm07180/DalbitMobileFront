@@ -5,11 +5,26 @@ let touchStartX = null
 let touchEndX = null
 let swiping = false
 let touchStartStatus = false
+let autoIntervalId = null
+let intervalBIdx = null
 
 export default props => {
   const {onSwipe, selectedBIdx, clickSwipEvent, selectedWrapRef} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
+
+  const setInitClosureVariable = () => {
+    if (autoIntervalId !== null) {
+      clearIntervalId(autoIntervalId)
+    }
+
+    touchStartX = null
+    touchEndX = null
+    swiping = false
+    touchStartStatus = false
+    autoIntervalId = null
+    intervalBIdx = null
+  }
 
   const touchStartEvent = e => {
     const swiperNode = swiperRef.current
@@ -95,6 +110,26 @@ export default props => {
 
   const touchCancelEvent = () => {}
 
+  const autoSlideInterval = () => {
+    if (autoIntervalId !== null) {
+      clearIntervalId(autoIntervalId)
+    }
+    const swiperNode = swiperRef.current
+    const wrapperNode = wrapperRef.current
+
+    autoIntervalId = setInterval(() => {
+      if (intervalBIdx !== null) {
+        const childrenLength = props.children.length
+        intervalBIdx = intervalBIdx + 1
+
+        if (intervalBIdx === childrenLength) {
+          intervalBIdx = 0
+        }
+        onSwipe(intervalBIdx)
+      }
+    }, 3000)
+  }
+
   const initialSwipperWrapperStyle = () => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
@@ -137,15 +172,19 @@ export default props => {
     window.addEventListener('resize', initialSwipperWrapperStyle)
     setClickEventAllSlide()
     setTouchEventSelectedWrap()
+    autoSlideInterval()
+
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
       removeClickEventAllSlide()
       removeTouchEventSelectedWrap()
+      setInitClosureVariable()
     }
   }, [])
 
   useEffect(() => {
-    console.log('df', selectedBIdx)
+    intervalBIdx = selectedBIdx
+    // console.log(intervalBIdx, selectedBIdx)
   }, [selectedBIdx])
 
   return (
