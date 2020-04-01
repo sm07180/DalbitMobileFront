@@ -165,6 +165,7 @@ export default props => {
     fetchDataUploadReply()
     fetchDataList()
     showReply(writeNumer, boardNumer)
+    setReplyRegist('')
   }
   const textChangeReply = e => {
     setReplyRegist(e.target.value)

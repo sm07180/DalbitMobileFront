@@ -10,9 +10,11 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //context
 import {Store} from './index'
+import {useHistory} from 'react-router-dom'
 
 export default props => {
   //----------------------------------------------------------------------------
+  let history = useHistory()
   //info
   const tabInfo = [
     {
@@ -36,13 +38,18 @@ export default props => {
     //   type: 'broadcast_guide'
     // }
   ]
+
   //makeContents
   const makeContents = () => {
     if (tabInfo === null) return
     return tabInfo.map((list, index) => {
       const {tab, type} = list
+      const push = () => {
+        history.push(`${type}`)
+        Store().action.updateCode(type)
+      }
       return (
-        <button onClick={() => Store().action.updateCode(type)} key={index} className={Store().menuCode === type ? 'on' : ''}>
+        <button onClick={push} key={index} className={Store().menuCode === type ? 'on' : ''}>
           {tab}
         </button>
       )
