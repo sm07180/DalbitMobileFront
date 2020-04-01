@@ -7,7 +7,7 @@ let swiping = false
 let touchStartStatus = false
 
 export default props => {
-  const {onSwipe, selectedBIdx, clickSwipEvent} = props
+  const {onSwipe, selectedBIdx, clickSwipEvent, selectedWrapRef} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -90,7 +90,7 @@ export default props => {
       swiping = false
       touchStartX = null
       touchEndX = null
-    }, 500)
+    }, 300)
   }
 
   const touchCancelEvent = () => {}
@@ -104,20 +104,43 @@ export default props => {
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }
 
-  const setAllSlideClickEvent = () => {
+  const setClickEventAllSlide = () => {
     const wrapperNode = wrapperRef.current
     wrapperNode.childNodes.forEach(child => {
       child.addEventListener('click', clickSwipEvent)
     })
   }
 
+  const removeClickEventAllSlide = () => {
+    const wrapperNode = wrapperRef.current
+    wrapperNode.childNodes.forEach(child => {
+      child.removeEventListener('click', clickSwipEvent)
+    })
+  }
+
+  const setTouchEventSelectedWrap = () => {
+    const selectedWrapNode = selectedWrapRef.current
+    selectedWrapNode.addEventListener('touchstart', touchStartEvent)
+    selectedWrapNode.addEventListener('touchmove', touchMoveEvent)
+    selectedWrapNode.addEventListener('touchend', touchEndEvent)
+  }
+
+  const removeTouchEventSelectedWrap = () => {
+    const selectedWrapNode = selectedWrapRef.current
+    selectedWrapNode.removeEventListener('touchstart', touchStartEvent)
+    selectedWrapNode.removeEventListener('touchmove', touchMoveEvent)
+    selectedWrapNode.removeEventListener('touchend', touchEndEvent)
+  }
+
   useEffect(() => {
     initialSwipperWrapperStyle()
     window.addEventListener('resize', initialSwipperWrapperStyle)
-
-    setAllSlideClickEvent()
+    setClickEventAllSlide()
+    setTouchEventSelectedWrap()
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
+      removeClickEventAllSlide()
+      removeTouchEventSelectedWrap()
     }
   }, [])
 
@@ -151,7 +174,7 @@ const Swiper = styled.div`
     padding: 10px 0;
 
     &.animate {
-      transition: transform 0.3s ease-in;
+      transition: transform 0.2s ease-in;
     }
 
     .slide {
