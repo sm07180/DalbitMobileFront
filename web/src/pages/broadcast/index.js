@@ -84,7 +84,7 @@ export default props => {
 
     if (beforeRoomNo != null) {
       if (beforeRoomNo !== obj.roomNo) await Api.broad_exit({data: {roomNo: beforeRoomNo}})
-      const {code, result, data, message} = resExitRoom
+      //const {code, result, data, message} = resExitRoom
       // if (result === 'success') {
       //joinRoom(obj)
       // } else {
