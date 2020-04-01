@@ -32,7 +32,7 @@ export default props => {
         style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['profImg']['thumb700x700']})`} : {}}>
         <img className="live-icon" src={LiveIcon} />
         <div className="counting">
-          <span className="bold">{list ? `1` : ''}</span>
+          <span className="bold">{list ? selectedBIdx + 1 : ''}</span>
           <span>{list ? `/ ${list.length}` : ''}</span>
         </div>
       </div>
