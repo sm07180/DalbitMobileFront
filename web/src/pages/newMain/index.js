@@ -13,6 +13,7 @@ import Layout from 'pages/common/layout/new_index.js'
 import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
+import RankList from './component/rankList.js'
 
 // static
 import Mic from './static/ic_mike.svg'
@@ -88,7 +89,9 @@ export default props => {
               </Link>
             </div>
 
-            <div className="content-wrap"></div>
+            <div className="content-wrap">
+              <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
+            </div>
           </div>
           <div className="section">
             <div className="title-wrap">
