@@ -1,15 +1,16 @@
 /**
+ * @title 방송방입장 및 퇴장 (하이브리드앱전용)
  * @code 
  
-import Room, {RoomJoin} from 'context/room'
+    import Room, {RoomJoin} from 'context/room'
 
-//function
-RoomJoin(roomNo + '', () => {
-    clicked = false
-})
+    //function
+    RoomJoin(roomNo + '', () => {
+        clicked = false
+    })
 
-//render추가
-return (   <Room />   )
+    //render추가
+    return (   <Room />   )
  */
 import React, {useContext} from 'react'
 //context
@@ -29,8 +30,8 @@ export default Room
 //-----------------------------------------------------------
 /**
  * @title 방송방입장
- * @param {roomNo} string
- * @param {callbackFunc} function //여러번 클릭을막기위해 필요시 flag설정
+ * @param {roomNo} string           //방송방번호
+ * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
   const res = await Api.broad_join({data: {roomNo: roomNo}})
@@ -64,7 +65,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //성공일때
     const {data} = res
     console.log(
-      '%c' + `Native: RoomJoin`,
+      '%c' + `Native: RoomJoin실행`,
       'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#000;background:orange;'
     )
     //하이브리드앱실행
@@ -75,7 +76,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
 //-----------------------------------------------------------
 /**
  * @title 방송방종료
- * @param {roomNo} string
+ * @param {roomNo} string           //방송방번호
  */
 export const RoomExit = async roomNo => {
   const res = await Api.broad_exit({data: {roomNo: roomNo}})
