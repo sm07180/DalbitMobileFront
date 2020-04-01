@@ -112,7 +112,7 @@ const Content = styled.div`
     display: block;
     padding: 10px 0;
     border-radius: 20px;
-    line-height: 17px;
+
     background-color: #f5f5f5;
     .reload {
       display: inline-block;
@@ -127,13 +127,13 @@ const Content = styled.div`
     .in_wrap {
       position: absolute;
       top: 50%;
-      right: 7%;
+      right: 8%;
       transform: translatey(-50%);
       .wrapper {
         position: relative;
         i {
           position: absolute;
-          right: -10px;
+          right: -13px;
           display: inline-block;
           padding: 10px 0;
           z-index: -1;
@@ -142,13 +142,13 @@ const Content = styled.div`
       select {
         display: inline-block;
         -webkit-appearance: none;
-        padding: 10px 11px;
+        padding: 10px 15px;
         color: #424242;
         font-size: 14px;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-        line-height: 1.14;
+
         letter-spacing: -0.35px;
         background: transparent;
       }
