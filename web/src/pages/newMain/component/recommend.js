@@ -8,7 +8,7 @@ import Swiper from 'components/ui/swiper.js'
 import LiveIcon from '../static/ic_live.svg'
 
 export default props => {
-  let {list} = props
+  const {list} = props
 
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()
@@ -24,12 +24,13 @@ export default props => {
         </div>
       </div>
       {list && (
-        <Swiper>
+        <Swiper onSwipe={() => {}}>
           {list.map((broadcast, idx) => {
             const {profImg, nickNm, title} = broadcast
             return (
               <div
                 className="slide"
+                data-idx={idx}
                 key={`b-${idx}`}
                 onClick={() => console.log('idx ' + idx)}
                 style={{backgroundImage: `url(${profImg['thumb88x88']})`}}
