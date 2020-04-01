@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
 
 // component
@@ -10,6 +10,7 @@ import LiveIcon from '../static/ic_live.svg'
 export default props => {
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
+  const selectedWrapRef = useRef()
 
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()
@@ -34,6 +35,7 @@ export default props => {
   return (
     <RecommendWrap>
       <div
+        ref={selectedWrapRef}
         className="selected-wrap"
         style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['profImg']['thumb700x700']})`} : {}}>
         <img className="live-icon" src={LiveIcon} />
@@ -43,7 +45,11 @@ export default props => {
         </div>
       </div>
       {list && (
-        <CustomSwiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx} clickSwipEvent={clickSwipEvent}>
+        <CustomSwiper
+          onSwipe={selectBroadcast}
+          selectedBIdx={selectedBIdx}
+          clickSwipEvent={clickSwipEvent}
+          selectedWrapRef={selectedWrapRef}>
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (
