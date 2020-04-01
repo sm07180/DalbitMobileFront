@@ -17,10 +17,14 @@ export default props => {
 
   console.log(djRank)
 
+  const swiperParams = {
+    slidesPerView: 'auto'
+  }
+
   return (
     <RankList>
       {rankType === 'dj' ? (
-        <Swiper>
+        <Swiper {...swiperParams}>
           {djRank.map((dj, idx) => {
             const {rank, nickNm, memNo, profImg} = dj
             return (
@@ -68,6 +72,7 @@ const RankList = styled.div`
   .slide-wrap {
     /* display: flex;
     flex-direction: column; */
+    width: 102px;
 
     .main-img {
       position: relative;
