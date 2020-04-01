@@ -7,6 +7,7 @@ let swiping = false
 let touchStartStatus = false
 
 export default props => {
+  const {onSwipe} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -71,6 +72,11 @@ export default props => {
         wrapperNode.appendChild(cloned)
         wrapperNode.removeChild(f_Child)
       }
+
+      const centerNodeIdx = Math.floor(childrenLength / 2)
+      const targetNode = wrapperNode.children[centerNodeIdx]
+      const bIdx = Number(targetNode.getAttribute('data-idx'))
+      onSwipe(bIdx)
 
       wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
       swiping = false
