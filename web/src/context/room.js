@@ -1,5 +1,15 @@
 /**
- *
+ * @code 
+ 
+import Room, {RoomJoin} from 'context/room'
+
+//function
+RoomJoin(roomNo + '', () => {
+    clicked = false
+})
+
+//render추가
+return (   <Room />   )
  */
 import React, {useContext} from 'react'
 //context
@@ -62,6 +72,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return true
   }
 }
+//-----------------------------------------------------------
 /**
  * @title 방송방종료
  * @param {roomNo} string

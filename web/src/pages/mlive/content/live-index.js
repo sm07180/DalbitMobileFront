@@ -50,10 +50,8 @@ const LiveIndex = () => {
       case mode.selectList !== undefined: //-------------아이템선택
         if (clicked) return
         clicked = true
-
         const {roomNo} = mode.selectList
         RoomJoin(roomNo + '', () => {
-          console.log('----1')
           clicked = false
         })
         break
@@ -88,8 +86,9 @@ const LiveIndex = () => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      {makeContents()}
+      {/* makeRoomJoin */}
       <Room />
+      {makeContents()}
     </Content>
   )
 }
