@@ -149,6 +149,10 @@ const Content = styled.div`
         }
       }
     }
+
+    .content-wrap {
+      min-height: 100px;
+    }
   }
 `
 
