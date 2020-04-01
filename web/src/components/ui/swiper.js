@@ -4,23 +4,24 @@ import styled from 'styled-components'
 export default props => {
   console.log('props', props)
 
+  const swiperRef = useRef()
   const wrapperRef = useRef()
-  const [swiperHeight, setSwiperHeight] = useState(0)
-  const {slideList, children} = props
-
-  if (Array.isArray(slideList) && slideList.length % 2 === 0) {
-    slideList.pop()
-  }
+  const [swiperStyle, setSwiperStyle] = useState(0)
 
   useEffect(() => {
-    const {current} = wrapperRef
-    setSwiperHeight(current.clientHeight + 'px')
-  }, [slideList])
+    const swiperNode = swiperRef.current
+    const wrapperNode = wrapperRef.current
+
+    setSwiperStyle({
+      swiperHeight: wrapperNode.clientHeight + 'px',
+      wrapperTransform: `translate3d(${(swiperNode.clientWidth - wrapperNode.clientWidth) / 2}px, 0, 0)`
+    })
+  }, [])
 
   return (
-    <Swiper swiperHeight={swiperHeight}>
+    <Swiper swiperStyle={swiperStyle} ref={swiperRef}>
       <div className="wrapper" ref={wrapperRef}>
-        {children}
+        {props.children}
       </div>
     </Swiper>
   )
@@ -29,11 +30,13 @@ export default props => {
 const Swiper = styled.div`
   position: relative;
   overflow: hidden;
-  height: ${props => props.swiperHeight};
+  height: ${props => props.swiperStyle.swiperHeight};
+
   .wrapper {
     position: absolute;
     display: flex;
     flex-direction: row;
+    transform: ${props => props.swiperStyle.wrapperTransform};
 
     .slide {
     }
