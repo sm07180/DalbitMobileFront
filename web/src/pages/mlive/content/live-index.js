@@ -17,6 +17,8 @@ import List from './live-list'
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //let
+  let clicked = false
   //interface
   LiveIndex.context = context
   //-----------------------------------------------------------
@@ -45,8 +47,13 @@ const LiveIndex = () => {
   function update(mode) {
     switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
+        if (clicked) return
+        clicked = true
+        console.log('---0')
         const {roomNo} = mode.selectList
-        RoomJoin(roomNo + '')
+        RoomJoin(roomNo + '', () => {
+          clicked = false
+        })
         break
       default:
         break
@@ -84,21 +91,22 @@ export default LiveIndex
 /**
  * @title 방송방입장
  * @param {roomNo} string
+ * @param {callbackFunc} function //여러번 클릭을막기위해 필요시 flag설정
  */
-export const RoomJoin = async roomNo => {
+export const RoomJoin = async (roomNo, callbackFunc) => {
   const res = await Api.broad_join({data: {roomNo: roomNo}})
+  if (callbackFunc !== undefined) callbackFunc()
   if (res.result === 'fail') {
     switch (res.code) {
       case '-4': //----------------------------이미 참가 되어있습니다
         LiveIndex.context.action.confirm({
           callback: () => {
             //강제방송종료
-            async function exit() {
+            ;(async () => {
               //입장되어있으면 퇴장처리 이후,success 일때 다시RoomJoin
               const result = await RoomExit(roomNo + '')
               if (result) RoomJoin(roomNo + '')
-            }
-            exit()
+            })()
           },
           title: res.messageKey,
           msg: res.message
@@ -112,7 +120,7 @@ export const RoomJoin = async roomNo => {
         })
         break
     }
-    //--
+    return false
   } else if (res.result === 'success') {
     //성공일때
     const {data} = res
@@ -122,6 +130,7 @@ export const RoomJoin = async roomNo => {
     )
     //하이브리드앱실행
     Hybrid('RoomJoin', data)
+    return true
   }
 }
 /**
