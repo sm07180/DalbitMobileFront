@@ -210,8 +210,8 @@ export default props => {
 
   const updateDispatch = event => {
     console.log(event)
-    alert(JSON.stringify(event))
-    if (event.detail.result == 'success' && event.detail.code == '0') {
+    alert(JSON.stringify(event.detail))
+    if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,
         itemName: context.popup_code[1].name,
