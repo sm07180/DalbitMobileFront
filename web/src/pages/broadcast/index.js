@@ -56,8 +56,18 @@ export default props => {
         if (code === '-4') {
           if (isHybrid()) {
             setReadyRoom(false)
-            ctx.action.alert({
+            // ctx.action.alert({
+            //   callback: () => {
+            //     props.history.goBack()
+            //   },
+            //   msg: message
+            // })
+            context.action.confirm({
+              //콜백처리
               callback: () => {
+                fetchData(obj)
+              },
+              cancelCallback: () => {
                 props.history.goBack()
               },
               msg: message

@@ -152,6 +152,11 @@ export default props => {
             mediaHandler.stop()
             sc.socketClusterDestory(false, context)
             props.history.goBack()
+
+            context.action.alert({
+              callback: () => {},
+              msg: recvMsg
+            })
           }
         }
       }
