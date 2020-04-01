@@ -4,22 +4,37 @@ import styled from 'styled-components'
 let touchStartX = null
 let touchEndX = null
 let swiping = false
+let touchStartStatus = false
 
 export default props => {
+  const {onSwipe} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
   const touchStartEvent = e => {
+    const swiperNode = swiperRef.current
+    const wrapperNode = wrapperRef.current
+
+    if (wrapperNode.clientWidth <= swiperNode.clientWidth) {
+      touchStartStatus = false
+      return
+    }
+
+    touchStartStatus = true
     touchStartX = e.touches[0].clientX
   }
   const touchMoveEvent = e => {
     touchEndX = e.touches[0].clientX
   }
   const touchEndEvent = e => {
+    if (!touchEndX || !touchStartStatus || swiping) {
+      return
+    }
+
     const diff = touchEndX - touchStartX
     const minDiffSize = Math.abs(diff) < 80
 
-    if (swiping || minDiffSize) {
+    if (minDiffSize) {
       return
     }
     const childrenLength = props.children.length
@@ -58,19 +73,35 @@ export default props => {
         wrapperNode.removeChild(f_Child)
       }
 
+      const centerNodeIdx = Math.floor(childrenLength / 2)
+      const targetNode = wrapperNode.children[centerNodeIdx]
+      const bIdx = Number(targetNode.getAttribute('data-idx'))
+      onSwipe(bIdx)
+
       wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
       swiping = false
+      touchStartX = null
+      touchEndX = null
     }, 500)
   }
+
   const touchCancelEvent = () => {}
 
-  useEffect(() => {
+  const initialSwipperWrapperStyle = () => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
     const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
 
     swiperNode.style.height = `${wrapperNode.clientHeight}px`
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+  }
+
+  useEffect(() => {
+    initialSwipperWrapperStyle()
+    window.addEventListener('resize', initialSwipperWrapperStyle)
+    return () => {
+      window.removeEventListener('resize', initialSwipperWrapperStyle)
+    }
   }, [])
 
   return (
@@ -99,7 +130,7 @@ const Swiper = styled.div`
     padding: 10px 0;
 
     &.animate {
-      transition: transform 0.3s;
+      transition: transform 0.3s ease-in;
     }
 
     .slide {

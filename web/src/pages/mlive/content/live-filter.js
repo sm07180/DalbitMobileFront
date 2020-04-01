@@ -6,13 +6,6 @@ import React, {useMemo, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Store} from './index'
-import {COLOR_MAIN} from 'context/color'
-//components
-import Api from 'context/api'
-import SelectBox from 'components/ui/selectBox'
-import {GetBroadList} from './live-index'
-//pages
-
 //static image
 import Reload from '../static/ic_refresh.svg'
 import Arrow from '../static/ic_arrow_down_color.svg'
@@ -133,7 +126,7 @@ const Content = styled.div`
         position: relative;
         i {
           position: absolute;
-          right: -13px;
+          right: -5px;
           display: inline-block;
           padding: 10px 0;
           z-index: -1;
@@ -148,7 +141,6 @@ const Content = styled.div`
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-
         letter-spacing: -0.35px;
         background: transparent;
       }

@@ -6,17 +6,20 @@ import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
-import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import {Store} from './index'
 import NoResult from 'components/ui/noResult'
+//room
+import Room, {RoomJoin} from 'context/room'
 //components
 import List from './live-list'
 //
 const LiveIndex = () => {
   //context
   const context = useContext(Context)
+  //let
+  let clicked = false
   //interface
   LiveIndex.context = context
   //-----------------------------------------------------------
@@ -45,8 +48,12 @@ const LiveIndex = () => {
   function update(mode) {
     switch (true) {
       case mode.selectList !== undefined: //-------------아이템선택
+        if (clicked) return
+        clicked = true
         const {roomNo} = mode.selectList
-        RoomJoin(roomNo + '')
+        RoomJoin(roomNo + '', () => {
+          clicked = false
+        })
         break
       default:
         break
@@ -77,68 +84,16 @@ const LiveIndex = () => {
     getBroadList()
   }, [Store().searchType, Store().roomType, Store().reload])
   //---------------------------------------------------------------------
-  return <Content>{makeContents()}</Content>
+  return (
+    <Content>
+      {/* makeRoomJoin */}
+      <Room />
+      {makeContents()}
+    </Content>
+  )
 }
 export default LiveIndex
 //---------------------------------------------------------------------
-/**
- * @title 방송방입장
- * @param {roomNo} string
- */
-export const RoomJoin = async roomNo => {
-  const res = await Api.broad_join({data: {roomNo: roomNo}})
-  if (res.result === 'fail') {
-    switch (res.code) {
-      case '-4': //----------------------------이미 참가 되어있습니다
-        LiveIndex.context.action.confirm({
-          callback: () => {
-            //강제방송종료
-            async function exit() {
-              //입장되어있으면 퇴장처리 이후,success 일때 다시RoomJoin
-              const result = await RoomExit(roomNo + '')
-              if (result) RoomJoin(roomNo + '')
-            }
-            exit()
-          },
-          title: res.messageKey,
-          msg: res.message
-        })
-        break
-      default:
-        //----------------------------
-        LiveIndex.context.action.alert({
-          title: res.messageKey,
-          msg: res.message
-        })
-        break
-    }
-    //--
-  } else if (res.result === 'success') {
-    //성공일때
-    const {data} = res
-    console.log(
-      '%c' + `Native: RoomJoin`,
-      'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#000;background:orange;'
-    )
-    //하이브리드앱실행
-    Hybrid('RoomJoin', data)
-  }
-}
-/**
- * @title 방송방종료
- * @param {roomNo} string
- */
-export const RoomExit = async roomNo => {
-  const res = await Api.broad_exit({data: {roomNo: roomNo}})
-  if (res.result === 'fail') {
-    LiveIndex.context.action.alert({
-      title: res.messageKey,
-      msg: res.message
-    })
-    return false
-  } else if (res.result === 'success') {
-    return true
-  }
-}
+
 //---------------------------------------------------------------------
 const Content = styled.div``
