@@ -34,7 +34,7 @@ export default props => {
           새로고침
         </button>
         <div className="in_wrap">
-          <span className="wrapper ">
+          <span className="wrapper type1">
             <i>
               <img src={Arrow} />
             </i>
@@ -52,13 +52,14 @@ export default props => {
               <option value="3">신입</option>
             </select>
           </span>
-          <span className="wrapper">
+          <span className="wrapper type2">
             <i>
               <img src={Arrow} />
             </i>
             <select
               className="room"
               name="roomType"
+              defaultValue={Store().roomType}
               onChange={event => {
                 const _val = event.target.value
                 Store().action.updateCurrentPage(1)
@@ -88,13 +89,14 @@ export default props => {
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  font-family: 'san-serif';
+  font-family: sans-serif, 'san-serif';
   margin-bottom: 10px;
   & > h1 {
     display: block;
     margin-top: 24px;
     margin-bottom: 10px;
     font-size: 18px;
+    font-family: 'san-serif';
     font-weight: bold;
     font-stretch: normal;
     font-style: normal;
@@ -144,7 +146,7 @@ const Content = styled.div`
       letter-spacing: -0.35px;
       background: transparent;
       &.search {
-        margin-right: 10px;
+        margin-right: 20px;
       }
     }
   }

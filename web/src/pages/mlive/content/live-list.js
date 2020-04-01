@@ -1,3 +1,6 @@
+/**
+ * @todos data.bjProfImg.path 경로다를때 예외처리
+ */
 import React, {useMemo, useState, useContext, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 //context
@@ -9,6 +12,8 @@ import Like from '../static/ic_heart_s_g.svg'
 export default props => {
   //------------------------------------------------------------ declare start
   const {data} = props
+
+  //useMemo
   const roomType = useMemo(() => {
     if (data.roomType === '') return '전체'
     if (data.roomType === '00') return '일상/챗'
@@ -33,6 +38,7 @@ export default props => {
         props.update({selectList: data})
       }}>
       <Profile url={data.bjProfImg.thumb120x120} />
+
       <Info>
         <h1>{data.title}</h1>
         <h2>{data.bjNickNm}</h2>
@@ -67,7 +73,7 @@ const Profile = styled.span`
   background-repeat: no-repeat;
   overflow: hidden;
 `
-//타이틀,등
+//타이틀,BJ명,방송방타입
 const Info = styled.div`
   box-sizing: border-box;
   padding-left: 88px;
