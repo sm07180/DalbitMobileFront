@@ -148,16 +148,14 @@ export default props => {
       if (cmd === 'chatEnd') {
         if (data.detail.data.chatEnd.type === 'bjOut') {
           if (!isHybrid()) {
-            Api.broad_exit({data: {roomNo: data.detail.channel}})
-            mediaHandler.stop()
-            sc.socketClusterDestory(false, context)
-
             context.action.alert({
               callback: () => {
                 props.history.goBack()
               },
-              msg: recvMsg
+              msg: recvMsg.msg
             })
+            mediaHandler.stop()
+            sc.socketClusterDestory(false, context)
           }
         }
       }
