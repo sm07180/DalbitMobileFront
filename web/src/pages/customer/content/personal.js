@@ -117,7 +117,7 @@ export default props => {
     const fileExtension = fileSplited.pop()
     //
     const extValidator = ext => {
-      const list = ['jpg', 'jpeg', 'png']
+      const list = ['jpg', 'jpeg', 'png', 'gif']
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
@@ -237,7 +237,7 @@ export default props => {
             </div>
           </ImgUploader>
 
-          <p className="infoupload">※ gif, jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
+          <p className="infoupload">※ gif, jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
         </dd>
       </dl>
       <div className="in_wrap">

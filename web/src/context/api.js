@@ -402,7 +402,29 @@ export default class API {
    */
   static mypage_fanboard_upload = async obj => {
     const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', params: data})
+    return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 마이페이지 팬보드 댓글 삭제
+   * @method "DELETE"""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.03.31
+   */
+  static mypage_fanboard_delete = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board`, method: method || 'DELETE', data: data})
+  }
+  /**
+   * @brief 회원 팬보드 대댓글 조회하기
+   * @method "GET"
+   * @param string memNo              //*팬보드 회원번호
+   * @param int boardNo                  //*댓글 그룹번호
+   * @create 황상한 2020.04.01
+   */
+  static member_fanboard_reply = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board/reply`, method: method || 'GET', params: params})
   }
 
   /**
@@ -716,17 +738,7 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/profile/board`, method: method || 'DELETE', data: data})
   }
-  /**
-   * @brief 회원 팬보드 대댓글 조회하기
-   * @method "GET"
-   * @param string memNo              //*팬보드 회원번호
-   * @param int boardNo                  //*댓글 그룹번호
-   * @create 김호겸 2020.01.31
-   */
-  static member_fanboard_reply = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board/reply`, method: method || 'GET', data: data})
-  }
+
   /**
    * @brief 회원 방송방 빠른말 가져오기 (없을 경우 기획에서 정의된 기본 데이터 노출되어야함)
    * @method "GET"
