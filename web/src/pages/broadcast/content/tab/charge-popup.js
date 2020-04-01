@@ -201,11 +201,7 @@ export default props => {
   const scrollOnUpdate = () => {
     let thisHeight = ''
     if (document.getElementsByClassName('round')[0]) {
-      if (window.innerWidth > 600) {
-        thisHeight = 683
-      } else {
-        thisHeight = document.getElementsByClassName('round')[0].offsetHeight
-      }
+      thisHeight = document.getElementsByClassName('round')[0].offsetHeight + 18
       area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
     }
   }
@@ -569,11 +565,11 @@ const ButtonArea = styled.div`
   width: 100%;
   justify-content: center;
   margin-top: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 13px;
 
   & > div {
     display: flex;
-    width: 90%;
+    width: 93%;
     height: 100%;
     align-items: center;
     justify-content: space-between;
@@ -756,6 +752,7 @@ const FixedWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     position: fixed;
     bottom: 0;
+    width: 100%;
   }
 `
 const InnerWrap = styled.div`
