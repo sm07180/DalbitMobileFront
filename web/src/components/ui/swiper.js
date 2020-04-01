@@ -174,7 +174,7 @@ const Swiper = styled.div`
     padding: 10px 0;
 
     &.animate {
-      transition: transform 0.3s ease-in;
+      transition: transform 0.2s ease-in;
     }
 
     .slide {
