@@ -90,7 +90,7 @@ export default props => {
       swiping = false
       touchStartX = null
       touchEndX = null
-    }, 500)
+    }, 300)
   }
 
   const touchCancelEvent = () => {}
