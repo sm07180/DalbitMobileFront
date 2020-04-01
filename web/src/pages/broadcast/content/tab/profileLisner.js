@@ -182,7 +182,7 @@ export default props => {
     store.action.updateTab(4) //선물하기 탭 이동
   }
   const userTypeContents = () => {
-    if (objProfileInfo.auth > 2) return // 본인 정보랑 같거나 프로필이 본인꺼 일때
+    if (context.broadcastTotalInfo.auth === objProfileInfo.auth) return // 본인 정보랑 같거나 프로필이 본인꺼 일때
     return (
       <React.Fragment>
         {makeKickout()}
