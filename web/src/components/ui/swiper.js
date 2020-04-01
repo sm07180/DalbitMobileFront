@@ -6,7 +6,7 @@ let touchEndX = null
 let swiping = false
 let touchStartStatus = false
 let autoIntervalId = null
-let intervalBIdx = null
+let tempSelectedNode = null
 
 export default props => {
   const {onSwipe, selectedBIdx, clickSwipEvent, selectedWrapRef} = props
@@ -21,7 +21,6 @@ export default props => {
     swiping = false
     touchStartStatus = false
     autoIntervalId = null
-    intervalBIdx = null
   }
 
   const oneStepSlide = direction => {
@@ -108,6 +107,7 @@ export default props => {
     touchStartStatus = true
     touchStartX = e.touches[0].clientX
   }
+
   const touchMoveEvent = e => {
     touchEndX = e.touches[0].clientX
   }
@@ -151,23 +151,29 @@ export default props => {
 
   const removeClickEventAllSlide = () => {
     const wrapperNode = wrapperRef.current
-    wrapperNode.childNodes.forEach(child => {
-      child.removeEventListener('click', clickSwipEvent)
-    })
+    if (wrapperNode) {
+      wrapperNode.childNodes.forEach(child => {
+        child.removeEventListener('click', clickSwipEvent)
+      })
+    }
   }
 
   const setTouchEventSelectedWrap = () => {
     const selectedWrapNode = selectedWrapRef.current
+    tempSelectedNode = selectedWrapNode
     selectedWrapNode.addEventListener('touchstart', touchStartEvent)
     selectedWrapNode.addEventListener('touchmove', touchMoveEvent)
     selectedWrapNode.addEventListener('touchend', touchEndEvent)
   }
 
   const removeTouchEventSelectedWrap = () => {
-    const selectedWrapNode = selectedWrapRef.current
-    selectedWrapNode.removeEventListener('touchstart', touchStartEvent)
-    selectedWrapNode.removeEventListener('touchmove', touchMoveEvent)
-    selectedWrapNode.removeEventListener('touchend', touchEndEvent)
+    // const selectedWrapNode = selectedWrapRef.current
+    if (tempSelectedNode) {
+      tempSelectedNode.removeEventListener('touchstart', touchStartEvent)
+      tempSelectedNode.removeEventListener('touchmove', touchMoveEvent)
+      tempSelectedNode.removeEventListener('touchend', touchEndEvent)
+    }
+    tempSelectedNode = null
   }
 
   useEffect(() => {
@@ -185,10 +191,7 @@ export default props => {
     }
   }, [])
 
-  useEffect(() => {
-    intervalBIdx = selectedBIdx
-    // console.log(intervalBIdx, selectedBIdx)
-  }, [selectedBIdx])
+  useEffect(() => {}, [selectedBIdx])
 
   return (
     <Swiper
