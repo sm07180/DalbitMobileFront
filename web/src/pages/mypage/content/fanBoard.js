@@ -30,6 +30,7 @@ export default props => {
   const [showBtn, setShowBtn] = useState('')
   const [count, setCount] = useState(0)
   const [broadNumbers, setBroadNumbers] = useState('')
+  const [replyRegist, setReplyRegist] = useState('')
   //api
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
@@ -87,7 +88,7 @@ export default props => {
       data: {
         memNo: profile.memNo,
         depth: 2,
-        content: '대댓글올라가세요',
+        content: replyRegist,
         boardNo: broadNumbers
       }
     })
@@ -165,7 +166,9 @@ export default props => {
     fetchDataList()
     showReply(writeNumer, boardNumer)
   }
-  console.log(fanTotal)
+  const textChangeReply = e => {
+    setReplyRegist(e.target.value)
+  }
   return (
     <>
       <FanBoard className="fanboard">
@@ -245,7 +248,7 @@ export default props => {
                       )
                     })}
                     <StartBottom className="on">
-                      <input placeholder={placeholderTextStart} />
+                      <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} />
                       <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
                     </StartBottom>
                   </div>
