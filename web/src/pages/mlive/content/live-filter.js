@@ -133,7 +133,7 @@ const Content = styled.div`
         position: relative;
         i {
           position: absolute;
-          right: -13px;
+          right: -5px;
           display: inline-block;
           padding: 10px 0;
           z-index: -1;
@@ -148,7 +148,6 @@ const Content = styled.div`
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-
         letter-spacing: -0.35px;
         background: transparent;
       }
