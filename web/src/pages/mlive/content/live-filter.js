@@ -28,7 +28,7 @@ export default props => {
             Store().action.updateReload()
           }}
           className="reload">
-          <i>
+          <i className="trans">
             <img src={Reload} />
           </i>
           새로고침
@@ -127,30 +127,31 @@ const Content = styled.div`
     .in_wrap {
       position: absolute;
       top: 50%;
-      right: 5%;
+      right: 7%;
       transform: translatey(-50%);
+      .wrapper {
+        position: relative;
+        i {
+          position: absolute;
+          right: -10px;
+          display: inline-block;
+          padding: 10px 0;
+          z-index: -1;
+        }
+      }
       select {
         display: inline-block;
-        padding: 5px;
+        -webkit-appearance: none;
+        padding: 10px 11px;
+        color: #424242;
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.14;
+        letter-spacing: -0.35px;
+        background: transparent;
       }
-    }
-    .wrapper {
-      i {
-        display: inline-block;
-        padding: 10px 0;
-      }
-    }
-    select {
-      display: inline-block;
-      -webkit-appearance: none;
-      color: #424242;
-      font-size: 14px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.14;
-      letter-spacing: -0.35px;
-      background: transparent;
     }
   }
 `
