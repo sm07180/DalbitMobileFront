@@ -79,7 +79,7 @@ const SubContent = styled.div`
 `
 
 const Content = styled.section`
-  margin: 30px auto 100px auto;
+  margin: 30px auto 15px auto;
   width: 1210px;
   @media (max-width: 1260px) {
     width: 91.11%;

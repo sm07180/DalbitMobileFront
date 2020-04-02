@@ -74,7 +74,7 @@ export default () => {
         <Route exact path="/mpay" component={MobilePay} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
-        <Route exact path="/mmypage/:memNo/:sub" component={MobileMyPage} />
+        <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
 
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />

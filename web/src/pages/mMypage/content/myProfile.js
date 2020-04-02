@@ -15,8 +15,11 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 const levelBarWidth = 176
 
 const myProfile = props => {
-  const context = useContext(Context)
-  const {profile} = context
+  const {profile} = props
+
+  if (profile === null) {
+    return null
+  }
 
   return (
     <MyProfile>
