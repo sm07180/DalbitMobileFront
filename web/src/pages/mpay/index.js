@@ -8,7 +8,7 @@ import Layout from 'pages/common/layout/new_index'
 //context
 import {PayProvider} from './store'
 //components
-//pages
+import Content from './content'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -20,7 +20,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <PayProvider>
-      <h1>111</h1>
+      <Content {...props} />
     </PayProvider>
   )
 }
