@@ -4,6 +4,8 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
+
 //context
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
@@ -11,11 +13,16 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
 // component
 import Header from '../component/header.js'
+//static
+import NeedLoginImg from '../static/profile/need_login.png'
 
 export default props => {
   //---------------------------------------------------------------------
   //context
-  const context = new useContext(Context)
+  const globalCtx = useContext(Context)
+  const {profile} = globalCtx
+  const {isLogin} = globalCtx.token
+
   //useState
   const [fetch, setFetch] = useState(null)
   //---------------------------------------------------------------------
@@ -31,7 +38,7 @@ export default props => {
       setFetch(res.data.list)
     } else if (res.result === 'fail') {
       //에러메시지
-      context.action.alert({
+      globalCtx.action.alert({
         title: res.messageKey,
         msg: res.message
       })
@@ -62,7 +69,20 @@ export default props => {
       <Header>
         <div className="category-text">알림사항</div>
       </Header>
-      <Content>{makeContents()}</Content>
+      <Content>
+        {!isLogin && (
+          <div className="log-out">
+            <Link to="/mlogin">
+              <img src={NeedLoginImg} />
+              <div className="text">
+                <span className="bold">로그인</span> 해주세요
+              </div>
+            </Link>
+          </div>
+        )}
+
+        {makeContents()}
+      </Content>
     </div>
   )
 }
@@ -71,6 +91,27 @@ export default props => {
 const Content = styled.div`
   display: block;
   margin-top: 30px;
+  .log-out {
+    padding-top: 30px;
+    box-sizing: border-box;
+
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 100px;
+    }
+    .text {
+      margin-top: 10px;
+      color: #424242;
+      font-size: 20px;
+      text-align: center;
+
+      .bold {
+        color: #8556f6;
+        font-weight: bold;
+      }
+    }
+  }
 `
 const InfoWrap = styled.div`
   overflow: hidden;
