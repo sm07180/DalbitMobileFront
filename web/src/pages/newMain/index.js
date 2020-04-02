@@ -60,10 +60,10 @@ export default props => {
                 <Link to={'/mlive'}>라이브</Link>
               </div>
               <div className="tab">
-                <Link to={'/ranking'}>랭킹</Link>
+                <Link to={'/mranking'}>랭킹</Link>
               </div>
               <div className="tab">
-                <Link to={'/store'}>스토어</Link>
+                <Link to={'/mstore'}>스토어</Link>
               </div>
             </div>
             <div className="right-side">
