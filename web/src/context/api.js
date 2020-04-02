@@ -502,9 +502,8 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
 
-  static member_logout = async obj => {
-    const {data} = obj
-    return await ajax({url: `/member/logout`, method: 'POST', data: data})
+  static member_logout = async () => {
+    return await ajax({url: `/member/logout`, method: 'POST'})
   }
 
   /**
