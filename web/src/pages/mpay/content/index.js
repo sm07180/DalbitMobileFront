@@ -29,7 +29,6 @@ const Index = props => {
       <div>
         <button
           onClick={() => {
-            alert('2')
             context.action.updatePopup('CHARGE', {
               name: selected.name,
               price: selected.price

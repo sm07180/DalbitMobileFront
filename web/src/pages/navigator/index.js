@@ -14,6 +14,7 @@ export default props => {
   //queryString
   const queryString = useMemo(() => {
     if (props.location.search === undefined) return ''
+    alert(JSON.stringify(props.location.search, null, 1))
     return qs.parse(props.location.search, {ignoreQueryPrefix: true})
   })
   //useEffect
