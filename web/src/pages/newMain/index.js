@@ -89,7 +89,7 @@ export default props => {
               </Link>
             </div>
 
-            <div className="content-wrap">
+            <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
@@ -116,13 +116,13 @@ export default props => {
 
 const Content = styled.div`
   .section {
-    margin-top: 22px;
-    padding: 0 16px;
+    margin-top: 28px;
 
     .title-wrap {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      padding: 0 16px;
 
       .title {
         display: flex;
@@ -154,8 +154,15 @@ const Content = styled.div`
     }
 
     .content-wrap {
+      position: relative;
       min-height: 100px;
       margin-top: 10px;
+      padding: 0 16px;
+
+      &.rank-slide {
+        padding: 0;
+        min-height: 150px;
+      }
     }
   }
 `
@@ -190,6 +197,8 @@ const SubMain = styled.div`
           display: flex;
           align-items: center;
           justify-content: center;
+          font-weight: 600;
+          transform: skew(-0.03deg);
         }
       }
     }
@@ -203,12 +212,14 @@ const SubMain = styled.div`
         height: 36px;
         margin-right: 8px;
         padding-left: 34px;
+        font-weight: 600;
         text-align: right;
         border-radius: 18px;
         background-color: #fff;
         color: #8556f6;
         font-size: 16px;
         box-sizing: border-box;
+        transform: skew(-0.03deg);
 
         &::before {
           position: absolute;
