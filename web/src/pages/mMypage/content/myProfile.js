@@ -20,7 +20,6 @@ const myProfile = props => {
   if (profile === null) {
     return null
   }
-  console.log(profile)
 
   return (
     <MyProfile>

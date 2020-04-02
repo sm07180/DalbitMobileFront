@@ -35,7 +35,7 @@ export default props => {
   const [profileInfo, setProfileInfo] = useState(null)
 
   if (!token.isLogin && profile === null) {
-    // props.history.push('/')
+    props.history.push('/')
   }
   if (profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
