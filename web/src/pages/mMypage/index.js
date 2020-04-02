@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect} from 'react-router-dom'
 
 // component
 import Layout from 'pages/common/layout/new_index.js'
@@ -38,11 +38,6 @@ export default props => {
     props.history.push('/')
   }
 
-  if (!type) {
-    type = 'notice'
-    window.location.href = `${location.pathname}/notice`
-  }
-
   if (profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
   } else {
@@ -66,10 +61,13 @@ export default props => {
         <MyProfile profile={profileInfo} />
         {type && <Navigation list={navigationList} memNo={memNo} type={type} />}
         <SubContent>
-          {navigationList.map(value => {
-            const {type, component} = value
-            return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
-          })}
+          <Switch>
+            {navigationList.map(value => {
+              const {type, component} = value
+              return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
+            })}
+            <Redirect to={`/mmypage/${memNo}/notice`} />
+          </Switch>
         </SubContent>
       </Mypage>
     </Layout>
