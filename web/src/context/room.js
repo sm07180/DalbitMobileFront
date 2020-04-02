@@ -45,21 +45,21 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
    * @title roomNo 저장이후 동일하면 RoomJoin이 아닌,EnterRoom실행
    */
-  alert(Room.roomNo + ' : ' + roomNo)
   if (Room.roomNo === roomNo) {
-    //하이브리드앱실행
     console.log(
       '%c' + `Native: EnterRoom실행`,
       'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
     )
-    alert('Room.roomNo 동일')
+    //하이브리드앱실행
     Hybrid('EnterRoom')
-    return true
+    if (callbackFunc !== undefined) callbackFunc()
+    return false
   }
   Room.setRoomNo(roomNo)
   // Room.roomNo = roomNo
   console.log(Room.roomNo)
   const res = await Api.broad_join({data: {roomNo: roomNo}})
+  //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
   if (callbackFunc !== undefined) callbackFunc()
   if (res.result === 'fail') {
     switch (res.code) {
