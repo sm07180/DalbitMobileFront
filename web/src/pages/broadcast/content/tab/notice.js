@@ -22,6 +22,8 @@ export default props => {
   })
   //const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [show, setShow] = useState(false)
+  const [viewNotice, setViewNotice] = useState(false)
+
   //const [showRegist, setShowRegist] = useState(true)
 
   const RoomNumbers = roomNo
@@ -105,6 +107,7 @@ export default props => {
   }
   //리스너뷰
   const listenerNotice = () => {
+    console.log('listenerNotice = ' + context.broadcastTotalInfo.hasNotice)
     if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
       return (
         <div className="noresultWrap">
@@ -118,7 +121,8 @@ export default props => {
   }
   //버튼
   const buttonfunc = () => {
-    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg === '') return <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>
+    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg === '')
+      return <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>
     if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg !== '')
       return (
         <div className="modifyWrap">
@@ -136,7 +140,10 @@ export default props => {
   }
   //텍스트아리아
   const textareafunc = () => {
-    if ((context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === false) || (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === true))
+    if (
+      (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === false) ||
+      (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === true)
+    )
       return (
         <div className="noticeInput">
           <textarea onChange={handleChangeNotice} maxLength="100" placeholder="최대 100자 이내로 작성해주세요." value={typing}>
@@ -152,7 +159,11 @@ export default props => {
   return (
     <Container>
       <Navi title={'공지사항'} prev={props.prev} _changeItem={props._changeItem} />
-      {context.broadcastTotalInfo.auth == 3 ? <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5> : <h5>* 현재 방송방의 공지 사항 입니다.</h5>}
+      {context.broadcastTotalInfo.auth == 3 ? (
+        <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5>
+      ) : (
+        <h5>* 현재 방송방의 공지 사항 입니다.</h5>
+      )}
       {textareafunc()}
       {listenerNotice()}
       {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}

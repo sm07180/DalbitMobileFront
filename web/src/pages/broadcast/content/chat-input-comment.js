@@ -12,7 +12,8 @@ import {Link, NavLink} from 'react-router-dom'
 import {BroadCastStore} from '../store'
 import {useHistory} from 'react-router-dom'
 const sc = require('context/socketCluster')
-
+import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
+let audioStream = null
 //component
 import LottieLoader from 'components/module/lottieLoader'
 import * as timer from 'pages/broadcast/content/tab/timer'
@@ -157,6 +158,47 @@ export default props => {
       cancelCallback: () => {},
       msg: `방송을 ${props.auth === 3 ? '종료' : '나가기'} 하시겠습니까?`
     })
+  }
+
+  const infiniteAudioChecker = async () => {
+    audioStream = await navigator.mediaDevices
+      .getUserMedia({audio: true})
+      .then(result => result)
+      .catch(e => e)
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext
+    const audioCtx = new AudioContext()
+
+    const audioSource = audioCtx.createMediaStreamSource(audioStream)
+    const analyser = audioCtx.createAnalyser()
+    analyser.fftSize = 1024
+    audioSource.connect(analyser)
+
+    // const volumeCheck = () => {
+    //   const db = getDecibel(analyser)
+    //   if (db <= 1) {
+    //     setAudioVolume(0)
+    //   } else if (db !== audioVolume) {
+    //     setAudioVolume(db)
+    //     if (!audioPass) {
+    //       setAudioPass(true)
+    //     }
+    //   }
+    // }
+
+    // if (!drawId) {
+    //   drawId = setInterval(volumeCheck)
+    // }
+  }
+  const detectAudioDevice = async () => {
+    const device = await getAudioDeviceCheck()
+    if (drawId && device) {
+      setAudioPass(false)
+      setAudioVolume(0)
+      clearInterval(drawId)
+      drawId = null
+      await infiniteAudioChecker()
+    }
   }
 
   //마이크 on off
@@ -321,9 +363,12 @@ export default props => {
         {/* 좋아요-부스터버튼, 마이크 버튼 */}
         {creatLikeBoost()}
         {/* 볼륨조절버튼 */}
-        <button name="volume" className="volume" title="볼륨조정" onClick={activeMenu}>
-          볼륨조정
-        </button>
+        {props.auth < 3 && (
+          <button name="volume" className="volume" title="볼륨조정" onClick={activeMenu}>
+            볼륨조정
+          </button>
+        )}
+
         <ul className={`volume-box ${toggle.volume ? 'on' : 'off'}`}>
           <li>
             <Volumebar></Volumebar>

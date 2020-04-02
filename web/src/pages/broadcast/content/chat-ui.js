@@ -199,7 +199,7 @@ export default props => {
       }
       //랭킹,좋아요 수
       if (cmd === 'reqChangeCount') context.action.updateBroadcastTotalInfo(data.detail.data.reqChangeCount)
-      // 공지사항
+      // 공지사항 푸시
       if (cmd === 'reqNotice') {
         if (recvMsg.msg !== '') context.action.updateBroadcastTotalInfo({hasNotice: true})
         else context.action.updateBroadcastTotalInfo({hasNotice: false})
@@ -207,6 +207,11 @@ export default props => {
         store.action.updateNoticeMsg(recvMsg.msg)
         console.log(store.noticeMsg)
       }
+      // 사연 푸시
+      if (cmd === 'reqStory') {
+        context.action.updateBroadcastTotalInfo({hasStory: true})
+      }
+
       // 매니저 등록 / 해제 시 적용
       const recvauth = recvMsg.msg
       if (cmd === 'reqGrant') {

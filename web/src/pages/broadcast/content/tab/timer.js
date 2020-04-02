@@ -1,8 +1,12 @@
 import React, {useContext, useEffect} from 'react'
+
 import {BroadCastStore} from 'pages/broadcast/store'
-import Api from 'context/api'
 import {Context} from 'context'
-import styled from 'styled-components'
+const sc = require('context/socketCluster')
+import {Global} from 'App'
+import Api from 'context/api'
+import qs from 'query-string'
+import {isHybrid, Hybrid} from 'context/hybrid'
 
 let time = 0
 let hour = 0
@@ -13,7 +17,7 @@ let startFlag = false
 let pauseFlag = false
 let addFlag = false
 
-let BcEndTime = 7200 //방송방 기본 시간 ( 2시간 -> 7200)
+let BcEndTime = 10 //방송방 기본 시간 ( 2시간 -> 7200)
 
 const getTimeStamp = () => {
   const context = Timer.context()
@@ -111,8 +115,34 @@ const timeloop = () => {
 
       //console.log('타이머 시간 = ' + time)
       // 타이머 종료 조건을 건다.
+
       if (time >= BcEndTime) {
         stopTimer()
+        const {mediaHandler} = Global()
+
+        async function broadDestroy() {
+          const {roomNo} = qs.parse(location.search)
+          const res = await Api.broad_exit({data: {roomNo: roomNo}})
+          //Error발생시
+          if (res.result === 'fail') {
+            console.log(res.message)
+            return
+          } else {
+            if (isHybrid()) {
+              Hybrid('ExitRoom')
+              Global().action.updateMediaPlayerStatus(false)
+            } else {
+              Global().action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+              Global().action.updateBroadcastTotalInfo(null)
+              Global().action.updateMediaPlayerStatus(false)
+              mediaHandler.stop()
+              sc.socketClusterDestory(false, roomNo)
+              localStorage.clear()
+              window.location.href = window.location.origin + '/live'
+            }
+          }
+        }
+        broadDestroy()
         return
       }
       time++
@@ -127,9 +157,9 @@ const timeloop = () => {
 const Timer = props => {
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
-
   Timer.context = () => context
   Timer.store = () => store
+
   useEffect(() => {
     startTimer()
   }, [])
