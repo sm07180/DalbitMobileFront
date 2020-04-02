@@ -74,10 +74,10 @@ const Container = styled.div`
   width: 1210px;
   margin: 78px auto 0 auto;
   & h1 {
-    margin: 40px 0;
+    margin: 30px 0;
     text-align: center;
     color: ${COLOR_MAIN};
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.7px;
   }

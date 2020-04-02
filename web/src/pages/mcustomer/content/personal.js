@@ -55,7 +55,7 @@ export default props => {
   //--------------------------------------------------------------------------
   //fetch
   async function fetchData(obj) {
-    console.log(JSON.stringify(obj, null, 1))
+    //console.log(JSON.stringify(obj, null, 1))
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
       if (obj.data.email === undefined || obj.data.email === '') {

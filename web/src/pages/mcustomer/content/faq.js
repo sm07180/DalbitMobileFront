@@ -361,7 +361,7 @@ const TableWrap = styled.div`
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
-    font-size: 14px;
+    font-size: 12px;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
@@ -384,7 +384,7 @@ const TableWrap = styled.div`
     height: 24px;
     background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
     &.on {
-      background: url('https://devimage.dalbitlive.com/images/api/ico-selectup-g.png') no-repeat center center / 17px 9px;
+      background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
     }
 
     @media (max-width: ${WIDTH_MOBILE}) {

@@ -76,6 +76,7 @@ const Wrap = styled.div`
       border-bottom: 1px solid ${COLOR_MAIN};
       border-right: none;
       color: ${COLOR_MAIN};
+      font-size: 14px;
       &:nth-child(3) {
         border-right: 1px solid #e0e0e0;
       }
