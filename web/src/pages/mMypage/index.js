@@ -37,6 +37,12 @@ export default props => {
   if (!token.isLogin && profile === null) {
     props.history.push('/')
   }
+
+  if (!type) {
+    window.location.href = `${location.pathname}/notice`
+    return null
+  }
+
   if (profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
   } else {
