@@ -26,6 +26,7 @@ const Room = () => {
   //interface
   Room.context = context
   Room.roomNo = roomNo
+  Room.setRoomNo = num => setRoomNo(num)
   //-----------------------------------------------------------
   useEffect(() => {
     console.log('Room.roomNo : ' + Room.roomNo)
@@ -55,7 +56,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     Hybrid('EnterRoom')
     return true
   }
-  Room.roomNo = roomNo
+  Room.setRoomNo(roomNo)
+  // Room.roomNo = roomNo
   console.log(Room.roomNo)
   const res = await Api.broad_join({data: {roomNo: roomNo}})
   if (callbackFunc !== undefined) callbackFunc()
