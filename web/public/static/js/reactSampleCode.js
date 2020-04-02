@@ -28,7 +28,7 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-player-show', {
+    new CustomEvent('native-end', {
       detail: {
         roomNo: '1111',
         bjNickNm: '2222',
