@@ -136,8 +136,6 @@ export default props => {
     }
   }, [])
 
-  console.log('token', token)
-
   return (
     <Switch>
       {!token.isLogin ? (
