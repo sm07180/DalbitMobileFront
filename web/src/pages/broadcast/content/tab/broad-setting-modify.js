@@ -79,7 +79,22 @@ export default props => {
     })
   }
   const makeRadios = () => {
-    const info = ['일상/챗', ' 연애/오락', '노래/연주', '고민/사연', '책/힐링', '스포츠', 'ASMR', '노래방', '건강', '공포', '먹방', '성우', '요리', '기타']
+    const info = [
+      '일상/챗',
+      ' 연애/오락',
+      '노래/연주',
+      '고민/사연',
+      '책/힐링',
+      '스포츠',
+      'ASMR',
+      '노래방',
+      '건강',
+      '공포',
+      '먹방',
+      '성우',
+      '요리',
+      '기타'
+    ]
     let leadingZeros = (n, digits) => {
       var zero = ''
       n = n.toString()
@@ -219,7 +234,13 @@ export default props => {
       <Content>
         <Navi title={'방송설정'} />
         <Wrap onWheel={handleOnWheel} ref={settingArea}>
-          <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+          <Scrollbars
+            ref={scrollbars}
+            autoHeight
+            autoHeightMax={'100%'}
+            onUpdate={scrollOnUpdate}
+            autoHide
+            className="scrollCustom">
             <BroadDetail>
               <JoinProhibit>
                 <h2>입장제한</h2>
@@ -541,7 +562,6 @@ const BroadWelcome = styled.div`
     appearance: none;
     width: 100%;
     height: 110px;
-    font-family: NanumSquare;
     padding: 15px 40px 15px 15px;
     box-sizing: border-box;
     background-color: #f5f5f5;

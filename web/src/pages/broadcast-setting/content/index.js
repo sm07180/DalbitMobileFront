@@ -727,7 +727,6 @@ const BroadWelcome = styled.div`
     appearance: none;
     width: 100%;
     height: 110px;
-    font-family: NanumSquare;
     padding: 15px 40px 15px 15px;
     box-sizing: border-box;
     background-color: #f5f5f5;
