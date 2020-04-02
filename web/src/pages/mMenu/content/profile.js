@@ -13,8 +13,6 @@ import NoticeIcon from '../static/profile/ic_notice_m.svg'
 import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
 import WalletIcon from '../static/profile/ic_wallet_m.svg'
 import ReportIcon from '../static/profile/ic_report_m.svg'
-import AlarmIcon from '../static/profile/ic_alarm_m.svg'
-import SettingIcon from '../static/profile/ic_broadcastingsetting_m.svg'
 
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
@@ -23,6 +21,8 @@ import ByeolIcon from '../static/profile/ic_star_m_p.svg'
 import DalIcon from '../static/profile/ic_moon_m_p.svg'
 
 import NeedLoginImg from '../static/profile/need_login.png'
+
+import Api from 'context/api'
 
 export default props => {
   const subNavList = [
@@ -44,6 +44,19 @@ export default props => {
   const {profile} = globalCtx
   const {isLogin} = globalCtx.token
 
+  const [fetching, setFetching] = useState(false)
+
+  const clickLogoutBtn = async () => {
+    if (fetching) {
+      return
+    }
+
+    globalCtx.action.confirm({
+      callback: () => {},
+      msg: '로그아웃 하시겠습니까?'
+    })
+    // const logoutInfo = await Api.member_logout({data: {}})
+  }
   console.log('profile', profile)
 
   return (
@@ -120,11 +133,24 @@ export default props => {
               </Link>
             )
           })}
+
+          <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
         </div>
       )}
     </MenuMypage>
   )
 }
+
+const LogoutBtn = styled.button`
+  display: block;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 13px 0;
+  width: 100%;
+  color: #bdbdbd;
+  font-size: 12px;
+  margin-top: 20px;
+`
 
 const MenuMypage = styled.div`
   min-height: 100vh;

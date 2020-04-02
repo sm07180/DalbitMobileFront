@@ -490,8 +490,8 @@ export default class API {
    */
 
   static member_login = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/member/login`, method: 'POST', data})
+    const {data} = obj
+    return await ajax({url: `/member/login`, method: 'POST', data})
   }
 
   /**
@@ -503,8 +503,8 @@ export default class API {
    */
 
   static member_logout = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/logout`, method: method || 'POST', data: data})
+    const {data} = obj
+    return await ajax({url: `/member/logout`, method: 'POST', data: data})
   }
 
   /**
