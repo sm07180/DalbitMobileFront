@@ -21,7 +21,7 @@ const Layout = props => {
       <TopScrollBtn />
       <article>{children}</article>
       {/* (방송방)Player */}
-      <NewPlayer {...props} />
+      {/* <NewPlayer {...props} /> */}
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}
