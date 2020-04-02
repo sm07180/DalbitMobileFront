@@ -42,10 +42,6 @@ export default props => {
 
   //오른쪽 메뉴들 토글기능
   const activeMenu = e => {
-    if (!context.token.isLogin) {
-      context.action.updatePopup('LOGIN')
-      return
-    }
     const current = e.target.name
 
     setToggle({
@@ -277,12 +273,6 @@ export default props => {
     if (list && idx) {
       if (context.token.isLogin) {
         sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
-      } else {
-        context.action.alert({
-          //콜백처리
-          callback: () => {},
-          msg: loginCheckMsg
-        })
       }
     }
   }
