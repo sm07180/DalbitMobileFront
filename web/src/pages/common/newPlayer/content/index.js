@@ -37,19 +37,6 @@ export default props => {
     auth: 0
   })
 
-  async function playercloseExitRoom() {
-    const beforeRoomNo = localStorage.getItem('currentRoomNo')
-    if (beforeRoomNo != '' || beforeRoomNo != null) {
-      const res = await Api.broad_exit({data: {roomNo: beforeRoomNo}})
-      if (res.result === 'success') {
-        if (isHybrid()) {
-        } else {
-          sc.socketClusterDestory(false, beforeRoomNo)
-          localStorage.clear()
-        }
-      }
-    }
-  }
   //---------------------------------------------------------------------
   const makeCloseBtn = () => {
     if (info.auth === 3) return
@@ -57,7 +44,6 @@ export default props => {
       <button
         className="close"
         onClick={() => {
-          playercloseExitRoom()
           props.update({playerClose: true})
         }}>
         닫기
@@ -66,27 +52,11 @@ export default props => {
   }
   //useEffect Native
   useEffect(() => {
-    if (!isHybrid()) return
     //@Native
     if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
-  //useEffect React
-  useEffect(() => {
-    if (isHybrid()) return
-    //@PC
-    if (roomInfo !== null && roomInfo !== undefined) {
-      const {auth, title, bjNickNm, roomNo, bjProfImg, likes} = roomInfo
-      setInfo({
-        bjNickNm: bjNickNm,
-        roomNo: roomNo,
-        bjProfImg: bjProfImg.thumb150x150,
-        title: title,
-        auth: auth
-      })
-    }
-  }, [roomInfo])
 
   //---------------------------------------------------------------------
   return (
@@ -122,13 +92,6 @@ export default props => {
             <span>{info.title}</span>
           </p>
         </div>
-        {!isHybrid() && (
-          <div className="state">
-            <span>{_.hasIn(context.broadcastTotalInfo, 'userCount') && context.broadcastTotalInfo.userCount}</span>
-            <span>{_.hasIn(context.broadcastTotalInfo, 'historyCount') && context.broadcastTotalInfo.historyCount}</span>
-            <span>{_.hasIn(context.broadcastTotalInfo, 'likes') && context.broadcastTotalInfo.likes}</span>
-          </div>
-        )}
         <button
           className="enter-btn"
           onClick={() => {
