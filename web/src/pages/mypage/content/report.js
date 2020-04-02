@@ -534,7 +534,6 @@ const TitleSubMsg = styled.div`
 const TitleText = styled.div`
   color: #8556f6;
   font-size: 20px;
-  font-family: NanumSquareB;
   letter-spacing: -0.5px;
   font-weight: 600;
 `

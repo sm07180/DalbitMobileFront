@@ -22,5 +22,9 @@ export default props => {
   //function
 
   //-----------------------------------------------------------------------------
-  return <div>broadcast setting</div>
+  return <Content>브로드캐스팅</Content>
 }
+
+const Content = styled.div`
+  padding-top: 40px;
+`

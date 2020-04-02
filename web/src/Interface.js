@@ -11,6 +11,8 @@ import _ from 'lodash'
 import {Context} from 'context'
 //util
 import Utility from 'components/lib/utility'
+//components
+import Room from 'context/room'
 
 export default () => {
   //context
@@ -45,14 +47,17 @@ export default () => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
-      case 'native-end': //-----------------------------Native end (Android&iOS)
+      case 'native-end': //-----------------------------Native End (Android&iOS)
         context.action.updateMediaPlayerStatus(false)
         //방송종료
         context.action.updateCastState(false)
         //(BJ)일경우 방송하기:방송중
         context.action.updateCastState(null)
         //종료시
-        // alert(JSON.stringify(event.detail))
+        //App에서 방송종료 알림경우
+        if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
+          Room.setRoomNo('')
+        }
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
