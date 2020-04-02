@@ -142,21 +142,64 @@ export default props => {
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
-      const recvMsg = data.detail.data.recvMsg
+      const recvMsg = data.detail.data.recvMsg.msg
       const cmd = data.detail.data.cmd
 
       if (cmd === 'chatEnd') {
-        if (data.detail.data.chatEnd.type === 'bjOut') {
-          if (!isHybrid()) {
-            context.action.alert({
-              callback: () => {
-                props.history.goBack()
-              },
-              msg: recvMsg.msg
-            })
-            mediaHandler.stop()
-            sc.socketClusterDestory(false, context)
-          }
+        const chatEndType = data.detail.data.chatEnd.type
+        switch (chatEndType) {
+          case 'bjOut': //BJ나가기
+            if (!isHybrid()) {
+              context.action.alert({
+                callback: () => {
+                  props.history.goBack()
+                },
+                msg: recvMsg.msg
+              })
+              mediaHandler.stop()
+              sc.socketClusterDestory(false, context)
+            }
+            break
+          case 'roomOut': //채팅방 종료
+            break
+          case 'roomExpectedOut': //채팅방 사용가능시간 초과
+            async function broadDestroy() {
+              const {roomNo} = qs.parse(location.search)
+              const res = await Api.broad_exit({data: {roomNo: roomNo}})
+              //Error발생시
+              if (res.result === 'fail') {
+                console.log(res.message)
+                return
+              } else {
+                if (isHybrid()) {
+                  Hybrid('ExitRoom')
+                  context.action.updateMediaPlayerStatus(false)
+                } else {
+                  context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+                  context.action.updateBroadcastTotalInfo(null)
+                  context.action.updateMediaPlayerStatus(false)
+                  mediaHandler.stop()
+                  sc.socketClusterDestory(false, roomNo)
+                  localStorage.clear()
+                  //props.history.goBack()
+                  //window.location.href = window.location.origin + '/live'
+                }
+
+                context.action.alert({
+                  callback: () => {
+                    props.history.goBack()
+                  },
+                  msg: recvMsg.msg
+                })
+              }
+            }
+            broadDestroy()
+            break
+          case 'roomExceptionOut': // BJ 재입장 가능시간 초과
+            break
+
+          default:
+            break
         }
       }
       // console.log(recvMsg)
