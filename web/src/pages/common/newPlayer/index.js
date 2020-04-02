@@ -28,12 +28,10 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
-        alert('ExitRoom')
-
+        alert(JSON.stringify(context.customHeader, null, 1))
         Hybrid('ExitRoom', '')
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
-        alert('EnterRoom')
         Hybrid('EnterRoom', '')
         break
       default:
