@@ -56,7 +56,6 @@ export default props => {
       broad_shortcut()
     }
   }
-
   //마이크 on off 기능~
   const activeMike = () => {
     console.log('store.mikeState = ' + store.mikeState)
@@ -65,18 +64,17 @@ export default props => {
 
   //좋아요~!
   const activeLike = () => {
-    console.log('store.like = ' + store.like)
+    if (!context.token.isLogin) {
+      context.action.updatePopup('LOGIN')
+      return
+    }
+
     if (store.like == 0) {
       if (context.token.isLogin) {
         loginCheckMsg = '좋아요는 방송청취 1분 후에 가능합니다.'
+      } else {
+        context.action.updatePopup('LOGIN')
       }
-      context.action.alert({
-        //콜백처리
-        callback: () => {
-          return
-        },
-        msg: loginCheckMsg
-      })
     }
     if (store.like == 1) {
       broad_likes(context.broadcastTotalInfo.roomNo)
@@ -87,7 +85,8 @@ export default props => {
 
   //부스트
   const activeBoost = () => {
-    store.action.updateTab(5)
+    if (context.token.isLogin) store.action.updateTab(5)
+
     //부스트 탭 열린 후 부스트 사용에 따른 분기처리.
   }
 
@@ -246,15 +245,9 @@ export default props => {
     }
   }
   const broadcastLink = e => {
-    if (context.token.isLogin) {
-    } else {
-      context.action.alert({
-        //콜백처리
-        callback: () => {
-          return
-        },
-        msg: loginCheckMsg
-      })
+    if (!context.token.isLogin) {
+      context.action.updatePopup('LOGIN')
+      return
     }
 
     //broad_Link()
@@ -280,12 +273,6 @@ export default props => {
     if (list && idx) {
       if (context.token.isLogin) {
         sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
-      } else {
-        context.action.alert({
-          //콜백처리
-          callback: () => {},
-          msg: loginCheckMsg
-        })
       }
     }
   }
@@ -327,11 +314,7 @@ export default props => {
         store.action.updateTab(12)
       }
     } else {
-      context.action.alert({
-        //콜백처리
-        callback: () => {},
-        msg: loginCheckMsg
-      })
+      context.action.updatePopup('LOGIN')
     }
   }
   const actionSetting = () => {

@@ -88,6 +88,10 @@ export default props => {
 
   let userTypeMemNo = ''
   async function goBjProfile(obj) {
+    if (!context.token.isLogin) {
+      context.action.updatePopup('LOGIN')
+      return
+    }
     store.action.updateTab(6)
 
     if (obj.isBj) {
@@ -138,6 +142,11 @@ export default props => {
   }
 
   const tabMove = type => {
+    if (!context.token.isLogin) {
+      context.action.updatePopup('LOGIN')
+      return
+    }
+
     switch (type) {
       case 0:
         store.action.updateTab(0)
