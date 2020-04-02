@@ -20,7 +20,6 @@ import {BroadCastStore} from '../store'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import qs from 'query-string'
-
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -143,42 +142,30 @@ export default props => {
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
-      const recvMsg = data.detail.data.recvMsg.msg
+      const recvMsg = data.detail.data.recvMsg
       const cmd = data.detail.data.cmd
 
       if (cmd === 'chatEnd') {
-        async function broadDestroy() {
-          const {roomNo} = qs.parse(location.search)
-          const res = await Api.broad_exit({data: {roomNo: roomNo}})
-          //Error발생시
-          if (res.result === 'fail') {
-            console.log(res.message)
-            return
-          } else {
-            if (isHybrid()) {
-              Hybrid('ExitRoom')
-              context.action.updateMediaPlayerStatus(false)
-            } else {
-              context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
-              context.action.updateBroadcastTotalInfo(null)
-              context.action.updateMediaPlayerStatus(false)
-              mediaHandler.stop()
-              sc.socketClusterDestory(false, roomNo)
-              localStorage.clear()
-              //props.history.goBack()
-              //window.location.href = window.location.origin + '/live'
-              context.action.alert({
-                callback: () => {
-                  props.history.goBack()
-                },
-                msg: recvMsg.msg
-              })
-            }
-          }
+        if (isHybrid()) {
+          Hybrid('ExitRoom')
+          context.action.updateMediaPlayerStatus(false)
+        } else {
+          context.action.updateCastState(null) //gnb 방송중-방송종료 표시 상태값
+          context.action.updateBroadcastTotalInfo(null)
+          context.action.updateMediaPlayerStatus(false)
+          mediaHandler.stop()
+          sc.socketClusterDestory(false, context)
+          localStorage.clear()
+          //window.location.href = window.location.origin + '/live'
+          context.action.alert({
+            callback: () => {
+              props.history.goBack()
+            },
+            msg: recvMsg.msg
+          })
         }
-        broadDestroy()
       }
-      // console.log(recvMsg)
+
       //총접속자 , 누적 사용자수 업데이트
       if (cmd == 'connect' || cmd == 'disconnect') {
         // if (store.listenerUpdate > 0) {
