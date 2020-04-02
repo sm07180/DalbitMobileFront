@@ -17,7 +17,7 @@ const myProfile = props => {
   const {profile} = props
 
   if (profile === null) {
-    return null
+    return <div style={{minHeight: '400px'}}></div>
   }
 
   return (
@@ -83,6 +83,7 @@ const MyProfile = styled.div`
   flex-direction: row;
 
   width: 100%;
+  min-height: 300px;
   margin: 0 auto;
   padding: 40px 16px 57px 16px;
 
