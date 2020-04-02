@@ -5,11 +5,11 @@
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-//context
+//context & store
+import Api from 'context/api'
 import {PayStore} from '../store'
 //components
-import Api from 'context/api'
-
+import Pay from 'pages/store/content/index'
 const Index = props => {
   //---------------------------------------------------------------------
   //let
@@ -25,6 +25,7 @@ const Index = props => {
   return (
     <Content>
       <div>안드로이드 결제</div>
+      <Pay />
     </Content>
   )
 }
@@ -32,7 +33,6 @@ export default Index
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  margin-top: 60px;
   padding-left: 16px;
   padding-right: 16px;
   box-sizing: border-box;

@@ -6,7 +6,7 @@ import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //layout
 import Layout from 'pages/common/layout'
-import Banner from './banner'
+import Banner from './content/banner'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -15,6 +15,8 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
+//components
+//
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -86,21 +88,28 @@ export default props => {
   }, [])
   //---------------------------------------------------------------------
   return (
-    <Content>
-      {list ? (
-        <>
-          <List>{creatList()}</List>
-          <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            구매하기
-          </button>
-        </>
-      ) : (
-        <NoResult>
-          <NoImg />
-          <span>조회된 결과가 없습니다.</span>
-        </NoResult>
-      )}
-    </Content>
+    <Layout {...props}>
+      <Content>
+        <h2>스토어</h2>
+        {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt}</p>}
+        <Slider>
+          <Banner />
+        </Slider>
+        {list ? (
+          <>
+            <List>{creatList()}</List>
+            <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
+              구매하기
+            </button>
+          </>
+        ) : (
+          <NoResult>
+            <NoImg />
+            <span>조회된 결과가 없습니다.</span>
+          </NoResult>
+        )}
+      </Content>
+    </Layout>
   )
 }
 
@@ -111,7 +120,13 @@ const Content = styled.section`
   min-height: 300px;
   margin: 0 auto;
   padding: 40px 0 120px 0;
-
+  h2 {
+    padding-bottom: 60px;
+    font-size: 28px;
+    font-weight: 600;
+    color: ${COLOR_MAIN};
+    text-align: center;
+  }
   .charge-btn {
     display: block;
     width: 328px;
@@ -172,6 +187,13 @@ const Content = styled.section`
       font-size: 14px;
       line-height: 48px;
     }
+  }
+`
+
+const Slider = styled.div`
+  margin-top: 40px;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    margin-top: 20px;
   }
 `
 
