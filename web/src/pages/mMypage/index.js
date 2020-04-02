@@ -56,6 +56,7 @@ export default props => {
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/new`} />}
+      {memNo && !type && <Redirect to={`/mmypage/${memNo}/notice`} />}
       <Layout {...props}>
         <Mypage>
           <MyProfile profile={profileInfo} />
@@ -65,7 +66,6 @@ export default props => {
               const {type, component} = value
               return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
             })}
-            <Redirect to={`/mmypage/${memNo}/notice`} />
           </SubContent>
         </Mypage>
       </Layout>
