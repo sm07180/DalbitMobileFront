@@ -44,6 +44,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
    * @title roomNo 저장이후 동일하면 RoomJoin이 아닌,EnterRoom실행
    */
+  alert(Room.roomNo + ' : ' + roomNo)
   if (Room.roomNo === roomNo) {
     //하이브리드앱실행
     console.log(
@@ -53,9 +54,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     alert('Room.roomNo 동일')
     Hybrid('EnterRoom')
     return true
-  } else {
-    Room.roomNo = roomNo
   }
+  Room.roomNo = roomNo
   console.log(Room.roomNo)
   const res = await Api.broad_join({data: {roomNo: roomNo}})
   if (callbackFunc !== undefined) callbackFunc()
