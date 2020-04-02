@@ -13,6 +13,7 @@ import Api from 'context/api'
 //layout
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import use from 'pages/setting/content/use'
 export default props => {
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -29,7 +30,7 @@ export default props => {
   const [showBtn, setShowBtn] = useState('')
   const [count, setCount] = useState(0)
   const [broadNumbers, setBroadNumbers] = useState('')
-
+  const [replyRegist, setReplyRegist] = useState('')
   //api
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
@@ -40,8 +41,11 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
-      setFanTotal(res.data.list)
+      setFanTotal(
+        res.data.list.filter(function(item) {
+          return item.status === 1
+        })
+      )
     } else if (res.result === 'fail') {
       console.log(res)
     }
@@ -84,16 +88,14 @@ export default props => {
       data: {
         memNo: profile.memNo,
         depth: 2,
-        content: '대댓글올라가세요',
+        content: replyRegist,
         boardNo: broadNumbers
       }
     })
     if (res.result === 'success') {
-      //console.log(res)
-      fetchDataReplyList()
-      fetchDataList()
+      console.log(res)
     } else if (res.result === 'fail') {
-      // console.log(res)
+      console.log(res)
     }
   }
   useEffect(() => {
@@ -159,11 +161,15 @@ export default props => {
     setBroadNumbers(boardNumer)
   }
   //대댓글등록
-  const uploadReply = () => {
-    showReply()
+  const uploadReply = (writeNumer, boardNumer) => {
     fetchDataUploadReply()
+    fetchDataList()
+    showReply(writeNumer, boardNumer)
+    setReplyRegist('')
   }
-
+  const textChangeReply = e => {
+    setReplyRegist(e.target.value)
+  }
   return (
     <>
       <FanBoard className="fanboard">
@@ -199,7 +205,7 @@ export default props => {
             let value = boardIdx
             let writeNumer = writerNo
             let boardNumer = boardNo
-
+            if (status !== 1) return
             return (
               <CommentBox key={index} className={status === 1 ? 'show' : ''}>
                 <div className="titlewrap">
@@ -237,25 +243,14 @@ export default props => {
                               <span>{writerNo}</span>
                               <span>{writeDt}</span>
                             </div>
-                            <BtnIcon
-                              onClick={() => setShowBtn(index)}
-                              className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
-                            <DetailBtn className={showBtn === index ? 'active' : ''}>
-                              <a className="modify" onClick={() => DeleteComment()}>
-                                수정하기
-                              </a>
-                              <a className="delete" onClick={() => DeleteComment(value)}>
-                                삭제하기
-                              </a>
-                            </DetailBtn>
                           </div>
                           <div className="content">{contents}</div>
                         </div>
                       )
                     })}
                     <StartBottom className="on">
-                      <input placeholder={placeholderTextStart} />
-                      <button onClick={() => uploadReply(boardNumer)}>등록</button>
+                      <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} />
+                      <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
                     </StartBottom>
                   </div>
                 )}
