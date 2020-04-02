@@ -5,32 +5,31 @@
 
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-
 // context
 import {Context} from 'context'
 import Api from 'context/api'
-
-//layout
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import use from 'pages/setting/content/use'
+//layout
+
 export default props => {
+  //context
   const ctx = useContext(Context)
   const context = useContext(Context)
+  //profileGlobal info
   const {profile} = ctx
-  const placeholderText =
-    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
-  const placeholderTextStart = '팬 보드에 글을 남겨주세요. '
   //state
   const [comment, setComment] = useState('')
   const MaxCommentLength = 100
+  //apiinfo
   const [fanTotal, setFanTotal] = useState([])
   const [replyInfo, setReplyInfo] = useState([])
+  //toggles
   const [active, setActive] = useState(false)
   const [showBtn, setShowBtn] = useState('')
   const [showBtnReply, setShowBtnReply] = useState('')
+  //count
   const [count, setCount] = useState(0)
-  const [Rcount, setRCount] = useState(0)
   const [broadNumbers, setBroadNumbers] = useState('')
   const [replyRegist, setReplyRegist] = useState('')
   //api
@@ -53,7 +52,6 @@ export default props => {
       console.log(res)
     }
   }
-
   //대댓글 조회
   async function fetchDataReplyList(writeNumer, boardNumer) {
     const res = await Api.member_fanboard_reply({
@@ -101,9 +99,6 @@ export default props => {
       console.log(res)
     }
   }
-  useEffect(() => {
-    fetchDataList()
-  }, [])
 
   const submitClick = () => {
     fetchDataUpload()
@@ -112,8 +107,8 @@ export default props => {
   }
   //댓글 등록 온체인지
   const textChange = e => {
-    const defaultHeight = 36
-    const lineBreakHeight = 14
+    // const defaultHeight = 36
+    // const lineBreakHeight = 14
     const target = e.currentTarget
     const lineBreakLenght = target.value.split('\n').length
 
@@ -145,15 +140,6 @@ export default props => {
     fetchDataDelete()
   }
 
-  //전체 카운터
-  useEffect(() => {
-    setCount(
-      fanTotal.filter(function(item) {
-        return item.status === 1
-      }).length
-    )
-  }, [fanTotal])
-
   //대댓글보기
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
@@ -163,7 +149,10 @@ export default props => {
   const uploadReply = (writeNumer, boardNumer) => {
     fetchDataUploadReply()
     fetchDataList()
-    showReply(writeNumer, boardNumer)
+    setTimeout(() => {
+      showReply(writeNumer, boardNumer)
+    }, 100)
+
     setReplyRegist('')
   }
   const textChangeReply = e => {
@@ -172,7 +161,7 @@ export default props => {
     if (target.value.length > MaxCommentLength) return
     setReplyRegist(target.value)
   }
-  //click bg
+  //click bg zindex
   const clickRefresh = () => {
     setShowBtn('')
     setShowBtnReply('')
@@ -183,8 +172,36 @@ export default props => {
     deletApiFun(value)
     showReply(writeNumer, boardNumer)
   }
+  //dateformat
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
+  //placeholder
+  const placeholderText =
+    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
+  const placeholderTextStart = '팬 보드에 글을 남겨주세요. '
+  //--------------------------------------------------------------------------
+  //전체 카운터
+  useEffect(() => {
+    setCount(
+      fanTotal.filter(function(item) {
+        return item.status === 1
+      }).length
+    )
+  }, [fanTotal])
+  useEffect(() => {
+    fetchDataList()
+  }, [])
+
+  //--------------------------------------------------------------------------
   return (
     <>
+      {/* 전체영역 */}
       <FanBoard className="fanboard">
         <WriteArea className={active === true ? 'on' : ''}>
           <WriteAreaTop>
@@ -208,6 +225,7 @@ export default props => {
             <button>등록</button>
           </StartBottom>
         </article>
+        {/* 팬보드 큰댓글 등록 영역---- */}
         <ListArea>
           <ListTitle>
             <span>게시글</span>
@@ -226,7 +244,7 @@ export default props => {
                   <div>
                     <span>{nickNm}</span>
                     <span>{writerNo}</span>
-                    <span>{writeDt}</span>
+                    <span>{timeFormat(writeDt)}</span>
                   </div>
                   <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
                   <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
@@ -238,11 +256,11 @@ export default props => {
                     </a>
                   </DetailBtn>
                 </div>
-
                 <div className="content">{contents}</div>
                 <button className="reply" onClick={() => showReply(writeNumer, boardNumer)}>
-                  답글 <span>{replyCnt}</span>
+                  답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
                 </button>
+                {/*  큰댓글 컨텐츠 영역---- */}
                 {boardNumer === broadNumbers && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
@@ -256,7 +274,7 @@ export default props => {
                             <div>
                               <span>{nickNm}</span>
                               <span>{writerNo}</span>
-                              <span>{writeDt}</span>
+                              <span>{timeFormat(writeDt)}</span>
                             </div>
                             <BtnIcon
                               onClick={() => setShowBtnReply(boardIdx)}
@@ -283,6 +301,7 @@ export default props => {
               </CommentBox>
             )
           })}
+          {/*  대댓글 컨텐츠 영역---- */}
         </ListArea>
       </FanBoard>
       <BG onClick={clickRefresh} className={showBtn !== '' || showBtnReply !== '' ? 'on' : ''}></BG>
@@ -299,11 +318,12 @@ const ListTitle = styled.div`
 
   & > span {
     vertical-align: center;
+    transform: skew(-0.03deg);
   }
 `
 
 const ListArea = styled.div`
-  margin: 30px 0;
+  margin: 24px 0;
 `
 
 const CommentSubmitBtn = styled.button`
@@ -324,6 +344,9 @@ const TextCount = styled.div`
   box-sizing: border-box;
   border-top: 1px solid #ededed;
   border-bottom: 1px solid #d0d0d0;
+  & span {
+    transform: skew(-0.03deg);
+  }
 `
 
 const WriteAreaBottom = styled.div`
@@ -336,7 +359,7 @@ const WriteAreaBottom = styled.div`
 const Textarea = styled.textarea`
   display: block;
   width: 100%;
-
+  font-size: 14px;
   height: 106px;
   font-family: inherit;
   padding: 18px 20px;
@@ -432,7 +455,6 @@ const CommentBox = styled.div`
   & .titlewrap {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 16px 0;
     div:nth-child(2) {
       display: flex;
@@ -464,7 +486,7 @@ const CommentBox = styled.div`
       span:nth-child(3) {
         display: block;
         width: 100%;
-        margin-top: 6px;
+        margin-top: 2px;
         color: #9e9e9e;
         font-size: 12px;
         letter-spacing: -0.3px;
@@ -474,7 +496,7 @@ const CommentBox = styled.div`
   }
   .content {
     width: 100%;
-    margin: 16px 0;
+    margin: 0 0 16px 0;
     font-size: 14px;
     color: #424242;
     line-height: 1.57;
@@ -484,7 +506,7 @@ const CommentBox = styled.div`
   }
   .reply {
     display: block;
-    width: 61px;
+    padding: 0 8px;
     height: 28px;
     margin-bottom: 12px;
     border: solid 1px #e0e0e0;
@@ -513,6 +535,7 @@ const CommentBox = styled.div`
 const Imgbox = styled.div`
   width: 32px;
   height: 32px;
+  border-radius: 50%;
   background: url(${props => props.bg}) no-repeat center center / cover;
 `
 
@@ -540,6 +563,7 @@ const DetailBtn = styled.div`
     letter-spacing: -0.35px;
     color: #757575;
     background-color: #fff;
+    transform: skew(-0.03deg);
   }
   & a:hover {
     background-color: #f8f8f8;
@@ -570,4 +594,3 @@ const BtnIcon = styled.button`
     display: block;
   }
 `
-const ReplyWrap = styled
