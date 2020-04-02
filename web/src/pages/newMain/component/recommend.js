@@ -114,11 +114,13 @@ const RecommendWrap = styled.div`
     letter-spacing: -0.4px;
     text-align: center;
     margin-bottom: 5px;
+    transform: skew(-0.03deg);
   }
   .selected-nickname {
     color: #fff;
     font-size: 14px;
     letter-spacing: -0.35px;
     text-align: center;
+    transform: skew(-0.03deg);
   }
 `

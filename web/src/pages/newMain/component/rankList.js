@@ -66,9 +66,15 @@ export default props => {
 }
 
 const RankList = styled.div`
+  position: absolute;
+  top: 0;
+  left: 16px;
+  width: calc(100% - 16px);
+  .swiper-container {
+    padding-right: 16px;
+  }
   .slide-wrap {
     width: 102px;
-    margin-right: 10px;
 
     .main-img {
       position: relative;
@@ -97,6 +103,8 @@ const RankList = styled.div`
       letter-spacing: -0.35px;
       text-align: center;
       margin-top: 10px;
+      font-weight: 600;
+      transform: skew(-0.03deg);
     }
     .info-wrap {
       display: flex;
@@ -116,5 +124,8 @@ const RankList = styled.div`
         margin-left: 6px;
       }
     }
+  }
+  .slide-wrap + .slide-wrap {
+    margin-left: 10px;
   }
 `
