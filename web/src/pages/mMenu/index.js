@@ -19,7 +19,7 @@ export default props => {
   ]
 
   return (
-    <Layout {...props}>
+    <Layout {...props} status="no_gnb">
       <MenuWrap>
         <Switch>
           {categoryList.map(value => {
