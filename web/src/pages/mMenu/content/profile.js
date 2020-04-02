@@ -26,7 +26,6 @@ import NeedLoginImg from '../static/profile/need_login.png'
 
 export default props => {
   const subNavList = [
-    {type: 'setting', txt: '내 정보 관리', icon: InfoIcon},
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
@@ -44,7 +43,7 @@ export default props => {
   const globalCtx = useContext(Context)
   const {profile} = globalCtx
   const {isLogin} = globalCtx.token
-  const {memNo} = profile
+
   console.log('profile', profile)
 
   return (
@@ -104,10 +103,16 @@ export default props => {
 
       {isLogin && (
         <div className="sub-nav">
+          <Link to={`/my/setting`}>
+            <div className="list">
+              <span className="text">내 정보 관리</span>
+              <img className="icon" src={InfoIcon} />
+            </div>
+          </Link>
           {subNavList.map((value, idx) => {
             const {type, txt, icon} = value
             return (
-              <Link to={`/mmypage/${memNo}/${type}`} key={`list-${idx}`}>
+              <Link to={`/mmypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                 <div className="list">
                   <span className="text">{txt}</span>
                   <img className="icon" src={icon} />

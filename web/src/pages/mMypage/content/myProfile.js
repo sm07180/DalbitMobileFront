@@ -92,7 +92,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 0 0 45px 0;
+    padding: 20px 0 45px 0;
   }
 `
 //flex item3
