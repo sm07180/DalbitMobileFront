@@ -44,7 +44,7 @@ export default props => {
   const globalCtx = useContext(Context)
   const {profile} = globalCtx
   const {isLogin} = globalCtx.token
-  const {memNo} = profile
+
   console.log('profile', profile)
 
   return (
@@ -107,7 +107,7 @@ export default props => {
           {subNavList.map((value, idx) => {
             const {type, txt, icon} = value
             return (
-              <Link to={`/mmypage/${memNo}/${type}`} key={`list-${idx}`}>
+              <Link to={`/mmypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                 <div className="list">
                   <span className="text">{txt}</span>
                   <img className="icon" src={icon} />
