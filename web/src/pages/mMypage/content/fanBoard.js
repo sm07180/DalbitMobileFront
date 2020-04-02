@@ -47,9 +47,7 @@ export default props => {
           return item.status === 1
         })
       )
-      console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
   //대댓글 조회
@@ -61,10 +59,8 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
   //팬보다 댓글추가
@@ -77,10 +73,8 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
       fetchDataList()
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
   //대댓글 추가
@@ -94,9 +88,7 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
 
@@ -131,10 +123,8 @@ export default props => {
         }
       })
       if (res.result === 'success') {
-        console.log(res)
         fetchDataList()
       } else if (res.result === 'fail') {
-        //console.log(res)
       }
     }
     fetchDataDelete()
@@ -198,11 +188,10 @@ export default props => {
     fetchDataList()
   }, [])
   //--------------------------------------------------------------------------
-  console.log(props.location.pathname.split('/')[2])
-  const pathProfile = props.location.pathname.split('/')[2]
 
+  const pathProfile = props.location.pathname.split('/')[2]
   const [pathName, setPathName] = useState(pathProfile)
-  console.log(pathName)
+
   return (
     <>
       {/* 전체영역 */}
