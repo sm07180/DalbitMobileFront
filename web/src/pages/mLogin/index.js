@@ -56,7 +56,7 @@ export default props => {
         if (profileInfo.result === 'success') {
           const {data} = profileInfo
           globalCtx.action.updateProfile(data)
-          props.history.push('/new')
+          return props.history.push('/new')
         }
       }
       setFetching(false)
