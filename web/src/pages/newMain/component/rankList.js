@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 // component
 import Swiper from 'react-id-swiper'
@@ -27,16 +28,18 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
-                <div className="nickname">{nickNm}</div>
-                <div className="info-wrap">
-                  <img src={peopleIcon} />
-                  <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
-                  <img src={heartIcon} className="heart-icon" />
-                  <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
-                </div>
+                <Link to={`/mmypage/${memNo}`}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    <div className="counting">{rank}</div>
+                  </div>
+                  <div className="nickname">{nickNm}</div>
+                  <div className="info-wrap">
+                    <img src={peopleIcon} />
+                    <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
+                    <img src={heartIcon} className="heart-icon" />
+                    <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
+                  </div>
+                </Link>
               </div>
             )
           })}
@@ -47,10 +50,12 @@ export default props => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
-                <div className="nickname">{nickNm}</div>
+                <Link to={`/mmypage/${memNo}`}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    <div className="counting">{rank}</div>
+                  </div>
+                  <div className="nickname">{nickNm}</div>
+                </Link>
               </div>
             )
           })}

@@ -34,13 +34,9 @@ export default props => {
 
   const [profileInfo, setProfileInfo] = useState(null)
 
-  if (!token.isLogin && profile === null) {
-    props.history.push('/')
-  }
-
-  if (profile.memNo !== memNo) {
+  if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
-  } else {
+  } else if (profile && profile.memNo === memNo) {
     memNo = profile.memNo
   }
 
@@ -52,25 +48,28 @@ export default props => {
       }
     }
 
-    settingProfileInfo(memNo)
+    if (memNo) {
+      settingProfileInfo(memNo)
+    }
   }, [])
 
   return (
-    <Layout {...props}>
-      <Mypage>
-        <MyProfile profile={profileInfo} />
-        {type && <Navigation list={navigationList} memNo={memNo} type={type} />}
-        <SubContent>
-          <Switch>
+    <Switch>
+      {!token.isLogin && profile === null && <Redirect to={`/new`} />}
+      <Layout {...props}>
+        <Mypage>
+          <MyProfile profile={profileInfo} />
+          {type && <Navigation list={navigationList} memNo={memNo} type={type} />}
+          <SubContent>
             {navigationList.map(value => {
               const {type, component} = value
               return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
             })}
             <Redirect to={`/mmypage/${memNo}/notice`} />
-          </Switch>
-        </SubContent>
-      </Mypage>
-    </Layout>
+          </SubContent>
+        </Mypage>
+      </Layout>
+    </Switch>
   )
 }
 
