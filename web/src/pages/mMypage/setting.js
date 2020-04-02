@@ -258,7 +258,7 @@ const BirthDate = styled.div`
 `
 
 const PasswordRedirectBtn = styled.button`
-  width: 138px;
+  width: 128px;
   font-size: 16px;
   color: #fff;
   padding: 16px 0;
@@ -276,7 +276,7 @@ const PasswordCircle = styled.div`
 const PasswordTextWrap = styled.div`
   display: flex;
   align-items: center;
-  width: calc(100% - 138px);
+  width: calc(100% - 128px);
   border: 1px solid #e0e0e0;
   border-right: none;
   background-color: #eee;
@@ -340,10 +340,10 @@ const SettingWrap = styled.div`
   margin: 0 auto;
 
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 320px;
+    width: 300px;
   }
 `
 
 const Content = styled.section`
-  margin: 30px 0 100px 0;
+  margin: 70px 0 20px 0;
 `
