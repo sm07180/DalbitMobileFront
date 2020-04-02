@@ -55,7 +55,7 @@ export default props => {
 
   return (
     <Switch>
-      {!token.isLogin && profile === null && <Redirect to={`/new`} />}
+      {!token.isLogin && profile === null && <Redirect to={`/mlogin`} />}
       {memNo && !type && <Redirect to={`/mmypage/${memNo}/notice`} />}
       <Layout {...props}>
         <Mypage>
