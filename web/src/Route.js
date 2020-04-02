@@ -27,10 +27,11 @@ const TestPage = React.lazy(() => import('pages/testpage'))
 
 // mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
-const MobileRanking = React.lazy(() => import('pages/mranking'))
+const MobileRanking = React.lazy(() => import('pages/mRanking'))
 const MobileMyPage = React.lazy(() => import('pages/mMyPage'))
 const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
+const MobileStore = React.lazy(() => import('pages/mStore'))
 const MobileLogin = React.lazy(() => import('pages/mLogin'))
 
 //
@@ -59,8 +60,9 @@ export default () => {
 
         <Route exact path="/new" component={newMain} />
         <Route exact path="/menu/:category" component={MobileMenu} />
-        <Route exact path="/mrank" component={MobileRanking} />
+        <Route exact path="/mranking" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
+        <Route exact path="/mstore" component={MobileStore} />
         <Route exact path="/mlogin" component={MobileLogin} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />

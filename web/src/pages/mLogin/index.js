@@ -16,8 +16,11 @@ export default props => {
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
-  const [phoneNum, setPhoneNum] = useState('')
-  const [password, setPassword] = useState('')
+  // const [phoneNum, setPhoneNum] = useState('')
+  // const [password, setPassword] = useState('')
+  const [fetching, setFetching] = useState(false)
+  const [phoneNum, setPhoneNum] = useState('01071825603')
+  const [password, setPassword] = useState('1234qwer')
 
   const changePhoneNum = e => {
     const target = e.currentTarget
@@ -30,6 +33,35 @@ export default props => {
   }
 
   const clickLoginBtn = () => {
+    if (fetching) {
+      return
+    }
+
+    const fetchPhoneLogin = async (phone, pw) => {
+      setFetching(true)
+      const loginInfo = await Api.member_login({
+        data: {
+          memType: 'p',
+          memId: phone,
+          memPwd: pw
+        }
+      })
+
+      if (loginInfo.result === 'success') {
+        const {data} = loginInfo
+        globalCtx.action.updateToken(data)
+
+        const {memNo} = data
+        const profileInfo = await Api.profile({params: {memNo}})
+        if (profileInfo.result === 'success') {
+          const {data} = profileInfo
+          globalCtx.action.updateProfile(data)
+          return props.history.push('/new')
+        }
+      }
+      setFetching(false)
+    }
+
     const inputPhoneNode = inputPhoneRef.current
     const inputPasswordNode = inputPasswordRef.current
 
@@ -37,6 +69,8 @@ export default props => {
       inputPhoneNode.focus()
     } else if (password === '') {
       inputPasswordNode.focus()
+    } else {
+      fetchPhoneLogin(phoneNum, password)
     }
   }
 

@@ -1,15 +1,33 @@
-import React, {useEffect} from 'react'
+/**
+ * @file /ranking/index.js
+ * @brief 랭킹 페이지
+ */
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
-
-// components
-import Gnb from '../common/newGnb'
+//layout
+import Layout from 'pages/common/layout/new_index'
+//context
+import {Context} from 'context'
+import {RankingProvider} from './store'
+//pages
+import Contents from './content'
 
 export default props => {
+  //context
+  const context = useContext(Context)
+
   return (
-    <MobileRanking>
-      <Gnb />
-    </MobileRanking>
+    <RankingProvider>
+      <Layout {...props}>
+        <Contents />
+      </Layout>
+    </RankingProvider>
   )
 }
 
-const MobileRanking = styled.div``
+//---------------------------------------------------------------------
+
+const Content = styled.section`
+  min-height: 300px;
+  background: #e1e1e1;
+`
