@@ -7,6 +7,9 @@ import Profile from './content/profile.js'
 import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
+// component
+import Layout from 'pages/common/layout/new_index.js'
+
 export default props => {
   const categoryList = [
     {type: 'nav', component: Nav},
@@ -14,18 +17,18 @@ export default props => {
     {type: 'alarm', component: Alarm},
     {type: 'search', component: Search}
   ]
-  // const {category} = useParams()
-  // console.log('category', category)
 
   return (
-    <MenuWrap>
-      <Switch>
-        {categoryList.map(value => {
-          const {type, component} = value
-          return <Route exact path={`/menu/${type}`} component={component} key={type} />
-        })}
-      </Switch>
-    </MenuWrap>
+    <Layout {...props}>
+      <MenuWrap>
+        <Switch>
+          {categoryList.map(value => {
+            const {type, component} = value
+            return <Route exact path={`/menu/${type}`} component={component} key={type} />
+          })}
+        </Switch>
+      </MenuWrap>
+    </Layout>
   )
 }
 
