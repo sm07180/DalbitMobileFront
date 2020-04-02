@@ -12,8 +12,6 @@ import TopScrollBtn from 'pages/newMain/component/top_scroll_btn.js'
 //
 const Layout = props => {
   const {children} = props
-
-  console.log(props.status)
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
