@@ -15,8 +15,6 @@ export default props => {
     return null
   }
 
-  console.log(djRank)
-
   const swiperParams = {
     slidesPerView: 'auto'
   }
@@ -26,18 +24,18 @@ export default props => {
       {rankType === 'dj' ? (
         <Swiper {...swiperParams}>
           {djRank.map((dj, idx) => {
-            const {rank, nickNm, memNo, profImg} = dj
+            const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <div className="main-img">
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   <div className="counting">{rank}</div>
                 </div>
                 <div className="nickname">{nickNm}</div>
                 <div className="info-wrap">
                   <img src={peopleIcon} />
-                  <div className="text"></div>
-                  <img src={heartIcon} />
-                  <div className="text"></div>
+                  <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
+                  <img src={heartIcon} className="heart-icon" />
+                  <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
                 </div>
               </div>
             )
@@ -46,19 +44,13 @@ export default props => {
       ) : (
         <Swiper>
           {fanRank.map((fan, idx) => {
-            // const {} = fan
+            const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                <div className="main-img">
-                  <div className="counting" />
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  <div className="counting">{rank}</div>
                 </div>
-                <div className="nickname"></div>
-                <div className="info-wrap">
-                  <img src={peopleIcon} />
-                  <div className="text"></div>
-                  <img src={heartIcon} />
-                  <div className="text"></div>
-                </div>
+                <div className="nickname">{nickNm}</div>
               </div>
             )
           })}
@@ -70,9 +62,8 @@ export default props => {
 
 const RankList = styled.div`
   .slide-wrap {
-    /* display: flex;
-    flex-direction: column; */
     width: 102px;
+    margin-right: 10px;
 
     .main-img {
       position: relative;
@@ -100,16 +91,24 @@ const RankList = styled.div`
       font-size: 14px;
       letter-spacing: -0.35px;
       text-align: center;
+      margin-top: 10px;
     }
     .info-wrap {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: center;
+      margin-top: 6px;
 
       .text {
         color: #bdbdbd;
         font-size: 11px;
         letter-spacing: -0.28px;
+        margin-left: 2px;
+      }
+
+      .heart-icon {
+        margin-left: 6px;
       }
     }
   }

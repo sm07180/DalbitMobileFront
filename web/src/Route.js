@@ -7,20 +7,8 @@ import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 //
 import Navigator from './pages/navigator'
-import newBroadcast from 'pages/newBroadcast'
-
 import newMain from './pages/newMain'
 
-/**
- * 하이브리드 앱연동을 문제발생,lazy로딩 x
- */
-
-//const Login = React.lazy(() => import('pages/login'))
-/* :title  
-/user/join 회원가입 
-/user/password 비밀번호찾기
-*/
-//pages
 /*-common-*/
 const Main = React.lazy(() => import('pages/main'))
 const BroadCast = React.lazy(() => import('pages/broadcast'))
@@ -33,7 +21,6 @@ const Ranking = React.lazy(() => import('pages/ranking'))
 const Store = React.lazy(() => import('pages/store'))
 const Event = React.lazy(() => import('pages/event'))
 const Mypage = React.lazy(() => import('pages/mypage'))
-const Private = React.lazy(() => import('pages/mypage/private.js'))
 const MypageSetting = React.lazy(() => import('pages/mypage/setting.js'))
 const Search = React.lazy(() => import('pages/search'))
 const TestPage = React.lazy(() => import('pages/testpage'))
@@ -41,6 +28,10 @@ const TestPage = React.lazy(() => import('pages/testpage'))
 // mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
 const MobileRanking = React.lazy(() => import('pages/mranking'))
+const MobileMyPage = React.lazy(() => import('pages/mMyPage'))
+const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
+const MobilePay = React.lazy(() => import('pages/mpay'))
+const MobileLogin = React.lazy(() => import('pages/mLogin'))
 
 //
 const error = React.lazy(() => import('pages/common/error'))
@@ -65,9 +56,17 @@ export default () => {
       }>
       <Switch>
         <Route exact path="/" component={Main} />
+
         <Route exact path="/new" component={newMain} />
         <Route exact path="/menu/:category" component={MobileMenu} />
         <Route exact path="/mrank" component={MobileRanking} />
+        <Route exact path="/mpay" component={MobilePay} />
+        <Route exact path="/mlogin" component={MobileLogin} />
+
+        <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
+        <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
+        <Route exact path="/my/setting" component={MobileMySetting} />
+
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
         <Route exact path="/cast" component={Cast} />
@@ -82,12 +81,18 @@ export default () => {
         <Route path="/guide" component={Guide} />
         <Route exact path="/mypage/setting" component={MypageSetting} />
         <Route exact path="/mypage/:sub" component={Mypage} />
-        <Route exact path="/private/:memNo" component={Private} />
         <Route exact path="/search" component={Search} />
-        <Route exact path="/customer" component={Customer} />
-        <Route exact path="/customer/:num" component={Customer} />
+        <Route exact path="/customer/" component={Customer} />
+        <Route exact path="/customer/:title" component={Customer} />
+        <Route exact path="/customer/:title/:num" component={Customer} />
+        {/* <Route exact path="/customer/:faq" component={Customer} />
+        <Route exact path="/customer/:personal" component={Customer} /> */}
+
+        {/* <Route exact path="/customer/:notice" component={Customer} />
+        <Route exact path="/customer/:notice:num" component={Customer} />
         <Route exact path="/customer/:faq" component={Customer} />
-        <Route exact path="/customer/:personal" component={Customer} />
+        <Route exact path="/customer/:personal" component={Customer} /> */}
+
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />

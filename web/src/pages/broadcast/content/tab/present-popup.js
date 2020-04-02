@@ -53,7 +53,6 @@ const Title = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    font-family: 'NanumSquareEB';
     line-height: 1.2;
     letter-spacing: normal;
     text-align: center;

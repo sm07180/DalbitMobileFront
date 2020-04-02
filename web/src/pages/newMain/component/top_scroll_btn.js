@@ -30,4 +30,5 @@ const TopScrollBtn = styled.button`
   background-position: center;
   background-size: cover;
   background-image: url(${TopScrollIcon});
+  z-index: 12;
 `

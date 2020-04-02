@@ -91,11 +91,9 @@ const App = () => {
         context.action.updateToken(res.data)
 
         if (res.data.isLogin) {
-          if (location.href.indexOf('/private/') === -1) {
-            const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
-            if (profileInfo.result === 'success') {
-              context.action.updateProfile(profileInfo.data)
-            }
+          const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+          if (profileInfo.result === 'success') {
+            context.action.updateProfile(profileInfo.data)
           }
         }
 

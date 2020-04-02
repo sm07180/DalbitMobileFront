@@ -467,7 +467,6 @@ const Message = styled.div`
     border-radius: 10px;
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
-    font-family: 'NanumSquare';
     font-size: 14px;
     font-weight: 600;
     line-height: 18px;

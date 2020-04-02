@@ -45,11 +45,13 @@ export default props => {
     return tabInfo.map((list, index) => {
       const {tab, type} = list
       const push = () => {
-        history.push(`${type}`)
+        // alert(JSON.stringify(type, null, 1))
+        //  history.push(`${type}`)
+        history.push(`/customer/${type}`)
         Store().action.updateCode(type)
       }
       return (
-        <button onClick={push} key={index} className={Store().menuCode === type ? 'on' : ''}>
+        <button onClick={() => push()} key={index} className={Store().menuCode === type ? 'on' : ''}>
           {tab}
         </button>
       )

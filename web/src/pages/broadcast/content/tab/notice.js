@@ -208,7 +208,6 @@ const Container = styled.div`
       width: 100%;
       min-height: 140px;
       background-color: #f5f5f5;
-      font-family: NanumSquare;
       color: #424242;
       font-size: 16px;
       transform: skew(-0.03deg);

@@ -21,7 +21,7 @@ export default props => {
   useEffect(() => {
     ;(async () => {
       if (!profile) {
-        const profileInfo = await Api.profile({params: {type: 'private', memNo: memNo}})
+        const profileInfo = await Api.profile({params: {memNo: memNo}})
         if (profileInfo.result === 'success') {
           setProfile(profileInfo.data)
         } else {

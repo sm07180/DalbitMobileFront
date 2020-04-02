@@ -11,11 +11,14 @@ import Notice from './notice'
 import Faq from './faq'
 import Personal from './personal'
 //
+
 const Index = props => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
   Index.store = store
+
+  const {title} = props.match.params
   //resize page func
   useEffect(() => {
     if (window.innerWidth <= 600) {
@@ -25,21 +28,22 @@ const Index = props => {
     }
   }, [useResize()])
   //---------------------------------------------------------------------
-  //makeContents
-  const makeContents = () => {
-    switch (store.menuCode) {
-      case 'notice': //------------------------공지사항
-        return <Notice perPage={Store().page} />
-      case 'faq': //---------------------------FAQ
-        return <Faq perPage={Store().page} />
-      case 'personal': //----------------------1:1문의
+
+  function CustomerRoute() {
+    switch ((title, store.menuCode)) {
+      case 'notice': //공지사항
+        return <Notice perPage={Store().page} {...props} />
+      case 'faq': //FAQ
+        return <Faq perPage={Store().page} {...props} />
+      case 'personal': //1:1문의
         return <Personal />
-      case 'broadcast_guide': //---------------방송 가이드(미정)
+      case 'broadcast_guide': //방송 가이드(미정)
         return <h1>미정_감출것인지</h1>
       default:
-        break
+        return <Notice perPage={Store().page} {...props} />
     }
   }
+
   //---------------------------------------------------------------------
   return (
     <Container>
@@ -48,7 +52,7 @@ const Index = props => {
       {/* 탭설정 */}
       <Tab />
       {/* 컨텐츠설정 */}
-      {makeContents()}
+      {CustomerRoute()}
     </Container>
   )
 }
