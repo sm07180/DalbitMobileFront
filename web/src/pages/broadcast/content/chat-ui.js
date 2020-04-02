@@ -19,6 +19,7 @@ import store from 'pages/store'
 import {BroadCastStore} from '../store'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import qs from 'query-string'
 
 export default props => {
   //---------------------------------------------------------------------
