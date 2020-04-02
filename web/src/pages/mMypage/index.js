@@ -39,8 +39,8 @@ export default props => {
   }
 
   if (!type) {
+    type = 'notice'
     window.location.href = `${location.pathname}/notice`
-    return null
   }
 
   if (profile.memNo !== memNo) {
@@ -62,11 +62,29 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <MyProfile profile={profileInfo} />
-      <Navigation list={navigationList} memNo={memNo} type={type} />
-      <Mypage></Mypage>
+      <Mypage>
+        <MyProfile profile={profileInfo} />
+        {type && <Navigation list={navigationList} memNo={memNo} type={type} />}
+        <SubContent>
+          {navigationList.map(value => {
+            const {type, component} = value
+            return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
+          })}
+        </SubContent>
+      </Mypage>
     </Layout>
   )
 }
 
-const Mypage = styled.div``
+const SubContent = styled.div`
+  margin: 0 auto;
+`
+
+const Mypage = styled.div`
+  margin: 60px auto 15px auto;
+  width: 1210px;
+
+  @media (max-width: 1260px) {
+    width: 91.11%;
+  }
+`
