@@ -68,7 +68,7 @@ module.exports = (_, options) => {
           use: [
             {
               loader: 'html-loader',
-              options: {minimize: false}
+              options: {minimize: true}
             }
           ]
         },
@@ -158,7 +158,7 @@ module.exports = (_, options) => {
     )
 
     config.optimization = {
-      minimize: true,
+      minimize: env === 'dev' ? false : true,
       minimizer: [
         new TerserPlugin({
           terserOptions: {

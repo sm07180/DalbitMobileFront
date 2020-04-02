@@ -42,6 +42,7 @@ const TestPage = React.lazy(() => import('pages/testpage'))
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
 const MobileRanking = React.lazy(() => import('pages/mranking'))
 const MobileMyPage = React.lazy(() => import('pages/mMyPage'))
+const MobilePay = React.lazy(() => import('pages/mpay'))
 
 //
 const error = React.lazy(() => import('pages/common/error'))
@@ -70,8 +71,10 @@ export default () => {
         <Route exact path="/new" component={newMain} />
         <Route exact path="/menu/:category" component={MobileMenu} />
         <Route exact path="/mrank" component={MobileRanking} />
+        <Route exact path="/mpay" component={MobilePay} />
+
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
-        <Route exact path="/mmypage/:memNo/:sub" component={MobileMyPage} />
+        <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
 
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />
