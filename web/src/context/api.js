@@ -361,6 +361,39 @@ export default class API {
   //--------------------------------------------------------------------- 회원 관련
 
   /**
+   * @brief 마이페이지 방송설정 금지어 단어 저장
+   * @method "POST"
+   * @param string banWord              //금지어 ( | 구분자)
+   * @create 이은비 2020.04.02
+   */
+  static mypage_banword_write = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 금지어 단어 조회
+   * @method "GET"
+   * @create 이은비 2020.04.02
+   */
+  static mypage_banword_list = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'GET'})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 유저 검색
+   * @method "GET"
+   * @todo
+   * @param string banWord              //금지어 ( | 구분자), 파람 없이 보내면 조회만 함
+   * @create 이은비 2020.04.02
+   */
+  static mypage_banword = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 마이페이지 리포트 방송내역 조회
    * @method "GET""
    * @todo

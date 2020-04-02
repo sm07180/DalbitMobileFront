@@ -17,35 +17,75 @@ export default props => {
   const context = useContext(Context)
 
   //state
-  const [showState, setShowState] = useState(false)
+  const [word, setWord] = useState(false)
 
   //-----------------------------------------------------------------------------
   //function
+  async function fetchWrite() {
+    const res = await Api.mypage_banword_write({
+      data: {
+        banWord: ''
+      }
+    })
+  }
+
+  async function fetchList() {
+    const res = await Api.mypage_banword_list({})
+    if (res.result === 'success' && _.hasIn(res, 'data')) {
+      if (res.data.banWordCnt) setWord(res.data.banWord.split('|'))
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  const createList = () => {
+    return word.map((item, index) => {
+      return (
+        <div className="input-wrap">
+          <input type="text" maxlength="12" defaultValue={item} />
+          <button>삭제</button>
+        </div>
+      )
+    })
+  }
+
+  //-----------------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    //fetchWrite()
+    fetchList()
+  }, [])
+
+  useEffect(() => {
+    console.log(word)
+  }, [word])
 
   //-----------------------------------------------------------------------------
   return (
     <Content>
-      <button
-        className="ban-add-btn"
-        onClick={() => {
-          setShowState(false)
-        }}>
-        금지어 추가
-      </button>
-      {/* <div className="input-wrap">
-        <input type="text" maxLength="12" />
-        <button>삭제</button>
-      </div>
-      <div className="input-wrap">
-        <input type="text" maxLength="12" />
-        <button>삭제</button>
-      </div> */}
+      {!word && (
+        <button
+          className="ban-add-btn"
+          onClick={() => {
+            setShowState(false)
+          }}>
+          금지어 추가
+        </button>
+      )}
+
+      {word && createList()}
+
       <p className="info">금지어는 최대 12자 이내로만 등록 가능합니다.</p>
       <p className="info">채팅 금지어 (최대 100개)를 직접 설정 하실 수 있습니다.</p>
-      {/* <div className="btn-wrap">
-        <button className="white">추가</button>
-        <button className="purple">저장</button>
-      </div> */}
+
+      {word && (
+        <div className="btn-wrap">
+          <button className="white">추가</button>
+          <button className="purple">저장</button>
+        </div>
+      )}
     </Content>
   )
 }
