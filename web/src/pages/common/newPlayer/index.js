@@ -28,9 +28,12 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
-        Hybrid('ExitRoom')
+        alert('ExitRoom')
+
+        Hybrid('ExitRoom', '')
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
+        alert('EnterRoom')
         Hybrid('EnterRoom', '')
         break
       default:
@@ -45,7 +48,7 @@ export default props => {
   return (
     <React.Fragment>
       {/* 미디어 플레이어 */}
-      {visible && context.mediaPlayerStatus && <Content {...props} update={update} />}
+      {visible && <Content {...props} update={update} />}
     </React.Fragment>
   )
 }
