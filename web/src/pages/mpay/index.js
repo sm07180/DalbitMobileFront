@@ -20,7 +20,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <PayProvider>
-      <Layout {...props}>
+      <Layout {...props} status="no_gnb">
         <Content {...props} />
       </Layout>
     </PayProvider>

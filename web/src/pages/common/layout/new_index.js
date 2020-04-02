@@ -9,13 +9,16 @@ import Player from 'pages/common/player'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/newMain/component/top_scroll_btn.js'
+//
 const Layout = props => {
   const {children} = props
+
+  console.log(props.status)
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
       {/* GNB */}
-      <Gnb />
+      {props.status !== 'no_gnb' && <Gnb />}
       {/* 탑버튼 */}
       <TopScrollBtn />
       <article>{children}</article>
