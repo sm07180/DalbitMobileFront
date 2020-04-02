@@ -36,6 +36,7 @@ export default props => {
     if (fetching) {
       return
     }
+
     const fetchPhoneLogin = async (phone, pw) => {
       setFetching(true)
       const loginInfo = await Api.member_login({
@@ -54,7 +55,8 @@ export default props => {
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
           const {data} = profileInfo
-          context.action.updateProfile(data)
+          globalCtx.action.updateProfile(data)
+          props.history.push('/new')
         }
       }
       setFetching(false)
