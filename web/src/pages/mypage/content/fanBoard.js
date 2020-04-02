@@ -61,7 +61,7 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
+      console.log(res.data.list)
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
       console.log(res)
@@ -232,7 +232,7 @@ export default props => {
             <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{count}</span>
           </ListTitle>
           {fanTotal.map((item, index) => {
-            const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo} = item
+            const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
             let value = boardIdx
             let writeNumer = writerNo
             let boardNumer = boardNo
@@ -243,7 +243,7 @@ export default props => {
                   <Imgbox bg={profImg.thumb62x62} />
                   <div>
                     <span>{nickNm}</span>
-                    <span>{writerNo}</span>
+                    <span>(@{memId})</span>
                     <span>{timeFormat(writeDt)}</span>
                   </div>
                   <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
@@ -264,7 +264,7 @@ export default props => {
                 {boardNumer === broadNumbers && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
-                      const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo} = reply
+                      const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = reply
                       let value = boardIdx
                       if (status !== 1) return
                       return (
@@ -273,7 +273,7 @@ export default props => {
                             <Imgbox bg={profImg.thumb62x62} />
                             <div>
                               <span>{nickNm}</span>
-                              <span>{writerNo}</span>
+                              <span>(@{memId})</span>
                               <span>{timeFormat(writeDt)}</span>
                             </div>
                             <BtnIcon

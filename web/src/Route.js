@@ -33,6 +33,7 @@ const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
 const MobileLogin = React.lazy(() => import('pages/mLogin'))
+const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
 
 //
 const error = React.lazy(() => import('pages/common/error'))
@@ -68,6 +69,10 @@ export default () => {
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
         <Route exact path="/my/setting" component={MobileMySetting} />
+
+        <Route exact path="/mcustomer/" component={MobileCustomer} />
+        <Route exact path="/mcustomer/:title" component={MobileCustomer} />
+        <Route exact path="/mcustomer/:title/:num" component={MobileCustomer} />
 
         <Route exact path="/broadcast" component={BroadCast} />
         <Route exact path="/broadcast-setting" component={BroadCastSetting} />

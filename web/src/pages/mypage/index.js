@@ -58,9 +58,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <MyProfile />
-
         <Navigation list={navigationList} />
-
         <SubContent>
           <Switch>
             {navigationList.map(value => {
