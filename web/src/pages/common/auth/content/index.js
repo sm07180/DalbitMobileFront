@@ -211,7 +211,7 @@ export default props => {
         ''
       ) : (
         <Logo className="logo">
-          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+          <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
         </Logo>
       )}
       <LoginInput>

@@ -20,7 +20,7 @@ export default props => {
         <Login>
           <div>
             <Link to="/new">
-              <img className="logo" src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+              <img className="logo" src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
             </Link>
           </div>
 

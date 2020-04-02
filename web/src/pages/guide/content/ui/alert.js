@@ -39,7 +39,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
+              const imgUrl = `${IMG_SERVER}/images/api/logo_p_l.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <ol><li>ol-li tab 타입1</li><li>타입1</li></ol>`
@@ -88,7 +88,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
+              const imgUrl = `${IMG_SERVER}/images/api/logo_p_l.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <a href="https://devwww2.dalbitcast.com/" target="_blank">개발사이트로 이동</a>
@@ -114,7 +114,7 @@ export default () => {
         <dt>
           <button
             onClick={() => {
-              const imgUrl = `${IMG_SERVER}/images/api/ic_logo_normal.png`
+              const imgUrl = `${IMG_SERVER}/images/api/logo_p_l.png`
               const element = `
               <div><img src=${imgUrl}></div>
               <a href="https://devwww2.dalbitcast.com/" target="_blank">개발사이트로 이동</a>

@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 // static image
-import Logo from './static/logo@2x.png'
+//import Logo from './static/logo@2x.png'
+import Logo from './static/logo_beta.png'
 import Search from './static/ic_search.svg'
 import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'

@@ -45,7 +45,7 @@ const Layout = props => {
       {/* 헤더설정 */}
       <Logo>
         <NavLink to="/" exact>
-          <img src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+          <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
         </NavLink>
       </Logo>
       {/* global navigation */}
