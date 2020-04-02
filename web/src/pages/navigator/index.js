@@ -14,12 +14,15 @@ export default props => {
   //queryString
   const queryString = useMemo(() => {
     if (props.location.search === undefined) return ''
-    alert(JSON.stringify(props.location.search, null, 1))
+    //alert(JSON.stringify(props.location.search, null, 1))
     return qs.parse(props.location.search, {ignoreQueryPrefix: true})
   })
   //useEffect
   useEffect(() => {
-    if (queryString === '') alert('정보가없습니다')
+    if (queryString === '') {
+      alert('정보가없습니다')
+      return
+    }
     //title
     const {history} = props
 
