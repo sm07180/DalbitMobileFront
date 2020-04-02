@@ -68,9 +68,9 @@ const Navigation = styled.div`
     height: 49px;
     .swiper-container {
       position: absolute;
-      left: 2.5%;
-      width: calc(97.5%);
-      padding-right: 2.5%;
+      left: 4.445%;
+      width: 95.555%;
+      padding-right: 4.445%;
     }
   }
 
