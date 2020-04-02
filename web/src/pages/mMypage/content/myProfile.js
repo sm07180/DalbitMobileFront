@@ -24,7 +24,7 @@ const myProfile = props => {
     <MyProfile>
       <ButtonWrap>
         <InfoConfigBtn>
-          <Link to="/mypage/setting">내 정보 관리</Link>
+          <Link to="/my/setting">내 정보 관리</Link>
         </InfoConfigBtn>
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
