@@ -11,8 +11,8 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 let naviSwiper = ''
 export default props => {
-  const {list} = props
-  const current = location.pathname.replace('/mypage/', '')
+  const {list, memNo, sub} = props
+  const current = sub
   let currentTab = list.filter(list => {
     return list.type == current
   })[0].id
@@ -41,7 +41,7 @@ export default props => {
         {list.map((bundle, index) => {
           const {type, txt} = bundle
           return (
-            <NavLink to={`/mypage/${type}`} activeClassName="active" key={index}>
+            <NavLink to={`/mmypage/${memNo}/${type}`} activeClassName="active" key={index}>
               <TabText>{txt}</TabText>
             </NavLink>
           )

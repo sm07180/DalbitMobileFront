@@ -4,6 +4,8 @@ import {Switch, Route, useParams} from 'react-router-dom'
 
 // component
 import Layout from 'pages/common/layout/new_index.js'
+import MyProfile from './content/myProfile.js'
+import Navigation from './content/navigation.js'
 import Notice from './content/notice.js'
 import FanBoard from './content/fanBoard.js'
 import Cast from './content/cast.js'
@@ -28,12 +30,17 @@ export default props => {
 
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-  const {memNo, sub} = useParams()
+  let {memNo, sub} = useParams()
 
   const [profileInfo, setProfileInfo] = useState(null)
 
+  if (!token.isLogin && profile === null) {
+    // props.history.push('/')
+  }
   if (profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
+  } else {
+    memNo = profile.memNo
   }
 
   useEffect(() => {
@@ -42,25 +49,14 @@ export default props => {
       setProfileInfo(profileInfo)
     }
 
-    if (!token.isLogin && profile === null) {
-      // props.history.push('/')
-    } else {
-      if (profile.memNo !== memNo) {
-        // public profile!
-        settingProfileInfo()
-      } else {
-        // private profile!
-        // const profileInfo = await Api.profile({params: {memNo: profile.memNo}})
-        // setProfileInfo(profileInfo)
-      }
-    }
+    settingProfileInfo(memNo)
   }, [])
-
-  console.log(navigationList)
 
   return (
     <Layout {...props}>
-      <Mypage>dfdf</Mypage>
+      <MyProfile />
+      <Navigation list={navigationList} memNo={memNo} sub={sub} />
+      <Mypage></Mypage>
     </Layout>
   )
 }
