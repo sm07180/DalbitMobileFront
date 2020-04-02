@@ -7,14 +7,15 @@ import styled from 'styled-components'
 import _ from 'lodash'
 //context & store
 import Api from 'context/api'
+import {Context} from 'context'
 import {PayStore} from '../store'
 //components
 import Pay from 'pages/store/content/index'
 const Index = props => {
   //---------------------------------------------------------------------
-  //let
-  let timer
+  const context = useContext(Context)
   //context
+
   const store = useContext(PayStore)
   Index.store = store
 
@@ -24,8 +25,20 @@ const Index = props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <div>안드로이드 결제</div>
-      <Pay />
+      <h1>안드로이드 결제</h1>
+      <div>
+        <button
+          onClick={() => {
+            alert('2')
+            context.action.updatePopup('CHARGE', {
+              name: selected.name,
+              price: selected.price
+            })
+          }}>
+          테스트
+        </button>
+      </div>
+      <Pay {...props} />
     </Content>
   )
 }

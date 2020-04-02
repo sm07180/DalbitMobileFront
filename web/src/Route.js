@@ -7,20 +7,8 @@ import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 //
 import Navigator from './pages/navigator'
-import newBroadcast from 'pages/newBroadcast'
-
 import newMain from './pages/newMain'
 
-/**
- * 하이브리드 앱연동을 문제발생,lazy로딩 x
- */
-
-//const Login = React.lazy(() => import('pages/login'))
-/* :title  
-/user/join 회원가입 
-/user/password 비밀번호찾기
-*/
-//pages
 /*-common-*/
 const Main = React.lazy(() => import('pages/main'))
 const BroadCast = React.lazy(() => import('pages/broadcast'))
@@ -43,6 +31,7 @@ const MobileRanking = React.lazy(() => import('pages/mranking'))
 const MobileMyPage = React.lazy(() => import('pages/mMyPage'))
 const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
+const MobileLogin = React.lazy(() => import('pages/mLogin'))
 
 //
 const error = React.lazy(() => import('pages/common/error'))
@@ -72,6 +61,7 @@ export default () => {
         <Route exact path="/menu/:category" component={MobileMenu} />
         <Route exact path="/mrank" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
+        <Route exact path="/mlogin" component={MobileLogin} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />

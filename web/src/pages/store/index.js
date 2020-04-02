@@ -50,7 +50,23 @@ const Content = styled.section`
     color: ${COLOR_MAIN};
     text-align: center;
   }
-
+  .mydal {
+    color: #424242;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 36px;
+    text-align: center;
+    &:before {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      margin-top: -2px;
+      padding-right: 5px;
+      vertical-align: top;
+      background: url(${IMG_SERVER}/images/api/ic_moon_s@2x.png) no-repeat;
+      content: '';
+    }
+  }
   @media (max-width: 1060px) {
     width: 95%;
     padding: 30px 0 100px 0;
