@@ -6,16 +6,10 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
-import {isHybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
-import Utility from 'components/lib/utility'
-import qs from 'query-string'
-const sc = require('context/socketCluster') //socketCluster
-import Api from 'context/api'
 // etc
-
 // image
 
 export default props => {
@@ -23,8 +17,6 @@ export default props => {
   //context
   const context = useContext(Context)
   const {broadcastTotalInfo} = context
-  const roomInfo = broadcastTotalInfo
-  const {roomNo} = qs.parse(location.search)
   //useState
   const [info, setInfo] = useState({
     /**
