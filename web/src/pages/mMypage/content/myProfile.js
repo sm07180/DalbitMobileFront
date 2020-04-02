@@ -31,7 +31,7 @@ const myProfile = props => {
           {profile.fanRank.map((fan, index) => {
             return (
               <FanRank key={index} style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}>
-                <Link to={`/private/${fan.memNo}`} />
+                <Link to={`/mmypage/${fan.memNo}`} />
               </FanRank>
             )
           })}
