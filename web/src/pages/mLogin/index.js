@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+import {Link, Switch, Redirect} from 'react-router-dom'
 
 // context
 import {Context} from 'context'
@@ -12,33 +12,29 @@ export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
-  console.log(token)
-
-  if (token.isLogin) {
-    props.history.push('/')
-    return null
-  }
-
   return (
-    <Login>
-      <div>
-        <Link to="/new">
-          <img className="logo" src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
-        </Link>
-      </div>
+    <Switch>
+      {token.isLogin && <Redirect to={`/new`} />}
+      <Login>
+        <div>
+          <Link to="/new">
+            <img className="logo" src={`${IMG_SERVER}/images/api/ic_logo_normal.png`} />
+          </Link>
+        </div>
 
-      <div className="input-wrap">
-        <input type="text" autoComplete="off" placeholder="전화번호" />
-        <input type="password" autoComplete="new-password" placeholder="비밀번호" />
-        <button className="login-btn">로그인</button>
-      </div>
+        <div className="input-wrap">
+          <input type="text" autoComplete="off" placeholder="전화번호" />
+          <input type="password" autoComplete="new-password" placeholder="비밀번호" />
+          <button className="login-btn">로그인</button>
+        </div>
 
-      <div className="link-wrap">
-        <div className="link-text">비밀번호 변경</div>
-        <div className="bar" />
-        <div className="link-text">회원가입</div>
-      </div>
-    </Login>
+        <div className="link-wrap">
+          <div className="link-text">비밀번호 변경</div>
+          <div className="bar" />
+          <div className="link-text">회원가입</div>
+        </div>
+      </Login>
+    </Switch>
   )
 }
 
