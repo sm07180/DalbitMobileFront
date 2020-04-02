@@ -72,9 +72,9 @@ export const Store = () => {
 //---------------------------------------------------------------------
 const Container = styled.div`
   width: 1210px;
-  margin: 78px auto 0 auto;
+  margin: 76px auto 0 auto;
   & h1 {
-    margin: 30px 0;
+    margin: 26px 0;
     text-align: center;
     color: ${COLOR_MAIN};
     font-size: 20px;
@@ -82,6 +82,6 @@ const Container = styled.div`
     letter-spacing: -0.7px;
   }
   @media (max-width: 1240px) {
-    width: 95%;
+    width: 91.111%;
   }
 `

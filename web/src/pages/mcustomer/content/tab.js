@@ -82,7 +82,7 @@ const Wrap = styled.div`
       }
     }
     @media (max-width: ${WIDTH_MOBILE}) {
-      margin-top: 30px;
+      margin-top: 26px;
     }
     & button.on {
       background-color: ${COLOR_MAIN};
