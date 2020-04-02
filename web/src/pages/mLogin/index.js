@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Link, Switch, Redirect} from 'react-router-dom'
 
@@ -8,9 +8,39 @@ import {Context} from 'context'
 // static
 import {IMG_SERVER} from 'context/config'
 
+import Api from 'context/api'
+
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
+
+  const inputPhoneRef = useRef()
+  const inputPasswordRef = useRef()
+  const [phoneNum, setPhoneNum] = useState('')
+  const [password, setPassword] = useState('')
+
+  const changePhoneNum = e => {
+    const target = e.currentTarget
+    setPhoneNum(target.value.toLowerCase())
+  }
+
+  const changePassword = e => {
+    const target = e.currentTarget
+    setPassword(target.value.toLowerCase())
+  }
+
+  const clickLoginBtn = () => {
+    const inputPhoneNode = inputPhoneRef.current
+    const inputPasswordNode = inputPasswordRef.current
+
+    if (phoneNum === '') {
+      inputPhoneNode.focus()
+    } else if (password === '') {
+      inputPasswordNode.focus()
+    }
+  }
+
+  useEffect(() => {}, [])
 
   return (
     <Switch>
@@ -25,15 +55,35 @@ export default props => {
           </div>
 
           <div className="input-wrap">
-            <input type="text" autoComplete="off" placeholder="전화번호" />
-            <input type="password" autoComplete="new-password" placeholder="비밀번호" />
-            <button className="login-btn">로그인</button>
+            <input
+              ref={inputPhoneRef}
+              type="text"
+              autoComplete="off"
+              placeholder="전화번호"
+              value={phoneNum}
+              onChange={changePhoneNum}
+            />
+            <input
+              ref={inputPasswordRef}
+              type="password"
+              autoComplete="new-password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={changePassword}
+            />
+            <button className="login-btn" onClick={clickLoginBtn}>
+              로그인
+            </button>
           </div>
 
           <div className="link-wrap">
-            <div className="link-text">비밀번호 변경</div>
+            <Link to="/user/password">
+              <div className="link-text">비밀번호 변경</div>
+            </Link>
             <div className="bar" />
-            <div className="link-text">회원가입</div>
+            <Link to="/user/join">
+              <div className="link-text">회원가입</div>
+            </Link>
           </div>
         </Login>
       )}
