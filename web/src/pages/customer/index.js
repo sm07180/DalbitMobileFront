@@ -13,6 +13,7 @@ import {CustomerProvider} from './store'
 
 export default props => {
   //---------------------------------------------------------------------
+  //title
 
   return (
     <Layout {...props}>

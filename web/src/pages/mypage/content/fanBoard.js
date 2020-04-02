@@ -28,7 +28,9 @@ export default props => {
   const [replyInfo, setReplyInfo] = useState([])
   const [active, setActive] = useState(false)
   const [showBtn, setShowBtn] = useState('')
+  const [showBtnReply, setShowBtnReply] = useState('')
   const [count, setCount] = useState(0)
+  const [Rcount, setRCount] = useState(0)
   const [broadNumbers, setBroadNumbers] = useState('')
   const [replyRegist, setReplyRegist] = useState('')
   //api
@@ -46,6 +48,7 @@ export default props => {
           return item.status === 1
         })
       )
+      console.log(res)
     } else if (res.result === 'fail') {
       console.log(res)
     }
@@ -133,7 +136,7 @@ export default props => {
         }
       })
       if (res.result === 'success') {
-        //console.log(res)
+        console.log(res)
         fetchDataList()
       } else if (res.result === 'fail') {
         //console.log(res)
@@ -150,11 +153,7 @@ export default props => {
       }).length
     )
   }, [fanTotal])
-  //버튼 토클
-  const DeleteComment = value => {
-    setShowBtn('')
-    deletApiFun(value)
-  }
+
   //대댓글보기
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
@@ -168,7 +167,21 @@ export default props => {
     setReplyRegist('')
   }
   const textChangeReply = e => {
-    setReplyRegist(e.target.value)
+    const target = e.currentTarget
+
+    if (target.value.length > MaxCommentLength) return
+    setReplyRegist(target.value)
+  }
+  //click bg
+  const clickRefresh = () => {
+    setShowBtn('')
+    setShowBtnReply('')
+  }
+  //버튼 토클
+  const DeleteComment = (value, writeNumer, boardNumer) => {
+    setShowBtn('')
+    deletApiFun(value)
+    showReply(writeNumer, boardNumer)
   }
   return (
     <>
@@ -215,8 +228,8 @@ export default props => {
                     <span>{writerNo}</span>
                     <span>{writeDt}</span>
                   </div>
-                  <BtnIcon onClick={() => setShowBtn(index)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
-                  <DetailBtn className={showBtn === index ? 'active' : ''}>
+                  <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                  <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
                     <a className="modify" onClick={() => DeleteComment()}>
                       수정하기
                     </a>
@@ -234,6 +247,8 @@ export default props => {
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
                       const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo} = reply
+                      let value = boardIdx
+                      if (status !== 1) return
                       return (
                         <div key={index} className="replyContent">
                           <div className="titlewrap">
@@ -243,13 +258,24 @@ export default props => {
                               <span>{writerNo}</span>
                               <span>{writeDt}</span>
                             </div>
+                            <BtnIcon
+                              onClick={() => setShowBtnReply(boardIdx)}
+                              className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                            <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
+                              <a className="modify" onClick={() => DeleteComment()}>
+                                수정하기
+                              </a>
+                              <a className="delete" onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
+                                삭제하기
+                              </a>
+                            </DetailBtn>
                           </div>
                           <div className="content">{contents}</div>
                         </div>
                       )
                     })}
                     <StartBottom className="on">
-                      <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} />
+                      <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} maxLength={100} />
                       <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
                     </StartBottom>
                   </div>
@@ -259,7 +285,7 @@ export default props => {
           })}
         </ListArea>
       </FanBoard>
-      <BG onClick={() => setShowBtn('')} className={showBtn !== '' ? 'on' : ''}></BG>
+      <BG onClick={clickRefresh} className={showBtn !== '' || showBtnReply !== '' ? 'on' : ''}></BG>
     </>
   )
 }
@@ -364,6 +390,7 @@ const StartBottom = styled.div`
     line-height: 1.43;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+
     &::placeholder {
       color: #bdbdbd;
       font-size: 14px;
@@ -384,7 +411,7 @@ const StartBottom = styled.div`
 `
 //mother
 const FanBoard = styled.div`
-  margin-top: 48px;
+  margin-top: 24px;
   /* 등록 숨김 */
   article {
     display: block;
@@ -474,7 +501,8 @@ const CommentBox = styled.div`
     padding-bottom: 18px;
   }
   & .replyContent {
-    padding-left: 20px;
+    position: relative;
+    padding: 0 20px;
     border-bottom: 1px solid #eeeeee;
 
     &:last-child {
@@ -501,6 +529,7 @@ const DetailBtn = styled.div`
   border: 1px solid #e0e0e0;
   &.active {
     display: flex;
+    background-color: #fff;
   }
   & a {
     display: block;

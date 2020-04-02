@@ -27,7 +27,8 @@ export default props => {
     {value: 4, text: '결제'},
     {value: 5, text: '건의'},
     {value: 6, text: '장애/버그'},
-    {value: 7, text: '선물/아이'}
+    {value: 7, text: '선물/아이템'},
+    {value: 99, text: '기타'}
   ]
   //console.log(faqNum)
   //--------------------------------------------------------------------------
@@ -48,7 +49,7 @@ export default props => {
 
   const {changes, setChanges, onChange, onChangeEvent} = useChange(update, {qnaType: faqNum, onChange: -1})
   const [faqNum, setfaqNum] = useState('')
-  const [imgurls, setImgurl] = useState('파일선택')
+  const [imgurls, setImgurl] = useState('파일을 첨부할 수 있습니다.')
   //useState
 
   //--------------------------------------------------------------------------
@@ -166,13 +167,13 @@ export default props => {
   console.log(imgurls)
 
   useEffect(() => {
-    setImgurl('파일선택')
+    setImgurl('파일을 첨부할 수 있습니다.')
   }, [])
 
   useEffect(() => {
-    if (changes.questionFile !== undefined && imgurls === '파일선택') {
+    if (changes.questionFile !== undefined && imgurls === '파일을 첨부할 수 있습니다.') {
       setImgurl(changes.questionFile)
-    } else if (changes.questionFile !== undefined && imgurls !== '파일선택') {
+    } else if (changes.questionFile !== undefined && imgurls !== '파일을 첨부할 수 있습니다.') {
       setImgurl(changes.questionFile)
     }
   }, [changes.questionFile])
@@ -221,9 +222,9 @@ export default props => {
           <ImgUploader>
             <div className="textinput">
               <p className="urltext">{imgurls}</p>
-              <input id="imgUploadTxt" type="text" placeholder="파일선택" value={changes.questionFile} />
+              <input id="imgUploadTxt" type="text" placeholder="파일을 첨부할 수 있습니다." value={changes.questionFile} />
               <label htmlFor="imgUpload">
-                <span>찾아보기</span>
+                <span>첨부파일</span>
               </label>
               <input
                 type="file"

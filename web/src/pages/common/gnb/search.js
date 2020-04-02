@@ -48,7 +48,7 @@ export default props => {
         <SearchWrap>
           <input
             type="text"
-            placeholder="인기 DJ, 꿀보이스, 나긋한 목소리 등 검색어를 입력해 보세요"
+            placeholder="검색어를 입력하세요"
             value={search}
             onChange={handleChange}
             onKeyDown={searchOnKeyDown}

@@ -82,6 +82,6 @@ const Content = styled.section`
   margin: 30px auto 100px auto;
   width: 1210px;
   @media (max-width: 1260px) {
-    width: 95%;
+    width: 91.11%;
   }
 `

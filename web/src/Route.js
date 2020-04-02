@@ -84,10 +84,17 @@ export default () => {
         <Route exact path="/mypage/:sub" component={Mypage} />
         <Route exact path="/private/:memNo" component={Private} />
         <Route exact path="/search" component={Search} />
-        <Route exact path="/customer" component={Customer} />
-        <Route exact path="/customer/:num" component={Customer} />
+        <Route exact path="/customer/" component={Customer} />
+        <Route exact path="/customer/:title" component={Customer} />
+        <Route exact path="/customer/:title/:num" component={Customer} />
+        {/* <Route exact path="/customer/:faq" component={Customer} />
+        <Route exact path="/customer/:personal" component={Customer} /> */}
+
+        {/* <Route exact path="/customer/:notice" component={Customer} />
+        <Route exact path="/customer/:notice:num" component={Customer} />
         <Route exact path="/customer/:faq" component={Customer} />
-        <Route exact path="/customer/:personal" component={Customer} />
+        <Route exact path="/customer/:personal" component={Customer} /> */}
+
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
