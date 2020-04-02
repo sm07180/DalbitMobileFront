@@ -580,8 +580,8 @@ export default class API {
    * @create 이은비 2020.01.15
    */
   static profile = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile`, method: method || 'GET', params: params})
+    const {params} = obj
+    return await ajax({url: `/profile`, method: 'GET', params: params})
   }
 
   /**
