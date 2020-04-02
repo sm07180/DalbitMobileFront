@@ -92,7 +92,7 @@ export default props => {
         </div>
       ) : (
         <div className="log-out">
-          <Link to="/login">
+          <Link to="/mlogin">
             <img src={NeedLoginImg} />
             <div className="text">
               <span className="bold">로그인</span> 해주세요
