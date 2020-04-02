@@ -51,7 +51,7 @@ export default props => {
         Store().action.updateCode(type)
       }
       return (
-        <button onClick={push} key={index} className={Store().menuCode === type ? 'on' : ''}>
+        <button onClick={() => push()} key={index} className={Store().menuCode === type ? 'on' : ''}>
           {tab}
         </button>
       )

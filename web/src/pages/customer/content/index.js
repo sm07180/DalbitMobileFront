@@ -11,13 +11,13 @@ import Notice from './notice'
 import Faq from './faq'
 import Personal from './personal'
 //
-const Index = props => {
-  console.log(props.match.params.title)
 
+const Index = props => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
   Index.store = store
+
   const {title} = props.match.params
   //resize page func
   useEffect(() => {
@@ -28,24 +28,9 @@ const Index = props => {
     }
   }, [useResize()])
   //---------------------------------------------------------------------
-  //makeContents
-  // const makeContents = () => {
-  //   switch (store.menuCode) {
-  //     case 'notice': //------------------------공지사항
-  //       return <Notice perPage={Store().page} />
-  //     case 'faq': //---------------------------FAQ
-  //       return <Faq perPage={Store().page} />
-  //     case 'personal': //----------------------1:1문의
-  //       return <Personal />
-  //     case 'broadcast_guide': //---------------방송 가이드(미정)
-  //       return <h1>미정_감출것인지</h1>
-  //     default:
-  //       break
-  //   }
-  // }
 
   function CustomerRoute() {
-    switch (title) {
+    switch ((title, store.menuCode)) {
       case 'notice': //공지사항
         return <Notice perPage={Store().page} {...props} />
       case 'faq': //FAQ
@@ -58,6 +43,7 @@ const Index = props => {
         return <Notice perPage={Store().page} {...props} />
     }
   }
+
   //---------------------------------------------------------------------
   return (
     <Container>

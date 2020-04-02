@@ -31,6 +31,7 @@ function Faq(props) {
   const [faqList, setFaqList] = useState([])
   const [faqDetail, setFaqDetail] = useState([])
   const [faqNum, setfaqNum] = useState(0)
+  const [listhide, SetListhide] = useState('')
   //page state
   const [page, setPage] = useState(1)
   const {perPage} = props
@@ -101,12 +102,13 @@ function Faq(props) {
    */
 
   const clickEvent = faqIdx => {
+    //Store().action.updatefaqPage(faqIdx)
     if (Store().faqPage === '') {
       Store().action.updatefaqPage(faqIdx)
-    }
-    if (Store().faqPage !== '') {
+    } else if (Store().faqPage !== '') {
       Store().action.updatefaqPage('')
     }
+    SetListhide(faqIdx)
   }
 
   //set type select
@@ -114,12 +116,16 @@ function Faq(props) {
     if (value === 0) {
       setfaqNum(0)
     } else if (value === 1) {
+      Store().action.updatefaqPage('')
       setfaqNum(1)
     } else if (value === 2) {
+      Store().action.updatefaqPage('')
       setfaqNum(2)
     } else if (value === 3) {
+      Store().action.updatefaqPage('')
       setfaqNum(3)
     } else if (value === 4) {
+      Store().action.updatefaqPage('')
       setfaqNum(4)
     }
   }
@@ -134,10 +140,11 @@ function Faq(props) {
     }
   }, [Store().faqPage])
   //--------------------------------------------------------
+
   return (
     <>
       {/* 컨텐츠 : 게시판 스타일 */}
-      <ContentInfo>
+      <ContentInfo onClick={() => SetListhide('')}>
         <h2>
           {faqNum === 0 ? '전체' : ''}
           {faqNum === 1 ? '일반' : ''}
@@ -164,7 +171,12 @@ function Faq(props) {
           </button>
         </div>
         <div className="m-catecory">
-          <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 8}} />
+          <SelectBoxs
+            boxList={selectBoxData}
+            onChangeEvent={setType}
+            inlineStyling={{right: 0, top: 0, zIndex: 8}}
+            type={'remove-init-data'}
+          />
         </div>
       </ContentInfo>
 
@@ -190,12 +202,14 @@ function Faq(props) {
                         <span>Q</span>
                         {question}
                       </dd>
-                      <dd></dd>
+                      <dd className={Store().faqPage === faqIdx ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <div>
-                        <span class="icon">A</span>
-                        <p dangerouslySetInnerHTML={{__html: faqDetail.answer}}></p>
+                        <span className="icon">A</span>
+                        {faqDetail.answer && (
+                          <p dangerouslySetInnerHTML={{__html: faqDetail.answer.replace(/class/gi, 'className')}}></p>
+                        )}
                       </div>
                     </Detail>
                   </>
@@ -214,12 +228,14 @@ function Faq(props) {
                         <span>Q</span>
                         {question}
                       </dd>
-                      <dd></dd>
+                      <dd className={Store().faqPage === faqIdx ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <div>
-                        <span class="icon">A</span>
-                        <p dangerouslySetInnerHTML={{__html: faqDetail.answer}}></p>
+                        <span className="icon">A</span>
+                        {faqDetail.answer && (
+                          <p dangerouslySetInnerHTML={{__html: faqDetail.answer.replace(/class/gi, 'className')}}></p>
+                        )}
                       </div>
                     </Detail>
                   </>
@@ -363,6 +379,9 @@ const TableWrap = styled.div`
     width: 24px;
     height: 24px;
     background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
+    &.on {
+      background: url('https://devimage.dalbitlive.com/images/api/ico-selectup-g.png') no-repeat center center / 17px 9px;
+    }
 
     @media (max-width: ${WIDTH_MOBILE}) {
       position: absolute;
