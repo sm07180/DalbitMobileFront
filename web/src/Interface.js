@@ -27,6 +27,7 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
+        alert('native-player-show')
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
@@ -37,6 +38,8 @@ export default () => {
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
+        alert('native-start')
+
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
