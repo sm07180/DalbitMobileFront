@@ -197,8 +197,12 @@ export default props => {
   useEffect(() => {
     fetchDataList()
   }, [])
-
   //--------------------------------------------------------------------------
+  console.log(props.location.pathname.split('/')[2])
+  const pathProfile = props.location.pathname.split('/')[2]
+
+  const [pathName, setPathName] = useState(pathProfile)
+  console.log(pathName)
   return (
     <>
       {/* 전체영역 */}
@@ -246,12 +250,16 @@ export default props => {
                     <span>{writerNo}</span>
                     <span>{timeFormat(writeDt)}</span>
                   </div>
-                  <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                  <BtnIcon
+                    onClick={() => setShowBtn(boardIdx)}
+                    className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}></BtnIcon>
                   <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                    <a className="modify" onClick={() => DeleteComment()}>
+                    <a onClick={() => DeleteComment()} className={writerNo === profile.memNo ? 'on' : ''}>
                       수정하기
                     </a>
-                    <a className="delete" onClick={() => DeleteComment(value)}>
+                    <a
+                      onClick={() => DeleteComment(value)}
+                      className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}>
                       삭제하기
                     </a>
                   </DetailBtn>
@@ -278,12 +286,14 @@ export default props => {
                             </div>
                             <BtnIcon
                               onClick={() => setShowBtnReply(boardIdx)}
-                              className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                              className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a className="modify" onClick={() => DeleteComment()}>
+                              <a onClick={() => DeleteComment()} className={writerNo === profile.memNo ? 'on' : ''}>
                                 수정하기
                               </a>
-                              <a className="delete" onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
+                              <a
+                                onClick={() => DeleteComment(value, writeNumer, boardNumer)}
+                                className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}>
                                 삭제하기
                               </a>
                             </DetailBtn>
@@ -555,7 +565,7 @@ const DetailBtn = styled.div`
     background-color: #fff;
   }
   & a {
-    display: block;
+    display: none;
     text-align: center;
     padding: 7px;
     font-size: 14px;
@@ -564,6 +574,9 @@ const DetailBtn = styled.div`
     color: #757575;
     background-color: #fff;
     transform: skew(-0.03deg);
+    &.on {
+      display: block;
+    }
   }
   & a:hover {
     background-color: #f8f8f8;
