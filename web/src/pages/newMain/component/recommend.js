@@ -37,7 +37,7 @@ export default props => {
       <div
         ref={selectedWrapRef}
         className="selected-wrap"
-        style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['profImg']['thumb700x700']})`} : {}}>
+        style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {}}>
         <img className="live-icon" src={LiveIcon} />
         <div className="counting">
           <span className="bold">{list ? selectedBIdx + 1 : ''}</span>
