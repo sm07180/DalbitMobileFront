@@ -643,7 +643,7 @@ const Submit = styled.button`
   width: 113px;
   border-radius: 24px;
   margin: 31px auto 0 auto;
-  padding: 8px 0 4px 0;
+  padding: 6px 0;
   border: 1px solid #bdbdbd;
   font-size: 14px;
   color: #bdbdbd;

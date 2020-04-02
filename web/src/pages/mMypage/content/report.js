@@ -231,6 +231,14 @@ export default props => {
     return inputNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
+  function decodeSec(seconds) {
+    var hour = parseInt(seconds / 3600)
+    var min = parseInt((seconds % 3600) / 60)
+    var sec = seconds % 60
+    return `${hour}` + ':' + `${min}` + ':' + `${sec}`
+    //document.getElementById("demo").innerHTML = hour+":"+min+":" + sec
+  }
+
   return (
     <Report>
       <TitleWrap style={{paddingBottom: '25px'}}>
@@ -301,9 +309,7 @@ export default props => {
                 <div>
                   <div>{broadInfo[section][1]}</div>
                   <div className="count">
-                    {broadInfo[section][1] === '방송' &&
-                      broadtotal.length !== 0 &&
-                      timeFormatSumurry(String(broadtotal.broadcastTime))}
+                    {broadInfo[section][1] === '방송' && broadtotal.length !== 0 && decodeSec(String(broadtotal.broadcastTime))}
                     {broadInfo[section][1] === '받은별' &&
                       broadtotal.length !== 0 &&
                       numberFormat(String(broadtotal.byeolTotCnt))}
@@ -324,7 +330,7 @@ export default props => {
                 <div>
                   <div>{listenInfo[section][1]}</div>
                   <div className="count">
-                    {listenInfo[section][1] === '청취' && listentotal.length !== 0 && timeFormatSumurry(String(listeningTime))}
+                    {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
                     {listenInfo[section][1] === '달 선물' && listentotal.length !== 0 && numberFormat(String(giftDalTotCnt))}
                     {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
                     {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
@@ -637,7 +643,7 @@ const Submit = styled.button`
   width: 113px;
   border-radius: 24px;
   margin: 31px auto 0 auto;
-  padding: 8px 0 4px 0;
+  padding: 6px 0;
   border: 1px solid #bdbdbd;
   font-size: 14px;
   color: #bdbdbd;

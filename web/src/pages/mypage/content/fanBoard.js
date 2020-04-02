@@ -99,9 +99,6 @@ export default props => {
       console.log(res)
     }
   }
-  useEffect(() => {
-    fetchDataList()
-  }, [])
 
   const submitClick = () => {
     fetchDataUpload()
@@ -152,7 +149,10 @@ export default props => {
   const uploadReply = (writeNumer, boardNumer) => {
     fetchDataUploadReply()
     fetchDataList()
-    showReply(writeNumer, boardNumer)
+    setTimeout(() => {
+      showReply(writeNumer, boardNumer)
+    }, 100)
+
     setReplyRegist('')
   }
   const textChangeReply = e => {
@@ -194,6 +194,10 @@ export default props => {
       }).length
     )
   }, [fanTotal])
+  useEffect(() => {
+    fetchDataList()
+  }, [])
+
   //--------------------------------------------------------------------------
   return (
     <>
