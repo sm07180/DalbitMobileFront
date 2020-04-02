@@ -190,7 +190,9 @@ function Faq(props) {
               <div key={index}>
                 {faqType === faqNum && (
                   <>
-                    <TableWrap onClick={() => clickEvent(faqIdx)} className={Store().faqPage === faqIdx ? 'on' : ''}>
+                    <TableWrap
+                      onClick={() => clickEvent(faqIdx)}
+                      className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <dt>
                         {faqType === 0 ? '전체' : ''}
                         {faqType === 1 ? '일반' : ''}
@@ -202,7 +204,7 @@ function Faq(props) {
                         <span>Q</span>
                         {question}
                       </dd>
-                      <dd className={Store().faqPage === faqIdx ? 'on' : ''}></dd>
+                      <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
                     </TableWrap>
                     <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <div>
@@ -216,7 +218,9 @@ function Faq(props) {
                 )}
                 {faqNum === 0 && (
                   <>
-                    <TableWrap onClick={() => clickEvent(faqIdx)} className={Store().faqPage === faqIdx ? 'on' : ''}>
+                    <TableWrap
+                      onClick={() => clickEvent(faqIdx)}
+                      className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <dt>
                         {faqType === 0 ? '전체' : ''}
                         {faqType === 1 ? '일반' : ''}
@@ -228,9 +232,9 @@ function Faq(props) {
                         <span>Q</span>
                         {question}
                       </dd>
-                      <dd className={Store().faqPage === faqIdx ? 'on' : ''}></dd>
+                      <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' && listhide !== '' ? 'on' : ''}>
                       <div>
                         <span className="icon">A</span>
                         {faqDetail.answer && (
