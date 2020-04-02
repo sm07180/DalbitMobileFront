@@ -102,6 +102,7 @@ export default class SignalingHandler {
     audioSource.connect(gainNode)
     gainNode.connect(audioDestination)
     audioVolume = gainNode.gain.value
+    setAudioTag(gainNode)
     //console.log('초기 볼륨 크기 = ' + audioVolume)
   }
   getAudioVolume = () => {
@@ -143,11 +144,10 @@ export default class SignalingHandler {
       .getUserMedia(constraint)
       .then(stream => {
         this.audioStream = stream
-        //this.audioTag.srcObject = stream
       })
       .then(() => {
         //오디오 볼륨
-        //setAudioVolumeMake()
+        //this.setAudioVolumeMake()
       })
       .catch(e => {
         if (String(e).indexOf('Permission') !== -1) {
@@ -229,8 +229,11 @@ export default class SignalingHandler {
   }
 
   setMuted(status) {
+    //this.audioTag.muted = status
+    // 전체 마이크랑 배경 음악도 지워진다.
     if (this.audioStream) {
-      this.audioStream.getTracks()[0].enabled = status
+      const track = this.audioStream.getAudioTracks()[1]
+      if (track) track.enabled = status
     }
   }
 
@@ -303,6 +306,16 @@ export default class SignalingHandler {
         if (this.audioStream) {
           const audioTrack = this.audioStream.getAudioTracks()[0]
           this.rtcPeerConn.addTrack(audioTrack)
+
+          // var context = new window.AudioContext()
+          // var microphone = context.createMediaStreamSource(this.audioStream)
+          // var gainFilter = context.createGain()
+          // var destination = context.createMediaStreamDestination()
+          // this.audioStream = destination.stream
+          // microphone.connect(gainFilter)
+          // gainFilter.connect(destination)
+          // var filteredTrack = this.audioStream.getAudioTracks()[1]
+          // this.rtcPeerConn.addTrack(filteredTrack)
         }
       }
       this.rtcPeerConn.onicecandidate = e => {

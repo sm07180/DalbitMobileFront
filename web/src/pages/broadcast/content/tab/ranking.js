@@ -51,8 +51,8 @@ export default props => {
   //map
 
   const creatFanRank = () => {
-    if (room.fanRank.length < 1) return
-    return room.fanRank.map((item, index) => {
+    if (props.fanRank.length < 1) return
+    return props.fanRank.map((item, index) => {
       return (
         <li className={`top${++index}`} key={index}>
           <Figure src={item.profImg.url} title={item.nickNm}>

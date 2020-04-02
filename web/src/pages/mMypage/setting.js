@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
-import {Switch, Route, Link} from 'react-router-dom'
+import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
@@ -15,7 +15,7 @@ import camera from 'images/camera.svg'
 
 export default props => {
   const context = useContext(Context)
-  const {profile} = context
+  const {profile, token} = context
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState(null)
   const [profileMsg, setProfileMsg] = useState('')
@@ -23,10 +23,6 @@ export default props => {
   const [tempPhoto, setTempPhoto] = useState(null)
 
   const nicknameReference = useRef()
-
-  if (!profile) {
-    props.history.push('/')
-  }
 
   const profileImageUpload = e => {
     const target = e.currentTarget
@@ -132,60 +128,71 @@ export default props => {
   }
 
   useEffect(() => {
-    setNickname(profile.nickNm)
-    setProfileMsg(profile.profMsg)
-    setPhotoPath(profile.profImg.path)
-    setGender(profile.gender)
+    if (profile) {
+      setNickname(profile.nickNm)
+      setProfileMsg(profile.profMsg)
+      setPhotoPath(profile.profImg.path)
+      setGender(profile.gender)
+    }
   }, [])
+
   return (
-    <Layout {...props}>
-      <Content>
-        <SettingWrap>
-          <ProfileImg
-            style={{backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`}}>
-            <label htmlFor="profileImg" />
-            <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-            <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
-          </ProfileImg>
-          <div className="nickname">
-            <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
-          </div>
-          <UserId>{`@${profile.memId}`}</UserId>
-          <PasswordWrap>
-            <PasswordTextWrap>
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-              <PasswordCircle />
-            </PasswordTextWrap>
-            <PasswordRedirectBtn>
-              <Link to="/user/password">비밀번호 변경</Link>
-            </PasswordRedirectBtn>
-          </PasswordWrap>
-          <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
-          <GenderWrap>
-            <GenderTab className={gender === 'm' ? '' : 'off'} onClick={() => setGender('m')}>
-              남자
-            </GenderTab>
-            <GenderTab className={gender === 'f' ? '' : 'off'} onClick={() => setGender('f')}>
-              여자
-            </GenderTab>
-          </GenderWrap>
+    <Switch>
+      {!token.isLogin ? (
+        <Redirect to={`/new`} />
+      ) : (
+        <Layout {...props}>
+          <Content>
+            <SettingWrap>
+              <ProfileImg
+                style={{
+                  backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
+                }}>
+                <label htmlFor="profileImg" />
+                <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+                <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+              </ProfileImg>
+              <div className="nickname">
+                <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
+              </div>
+              <UserId>{`@${profile.memId}`}</UserId>
+              <PasswordWrap>
+                <PasswordTextWrap>
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                </PasswordTextWrap>
+                <PasswordRedirectBtn>
+                  <Link to="/user/password">비밀번호 변경</Link>
+                </PasswordRedirectBtn>
+              </PasswordWrap>
+              <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
+              <GenderWrap>
+                <GenderTab className={gender === 'm' ? '' : 'off'} onClick={() => setGender('m')}>
+                  남자
+                </GenderTab>
+                <GenderTab className={gender === 'f' ? '' : 'off'} onClick={() => setGender('f')}>
+                  여자
+                </GenderTab>
+              </GenderWrap>
 
-          <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
+              <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
 
-          <div className="msg-wrap">
-            <MsgTitle>프로필 메세지</MsgTitle>
-            <MsgText value={profileMsg} onChange={changeMsg} />
-          </div>
-          <SaveBtn onClick={saveUpload}>저장</SaveBtn>
-        </SettingWrap>
-      </Content>
-    </Layout>
+              <div className="msg-wrap">
+                <MsgTitle>프로필 메세지</MsgTitle>
+                <MsgText value={profileMsg} onChange={changeMsg} />
+              </div>
+              <SaveBtn onClick={saveUpload}>저장</SaveBtn>
+            </SettingWrap>
+          </Content>
+        </Layout>
+      )}
+    </Switch>
   )
 }
 

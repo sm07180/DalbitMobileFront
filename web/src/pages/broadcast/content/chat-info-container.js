@@ -85,13 +85,7 @@ export default props => {
       )
     }
   }
-  // const likeCheck = () => {
-  //   if (context.broadcastTotalInfo === null) {
-  //     return room.like
-  //   } else {
-  //     return context.broadcastTotalInfo.likes
-  //   }
-  // }
+
   let userTypeMemNo = ''
   async function goBjProfile(obj) {
     store.action.updateTab(6)
@@ -115,7 +109,6 @@ export default props => {
   }
 
   async function getNotice() {
-    store.action.updateTab(8)
     const res = await Api.broad_notice({
       params: {
         roomNo: context.broadcastTotalInfo.roomNo
@@ -127,17 +120,6 @@ export default props => {
       store.action.updateNoticeMsg(res.data.notice)
     }
   }
-
-  //---------------------------------------------------------------------
-  //useEffect
-  useEffect(() => {
-    setRoom({
-      ...room,
-      ...props
-    })
-    likeCheckTimer()
-  }, [])
-
   // 방 입장후 좋아요 타이머 체크 함수
   const likeCheckTimer = () => {
     if (props.auth === 3) return
@@ -154,6 +136,56 @@ export default props => {
     }, 1000)
     setLikeTimer(interval)
   }
+
+  const tabMove = type => {
+    switch (type) {
+      case 0:
+        store.action.updateTab(0)
+        break
+      case 1:
+        break
+      case 2:
+        break
+      case 3:
+        break
+      case 4:
+        break
+      case 5:
+        break
+      case 6:
+        break
+      case 7:
+        break
+      case 8:
+        store.action.updateTab(8)
+        getNotice()
+        // var aaa = document.getElementsByClassName('cast-info')[0]
+        // var bbb = aaa.getElementsByTagName('button')[1]
+        // bbb.className = ''
+        break
+      case 9:
+        store.action.updateTab(9)
+        context.action.updateBroadcastTotalInfo({hasStory: false})
+        break
+      case 10:
+        break
+      case 11:
+        break
+      case 12:
+        break
+      default:
+        break
+    }
+  }
+  //---------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    setRoom({
+      ...room,
+      ...props
+    })
+    likeCheckTimer()
+  }, [])
 
   //좋아요~부스트단계 바뀔시마다 셋팅해줘야할것들.. top랭크 영역표시 클래스 조절하기
   useEffect(() => {
@@ -190,7 +222,12 @@ export default props => {
           최소화
         </button>
         {/* 방장 프로필, 방장 닉네임, 방 제목 */}
-        <Figure src={room.bjProfImg.url} holder={room.bjHolder} title={room.bjNickNm} className="dj" onClick={() => goBjProfile({isBj: true})}>
+        <Figure
+          src={room.bjProfImg.url}
+          holder={room.bjHolder}
+          title={room.bjNickNm}
+          className="dj"
+          onClick={() => goBjProfile({isBj: true})}>
           <img src={room.bjProfImg.url} alt={room.bjNickNm} />
         </Figure>
         <div>
@@ -201,7 +238,7 @@ export default props => {
           {/* 팬랭킹 영역 */}
           {creatFanRank()}
           {/* 현재 방송방 내 청취자 수 카운팅, 클릭시 청취자 탭*/}
-          <li className="people" onClick={() => store.action.updateTab(0)}>
+          <li className="people" onClick={() => tabMove(0)}>
             {context.broadcastTotalInfo.userCount != '' ? context.broadcastTotalInfo.userCount : 0}
           </li>
         </ul>
@@ -221,11 +258,14 @@ export default props => {
         </ul>
         <div>
           {/* 새클릭시 사연 탭 */}
-          <button title="사연" onClick={() => store.action.updateTab(9)}>
+          <button title="사연" onClick={() => tabMove(9)} className={context.broadcastTotalInfo.hasStory == true ? 'on' : ''}>
             사연
           </button>
           {/* 클릭시 공지 탭 */}
-          <button title="공지사항" onClick={() => getNotice()} className={context.broadcastTotalInfo.hasNotice == true ? 'on' : ''}>
+          <button
+            title="공지사항"
+            onClick={() => tabMove(8)}
+            className={context.broadcastTotalInfo.hasNotice == true ? 'on' : ''}>
             공지사항
           </button>
         </div>
@@ -236,7 +276,9 @@ export default props => {
           랭킹 (부스터 사용 표시)
           boost-off 상태 -> dj일 경우, 청취자가 좋아요를 했을경우
           boost-on 상태 -> 부스터 쓸 경우. */}
-          <li className={`rank ${boost}`}>TOP {context.broadcastTotalInfo.rank != '' ? context.broadcastTotalInfo.rank : room.rank}</li>
+          <li className={`rank ${boost}`}>
+            TOP {context.broadcastTotalInfo.rank != '' ? context.broadcastTotalInfo.rank : room.rank}
+          </li>
           {/* 방에 붙여진 딱지 추천, 인기, 신입 */}
           {props.isRecomm && <li className="recommend">추천</li>}
           {props.isPop && <li className="popular">인기</li>}
@@ -244,7 +286,7 @@ export default props => {
         </ul>
         <div>
           {/* 방장일경우 게스트 초대 버튼, 청취자일경우 게스트 신청 버튼, 게스트가 있을경우 게스트 프로필 노출  */}
-          {/* {creatGuest()}  3월 31일 이후 open */}    
+          {/* {creatGuest()}  3월 31일 이후 open */}
         </div>
       </div>
     </Content>
@@ -459,6 +501,9 @@ const Content = styled.div`
       }
       button:first-child {
         background: url(${IMG_SERVER}/images/chat/ic_mail.png) no-repeat center center / cover;
+      }
+      button.on:first-child {
+        background: url(${IMG_SERVER}/images/chat/ic_mail_dot.png) no-repeat center center / cover;
       }
       button:last-child {
         margin-left: 6px;

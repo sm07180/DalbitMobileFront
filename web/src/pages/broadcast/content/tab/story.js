@@ -54,6 +54,7 @@ export default props => {
     })
     console.log('## story - res :', res)
     if (res.result === 'success') {
+      //if (res.data.list.length > 0) store.action.updateStoryList(res.data)
       store.action.updateStoryList(res.data)
     }
   }
@@ -100,19 +101,9 @@ export default props => {
     console.log('## deleteStory - res :', res)
     if (res.result === 'success') selectStoryList()
   }
-
-  useEffect(() => {
-    //Dj - 사연조회, Listener - 사연작성
-    if (type) {
-      selectStoryList()
-      refresh()
-    }
-  }, [])
-  //----------------------------------------------- components start
-  return (
-    <Container>
-      <Navi title={context.token.memNo === broadcastTotalInfo.bjMemNo ? '등록 사연' : '사연'} prev={props.prev} _changeItem={props._changeItem} />
-      {context.token.memNo === broadcastTotalInfo.bjMemNo ? (
+  const makeContent = () => {
+    if (store.storyList.length > 0 || store.storyList.length !== undefined || store.storyList.list.length > 0) {
+      return (
         <DjMain>
           <div className="topBar">
             <div className="refresh">
@@ -128,7 +119,7 @@ export default props => {
                   <Contents key={idx}>
                     <UserInfo>
                       <div>
-                        <Img width={40} height={40} src={`${IMG_SERVER}/images/api/profile_test5.jpg`} marginRight={8} />
+                        <Img src={data.profImg.url} marginRight={8} />
                         <div>{data.nickNm}</div>
                       </div>
                       <div>
@@ -143,6 +134,36 @@ export default props => {
               })}
           </Scrollbars>
         </DjMain>
+      )
+    } else {
+      return (
+        <Wrapper>
+          <div className="noresultWrap">
+            <img src={`${IMG_SERVER}/images/api/img_noresult.png`}></img>
+            <p>등록된 사연이 없습니다.</p>
+          </div>
+        </Wrapper>
+      )
+    }
+  }
+
+  useEffect(() => {
+    //Dj - 사연조회, Listener - 사연작성
+    if (type) {
+      selectStoryList()
+      refresh()
+    }
+  }, [])
+  //----------------------------------------------- components start
+  return (
+    <Container>
+      <Navi
+        title={context.token.memNo === broadcastTotalInfo.bjMemNo ? '등록 사연' : '사연'}
+        prev={props.prev}
+        _changeItem={props._changeItem}
+      />
+      {context.token.memNo === broadcastTotalInfo.bjMemNo ? (
+        makeContent()
       ) : (
         <>
           <ListenerMain>
@@ -158,42 +179,31 @@ export default props => {
           <LButton title={'등록하기'} background={'#8556f6'} clickEvent={() => writeStory()} />
         </>
       )}
-      {/* <DjMain>
-        <div className="topBar">
-          <div className="refresh">
-            <button onClick={() => refresh()} />
-            <span>{now}</span>
-          </div>
-          <Count>사연수 : {store.storyList.list ? store.storyList.paging.total : 0}개</Count>
-        </div>
-        <Scrollbars ref={scrollbars} style={{height: '100%'}} autoHide>
-          {store.storyList.list &&
-            store.storyList.list.map((data, idx) => {
-              return (
-                <Contents key={idx}>
-                  <UserInfo>
-                    <div>
-                      <Img width={40} height={40} src={data.profImg.thumb62x62} marginRight={8} />
-                      <div>{data.nickNm}</div>
-                    </div>
-                    <div>
-                      <span>{Util.format(data.writeDt)}</span>
-                      <SaveButton onClick={() => deleteStory(data.storyIdx)}>삭제</SaveButton>
-                    </div>
-                  </UserInfo>
-                  <Story value={data.contents} disabled />
-                  <hr />
-                </Contents>
-              )
-            })}
-        </Scrollbars>
-      </DjMain> */}
     </Container>
   )
 }
 
 //----------------------------------------------- styled start
-
+const Wrapper = styled.div`
+  margin-top: 20px;
+  height: calc(100% - 60px);
+  & .scrollCustom {
+    & > div:nth-child(3) {
+      width: 10px !important;
+    }
+  }
+  .noresultWrap {
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    p {
+      transform: skew(-0.03deg);
+      text-align: center;
+      margin: 20px 0;
+    }
+  }
+`
 const Container = styled.div`
   display: flex;
   flex-direction: column;

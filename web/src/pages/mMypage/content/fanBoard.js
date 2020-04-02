@@ -36,7 +36,7 @@ export default props => {
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
       params: {
-        memNo: profile.memNo,
+        memNo: pathName,
         page: 1,
         records: 1000
       }
@@ -56,7 +56,7 @@ export default props => {
   async function fetchDataReplyList(writeNumer, boardNumer) {
     const res = await Api.member_fanboard_reply({
       params: {
-        memNo: profile.memNo,
+        memNo: pathName,
         boardNo: boardNumer
       }
     })
@@ -71,7 +71,7 @@ export default props => {
   async function fetchDataUpload() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: profile.memNo,
+        memNo: pathName,
         depth: 1,
         content: comment
       }
@@ -87,7 +87,7 @@ export default props => {
   async function fetchDataUploadReply() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: profile.memNo,
+        memNo: pathName,
         depth: 2,
         content: replyRegist,
         boardNo: broadNumbers
@@ -126,7 +126,7 @@ export default props => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
-          memNo: profile.memNo,
+          memNo: pathName,
           boardIdx: value
         }
       })

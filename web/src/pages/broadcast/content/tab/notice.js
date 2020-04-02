@@ -22,6 +22,8 @@ export default props => {
   })
   //const [roomInfo, setRoomInfo] = useState({...props.location.state})
   const [show, setShow] = useState(false)
+  const [viewNotice, setViewNotice] = useState(false)
+
   //const [showRegist, setShowRegist] = useState(true)
 
   const RoomNumbers = roomNo
@@ -105,6 +107,7 @@ export default props => {
   }
   //리스너뷰
   const listenerNotice = () => {
+    console.log('listenerNotice = ' + context.broadcastTotalInfo.hasNotice)
     if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
       return (
         <div className="noresultWrap">
