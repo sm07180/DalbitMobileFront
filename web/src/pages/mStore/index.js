@@ -41,7 +41,7 @@ export default props => {
 const Content = styled.section`
   width: 1040px;
   min-height: 300px;
-  margin: 80px auto 0 auto;
+  margin: 76px auto 0 auto;
   padding: 0 0 120px 0;
   h2 {
     padding-bottom: 60px;

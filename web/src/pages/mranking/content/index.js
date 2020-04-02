@@ -167,7 +167,7 @@ export default props => {
 const Contents = styled.div`
   width: 1210px;
   min-height: 300px;
-  margin: 80px auto 0 auto;
+  margin: 76px auto 0 auto;
   padding: 0 0 80px 0;
   h2 {
     padding-bottom: 60px;

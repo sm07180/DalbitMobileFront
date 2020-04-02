@@ -6,6 +6,8 @@ import React, {useMemo, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {Store} from './index'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //static image
 import Reload from '../static/ic_refresh.svg'
 import Arrow from '../static/ic_arrow_down_color.svg'
@@ -84,21 +86,13 @@ export default props => {
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  font-family: sans-serif, 'san-serif';
   margin-bottom: 10px;
   & > h1 {
-    display: block;
-    margin-top: 24px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-family: 'san-serif';
-    font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.17;
-    letter-spacing: -0.36px;
-    text-align: left;
-    color: #424242;
+    padding-bottom: 26px;
+    font-size: 24px;
+    font-weight: 600;
+    color: ${COLOR_MAIN};
+    text-align: center;
   }
   section {
     position: relative;
@@ -138,9 +132,6 @@ const Content = styled.div`
         padding: 10px 15px;
         color: #424242;
         font-size: 14px;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
         letter-spacing: -0.35px;
         background: transparent;
       }
