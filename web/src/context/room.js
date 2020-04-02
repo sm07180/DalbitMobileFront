@@ -50,6 +50,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       '%c' + `Native: EnterRoom실행`,
       'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
     )
+    alert('Room.roomNo 동일')
     Hybrid('EnterRoom')
     return true
   } else {
