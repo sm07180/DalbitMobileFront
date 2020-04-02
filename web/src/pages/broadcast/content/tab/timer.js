@@ -17,7 +17,7 @@ let startFlag = false
 let pauseFlag = false
 let addFlag = false
 
-let BcEndTime = 10 //방송방 기본 시간 ( 2시간 -> 7200)
+let BcEndTime = 7200 //방송방 기본 시간 ( 2시간 -> 7200)
 
 const getTimeStamp = () => {
   const context = Timer.context()
