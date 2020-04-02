@@ -56,8 +56,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   }
   Room.setRoomNo(roomNo)
-  // Room.roomNo = roomNo
-  console.log(Room.roomNo)
+  //
   const res = await Api.broad_join({data: {roomNo: roomNo}})
   //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
   if (callbackFunc !== undefined) callbackFunc()
