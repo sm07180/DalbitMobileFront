@@ -114,6 +114,15 @@ const Navigation = styled.div`
       min-width: 33%;
     }
   }
+  &.tab4 {
+    a {
+      width: 25%;
+      /* min-width: 33%; */
+      @media (max-width: ${WIDTH_MOBILE}) {
+        width: 30%;
+      }
+    }
+  }
   &.tab5 {
     a {
       width: 20%;
