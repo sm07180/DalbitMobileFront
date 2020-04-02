@@ -11,8 +11,8 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 let naviSwiper = ''
 export default props => {
-  const {list, memNo, sub} = props
-  const current = sub
+  const {list, memNo, type} = props
+  const current = type
   let currentTab = list.filter(list => {
     return list.type == current
   })[0].id

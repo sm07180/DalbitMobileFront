@@ -30,7 +30,7 @@ export default props => {
 
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-  let {memNo, sub} = useParams()
+  let {memNo, type} = useParams()
 
   const [profileInfo, setProfileInfo] = useState(null)
 
@@ -46,7 +46,9 @@ export default props => {
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
-      setProfileInfo(profileInfo)
+      if (profileInfo.result === 'success') {
+        setProfileInfo(profileInfo.data)
+      }
     }
 
     settingProfileInfo(memNo)
@@ -54,8 +56,8 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <MyProfile />
-      <Navigation list={navigationList} memNo={memNo} sub={sub} />
+      <MyProfile profile={profileInfo} />
+      <Navigation list={navigationList} memNo={memNo} type={type} />
       <Mypage></Mypage>
     </Layout>
   )
