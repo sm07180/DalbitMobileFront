@@ -41,8 +41,8 @@ const GlobalProvider = props => {
   const [search, setSearch] = useState('')
   const [roomReady, setRoomReady] = useState(false)
   const [reloadType, setReloadType] = useState(0)
-
   const [logoChange, setLogoChange] = useState(false)
+  const [player, setPlayer] = useState(false) //Player상태
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -168,6 +168,17 @@ const GlobalProvider = props => {
       }
     },
     /**
+     * 오디오 글로벌 플레이어 상태
+     * @param boolean status
+     */
+    updatePlayer: bool => {
+      setPlayer(bool)
+      //flase 일때 쿠키삭제
+      if (!bool) {
+        Utility.setCookie('native-player-info', '', -1)
+      }
+    },
+    /**
      * 방송방 토큰 재생성
      * @breif 방들어올때,생성할때
      */
@@ -223,7 +234,8 @@ const GlobalProvider = props => {
     action,
     roomReady,
     reloadType,
-    logoChange
+    logoChange,
+    player
   }
   return <Provider value={value}>{props.children}</Provider>
 }

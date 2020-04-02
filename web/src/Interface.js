@@ -33,6 +33,7 @@ export default () => {
         }
         const _ios = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
+        context.action.updatePlayer(true)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
@@ -44,10 +45,14 @@ export default () => {
         //
         const _android = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', _android, 100)
+        context.action.updatePlayer(true)
+
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
+        context.action.updatePlayer(false)
+
         context.action.updateMediaPlayerStatus(false)
         //방송종료
         context.action.updateCastState(false)

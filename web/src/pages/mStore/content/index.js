@@ -90,9 +90,13 @@ export default props => {
       {list ? (
         <>
           <List>{creatList()}</List>
+          {/* 
+          사장님 보고를 위해서 구매하기 막아둠. 
+
+          
           <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
             구매하기
-          </button>
+          </button> */}
         </>
       ) : (
         <NoResult>

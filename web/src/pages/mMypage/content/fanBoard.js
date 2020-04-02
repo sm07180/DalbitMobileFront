@@ -36,7 +36,7 @@ export default props => {
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
       params: {
-        memNo: pathName,
+        memNo: profile.memNo,
         page: 1,
         records: 1000
       }
@@ -47,48 +47,56 @@ export default props => {
           return item.status === 1
         })
       )
+      console.log(res)
     } else if (res.result === 'fail') {
+      console.log(res)
     }
   }
   //대댓글 조회
   async function fetchDataReplyList(writeNumer, boardNumer) {
     const res = await Api.member_fanboard_reply({
       params: {
-        memNo: pathName,
+        memNo: profile.memNo,
         boardNo: boardNumer
       }
     })
     if (res.result === 'success') {
+      console.log(res.data.list)
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
+      console.log(res)
     }
   }
   //팬보다 댓글추가
   async function fetchDataUpload() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: pathName,
+        memNo: profile.memNo,
         depth: 1,
         content: comment
       }
     })
     if (res.result === 'success') {
+      console.log(res)
       fetchDataList()
     } else if (res.result === 'fail') {
+      console.log(res)
     }
   }
   //대댓글 추가
   async function fetchDataUploadReply() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: pathName,
+        memNo: profile.memNo,
         depth: 2,
         content: replyRegist,
         boardNo: broadNumbers
       }
     })
     if (res.result === 'success') {
+      console.log(res)
     } else if (res.result === 'fail') {
+      console.log(res)
     }
   }
 
@@ -118,13 +126,15 @@ export default props => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
-          memNo: pathName,
+          memNo: profile.memNo,
           boardIdx: value
         }
       })
       if (res.result === 'success') {
+        console.log(res)
         fetchDataList()
       } else if (res.result === 'fail') {
+        //console.log(res)
       }
     }
     fetchDataDelete()
@@ -187,11 +197,8 @@ export default props => {
   useEffect(() => {
     fetchDataList()
   }, [])
+
   //--------------------------------------------------------------------------
-
-  const pathProfile = props.location.pathname.split('/')[2]
-  const [pathName, setPathName] = useState(pathProfile)
-
   return (
     <>
       {/* 전체영역 */}
@@ -225,7 +232,7 @@ export default props => {
             <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{count}</span>
           </ListTitle>
           {fanTotal.map((item, index) => {
-            const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo} = item
+            const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
             let value = boardIdx
             let writeNumer = writerNo
             let boardNumer = boardNo
@@ -236,19 +243,15 @@ export default props => {
                   <Imgbox bg={profImg.thumb62x62} />
                   <div>
                     <span>{nickNm}</span>
-                    <span>{writerNo}</span>
+                    <span>(@{memId})</span>
                     <span>{timeFormat(writeDt)}</span>
                   </div>
-                  <BtnIcon
-                    onClick={() => setShowBtn(boardIdx)}
-                    className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}></BtnIcon>
+                  <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
                   <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                    <a onClick={() => DeleteComment()} className={writerNo === profile.memNo ? 'on' : ''}>
+                    <a className="modify" onClick={() => DeleteComment()}>
                       수정하기
                     </a>
-                    <a
-                      onClick={() => DeleteComment(value)}
-                      className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}>
+                    <a className="delete" onClick={() => DeleteComment(value)}>
                       삭제하기
                     </a>
                   </DetailBtn>
@@ -261,7 +264,7 @@ export default props => {
                 {boardNumer === broadNumbers && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
-                      const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo} = reply
+                      const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = reply
                       let value = boardIdx
                       if (status !== 1) return
                       return (
@@ -270,19 +273,17 @@ export default props => {
                             <Imgbox bg={profImg.thumb62x62} />
                             <div>
                               <span>{nickNm}</span>
-                              <span>{writerNo}</span>
+                              <span>(@{memId})</span>
                               <span>{timeFormat(writeDt)}</span>
                             </div>
                             <BtnIcon
                               onClick={() => setShowBtnReply(boardIdx)}
-                              className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}></BtnIcon>
+                              className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a onClick={() => DeleteComment()} className={writerNo === profile.memNo ? 'on' : ''}>
+                              <a className="modify" onClick={() => DeleteComment()}>
                                 수정하기
                               </a>
-                              <a
-                                onClick={() => DeleteComment(value, writeNumer, boardNumer)}
-                                className={writerNo === profile.memNo || pathName === profile.memNo ? 'on' : ''}>
+                              <a className="delete" onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
                                 삭제하기
                               </a>
                             </DetailBtn>
@@ -554,7 +555,7 @@ const DetailBtn = styled.div`
     background-color: #fff;
   }
   & a {
-    display: none;
+    display: block;
     text-align: center;
     padding: 7px;
     font-size: 14px;
@@ -563,9 +564,6 @@ const DetailBtn = styled.div`
     color: #757575;
     background-color: #fff;
     transform: skew(-0.03deg);
-    &.on {
-      display: block;
-    }
   }
   & a:hover {
     background-color: #f8f8f8;

@@ -51,13 +51,25 @@ export default props => {
       return
     }
 
+    const fetchLogout = async () => {
+      setFetching(true)
+      const logoutInfo = await Api.member_logout()
+      if (logoutInfo.result === 'success') {
+        const {data} = logoutInfo
+        globalCtx.action.updateToken(data)
+        globalCtx.action.updateProfile(null)
+        return props.history.push('/new')
+      }
+      setFetching(false)
+    }
+
     globalCtx.action.confirm({
-      callback: () => {},
+      callback: () => {
+        fetchLogout()
+      },
       msg: '로그아웃 하시겠습니까?'
     })
-    // const logoutInfo = await Api.member_logout({data: {}})
   }
-  console.log('profile', profile)
 
   return (
     <MenuMypage>

@@ -16,11 +16,11 @@ export default props => {
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
-  // const [phoneNum, setPhoneNum] = useState('')
-  // const [password, setPassword] = useState('')
+  const [phoneNum, setPhoneNum] = useState('')
+  const [password, setPassword] = useState('')
   const [fetching, setFetching] = useState(false)
-  const [phoneNum, setPhoneNum] = useState('01071825603')
-  const [password, setPassword] = useState('1234qwer')
+  // const [phoneNum, setPhoneNum] = useState('01071825603')
+  // const [password, setPassword] = useState('1234qwer')
 
   const changePhoneNum = e => {
     const target = e.currentTarget
