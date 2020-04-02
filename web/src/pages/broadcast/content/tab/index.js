@@ -45,7 +45,11 @@ export default props => {
         next: index
       })
     }
-    changeItem(index)
+    if (!context.token.isLogin) {
+      context.action.updatePopup('LOGIN')
+    } else {
+      changeItem(index)
+    }
   }
 
   useEffect(() => {
