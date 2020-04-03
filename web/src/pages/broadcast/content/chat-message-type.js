@@ -111,7 +111,7 @@ export default props => {
           <pre>
             {recvMsg.msg}
             {/* <strong>도넛을 먹는 달덩이 X100</strong> 을<br />
-            선물하였습니다. */}
+              선물하였습니다. */}
           </pre>
         </div>
       </Message>

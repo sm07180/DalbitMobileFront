@@ -142,8 +142,8 @@ export default props => {
   //useEffect
   useEffect(() => {
     const res = document.addEventListener('socketSendData', data => {
-      const recvMsg = data.detail.data.recvMsg
-      const cmd = data.detail.data.cmd
+      let {roomNo} = data.detail.channel //방번호
+      let {cmd, chat, recvMsg, user} = data.detail.data //recv object
 
       if (cmd === 'chatEnd') {
         if (isHybrid()) {
@@ -247,10 +247,30 @@ export default props => {
       if (data && data.detail) {
         if (recvMsg.position === undefined || recvMsg.position === 'chat') {
           //팬퇴장 일때 position 값이 비어 있어서 top2 영역에 들어갔었다. 버그 임
-          if (data.detail.data.cmd === 'reqRoomChangeInfo') {
+          if (cmd === 'reqRoomChangeInfo') {
             //console.log('방송방 수정 들어옴 = ' + data.detail.data.reqRoomChangeInfo)
             context.action.updateBroadcastTotalInfo(data.detail.data.reqRoomChangeInfo)
             store.action.updateRoomInfo(data.detail.data.reqRoomChangeInfo)
+          } else if (cmd === 'reqGiftImg') {
+            const reqGiftImg = data.detail.data.reqGiftImg
+            if (reqGiftImg.isSecret && context.broadcastTotalInfo.auth === 3) {
+              const element = `<img src=${
+                reqGiftImg.itemImg
+              } width=${48} height=${48}> <img src=${'https://devimage.dalbitlive.com/images/api/ic_multiplication_p@3x.png'} width=${18} height=${18} top=${34}% style="margin-top:18px" ><span style="width:20px;height:20px;font-size: 18px;font-weight: normal;font-stretch: normal;font-style: normal;line-height: 1.44;letter-spacing: normal;text-align: center;color: #8555f6;">${
+                reqGiftImg.itemCnt
+              }</span>
+              ${user.nk} 님께서
+              ${reqGiftImg.itemNm} ${reqGiftImg.itemCnt}개를 선물하셨습니다.`
+
+              context.action.alert({
+                //콜백처리
+                callback: () => {},
+                title: '몰래온 선물',
+                msg: element
+              })
+            } else {
+              getRecvChatData(data.detail)
+            }
           } else {
             getRecvChatData(data.detail)
             //store.action.updateRoleCheck(data.detail)

@@ -867,7 +867,13 @@ export default class API {
 
   /**
    * @brief 방송방 선물하기
+   * @param string roomNo                     // 방송방 번호
+   * @param string memNo                      // 선물 받을 회원번호
+   * @param string itemNo                     // 선물할 아이템 번호
+   * @param int itemCnt                       // 아이템 개수
+   * @param boolean isSecret                  // 몰래 선물 여부
    * @create 최우정 2020.02.17
+   * @update 김호겸 2020.04.03
    */
   static send_gift = async obj => {
     const {url, method, data} = obj || {}

@@ -40,6 +40,7 @@ export default props => {
         msg: '아이템을 선택해 주세요'
       })
     }
+
     const res = await Api.send_gift({
       data: {
         roomNo: context.broadcastTotalInfo.roomNo,
@@ -106,7 +107,7 @@ export default props => {
           flag={state}
         />
       ) : (
-        <SendDirect profile={store.broadcastProfileInfo} />
+        <SendDirect />
       )}
     </Container>
   )
