@@ -59,10 +59,13 @@ export default props => {
       }
     })()
     ;(async () => {
-      const broadcastList = await Api.broad_list({records: 30})
+      const broadcastList = await Api.broad_list({
+        params: {
+          records: 30
+        }
+      })
       if (broadcastList.result === 'success') {
         const {list} = broadcastList.data
-
         setLiveList(list)
       }
     })()
