@@ -22,11 +22,12 @@ export default props => {
           url={url}
           className="figure"
           onClick={() => {
-            if (context.token.isLogin) {
-              history.push(`/mmypage/${memNo}`)
-            } else {
-              context.action.updatePopup('LOGIN')
-            }
+            history.push(`/mmypage/${memNo}`)
+            // if (context.token.isLogin) {
+            //   history.push(`/mmypage/${memNo}`)
+            // } else {
+            //   context.action.updatePopup('LOGIN')
+            // }
           }}>
           <img src={url} alt={name} />
         </Figure>
