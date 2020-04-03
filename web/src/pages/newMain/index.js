@@ -37,8 +37,10 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const clickBroadcastBtn = () => {
-    if (globalCtx.isLogin) {
-      return Hybrid('RoomMake', '')
+    if (isHybrid()) {
+      if (globalCtx.isLogin) {
+        return Hybrid('RoomMake', '')
+      }
     }
     return (window.location.href = '/mlogin')
   }
