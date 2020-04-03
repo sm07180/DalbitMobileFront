@@ -27,21 +27,20 @@ const TestPage = React.lazy(() => import('pages/testpage'))
 
 // mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
-const MobileRanking = React.lazy(() => import('pages/mRanking'))
+const MobileRanking = React.lazy(() => import('pages/mranking'))
 const MobileMyPage = React.lazy(() => import('pages/mMyPage'))
 const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
 const MobileLogin = React.lazy(() => import('pages/mLogin'))
 const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
+const mLive = React.lazy(() => import('pages/mlive'))
 
 //
 const error = React.lazy(() => import('pages/common/error'))
 const NotFoundPage = React.lazy(() => import('pages/common/error'))
 //live pub
 const Live = React.lazy(() => import('pages/live'))
-//native live
-const mLive = React.lazy(() => import('pages/mlive'))
 //customer-service
 const Customer = React.lazy(() => import('pages/customer'))
 //setting
