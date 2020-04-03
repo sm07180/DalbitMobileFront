@@ -99,11 +99,20 @@ export default props => {
           <div className="input-wrap">
             <input
               ref={inputPhoneRef}
-              type="text"
+              type="number"
               autoComplete="off"
               placeholder="전화번호"
               value={phoneNum}
               onChange={changePhoneNum}
+              onKeyDown={e => {
+                const {keyCode} = e
+                // 96 - 105 , 48 - 57
+                // delete 8, 46
+                if (keyCode === 8 || keyCode === 46 || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105)) {
+                  return
+                }
+                e.preventDefault()
+              }}
             />
             <input
               ref={inputPasswordRef}
