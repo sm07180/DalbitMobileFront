@@ -43,6 +43,8 @@ export default props => {
   const clickCloseBtn = () => {
     if (webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
+    } else {
+      window.history.href = '/new'
     }
   }
 
