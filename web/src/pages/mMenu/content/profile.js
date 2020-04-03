@@ -150,6 +150,9 @@ export default props => {
               <span className="bold">로그인</span> 해주세요
             </div>
           </Link>
+          <Link to="/mlogin">
+            <button className="loginBtn">로그인</button>
+          </Link>
         </div>
       )}
     </MenuMypage>
@@ -301,5 +304,16 @@ const MenuMypage = styled.div`
         }
       }
     }
+  }
+
+  .loginBtn {
+    display: block;
+    width: 120px;
+    height: 40px;
+    margin: 30px auto;
+    border: 2px solid #8556f6;
+    color: #424242;
+    border-radius: 10px;
+    transform: skew(-0.03deg);
   }
 `

@@ -90,6 +90,9 @@ export default props => {
                 <span className="bold">로그인</span> 해주세요
               </div>
             </Link>
+            <Link to="/mlogin">
+              <button className="loginBtn">로그인</button>
+            </Link>
           </div>
         )}
 
@@ -103,6 +106,16 @@ export default props => {
 const Content = styled.div`
   display: block;
   margin-top: 30px;
+  .loginBtn {
+    display: block;
+    width: 120px;
+    height: 40px;
+    margin: 30px auto;
+    border: 2px solid #8556f6;
+    color: #424242;
+    border-radius: 10px;
+    transform: skew(-0.03deg);
+  }
   .log-out {
     padding-top: 30px;
     box-sizing: border-box;
@@ -117,7 +130,6 @@ const Content = styled.div`
       color: #424242;
       font-size: 20px;
       text-align: center;
-
       .bold {
         color: #8556f6;
         font-weight: bold;
