@@ -23,7 +23,7 @@ export default props => {
           className="figure"
           onClick={() => {
             if (context.token.isLogin) {
-              history.push(`/private/${memNo}`)
+              history.push(`/mmypage/${memNo}`)
             } else {
               context.action.updatePopup('LOGIN')
             }
