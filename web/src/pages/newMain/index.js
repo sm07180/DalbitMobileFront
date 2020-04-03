@@ -37,6 +37,7 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const clickBroadcastBtn = () => {
+    //
     if (isHybrid()) {
       if (globalCtx.isLogin) {
         return Hybrid('RoomMake', '')
