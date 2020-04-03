@@ -18,6 +18,7 @@ export default props => {
   const store = useContext(BroadCastStore)
 
   const {broadcastProfileInfo} = store
+  const customHeader = JSON.parse(Api.customHeader)
   //-------------------------------------------------------- func start
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
@@ -69,12 +70,27 @@ export default props => {
     })
     if (res.result === 'success') {
       context.action.alert({
-        callback: () => {},
+        callback: () => {
+          setText(dalcount)
+        },
         msg: res.message
       })
     }
   }
 
+  const broadCastCharge = () => {
+    let unitDalprice = 100 // 달 개당 100원(추후 수정) -> 나중에 글로벌로 뺴야 한다.
+    let osType = customHeader.os // os : 1(Aos) , 2(ios)
+    let rate = osType === 2 ? 0.3 : 1 // ios 경우 가격 책정이 달라 비율 조정을 차후 수정 (임의 30% 설정)
+    let totalPrice = unitDalprice * (directDalCnt > 0 ? directDalCnt : text)
+    let calc = totalPrice * rate
+    let iosPrice = totalPrice + calc
+
+    context.action.updatePopup('CHARGE', {
+      name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
+      price: osType === 2 ? iosPrice : totalPrice
+    })
+  }
   useEffect(() => {
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
@@ -115,12 +131,7 @@ export default props => {
         <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
       <ButtonArea>
-        <BotButton
-          title={'충전하기'}
-          borderColor={'#8556f6'}
-          color={'#8556f6'}
-          clickEvent={() => context.action.updatePopupVisible(true)}
-        />
+        <BotButton title={'충전하기'} borderColor={'#8556f6'} color={'#8556f6'} clickEvent={() => broadCastCharge()} />
         <BotButton
           title={'선물하기'}
           borderColor={'#bdbdbd'}

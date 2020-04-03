@@ -40,7 +40,7 @@ const Main = props => {
     }
   }
   const makeSlider = () => {
-    if (fetch1 === null) return
+    if (fetch1 === null || fetch1 === undefined) return
     //데이터가공
     let data = []
 
