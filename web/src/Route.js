@@ -34,6 +34,7 @@ const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
 const MobileLogin = React.lazy(() => import('pages/mLogin'))
 const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
+const MobileUser = React.lazy(() => import('pages/m_user'))
 const mLive = React.lazy(() => import('pages/mlive'))
 
 //
@@ -64,6 +65,8 @@ export default () => {
         <Route exact path="/mpay" component={MobilePay} />
         <Route exact path="/mstore" component={MobileStore} />
         <Route exact path="/mlogin" component={MobileLogin} />
+        <Route exact path="/muser" component={MobileUser} />
+        <Route exact path="/muser/:title" component={MobileUser} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
