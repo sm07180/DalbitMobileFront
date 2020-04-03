@@ -15,7 +15,7 @@ import Api from 'context/api'
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {webview} = qs.parse(locatin.patname)
+  const {webview} = qs.parse(location.patname)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
