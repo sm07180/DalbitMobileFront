@@ -73,7 +73,7 @@ export default props => {
       msg: '로그아웃 하시겠습니까?'
     })
   }
-  console.log('p', profile)
+
   return (
     <MenuMypage>
       <Header>
