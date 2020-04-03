@@ -176,7 +176,9 @@ export default props => {
   const DeleteComment = (value, writeNumer, boardNumer) => {
     clickRefresh()
     deletApiFun(value)
-    showReply(writeNumer, boardNumer)
+    setTimeout(() => {
+      showReply(writeNumer, boardNumer)
+    }, 100)
   }
   const DeleteComment2 = (value, writeNumer, boardNumer) => {
     clickRefresh()
@@ -234,7 +236,7 @@ export default props => {
         </WriteArea>
         <article className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
           <StartBottom>
-            <input placeholder={placeholderTextStart} />
+            <div>{placeholderTextStart}</div>
             <button>등록</button>
           </StartBottom>
         </article>
@@ -423,6 +425,20 @@ const WriteArea = styled.div`
 const StartBottom = styled.div`
   display: flex;
   border: 1px solid #d0d0d0;
+  > div {
+    display: block;
+    width: calc(100% - 68px);
+    padding: 16px 0 16px 16px;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+    color: #bdbdbd;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    line-height: 1.43;
+    transform: skew(-0.03deg);
+  }
 
   input {
     display: block;
