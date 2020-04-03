@@ -28,8 +28,9 @@ export default props => {
   //---------------------------------------------------------------------
 
   //context
-  const context = useContext(Context)
   let history = useHistory()
+  const globalCtx = useContext(Context)
+  const {token} = Context
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
@@ -37,7 +38,10 @@ export default props => {
 
   const clickBroadcastBtn = () => {
     if (isHybrid()) {
-      Hybrid('RoomMake', '')
+      if (token.isLogin) {
+        return Hybrid('RoomMake', '')
+      }
+      return (window.location.href = '/mlogin')
     }
   }
 
@@ -81,7 +85,7 @@ export default props => {
                   onClick={event => {
                     event.preventDefault()
                     //IOS일때
-                    if (context.customHeader.os === '2') {
+                    if (globalCtx.customHeader.os === '2') {
                       webkit.messageHandlers.openInApp.postMessage('')
                     } else {
                       history.push(`/mstore`)
