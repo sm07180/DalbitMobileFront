@@ -40,8 +40,7 @@ const App = () => {
     // native app case
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
-      jsonParsed.nativeApp = true
-      //백엔드요청
+      jsonParsed['nativeApp'] = true
       jsonParsed.isHybrid = 'Y'
       jsonParsed.appVersion = '1.0.1'
       jsonParsed.locale = Utility.locale()

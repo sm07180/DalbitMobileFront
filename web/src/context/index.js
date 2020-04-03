@@ -63,7 +63,7 @@ const GlobalProvider = props => {
       API.setCustomHeader(stringified)
       Utility.setCookie('custom-header', '', -1)
       Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
-      setCustomHeader(obj)
+      setCustomHeader({...obj})
     },
     /**
      * @brief 토큰업데이트, authToken 및 login여부
