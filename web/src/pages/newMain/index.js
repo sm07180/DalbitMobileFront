@@ -84,7 +84,7 @@ export default props => {
                   팬 랭킹
                 </div>
               </div>
-              <Link to="/ranking">
+              <Link to="/mranking">
                 <img className="plus-icon" src={PlusIcon} />
               </Link>
             </div>
