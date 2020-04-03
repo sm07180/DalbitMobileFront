@@ -40,6 +40,14 @@ export default props => {
     setPassword(target.value.toLowerCase())
   }
 
+  const clickCloseBtn = () => {
+    if (webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.location.href = '/new'
+    }
+  }
+
   const clickLoginBtn = () => {
     if (fetching) {
       return
@@ -100,10 +108,17 @@ export default props => {
           <Redirect to={`/new`} />
         ) : (
           <Login>
+            <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
             <div>
-              <Link to="/new">
-                <img className="logo" src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
-              </Link>
+              <img
+                className="logo"
+                src={`${IMG_SERVER}/images/api/logo_p_l.png`}
+                onClick={() => {
+                  if (!webview) {
+                    window.location.href = '/new'
+                  }
+                }}
+              />
             </div>
 
             <div className="input-wrap">
@@ -154,11 +169,19 @@ export default props => {
 }
 
 const Login = styled.div`
+  position: relative;
   margin: 0 10px;
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: 5px;
+  }
+
   .logo {
     display: block;
     margin: 0 auto;
-    padding: 30px 0 50px;
+    padding: 40px 0 50px;
     width: 60%;
     max-width: 220px;
   }

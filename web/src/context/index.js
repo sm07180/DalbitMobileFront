@@ -49,7 +49,7 @@ const GlobalProvider = props => {
     updateState: obj => {
       setState(state => ({...state, ...obj}))
     },
-    //updateCustomHeader
+
     /**
      * @brief customHeader, Server->React
      * @param string locale                  // 국가코드
@@ -78,6 +78,7 @@ const GlobalProvider = props => {
       Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken({...obj})
     },
+
     /**
      * @brief 입장한방, 생성한방 정보업데이트
      */
@@ -128,7 +129,6 @@ const GlobalProvider = props => {
      * @param {msg} 메시지영역
      */
     alert: obj => {
-      const {msg} = obj
       setMessage({type: 'alert', visible: true, ...obj})
     },
     /**

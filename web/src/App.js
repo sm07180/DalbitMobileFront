@@ -45,23 +45,23 @@ const App = () => {
       jsonParsed.appVersion = '1.0.1'
       jsonParsed.locale = Utility.locale()
       return jsonParsed
-    } else {
-      const cookie = Utility.getCookie('custom-header')
-      if (cookie !== undefined) {
-        let jsonParsed = JSON.parse(cookie)
-        jsonParsed.appVersion = '1.0.1'
-        jsonParsed.locale = Utility.locale()
-        return jsonParsed
-      }
+    }
 
-      return {
-        os: '3',
-        locale: 'temp_KR',
-        isHybrid: 'N',
-        deviceId: Utility.createUUID(),
-        language: Utility.locale(),
-        deviceToken: 'make_custom_header'
-      }
+    const cookie = Utility.getCookie('custom-header')
+    if (cookie !== undefined) {
+      let jsonParsed = JSON.parse(cookie)
+      jsonParsed.appVersion = '1.0.1'
+      jsonParsed.locale = Utility.locale()
+      return jsonParsed
+    }
+
+    return {
+      os: '3',
+      locale: 'temp_KR',
+      isHybrid: 'N',
+      deviceId: Utility.createUUID(),
+      language: Utility.locale(),
+      deviceToken: 'make_custom_header'
     }
   }, [])
 
@@ -85,11 +85,11 @@ const App = () => {
       context.action.updateCommon(commonData.data)
 
       // Renew token
-      const res = await Api.getToken()
-      if (res.result === 'success') {
-        context.action.updateToken(res.data)
+      const tokenInfo = await Api.getToken()
+      if (tokenInfo.result === 'success') {
+        context.action.updateToken(tokenInfo.data)
 
-        if (res.data.isLogin) {
+        if (tokenInfo.data.isLogin) {
           const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
           if (profileInfo.result === 'success') {
             context.action.updateProfile(profileInfo.data)
