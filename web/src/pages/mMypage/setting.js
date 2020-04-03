@@ -215,6 +215,10 @@ const MsgText = styled.textarea`
   padding: 16px;
   height: 178px;
   font-family: inherit;
+  color: #000000;
+  transform: skew(-0.03deg);
+  font-size: 14px;
+  line-height: 20px;
 `
 
 const MsgTitle = styled.div`
@@ -230,6 +234,7 @@ const GenderAlertMsg = styled.div`
   color: #bdbdbd;
   font-size: 12px;
   margin-top: 12px;
+  transform: skew(-0.03deg);
 `
 
 const GenderTab = styled.div`
