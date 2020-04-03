@@ -47,7 +47,11 @@ export default props => {
         <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
       </div>
       {logoChange ? (
-        <div className="mic-btn">
+        <div
+          className="mic-btn"
+          onClick={() => {
+            Hybrid('RoomMake', '')
+          }}>
           <img src={Mic} />
         </div>
       ) : (
