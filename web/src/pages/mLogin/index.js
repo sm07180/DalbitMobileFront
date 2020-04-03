@@ -60,11 +60,10 @@ export default props => {
           globalCtx.action.updateProfile(profileInfo.data)
 
           if (webview && webview === 'new') {
-            Hybrid('GetLoginTokenNewWin', loginInfo.data)
-          } else {
-            Hybrid('GetLoginToken', loginInfo.data)
+            return Hybrid('GetLoginTokenNewWin', loginInfo.data)
           }
 
+          Hybrid('GetLoginToken', loginInfo.data)
           return (window.location.href = '/new')
         }
       }
