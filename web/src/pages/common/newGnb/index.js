@@ -43,7 +43,7 @@ export default props => {
   return (
     <GnbWrap>
       <div className="icon-wrap">
-        <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+        {/* <img className="icon" src={Search} onClick={() => moveToMenu('search')} /> */}
         <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
       </div>
       {logoChange ? (
