@@ -355,7 +355,7 @@ const SettingWrap = styled.div`
   padding-top: 20px;
 
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 300px;
+    width: 91.111%;
   }
 `
 
