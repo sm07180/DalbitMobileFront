@@ -8,6 +8,7 @@ import {Hybrid} from 'context/hybrid'
 
 // static
 import {IMG_SERVER} from 'context/config'
+import closeBtn from 'pages/mMenu/static/ic_close.svg'
 
 import qs from 'query-string'
 import Api from 'context/api'
@@ -66,6 +67,7 @@ export default props => {
           Hybrid('GetLoginToken', loginInfo.data)
           return (window.location.href = '/new')
         }
+      } else {
       }
       setFetching(false)
     }
