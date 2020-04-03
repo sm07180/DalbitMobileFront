@@ -18,7 +18,6 @@ export default props => {
   const context = useContext(Context)
   //profileGlobal info
   const {profile} = ctx
-
   var urlrStr = props.location.pathname.split('/')[2]
   //console.log(urlrStr)
   //state
@@ -303,7 +302,7 @@ export default props => {
                               </a>
                               <a
                                 className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
-                                onClick={() => DeleteComment(value)}>
+                                onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
                                 삭제하기
                               </a>
                             </DetailBtn>
