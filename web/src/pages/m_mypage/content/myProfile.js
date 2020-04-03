@@ -28,11 +28,10 @@ const myProfile = props => {
         </InfoConfigBtn>
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
-            // console.log(profile.fanRank)
             return (
-              <FanRank key={index} style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}>
-                {/* <Link to={`/mmypage/${fan.memNo}`} /> */}
-              </FanRank>
+              <a href={`/mmypage/${fan.memNo}`} key={index}>
+                <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
+              </a>
             )
           })}
         </FanListWrap>
