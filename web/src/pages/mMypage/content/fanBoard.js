@@ -18,6 +18,9 @@ export default props => {
   const context = useContext(Context)
   //profileGlobal info
   const {profile} = ctx
+
+  var urlrStr = props.location.pathname.split('/')[2]
+  //console.log(urlrStr)
   //state
   const [comment, setComment] = useState('')
   const MaxCommentLength = 100
@@ -36,7 +39,7 @@ export default props => {
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
       params: {
-        memNo: profile.memNo,
+        memNo: urlrStr,
         page: 1,
         records: 1000
       }
@@ -56,7 +59,7 @@ export default props => {
   async function fetchDataReplyList(writeNumer, boardNumer) {
     const res = await Api.member_fanboard_reply({
       params: {
-        memNo: profile.memNo,
+        memNo: urlrStr,
         boardNo: boardNumer
       }
     })
@@ -71,7 +74,7 @@ export default props => {
   async function fetchDataUpload() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: profile.memNo,
+        memNo: urlrStr,
         depth: 1,
         content: comment
       }
@@ -80,6 +83,10 @@ export default props => {
       console.log(res)
       fetchDataList()
     } else if (res.result === 'fail') {
+      context.action.alert({
+        cancelCallback: () => {},
+        msg: res.message
+      })
       console.log(res)
     }
   }
@@ -87,7 +94,7 @@ export default props => {
   async function fetchDataUploadReply() {
     const res = await Api.mypage_fanboard_upload({
       data: {
-        memNo: profile.memNo,
+        memNo: urlrStr,
         depth: 2,
         content: replyRegist,
         boardNo: broadNumbers
@@ -126,7 +133,7 @@ export default props => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
-          memNo: profile.memNo,
+          memNo: urlrStr,
           boardIdx: value
         }
       })
@@ -171,6 +178,13 @@ export default props => {
     setShowBtn('')
     deletApiFun(value)
     showReply(writeNumer, boardNumer)
+  }
+  const DeleteComment2 = (value, writeNumer, boardNumer) => {
+    clickRefresh()
+    context.action.alert({
+      cancelCallback: () => {},
+      msg: '수정기능 준비중입니다'
+    })
   }
   //dateformat
   const timeFormat = strFormatFromServer => {
@@ -246,12 +260,16 @@ export default props => {
                     <span>(@{memId})</span>
                     <span>{timeFormat(writeDt)}</span>
                   </div>
-                  <BtnIcon onClick={() => setShowBtn(boardIdx)} className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                  <BtnIcon
+                    onClick={() => setShowBtn(boardIdx)}
+                    className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                   <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                    <a className="modify" onClick={() => DeleteComment()}>
+                    <a
+                      className={urlrStr === profile.memNo || writerNo === profile.memNo ? 'on' : ''}
+                      onClick={() => DeleteComment2()}>
                       수정하기
                     </a>
-                    <a className="delete" onClick={() => DeleteComment(value)}>
+                    <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment(value)}>
                       삭제하기
                     </a>
                   </DetailBtn>
@@ -278,12 +296,14 @@ export default props => {
                             </div>
                             <BtnIcon
                               onClick={() => setShowBtnReply(boardIdx)}
-                              className={writerNo === profile.memNo ? 'on' : ''}></BtnIcon>
+                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a className="modify" onClick={() => DeleteComment()}>
+                              <a
+                                className={urlrStr === profile.memNo || writerNo === profile.memNo ? 'on' : ''}
+                                onClick={() => DeleteComment2()}>
                                 수정하기
                               </a>
-                              <a className="delete" onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
+                              <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment(value)}>
                                 삭제하기
                               </a>
                             </DetailBtn>
@@ -547,7 +567,7 @@ const DetailBtn = styled.div`
   z-index: 8;
   flex-direction: column;
   width: 103px;
-  padding: 13px 0;
+  padding: 8px 0;
   justify-content: center;
   border: 1px solid #e0e0e0;
   &.active {
@@ -555,15 +575,18 @@ const DetailBtn = styled.div`
     background-color: #fff;
   }
   & a {
-    display: block;
+    display: none;
     text-align: center;
-    padding: 7px;
+    padding: 6px;
     font-size: 14px;
     z-index: 9;
     letter-spacing: -0.35px;
     color: #757575;
     background-color: #fff;
     transform: skew(-0.03deg);
+    &.on {
+      display: block;
+    }
   }
   & a:hover {
     background-color: #f8f8f8;
