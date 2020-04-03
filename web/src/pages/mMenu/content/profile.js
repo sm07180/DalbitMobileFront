@@ -73,7 +73,7 @@ export default props => {
       msg: '로그아웃 하시겠습니까?'
     })
   }
-
+  console.log('p', profile)
   return (
     <MenuMypage>
       <Header>
@@ -83,7 +83,13 @@ export default props => {
       {isLogin && profile ? (
         <>
           <div className="log-in">
-            <div></div>
+            <div className="main-info">
+              <div
+                className="photo"
+                style={profile['profImg'] ? {backgroundImage: `url(${profile['profImg']['thumb190x190']})`} : {}}></div>
+              <div className="nickname">{profile.nickNm}</div>
+              <div className="mem-id">{profile.memId}</div>
+            </div>
             <div className="profile-info">
               <div className="time-info">
                 <div className="total-time">
@@ -176,6 +182,32 @@ const MenuMypage = styled.div`
   .log-in {
     margin-top: 30px;
     margin-bottom: 20px;
+
+    .main-info {
+      text-align: center;
+
+      .photo {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+      .nickname {
+        margin-top: 10px;
+        font-size: 20px;
+        color: #000;
+        letter-spacing: -0.5px;
+      }
+      .mem-id {
+        margin-top: 8px;
+        margin-bottom: 24px;
+        color: #757575;
+        font-size: 12px;
+      }
+    }
 
     .profile-info {
       border: 1px solid #8556f6;
