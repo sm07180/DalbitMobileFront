@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
-
+import {Hybrid} from 'context/hybrid'
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_beta.png'
