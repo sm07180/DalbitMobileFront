@@ -298,7 +298,7 @@ export default props => {
                               onClick={() => setShowBtnReply(boardIdx)}
                               className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a className={urlrStr === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
+                              <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
                                 수정하기
                               </a>
                               <a
