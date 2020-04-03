@@ -78,7 +78,7 @@ const Content = styled.div`
         }
         img.mobilesub {
           display: block;
-          width: 38px;
+          width: 67px;
         }
       }
     }
