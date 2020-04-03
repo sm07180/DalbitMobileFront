@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
-
+import {Hybrid} from 'context/hybrid'
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_beta.png'
@@ -47,7 +47,11 @@ export default props => {
         <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
       </div>
       {logoChange ? (
-        <div className="mic-btn">
+        <div
+          className="mic-btn"
+          onClick={() => {
+            Hybrid('RoomMake', '')
+          }}>
           <img src={Mic} />
         </div>
       ) : (
