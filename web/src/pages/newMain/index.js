@@ -38,7 +38,7 @@ export default props => {
 
   const clickBroadcastBtn = () => {
     // if (isHybrid()) {
-    if (globalCtx.isLogin) {
+    if (token.isLogin) {
       return Hybrid('RoomMake', '')
     }
     // }

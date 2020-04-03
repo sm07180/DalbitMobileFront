@@ -14,6 +14,7 @@ import Mic from './static/ic_mike_w.svg'
 
 export default props => {
   const globalCtx = useContext(Context)
+  const {token} = globalCtx
   const {logoChange} = globalCtx
 
   const reLoad = () => {
@@ -50,7 +51,10 @@ export default props => {
         <div
           className="mic-btn"
           onClick={() => {
-            Hybrid('RoomMake', '')
+            if (token.isLogin) {
+              return Hybrid('RoomMake', '')
+            }
+            return (window.location.href = '/mlogin')
           }}>
           <img src={Mic} />
         </div>
