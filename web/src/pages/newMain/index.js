@@ -24,13 +24,19 @@ import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 
 export default props => {
+  const globalCtx = useContext(Context)
+  const {token} = Context
+
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const clickBroadcastBtn = () => {
     if (isHybrid()) {
-      Hybrid('RoomMake', '')
+      if (token.isLogin) {
+        return Hybrid('RoomMake', '')
+      }
+      return (window.location.href = '/mlogin')
     }
   }
 
