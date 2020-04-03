@@ -58,7 +58,8 @@ export default props => {
         const {data} = logoutInfo
         globalCtx.action.updateToken(data)
         globalCtx.action.updateProfile(null)
-        return props.history.push('/new')
+        props.history.push('/new')
+        return (window.location.href = '/new')
       }
       setFetching(false)
     }
