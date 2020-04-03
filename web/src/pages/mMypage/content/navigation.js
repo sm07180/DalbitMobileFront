@@ -108,6 +108,13 @@ const Navigation = styled.div`
     }
   }
 
+  &.tab2 {
+    a {
+      width: 50%;
+      min-width: 50%;
+    }
+  }
+
   &.tab3 {
     a {
       width: 33.333%;

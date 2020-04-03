@@ -20,6 +20,8 @@ export default props => {
       <section>
         <button
           onClick={() => {
+            Store().action.updateSearchType('-1')
+            Store().action.updateRoomType('')
             Store().action.updateReload()
           }}
           className="reload">
@@ -34,6 +36,7 @@ export default props => {
               dir="rtl"
               className="search"
               name="searchType"
+              value={Store().searchType}
               onChange={() => {
                 const _val = event.target.value
                 Store().action.updateCurrentPage(1)
@@ -53,7 +56,7 @@ export default props => {
               dir="rtl"
               className="room"
               name="roomType"
-              defaultValue={Store().roomType}
+              value={Store().roomType}
               onChange={event => {
                 const _val = event.target.value
                 Store().action.updateCurrentPage(1)
@@ -106,6 +109,14 @@ const Content = styled.div`
       margin-left: 10px;
       color: #bdbdbd;
       font-size: 14px;
+
+      @media (hover: hover) {
+        &:hover {
+          color: #000;
+          font-weight: bold;
+        }
+      }
+
       i {
         display: inline-block;
         padding-right: 5px;
