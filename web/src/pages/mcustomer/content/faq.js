@@ -283,6 +283,7 @@ const Detail = styled.section`
       margin-right: 4px;
       width: 16px;
       height: 16px;
+      line-height: 16px;
       background-color: #ec455f;
       color: #fff;
       text-align: center;
@@ -399,6 +400,7 @@ const TableWrap = styled.div`
     margin-right: 4px;
     width: 16px;
     height: 16px;
+    line-height: 16px;
     background-color: ${COLOR_MAIN};
     color: #fff;
     text-align: center;
