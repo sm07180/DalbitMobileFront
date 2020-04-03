@@ -22,14 +22,14 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, title, likeCnt, entryCnt} = list
     return (
       <LiveList
         key={`live-${idx}`}
         onClick={() => {
           RoomJoin(roomNo + '')
         }}>
-        <div className="broadcast-img" style={{backgroundImage: `url(${bgImg['thumb150x150']})`}} />
+        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb150x150']})`}} />
         <div className="broadcast-content">
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
