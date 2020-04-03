@@ -45,15 +45,16 @@ const Layout = props => {
   return (
     <Container className="pure">
       {/* 닫기버튼 */}
-      <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
+
       {isNavigator && (
-        <CloseButton
-          onClick={() => {
-            //Hybrid('CloseLayerPopup', '')
-            window.history.back()
-          }}>
-          닫기
-        </CloseButton>
+        // <CloseButton
+        //   onClick={() => {
+        //     //Hybrid('CloseLayerPopup', '')
+        //     window.history.back()
+        //   }}>
+        //   닫기
+        // </CloseButton>
+        <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
       )}
 
       {/* 헤더설정 */}
