@@ -47,11 +47,11 @@ export default class Utility {
    *
    */
   static getCookie = c_name => {
-    const splited = document.cookie.split('; ')
+    const splited = document.cookie.split(';')
     const cookies = {}
     splited.forEach(bundle => {
       const [key, value] = bundle.split('=')
-      cookies[key] = value
+      cookies[key.trim()] = value
     })
 
     return cookies[c_name]
