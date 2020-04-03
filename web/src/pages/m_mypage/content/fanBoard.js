@@ -18,7 +18,6 @@ export default props => {
   const context = useContext(Context)
   //profileGlobal info
   const {profile} = ctx
-
   var urlrStr = props.location.pathname.split('/')[2]
   //console.log(urlrStr)
   //state
@@ -175,7 +174,7 @@ export default props => {
   }
   //버튼 토클
   const DeleteComment = (value, writeNumer, boardNumer) => {
-    setShowBtn('')
+    clickRefresh()
     deletApiFun(value)
     showReply(writeNumer, boardNumer)
   }
@@ -303,7 +302,7 @@ export default props => {
                               </a>
                               <a
                                 className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
-                                onClick={() => DeleteComment(value)}>
+                                onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
                                 삭제하기
                               </a>
                             </DetailBtn>
@@ -567,7 +566,7 @@ const DetailBtn = styled.div`
   z-index: 8;
   flex-direction: column;
   width: 103px;
-  padding: 6px 0;
+  padding: 10px 0;
   justify-content: center;
   border: 1px solid #e0e0e0;
   &.active {

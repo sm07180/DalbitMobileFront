@@ -23,6 +23,7 @@ import DalIcon from '../static/profile/ic_moon_m_p.svg'
 import NeedLoginImg from '../static/profile/need_login.png'
 
 import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 
 export default props => {
   const subNavList = [
@@ -56,6 +57,7 @@ export default props => {
       const logoutInfo = await Api.member_logout()
       if (logoutInfo.result === 'success') {
         const {data} = logoutInfo
+        Hybrid('GetLogoutToken', data)
         globalCtx.action.updateToken(data)
         globalCtx.action.updateProfile(null)
         props.history.push('/new')

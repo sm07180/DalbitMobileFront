@@ -16,11 +16,9 @@ export default class Utility {
   }
   /**
    * @brief nl2br
-   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *
    */
   static nl2br = text => {
-    //return <div dangerouslySetInnerHTML={{__html: body}} />
     return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
   }
   /**
@@ -28,7 +26,6 @@ export default class Utility {
    * @param string    c_name            //*쿠키의 key(키)
    * @param string    value             //*쿠키의 value(값)
    * @param string    exdays            //*유효기간
-   * @code Utility.setCookie('custom-header', JSON.stringify(customHeader), '2')
    *
    */
   static setCookie = (c_name, value, exdays) => {
@@ -39,7 +36,7 @@ export default class Utility {
 
     const encodedValue = encodeURIComponent(value)
     const c_value = encodedValue + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = c_name + '=' + c_value + ';path=/;Secure;Domain=dalbitlive.com'
+    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
   }
 
   /**
@@ -54,7 +51,11 @@ export default class Utility {
       cookies[key.trim()] = value
     })
 
-    return decodeURIComponent(cookies[c_name])
+    if (cookies[c_name]) {
+      return decodeURIComponent(cookies[c_name])
+    }
+
+    return undefined
   }
 
   //* make UUID

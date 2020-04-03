@@ -32,7 +32,7 @@ export default () => {
           context.action.updateCastState(event.detail.roomNo)
         }
         const _ios = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
+        Utility.setCookie('native-player-info', _ios, 100)
         context.action.updatePlayer(true)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)

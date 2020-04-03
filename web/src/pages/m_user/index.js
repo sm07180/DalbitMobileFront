@@ -8,8 +8,8 @@ import styled from 'styled-components'
 //context
 import {WIDTH_TABLET} from 'context/config'
 //layout
-import PureLayout from 'pages/common/layout/pure'
-import Layout from 'pages/common/layout/index'
+import PureLayout from 'pages/common/layout/new_pure'
+import Layout from 'pages/common/layout/new_index'
 //components
 import Join from './content/join-form'
 import Password from './content/password'
@@ -84,7 +84,6 @@ const User = props => {
           //앱에서호출되는 로그인팝업
           if (_href.indexOf('/login') !== -1) {
             Hybrid('GetLoginTokenNewWin', mode.loginSuccess)
-            // Utility.setCookie('native-player-info', 'GetLoginTokenNewWin', 100)
           } else {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)

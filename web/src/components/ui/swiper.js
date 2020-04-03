@@ -83,9 +83,11 @@ export default props => {
   }
 
   const autoSlideInterval = () => {
-    autoIntervalId = setInterval(() => {
-      oneStepSlide('left')
-    }, 3000)
+    if (props.children.length) {
+      autoIntervalId = setInterval(() => {
+        oneStepSlide('left')
+      }, 3000)
+    }
   }
 
   const clearAutoSlideInterval = () => {

@@ -45,23 +45,23 @@ const App = () => {
       jsonParsed.appVersion = '1.0.1'
       jsonParsed.locale = Utility.locale()
       return jsonParsed
-    } else {
-      const cookie = Utility.getCookie('custom-header')
-      if (cookie !== undefined) {
-        let jsonParsed = JSON.parse(cookie)
-        jsonParsed.appVersion = '1.0.1'
-        jsonParsed.locale = Utility.locale()
-        return jsonParsed
-      }
+    }
 
-      return {
-        os: '3',
-        locale: 'temp_KR',
-        isHybrid: 'N',
-        deviceId: Utility.createUUID(),
-        language: Utility.locale(),
-        deviceToken: 'make_custom_header'
-      }
+    const cookie = Utility.getCookie('custom-header')
+    if (cookie !== undefined) {
+      let jsonParsed = JSON.parse(cookie)
+      jsonParsed.appVersion = '1.0.1'
+      jsonParsed.locale = Utility.locale()
+      return jsonParsed
+    }
+
+    return {
+      os: '3',
+      locale: 'temp_KR',
+      isHybrid: 'N',
+      deviceId: Utility.createUUID(),
+      language: Utility.locale(),
+      deviceToken: 'make_custom_header'
     }
   }, [])
 
@@ -85,12 +85,12 @@ const App = () => {
       context.action.updateCommon(commonData.data)
 
       // Renew token
-      const res = await Api.getToken()
-      if (res.result === 'success') {
-        context.action.updateToken(res.data)
+      const tokenInfo = await Api.getToken()
+      if (tokenInfo.result === 'success') {
+        context.action.updateToken(tokenInfo.data)
 
-        if (res.data.isLogin) {
-          const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+        if (tokenInfo.data.isLogin) {
+          const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
           if (profileInfo.result === 'success') {
             context.action.updateProfile(profileInfo.data)
           }
@@ -99,10 +99,10 @@ const App = () => {
         // *** Native App case
         if (customHeader.nativeApp) {
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
-            Hybrid('GetLoginToken', res.data)
+            Hybrid('GetLoginToken', tokenInfo.data)
           } else {
-            if (res.data.authToken !== authToken) {
-              Hybrid('GetLoginToken', res.data)
+            if (tokenInfo.data.authToken !== authToken) {
+              Hybrid('GetLoginToken', tokenInfo.data)
             }
           }
 
@@ -132,8 +132,8 @@ const App = () => {
       } else {
         //토큰에러
         context.action.alert({
-          title: res.messageKey,
-          msg: res.message
+          title: tokenInfo.messageKey,
+          msg: tokenInfo.message
         })
       }
     }

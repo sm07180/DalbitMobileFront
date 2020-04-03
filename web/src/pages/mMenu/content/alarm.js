@@ -35,6 +35,7 @@ export default props => {
     })
     console.log(res)
     if (res.result === 'success') {
+      console.log(res.data)
       setFetch(res.data.list)
     } else if (res.result === 'fail') {
       //에러메시지
@@ -44,14 +45,25 @@ export default props => {
       })
     }
   }
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} `
+  }
   //makeContents
   const makeContents = () => {
     if (fetch === null) return '알림이 없습니다.'
     return fetch.map((item, index) => {
-      const {id, contents, url} = item
+      const {id, contents, url, regDt} = item
       return (
         <InfoWrap key={index}>
-          <TALK>{contents}</TALK>
+          <div className="imgwrap"></div>
+          <div>
+            <TALK>{contents}</TALK>
+            <Time>{timeFormat(regDt)}</Time>
+          </div>
         </InfoWrap>
       )
     })
@@ -113,16 +125,35 @@ const Content = styled.div`
     }
   }
 `
+
+const Time = styled.div`
+  margin-top: 3px;
+  font-size: 12px;
+  letter-spacing: -0.3px;
+  text-align: left;
+  color: #bdbdbd;
+  transform: skew(-0.03deg);
+`
 const InfoWrap = styled.div`
+  display: flex;
   overflow: hidden;
   width: 100%;
   margin-bottom: 16px;
+
+  .imgwrap {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+    background-color: blue;
+    border-radius: 50%;
+    background: url('https://image.dalbitcast.com/images/profile/main2.jpg') no-repeat center center / cover;
+  }
 `
 const TALK = styled.h4`
   float: left;
-  color: #757575;
+  color: #424242;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 20px;
   letter-spacing: -0.35px;
   transform: skew(-0.03deg);
