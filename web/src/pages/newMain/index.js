@@ -30,14 +30,14 @@ export default props => {
   //context
   let history = useHistory()
   const globalCtx = useContext(Context)
-  const {token} = Context
+  const {token} = globalCtx
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const clickBroadcastBtn = () => {
-    if (token.isLogin) {
+    if (globalCtx.isLogin) {
       return Hybrid('RoomMake', '')
     }
     return (window.location.href = '/mlogin')
