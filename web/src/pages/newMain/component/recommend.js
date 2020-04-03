@@ -1,6 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
-
+import {useHistory} from 'react-router-dom'
+//context
+import Room, {RoomJoin} from 'context/room'
 // component
 import CustomSwiper from 'components/ui/swiper.js'
 
@@ -8,6 +10,9 @@ import CustomSwiper from 'components/ui/swiper.js'
 import LiveIcon from '../static/ic_live.svg'
 
 export default props => {
+  //---------------------------------------------------------------------
+  //context
+  let history = useHistory()
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const selectedWrapRef = useRef()
@@ -34,7 +39,19 @@ export default props => {
 
   return (
     <RecommendWrap>
+      <Room />
       <div
+        onClick={() => {
+          const data = list[selectedBIdx]
+          const {roomNo, memNo} = data
+          //
+          //상대방 페이지이동
+          if (roomNo === '') {
+            history.push(`mmypage/${memNo}/`)
+          } else {
+            RoomJoin(roomNo + '')
+          }
+        }}
         ref={selectedWrapRef}
         className="selected-wrap"
         style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {}}>

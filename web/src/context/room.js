@@ -28,9 +28,9 @@ const Room = () => {
   Room.roomNo = roomNo
   Room.setRoomNo = num => setRoomNo(num)
   //-----------------------------------------------------------
-  useEffect(() => {
-    console.log('Room.roomNo : ' + Room.roomNo)
-  }, [Room.roomNo])
+  // useEffect(() => {
+  //   console.log('Room.roomNo : ' + Room.roomNo)
+  // }, [Room.roomNo])
   //-----------------------------------------------------------
   return <React.Fragment />
 }
