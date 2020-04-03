@@ -46,6 +46,7 @@ export default props => {
       <div className="icon-wrap">
         {/* <img className="icon" src={Search} onClick={() => moveToMenu('search')} /> */}
         <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
+        <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} />
       </div>
       {logoChange ? (
         <div
