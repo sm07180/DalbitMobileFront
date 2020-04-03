@@ -4,15 +4,18 @@ import {Link, Switch, Redirect} from 'react-router-dom'
 
 // context
 import {Context} from 'context'
+import {Hybrid} from 'context/hybrid'
 
 // static
 import {IMG_SERVER} from 'context/config'
 
+import qs from 'query-string'
 import Api from 'context/api'
 
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
+  const {webview} = qs.parse(location.patname)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -48,14 +51,19 @@ export default props => {
       })
 
       if (loginInfo.result === 'success') {
-        const {data} = loginInfo
-        globalCtx.action.updateToken(data)
-
         const {memNo} = data
+
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
-          const {data} = profileInfo
-          globalCtx.action.updateProfile(data)
+          globalCtx.action.updateToken(loginInfo.data)
+          if (webview && webview === 'new') {
+            Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          } else {
+            Hybrid('GetLoginToken', loginInfo.data)
+          }
+
+          globalCtx.action.updateProfile(profileInfo.data)
+
           return props.history.push('/new')
         }
       }

@@ -32,18 +32,7 @@ export const osName = () => {
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  //alert('Api.customHeader = ' + Api.customHeader)
-  //하이브리드앱 아닐경우 예외처리
-  //alert('customHeader.os = ' + customHeader.os + '')
-  if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
-    //<textarea id="customHeader" > 2중체크
-    // const element = document.getElementById('customHeader')
-    // if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-    //   const val = JSON.parse(element.value)
-    //   if (val.os + '' === '1' || val.os + '' === '2') return true
-    // } else {
-    //   alert('custom noting ')
-    // }
+  if (customHeader.nativeApp) {
     return true
   }
   return false

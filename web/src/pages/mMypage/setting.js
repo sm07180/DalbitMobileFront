@@ -121,7 +121,7 @@ export default props => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          props.history.push('/')
+          props.history.push('/new')
         }
       })
     }
@@ -196,8 +196,9 @@ export default props => {
   )
 }
 
-const SaveBtn = styled.div`
+const SaveBtn = styled.button`
   margin-top: 60px;
+  width: 100%;
   padding: 16px 0;
   color: #fff;
   text-align: center;
@@ -215,6 +216,11 @@ const MsgText = styled.textarea`
   padding: 16px;
   height: 178px;
   font-family: inherit;
+  color: #000000;
+  transform: skew(-0.03deg);
+  font-size: 14px;
+  line-height: 20px;
+  outline: none;
 `
 
 const MsgTitle = styled.div`
@@ -230,6 +236,7 @@ const GenderAlertMsg = styled.div`
   color: #bdbdbd;
   font-size: 12px;
   margin-top: 12px;
+  transform: skew(-0.03deg);
 `
 
 const GenderTab = styled.div`
@@ -345,6 +352,7 @@ const ProfileImg = styled.div`
 const SettingWrap = styled.div`
   width: 394px;
   margin: 0 auto;
+  padding-top: 20px;
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 300px;
