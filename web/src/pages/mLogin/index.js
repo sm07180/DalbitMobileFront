@@ -15,7 +15,7 @@ import Api from 'context/api'
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {view} = qs.parse(locatin.patname)
+  const {webview} = qs.parse(locatin.patname)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -56,11 +56,12 @@ export default props => {
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
           globalCtx.action.updateToken(loginInfo.data)
-          if (view && view === 'new') {
+          if (webview && webview === 'new') {
             Hybrid('GetLoginTokenNewWin', loginInfo.data)
           } else {
             Hybrid('GetLoginToken', loginInfo.data)
           }
+
           globalCtx.action.updateProfile(profileInfo.data)
 
           return props.history.push('/new')
