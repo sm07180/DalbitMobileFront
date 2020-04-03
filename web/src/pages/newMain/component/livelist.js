@@ -16,7 +16,9 @@ function usePrevious(value) {
   return ref.current
 }
 
-export default props => {
+//makeContents
+
+const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
@@ -46,6 +48,14 @@ export default props => {
       </LiveList>
     )
   })
+}
+export default props => {
+  return (
+    <React.Fragment>
+      <Room />
+      {makeContents(props)}
+    </React.Fragment>
+  )
 }
 
 const LiveList = styled.div`
