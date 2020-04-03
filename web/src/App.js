@@ -70,12 +70,13 @@ const App = () => {
     // native app boot case
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
-    } else {
-      const cookie = Utility.getCookie('authToken')
-      if (cookie !== undefined) {
-        return cookie
-      }
     }
+
+    const cookie = Utility.getCookie('authToken')
+    if (cookie !== undefined) {
+      return cookie
+    }
+
     return ''
   }, [])
 
