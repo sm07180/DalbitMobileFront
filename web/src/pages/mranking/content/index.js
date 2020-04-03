@@ -29,7 +29,7 @@ export default props => {
   //state
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(1)
-  const [list, setList] = useState(false)
+  const [list, setList] = useState(-1)
   const [nextList, setNextList] = useState(false)
   const [moreState, setMoreState] = useState(false)
 
@@ -109,7 +109,7 @@ export default props => {
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
       if (res.data.list == false) {
-        if (!next) setList(false)
+        if (!next) setList(0)
         setMoreState(false)
       } else {
         if (next) {
@@ -140,6 +140,16 @@ export default props => {
     }
   }, [])
 
+  const creatResult = () => {
+    if (list === -1) {
+      return null
+    } else if (list === 0) {
+      return <NoResult />
+    } else {
+      return <RankList list={list} />
+    }
+  }
+
   //---------------------------------------------------------------------
   return (
     <Contents>
@@ -149,7 +159,8 @@ export default props => {
         <div className="date-type">{createDateButton()}</div>
       </div>
       {context.profile && creatMyRank()}
-      {list ? <RankList list={list} /> : <NoResult />}
+      {/* {list ? <RankList list={list} /> : <NoResult />} */}
+      {creatResult()}
       {moreState && (
         <button
           className="more-btn"
