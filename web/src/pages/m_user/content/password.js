@@ -365,7 +365,7 @@ export default props => {
             placeholder="신규 비밀번호"
             maxLength="20"
           />
-          <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
+          {/* <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span> */}
           {currentPwd && (
             <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
               {currentPwd}
@@ -376,7 +376,7 @@ export default props => {
             name="loginPwdCheck"
             defaultValue={changes.loginPwdCheck}
             onChange={onLoginHandleChange}
-            placeholder="비밀번호 확인"
+            placeholder="비밀번호 재 확인"
             maxLength="20"
           />
           {currentPwdCheck && (
