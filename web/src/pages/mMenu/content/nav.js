@@ -14,7 +14,6 @@ import RankingIcon from '../static/nav/ic_rank_l_p.svg'
 import StoreIcon from '../static/nav/ic_store_l_p.svg'
 import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
-import Layout from 'pages/common/layout/new_index.js'
 
 export default props => {
   let history = useHistory()

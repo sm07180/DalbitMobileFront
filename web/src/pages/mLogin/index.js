@@ -2,12 +2,16 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Link, Switch, Redirect} from 'react-router-dom'
 
+// component
+import Layout from 'pages/common/layout/new_index.js'
+
 // context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 
 // static
 import {IMG_SERVER} from 'context/config'
+import closeBtn from 'pages/mMenu/static/ic_close.svg'
 
 import qs from 'query-string'
 import Api from 'context/api'
@@ -66,6 +70,11 @@ export default props => {
           Hybrid('GetLoginToken', loginInfo.data)
           return (window.location.href = '/new')
         }
+      } else if (loginInfo.result === 'fail') {
+        globalCtx.action.alert({
+          title: '로그인 실패',
+          msg: `${loginInfo.message}`
+        })
       }
       setFetching(false)
     }
@@ -85,60 +94,62 @@ export default props => {
   useEffect(() => {}, [])
 
   return (
-    <Switch>
-      {token.isLogin && !webview ? (
-        <Redirect to={`/new`} />
-      ) : (
-        <Login>
-          <div>
-            <Link to="/new">
-              <img className="logo" src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
-            </Link>
-          </div>
+    <Layout {...props} status={'no_gnb'}>
+      <Switch>
+        {token.isLogin && !webview ? (
+          <Redirect to={`/new`} />
+        ) : (
+          <Login>
+            <div>
+              <Link to="/new">
+                <img className="logo" src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
+              </Link>
+            </div>
 
-          <div className="input-wrap">
-            <input
-              ref={inputPhoneRef}
-              type="number"
-              autoComplete="off"
-              placeholder="전화번호"
-              value={phoneNum}
-              onChange={changePhoneNum}
-              onKeyDown={e => {
-                const {keyCode} = e
-                // 96 - 105 , 48 - 57
-                // delete 8, 46
-                if (keyCode === 8 || keyCode === 46 || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105)) {
-                  return
-                }
-                e.preventDefault()
-              }}
-            />
-            <input
-              ref={inputPasswordRef}
-              type="password"
-              autoComplete="new-password"
-              placeholder="비밀번호"
-              value={password}
-              onChange={changePassword}
-            />
-            <button className="login-btn" onClick={clickLoginBtn}>
-              로그인
-            </button>
-          </div>
+            <div className="input-wrap">
+              <input
+                ref={inputPhoneRef}
+                type="number"
+                autoComplete="off"
+                placeholder="전화번호"
+                value={phoneNum}
+                onChange={changePhoneNum}
+                onKeyDown={e => {
+                  const {keyCode} = e
+                  // 96 - 105 , 48 - 57
+                  // delete 8, 46
+                  if (keyCode === 8 || keyCode === 46 || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105)) {
+                    return
+                  }
+                  e.preventDefault()
+                }}
+              />
+              <input
+                ref={inputPasswordRef}
+                type="password"
+                autoComplete="new-password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={changePassword}
+              />
+              <button className="login-btn" onClick={clickLoginBtn}>
+                로그인
+              </button>
+            </div>
 
-          <div className="link-wrap">
-            <Link to="/muser/password">
-              <div className="link-text">비밀번호 변경</div>
-            </Link>
-            <div className="bar" />
-            <Link to="/muser/join">
-              <div className="link-text">회원가입</div>
-            </Link>
-          </div>
-        </Login>
-      )}
-    </Switch>
+            <div className="link-wrap">
+              <Link to="/muser/password">
+                <div className="link-text">비밀번호 변경</div>
+              </Link>
+              <div className="bar" />
+              <Link to="/muser/join">
+                <div className="link-text">회원가입</div>
+              </Link>
+            </div>
+          </Login>
+        )}
+      </Switch>
+    </Layout>
   )
 }
 
