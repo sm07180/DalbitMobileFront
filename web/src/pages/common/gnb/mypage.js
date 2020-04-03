@@ -159,7 +159,6 @@ export default props => {
                             localStorage.removeItem('com.naver.nid.oauth.state_token')
                             props.history.push('/')
                             context.action.updateGnbVisible(false)
-                            context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
                             context.action.updateProfile(null)
                           } else {
                             //Error 및 "result":"fail" 에러메시지

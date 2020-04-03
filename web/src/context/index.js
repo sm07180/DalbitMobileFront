@@ -85,13 +85,6 @@ const GlobalProvider = props => {
       setRoomInfo(obj)
     },
     /**
-     * @brief 마이페이지 업데이트
-     * @param object obj                        //마이페이지
-     */
-    updateMypage: obj => {
-      setMypage(obj)
-    },
-    /**
      * @brief Native->Player실행
      * @param string roomNo
      * @param string bjNickNm

@@ -39,7 +39,6 @@ const Exit = props => {
           localStorage.removeItem('com.naver.nid.access_token')
           localStorage.removeItem('com.naver.nid.oauth.state_token')
           context.action.updateGnbVisible(false)
-          context.action.updateMypage(null) // 넣어둔 mypage 정보 초기화.
           context.action.updateProfile(null)
           context.action.alert({
             msg: '회원 탈퇴가 완료 되었습니다.',
