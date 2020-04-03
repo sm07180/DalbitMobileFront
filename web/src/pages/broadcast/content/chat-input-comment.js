@@ -228,20 +228,42 @@ export default props => {
       store.action.updateShortCutList(res.data)
     }
   }
+
+  const copyToClipboard = url => {
+    const t = document.createElement('textarea')
+    document.body.appendChild(t)
+    t.value = url
+    t.select()
+    document.execCommand('copy')
+    document.body.removeChild(t)
+  }
+
   async function broad_Link() {
     console.log(JSON.stringify(props))
 
-    const res = await Api.broad_link({
+    const res = await Api.broad_share({
       params: {
-        link: store.roomInfo.link
+        roomNo: props.roomNo
       },
       method: 'GET'
     })
     //Error발생시
     if (res.result === 'success') {
-      console.log('## broad_link  res = ' + res)
+      let element = `복사 버튼을 눌러 링크를 공유 하세요<br>
+      <input type="text" value=${res.data.shareLink} id="myInput" style="padding:8px;display:block;border:1px solid #ccc!important;width:360px">`
+      context.action.alert({
+        // 좋아요 중복 사용 알림 팝업
+        callback: () => {
+          copyToClipboard(res.data.shareLink)
+        },
+        msg: element
+      })
     } else {
-      console.log('## broad_link  res = ' + res)
+      context.action.alert({
+        // 좋아요 중복 사용 알림 팝업
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   const broadcastLink = e => {
@@ -249,8 +271,7 @@ export default props => {
       context.action.updatePopup('LOGIN')
       return
     }
-
-    //broad_Link()
+    broad_Link()
   }
   const Commandlist = () => {
     const info = ['인사', '박수', '감사']

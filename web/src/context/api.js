@@ -358,6 +358,17 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/broad/check`, method: method || 'GET', params: params})
   }
+  /**
+   * @brief 방송방 공유랑크 조회
+   * @method "GET""
+   * @todo
+   * @param string roomNo                 //*방번호
+   * @create 김호겸 2020.04.03
+   */
+  static broad_share = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/broad/share`, method: method || 'GET', params: params})
+  }
   //--------------------------------------------------------------------- 회원 관련
 
   /**
