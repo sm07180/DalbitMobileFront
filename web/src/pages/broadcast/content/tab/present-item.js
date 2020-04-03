@@ -63,9 +63,10 @@ export default props => {
         <LevelInfo>
           <DashBoard>
             {/* {props.testData.guestYn === 'Y' && ( */}
-            <Target>
+            {/*나중에 게스트하고 DJ 같이 나와야 되는 부분인데 결제 심사 부분때문에 일단 맏는다.*/}
+            {/* <Target>
               <TargetInfo profile={context.broadcastTotalInfo} />
-            </Target>
+            </Target> */}
             {/* )} */}
             <Level>
               <UserLevel>LEVEL {props.profile != undefined && props.profile.level}</UserLevel>
@@ -202,7 +203,7 @@ const Guest = styled.button`
 const LevelInfo = styled.div`
   display: flex;
   width: 100%;
-  height: 190px;
+  /* height: 190px; */
   align-items: center;
   flex-direction: column;
 `
@@ -454,7 +455,7 @@ const DashBoard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 170px;
+  /* height: 170px; */
   background: #f6f6f6;
   align-items: center;
 `

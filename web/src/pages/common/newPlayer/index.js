@@ -18,22 +18,15 @@ export default props => {
   //context
 
   const context = useContext(Context)
-  const {broadcastTotalInfo} = context
-  //useMemo
-  const visible = useMemo(() => {
-    if (_.hasIn(props, 'location.search') && props.location.search.indexOf('roomNo') !== -1) return false
-    return true
-  })
+
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
-        alert('ExitRoom')
-
         Hybrid('ExitRoom', '')
+        context.action.updatePlayer(false)
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
-        alert('EnterRoom')
         Hybrid('EnterRoom', '')
         break
       default:
@@ -48,7 +41,7 @@ export default props => {
   return (
     <React.Fragment>
       {/* 미디어 플레이어 */}
-      {visible && <Content {...props} update={update} />}
+      {context.player && <Content {...props} update={update} />}
     </React.Fragment>
   )
 }

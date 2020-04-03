@@ -734,6 +734,47 @@ export default class API {
   }
 
   /**
+   * @brief 회원 방송방 빠른말 가져오기 (없을 경우 기획에서 정의된 기본 데이터 노출되어야함)
+   * @method "GET"
+   * @create 김호겸 2020.01.31
+   */
+  static member_broadcast_shortcut = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'GET', data: data})
+  }
+
+  /**
+   * @brief 회원 방송방 빠른말 저장하기
+   * @method "POST"
+   * @param string order_1                  //*첫번째 명령
+   * @param string text_1                   //*첫번째 내용
+   * @param string onOff_1                  //*첫번째 사용여부(on/off)
+   * @param string order_2                  //*두번째 명령
+   * @param string text_2                   //*두번째 내용
+   * @param string onOff_2                  //*두번째 사용여부(on/off)
+   * @param string order_3                  //*세번째 명령
+   * @param string text_3                   //*세번째 내용
+   * @param string onOff_3                  //*세번째 사용여부(on/off)
+   * @create 김호겸 2020.01.31
+   */
+  static member_broadcast_shortcut = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 회원 달 선물하기 -> 방송방에서 프로필 보기 클릭 후 선물하기 할때 사용
+   * @method "POST"
+   * @param string memNo                   //*선물받는 회원번호
+   * @param int    dal               //*선물할 달 수
+   * @create 김호겸 2020.04.02
+   */
+  static member_gift_dal = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
+  }
+
+  /**
    * @brief 회원 팬보드 팬보드 댓글 달기
    * @method "POST"
    * @param string memNo              //*팬보드 회원번호
@@ -772,15 +813,6 @@ export default class API {
   }
 
   /**
-   * @brief 회원 방송방 빠른말 가져오기 (없을 경우 기획에서 정의된 기본 데이터 노출되어야함)
-   * @method "GET"
-   * @create 김호겸 2020.01.31
-   */
-  static member_broadcast_shortcut = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'GET', data: data})
-  }
-  /**
    * @brief 마이 DJ 조회
    * @method "GET"
    * @create 손완휘 2020.03.27
@@ -797,25 +829,6 @@ export default class API {
   static recommand = async obj => {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/recommand`, method: method || 'GET', params: params})
-  }
-
-  /**
-   * @brief 회원 방송방 빠른말 저장하기
-   * @method "POST"
-   * @param string order_1                  //*첫번째 명령
-   * @param string text_1                   //*첫번째 내용
-   * @param string onOff_1                  //*첫번째 사용여부(on/off)
-   * @param string order_2                  //*두번째 명령
-   * @param string text_2                   //*두번째 내용
-   * @param string onOff_2                  //*두번째 사용여부(on/off)
-   * @param string order_3                  //*세번째 명령
-   * @param string text_3                   //*세번째 내용
-   * @param string onOff_3                  //*세번째 사용여부(on/off)
-   * @create 김호겸 2020.01.31
-   */
-  static member_broadcast_shortcut = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'POST', data: data})
   }
 
   //-------------------------------------------------------------------- 포토 관련

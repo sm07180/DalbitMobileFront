@@ -27,19 +27,17 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        alert('native-player-show')
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
         }
         const _ios = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', escape(encodeURIComponent(_ios)), 100)
+        context.action.updatePlayer(true)
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android)
-        alert('native-start')
-
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
@@ -47,10 +45,14 @@ export default () => {
         //
         const _android = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', _android, 100)
+        context.action.updatePlayer(true)
+
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
+        context.action.updatePlayer(false)
+
         context.action.updateMediaPlayerStatus(false)
         //방송종료
         context.action.updateCastState(false)

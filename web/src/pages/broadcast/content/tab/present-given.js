@@ -10,7 +10,7 @@ import {IMG_SERVER} from 'context/config'
 export default props => {
   //--------------------------------------------------- declare start
   const [secretYn, setSecret] = useState(false)
-  const [givenData, setGivenData] = useState(null)
+  const [givenData, setGivenData] = useState()
   const scrollbars = useRef(null)
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
@@ -38,6 +38,45 @@ export default props => {
     const res = await Api.splash({})
   }
 
+  function dateParsing(giftDate) {
+    let str = giftDate.slice(-6)
+    let hour = str.slice(0, 2)
+    let Min = str.slice(2, 4)
+    let sec = str.slice(4, 6)
+
+    let timeFormat = hour + ':' + Min + ':' + sec
+    return timeFormat
+  }
+  function makeContents() {
+    if (givenData) {
+      return (
+        givenData.list.length > 0 &&
+        givenData.list.map((data, idx) => {
+          return (
+            <Contents key={idx}>
+              <UserInfo>
+                <Img profImg={data.profImg.url} />
+                <div className="user">
+                  <div>{data.nickNm}</div>
+                  <span>{dateParsing(data.giftDt)}</span>
+                </div>
+              </UserInfo>
+              <ItemInfo>
+                <div className="item">
+                  {data.isSecret && <Secret>몰래</Secret>}
+                  <span>{data.itemNm}</span>
+                </div>
+                <div className="gold">
+                  <span>골드 {data.gold}</span>
+                </div>
+              </ItemInfo>
+            </Contents>
+          )
+        })
+      )
+    }
+  }
+
   useEffect(() => {
     fetchData() //api 테스트 완료했지만 데이터가 없어 테스트 데이터로 바인딩
     commonData()
@@ -60,31 +99,7 @@ export default props => {
       </Info>
       <History>
         <Scrollbars ref={scrollbars} style={{height: '90%'}} autoHide>
-          {givenData &&
-            givenData.list.length > 0 &&
-            givenData.list.map((data, idx) => {
-              return (
-                <Contents key={idx}>
-                  <UserInfo>
-                    <Img />
-                    <div className="user">
-                      <div>{data.nickNm}</div>
-                      <span>{data.giftDt}</span>
-                    </div>
-                  </UserInfo>
-                  <ItemInfo>
-                    <div className="item">
-                      {data.isSecret && <Secret>몰래</Secret>}
-                      <span>{data.itemNm}</span>
-                    </div>
-
-                    <div className="gold">
-                      <span>골드 {data.gold}</span>
-                    </div>
-                  </ItemInfo>
-                </Contents>
-              )
-            })}
+          {makeContents()}
         </Scrollbars>
       </History>
     </Container>
@@ -234,7 +249,7 @@ const Img = styled.div`
   height: 40px;
   border-radius: 75px;
   margin-right: 5px;
-  background: url(${IMG_SERVER}/images/api/guest@2x.png) no-repeat;
+  background: url(${props => props.profImg}) no-repeat center center / cover;
 `
 const Secret = styled.div`
   display: flex;
