@@ -15,6 +15,7 @@ import closeBtn from 'pages/mMenu/static/ic_close.svg'
 
 import qs from 'query-string'
 import Api from 'context/api'
+import {COLOR_MAIN} from 'context/color'
 
 export default props => {
   const globalCtx = useContext(Context)
@@ -170,7 +171,8 @@ export default props => {
 
 const Login = styled.div`
   position: relative;
-  margin: 0 10px;
+  margin: 0 auto;
+  width: 91.111%;
 
   .close-btn {
     position: absolute;
@@ -196,6 +198,9 @@ const Login = styled.div`
     }
     input[type='password'] {
       margin-top: 12px;
+    }
+    input:focus {
+      border: 1px solid ${COLOR_MAIN};
     }
     .login-btn {
       display: block;
