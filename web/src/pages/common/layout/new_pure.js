@@ -36,7 +36,8 @@ const Layout = props => {
       {isNavigator && (
         <CloseButton
           onClick={() => {
-            Hybrid('CloseLayerPopup', '')
+            //Hybrid('CloseLayerPopup', '')
+            window.history.back()
           }}>
           닫기
         </CloseButton>
@@ -53,7 +54,7 @@ const Layout = props => {
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      <Footer Ftype="loginFooter"></Footer>
+      {/* <Footer Ftype="loginFooter"></Footer> */}
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}
