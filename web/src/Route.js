@@ -28,7 +28,7 @@ const TestPage = React.lazy(() => import('pages/testpage'))
 // mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
 const MobileRanking = React.lazy(() => import('pages/mranking'))
-const MobileMyPage = React.lazy(() => import('pages/mMyPage/index.js'))
+const MobileMyPage = React.lazy(() => import('pages/mmyPage/index.js'))
 const MobileMySetting = React.lazy(() => import('pages/mMypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
