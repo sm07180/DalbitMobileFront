@@ -40,98 +40,91 @@ export default props => {
   // }, [store.roomInfo])
 
   //---------------------------------------------------------------------
-  if (
-    props.data.cmd === 'reqBcStart' ||
-    props.data.cmd === 'reqWelcome' ||
-    props.data.cmd === 'chatEnd' ||
-    props.data.cmd === 'bjEnd'
-  ) {
+  let {cmd, recvMsg, user, reqGiftImg} = props.data
+  if (cmd === 'reqBcStart' || cmd === 'reqWelcome' || cmd === 'chatEnd' || cmd === 'bjEnd') {
     return (
       <>
         <Message className="guide">
           <div>
-            <span>{props.data.recvMsg.msg}</span>
+            <span>{recvMsg.msg}</span>
           </div>
         </Message>
       </>
     )
-  } else if (props.data.cmd == 'connect' || props.data.cmd == 'disconnect' || props.data.cmd == 'reqKickOut') {
+  } else if (cmd === 'connect' || cmd === 'disconnect' || cmd === 'reqKickOut') {
     return (
       <>
         <Message className="enter-exit">
           <div>
-            <span>{props.data.recvMsg.msg}</span>
+            <span>{recvMsg.msg}</span>
           </div>
         </Message>
       </>
     )
-  } else if (props.data.cmd === 'chat') {
+  } else if (cmd === 'chat') {
     return (
-      <Message className="comment" profImg={props.data.user.image}>
+      <Message className="comment" profImg={user.image}>
         <figure></figure>
         <div>
           <p>
-            {props.data.user.auth == 3 ? (
+            {user.auth == 3 ? (
               <b className="dj">DJ</b>
-            ) : props.data.user.auth == 2 ? (
+            ) : user.auth == 2 ? (
               <b className="guest">게스트</b>
-            ) : props.data.user.auth == 1 ? (
+            ) : user.auth == 1 ? (
               <b className="manager">매니저</b>
             ) : (
               <></>
             )}
-            {props.data.user.nk}
+            {user.nk}
           </p>
 
-          <pre>{props.data.recvMsg.msg}</pre>
+          <pre>{recvMsg.msg}</pre>
         </div>
       </Message>
     )
-  } else if (props.data.cmd === 'reqGood') {
+  } else if (cmd === 'reqGood') {
     return (
       <Message className="like">
         <div>
-          <span>{props.data.recvMsg.msg}</span>
+          <span>{recvMsg.msg}</span>
         </div>
       </Message>
     )
-  } else if (props.data.cmd === 'reqGiftImg') {
+  } else if (cmd === 'reqGiftImg') {
     return (
-      <Message
-        className="comment present"
-        profImg={`${IMG_SERVER}/images/api/tica034j16080551.jpg`}
-        itemImg={`${IMG_SERVER}/images/api/boost_active@2x.png`}>
+      <Message className="comment present" profImg={user.image} itemImg={reqGiftImg.itemImg}>
         <figure></figure>
         <div>
           <p>
-            {props.rcvData.data.user.auth == 3 ? (
+            {user.auth == 3 ? (
               <b className="dj">DJ</b>
-            ) : props.rcvData.data.user.auth == 2 ? (
+            ) : user.auth == 2 ? (
               <b className="guest">게스트</b>
-            ) : props.rcvData.data.user.auth == 1 ? (
+            ) : user.auth == 1 ? (
               <b className="manager">매니저</b>
             ) : (
               <></>
             )}
-            {props.rcvData.data.user.nk}
+            {user.nk}
           </p>
           <pre>
-            {props.data.recvMsg.msg}
+            {recvMsg.msg}
             {/* <strong>도넛을 먹는 달덩이 X100</strong> 을<br />
             선물하였습니다. */}
           </pre>
         </div>
       </Message>
     )
-  } else if (props.data.cmd === 'reqGuest') {
+  } else if (cmd === 'reqGuest') {
     return (
       <Message className="like guest">
         <div>
-          <span>{props.data.recvMsg.msg}</span>
+          <span>{recvMsg.msg}</span>
         </div>
       </Message>
     )
-  } else if (props.data.cmd === 'reqGoodFirst') {
+  } else if (cmd === 'reqGoodFirst') {
     return (
       <Message
         className="comment action"
@@ -143,7 +136,7 @@ export default props => {
             <b className="dj">DJ</b>BJ라디오
           </p>
           <span>
-            {props.data.recvMsg.msg}
+            {recvMsg.msg}
             {/* 좋아요 감사합니다.
             <br />
             {`${props.rcvData.data.user.nk} 님`}
