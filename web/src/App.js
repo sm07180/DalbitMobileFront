@@ -90,7 +90,7 @@ const App = () => {
         context.action.updateToken(tokenInfo.data)
 
         if (tokenInfo.data.isLogin) {
-          const profileInfo = await Api.profile({params: {memNo: res.data.memNo}})
+          const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
           if (profileInfo.result === 'success') {
             context.action.updateProfile(profileInfo.data)
           }
@@ -99,10 +99,10 @@ const App = () => {
         // *** Native App case
         if (customHeader.nativeApp) {
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
-            Hybrid('GetLoginToken', res.data)
+            Hybrid('GetLoginToken', tokenInfo.data)
           } else {
-            if (res.data.authToken !== authToken) {
-              Hybrid('GetLoginToken', res.data)
+            if (tokenInfo.data.authToken !== authToken) {
+              Hybrid('GetLoginToken', tokenInfo.data)
             }
           }
 
@@ -132,8 +132,8 @@ const App = () => {
       } else {
         //토큰에러
         context.action.alert({
-          title: res.messageKey,
-          msg: res.message
+          title: tokenInfo.messageKey,
+          msg: tokenInfo.message
         })
       }
     }
