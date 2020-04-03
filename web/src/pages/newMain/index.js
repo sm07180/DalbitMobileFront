@@ -21,7 +21,7 @@ import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 
 import Api from 'context/api'
-import {isHybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 
 export default props => {
   const [initData, setInitData] = useState({})
@@ -30,6 +30,7 @@ export default props => {
 
   const clickBroadcastBtn = () => {
     if (isHybrid()) {
+      Hybrid('RoomMake', '')
     }
   }
 

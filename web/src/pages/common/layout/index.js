@@ -26,9 +26,6 @@ const Layout = props => {
   const {children} = props
   const context = useContext(Context)
   //
-  const isCustomer = useMemo(() => {
-    return window.location.href.indexOf('/customer') === -1 ? false : true
-  })
 
   //---------------------------------------------------------------------
   return (
@@ -41,7 +38,7 @@ const Layout = props => {
         <article>{children}</article>
       </main>
       {/* 푸터설정 */}
-      {isCustomer && <Footer Ftype="mainFooter" />}
+      {<Footer Ftype="mainFooter" />}
       {/* (방송방)Player */}
       <Player {...props} />
       {/* 레이어팝업 */}

@@ -1,5 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
+//context
+import Room, {RoomJoin} from 'context/room'
 
 import {broadcastLive} from 'constant/broadcast.js'
 
@@ -14,14 +16,19 @@ function usePrevious(value) {
   return ref.current
 }
 
-export default props => {
+//makeContents
+
+const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
-
+    const {roomNo, roomType, bgImg, bjNickNm, title, likeCnt, entryCnt} = list
     return (
-      <LiveList key={`live-${idx}`}>
+      <LiveList
+        key={`live-${idx}`}
+        onClick={() => {
+          RoomJoin(roomNo + '')
+        }}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bgImg['thumb150x150']})`}} />
         <div className="broadcast-content">
           <div className="title">{title}</div>
@@ -41,6 +48,14 @@ export default props => {
       </LiveList>
     )
   })
+}
+export default props => {
+  return (
+    <React.Fragment>
+      <Room />
+      {makeContents(props)}
+    </React.Fragment>
+  )
 }
 
 const LiveList = styled.div`

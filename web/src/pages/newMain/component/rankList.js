@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 // component
 import Swiper from 'react-id-swiper'
+import NoRsult from 'components/ui/noResult'
 
 // static
 import peopleIcon from '../static/ic_people_s.svg'
@@ -13,7 +14,7 @@ export default props => {
   const {rankType, djRank, fanRank} = props
 
   if (djRank === undefined || fanRank === undefined) {
-    return null
+    return <NoRsult className={'mobile'} />
   }
 
   const swiperParams = {

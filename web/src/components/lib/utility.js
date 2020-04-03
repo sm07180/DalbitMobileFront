@@ -36,25 +36,25 @@ export default class Utility {
     if (exdays !== null) {
       exdate.setDate(exdate.getDate() + Number(exdays))
     }
-    const c_value = value + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
+
+    const encodedValue = encodeURIComponent(value)
+    const c_value = encodedValue + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
     document.cookie = c_name + '=' + c_value + ';path=/;Secure;Domain=dalbitlive.com'
   }
 
   /**
    * @brief 쿠키가져오기
    * @param string    c_name            //*쿠키의 key(키)
-   * @code console.log(JSON.parse(Utility.getCookie('custom-header')))
-   *
    */
   static getCookie = c_name => {
-    const splited = document.cookie.split('; ')
+    const splited = document.cookie.split(';')
     const cookies = {}
     splited.forEach(bundle => {
       const [key, value] = bundle.split('=')
-      cookies[key] = value
+      cookies[key.trim()] = value
     })
 
-    return cookies[c_name]
+    return decodeURIComponent(cookies[c_name])
   }
 
   //* make UUID

@@ -11,7 +11,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 export default props => {
   return (
-    <NoResult>
+    <NoResult className={props.className}>
       <span>조회된 결과가 없습니다.</span>
     </NoResult>
   )
@@ -46,6 +46,17 @@ const NoResult = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       font-size: 18px;
       margin-top: 20px;
+    }
+  }
+
+  &.mobile{
+    margin-top:0;
+    padding-top:104px;
+    background-size:162px !important;
+    & > span{
+      margin-top:20px;
+      font-size:14px;
+      transform:skew(-0.03deg);
     }
   }
 `

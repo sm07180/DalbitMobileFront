@@ -37,11 +37,10 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const tempCustomHeaderTag = document.getElementById('customHeader')
-    // native app case
+    // native app boot case
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
-      jsonParsed.nativeApp = true
-      //백엔드요청
+      jsonParsed['nativeApp'] = true
       jsonParsed.isHybrid = 'Y'
       jsonParsed.appVersion = '1.0.1'
       jsonParsed.locale = Utility.locale()
@@ -68,7 +67,7 @@ const App = () => {
 
   const authToken = useMemo(() => {
     const tempAuthTokenTag = document.getElementById('authToken')
-    // native app case
+    // native app boot case
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
     } else {

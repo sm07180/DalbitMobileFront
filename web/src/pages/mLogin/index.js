@@ -15,13 +15,14 @@ import Api from 'context/api'
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {webview} = qs.parse(location.patname)
+  const {webview} = qs.parse(location.search)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
+
+  const [fetching, setFetching] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
-  const [fetching, setFetching] = useState(false)
   // const [phoneNum, setPhoneNum] = useState('01071825603')
   // const [password, setPassword] = useState('1234qwer')
 
@@ -51,20 +52,19 @@ export default props => {
       })
 
       if (loginInfo.result === 'success') {
-        const {memNo} = data
+        const {memNo} = loginInfo.data
+        globalCtx.action.updateToken(loginInfo.data)
 
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
-          globalCtx.action.updateToken(loginInfo.data)
-          if (webview && webview === 'new') {
-            Hybrid('GetLoginTokenNewWin', loginInfo.data)
-          } else {
-            Hybrid('GetLoginToken', loginInfo.data)
-          }
-
           globalCtx.action.updateProfile(profileInfo.data)
 
-          return props.history.push('/new')
+          if (webview && webview === 'new') {
+            return Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          }
+
+          Hybrid('GetLoginToken', loginInfo.data)
+          return (window.location.href = '/new')
         }
       }
       setFetching(false)
@@ -86,7 +86,7 @@ export default props => {
 
   return (
     <Switch>
-      {token.isLogin ? (
+      {token.isLogin && !webview ? (
         <Redirect to={`/new`} />
       ) : (
         <Login>
@@ -119,11 +119,11 @@ export default props => {
           </div>
 
           <div className="link-wrap">
-            <Link to="/user/password">
+            <Link to="/muser/password">
               <div className="link-text">비밀번호 변경</div>
             </Link>
             <div className="bar" />
-            <Link to="/user/join">
+            <Link to="/muser/join">
               <div className="link-text">회원가입</div>
             </Link>
           </div>
