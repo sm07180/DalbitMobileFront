@@ -32,7 +32,7 @@ export const osName = () => {
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader.nativeApp) {
+  if (customHeader['os'] !== '3') {
     return true
   }
   return false

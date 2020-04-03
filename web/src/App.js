@@ -97,7 +97,7 @@ const App = () => {
         }
 
         // *** Native App case
-        if (customHeader.nativeApp) {
+        if (customHeader['os'] !== '3') {
           if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
             Hybrid('GetLoginToken', tokenInfo.data)
           } else {
