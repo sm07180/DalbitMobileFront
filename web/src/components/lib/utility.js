@@ -55,7 +55,7 @@ export default class Utility {
       return decodeURIComponent(cookies[c_name])
     }
 
-    return false
+    return undefined
   }
 
   //* make UUID
