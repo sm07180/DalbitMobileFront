@@ -107,7 +107,7 @@ export default props => {
           flag={state}
         />
       ) : (
-        <SendDirect />
+        <SendDirect profile={store.broadcastProfileInfo} />
       )}
     </Container>
   )
