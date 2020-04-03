@@ -508,8 +508,10 @@ export default props => {
 
         //@hybrid
         if (isHybrid()) {
-          //alert('앱내 회원가입완료')
           context.action.alert({
+            callback: () => {
+              props.history.push('/new')
+            },
             msg: '앱내 회원가입완료'
           })
           Hybrid('GetLoginToken', res.data)

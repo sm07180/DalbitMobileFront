@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 
 // components
 import Layout from 'pages/common/layout/new_index.js'
@@ -24,6 +25,10 @@ import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 
 export default props => {
+  //---------------------------------------------------------------------
+
+  //context
+  let history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = Context
 
@@ -76,7 +81,19 @@ export default props => {
                 <Link to={'/mranking'}>랭킹</Link>
               </div>
               <div className="tab">
-                <Link to={'/mstore'}>스토어</Link>
+                <Link
+                  onClick={event => {
+                    event.preventDefault()
+                    //IOS일때
+                    if (globalCtx.customHeader.os === '2') {
+                      webkit.messageHandlers.openInApp.postMessage('')
+                    } else {
+                      history.push(`/mstore`)
+                    }
+                  }}
+                  to={'/mstore'}>
+                  스토어
+                </Link>
               </div>
             </div>
             <div className="right-side">
