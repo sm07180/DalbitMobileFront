@@ -177,13 +177,7 @@ export default props => {
     }
   }
   //자동로그인
-  useEffect(() => {
-    let cookie = Utility.getCookie('saveLogin')
-    if (cookie !== undefined && cookie !== '') {
-      cookie = JSON.parse(decodeURIComponent(cookie))
-      setChanges({...changes, ...cookie})
-    }
-  }, [])
+  useEffect(() => {}, [])
   useEffect(() => {}, [])
 
   const pwdValidateHandle = e => {
