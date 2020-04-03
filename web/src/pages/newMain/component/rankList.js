@@ -99,6 +99,9 @@ const RankList = styled.div`
       }
     }
     .nickname {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: #424242;
       font-size: 14px;
       letter-spacing: -0.35px;
