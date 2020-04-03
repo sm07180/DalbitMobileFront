@@ -207,6 +207,7 @@ const LevelStatus = styled.div`
   top: -1px;
   left: -1px;
   height: calc(100% + 2px);
+  max-width: calc(100% + 2px);
   border-radius: 10px;
   background-color: ${COLOR_MAIN};
   text-align: right;
