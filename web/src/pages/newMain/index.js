@@ -21,11 +21,17 @@ import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 
 import Api from 'context/api'
+import {isHybrid} from 'context/hybrid'
 
 export default props => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+
+  const clickBroadcastBtn = () => {
+    if (isHybrid()) {
+    }
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -67,7 +73,9 @@ export default props => {
               </div>
             </div>
             <div className="right-side">
-              <div className="btn">방송하기</div>
+              <div className="btn" onClick={clickBroadcastBtn}>
+                방송하기
+              </div>
             </div>
           </div>
           <Recommend list={initData.recommend} />

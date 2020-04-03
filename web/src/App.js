@@ -145,10 +145,10 @@ const App = () => {
     context.action.updateCustomHeader(customHeader)
     Api.setAuthToken(authToken)
 
-    // Renew all initial data
     const storageTotalInfoObj = JSON.parse(localStorage.getItem('BroadTotalInfo'))
     if (storageTotalInfoObj != '') context.action.updateBroadcastTotalInfo(storageTotalInfoObj)
 
+    // Renew all initial data
     fetchData()
   }, [])
 
