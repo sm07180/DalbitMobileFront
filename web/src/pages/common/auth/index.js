@@ -39,14 +39,6 @@ export default props => {
             //일반적인 로그인성공
             Hybrid('GetLoginToken', mode.loginSuccess)
           }
-          //쿠키실행
-          if (isSave) {
-            const {changes} = mode
-            const cookie = escape(encodeURIComponent(JSON.stringify(changes)))
-            Utility.setCookie('saveLogin', cookie, '100')
-          } else {
-            Utility.setCookie('saveLogin', '', -1)
-          }
         }
         break
       case mode.saveLogin !== undefined: //------------------------로그인유지

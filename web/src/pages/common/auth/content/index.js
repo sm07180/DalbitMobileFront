@@ -32,12 +32,6 @@ export default props => {
   //context
   const context = useContext(Context)
   //useState
-  const saveLogin = useMemo(() => {
-    let cookie = Utility.getCookie('saveLogin')
-    if (cookie !== undefined && cookie !== '') return true
-
-    return false
-  })
 
   //const [saveLogin, setSaveLogin] = useState(false)
   //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
@@ -188,8 +182,6 @@ export default props => {
     if (cookie !== undefined && cookie !== '') {
       cookie = JSON.parse(decodeURIComponent(cookie))
       setChanges({...changes, ...cookie})
-
-      console.log(cookie)
     }
   }, [])
   useEffect(() => {}, [])
