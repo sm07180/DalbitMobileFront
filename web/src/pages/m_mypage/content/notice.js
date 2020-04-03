@@ -79,14 +79,22 @@ const Notice = () => {
               return <List key={idx} isTop={isTop} title={title} contents={contents} writeDt={writeDt} />
             })
           ) : (
-            <NoResult />
+            <>
+              <NoResult />
+              <br />
+              <br />
+              <br />
+            </>
           )
         ) : (
           <div className="search" />
         )}
       </ListWrap>
 
-      {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />}
+      {/* {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />} */}
+      {Array.isArray(listDetailed) && listDetailed.length > 0 && listDetailed !== 'search' && (
+        <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
+      )}
 
       {/* <GlobalWriteBtn>
         <div className="inner" />

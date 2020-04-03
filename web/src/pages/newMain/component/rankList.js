@@ -14,7 +14,7 @@ export default props => {
   const {rankType, djRank, fanRank} = props
 
   if (djRank === undefined || fanRank === undefined) {
-    return <NoRsult className={'mobile'} />
+    return null
   }
 
   const swiperParams = {

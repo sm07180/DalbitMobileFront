@@ -14,6 +14,7 @@ import Mic from './static/ic_mike_w.svg'
 
 export default props => {
   const globalCtx = useContext(Context)
+  const {token} = globalCtx
   const {logoChange} = globalCtx
 
   const reLoad = () => {
@@ -45,12 +46,16 @@ export default props => {
       <div className="icon-wrap">
         {/* <img className="icon" src={Search} onClick={() => moveToMenu('search')} /> */}
         <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
+        <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} />
       </div>
       {logoChange ? (
         <div
           className="mic-btn"
           onClick={() => {
-            Hybrid('RoomMake', '')
+            if (token.isLogin) {
+              return Hybrid('RoomMake', '')
+            }
+            return (window.location.href = '/mlogin')
           }}>
           <img src={Mic} />
         </div>
