@@ -12,7 +12,9 @@ import Footer from 'pages/common/footer'
 //layout
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
+import qs from 'query-string'
 //
+import closeBtn from 'pages/mMenu/static/ic_close.svg'
 const Layout = props => {
   const [show, setShow] = useState(false)
   //context
@@ -26,6 +28,16 @@ const Layout = props => {
     // if (props.location.state === undefined) return false
     // if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
   })
+  const {webview} = qs.parse(location.search)
+
+  const clickCloseBtn = () => {
+    if (webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.location.href = '/new'
+    }
+  }
+
   //---------------------------------------------------------------------
 
   useEffect(() => {}, [])
@@ -33,6 +45,7 @@ const Layout = props => {
   return (
     <Container className="pure">
       {/* 닫기버튼 */}
+      <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
       {isNavigator && (
         <CloseButton
           onClick={() => {
@@ -107,7 +120,12 @@ const Container = styled.div`
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     main {
-      width: 90%;
+      width: 91.111%;
     }
+  }
+  .close-btn {
+    position: absolute;
+    right: 4.444%;
+    top: 5px;
   }
 `
