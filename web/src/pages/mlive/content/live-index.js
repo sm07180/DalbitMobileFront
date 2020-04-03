@@ -26,7 +26,7 @@ const LiveIndex = () => {
   // 방송방 리스트 조회
   const getBroadList = async mode => {
     const obj = {
-      params: {records: 5, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
+      params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
     const res = await Api.broad_list(obj)
     if (res.result === 'success') {

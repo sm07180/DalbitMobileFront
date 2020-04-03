@@ -30,10 +30,8 @@ const Index = props => {
       const html = document.documentElement
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
-      console.log(windowBottom, docHeight)
       //스크롤이벤트체크
       if (windowBottom >= docHeight - 30 && _.hasIn(Index.store.broadList, 'paging.totalPage')) {
-        console.log('----')
         //현재페이지와 전체페이지비교
         if (Index.store.broadList.paging.totalPage > Index.store.currentPage) {
           Index.store.action.updateCurrentPage(Index.store.currentPage + 1)
