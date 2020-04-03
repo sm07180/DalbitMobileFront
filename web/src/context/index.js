@@ -49,7 +49,6 @@ const GlobalProvider = props => {
     updateState: obj => {
       setState(state => ({...state, ...obj}))
     },
-    //updateCustomHeader
     /**
      * @brief customHeader, Server->React
      * @param string locale                  // 국가코드

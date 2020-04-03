@@ -101,9 +101,15 @@ export default props => {
         ) : (
           <Login>
             <div>
-              <Link to="/new">
-                <img className="logo" src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
-              </Link>
+              <img
+                className="logo"
+                src={`${IMG_SERVER}/images/api/logo_p_l.png`}
+                onClick={() => {
+                  if (!webview) {
+                    window.location.href = '/new'
+                  }
+                }}
+              />
             </div>
 
             <div className="input-wrap">
