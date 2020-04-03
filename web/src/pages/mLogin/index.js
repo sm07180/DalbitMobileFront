@@ -51,7 +51,7 @@ export default props => {
       })
 
       if (loginInfo.result === 'success') {
-        const {memNo} = data
+        const {memNo} = loginInfo.data
 
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
