@@ -190,6 +190,7 @@ const Content = styled.div`
       min-height: 100px;
       margin-top: 10px;
       padding: 0 16px;
+      padding-bottom: 80px;
 
       &.rank-slide {
         padding: 0;
@@ -202,8 +203,8 @@ const Content = styled.div`
 const SubMain = styled.div`
   height: 310px;
   background-color: #8556f6;
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 
   .gnb {
     display: flex;
