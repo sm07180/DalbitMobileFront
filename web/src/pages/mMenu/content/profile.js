@@ -78,44 +78,68 @@ export default props => {
         <div className="category-text">마이 페이지</div>
       </Header>
 
-      {isLogin ? (
-        <div className="log-in">
-          <div></div>
-          <div className="profile-info">
-            <div className="time-info">
-              <div className="total-time">
-                <div className="type-wrap">
-                  <span className="text">총 방송 시간</span>
-                  <img src={TimeIcon} />
-                </div>
-                <div className="time">{timeFormat(profile.broadTotTime)}</div>
-              </div>
-              <div className="total-time">
-                <div className="type-wrap">
-                  <span className="text">총 청취 시간</span>
-                  <img src={HeadphoneIcon} />
-                </div>
-                <div className="time">{timeFormat(profile.listenTotTime)}</div>
-              </div>
-            </div>
-            <div className="real-info">
-              {[
-                {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
-                {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
-                {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
-              ].map(real => {
-                const {type, icon, txt, value} = real
-                return (
-                  <div key={type} className="each">
-                    <span className="type">{txt}</span>
-                    <img src={icon} />
-                    <span className="value">{value}</span>
+      {isLogin && profile ? (
+        <>
+          <div className="log-in">
+            <div></div>
+            <div className="profile-info">
+              <div className="time-info">
+                <div className="total-time">
+                  <div className="type-wrap">
+                    <span className="text">총 방송 시간</span>
+                    <img src={TimeIcon} />
                   </div>
-                )
-              })}
+                  <div className="time">{timeFormat(profile.broadTotTime)}</div>
+                </div>
+                <div className="total-time">
+                  <div className="type-wrap">
+                    <span className="text">총 청취 시간</span>
+                    <img src={HeadphoneIcon} />
+                  </div>
+                  <div className="time">{timeFormat(profile.listenTotTime)}</div>
+                </div>
+              </div>
+              <div className="real-info">
+                {[
+                  {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
+                  {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
+                  {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
+                ].map(real => {
+                  const {type, icon, txt, value} = real
+                  return (
+                    <div key={type} className="each">
+                      <span className="type">{txt}</span>
+                      <img src={icon} />
+                      <span className="value">{value}</span>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="sub-nav">
+            <Link to={`/my/setting`}>
+              <div className="list">
+                <span className="text">내 정보 관리</span>
+                <img className="icon" src={InfoIcon} />
+              </div>
+            </Link>
+            {subNavList.map((value, idx) => {
+              const {type, txt, icon} = value
+              return (
+                <Link to={`/mmypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                  <div className="list">
+                    <span className="text">{txt}</span>
+                    <img className="icon" src={icon} />
+                  </div>
+                </Link>
+              )
+            })}
+
+            <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
+          </div>
+        </>
       ) : (
         <div className="log-out">
           <Link to="/mlogin">
@@ -124,30 +148,6 @@ export default props => {
               <span className="bold">로그인</span> 해주세요
             </div>
           </Link>
-        </div>
-      )}
-
-      {isLogin && (
-        <div className="sub-nav">
-          <Link to={`/my/setting`}>
-            <div className="list">
-              <span className="text">내 정보 관리</span>
-              <img className="icon" src={InfoIcon} />
-            </div>
-          </Link>
-          {subNavList.map((value, idx) => {
-            const {type, txt, icon} = value
-            return (
-              <Link to={`/mmypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
-                <div className="list">
-                  <span className="text">{txt}</span>
-                  <img className="icon" src={icon} />
-                </div>
-              </Link>
-            )
-          })}
-
-          <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
         </div>
       )}
     </MenuMypage>
