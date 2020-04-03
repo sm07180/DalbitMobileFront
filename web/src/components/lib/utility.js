@@ -53,8 +53,9 @@ export default class Utility {
       const [key, value] = bundle.split('=')
       cookies[key.trim()] = value
     })
-
-    return decodeURIComponent(cookies[c_name])
+    if (cookies[c_name]) {
+      return decodeURIComponent(cookies[c_name])
+    }
   }
 
   //* make UUID
