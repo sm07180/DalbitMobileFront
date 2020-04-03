@@ -264,12 +264,12 @@ export default props => {
                     onClick={() => setShowBtn(boardIdx)}
                     className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                   <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                    <a
-                      className={urlrStr === profile.memNo || writerNo === profile.memNo ? 'on' : ''}
-                      onClick={() => DeleteComment2()}>
+                    <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
                       수정하기
                     </a>
-                    <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment(value)}>
+                    <a
+                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                      onClick={() => DeleteComment(value)}>
                       삭제하기
                     </a>
                   </DetailBtn>
@@ -298,12 +298,12 @@ export default props => {
                               onClick={() => setShowBtnReply(boardIdx)}
                               className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a
-                                className={urlrStr === profile.memNo || writerNo === profile.memNo ? 'on' : ''}
-                                onClick={() => DeleteComment2()}>
+                              <a className={urlrStr === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
                                 수정하기
                               </a>
-                              <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment(value)}>
+                              <a
+                                className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                                onClick={() => DeleteComment(value)}>
                                 삭제하기
                               </a>
                             </DetailBtn>
