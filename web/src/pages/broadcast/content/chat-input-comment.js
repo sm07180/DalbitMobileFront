@@ -249,7 +249,7 @@ export default props => {
     })
     //Error발생시
     if (res.result === 'success') {
-      let element = `복사 버튼을 눌러 링크를 공유 하세요<br>
+      let element = `확인 버튼을 눌러 링크를 공유 하세요<br>
       <input type="text" value=${res.data.shareLink} id="myInput" style="padding:8px;display:block;border:1px solid #ccc!important;width:360px">`
       context.action.alert({
         // 좋아요 중복 사용 알림 팝업
@@ -330,6 +330,9 @@ export default props => {
     if (context.token.isLogin) {
       //방장인 경우 받은 선물 탭으로 이동
       if (context.broadcastTotalInfo.auth != 3) {
+        if (store.giftSendType === 1) {
+          store.action.updateGiftSendType(0)
+        }
         store.action.updateTab(4)
       } else {
         store.action.updateTab(12)
