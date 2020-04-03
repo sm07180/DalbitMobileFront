@@ -31,14 +31,14 @@ const Index = props => {
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
-      if (windowBottom >= docHeight && _.hasIn(Index.store.broadList, 'paging.totalPage')) {
+      if (windowBottom >= docHeight - 30 && _.hasIn(Index.store.broadList, 'paging.totalPage')) {
         //현재페이지와 전체페이지비교
         if (Index.store.broadList.paging.totalPage > Index.store.currentPage) {
           Index.store.action.updateCurrentPage(Index.store.currentPage + 1)
         }
       } else {
       }
-    }, 100)
+    }, 50)
   }
   //---------------------------------------------------------------------
   //useEffect
