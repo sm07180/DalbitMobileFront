@@ -115,7 +115,7 @@ const Exit = props => {
         fnChange={v => setState({click2: v})}
         checked={state.click2}
       />
-      <Checkbox
+      {/* <Checkbox
         title="탈퇴 후 기존 보유한 팬 정보는 모두 삭제됩니다."
         fnChange={v => setState({click3: v})}
         checked={state.click3}
@@ -125,7 +125,7 @@ const Exit = props => {
         fnChange={v => setState({click4: v})}
         checked={state.click4}
       />
-      <Checkbox title="탈퇴 후 7일간 서비스 재가입은 불가합니다." fnChange={v => setState({click5: v})} checked={state.click5} />
+      <Checkbox title="탈퇴 후 7일간 서비스 재가입은 불가합니다." fnChange={v => setState({click5: v})} checked={state.click5} /> */}
       <Checkbox
         title="약관에 의해 제재중인 계정의 경우 즉시 탈퇴가 불가합니다.
          별도로 문의해주시기 바랍니다."
