@@ -15,7 +15,7 @@ import Api from 'context/api'
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {webview} = qs.parse(location.patname)
+  const {webview} = qs.parse(location.search)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -86,7 +86,7 @@ export default props => {
 
   return (
     <Switch>
-      {token.isLogin ? (
+      {token.isLogin && !webview ? (
         <Redirect to={`/new`} />
       ) : (
         <Login>
