@@ -29,10 +29,8 @@ export default props => {
 
   return (
     <div>
-      <Header>
-        <img src={Home} />
-        <img src={Setting} />
-      </Header>
+      <Header>{/* <img src={Home} />
+        <img src={Setting} /> */}</Header>
 
       <NavWrap>
         <NavBtnWrapLine>
