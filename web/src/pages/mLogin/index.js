@@ -19,9 +19,10 @@ export default props => {
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
+
+  const [fetching, setFetching] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
-  const [fetching, setFetching] = useState(false)
   // const [phoneNum, setPhoneNum] = useState('01071825603')
   // const [password, setPassword] = useState('1234qwer')
 
@@ -52,19 +53,19 @@ export default props => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+        globalCtx.action.updateToken(loginInfo.data)
 
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
-          globalCtx.action.updateToken(loginInfo.data)
+          globalCtx.action.updateProfile(profileInfo.data)
+
           if (webview && webview === 'new') {
             Hybrid('GetLoginTokenNewWin', loginInfo.data)
           } else {
             Hybrid('GetLoginToken', loginInfo.data)
           }
 
-          globalCtx.action.updateProfile(profileInfo.data)
-
-          return props.history.push('/new')
+          return (window.location.href = '/new')
         }
       }
       setFetching(false)
