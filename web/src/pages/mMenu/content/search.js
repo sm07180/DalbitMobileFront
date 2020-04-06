@@ -10,6 +10,8 @@ export default props => {
       <Header>
         <div className="category-text">검색</div>
       </Header>
+      <div>검색영역</div>
     </div>
   )
 }
+//-------------------------
