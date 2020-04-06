@@ -5,7 +5,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 //layout
-import Layout from 'pages/common/layout/new_index'
+import Layout from 'pages/common/layout'
 //context
 import {Context} from 'context'
 import {RankingProvider} from './store'

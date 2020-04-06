@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import {WIDTH_TABLET} from 'context/config'
 //layout
 import PureLayout from 'pages/common/layout/new_pure.js'
-import Layout from 'pages/common/layout/new_index'
+import Layout from 'pages/common/layout'
 //components
 import Join from './content/join-form'
 import Password from './content/password'

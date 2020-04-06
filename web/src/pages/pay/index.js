@@ -6,7 +6,7 @@ import React, {useContext} from 'react'
 //context
 import {PayProvider} from './store'
 //layout
-import Layout from 'pages/common/layout/new_index'
+import Layout from 'pages/common/layout'
 //components
 import Content from './content'
 //

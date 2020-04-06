@@ -4,7 +4,7 @@
  */
 import React, {useContext} from 'react'
 //layout
-import Layout from 'pages/common/layout/new_index'
+import Layout from 'pages/common/layout'
 //context
 import {LiveProvider} from './store'
 //components

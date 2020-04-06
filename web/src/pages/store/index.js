@@ -6,7 +6,7 @@ import React, {useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //layout
-import Layout from 'pages/common/layout/new_index'
+import Layout from 'pages/common/layout'
 import Banner from './content/banner'
 //context
 import {Context} from 'context'
