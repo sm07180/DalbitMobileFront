@@ -61,7 +61,7 @@ export default props => {
         globalCtx.action.updateToken(data)
         globalCtx.action.updateProfile(null)
         props.history.push('/new')
-        return (window.location.href = '/new')
+        return (window.location.href = '/')
       }
       setFetching(false)
     }

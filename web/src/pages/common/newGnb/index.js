@@ -18,7 +18,7 @@ export default props => {
   const {logoChange} = globalCtx
 
   const reLoad = () => {
-    window.location.href = '/new'
+    window.location.href = '/'
   }
   const moveToMenu = category => {
     window.location.href = `/menu/${category}`

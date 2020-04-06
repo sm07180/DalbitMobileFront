@@ -121,7 +121,7 @@ export default props => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          props.history.push('/new')
+          props.history.push('/')
         }
       })
     }
@@ -139,7 +139,7 @@ export default props => {
   return (
     <Switch>
       {!token.isLogin ? (
-        <Redirect to={`/new`} />
+        <Redirect to={`/`} />
       ) : (
         <Layout {...props}>
           <Content>

@@ -495,7 +495,7 @@ export default props => {
                     }
                   })
 
-                  window.location.href = '/new'
+                  window.location.href = '/'
                 } else {
                   console.log(resLogin)
                 }
@@ -510,7 +510,7 @@ export default props => {
         if (isHybrid()) {
           context.action.alert({
             callback: () => {
-              props.history.push('/new')
+              props.history.push('/')
             },
             msg: '앱내 회원가입완료'
           })

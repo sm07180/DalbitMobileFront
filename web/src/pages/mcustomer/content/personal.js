@@ -83,7 +83,7 @@ export default props => {
       context.action.alert({
         msg: '1:1문의를 접수하였습니다.',
         callback: () => {
-          history.push(`/new`)
+          history.push(`/`)
         }
       })
     }

@@ -45,7 +45,7 @@ export default props => {
     if (webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/new'
+      window.location.href = '/'
     }
   }
 
@@ -106,7 +106,7 @@ export default props => {
     <Layout {...props} status={'no_gnb'}>
       <Switch>
         {token.isLogin && !webview ? (
-          <Redirect to={`/new`} />
+          <Redirect to={`/`} />
         ) : (
           <Login>
             <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
@@ -116,7 +116,7 @@ export default props => {
                 src={`${IMG_SERVER}/images/api/logo_p_l.png`}
                 onClick={() => {
                   if (!webview) {
-                    window.location.href = '/new'
+                    window.location.href = '/'
                   }
                 }}
               />
