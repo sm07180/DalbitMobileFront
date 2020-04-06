@@ -71,8 +71,8 @@ export default props => {
 const Wrap = styled.div`
   & .btn-wrap {
     position: relative;
-    padding: 21px 10px;
-    font-size: 16px;
+    padding: 16px 10px;
+    font-size: 14px;
     color: #616161;
     letter-spacing: -0.4px;
     transform: skew(-0.03deg);

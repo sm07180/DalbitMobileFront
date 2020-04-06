@@ -1,5 +1,5 @@
 /**
- * @file store.js
+ * @file 모바일/store.js
  * @brief 설정 context API
  * @code 
   import React, {useContext, useState} from 'react'

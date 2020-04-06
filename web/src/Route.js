@@ -9,15 +9,16 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 import Main from './pages/main'
 
-const MobileMenu = React.lazy(() => import('pages/mMenu'))
+const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
-const MobileStore = React.lazy(() => import('pages/mStore'))
+const Store = React.lazy(() => import('pages/store'))
 const Customer = React.lazy(() => import('pages/customer'))
-const MobileSetting = React.lazy(() => import('pages/msetting'))
+const Setting = React.lazy(() => import('pages/setting'))
+
 const MobileUser = React.lazy(() => import('pages/m_user'))
 
 const Live = React.lazy(() => import('pages/live'))
@@ -38,10 +39,11 @@ export default () => {
       }>
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/menu/:category" component={MobileMenu} />
+        <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
-        <Route exact path="/store" component={MobileStore} />
+        <Route exact path="/store" component={Store} />
+
         <Route exact path="/muser" component={MobileUser} />
         <Route exact path="/muser/:title" component={MobileUser} />
 
@@ -58,12 +60,12 @@ export default () => {
         <Route exact path="/customer/:title" component={Customer} />
         <Route exact path="/customer/:title/:num" component={Customer} />
 
-        <Route exact path="/msetting/" component={MobileSetting} />
+        <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
 
         <Route exact path="/notfound" component={NotFound} />
-        <Redirect to="/notfound" component={NotFound} />
+        <Redirect to="/notfound" />
       </Switch>
     </React.Suspense>
   )

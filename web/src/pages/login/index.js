@@ -11,7 +11,7 @@ import {Hybrid} from 'context/hybrid'
 
 // static
 import {IMG_SERVER} from 'context/config'
-import closeBtn from 'pages/mMenu/static/ic_close.svg'
+import closeBtn from 'pages/menu/static/ic_close.svg'
 
 import qs from 'query-string'
 import Api from 'context/api'

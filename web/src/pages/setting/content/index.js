@@ -10,7 +10,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 import {useHistory} from 'react-router-dom'
 //ui
-import Accordion from 'components/ui/accordian'
+import Accordion from './accordian'
 import Use from './use'
 //
 const Index = props => {
@@ -107,7 +107,7 @@ export const Store = () => {
 //---------------------------------------------------------------------
 const Container = styled.div`
   width: 1210px;
-  margin: 0 auto 438px auto;
+  margin: 76px auto 0 auto;
   > div {
     width: 600px;
     margin: 0 auto;
@@ -120,7 +120,7 @@ const Container = styled.div`
     width: 100%;
     display: block;
     padding: 19px 10px;
-    font-size: 20px;
+    font-size: 16px;
     letter-spacing: -0.5px;
     color: #7c4dec;
     text-align: left;
@@ -136,19 +136,18 @@ const Container = styled.div`
     }
   }
   & h1 {
-    margin: 40px 0;
+    margin: 30px 0;
     text-align: center;
     color: ${COLOR_MAIN};
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.7px;
   }
-  & .accordian-box {
-  }
+
   @media (max-width: 1240px) {
     width: 95%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin: 0 auto 138px auto;
+    margin: 76px auto 138px auto;
   }
 `

@@ -1,12 +1,12 @@
 /**
- * @file /setting/index.js
+ * @file 모바일/setting/index.js
  * @brief 설정
  * @todo
  */
 
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout/new_index'
 import Content from './content'
 //Context
 import {SettingProvider} from './store'
