@@ -8,7 +8,7 @@ import {Context} from 'context'
 
 // component
 import Paging from 'components/ui/paging.js'
-import List from '../component/wallet/list.js.js'
+import List from '../component/wallet/list.js'
 
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
