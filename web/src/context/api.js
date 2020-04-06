@@ -470,6 +470,39 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/profile/board/reply`, method: method || 'GET', params: params})
   }
+  /**
+   * @brief 마이페이지 공지사항 등록
+   * @method "POST""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.04.06
+   */
+  static mypage_notice_upload = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notice/add`, method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 마이페이지 공지사항 수정
+   * @method "POST""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.04.06
+   */
+  static mypage_notice_edit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notice/edit`, method: method || 'POST', data: data})
+  }
+  /**
+   * @brief 마이페이지 공지사항 삭제
+   * @method "DELETE""
+   * @todo
+   * @param              /
+   * @create 황상한 2020.04.06
+   */
+  static mypage_notice_delete = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notice`, method: method || 'DELETE', data: data})
+  }
 
   /**
    * @brief 토큰조회
