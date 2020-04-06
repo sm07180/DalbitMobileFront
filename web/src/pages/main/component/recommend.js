@@ -37,6 +37,8 @@ export default props => {
     }
   }, [list])
 
+  const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
+
   return (
     <RecommendWrap>
       <Room />
@@ -78,7 +80,15 @@ export default props => {
         </CustomSwiper>
       )}
       <div className="selected-title">{selectedBIdx !== null ? list[selectedBIdx]['title'] : ''}</div>
-      <div className="selected-nickname">{selectedBIdx !== null ? list[selectedBIdx]['nickNm'] : ''}</div>
+      <div className="selected-nickname">
+        {selectedBIdx !== null
+          ? list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+              // 🎉😝pqpq😝🎉
+              // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+              return <span key={`splited-${idx}`}>{str}</span>
+            })
+          : ''}
+      </div>
     </RecommendWrap>
   )
 }
@@ -152,5 +162,9 @@ const RecommendWrap = styled.div`
     letter-spacing: -0.35px;
     text-align: center;
     transform: skew(-0.03deg);
+
+    span {
+      vertical-align: middle;
+    }
   }
 `
