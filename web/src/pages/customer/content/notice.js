@@ -87,7 +87,7 @@ function Notice(props) {
   //function---------------------------------------
   const GoNotice = () => {
     Store().action.updatenoticePage('')
-    history.push(`/mCustomer`)
+    history.push(`/customer`)
   }
   const typeActive = e => {
     const number = parseInt(e.target.value)
@@ -98,7 +98,7 @@ function Notice(props) {
     const index = Store().noticePage.noticeIdx
 
     if (index !== '') {
-      history.push(`/mCustomer/notice/${index}`)
+      history.push(`/customer/notice/${index}`)
       fetchData2()
     }
   }

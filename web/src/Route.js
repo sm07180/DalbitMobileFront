@@ -10,12 +10,12 @@ import Navigator from './pages/navigator'
 import Main from './pages/main'
 
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
-const MobileRanking = React.lazy(() => import('pages/mranking'))
+const Ranking = React.lazy(() => import('pages/ranking'))
 const MobileMyPage = React.lazy(() => import('pages/m_mypage/index.js'))
 const MobileMySetting = React.lazy(() => import('pages/m_mypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
-const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
+const Customer = React.lazy(() => import('pages/customer'))
 const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
 
@@ -38,7 +38,7 @@ export default () => {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={MobileMenu} />
-        <Route exact path="/rank" component={MobileRanking} />
+        <Route exact path="/rank" component={Ranking} />
         <Route exact path="/mpay" component={MobilePay} />
         <Route exact path="/store" component={MobileStore} />
         <Route exact path="/muser" component={MobileUser} />
@@ -53,9 +53,9 @@ export default () => {
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
         <Route exact path="/my/setting" component={MobileMySetting} />
 
-        <Route exact path="/customer/" component={MobileCustomer} />
-        <Route exact path="/customer/:title" component={MobileCustomer} />
-        <Route exact path="/customer/:title/:num" component={MobileCustomer} />
+        <Route exact path="/customer/" component={Customer} />
+        <Route exact path="/customer/:title" component={Customer} />
+        <Route exact path="/customer/:title/:num" component={Customer} />
 
         <Route exact path="/msetting/" component={MobileSetting} />
 

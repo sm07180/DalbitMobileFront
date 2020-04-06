@@ -47,7 +47,7 @@ export default props => {
       const push = () => {
         // alert(JSON.stringify(type, null, 1))
         //  history.push(`${type}`)
-        history.push(`/mCustomer/${type}`)
+        history.push(`/customer/${type}`)
         Store().action.updateCode(type)
       }
       return (
