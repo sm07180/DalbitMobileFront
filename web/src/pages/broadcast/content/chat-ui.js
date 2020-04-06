@@ -14,7 +14,6 @@ import MessageType from './chat-message-type'
 //component
 import InfoContainer from './chat-info-container'
 import InputComment from './chat-input-comment'
-import store from 'pages/store'
 import {BroadCastStore} from '../store'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'

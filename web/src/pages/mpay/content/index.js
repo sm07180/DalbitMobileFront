@@ -10,7 +10,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {PayStore} from '../store'
 //components
-import Pay from 'pages/store/content/index'
+import Pay from './pay.js'
 const Index = props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
