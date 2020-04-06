@@ -8,6 +8,7 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
+import _ from 'lodash'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
@@ -20,26 +21,54 @@ export default props => {
 
   //state
   const [word, setWord] = useState(false)
+  const [list, setList] = useState(false)
 
   //hooks
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange({onChange: -1})
 
   //-----------------------------------------------------------------------------
   //function
-  function update(mode) {
-    switch (true) {
-      case mode.onChange !== undefined:
-        console.log(JSON.stringify(changes))
-        break
-    }
-  }
 
-  async function fetchWrite() {
-    const res = await Api.mypage_banword_write({
-      data: {
-        banWord: '귀를기울여봐|우리들의|잊지못할|이야기|꿈처럼~|바람처럼~|들려줄게~'
+  async function fetchWrite(type) {
+    let words = []
+    word.forEach((item, index) => {
+      if (_.hasIn(changes, `word${index}`)) {
+        words = words.concat(changes[`word${index}`])
+      } else {
+        words = words.concat([item])
       }
     })
+    let banWords = ''
+    words.forEach((item, index) => {
+      if (item == false) return
+      if (!index) {
+        banWords = `${item}`
+      } else {
+        banWords = `${banWords}|${item}`
+      }
+    })
+    const res = await Api.mypage_banword_write({
+      data: {
+        banWord: banWords
+      }
+    })
+    if (res.result === 'success' && _.hasIn(res, 'data')) {
+      if (res.data.banWordCnt) {
+        setWord(res.data.banWord.split('|'))
+      } else {
+        setWord(false)
+        setChanges([''])
+      }
+      if (!(type == 'remove')) {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
   }
 
   async function fetchList() {
@@ -48,6 +77,7 @@ export default props => {
       if (res.data.banWordCnt) {
         setWord(res.data.banWord.split('|'))
       } else {
+        setWord(false)
         setChanges([''])
       }
     } else {
@@ -61,10 +91,16 @@ export default props => {
     return word.map((item, index) => {
       return (
         <div className="input-wrap" key={index}>
-          <input type="text" maxLength="12" name={`word${index}`} onChange={onChange} defaultValue={word[index]} />
+          <input
+            type="text"
+            maxLength="12"
+            name={`word${index}`}
+            onChange={onChange}
+            value={_.hasIn(changes, `word${index}`) ? changes[`word${index}`] : word[index]}
+          />
           <button
             onClick={() => {
-              setWord([''])
+              removeInput(index)
             }}>
             삭제
           </button>
@@ -73,20 +109,35 @@ export default props => {
     })
   }
 
-  const addinput = () => {
+  const addInput = () => {
     setWord(word.concat(''))
+  }
+
+  const removeInput = index => {
+    context.action.confirm({
+      msg: `금지어를 삭제하시겠습니까?`,
+      callback: () => {
+        let words = word
+        let splice = words.splice(index, 1)
+        setWord([...words])
+        if (_.hasIn(changes, `word${index}`)) {
+          delete changes[`word${index}`]
+          setChanges({...changes})
+        }
+        fetchWrite('remove')
+      }
+    })
+  }
+
+  const writeValidate = () => {
+    fetchWrite()
   }
 
   //-----------------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    //fetchWrite()
     fetchList()
   }, [])
-
-  useEffect(() => {
-    console.log(word)
-  }, [word])
 
   //-----------------------------------------------------------------------------
   return (
@@ -111,11 +162,17 @@ export default props => {
           <button
             className="white"
             onClick={() => {
-              addinput()
+              addInput()
             }}>
             추가
           </button>
-          <button className="purple">저장</button>
+          <button
+            className="purple"
+            onClick={() => {
+              writeValidate()
+            }}>
+            저장
+          </button>
         </div>
       )}
     </Content>
