@@ -12,7 +12,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 
 //contents
 import Auth from 'pages/common/auth'
-import Charge from 'pages/broadcast/content/tab/charge-popup'
+import Charge from './charge_popup.js'
 import Terms from 'pages/common/terms'
 
 //
