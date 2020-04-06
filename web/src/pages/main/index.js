@@ -194,7 +194,7 @@ const Content = styled.div`
       min-height: 100px;
       margin-top: 10px;
       padding: 0 16px;
-      padding-bottom: 80px;
+      padding-bottom: 32px;
 
       &.rank-slide {
         padding: 0;

@@ -107,7 +107,7 @@ const LiveList = styled.div`
         display: flex;
         align-items: center;
         flex-direction: row;
-        margin-left: 6px;
+        margin-left: 8px;
         color: #bdbdbd;
         font-size: 11px;
         letter-spacing: -0.28px;

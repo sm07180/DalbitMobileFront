@@ -44,10 +44,10 @@ export default props => {
         onClick={() => {
           const data = list[selectedBIdx]
           const {roomNo, memNo} = data
-          //
+
           //상대방 페이지이동
           if (roomNo === '') {
-            history.push(`/mypage/${memNo}/`)
+            window.location.href = `/mypage/${memNo}`
           } else {
             RoomJoin(roomNo + '')
           }
@@ -70,7 +70,9 @@ export default props => {
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (
-              <div className="slide" data-idx={idx} key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}} />
+              <div className="slide" data-idx={idx} key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}}>
+                <div className="slide-over" />
+              </div>
             )
           })}
         </CustomSwiper>
@@ -83,8 +85,19 @@ export default props => {
 
 const RecommendWrap = styled.div`
   .dalbit-swiper {
+    .slide,
+    .slide-over {
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+    }
     .slide {
       margin: 0 5px;
+    }
+    .slide-over {
+      position: absolute;
+      opacity: 0.3;
+      background-color: #8556f6;
     }
   }
 

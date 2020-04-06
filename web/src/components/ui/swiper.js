@@ -169,7 +169,6 @@ export default props => {
   }
 
   const removeTouchEventSelectedWrap = () => {
-    // const selectedWrapNode = selectedWrapRef.current
     if (tempSelectedNode) {
       tempSelectedNode.removeEventListener('touchstart', touchStartEvent)
       tempSelectedNode.removeEventListener('touchmove', touchMoveEvent)
@@ -184,7 +183,6 @@ export default props => {
     setClickEventAllSlide()
     setTouchEventSelectedWrap()
     autoSlideInterval()
-
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
       removeClickEventAllSlide()
@@ -193,7 +191,17 @@ export default props => {
     }
   }, [])
 
-  useEffect(() => {}, [selectedBIdx])
+  useEffect(() => {
+    const wrapperNode = wrapperRef.current
+    const middleIdx = Math.floor(wrapperNode.children.length / 2)
+    wrapperNode.childNodes.forEach((child, idx) => {
+      if (middleIdx === idx) {
+        child.firstChild.style.opacity = 0
+      } else {
+        child.firstChild.style.opacity = 0.3
+      }
+    })
+  }, [selectedBIdx])
 
   return (
     <Swiper
@@ -228,9 +236,6 @@ const Swiper = styled.div`
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
       background-color: #eee;
     }
   }
