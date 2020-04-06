@@ -173,7 +173,7 @@ const LogoutBtn = styled.button`
   width: 100%;
   color: #bdbdbd;
   font-size: 12px;
-  margin-top: 20px;
+  margin: 20px 0;
 `
 
 const MenuMypage = styled.div`
