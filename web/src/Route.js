@@ -15,11 +15,14 @@ const MobileMyPage = React.lazy(() => import('pages/m_mypage/index.js'))
 const MobileMySetting = React.lazy(() => import('pages/m_mypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
-const MobileLogin = React.lazy(() => import('pages/login'))
 const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
 const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
+
 const Live = React.lazy(() => import('pages/mlive'))
+const Login = React.lazy(() => import('pages/login'))
+const SignUp = React.lazy(() => import('pages/sign_up'))
+const Password = React.lazy(() => import('pages/password'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const NotFound = React.lazy(() => import('pages/not_found'))
@@ -38,11 +41,13 @@ export default () => {
         <Route exact path="/rank" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
         <Route exact path="/store" component={MobileStore} />
-        <Route exact path="/login" component={MobileLogin} />
         <Route exact path="/muser" component={MobileUser} />
         <Route exact path="/muser/:title" component={MobileUser} />
 
         <Route exact path="/live" component={Live} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/password" component={Password} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
