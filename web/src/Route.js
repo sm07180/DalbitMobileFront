@@ -9,7 +9,6 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 import Main from './pages/main'
 
-// mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
 const MobileRanking = React.lazy(() => import('pages/mranking'))
 const MobileMyPage = React.lazy(() => import('pages/m_mypage/index.js'))

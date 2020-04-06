@@ -79,7 +79,7 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <Link to={'/mlive'}>라이브</Link>
+                <Link to={'/live'}>라이브</Link>
               </div>
               <div className="tab">
                 <Link to={'/ranking'}>랭킹</Link>
