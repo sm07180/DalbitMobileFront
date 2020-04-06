@@ -189,6 +189,7 @@ export default props => {
       Object.keys(res.data).forEach(key => {
         ft.append(makeHiddenInput(key, res.data[key]))
       })
+      console.log('ft폼데이터', ft)
       MCASH_PAYMENT(ft)
       ft.innerHTML = ''
     } else {
