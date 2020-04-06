@@ -82,7 +82,7 @@ export default props => {
                 <Link to={'/live'}>라이브</Link>
               </div>
               <div className="tab">
-                <Link to={'/ranking'}>랭킹</Link>
+                <Link to={'/rank'}>랭킹</Link>
               </div>
               <div className="tab">
                 <Link
@@ -120,7 +120,7 @@ export default props => {
                   팬 랭킹
                 </div>
               </div>
-              <Link to="/ranking">
+              <Link to="/rank">
                 <img className="plus-icon" src={PlusIcon} />
               </Link>
             </div>

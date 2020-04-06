@@ -35,7 +35,7 @@ export default () => {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={MobileMenu} />
-        <Route exact path="/ranking" component={MobileRanking} />
+        <Route exact path="/rank" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
         <Route exact path="/store" component={MobileStore} />
         <Route exact path="/login" component={MobileLogin} />

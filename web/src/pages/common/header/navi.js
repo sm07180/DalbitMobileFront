@@ -189,7 +189,7 @@ const Navi = props => {
     {title: '라이브', url: '/live'},
     {title: '스토어', url: '/store'}
     // {title: '캐스트', url: '/cast'},
-    //{title: '랭킹', url: '/ranking'}
+    //{title: '랭킹', url: '/rank'}
   ]
 
   //---------------------------------------------------------------------
@@ -207,7 +207,7 @@ const Navi = props => {
           exact
           activeClassName="on"
           onClick={event => {
-            if (_url == '/cast' || _url == '/ranking') {
+            if (_url == '/cast' || _url == '/rank') {
               event.preventDefault()
               context.action.alert({
                 msg: '서비스 준비중입니다.'
