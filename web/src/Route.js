@@ -15,7 +15,7 @@ const MobileMyPage = React.lazy(() => import('pages/m_mypage/index.js'))
 const MobileMySetting = React.lazy(() => import('pages/m_mypage/setting.js'))
 const MobilePay = React.lazy(() => import('pages/mpay'))
 const MobileStore = React.lazy(() => import('pages/mStore'))
-const MobileLogin = React.lazy(() => import('pages/mLogin'))
+const MobileLogin = React.lazy(() => import('pages/login'))
 const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
 const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
@@ -38,7 +38,7 @@ export default () => {
         <Route exact path="/ranking" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
         <Route exact path="/store" component={MobileStore} />
-        <Route exact path="/mlogin" component={MobileLogin} />
+        <Route exact path="/login" component={MobileLogin} />
         <Route exact path="/muser" component={MobileUser} />
         <Route exact path="/muser/:title" component={MobileUser} />
 

@@ -84,13 +84,13 @@ export default props => {
       <Content>
         {!isLogin && (
           <div className="log-out">
-            <Link to="/mlogin">
+            <Link to="/login">
               <img src={NeedLoginImg} />
               <div className="text">
                 <span className="bold">로그인</span> 해주세요
               </div>
             </Link>
-            <Link to="/mlogin">
+            <Link to="/login">
               <button className="loginBtn">로그인</button>
             </Link>
           </div>

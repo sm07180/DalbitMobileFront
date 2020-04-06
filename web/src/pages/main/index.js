@@ -42,7 +42,7 @@ export default props => {
       return Hybrid('RoomMake', '')
     }
     // }
-    return (window.location.href = '/mlogin')
+    return (window.location.href = '/login')
   }
 
   useEffect(() => {

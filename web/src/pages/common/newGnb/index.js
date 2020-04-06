@@ -55,7 +55,7 @@ export default props => {
             if (token.isLogin) {
               return Hybrid('RoomMake', '')
             }
-            return (window.location.href = '/mlogin')
+            return (window.location.href = '/login')
           }}>
           <img src={Mic} />
         </div>
