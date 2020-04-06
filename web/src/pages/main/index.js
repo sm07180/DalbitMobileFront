@@ -206,7 +206,7 @@ const Content = styled.div`
 
 const SubMain = styled.div`
   height: 310px;
-  background-color: #8556f6;
+  background: linear-gradient(#8556f6, #8556f6, #662eec);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 

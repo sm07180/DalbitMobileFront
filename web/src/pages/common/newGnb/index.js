@@ -105,6 +105,6 @@ const GnbWrap = styled.div`
     width: 82px;
     height: 40px;
     border-radius: 21px;
-    background-color: #8556f6;
+    background: linear-gradient(#662eec, #8556f6);
   }
 `
