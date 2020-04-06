@@ -5,12 +5,9 @@
  */
 import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
-//
-import Navigator from './pages/navigator'
-import newMain from './pages/newMain'
 
-/*-common-*/
-const TestPage = React.lazy(() => import('pages/testpage'))
+import Navigator from './pages/navigator'
+import Main from './pages/main'
 
 // mobile page
 const MobileMenu = React.lazy(() => import('pages/mMenu'))
@@ -38,7 +35,7 @@ export default () => {
         </div>
       }>
       <Switch>
-        <Route exact path="/" component={newMain} />
+        <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={MobileMenu} />
         <Route exact path="/mranking" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
@@ -62,7 +59,6 @@ export default () => {
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
-        <Route exact path="/testpage" component={TestPage} />
 
         {/* <Redirect to="/error" /> */}
       </Switch>

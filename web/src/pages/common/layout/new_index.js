@@ -8,7 +8,7 @@ import Gnb from 'pages/common/newGnb'
 import NewPlayer from 'pages/common/newPlayer'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
-import TopScrollBtn from 'pages/newMain/component/top_scroll_btn.js'
+import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 //
 const Layout = props => {
   const {children} = props
