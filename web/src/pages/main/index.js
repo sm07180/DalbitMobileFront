@@ -15,7 +15,7 @@ import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
-
+import {RoomMake} from 'context/room'
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
@@ -101,7 +101,13 @@ export default props => {
               </div>
             </div>
             <div className="right-side">
-              <div className="btn" onClick={clickBroadcastBtn}>
+              <div
+                className="btn"
+                onClick={() => {
+                  //clickBroadcastBtn
+                  //방송하기 공통처리
+                  RoomMake(globalCtx)
+                }}>
                 방송하기
               </div>
             </div>
