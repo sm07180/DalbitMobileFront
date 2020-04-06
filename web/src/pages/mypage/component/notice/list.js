@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Api from 'context/api'
 import {WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
+
 // image
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
@@ -11,7 +12,8 @@ import Checkbox from '../../content/checkbox'
 
 const List = props => {
   const context = useContext(Context)
-  const {isTop, title, contents, writeDt, noticeIdx} = props
+  const ctx = useContext(Context)
+  const {isTop, title, contents, writeDt, noticeIdx, shows} = props
   const [opened, setOpened] = useState(false)
 
   const timeFormat = strFormatFromServer => {
@@ -36,6 +38,7 @@ const List = props => {
   const [comentContent, setCommentContent] = useState(contents)
   const [writeShow, setWriteShow] = useState(false)
   const [writeBtnState, setWriteBtnState] = useState(false)
+  const [num, setNum] = useState('')
   var urlrStr = props.location.pathname.split('/')[2]
   //공지제목 등록 온체인지
   const textChange = (e, title) => {
@@ -99,17 +102,16 @@ const List = props => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            window.location.reload()
-          },
-          msg: res.message
-        })
+        window.location.reload()
       } else if (res.result === 'fail') {
       }
     }
-
-    fetcNoticeDelete()
+    context.action.confirm({
+      callback: () => {
+        fetcNoticeDelete()
+      },
+      msg: '<b>게시글을 삭제하시겠습니까?</b>'
+    })
   }
   const WriteToggle = () => {
     if (writeShow === false) {
@@ -128,18 +130,33 @@ const List = props => {
   }, [coment, comentContent])
 
   //---------------------------------------------------------------------
+  const modifyBtn = () => {
+    context.action.confirm({
+      callback: () => {
+        setWriteShow(false)
+      },
+      msg: '현재 작성 중인 게시글은 저장되지 않습니다.<br /><b>취소하시겠습니까?</b>'
+    })
+  }
 
+  const toggler = noticeIdx => {
+    setOpened(false)
+    if (opened === true) {
+      setOpened(false)
+    } else {
+      setOpened(true)
+    }
+  }
+  console.log(opened)
   return (
-    <div>
-      <ListStyled onClick={() => setOpened(opened ? false : true)} className={opened ? 'on' : ''}>
+    <Wrap>
+      <ListStyled onClick={() => toggler(noticeIdx)} className={opened ? 'on' : ''}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>
         </TitleWrap>
-        {/* <TimeWrap>
-          <Time>{timeFormat(writeDt)}</Time>
-          <ArrowDownBtn />
-        </TimeWrap> */}
+
+        <ArrowDownBtn className={opened ? 'on' : ''} />
       </ListStyled>
       {opened && (
         <>
@@ -148,7 +165,7 @@ const List = props => {
             <div> {timeFormat(writeDt)}</div>
             <div>{contents}</div>
           </ListContent>
-          <Buttons>
+          <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
             <button onClick={WriteToggle}>
               <i className="far fa-edit"></i>수정
             </button>
@@ -160,11 +177,11 @@ const List = props => {
 
           <Write className={writeShow && 'on'}>
             <header>
-              <button onClick={() => setWriteShow(false)}></button>
+              <button onClick={modifyBtn}></button>
               <h2>공지 수정하기</h2>
-              <button className="submit" onClick={() => NoticeUpload()}>
-                등록
-              </button>
+              <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
+                수정
+              </TitleBtn>
             </header>
             <section>
               <div className="titleWrite">
@@ -187,7 +204,7 @@ const List = props => {
           </Write>
         </>
       )}
-    </div>
+    </Wrap>
   )
 }
 
@@ -199,6 +216,9 @@ const ArrowDownBtn = styled.button`
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${arrowDownImg});
+  &.on {
+    background-image: url('https://devimage.dalbitlive.com/images/api/ic_chevron_sm_up.png');
+  }
 `
 
 const Time = styled.div`
@@ -224,16 +244,23 @@ const TitleWrap = styled.div`
   align-items: center;
   color: #424242;
   font-size: 14px;
+  transform: skew(-0.03deg);
+  margin-left: 4px;
+  > i {
+    display: none;
+  }
 
   &.is-top {
     color: #8556f6;
     font-size: 14px;
+    font-weight: 600;
     letter-spacing: -0.35px;
+    > i {
+      display: block;
+    }
   }
-
   .text {
-    font-weight: bold;
-    margin-left: 6px;
+    margin-left: 4px;
   }
 `
 
@@ -264,6 +291,7 @@ const ListContent = styled.div`
     line-height: 1.43;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
+    overflow-wrap: break-word;
   }
 `
 
@@ -276,6 +304,7 @@ const ListStyled = styled.div`
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   user-select: none;
+
   &.on {
     background-color: #f8f8f8;
   }
@@ -285,13 +314,13 @@ const ListStyled = styled.div`
   }
 `
 const Buttons = styled.div`
-  display: flex;
+  display: none;
   justify-content: flex-end;
   background-color: #f8f8f8;
   border-top: 1px solid #efefef;
   border-bottom: 1px solid #efefef;
   & button {
-    padding: 20px 20px 12px 20px;
+    padding: 12px 20px 12px 20px;
     font-size: 14px;
     line-height: 1.43;
     letter-spacing: -0.35px;
@@ -305,6 +334,9 @@ const Buttons = styled.div`
       color: #bdbdbd;
     }
   }
+  &.on {
+    display: flex;
+  }
 `
 
 const Write = styled.div`
@@ -317,8 +349,8 @@ const Write = styled.div`
   background-color: #fff;
   z-index: 21;
   & header {
-    padding: 20px 16px 8px 10px;
-    margin-top: 8px;
+    padding: 16px 16px 16px 10px;
+
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #e0e0e0;
@@ -348,10 +380,13 @@ const Write = styled.div`
   & section {
     padding: 32px 16px 0 16px;
     .titleWrite {
-      padding: 16px;
-      border: 1px solid #e0e0e0;
       input {
         width: 100%;
+        padding: 16px;
+        border: 1px solid #e0e0e0;
+        &:focus {
+          border: 1px solid ${COLOR_MAIN};
+        }
         &::placeholder {
           font-family: NanumSquareR;
           color: #616161;
@@ -364,10 +399,12 @@ const Write = styled.div`
     }
     .contentWrite {
       margin-top: 20px;
-
-      padding: 16px;
-      border: 1px solid #e0e0e0;
       textarea {
+        &:focus {
+          border: 1px solid ${COLOR_MAIN};
+        }
+        padding: 16px;
+        border: 1px solid #e0e0e0;
         width: 100%;
         min-height: 310px;
         font-family: NanumSquareR;
@@ -408,5 +445,21 @@ const WriteSubmit = styled.button`
 
   &.on {
     background-color: ${COLOR_MAIN};
+  }
+`
+const Wrap = styled.div`
+  position: relative;
+`
+const TitleBtn = styled.button`
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  text-align: left;
+  color: #9e9e9e;
+  transform: skew(-0.03deg);
+
+  &.on {
+    color: ${COLOR_MAIN};
+    font-weight: 600;
   }
 `

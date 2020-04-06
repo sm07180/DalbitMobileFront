@@ -103,7 +103,7 @@ const Alert = styled.section`
   }
   .wrap-btn {
     display: flex;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     text-align: center;
   }
   /* 타이틀 */
@@ -114,8 +114,9 @@ const Alert = styled.section`
   }
   /* 메시지 */
   .msg {
-    padding: 62px 20px;
-    font-size: 16px;
+    padding: 38px 20px;
+    font-size: 14px;
+
     line-height: 1.71;
     letter-spacing: -0.35px;
     word-break: break-all;

@@ -12,52 +12,24 @@ import WritePage from '../component/notice/writePage.js'
 import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 import Checkbox from './checkbox'
-// image
+// image,color
 import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
 const Notice = props => {
+  //context
   const ctx = useContext(Context)
   const context = useContext(Context)
+  //memNo
   const urlrStr = props.location.pathname.split('/')[2]
-  console.log(urlrStr)
+  //state
   const [writeStatus, setWriteStatus] = useState('off')
-
   const [listDetailed, setListDetailed] = useState('search')
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-
-  const writeStatusHandler = () => {
-    if (writeStatus === 'off') {
-      setWriteStatus('on')
-    } else if (writeStatus === 'on') {
-      setWriteStatus('off')
-    }
-  }
-
-  useEffect(() => {
-    ;(async () => {
-      const params = {
-        memNo: urlrStr,
-        page,
-        records: 10
-      }
-      const response = await Api.mypage_notice_inquire(params)
-      if (response.result === 'success') {
-        const {list, paging} = response.data
-        if (paging) {
-          const {totalPage} = paging
-          setTotalPageNumber(totalPage)
-        }
-        setListDetailed(list)
-        console.log(response)
-      }
-    })()
-  }, [page])
-  //---------------------------------------------------------------------
-  //context
+  //체크상태
   const initialState = {
     click1: false
   }
@@ -68,7 +40,6 @@ const Notice = props => {
   const [comentContent, setCommentContent] = useState('')
   const [writeShow, setWriteShow] = useState(false)
   const [writeBtnState, setWriteBtnState] = useState(false)
-
   //공지제목 등록 온체인지
   const textChange = e => {
     const target = e.currentTarget
@@ -82,7 +53,6 @@ const Notice = props => {
     setCommentContent(target.value)
   }
   //api
-
   const NoticeUpload = () => {
     async function fetcNoticeUpload() {
       const res = await Api.mypage_notice_upload({
@@ -121,7 +91,6 @@ const Notice = props => {
       fetcNoticeUpload()
     }
   }
-
   const WriteToggle = () => {
     if (writeShow === false) {
       setWriteShow(true)
@@ -138,29 +107,42 @@ const Notice = props => {
   useEffect(() => {
     WritBtnActive()
   }, [coment, comentContent])
-
+  //-----------------------------------------------------------------------
+  //리스트
+  useEffect(() => {
+    ;(async () => {
+      const params = {
+        memNo: urlrStr,
+        page,
+        records: 10
+      }
+      const response = await Api.mypage_notice_inquire(params)
+      if (response.result === 'success') {
+        const {list, paging} = response.data
+        if (paging) {
+          const {totalPage} = paging
+          setTotalPageNumber(totalPage)
+        }
+        setListDetailed(list)
+        console.log(response)
+      }
+    })()
+  }, [page])
+  // const ddd = (noticeIdx, idx) => {
+  //   console.log(noticeIdx)
+  // }
+  //-----------------------------------------------------------------------
   return (
     <>
       <TopWrap>
         <div className="title">방송국 공지</div>
-        {/* <WriteBtn className={writeStatus} onClick={writeStatusHandler}>
-          공지 작성하기
-        </WriteBtn> */}
       </TopWrap>
-
-      {/* {writeStatus === 'off' ? (
-        <>
-          <List noticeList={[1, 2, 3, 4]} />
-        </>
-      ) : (
-        <WritePage />
-      )} */}
-
       <ListWrap>
         {Array.isArray(listDetailed) ? (
           listDetailed.length > 0 ? (
             listDetailed.map((list, idx) => {
               const {isTop, title, contents, writeDt, noticeIdx} = list
+
               return (
                 <List
                   key={idx}
@@ -185,7 +167,6 @@ const Notice = props => {
           <div className="search" />
         )}
       </ListWrap>
-
       {/* {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />} */}
       {Array.isArray(listDetailed) && listDetailed.length > 0 && listDetailed !== 'search' && (
         <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
@@ -199,9 +180,9 @@ const Notice = props => {
         <header>
           <button onClick={() => setWriteShow(false)}></button>
           <h2>공지 작성하기</h2>
-          <button className="submit" onClick={() => NoticeUpload()}>
+          <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
             등록
-          </button>
+          </TitleBtn>
         </header>
         <section>
           <div className="titleWrite">
@@ -230,7 +211,7 @@ const GlobalWriteBtn = styled.button`
     align-items: center;
     position: fixed;
     bottom: 22px;
-    right: 16px;
+    right: 50px;
     width: 52px;
     height: 52px;
     border-radius: 50%;
@@ -294,15 +275,16 @@ const ListWrap = styled.div`
 const TopWrap = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #8556f6;
+  border-bottom: 1px solid ${COLOR_MAIN};
   align-items: center;
   justify-content: space-between;
-  margin-top: 54px;
-  padding-bottom: 16px;
+  margin-top: 24px;
+  padding-bottom: 12px;
 
   .title {
-    color: #8556f6;
-    font-size: 20px;
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
     letter-spacing: -0.5px;
   }
 `
@@ -316,9 +298,9 @@ const Write = styled.div`
   height: 100vh;
   background-color: #fff;
   z-index: 21;
+
   & header {
-    padding: 20px 16px 8px 10px;
-    margin-top: 8px;
+    padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #e0e0e0;
@@ -334,29 +316,22 @@ const Write = styled.div`
       letter-spacing: -0.45px;
       text-align: center;
     }
-
-    .submit {
-      font-size: 16px;
-      line-height: 1.25;
-      letter-spacing: -0.4px;
-      text-align: left;
-      color: #9e9e9e;
-      transform: skew(-0.03deg);
-    }
   }
 
   & section {
     padding: 32px 16px 0 16px;
     .titleWrite {
-      padding: 16px;
-      border: 1px solid #e0e0e0;
       input {
+        padding: 16px;
+        border: 1px solid #e0e0e0;
         width: 100%;
+        &:focus {
+          border: 1px solid ${COLOR_MAIN};
+        }
         &::placeholder {
           font-family: NanumSquareR;
           color: #616161;
           font-size: 16px;
-
           line-height: 1.5;
           transform: skew(-0.03deg);
         }
@@ -365,9 +340,12 @@ const Write = styled.div`
     .contentWrite {
       margin-top: 20px;
 
-      padding: 16px;
-      border: 1px solid #e0e0e0;
       textarea {
+        &:focus {
+          border: 1px solid ${COLOR_MAIN};
+        }
+        padding: 16px;
+        border: 1px solid #e0e0e0;
         width: 100%;
         min-height: 310px;
         font-family: NanumSquareR;
@@ -408,6 +386,19 @@ const WriteSubmit = styled.button`
 
   &.on {
     background-color: ${COLOR_MAIN};
+  }
+`
+const TitleBtn = styled.button`
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  text-align: left;
+  color: #9e9e9e;
+  transform: skew(-0.03deg);
+
+  &.on {
+    color: ${COLOR_MAIN};
+    font-weight: 600;
   }
 `
 
