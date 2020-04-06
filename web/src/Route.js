@@ -19,7 +19,7 @@ const Customer = React.lazy(() => import('pages/customer'))
 const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
 
-const Live = React.lazy(() => import('pages/mlive'))
+const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
