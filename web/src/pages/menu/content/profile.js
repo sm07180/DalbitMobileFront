@@ -202,7 +202,7 @@ const MenuMypage = styled.div`
         letter-spacing: -0.5px;
       }
       .mem-id {
-        margin-top: 8px;
+        margin-top: 4px;
         margin-bottom: 24px;
         color: #757575;
         font-size: 12px;
