@@ -8,8 +8,7 @@ import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
 import {Context} from 'context'
 import qs from 'query-string'
-//soket
-const sc = require('context/socketCluster')
+
 export default props => {
   //context
   const store = useContext(BroadCastStore)
@@ -73,7 +72,6 @@ export default props => {
     })
     //Error발생시
     if (res.result === 'success') {
-      sc.SendMessageKickout(res)
       broadListenListReload()
     }
   }

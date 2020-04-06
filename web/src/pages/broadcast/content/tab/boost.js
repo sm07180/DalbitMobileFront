@@ -7,7 +7,6 @@ import {IMG_SERVER} from 'context/config'
 import Util from '../../util/broadcast-util'
 // import PopUp from '../../../components/ui/pop-mic'
 import * as broadTimer from 'pages/broadcast/content/tab/timer'
-import * as sc from 'context/socketCluster'
 
 const testData = [
   {

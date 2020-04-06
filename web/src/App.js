@@ -24,8 +24,6 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
-// socketCluster 연결
-import SocketCluster from 'context/socketCluster'
 
 const App = () => {
   const context = useContext(Context)
@@ -144,9 +142,6 @@ const App = () => {
     context.action.updateCustomHeader(customHeader)
     Api.setAuthToken(authToken)
 
-    const storageTotalInfoObj = JSON.parse(localStorage.getItem('BroadTotalInfo'))
-    if (storageTotalInfoObj != '') context.action.updateBroadcastTotalInfo(storageTotalInfoObj)
-
     // Renew all initial data
     fetchData()
   }, [])
@@ -155,7 +150,6 @@ const App = () => {
     <React.Fragment>
       {ready && <Interface />}
       {ready && <Route />}
-      {ready && window.location.pathname === '/' && <SocketCluster />}
     </React.Fragment>
   )
 }

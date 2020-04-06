@@ -11,7 +11,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {Link, NavLink} from 'react-router-dom'
 import {BroadCastStore} from '../store'
 import {useHistory} from 'react-router-dom'
-const sc = require('context/socketCluster')
+
 import {getAudioDeviceCheck} from 'components/lib/audioFeature.js'
 let audioStream = null
 //component
@@ -144,7 +144,6 @@ export default props => {
       mediaHandler.stop()
       timer.stopTimer() //방송 시간 멈춤
       history.push('/live')
-      sc.socketClusterDestory(false, UserRoomNo)
     }
     //return res
   }
@@ -293,7 +292,6 @@ export default props => {
 
     if (list && idx) {
       if (context.token.isLogin) {
-        sc.SendMessageChat({roomNo: props.roomNo, msg: list[idx.cmdType].text})
       }
     }
   }

@@ -6,14 +6,9 @@
  */
 import React, {useState, useEffect, useContext, useMemo} from 'react'
 import styled from 'styled-components'
-//hooks
 import useChange from 'components/hooks/useChange'
 //components
 import Utility from 'components/lib/utility'
-//import {GoogleLogin} from 'react-google-login'
-//import KakaoLogin from 'react-kakao-login'
-//import NaverLogin from 'react-naver-login'
-//import FacebookLogin from 'react-facebook-login'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -21,24 +16,13 @@ import {Hybrid} from 'context/hybrid'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 
-const sc = require('context/socketCluster')
-//import FacebookLogin from 'pages/common/auth/fbAuth'
-//context
-
-//import {switchCase} from '@babel/types'
-
 export default props => {
-  //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
   //useState
-
-  //const [saveLogin, setSaveLogin] = useState(false)
-  //const [Fbstate, setFbState] = userState({isLoggedIn: false, userID: '', name: '', email: '', picture: ''})
   const [fetch, setFetch] = useState(null)
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1, phone: '', pwd: ''})
 
-  //const [changes, setChanges] = useState({})
   let loginId = '',
     loginName = '',
     loginImg = '',
@@ -46,7 +30,7 @@ export default props => {
     loginEmail = '',
     loginNicknm = '',
     gender = ''
-  //---------------------------------------------------------------------
+
   //fetch
   async function fetchData(obj, ostype) {
     switch (ostype) {
@@ -336,33 +320,4 @@ const ButtonArea = styled.div`
       letter-spacing: -0.5px;
     }
   }
-`
-
-const SocialLogin = styled.div`
-  display: none;
-  margin: 30px 0 0 0;
-  div {
-    float: left;
-    width: 48.5%;
-    height: 48px;
-    margin-left: 3%;
-    margin-bottom: 12px;
-    background: #f5f5f5;
-  }
-  div:nth-child(2n + 1) {
-    margin-left: 0;
-  }
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-`
-const SnsGoogleLogion = styled.button`
-  padding: 10px 34px 10px 50px;
-  border: 1px solid #e5e5e5;
-  background: #fff url(${IMG_SERVER}/svg/ico-google.svg) no-repeat -1px -3px;
-  color: #757575;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
 `

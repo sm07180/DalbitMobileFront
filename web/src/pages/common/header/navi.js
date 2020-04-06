@@ -13,8 +13,7 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-//socket
-const sc = require('context/socketCluster')
+
 let history
 /**
  * @title 방송하기 유효성체크

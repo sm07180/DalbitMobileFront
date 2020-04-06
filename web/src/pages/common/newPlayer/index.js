@@ -11,7 +11,6 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
 import qs from 'query-string'
-const sc = require('context/socketCluster') //socketCluster
 
 export default props => {
   //---------------------------------------------------------------------

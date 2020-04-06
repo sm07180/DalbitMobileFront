@@ -9,7 +9,6 @@ import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-const sc = require('context/socketCluster')
 import MessageType from './chat-message-type'
 
 //component
@@ -43,7 +42,6 @@ export default props => {
     //context
     if (e.target.value && e.key == 'Enter') {
       if (context.token.isLogin) {
-        sc.SendMessageChat({...broadcastTotalInfo, msg: e.target.value})
         e.target.value = ''
       } else {
         e.target.value = ''
@@ -154,7 +152,6 @@ export default props => {
           context.action.updateBroadcastTotalInfo(null)
           context.action.updateMediaPlayerStatus(false)
           mediaHandler.stop()
-          sc.socketClusterDestory(false, context)
           localStorage.clear()
           //window.location.href = window.location.origin + '/live'
           context.action.alert({

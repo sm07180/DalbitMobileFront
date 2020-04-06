@@ -19,9 +19,6 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 //components
 import useResize from 'components/hooks/useResize'
 import ChatUI from './chat-ui'
-import {setSesstionStorage, getSesstionStorage} from 'components/lib/sesstionStorageCtl'
-
-const sc = require('context/socketCluster')
 import SideContent from './tab'
 
 let audioStartInterval = null
@@ -159,7 +156,6 @@ export default props => {
       return
     }
 
-    //sc.socketClusterBinding(roomNo, context)
     context.action.updateBroadcastTotalInfo(res.data)
   }
 
@@ -189,7 +185,6 @@ export default props => {
     console.log('방송방 진입해서 private chennel 입장 ')
     const pathUrl = window.location.search
     let UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
-    sc.socketClusterBinding(UserRoomNo, context)
     //방송방 최초 진입시 모바일 사이즈일경우 사이드탭은 무조건 닫혀있는 상태, PC일경우에만 열려있음
     if (window.innerWidth <= 840) {
       setIsSideOn(false)
