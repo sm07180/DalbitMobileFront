@@ -20,8 +20,8 @@ import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
 
 const selectBoxData = [
-  {value: 0, text: '금지어 관리'}
-  // {value: 1, text: '매니저 관리'},
+  //{value: 0, text: '금지어 관리'},
+  {value: 1, text: '매니저 관리'}
   // {value: 2, text: '블랙리스트 관리'}
 ]
 
