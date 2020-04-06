@@ -1,9 +1,7 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {LButton} from './bot-button'
-import {BroadCastStore} from '../../store'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 // props 로 가져온 데이터들 바인딩 필요함

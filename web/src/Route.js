@@ -24,8 +24,8 @@ const mLive = React.lazy(() => import('pages/mlive'))
 
 //setting
 const Setting = React.lazy(() => import('pages/setting'))
-//secession
 const Secession = React.lazy(() => import('pages/secession'))
+
 export default () => {
   return (
     <React.Suspense
