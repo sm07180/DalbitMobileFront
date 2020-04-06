@@ -11,6 +11,8 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
+import useChange from 'components/hooks/useChange'
+
 export default props => {
   //-----------------------------------------------------------------------------
   //contenxt
@@ -19,12 +21,23 @@ export default props => {
   //state
   const [word, setWord] = useState(false)
 
+  //hooks
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+
   //-----------------------------------------------------------------------------
   //function
+  function update(mode) {
+    switch (true) {
+      case mode.onChange !== undefined:
+        console.log(JSON.stringify(changes))
+        break
+    }
+  }
+
   async function fetchWrite() {
     const res = await Api.mypage_banword_write({
       data: {
-        banWord: ''
+        banWord: '귀를기울여봐|우리들의|잊지못할|이야기|꿈처럼~|바람처럼~|들려줄게~'
       }
     })
   }
@@ -32,7 +45,11 @@ export default props => {
   async function fetchList() {
     const res = await Api.mypage_banword_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      if (res.data.banWordCnt) setWord(res.data.banWord.split('|'))
+      if (res.data.banWordCnt) {
+        setWord(res.data.banWord.split('|'))
+      } else {
+        setChanges([''])
+      }
     } else {
       context.action.alert({
         msg: res.message
@@ -43,12 +60,21 @@ export default props => {
   const createList = () => {
     return word.map((item, index) => {
       return (
-        <div className="input-wrap">
-          <input type="text" maxlength="12" defaultValue={item} />
-          <button>삭제</button>
+        <div className="input-wrap" key={index}>
+          <input type="text" maxLength="12" name={`word${index}`} onChange={onChange} defaultValue={word[index]} />
+          <button
+            onClick={() => {
+              setWord([''])
+            }}>
+            삭제
+          </button>
         </div>
       )
     })
+  }
+
+  const addinput = () => {
+    setWord(word.concat(''))
   }
 
   //-----------------------------------------------------------------------------
@@ -69,7 +95,7 @@ export default props => {
         <button
           className="ban-add-btn"
           onClick={() => {
-            setShowState(false)
+            setWord([''])
           }}>
           금지어 추가
         </button>
@@ -82,7 +108,13 @@ export default props => {
 
       {word && (
         <div className="btn-wrap">
-          <button className="white">추가</button>
+          <button
+            className="white"
+            onClick={() => {
+              addinput()
+            }}>
+            추가
+          </button>
           <button className="purple">저장</button>
         </div>
       )}
