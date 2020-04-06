@@ -24,12 +24,12 @@ const myProfile = props => {
     <MyProfile>
       <ButtonWrap>
         <InfoConfigBtn>
-          <Link to="/my/setting">내 정보 관리</Link>
+          <Link to="/private">내 정보 관리</Link>
         </InfoConfigBtn>
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
             return (
-              <a href={`/mmypage/${fan.memNo}`} key={index}>
+              <a href={`/mypage/${fan.memNo}`} key={index}>
                 <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
               </a>
             )

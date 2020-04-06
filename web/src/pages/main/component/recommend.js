@@ -47,7 +47,7 @@ export default props => {
           //
           //상대방 페이지이동
           if (roomNo === '') {
-            history.push(`mmypage/${memNo}/`)
+            history.push(`/mypage/${memNo}/`)
           } else {
             RoomJoin(roomNo + '')
           }

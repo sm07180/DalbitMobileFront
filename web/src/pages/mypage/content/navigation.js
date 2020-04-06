@@ -41,7 +41,7 @@ export default props => {
         {list.map((bundle, index) => {
           const {type, txt} = bundle
           return (
-            <NavLink to={`/mmypage/${memNo}/${type}`} activeClassName="active" key={index}>
+            <NavLink to={`/mypage/${memNo}/${type}`} activeClassName="active" key={index}>
               <TabText>{txt}</TabText>
             </NavLink>
           )

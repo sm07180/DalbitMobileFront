@@ -4,15 +4,15 @@ import {Switch, Route, useParams, Redirect} from 'react-router-dom'
 
 // component
 import Layout from 'pages/common/layout/new_index.js'
-import MyProfile from './content/myProfile.js'
-import Navigation from './content/navigation.js'
-import Notice from './content/notice.js'
-import FanBoard from './content/fanBoard.js'
-import Cast from './content/cast.js'
-import Wallet from './content/wallet.js'
-import Report from './content/report.js'
-import Alert from './content/alert.js'
-import BroadcastSetting from './content/broadcastSetting.js'
+import MyProfile from './content/myProfile.js.js'
+import Navigation from './content/navigation.js.js'
+import Notice from './content/notice.js.js'
+import FanBoard from './content/fanBoard.js.js'
+import Cast from './content/cast.js.js'
+import Wallet from './content/wallet.js.js'
+import Report from './content/report.js.js'
+import Alert from './content/alert.js.js'
+import BroadcastSetting from './content/broadcastSetting.js.js'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -56,7 +56,7 @@ export default props => {
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      {memNo && !type && <Redirect to={`/mmypage/${memNo}/fanboard`} />}
+      {memNo && !type && <Redirect to={`/mypage/${memNo}/fanboard`} />}
       <Layout {...props}>
         <Mypage>
           <MyProfile profile={profileInfo} />
@@ -64,7 +64,7 @@ export default props => {
           <SubContent>
             {navigationList.map(value => {
               const {type, component} = value
-              return <Route exact path={`/mmypage/${memNo}/${type}`} component={component} key={type} />
+              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
           </SubContent>
         </Mypage>

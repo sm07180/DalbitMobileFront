@@ -29,7 +29,7 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <Link to={`/mmypage/${memNo}`}>
+                <Link to={`/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
@@ -51,7 +51,7 @@ export default props => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                <Link to={`/mmypage/${memNo}`}>
+                <Link to={`/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>

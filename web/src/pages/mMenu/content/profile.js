@@ -127,7 +127,7 @@ export default props => {
           </div>
 
           <div className="sub-nav">
-            <Link to={`/my/setting`}>
+            <Link to={`/private`}>
               <div className="list">
                 <span className="text">내 정보 관리</span>
                 <img className="icon" src={InfoIcon} />
@@ -136,7 +136,7 @@ export default props => {
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
-                <Link to={`/mmypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <Link to={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                   <div className="list">
                     <span className="text">{txt}</span>
                     <img className="icon" src={icon} />
