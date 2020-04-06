@@ -22,8 +22,9 @@ const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
 const mLive = React.lazy(() => import('pages/mlive'))
 
-//setting
 const Secession = React.lazy(() => import('pages/secession'))
+
+const NotFound = React.lazy(() => import('pages/not_found'))
 
 export default () => {
   return (
@@ -58,7 +59,8 @@ export default () => {
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
 
-        {/* <Redirect to="/error" /> */}
+        <Route exact path="/notfound" component={NotFound} />
+        <Redirect to="/notfound" component={NotFound} />
       </Switch>
     </React.Suspense>
   )
