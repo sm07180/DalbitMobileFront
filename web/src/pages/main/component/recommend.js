@@ -7,7 +7,7 @@ import Room, {RoomJoin} from 'context/room'
 import CustomSwiper from 'components/ui/swiper.js'
 
 // static
-import LiveIcon from '../static/ic_live.svg'
+import LiveIcon from '../static/ic_live.png'
 
 export default props => {
   //---------------------------------------------------------------------
