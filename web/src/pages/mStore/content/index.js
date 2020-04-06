@@ -4,9 +4,7 @@
  */
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-//layout
-import Layout from 'pages/common/layout'
-import Banner from './banner'
+
 //context
 import {Context} from 'context'
 import Api from 'context/api'
