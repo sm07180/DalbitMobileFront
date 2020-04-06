@@ -38,7 +38,15 @@ export default props => {
           <button>해제</button>
         </li>
       </ul>
-      간격.
+      <SearchArea>
+        <select>
+          <option value="0">전체</option>
+          <option value="1">닉네임</option>
+          <option value="2">ID</option>
+        </select>
+        <input type="text" />
+        <button>찾기</button>
+      </SearchArea>
       <ul className="list-item search">
         <li>
           <figure
@@ -55,6 +63,37 @@ export default props => {
     </Content>
   )
 }
+
+const SearchArea = styled.div`
+  position: relative;
+  margin: 12px 0;
+  border: 1px solid #e0e0e0;
+  * {
+    height: 46px;
+    line-height: 46px;
+  }
+  select {
+    width: 116px;
+    border-right: 1px solid #e0e0e0;
+    color: #707070;
+    text-indent: 12px;
+    background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
+  }
+  input {
+    width: calc(100% - 117px);
+    padding: 0 46px 0 12px;
+    color: #424242;
+  }
+  button {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat center;
+    text-indent: -9999px;
+  }
+`
 
 const Content = styled.div`
   .list-item {

@@ -60,6 +60,13 @@ option,
 button {
   cursor: pointer;
 }
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+select::-ms-expand {
+  display: none;
+}
 button:disabled {
   cursor: auto;
 }
