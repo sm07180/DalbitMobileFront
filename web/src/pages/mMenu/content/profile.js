@@ -60,7 +60,7 @@ export default props => {
         Hybrid('GetLogoutToken', data)
         globalCtx.action.updateToken(data)
         globalCtx.action.updateProfile(null)
-        props.history.push('/new')
+        props.history.push('/')
         return (window.location.href = '/')
       }
       setFetching(false)

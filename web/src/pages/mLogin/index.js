@@ -77,7 +77,7 @@ export default props => {
           }
 
           Hybrid('GetLoginToken', loginInfo.data)
-          return (window.location.href = '/new')
+          return (window.location.href = '/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
