@@ -189,6 +189,7 @@ const TopWrap = styled.div`
 `
 
 const Write = styled.div`
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
