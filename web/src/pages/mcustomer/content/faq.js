@@ -103,11 +103,12 @@ function Faq(props) {
 
   const clickEvent = faqIdx => {
     //Store().action.updatefaqPage(faqIdx)
-    if (Store().faqPage === '') {
-      Store().action.updatefaqPage(faqIdx)
-    } else if (Store().faqPage !== '') {
-      Store().action.updatefaqPage('')
-    }
+    // if (Store().faqPage === '') {
+
+    // } else if (Store().faqPage !== '') {
+    //   Store().action.updatefaqPage('')
+    // }
+    Store().action.updatefaqPage(faqIdx)
     SetListhide(faqIdx)
   }
 
@@ -128,6 +129,7 @@ function Faq(props) {
       Store().action.updatefaqPage('')
       setfaqNum(4)
     }
+    setPage(1)
   }
   //--------------------------------------------------------
   useEffect(() => {
@@ -303,7 +305,7 @@ const Detail = styled.section`
     opacity: 1;
     height: auto;
     padding: 30px 0 30px 120px;
-    transition: padding-top 0.6s ease;
+    transition: padding-top 0.2s ease-in-out;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding: 30px 0 30px 0px;
     }

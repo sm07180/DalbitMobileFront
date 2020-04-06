@@ -24,17 +24,34 @@ const List = props => {
 
   return (
     <div>
-      <ListStyled onClick={() => setOpened(opened ? false : true)}>
+      <ListStyled onClick={() => setOpened(opened ? false : true)} className={opened ? 'on' : ''}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>
         </TitleWrap>
-        <TimeWrap>
+        {/* <TimeWrap>
           <Time>{timeFormat(writeDt)}</Time>
           <ArrowDownBtn />
-        </TimeWrap>
+        </TimeWrap> */}
       </ListStyled>
-      {opened && <ListContent>{contents}</ListContent>}
+      {opened && (
+        <>
+          <ListContent>
+            <div>{title}</div>
+            <div> {timeFormat(writeDt)}</div>
+            <div>{contents}</div>
+          </ListContent>
+          <Buttons>
+            <button>
+              <i className="far fa-edit"></i>수정
+            </button>
+            <button>
+              <i className="far fa-trash-alt"></i>
+              삭제
+            </button>
+          </Buttons>
+        </>
+      )}
     </div>
   )
 }
@@ -91,6 +108,28 @@ const ListContent = styled.div`
   color: #616161;
   font-size: 14px;
   letter-spacing: -0.35px;
+  div:nth-child(1) {
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.4px;
+    transform: skew(-0.03deg);
+  }
+  div:nth-child(2) {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #bdbdbd;
+    line-height: 1.08;
+    letter-spacing: -0.3px;
+    transform: skew(-0.03deg);
+  }
+  div:nth-child(3) {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+  }
 `
 
 const ListStyled = styled.div`
@@ -102,8 +141,33 @@ const ListStyled = styled.div`
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   user-select: none;
+  &.on {
+    background-color: #f8f8f8;
+  }
 
   &:active {
     background-color: #efefef;
+  }
+`
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f8f8;
+  border-top: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
+  & button {
+    padding: 20px 20px 12px 20px;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.35px;
+    text-align: left;
+    color: #9e9e9e;
+    transform: skew(-0.03deg);
+    > i {
+      display: inline-block;
+      padding-right: 5px;
+      font-size: 14px;
+      color: #bdbdbd;
+    }
   }
 `

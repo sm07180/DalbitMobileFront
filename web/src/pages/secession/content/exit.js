@@ -40,7 +40,7 @@ const Exit = props => {
           localStorage.removeItem('com.naver.nid.oauth.state_token')
           context.action.updateGnbVisible(false)
           context.action.updateProfile(null)
-          context.action.alert({
+          context.action.confirm({
             msg: '회원 탈퇴가 완료 되었습니다.',
             callback: () => {
               history.push(`/`)
@@ -64,41 +64,46 @@ const Exit = props => {
   }
 
   const clearFilter = () => {
-    setState(agree)
-    if (
-      state.click1 === true &&
-      state.click2 === true &&
-      state.click3 === true &&
-      state.click4 === true &&
-      state.click5 === true &&
-      state.click6 === true
-    ) {
-      setState(initialState)
+    // setState(agree)
+    // if (
+    //   state.click1 === true &&
+    //   state.click2 === true &&
+    //   state.click3 === true &&
+    //   state.click4 === true &&
+    //   state.click5 === true &&
+    //   state.click6 === true
+    // ) {
+    //   setState(initialState)
+    // }
+    if (all === false) {
+      setAll(true)
+    } else if (all === true) {
+      setAll(false)
     }
   }
 
-  useEffect(() => {
-    if (
-      state.click1 === true &&
-      state.click2 === true &&
-      state.click3 === true &&
-      state.click4 === true &&
-      state.click5 === true &&
-      state.click6 === true
-    ) {
-      setAll(true)
-    }
-    if (
-      state.click1 === false ||
-      state.click2 === false ||
-      state.click3 === false ||
-      state.click4 === false ||
-      state.click5 === false ||
-      state.click6 === false
-    ) {
-      setAll(false)
-    }
-  }, [state])
+  // useEffect(() => {
+  //   if (
+  //     state.click1 === true &&
+  //     state.click2 === true &&
+  //     state.click3 === true &&
+  //     state.click4 === true &&
+  //     state.click5 === true &&
+  //     state.click6 === true
+  //   ) {
+  //     setAll(true)
+  //   }
+  //   if (
+  //     state.click1 === false ||
+  //     state.click2 === false ||
+  //     state.click3 === false ||
+  //     state.click4 === false ||
+  //     state.click5 === false ||
+  //     state.click6 === false
+  //   ) {
+  //     setAll(false)
+  //   }
+  // }, [state])
   return (
     <Wrap>
       <Checkbox
@@ -136,7 +141,11 @@ const Exit = props => {
         위의 내용을 모두 확인하였습니다.
         <button onClick={() => clearFilter()} className={all === true ? 'on' : ''}></button>
       </div>
-      <button className={all === true ? 'submiton' : 'submit'} onClick={Validate}>
+      <button
+        className={
+          all === true && state.click1 === true && state.click2 === true && state.click6 === true ? 'submiton' : 'submit'
+        }
+        onClick={Validate}>
         회원탈퇴
       </button>
     </Wrap>

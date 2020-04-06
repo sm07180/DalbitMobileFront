@@ -1,10 +1,17 @@
 /**
  * @title error페이지
  */
-import React from 'react'
+import {React, useContext} from 'react'
 import 'styles/errorstyle.scss'
-
+import {Context} from 'context'
+import Api from 'context/api'
 export default () => {
+  const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
+  console.log(customHeader.os)
+  const roots = () => {
+    let osType = customHeader.os // os : 1(Aos) , 2(ios)
+  }
   return (
     <>
       <section>

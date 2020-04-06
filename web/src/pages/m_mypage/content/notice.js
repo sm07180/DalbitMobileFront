@@ -96,9 +96,11 @@ const Notice = () => {
         <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
       )}
 
-      {/* <GlobalWriteBtn>
+      <GlobalWriteBtn>
         <div className="inner" />
-      </GlobalWriteBtn> */}
+      </GlobalWriteBtn>
+
+      <Write></Write>
     </>
   )
 }
@@ -184,6 +186,16 @@ const TopWrap = styled.div`
     font-size: 20px;
     letter-spacing: -0.5px;
   }
+`
+
+const Write = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 21;
 `
 
 export default Notice
