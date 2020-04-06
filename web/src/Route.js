@@ -7,8 +7,8 @@ import React from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 
 import Navigator from './pages/navigator'
-import Main from './pages/main'
 
+import Main from './pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
 const MyPage = React.lazy(() => import('pages/mypage'))
@@ -27,7 +27,7 @@ const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
 
 const Secession = React.lazy(() => import('pages/secession'))
-const NotFound = React.lazy(() => import('pages/not_found'))
+const ErrorPage = React.lazy(() => import('pages/common/error'))
 
 export default () => {
   return (
@@ -64,8 +64,8 @@ export default () => {
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
 
-        <Route exact path="/notfound" component={NotFound} />
-        <Redirect to="/notfound" />
+        <Route exact path="/error" component={ErrorPage} />
+        <Redirect to="/error" />
       </Switch>
     </React.Suspense>
   )
