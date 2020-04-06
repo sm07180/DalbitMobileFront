@@ -8,7 +8,7 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 
 import Navigator from './pages/navigator'
 
-import Main from './pages/main'
+import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
 const MyPage = React.lazy(() => import('pages/mypage'))

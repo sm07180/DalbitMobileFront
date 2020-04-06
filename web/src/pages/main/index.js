@@ -79,10 +79,10 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <Link to={'/live'}>라이브</Link>
+                <a href={'/live'}>라이브</a>
               </div>
               <div className="tab">
-                <Link to={'/rank'}>랭킹</Link>
+                <a href={'/rank'}>랭킹</a>
               </div>
               <div className="tab">
                 <Link
@@ -92,7 +92,7 @@ export default props => {
                     if (globalCtx.customHeader.os === '2') {
                       webkit.messageHandlers.openInApp.postMessage('')
                     } else {
-                      history.push(`/store`)
+                      window.location.href = '/store'
                     }
                   }}
                   to={'/store'}>
@@ -120,9 +120,9 @@ export default props => {
                   팬 랭킹
                 </div>
               </div>
-              <Link to="/rank">
+              <a href="/rank">
                 <img className="plus-icon" src={PlusIcon} />
-              </Link>
+              </a>
             </div>
 
             <div className="content-wrap rank-slide">
@@ -135,9 +135,9 @@ export default props => {
                 <div className="txt">실시간 LIVE</div>
                 <img className="icon live" src={PlayIcon} />
               </div>
-              <Link to="/live">
+              <a href="/live">
                 <img className="plus-icon" src={PlusIcon} />
-              </Link>
+              </a>
             </div>
 
             <div className="content-wrap">
