@@ -14,7 +14,6 @@
     3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
-import {osName, isAndroid, isIPad13} from 'react-device-detect'
 
 //components
 import Api from 'context/api'
