@@ -393,9 +393,8 @@ export default class API {
   }
 
   /**
-   * @brief 마이페이지 방송설정 유저 검색
+   * @brief 마이페이지 방송설정 금지어 단어 등록, 수정
    * @method "GET"
-   * @todo
    * @param string banWord              //금지어 ( | 구분자), 파람 없이 보내면 조회만 함
    * @create 이은비 2020.04.02
    */
@@ -405,9 +404,67 @@ export default class API {
   }
 
   /**
+   * @brief 마이페이지 방송설정 유저 검색
+   * @method "GET"
+   * @param int userType               //필수 유저검색타입(0: 전체, 1:닉네임, 2:아이디)
+   * @param string search              //필수 검색단어
+   * @param int page                   //페이지번호
+   * @param int records                //페이지당 리스트 수
+   * @create 이은비 2020.04.06
+   */
+  static mypage_user_search = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/search`, method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 고정매니저 조회
+   * @method "GET"
+   * @create 이은비 2020.04.06
+   */
+  static mypage_manager_list = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/manager`, method: method || 'GET'})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 고정매니저 등록
+   * @method "POST"
+   * @param string memNo               //필수 매니저될 회원 번호
+   * @param string role              //권한설정
+   * @create 이은비 2020.04.06
+   */
+  static mypage_manager_add = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/manager/add`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 고정매니저 권한 수정
+   * @method "POST"
+   * @param string memNo               //필수 매니저될 회원 번호
+   * @param string role                //필수 권한설정
+   * @create 이은비 2020.04.06
+   */
+  static mypage_manager_edit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/manager/edit`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 고정매니저 해제
+   * @method "DELETE""
+   * @param string memNo               //필수 해제할 매니저 회원 번호
+   * @create 이은비 2020.04.06
+   */
+  static mypage_manager_delete = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/manager`, method: method || 'DELETE', data: data})
+  }
+
+  /**
    * @brief 마이페이지 리포트 방송내역 조회
    * @method "GET""
-   * @todo
    * @param              /
    * @create 황상한 2020.03.30
    */
