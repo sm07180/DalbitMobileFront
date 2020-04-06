@@ -115,15 +115,6 @@ export default props => {
 
         pathUrl = window.location.search
         UserRoomNo = pathUrl ? pathUrl.split('=')[1] : ''
-        const scLoginInfo = {
-          authToken: res.data.authToken,
-          memNo: res.data.memNo,
-          locale: Utility.locale(),
-          roomNo: UserRoomNo
-        }
-        if (UserRoomNo != '') {
-          sc.sendMessage.login(scLoginInfo)
-        }
 
         Api.profile({params: {memNo: res.data.memNo}}).then(profileInfo => {
           if (profileInfo.result === 'success') {

@@ -117,7 +117,6 @@ export default props => {
         //콜백처리
         msg: `${objProfileInfo.nickNm} 님이 강제 퇴장 되었습니다.`
       })
-      //sc.SendMessageKickout(res)
     }
   }
 

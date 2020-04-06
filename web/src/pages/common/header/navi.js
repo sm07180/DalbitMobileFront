@@ -51,14 +51,11 @@ export const BroadValidation = () => {
                     const res = await Api.broadcast_reToken({data: {...obj}})
                     //Error발생시
                     if (res.result === 'fail') {
-                      console.log(res.message)
                       props.history.push('/')
                       return
                     }
                     //정상리토큰
                     if (res.result === 'success') {
-                      console.log('socketClusterBinding1 = ' + res.data.roomNo)
-                      sc.socketClusterBinding(res.data.roomNo, context)
                       context.action.updateBroadcastTotalInfo(res.data)
                       if (isApp) {
                         Hybrid('ReconnectRoom', res.data)
@@ -67,7 +64,6 @@ export const BroadValidation = () => {
                       }
                       return
                     }
-                    //return res.data
                   }
                   getReToken(res.data)
                 }, 100)
@@ -116,7 +112,6 @@ export const BroadValidation = () => {
                     }
                     //정상리토큰
                     if (res.result === 'success') {
-                      // sc.socketClusterBinding(res.data.roomNo, context)
                       context.action.updateBroadcastTotalInfo(res.data)
                       if (isApp) {
                         Hybrid('ReconnectRoom', res.data)
