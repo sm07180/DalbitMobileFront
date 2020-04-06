@@ -20,10 +20,9 @@ const MobileLogin = React.lazy(() => import('pages/mLogin'))
 const MobileCustomer = React.lazy(() => import('pages/mcustomer'))
 const MobileSetting = React.lazy(() => import('pages/msetting'))
 const MobileUser = React.lazy(() => import('pages/m_user'))
-const mLive = React.lazy(() => import('pages/mlive'))
+const Live = React.lazy(() => import('pages/mlive'))
 
 const Secession = React.lazy(() => import('pages/secession'))
-
 const NotFound = React.lazy(() => import('pages/not_found'))
 
 export default () => {
@@ -37,22 +36,22 @@ export default () => {
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={MobileMenu} />
-        <Route exact path="/mranking" component={MobileRanking} />
+        <Route exact path="/ranking" component={MobileRanking} />
         <Route exact path="/mpay" component={MobilePay} />
-        <Route exact path="/mstore" component={MobileStore} />
+        <Route exact path="/store" component={MobileStore} />
         <Route exact path="/mlogin" component={MobileLogin} />
         <Route exact path="/muser" component={MobileUser} />
         <Route exact path="/muser/:title" component={MobileUser} />
 
-        <Route exact path="/mlive" component={mLive} />
+        <Route exact path="/live" component={Live} />
 
         <Route exact path="/mmypage/:memNo" component={MobileMyPage} />
         <Route exact path="/mmypage/:memNo/:type" component={MobileMyPage} />
         <Route exact path="/my/setting" component={MobileMySetting} />
 
-        <Route exact path="/mcustomer/" component={MobileCustomer} />
-        <Route exact path="/mcustomer/:title" component={MobileCustomer} />
-        <Route exact path="/mcustomer/:title/:num" component={MobileCustomer} />
+        <Route exact path="/customer/" component={MobileCustomer} />
+        <Route exact path="/customer/:title" component={MobileCustomer} />
+        <Route exact path="/customer/:title/:num" component={MobileCustomer} />
 
         <Route exact path="/msetting/" component={MobileSetting} />
 

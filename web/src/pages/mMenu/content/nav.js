@@ -20,11 +20,11 @@ export default props => {
 
   const navList = [
     {active: true, value: 'broadcast', txt: '방송하기', icon: MicIcon},
-    {value: 'mlive', txt: '라이브', icon: LiveIcon},
-    {value: 'mranking', txt: '랭킹', icon: RankingIcon},
-    {value: 'mstore', txt: '스토어', icon: StoreIcon},
-    //{value: 'mevent', txt: '이벤트', icon: EventIcon},
-    {value: 'mcustomer', txt: '고객센터', icon: CSIcon}
+    {value: 'live', txt: '라이브', icon: LiveIcon},
+    {value: 'ranking', txt: '랭킹', icon: RankingIcon},
+    {value: 'store', txt: '스토어', icon: StoreIcon},
+    //{value: 'event', txt: '이벤트', icon: EventIcon},
+    {value: 'customer', txt: '고객센터', icon: CSIcon}
   ]
 
   return (

@@ -82,7 +82,7 @@ export default props => {
                 <Link to={'/mlive'}>라이브</Link>
               </div>
               <div className="tab">
-                <Link to={'/mranking'}>랭킹</Link>
+                <Link to={'/ranking'}>랭킹</Link>
               </div>
               <div className="tab">
                 <Link
@@ -92,10 +92,10 @@ export default props => {
                     if (globalCtx.customHeader.os === '2') {
                       webkit.messageHandlers.openInApp.postMessage('')
                     } else {
-                      history.push(`/mstore`)
+                      history.push(`/store`)
                     }
                   }}
-                  to={'/mstore'}>
+                  to={'/store'}>
                   스토어
                 </Link>
               </div>
@@ -120,7 +120,7 @@ export default props => {
                   팬 랭킹
                 </div>
               </div>
-              <Link to="/mranking">
+              <Link to="/ranking">
                 <img className="plus-icon" src={PlusIcon} />
               </Link>
             </div>
@@ -135,7 +135,7 @@ export default props => {
                 <div className="txt">실시간 LIVE</div>
                 <img className="icon live" src={PlayIcon} />
               </div>
-              <Link to="/mlive">
+              <Link to="/live">
                 <img className="plus-icon" src={PlusIcon} />
               </Link>
             </div>

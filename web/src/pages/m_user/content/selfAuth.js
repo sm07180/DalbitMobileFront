@@ -46,7 +46,7 @@ export default props => {
   let url = ''
   switch (authType) {
     case 'charge':
-      url = '/mstore'
+      url = '/store'
       break
     case 'cast':
       url = '/broadcast-setting'
