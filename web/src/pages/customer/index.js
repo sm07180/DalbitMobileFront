@@ -6,7 +6,7 @@
 
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 import Content from './content'
 //Context
 import {CustomerProvider} from './store'

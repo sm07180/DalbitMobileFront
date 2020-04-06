@@ -8,7 +8,7 @@ import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
 // component
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 
 export default props => {
   const categoryList = [

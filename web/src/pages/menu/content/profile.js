@@ -156,9 +156,9 @@ export default props => {
               <span className="bold">로그인</span> 해주세요
             </div>
           </Link>
-          <Link to="/login">
+          <a href="/login">
             <button className="loginBtn">로그인</button>
-          </Link>
+          </a>
         </div>
       )}
     </MenuMypage>
@@ -307,6 +307,17 @@ const MenuMypage = styled.div`
         font-weight: bold;
       }
     }
+
+    .loginBtn {
+      display: block;
+      width: 120px;
+      height: 40px;
+      margin: 30px auto;
+      border: 2px solid #8556f6;
+      color: #424242;
+      border-radius: 10px;
+      transform: skew(-0.03deg);
+    }
   }
 
   .sub-nav {
@@ -336,16 +347,5 @@ const MenuMypage = styled.div`
         }
       }
     }
-  }
-
-  .loginBtn {
-    display: block;
-    width: 120px;
-    height: 40px;
-    margin: 30px auto;
-    border: 2px solid #8556f6;
-    color: #424242;
-    border-radius: 10px;
-    transform: skew(-0.03deg);
   }
 `

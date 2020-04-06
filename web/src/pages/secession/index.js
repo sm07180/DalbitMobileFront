@@ -5,7 +5,7 @@
  */
 
 import React, {useState, useEffect, useContext} from 'react'
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 import Content from './content'
 //Context
 import {SecssionProvider} from './store'

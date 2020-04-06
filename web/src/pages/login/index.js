@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Link, Switch, Redirect} from 'react-router-dom'
 
 // component
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 
 // context
 import {Context} from 'context'

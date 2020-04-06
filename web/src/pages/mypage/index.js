@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Switch, Route, useParams, Redirect} from 'react-router-dom'
 
 // component
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 import MyProfile from './content/myProfile.js'
 import Navigation from './content/navigation.js'
 import Notice from './content/notice.js'

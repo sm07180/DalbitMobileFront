@@ -3,7 +3,7 @@ import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 import {WIDTH_MOBILE} from 'context/config'
 
 //context

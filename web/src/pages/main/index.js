@@ -10,7 +10,7 @@ import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
 // components
-import Layout from 'pages/common/layout/new_index.js'
+import Layout from 'pages/common/layout'
 import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
