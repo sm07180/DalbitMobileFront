@@ -36,8 +36,6 @@ const Index = props => {
                 // alert(JSON.stringify(res.data, null, 1))
                 Hybrid('GetLogoutToken', res.data)
                 context.action.updateToken(res.data)
-                localStorage.removeItem('com.naver.nid.access_token')
-                localStorage.removeItem('com.naver.nid.oauth.state_token')
                 props.history.push('/')
                 context.action.updateGnbVisible(false)
                 context.action.updateProfile(null)
