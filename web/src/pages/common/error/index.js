@@ -8,7 +8,7 @@ import Api from 'context/api'
 export default () => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
-  console.log(customHeader.os)
+
   const roots = () => {
     let osType = customHeader.os // os : 1(Aos) , 2(ios)
   }
