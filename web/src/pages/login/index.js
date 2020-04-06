@@ -45,7 +45,7 @@ export default props => {
     if (webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/'
+      window.history.back()
     }
   }
 
@@ -132,9 +132,16 @@ export default props => {
                 onChange={changePhoneNum}
                 onKeyDown={e => {
                   const {keyCode} = e
-                  // 96 - 105 , 48 - 57
-                  // delete 8, 46
-                  if (keyCode === 8 || keyCode === 46 || (keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105)) {
+                  // Number 96 - 105 , 48 - 57
+                  // Delete 8, 46
+                  // Tab 9
+                  if (
+                    keyCode === 9 ||
+                    keyCode === 8 ||
+                    keyCode === 46 ||
+                    (keyCode >= 48 && keyCode <= 57) ||
+                    (keyCode >= 96 && keyCode <= 105)
+                  ) {
                     return
                   }
                   e.preventDefault()
