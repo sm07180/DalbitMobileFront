@@ -23,7 +23,6 @@ const MobileUser = React.lazy(() => import('pages/m_user'))
 const mLive = React.lazy(() => import('pages/mlive'))
 
 //setting
-const Setting = React.lazy(() => import('pages/setting'))
 const Secession = React.lazy(() => import('pages/secession'))
 
 export default () => {
@@ -56,7 +55,6 @@ export default () => {
 
         <Route exact path="/msetting/" component={MobileSetting} />
 
-        <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
 
