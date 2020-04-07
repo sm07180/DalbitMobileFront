@@ -51,10 +51,15 @@ const GlobalProvider = props => {
      * @brief customHeader
      */
     updateCustomHeader: obj => {
-      const stringified = JSON.stringify(obj)
-      Utility.setCookie('custom-header', '', -1)
-      Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
-      setCustomHeader({...obj})
+      if (obj) {
+        const stringified = JSON.stringify(obj)
+        Utility.setCookie('custom-header', '', -1)
+        Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
+        setCustomHeader({...obj})
+      } else {
+        Utility.setCookie('custom-header', '', -1)
+        setCustomHeader(null)
+      }
     },
     /**
      * @brief authToken 및 login여부
@@ -63,10 +68,15 @@ const GlobalProvider = props => {
      * @param bool isLogin                      // 로그인 여부
      */
     updateToken: obj => {
-      const {authToken} = obj
-      Utility.setCookie('authToken', '', -1)
-      Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-      setToken({...obj})
+      if (obj) {
+        const {authToken} = obj
+        Utility.setCookie('authToken', '', -1)
+        Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
+        setToken({...obj})
+      } else {
+        Utility.setCookie('authToken', '', -1)
+        setToken(null)
+      }
     },
 
     /**
