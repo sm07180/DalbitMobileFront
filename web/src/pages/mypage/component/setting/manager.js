@@ -4,62 +4,249 @@
  **/
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import useChange from 'components/hooks/useChange'
 
 //context
 import {Context} from 'context'
 import Api from 'context/api'
+import _ from 'lodash'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Utility from 'components/lib/utility'
+
+//component
+import Paging from 'components/ui/paging.js'
+import NoResult from 'components/ui/noResult'
 
 export default props => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
 
+  //hooks
+  const {changes, setChanges, onChange} = useChange({onChange: -1})
+
   //state
+  const [managerState, setManagerState] = useState(-1)
+  const [userState, setUserState] = useState(-1)
+  const [userList, setUserList] = useState(false)
+  const [managerList, setManagerList] = useState(false)
+  const [totalPageNumber, setTotalPageNumber] = useState(null)
+  const [page, setPage] = useState(1)
+
+  let userTypeSetting = 0
 
   //-----------------------------------------------------------------------------
+  //async
+  async function getManagerList() {
+    const res = await Api.mypage_manager_list({})
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        setManagerState(0)
+        setManagerList(false)
+      } else {
+        setManagerState(1)
+        setManagerList(res.data.list)
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function addManager(memNum) {
+    const res = await Api.mypage_manager_add({
+      data: {
+        memNo: memNum
+      }
+    })
+    if (res.result == 'success') {
+      getManagerList()
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function deleteManager(memNum) {
+    const res = await Api.mypage_manager_delete({
+      data: {
+        memNo: memNum
+      }
+    })
+    if (res.result == 'success') {
+      getManagerList()
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function getSearchList(type, typeDetail) {
+    if (!_.hasIn(changes, 'search') || changes.search.length == 0)
+      return context.action.alert({
+        msg: `검색어를 입력해주세요.`
+      })
+    userTypeSetting = type == 'search' ? Number(typeDetail) : userTypeSetting
+    const params = {
+      userType: userTypeSetting,
+      search: changes.search,
+      page: type == 'page' ? typeDetail : 1,
+      records: 5
+    }
+    const res = await Api.mypage_user_search({params})
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        setUserState(0)
+        setUserList(false)
+      } else {
+        const {list, paging} = res.data
+        if (paging) {
+          const {totalPage} = paging
+          setTotalPageNumber(totalPage)
+          setUserState(1)
+          setUserList(list)
+        }
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+  //-----------------------------------------------------------------------------
   //function
+
+  const createUserList = () => {
+    if (userList == false) return null
+    return (
+      <>
+        <ul className="list-item search">
+          {userList.map((item, index) => {
+            const {memNo, nickNm, memId, profImg} = item
+            return (
+              <li key={index}>
+                <figure
+                  style={{
+                    background: `url(${profImg.url}) no-repeat center center/ cover`
+                  }}></figure>
+                <div>
+                  <span>@{memId}</span>
+                  <p>{nickNm}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `${nickNm} 님을 매니저로 등록 하시겠습니까?`,
+                      callback: () => {
+                        addManager(memNo)
+                      }
+                    })
+                  }}>
+                  등록
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+        <Paging setPage={setPagination} totalPage={totalPageNumber} currentPage={page} />
+      </>
+    )
+  }
+
+  const createManagerList = () => {
+    if (managerList == false) return null
+    return (
+      <>
+        <ul className="list-item">
+          {managerList.map((item, index) => {
+            const {memNo, nickNm, memId, profImg, regDt} = item
+            const date = Utility.dateFormatter(regDt)
+            return (
+              <li key={index}>
+                <figure
+                  style={{
+                    background: `url(${profImg.url}) no-repeat center center/ cover`
+                  }}></figure>
+                <div>
+                  <span>@{memId}</span>
+                  <p>{nickNm}</p>
+                  <em>{date}</em>
+                </div>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `고정 매니저 권한을 해제하시겠습니까?`,
+                      callback: () => {
+                        deleteManager(memNo)
+                      }
+                    })
+                  }}>
+                  해제
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  }
+
+  const setPagination = page => {
+    //페이지 셋팅해서 패치 날리기..
+    setPage(page)
+    getSearchList('page', page)
+  }
+
+  const createUserResult = () => {
+    if (userState === -1) {
+      return null
+    } else if (userState === 0) {
+      return <NoResult className="mobile" />
+    } else {
+      return createUserList()
+    }
+  }
+
+  const createManagerResult = () => {
+    if (managerState === -1) {
+      return null
+    } else if (managerState === 0) {
+      return <NoResult className="mobile" text="지정된 매니저가 없습니다." />
+    } else {
+      return createManagerList()
+    }
+  }
+
+  //-----------------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    getManagerList()
+  }, [])
 
   //-----------------------------------------------------------------------------
   return (
     <Content>
-      <ul className="list-item">
-        <li>
-          <figure
-            style={{
-              background: `url(https://photo.dalbitlive.com/profile_0/20600190000/20200320092207071548.jpeg?336x336) no-repeat center center/ cover`
-            }}></figure>
-          <div>
-            <span>@34f432</span>
-            <p>이것이 나의 닉네임입니다</p>
-            <em>2020-03-20</em>
-          </div>
-          <button>해제</button>
-        </li>
-      </ul>
+      <div className="resulte-area">{createManagerResult()}</div>
       <SearchArea>
-        <select>
+        <select name="searchType" onChange={onChange}>
           <option value="0">전체</option>
           <option value="1">닉네임</option>
           <option value="2">ID</option>
         </select>
-        <input type="text" />
-        <button>찾기</button>
+        <input type="search" name="search" onChange={onChange} />
+        <button
+          onClick={() => {
+            const type = _.hasIn(changes, 'searchType') ? changes.searchType : 0
+            getSearchList('search', type)
+          }}>
+          찾기
+        </button>
       </SearchArea>
-      <ul className="list-item search">
-        <li>
-          <figure
-            style={{
-              background: `url(https://photo.dalbitlive.com/profile_0/20600190000/20200320092207071548.jpeg?336x336) no-repeat center center/ cover`
-            }}></figure>
-          <div>
-            <span>@34f432</span>
-            <p>이것이 나의 닉네임입니다 닉네임이 길면 어떻게 하실건가요;; </p>
-          </div>
-          <button>등록</button>
-        </li>
-      </ul>
+      <div className="resulte-area">{createUserResult()}</div>
     </Content>
   )
 }
@@ -97,6 +284,7 @@ const SearchArea = styled.div`
 
 const Content = styled.div`
   .list-item {
+    margin-top: -20px;
     li {
       display: flex;
       padding: 16px 0;
@@ -121,8 +309,9 @@ const Content = styled.div`
         }
         p {
           overflow: hidden;
-          padding-top: 3px;
+          padding-top: 1px;
           color: #424242;
+          line-height: 22px;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
@@ -146,6 +335,8 @@ const Content = styled.div`
     }
   }
   .list-item.search {
+    margin-top: 0;
+    margin-bottom: 30px;
     border-top: 1px solid ${COLOR_MAIN};
     div {
       padding-top: 3px;
@@ -154,5 +345,9 @@ const Content = styled.div`
       margin-top: 3px;
       background: ${COLOR_MAIN};
     }
+  }
+  .resulte-area {
+    min-height: 100px;
+    padding: 20px 0;
   }
 `

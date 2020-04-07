@@ -8,11 +8,19 @@ import styled from 'styled-components'
 
 //context
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import _ from 'lodash'
 
 export default props => {
+  const [text, setText] = useState('조회된 결과가 없습니다.')
+
+  useEffect(() => {
+    if (_.hasIn(props, 'text')) {
+      setText(props.text)
+    }
+  }, [])
   return (
     <NoResult className={props.className}>
-      <span>조회된 결과가 없습니다.</span>
+      <span>{text}</span>
     </NoResult>
   )
 }
