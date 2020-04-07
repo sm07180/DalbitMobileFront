@@ -131,7 +131,7 @@ const App = () => {
       })
     }
   }
-  //---------------------------------------------------------------------
+
   //useEffect token
   useEffect(() => {
     context.action.updateCustomHeader(customHeader)

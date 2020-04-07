@@ -17,7 +17,11 @@ import BroadcastSetting from './content/broadcastSetting.js'
 import {Context} from 'context'
 import Api from 'context/api'
 
+import qs from 'query-string'
+
 export default props => {
+  const {webview} = qs.parse(location.search)
+
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '공지사항'},
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
@@ -56,7 +60,7 @@ export default props => {
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      {memNo && !type && <Redirect to={`/mypage/${memNo}/fanboard`} />}
+      {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
       <Layout {...props}>
         <Mypage>
           <MyProfile profile={profileInfo} />
