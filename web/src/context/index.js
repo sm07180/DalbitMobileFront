@@ -34,7 +34,6 @@ const GlobalProvider = props => {
   const [login_state, setlogin] = useState(false)
   const [mediaHandler, setMediaHandler] = useState(null)
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
-  const [broadcastTotalInfo, setBroadcastTotalInfo] = useState(null) //create 2020.02.28 김호겸 - 방송방 reToken 정보
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   const [search, setSearch] = useState('')
   const [roomReady, setRoomReady] = useState(false)
@@ -168,13 +167,6 @@ const GlobalProvider = props => {
         Utility.setCookie('native-player-info', '', -1)
       }
     },
-    /**
-     * 방송방 토큰 재생성
-     * @breif 방들어올때,생성할때
-     */
-    updateBroadcastTotalInfo: obj => {
-      setBroadcastTotalInfo(broadcastTotalInfo => ({...broadcastTotalInfo, ...obj}))
-    },
     //
     /**
      * 방생성 후 방정보 가지고있음, 방 종료시 사라짐
@@ -216,7 +208,6 @@ const GlobalProvider = props => {
     gnb_state,
     mediaHandler,
     mediaPlayerStatus,
-    broadcastTotalInfo,
     cast_state,
     search,
     action,

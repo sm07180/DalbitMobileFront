@@ -4,7 +4,7 @@
 import React from 'react'
 //context
 //layout
-import Gnb from 'pages/common/newGnb'
+import Gnb from 'pages/common/gnb'
 import NewPlayer from 'pages/common/newPlayer'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
