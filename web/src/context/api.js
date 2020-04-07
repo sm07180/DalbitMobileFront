@@ -1317,6 +1317,8 @@ export default class API {
     return await ajax({...obj, url: url || `/rest/pay/bank`, method: method || 'POST', data: data})
   }
 }
+API.customHeader = null
+API.authToken = null
 
 //ajax
 export const ajax = async obj => {
