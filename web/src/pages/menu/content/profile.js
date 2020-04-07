@@ -45,7 +45,7 @@ export default props => {
 
   const globalCtx = useContext(Context)
   const {profile} = globalCtx
-  const {isLogin} = globalCtx.token
+  const {token} = globalCtx
 
   const [fetching, setFetching] = useState(false)
 
@@ -82,7 +82,7 @@ export default props => {
         <div className="category-text">마이 페이지</div>
       </Header>
 
-      {isLogin && profile ? (
+      {token && token.isLogin && profile ? (
         <>
           <div className="log-in">
             <div className="main-info">
