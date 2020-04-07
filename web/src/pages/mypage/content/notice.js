@@ -137,6 +137,9 @@ const Notice = props => {
 
   const toggler = noticeIdx => {
     setNumbers(noticeIdx)
+    if (numbers === noticeIdx) {
+      setNumbers('')
+    }
   }
   useEffect(() => {
     //console.log(numbers)

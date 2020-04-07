@@ -202,7 +202,7 @@ const List = props => {
               </div>
               <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
               <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
-                등록
+                수정
               </WriteSubmit>
             </section>
           </Write>
