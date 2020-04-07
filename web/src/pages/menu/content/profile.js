@@ -60,7 +60,7 @@ export default props => {
       if (logoutInfo.result === 'success') {
         const {data} = logoutInfo
         Hybrid('GetLogoutToken', data)
-        globalCtx.action.updateToken(data)
+        globalCtx.action.updateToken(null)
         globalCtx.action.updateProfile(null)
         props.history.push('/')
         return (window.location.href = '/')

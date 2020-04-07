@@ -106,7 +106,7 @@ const RecommendWrap = styled.div`
     }
     .slide-over {
       position: absolute;
-      opacity: 0.3;
+      /* opacity: 0.3; */
       background-color: #8556f6;
     }
   }

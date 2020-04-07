@@ -198,7 +198,7 @@ export default props => {
       if (middleIdx === idx) {
         child.firstChild.style.opacity = 0
       } else {
-        child.firstChild.style.opacity = 0.3
+        child.firstChild.style.backgroundColor = 'rgba(117,65,241, 0.6)'
       }
     })
   }, [selectedBIdx])
