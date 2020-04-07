@@ -126,14 +126,16 @@ export const RoomMake = async context => {
     return
   }
   //#2 본인인증 (AOS만 실행 개발중)
-  alert('os :' + customHeader.os)
-  const selfAuth = await Api.self_auth_check({})
-  if (selfAuth.result === 'fail') {
-    window.location.href = '/selfauth'
-    return
+  alert('OS' + customHeader.os + '')
+  if (customHeader.os + '' === '1') {
+    const selfAuth = await Api.self_auth_check({})
+    if (selfAuth.result === 'fail') {
+      window.location.href = '/selfauth'
+      return
+    }
   }
   //# 실행
-  Hybrid('RoomMake', '')
+  Hybrid('RoomMake')
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
