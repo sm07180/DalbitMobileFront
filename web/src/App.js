@@ -1,17 +1,6 @@
 /**
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
- * @notice
- * @flow
- * 
-  @customHeader
-    1.textarea (id="customHeader")
-    2.cookie(get) 
-    3.makeCustomHeader
-  @token
-    1.textarea (id="authToken")
-    2.cookie(get)
-    3.api/token 실행 (header에 1,2번포함)
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
 
@@ -26,23 +15,20 @@ import Route from './Route'
 import Interface from './Interface'
 
 const App = () => {
-  const context = useContext(Context)
+  const globalCtx = useContext(Context)
   App.context = () => context
 
-  //useState
   const [ready, setReady] = useState(false)
 
   const customHeader = useMemo(() => {
     const tempCustomHeaderTag = document.getElementById('customHeader')
-    console.log('temp custom', tempCustomHeaderTag)
-    console.log('temp custom value', tempCustomHeaderTag && tempCustomHeaderTag.value)
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
       return jsonParsed
     }
 
     const cookie = Utility.getCookie('custom-header')
-    if (cookie !== undefined) {
+    if (cookie) {
       let jsonParsed = JSON.parse(cookie)
       return jsonParsed
     }
@@ -55,69 +41,60 @@ const App = () => {
 
   const authToken = useMemo(() => {
     const tempAuthTokenTag = document.getElementById('authToken')
-    console.log('temp authtoken', tempAuthTokenTag)
-    console.log('temp authtoken value', tempAuthTokenTag && tempAuthTokenTag.value)
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
     }
 
-    const cookie = Utility.getCookie('authToken')
-    if (cookie !== undefined) {
-      return cookie
-    }
-
-    return ''
+    return Utility.getCookie('authToken')
   }, [])
 
   async function fetchData() {
     // Renew token
     const tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
-      context.action.updateToken(tokenInfo.data)
+      globalCtx.action.updateCustomHeader(customHeader)
+      globalCtx.action.updateToken(tokenInfo.data)
 
       if (tokenInfo.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
         if (profileInfo.result === 'success') {
-          context.action.updateProfile(profileInfo.data)
+          globalCtx.action.updateProfile(profileInfo.data)
         }
       }
 
       // *** Native App case
-      if (customHeader['os'] !== '3') {
-        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
+      // os => '1': Android, '2': IOS
+      if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+        if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
-        } else {
-          if (tokenInfo.data.authToken !== authToken) {
-            Hybrid('GetLoginToken', tokenInfo.data)
-          }
         }
 
         //최초앱 기동할때만적용
         if (customHeader.isFirst === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        } else if (customHeader.isFirst === 'N') {
-          //-----@안드로이드 Cookie
-          let cookie = Utility.getCookie('native-player-info')
-          if (customHeader.os === '1' && cookie !== null && cookie !== undefined) {
-            cookie = JSON.parse(cookie)
-            context.action.updateMediaPlayerStatus(true)
-            context.action.updateNativePlayer(cookie)
-          }
-          //-----@iOS
-          if (customHeader.os === '2' && cookie !== null && cookie !== undefined) {
-            cookie = decodeURIComponent(cookie)
-            cookie = JSON.parse(cookie)
-            context.action.updateMediaPlayerStatus(true)
-            context.action.updateNativePlayer(cookie)
+        } else if (customHeader['isFirst'] === 'N') {
+          const cookie = Utility.getCookie('native-player-info')
+          if (cookie) {
+            //----- @ Android
+            if (customHeader['os'] === '1') {
+              const parsedCookie = JSON.parse(cookie)
+              globalCtx.action.updateMediaPlayerStatus(true)
+              globalCtx.action.updateNativePlayer(parsedCookie)
+            }
+            //----- @ IOS
+            else if (customHeader['os'] === '2') {
+              const parsedCookie = JSON.parse(cookie)
+              globalCtx.action.updateMediaPlayerStatus(true)
+              globalCtx.action.updateNativePlayer(parsedCookie)
+            }
           }
         }
       }
 
-      //모든처리완료
+      //모든 처리 완료
       setReady(true)
     } else {
-      //토큰에러
-      context.action.alert({
+      globalCtx.action.alert({
         title: tokenInfo.messageKey,
         msg: tokenInfo.message
       })
@@ -126,7 +103,6 @@ const App = () => {
 
   //useEffect token
   useEffect(() => {
-    // context.action.updateCustomHeader(customHeader)
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 

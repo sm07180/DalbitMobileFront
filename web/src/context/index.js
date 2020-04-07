@@ -58,9 +58,8 @@ const GlobalProvider = props => {
      */
     updateCustomHeader: obj => {
       const stringified = JSON.stringify(obj)
-      // API.setCustomHeader(stringified)
-      // Utility.setCookie('custom-header', '', -1)
-      // Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
+      Utility.setCookie('custom-header', '', -1)
+      Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
       setCustomHeader({...obj})
     },
     /**
@@ -71,9 +70,8 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       const {authToken} = obj
-      // API.setAuthToken(authToken)
-      // Utility.setCookie('authToken', '', -1)
-      // Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
+      Utility.setCookie('authToken', '', -1)
+      Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
       setToken({...obj})
     },
 
