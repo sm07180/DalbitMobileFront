@@ -58,16 +58,6 @@ export default class Utility {
     return
   }
 
-  //* make UUID
-  static createUUID = () => {
-    var dt = new Date().getTime()
-    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = (dt + Math.random() * 16) % 16 | 0
-      dt = Math.floor(dt / 16)
-      return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16)
-    })
-    return uuid
-  }
   //* 배열이나 문자열 중복제거  [1,3,2,4,3,1,5,6,2,1] =>[1,3,2,4,5,6]  ,  '11411' =>'14'
   static removeOverlap = data => {
     if (typeof data === 'object') return [...new Set(data)]
