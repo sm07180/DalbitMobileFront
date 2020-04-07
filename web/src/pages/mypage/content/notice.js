@@ -132,6 +132,7 @@ const Notice = props => {
   //   console.log(noticeIdx)
   // }
   //-----------------------------------------------------------------------
+
   return (
     <>
       <TopWrap>
@@ -145,13 +146,13 @@ const Notice = props => {
 
               return (
                 <List
+                  {...props}
                   key={idx}
                   isTop={isTop}
                   title={title}
                   contents={contents}
                   writeDt={writeDt}
                   noticeIdx={noticeIdx}
-                  {...props}
                 />
               )
             })

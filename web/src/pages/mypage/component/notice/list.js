@@ -1,59 +1,35 @@
 import React, {useState, useEffect, useReducer, useContext} from 'react'
 import styled from 'styled-components'
-import Api from 'context/api'
-import {WIDTH_MOBILE} from 'context/config'
-import {Context} from 'context'
 
+import {Context} from 'context'
+import Api from 'context/api'
 // image
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE} from 'context/config'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
-
+//component
 import Checkbox from '../../content/checkbox'
 
 const List = props => {
-  const context = useContext(Context)
-  const ctx = useContext(Context)
-  const {isTop, title, contents, writeDt, noticeIdx, shows} = props
-  const [opened, setOpened] = useState(false)
-
-  const timeFormat = strFormatFromServer => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
-    return `${date} ${time}`
-  }
-
-  useEffect(() => {
-    setOpened(false)
-  }, [title])
-  ////context
+  //context
   const initialState = {
     click1: false
   }
-  //---------------------------------------------------------------------
+  const context = useContext(Context)
+  const ctx = useContext(Context)
+  var urlrStr = props.location.pathname.split('/')[2]
+  //props
+  const {isTop, title, contents, writeDt, noticeIdx} = props
+  //state
+  const [opened, setOpened] = useState(false)
   const reducer = (state, action) => ({...state, ...action})
   const [state, setState] = useReducer(reducer, initialState)
   const [coment, setComment] = useState(title)
   const [comentContent, setCommentContent] = useState(contents)
   const [writeShow, setWriteShow] = useState(false)
   const [writeBtnState, setWriteBtnState] = useState(false)
-  const [num, setNum] = useState('')
-  var urlrStr = props.location.pathname.split('/')[2]
-  //공지제목 등록 온체인지
-  const textChange = (e, title) => {
-    const target = e.currentTarget
-    if (target.value.length > 20) return
-    setComment(target.value)
-  }
-  //공지컨텐트 등록 온체인지
-  const textChangeContent = e => {
-    const target = e.currentTarget
-    if (target.value.length > 189) return
-    setCommentContent(target.value)
-  }
+  //---------------------------------------------------------------------
   //api
-
   const NoticeUpload = () => {
     async function fetcNoticeUpload() {
       const res = await Api.mypage_notice_edit({
@@ -113,23 +89,18 @@ const List = props => {
       msg: '<b>게시글을 삭제하시겠습니까?</b>'
     })
   }
-  const WriteToggle = () => {
-    if (writeShow === false) {
-      setWriteShow(true)
-    }
+  //func
+  //dateFormat
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
   }
-  const WritBtnActive = () => {
-    if (coment !== '' && comentContent !== '') {
-      setWriteBtnState(true)
-    } else {
-      setWriteBtnState(false)
-    }
-  }
-  useEffect(() => {
-    WritBtnActive()
-  }, [coment, comentContent])
+  //open toggler
 
-  //---------------------------------------------------------------------
+  //alertfunc
   const modifyBtn = () => {
     context.action.confirm({
       callback: () => {
@@ -138,25 +109,79 @@ const List = props => {
       msg: '현재 작성 중인 게시글은 저장되지 않습니다.<br /><b>취소하시겠습니까?</b>'
     })
   }
+  const WriteToggle = () => {
+    if (writeShow === false) {
+      setWriteShow(true)
+    }
+  }
+  //active
+  const WritBtnActive = () => {
+    if (coment !== '' && comentContent !== '') {
+      setWriteBtnState(true)
+    } else {
+      setWriteBtnState(false)
+    }
+  }
+  //공지제목 등록 온체인지
+  const textChange = (e, title) => {
+    const target = e.currentTarget
+    if (target.value.length > 20) return
+    setComment(target.value)
+  }
+  //공지컨텐트 등록 온체인지
+  const textChangeContent = e => {
+    const target = e.currentTarget
+    if (target.value.length > 189) return
+    setCommentContent(target.value)
+  }
+  //-------------------------------------------------------------------------
+  useEffect(() => {
+    setOpened(false)
+  }, [title])
+  //------------------------------------------------------------------------
+  useEffect(() => {
+    WritBtnActive()
+  }, [coment, comentContent])
+  ////
+  const [numbers, setNumbers] = useState('')
 
   const toggler = noticeIdx => {
-    setOpened(false)
     if (opened === true) {
       setOpened(false)
-    } else {
+    } else if (opened === false) {
+      setNumbers(noticeIdx)
       setOpened(true)
     }
   }
-  console.log(opened)
+  useEffect(() => {
+    // /setOpened(false)
+    // if (numbers !== noticeIdx) {
+
+    // } else if (numbers === noticeIdx) {
+
+    // }
+
+    if (numbers == noticeIdx) {
+      setOpened(true)
+      console.log('열림')
+    } else if (numbers !== noticeIdx) {
+      setOpened(false)
+      console.log('닫힘')
+    }
+
+    console.log(numbers, noticeIdx)
+  }, [numbers])
+
+  //-------------------------------------------------------------------------
   return (
     <Wrap>
-      <ListStyled onClick={() => toggler(noticeIdx)} className={opened ? 'on' : ''}>
+      <ListStyled onClick={() => toggler(noticeIdx)} className={opened === true ? 'on' : ''}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>
         </TitleWrap>
 
-        <ArrowDownBtn className={opened ? 'on' : ''} />
+        <ArrowDownBtn className={opened === true ? 'on' : ''} />
       </ListStyled>
       {opened && (
         <>

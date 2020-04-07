@@ -41,6 +41,7 @@ const GlobalProvider = props => {
   const [reloadType, setReloadType] = useState(0)
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
+  const [ss, setsss] = useState('') //Player상태
   //---------------------------------------------------------------------
   const action = {
     //updateState
@@ -193,10 +194,14 @@ const GlobalProvider = props => {
     },
     updateLogoChange: status => {
       setLogoChange(status)
+    },
+    updatess: num => {
+      setsss(num)
     }
   }
   //---------------------------------------------------------------------
   const value = {
+    ss,
     state,
     roomInfo,
     nativePlayer,

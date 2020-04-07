@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import {Context} from 'context'
 import {RoomMake} from 'context/room'
+
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_beta.png'
@@ -14,7 +15,6 @@ import Mic from './static/ic_mike_w.svg'
 
 export default props => {
   const globalCtx = useContext(Context)
-  const {token} = globalCtx
   const {logoChange} = globalCtx
 
   const reLoad = () => {
