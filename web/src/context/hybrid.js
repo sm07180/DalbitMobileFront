@@ -32,7 +32,7 @@ export const osName = () => {
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader['os'] !== '3') {
+  if (customHeader['os'] === '1' || customHeader['os'] === '2') {
     return true
   }
   return false
