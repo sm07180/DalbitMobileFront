@@ -125,6 +125,8 @@ export const RoomMake = async context => {
     window.location.href = '/login'
     return
   }
+  //# 실행
+  Hybrid('RoomMake', '')
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
