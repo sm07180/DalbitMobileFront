@@ -29,7 +29,7 @@ export default props => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
+      setList(res.data)
     } else {
       context.action.alert({
         msg: res.message
@@ -45,24 +45,24 @@ export default props => {
         return (
           <div
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
-            key={item.storeNo}
-            applestoreid={item.appleStoreId}
+            key={item.itemNo}
+            iosprice={item.iosPrice}
             onClick={() => {
               if (selected.num == index) {
                 setSelected(-1)
               } else {
                 setSelected({
                   num: index,
-                  name: item.storeNm,
-                  price: item.price
+                  name: item.itemNm,
+                  price: item.salePrice
                 })
               }
             }}>
             <div className="item-wrap">
               <img src={item.img}></img>
-              <p>{item.storeNm}</p>
+              <p>{item.itemNm}</p>
             </div>
-            <p>{Utility.addComma(item.price)}원</p>
+            <p>{Utility.addComma(item.salePrice)}원</p>
           </div>
         )
       })
