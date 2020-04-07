@@ -8,9 +8,7 @@ import _ from 'lodash'
 import {Context} from 'context'
 import {isHybrid, Hybrid} from 'context/hybrid'
 // etc
-import SignalingHandler from 'components/lib/SignalingHandler'
 import Content from './content'
-import qs from 'query-string'
 
 export default props => {
   //---------------------------------------------------------------------
