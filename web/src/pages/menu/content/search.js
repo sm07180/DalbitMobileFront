@@ -39,6 +39,14 @@ export default props => {
         const {query} = mode.search
         fetchData(query)
         break
+      case mode.select !== undefined: //-------------------------------검색결과 아이템선택
+        const {roomNo, memNo} = mode.select
+        //라이브중아님
+        if (roomNo !== '') {
+        } else {
+        }
+        console.log(roomNo, memNo)
+        break
       default:
         break
     }
@@ -55,8 +63,8 @@ export default props => {
       </Header>
       {/* 검색바 */}
       <SearchBar update={update} />
-      <h1>최근 본 달디</h1>
-      <List fetch={fetch} />
+      <h1>사용자 검색</h1>
+      <List update={update} fetch={fetch} />
     </Content>
   )
 }
