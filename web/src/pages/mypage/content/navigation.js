@@ -11,7 +11,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 let naviSwiper = ''
 export default props => {
-  const {list, memNo, type} = props
+  const {list, memNo, type, webview} = props
   const current = type
   let currentTab = list.filter(list => {
     return list.type == current
@@ -41,7 +41,10 @@ export default props => {
         {list.map((bundle, index) => {
           const {type, txt} = bundle
           return (
-            <NavLink to={`/mypage/${memNo}/${type}`} activeClassName="active" key={index}>
+            <NavLink
+              to={webview ? `/mypage/${memNo}/${type}?webview=${webview}` : `/mypage/${memNo}/${type}`}
+              activeClassName="active"
+              key={index}>
               <TabText>{txt}</TabText>
             </NavLink>
           )

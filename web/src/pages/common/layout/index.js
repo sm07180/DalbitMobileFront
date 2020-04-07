@@ -11,12 +11,12 @@ import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 //
 const Layout = props => {
-  const {children} = props
+  const {children, webview} = props
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
       {/* GNB */}
-      {props.status !== 'no_gnb' && <Gnb />}
+      {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
       <article>{children}</article>
