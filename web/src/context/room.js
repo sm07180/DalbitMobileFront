@@ -121,6 +121,8 @@ export const RoomMake = async context => {
   const {token} = context || Room.context
   console.log(token)
   //#1 로그인체크
+  alert('token.isLogin ' + token.isLogin)
+
   if (!token.isLogin) {
     window.location.href = '/login'
     return
@@ -128,6 +130,7 @@ export const RoomMake = async context => {
   //#2 본인인증 (개발중)
   const selfAuth = await Api.self_auth_check({})
   console.log(selfAuth)
+  alert('selfAuth.result ' + selfAuth.result)
   if (selfAuth.result === 'fail') {
     window.location.href = '/selfauth'
     return
