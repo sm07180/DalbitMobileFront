@@ -27,7 +27,6 @@ export default props => {
   //context
   let history = useHistory()
   const globalCtx = useContext(Context)
-  const {token} = globalCtx
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
