@@ -122,6 +122,11 @@ const Alert = styled.section`
     word-break: break-all;
     text-align: center;
     transform: skew(-0.03deg);
+    em {
+      font-weight: 600;
+      font-style: normal;
+      color: #616161;
+    }
   }
 
   /* 버튼 */

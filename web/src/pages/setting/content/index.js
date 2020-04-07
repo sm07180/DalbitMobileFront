@@ -106,6 +106,7 @@ export const Store = () => {
 const Container = styled.div`
   width: 1210px;
   margin: 76px auto 0 auto;
+  color: #616161;
   > div {
     width: 600px;
     margin: 0 auto;
@@ -129,6 +130,7 @@ const Container = styled.div`
       transform: translateY(-50%);
       font-size: 14px;
       color: #bdbdbd;
+
       letter-spacing: -0.35px;
       transform: skew(-0.03deg);
     }

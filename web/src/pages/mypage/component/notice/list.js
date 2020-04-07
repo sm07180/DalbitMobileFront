@@ -86,7 +86,7 @@ const List = props => {
       callback: () => {
         fetcNoticeDelete()
       },
-      msg: '<b>게시글을 삭제하시겠습니까?</b>'
+      msg: '<em className="brown">게시글을 삭제하시겠습니까?</em>'
     })
   }
   //func
@@ -143,26 +143,31 @@ const List = props => {
     WritBtnActive()
   }, [coment, comentContent])
   /////////////////////////////////////////////////////////////
-  // const toggler = () => {
-  //   if (opened === false) {
-  //     setOpened(true)
-  //   } else {
-  //     setOpened(false)
-  //   }
-  // }
+  const toggler = () => {
+    if (numbers === noticeIdx) {
+      setOpened(false)
+    }
+  }
+  useEffect(() => {
+    if (numbers === noticeIdx) {
+      setOpened(true)
+    } else {
+      setOpened(false)
+    }
+  }, [numbers])
 
   //-------------------------------------------------------------------------
   return (
     <Wrap>
-      <ListStyled className={numbers === noticeIdx ? 'on' : ''}>
+      <ListStyled className={numbers === noticeIdx && opened ? 'on' : ''} onClick={toggler}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>
         </TitleWrap>
 
-        <ArrowDownBtn className={numbers === noticeIdx ? 'on' : ''} />
+        <ArrowDownBtn className={numbers === noticeIdx && opened ? 'on' : ''} />
       </ListStyled>
-      {numbers === noticeIdx && (
+      {numbers === noticeIdx && opened && (
         <>
           <ListContent>
             <div>{title}</div>
