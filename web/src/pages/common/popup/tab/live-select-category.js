@@ -32,14 +32,10 @@ export default props => {
   const commonData = async obj => {
     const res = await Api.splash()
     if (res.result === 'success') {
-      //context.action.updateCommon(res.data) // context에 update
-      //console.log(res)
-      //console.log(res.data.roomType)
       setList(res.data.roomType)
     }
   }
-  // console.log(store.category)
-  //------------------------------------------------------------------
+
   //category map
   const categorySelect = list.map((item, index) => {
     const {option, cdNm, cd} = item
