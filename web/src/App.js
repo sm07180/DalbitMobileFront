@@ -33,10 +33,7 @@ const App = () => {
       return jsonParsed
     }
 
-    return {
-      os: '3',
-      isHybrid: 'N'
-    }
+    return {os: '3'}
   }, [])
 
   const authToken = useMemo(() => {
