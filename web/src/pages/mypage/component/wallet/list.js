@@ -2,8 +2,10 @@ import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
+import NoResult from 'components/ui/noResult'
 
 export default props => {
   const {searching, coinType, walletData, returnCoinText, setWalletType} = props
@@ -20,7 +22,7 @@ export default props => {
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
-    return `${date} ${time}`
+    return `${date}`
   }
 
   return (
@@ -61,10 +63,7 @@ export default props => {
             )
           })
         ) : (
-          <div className="no-list">
-            <img src={`${IMG_SERVER}/images/api/img_noresult.png`} />
-            <div>검색 결과가 없습니다.</div>
-          </div>
+          <NoResult />
         )}
       </ListWrap>
     </ListContainer>
@@ -90,67 +89,47 @@ const ListWrap = styled.div`
     height: 47px;
     user-select: none;
 
-    .how-to-get {
-      width: 66px;
-      border: 1px solid #000;
-      border-radius: 15px;
-      padding: 6px 16px;
-      font-size: 14px;
+    span {
+      transform: skew(-0.03deg);
+    }
 
-      @media (max-width: ${WIDTH_MOBILE}) {
-        width: 34px;
-        padding: 2px 4px;
-        font-size: 12px;
-        border-radius: 12px;
-        color: #fff;
-      }
+    .how-to-get {
+      width: 32px;
+      margin-left: 4px;
+      border-radius: 15px;
+      font-size: 12px;
+      line-height: 17px;
+      color: #fff;
 
       &.type-1 {
-        color: #feac2c;
-        border-color: #feac2c;
+        background: ${COLOR_POINT_Y};
       }
       &.type-2 {
-        color: #e84d6f;
-        border-color: #e84d6f;
+        background: ${COLOR_POINT_P};
       }
       &.type-3 {
-        color: #8556f6;
-        border-color: #8556f6;
+        background: ${COLOR_MAIN};
       }
     }
     .detail {
-      width: calc(100% - 400px);
+      width: calc(100% - 176px);
       text-align: left;
-      box-sizing: border-box;
-      padding-left: 20px;
+      padding-left: 10px;
       font-size: 14px;
       letter-spacing: -0.35px;
-      color: #616161;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        width: calc(100% - 144px);
-      }
+      color: #424242;
     }
     .type {
-      width: 164px;
+      width: 65px;
       color: #424242;
       font-size: 14px;
-      font-weight: bold;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        width: 50px;
-      }
+      font-weight: 600;
     }
     .date {
-      width: 170px;
+      width: 75px;
       font-size: 14px;
       color: #bdbdbd;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        width: 60px;
-        height: 16px;
-        font-size: 12px;
-      }
+      font-size: 12px;
     }
 
     &.title {
@@ -163,6 +142,7 @@ const ListWrap = styled.div`
 
       .how-to-get {
         border: none;
+        font-size: 14px;
       }
       .detail {
         text-align: center;
@@ -174,6 +154,8 @@ const ListWrap = styled.div`
       .type,
       .date {
         color: #8556f6;
+        font-size: 12px;
+        font-weight: 600;
       }
     }
   }
@@ -204,6 +186,7 @@ const TopArea = styled.div`
 
       @media (max-width: ${WIDTH_MOBILE}) {
         font-size: 18px;
+        font-weight: 600;
       }
     }
     .sub {
@@ -211,10 +194,6 @@ const TopArea = styled.div`
       color: #757575;
       font-size: 14px;
       letter-spacing: -0.35px;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        font-size: 12px;
-      }
     }
   }
 `
@@ -224,6 +203,7 @@ const ListContainer = styled.div`
   margin-top: 40px;
 
   .mypage-wallet-select-box {
+    z-index: 1;
     top: 0;
     right: 0;
 

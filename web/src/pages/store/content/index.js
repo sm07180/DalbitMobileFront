@@ -13,6 +13,8 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
+import NoResult from 'components/ui/noResult'
+
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -97,10 +99,7 @@ export default props => {
           </button> */}
         </>
       ) : (
-        <NoResult>
-          <NoImg />
-          <span>조회된 결과가 없습니다.</span>
-        </NoResult>
+        <NoResult />
       )}
     </Content>
   )
@@ -252,43 +251,5 @@ const List = styled.div`
         font-size: 12px;
       }
     }
-  }
-`
-
-const NoResult = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 60px;
-
-  & > span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 282px;
-    height: 26px;
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.6px;
-    color: #616161;
-    margin-top: 30px;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 18px;
-    }
-  }
-`
-
-const NoImg = styled.div`
-  display: flex;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center center;
-  width: 299px;
-  height: 227px;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 90%;
-    height: 198;
   }
 `

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext, useMemo} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 
@@ -16,6 +17,8 @@ import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 import {WIDTH_MOBILE} from 'context/config'
 
 export default props => {
+  let history = useHistory()
+
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
   const [totalCoin, setTotalCoin] = useState(null)
@@ -75,21 +78,13 @@ export default props => {
   return (
     <div>
       <TitleWrap>
-        <span className="text">내 지갑</span>
-        <div>
-          <CoinTypeBtn
-            className={coinType === 'dal' ? 'active' : ''}
-            style={{marginRight: '5px'}}
-            onClick={() => changeCoinTypeClick('dal')}>
-            달
-          </CoinTypeBtn>
-          <CoinTypeBtn
-            className={coinType === 'byeol' ? 'active' : ''}
-            style={{marginLeft: '5px'}}
-            onClick={() => changeCoinTypeClick('byeol')}>
-            별
-          </CoinTypeBtn>
-        </div>
+        {/* <span className="text">내 지갑</span> */}
+        <CoinTypeBtn className={coinType === 'dal' ? 'active' : ''} onClick={() => changeCoinTypeClick('dal')}>
+          달
+        </CoinTypeBtn>
+        <CoinTypeBtn className={coinType === 'byeol' ? 'active' : ''} onClick={() => changeCoinTypeClick('byeol')}>
+          별
+        </CoinTypeBtn>
       </TitleWrap>
 
       <CoinCountingView>
@@ -99,16 +94,21 @@ export default props => {
           <span className="current-value">{totalCoin !== null && Number(totalCoin).toLocaleString()}</span>
         </CoinCurrentStatus>
 
-        {/* <div>
+        <div>
           {coinType === 'dal' ? (
-            <CoinChargeBtn>충전하기</CoinChargeBtn>
+            <CoinChargeBtn
+              onClick={() => {
+                history.push('/store')
+              }}>
+              충전하기
+            </CoinChargeBtn>
           ) : (
             <>
-              <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
-              <CoinChargeBtn>환전하기</CoinChargeBtn>
+              {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
+              <CoinChargeBtn>환전하기</CoinChargeBtn> */}
             </>
           )}
-        </div> */}
+        </div>
       </CoinCountingView>
 
       <List
@@ -165,12 +165,14 @@ const CoinCurrentStatus = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 36px;
       margin-left: 0;
+      margin-right: 3px;
     }
   }
   .current-value {
     color: #8556f6;
     font-size: 28px;
     letter-spacing: -0.7px;
+    font-weight: 600;
 
     @media (max-width: ${WIDTH_MOBILE}) {
       font-size: 20px;
@@ -194,16 +196,27 @@ const CoinCountingView = styled.div`
 `
 
 const CoinTypeBtn = styled.button`
+  position: relative;
+  width: 50%;
+  text-align: center;
   color: #757575;
-  width: 86px;
-  padding: 15px 0;
-  box-sizing: border-box;
-  border: 1px solid #e0e0e0;
-  border-radius: 24px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 50px;
+
+  &:first-child:after {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 15px;
+    width: 1px;
+    height: 20px;
+    background: #e0e0e0;
+    content: '';
+  }
 
   &.active {
     color: #8556f6;
-    border-color: #8556f6;
   }
 `
 
@@ -212,8 +225,7 @@ const TitleWrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 36px;
-  margin-bottom: 16px;
+  margin: 20px 0 10px 0;
 
   .text {
     font-size: 20px;

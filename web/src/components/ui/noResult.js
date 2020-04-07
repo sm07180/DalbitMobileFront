@@ -34,9 +34,10 @@ const NoResult = styled.div`
   justify-content: center;
   align-items: center;
   width: 100% !important;
-  margin-top:60px;
-  padding-top:230px;
+  margin-top:30px;
+  padding-top:170px;
   background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center top;
+  background-size: 208px 158px !important;
 
   & > span {
     display: flex;
@@ -44,20 +45,15 @@ const NoResult = styled.div`
     align-items: center;
     width: 282px;
     height: 26px;
-    font-size: 24px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1.25;
     letter-spacing: -0.6px;
     color: #616161;
-    margin-top: 30px;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 18px;
-      margin-top: 20px;
-    }
+    transform:skew(-0.03deg);
   }
 
-  &.mobile{
+  /* &.mobile{
     margin-top:0;
     padding-top:104px;
     background-size:162px !important;
@@ -66,5 +62,5 @@ const NoResult = styled.div`
       font-size:14px;
       transform:skew(-0.03deg);
     }
-  }
+  } */
 `

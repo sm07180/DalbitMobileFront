@@ -1266,7 +1266,7 @@ export default class API {
    */
   static store_list = async obj => {
     const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/store`, method: method || 'GET'})
+    return await ajax({...obj, url: url || `/store/charge`, method: method || 'GET'})
   }
 
   /**

@@ -13,6 +13,8 @@ import NoticeIcon from '../static/profile/ic_notice_m.svg'
 import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
 import WalletIcon from '../static/profile/ic_wallet_m.svg'
 import ReportIcon from '../static/profile/ic_report_m.svg'
+import AlarmIcon from '../static/profile/ic_alarm_m.svg'
+import SettingIcon from '../static/profile/ic_broadcastingsetting_m.svg'
 
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
@@ -30,9 +32,9 @@ export default props => {
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
-    {type: 'report', txt: '리포트', icon: ReportIcon}
+    {type: 'report', txt: '리포트', icon: ReportIcon},
     // {type: 'alarm', txt: '알림', icon: AlarmIcon},
-    // {type: 'bsetting', txt: '방송설정', icon: SettingIcon}
+    {type: 'bcsetting', txt: '방송설정', icon: SettingIcon}
   ]
 
   const timeFormat = sec_time => {
