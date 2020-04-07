@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ico_moon_s" width="24" height="24" viewBox="0 0 24 24">
+    <g id="prefix__사각형_478" data-name="사각형 478" style="fill:#fff;stroke:#707070;opacity:0">
+        <path d="M0 0H24V24H0z" style="stroke:none"/>
+        <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none"/>
+    </g>
+    <g id="prefix__달" transform="translate(4.4 4)">
+        <g id="prefix__그룹_9725" data-name="그룹 9725">
+            <path id="prefix__패스_4107" d="M70.759 44a4.981 4.981 0 1 1 .877-9.884 7.779 7.779 0 1 0 3.1 7.906A4.973 4.973 0 0 1 70.759 44z" data-name="패스 4107" transform="translate(-59.333 -32.667)" style="stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.4px;fill:none"/>
+        </g>
+    </g>
+</svg>
