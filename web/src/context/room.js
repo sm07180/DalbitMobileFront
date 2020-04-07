@@ -119,27 +119,20 @@ export const RoomExit = async roomNo => {
  */
 export const RoomMake = async context => {
   const {token} = context || Room.context
-  console.log(token)
-  Hybrid('RoomMake', '')
-  return
+  //  return
   //#1 로그인체크
-  alert('token.isLogin ' + token.isLogin)
-
   if (!token.isLogin) {
     window.location.href = '/login'
     return
   }
   //#2 본인인증 (개발중)
   const selfAuth = await Api.self_auth_check({})
-  console.log(selfAuth)
-  alert('selfAuth.result ' + selfAuth.result)
   if (selfAuth.result === 'fail') {
     window.location.href = '/selfauth'
     return
   }
-
   //# 실행
-  //Hybrid('RoomMake', '')
+  Hybrid('RoomMake', '')
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
