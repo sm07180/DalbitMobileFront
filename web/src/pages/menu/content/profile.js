@@ -175,7 +175,7 @@ const LogoutBtn = styled.button`
   width: 100%;
   color: #bdbdbd;
   font-size: 12px;
-  margin: 20px 0;
+  margin-top: 20px;
 `
 
 const MenuMypage = styled.div`
@@ -323,6 +323,8 @@ const MenuMypage = styled.div`
   }
 
   .sub-nav {
+    padding-bottom: 20px;
+
     a {
       display: block;
 
