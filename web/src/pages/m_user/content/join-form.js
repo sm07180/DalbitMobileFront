@@ -508,11 +508,12 @@ export default props => {
         if (isHybrid()) {
           context.action.alert({
             callback: () => {
-              props.history.push('/')
+              //props.history.push('/')
+              window.location.href = '/'
             },
-            msg: '앱내 회원가입완료'
+            msg: '회원가입 완료되었습니다.'
           })
-          Hybrid('GetLoginToken', res.data)
+          //Hybrid('GetLoginToken', res.data)
         }
         context.action.updateLogin(true)
       } else {
