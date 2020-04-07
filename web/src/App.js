@@ -69,23 +69,24 @@ const App = () => {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
 
-        //최초앱 기동할때만적용
-        if (customHeader.isFirst === 'Y') {
+        if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        } else if (customHeader['isFirst'] === 'N') {
-          const cookie = Utility.getCookie('native-player-info')
-          if (cookie) {
+        }
+
+        if (customHeader['isFirst'] === 'N') {
+          const nativeInfo = Utility.getCookie('native-player-info')
+          if (nativeInfo) {
             //----- @ Android
             if (customHeader['os'] === '1') {
-              const parsedCookie = JSON.parse(cookie)
+              const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsedCookie)
+              globalCtx.action.updateNativePlayer(parsed)
             }
             //----- @ IOS
             else if (customHeader['os'] === '2') {
-              const parsedCookie = JSON.parse(cookie)
+              const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsedCookie)
+              globalCtx.action.updateNativePlayer(parsed)
             }
           }
         }
@@ -103,6 +104,7 @@ const App = () => {
 
   //useEffect token
   useEffect(() => {
+    // set header (custom-header, authToken)
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 

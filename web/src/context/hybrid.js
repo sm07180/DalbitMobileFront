@@ -44,21 +44,24 @@ export const isHybrid = () => {
  *
  */
 export const Hybrid = (func, info) => {
-  const customHeader = JSON.parse(Api.customHeader)
   if (!isHybrid()) return
-  const os = customHeader.os + ''
-  switch (os) {
-    case '':
-      break
-    case '1':
-      if (window.android[func] === null || window.android[func] === undefined) return
+
+  const customHeader = JSON.parse(Api.customHeader)
+
+  switch (customHeader['os']) {
+    // Android
+    case '1': {
+      if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function')
+        return
       if (info === '' || info === null || info === undefined) {
         window.android[func]()
       } else {
         window.android[func](JSON.stringify(info))
       }
       break
-    case '2':
+    }
+    // IOS
+    case '2': {
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
@@ -67,6 +70,7 @@ export const Hybrid = (func, info) => {
         webkit.messageHandlers[func].postMessage(info)
       }
       break
+    }
     default:
       break
   }

@@ -43,18 +43,12 @@ const GlobalProvider = props => {
 
   //---------------------------------------------------------------------
   const action = {
-    //updateState
     updateState: obj => {
       setState(state => ({...state, ...obj}))
     },
 
     /**
-     * @brief customHeader, Server->React
-     * @param string locale                  // 국가코드
-     * @param string deviceId                // 디바이스 ID
-     * @param string os                      // OS
-     * @param string language                // 언어
-     * @param string deviceToken             // 디바이스토큰
+     * @brief customHeader
      */
     updateCustomHeader: obj => {
       const stringified = JSON.stringify(obj)
@@ -63,7 +57,7 @@ const GlobalProvider = props => {
       setCustomHeader({...obj})
     },
     /**
-     * @brief 토큰업데이트, authToken 및 login여부
+     * @brief authToken 및 login여부
      * @param string authToken                  // authToken
      * @param string memNo                      // 회원번호
      * @param bool isLogin                      // 로그인 여부
