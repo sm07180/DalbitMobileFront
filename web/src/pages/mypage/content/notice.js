@@ -132,7 +132,15 @@ const Notice = props => {
   //   console.log(noticeIdx)
   // }
   //-----------------------------------------------------------------------
+  //토글
+  const [numbers, setNumbers] = useState('')
 
+  const toggler = noticeIdx => {
+    setNumbers(noticeIdx)
+  }
+  useEffect(() => {
+    //console.log(numbers)
+  }, [numbers])
   return (
     <>
       <TopWrap>
@@ -143,17 +151,18 @@ const Notice = props => {
           listDetailed.length > 0 ? (
             listDetailed.map((list, idx) => {
               const {isTop, title, contents, writeDt, noticeIdx} = list
-
               return (
-                <List
-                  {...props}
-                  key={idx}
-                  isTop={isTop}
-                  title={title}
-                  contents={contents}
-                  writeDt={writeDt}
-                  noticeIdx={noticeIdx}
-                />
+                <a onClick={() => toggler(noticeIdx)} key={idx}>
+                  <List
+                    {...props}
+                    isTop={isTop}
+                    title={title}
+                    contents={contents}
+                    writeDt={writeDt}
+                    noticeIdx={noticeIdx}
+                    numbers={numbers}
+                  />
+                </a>
               )
             })
           ) : (
@@ -270,6 +279,11 @@ const WriteBtn = styled.button`
 const ListWrap = styled.div`
   .search {
     min-height: 200px;
+  }
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 `
 

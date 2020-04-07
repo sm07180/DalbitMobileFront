@@ -19,7 +19,7 @@ const List = props => {
   const ctx = useContext(Context)
   var urlrStr = props.location.pathname.split('/')[2]
   //props
-  const {isTop, title, contents, writeDt, noticeIdx} = props
+  const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
   //state
   const [opened, setOpened] = useState(false)
   const reducer = (state, action) => ({...state, ...action})
@@ -142,48 +142,27 @@ const List = props => {
   useEffect(() => {
     WritBtnActive()
   }, [coment, comentContent])
-  ////
-  const [numbers, setNumbers] = useState('')
-
-  const toggler = noticeIdx => {
-    if (opened === true) {
-      setOpened(false)
-    } else if (opened === false) {
-      setNumbers(noticeIdx)
-      setOpened(true)
-    }
-  }
-  useEffect(() => {
-    // /setOpened(false)
-    // if (numbers !== noticeIdx) {
-
-    // } else if (numbers === noticeIdx) {
-
-    // }
-
-    if (numbers == noticeIdx) {
-      setOpened(true)
-      console.log('열림')
-    } else if (numbers !== noticeIdx) {
-      setOpened(false)
-      console.log('닫힘')
-    }
-
-    console.log(numbers, noticeIdx)
-  }, [numbers])
+  /////////////////////////////////////////////////////////////
+  // const toggler = () => {
+  //   if (opened === false) {
+  //     setOpened(true)
+  //   } else {
+  //     setOpened(false)
+  //   }
+  // }
 
   //-------------------------------------------------------------------------
   return (
     <Wrap>
-      <ListStyled onClick={() => toggler(noticeIdx)} className={opened === true ? 'on' : ''}>
+      <ListStyled className={numbers === noticeIdx ? 'on' : ''}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>
         </TitleWrap>
 
-        <ArrowDownBtn className={opened === true ? 'on' : ''} />
+        <ArrowDownBtn className={numbers === noticeIdx ? 'on' : ''} />
       </ListStyled>
-      {opened && (
+      {numbers === noticeIdx && (
         <>
           <ListContent>
             <div>{title}</div>
