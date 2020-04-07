@@ -12,17 +12,20 @@ import Layout from 'pages/common/layout'
 //context
 import _ from 'lodash'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 
 export default props => {
   //---------------------------------------------------------------------
+  const {state} = props.location
+  if (state !== undefined) {
+    alert(JSON.stringify(state, null, 1))
+  }
+
   //State
   const [authState, setAuthState] = useState(false)
-
   //context
   const context = useContext(Context)
-
   //formData
   const [formState, setFormState] = useState({
     tr_cert: '',
@@ -145,10 +148,10 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    document.addEventListener('self-auth', updateDispatch)
-    return () => {
-      document.removeEventListener('self-auth', updateDispatch)
-    }
+    // document.addEventListener('self-auth', updateDispatch)
+    // return () => {
+    //   document.removeEventListener('self-auth', updateDispatch)
+    // }
   }, [])
 
   //---------------------------------------------------------------------
