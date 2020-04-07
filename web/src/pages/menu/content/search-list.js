@@ -32,14 +32,16 @@ export default props => {
       return <NoResult />
     } else {
       return list.map((list, idx) => {
-        const {title, profImg} = list
-        console.log(profImg.thumb150x150)
+        const {nickNm, profImg} = list
         return (
           <div key={idx} className="list">
-            <button>
+            <button
+              onClick={() => {
+                props.update({select: list})
+              }}>
               <img src={profImg.thumb150x150} />
             </button>
-            <p>{title}</p>
+            <p>{nickNm}</p>
           </div>
         )
       })

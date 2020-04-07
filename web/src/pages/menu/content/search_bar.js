@@ -19,11 +19,17 @@ export default props => {
         break
     }
   }
+  //handleKeyPress
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      props.update({search: changes})
+    }
+  }
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="in_wrap">
-        <input type="text" name="query" placeholder="검색어를 입력해 보세요." onChange={onChange} />
+        <input type="text" name="query" placeholder="검색어를 입력해 보세요." onKeyPress={handleKeyPress} onChange={onChange} />
         <button
           onClick={() => {
             props.update({search: changes})
