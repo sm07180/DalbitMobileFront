@@ -7,7 +7,7 @@ import Layout from 'pages/common/layout'
 
 // context
 import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import {IMG_SERVER} from 'context/config'
@@ -40,7 +40,7 @@ export default props => {
   }
 
   const clickCloseBtn = () => {
-    if (webview && webview === 'new') {
+    if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
       window.history.back()
@@ -70,12 +70,11 @@ export default props => {
         if (profileInfo.result === 'success') {
           globalCtx.action.updateProfile(profileInfo.data)
 
-          if (webview && webview === 'new') {
+          if (isHybrid()) {
             return Hybrid('GetLoginTokenNewWin', loginInfo.data)
           }
 
-          Hybrid('GetLoginToken', loginInfo.data)
-          return (window.location.href = '/')
+          return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
