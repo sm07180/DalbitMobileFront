@@ -136,8 +136,8 @@ const App = () => {
 
   //useEffect token
   useEffect(() => {
-    // context.action.updateCustomHeader(customHeader)
-    Api.setCustomHeader(JSON.stringify(customHeader))
+    context.action.updateCustomHeader(customHeader)
+    // Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
     // Renew all initial data
