@@ -24,7 +24,6 @@ const GlobalProvider = props => {
   const [nativePlayer, setNativePlayer] = useState(null)
   const [message, setMessage] = useState({visible: false})
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
-  const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
@@ -113,9 +112,7 @@ const GlobalProvider = props => {
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
-    /**
-     * search, mypage, notice, menu
-     */
+
     updateGnbState: str => {
       setGnbState(str)
       //render 후 애니메이션 처리
@@ -203,7 +200,6 @@ const GlobalProvider = props => {
     state,
     roomInfo,
     nativePlayer,
-    mypage,
     profile,
     message,
     token,
