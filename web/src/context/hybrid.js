@@ -8,23 +8,6 @@
  *
  */
 import Api from 'context/api'
-//---------------------------------------------------------------------
-/**
- *
- * @brief 하이브리드앱 안드로이드/IOS체크
- *
- */
-export const osName = () => {
-  const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader.os + '' === '1' || customHeader.os + '' === '2') {
-    const element = document.getElementById('customHeader')
-    if (element !== null && element.value.trim() !== '' && element.value !== undefined) {
-      const val = JSON.parse(element.value)
-      return val.os + ''
-    }
-  }
-  return ''
-}
 /**
  *
  * @brief 하이브리드앱 여부체크확인
