@@ -102,6 +102,8 @@ const App = () => {
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
+    //백엔드요청(본인인증및결제)
+    customHeader['isHybrid'] = 'Y'
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
