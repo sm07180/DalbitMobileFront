@@ -196,7 +196,6 @@ export default props => {
   }
 
   const setPagination = page => {
-    //페이지 셋팅해서 패치 날리기..
     setPage(page)
     getSearchList('page', page)
   }
