@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams, Redirect} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
 
 // component
 import Layout from 'pages/common/layout'
@@ -61,10 +61,10 @@ export default props => {
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
-      <Layout {...props}>
-        <Mypage>
+      <Layout {...props} webview={webview}>
+        <Mypage webview={webview}>
           <MyProfile profile={profileInfo} />
-          {type && <Navigation list={navigationList} memNo={memNo} type={type} />}
+          {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />}
           <SubContent>
             {navigationList.map(value => {
               const {type, component} = value
@@ -82,7 +82,8 @@ const SubContent = styled.div`
 `
 
 const Mypage = styled.div`
-  margin: 60px auto 15px auto;
+  margin: 0 auto 15px auto;
+  margin-top: ${props => (props.webview ? 0 : '60px')};
   width: 1210px;
 
   @media (max-width: 1260px) {

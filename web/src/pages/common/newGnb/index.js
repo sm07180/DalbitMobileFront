@@ -14,6 +14,12 @@ import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_mike_w.svg'
 
 export default props => {
+  const {webview} = props
+
+  if (webview && webview === 'new') {
+    return null
+  }
+
   const globalCtx = useContext(Context)
   const {logoChange} = globalCtx
 
