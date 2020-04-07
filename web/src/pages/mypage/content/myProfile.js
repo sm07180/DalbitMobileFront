@@ -331,12 +331,12 @@ const CountingWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 16px;
+    margin-top: 14px;
   }
 `
 //프로필메세지
 const ProfileMsg = styled.p`
-  margin-top: 16px;
+  margin-top: 14px;
   color: #616161;
   font-size: 14px;
   line-height: 20px;

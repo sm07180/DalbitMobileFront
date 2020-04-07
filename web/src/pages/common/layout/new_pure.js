@@ -34,7 +34,7 @@ const Layout = props => {
     if (webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/new'
+      window.location.href = '/'
     }
   }
 
@@ -59,7 +59,7 @@ const Layout = props => {
 
       {/* 헤더설정 */}
       <Logo>
-        <NavLink to="/new" exact>
+        <NavLink to="/" exact>
           <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
         </NavLink>
       </Logo>
