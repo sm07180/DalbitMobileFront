@@ -65,8 +65,8 @@ const App = () => {
 
   const authToken = useMemo(() => {
     const tempAuthTokenTag = document.getElementById('authToken')
-    console.log('temp auth token', tempAuthTokenTag)
-    console.log('temp auth token', tempAuthTokenTag && tempAuthTokenTag.value)
+    console.log('temp authtoken', tempAuthTokenTag)
+    console.log('temp authtoken value', tempAuthTokenTag && tempAuthTokenTag.value)
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
     }
@@ -136,8 +136,8 @@ const App = () => {
 
   //useEffect token
   useEffect(() => {
-    context.action.updateCustomHeader(customHeader)
-    // Api.setCustomHeader(JSON.stringify(customHeader))
+    // context.action.updateCustomHeader(customHeader)
+    Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
     // Renew all initial data
