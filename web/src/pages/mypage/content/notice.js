@@ -64,12 +64,12 @@ const Notice = props => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
+        context.action.confirm({
           callback: () => {
             setWriteShow(false)
             window.location.reload()
           },
-          msg: res.message
+          msg: '공시사항을 등록 하시겠습니까?'
         })
       } else if (res.result === 'fail') {
         if (coment.length === 0) {
@@ -137,6 +137,9 @@ const Notice = props => {
 
   const toggler = noticeIdx => {
     setNumbers(noticeIdx)
+    // if (numbers === noticeIdx) {
+    //   setNumbers('')
+    // }
   }
   useEffect(() => {
     //console.log(numbers)

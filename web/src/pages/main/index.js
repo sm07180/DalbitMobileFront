@@ -12,7 +12,6 @@ import {Context} from 'context'
 
 // components
 import Layout from 'pages/common/layout'
-import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
@@ -28,7 +27,6 @@ export default props => {
   //context
   let history = useHistory()
   const globalCtx = useContext(Context)
-  const {token} = globalCtx
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
@@ -63,7 +61,6 @@ export default props => {
   return (
     <Layout {...props}>
       <MainWrap>
-        <Gnb />
         <SubMain>
           <div className="gnb">
             <div className="left-side">
