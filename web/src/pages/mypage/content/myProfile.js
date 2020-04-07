@@ -9,12 +9,22 @@ import styled from 'styled-components'
 
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {WIDTH_TABLET_S} from 'context/config'
+import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 
+import Api from 'context/api'
+
+// context
+import {Context} from 'context'
 const levelBarWidth = 176
 
 const myProfile = props => {
+  const ctx = useContext(Context)
+  const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
+  console.log(props)
+  const myProfileNo = ctx.profile.memNo
+  console.log('cccc', profile)
+  //memNo
 
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
@@ -24,8 +34,19 @@ const myProfile = props => {
     <MyProfile>
       <ButtonWrap>
         <InfoConfigBtn>
-          <Link to="/private">내 정보 관리</Link>
+          {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
+          {urlrStr !== myProfileNo && (
+            <div className="notBjWrap">
+              {profile.isFan === 1 && <button className="fanRegist">팬</button>}
+              {profile.isFan === 0 && <button>+ 팬등록</button>}
+              <button>
+                <span></span>
+                <em>선물</em>
+              </button>
+            </div>
+          )}
         </InfoConfigBtn>
+
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
             return (
@@ -38,6 +59,7 @@ const myProfile = props => {
       </ButtonWrap>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+        {profile.roomNo === '' && <div className="liveIcon"></div>}
         <figure>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
@@ -67,6 +89,7 @@ const myProfile = props => {
           <span>
             스타 <em>{profile.starCnt}</em>
           </span>
+          {urlrStr !== myProfileNo && <div></div>}
         </CountingWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
@@ -149,6 +172,14 @@ const ProfileImg = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 10px;
     order: 2;
+  }
+  & .liveIcon {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    width: 52px;
+    height: 26px;
+    background: url('https://devimage.dalbitlive.com/images/api/label_live.png') no-repeat center center / cover;
   }
 `
 
@@ -254,6 +285,8 @@ const NameWrap = styled.div`
 `
 //팬, 스타 수
 const CountingWrap = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 12px;
   span {
     display: inline-block;
@@ -278,6 +311,25 @@ const CountingWrap = styled.div`
     background: #e0e0e0;
     content: '';
   }
+  & div {
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/api/ic_report.png);
+    margin-left: 18px;
+    position: relative;
+    :after {
+      display: block;
+      width: 1px;
+      height: 12px;
+      position: absolute;
+      left: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #e0e0e0;
+      content: '';
+    }
+  }
+
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 16px;
   }
@@ -309,6 +361,39 @@ const InfoConfigBtn = styled.div`
 
   a + a {
     margin-left: 4px;
+  }
+  .notBjWrap {
+    display: flex;
+    & button {
+      display: flex;
+      justify-content: center;
+      width: 80px;
+      height: 36px;
+      color: #9e9e9e;
+      font-size: 14px;
+      transform: skew(-0.03deg);
+      margin-right: 4px;
+      border-radius: 18px;
+      border: solid 1px #bdbdbd;
+      &.fanRegist {
+        border: solid 1px ${COLOR_MAIN};
+        color: ${COLOR_MAIN};
+      }
+      & span {
+        display: block;
+        width: 18px;
+        height: 18px;
+        background: url('https://devimage.dalbitlive.com/images/api/ic_moon_s.png') no-repeat center center / cover;
+      }
+      & em {
+        display: block;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1.41;
+        letter-spacing: -0.35px;
+        height: 18px;
+      }
+    }
   }
 `
 //팬랭킹

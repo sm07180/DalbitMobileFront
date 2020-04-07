@@ -595,6 +595,17 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/mypage/notice`, method: method || 'DELETE', data: data})
   }
+  /**
+   * @brief 회원 달 선물하기 -> 마이페이지
+   * @method "POST"
+   * @param string memNo              //*선물받는 회원번호
+   * @param int    dal               //*선물할 달 수
+   * @create 황상한 2020.04.07
+   */
+  static mypage_gift_dal = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
+  }
 
   /**
    * @brief 토큰조회

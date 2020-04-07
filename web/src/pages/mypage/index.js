@@ -63,7 +63,7 @@ export default props => {
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
       <Layout {...props} webview={webview}>
         <Mypage webview={webview}>
-          <MyProfile profile={profileInfo} />
+          <MyProfile profile={profileInfo} {...props} />
           {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />}
           <SubContent>
             {navigationList.map(value => {
