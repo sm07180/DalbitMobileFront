@@ -21,9 +21,9 @@ const App = () => {
   const [ready, setReady] = useState(false)
 
   const customHeader = useMemo(() => {
-    const tempCustomHeaderTag = document.getElementById('customHeader')
-    if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
-      let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
+    const customHeaderTag = document.getElementById('customHeader')
+    if (customHeaderTag && customHeaderTag.value) {
+      let jsonParsed = JSON.parse(customHeaderTag.value)
       return jsonParsed
     }
 
@@ -40,9 +40,9 @@ const App = () => {
   }, [])
 
   const authToken = useMemo(() => {
-    const tempAuthTokenTag = document.getElementById('authToken')
-    if (tempAuthTokenTag && tempAuthTokenTag.value) {
-      return tempAuthTokenTag.value
+    const authTokenTag = document.getElementById('authToken')
+    if (authTokenTag && authTokenTag.value) {
+      return authTokenTag.value
     }
 
     return Utility.getCookie('authToken')
