@@ -127,6 +127,7 @@ export const RoomMake = async context => {
   }
   //#2 본인인증
   const selfAuth = await Api.self_auth_check({})
+  console.log(selfAuth)
   if (selfAuth.result === 'fail') {
     window.location.href = '/muser/selfAuth'
     return
