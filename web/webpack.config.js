@@ -159,15 +159,18 @@ module.exports = (_, options) => {
 
     config.optimization = {
       minimize: env === 'dev' ? false : true,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true
-            }
-          }
-        })
-      ]
+      minimizer:
+        env === 'dev'
+          ? []
+          : [
+              new TerserPlugin({
+                terserOptions: {
+                  compress: {
+                    drop_console: true
+                  }
+                }
+              })
+            ]
     }
   }
 
