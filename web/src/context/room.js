@@ -118,14 +118,15 @@ export const RoomExit = async roomNo => {
  * @param {context} object            //context
  */
 export const RoomMake = async context => {
-  const {token} = context || Room.context
-  //  return
+  const {customHeader, token} = context || Room.context
+
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
     return
   }
-  //#2 본인인증 (개발중)
+  //#2 본인인증 (AOS만 실행 개발중)
+  alert('os :' + customHeader.os)
   const selfAuth = await Api.self_auth_check({})
   if (selfAuth.result === 'fail') {
     window.location.href = '/selfauth'

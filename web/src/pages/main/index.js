@@ -9,7 +9,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
+
 // components
 import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
@@ -91,8 +91,8 @@ export default props => {
                 className="btn"
                 onClick={() => {
                   //방송하기 공통처리
-                  Hybrid('RoomMake', '')
-                  //  RoomMake(globalCtx)
+                  //  Hybrid('RoomMake', '')
+                  RoomMake(globalCtx)
                 }}>
                 방송하기
               </div>
