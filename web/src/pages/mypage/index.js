@@ -28,7 +28,7 @@ export default props => {
     // //{id: 2, type: 'cast', component: Cast, txt: '캐스트'},
     {id: 3, type: 'wallet', component: Wallet, txt: '내 지갑'},
     {id: 4, type: 'report', component: Report, txt: '리포트'},
-    // // {id: 5, type: 'alert', component: Alert, txt: '알림'},
+    {id: 5, type: 'alert', component: Alert, txt: '알림'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
 

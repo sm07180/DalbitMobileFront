@@ -475,31 +475,32 @@ export default props => {
         //alert(res.message)
         context.action.alert({
           callback: () => {
-            async function fetchLogin() {
-              const resLogin = await Api.member_login({
-                data: {
-                  memType: changes.memType,
-                  memId: loginID,
-                  memPwd: changes.loginPwd
-                }
-              })
-              if (resLogin && resLogin.code) {
-                if (resLogin.code == 0) {
-                  //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-                  props.update({loginSuccess: resLogin.data})
-                  Api.profile({params: {memNo: resLogin.data.memNo}}).then(profileInfo => {
-                    if (profileInfo.result === 'success') {
-                      context.action.updateProfile(profileInfo.data)
-                    }
-                  })
+            // async function fetchLogin() {
+            //   const resLogin = await Api.member_login({
+            //     data: {
+            //       memType: changes.memType,
+            //       memId: loginID,
+            //       memPwd: changes.loginPwd
+            //     }
+            //   })
+            //   if (resLogin && resLogin.code) {
+            //     if (resLogin.code == 0) {
+            //       //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
+            //       props.update({loginSuccess: resLogin.data})
+            //       Api.profile({params: {memNo: resLogin.data.memNo}}).then(profileInfo => {
+            //         if (profileInfo.result === 'success') {
+            //           context.action.updateProfile(profileInfo.data)
+            //         }
+            //       })
 
-                  window.location.href = '/'
-                } else {
-                  console.log(resLogin)
-                }
-              }
-            }
-            fetchLogin()
+            //       window.location.href = '/'
+            //     } else {
+            //       console.log(resLogin)
+            //     }
+            //   }
+            // }
+            // fetchLogin()
+            window.location.href = '/'
           },
           msg: '회원가입 완료되었습니다.'
         })
