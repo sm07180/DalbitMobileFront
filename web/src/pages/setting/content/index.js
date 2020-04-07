@@ -32,8 +32,7 @@ const Index = props => {
               if (res.result === 'success') {
                 //로그아웃성공
                 //쿠키삭제
-                Utility.setCookie('custom-header', '', -1)
-                // alert(JSON.stringify(res.data, null, 1))
+                // Utility.setCookie('custom-header', '', -1)
                 Hybrid('GetLogoutToken', res.data)
                 context.action.updateToken(res.data)
                 props.history.push('/')
