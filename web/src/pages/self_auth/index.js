@@ -148,10 +148,10 @@ export default props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    // document.addEventListener('self-auth', updateDispatch)
-    // return () => {
-    //   document.removeEventListener('self-auth', updateDispatch)
-    // }
+    document.addEventListener('self-auth', updateDispatch)
+    return () => {
+      document.removeEventListener('self-auth', updateDispatch)
+    }
   }, [])
 
   //---------------------------------------------------------------------
