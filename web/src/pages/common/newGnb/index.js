@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
+import {RoomMake} from 'context/room'
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_beta.png'
@@ -52,10 +52,7 @@ export default props => {
         <div
           className="mic-btn"
           onClick={() => {
-            if (token.isLogin) {
-              return Hybrid('RoomMake', '')
-            }
-            return (window.location.href = '/login')
+            RoomMake()
           }}>
           <img src={Mic} />
         </div>

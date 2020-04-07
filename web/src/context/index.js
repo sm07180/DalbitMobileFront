@@ -24,7 +24,6 @@ const GlobalProvider = props => {
   const [nativePlayer, setNativePlayer] = useState(null)
   const [message, setMessage] = useState({visible: false})
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
-  const [mypage, setMypage] = useState(null) //마이페이지(회원정보)
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
@@ -37,7 +36,6 @@ const GlobalProvider = props => {
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
   const [broadcastTotalInfo, setBroadcastTotalInfo] = useState(null) //create 2020.02.28 김호겸 - 방송방 reToken 정보
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
-  const [common, setCommon] = useState() //공통코드
   const [search, setSearch] = useState('')
   const [roomReady, setRoomReady] = useState(false)
   const [reloadType, setReloadType] = useState(0)
@@ -115,9 +113,7 @@ const GlobalProvider = props => {
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
-    /**
-     * search, mypage, notice, menu
-     */
+
     updateGnbState: str => {
       setGnbState(str)
       //render 후 애니메이션 처리
@@ -187,10 +183,6 @@ const GlobalProvider = props => {
     updateCastState: str => {
       setCastState(str)
     },
-    //공통코드 live 진입 시 context에 저장  * /splash api 참조 *
-    updateCommon: obj => {
-      setCommon(obj)
-    },
     updateSearch: str => {
       setSearch(str)
     },
@@ -213,7 +205,6 @@ const GlobalProvider = props => {
     state,
     roomInfo,
     nativePlayer,
-    mypage,
     profile,
     message,
     token,
@@ -227,7 +218,6 @@ const GlobalProvider = props => {
     mediaPlayerStatus,
     broadcastTotalInfo,
     cast_state,
-    common,
     search,
     action,
     roomReady,

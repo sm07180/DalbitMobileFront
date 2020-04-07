@@ -78,62 +78,57 @@ const App = () => {
   }, [])
 
   async function fetchData() {
-    const commonData = await Api.splash()
-    if (commonData.result === 'success') {
-      context.action.updateCommon(commonData.data)
+    // Renew token
+    const tokenInfo = await Api.getToken()
+    if (tokenInfo.result === 'success') {
+      context.action.updateToken(tokenInfo.data)
 
-      // Renew token
-      const tokenInfo = await Api.getToken()
-      if (tokenInfo.result === 'success') {
-        context.action.updateToken(tokenInfo.data)
-
-        if (tokenInfo.data.isLogin) {
-          const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
-          if (profileInfo.result === 'success') {
-            context.action.updateProfile(profileInfo.data)
-          }
+      if (tokenInfo.data.isLogin) {
+        const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
+        if (profileInfo.result === 'success') {
+          context.action.updateProfile(profileInfo.data)
         }
-
-        // *** Native App case
-        if (customHeader['os'] !== '3') {
-          if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
-            Hybrid('GetLoginToken', tokenInfo.data)
-          } else {
-            if (tokenInfo.data.authToken !== authToken) {
-              Hybrid('GetLoginToken', tokenInfo.data)
-            }
-          }
-
-          //최초앱 기동할때만적용
-          if (customHeader.isFirst === 'Y') {
-            Utility.setCookie('native-player-info', '', -1)
-          } else if (customHeader.isFirst === 'N') {
-            //-----@안드로이드 Cookie
-            let cookie = Utility.getCookie('native-player-info')
-            if (customHeader.os === '1' && cookie !== null && cookie !== undefined) {
-              cookie = JSON.parse(cookie)
-              context.action.updateMediaPlayerStatus(true)
-              context.action.updateNativePlayer(cookie)
-            }
-            //-----@iOS
-            if (customHeader.os === '2' && cookie !== null && cookie !== undefined) {
-              cookie = decodeURIComponent(cookie)
-              cookie = JSON.parse(cookie)
-              context.action.updateMediaPlayerStatus(true)
-              context.action.updateNativePlayer(cookie)
-            }
-          }
-        }
-
-        //모든처리완료
-        setReady(true)
-      } else {
-        //토큰에러
-        context.action.alert({
-          title: tokenInfo.messageKey,
-          msg: tokenInfo.message
-        })
       }
+
+      // *** Native App case
+      if (customHeader['os'] !== '3') {
+        if (customHeader.isFirst !== undefined && customHeader.isFirst === 'Y') {
+          Hybrid('GetLoginToken', tokenInfo.data)
+        } else {
+          if (tokenInfo.data.authToken !== authToken) {
+            Hybrid('GetLoginToken', tokenInfo.data)
+          }
+        }
+
+        //최초앱 기동할때만적용
+        if (customHeader.isFirst === 'Y') {
+          Utility.setCookie('native-player-info', '', -1)
+        } else if (customHeader.isFirst === 'N') {
+          //-----@안드로이드 Cookie
+          let cookie = Utility.getCookie('native-player-info')
+          if (customHeader.os === '1' && cookie !== null && cookie !== undefined) {
+            cookie = JSON.parse(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
+          }
+          //-----@iOS
+          if (customHeader.os === '2' && cookie !== null && cookie !== undefined) {
+            cookie = decodeURIComponent(cookie)
+            cookie = JSON.parse(cookie)
+            context.action.updateMediaPlayerStatus(true)
+            context.action.updateNativePlayer(cookie)
+          }
+        }
+      }
+
+      //모든처리완료
+      setReady(true)
+    } else {
+      //토큰에러
+      context.action.alert({
+        title: tokenInfo.messageKey,
+        msg: tokenInfo.message
+      })
     }
   }
   //---------------------------------------------------------------------

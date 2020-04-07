@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
-
+import {RoomMake} from 'context/room'
+//context
+import {Context} from 'context'
 // component
 import Header from '../component/header.js'
 
@@ -16,6 +18,8 @@ import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
 
 export default props => {
+  //context
+  const context = useContext(Context)
   let history = useHistory()
 
   const navList = [
@@ -47,6 +51,7 @@ export default props => {
                 <NavBtnWrap
                   onClick={() => {
                     if (value == 'broadcast') {
+                      RoomMake(context)
                     } else {
                       history.push(`/${value}`)
                     }

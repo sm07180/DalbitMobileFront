@@ -97,7 +97,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return true
   }
 }
-//-----------------------------------------------------------
 /**
  * @title 방송방종료
  * @param {roomNo} string           //방송방번호
@@ -113,4 +112,23 @@ export const RoomExit = async roomNo => {
   } else if (res.result === 'success') {
     return true
   }
+}
+/**
+ * @title 방송방생성
+ * @param {context} object            //context
+ */
+export const RoomMake = async context => {
+  const {token} = context || Room.context
+  console.log(token)
+  //#1 로그인체크
+  if (!token.isLogin) {
+    window.location.href = '/login'
+    return
+  }
+  //# 실행
+  Hybrid('RoomMake', '')
+  console.log(
+    '%c' + `Native: RoomMake`,
+    'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
+  )
 }

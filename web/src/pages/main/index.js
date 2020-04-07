@@ -3,11 +3,12 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-
+//context
+import Api from 'context/api'
 import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
 
 // components
 import Layout from 'pages/common/layout'
@@ -15,14 +16,11 @@ import Gnb from '../common/newGnb'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
-
+import {RoomMake} from 'context/room'
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
-
-import Api from 'context/api'
-import {isHybrid, Hybrid} from 'context/hybrid'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -35,15 +33,6 @@ export default props => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
-
-  const clickBroadcastBtn = () => {
-    // if (isHybrid()) {
-    if (token.isLogin) {
-      return Hybrid('RoomMake', '')
-    }
-    // }
-    return (window.location.href = '/login')
-  }
 
   useEffect(() => {
     ;(async () => {
@@ -101,7 +90,12 @@ export default props => {
               </div>
             </div>
             <div className="right-side">
-              <div className="btn" onClick={clickBroadcastBtn}>
+              <div
+                className="btn"
+                onClick={() => {
+                  //방송하기 공통처리
+                  RoomMake(globalCtx)
+                }}>
                 방송하기
               </div>
             </div>
