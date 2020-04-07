@@ -38,28 +38,18 @@ const App = () => {
     console.log('temp custom value', tempCustomHeaderTag && tempCustomHeaderTag.value)
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
-      jsonParsed['nativeApp'] = true
-      jsonParsed.isHybrid = 'Y'
-      jsonParsed.appVersion = '1.0.1'
-      jsonParsed.locale = Utility.locale()
       return jsonParsed
     }
 
     const cookie = Utility.getCookie('custom-header')
     if (cookie !== undefined) {
       let jsonParsed = JSON.parse(cookie)
-      jsonParsed.appVersion = '1.0.1'
-      jsonParsed.locale = Utility.locale()
       return jsonParsed
     }
 
     return {
       os: '3',
-      locale: 'temp_KR',
-      isHybrid: 'N',
-      deviceId: Utility.createUUID(),
-      language: Utility.locale(),
-      deviceToken: 'make_custom_header'
+      isHybrid: 'N'
     }
   }, [])
 

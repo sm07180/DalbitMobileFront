@@ -97,8 +97,6 @@ export default props => {
     auth: '',
     CMID: '',
     osName: context.customHeader.os,
-    deviceid: context.customHeader.deviceid,
-
     ...props.location.state
   })
 

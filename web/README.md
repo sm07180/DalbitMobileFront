@@ -10,10 +10,7 @@
 ```
 os: "3"
 locale: "temp_KR"
-deviceId: "e9609b9f-626c-41d1-8a4d-8b327152e691"
-browserName: "Chrome"
 language: "ko"
-deviceToken: "make_custom_header"
 ```
 
 > 네이티브앱 과 모바일웹 구분
