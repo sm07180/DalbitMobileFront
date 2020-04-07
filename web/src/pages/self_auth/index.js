@@ -111,6 +111,7 @@ export default props => {
   async function authReq() {
     const res = await Api.self_auth_req({})
     if (res.result == 'success' && res.code == 0) {
+      alert(JSON.stringify(res, null, 1))
       setFormState({
         tr_cert: res.data.tr_cert,
         tr_url: res.data.tr_url,
