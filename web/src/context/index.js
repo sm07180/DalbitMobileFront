@@ -58,6 +58,7 @@ const GlobalProvider = props => {
         setCustomHeader({...obj})
       } else {
         Utility.setCookie('custom-header', '', -1)
+        Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
         setCustomHeader(null)
       }
     },
@@ -75,6 +76,7 @@ const GlobalProvider = props => {
         setToken({...obj})
       } else {
         Utility.setCookie('authToken', '', -1)
+        Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
         setToken(null)
       }
     },
