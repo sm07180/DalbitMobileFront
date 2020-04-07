@@ -90,7 +90,7 @@ export default props => {
       return context.action.alert({
         msg: `검색어를 입력해주세요.`
       })
-    userTypeSetting = type == 'search' ? Number(typeDetail) : userTypeSetting
+    userTypeSetting = type == 'search' ? Number(_.hasIn(changes, 'searchType') ? changes.searchType : 0) : userTypeSetting
     const params = {
       userType: userTypeSetting,
       search: changes.search,
@@ -109,6 +109,9 @@ export default props => {
           setTotalPageNumber(totalPage)
           setUserState(1)
           setUserList(list)
+        }
+        if (type == 'search') {
+          setPage(1)
         }
       }
     } else {
@@ -236,11 +239,17 @@ export default props => {
           <option value="1">닉네임</option>
           <option value="2">ID</option>
         </select>
-        <input type="search" name="search" onChange={onChange} />
+        <input
+          type="search"
+          name="search"
+          onChange={onChange}
+          onKeyUp={e => {
+            if (e.keyCode === 13) getSearchList('search')
+          }}
+        />
         <button
           onClick={() => {
-            const type = _.hasIn(changes, 'searchType') ? changes.searchType : 0
-            getSearchList('search', type)
+            getSearchList('search')
           }}>
           찾기
         </button>

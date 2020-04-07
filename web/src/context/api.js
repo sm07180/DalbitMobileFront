@@ -462,6 +462,41 @@ export default class API {
     return await ajax({...obj, url: url || `/mypage/manager`, method: method || 'DELETE', data: data})
   }
 
+  //블랙리스트
+  /**
+   * @brief 마이페이지 방송설정 블랙리스트 조회
+   * @method "GET"
+   * @create 이은비 2020.04.07
+   */
+  static mypage_black_list = async obj => {
+    const {url, method} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/black`, method: method || 'GET'})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 블랙리스트 등록
+   * @method "POST"
+   * @param string memNo               //필수 매니저될 회원 번호
+   * @create 이은비 2020.04.07
+   */
+  static mypage_black_add = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/black/add`, method: method || 'POST', data: data})
+  }
+
+  /**
+   * @brief 마이페이지 방송설정 블랙리스트 해제
+   * @method "DELETE""
+   * @param string memNo               //필수 해제할 매니저 회원 번호
+   * @create 이은비 2020.04.07
+   */
+  static mypage_black_delete = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/black`, method: method || 'DELETE', data: data})
+  }
+
+  //블랙리스트
+
   /**
    * @brief 마이페이지 리포트 방송내역 조회
    * @method "GET""

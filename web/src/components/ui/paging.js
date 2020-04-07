@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import {IMG_SERVER} from 'context/config'
 
-const PageBtnMaxLength = 10
+const PageBtnMaxLength = 5
 
 export default props => {
   const {setPage, totalPage, currentPage} = props

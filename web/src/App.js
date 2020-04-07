@@ -34,7 +34,8 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const tempCustomHeaderTag = document.getElementById('customHeader')
-    // native app boot case
+    console.log('temp custom', tempCustomHeaderTag)
+    console.log('temp custom value', tempCustomHeaderTag && tempCustomHeaderTag.value)
     if (tempCustomHeaderTag && tempCustomHeaderTag.value) {
       let jsonParsed = JSON.parse(tempCustomHeaderTag.value)
       jsonParsed['nativeApp'] = true
@@ -64,7 +65,8 @@ const App = () => {
 
   const authToken = useMemo(() => {
     const tempAuthTokenTag = document.getElementById('authToken')
-    // native app boot case
+    console.log('temp auth token', tempAuthTokenTag)
+    console.log('temp auth token', tempAuthTokenTag && tempAuthTokenTag.value)
     if (tempAuthTokenTag && tempAuthTokenTag.value) {
       return tempAuthTokenTag.value
     }
@@ -134,7 +136,8 @@ const App = () => {
 
   //useEffect token
   useEffect(() => {
-    context.action.updateCustomHeader(customHeader)
+    // context.action.updateCustomHeader(customHeader)
+    Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
     // Renew all initial data
