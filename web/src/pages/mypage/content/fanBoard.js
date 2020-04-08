@@ -298,7 +298,14 @@ export default props => {
     clickRefresh()
     setModifyInfo({profileImg, nickNm, memId, parseDT})
   }
-  const timem = modifyInfo.writeDt
+  const moidfyCancel = () => {
+    setHidden(false)
+    setModifyInComment('')
+    setModifyInShow('')
+    setModifyComment('')
+    setModifyShow('')
+  }
+
   console.log(modifyInfo.profileImg)
   return (
     <>
@@ -308,7 +315,6 @@ export default props => {
           <WriteAreaTop>
             <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
             <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}}>{profile.nickNm}</div>
-            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontWeight: '600'}}>{profile.nickNm}</div>
           </WriteAreaTop>
           <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
           <WriteAreaBottom>
@@ -380,6 +386,7 @@ export default props => {
                       <span style={{color: '#424242'}}>{`${modifyComment.length * 2}`}</span>
                       <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
                     </TextCount>
+                    <CommentSubmitBtnCancel onClick={() => moidfyCancel()}>취소</CommentSubmitBtnCancel>
                     <CommentSubmitBtn onClick={() => fetchDataEdit(boardNumer)}>수정</CommentSubmitBtn>
                   </WriteAreaBottom>
                 </WriteArea>
@@ -441,15 +448,21 @@ export default props => {
                           placeholder={placeholderTextStart}
                           onChange={textChangeReplyModify}
                           value={modifyInComment}
-                          maxLength={100}
+                          maxLength={49}
                         />
-                        <div>
-                          <TextCount>
+                        <div className="countmodify">
+                          <TextCount className="modifyTextCount">
                             <span style={{color: '#424242'}}>{`${modifyInComment.length * 2}`}</span>
-                            <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
+                            <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
                           </TextCount>
-                          <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)}>취소</button>
-                          <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)}>수정</button>
+                          <div className="btnwraps">
+                            <button onClick={() => moidfyCancel()} className="cancelbtns">
+                              취소
+                            </button>
+                            <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)} className="modifybtns">
+                              수정
+                            </button>
+                          </div>
                         </div>
                       </StartBottom>
                     </MMwrap>
@@ -506,7 +519,15 @@ const CommentSubmitBtn = styled.button`
   background-color: #8556f6;
   position: relative;
 `
-
+const CommentSubmitBtnCancel = styled.button`
+  width: 92px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+  background-color: #bdbdbd;
+  position: relative;
+`
 const TextCount = styled.div`
   width: calc(100% - 92px);
   font-size: 14px;
@@ -816,14 +837,42 @@ const BtnIcon = styled.button`
 const MMwrap = styled.section`
   width: 100%;
 
+  & .titlewrap {
+    padding: 16px 20px;
+  }
   > div {
     display: flex;
     flex-direction: column;
+    border: none;
     > input {
-      width: 100%;
+      padding: 16px 4px;
+      margin: 0 16px;
+      width: calc(100% - 32px);
     }
   }
   &.disable {
     display: none;
+  }
+  & div:nth-child(2) > div {
+    padding: 0;
+  }
+  & .countmodify {
+    width: calc(100% - 16px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 0 16px 16px;
+    .cancelbtns {
+      height: 52px;
+      background-color: #bdbdbd;
+    }
+    .btnwraps {
+      display: flex;
+    }
+    .modifyTextCount {
+      border: none;
+      height: 52px;
+    }
   }
 `
