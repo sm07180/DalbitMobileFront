@@ -187,6 +187,7 @@ export const RoomMake = async context => {
   }
 
   //#2 본인인증 (Android만 실행 개발중)
+  /*---------20.04.08 임시로 막아둠
   if (_os === OS_TYPE['Android']) {
     const selfAuth = await Api.self_auth_check(token)
     if (selfAuth.result === 'fail') {
@@ -194,6 +195,7 @@ export const RoomMake = async context => {
       return
     }
   }
+  */
 
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()
