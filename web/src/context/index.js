@@ -7,7 +7,7 @@ const store = useContext(Context)
  */
 import React, {useState, useContext, createContext} from 'react'
 //context
-import API from 'context/api'
+import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 //Context
@@ -55,11 +55,14 @@ const GlobalProvider = props => {
     updateCustomHeader: obj => {
       if (obj) {
         const stringified = JSON.stringify(obj)
+        Api.setCustomHeader(stringified)
         Utility.setCookie('custom-header', '', -1)
         Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
         setCustomHeader({...obj})
       } else {
+        Api.setCustomHeader(null)
         Utility.setCookie('custom-header', '', -1)
+        Utility.setCookie('custom-header', '', DAY_COOKIE_PERIOD)
         setCustomHeader(null)
       }
     },
@@ -72,11 +75,14 @@ const GlobalProvider = props => {
     updateToken: obj => {
       if (obj) {
         const {authToken} = obj
+        Api.setAuthToken(authToken)
         Utility.setCookie('authToken', '', -1)
         Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
         setToken({...obj})
       } else {
+        Api.setAuthToken(null)
         Utility.setCookie('authToken', '', -1)
+        Utility.setCookie('authToken', '', DAY_COOKIE_PERIOD)
         setToken(null)
       }
     },

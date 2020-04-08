@@ -1326,10 +1326,12 @@ export default class API {
     return await ajax({...obj, url: url || `/rest/pay/bank`, method: method || 'POST', data: data})
   }
 }
+API.customHeader = null
+API.authToken = null
 
 //ajax
 export const ajax = async obj => {
-  const {url, method, data, params, authToken} = obj
+  const {url, method, data, params} = obj
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : API_SERVER
     const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded; charset=utf-8'

@@ -26,6 +26,7 @@ import NeedLoginImg from '../static/profile/need_login.png'
 
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 
 export default props => {
   const subNavList = [
@@ -152,15 +153,28 @@ export default props => {
         </>
       ) : (
         <div className="log-out">
-          <Link to="/login">
+          <a href="/login">
             <img src={NeedLoginImg} />
             <div className="text">
               <span className="bold">로그인</span> 해주세요
             </div>
-          </Link>
-          <a href="/login">
+
             <button className="loginBtn">로그인</button>
           </a>
+          <div>
+            <div>custom-header</div>
+            <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('custom-header')}</div>
+
+            <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
+
+            <div>authToken</div>
+            <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('authToken')}</div>
+
+            <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
+
+            <div>from server</div>
+            <div style={{wordBreak: 'break-word'}}>{JSON.stringify(token)}</div>
+          </div>
         </div>
       )}
     </MenuMypage>
@@ -175,7 +189,7 @@ const LogoutBtn = styled.button`
   width: 100%;
   color: #bdbdbd;
   font-size: 12px;
-  margin: 20px 0;
+  margin-top: 20px;
 `
 
 const MenuMypage = styled.div`
@@ -323,6 +337,8 @@ const MenuMypage = styled.div`
   }
 
   .sub-nav {
+    padding-bottom: 20px;
+
     a {
       display: block;
 

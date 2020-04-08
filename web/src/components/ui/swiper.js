@@ -232,12 +232,5 @@ const Swiper = styled.div`
     &.animate {
       transition: transform 0.2s ease-in;
     }
-
-    .slide {
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      background-color: #eee;
-    }
   }
 `

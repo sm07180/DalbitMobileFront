@@ -95,19 +95,27 @@ export default props => {
 
 const RecommendWrap = styled.div`
   .dalbit-swiper {
-    .slide,
-    .slide-over {
+    .slide {
       border-radius: 50%;
       width: 48px;
       height: 48px;
-    }
-    .slide {
       margin: 0 5px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      background-color: #eee;
     }
     .slide-over {
       position: absolute;
-      /* opacity: 0.3; */
-      background-color: #8556f6;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      box-sizing: border-box;
+
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      background-color: #eee;
     }
   }
 

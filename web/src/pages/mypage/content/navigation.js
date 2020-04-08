@@ -57,6 +57,7 @@ export default props => {
 const TabText = styled.div`
   color: ${COLOR_MAIN};
   cursor: pointer;
+  transform: skew(-0.03deg);
 `
 
 const Navigation = styled.div`
@@ -89,7 +90,7 @@ const Navigation = styled.div`
     min-width: 100px;
     box-sizing: border-box;
     letter-spacing: -0.4px;
-    transform: skew(-0.03deg);
+
     border-bottom: 1px solid ${COLOR_MAIN};
 
     &:first-child {

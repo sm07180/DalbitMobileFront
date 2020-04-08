@@ -91,6 +91,7 @@ export default props => {
                 className="btn"
                 onClick={() => {
                   //방송하기 공통처리
+                  //  Hybrid('RoomMake', '')
                   RoomMake(globalCtx)
                 }}>
                 방송하기
