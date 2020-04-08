@@ -110,18 +110,16 @@ export default props => {
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
-                        <>
-                          <List key={index}>
-                            <Photo bg={profImg.thumb62x62}></Photo>
-                            <span>{nickNm}</span>
-                            {isFan === false && (
-                              <button onClick={() => Regist(memNo)} className="plusFan">
-                                +팬등록
-                              </button>
-                            )}
-                            {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
-                          </List>
-                        </>
+                        <List key={index}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                          {isFan === false && (
+                            <button onClick={() => Regist(memNo)} className="plusFan">
+                              +팬등록
+                            </button>
+                          )}
+                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                        </List>
                       )
                     })}
                 </Container>

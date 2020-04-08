@@ -57,7 +57,7 @@ export default props => {
       settingProfileInfo(memNo)
     }
   }, [context.mypageFanCnt])
-  console.log(context.mypageFanCnt)
+  //console.log(context.mypageFanCnt)
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
