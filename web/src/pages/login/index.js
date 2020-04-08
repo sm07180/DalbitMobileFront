@@ -162,11 +162,11 @@ export default props => {
             </div>
 
             <div className="link-wrap">
-              <Link to="/password">
+              <a href="/password">
                 <div className="link-text">비밀번호 변경</div>
               </a>
               <div className="bar" />
-              <Link to="/signup">
+              <a href="/signup">
                 <div className="link-text">회원가입</div>
               </a>
             </div>
