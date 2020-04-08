@@ -130,6 +130,7 @@ export const RoomMake = async context => {
     window.location.href = '/login'
     return
   }
+
   //#2 본인인증 (Android만 실행 개발중)
   if (_os === OS_TYPE['Android']) {
     const selfAuth = await Api.self_auth_check({})
@@ -138,6 +139,7 @@ export const RoomMake = async context => {
       return
     }
   }
+
   //# 실행
   if (_os === OS_TYPE['Android']) {
     window.android.RoomMake()
