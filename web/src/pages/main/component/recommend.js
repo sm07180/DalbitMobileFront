@@ -165,6 +165,7 @@ const RecommendWrap = styled.div`
       position: absolute;
       width: 300%;
       height: 100%;
+      left: -100%;
       display: flex;
       flex-direction: row;
 
