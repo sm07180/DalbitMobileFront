@@ -3,10 +3,11 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 
-import React, {useEffect, useStet, useContext} from 'react'
+import React, {useEffect, useStet, useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
-
+import ProfileReport from './profile_report'
+import ProfileFanList from './profile_fanList'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
@@ -19,17 +20,35 @@ const levelBarWidth = 176
 
 const myProfile = props => {
   const ctx = useContext(Context)
+  const context = useContext(Context)
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  console.log(props)
+  console.log()
   const myProfileNo = ctx.profile.memNo
   console.log('cccc', profile)
   //memNo
+  const [reportShow, SetShowReport] = useState(false)
 
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
   }
-
+  //api
+  async function fetchDataFanRegist(myProfileNo) {
+    const res = await Api.fan_change({
+      data: {
+        memNo: urlrStr
+      }
+    })
+    if (res.result === 'success') {
+      context.action.updateMypageFanCnt(myProfileNo)
+      console.log(res)
+    } else if (res.result === 'fail') {
+      console.log(res)
+    }
+  }
+  const fanRegist = myProfileNo => {
+    fetchDataFanRegist(myProfileNo)
+  }
   return (
     <MyProfile>
       <ButtonWrap>
@@ -37,8 +56,8 @@ const myProfile = props => {
           {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
           {urlrStr !== myProfileNo && (
             <div className="notBjWrap">
-              {profile.isFan === 1 && <button className="fanRegist">팬</button>}
-              {profile.isFan === 0 && <button>+ 팬등록</button>}
+              {profile.isFan === 0 && <button className="fanRegist">팬</button>}
+              {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
               <button>
                 <span></span>
                 <em>선물</em>
@@ -55,11 +74,12 @@ const myProfile = props => {
               </a>
             )
           })}
+          {profile.fanRank.length > 0 && <button className="moreFan" onClick={() => context.action.updateClose(true)}></button>}
         </FanListWrap>
       </ButtonWrap>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-        {profile.roomNo === '' && <div className="liveIcon"></div>}
+        {profile.roomNo !== '' && <div className="liveIcon"></div>}
         <figure>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
@@ -89,11 +109,13 @@ const myProfile = props => {
           <span>
             스타 <em>{profile.starCnt}</em>
           </span>
-          {urlrStr !== myProfileNo && <div></div>}
+          {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
         </CountingWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
+      {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
+      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} />}
     </MyProfile>
   )
 }
@@ -179,7 +201,7 @@ const ProfileImg = styled.div`
     top: 0px;
     width: 52px;
     height: 26px;
-    background: url('https://devimage.dalbitlive.com/images/api/label_live.png') no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/label_live.png) no-repeat center center / cover;
   }
 `
 
@@ -317,6 +339,7 @@ const CountingWrap = styled.div`
     background: url(${IMG_SERVER}/images/api/ic_report.png);
     margin-left: 18px;
     position: relative;
+    cursor: pointer;
     :after {
       display: block;
       width: 1px;
@@ -383,7 +406,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url('https://devimage.dalbitlive.com/images/api/ic_moon_s.png') no-repeat center center / cover;
+        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
       }
       & em {
         display: block;
@@ -400,7 +423,11 @@ const InfoConfigBtn = styled.div`
 const FanListWrap = styled.div`
   display: block;
   margin-top: 33px;
-
+  & .moreFan {
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/api/ic_more_round.png) no-repeat center center / cover;
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 0;
   }
@@ -410,6 +437,7 @@ const FanRank = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  margin-right: 5px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -606,6 +606,15 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief 팬 랭킹 마이페이지
+   * @method "GET"
+   * @create 황상한 2020.04.07
+   */
+  static mypage_fan_ranking = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile/fan`, method: method || 'GET', params: params})
+  }
 
   /**
    * @brief 토큰조회

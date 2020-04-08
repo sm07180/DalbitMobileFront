@@ -325,7 +325,7 @@ const Write = styled.div`
     button:nth-child(1) {
       width: 24px;
       height: 24px;
-      background: url('https://devimage.dalbitlive.com/images/api/btn_back.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
     }
     h2 {
       font-size: 18px;

@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 // image
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {WIDTH_MOBILE} from 'context/config'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
 //component
 import Checkbox from '../../content/checkbox'
@@ -226,7 +226,7 @@ const ArrowDownBtn = styled.button`
   background-position: center;
   background-image: url(${arrowDownImg});
   &.on {
-    background-image: url('https://devimage.dalbitlive.com/images/api/ic_chevron_sm_up.png');
+    background-image: url(${IMG_SERVER}images/api/ic_chevron_sm_up.png);
   }
 `
 
@@ -366,7 +366,7 @@ const Write = styled.div`
     button:nth-child(1) {
       width: 24px;
       height: 24px;
-      background: url('https://devimage.dalbitlive.com/images/api/btn_back.png') no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
     }
     h2 {
       font-size: 18px;

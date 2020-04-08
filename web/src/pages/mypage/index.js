@@ -31,7 +31,7 @@ export default props => {
     // // {id: 5, type: 'alert', component: Alert, txt: '알림'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
-
+  const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
   let {memNo, type} = useParams()
@@ -49,14 +49,15 @@ export default props => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
+        //console.log(profileInfo.data.fanCnt)
       }
     }
 
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [])
-
+  }, [context.mypageFanCnt])
+  console.log(context.mypageFanCnt)
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}

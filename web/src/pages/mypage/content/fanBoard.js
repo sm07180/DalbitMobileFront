@@ -49,7 +49,7 @@ export default props => {
           return item.status === 1
         })
       )
-      console.log(res)
+      // console.log(res)
     } else if (res.result === 'fail') {
       console.log(res)
     }

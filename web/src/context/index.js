@@ -40,7 +40,9 @@ const GlobalProvider = props => {
   const [reloadType, setReloadType] = useState(0)
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
-
+  const [mypageReport, setMypageReport] = useState(false)
+  const [mypageFanCnt, setMypageFanCnt] = useState('')
+  const [close, setClose] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
@@ -188,6 +190,15 @@ const GlobalProvider = props => {
     },
     updateLogoChange: status => {
       setLogoChange(status)
+    },
+    updateMypageReport: bool => {
+      setMypageReport(bool)
+    },
+    updateMypageFanCnt: str => {
+      setMypageFanCnt(str)
+    },
+    updateClose: bool => {
+      setClose(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -212,7 +223,10 @@ const GlobalProvider = props => {
     roomReady,
     reloadType,
     logoChange,
-    player
+    player,
+    mypageReport,
+    mypageFanCnt,
+    close
   }
   return <Provider value={value}>{props.children}</Provider>
 }
