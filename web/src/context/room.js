@@ -141,11 +141,13 @@ export const RoomMake = async context => {
   }
 
   //# 실행
-  if (_os === OS_TYPE['Android']) {
-    window.android.RoomMake()
-  } else if (_os === OS_TYPE['IOS']) {
-    webkit.messageHandlers.RoomMake.postMessage('')
-  }
+  alert(_os)
+  Hybrid('RoomMake')
+  // if (_os === OS_TYPE['Android']) {
+  //   window.android.RoomMake()
+  // } else if (_os === OS_TYPE['IOS']) {
+  //   webkit.messageHandlers.RoomMake.postMessage('')
+  // }
 
   console.log(
     '%c' + `Native: RoomMake`,
