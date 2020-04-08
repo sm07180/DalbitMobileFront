@@ -122,9 +122,57 @@ export const RoomExit = async roomNo => {
  * @param {context} object            //context
  */
 export const RoomMake = async context => {
+  /**
+   * @title 방송방체크
+   * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))
+   */
+  async function broadCheck(obj) {
+    const res = await Api.broad_check()
+    console.log(res)
+    //진행중인 방송이 없습니다
+    if (res.code === '0') return true
+    //진행중인 방송이 있습니다.
+    if (res.code === '1') {
+      context.action.alert({
+        msg: res.message
+      })
+      return false
+    }
+    //
+    if (res.result === 'success') {
+      const {code} = res
+      const {roomNo, state} = res.data
+      //진행중인 방송이 있습니다
+      context.action.confirm({
+        msg: res.message,
+        //방송하기클릭
+        callback: () => {
+          ;(async function() {
+            const reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
+            console.log(reToken)
+          })()
+        },
+        //방송종료버튼클릭
+        cancelCallback: () => {
+          ;(async function() {
+            const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+            console.log(exit)
+          })()
+        },
+        buttonText: {
+          left: '방송종료',
+          right: '방송하기'
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: res.message !== undefined && res.message
+      })
+    }
+  }
+  //-----------------------------------------------------
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
-
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
@@ -133,22 +181,18 @@ export const RoomMake = async context => {
 
   //#2 본인인증 (Android만 실행 개발중)
   if (_os === OS_TYPE['Android']) {
-    const selfAuth = await Api.self_auth_check({})
+    const selfAuth = await Api.self_auth_check(token)
     if (selfAuth.result === 'fail') {
       window.location.href = '/selfauth'
       return
     }
   }
 
-  //# 실행
-  alert(_os)
+  //#3 방상태확인 ("진행중인 방송이 있습니다.")
+  const result = await broadCheck()
+  if (!result) return
+  //## 실행
   Hybrid('RoomMake')
-  // if (_os === OS_TYPE['Android']) {
-  //   window.android.RoomMake()
-  // } else if (_os === OS_TYPE['IOS']) {
-  //   webkit.messageHandlers.RoomMake.postMessage('')
-  // }
-
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
