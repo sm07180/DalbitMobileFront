@@ -226,7 +226,7 @@ const ArrowDownBtn = styled.button`
   background-position: center;
   background-image: url(${arrowDownImg});
   &.on {
-    background-image: url(${IMG_SERVER}images/api/ic_chevron_sm_up.png);
+    background-image: url(${IMG_SERVER}/images/api/ic_chevron_sm_up.png);
   }
 `
 
