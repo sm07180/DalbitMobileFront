@@ -35,7 +35,7 @@ const Header = styled.div`
       color: #000;
       font-size: 18px;
       letter-spacing: -0.45px;
-      font-weight: bold;
+      font-weight: 800;
     }
   }
 

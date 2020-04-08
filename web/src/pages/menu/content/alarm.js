@@ -132,7 +132,7 @@ const Content = styled.div`
       text-align: center;
       .bold {
         color: #8556f6;
-        font-weight: bold;
+        font-weight: 800;
       }
     }
   }

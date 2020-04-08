@@ -218,9 +218,10 @@ const MenuMypage = styled.div`
         font-size: 20px;
         color: #000;
         letter-spacing: -0.5px;
+        font-weight: 600;
       }
       .mem-id {
-        margin-top: 4px;
+        margin-top: 8px;
         margin-bottom: 24px;
         color: #757575;
         font-size: 12px;
@@ -322,7 +323,7 @@ const MenuMypage = styled.div`
 
       .bold {
         color: #8556f6;
-        font-weight: bold;
+        font-weight: 800;
       }
     }
 
