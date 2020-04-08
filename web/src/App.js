@@ -22,8 +22,8 @@ const App = () => {
 
   const isJsonString = str => {
     try {
-      var parsed = JSON.parse(str)
       alert(str)
+      var parsed = JSON.parse(str)
       return typeof parsed === 'object'
     } catch (e) {
       return false
