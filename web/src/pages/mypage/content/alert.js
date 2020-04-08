@@ -10,6 +10,10 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Utility from 'components/lib/utility'
+
+//component
+import NoResult from 'components/ui/noResult'
 
 //icon
 import userIco from '../component/images/ic_user_normal.svg'
@@ -26,7 +30,66 @@ export default props => {
   const [alertList, setAlertList] = useState(false)
 
   //-----------------------------------------------------------------------------
+  //async
+  async function getAlertList() {
+    const res = await Api.my_notification({
+      params: {
+        page: 1,
+        records: 10
+      }
+    })
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        setListState(0)
+        setAlertList(false)
+      } else {
+        setListState(1)
+        setAlertList(res.data.list)
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
   //function
+  const createAlertList = () => {
+    if (alertList == false) return null
+    return (
+      <>
+        <ul className="alert-list">
+          {alertList.map((item, index) => {
+            const {notiType, contents, memNo, roomNo, regDt, profImg} = item
+            return (
+              <li key={index}>
+                <figure>
+                  <img src={userIco} />
+                </figure>
+                <p>
+                  {contents} <span>{Utility.dateFormatter(regDt, 'dot')}</span>
+                </p>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  }
+
+  const createAlertResult = () => {
+    if (listState === -1) {
+      return null
+    } else if (listState === 0) {
+      return <NoResult className="mobile" text="알람이 없습니다." />
+    } else {
+      return createAlertList()
+    }
+  }
+
+  useEffect(() => {
+    getAlertList()
+  }, [])
 
   //-----------------------------------------------------------------------------
   return (
@@ -34,32 +97,7 @@ export default props => {
       <TitleWrap style={{paddingBottom: '25px'}}>
         <TitleText>알림</TitleText>
       </TitleWrap>
-      <ul className="alert-list">
-        <li>
-          <figure>
-            <img src={userIco} />
-          </figure>
-          <p>
-            누구누구 님이 어떻게 어떻게 하였습니다. <span>2020.02.02</span>
-          </p>
-        </li>
-        <li>
-          <figure>
-            <img src={moonIco} />
-          </figure>
-          <p>
-            누구누구 님이 어떻게 어떻게 하였습니다. <span>2020.02.02</span>
-          </p>
-        </li>
-        <li>
-          <figure>
-            <img src={alarmIco} />
-          </figure>
-          <p>
-            누구누구 님이 어떻게 어떻게 하였습니다. <span>2020.02.02</span>
-          </p>
-        </li>
-      </ul>
+      {createAlertResult()}
     </Content>
   )
 }
