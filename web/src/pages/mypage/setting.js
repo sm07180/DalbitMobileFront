@@ -124,6 +124,11 @@ export default props => {
           props.history.push('/')
         }
       })
+    } else {
+      return context.action.alert({
+        title: `${res.messageKey}`,
+        msg: `${res.message}`
+      })
     }
   }
 
@@ -168,7 +173,7 @@ export default props => {
                   <PasswordCircle />
                 </PasswordTextWrap>
                 <PasswordRedirectBtn>
-                  <Link to="/user/password">비밀번호 변경</Link>
+                  <Link to="/password">비밀번호 변경</Link>
                 </PasswordRedirectBtn>
               </PasswordWrap>
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
