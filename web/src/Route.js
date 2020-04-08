@@ -21,8 +21,6 @@ const Store = React.lazy(() => import('pages/store'))
 const Customer = React.lazy(() => import('pages/customer'))
 const Setting = React.lazy(() => import('pages/setting'))
 
-const MobileUser = React.lazy(() => import('pages/m_user'))
-
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/sign_up'))
@@ -47,9 +45,6 @@ export default () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
-
-        <Route exact path="/muser" component={MobileUser} />
-        <Route exact path="/muser/:title" component={MobileUser} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
