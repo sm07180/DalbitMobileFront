@@ -57,11 +57,42 @@ export default props => {
         ref={selectedWrapRef}
         className="selected-wrap"
         style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {}}>
-        <img className="live-icon" src={LiveIcon} />
-        <div className="counting">
-          <span className="bold">{list ? selectedBIdx + 1 : ''}</span>
-          <span>{list ? `/ ${list.length}` : ''}</span>
+        {/* {Array.isArray(list) && list.length > 0 && ( */}
+        {/* <> */}
+        <div className="slide-wrap">
+          <div
+            className="broad-slide"
+            style={
+              selectedBIdx !== null
+                ? {
+                    backgroundImage: `url(${list[selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1]['bannerUrl']})`
+                  }
+                : {backgroundColor: 'yellow'}
+            }></div>
+          <div
+            className="broad-slide"
+            style={
+              selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {backgroundColor: 'green'}
+            }></div>
+          <div
+            className="broad-slide"
+            style={
+              selectedBIdx !== null
+                ? {
+                    backgroundImage: `url(${list[selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0]['bannerUrl']})`
+                  }
+                : {backgroundColor: 'red'}
+            }></div>
         </div>
+        {/* </> */}
+        {/* )} */}
+        <img className="live-icon" src={LiveIcon} />
+        {Array.isArray(list) && list.length > 0 && (
+          <div className="counting">
+            <span className="bold">{selectedBIdx + 1}</span>
+            <span>{list ? `/ ${list.length}` : ''}</span>
+          </div>
+        )}
       </div>
       {list && (
         <CustomSwiper
@@ -128,6 +159,20 @@ const RecommendWrap = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    overflow: hidden;
+
+    .slide-wrap {
+      position: absolute;
+      width: 300%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+
+      .broad-slide {
+        width: 33.3334%;
+        height: 100%;
+      }
+    }
 
     .live-icon {
       position: absolute;
