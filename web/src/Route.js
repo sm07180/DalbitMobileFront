@@ -8,6 +8,8 @@ import {Route, Redirect, Switch} from 'react-router-dom'
 
 import Navigator from './pages/navigator'
 
+import ScrollToTop from 'components/lib/ScrollToTop'
+
 import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
@@ -38,6 +40,7 @@ export default () => {
           <span></span>
         </div>
       }>
+      <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
