@@ -62,6 +62,8 @@ const App = () => {
       // *** Native App case
       // os => '1': Android, '2': IOS
       if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+        customHeader['isHybrid'] = 'Y'
+
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
@@ -102,8 +104,6 @@ const App = () => {
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
-    //백엔드요청(본인인증및결제)
-    customHeader['isHybrid'] = 'Y'
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
