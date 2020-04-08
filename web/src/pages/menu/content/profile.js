@@ -167,6 +167,9 @@ export default props => {
             <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
             <div>authToken</div>
             <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('authToken')}</div>
+            <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
+            <div>from server</div>
+            <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}>{JSON.stringify(token)}</div>
           </div>
         </div>
       )}
