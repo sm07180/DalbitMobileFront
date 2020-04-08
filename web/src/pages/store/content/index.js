@@ -29,7 +29,7 @@ export default props => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data)
+      setList(res.data.list)
     } else {
       context.action.alert({
         msg: res.message
