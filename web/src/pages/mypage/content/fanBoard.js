@@ -221,9 +221,7 @@ export default props => {
         <WriteArea className={active === true ? 'on' : ''}>
           <WriteAreaTop>
             <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
-            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontFamily: 'NanumSquareB'}}>
-              {profile.nickNm}
-            </div>
+            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontWeight: '600'}}>{profile.nickNm}</div>
           </WriteAreaTop>
           <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
           <WriteAreaBottom>
