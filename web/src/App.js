@@ -50,7 +50,7 @@ const App = () => {
       }
     }
 
-    return {os: 3}
+    return {os: OS_TYPE['Desktop']}
   }, [])
 
   const authToken = useMemo(() => {
