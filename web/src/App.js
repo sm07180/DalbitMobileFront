@@ -33,7 +33,6 @@ const App = () => {
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
-      alert('check1')
       if (isJsonString(cutomeHeaderTag.value)) {
         alert('check2')
         return JSON.parse(customHeaderTag.value)
