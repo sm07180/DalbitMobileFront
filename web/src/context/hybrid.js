@@ -27,10 +27,8 @@ export const isHybrid = () => {
  *
  */
 export const Hybrid = (func, info) => {
-  if (!isHybrid()) return
-
+  //if (!isHybrid()) return
   const customHeader = JSON.parse(Api.customHeader)
-
   switch (customHeader['os']) {
     // Android
     case '1': {
