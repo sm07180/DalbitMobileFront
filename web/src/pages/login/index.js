@@ -12,6 +12,10 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 // static
 import {IMG_SERVER} from 'context/config'
 import closeBtn from 'pages/menu/static/ic_close.svg'
+import naverLogo from './static/naver_logo.png'
+import kakaoLogo from './static/kakao_logo.png'
+import googleLogo from './static/google_logo.png'
+import facebookLogo from './static/fb_logo.png'
 
 import qs from 'query-string'
 import Api from 'context/api'
@@ -166,12 +170,71 @@ export default props => {
                 <div className="link-text">회원가입</div>
               </Link>
             </div>
+
+            <SocialLoginWrap>
+              <div className="line-wrap">
+                <button className="social-btn">
+                  <img className="icon facebook" src={facebookLogo} />
+                  <span className="text">페이스북 로그인</span>
+                </button>
+                <button className="social-btn">
+                  <img className="icon google" src={googleLogo} />
+                  <span className="text">구글 로그인</span>
+                </button>
+              </div>
+              <div className="line-wrap">
+                <button className="social-btn">
+                  <img className="icon naver" src={naverLogo} />
+                  <span className="text">네이버 로그인</span>
+                </button>
+                <button className="social-btn">
+                  <img className="icon kakao" src={kakaoLogo} />
+                  <span className="text">카카오톡 로그인</span>
+                </button>
+              </div>
+            </SocialLoginWrap>
           </Login>
         )}
       </Switch>
     </Layout>
   )
 }
+
+const SocialLoginWrap = styled.div`
+  margin-top: 80px;
+
+  .line-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+
+    .social-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: calc(50% - 6px);
+      height: 48px;
+      background-color: #f5f5f5;
+      box-sizing: border-box;
+      padding: 0 6px;
+
+      .icon {
+        width: 36px;
+      }
+      .text {
+        display: inline-block;
+        width: calc(100% - 36px);
+        color: #757575;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        text-align: center;
+      }
+    }
+  }
+`
 
 const Login = styled.div`
   position: relative;
