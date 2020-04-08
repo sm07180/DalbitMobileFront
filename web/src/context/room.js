@@ -175,7 +175,7 @@ export const RoomMake = async context => {
             left: '방송종료',
             right: '방송하기'
           }
-        })git
+        })
         return false
       }
       return true
