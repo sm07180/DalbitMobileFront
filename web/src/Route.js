@@ -46,12 +46,6 @@ export default () => {
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
 
-<<<<<<< HEAD
-        <Route exact path="/user" component={MobileUser} />
-        <Route exact path="/user/:title" component={MobileUser} />
-
-=======
->>>>>>> 24555c2209ed786213735d675c537d33c9332d1a
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={SignUp} />
