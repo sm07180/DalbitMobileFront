@@ -45,7 +45,7 @@ const App = () => {
         parsed['FROM'] = '@@ CUSTOM @@'
 
         if (__NODE_ENV === 'dev') {
-          if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+          if (parsed['os'] === OS_TYPE['Android']) {
             alert(`custom ${JSON.stringify(parsed)}`)
           }
         }
@@ -64,7 +64,7 @@ const App = () => {
         parsed['FROM'] = '@@ COOKIE @@'
 
         if (__NODE_ENV === 'dev') {
-          if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+          if (parsed['os'] === OS_TYPE['Android']) {
             alert(`cookie ${JSON.stringify(parsed)}`)
           }
         }
