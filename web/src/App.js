@@ -39,6 +39,9 @@ const App = () => {
         if (parsed['os']) {
           parsed['os'] = Number(parsed['os'])
         }
+        if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+          console.log(JSON.stringify(parsed))
+        }
         return parsed
       }
     }
