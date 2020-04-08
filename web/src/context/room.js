@@ -135,7 +135,7 @@ export const RoomMake = async context => {
     }
   }
   //# 실행
-  window.android.RoomMake()
+  //window.android.RoomMake()
   //Hybrid('RoomMake')
   console.log(
     '%c' + `Native: RoomMake`,
