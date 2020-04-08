@@ -9,7 +9,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
+import {StoreLink} from 'context/link'
 // components
 import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
@@ -74,12 +74,7 @@ export default props => {
                 <Link
                   onClick={event => {
                     event.preventDefault()
-                    //IOS일때
-                    if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
-                      webkit.messageHandlers.openInApp.postMessage('')
-                    } else {
-                      window.location.href = '/store'
-                    }
+                    StoreLink(globalCtx)
                   }}
                   to={'/store'}>
                   스토어
