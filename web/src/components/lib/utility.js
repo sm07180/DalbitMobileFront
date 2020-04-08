@@ -142,7 +142,7 @@ export default class Utility {
     return zero + data
   }
   //문자열 시간 넣으면 앞에서부터 8자리로 잘라 YYYY-MM-DD 포맷으로 반환
-  static dateFormatter(num) {
+  static dateFormatter(num, type) {
     if (!num) return ''
     var formatNum = ''
     // 공백제거
@@ -150,7 +150,11 @@ export default class Utility {
     num = num.substr(0, 8)
     try {
       if (num.length == 8) {
-        formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')
+        if (type == 'dot') {
+          formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')
+        } else {
+          formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')
+        }
       }
     } catch (e) {
       formatNum = num
