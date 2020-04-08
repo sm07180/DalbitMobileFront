@@ -89,10 +89,10 @@ const myProfile = props => {
                 </button>
               )}
               {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-              <button>
+              {/* <button>
                 <span></span>
                 <em>선물</em>
-              </button>
+              </button> */}
             </div>
           )}
         </InfoConfigBtn>
