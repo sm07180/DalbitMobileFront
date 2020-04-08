@@ -129,20 +129,27 @@ export const RoomMake = async context => {
   async function broadCheck(obj) {
     const res = await Api.broad_check()
     console.log(res)
+
     //진행중인 방송이 없습니다
     if (res.code === '0') return true
+
     //진행중인 방송이 있습니다.
     if (res.code === '1') {
       context.action.alert({
-        msg: res.message
+        msg: res.message,
+        callback: () => {
+          ;(async function() {
+            const reToken = await Api.broadcast_reToken({data: {roomNo: res.data.roomNo}})
+            console.log(reToken)
+          })()
+        }
       })
       return false
     }
-    //
+    //-----------------------------------
     if (res.result === 'success') {
       const {code} = res
       const {roomNo, state} = res.data
-      //진행중인 방송이 있습니다
       context.action.confirm({
         msg: res.message,
         //방송하기클릭
