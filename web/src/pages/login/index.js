@@ -102,8 +102,8 @@ export default props => {
   return (
     <Layout {...props} status={'no_gnb'}>
       <Switch>
-        {token.isLogin && !webview ? (
-          <Redirect to={`/`} />
+        {token && token.isLogin ? (
+          <Redirect to={'/'} />
         ) : (
           <Login>
             <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
