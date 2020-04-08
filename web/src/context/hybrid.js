@@ -8,6 +8,8 @@
  *
  */
 import Api from 'context/api'
+import {OS_TYPE} from 'context/config.js'
+
 /**
  *
  * @brief 하이브리드앱 여부체크확인
@@ -15,7 +17,7 @@ import Api from 'context/api'
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+  if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
     return true
   }
   return false
@@ -31,7 +33,7 @@ export const Hybrid = (func, info) => {
   const customHeader = JSON.parse(Api.customHeader)
   switch (customHeader['os']) {
     // Android
-    case '1': {
+    case OS_TYPE['Android']: {
       if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function')
         return
       if (info === '' || info === null || info === undefined) {
@@ -42,7 +44,7 @@ export const Hybrid = (func, info) => {
       break
     }
     // IOS
-    case '2': {
+    case OS_TYPE['IOS']: {
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
