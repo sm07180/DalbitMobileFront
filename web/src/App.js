@@ -46,10 +46,10 @@ const App = () => {
       }
     }
 
-    const cookie = Utility.getCookie('custom-header')
-    if (cookie) {
-      if (isJsonString(cookie)) {
-        const parsed = JSON.parse(cookie)
+    const customHeaderCookie = Utility.getCookie('custom-header')
+    if (customHeaderCookie) {
+      if (isJsonString(customHeaderCookie)) {
+        const parsed = JSON.parse(customHeaderCookie)
         if (parsed['os']) {
           parsed['os'] = Number(parsed['os'])
         }
