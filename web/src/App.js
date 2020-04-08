@@ -36,17 +36,27 @@ const App = () => {
     if (customHeaderTag && customHeaderTag.value) {
       if (isJsonString(customHeaderTag.value)) {
         const parsed = JSON.parse(customHeaderTag.value)
-        parsed['os'] = Number(parsed['os'])
+        if (parsed['os']) {
+          parsed['os'] = Number(parsed['os'])
+        }
+        if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+          alert('custom', JSON.stringify(parsed))
+        }
         return parsed
       }
     }
 
-    const cookie = Utility.getCookie('custom-header')
-    if (cookie) {
-      if (isJsonString(cookie)) {
-        const parsed = JSON.parse(cookie)
-        parsed['os'] = Number(parsed['os'])
-        return JSON.parse(cookie)
+    const customHeaderCookie = Utility.getCookie('custom-header')
+    if (customHeaderCookie) {
+      if (isJsonString(customHeaderCookie)) {
+        const parsed = JSON.parse(customHeaderCookie)
+        if (parsed['os']) {
+          parsed['os'] = Number(parsed['os'])
+        }
+        if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+          alert('cookie', JSON.stringify(parsed))
+        }
+        return parsed
       }
     }
 

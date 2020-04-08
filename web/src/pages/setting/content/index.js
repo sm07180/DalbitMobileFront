@@ -51,7 +51,7 @@ const Index = props => {
         msg: `로그아웃 하시겠습니까?`
       })
     } else if (context.token.isLogin === false) {
-      context.action.updatePopup('LOGIN')
+      window.location.href = '/login'
     }
   }
 
@@ -59,7 +59,7 @@ const Index = props => {
     if (context.token.isLogin === true) {
       history.push(`/secession`)
     } else if (context.token.isLogin === false) {
-      context.action.updatePopup('LOGIN')
+      window.location.href = '/login'
     }
   }
 
