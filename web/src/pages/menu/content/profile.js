@@ -130,21 +130,21 @@ export default props => {
           </div>
 
           <div className="sub-nav">
-            <Link to={`/private`}>
+            <a href={`/private`}>
               <div className="list">
                 <span className="text">내 정보 관리</span>
                 <img className="icon" src={InfoIcon} />
               </div>
-            </Link>
+            </a>
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
-                <Link to={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <a href={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                   <div className="list">
                     <span className="text">{txt}</span>
                     <img className="icon" src={icon} />
                   </div>
-                </Link>
+                </a>
               )
             })}
 
