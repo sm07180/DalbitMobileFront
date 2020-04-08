@@ -42,7 +42,7 @@ export default class API {
    * @param string welcomMsg            //*환영 메시지
    * @param string notice               //공지사항
    * @param int entryType               //*entry 타입 (0:전체,1:팬,20세이상)
-   * @param int os                      //*OS 구분(1:Android,2:IOS,3:PC)
+   * @param int os                      //*OS 구분(1:Android,2:IOS,3:Desktop)
    * @param string deviceId             //디바이스 고유아이디
    * @param string deviceToken          //디바이스 토큰
    * @param string appVer               //앱 버전
@@ -87,7 +87,7 @@ export default class API {
    * @param int bgImgRacy               //백그라운드 구글 선정성
    * @param string welcomMsg            //환영 메시지
    * @param string notice               //공지사항
-   * @param int os                      //*OS 구분(1:Android,2:IOS,3:PC)
+   * @param int os                      //*OS 구분(1:Android,2:IOS,3:Desktop)
    * @param string deviceId             //디바이스 고유아이디
    * @param string deviceToken          //디바이스 토큰
    * @param string appVer               //앱 버전
