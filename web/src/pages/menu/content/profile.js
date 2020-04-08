@@ -262,7 +262,7 @@ const MenuMypage = styled.div`
             color: #424242;
             font-size: 14px;
             letter-spacing: -0.35px;
-            font-weight: bold;
+            font-weight: 800;
           }
         }
       }
@@ -291,15 +291,17 @@ const MenuMypage = styled.div`
             color: #8556f6;
             font-size: 14px;
             letter-spacing: -0.35px;
+            font-weight: 600;
           }
           img {
             display: block;
+            margin: 4px 0;
           }
           .value {
             color: #424242;
             font-size: 14px;
             letter-spacing: -0.35px;
-            font-weight: bold;
+            font-weight: 600;
           }
         }
       }
@@ -361,6 +363,7 @@ const MenuMypage = styled.div`
           color: #424242;
           font-size: 14px;
           letter-spacing: -0.35px;
+          font-weight: 600;
         }
         .icon {
           display: block;
