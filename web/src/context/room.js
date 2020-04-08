@@ -141,9 +141,10 @@ export const RoomMake = async context => {
     //-----------------------------------
     if (res.result === 'success') {
       const {code} = res
+      alert('code : ' + code)
       //비정상된 방이 있음
       if (code === '2') {
-        const {roomNo, state} = res.data
+        const {roomNo} = res.data
         context.action.confirm({
           msg: res.message,
           //방송하기_클릭
