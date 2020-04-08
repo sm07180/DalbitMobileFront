@@ -46,7 +46,7 @@ const App = () => {
       if (isJsonString(cookie)) {
         const parsed = JSON.parse(cookie)
         parsed['os'] = Number(parsed['os'])
-        return JSON.parse(cookie)
+        return parsed
       }
     }
 
