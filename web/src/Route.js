@@ -48,8 +48,8 @@ export default () => {
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
 
-        <Route exact path="/muser" component={MobileUser} />
-        <Route exact path="/muser/:title" component={MobileUser} />
+        <Route exact path="/user" component={MobileUser} />
+        <Route exact path="/user/:title" component={MobileUser} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
