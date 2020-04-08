@@ -158,8 +158,7 @@ export default props => {
             <div className="text">
               <span className="bold">로그인</span> 해주세요
             </div>
-          </a>
-          <a href="/login">
+
             <button className="loginBtn">로그인</button>
           </a>
           <div>
