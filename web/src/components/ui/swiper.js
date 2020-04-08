@@ -71,16 +71,17 @@ export default props => {
           wrapperNode.removeChild(f_child)
         }
       }
+      if (childrenLength > 0) {
+        const centerNodeIdx = Math.floor(childrenLength / 2)
+        const targetNode = wrapperNode.childNodes[centerNodeIdx]
+        const bIdx = Number(targetNode.getAttribute('data-idx'))
+        onSwipe(bIdx)
 
-      const centerNodeIdx = Math.floor(childrenLength / 2)
-      const targetNode = wrapperNode.childNodes[centerNodeIdx]
-      const bIdx = Number(targetNode.getAttribute('data-idx'))
-      onSwipe(bIdx)
-
-      wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
-      touchStartX = null
-      touchEndX = null
-      swiping = false
+        wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+        touchStartX = null
+        touchEndX = null
+        swiping = false
+      }
 
       autoSlideInterval()
     }, 300)
