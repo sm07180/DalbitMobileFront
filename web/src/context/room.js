@@ -141,7 +141,6 @@ export const RoomMake = async context => {
     //-----------------------------------
     if (res.result === 'success') {
       const {code} = res
-      alert('code_ : ' + code)
       //비정상된 방이 있음
       if (code === '2') {
         const {roomNo} = res.data
