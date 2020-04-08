@@ -40,7 +40,7 @@ const App = () => {
           parsed['os'] = Number(parsed['os'])
         }
         if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
-          console.log(JSON.stringify(parsed))
+          alert('custom', JSON.stringify(parsed))
         }
         return parsed
       }
@@ -54,7 +54,7 @@ const App = () => {
           parsed['os'] = Number(parsed['os'])
         }
         if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
-          console.log(JSON.stringify(parsed))
+          alert('cookie', JSON.stringify(parsed))
         }
         return parsed
       }
