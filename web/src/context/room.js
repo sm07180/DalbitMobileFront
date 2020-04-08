@@ -13,10 +13,14 @@
     return (   <Room />   )
  */
 import React, {useEffect, useState, useContext} from 'react'
+
 //context
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
+
+import {OS_TYPE} from 'context/config.js'
+
 //
 const Room = () => {
   //context
@@ -119,16 +123,15 @@ export const RoomExit = async roomNo => {
  */
 export const RoomMake = async context => {
   const {customHeader, token} = context || Room.context
-  const _os = customHeader.os + '' //1안드로이드, 2 iOS
-  alert('OS : ' + _os)
+  const _os = customHeader['os']
 
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
     return
   }
-  //#2 본인인증 (AOS만 실행 개발중)
-  if (_os === '1') {
+  //#2 본인인증 (Android만 실행 개발중)
+  if (_os === OS_TYPE['Android']) {
     const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       window.location.href = '/selfauth'
@@ -136,13 +139,12 @@ export const RoomMake = async context => {
     }
   }
   //# 실행
-  if (_os === '1') {
+  if (_os === OS_TYPE['Android']) {
     window.android.RoomMake()
-  } else if (_os === '2') {
+  } else if (_os === OS_TYPE['IOS']) {
     webkit.messageHandlers.RoomMake.postMessage('')
   }
-  //window.android.RoomMake()
-  //Hybrid('RoomMake')
+
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
