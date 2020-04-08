@@ -126,7 +126,7 @@ export const RoomMake = async context => {
     return
   }
   //#2 본인인증 (AOS만 실행 개발중)
-  alert('OS' + customHeader.os + '')
+  alert('OS : ' + customHeader.os + '')
   if (customHeader.os + '' === '1') {
     const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
@@ -135,7 +135,8 @@ export const RoomMake = async context => {
     }
   }
   //# 실행
-  Hybrid('RoomMake')
+  window.android.RoomMake()
+  //Hybrid('RoomMake')
   console.log(
     '%c' + `Native: RoomMake`,
     'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
