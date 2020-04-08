@@ -20,17 +20,28 @@ const App = () => {
 
   const [ready, setReady] = useState(false)
 
+  const isJsonString = str => {
+    try {
+      var parsed = JSON.parse(str)
+      return typeof parsed === 'object'
+    } catch (e) {
+      return false
+    }
+  }
+
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
-      let jsonParsed = JSON.parse(customHeaderTag.value)
-      return jsonParsed
+      if (isJsonString(cutomeHeaderTag.value)) {
+        return JSON.parse(customHeaderTag.value)
+      }
     }
 
     const cookie = Utility.getCookie('custom-header')
     if (cookie) {
-      let jsonParsed = JSON.parse(cookie)
-      return jsonParsed
+      if (isJsonString(cookie)) {
+        return JSON.parse(cookie)
+      }
     }
 
     return {os: '3'}
@@ -75,14 +86,7 @@ const App = () => {
         if (customHeader['isFirst'] === 'N') {
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
-            //----- @ Android
-            if (customHeader['os'] === '1') {
-              const parsed = JSON.parse(nativeInfo)
-              globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsed)
-            }
-            //----- @ IOS
-            else if (customHeader['os'] === '2') {
+            if (isJsonString(nativeInfo)) {
               const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updateMediaPlayerStatus(true)
               globalCtx.action.updateNativePlayer(parsed)
