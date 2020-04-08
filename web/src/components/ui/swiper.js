@@ -98,14 +98,6 @@ export default props => {
   }
 
   const touchStartEvent = e => {
-    const swiperNode = swiperRef.current
-    const wrapperNode = wrapperRef.current
-
-    if (wrapperNode.clientWidth <= swiperNode.clientWidth) {
-      touchStartStatus = false
-      return
-    }
-
     touchStartStatus = true
     touchStartX = e.touches[0].clientX
   }
