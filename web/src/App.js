@@ -44,8 +44,10 @@ const App = () => {
 
         parsed['FROM'] = '@@ CUSTOM @@'
 
-        if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
-          alert(`custom ${JSON.stringify(parsed)}`)
+        if (__NODE_ENV === 'dev') {
+          if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+            alert(`custom ${JSON.stringify(parsed)}`)
+          }
         }
         return parsed
       }
@@ -61,8 +63,10 @@ const App = () => {
 
         parsed['FROM'] = '@@ COOKIE @@'
 
-        if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
-          alert(`cookie ${JSON.stringify(parsed)}`)
+        if (__NODE_ENV === 'dev') {
+          if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
+            alert(`cookie ${JSON.stringify(parsed)}`)
+          }
         }
         return parsed
       }
