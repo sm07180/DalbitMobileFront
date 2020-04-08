@@ -23,9 +23,7 @@ const myProfile = props => {
   const context = useContext(Context)
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  console.log()
   const myProfileNo = ctx.profile.memNo
-  console.log('cccc', profile)
   //memNo
   const [reportShow, SetShowReport] = useState(false)
 
