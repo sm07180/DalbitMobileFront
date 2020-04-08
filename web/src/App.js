@@ -60,9 +60,6 @@ const App = () => {
     // Renew token
     const tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
-      if (customHeader['os'] === '1' || customHeader['os'] === '2') {
-        customHeader['isHybrid'] = 'Y'
-      }
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
 
@@ -109,6 +106,10 @@ const App = () => {
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
+    if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+      customHeader['isHybrid'] = 'Y'
+    }
+
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
