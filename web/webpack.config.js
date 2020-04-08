@@ -9,28 +9,28 @@ const fs = require('fs')
 
 const ENV_URL = {
   dev: {
-    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitlive.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com')
+    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com'),
+    SOCIAL_URL: JSON.stringify('https://devwww2.dalbitlive.com/social')
   },
   stage: {
-    BROADCAST_SOCKET_URL: JSON.stringify('devsv1.dalbitlive.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com')
+    PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
+    SOCIAL_URL: JSON.stringify('https://devwww.dalbitlive.com/social')
   },
   real: {
-    BROADCAST_SOCKET_URL: JSON.stringify('sv.dalbitlive.com'),
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://pay.dalbitlive.com')
+    PAY_SERVER_URL: JSON.stringify('https://pay.dalbitlive.com'),
+    SOCIAL_URL: JSON.stringify('https://www.dalbitlive.com/social')
   }
 }
 
@@ -122,12 +122,12 @@ module.exports = (_, options) => {
 
       new webpack.DefinePlugin({
         __NODE_ENV: JSON.stringify(env),
-        __BROADCAST_SOCKET_URL: ENV_URL[env]['BROADCAST_SOCKET_URL'],
         __WEBRTC_SOCKET_URL: ENV_URL[env]['WEBRTC_SOCKET_URL'],
         __API_SERVER_URL: ENV_URL[env]['API_SERVER_URL'],
         __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
         __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL'],
-        __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL']
+        __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL'],
+        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL']
       })
     ]
   }

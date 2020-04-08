@@ -162,34 +162,44 @@ export default props => {
             </div>
 
             <div className="link-wrap">
-              <Link to="/password">
+              <a href="/password">
                 <div className="link-text">비밀번호 변경</div>
-              </Link>
+              </a>
               <div className="bar" />
-              <Link to="/signup">
+              <a href="/signup">
                 <div className="link-text">회원가입</div>
-              </Link>
+              </a>
             </div>
 
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-btn">
-                  <img className="icon facebook" src={facebookLogo} />
-                  <span className="text">페이스북 로그인</span>
+                  <a href={`${__SOCIAL_URL}/facebook?target=mobile`}>
+                    <img className="icon facebook" src={facebookLogo} />
+                    <span className="text">페이스북 로그인</span>
+                  </a>
                 </button>
+
                 <button className="social-btn">
-                  <img className="icon google" src={googleLogo} />
-                  <span className="text">구글 로그인</span>
+                  <a href={`${__SOCIAL_URL}/google?target=mobile`}>
+                    <img className="icon google" src={googleLogo} />
+                    <span className="text">구글 로그인</span>
+                  </a>
                 </button>
               </div>
               <div className="line-wrap">
                 <button className="social-btn">
-                  <img className="icon naver" src={naverLogo} />
-                  <span className="text">네이버 로그인</span>
+                  <a href={`${__SOCIAL_URL}/naver?target=mobile`}>
+                    <img className="icon naver" src={naverLogo} />
+                    <span className="text">네이버 로그인</span>
+                  </a>
                 </button>
+
                 <button className="social-btn">
-                  <img className="icon kakao" src={kakaoLogo} />
-                  <span className="text">카카오톡 로그인</span>
+                  <a href={`${__SOCIAL_URL}/kakao?target=mobile`}>
+                    <img className="icon kakao" src={kakaoLogo} />
+                    <span className="text">카카오톡 로그인</span>
+                  </a>
                 </button>
               </div>
             </SocialLoginWrap>
@@ -222,16 +232,22 @@ const SocialLoginWrap = styled.div`
       box-sizing: border-box;
       padding: 0 6px;
 
-      .icon {
-        width: 36px;
-      }
-      .text {
-        display: inline-block;
-        width: calc(100% - 36px);
-        color: #757575;
-        font-size: 12px;
-        letter-spacing: -0.3px;
-        text-align: center;
+      a {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .icon {
+          width: 36px;
+        }
+        .text {
+          display: inline-block;
+          width: calc(100% - 36px);
+          color: #757575;
+          font-size: 12px;
+          letter-spacing: -0.3px;
+          text-align: center;
+        }
       }
     }
   }

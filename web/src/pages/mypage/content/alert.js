@@ -44,7 +44,6 @@ export default props => {
   //async
   async function getAlertList(next) {
     currentPage = next ? ++currentPage : currentPage
-    console.log('currentPage', currentPage)
     const res = await Api.my_notification({
       params: {
         page: currentPage,

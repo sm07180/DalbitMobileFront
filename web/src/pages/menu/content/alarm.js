@@ -1,6 +1,5 @@
 /**
  * @title 알림사항
- * @todos 디자인에 맞게, 프로필이미지 및 시간체크기능필요
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
@@ -11,10 +10,21 @@ import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
+import Utility from 'components/lib/utility'
+//room
+import Room, {RoomJoin} from 'context/room'
 // component
 import Header from '../component/header.js'
+import NoResult from 'components/ui/noResult'
 //static
 import NeedLoginImg from '../static/profile/need_login.png'
+
+//icon
+import userIco from 'pages/mypage/component/images/ic_user_normal.svg'
+import moonIco from 'pages/mypage/component/images/ico_moon_s.svg'
+import alarmIco from 'pages/mypage/component/images/ic_alarm.svg'
+
+let currentPage = 1
 
 export default props => {
   //---------------------------------------------------------------------
@@ -22,57 +32,178 @@ export default props => {
   const globalCtx = useContext(Context)
   const {profile} = globalCtx
   const {isLogin} = globalCtx.token
+  const myMemNo = isLogin ? globalCtx.profile.memNo : null
 
   //useState
   const [fetch, setFetch] = useState(null)
+
+  const [listState, setListState] = useState(-1)
+  const [alertList, setAlertList] = useState(false)
+  const [nextList, setNextList] = useState(false)
+  const [moreState, setMoreState] = useState(false)
+
+  //let
+  let clicked = false
+
   //---------------------------------------------------------------------
-  async function fetchData(obj) {
+  async function getAlertList(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await Api.my_notification({
       params: {
-        page: 1,
+        page: currentPage,
         records: 10
       }
     })
-    console.log(res)
-    if (res.result === 'success') {
-      console.log(res.data)
-      setFetch(res.data.list)
-    } else if (res.result === 'fail') {
-      //에러메시지
-      globalCtx.action.alert({
-        title: res.messageKey,
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        if (!next) {
+          setAlertList(false)
+          setListState(0)
+        }
+        setMoreState(false)
+      } else {
+        if (next) {
+          setMoreState(true)
+          setNextList(res.data.list)
+        } else {
+          setAlertList(res.data.list)
+          getAlertList('next')
+        }
+        setListState(1)
+      }
+    } else {
+      context.action.alert({
         msg: res.message
       })
     }
   }
-  const timeFormat = strFormatFromServer => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
-    return `${date} `
+
+  const showMoreList = () => {
+    setAlertList(alertList.concat(nextList))
+    getAlertList('next')
   }
-  //makeContents
-  const makeContents = () => {
-    if (fetch === null) return '알림이 없습니다.'
-    return fetch.map((item, index) => {
-      const {id, contents, url, regDt} = item
-      return (
-        <InfoWrap key={index}>
-          <div className="imgwrap"></div>
-          <div>
-            <TALK>{contents}</TALK>
-            <Time>{timeFormat(regDt)}</Time>
-          </div>
-        </InfoWrap>
-      )
-    })
+
+  const createAlertList = () => {
+    if (alertList == false) return null
+    return (
+      <>
+        <ul className="alert-list">
+          {alertList.map((item, index) => {
+            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
+            const textArea = (
+              <p>
+                {contents} <span>{Utility.settingAlarmTime(regTs)}</span>
+              </p>
+            )
+            switch (notiType) {
+              case 1: //마이스타 방송알림
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      if (clicked) return
+                      clicked = true
+                      RoomJoin(roomNo + '', () => {
+                        clicked = false
+                      })
+                    }}>
+                    <figure style={{background: `url(${profImg.url}) no-repeat center center/ cover`}}></figure>
+                    {textArea}
+                  </li>
+                )
+                break
+              case 2: //달 알림//완료
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      props.history.push(`/mypage/${myMemNo}/wallet`)
+                    }}>
+                    <figure>
+                      <img src={moonIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+              case 3: // 팬 알림
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      props.history.push(`/mypage/${myMemNo}`)
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+              case 4: //팬보드 알림
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      props.history.push(`/mypage/${myMemNo}/fanboard`)
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+              case 5: // 공지 알림
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      props.history.push(`/customer/notice`)
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+
+              default:
+                return (
+                  <li key={index}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+            }
+          })}
+        </ul>
+      </>
+    )
   }
+
+  const createAlertResult = () => {
+    if (listState === -1) {
+      return null
+    } else if (listState === 0) {
+      return <NoResult className="mobile" text="알람이 없습니다." />
+    } else {
+      return createAlertList()
+    }
+  }
+
   //---------------------------------------------------------------------
 
   //useEffect
   useEffect(() => {
-    fetchData()
+    getAlertList()
+    return () => {
+      currentPage = 1
+    }
   }, [])
   //---------------------------------------------------------------------
 
@@ -82,7 +213,23 @@ export default props => {
         <div className="category-text">알림사항</div>
       </Header>
       <Content>
-        {!isLogin && (
+        {isLogin ? (
+          <>
+            {createAlertResult()}
+            {moreState && (
+              <div className="more-btn-wrap">
+                <button
+                  className="more-btn"
+                  onClick={() => {
+                    props.history.push(`/mypage/${myMemNo}/alert`)
+                  }}>
+                  더보기
+                </button>
+              </div>
+            )}
+            <Room />
+          </>
+        ) : (
           <div className="log-out">
             <Link to="/login">
               <img src={NeedLoginImg} />
@@ -95,8 +242,6 @@ export default props => {
             </Link>
           </div>
         )}
-
-        {makeContents()}
       </Content>
     </div>
   )
@@ -132,46 +277,87 @@ const Content = styled.div`
       text-align: center;
       .bold {
         color: #8556f6;
-        font-weight: bold;
+        font-weight: 800;
       }
     }
   }
-`
 
-const Time = styled.div`
-  margin-top: 3px;
-  font-size: 12px;
-  letter-spacing: -0.3px;
-  text-align: left;
-  color: #bdbdbd;
-  transform: skew(-0.03deg);
-`
-const InfoWrap = styled.div`
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-  margin-bottom: 16px;
-
-  .imgwrap {
-    width: 36px;
-    height: 36px;
-    margin-right: 10px;
-    background-color: blue;
-    border-radius: 50%;
-    background: url('https://image.dalbitcast.com/images/profile/main2.jpg') no-repeat center center / cover;
+  .alert-list {
+    li {
+      display: flex;
+      margin: 20px 0;
+      figure {
+        flex-basis: 36px;
+        margin-right: 10px;
+        height: 36px;
+        line-height: 34px;
+        border-radius: 50%;
+        background: #f6f6f6;
+        text-align: center;
+        img {
+          vertical-align: middle;
+        }
+      }
+      p {
+        color: #424242;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight:600;
+        transform: skew(-0.03deg);
+        span {
+          display: block;
+          color: #bdbdbd;
+          font-size: 12px;
+        }
+      }
+    }
   }
-`
-const TALK = styled.h4`
-  float: left;
-  color: #424242;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: -0.35px;
-  transform: skew(-0.03deg);
-  span {
+  .more-btn-wrap {
+    position: relative;
+    &:before {
+      display: block;
+      position: absolute;
+      left: calc(50% - 63px);
+      width: 126px;
+      height: 48px;
+      background: #fff;
+      content: '';
+      z-index: 1;
+    }
+    &:after {
+      position: absolute;
+      right: 0;
+      top: 23px;
+      width: 100%;
+      height: 1px;
+      background: #e0e0e0;
+      content: '';
+    }
+  }
+  .more-btn {
     display: block;
-    color: #dbdbdb;
-    font-size: 12px;
+    position: relative;
+    width: 113px;
+    margin: 40px auto;
+    /* padding-right: 28px; */
+    border: 1px solid #e0e0e0;
+    border-radius: 46px;
+    background: #fff;
+    color: #616161;
+    font-size: 14px;
+    line-height: 46px;
+    z-index: 1;
+    /* &:after {
+      display: block;
+      position: absolute;
+      right: 24px;
+      top: 11px;
+      width: 12px;
+      height: 12px;
+      border-left: 2px solid ${COLOR_MAIN};
+      border-top: 2px solid ${COLOR_MAIN};
+      transform: rotate(-135deg);
+      content: '';
+    } */
   }
 `
