@@ -4,15 +4,17 @@
  */
 import React, {useMemo, useState, useEffect, useContext} from 'react'
 
-//components
-import Api from 'context/api'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+
 //components
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
+
+import Api from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 
 const App = () => {
   const globalCtx = useContext(Context)
@@ -33,18 +35,22 @@ const App = () => {
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
       if (isJsonString(customHeaderTag.value)) {
-        return JSON.parse(customHeaderTag.value)
+        const parsed = JSON.parse(customHeaderTag.value)
+        parsed['os'] = Number(parsed['os'])
+        return parsed
       }
     }
 
     const cookie = Utility.getCookie('custom-header')
     if (cookie) {
       if (isJsonString(cookie)) {
+        const parsed = JSON.parse(cookie)
+        parsed['os'] = Number(parsed['os'])
         return JSON.parse(cookie)
       }
     }
 
-    return {os: '3'}
+    return {os: 3}
   }, [])
 
   const authToken = useMemo(() => {
@@ -71,8 +77,7 @@ const App = () => {
       }
 
       // *** Native App case
-      // os => '1': Android, '2': IOS
-      if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+      if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
@@ -106,7 +111,7 @@ const App = () => {
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
-    if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+    if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
       customHeader['isHybrid'] = 'Y'
     }
 

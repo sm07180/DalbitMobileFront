@@ -31,3 +31,9 @@ export const WIDTH_TABLET_S = '840px' //디자인 시안 사이즈
 export const WIDTH_MOBILE = '600px'
 export const WIDTH_MOBILE_S = '360px' //디자인 시안 사이즈
 //---------------------------------------------------------------------
+
+export const OS_TYPE = {
+  Android: 1,
+  IOS: 2,
+  Desktop: 3
+}
