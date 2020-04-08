@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
 import API from 'context/api'
+import Room, {RoomJoin} from 'context/room'
 // component
 import Header from '../component/header.js'
 import SearchBar from './search_bar'
@@ -19,6 +20,7 @@ export default props => {
 
   //fetch
   async function fetchData(query) {
+    if (query === undefined) return
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
     const res = await API.live_search({
       params: {
@@ -43,9 +45,11 @@ export default props => {
         const {roomNo, memNo} = mode.select
         //라이브중아님
         if (roomNo !== '') {
+          RoomJoin(roomNo)
         } else {
+          window.location.href = `/mypage/${memNo}/`
         }
-        console.log(roomNo, memNo)
+        //console.log(roomNo, memNo)
         break
       default:
         break
@@ -53,17 +57,19 @@ export default props => {
   }
   //useEffect
   useEffect(() => {
-    fetchData()
+    const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
+    if (qs !== undefined) fetchData()
   }, [])
   //---------------------------------------------------------------------
   return (
     <Content>
+      <Room />
       <Header>
         <div className="category-text">검색</div>
       </Header>
       {/* 검색바 */}
       <SearchBar update={update} />
-      <h1>사용자 검색</h1>
+      <h1>라이브 검색</h1>
       <List update={update} fetch={fetch} />
     </Content>
   )

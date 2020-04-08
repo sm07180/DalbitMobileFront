@@ -371,7 +371,7 @@ const Write = styled.div`
     h2 {
       font-size: 18px;
       font-weight: 600;
-      line-height: 1.17;
+      line-height: 24px;
       letter-spacing: -0.45px;
       text-align: center;
     }
@@ -397,7 +397,6 @@ const Write = styled.div`
           border: 1px solid ${COLOR_MAIN};
         }
         &::placeholder {
-          font-family: NanumSquareR;
           color: #616161;
           font-size: 16px;
 
@@ -416,14 +415,13 @@ const Write = styled.div`
         border: 1px solid #e0e0e0;
         width: 100%;
         min-height: 310px;
-        font-family: NanumSquareR;
+
         color: #616161;
         font-size: 16px;
         letter-spacing: -0.8px;
         line-height: 1.5;
         transform: skew(-0.03deg);
         &::placeholder {
-          font-family: NanumSquareR;
           color: #616161;
           font-size: 16px;
           letter-spacing: -0.88px;

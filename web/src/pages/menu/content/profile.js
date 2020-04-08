@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
 
 import {Context} from 'context'
 
@@ -25,7 +24,7 @@ import DalIcon from '../static/profile/ic_moon_m_p.svg'
 import NeedLoginImg from '../static/profile/need_login.png'
 
 import Api from 'context/api'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 export default props => {
@@ -60,7 +59,9 @@ export default props => {
       const logoutInfo = await Api.member_logout()
       if (logoutInfo.result === 'success') {
         const {data} = logoutInfo
-        Hybrid('GetLogoutToken', data)
+        if (isHybrid()) {
+          Hybrid('GetLogoutToken', data)
+        }
         globalCtx.action.updateToken(null)
         globalCtx.action.updateProfile(null)
         props.history.push('/')

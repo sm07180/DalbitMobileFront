@@ -21,6 +21,7 @@ export default props => {
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
+  const [photoUploading, setPhotoUploading] = useState(false)
 
   const nicknameReference = useRef()
 
@@ -50,6 +51,7 @@ export default props => {
 
     reader.onload = async () => {
       if (reader.result) {
+        setPhotoUploading(true)
         const res = await Api.image_upload({
           data: {
             dataURL: reader.result,
@@ -59,6 +61,7 @@ export default props => {
         if (res.result === 'success') {
           setTempPhoto(reader.result)
           setPhotoPath(res.data.path)
+          setPhotoUploading(false)
         } else {
           context.action.alert({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
@@ -80,10 +83,6 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeGender = type => {
-    setGender(type)
-  }
-
   const changeMsg = e => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
@@ -98,6 +97,15 @@ export default props => {
           if (nicknameReference.current) {
             nicknameReference.current.focus()
           }
+        }
+      })
+    }
+
+    if (photoUploading) {
+      return context.action.alert({
+        msg: '프로필 사진 업로드 중입니다.',
+        callback: () => {
+          context.action.alert({visible: false})
         }
       })
     }
@@ -123,6 +131,11 @@ export default props => {
           context.action.alert({visible: false})
           props.history.push('/')
         }
+      })
+    } else {
+      return context.action.alert({
+        title: `${res.messageKey}`,
+        msg: `${res.message}`
       })
     }
   }
@@ -168,7 +181,7 @@ export default props => {
                   <PasswordCircle />
                 </PasswordTextWrap>
                 <PasswordRedirectBtn>
-                  <Link to="/user/password">비밀번호 변경</Link>
+                  <Link to="/password">비밀번호 변경</Link>
                 </PasswordRedirectBtn>
               </PasswordWrap>
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>

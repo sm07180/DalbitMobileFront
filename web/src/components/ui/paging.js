@@ -16,14 +16,17 @@ export default props => {
     throw new Error('Need a currentPage')
   }
 
-  const removedLastDigitPageNumber = useMemo(() => Math.floor(currentPage / PageBtnMaxLength) * PageBtnMaxLength, [currentPage])
+  const removedLastDigitPageNumber = useMemo(() => Math.floor((currentPage - 1) / PageBtnMaxLength) * PageBtnMaxLength, [
+    currentPage
+  ])
+
   const NumberOfPageBtn = useMemo(() => {
     if (totalPage < removedLastDigitPageNumber + PageBtnMaxLength) {
       return totalPage % PageBtnMaxLength
     } else {
       return PageBtnMaxLength
     }
-  }, [totalPage])
+  })
 
   const changePage = pageNumber => {
     if (currentPage !== pageNumber) {

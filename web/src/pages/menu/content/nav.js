@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {RoomMake} from 'context/room'
 //context
 import {Context} from 'context'
+import {StoreLink} from 'context/link'
 // component
 import Header from '../component/header.js'
 
@@ -26,7 +27,7 @@ export default props => {
     {active: true, value: 'broadcast', txt: '방송하기', icon: MicIcon},
     {value: 'live', txt: '라이브', icon: LiveIcon},
     {value: 'rank', txt: '랭킹', icon: RankingIcon},
-    {value: 'store', txt: '스토어', icon: StoreIcon},
+    {value: 'store', value: 'store', txt: '스토어', icon: StoreIcon},
     //{value: 'event', txt: '이벤트', icon: EventIcon},
     {value: 'customer', txt: '고객센터', icon: CSIcon}
   ]
@@ -52,6 +53,8 @@ export default props => {
                   onClick={() => {
                     if (value == 'broadcast') {
                       RoomMake(context)
+                    } else if (value == 'store') {
+                      StoreLink(context)
                     } else {
                       history.push(`/${value}`)
                     }

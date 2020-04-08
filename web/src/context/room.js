@@ -129,49 +129,56 @@ export const RoomMake = async context => {
   async function broadCheck(obj) {
     const res = await Api.broad_check()
     console.log(res)
-
     //진행중인 방송이 없습니다
     if (res.code === '0') return true
-
-    //진행중인 방송이 있습니다.
+    //진행중인 방송이 있습니다
     if (res.code === '1') {
       context.action.alert({
-        msg: res.message,
-        callback: () => {
-          ;(async function() {
-            const reToken = await Api.broadcast_reToken({data: {roomNo: res.data.roomNo}})
-            console.log(reToken)
-          })()
-        }
+        msg: res.message
       })
       return false
     }
     //-----------------------------------
     if (res.result === 'success') {
       const {code} = res
-      const {roomNo, state} = res.data
-      context.action.confirm({
-        msg: res.message,
-        //방송하기클릭
-        callback: () => {
-          ;(async function() {
-            const reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
-            console.log(reToken)
-          })()
-        },
-        //방송종료버튼클릭
-        cancelCallback: () => {
-          ;(async function() {
-            const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-            console.log(exit)
-          })()
-        },
-        buttonText: {
-          left: '방송종료',
-          right: '방송하기'
-        }
-      })
-    } else {
+      //비정상된 방이 있음
+      if (code === '2') {
+        const {roomNo} = res.data
+        context.action.confirm({
+          msg: res.message,
+          //방송하기_클릭
+          callback: () => {
+            ;(async function() {
+              const reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
+              console.log(reToken)
+              if (reToken.result === 'success') {
+                Hybrid('ReconnectRoom', reToken.data)
+              } else {
+                context.action.alert({
+                  msg: reToken.message
+                })
+              }
+            })()
+          },
+          //방송종료_클릭
+          cancelCallback: () => {
+            ;(async function() {
+              const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+              //success,fail노출
+              context.action.alert({
+                msg: exit.message
+              })
+            })()
+          },
+          buttonText: {
+            left: '방송종료',
+            right: '방송하기'
+          }
+        })
+        return false
+      }
+      return true
+    } else if (res.result === 'fail') {
       context.action.alert({
         msg: res.message !== undefined && res.message
       })

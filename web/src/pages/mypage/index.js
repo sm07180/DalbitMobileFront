@@ -49,7 +49,6 @@ export default props => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        //console.log(profileInfo.data.fanCnt)
       }
     }
 
@@ -57,14 +56,14 @@ export default props => {
       settingProfileInfo(memNo)
     }
   }, [context.mypageFanCnt])
-  //console.log(context.mypageFanCnt)
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
       <Layout {...props} webview={webview}>
         <Mypage webview={webview}>
-          <MyProfile profile={profileInfo} {...props} />
+          <MyProfile profile={profileInfo} {...props} webview={webview} />
           {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />}
           <SubContent>
             {navigationList.map(value => {

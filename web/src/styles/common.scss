@@ -46,8 +46,13 @@ body {
   -webkit-text-size-adjust: none;
   height: 100vh;
 }
-pre {
+pre,
+textarea {
   font-family: 'NanumSquare', sans-serif;
+}
+textarea {
+  outline: none;
+  resize: none;
 }
 input,
 select,

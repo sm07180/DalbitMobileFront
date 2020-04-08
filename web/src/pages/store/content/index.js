@@ -29,7 +29,7 @@ export default props => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data)
+      setList(res.data.list)
     } else {
       context.action.alert({
         msg: res.message
@@ -90,13 +90,9 @@ export default props => {
       {list ? (
         <>
           <List>{creatList()}</List>
-          {/* 
-          사장님 보고를 위해서 구매하기 막아둠. 
-
-          
           <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
             구매하기
-          </button> */}
+          </button>
         </>
       ) : (
         <NoResult />
