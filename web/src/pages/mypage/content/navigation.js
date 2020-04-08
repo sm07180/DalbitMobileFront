@@ -27,7 +27,7 @@ export default props => {
   }
 
   useEffect(() => {
-    currentTab = currentTab == 1 || currentTab == 2 ? 0 : currentTab == 3 ? 2 : currentTab
+    currentTab = currentTab == 1 || currentTab == 2 ? 0 : currentTab == 3 ? 0 : currentTab
     naviSwiper.slideTo(currentTab, 300)
   }, [currentTab])
 

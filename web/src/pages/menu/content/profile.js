@@ -34,7 +34,7 @@ export default props => {
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},
-    // {type: 'alarm', txt: '알림', icon: AlarmIcon},
+    {type: 'alert', txt: '알림', icon: AlarmIcon},
     {type: 'bcsetting', txt: '방송설정', icon: SettingIcon}
   ]
 
