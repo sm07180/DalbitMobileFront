@@ -22,7 +22,6 @@ const App = () => {
 
   const isJsonString = str => {
     try {
-      alert(str)
       var parsed = JSON.parse(str)
       return typeof parsed === 'object'
     } catch (e) {
@@ -33,8 +32,7 @@ const App = () => {
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
-      if (isJsonString(cutomeHeaderTag.value)) {
-        alert('check2')
+      if (isJsonString(customHeaderTag.value)) {
         return JSON.parse(customHeaderTag.value)
       }
     }
