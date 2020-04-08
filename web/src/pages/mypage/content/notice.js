@@ -84,7 +84,6 @@ const Notice = props => {
             msg: '공지사항 내용을 입력해주세요.'
           })
         }
-        //console.log(res)
       }
     }
     if (writeBtnState === true) {
@@ -124,13 +123,11 @@ const Notice = props => {
           setTotalPageNumber(totalPage)
         }
         setListDetailed(list)
-        console.log(response)
+        //console.log(response)
       }
     })()
   }, [page])
-  // const ddd = (noticeIdx, idx) => {
-  //   console.log(noticeIdx)
-  // }
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')

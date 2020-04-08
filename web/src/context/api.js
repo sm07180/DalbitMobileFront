@@ -953,6 +953,15 @@ export default class API {
     return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', data: data})
   }
   /**
+   * @brief 회원 팬보드 팬보드 댓글 수정
+   * @method "POST"
+   * @create 황상한 2020.04.08
+   */
+  static mypage_board_edit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board/edit`, method: method || 'POST', data: data})
+  }
+  /**
    * @brief 회원 팬보드 목록조회
    * @method "GET"
    * @param string memNo              //*팬보드 회원번호
