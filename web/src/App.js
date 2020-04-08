@@ -41,6 +41,9 @@ const App = () => {
         if (parsed['os']) {
           parsed['os'] = Number(parsed['os'])
         }
+
+        parsed['FROM'] = '@@ CUSTOM @@'
+
         if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
           alert(`custom ${JSON.stringify(parsed)}`)
         }
@@ -55,6 +58,9 @@ const App = () => {
         if (parsed['os']) {
           parsed['os'] = Number(parsed['os'])
         }
+
+        parsed['FROM'] = '@@ COOKIE @@'
+
         if (parsed['os'] === OS_TYPE['Android'] || parsed['os'] === OS_TYPE['IOS']) {
           alert(`cookie ${JSON.stringify(parsed)}`)
         }
