@@ -34,8 +34,10 @@ const App = () => {
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
-      if (isJsonString(customHeaderTag.value)) {
-        const parsed = JSON.parse(customHeaderTag.value)
+      // The data that get from server is encoded as URIComponent.
+      const decodeValue = decodeURIComponent(customHeaderTag.value)
+      if (isJsonString(decodeValue)) {
+        const parsed = JSON.parse(decodeValue)
         if (parsed['os']) {
           parsed['os'] = Number(parsed['os'])
         }
