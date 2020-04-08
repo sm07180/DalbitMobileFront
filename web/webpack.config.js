@@ -121,6 +121,7 @@ module.exports = (_, options) => {
       new CopyWebpackPlugin([{from: './public/static'}]),
 
       new webpack.DefinePlugin({
+        __NODE_ENV: JSON.stringify(env),
         __BROADCAST_SOCKET_URL: ENV_URL[env]['BROADCAST_SOCKET_URL'],
         __WEBRTC_SOCKET_URL: ENV_URL[env]['WEBRTC_SOCKET_URL'],
         __API_SERVER_URL: ENV_URL[env]['API_SERVER_URL'],
