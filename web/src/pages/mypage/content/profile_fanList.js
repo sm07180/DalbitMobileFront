@@ -1,30 +1,28 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
+//styled
 import styled from 'styled-components'
+//context
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
+//scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
   //context------------------------------------------
-  const {reportShow} = props
   const context = useContext(Context)
   const ctx = useContext(Context)
+  //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-
   const myProfileNo = ctx.profile.memNo
-
+  //state
   const [rankInfo, setRankInfo] = useState('')
-  console.log(rankInfo)
   const [select, setSelect] = useState('')
-  const [active, setActive] = useState(false)
   const [allFalse, setAllFalse] = useState(false)
-
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  //3.버튼info 배열 --------------------------------------
   //api
   const fetchData = async () => {
     const res = await Api.mypage_fan_ranking({
@@ -36,40 +34,12 @@ export default props => {
     })
     if (res.result === 'success') {
       setRankInfo(res.data.list)
-      console.log(res)
-      //   context.action.alert({
-      //     callback: () => {
-      //       context.action.updateMypageReport(false)
-      //     },
-      //     msg: profile.nickNm + '님을 신고 하였습니다.'
-      //   })
+      //console.log(res)
     } else {
       console.log(res)
-      //   context.action.alert({
-      //     callback: () => {
-      //       context.action.updateMypageReport(false)
-      //     },
-      //     msg: '이미 신고한 회원 입니다.'
-      //   })
     }
-
     return
   }
-
-  useEffect(() => {
-    fetchData()
-  }, [select])
-
-  //api
-
-  // context.action.updateMypageReport(false)
-  //버튼map
-  //   console.log(rankInfo)
-  //   const Reportmap = rankInfo.map((item, index) => {
-  //     const {title, id} = item
-  //     return <div>asdas</div>
-  //   })
-
   //scroll function
   const scrollOnUpdate = () => {
     let thisHeight = ''
@@ -78,6 +48,7 @@ export default props => {
       area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
     }
   }
+  //등록,해제
   const Regist = memNo => {
     async function fetchDataFanRegist(memNo) {
       const res = await Api.fan_change({
@@ -86,66 +57,104 @@ export default props => {
         }
       })
       if (res.result === 'success') {
-        setSelect(memNo)
-        //context.action.updateMypageFanCnt(myProfileNo)
-        //console.log(res.data)
+        context.action.alert({
+          callback: () => {
+            setSelect(memNo)
+          },
+          msg: '팬등록에 성공하였습니다.'
+        })
       } else if (res.result === 'fail') {
         console.log(res)
       }
     }
     fetchDataFanRegist(memNo)
-    //   const fanRegist = myProfileNo => {
-    //     fetchDataFanRegist(myProfileNo)
-    //   }
   }
-  // background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+
+  const Cancel = (memNo, isFan) => {
+    async function fetchDataFanCancel(memNo, isFan) {
+      const res = await Api.mypage_fan_cancel({
+        data: {
+          memNo: memNo
+        }
+      })
+      if (res.result === 'success') {
+        context.action.alert({
+          callback: () => {
+            setSelect(memNo + 1)
+          },
+          msg: '팬등록을 해제하였습니다.'
+        })
+      } else if (res.result === 'fail') {
+        console.log(res)
+      }
+    }
+    fetchDataFanCancel(memNo)
+  }
+  //------------------------------------------------------------
+  useEffect(() => {
+    fetchData()
+  }, [select])
   //------------------------------------------------------------
   return (
     <>
-      <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
-        <div className="wrapper">
-          <button className="close" onClick={() => context.action.updateClose(false)}></button>
-          <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-            <div className="scrollWrap">
-              <Container>
-                <div className="reportTitle"></div>
-                <h2>팬 랭킹</h2>
-                {rankInfo !== '' &&
-                  rankInfo.map((item, index) => {
-                    const {title, id, profImg, nickNm, isFan, memNo} = item
-                    return (
-                      <>
-                        <List>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
-                          {isFan === false && (
-                            <button onClick={() => Regist(memNo)} className="plusFan">
-                              +팬등록
-                            </button>
-                          )}
-                          {isFan === true && <button>팬</button>}
-                        </List>
-                      </>
-                    )
-                  })}
-              </Container>
-            </div>
-          </Scrollbars>
-        </div>
-      </FixedBg>
-      {/* <Dim onClick={() => context.action.updateClose(false)}></Dim> */}
+      <HoleWrap>
+        <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
+          <div className="wrapper">
+            <button className="close" onClick={() => context.action.updateClose(false)}></button>
+            <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
+              <div className="scrollWrap">
+                <Container>
+                  <div className="reportTitle"></div>
+                  <h2>팬 랭킹</h2>
+                  {rankInfo !== '' &&
+                    rankInfo.map((item, index) => {
+                      const {title, id, profImg, nickNm, isFan, memNo} = item
+                      return (
+                        <>
+                          <List key={index}>
+                            <Photo bg={profImg.thumb62x62}></Photo>
+                            <span>{nickNm}</span>
+                            {isFan === false && (
+                              <button onClick={() => Regist(memNo)} className="plusFan">
+                                +팬등록
+                              </button>
+                            )}
+                            {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                          </List>
+                        </>
+                      )
+                    })}
+                </Container>
+              </div>
+            </Scrollbars>
+          </div>
+        </FixedBg>
+      </HoleWrap>
+      <Dim onClick={() => context.action.updateClose(false)}></Dim>
     </>
   )
 }
 //----------------------------------------
 //styled
+const HoleWrap = styled.div`
+  display: flex;
+  position: fixed;
+
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 24;
+`
 const Dim = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 24;
+  z-index: 23;
+  background-color: rgba(0, 0, 0, 0.5);
 `
 
 const List = styled.div`
@@ -189,14 +198,7 @@ const Photo = styled.div`
 `
 
 const FixedBg = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 83.33%;
-
-  background-color: rgba(0, 0, 0, 0.5);
   z-index: 24;
-
   .wrapper {
     &:after {
       content: '';
@@ -222,7 +224,8 @@ const FixedBg = styled.div`
   }
   .scrollWrap {
     width: 100vw;
-    max-height: 500px;
+    max-height: 420px;
+    flex: none;
   }
   &.on {
     display: none;
@@ -235,13 +238,14 @@ const FixedBg = styled.div`
 `
 const Container = styled.div`
   padding: 12px;
-
+  width: 83.33%;
   margin: 0 auto;
+  min-height: 360px;
   display: flex;
   background-color: #fff;
   /* align-items: center; */
   flex-direction: column;
-  justify-content: center;
+
   border-radius: 10px;
   & h2 {
     margin-top: 14px;

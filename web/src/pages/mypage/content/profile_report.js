@@ -1,25 +1,23 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
+//styled
 import styled from 'styled-components'
+//context
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
 export default props => {
   //context------------------------------------------
-  const {reportShow} = props
   const context = useContext(Context)
   const ctx = useContext(Context)
+  //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-
-  //console.log(props)
   const myProfileNo = ctx.profile.memNo
-  //console.log('cccc', profile)
-
+  //state
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
   const [allFalse, setAllFalse] = useState(false)
-  //3.버튼info 배열 --------------------------------------
   //api
   const fetchData = async () => {
     const res = await Api.member_declar({
@@ -29,7 +27,7 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
+      //console.log(res)
       context.action.alert({
         callback: () => {
           context.action.updateMypageReport(false)
@@ -49,10 +47,6 @@ export default props => {
     return
   }
   const BTNInfo = [
-    // {
-    //   title: '방송방 배경사진',
-    //   id: 1
-    // },
     {
       title: '프로필 사진',
       id: 1
@@ -104,7 +98,7 @@ export default props => {
   useEffect(() => {
     SubmitBTNChange()
   })
-  //
+  //리포트클로즈
   const ClearReport = () => {
     context.action.updateMypageReport(false)
   }

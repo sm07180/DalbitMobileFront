@@ -615,7 +615,16 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({...obj, url: url || `/profile/fan`, method: method || 'GET', params: params})
   }
-
+  /**
+   * @brief 방송방 팬 헤제(BJ팬 등록 경우 채팅방 알림)
+   * @method "DELETE"
+   * @todo
+   * @create 황상한 2020.04.08
+   */
+  static mypage_fan_cancel = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/fan`, method: method || 'DELETE', data: data})
+  }
   /**
    * @brief 토큰조회
    * @method "GET"

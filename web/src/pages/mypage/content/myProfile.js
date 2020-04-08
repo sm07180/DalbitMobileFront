@@ -2,33 +2,32 @@
  * @file /mypage/content/my-profile.js
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
-
 import React, {useEffect, useStet, useContext, useState} from 'react'
+//route
 import {Link} from 'react-router-dom'
+//styled
 import styled from 'styled-components'
+//component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
-
 import Api from 'context/api'
-
-// context
 import {Context} from 'context'
+
 const levelBarWidth = 176
 
 const myProfile = props => {
+  //context
   const ctx = useContext(Context)
   const context = useContext(Context)
+  //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  console.log()
   const myProfileNo = ctx.profile.memNo
-  console.log('cccc', profile)
-  //memNo
+  //state
   const [reportShow, SetShowReport] = useState(false)
-
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
   }
@@ -40,15 +39,43 @@ const myProfile = props => {
       }
     })
     if (res.result === 'success') {
-      context.action.updateMypageFanCnt(myProfileNo)
-      console.log(res)
+      context.action.alert({
+        callback: () => {
+          context.action.updateMypageFanCnt(myProfileNo)
+        },
+        msg: '팬등록에 성공하였습니다.'
+      })
+      //console.log(res)
     } else if (res.result === 'fail') {
       console.log(res)
     }
   }
+  //function:팬해제
+  const Cancel = myProfileNo => {
+    async function fetchDataFanCancel(myProfileNo) {
+      const res = await Api.mypage_fan_cancel({
+        data: {
+          memNo: urlrStr
+        }
+      })
+      if (res.result === 'success') {
+        context.action.alert({
+          callback: () => {
+            context.action.updateMypageFanCnt(myProfileNo + 1)
+          },
+          msg: '팬등록을 해제하였습니다.'
+        })
+      } else if (res.result === 'fail') {
+        console.log(res)
+      }
+    }
+    fetchDataFanCancel(myProfileNo)
+  }
+  //function:팬등록
   const fanRegist = myProfileNo => {
     fetchDataFanRegist(myProfileNo)
   }
+
   return (
     <MyProfile>
       <ButtonWrap>
@@ -56,7 +83,11 @@ const myProfile = props => {
           {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
           {urlrStr !== myProfileNo && (
             <div className="notBjWrap">
-              {profile.isFan === 0 && <button className="fanRegist">팬</button>}
+              {profile.isFan === 0 && (
+                <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                  팬
+                </button>
+              )}
               {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
               <button>
                 <span></span>
@@ -121,8 +152,7 @@ const myProfile = props => {
 }
 
 export default myProfile
-
-//최상단 flex wrap
+//styled======================================
 const MyProfile = styled.div`
   display: flex;
   flex-direction: row;
@@ -132,7 +162,7 @@ const MyProfile = styled.div`
   margin: 0 auto;
   padding: 40px 16px 57px 16px;
 
-  * > div {
+  & > div {
     flex: 0 0 auto;
   }
 
