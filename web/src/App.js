@@ -60,6 +60,9 @@ const App = () => {
     // Renew token
     const tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
+      if (customHeader['os'] === '1' || customHeader['os'] === '2') {
+        customHeader['isHybrid'] = 'Y'
+      }
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
 
@@ -73,8 +76,6 @@ const App = () => {
       // *** Native App case
       // os => '1': Android, '2': IOS
       if (customHeader['os'] === '1' || customHeader['os'] === '2') {
-        customHeader['isHybrid'] = 'Y'
-
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
