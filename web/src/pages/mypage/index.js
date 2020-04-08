@@ -49,7 +49,6 @@ export default props => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        //console.log(profileInfo.data.fanCnt)
       }
     }
 
@@ -57,7 +56,7 @@ export default props => {
       settingProfileInfo(memNo)
     }
   }, [context.mypageFanCnt])
-  //console.log(context.mypageFanCnt)
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
