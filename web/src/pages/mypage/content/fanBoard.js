@@ -3,7 +3,7 @@
  * @brief 마이페이지 팬보드
  */
 
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 // context
 import {Context} from 'context'
@@ -13,6 +13,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 //layout
 
 export default props => {
+  const inputEl = useRef(null)
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -298,6 +299,7 @@ export default props => {
     clickRefresh()
     setModifyInfo({profileImg, nickNm, memId, parseDT})
   }
+
   const moidfyCancel = () => {
     setHidden(false)
     setModifyInComment('')
@@ -306,7 +308,13 @@ export default props => {
     setModifyShow('')
   }
 
-  console.log(modifyInfo.profileImg)
+  useEffect(() => {
+    if (hidden === true) {
+      setTimeout(() => {
+        inputEl.current.focus()
+      }, 100)
+    }
+  }, [hidden])
   return (
     <>
       {/* 전체영역 */}
@@ -449,6 +457,7 @@ export default props => {
                           onChange={textChangeReplyModify}
                           value={modifyInComment}
                           maxLength={49}
+                          ref={inputEl}
                         />
                         <div className="countmodify">
                           <TextCount className="modifyTextCount">
