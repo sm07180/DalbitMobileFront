@@ -46,6 +46,7 @@ const GlobalProvider = props => {
   const [closeFanCnt, setCloseFanCnt] = useState(false)
   const [closeStarCnt, setCloseStarCnt] = useState(false)
   const [closePresent, setClosePresent] = useState(false)
+  const [boardNumber, setBoardNumber] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
@@ -217,6 +218,9 @@ const GlobalProvider = props => {
     },
     updateClosePresent: bool => {
       setClosePresent(bool)
+    },
+    updateBoardNumber: num => {
+      setBoardNumber(num)
     }
   }
   //---------------------------------------------------------------------
@@ -247,7 +251,8 @@ const GlobalProvider = props => {
     close,
     closeFanCnt,
     closeStarCnt,
-    closePresent
+    closePresent,
+    boardNumber
   }
   return <Provider value={value}>{props.children}</Provider>
 }

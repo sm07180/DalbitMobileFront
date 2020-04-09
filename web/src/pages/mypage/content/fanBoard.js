@@ -51,7 +51,10 @@ export default props => {
         })
       )
     } else if (res.result === 'fail') {
-      console.log(res)
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //대댓글 조회
@@ -65,6 +68,10 @@ export default props => {
     if (res.result === 'success') {
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
 
@@ -97,9 +104,12 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
+      //console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
 
@@ -129,6 +139,10 @@ export default props => {
       if (res.result === 'success') {
         fetchDataList()
       } else if (res.result === 'fail') {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       }
     }
     fetchDataDelete()
@@ -147,6 +161,10 @@ export default props => {
       setModifyComment('')
       setModifyShow('')
     } else if (res.result === 'fail') {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //팬보다 대댓글수정
@@ -164,6 +182,10 @@ export default props => {
       setModifyInComment('')
       setModifyInShow('')
     } else if (res.result === 'fail') {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //placeholder
@@ -187,14 +209,21 @@ export default props => {
   }
   //대댓글보기
   const ShowReplyBtnState = (writeNumer, boardNumer) => {
-    showReply(writeNumer, boardNumer)
-    if (btnState === false) {
+    if (btnState === true) {
+      setBtnState(false)
+    } else {
       setBtnState(true)
-    } else if (btnState === true) {
+    }
+    context.action.updateBoardNumber(boardNumer)
+    showReply(writeNumer, boardNumer)
+  }
+  useEffect(() => {
+    if (context.boardNumber === broadNumbers) {
+      setBtnState(true)
+    } else if (context.boardNumber !== broadNumbers) {
       setBtnState(false)
     }
-  }
-
+  }, [context.boardNumber])
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
     setBroadNumbers(boardNumer)
@@ -234,6 +263,7 @@ export default props => {
     setModifyComment(contents)
     setModifyShow(boardIdx)
     clickRefresh()
+    setBtnState(false)
   }
   //댓글 수정 온체인지
   const textModify = e => {
