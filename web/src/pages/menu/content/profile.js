@@ -348,7 +348,7 @@ const MenuMypage = styled.div`
   }
 
   .sub-nav {
-    padding-bottom: 20px;
+    padding-bottom: 100px;
 
     a {
       display: block;
