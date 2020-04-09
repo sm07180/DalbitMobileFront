@@ -27,6 +27,7 @@ const myProfile = props => {
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
+  console.log(profile)
   const myProfileNo = ctx.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -76,6 +77,17 @@ const myProfile = props => {
   //function:팬등록
   const fanRegist = myProfileNo => {
     fetchDataFanRegist(myProfileNo)
+  }
+  //func
+  const starContext = () => {
+    if (profile.StarCnt > 0) {
+      context.action.updateCloseStarCnt(true)
+    }
+  }
+  const fanContext = () => {
+    if (profile.fanCnt > 0) {
+      context.action.updateCloseFanCnt(true)
+    }
   }
 
   return (
@@ -143,10 +155,10 @@ const myProfile = props => {
         </NameWrap>
 
         <CountingWrap>
-          <span onClick={() => context.action.updateCloseFanCnt(true)}>
+          <span onClick={() => fanContext()}>
             팬 <em>{profile.fanCnt}</em>
           </span>
-          <span onClick={() => context.action.updateCloseStarCnt(true)}>
+          <span onClick={() => StarContext()}>
             스타 <em>{profile.starCnt}</em>
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
