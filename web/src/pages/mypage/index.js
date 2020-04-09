@@ -67,7 +67,7 @@ export default props => {
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
       <Layout {...props} webview={webview}>
         <Mypage webview={webview}>
-          <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
+          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           <MyProfile profile={profileInfo} {...props} webview={webview} />
           {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />}
           <SubContent>
@@ -94,7 +94,8 @@ const Mypage = styled.div`
 
   .close-btn {
     position: absolute;
-    right: 0;
+    top: 6px;
+    right: -7px;
   }
 
   @media (max-width: 1260px) {

@@ -21,6 +21,8 @@ import {Context} from 'context'
 const levelBarWidth = 176
 
 const myProfile = props => {
+  const {webview} = props
+
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -91,7 +93,7 @@ const myProfile = props => {
   }
 
   return (
-    <MyProfile>
+    <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
           {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
@@ -193,6 +195,7 @@ const MyProfile = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 20px 0 45px 0;
+    padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
   }
 `
 //flex item3
