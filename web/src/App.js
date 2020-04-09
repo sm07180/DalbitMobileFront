@@ -98,10 +98,13 @@ const App = () => {
         }
 
         if (customHeader['isFirst'] === 'N') {
+          // /webview=new 형태로 이루어진 player종료
+          if (window.location.href.indexOf('webview') !== -1) {
+            return
+          }
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
-              console.log('window.location.href')
               console.log(window.location.href)
               const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updatePlayer(true)
@@ -111,7 +114,6 @@ const App = () => {
           }
         }
       }
-
       //모든 처리 완료
       setReady(true)
     } else {
