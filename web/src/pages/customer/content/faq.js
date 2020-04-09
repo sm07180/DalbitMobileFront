@@ -14,6 +14,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import styled from 'styled-components'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
+import {reset} from 'ansi-colors'
 //----------------------------------------------------------
 
 function Faq(props) {
@@ -100,17 +101,23 @@ function Faq(props) {
    *
    * @func 클릭 조건 실행
    */
-
+  const [reset, setReset] = useState(true)
   const clickEvent = faqIdx => {
-    //Store().action.updatefaqPage(faqIdx)
-    // if (Store().faqPage === '') {
-
-    // } else if (Store().faqPage !== '') {
+    /////////////////////////////////////
+    // if (faqIdx === Store().faqPage) {
     //   Store().action.updatefaqPage('')
+    //   SetListhide('')
+
     // }
     Store().action.updatefaqPage(faqIdx)
     SetListhide(faqIdx)
+    if (Store().faqPage === faqIdx && listhide !== '') {
+      setReset(false)
+    } else {
+      setReset(true)
+    }
   }
+  useEffect(() => {})
 
   //set type select
   const setType = value => {
@@ -142,7 +149,7 @@ function Faq(props) {
     }
   }, [Store().faqPage])
   //--------------------------------------------------------
-
+  //Store().faqPage === faqIdx && listhide !== ''
   return (
     <>
       {/* 컨텐츠 : 게시판 스타일 */}
@@ -236,7 +243,7 @@ function Faq(props) {
                       </dd>
                       <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx && listhide !== '' && listhide !== '' ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
                       <div>
                         <span className="icon">A</span>
                         {faqDetail.answer && (

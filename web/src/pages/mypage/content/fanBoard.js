@@ -396,6 +396,7 @@ export default props => {
                       const profileImg = profImg.thumb62x62
                       const parseDT = timeFormat(writeDt)
                       if (status !== 1) return
+                      //console.log(boardIdx)
                       return (
                         <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
