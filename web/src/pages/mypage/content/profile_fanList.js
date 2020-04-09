@@ -9,6 +9,7 @@ import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
+  const {name} = props
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -90,6 +91,25 @@ export default props => {
     }
     fetchDataFanCancel(memNo)
   }
+  const CancelBtn = () => {
+    if (name === '팬 랭킹') {
+      context.action.updateClose(false)
+    } else if (name === '팬') {
+      context.action.updateCloseFanCnt(false)
+    } else if (name === '스타') {
+      context.action.updateCloseStarCnt(false)
+    }
+  }
+
+  const DimCancel = () => {
+    if (name === '팬 랭킹') {
+      context.action.updateClose(false)
+    } else if (name === '팬') {
+      context.action.updateCloseFanCnt(false)
+    } else if (name === '스타') {
+      context.action.updateCloseStarCnt(false)
+    }
+  }
   //------------------------------------------------------------
   useEffect(() => {
     fetchData()
@@ -100,17 +120,17 @@ export default props => {
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            <button className="close" onClick={() => context.action.updateClose(false)}></button>
+            <button className="close" onClick={() => CancelBtn()}></button>
             <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
               <div className="scrollWrap">
                 <Container>
                   <div className="reportTitle"></div>
-                  <h2>팬 랭킹</h2>
+                  <h2>{name}</h2>
                   {rankInfo !== '' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
-                        <List key={index}>
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
                           <Photo bg={profImg.thumb62x62}></Photo>
                           <span>{nickNm}</span>
                           {isFan === false && (
@@ -128,7 +148,7 @@ export default props => {
           </div>
         </FixedBg>
       </HoleWrap>
-      <Dim onClick={() => context.action.updateClose(false)}></Dim>
+      <Dim onClick={() => DimCancel()}></Dim>
     </>
   )
 }
@@ -185,6 +205,9 @@ const List = styled.div`
   .plusFan {
     background-color: ${COLOR_MAIN};
     color: #fff;
+  }
+  &.none {
+    display: none;
   }
 `
 const Photo = styled.div`
