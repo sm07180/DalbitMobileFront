@@ -103,7 +103,7 @@ const GlobalProvider = props => {
      * @param string bjProfImg
      */
     updateNativePlayer: obj => {
-      setNativePlayer(obj)
+      setNativePlayer({...obj})
     },
     updateProfile: profile => {
       setProfile(profile)
