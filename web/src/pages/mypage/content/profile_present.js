@@ -1,203 +1,172 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
-//styled
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
-//context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
-import Api from 'context/api'
 import {Context} from 'context'
-//scroll
-import {Scrollbars} from 'react-custom-scrollbars'
+import Api from 'context/api'
+
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+
+const testData = [20, 50, 100, 500, 1000]
+// 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default props => {
-  //context------------------------------------------
+  //-------------------------------------------------------- declare start
+  const [point, setPoint] = useState()
+  const [text, setText] = useState('')
+  const [active, setActive] = useState(false)
+  const [send, setSend] = useState(false)
+  const [directDalCnt, setDirectDalCnt] = useState(0)
   const context = useContext(Context)
-  const ctx = useContext(Context)
-  //pathname
-  const urlrStr = props.location.pathname.split('/')[2]
-  const {profile} = props
-  const myProfileNo = ctx.profile.memNo
-  //state
-  const [rankInfo, setRankInfo] = useState('')
-  const [select, setSelect] = useState('')
+  const customHeader = JSON.parse(Api.customHeader)
   const [allFalse, setAllFalse] = useState(false)
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  //api
-  const fetchData = async () => {
-    const res = await Api.mypage_fan_ranking({
-      params: {
-        memNo: urlrStr,
-        page: 1,
-        records: 100
+  //-------------------------------------------------------- func start
+  const handleChangeInput = event => {
+    const {value, maxLength} = event.target
+    if (value.length > maxLength) {
+      return false
+    }
+    setText(value)
+  }
+
+  const _active = param => {
+    // 달 수를 직접 입력 ( param : input ) , 20,50,100,500,1000 (param : 0,1,2,3,4)
+    if (param === 'input') {
+      setPoint(-1)
+      setActive(true)
+      setDirectDalCnt(0)
+    } else {
+      setPoint(param)
+      setActive(false)
+      setDirectDalCnt(testData[param])
+      setText('')
+    }
+    setSend(true)
+  }
+
+  // 선물하기
+  async function giftSend() {
+    let dalcount
+    if (directDalCnt != 0) {
+      dalcount = directDalCnt
+    } else {
+      dalcount = parseInt(text)
+    }
+
+    if (dalcount <= 0) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        msg: '보낼 달 수량을 입력해 주세요'
+      })
+    }
+    // console.log(props)
+    // console.log('달 수  = ' + dalcount)
+    const res = await Api.member_gift_dal({
+      data: {
+        memNo: props.profile.memNo,
+        dal: dalcount
       }
     })
     if (res.result === 'success') {
-      setRankInfo(res.data.list)
-      //console.log(res)
-    } else {
-      console.log(res)
-    }
-    return
-  }
-  //scroll function
-  const scrollOnUpdate = () => {
-    let thisHeight = ''
-    if (document.getElementsByClassName('round')[0]) {
-      thisHeight = document.getElementsByClassName('round')[0].offsetHeight + 18
-      area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
-    }
-  }
-  //등록,해제
-  const Regist = memNo => {
-    async function fetchDataFanRegist(memNo) {
-      const res = await Api.fan_change({
-        data: {
-          memNo: memNo
-        }
+      context.action.alert({
+        callback: () => {
+          setText(dalcount)
+        },
+        msg: res.message
       })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            setSelect(memNo)
-          },
-          msg: '팬등록에 성공하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        console.log(res)
-      }
     }
-    fetchDataFanRegist(memNo)
   }
 
-  const Cancel = (memNo, isFan) => {
-    async function fetchDataFanCancel(memNo, isFan) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: memNo
-        }
-      })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            setSelect(memNo + 1)
-          },
-          msg: '팬등록을 해제하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        console.log(res)
-      }
-    }
-    fetchDataFanCancel(memNo)
+  const broadCastCharge = () => {
+    let unitDalprice = 100 // 달 개당 100원(추후 수정) -> 나중에 글로벌로 뺴야 한다.
+    let osType = customHeader.os // os : 1(Aos) , 2(ios)
+    let rate = osType === 2 ? 0.3 : 1 // ios 경우 가격 책정이 달라 비율 조정을 차후 수정 (임의 30% 설정)
+    let totalPrice = unitDalprice * (directDalCnt > 0 ? directDalCnt : text)
+    let calc = totalPrice * rate
+    let iosPrice = totalPrice + calc
+
+    context.action.updatePopup('CHARGE', {
+      name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
+      price: osType === 2 ? iosPrice : totalPrice
+    })
   }
-  //------------------------------------------------------------
   useEffect(() => {
-    fetchData()
-  }, [select])
-  //------------------------------------------------------------
+    context.action.updatePopup('CHARGE')
+    context.action.updatePopupVisible(false)
+  }, [])
+  //-------------------------------------------------------- components start
   return (
     <>
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            <button className="close" onClick={() => context.action.updateClose(false)}></button>
-            <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-              <div className="scrollWrap">
-                <Container>
-                  <div className="reportTitle"></div>
-                  <h2>팬 랭킹</h2>
-                  {rankInfo !== '' &&
-                    rankInfo.map((item, index) => {
-                      const {title, id, profImg, nickNm, isFan, memNo} = item
-                      return (
-                        <List key={index}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
-                          {isFan === false && (
-                            <button onClick={() => Regist(memNo)} className="plusFan">
-                              +팬등록
-                            </button>
-                          )}
-                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
-                        </List>
-                      )
-                    })}
-                </Container>
-              </div>
-            </Scrollbars>
+            {/* <button className="close" onClick={() => context.action.updateClosePresent(false)}></button> */}
+            <div className="scrollWrap">
+              <Container>
+                <Contents>
+                  <div>
+                    <h2>선물하기</h2>
+                    <p>
+                      <span>닉 네 임 </span> 님에게
+                      <br />
+                      달을 선물하시겠습니까?
+                    </p>
+                  </div>
+                </Contents>
+                <MyPoint>
+                  <em>내가 보유한 달</em>
+                  <span>
+                    10,000
+                    <button
+                      onClick={() => {
+                        props.history.push('/store')
+                      }}>
+                      충전
+                    </button>
+                  </span>
+                </MyPoint>
+                <Select>
+                  {testData.map((data, idx) => {
+                    return (
+                      <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                        {data}
+                      </PointButton>
+                    )
+                  })}
+                </Select>
+                <TextArea>
+                  <PointInput
+                    placeholder="직접 입력"
+                    type="number"
+                    maxLength="5"
+                    value={text}
+                    onChange={handleChangeInput}
+                    onClick={() => _active('input')}
+                    active={active ? 'active' : ''}
+                  />
+                  <p>*선물하신 달은 별로 전환되지 않습니다.</p>
+                </TextArea>
+                <ButtonArea>
+                  <button onClick={() => context.action.updateClosePresent(false)}>취소</button>
+                  <button onClick={() => giftSend()}>선물</button>
+                </ButtonArea>
+              </Container>
+            </div>
           </div>
         </FixedBg>
       </HoleWrap>
-      <Dim onClick={() => context.action.updateClose(false)}></Dim>
+      <Dim onClick={() => context.action.updateClosePresent(false)}></Dim>
     </>
   )
 }
-//----------------------------------------
-//styled
-const HoleWrap = styled.div`
-  display: flex;
-  position: fixed;
-
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  z-index: 24;
-`
-const Dim = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 23;
-  background-color: rgba(0, 0, 0, 0.5);
-`
-
-const List = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 7px;
-  > span {
-    flex: none;
-    display: block;
-    margin-left: 10px;
-    line-height: 40px;
-    font-size: 14px;
-    color: #424242;
-    transform: skew(-0.03deg);
-    letter-spacing: -0.35px;
-  }
-  > button {
-    flex: none;
-    margin-left: auto;
-    width: 53px;
-    height: 26px;
-    border: 1px solid ${COLOR_MAIN};
-    font-size: 12px;
-    line-height: 1.2;
-    letter-spacing: -0.3px;
-    border-radius: 13px;
-    transform: skew(-0.03deg);
-    color: ${COLOR_MAIN};
-  }
-  .plusFan {
-    background-color: ${COLOR_MAIN};
-    color: #fff;
-  }
-`
-const Photo = styled.div`
-  flex: none;
-  width: 40px;
-  height: 40px;
-  background: url(${props => props.bg}) no-repeat center center/cover;
-  border-radius: 50%;
-`
-
+//-------------------------------------------------------- styled start
 const FixedBg = styled.div`
   z-index: 24;
   .wrapper {
+    position: relative;
     &:after {
       content: '';
       clear: both;
@@ -205,8 +174,9 @@ const FixedBg = styled.div`
     }
     .close {
       display: block;
-      float: right;
-      margin-right: calc(16.67% - 36px);
+      position: absolute;
+      top: -36px;
+      right: 8.335%;
       width: 36px;
       height: 36px;
       background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
@@ -238,7 +208,7 @@ const Container = styled.div`
   padding: 12px;
   width: 83.33%;
   margin: 0 auto;
-  min-height: 360px;
+  min-height: 344px;
   display: flex;
   background-color: #fff;
   /* align-items: center; */
@@ -259,47 +229,138 @@ const Container = styled.div`
     }
   }
   & p {
-    margin: 12px 0 20px 0;
     color: #616161;
     font-size: 14px;
     letter-spacing: -0.35px;
-    text-align: left;
+    text-align: center;
     transform: skew(-0.03deg);
   }
 `
-const BTN = styled.button`
-  display: block;
-  width: 100%;
-  margin-top: 4px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 8px 0;
-  color: #616161;
-  font-size: 12px;
-  transform: skew(-0.03deg);
-  outline: none;
-  &.on {
-    border: 1px solid ${COLOR_MAIN};
-    color: ${COLOR_MAIN};
+
+const HoleWrap = styled.div`
+  display: flex;
+  position: fixed;
+
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  z-index: 24;
+`
+const Dim = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 23;
+  background-color: rgba(0, 0, 0, 0.5);
+`
+
+const Contents = styled.div`
+  & > div {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.4px;
+    text-align: center;
+  }
+
+  & > div > p > span {
     font-weight: 600;
   }
 `
-const SubmitBTN = styled.button`
-  display: block;
-  width: calc(50% - 4px);
-  margin-top: 12px;
-  padding: 16px 0;
-  border-radius: 10px;
-  background-color: #bdbdbd;
-  font-size: 14px;
-  color: #fff;
-  letter-spacing: -0.4px;
-  :first-child {
-    background-color: #fff;
-    border: solid 1px ${COLOR_MAIN};
-    color: ${COLOR_MAIN};
+
+const MyPoint = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0 15px 0;
+  & > * {
+    display: inline-block;
   }
-  &.on {
-    background-color: ${COLOR_MAIN};
+`
+const Select = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  width: 100%;
+  height: 32px;
+`
+
+const PointButton = styled.button`
+  width: calc(20% - 4px);
+  height: 32px;
+  border-style: solid;
+  border-color: ${props => (props.active == 'active' ? '#8556f6' : '#e0e0e0')};
+  border-width: 1px;
+  border-radius: 10px;
+  color: ${props => (props.active == 'active' ? '#8556f6' : '#616161')};
+  font-weight: 400;
+  color: #616161;
+  font-size: 12px;
+`
+const TextArea = styled.div`
+  display: flex;
+  width: 100%;
+  height: 58px;
+  flex-direction: column;
+  margin-top: 8px;
+
+  & > p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: -0.35px;
+    color: #bdbdbd;
+    text-align: left;
+  }
+`
+const PointInput = styled.input`
+  display: flex;
+  width: 100%;
+  height: 32px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.35px;
+  border-color: ${props => (props.active === 'active' ? '#8556f6' : '#e0e0e0')};
+
+  &::placeholder {
+    color: #bdbdbd;
+  }
+  p {
+    font-size: 12px;
+    text-align: left;
+  }
+`
+const ButtonArea = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    width: calc(50% - 4px);
+    font-size: 14px;
+    line-height: 46px;
+    border: 1px solid #bdbdbd;
+    border-radius: 10px;
+    background: #bdbdbd;
+    color: #fff;
+  }
+
+  button:first-child {
+    border: 1px solid ${COLOR_MAIN};
+    background: #fff;
+    color: ${COLOR_MAIN};
   }
 `

@@ -45,6 +45,7 @@ const GlobalProvider = props => {
   const [close, setClose] = useState(false)
   const [closeFanCnt, setCloseFanCnt] = useState(false)
   const [closeStarCnt, setCloseStarCnt] = useState(false)
+  const [closePresent, setClosePresent] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
@@ -213,6 +214,9 @@ const GlobalProvider = props => {
     },
     updateCloseStarCnt: bool => {
       setCloseStarCnt(bool)
+    },
+    updateClosePresent: bool => {
+      setClosePresent(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -242,7 +246,8 @@ const GlobalProvider = props => {
     mypageFanCnt,
     close,
     closeFanCnt,
-    closeStarCnt
+    closeStarCnt,
+    closePresent
   }
   return <Provider value={value}>{props.children}</Provider>
 }
