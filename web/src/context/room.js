@@ -62,9 +62,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     Room.setRoomNo(roomNo)
-    const result = await RoomExit(roomNo + '')
+    const exit = await RoomExit(roomNo + '')
     console.log('await RoomExit(roomNo)')
-    console.log(result)
+    console.log(exit)
+
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     console.log('Api.broad_join')
     console.log(res)
@@ -77,7 +78,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
             callback: () => {
               //강제방송종료
               ;(async () => {
-                //입장되어있으면 퇴장처리 이후,success 일때 다시RoomJoin
+                //입장되어있으면 퇴장처리 이후,success 일때 다시 재귀RoomJoin
                 const result = await RoomExit(roomNo + '')
                 if (result) RoomJoin(roomNo + '')
               })()
