@@ -56,7 +56,7 @@ export default props => {
 
     const baseWidth = slideWrapNode.clientWidth / 3
     const diff = touchEndX - touchStartX
-    const calcX = `${-baseWidth}px`
+    const calcX = `${-baseWidth + diff}px`
     console.log(baseWidth, diff)
     slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
   }
@@ -65,6 +65,10 @@ export default props => {
     if (!touchEndX || !touchStartStatus || swiping) {
       return
     }
+
+    const slideWrapNode = slideWrapRef.current
+    const baseWidth = slideWrapNode.clientWidth / 3
+    slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
 
     const diff = touchEndX - touchStartX
 
