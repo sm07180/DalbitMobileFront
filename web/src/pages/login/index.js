@@ -75,7 +75,11 @@ export default props => {
           globalCtx.action.updateProfile(profileInfo.data)
 
           if (isHybrid()) {
-            return Hybrid('GetLoginTokenNewWin', loginInfo.data)
+            if (webview && webview === 'new') {
+              return Hybrid('GetLoginTokenNewWin', loginInfo.data)
+            } else {
+              Hybrid('GetLoginToken', loginInfo.data)
+            }
           }
 
           return props.history.push('/')
