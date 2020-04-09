@@ -51,16 +51,24 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(join)
-    Hybrid('RoomJoin', join.data)
-    console.log(
-      '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
-      'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
-    )
-
+    if (join.result === 'fail') {
+      Room.context.action.alert({
+        title: join.messageKey,
+        msg: join.message
+      })
+    } else if (join.result === 'success') {
+      console.log(join)
+      Hybrid('RoomJoin', join.data)
+      console.log(
+        '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
+        'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
+      )
+    }
+    //
     if (callbackFunc !== undefined) callbackFunc()
     return false
   } else {
+    //-------------------------------------------------------------
     Room.setRoomNo(roomNo)
     const exit = await RoomExit(roomNo + '')
     console.log('await RoomExit(roomNo)')
