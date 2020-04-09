@@ -114,13 +114,14 @@ const App = () => {
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
               const parsed = JSON.parse(nativeInfo)
+              globalCtx.action.updatePlayer(true)
               globalCtx.action.updateMediaPlayerStatus(true)
               globalCtx.action.updateNativePlayer(parsed)
             }
           }
           /*개발테스트코드*/
           if (__NODE_ENV === 'dev') {
-            alert('isFirst : ' + customHeader['isFirst'])
+            // alert('isFirst : ' + customHeader['isFirst'])
             console.log(nativeInfo)
           }
           /*개발테스트종료*/
