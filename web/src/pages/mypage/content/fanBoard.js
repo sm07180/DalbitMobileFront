@@ -7,12 +7,13 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 // context
 import {Context} from 'context'
-import Api from 'context/api'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+//api
+import Api from 'context/api'
 //layout
-
 export default props => {
+  //ref
   const inputEl = useRef(null)
   //context
   const ctx = useContext(Context)
@@ -20,7 +21,6 @@ export default props => {
   //profileGlobal info
   const {profile} = ctx
   var urlrStr = props.location.pathname.split('/')[2]
-  //console.log(urlrStr)
   //state
   const [comment, setComment] = useState('')
   const MaxCommentLength = 100
@@ -35,7 +35,7 @@ export default props => {
   const [count, setCount] = useState(0)
   const [broadNumbers, setBroadNumbers] = useState('')
   const [replyRegist, setReplyRegist] = useState('')
-  //api
+  //api:댓글 리스트
   async function fetchDataList() {
     const res = await Api.mypage_fanboard_list({
       params: {
@@ -50,7 +50,6 @@ export default props => {
           return item.status === 1
         })
       )
-      // console.log(res)
     } else if (res.result === 'fail') {
       console.log(res)
     }
@@ -64,13 +63,11 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res.data.list)
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
-  useEffect(() => {}, [])
+
   //팬보다 댓글추가
   async function fetchDataUpload() {
     const res = await Api.mypage_fanboard_upload({
@@ -81,14 +78,12 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log(res)
       fetchDataList()
     } else if (res.result === 'fail') {
       context.action.alert({
         cancelCallback: () => {},
         msg: res.message
       })
-      console.log(res)
     }
   }
   //대댓글 추가
@@ -108,15 +103,8 @@ export default props => {
     }
   }
 
-  const submitClick = () => {
-    fetchDataUpload()
-    setComment('')
-    setActive(false)
-  }
   //댓글 등록 온체인지
   const textChange = e => {
-    // const defaultHeight = 36
-    // const lineBreakHeight = 14
     const target = e.currentTarget
     const lineBreakLenght = target.value.split('\n').length
 
@@ -139,15 +127,63 @@ export default props => {
         }
       })
       if (res.result === 'success') {
-        console.log(res)
         fetchDataList()
       } else if (res.result === 'fail') {
-        //console.log(res)
       }
     }
     fetchDataDelete()
   }
-
+  //팬보다 댓글수정
+  async function fetchDataEdit(boardNumer) {
+    const res = await Api.mypage_board_edit({
+      data: {
+        memNo: urlrStr,
+        boardIdx: boardNumer,
+        content: modifyComment
+      }
+    })
+    if (res.result === 'success') {
+      fetchDataList()
+      setModifyComment('')
+      setModifyShow('')
+    } else if (res.result === 'fail') {
+    }
+  }
+  //팬보다 대댓글수정
+  async function fetchDataEditReply(boardNumer, writeNumer) {
+    const res = await Api.mypage_board_edit({
+      data: {
+        memNo: urlrStr,
+        boardIdx: modifyInShow,
+        content: modifyInComment
+      }
+    })
+    if (res.result === 'success') {
+      showReply(boardNumer, writeNumer)
+      setHidden(false)
+      setModifyInComment('')
+      setModifyInShow('')
+    } else if (res.result === 'fail') {
+    }
+  }
+  //placeholder
+  const placeholderText =
+    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
+  const placeholderTextStart = '팬 보드에 글을 남겨주세요. '
+  //modiy-state
+  const [modifyShow, setModifyShow] = useState('')
+  const [modifyInShow, setModifyInShow] = useState('')
+  const [modifyComment, setModifyComment] = useState('')
+  const [modifyInComment, setModifyInComment] = useState('')
+  const [modifyNumber, setModifyNumber] = useState('')
+  const [hidden, setHidden] = useState(false)
+  const [modifyInfo, setModifyInfo] = useState({})
+  //등록
+  const submitClick = () => {
+    fetchDataUpload()
+    setComment('')
+    setActive(false)
+  }
   //대댓글보기
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
@@ -160,9 +196,9 @@ export default props => {
     setTimeout(() => {
       showReply(writeNumer, boardNumer)
     }, 100)
-
     setReplyRegist('')
   }
+  //대댓글 value
   const textChangeReply = e => {
     const target = e.currentTarget
 
@@ -182,47 +218,12 @@ export default props => {
       showReply(writeNumer, boardNumer)
     }, 100)
   }
-
-  //dateformat
-  const timeFormat = strFormatFromServer => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
-    return `${date} ${time}`
-  }
-
-  //placeholder
-  const placeholderText =
-    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
-  const placeholderTextStart = '팬 보드에 글을 남겨주세요. '
-  //--------------------------------------------------------------------------
-  //전체 카운터
-  useEffect(() => {
-    setCount(
-      fanTotal.filter(function(item) {
-        return item.status === 1
-      }).length
-    )
-  }, [fanTotal])
-  useEffect(() => {
-    fetchDataList()
-  }, [modifyInShow])
-
-  //--------------------------------------------------------------------------
-  //state
-  const [modifyShow, setModifyShow] = useState('')
-  const [modifyInShow, setModifyInShow] = useState('')
-  const [modifyComment, setModifyComment] = useState('')
-  const [modifyInComment, setModifyInComment] = useState('')
-  const [modifyNumber, setModifyNumber] = useState('')
-  const [hidden, setHidden] = useState(false)
+  //댓글수정
   const FanboardModify = (contents, boardIdx, boardNumer) => {
     setModifyComment(contents)
     setModifyShow(boardIdx)
     clickRefresh()
   }
-
   //댓글 수정 온체인지
   const textModify = e => {
     const target = e.currentTarget
@@ -244,53 +245,7 @@ export default props => {
     if (target.value.length > MaxCommentLength) return
     setModifyInComment(target.value)
   }
-  //팬보다 댓글수정
-  async function fetchDataEdit(boardNumer) {
-    const res = await Api.mypage_board_edit({
-      data: {
-        memNo: urlrStr,
-        boardIdx: boardNumer,
-        content: modifyComment
-      }
-    })
-    if (res.result === 'success') {
-      fetchDataList()
-      setModifyComment('')
-      setModifyShow('')
-
-      // console.log(res)
-    } else if (res.result === 'fail') {
-      // context.action.alert({
-      //   cancelCallback: () => {},
-      //   msg: res.message
-      // })
-      // console.log(res)
-    }
-  }
-  //팬보다 대댓글수정
-  async function fetchDataEditReply(boardNumer, writeNumer) {
-    const res = await Api.mypage_board_edit({
-      data: {
-        memNo: urlrStr,
-        boardIdx: modifyInShow,
-        content: modifyInComment
-      }
-    })
-    if (res.result === 'success') {
-      showReply(boardNumer, writeNumer)
-      setHidden(false)
-      setModifyInComment('')
-      setModifyInShow('')
-      // console.log(res)
-    } else if (res.result === 'fail') {
-      // context.action.alert({
-      //   cancelCallback: () => {},
-      //   msg: res.message
-      // })
-      // console.log(res)
-    }
-  }
-  const [modifyInfo, setModifyInfo] = useState({})
+  //대댓글수정
   const replyModify = (contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT) => {
     setModifyInComment(contents)
     setModifyInShow(boardIdx)
@@ -299,7 +254,7 @@ export default props => {
     clickRefresh()
     setModifyInfo({profileImg, nickNm, memId, parseDT})
   }
-
+  //수정취소
   const moidfyCancel = () => {
     setHidden(false)
     setModifyInComment('')
@@ -308,6 +263,28 @@ export default props => {
     setModifyShow('')
   }
 
+  //dateformat
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+  //--------------------------------------------------------------------------
+  //전체 카운터
+  useEffect(() => {
+    setCount(
+      fanTotal.filter(function(item) {
+        return item.status === 1
+      }).length
+    )
+  }, [fanTotal])
+  useEffect(() => {
+    fetchDataList()
+  }, [modifyInShow])
+
+  //--------------------------------------------------------------------------
   useEffect(() => {
     if (hidden === true) {
       setTimeout(() => {
@@ -315,6 +292,7 @@ export default props => {
       }, 100)
     }
   }, [hidden])
+  //------------------------------------------------------------------------
   return (
     <>
       {/* 전체영역 */}
