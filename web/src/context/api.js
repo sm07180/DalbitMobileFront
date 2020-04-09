@@ -1034,8 +1034,8 @@ export default class API {
    * @brief Server->React customHeader
    * @create 손완휘 2020.02.06
    */
-  static setCustomHeader = obj => {
-    this.customHeader = obj
+  static setCustomHeader = str => {
+    this.customHeader = str
   }
   //--------------------------------------------------------------------- 방송 사이드컨텐츠
 
