@@ -62,7 +62,7 @@ export default props => {
   //scroll function
   const scrollOnUpdate = () => {
     const thisHeight = document.querySelector('.scrollWrap').offsetHeight + 18
-    console.log(thisHeight)
+    // console.log(thisHeight)
     document.querySelector('.scroll-box').children[0].style.maxHeight = `calc(${360}px)`
   }
   //등록,해제

@@ -38,7 +38,7 @@ const Exit = props => {
           context.action.updateToken(res.data)
           context.action.updateGnbVisible(false)
           context.action.updateProfile(null)
-          context.action.confirm({
+          context.action.alert({
             msg: '회원 탈퇴가 완료 되었습니다.',
             callback: () => {
               history.push(`/`)
@@ -54,11 +54,15 @@ const Exit = props => {
       })
     }
   }
-
   const Validate = () => {
-    if (all === true) {
-      FethData()
-    }
+    context.action.confirm({
+      msg: '정말 회원탈퇴 하시겠습니까 ?',
+      callback: () => {
+        if (all === true) {
+          FethData()
+        }
+      }
+    })
   }
 
   const clearFilter = () => {

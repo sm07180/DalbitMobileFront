@@ -38,15 +38,23 @@ export default props => {
         words = words.concat([item])
       }
     })
+
     let banWords = ''
+    let wordIndex = 0
     words.forEach((item, index) => {
+      console.log('item text', item == false)
       if (item == false) return
-      if (!index) {
+      if (!wordIndex) {
         banWords = `${item}`
       } else {
         banWords = `${banWords}|${item}`
       }
+      wordIndex++
     })
+    if (banWords == '')
+      return context.action.alert({
+        msg: `금지어를 입력해주세요.`
+      })
     const res = await Api.mypage_banword_write({
       data: {
         banWord: banWords
@@ -57,8 +65,8 @@ export default props => {
         setWord(res.data.banWord.split('|'))
       } else {
         setWord(false)
-        setChanges([''])
       }
+      setChanges([''])
       if (!(type == 'remove')) {
         context.action.alert({
           msg: res.message

@@ -35,7 +35,7 @@ export const Store = () => {
 //---------------------------------------------------------------------
 const Container = styled.div`
   width: 740px;
-  margin: 0 auto;
+  margin: 76px auto 0 auto;
   @media (max-width: 1240px) {
     width: 95%;
   }
