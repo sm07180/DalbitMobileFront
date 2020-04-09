@@ -244,11 +244,6 @@ const SocialLoginWrap = styled.div`
       box-sizing: border-box;
       padding: 0 6px;
 
-      /* a {
-        display: flex;
-        width: 100%;
-        align-items: center; */
-
       .icon {
         width: 36px;
       }
@@ -260,7 +255,6 @@ const SocialLoginWrap = styled.div`
         letter-spacing: -0.3px;
         text-align: center;
       }
-      /* } */
     }
   }
 `
@@ -273,7 +267,7 @@ const Login = styled.div`
   .close-btn {
     position: absolute;
     right: 0;
-    top: 5px;
+    top: 6px;
   }
 
   .logo {

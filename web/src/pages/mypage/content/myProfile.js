@@ -27,7 +27,7 @@ const myProfile = props => {
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  console.log(profile)
+
   const myProfileNo = ctx.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -441,10 +441,11 @@ const InfoConfigBtn = styled.div`
   }
   .notBjWrap {
     display: flex;
+
     & button {
       display: flex;
       justify-content: center;
-      width: 80px;
+      width: 62px;
       height: 36px;
       color: #9e9e9e;
       font-size: 14px;

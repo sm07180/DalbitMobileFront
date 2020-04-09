@@ -14,9 +14,11 @@ import Report from './content/report.js'
 import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 
+// static
+import closeBtn from 'pages/menu/static/ic_close.svg'
+
 import {Context} from 'context'
 import Api from 'context/api'
-
 import qs from 'query-string'
 
 export default props => {
@@ -44,6 +46,8 @@ export default props => {
     memNo = profile.memNo
   }
 
+  const clickCloseBtn = () => {}
+
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
@@ -63,6 +67,7 @@ export default props => {
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/fanboard?webview=${webview}` : `/mypage/${memNo}/fanboard`} />}
       <Layout {...props} webview={webview}>
         <Mypage webview={webview}>
+          <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
           <MyProfile profile={profileInfo} {...props} webview={webview} />
           {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />}
           <SubContent>
@@ -82,9 +87,15 @@ const SubContent = styled.div`
 `
 
 const Mypage = styled.div`
+  position: relative;
   margin: 0 auto 15px auto;
   margin-top: ${props => (props.webview ? 0 : '60px')};
   width: 1210px;
+
+  .close-btn {
+    position: absolute;
+    right: 0;
+  }
 
   @media (max-width: 1260px) {
     width: 91.11%;
