@@ -46,7 +46,7 @@ const App = () => {
 
         if (__NODE_ENV === 'dev') {
           if (parsed['os'] === OS_TYPE['Android']) {
-            alert(`custom ${JSON.stringify(parsed)}`)
+            // alert(`custom ${JSON.stringify(parsed)}`)
           }
         }
         return parsed
@@ -65,7 +65,7 @@ const App = () => {
 
         if (__NODE_ENV === 'dev') {
           if (parsed['os'] === OS_TYPE['Android']) {
-            alert(`cookie ${JSON.stringify(parsed)}`)
+            // alert(`cookie ${JSON.stringify(parsed)}`)
           }
         }
         return parsed
