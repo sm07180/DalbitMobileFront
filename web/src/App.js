@@ -102,11 +102,13 @@ const App = () => {
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
-              alert('webview : ' + window.location.href.indexOf('webview'))
-              const parsed = JSON.parse(nativeInfo)
-              globalCtx.action.updatePlayer(true)
-              globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsed)
+              //    alert('webview : ' + window.location.href.indexOf('webview'))
+              if (window.location.href.indexOf('webview') === -1) {
+                const parsed = JSON.parse(nativeInfo)
+                globalCtx.action.updatePlayer(true)
+                globalCtx.action.updateMediaPlayerStatus(true)
+                globalCtx.action.updateNativePlayer(parsed)
+              }
             }
           }
         }
