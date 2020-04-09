@@ -85,8 +85,6 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  //방송하기 공통처리
-                  //  Hybrid('RoomMake', '')
                   RoomMake(globalCtx)
                 }}>
                 방송하기
@@ -116,6 +114,15 @@ export default props => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
+
+          <div className="section">
+            <div className="content-wrap row">
+              <div className="my-star">
+                <div className="image"></div>
+              </div>
+            </div>
+          </div>
+
           <div className="section">
             <div className="title-wrap">
               <div className="title">
@@ -182,6 +189,12 @@ const Content = styled.div`
       margin-top: 10px;
       padding: 0 16px;
       padding-bottom: 20px;
+
+      &.row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
       &.rank-slide {
         padding: 0;
