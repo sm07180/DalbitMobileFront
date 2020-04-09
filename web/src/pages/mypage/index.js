@@ -14,9 +14,11 @@ import Report from './content/report.js'
 import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 
+// static
+import closeBtn from 'pages/menu/static/ic_close.svg'
+
 import {Context} from 'context'
 import Api from 'context/api'
-
 import qs from 'query-string'
 
 export default props => {
