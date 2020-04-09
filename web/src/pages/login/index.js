@@ -174,7 +174,11 @@ export default props => {
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-btn">
-                  <a href={`${__SOCIAL_URL}/facebook?target=mobile`}>
+                  <a
+                    href={`${__SOCIAL_URL}/facebook?target=mobile`}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}>
                     <img className="icon facebook" src={facebookLogo} />
                     <span className="text">페이스북 로그인</span>
                   </a>

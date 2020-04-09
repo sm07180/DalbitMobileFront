@@ -66,6 +66,11 @@ export default props => {
         globalCtx.action.updateProfile(null)
         props.history.push('/')
         return (window.location.href = '/')
+      } else if (logoutInfo.result === 'fail') {
+        globalCtx.action.alert({
+          title: '로그아웃 실패',
+          msg: `${logoutInfo.message}`
+        })
       }
       setFetching(false)
     }
