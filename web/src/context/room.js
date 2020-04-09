@@ -57,16 +57,16 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
       'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
     )
-    RoomJoin(roomNo + '')
+
     if (callbackFunc !== undefined) callbackFunc()
     return false
   } else {
     Room.setRoomNo(roomNo)
-
     const result = await RoomExit(roomNo + '')
-
-    //
+    console.log('await RoomExit(roomNo)')
+    console.log(result)
     const res = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log('Api.broad_join')
     console.log(res)
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
