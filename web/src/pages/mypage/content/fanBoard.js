@@ -739,13 +739,16 @@ const CommentBox = styled.div`
     }
   }
   & .replyWrap {
-    width:calc(100% + 9.8%);
-    margin-left:-4.9%
-    margin-bottom:-1px;
-    padding:0 4.445% 18px 4.445%;
+    width: calc(100% + 9.8%);
+    margin-left: -4.9%;
+    margin-bottom: -1px;
+    padding: 18px 4.445% 18px 4.445%;
     border-top: 1px solid #eeeeee;
-    border-bottom:1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
     background-color: #f8f8f8;
+    & > div:first-child > .titlewrap {
+      padding-top: 0;
+    }
   }
 
   & .replyContent {
