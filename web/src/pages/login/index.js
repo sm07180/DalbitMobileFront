@@ -113,7 +113,7 @@ export default props => {
 
     if (res.status === 200) {
       const redirectUrl = await res.text()
-      console.log(redirectUrl)
+      window.location.href = `${redirectUrl}`
     }
   }
 
