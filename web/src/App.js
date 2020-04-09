@@ -122,9 +122,6 @@ const App = () => {
           if (__NODE_ENV === 'dev') {
             alert('isFirst : ' + customHeader['isFirst'])
             console.log(nativeInfo)
-            if (parsed !== undefined) {
-              console.log(parsed)
-            }
           }
           /*개발테스트종료*/
         }
