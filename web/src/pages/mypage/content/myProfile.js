@@ -21,13 +21,15 @@ import {Context} from 'context'
 const levelBarWidth = 176
 
 const myProfile = props => {
+  const {webview} = props
+
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  console.log(profile)
+
   const myProfileNo = ctx.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -80,7 +82,7 @@ const myProfile = props => {
   }
   //func
   const starContext = () => {
-    if (profile.StarCnt > 0) {
+    if (profile.starCnt > 0) {
       context.action.updateCloseStarCnt(true)
     }
   }
@@ -91,7 +93,7 @@ const myProfile = props => {
   }
 
   return (
-    <MyProfile>
+    <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
           {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
@@ -158,7 +160,7 @@ const myProfile = props => {
           <span onClick={() => fanContext()}>
             팬 <em>{profile.fanCnt}</em>
           </span>
-          <span onClick={() => StarContext()}>
+          <span onClick={() => starContext()}>
             스타 <em>{profile.starCnt}</em>
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
@@ -193,6 +195,7 @@ const MyProfile = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 20px 0 45px 0;
+    padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
   }
 `
 //flex item3
@@ -441,10 +444,11 @@ const InfoConfigBtn = styled.div`
   }
   .notBjWrap {
     display: flex;
+
     & button {
       display: flex;
       justify-content: center;
-      width: 80px;
+      width: 62px;
       height: 36px;
       color: #9e9e9e;
       font-size: 14px;
