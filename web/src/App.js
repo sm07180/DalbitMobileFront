@@ -101,6 +101,8 @@ const App = () => {
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
+              console.log('window.location.href')
+              console.log(window.location.href)
               const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updatePlayer(true)
               globalCtx.action.updateMediaPlayerStatus(true)
