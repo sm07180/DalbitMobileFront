@@ -178,6 +178,7 @@ export default props => {
   const [modifyNumber, setModifyNumber] = useState('')
   const [hidden, setHidden] = useState(false)
   const [modifyInfo, setModifyInfo] = useState({})
+  const [btnState, setBtnState] = useState(false)
   //등록
   const submitClick = () => {
     fetchDataUpload()
@@ -185,9 +186,19 @@ export default props => {
     setActive(false)
   }
   //대댓글보기
+  const ShowReplyBtnState = (writeNumer, boardNumer) => {
+    showReply(writeNumer, boardNumer)
+    if (btnState === false) {
+      setBtnState(true)
+    } else if (btnState === true) {
+      setBtnState(false)
+    }
+  }
+
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
     setBroadNumbers(boardNumer)
+    moidfyCancel()
   }
   //대댓글등록
   const uploadReply = (writeNumer, boardNumer) => {
@@ -356,7 +367,7 @@ export default props => {
                     </DetailBtn>
                   </div>
                   <div className="content">{contents}</div>
-                  <button className="reply" onClick={() => showReply(writeNumer, boardNumer)}>
+                  <button className="reply" onClick={() => ShowReplyBtnState(writeNumer, boardNumer)}>
                     답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
                   </button>
                 </div>
@@ -377,7 +388,7 @@ export default props => {
                   </WriteAreaBottom>
                 </WriteArea>
                 {/*  큰댓글 컨텐츠 영역---- */}
-                {boardNumer === broadNumbers && (
+                {boardNumer === broadNumbers && btnState === true && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
                       const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = reply

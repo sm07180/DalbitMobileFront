@@ -123,6 +123,7 @@ export default props => {
             <button className="close" onClick={() => CancelBtn()}></button>
             <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
               <div className="scrollWrap">
+                <BorderBG></BorderBG>
                 <Container>
                   <div className="reportTitle"></div>
                   <h2>{name}</h2>
@@ -256,6 +257,19 @@ const FixedBg = styled.div`
     width: 100%;
     justify-content: space-between;
   }
+`
+const BorderBG = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  width: 83.33%;
+  min-height: 460px;
+  background-color: #fff;
+  z-index: -1;
+  margin: 0 auto;
+  border-radius: 10px;
 `
 const Container = styled.div`
   padding: 12px;
