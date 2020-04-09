@@ -99,13 +99,10 @@ const App = () => {
 
         if (customHeader['isFirst'] === 'N') {
           // /webview=new 형태로 이루어진 player종료
-          if (window.location.href.indexOf('webview') !== -1) {
-            return
-          }
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
-              console.log(window.location.href)
+              alert('webview : ' + window.location.href.indexOf('webview'))
               const parsed = JSON.parse(nativeInfo)
               globalCtx.action.updatePlayer(true)
               globalCtx.action.updateMediaPlayerStatus(true)
