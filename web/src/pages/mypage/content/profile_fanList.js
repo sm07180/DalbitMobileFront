@@ -19,6 +19,7 @@ export default props => {
   const myProfileNo = ctx.profile.memNo
   //state
   const [rankInfo, setRankInfo] = useState('')
+  const [starInfo, setStarInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
   //scroll
@@ -41,6 +42,22 @@ export default props => {
     }
     return
   }
+
+  const fetchDataStar = async () => {
+    const res = await Api.mypage_star_list({
+      params: {
+        memNo: urlrStr
+      }
+    })
+    if (res.result === 'success') {
+      setStarInfo(res.data.list)
+      //console.log(res)
+    } else {
+      console.log(res)
+    }
+    return
+  }
+
   //scroll function
   const scrollOnUpdate = () => {
     let thisHeight = ''
@@ -112,7 +129,13 @@ export default props => {
   }
   //------------------------------------------------------------
   useEffect(() => {
-    fetchData()
+    if (name === '스타') {
+      fetchDataStar()
+    } else if (name === '팬 랭크') {
+      fetchData()
+    } else if (name === '팬') {
+      fetchData()
+    }
   }, [select])
   //------------------------------------------------------------
   return (
@@ -128,6 +151,25 @@ export default props => {
                   <div className="reportTitle"></div>
                   <h2>{name}</h2>
                   {rankInfo !== '' &&
+                    name === '팬 랭크' &&
+                    rankInfo.map((item, index) => {
+                      const {title, id, profImg, nickNm, isFan, memNo} = item
+                      return (
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                          {isFan === false && (
+                            <button onClick={() => Regist(memNo)} className="plusFan">
+                              +팬등록
+                            </button>
+                          )}
+                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                        </List>
+                      )
+                    })}
+
+                  {rankInfo !== '' &&
+                    name === '스타' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
@@ -260,12 +302,12 @@ const FixedBg = styled.div`
 `
 const BorderBG = styled.div`
   position: fixed;
-  top: 50%;
+  top: calc(50% + 20px);
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 12px;
   width: 83.33%;
-  min-height: 460px;
+  min-height: 440px;
   background-color: #fff;
   z-index: -1;
   margin: 0 auto;
@@ -283,7 +325,7 @@ const Container = styled.div`
 
   border-radius: 10px;
   & h2 {
-    margin-top: 14px;
+    margin-top: 8px;
     margin-bottom: 20px;
     color: #424242;
     font-size: 20px;
