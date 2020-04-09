@@ -69,6 +69,7 @@ export default props => {
       console.log(res)
     }
   }
+  useEffect(() => {}, [])
   //팬보다 댓글추가
   async function fetchDataUpload() {
     const res = await Api.mypage_fanboard_upload({
@@ -180,13 +181,7 @@ export default props => {
       showReply(writeNumer, boardNumer)
     }, 100)
   }
-  const DeleteComment2 = (value, writeNumer, boardNumer) => {
-    clickRefresh()
-    context.action.alert({
-      cancelCallback: () => {},
-      msg: '수정기능 준비중입니다'
-    })
-  }
+
   //dateformat
   const timeFormat = strFormatFromServer => {
     let date = strFormatFromServer.slice(0, 8)
@@ -211,9 +206,107 @@ export default props => {
   }, [fanTotal])
   useEffect(() => {
     fetchDataList()
-  }, [])
+  }, [modifyInShow])
 
   //--------------------------------------------------------------------------
+  //state
+  const [modifyShow, setModifyShow] = useState('')
+  const [modifyInShow, setModifyInShow] = useState('')
+  const [modifyComment, setModifyComment] = useState('')
+  const [modifyInComment, setModifyInComment] = useState('')
+  const [modifyNumber, setModifyNumber] = useState('')
+  const [hidden, setHidden] = useState(false)
+  const FanboardModify = (contents, boardIdx, boardNumer) => {
+    setModifyComment(contents)
+    setModifyShow(boardIdx)
+    clickRefresh()
+  }
+
+  //댓글 수정 온체인지
+  const textModify = e => {
+    const target = e.currentTarget
+    const lineBreakLenght = target.value.split('\n').length
+
+    if (target.value.length > MaxCommentLength) return
+    setModifyComment(target.value)
+
+    if (lineBreakLenght >= 2) {
+      target.style.height = `106px`
+    } else {
+      target.style.height = `106px`
+    }
+  }
+  //대댓글 수정 온체인지
+  const textChangeReplyModify = e => {
+    const target = e.currentTarget
+
+    if (target.value.length > MaxCommentLength) return
+    setModifyInComment(target.value)
+  }
+  //팬보다 댓글수정
+  async function fetchDataEdit(boardNumer) {
+    const res = await Api.mypage_board_edit({
+      data: {
+        memNo: urlrStr,
+        boardIdx: boardNumer,
+        content: modifyComment
+      }
+    })
+    if (res.result === 'success') {
+      fetchDataList()
+      setModifyComment('')
+      setModifyShow('')
+
+      // console.log(res)
+    } else if (res.result === 'fail') {
+      // context.action.alert({
+      //   cancelCallback: () => {},
+      //   msg: res.message
+      // })
+      // console.log(res)
+    }
+  }
+  //팬보다 대댓글수정
+  async function fetchDataEditReply(boardNumer, writeNumer) {
+    const res = await Api.mypage_board_edit({
+      data: {
+        memNo: urlrStr,
+        boardIdx: modifyInShow,
+        content: modifyInComment
+      }
+    })
+    if (res.result === 'success') {
+      showReply(boardNumer, writeNumer)
+      setHidden(false)
+      setModifyInComment('')
+      setModifyInShow('')
+      // console.log(res)
+    } else if (res.result === 'fail') {
+      // context.action.alert({
+      //   cancelCallback: () => {},
+      //   msg: res.message
+      // })
+      // console.log(res)
+    }
+  }
+  const [modifyInfo, setModifyInfo] = useState({})
+  const replyModify = (contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT) => {
+    setModifyInComment(contents)
+    setModifyInShow(boardIdx)
+    setModifyNumber(boardIdx)
+    setHidden(true)
+    clickRefresh()
+    setModifyInfo({profileImg, nickNm, memId, parseDT})
+  }
+  const moidfyCancel = () => {
+    setHidden(false)
+    setModifyInComment('')
+    setModifyInShow('')
+    setModifyComment('')
+    setModifyShow('')
+  }
+
+  console.log(modifyInfo.profileImg)
   return (
     <>
       {/* 전체영역 */}
@@ -221,7 +314,7 @@ export default props => {
         <WriteArea className={active === true ? 'on' : ''}>
           <WriteAreaTop>
             <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
-            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px', fontWeight: '600'}}>{profile.nickNm}</div>
+            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}}>{profile.nickNm}</div>
           </WriteAreaTop>
           <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
           <WriteAreaBottom>
@@ -252,40 +345,63 @@ export default props => {
             if (status !== 1) return
             return (
               <CommentBox key={index} className={status === 1 ? 'show' : ''}>
-                <div className="titlewrap">
-                  <Imgbox bg={profImg.thumb62x62} />
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>(@{memId})</span>
-                    <span>{timeFormat(writeDt)}</span>
+                <div className={modifyShow === boardIdx ? 'disableCommentWrap' : 'CommentWrap'}>
+                  <div className="titlewrap">
+                    <Imgbox bg={profImg.thumb62x62} />
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>(@{memId})</span>
+                      <span>{timeFormat(writeDt)}</span>
+                    </div>
+                    <BtnIcon
+                      onClick={() => setShowBtn(boardIdx)}
+                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
+                    <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
+                      <a
+                        className={writerNo === profile.memNo ? 'on' : ''}
+                        onClick={() => FanboardModify(contents, boardIdx, boardNumer)}>
+                        수정하기
+                      </a>
+                      <a
+                        className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                        onClick={() => DeleteComment(value)}>
+                        삭제하기
+                      </a>
+                    </DetailBtn>
                   </div>
-                  <BtnIcon
-                    onClick={() => setShowBtn(boardIdx)}
-                    className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
-                  <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                    <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
-                      수정하기
-                    </a>
-                    <a
-                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
-                      onClick={() => DeleteComment(value)}>
-                      삭제하기
-                    </a>
-                  </DetailBtn>
+                  <div className="content">{contents}</div>
+                  <button className="reply" onClick={() => showReply(writeNumer, boardNumer)}>
+                    답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
+                  </button>
                 </div>
-                <div className="content">{contents}</div>
-                <button className="reply" onClick={() => showReply(writeNumer, boardNumer)}>
-                  답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
-                </button>
+                {/* 댓글수정 */}
+                <WriteArea className={modifyShow === boardIdx ? 'onModify' : ''}>
+                  <WriteAreaTop>
+                    <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
+                    <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}}>{profile.nickNm}</div>
+                  </WriteAreaTop>
+                  <Textarea placeholder={placeholderText} onChange={textModify} value={modifyComment} />
+                  <WriteAreaBottom>
+                    <TextCount>
+                      <span style={{color: '#424242'}}>{`${modifyComment.length * 2}`}</span>
+                      <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
+                    </TextCount>
+                    <CommentSubmitBtnCancel onClick={() => moidfyCancel()}>취소</CommentSubmitBtnCancel>
+                    <CommentSubmitBtn onClick={() => fetchDataEdit(boardNumer)}>수정</CommentSubmitBtn>
+                  </WriteAreaBottom>
+                </WriteArea>
                 {/*  큰댓글 컨텐츠 영역---- */}
                 {boardNumer === broadNumbers && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
                       const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = reply
                       let value = boardIdx
+                      const profileImg = profImg.thumb62x62
+                      const parseDT = timeFormat(writeDt)
                       if (status !== 1) return
+                      console.log(boardIdx)
                       return (
-                        <div key={index} className="replyContent">
+                        <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
                             <Imgbox bg={profImg.thumb62x62} />
                             <div>
@@ -297,7 +413,9 @@ export default props => {
                               onClick={() => setShowBtnReply(boardIdx)}
                               className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a className={writerNo === profile.memNo ? 'on' : ''} onClick={() => DeleteComment2()}>
+                              <a
+                                className={writerNo === profile.memNo ? 'on' : ''}
+                                onClick={() => replyModify(contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT)}>
                                 수정하기
                               </a>
                               <a
@@ -308,13 +426,46 @@ export default props => {
                             </DetailBtn>
                           </div>
                           <div className="content">{contents}</div>
-                        </div>
+                        </ReplyWrap>
                       )
                     })}
-                    <StartBottom className="on">
+                    <StartBottom className={hidden === false ? '' : 'disable'}>
                       <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} maxLength={100} />
                       <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
                     </StartBottom>
+                    <MMwrap className={hidden === true ? '' : 'disable'}>
+                      <StartBottom>
+                        <div className="titlewrap">
+                          <Imgbox bg={modifyInfo.profileImg} />
+                          <div>
+                            <span>{modifyInfo.nickNm}</span>
+                            <span>(@{modifyInfo.memId})</span>
+                            <span>{modifyInfo.parseDT}</span>
+                          </div>
+                        </div>
+
+                        <input
+                          placeholder={placeholderTextStart}
+                          onChange={textChangeReplyModify}
+                          value={modifyInComment}
+                          maxLength={49}
+                        />
+                        <div className="countmodify">
+                          <TextCount className="modifyTextCount">
+                            <span style={{color: '#424242'}}>{`${modifyInComment.length * 2}`}</span>
+                            <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
+                          </TextCount>
+                          <div className="btnwraps">
+                            <button onClick={() => moidfyCancel()} className="cancelbtns">
+                              취소
+                            </button>
+                            <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)} className="modifybtns">
+                              수정
+                            </button>
+                          </div>
+                        </div>
+                      </StartBottom>
+                    </MMwrap>
                   </div>
                 )}
               </CommentBox>
@@ -328,6 +479,20 @@ export default props => {
   )
 }
 
+const ReplyWrap = styled.div`
+  display: block;
+  position: relative;
+  padding: 0 20px;
+  border-bottom: 1px solid #eeeeee;
+
+  &:last-child {
+    border-bottom: 1px solid none;
+  }
+
+  &.disable {
+    display: none;
+  }
+`
 const ListTitle = styled.div`
   font-size: 16px;
   color: #616161;
@@ -354,7 +519,15 @@ const CommentSubmitBtn = styled.button`
   background-color: #8556f6;
   position: relative;
 `
-
+const CommentSubmitBtnCancel = styled.button`
+  width: 92px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+  background-color: #bdbdbd;
+  position: relative;
+`
 const TextCount = styled.div`
   width: calc(100% - 92px);
   font-size: 14px;
@@ -419,6 +592,10 @@ const WriteArea = styled.div`
   &.on {
     display: block;
   }
+  &.onModify {
+    display: block;
+    margin-top: 10px;
+  }
 `
 const StartBottom = styled.div`
   display: flex;
@@ -455,13 +632,21 @@ const StartBottom = styled.div`
       transform: skew(-0.03deg);
     }
   }
-  > button {
+  button {
     display: block;
     width: 68px;
     background-color: ${COLOR_MAIN};
     color: #fff;
   }
   &.on {
+    margin-top: 18px;
+  }
+  &.show {
+    display: flex;
+    margin-top: 18px;
+  }
+  &.disable {
+    display: none;
     margin-top: 18px;
   }
 `
@@ -475,6 +660,12 @@ const FanBoard = styled.div`
     &.on {
       display: none;
     }
+  }
+  & .CommentWrap {
+    display: block;
+  }
+  & .disableCommentWrap {
+    display: none;
   }
 `
 const CommentBox = styled.div`
@@ -555,7 +746,19 @@ const CommentBox = styled.div`
     background-color: #f8f8f8;
     padding-bottom: 18px;
   }
+
   & .replyContent {
+    display: block;
+    position: relative;
+    padding: 0 20px;
+    border-bottom: 1px solid #eeeeee;
+
+    &:last-child {
+      border-bottom: 1px solid none;
+    }
+  }
+  & .disableReplyContent {
+    display: none;
     position: relative;
     padding: 0 20px;
     border-bottom: 1px solid #eeeeee;
@@ -628,5 +831,48 @@ const BtnIcon = styled.button`
   z-index: 8;
   &.on {
     display: block;
+  }
+`
+
+const MMwrap = styled.section`
+  width: 100%;
+
+  & .titlewrap {
+    padding: 16px 20px;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    > input {
+      padding: 16px 4px;
+      margin: 0 16px;
+      width: calc(100% - 32px);
+    }
+  }
+  &.disable {
+    display: none;
+  }
+  & div:nth-child(2) > div {
+    padding: 0;
+  }
+  & .countmodify {
+    width: calc(100% - 16px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 0 16px 16px;
+    .cancelbtns {
+      height: 52px;
+      background-color: #bdbdbd;
+    }
+    .btnwraps {
+      display: flex;
+    }
+    .modifyTextCount {
+      border: none;
+      height: 52px;
+    }
   }
 `

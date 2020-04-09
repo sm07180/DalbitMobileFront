@@ -134,10 +134,10 @@ const myProfile = props => {
         </NameWrap>
 
         <CountingWrap>
-          <span>
+          <span onClick={() => context.action.updateCloseFanCnt(true)}>
             팬 <em>{profile.fanCnt}</em>
           </span>
-          <span>
+          <span onClick={() => context.action.updateCloseStarCnt(true)}>
             스타 <em>{profile.starCnt}</em>
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
@@ -146,7 +146,9 @@ const myProfile = props => {
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} />}
+      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
+      {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
+      {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
     </MyProfile>
   )
 }
