@@ -19,6 +19,7 @@ import closeBtn from 'pages/menu/static/ic_close.svg'
 
 import {Context} from 'context'
 import Api from 'context/api'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import qs from 'query-string'
 
 export default props => {
@@ -46,7 +47,11 @@ export default props => {
     memNo = profile.memNo
   }
 
-  const clickCloseBtn = () => {}
+  const clickCloseBtn = () => {
+    if (isHybrid()) {
+      Hybrid('CloseLayerPopup')
+    }
+  }
 
   useEffect(() => {
     const settingProfileInfo = async memNo => {
