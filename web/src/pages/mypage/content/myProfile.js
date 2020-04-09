@@ -10,6 +10,7 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
+import ProfilePresent from './profile_present'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
@@ -89,10 +90,13 @@ const myProfile = props => {
                 </button>
               )}
               {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-              {/* <button>
+              <button
+                onClick={() => {
+                  context.action.updateClosePresent(true)
+                }}>
                 <span></span>
                 <em>선물</em>
-              </button> */}
+              </button>
             </div>
           )}
         </InfoConfigBtn>
@@ -149,6 +153,7 @@ const myProfile = props => {
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
+      {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
     </MyProfile>
   )
 }
