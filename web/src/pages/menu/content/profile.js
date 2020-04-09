@@ -66,6 +66,11 @@ export default props => {
         globalCtx.action.updateProfile(null)
         props.history.push('/')
         return (window.location.href = '/')
+      } else if (logoutInfo.result === 'fail') {
+        globalCtx.action.alert({
+          title: '로그아웃 실패',
+          msg: `${logoutInfo.message}`
+        })
       }
       setFetching(false)
     }
@@ -343,7 +348,7 @@ const MenuMypage = styled.div`
   }
 
   .sub-nav {
-    padding-bottom: 20px;
+    padding-bottom: 100px;
 
     a {
       display: block;

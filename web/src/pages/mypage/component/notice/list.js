@@ -371,7 +371,7 @@ const Write = styled.div`
     h2 {
       font-size: 18px;
       font-weight: 600;
-      line-height: 1.17;
+      line-height: 24px;
       letter-spacing: -0.45px;
       text-align: center;
     }

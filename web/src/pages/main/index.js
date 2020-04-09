@@ -6,20 +6,25 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+
 //context
 import Api from 'context/api'
 import {Context} from 'context'
 import {StoreLink} from 'context/link'
+
 // components
 import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
-import {RoomMake} from 'context/room'
+import StarList from './component/starList.js'
+
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
+
+import {RoomMake} from 'context/room'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -85,8 +90,6 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  //방송하기 공통처리
-                  //  Hybrid('RoomMake', '')
                   RoomMake(globalCtx)
                 }}>
                 방송하기
@@ -116,6 +119,15 @@ export default props => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
+
+          <div className="section">
+            <div
+              className="content-wrap my-star-slide"
+              style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
+              <StarList list={initData.myStar} />
+            </div>
+          </div>
+
           <div className="section">
             <div className="title-wrap">
               <div className="title">
@@ -182,6 +194,9 @@ const Content = styled.div`
       margin-top: 10px;
       padding: 0 16px;
       padding-bottom: 20px;
+
+      &.my-star-slide {
+      }
 
       &.rank-slide {
         padding: 0;

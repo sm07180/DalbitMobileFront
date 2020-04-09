@@ -43,6 +43,9 @@ const GlobalProvider = props => {
   const [mypageReport, setMypageReport] = useState(false)
   const [mypageFanCnt, setMypageFanCnt] = useState('')
   const [close, setClose] = useState(false)
+  const [closeFanCnt, setCloseFanCnt] = useState(false)
+  const [closeStarCnt, setCloseStarCnt] = useState(false)
+  const [closePresent, setClosePresent] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
@@ -101,7 +104,7 @@ const GlobalProvider = props => {
      * @param string bjProfImg
      */
     updateNativePlayer: obj => {
-      setNativePlayer(obj)
+      setNativePlayer({...obj})
     },
     updateProfile: profile => {
       setProfile(profile)
@@ -205,6 +208,15 @@ const GlobalProvider = props => {
     },
     updateClose: bool => {
       setClose(bool)
+    },
+    updateCloseFanCnt: bool => {
+      setCloseFanCnt(bool)
+    },
+    updateCloseStarCnt: bool => {
+      setCloseStarCnt(bool)
+    },
+    updateClosePresent: bool => {
+      setClosePresent(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -232,7 +244,10 @@ const GlobalProvider = props => {
     player,
     mypageReport,
     mypageFanCnt,
-    close
+    close,
+    closeFanCnt,
+    closeStarCnt,
+    closePresent
   }
   return <Provider value={value}>{props.children}</Provider>
 }

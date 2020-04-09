@@ -37,7 +37,7 @@ export default props => {
           <div key={idx} className="list">
             <button
               onClick={() => {
-                props.update({select: list})
+                props.update({select: {...list, type: props.type}})
               }}>
               <img src={profImg.thumb150x150} />
             </button>
@@ -52,31 +52,37 @@ export default props => {
 }
 //---------------------------------------------------------------------
 const Content = styled.div`
-  button {
+  min-height: 200px;
+  .list {
     display: inline-block;
-    width: 72px;
-    height: 72px;
-    border-radius: 26px;
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: auto;
-      vertical-align: top;
+    margin-right: 13px;
+    margin-bottom: 20px;
+    button {
+      display: inline-block;
+      width: 72px;
+      height: 72px;
+      border-radius: 26px;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: auto;
+        vertical-align: top;
+      }
     }
-  }
-  p {
-    display: block;
-    margin-top: 6px;
-    width: 72px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 11px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.45;
-    letter-spacing: -0.28px;
-    text-align: center;
-    color: #424242;
+    p {
+      display: block;
+      margin-top: 6px;
+      width: 72px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 11px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.45;
+      letter-spacing: -0.28px;
+      text-align: center;
+      color: #424242;
+    }
   }
 `

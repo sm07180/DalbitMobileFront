@@ -5,11 +5,13 @@
 import React, {useEffect, useStet, useContext, useState} from 'react'
 //route
 import {Link} from 'react-router-dom'
+import {OS_TYPE} from 'context/config.js'
 //styled
 import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
+import ProfilePresent from './profile_present'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
@@ -89,10 +91,17 @@ const myProfile = props => {
                 </button>
               )}
               {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-              {/* <button>
-                <span></span>
-                <em>선물</em>
-              </button> */}
+              {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                <></>
+              ) : (
+                <button
+                  onClick={() => {
+                    context.action.updateClosePresent(true)
+                  }}>
+                  <span></span>
+                  <em>선물</em>
+                </button>
+              )}
             </div>
           )}
         </InfoConfigBtn>
@@ -134,10 +143,10 @@ const myProfile = props => {
         </NameWrap>
 
         <CountingWrap>
-          <span>
+          <span onClick={() => context.action.updateCloseFanCnt(true)}>
             팬 <em>{profile.fanCnt}</em>
           </span>
-          <span>
+          <span onClick={() => context.action.updateCloseStarCnt(true)}>
             스타 <em>{profile.starCnt}</em>
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
@@ -146,7 +155,10 @@ const myProfile = props => {
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} />}
+      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
+      {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
+      {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
+      {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
     </MyProfile>
   )
 }

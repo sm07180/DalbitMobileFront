@@ -285,7 +285,7 @@ const BirthDate = styled.div`
 `
 
 const PasswordRedirectBtn = styled.button`
-  width: 128px;
+  width: 100%;
   font-size: 16px;
   color: #fff;
   padding: 16px 0;
@@ -293,6 +293,7 @@ const PasswordRedirectBtn = styled.button`
 `
 
 const PasswordCircle = styled.div`
+  display: none;
   width: 10px;
   height: 10px;
   background-color: #9e9e9e;
@@ -301,7 +302,8 @@ const PasswordCircle = styled.div`
 `
 
 const PasswordTextWrap = styled.div`
-  display: flex;
+  /* display: flex; */
+  display: none;
   align-items: center;
   width: calc(100% - 128px);
   border: 1px solid #e0e0e0;

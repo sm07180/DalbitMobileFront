@@ -43,12 +43,6 @@ const App = () => {
         }
 
         parsed['FROM'] = '@@ CUSTOM @@'
-
-        if (__NODE_ENV === 'dev') {
-          if (parsed['os'] === OS_TYPE['Android']) {
-            alert(`custom ${JSON.stringify(parsed)}`)
-          }
-        }
         return parsed
       }
     }
@@ -62,12 +56,6 @@ const App = () => {
         }
 
         parsed['FROM'] = '@@ COOKIE @@'
-
-        if (__NODE_ENV === 'dev') {
-          if (parsed['os'] === OS_TYPE['Android']) {
-            alert(`cookie ${JSON.stringify(parsed)}`)
-          }
-        }
         return parsed
       }
     }
@@ -100,6 +88,7 @@ const App = () => {
 
       // *** Native App case
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
+        //
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
@@ -113,6 +102,7 @@ const App = () => {
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
               const parsed = JSON.parse(nativeInfo)
+              globalCtx.action.updatePlayer(true)
               globalCtx.action.updateMediaPlayerStatus(true)
               globalCtx.action.updateNativePlayer(parsed)
             }

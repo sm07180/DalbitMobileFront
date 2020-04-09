@@ -9,6 +9,7 @@ import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
+  const {name} = props
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -18,6 +19,7 @@ export default props => {
   const myProfileNo = ctx.profile.memNo
   //state
   const [rankInfo, setRankInfo] = useState('')
+  const [starInfo, setStarInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
   //scroll
@@ -40,13 +42,28 @@ export default props => {
     }
     return
   }
+
+  const fetchDataStar = async () => {
+    const res = await Api.mypage_star_list({
+      params: {
+        memNo: urlrStr
+      }
+    })
+    if (res.result === 'success') {
+      // console.log(res.data)
+      setStarInfo(res.data)
+      //console.log(res)
+    } else {
+      //console.log(res)
+    }
+    return
+  }
+
   //scroll function
   const scrollOnUpdate = () => {
-    let thisHeight = ''
-    if (document.getElementsByClassName('round')[0]) {
-      thisHeight = document.getElementsByClassName('round')[0].offsetHeight + 18
-      area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
-    }
+    const thisHeight = document.querySelector('.scrollWrap').offsetHeight + 18
+    console.log(thisHeight)
+    document.querySelector('.scroll-box').children[0].style.maxHeight = `calc(${360}px)`
   }
   //등록,해제
   const Regist = memNo => {
@@ -64,7 +81,7 @@ export default props => {
           msg: '팬등록에 성공하였습니다.'
         })
       } else if (res.result === 'fail') {
-        console.log(res)
+        //console.log(res)
       }
     }
     fetchDataFanRegist(memNo)
@@ -85,32 +102,67 @@ export default props => {
           msg: '팬등록을 해제하였습니다.'
         })
       } else if (res.result === 'fail') {
-        console.log(res)
+        // console.log(res)
       }
     }
     fetchDataFanCancel(memNo)
   }
+  const CancelBtn = () => {
+    if (name === '팬 랭킹') {
+      context.action.updateClose(false)
+    } else if (name === '팬') {
+      context.action.updateCloseFanCnt(false)
+    } else if (name === '스타') {
+      context.action.updateCloseStarCnt(false)
+    }
+  }
+
+  const DimCancel = () => {
+    if (name === '팬 랭킹') {
+      context.action.updateClose(false)
+    } else if (name === '팬') {
+      context.action.updateCloseFanCnt(false)
+    } else if (name === '스타') {
+      context.action.updateCloseStarCnt(false)
+    }
+  }
+  //console.log(name)
   //------------------------------------------------------------
   useEffect(() => {
-    fetchData()
+    if (name === '스타') {
+      fetchDataStar()
+    } else if (name === '팬 랭킹') {
+      fetchData()
+    } else if (name === '팬') {
+      fetchData()
+    }
   }, [select])
+  // console.log(starInfo)
   //------------------------------------------------------------
   return (
     <>
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            <button className="close" onClick={() => context.action.updateClose(false)}></button>
-            <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-              <div className="scrollWrap">
-                <Container>
+            <button className="close" onClick={() => CancelBtn()}></button>
+
+            <div className="scrollWrap">
+              <Container>
+                <Scrollbars
+                  className="scroll-box"
+                  ref={scrollbars}
+                  autoHeight
+                  autoHeightMax={'100%'}
+                  onUpdate={scrollOnUpdate}
+                  autoHide>
                   <div className="reportTitle"></div>
-                  <h2>팬 랭킹</h2>
+                  <h2>{name}</h2>
                   {rankInfo !== '' &&
+                    name === '팬 랭킹' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
-                        <List key={index}>
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
                           <Photo bg={profImg.thumb62x62}></Photo>
                           <span>{nickNm}</span>
                           {isFan === false && (
@@ -122,13 +174,48 @@ export default props => {
                         </List>
                       )
                     })}
-                </Container>
-              </div>
-            </Scrollbars>
+
+                  {starInfo !== '' &&
+                    name === '스타' &&
+                    starInfo.map((item, index) => {
+                      const {title, id, profImg, nickNm, isFan, memNo} = item
+                      return (
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                          {isFan === false && (
+                            <button onClick={() => Regist(memNo)} className="plusFan">
+                              +팬등록
+                            </button>
+                          )}
+                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                        </List>
+                      )
+                    })}
+                  {rankInfo !== '' &&
+                    name === '팬' &&
+                    rankInfo.map((item, index) => {
+                      const {title, id, profImg, nickNm, isFan, memNo} = item
+                      return (
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                          {isFan === false && (
+                            <button onClick={() => Regist(memNo)} className="plusFan">
+                              +팬등록
+                            </button>
+                          )}
+                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                        </List>
+                      )
+                    })}
+                </Scrollbars>
+              </Container>
+            </div>
           </div>
         </FixedBg>
       </HoleWrap>
-      <Dim onClick={() => context.action.updateClose(false)}></Dim>
+      <Dim onClick={() => DimCancel()}></Dim>
     </>
   )
 }
@@ -160,7 +247,12 @@ const List = styled.div`
   align-items: center;
   margin-bottom: 7px;
   > span {
+    display: block;
     flex: none;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: block;
     margin-left: 10px;
     line-height: 40px;
@@ -186,6 +278,9 @@ const List = styled.div`
     background-color: ${COLOR_MAIN};
     color: #fff;
   }
+  &.none {
+    display: none;
+  }
 `
 const Photo = styled.div`
   flex: none;
@@ -205,8 +300,9 @@ const FixedBg = styled.div`
     }
     .close {
       display: block;
-      float: right;
-      margin-right: calc(16.67% - 36px);
+      position: absolute;
+      top: -32px;
+      right: 28px;
       width: 36px;
       height: 36px;
       background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
@@ -234,6 +330,19 @@ const FixedBg = styled.div`
     justify-content: space-between;
   }
 `
+const BorderBG = styled.div`
+  position: fixed;
+  top: calc(50% + 20px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 12px;
+  width: 83.33%;
+  min-height: 440px;
+  background-color: #fff;
+  z-index: -1;
+  margin: 0 auto;
+  border-radius: 10px;
+`
 const Container = styled.div`
   padding: 12px;
   width: 83.33%;
@@ -246,7 +355,7 @@ const Container = styled.div`
 
   border-radius: 10px;
   & h2 {
-    margin-top: 14px;
+    margin-top: 8px;
     margin-bottom: 20px;
     color: #424242;
     font-size: 20px;

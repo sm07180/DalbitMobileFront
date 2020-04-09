@@ -101,6 +101,26 @@ export default props => {
     }
   }
 
+  const fetchSocialData = async vendor => {
+    let customHeader = JSON.parse(Api.customHeader)
+    customHeader['os'] = 1
+    customHeader = JSON.stringify(customHeader)
+
+    const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
+      method: 'get',
+      headers: {
+        authToken: Api.authToken,
+        'custom-header': customHeader,
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      }
+    })
+
+    if (res.status === 200) {
+      const redirectUrl = await res.text()
+      window.location.href = `${redirectUrl}`
+    }
+  }
+
   useEffect(() => {}, [])
 
   return (
@@ -173,33 +193,25 @@ export default props => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
-                <button className="social-btn">
-                  <a href={`${__SOCIAL_URL}/facebook?target=mobile`}>
-                    <img className="icon facebook" src={facebookLogo} />
-                    <span className="text">페이스북 로그인</span>
-                  </a>
+                <button className="social-btn" onClick={() => fetchSocialData('facebook')}>
+                  <img className="icon facebook" src={facebookLogo} />
+                  <span className="text">페이스북 로그인</span>
                 </button>
 
-                <button className="social-btn">
-                  <a href={`${__SOCIAL_URL}/google?target=mobile`}>
-                    <img className="icon google" src={googleLogo} />
-                    <span className="text">구글 로그인</span>
-                  </a>
+                <button className="social-btn" onClick={() => fetchSocialData('google')}>
+                  <img className="icon google" src={googleLogo} />
+                  <span className="text">구글 로그인</span>
                 </button>
               </div>
               <div className="line-wrap">
-                <button className="social-btn">
-                  <a href={`${__SOCIAL_URL}/naver?target=mobile`}>
-                    <img className="icon naver" src={naverLogo} />
-                    <span className="text">네이버 로그인</span>
-                  </a>
+                <button className="social-btn" onClick={() => fetchSocialData('naver')}>
+                  <img className="icon naver" src={naverLogo} />
+                  <span className="text">네이버 로그인</span>
                 </button>
 
-                <button className="social-btn">
-                  <a href={`${__SOCIAL_URL}/kakao?target=mobile`}>
-                    <img className="icon kakao" src={kakaoLogo} />
-                    <span className="text">카카오톡 로그인</span>
-                  </a>
+                <button className="social-btn" onClick={() => fetchSocialData('kakao')}>
+                  <img className="icon kakao" src={kakaoLogo} />
+                  <span className="text">카카오톡 로그인</span>
                 </button>
               </div>
             </SocialLoginWrap>
@@ -232,23 +244,23 @@ const SocialLoginWrap = styled.div`
       box-sizing: border-box;
       padding: 0 6px;
 
-      a {
+      /* a {
         display: flex;
         width: 100%;
-        align-items: center;
+        align-items: center; */
 
-        .icon {
-          width: 36px;
-        }
-        .text {
-          display: inline-block;
-          width: calc(100% - 36px);
-          color: #757575;
-          font-size: 12px;
-          letter-spacing: -0.3px;
-          text-align: center;
-        }
+      .icon {
+        width: 36px;
       }
+      .text {
+        display: inline-block;
+        width: calc(100% - 36px);
+        color: #757575;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        text-align: center;
+      }
+      /* } */
     }
   }
 `

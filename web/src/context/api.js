@@ -22,13 +22,8 @@ useEffect(() => {
 import axios from 'axios'
 import qs from 'qs'
 //context
-import {Global} from 'App'
 import {API_SERVER, PHOTO_SERVER, PAY_SERVER} from 'context/config'
 
-// export const authToken = () => {
-//   const context = useContext(Context)
-//   return context.authToken
-// }
 export default class API {
   //---------------------------------------------------------------------방송관련
   /**
@@ -49,8 +44,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_create = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/create`, method: method || 'POST', data: data})
+    const {data} = obj || {}
+    return await ajax({...obj, url: `/broad/create`, method: 'POST', data: data})
   }
 
   /**
@@ -94,8 +89,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/edit`, method: method || 'POST', data: data})
+    const {data} = obj || {}
+    return await ajax({...obj, url: `/broad/edit`, method: 'POST', data: data})
   }
 
   static main_init_data = async () => {
@@ -131,8 +126,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_listeners = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/listeners`, method: method || 'GET', params: params || {}})
+    const {params} = obj || {}
+    return await ajax({...obj, url: `/broad/listeners`, method: 'GET', params: params || {}})
   }
   /**
    * @brief 방송방 좋아요 추가
@@ -142,8 +137,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_likes = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/likes`, method: method || 'POST', data: data})
+    const {data} = obj || {}
+    return await ajax({...obj, url: `/broad/likes`, method: 'POST', data: data})
   }
 
   /**
@@ -156,8 +151,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_guest = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/guest`, method: method || 'POST', data: data})
+    const {data} = obj || {}
+    return await ajax({...obj, url: `/broad/guest`, method: 'POST', data: data})
   }
 
   /**
@@ -169,8 +164,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_guest = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/guest`, method: method || 'DELETE', data: data})
+    const {data} = obj || {}
+    return await ajax({...obj, url: `/broad/guest`, method: 'DELETE', data: data})
   }
 
   /**
@@ -626,6 +621,16 @@ export default class API {
     return await ajax({...obj, url: url || `/mypage/fan`, method: method || 'DELETE', data: data})
   }
   /**
+   * @brief 스타 리스트
+   * @method "GET"
+   * @todo
+   * @create 황상한 2020.04.09
+   */
+  static mypage_star_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile/star`, method: method || 'GET', params: params})
+  }
+  /**
    * @brief 토큰조회
    * @method "GET"
    * @param int    os                 //*OS구분
@@ -953,6 +958,15 @@ export default class API {
     return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', data: data})
   }
   /**
+   * @brief 회원 팬보드 팬보드 댓글 수정
+   * @method "POST"
+   * @create 황상한 2020.04.08
+   */
+  static mypage_board_edit = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/profile/board/edit`, method: method || 'POST', data: data})
+  }
+  /**
    * @brief 회원 팬보드 목록조회
    * @method "GET"
    * @param string memNo              //*팬보드 회원번호
@@ -1025,8 +1039,8 @@ export default class API {
    * @brief Server->React customHeader
    * @create 손완휘 2020.02.06
    */
-  static setCustomHeader = obj => {
-    this.customHeader = obj
+  static setCustomHeader = str => {
+    this.customHeader = str
   }
   //--------------------------------------------------------------------- 방송 사이드컨텐츠
 
