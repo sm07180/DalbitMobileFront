@@ -12,7 +12,7 @@
     //render추가
     return (   <Room />   )
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
@@ -47,17 +47,17 @@ export default Room
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
-   * @title roomNo 저장이후 동일하면 RoomJoin이 아닌,EnterRoom실행
+   * @title Room.roomNo , roomNo 비교
    */
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
+    console.log(join)
     if (join.result === 'fail') {
       Room.context.action.alert({
         title: join.messageKey,
         msg: join.message
       })
     } else if (join.result === 'success') {
-      console.log(join)
       Hybrid('RoomJoin', join.data)
       console.log(
         '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
@@ -70,15 +70,15 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   } else {
     //-------------------------------------------------------------
     Room.setRoomNo(roomNo)
-    const exit = await RoomExit(roomNo + '')
-    console.log('await RoomExit(roomNo)')
+    //방송강제퇴장
+    const exit = await Api.broad_exit({data: {roomNo: roomNo}})
     console.log(exit)
-
+    //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log('Api.broad_join')
     console.log(res)
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
+    //
     if (res.result === 'fail') {
       switch (res.code) {
         case '-4': //----------------------------이미 참가 되어있습니다

@@ -20,7 +20,7 @@ export default props => {
               <div>나의</div>
               <div style={{marginTop: '2px'}}>스타</div>
             </div>
-            <div className="text">ㅇ나난러ㅣㅇ나멀ㄴㅁ이ㅏㅓㄹㄴㅁ이ㅏㅓ</div>
+            <div className="text"></div>
           </div>
         )}
 
@@ -67,7 +67,7 @@ const StarList = styled.div`
       align-items: center;
       justify-content: center;
       flex-direction: column;
-
+      background-size: cover;
       width: 72px;
       height: 72px;
       border: 1px solid #e0e0e0;
