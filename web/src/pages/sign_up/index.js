@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import qs from 'query-string'
+
 //components
 import PureLayout from 'pages/common/layout/new_pure.js'
 import Utility from 'components/lib/utility'
@@ -20,12 +22,15 @@ import {
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
+import _ from 'lodash'
 
 let intervalId = null
 let pickerHolder = true
 let nickCheckState = false
 
 export default props => {
+  const snsInfo = qs.parse(location.search)
+  console.log('snsInfo', snsInfo)
   //context
   const context = useContext(Context)
   //useState
@@ -33,10 +38,10 @@ export default props => {
   const [boxState, setBoxState] = useState(false) // 약관동의 박스 열고닫음 상태값
   const [validate, setValidate] = useState({
     // 유효성 체크
-    loginID: false,
+    memId: false,
     loginPwd: false,
     loginPwdCheck: false,
-    loginNickNm: false,
+    nickNm: false,
     birth: false,
     term: false, // 약관동의는 필수만 체크하기
     auth: false
@@ -81,11 +86,11 @@ export default props => {
 
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
-    loginID: '',
+    memId: '',
     loginPwd: '',
     loginPwdCheck: '',
-    loginNickNm: '',
-    loginName: '',
+    nickNm: '',
+    name: '',
     birth: '',
     gender: 'n',
     image: '',
@@ -98,10 +103,10 @@ export default props => {
     auth: '',
     CMID: '',
     osName: context.customHeader.os,
-    ...props.location.state
+    ...snsInfo
   })
 
-  const {loginID, loginPwd, loginPwdCheck, loginNickNm, loginName, gender, birth, image, memType, osName} = changes
+  const {memId, loginPwd, loginPwdCheck, nickNm, name, gender, birth, image, memType, osName} = changes
   const [fetch, setFetch] = useState(null)
 
   //회원가입 input onChange
@@ -118,14 +123,11 @@ export default props => {
     //유효성검사
     if (e.target.name == 'loginPwd') {
       validatePwd(e.target.value)
-    } else if (e.target.name == 'loginID') {
+    } else if (e.target.name == 'memId') {
       validateID(e.target.value)
-    } else if (e.target.name == 'loginNickNm') {
+    } else if (e.target.name == 'nickNm') {
       validateNick(e.target.value.replace(/(\s*)/g, ''))
-      // setChanges({
-      //   ...changes,
-      //   [e.target.name]: e.target.value.replace(/(\s*)/g, '')
-      // })
+      //validateNick(e.target.value)
     } else if (e.target.name == 'auth') {
       setChanges({
         ...changes,
@@ -228,22 +230,22 @@ export default props => {
 
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
-    //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
+    //let memIdVal = idEntered.replace(/[^0-9]/gi, '')
     //let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
     let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    //const loginIdVal = Utility.phoneAddHypen(idEntered)
-    const loginIdVal = idEntered
+    //const memIdVal = Utility.phoneAddHypen(idEntered)
+    const memIdVal = idEntered
     setChanges({
       ...changes,
-      loginID: loginIdVal
+      memId: memIdVal
     })
-    if (!(loginIdVal == undefined)) {
-      if (loginIdVal.length >= 11) {
+    if (!(memIdVal == undefined)) {
+      if (memIdVal.length >= 11) {
         // setValidate({
         //   ...validate,
-        //   loginID: true
+        //   memId: true
         // })
-        if (!rgEx.test(loginIdVal)) {
+        if (!rgEx.test(memIdVal)) {
           setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
           setCurrentAuthBtn({
             request: true,
@@ -255,10 +257,10 @@ export default props => {
             check: true
           })
         }
-      } else if (loginIdVal.length < 12) {
+      } else if (memIdVal.length < 12) {
         setValidate({
           ...validate,
-          loginID: false
+          memId: false
         })
         setCurrentAuthBtn({
           request: true,
@@ -276,13 +278,13 @@ export default props => {
     let nm = nickEntered
     setChanges({
       ...changes,
-      loginNickNm: nm
+      nickNm: nm
     })
-    let nmVal = {loginNickNm: false}
-    if (changes.loginNickNm.length == 0) {
+    let nmVal = {nickNm: false}
+    if (changes.nickNm.length == 0) {
       setValidate({
         ...validate,
-        loginNickNm: false
+        nickNm: false
       })
       setCurrentNick('')
     } else {
@@ -295,7 +297,7 @@ export default props => {
         if (resNick) {
           if (resNick.result === 'success') {
             if (resNick.code == '1') {
-              nmVal = {...nmVal, loginNickNm: true}
+              nmVal = {...nmVal, nickNm: true}
               setCurrentNick('사용 가능한 닉네임 입니다.')
             }
           } else if (resNick.result === 'fail') {
@@ -449,75 +451,36 @@ export default props => {
     }
 
     //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
-    const loginID = changes.loginID.replace(/-/g, '')
+    const memId = changes.memId.replace(/-/g, '')
     const res = await Api.member_join({
       data: {
         memType: changes.memType,
-        memId: loginID,
+        memId: memId,
         memPwd: changes.loginPwd,
         gender: changes.gender,
-        nickNm: changes.loginNickNm,
+        nickNm: changes.nickNm,
         birth: changes.birth,
         term1: changes.term1,
         term2: changes.term2,
         term3: changes.term3,
         term4: changes.term4,
         term5: changes.term5,
-        name: changes.loginName,
+        name: changes.name,
         profImg: resultImg,
         profImgRacy: 3,
         email: '',
         os: changes.osName
       }
     })
-    //console.log('회원가입 REST 결과값 = ' + JSON.stringify(res))
     if (res && res.code) {
       if (res.code == 0) {
         //alert(res.message)
         context.action.alert({
           callback: () => {
-            // async function fetchLogin() {
-            //   const resLogin = await Api.member_login({
-            //     data: {
-            //       memType: changes.memType,
-            //       memId: loginID,
-            //       memPwd: changes.loginPwd
-            //     }
-            //   })
-            //   if (resLogin && resLogin.code) {
-            //     if (resLogin.code == 0) {
-            //       //Webview 에서 native 와 데이터 주고 받을때 아래와 같이 사용
-            //       props.update({loginSuccess: resLogin.data})
-            //       Api.profile({params: {memNo: resLogin.data.memNo}}).then(profileInfo => {
-            //         if (profileInfo.result === 'success') {
-            //           context.action.updateProfile(profileInfo.data)
-            //         }
-            //       })
-
-            //       window.location.href = '/'
-            //     } else {
-            //       console.log(resLogin)
-            //     }
-            //   }
-            // }
-            // fetchLogin()
             window.location.href = '/'
           },
           msg: '회원가입 완료되었습니다.'
         })
-
-        //@hybrid
-        if (isHybrid()) {
-          context.action.alert({
-            callback: () => {
-              //props.history.push('/')
-              window.location.href = '/'
-            },
-            msg: '회원가입 완료되었습니다.'
-          })
-          //Hybrid('GetLoginToken', res.data)
-        }
-        context.action.updateLogin(true)
       } else {
         context.action.alert({
           msg: res.message
@@ -531,7 +494,7 @@ export default props => {
   async function fetchNickData() {
     const resNick = await Api.nickName_check({
       params: {
-        nickNm: changes.loginNickNm
+        nickNm: changes.nickNm
       }
     })
     if (resNick) {
@@ -553,19 +516,19 @@ export default props => {
   async function fetchAuth() {
     const resAuth = await Api.sms_request({
       data: {
-        phoneNo: changes.loginID,
+        phoneNo: changes.memId,
         authType: 0
       }
     })
     if (resAuth.result === 'success') {
       setValidate({
         ...validate,
-        loginID: true,
+        memId: true,
         auth: false
       })
       setChanges({...changes, CMID: resAuth.data.CMID})
       setCurrentAuth1('인증번호 요청이 완료되었습니다.')
-      document.getElementsByName('loginID')[0].disabled = true
+      document.getElementsByName('memId')[0].disabled = true
       setCurrentAuth2('')
       //document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       clearInterval(intervalId)
@@ -620,8 +583,6 @@ export default props => {
 
   useEffect(() => {
     context.action.updateGnbVisible(false)
-    //이미지 값 비었을 경우 기본 프로필 이미지 셋팅
-    //state 시점차이때문에 birth와 image를 처음 동시에 셋팅해주어야함, 그렇지 않으면 하나는 계속 빈값으로 엎어쳐진다ㅠㅠ
     let firstSetting = {}
     if (!changes.image && !changes.birth) {
       firstSetting = {birth: dateDefault, image: defaultImage}
@@ -634,18 +595,28 @@ export default props => {
     } else if (!changes.birth) {
       firstSetting = {birth: dateDefault}
     }
+
     setChanges({
       ...changes,
       ...firstSetting
     })
+
+    if (changes.memType !== 'p') {
+      changes.nickNm && validateNick(changes.nickNm.replace(/(\s*)/g, ''))
+    }
+
+    if (_.hasIn(changes, 'profImgUrl')) {
+      setChanges({
+        ...changes,
+        image: changes.profImgUrl
+      })
+      setImgData(changes.profImgUrl)
+    }
   }, [])
 
-  // useEffect(() => {
-  //   console.log(JSON.stringify(validate, null, 1))
-  // }, [validate])
-
   useEffect(() => {
-    //console.log(JSON.stringify(changes, null, 1))
+    console.log(JSON.stringify(changes, null, 1))
+
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
       setValidate({...validate, term: true})
@@ -655,10 +626,10 @@ export default props => {
     }
 
     if (!(changes.memType == 'p')) {
-      //validateNickNm(changes.loginNickNm)
+      //validateNickNm(changes.nickNm)
       validateSetting = {
         ...validateSetting,
-        loginID: true,
+        memId: true,
         loginPwd: true,
         loginPwdCheck: true
       }
@@ -699,26 +670,28 @@ export default props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    if (
-      validate.loginID &&
-      validate.loginPwd &&
-      validate.loginPwdCheck &&
-      validate.loginNickNm &&
-      validate.birth &&
-      validate.term &&
-      validate.auth
-    ) {
-      setValidatePass(true)
+    if (changes.memType == 'p') {
+      if (
+        validate.memId &&
+        validate.loginPwd &&
+        validate.loginPwdCheck &&
+        validate.nickNm &&
+        validate.birth &&
+        validate.term &&
+        validate.auth
+      ) {
+        setValidatePass(true)
+      } else {
+        setValidatePass(false)
+      }
     } else {
-      setValidatePass(false)
+      if (validate.nickNm && validate.birth && validate.term) {
+        setValidatePass(true)
+      } else {
+        setValidatePass(false)
+      }
     }
   }, [validate])
-
-  // useEffect(() => {
-  //   return () => {
-  //     console.log('remove join from')
-  //   }
-  // })
 
   return (
     <PureLayout>
@@ -729,8 +702,8 @@ export default props => {
             <PhoneAuth>
               <input
                 type="tel"
-                name="loginID"
-                value={changes.loginID}
+                name="memId"
+                value={changes.memId}
                 onChange={onLoginHandleChange}
                 placeholder="휴대폰 번호"
                 className="auth"
@@ -746,7 +719,7 @@ export default props => {
               </button>
             </PhoneAuth>
             {currentAuth1 && (
-              <HelpText state={validate.loginID} className={validate.loginID ? 'pass' : 'help'}>
+              <HelpText state={validate.memId} className={validate.memId ? 'pass' : 'help'}>
                 {currentAuth1}
               </HelpText>
             )}
@@ -797,24 +770,17 @@ export default props => {
           <input
             autoComplete="off"
             type="text"
-            name="loginNickNm"
-            value={changes.loginNickNm}
+            name="nickNm"
+            value={changes.nickNm}
             /*onBlur={validateNick}*/ onChange={onLoginHandleChange}
             placeholder="닉네임"
           />
-          <span className={validate.loginNickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
+          <span className={validate.nickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
           {currentNick && (
-            <HelpText state={validate.loginNickNm} className={validate.loginNickNm ? 'pass' : 'help'}>
+            <HelpText state={validate.nickNm} className={validate.nickNm ? 'pass' : 'help'}>
               {currentNick}
             </HelpText>
           )}
-          {/* <input type="text" name="loginName" defaultValue={changes.loginName} onChange={onLoginHandleChange} placeholder="이름" />
-          <span className={validate.loginName ? 'off' : 'on'}>2~10자</span>
-          {currentNick && (
-            <HelpText state={validate.loginName} className={validate.loginName ? 'pass' : 'help'}>
-              {currentNick}
-            </HelpText>
-          )} */}
         </InputWrap>
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
@@ -1170,10 +1136,10 @@ const CheckWrap = styled.div`
         font-size: 12px;
         font-weight: 600;
       }
-      &[name='loginNickNm']:after {
+      &[name='nickNm']:after {
         content: '2~20자 한글/영문/숫자';
       }
-      &[name='loginName']:after {
+      &[name='name']:after {
         content: '10자 한글/영문';
       }
     }
