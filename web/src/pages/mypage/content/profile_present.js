@@ -21,9 +21,12 @@ export default props => {
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
+  let myDalCnt = context.profile.dalCnt
+  myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start
   const handleChangeInput = event => {
     const {value, maxLength} = event.target
+    setDirectDalCnt(value)
     if (value.length > maxLength) {
       return false
     }
@@ -62,8 +65,6 @@ export default props => {
         msg: '보낼 달 수량을 입력해 주세요'
       })
     }
-    // console.log(props)
-    // console.log('달 수  = ' + dalcount)
     const res = await Api.member_gift_dal({
       data: {
         memNo: props.profile.memNo,
@@ -74,7 +75,29 @@ export default props => {
       context.action.alert({
         callback: () => {
           setText(dalcount)
+          context.action.updateClosePresent(false)
+          async function updateMyPofile() {
+            const profileInfo = await Api.profile({params: {memNo: context.profile.memNo}})
+            if (profileInfo.result === 'success') {
+              context.action.updateProfile(profileInfo.data)
+            }
+          }
+          updateMyPofile()
         },
+        msg: res.message
+      })
+    } else if (res.result === 'fail' && res.code === '-4') {
+      context.action.confirm({
+        msg: res.message,
+        buttonText: {
+          right: '충전하기'
+        },
+        callback: () => {
+          props.history.push('/store')
+        }
+      })
+    } else {
+      context.action.alert({
         msg: res.message
       })
     }
@@ -103,14 +126,14 @@ export default props => {
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            {/* <button className="close" onClick={() => context.action.updateClosePresent(false)}></button> */}
+            <button className="close" onClick={() => context.action.updateClosePresent(false)}></button>
             <div className="scrollWrap">
               <Container>
                 <Contents>
                   <div>
                     <h2>선물하기</h2>
                     <p>
-                      <span>닉 네 임 </span> 님에게
+                      <span>{props.profile.nickNm} </span> 님에게
                       <br />
                       달을 선물하시겠습니까?
                     </p>
@@ -119,7 +142,7 @@ export default props => {
                 <MyPoint>
                   <em>내가 보유한 달</em>
                   <span>
-                    10,000
+                    {myDalCnt}
                     <button
                       onClick={() => {
                         props.history.push('/store')
@@ -151,7 +174,9 @@ export default props => {
                 </TextArea>
                 <ButtonArea>
                   <button onClick={() => context.action.updateClosePresent(false)}>취소</button>
-                  <button onClick={() => giftSend()}>선물</button>
+                  <button onClick={() => giftSend()} disabled={directDalCnt == 0 ? true : false}>
+                    선물
+                  </button>
                 </ButtonArea>
               </Container>
             </div>
@@ -278,6 +303,45 @@ const MyPoint = styled.div`
   margin: 30px 0 15px 0;
   & > * {
     display: inline-block;
+    line-height: 20px;
+    transform: skew(-0.03deg);
+  }
+
+  em {
+    font-style: normal;
+    font-size: 14px;
+    color: #919191;
+  }
+
+  span {
+    color: #424242;
+    font-size: 16px;
+    font-weight: 800;
+
+    button {
+      position: relative;
+      vertical-align: top;
+      padding: 0 15px 0 8px;
+      margin-left: 6px;
+      border-radius: 20px;
+      background: ${COLOR_POINT_P};
+      color: #fff;
+      font-weight: 400;
+      font-size: 12px;
+
+      &:after {
+        display: block;
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        width: 4px;
+        height: 4px;
+        border-right: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        content: '';
+        transform: rotate(-45deg);
+      }
+    }
   }
 `
 const Select = styled.div`
@@ -352,12 +416,17 @@ const ButtonArea = styled.div`
     width: calc(50% - 4px);
     font-size: 14px;
     line-height: 46px;
-    border: 1px solid #bdbdbd;
+    border: 1px solid ${COLOR_MAIN};
     border-radius: 10px;
-    background: #bdbdbd;
+    background: ${COLOR_MAIN};
     color: #fff;
   }
 
+  button:disabled {
+    border: 1px solid #bdbdbd;
+    background: #bdbdbd;
+    color: #fff;
+  }
   button:first-child {
     border: 1px solid ${COLOR_MAIN};
     background: #fff;
