@@ -9,6 +9,11 @@ import CustomSwiper from 'components/ui/swiper.js'
 // static
 import LiveIcon from '../static/ic_live.png'
 
+let touchStartX = null
+let touchEndX = null
+let swiping = false
+let touchStartStatus = false
+
 export default props => {
   //---------------------------------------------------------------------
   //context
@@ -16,6 +21,7 @@ export default props => {
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const selectedWrapRef = useRef()
+  const slideWrapRef = useRef()
 
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()
@@ -39,6 +45,42 @@ export default props => {
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
+  const touchStartEvent = e => {
+    touchStartStatus = true
+    touchStartX = e.touches[0].clientX
+  }
+
+  const touchMoveEvent = e => {
+    const slideWrapNode = slideWrapRef.current
+    touchEndX = e.touches[0].clientX
+
+    const baseWidth = slideWrapNode.clientWidth / 3
+    const diff = touchEndX - touchStartX
+    const calcX = `${-baseWidth}px`
+    console.log(baseWidth, diff)
+    slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
+  }
+
+  const touchEndEvent = e => {
+    if (!touchEndX || !touchStartStatus || swiping) {
+      return
+    }
+
+    const diff = touchEndX - touchStartX
+
+    // const minDiffSize = Math.abs(diff) < 80
+
+    // if (minDiffSize) {
+    //   return
+    // }
+
+    // if (diff > 0) {
+    //   // oneStepSlide('right')
+    // } else {
+    //   // oneStepSlide('left')
+    // }
+  }
+
   return (
     <RecommendWrap>
       <Room />
@@ -59,7 +101,12 @@ export default props => {
         style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {}}>
         {/* {Array.isArray(list) && list.length > 0 && ( */}
         {/* <> */}
-        <div className="slide-wrap">
+        <div
+          ref={slideWrapRef}
+          className="slide-wrap animate"
+          onTouchStart={touchStartEvent}
+          onTouchMove={touchMoveEvent}
+          onTouchEnd={touchEndEvent}>
           <div
             className="broad-slide"
             style={
@@ -165,13 +212,17 @@ const RecommendWrap = styled.div`
       position: absolute;
       width: 300%;
       height: 100%;
-      left: -100%;
+      transform: translate3d(-33.3334%, 0, 0);
       display: flex;
       flex-direction: row;
 
       .broad-slide {
         width: 33.3334%;
         height: 100%;
+      }
+
+      &.animate {
+        transition: transform 0.2s ease-in;
       }
     }
 
