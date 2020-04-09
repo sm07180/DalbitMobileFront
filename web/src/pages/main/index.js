@@ -17,7 +17,7 @@ import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
-import StarList from './component/startList.js'
+import StarList from './component/starList.js'
 
 // static
 import Mic from './static/ic_mike.svg'
@@ -121,10 +121,8 @@ export default props => {
           </div>
 
           <div className="section">
-            <div className="content-wrap row">
-              <div className="my-star">
-                <div className="image"></div>
-              </div>
+            <div className="content-wrap my-star-slide">
+              <StarList list={initData.myStar} />
             </div>
           </div>
 
@@ -195,10 +193,7 @@ const Content = styled.div`
       padding: 0 16px;
       padding-bottom: 20px;
 
-      &.row {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+      &.my-star-slide {
       }
 
       &.rank-slide {

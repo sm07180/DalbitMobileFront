@@ -71,6 +71,7 @@ const RankList = styled.div`
   top: 0;
   left: 16px;
   width: calc(100% - 16px);
+
   .swiper-container {
     padding-right: 16px;
   }
