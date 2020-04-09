@@ -5,6 +5,7 @@
 import React, {useEffect, useStet, useContext, useState} from 'react'
 //route
 import {Link} from 'react-router-dom'
+import {OS_TYPE} from 'context/config.js'
 //styled
 import styled from 'styled-components'
 //component
@@ -90,13 +91,17 @@ const myProfile = props => {
                 </button>
               )}
               {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-              <button
-                onClick={() => {
-                  context.action.updateClosePresent(true)
-                }}>
-                <span></span>
-                <em>선물</em>
-              </button>
+              {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                <></>
+              ) : (
+                <button
+                  onClick={() => {
+                    context.action.updateClosePresent(true)
+                  }}>
+                  <span></span>
+                  <em>선물</em>
+                </button>
+              )}
             </div>
           )}
         </InfoConfigBtn>
