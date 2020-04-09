@@ -121,7 +121,9 @@ export default props => {
           </div>
 
           <div className="section">
-            <div className="content-wrap my-star-slide">
+            <div
+              className="content-wrap my-star-slide"
+              style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
               <StarList list={initData.myStar} />
             </div>
           </div>

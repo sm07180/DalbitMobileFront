@@ -5,8 +5,7 @@ import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 
 export default props => {
-  // const {list} = props
-  const list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+  const {list} = props
 
   const swiperParams = {
     slidesPerView: 'auto'
@@ -15,16 +14,26 @@ export default props => {
   return (
     <StarList>
       <Swiper {...swiperParams}>
+        {Array.isArray(list) && list.length > 0 && (
+          <div className="list">
+            <div className="image">
+              <div>나의</div>
+              <div style={{marginTop: '2px'}}>스타</div>
+            </div>
+            <div className="text">ㅇ나난러ㅣㅇ나멀ㄴㅁ이ㅏㅓㄹㄴㅁ이ㅏㅓ</div>
+          </div>
+        )}
+
         {Array.isArray(list) &&
           list.length > 0 &&
           list.map((star, idx) => {
             return (
               <div className="list" key={`start-list${idx}`}>
-                <div className="image">
-                  <div>나의</div>
-                  <div style={{marginTop: '2px'}}>스타</div>
-                </div>
-                <div className="text">ㅇ나난러ㅣㅇ나멀ㄴㅁ이ㅏㅓㄹㄴㅁ이ㅏㅓ</div>
+                <div
+                  className="image"
+                  style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
+                />
+                <div className="text">{star.title}</div>
               </div>
             )
           })}
