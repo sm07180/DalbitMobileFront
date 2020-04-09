@@ -50,10 +50,11 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      setStarInfo(res.data.list)
+      // console.log(res.data)
+      setStarInfo(res.data)
       //console.log(res)
     } else {
-      console.log(res)
+      //console.log(res)
     }
     return
   }
@@ -62,7 +63,7 @@ export default props => {
   const scrollOnUpdate = () => {
     let thisHeight = ''
     if (document.getElementsByClassName('round')[0]) {
-      thisHeight = document.getElementsByClassName('round')[0].offsetHeight + 18
+      thisHeight = document.getElementsByClassName('round')[0].offsetHeight
       area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
     }
   }
@@ -82,7 +83,7 @@ export default props => {
           msg: '팬등록에 성공하였습니다.'
         })
       } else if (res.result === 'fail') {
-        console.log(res)
+        //console.log(res)
       }
     }
     fetchDataFanRegist(memNo)
@@ -103,7 +104,7 @@ export default props => {
           msg: '팬등록을 해제하였습니다.'
         })
       } else if (res.result === 'fail') {
-        console.log(res)
+        // console.log(res)
       }
     }
     fetchDataFanCancel(memNo)
@@ -127,16 +128,18 @@ export default props => {
       context.action.updateCloseStarCnt(false)
     }
   }
+  //console.log(name)
   //------------------------------------------------------------
   useEffect(() => {
     if (name === '스타') {
       fetchDataStar()
-    } else if (name === '팬 랭크') {
+    } else if (name === '팬 랭킹') {
       fetchData()
     } else if (name === '팬') {
       fetchData()
     }
   }, [select])
+  // console.log(starInfo)
   //------------------------------------------------------------
   return (
     <>
@@ -146,12 +149,11 @@ export default props => {
             <button className="close" onClick={() => CancelBtn()}></button>
             <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
               <div className="scrollWrap">
-                <BorderBG></BorderBG>
                 <Container>
                   <div className="reportTitle"></div>
                   <h2>{name}</h2>
                   {rankInfo !== '' &&
-                    name === '팬 랭크' &&
+                    name === '팬 랭킹' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
@@ -168,8 +170,25 @@ export default props => {
                       )
                     })}
 
-                  {rankInfo !== '' &&
+                  {starInfo !== '' &&
                     name === '스타' &&
+                    starInfo.map((item, index) => {
+                      const {title, id, profImg, nickNm, isFan, memNo} = item
+                      return (
+                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                          {isFan === false && (
+                            <button onClick={() => Regist(memNo)} className="plusFan">
+                              +팬등록
+                            </button>
+                          )}
+                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                        </List>
+                      )
+                    })}
+                  {rankInfo !== '' &&
+                    name === '팬' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
@@ -223,7 +242,12 @@ const List = styled.div`
   align-items: center;
   margin-bottom: 7px;
   > span {
+    display: block;
     flex: none;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: block;
     margin-left: 10px;
     line-height: 40px;
