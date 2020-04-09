@@ -101,20 +101,14 @@ function Faq(props) {
    *
    * @func 클릭 조건 실행
    */
-  const [reset, setReset] = useState(true)
+  //const [reset, setReset] = useState(true)
   const clickEvent = faqIdx => {
-    /////////////////////////////////////
-    // if (faqIdx === Store().faqPage) {
-    //   Store().action.updatefaqPage('')
-    //   SetListhide('')
-
-    // }
     Store().action.updatefaqPage(faqIdx)
     SetListhide(faqIdx)
+
     if (Store().faqPage === faqIdx && listhide !== '') {
-      setReset(false)
-    } else {
-      setReset(true)
+      Store().action.updatefaqPage('')
+      SetListhide('')
     }
   }
   useEffect(() => {})
