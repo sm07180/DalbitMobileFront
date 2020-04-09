@@ -80,7 +80,7 @@ const myProfile = props => {
   }
   //func
   const starContext = () => {
-    if (profile.StarCnt > 0) {
+    if (profile.starCnt > 0) {
       context.action.updateCloseStarCnt(true)
     }
   }
@@ -158,7 +158,7 @@ const myProfile = props => {
           <span onClick={() => fanContext()}>
             팬 <em>{profile.fanCnt}</em>
           </span>
-          <span onClick={() => StarContext()}>
+          <span onClick={() => starContext()}>
             스타 <em>{profile.starCnt}</em>
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
