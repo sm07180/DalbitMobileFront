@@ -396,7 +396,6 @@ export default props => {
                       const profileImg = profImg.thumb62x62
                       const parseDT = timeFormat(writeDt)
                       if (status !== 1) return
-                      console.log(boardIdx)
                       return (
                         <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
@@ -740,9 +739,13 @@ const CommentBox = styled.div`
     }
   }
   & .replyWrap {
+    width:calc(100% + 9.8%);
+    margin-left:-4.9%
+    margin-bottom:-1px;
+    padding:0 4.445% 18px 4.445%;
     border-top: 1px solid #eeeeee;
+    border-bottom:1px solid #eeeeee;
     background-color: #f8f8f8;
-    padding-bottom: 18px;
   }
 
   & .replyContent {
