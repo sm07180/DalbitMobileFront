@@ -61,11 +61,9 @@ export default props => {
 
   //scroll function
   const scrollOnUpdate = () => {
-    let thisHeight = ''
-    if (document.getElementsByClassName('round')[0]) {
-      thisHeight = document.getElementsByClassName('round')[0].offsetHeight
-      area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
-    }
+    const thisHeight = document.querySelector('.scrollWrap').offsetHeight + 18
+    console.log(thisHeight)
+    document.querySelector('.scroll-box').children[0].style.maxHeight = `calc(${360}px)`
   }
   //등록,해제
   const Regist = memNo => {
@@ -147,9 +145,16 @@ export default props => {
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
             <button className="close" onClick={() => CancelBtn()}></button>
-            <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-              <div className="scrollWrap">
-                <Container>
+
+            <div className="scrollWrap">
+              <Container>
+                <Scrollbars
+                  className="scroll-box"
+                  ref={scrollbars}
+                  autoHeight
+                  autoHeightMax={'100%'}
+                  onUpdate={scrollOnUpdate}
+                  autoHide>
                   <div className="reportTitle"></div>
                   <h2>{name}</h2>
                   {rankInfo !== '' &&
@@ -204,9 +209,9 @@ export default props => {
                         </List>
                       )
                     })}
-                </Container>
-              </div>
-            </Scrollbars>
+                </Scrollbars>
+              </Container>
+            </div>
           </div>
         </FixedBg>
       </HoleWrap>
@@ -295,8 +300,9 @@ const FixedBg = styled.div`
     }
     .close {
       display: block;
-      float: right;
-      margin-right: calc(16.67% - 36px);
+      position: absolute;
+      top: -32px;
+      right: 28px;
       width: 36px;
       height: 36px;
       background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
