@@ -15,9 +15,7 @@ let swiping = false
 let touchStartStatus = false
 
 export default props => {
-  //---------------------------------------------------------------------
   //context
-  let history = useHistory()
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const selectedWrapRef = useRef()
@@ -57,8 +55,10 @@ export default props => {
     const baseWidth = slideWrapNode.clientWidth / 3
     const diff = touchEndX - touchStartX
     const calcX = `${-baseWidth + diff}px`
-    console.log(baseWidth, diff)
+    // console.log(baseWidth, diff)
     slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
+    slideWrapNode.style.transitionDuration = '0ms'
+    slideWrapNode.style.transitionTimingFunction = 'linear'
   }
 
   const touchEndEvent = e => {
@@ -68,9 +68,24 @@ export default props => {
 
     const slideWrapNode = slideWrapRef.current
     const baseWidth = slideWrapNode.clientWidth / 3
-    slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
 
+    const halfBaseWidth = baseWidth / 2
     const diff = touchEndX - touchStartX
+    const direction = diff > 0 ? 'right' : 'left'
+    const absDiff = Math.abs(diff)
+    console.log(halfBaseWidth, absDiff)
+
+    if (absDiff >= halfBaseWidth) {
+      if (direction === 'left') {
+        slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
+      } else if (direction === 'right') {
+        slideWrapNode.style.transform = `translate3d(0, 0, 0)`
+      }
+    } else {
+      slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
+    }
+    slideWrapNode.style.transitionTimingFunction = 'ease-in'
+    slideWrapNode.style.transitionDuration = '300ms'
 
     // const minDiffSize = Math.abs(diff) < 80
 
@@ -206,7 +221,6 @@ const RecommendWrap = styled.div`
     height: 120px;
     border-radius: 10px;
     margin: 0 16px;
-    background-color: #eee;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -223,10 +237,11 @@ const RecommendWrap = styled.div`
       .broad-slide {
         width: 33.3334%;
         height: 100%;
+        border-radius: 10px;
       }
 
       &.animate {
-        transition: transform 0.2s ease-in;
+        transition: transform 0.2s linear;
       }
     }
 
