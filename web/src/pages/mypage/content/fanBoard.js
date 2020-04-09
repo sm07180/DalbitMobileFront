@@ -747,6 +747,7 @@ const CommentBox = styled.div`
     border-top: 1px solid #eeeeee;
     border-bottom: 1px solid #eeeeee;
     background-color: #f8f8f8;
+
     & > div:first-child > .titlewrap {
       padding-top: 0;
     }
