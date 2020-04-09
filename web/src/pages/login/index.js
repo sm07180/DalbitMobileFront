@@ -102,15 +102,11 @@ export default props => {
   }
 
   const fetchSocialData = async vendor => {
-    let customHeader = JSON.parse(Api.customHeader)
-    customHeader['os'] = 1
-    customHeader = JSON.stringify(customHeader)
-
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
         authToken: Api.authToken,
-        'custom-header': customHeader,
+        'custom-header': Api.customHeader,
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       }
     })

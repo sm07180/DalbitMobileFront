@@ -51,20 +51,29 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(join)
-    Hybrid('RoomJoin', join.data)
-    console.log(
-      '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
-      'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
-    )
-
+    if (join.result === 'fail') {
+      Room.context.action.alert({
+        title: join.messageKey,
+        msg: join.message
+      })
+    } else if (join.result === 'success') {
+      console.log(join)
+      Hybrid('RoomJoin', join.data)
+      console.log(
+        '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
+        'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
+      )
+    }
+    //
     if (callbackFunc !== undefined) callbackFunc()
     return false
   } else {
+    //-------------------------------------------------------------
     Room.setRoomNo(roomNo)
-    const result = await RoomExit(roomNo + '')
+    const exit = await RoomExit(roomNo + '')
     console.log('await RoomExit(roomNo)')
-    console.log(result)
+    console.log(exit)
+
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     console.log('Api.broad_join')
     console.log(res)
@@ -77,7 +86,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
             callback: () => {
               //강제방송종료
               ;(async () => {
-                //입장되어있으면 퇴장처리 이후,success 일때 다시RoomJoin
+                //입장되어있으면 퇴장처리 이후,success 일때 다시 재귀RoomJoin
                 const result = await RoomExit(roomNo + '')
                 if (result) RoomJoin(roomNo + '')
               })()

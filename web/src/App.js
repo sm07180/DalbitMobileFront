@@ -98,18 +98,21 @@ const App = () => {
         }
 
         if (customHeader['isFirst'] === 'N') {
+          // /webview=new 형태로 이루어진 player종료
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
             if (isJsonString(nativeInfo)) {
-              const parsed = JSON.parse(nativeInfo)
-              globalCtx.action.updatePlayer(true)
-              globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsed)
+              //    alert('webview : ' + window.location.href.indexOf('webview'))
+              if (window.location.href.indexOf('webview') === -1) {
+                const parsed = JSON.parse(nativeInfo)
+                globalCtx.action.updatePlayer(true)
+                globalCtx.action.updateMediaPlayerStatus(true)
+                globalCtx.action.updateNativePlayer(parsed)
+              }
             }
           }
         }
       }
-
       //모든 처리 완료
       setReady(true)
     } else {
