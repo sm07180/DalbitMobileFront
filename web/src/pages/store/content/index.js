@@ -23,6 +23,7 @@ export default props => {
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
+  const [listState, setListState] = useState(-1)
 
   //---------------------------------------------------------------------
 
@@ -30,7 +31,9 @@ export default props => {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
+      setListState(1)
     } else {
+      setListState(0)
       context.action.alert({
         msg: res.message
       })
@@ -80,25 +83,29 @@ export default props => {
     }
   }
 
-  //useEffect
-  useEffect(() => {
-    getStoreList()
-  }, [])
-  //---------------------------------------------------------------------
-  return (
-    <Content>
-      {list ? (
+  const creatResult = () => {
+    if (listState == -1) {
+      return null
+    } else if (listState == 0) {
+      return <NoResult />
+    } else if (listState == 1) {
+      return (
         <>
           <List>{creatList()}</List>
           <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
             구매하기
           </button>
         </>
-      ) : (
-        <NoResult />
-      )}
-    </Content>
-  )
+      )
+    }
+  }
+
+  //useEffect
+  useEffect(() => {
+    getStoreList()
+  }, [])
+  //---------------------------------------------------------------------
+  return <Content>{creatResult()}</Content>
 }
 
 //---------------------------------------------------------------------
