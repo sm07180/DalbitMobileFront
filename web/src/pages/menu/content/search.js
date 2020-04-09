@@ -15,11 +15,26 @@ import List from './search-list'
 export default props => {
   //---------------------------------------------------------------------
   //useState
-  const [fetch, setFetch] = useState(null)
+  const [member, setMember] = useState(null)
+  const [live, setLive] = useState(null)
   //---------------------------------------------------------------------
-
-  //fetch
-  async function fetchData(query) {
+  //fetch 사용자검색
+  async function fetchMember(query) {
+    if (query === undefined) return
+    const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
+    const res = await API.member_search({
+      params: {
+        search: query || qs,
+        page: 1,
+        records: 10
+      }
+    })
+    if (res.result === 'success') {
+      setMember(res.data)
+    }
+  }
+  //fetch (라이브검색)
+  async function fetchLive(query) {
     if (query === undefined) return
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
     const res = await API.live_search({
@@ -30,8 +45,7 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      setFetch(res.data)
-      console.log(res.data)
+      setLive(res.data)
     }
   }
   //update
@@ -39,17 +53,17 @@ export default props => {
     switch (true) {
       case mode.search !== undefined: //-------------------------------검색어
         const {query} = mode.search
-        fetchData(query)
+        fetchMember(query)
+        fetchLive(query)
         break
       case mode.select !== undefined: //-------------------------------검색결과 아이템선택
-        const {roomNo, memNo} = mode.select
-        //라이브중아님
-        if (roomNo !== '') {
+        const {roomNo, memNo, type} = mode.select
+        //라이브중아님,사용자검색
+        if (roomNo !== '' && roomNo !== '0' && type !== 'member') {
           RoomJoin(roomNo)
         } else {
           window.location.href = `/mypage/${memNo}/`
         }
-        //console.log(roomNo, memNo)
         break
       default:
         break
@@ -58,7 +72,8 @@ export default props => {
   //useEffect
   useEffect(() => {
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
-    if (qs !== undefined) fetchData()
+    if (qs !== undefined) fetchMember()
+    if (qs !== undefined) fetchLive()
   }, [])
   //---------------------------------------------------------------------
   return (
@@ -69,8 +84,10 @@ export default props => {
       </Header>
       {/* 검색바 */}
       <SearchBar update={update} />
+      <h1>사용자 검색</h1>
+      <List update={update} type="member" fetch={member} />
       <h1>라이브 검색</h1>
-      <List update={update} fetch={fetch} />
+      <List update={update} type="live" fetch={live} />
     </Content>
   )
 }
