@@ -52,7 +52,10 @@ const myProfile = props => {
       })
       //console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //function:팬해제
@@ -71,7 +74,10 @@ const myProfile = props => {
           msg: '팬등록을 해제하였습니다.'
         })
       } else if (res.result === 'fail') {
-        console.log(res)
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       }
     }
     fetchDataFanCancel(myProfileNo)

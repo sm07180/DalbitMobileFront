@@ -631,6 +631,16 @@ export default class API {
     return await ajax({...obj, url: url || `/profile/star`, method: method || 'GET', params: params})
   }
   /**
+   * @brief 팬 전체 리스트
+   * @method "GET"
+   * @todo
+   * @create 황상한 2020.04.09
+   */
+  static mypage_fan_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/profile/fan/list`, method: method || 'GET', params: params})
+  }
+  /**
    * @brief 토큰조회
    * @method "GET"
    * @param int    os                 //*OS구분

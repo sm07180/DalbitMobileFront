@@ -124,6 +124,11 @@ const Notice = props => {
         }
         setListDetailed(list)
         //console.log(response)
+      } else {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       }
     })()
   }, [page])

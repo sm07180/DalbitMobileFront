@@ -20,6 +20,7 @@ export default props => {
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
+  const [fanInfo, setFanInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
   //scroll
@@ -59,6 +60,25 @@ export default props => {
     return
   }
 
+  const fetchDataHoleFan = async () => {
+    const res = await Api.mypage_fan_list({
+      params: {
+        memNo: urlrStr
+      }
+    })
+    if (res.result === 'success') {
+      // console.log(res.data)
+      setFanInfo(res.data.list)
+      //console.log(res)
+    } else {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+    return
+  }
+
   //scroll function
   const scrollOnUpdate = () => {
     const thisHeight = document.querySelector('.scrollWrap').offsetHeight + 18
@@ -81,7 +101,10 @@ export default props => {
           msg: '팬등록에 성공하였습니다.'
         })
       } else if (res.result === 'fail') {
-        //console.log(res)
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       }
     }
     fetchDataFanRegist(memNo)
@@ -102,7 +125,10 @@ export default props => {
           msg: '팬등록을 해제하였습니다.'
         })
       } else if (res.result === 'fail') {
-        // console.log(res)
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       }
     }
     fetchDataFanCancel(memNo)
@@ -134,7 +160,7 @@ export default props => {
     } else if (name === '팬 랭킹') {
       fetchData()
     } else if (name === '팬') {
-      fetchData()
+      fetchDataHoleFan()
     }
   }, [select])
   // console.log(starInfo)
@@ -174,7 +200,6 @@ export default props => {
                         </List>
                       )
                     })}
-
                   {starInfo !== '' &&
                     name === '스타' &&
                     starInfo.map((item, index) => {
@@ -192,9 +217,9 @@ export default props => {
                         </List>
                       )
                     })}
-                  {rankInfo !== '' &&
+                  {fanInfo !== '' &&
                     name === '팬' &&
-                    rankInfo.map((item, index) => {
+                    fanInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>

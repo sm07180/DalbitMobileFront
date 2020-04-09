@@ -82,9 +82,12 @@ export default props => {
       if (res.message === '방송내역 없습니다.') {
         setbroadtotal([])
       }
-      console.log(res)
+      //console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //
@@ -107,9 +110,12 @@ export default props => {
       if (res.message === '청취내역 없습니다.') {
         setlistentotal([])
       }
-      console.log(res)
+      // console.log(res)
     } else if (res.result === 'fail') {
-      console.log(res)
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
   }
   //생년월일 유효성에서 계산할 현재 년도 date
