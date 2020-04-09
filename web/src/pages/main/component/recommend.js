@@ -44,18 +44,26 @@ export default props => {
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
   const touchStartEvent = e => {
+    console.log(list.length)
+    // if (Array.isArray(list) && list.length > 0) {
+    console.log('aaaa')
     touchStartStatus = true
     touchStartX = e.touches[0].clientX
+    // }
   }
 
   const touchMoveEvent = e => {
+    // if (!touchEndX || !touchStartStatus || swiping) {
+    //   return
+    // }
+
     const slideWrapNode = slideWrapRef.current
     touchEndX = e.touches[0].clientX
 
     const baseWidth = slideWrapNode.clientWidth / 3
     const diff = touchEndX - touchStartX
     const calcX = `${-baseWidth + diff}px`
-    // console.log(baseWidth, diff)
+
     slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
     slideWrapNode.style.transitionDuration = '0ms'
     slideWrapNode.style.transitionTimingFunction = 'linear'
@@ -86,6 +94,8 @@ export default props => {
     }
     slideWrapNode.style.transitionTimingFunction = 'ease-in'
     slideWrapNode.style.transitionDuration = '300ms'
+
+    console.log(slideWrapNode)
 
     // const minDiffSize = Math.abs(diff) < 80
 
@@ -122,7 +132,7 @@ export default props => {
         {/* <> */}
         <div
           ref={slideWrapRef}
-          className="slide-wrap animate"
+          className="slide-wrap"
           onTouchStart={touchStartEvent}
           onTouchMove={touchMoveEvent}
           onTouchEnd={touchEndEvent}>
@@ -238,10 +248,6 @@ const RecommendWrap = styled.div`
         width: 33.3334%;
         height: 100%;
         border-radius: 10px;
-      }
-
-      &.animate {
-        transition: transform 0.2s linear;
       }
     }
 
