@@ -26,7 +26,7 @@ export default props => {
     <Layout {...props}>
       <Content>
         <h2>스토어</h2>
-        {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt}</p>}
+        {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt.toLocaleString()}</p>}
         {/* 배너슬라이더 */}
         <Slider>
           <Banner />
