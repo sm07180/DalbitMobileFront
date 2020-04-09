@@ -92,7 +92,6 @@ const SubContent = styled.div`
 `
 
 const Mypage = styled.div`
-  position: relative;
   margin: 0 auto 15px auto;
   margin-top: ${props => (props.webview ? 0 : '60px')};
   width: 1210px;
@@ -100,7 +99,7 @@ const Mypage = styled.div`
   .close-btn {
     position: absolute;
     top: 6px;
-    right: -7px;
+    right: 2%;
   }
 
   @media (max-width: 1260px) {
