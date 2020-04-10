@@ -95,7 +95,8 @@ const App = () => {
         if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
           if (window.location.pathname === '/') {
-            window.location.reload()
+            // window.location.reload()
+            window.location.href = '/'
           }
         } else if (customHeader['isFirst'] === 'N') {
           // ?webview=new 형태로 이루어진 player종료

@@ -3,9 +3,10 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import qs from 'query-string'
 
 //context
 import Api from 'context/api'
@@ -27,10 +28,7 @@ import PlusIcon from './static/ic_circle_plus.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
-  //---------------------------------------------------------------------
-
   //context
-  let history = useHistory()
   const globalCtx = useContext(Context)
 
   const [initData, setInitData] = useState({})
@@ -38,6 +36,11 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
+    const {reload} = qs.parse(location.search)
+    if (reload) {
+      window.location.href = '/'
+    }
+
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {

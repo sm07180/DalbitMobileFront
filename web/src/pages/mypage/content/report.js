@@ -91,6 +91,7 @@ export default props => {
       })
     }
   }
+
   //
   async function fetchDataListen() {
     const res = await Api.report_listen({

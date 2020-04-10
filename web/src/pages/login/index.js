@@ -78,11 +78,11 @@ export default props => {
             if (webview && webview === 'new') {
               return Hybrid('GetLoginTokenNewWin', loginInfo.data)
             } else {
-              Hybrid('GetLoginToken', loginInfo.data)
+              return Hybrid('GetLoginToken', loginInfo.data)
             }
           }
 
-          // props.history.push('/')
+          // return props.history.push('/?reload=true')
           return (window.location.href = '/')
         }
       } else if (loginInfo.result === 'fail') {

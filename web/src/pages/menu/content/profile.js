@@ -61,12 +61,12 @@ export default props => {
       if (logoutInfo.result === 'success') {
         const {data} = logoutInfo
         if (isHybrid()) {
-          Hybrid('GetLogoutToken', data)
+          return Hybrid('GetLogoutToken', data)
         }
         globalCtx.action.updateToken(null)
         globalCtx.action.updateProfile(null)
 
-        // props.history.push('/')
+        // return props.history.push('/?reload=true')
         return (window.location.href = '/')
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
