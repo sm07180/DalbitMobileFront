@@ -13,17 +13,6 @@ export default props => {
   //useState
   //---------------------------------------------------------------------
 
-  //update
-  function update(mode) {
-    switch (true) {
-      case mode.search !== undefined: //-------------------------------검색어
-        const {query} = mode.search
-        fetchData(query)
-        break
-      default:
-        break
-    }
-  }
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
@@ -53,10 +42,12 @@ export default props => {
 //---------------------------------------------------------------------
 const Content = styled.div`
   min-height: 200px;
+  text-align: left;
   .list {
     display: inline-block;
-    margin-right: 13px;
-    margin-bottom: 20px;
+    margin-left: -7px;
+    padding: 10px 7px;
+
     button {
       display: inline-block;
       width: 72px;
