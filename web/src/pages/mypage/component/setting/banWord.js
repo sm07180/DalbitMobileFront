@@ -30,7 +30,6 @@ export default props => {
   //function
 
   async function fetchWrite(type) {
-    console.log('당황스럽네;삭제가왜안돼')
     let words = []
     word.forEach((item, index) => {
       if (_.hasIn(changes, `word${index}`)) {
