@@ -30,7 +30,7 @@ const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 //Redirect
-const Redirect = React.lazy(() => import('pages/common/redirect'))
+const TempLogin = React.lazy(() => import('pages/common/redirect'))
 //
 export default () => {
   return (
@@ -68,7 +68,7 @@ export default () => {
 
         <Route exact path="/error" component={ErrorPage} />
 
-        <Route exact path="/redirect" component={Redirect} />
+        <Route exact path="/redirect" component={TempLogin} />
 
         <Redirect to="/error" />
       </Switch>
