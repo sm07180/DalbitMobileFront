@@ -64,7 +64,8 @@ export default props => {
         }
         globalCtx.action.updateToken(null)
         globalCtx.action.updateProfile(null)
-        props.history.push('/')
+
+        // props.history.push('/')
         return (window.location.href = '/')
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
