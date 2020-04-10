@@ -136,9 +136,13 @@ export default props => {
           onTouchStart={touchStartEvent}
           onTouchMove={touchMoveEvent}
           onTouchEnd={touchEndEvent}>
-          <div className="broad-slide" style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}}></div>
-          <div className="broad-slide" style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}></div>
-          <div className="broad-slide" style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}}></div>
+          <div className="broad-slide" b-idx={prevBIdx} style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}} />
+          <div
+            className="broad-slide"
+            b-idx={selectedBIdx}
+            style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
+          />
+          <div className="broad-slide" b-idx={nextBIdx} style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}} />
         </div>
         {/* </> */}
         {/* )} */}
