@@ -82,7 +82,9 @@ export default props => {
             }
           }
 
-          return props.history.push('/')
+          // return props.history.push('/')
+          props.history.push('/')
+          return (window.location.href = '/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
