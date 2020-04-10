@@ -94,9 +94,10 @@ const App = () => {
 
         if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        }
-
-        if (customHeader['isFirst'] === 'N') {
+          if (window.location.pathname === '/') {
+            window.location.reload()
+          }
+        } else if (customHeader['isFirst'] === 'N') {
           // ?webview=new 형태로 이루어진 player종료
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
