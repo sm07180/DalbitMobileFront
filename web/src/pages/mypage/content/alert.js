@@ -104,7 +104,7 @@ export default props => {
                         clicked = false
                       })
                     }}>
-                    <figure style={{background: `url(${profImg.url}) no-repeat center center/ cover`}}></figure>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
