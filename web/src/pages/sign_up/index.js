@@ -29,8 +29,12 @@ let pickerHolder = true
 let nickCheckState = false
 
 export default props => {
-  const snsInfo = qs.parse(location.search)
-  console.log('snsInfo', snsInfo)
+  let snsInfo = qs.parse(location.search)
+
+  if (_.hasIn(snsInfo, 'nickNm')) {
+    snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
+  }
+
   //context
   const context = useContext(Context)
   //useState
@@ -274,12 +278,15 @@ export default props => {
     }
   }
 
-  const validateNick = async nickEntered => {
+  const validateNick = async (nickEntered, type) => {
     let nm = nickEntered
-    setChanges({
-      ...changes,
-      nickNm: nm
-    })
+    if (type !== 'sns') {
+      setChanges({
+        ...changes,
+        nickNm: nm
+      })
+    }
+
     let nmVal = {nickNm: false}
     if (changes.nickNm.length == 0) {
       setValidate({
@@ -304,7 +311,9 @@ export default props => {
             if (resNick.code == '0') {
               setCurrentNick('닉네임 중복입니다.')
             } else {
-              console.log('중복체크 실패', resNick)
+              context.action.alert({
+                msg: resNick.message
+              })
             }
           }
         }
@@ -327,13 +336,7 @@ export default props => {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
     reader.onload = function() {
-      // console.log('reader', reader)
-      // console.log('reader.', reader.result)
       if (reader.result) {
-        // setChanges({
-        //   ...changes,
-        //   image: reader.result
-        // })
         setImgData(reader.result)
       } else {
       }
@@ -378,7 +381,7 @@ export default props => {
 
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
   const pickerOnChange = value => {
-    if (!changes.birth) {
+    if (changes.birth == '') {
       dateDefault = value
     } else {
       validateBirth(value)
@@ -386,11 +389,9 @@ export default props => {
   }
 
   const validateBirth = value => {
-    //생년월일 바뀔때마다 유효성
     let year = value.slice(0, 4)
 
     if (year == '') {
-      //console.log('빈값')
     } else if (year <= dateYear || value == date) {
       setCurrentBirth('')
       setValidate({
@@ -419,16 +420,10 @@ export default props => {
   //---------------------------------------------------------------------
   //fetchData
   async function fetchData() {
-    //console.log('회원가입 버튼 클릭 후 props= ' + JSON.stringify(changes))
-    //이미지가 기본 이미지면 image_upload를 날리지 않는다.
     let resultImg = ''
-
     if (imgData == defaultImage) {
-      //기본 이미지면 업로드 날리지 않고 기본이미지의 path바로 세팅
       resultImg = defaultImagePath
     } else {
-      //이미지가 등록되었다면 이미지 업로드 후 path 받아서 세팅
-
       const resUpload = await Api.image_upload({
         data: {
           file: '',
@@ -439,13 +434,12 @@ export default props => {
       })
       if (resUpload) {
         if (resUpload.code == 0 || resUpload.result === 'success') {
-          //업로드 성공
-          //console.log(resUpload.data)
           resultImg = resUpload.data.path
         } else {
-          //업로드 실패시 기본이미지 path 세팅
-          console.log(resUpload.message)
           resultImg = defaultImagePath
+          context.action.alert({
+            msg: resUpload.message
+          })
         }
       }
     }
@@ -491,27 +485,6 @@ export default props => {
   }
 
   let validateSetting = {}
-  async function fetchNickData() {
-    const resNick = await Api.nickName_check({
-      params: {
-        nickNm: changes.nickNm
-      }
-    })
-    if (resNick) {
-      if (resNick.result === 'success') {
-        if (resNick.code == '1') {
-          setNickSheck(resNick.code)
-        }
-      } else if (resNick.result === 'fail') {
-        if (resNick.code == '0') {
-          setNickSheck(resNick.code)
-        } else {
-          console.log('중복체크 실패', resNick)
-          setNickSheck('2')
-        }
-      }
-    }
-  }
 
   async function fetchAuth() {
     const resAuth = await Api.sms_request({
@@ -585,37 +558,40 @@ export default props => {
     context.action.updateGnbVisible(false)
     let firstSetting = {}
     if (!changes.image && !changes.birth) {
-      firstSetting = {birth: dateDefault, image: defaultImage}
-      setImgData(firstSetting.image)
-    } else if (!changes.image) {
-      firstSetting = {
-        image: defaultImage
+      if (_.hasIn(changes, 'profImgUrl')) {
+        firstSetting = {birth: dateDefault, image: changes.profImgUrl}
+        setImgData(changes.profImgUrl)
+      } else {
+        firstSetting = {birth: dateDefault, image: defaultImage}
+        setImgData(firstSetting.image)
       }
-      setImgData(defaultImage)
+    } else if (!changes.image) {
+      if (_.hasIn(changes, 'profImgUrl')) {
+        firstSetting = {
+          image: changes.profImgUrl
+        }
+        setImgData(changes.profImgUrl)
+      } else {
+        firstSetting = {
+          image: defaultImage
+        }
+        setImgData(defaultImage)
+      }
     } else if (!changes.birth) {
       firstSetting = {birth: dateDefault}
     }
-
     setChanges({
       ...changes,
       ...firstSetting
     })
 
     if (changes.memType !== 'p') {
-      changes.nickNm && validateNick(changes.nickNm.replace(/(\s*)/g, ''))
-    }
-
-    if (_.hasIn(changes, 'profImgUrl')) {
-      setChanges({
-        ...changes,
-        image: changes.profImgUrl
-      })
-      setImgData(changes.profImgUrl)
+      changes.nickNm && validateNick(changes.nickNm, 'sns')
     }
   }, [])
 
   useEffect(() => {
-    console.log(JSON.stringify(changes, null, 1))
+    // console.log(JSON.stringify(changes, null, 1))
 
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
@@ -626,7 +602,6 @@ export default props => {
     }
 
     if (!(changes.memType == 'p')) {
-      //validateNickNm(changes.nickNm)
       validateSetting = {
         ...validateSetting,
         memId: true,
