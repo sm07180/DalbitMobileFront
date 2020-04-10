@@ -13,6 +13,17 @@ export default props => {
   //useState
   //---------------------------------------------------------------------
 
+  //update
+  function update(mode) {
+    switch (true) {
+      case mode.search !== undefined: //-------------------------------검색어
+        const {query} = mode.search
+        fetchData(query)
+        break
+      default:
+        break
+    }
+  }
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
@@ -45,13 +56,14 @@ const Content = styled.div`
   text-align: left;
   .list {
     display: inline-block;
-    margin-left: -7px;
+    width: 25%;
     padding: 10px 7px;
-
+    box-sizing: border-box;
     button {
       display: inline-block;
-      width: 72px;
-      height: 72px;
+      width: 96%;
+      height: auto;
+
       border-radius: 26px;
       overflow: hidden;
       img {
