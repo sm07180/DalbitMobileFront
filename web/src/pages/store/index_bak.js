@@ -78,7 +78,7 @@ export default props => {
         price: selected.price
       })
     } else {
-      props.history.push('/login?redirect=/store')
+      props.history.push('/login')
     }
   }
 
