@@ -143,11 +143,6 @@ const List = props => {
     WritBtnActive()
   }, [coment, comentContent])
   /////////////////////////////////////////////////////////////
-  const toggler = () => {
-    if (numbers === noticeIdx) {
-      setOpened(false)
-    }
-  }
   useEffect(() => {
     if (numbers === noticeIdx) {
       setOpened(true)
@@ -159,7 +154,11 @@ const List = props => {
   //-------------------------------------------------------------------------
   return (
     <Wrap>
-      <ListStyled className={numbers === noticeIdx && opened ? 'on' : ''} onClick={toggler}>
+      <ListStyled
+        className={numbers === noticeIdx && opened ? 'on' : ''}
+        onClick={() => {
+          props.toggle(noticeIdx)
+        }}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
           <span className="text">{title}</span>

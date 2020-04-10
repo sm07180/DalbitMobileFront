@@ -138,14 +138,15 @@ const Notice = props => {
   const [numbers, setNumbers] = useState('')
 
   const toggler = noticeIdx => {
+    // const height = document.querySelector(`.idx${noticeIdx}`).offsetTop - 60
+    // window.scrollTo(0, height)
+    // setNumbers(noticeIdx)
     setNumbers(noticeIdx)
-    // if (numbers === noticeIdx) {
-    //   setNumbers('')
-    // }
+    if (numbers === noticeIdx) {
+      setNumbers('')
+    }
   }
-  useEffect(() => {
-    //console.log(numbers)
-  }, [numbers])
+
   return (
     <>
       <TopWrap>
@@ -158,7 +159,7 @@ const Notice = props => {
             listDetailed.map((list, idx) => {
               const {isTop, title, contents, writeDt, noticeIdx} = list
               return (
-                <a onClick={() => toggler(noticeIdx)} key={idx}>
+                <a key={idx} className={`idx${noticeIdx}`}>
                   <List
                     {...props}
                     isTop={isTop}
@@ -167,6 +168,7 @@ const Notice = props => {
                     writeDt={writeDt}
                     noticeIdx={noticeIdx}
                     numbers={numbers}
+                    toggle={toggler}
                   />
                 </a>
               )
