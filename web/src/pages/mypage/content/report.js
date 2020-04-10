@@ -109,6 +109,7 @@ export default props => {
       })
     }
   }
+
   //
   async function fetchDataListen(next) {
     if (!next) currentPage = 1
