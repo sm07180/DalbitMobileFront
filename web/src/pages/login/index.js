@@ -68,7 +68,7 @@ export default props => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
-
+        globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
           if (isHybrid()) {
@@ -80,8 +80,7 @@ export default props => {
           }
 
           globalCtx.action.updateProfile(profileInfo.data)
-          props.history.push('/')
-          return globalCtx.action.updateToken(loginInfo.data)
+          return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
