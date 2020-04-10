@@ -104,6 +104,13 @@ export default props => {
     console.log('selected b idx', selectedBIdx)
   }, [selectedBIdx])
 
+  if (selectedBIdx === null) {
+    return null
+  }
+
+  const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
+  const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
+
   return (
     <RecommendWrap>
       <Room />
@@ -120,7 +127,7 @@ export default props => {
         }}
         ref={selectedWrapRef}
         className="selected-wrap"
-        style={selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {}}>
+        style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}>
         {/* {Array.isArray(list) && list.length > 0 && ( */}
         {/* <> */}
         <div
@@ -129,29 +136,9 @@ export default props => {
           onTouchStart={touchStartEvent}
           onTouchMove={touchMoveEvent}
           onTouchEnd={touchEndEvent}>
-          <div
-            className="broad-slide"
-            style={
-              selectedBIdx !== null
-                ? {
-                    backgroundImage: `url(${list[selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1]['bannerUrl']})`
-                  }
-                : {backgroundColor: 'yellow'}
-            }></div>
-          <div
-            className="broad-slide"
-            style={
-              selectedBIdx !== null ? {backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`} : {backgroundColor: 'green'}
-            }></div>
-          <div
-            className="broad-slide"
-            style={
-              selectedBIdx !== null
-                ? {
-                    backgroundImage: `url(${list[selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0]['bannerUrl']})`
-                  }
-                : {backgroundColor: 'red'}
-            }></div>
+          <div className="broad-slide" style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}}></div>
+          <div className="broad-slide" style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}></div>
+          <div className="broad-slide" style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}}></div>
         </div>
         {/* </> */}
         {/* )} */}
@@ -179,15 +166,13 @@ export default props => {
           })}
         </CustomSwiper>
       )}
-      <div className="selected-title">{selectedBIdx !== null ? list[selectedBIdx]['title'] : ''}</div>
+      <div className="selected-title">{list[selectedBIdx]['title']}</div>
       <div className="selected-nickname">
-        {selectedBIdx !== null
-          ? list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
-              // 🎉😝pqpq😝🎉
-              // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
-              return <span key={`splited-${idx}`}>{str}</span>
-            })
-          : ''}
+        {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+          // 🎉😝pqpq😝🎉
+          // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+          return <span key={`splited-${idx}`}>{str}</span>
+        })}
       </div>
     </RecommendWrap>
   )
