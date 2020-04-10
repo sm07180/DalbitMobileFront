@@ -67,7 +67,8 @@ export default props => {
           Hybrid('GetLogoutToken', logoutInfo.data)
         }
 
-        return (window.location.href = '/')
+        // return (window.location.href = '/')
+        return props.history.push('/')
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
           title: '로그아웃 실패',
