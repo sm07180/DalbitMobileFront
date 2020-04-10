@@ -62,9 +62,9 @@ export default props => {
         globalCtx.action.updateToken(logoutInfo.data)
 
         if (isHybrid()) {
-          props.history.push('/')
-          globalCtx.action.updateProfile(null)
-          return Hybrid('GetLogoutToken', logoutInfo.data)
+          // props.history.push('/')
+          // globalCtx.action.updateProfile(null)
+          Hybrid('GetLogoutToken', logoutInfo.data)
         }
 
         return (window.location.href = '/')

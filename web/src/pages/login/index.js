@@ -78,8 +78,8 @@ export default props => {
             if (webview && webview === 'new') {
               return Hybrid('GetLoginTokenNewWin', loginInfo.data)
             } else {
-              props.history.push('/')
-              return Hybrid('GetLoginToken', loginInfo.data)
+              // props.history.push('/')
+              Hybrid('GetLoginToken', loginInfo.data)
             }
           }
 
