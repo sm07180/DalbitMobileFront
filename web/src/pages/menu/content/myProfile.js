@@ -30,6 +30,8 @@ const myProfile = props => {
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
 
+  const expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
+
   const myProfileNo = ctx.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -150,13 +152,14 @@ const myProfile = props => {
       </ProfileImg>
 
       <ContentWrap>
-        <LevelWrap>
-          <LevelText>LEVEL {profile.level}</LevelText>
-          <LevelStatusBarWrap>
-            <LevelStatus
-              style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
-          </LevelStatusBarWrap>
-        </LevelWrap>
+        {urlrStr == 'profile' && (
+          <LevelWrap>
+            <LevelText>LEVEL {profile.level}</LevelText>
+            <LevelStatusBarWrap>
+              <LevelStatus style={{width: `calc(${expCalc}% + 20px)`}}>{`${expCalc}%`}</LevelStatus>
+            </LevelStatusBarWrap>
+          </LevelWrap>
+        )}
 
         <NameWrap>
           <strong>{profile.nickNm}</strong>

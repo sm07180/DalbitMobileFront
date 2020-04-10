@@ -148,14 +148,6 @@ const myProfile = props => {
       </ProfileImg>
 
       <ContentWrap>
-        <LevelWrap>
-          <LevelText>LEVEL {profile.level}</LevelText>
-          <LevelStatusBarWrap>
-            <LevelStatus
-              style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
-          </LevelStatusBarWrap>
-        </LevelWrap>
-
         <NameWrap>
           <strong>{profile.nickNm}</strong>
           <span>{`@${profile.memId}`}</span>
