@@ -191,7 +191,7 @@ export default props => {
               </a>
             </div>
 
-            <SocialLoginWrap>
+            {/* <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon facebook" src={facebookLogo} />
@@ -214,7 +214,7 @@ export default props => {
                   <span className="text">카카오톡 로그인</span>
                 </button>
               </div>
-            </SocialLoginWrap>
+            </SocialLoginWrap> */}
           </Login>
         )}
       </Switch>
