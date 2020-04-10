@@ -3,7 +3,7 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -27,17 +27,23 @@ import PlusIcon from './static/ic_circle_plus.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
-  //---------------------------------------------------------------------
-
   //context
-  let history = useHistory()
   const globalCtx = useContext(Context)
+  const location = useLocation()
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
+    // window.location.reload()
+    // console.log(location)
+    console.log(location.state)
+    // console.log(location.pathname)
+    // console.log(location.search)
+    // console.log(reload)
+    //   console.log('sd;lfkjasd;lfkasjdf;lkj')
+    // window.location.reload()
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
