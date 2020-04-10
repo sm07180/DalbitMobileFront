@@ -247,6 +247,10 @@ export default props => {
 
   return (
     <Report>
+      <TopWrap>
+        <button onClick={() => setWriteShow(false)}></button>
+        <div className="title">리포트</div>
+      </TopWrap>
       <TitleWrap style={{paddingBottom: '25px'}}>
         <TitleText>리포트</TitleText>
         <SelectWrap>
@@ -556,7 +560,7 @@ const TitleWrap = styled.div`
   align-items: center;
   border-bottom: 1px solid #8556f6;
   padding-bottom: 25px;
-  margin-top: 40px;
+  margin-top: 0px;
 `
 
 const Report = styled.div`
@@ -662,5 +666,26 @@ const Submit = styled.button`
 
   &.disable {
     display: none;
+  }
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
   }
 `
