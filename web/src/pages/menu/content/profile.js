@@ -60,10 +60,10 @@ export default props => {
       const logoutInfo = await Api.member_logout()
       if (logoutInfo.result === 'success') {
         globalCtx.action.updateToken(logoutInfo.data)
-        globalCtx.action.updateProfile(null)
 
         if (isHybrid()) {
           props.history.push('/')
+          globalCtx.action.updateProfile(null)
           return Hybrid('GetLogoutToken', logoutInfo.data)
         }
 
