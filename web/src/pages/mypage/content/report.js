@@ -147,9 +147,6 @@ export default props => {
       })
     }
   }
-  useEffect(() => {
-    console.log(JSON.stringify(listenData, null, 1))
-  }, [listenData])
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
@@ -288,15 +285,12 @@ export default props => {
   }
 
   const showMoreList = () => {
-    console.log('?')
     if (selectType === 0) {
       setBroadData(broadData.concat(nextList))
       fetchData('next')
-      console.log('방송')
     } else {
       setListenData(listenData.concat(nextList))
       fetchDataListen('next')
-      console.log('리슨')
     }
   }
 
