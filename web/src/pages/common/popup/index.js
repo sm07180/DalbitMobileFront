@@ -11,7 +11,6 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //components
 
 //contents
-import Auth from 'pages/common/auth'
 import Charge from './tab/charge-popup'
 import Terms from 'pages/common/terms'
 
@@ -24,8 +23,6 @@ export default props => {
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {
-      case 'LOGIN': //---------------------------------------로그인
-        return <Auth {...props} />
       case 'CHARGE': //---------------------------------------충전
         return (
           <>
