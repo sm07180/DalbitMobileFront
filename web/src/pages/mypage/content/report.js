@@ -5,6 +5,7 @@
 
 import React, {useEffect, useStet, useContext, useState} from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
 
 //layout
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
@@ -22,30 +23,34 @@ import clock from 'images/mini/clock.svg'
 import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
 import moment from 'moment'
+import NoResult from 'components/ui/noResult'
+
 //
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 
 let pickerHolder = true
-//리포트 info 배열
 const broadInfo = {
   mic: [mic, '방송'],
   moon: [moon, '받은별'],
   heart: [heart, '좋아요'],
   clock: [clock, '청취자']
 }
+
 const listenInfo = {
   mic: [mic, '청취'],
   moon: [moon, '달 선물'],
   heart: [heart, '받은 별'],
   clock: [clock, '게스트 참여 시간']
 }
+
 const selectBoxData = [
   {value: 0, text: '방송'},
   {value: 1, text: '청취'}
 ]
 
+let currentPage = 1
+
 export default props => {
-  //context
   const context = useContext(Context)
   const ctx = useContext(Context)
   //state
@@ -54,8 +59,7 @@ export default props => {
   })
   const [active, setActive] = useState(0)
   const [selectType, setSelectType] = useState(0)
-  const [btnTrue, setBtnTrue] = useState(false)
-  //datepicker
+  const [moreState, setMoreState] = useState(false)
   const [currentPickdata, setCurrentPickdata] = useState()
   const [pickerState, setPickerState] = useState(true)
   const [broadData, setBroadData] = useState([])
@@ -63,59 +67,83 @@ export default props => {
   const [showingpage, setShowingpage] = useState(false)
   const [broadtotal, setbroadtotal] = useState([])
   const [listentotal, setlistentotal] = useState([])
+  const [pickerCssOn, setPickerCssOn] = useState(false)
+  const [resultState, setResultState] = useState(1)
+  const [nextList, setNextList] = useState(false)
   //api
-  async function fetchData() {
+  async function fetchData(next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
+
     const res = await Api.report_broad({
       params: {
         dateType: active,
         startDt: dateprev,
         endDt: datenext,
-        page: 1,
-        records: 10
+        page: currentPage,
+        records: 3
       }
     })
-    if (res.result === 'success') {
-      setBroadData(res.data.list)
-      setbroadtotal(res.data)
-      if (res.message !== '방송내역 없습니다.' && res.data.list.length > 9) {
-        setBtnTrue(true)
+    if (res.result === 'success' && _.hasIn(res.data, 'list')) {
+      if (res.data.list == false) {
+        if (!next) {
+          setbroadtotal([])
+          setBroadData([])
+          setResultState(0)
+        }
+        setMoreState(false)
+      } else {
+        if (next) {
+          setMoreState(true)
+          setNextList(res.data.list)
+        } else {
+          setBroadData(res.data.list)
+          fetchData('next')
+        }
+        setbroadtotal(res.data)
+        setResultState(1)
       }
-      if (res.message === '방송내역 없습니다.') {
-        setbroadtotal([])
-      }
-      //console.log(res)
-    } else if (res.result === 'fail') {
+    } else {
       context.action.alert({
-        callback: () => {},
         msg: res.message
       })
     }
   }
 
   //
-  async function fetchDataListen() {
+  async function fetchDataListen(next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
     const res = await Api.report_listen({
       params: {
         dateType: active,
         startDt: dateprev,
         endDt: datenext,
-        page: 1,
-        records: 10
+        page: currentPage,
+        records: 3
       }
     })
-    if (res.result === 'success') {
-      setlistentotal(res.data)
-      setListenData(res.data.list)
-      if (res.message !== '청취내역 없습니다.' && res.data.list.length > 9) {
-        setBtnTrue(true)
+    if (res.result === 'success' && _.hasIn(res.data, 'list')) {
+      if (res.data.list == false) {
+        if (!next) {
+          setlistentotal([])
+          setListenData([])
+          setResultState(0)
+        }
+        setMoreState(false)
+      } else {
+        if (next) {
+          setMoreState(true)
+          setNextList(res.data.list)
+        } else {
+          setListenData(res.data.list)
+          fetchDataListen('next')
+        }
+        setlistentotal(res.data)
+        setResultState(1)
       }
-      if (res.message === '청취내역 없습니다.') {
-        setlistentotal([])
-      }
-      // console.log(res)
-    } else if (res.result === 'fail') {
+    } else {
       context.action.alert({
-        callback: () => {},
         msg: res.message
       })
     }
@@ -141,6 +169,7 @@ export default props => {
       setDateprev(value)
       setActive(4)
     }
+    setPickerCssOn(true)
   }
 
   const pickerOnChangenext = value => {
@@ -151,6 +180,7 @@ export default props => {
       setDatenext(value)
       setActive(4)
     }
+    setPickerCssOn(true)
   }
 
   const validateBirth = value => {
@@ -194,7 +224,7 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    setBtnTrue(false)
+    //setMoreState(false)
     setBroadData([])
     setListenData([])
     setlistentotal([])
@@ -204,14 +234,22 @@ export default props => {
   useEffect(() => {
     setTimeout(() => {
       setActive(0)
+      setPickerCssOn(false)
     }, 10)
   }, [])
   //----------------------------
   // 셀렉트 타입
   const setType = value => {
     setSelectType(value)
-    setBtnTrue(false)
+    //setMoreState(false)
     setActive(0)
+    setBroadData([])
+    setListenData([])
+    setResultState(1)
+    setlistentotal(false)
+    setbroadtotal([])
+    setlistentotal([])
+    setResultState(1)
   }
   //date format
   const dateFormat = strFormatFromServer => {
@@ -247,194 +285,233 @@ export default props => {
     //document.getElementById("demo").innerHTML = hour+":"+min+":" + sec
   }
 
+  const showMoreList = () => {
+    if (selectType === 0) {
+      setBroadData(broadData.concat(nextList))
+      fetchData('next')
+    } else {
+      setListenData(listenData.concat(nextList))
+      fetchDataListen('next')
+    }
+  }
+
   return (
-    <>
-      {/* 공통타이틀 */}
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">리포트</div>
-      </TopWrap>
-      <Report>
-        <TitleWrap style={{paddingBottom: '25px'}}>
-          <TitleText>리포트</TitleText>
-          <SelectWrap>
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
-          </SelectWrap>
-        </TitleWrap>
-        <div className="radioWrap">
-          <button onClick={() => setActive(0)} className={active === 0 ? 'on' : ''}>
-            오늘
-          </button>
-          <button onClick={() => setActive(1)} className={active === 1 ? 'on' : ''}>
-            어제
-          </button>
-          <button onClick={() => setActive(2)} className={active === 2 ? 'on' : ''}>
-            최근 7일
-          </button>
-          <button onClick={() => setActive(3)} className={active === 3 ? 'on' : ''}>
-            월간
-          </button>
-          <div className="datebox">
-            <section>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdata}
-                change={pickerOnChange}
-                placeholder="날짜"
-                pickerState={pickerState}
-              />
-              <span className="line">
-                <span></span>
-              </span>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdata}
-                change={pickerOnChangenext}
-                placeholder="날짜"
-                pickerState={pickerState}
-              />
-            </section>
-            {selectType === 0 && (
-              <button className="search" onClick={fetchData}>
-                검색
-              </button>
-            )}
+    <Report>
+      <TitleWrap style={{paddingBottom: '25px'}}>
+        <TitleText>리포트</TitleText>
+        <SelectWrap>
+          <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
+        </SelectWrap>
+      </TitleWrap>
+      <div className="radioWrap">
+        <button
+          onClick={() => {
+            setActive(0)
+            setPickerCssOn(false)
+          }}
+          className={active === 0 ? 'on' : ''}>
+          오늘
+        </button>
+        <button
+          onClick={() => {
+            setActive(1)
+            setPickerCssOn(false)
+          }}
+          className={active === 1 ? 'on' : ''}>
+          어제
+        </button>
+        <button
+          onClick={() => {
+            setActive(2)
+            setPickerCssOn(false)
+          }}
+          className={active === 2 ? 'on' : ''}>
+          최근 7일
+        </button>
+        <button
+          onClick={() => {
+            setActive(3)
+            setPickerCssOn(false)
+          }}
+          className={active === 3 ? 'on' : ''}>
+          월간
+        </button>
+        <div className={[`datebox ${pickerCssOn ? 'on' : ''}`]}>
+          <section>
+            <Datepicker
+              text="날짜"
+              name="pickdata"
+              value={changes.pickdata}
+              change={pickerOnChange}
+              placeholder="날짜"
+              pickerState={pickerState}
+            />
+            <span className="line">
+              <span></span>
+            </span>
+            <Datepicker
+              text="날짜"
+              name="pickdata"
+              value={changes.pickdata}
+              change={pickerOnChangenext}
+              placeholder="날짜"
+              pickerState={pickerState}
+            />
+          </section>
+          {selectType === 0 && (
+            <button
+              className="search"
+              onClick={() => {
+                fetchData()
+              }}>
+              검색
+            </button>
+          )}
 
-            {selectType === 1 && (
-              <button className="search" onClick={fetchDataListen}>
-                검색
-              </button>
-            )}
-          </div>
+          {selectType === 1 && (
+            <button
+              className="search"
+              onClick={() => {
+                fetchDataListen()
+              }}>
+              검색
+            </button>
+          )}
         </div>
-        <TitleWrap>
-          {selectType === 0 && <TitleText>방송요약</TitleText>}
-          {selectType === 1 && <TitleText>청취요약</TitleText>}
-          <TitleSubMsg>데이터는 최대 6개월까지 검색 가능합니다.</TitleSubMsg>
-        </TitleWrap>
+      </div>
 
-        <BroadcastShort>
-          {selectType === 0 &&
-            Object.keys(broadInfo).map((section, index) => {
-              return (
-                <ShortSection key={index}>
-                  <div>
-                    <div>{broadInfo[section][1]}</div>
-                    <div className="count">
-                      {broadInfo[section][1] === '방송' && broadtotal.length !== 0 && decodeSec(String(broadtotal.broadcastTime))}
-                      {broadInfo[section][1] === '받은별' &&
-                        broadtotal.length !== 0 &&
-                        numberFormat(String(broadtotal.byeolTotCnt))}
-                      {broadInfo[section][1] === '좋아요' &&
-                        broadtotal.length !== 0 &&
-                        numberFormat(String(broadtotal.goodTotCnt))}
-                      {broadInfo[section][1] === '청취자' &&
-                        broadtotal.length !== 0 &&
-                        numberFormat(String(broadtotal.listenerTotCnt))}
-                    </div>
-                  </div>
-                </ShortSection>
-              )
-            })}
-          {selectType === 1 &&
-            Object.keys(listenInfo).map((section, index) => {
-              const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
-              return (
-                <ShortSection key={index}>
-                  <div>
-                    <div>{listenInfo[section][1]}</div>
-                    <div className="count">
-                      {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
-                      {listenInfo[section][1] === '달 선물' && listentotal.length !== 0 && numberFormat(String(giftDalTotCnt))}
-                      {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
-                      {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
-                    </div>
-                  </div>
-                </ShortSection>
-              )
-            })}
-        </BroadcastShort>
-
-        <TitleWrap>
-          <TitleText>상세내역</TitleText>
-        </TitleWrap>
-
-        <DetailTable>
-          <div>
+      {resultState == 0 ? (
+        <NoResult />
+      ) : (
+        <>
+          <TitleWrap>
+            {selectType === 0 && <TitleText>방송요약</TitleText>}
+            {selectType === 1 && <TitleText>청취요약</TitleText>}
+            <TitleSubMsg>데이터는 최대 6개월까지 검색 가능합니다.</TitleSubMsg>
+          </TitleWrap>
+          <BroadcastShort>
             {selectType === 0 &&
-              broadData.map((value, idx) => {
+              Object.keys(broadInfo).map((section, index) => {
                 return (
-                  <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
+                  <ShortSection key={index}>
                     <div>
-                      <span>방송일자</span> <span>{dateFormat(value.broadDt)}</span>
+                      <div>{broadInfo[section][1]}</div>
+                      <div className="count">
+                        {broadInfo[section][1] === '방송' &&
+                          broadtotal.length !== 0 &&
+                          decodeSec(String(broadtotal.broadcastTime))}
+                        {broadInfo[section][1] === '받은별' &&
+                          broadtotal.length !== 0 &&
+                          numberFormat(String(broadtotal.byeolTotCnt))}
+                        {broadInfo[section][1] === '좋아요' &&
+                          broadtotal.length !== 0 &&
+                          numberFormat(String(broadtotal.goodTotCnt))}
+                        {broadInfo[section][1] === '청취자' &&
+                          broadtotal.length !== 0 &&
+                          numberFormat(String(broadtotal.listenerTotCnt))}
+                      </div>
                     </div>
-                    <div>
-                      <span>방송시작 </span>
-                      <span>{timeFormat(value.startDt)}</span>
-                    </div>
-                    <div>
-                      <span> 방송종료 </span>
-                      <span>{timeFormat(value.endDt)}</span>
-                    </div>
-                    <div>
-                      <span>받은별 </span>
-                      <span>{numberFormat(value.byeolCnt)}</span>
-                    </div>
-                    <div>
-                      <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
-                    </div>
-                    <div>
-                      <span>최다 청취자</span> <span>{numberFormat(value.listenerCnt)}</span>
-                    </div>
-                    <div>
-                      <span>방송 최고 순위</span>
-                      <span>{value.rank}</span>
-                    </div>
-                  </MobileDetailTab>
+                  </ShortSection>
                 )
               })}
-
             {selectType === 1 &&
-              listenData.map((value, idx) => {
+              Object.keys(listenInfo).map((section, index) => {
+                const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
                 return (
-                  <MobileDetailTab key={idx} className={idx > 2 && showingpage === false ? 'disable' : 'able'}>
+                  <ShortSection key={index}>
                     <div>
-                      <span>청취시작</span> <span>{timeFormat(value.listenDt)}</span>
+                      <div>{listenInfo[section][1]}</div>
+                      <div className="count">
+                        {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
+                        {listenInfo[section][1] === '달 선물' && listentotal.length !== 0 && numberFormat(String(giftDalTotCnt))}
+                        {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
+                        {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
+                      </div>
                     </div>
-                    <div>
-                      <span>청취종료</span>
-                      <span>{timeFormat(value.endDt)}</span>
-                    </div>
-                    <div>
-                      <span>방송방(DJ)</span>
-                      <span style={{color: '#8556f6'}}>{value.bjNickNm}</span>
-                    </div>
-                    <div>
-                      <span>선물내역(달)</span>
-                      <span>{numberFormat(value.giftDalCnt)}</span>
-                    </div>
-                    <div>
-                      <span>받은내역(별)</span>
-                      <span>{numberFormat(value.byeolCnt)}</span>
-                    </div>
-                    <div>
-                      <span>게스트</span> <span>{value.isGuest === false ? '-' : value.isGuest}</span>
-                    </div>
-                  </MobileDetailTab>
+                  </ShortSection>
                 )
               })}
-          </div>
-        </DetailTable>
-        {btnTrue === true && (
-          <Submit onClick={() => setShowingpage(true)} className={showingpage === true ? 'disable' : ''}>
-            <span>더보기</span>
-            <em></em>
-          </Submit>
-        )}
-      </Report>
-    </>
+          </BroadcastShort>
+
+          <TitleWrap>
+            <TitleText>상세내역</TitleText>
+          </TitleWrap>
+          <DetailTable>
+            <div>
+              {selectType === 0 &&
+                broadData.map((value, idx) => {
+                  return (
+                    <MobileDetailTab key={idx}>
+                      <div>
+                        <span>방송일자</span> <span>{dateFormat(value.broadDt)}</span>
+                      </div>
+                      <div>
+                        <span>방송시작 </span>
+                        <span>{timeFormat(value.startDt)}</span>
+                      </div>
+                      <div>
+                        <span> 방송종료 </span>
+                        <span>{timeFormat(value.endDt)}</span>
+                      </div>
+                      <div>
+                        <span>받은별 </span>
+                        <span>{numberFormat(value.byeolCnt)}</span>
+                      </div>
+                      <div>
+                        <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
+                      </div>
+                      <div>
+                        <span>최다 청취자</span> <span>{numberFormat(value.listenerCnt)}</span>
+                      </div>
+                      <div>
+                        <span>방송 최고 순위</span>
+                        <span>{value.rank}</span>
+                      </div>
+                    </MobileDetailTab>
+                  )
+                })}
+
+              {selectType === 1 &&
+                listenData.map((value, idx) => {
+                  return (
+                    <MobileDetailTab key={idx}>
+                      <div>
+                        <span>청취시작</span> <span>{timeFormat(value.listenDt)}</span>
+                      </div>
+                      <div>
+                        <span>청취종료</span>
+                        <span>{timeFormat(value.endDt)}</span>
+                      </div>
+                      <div>
+                        <span>방송방(DJ)</span>
+                        <span style={{color: '#8556f6'}}>{value.bjNickNm}</span>
+                      </div>
+                      <div>
+                        <span>선물내역(달)</span>
+                        <span>{numberFormat(value.giftDalCnt)}</span>
+                      </div>
+                      <div>
+                        <span>받은내역(별)</span>
+                        <span>{numberFormat(value.byeolCnt)}</span>
+                      </div>
+                      <div>
+                        <span>게스트</span> <span>{value.isGuest === false ? '-' : value.isGuest}</span>
+                      </div>
+                    </MobileDetailTab>
+                  )
+                })}
+            </div>
+          </DetailTable>
+        </>
+      )}
+
+      {moreState && (
+        <Submit onClick={() => showMoreList()}>
+          <span>더보기</span>
+          <em></em>
+        </Submit>
+      )}
+    </Report>
   )
 }
 
@@ -585,6 +662,7 @@ const Report = styled.div`
       font-size: 14px;
       color: #757575;
       margin-right: -1px;
+      transform: none;
       &.on {
         width: calc(25% + 1px);
         border: 1px solid ${COLOR_MAIN};
@@ -602,10 +680,15 @@ const Report = styled.div`
     justify-content: center;
     border: 1px solid #e0e0e0;
 
+    &.on {
+      border: 1px solid ${COLOR_MAIN};
+    }
+
     > section {
       width: 75%;
       display: flex;
       padding: 0 1.5%;
+      padding-top: 2px;
       & .line {
         width: 10px;
         margin: 0 2.8%;
@@ -622,6 +705,10 @@ const Report = styled.div`
       }
       > div {
         width: calc(50%);
+        padding-left: 6px;
+        @media (max-width: 340px) {
+          padding-left: 0;
+        }
       }
     }
     .search {
@@ -673,26 +760,5 @@ const Submit = styled.button`
 
   &.disable {
     display: none;
-  }
-`
-const TopWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid ${COLOR_MAIN};
-  align-items: center;
-  margin-top: 24px;
-  padding-bottom: 12px;
-  button:nth-child(1) {
-    width: 24px;
-    height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
-  }
-  .title {
-    width: calc(100% - 24px);
-    color: ${COLOR_MAIN};
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: -0.5px;
-    text-align: center;
   }
 `
