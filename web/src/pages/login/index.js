@@ -82,8 +82,8 @@ export default props => {
             }
           }
 
-          return props.history.push('/?reload=true')
-          // return (window.location.href = '/')
+          // return props.history.push('/?reload=true')
+          return (window.location.href = '/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
