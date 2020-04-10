@@ -30,6 +30,7 @@ export default props => {
   //function
 
   async function fetchWrite(type) {
+    console.log('당황스럽네;삭제가왜안돼')
     let words = []
     word.forEach((item, index) => {
       if (_.hasIn(changes, `word${index}`)) {
@@ -50,7 +51,7 @@ export default props => {
       }
       wordIndex++
     })
-    if (banWords == '')
+    if (banWords == '' && type != 'remove')
       return context.action.alert({
         msg: `금지어를 입력해주세요.`
       })
