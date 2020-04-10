@@ -129,7 +129,7 @@ export default props => {
   //   }
   // }, [context.mypageFanCnt])
 
-  console.log(profileInfo)
+  //console.log(profileInfo)
   return (
     <MenuMypage>
       <Header>
