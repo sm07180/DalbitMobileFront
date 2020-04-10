@@ -6,6 +6,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useLocation} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import qs from 'query-string'
 
 //context
 import Api from 'context/api'
@@ -29,21 +30,17 @@ import {RoomMake} from 'context/room'
 export default props => {
   //context
   const globalCtx = useContext(Context)
-  const location = useLocation()
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
-    // window.location.reload()
-    // console.log(location)
-    console.log(location.state)
-    // console.log(location.pathname)
-    // console.log(location.search)
-    // console.log(reload)
-    //   console.log('sd;lfkjasd;lfkasjdf;lkj')
-    // window.location.reload()
+    const {reload} = qs.parse(location.search)
+    if (reload) {
+      window.location.href = '/'
+    }
+
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
