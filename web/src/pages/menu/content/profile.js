@@ -59,15 +59,15 @@ export default props => {
       setFetching(true)
       const logoutInfo = await Api.member_logout()
       if (logoutInfo.result === 'success') {
-        const {data} = logoutInfo
-        if (isHybrid()) {
-          props.history.push('/')
-          return Hybrid('GetLogoutToken', data)
-        }
-        globalCtx.action.updateToken(null)
+        globalCtx.action.updateToken(logoutInfo.data)
         globalCtx.action.updateProfile(null)
 
-        return (window.location.href = '/')
+        if (isHybrid()) {
+          props.history.push('/')
+          return Hybrid('GetLogoutToken', logoutInfo.data)
+        }
+
+        // return (window.location.href = '/')
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
           title: '로그아웃 실패',
