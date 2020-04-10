@@ -82,7 +82,7 @@ export default props => {
           globalCtx.action.updateProfile(profileInfo.data)
 
           // return props.history.push('/')
-          return props.history.push('/redirect')
+          return props.history.push('/after_main')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({

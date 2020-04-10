@@ -43,6 +43,7 @@ export default () => {
       <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />

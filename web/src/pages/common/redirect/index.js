@@ -12,7 +12,7 @@ export default props => {
   //useEffect
   useEffect(() => {
     window.location.href = '/'
-    alert('redirect실행')
+    //   alert('redirect실행')
   }, [])
 
   //---------------------------------------------------------------------
