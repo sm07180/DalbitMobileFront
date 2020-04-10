@@ -77,6 +77,7 @@ const Content = styled.div`
       margin-top: 6px;
       width: 72px;
       text-overflow: ellipsis;
+      white-space: nowrap;
       overflow: hidden;
       font-size: 11px;
       font-weight: normal;

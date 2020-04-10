@@ -361,6 +361,7 @@ const NameWrap = styled.div`
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
+    transform: skew(-0.03deg);
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
