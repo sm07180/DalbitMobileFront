@@ -46,17 +46,12 @@ export default props => {
   const touchStartEvent = e => {
     console.log(list.length)
     // if (Array.isArray(list) && list.length > 0) {
-    console.log('aaaa')
     touchStartStatus = true
     touchStartX = e.touches[0].clientX
     // }
   }
 
   const touchMoveEvent = e => {
-    // if (!touchEndX || !touchStartStatus || swiping) {
-    //   return
-    // }
-
     const slideWrapNode = slideWrapRef.current
     touchEndX = e.touches[0].clientX
 
@@ -66,7 +61,6 @@ export default props => {
 
     slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
     slideWrapNode.style.transitionDuration = '0ms'
-    slideWrapNode.style.transitionTimingFunction = 'linear'
   }
 
   const touchEndEvent = e => {
@@ -83,47 +77,46 @@ export default props => {
     const absDiff = Math.abs(diff)
     console.log(halfBaseWidth, absDiff)
 
-    if (absDiff >= halfBaseWidth) {
-      if (direction === 'left') {
-        slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
-      } else if (direction === 'right') {
-        slideWrapNode.style.transform = `translate3d(0, 0, 0)`
+    const slidingTime = 300 // unit is ms
+
+    const promiseSync = new Promise((resolve, reject) => {
+      slideWrapNode.style.transitionTimingFunction = 'ease-in'
+      slideWrapNode.style.transitionDuration = `${slidingTime}ms`
+
+      if (absDiff >= halfBaseWidth) {
+        if (direction === 'left') {
+          slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
+        } else if (direction === 'right') {
+          slideWrapNode.style.transform = `translate3d(0, 0, 0)`
+        }
+      } else {
+        slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
       }
-    } else {
-      slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
-    }
-    slideWrapNode.style.transitionTimingFunction = 'ease-in'
-    slideWrapNode.style.transitionDuration = '300ms'
+      setTimeout(() => resolve(), slidingTime)
+    })
 
-    console.log(slideWrapNode)
-
-    // const minDiffSize = Math.abs(diff) < 80
-
-    // if (minDiffSize) {
-    //   return
-    // }
-
-    // if (diff > 0) {
-    //   // oneStepSlide('right')
-    // } else {
-    //   // oneStepSlide('left')
-    // }
+    promiseSync.then(() => {
+      slideWrapNode.style.transitionDuration = '0ms'
+    })
   }
+
+  useEffect(() => {
+    console.log('selected b idx', selectedBIdx)
+  }, [selectedBIdx])
 
   return (
     <RecommendWrap>
       <Room />
       <div
         onClick={() => {
-          const data = list[selectedBIdx]
-          const {roomNo, memNo} = data
-
-          //상대방 페이지이동
-          if (roomNo === '') {
-            window.location.href = `/mypage/${memNo}`
-          } else {
-            RoomJoin(roomNo + '')
-          }
+          // const data = list[selectedBIdx]
+          // const {roomNo, memNo} = data
+          // //상대방 페이지이동
+          // if (roomNo === '') {
+          //   window.location.href = `/mypage/${memNo}`
+          // } else {
+          //   RoomJoin(roomNo + '')
+          // }
         }}
         ref={selectedWrapRef}
         className="selected-wrap"

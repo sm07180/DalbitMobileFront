@@ -176,15 +176,16 @@ export default props => {
 
   useEffect(() => {
     initialSwipperWrapperStyle()
+
     window.addEventListener('resize', initialSwipperWrapperStyle)
-    setClickEventAllSlide()
-    setTouchEventSelectedWrap()
-    autoSlideInterval()
+    // setClickEventAllSlide()
+    // setTouchEventSelectedWrap()
+    // autoSlideInterval()
 
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
-      removeClickEventAllSlide()
-      removeTouchEventSelectedWrap()
+      // removeClickEventAllSlide()
+      // removeTouchEventSelectedWrap()
       setInitClosureVariable()
     }
   }, [])
