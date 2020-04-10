@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_headphones_m_p" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-3{stroke:#8556f6;fill:none;stroke-linejoin:round}
+        </style>
+    </defs>
+    <g id="prefix__사각형_474" data-name="사각형 474" style="stroke:#8556f6;fill:#fff;opacity:0">
+        <path d="M0 0H24V24H0z" style="stroke:none"/>
+        <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none"/>
+    </g>
+    <g id="prefix__그룹_247" data-name="그룹 247" transform="translate(3 5)">
+        <path id="prefix__패스_441" d="M89.607 439.671v-3.895a5.094 5.094 0 1 0-10.187 0v3.895" data-name="패스 441" transform="translate(-75.225 -430.682)" style="stroke-linecap:square;stroke-miterlimit:10;fill:none;stroke:#8556f6"/>
+        <path id="prefix__사각형_272" d="M2.8 0h1.395v7.191H2.8a2.8 2.8 0 0 1-2.8-2.8V2.8A2.8 2.8 0 0 1 2.8 0z" class="prefix__cls-3" data-name="사각형 272" transform="translate(0 6.592)"/>
+        <path id="prefix__사각형_273" d="M2.8 0h1.395v7.191H2.8a2.8 2.8 0 0 1-2.8-2.8V2.8A2.8 2.8 0 0 1 2.8 0z" class="prefix__cls-3" data-name="사각형 273" transform="rotate(180 9.289 6.892)"/>
+    </g>
+</svg>

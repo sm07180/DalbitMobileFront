@@ -336,6 +336,10 @@ export default props => {
   //------------------------------------------------------------------------
   return (
     <>
+      <TopWrap>
+        <button onClick={() => window.history.back()}></button>
+        <div className="title">팬 보드</div>
+      </TopWrap>
       {/* 전체영역 */}
       <FanBoard className="fanboard">
         <WriteArea className={active === true ? 'on' : ''}>
@@ -910,5 +914,26 @@ const MMwrap = styled.section`
       border: none;
       height: 52px;
     }
+  }
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 20px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
   }
 `

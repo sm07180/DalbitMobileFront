@@ -11,7 +11,7 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
-import ProfilePresent from './profile_present'
+// import ProfilePresent from './profile_present'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
@@ -22,6 +22,7 @@ const levelBarWidth = 176
 
 const myProfile = props => {
   const {webview} = props
+
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -39,7 +40,7 @@ const myProfile = props => {
   async function fetchDataFanRegist(myProfileNo) {
     const res = await Api.fan_change({
       data: {
-        memNo: urlrStr
+        memNo: myProfileNo
       }
     })
     if (res.result === 'success') {
@@ -62,7 +63,7 @@ const myProfile = props => {
     async function fetchDataFanCancel(myProfileNo) {
       const res = await Api.mypage_fan_cancel({
         data: {
-          memNo: urlrStr
+          memNo: myProfileNo
         }
       })
       if (res.result === 'success') {
@@ -96,13 +97,14 @@ const myProfile = props => {
       context.action.updateCloseFanCnt(true)
     }
   }
+  console.log(urlrStr)
+  console.log(myProfileNo)
 
   return (
     <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
-          {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
-          {urlrStr !== myProfileNo && (
+          {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
             <div className="notBjWrap">
               {profile.isFan === 0 && (
                 <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
@@ -128,7 +130,7 @@ const myProfile = props => {
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
             return (
-              <a href={`/mypage/${fan.memNo}`} key={index}>
+              <a href={`/mypage/${fan.memNo}`} key={index} className={myProfileNo === fan.memNo ? 'none' : ''}>
                 <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
               </a>
             )
@@ -168,7 +170,9 @@ const myProfile = props => {
           <span onClick={() => starContext()}>
             스타 <em>{profile.starCnt}</em>
           </span>
-          {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
+          {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
+            <div onClick={() => context.action.updateMypageReport(true)}></div>
+          )}
         </CountingWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
@@ -177,7 +181,7 @@ const myProfile = props => {
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
-      {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
+      {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
     </MyProfile>
   )
 }
@@ -364,6 +368,7 @@ const NameWrap = styled.div`
     }
     span {
       padding: 2px 0 0 0;
+      transform: skew(-0.03deg);
     }
   }
 `
@@ -493,6 +498,11 @@ const FanListWrap = styled.div`
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 0;
+  }
+  > a {
+    &.none {
+      display: none;
+    }
   }
 `
 const FanRank = styled.div`

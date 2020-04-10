@@ -5,7 +5,10 @@ import {Context} from 'context'
 
 // component
 import Header from '../component/header.js'
-
+//my profile transfer
+import MyProfile from './myProfile'
+import qs from 'query-string'
+import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
 // static
 import InfoIcon from '../static/profile/ic_info_m.svg'
 import NoticeIcon from '../static/profile/ic_notice_m.svg'
@@ -43,9 +46,7 @@ export default props => {
     return `${hour}시간 ${min}분`
   }
 
-  const globalCtx = useContext(Context)
-  const {profile} = globalCtx
-  const {token} = globalCtx
+  //func
 
   const [fetching, setFetching] = useState(false)
 
@@ -84,6 +85,51 @@ export default props => {
     })
   }
 
+  /////////////////////////////////////////////
+  const {webview} = qs.parse(location.search)
+
+  let navigationList = [
+    // {id: 0, type: 'notice', component: Notice, txt: '공지사항'},
+    // {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
+    // // //{id: 2, type: 'cast', component: Cast, txt: '캐스트'},
+    // {id: 3, type: 'wallet', component: Wallet, txt: '내 지갑'},
+    // {id: 4, type: 'report', component: Report, txt: '리포트'},
+    // {id: 5, type: 'alert', component: Alert, txt: '알림'},
+    // {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
+  ]
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {token, profile} = globalCtx
+  //console.log(profile.memNo)
+
+  const [profileInfo, setProfileInfo] = useState(null)
+
+  // if (profile && profile.memNo !== memNo) {
+  //   navigationList = navigationList.slice(0, 2)
+  // } else if (profile && profile.memNo === memNo) {
+  //   memNo = profile.memNo
+  // }
+
+  const clickCloseBtn = () => {
+    if (isHybrid()) {
+      Hybrid('CloseLayerPopup')
+    }
+  }
+
+  // useEffect(() => {
+  //   const settingProfileInfo = async memNo => {
+  //     const profileInfo = await Api.profile({params: {memNo: memNo}})
+  //     if (profileInfo.result === 'success') {
+  //       setProfileInfo(profileInfo.data)
+  //     }
+  //   }
+
+  //   if (memNo) {
+  //     settingProfileInfo(memNo)
+  //   }
+  // }, [context.mypageFanCnt])
+
+  console.log(profileInfo)
   return (
     <MenuMypage>
       <Header>
@@ -93,13 +139,15 @@ export default props => {
       {token && token.isLogin && profile ? (
         <>
           <div className="log-in">
-            <div className="main-info">
+            <MyProfile profile={profile} {...props} webview={webview} />
+            {/* <div className="main-info">
               <div
                 className="photo"
                 style={profile['profImg'] ? {backgroundImage: `url(${profile['profImg']['thumb190x190']})`} : {}}></div>
               <div className="nickname">{profile.nickNm}</div>
               <div className="mem-id">{profile.memId}</div>
-            </div>
+            </div> */}
+
             <div className="profile-info">
               <div className="time-info">
                 <div className="total-time">
@@ -205,7 +253,7 @@ const MenuMypage = styled.div`
   min-height: 100vh;
 
   .log-in {
-    margin-top: 30px;
+    /* /margin-top: 30px; */
     margin-bottom: 20px;
 
     .main-info {
@@ -238,7 +286,7 @@ const MenuMypage = styled.div`
     .profile-info {
       border: 1px solid #8556f6;
       border-radius: 20px;
-
+      transform: skew(-0.03deg);
       .time-info {
         padding: 12px 22px;
 
@@ -277,7 +325,7 @@ const MenuMypage = styled.div`
         display: flex;
         flex-direction: row;
         border-top: 1px solid #eee;
-
+        transform: skew(-0.03deg);
         .each {
           display: flex;
           flex-direction: column;
@@ -350,7 +398,7 @@ const MenuMypage = styled.div`
 
   .sub-nav {
     padding-bottom: 100px;
-
+    transform: skew(-0.03deg);
     a {
       display: block;
 

@@ -14,7 +14,8 @@ import List from '../component/wallet/list.js'
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
-import {WIDTH_MOBILE} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 
 export default props => {
   let history = useHistory()
@@ -77,6 +78,11 @@ export default props => {
 
   return (
     <div>
+      {/* 공통타이틀 */}
+      <TopWrap>
+        <button onClick={() => window.history.back()}></button>
+        <div className="title">내 지갑</div>
+      </TopWrap>
       <TitleWrap>
         {/* <span className="text">내 지갑</span> */}
         <CoinTypeBtn className={coinType === 'dal' ? 'active' : ''} onClick={() => changeCoinTypeClick('dal')}>
@@ -110,7 +116,6 @@ export default props => {
           )}
         </div>
       </CoinCountingView>
-
       <List
         searching={searching}
         coinType={coinType}
@@ -118,14 +123,13 @@ export default props => {
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}
       />
-
       {Array.isArray(listDetailed) && listDetailed.length > 0 && (
         <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
       )}
     </div>
   )
 }
-
+//styled-------------------------------------------------------------------------------
 const CoinChargeBtn = styled.button`
   padding: 16px 44px;
   color: #fff;
@@ -142,7 +146,6 @@ const CoinChargeBtn = styled.button`
     margin-right: 12px;
   }
 `
-
 const CoinCurrentStatus = styled.div`
   display: flex;
   align-items: center;
@@ -179,7 +182,6 @@ const CoinCurrentStatus = styled.div`
     }
   }
 `
-
 const CoinCountingView = styled.div`
   border: 3px solid #8556f6;
   display: flex;
@@ -188,13 +190,11 @@ const CoinCountingView = styled.div`
   height: 118px;
   padding: 30px;
   box-sizing: border-box;
-
   @media (max-width: ${WIDTH_MOBILE}) {
     padding: 20px 16px;
     height: 80px;
   }
 `
-
 const CoinTypeBtn = styled.button`
   position: relative;
   width: 50%;
@@ -203,7 +203,6 @@ const CoinTypeBtn = styled.button`
   font-size: 20px;
   font-weight: 600;
   line-height: 50px;
-
   &:first-child:after {
     display: block;
     position: absolute;
@@ -214,12 +213,10 @@ const CoinTypeBtn = styled.button`
     background: #e0e0e0;
     content: '';
   }
-
   &.active {
     color: #8556f6;
   }
 `
-
 const TitleWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -231,5 +228,27 @@ const TitleWrap = styled.div`
     font-size: 20px;
     letter-spacing: -0.5px;
     color: #8556f6;
+  }
+`
+// 탑 공통 타이틀 스타일
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
   }
 `

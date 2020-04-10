@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_cs_l_p" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .prefix__cls-4{stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:#fff}
+        </style>
+    </defs>
+    <path id="prefix__사각형_826" d="M0 0H48V48H0z" data-name="사각형 826" style="fill:none"/>
+    <g id="prefix__그룹_10377" data-name="그룹 10377" transform="translate(10 12)">
+        <path id="prefix__패스_4163" d="M446.3 426.878h-13.45a4.341 4.341 0 0 0-4.34 4.34v5.236a4.34 4.34 0 0 0 4.34 4.34h3.5v3l4.025-3h5.925a4.34 4.34 0 0 0 4.341-4.34v-5.236a4.341 4.341 0 0 0-4.341-4.34z" data-name="패스 4163" transform="translate(-421.742 -426.878)" style="stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <path id="prefix__패스_4164" d="M435.017 451.153v-2.317a2.378 2.378 0 0 0-1.654-2.265l-2.327-.742a2.133 2.133 0 0 1-1.485-2.032v-.157a1.949 1.949 0 0 0 1.186-1.794v-2.565a1.949 1.949 0 0 0-1.949-1.949h-1.077a1.949 1.949 0 0 0-1.95 1.949v2.565a1.949 1.949 0 0 0 1.186 1.794v.157a2.133 2.133 0 0 1-1.485 2.032l-2.327.742a2.378 2.378 0 0 0-1.654 2.265v2.317" data-name="패스 4164" transform="translate(-421.481 -427.267)" style="fill:#eee;stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px"/>
+        <path id="prefix__선_102" d="M0 0L10.007 0" class="prefix__cls-4" data-name="선 102" transform="translate(13.236 4.019)"/>
+        <path id="prefix__선_103" d="M0 0L10.007 0" class="prefix__cls-4" data-name="선 103" transform="translate(13.236 6.773)"/>
+        <path id="prefix__선_104" d="M0 0L10.007 0" class="prefix__cls-4" data-name="선 104" transform="translate(13.236 9.527)"/>
+    </g>
+</svg>

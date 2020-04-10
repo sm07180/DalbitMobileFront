@@ -202,29 +202,34 @@ export default props => {
 
   //-----------------------------------------------------------------------------
   return (
-    <Content>
-      <TitleWrap style={{paddingBottom: '25px'}}>
-        <TitleText>알림</TitleText>
-      </TitleWrap>
-      {createAlertResult()}
-      {moreState && (
-        <div className="more-btn-wrap">
-          <button
-            className="more-btn"
-            onClick={() => {
-              showMoreList()
-            }}>
-            더보기
-          </button>
-        </div>
-      )}
-      <Room />
-    </Content>
+    <>
+      <TopWrap>
+        <button onClick={() => window.history.back()}></button>
+        <div className="title">알림</div>
+      </TopWrap>
+      <Content>
+        {/* <TitleWrap style={{paddingBottom: '25px'}}>
+          <TitleText>알림</TitleText>
+        </TitleWrap> */}
+        {createAlertResult()}
+        {moreState && (
+          <div className="more-btn-wrap">
+            <button
+              className="more-btn"
+              onClick={() => {
+                showMoreList()
+              }}>
+              더보기
+            </button>
+          </div>
+        )}
+        <Room />
+      </Content>
+    </>
   )
 }
 
 const Content = styled.div`
-  padding-top: 40px;
   .alert-list {
     li {
       display: flex;
@@ -317,4 +322,25 @@ const TitleText = styled.div`
   font-size: 20px;
   letter-spacing: -0.5px;
   font-weight: 600;
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
 `

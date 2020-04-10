@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_live_l_p" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:none;stroke:#8556f6;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px}.prefix__cls-3{fill:transparent}
+        </style>
+    </defs>
+    <path id="prefix__사각형_822" d="M0 0H48V48H0z" data-name="사각형 822" style="fill:none"/>
+    <g id="prefix__그룹_10374" data-name="그룹 10374" transform="translate(13.5 10)">
+        <path id="prefix__패스_4153" d="M263.736 533.078a9.937 9.937 0 0 1-14.053-14.053z" class="prefix__cls-2" data-name="패스 4153" transform="translate(-246.775 -513.8)"/>
+        <path id="prefix__선_97" d="M0 3.172L3.172 0" class="prefix__cls-2" data-name="선 97" transform="translate(9.933 9.077)"/>
+        <path id="prefix__패스_4154" d="M256.331 515.849a7.569 7.569 0 0 1 10.7 10.7" class="prefix__cls-3" data-name="패스 4154" transform="translate(-247.066 -513.636)"/>
+        <path id="prefix__패스_4155" d="M259.783 519.345a2.835 2.835 0 0 1 4.009 4.009" class="prefix__cls-3" data-name="패스 4155" transform="translate(-247.171 -513.784)"/>
+        <path id="prefix__패스_4156" d="M256.786 542.645h-7.418l3.709-6.866z" class="prefix__cls-2" data-name="패스 4156" transform="translate(-246.854 -514.31)"/>
+    </g>
+</svg>

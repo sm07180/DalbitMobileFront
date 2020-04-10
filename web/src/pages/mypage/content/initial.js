@@ -8,27 +8,12 @@ import {Context} from 'context'
 
 export default props => {
   const ctx = useContext(Context)
-  return (
-    <div>
-      <TitleWrap>
-        <span className="text">내 지갑</span>
-        <div>
-          <CoinTypeBtn style={{marginRight: '5px'}}>달</CoinTypeBtn>
-          <CoinTypeBtn style={{marginLeft: '5px'}}>별</CoinTypeBtn>
-        </div>
-      </TitleWrap>
-
-      <CoinCountingView>
-        <CoinCurrentStatus>
-          <span className="text">현재 보유 달:</span>
-          <span className="current-value">20,520</span>
-        </CoinCurrentStatus>
-        <CoinChargeBtn>충전하기</CoinChargeBtn>
-      </CoinCountingView>
-    </div>
-  )
+  return <Wrap></Wrap>
 }
-
+const Wrap = styled.div`
+  width: 100%;
+  background-color: red;
+`
 const CoinChargeBtn = styled.button`
   background-color: #8556f6;
 `
