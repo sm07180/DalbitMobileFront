@@ -60,7 +60,7 @@ export default props => {
       if (logoutInfo.result === 'success') {
         const {data} = logoutInfo
         if (isHybrid()) {
-          Hybrid('GetLogoutToken', data)
+          return Hybrid('GetLogoutToken', data)
         }
         globalCtx.action.updateToken(null)
         globalCtx.action.updateProfile(null)

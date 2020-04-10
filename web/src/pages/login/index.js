@@ -78,7 +78,7 @@ export default props => {
             if (webview && webview === 'new') {
               return Hybrid('GetLoginTokenNewWin', loginInfo.data)
             } else {
-              Hybrid('GetLoginToken', loginInfo.data)
+              return Hybrid('GetLoginToken', loginInfo.data)
             }
           }
 
