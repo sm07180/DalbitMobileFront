@@ -224,14 +224,6 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    //setMoreState(false)
-    setBroadData([])
-    setListenData([])
-    setlistentotal([])
-    setbroadtotal([])
-  }, [active])
-
-  useEffect(() => {
     setTimeout(() => {
       setActive(0)
       setPickerCssOn(false)
