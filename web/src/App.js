@@ -32,6 +32,19 @@ const App = () => {
   }
 
   const customHeader = useMemo(() => {
+    const customHeaderCookie = Utility.getCookie('custom-header')
+    if (customHeaderCookie) {
+      if (isJsonString(customHeaderCookie)) {
+        const parsed = JSON.parse(customHeaderCookie)
+        if (parsed['os']) {
+          parsed['os'] = Number(parsed['os'])
+        }
+
+        parsed['FROM'] = '@@ COOKIE @@'
+        return parsed
+      }
+    }
+
     const customHeaderTag = document.getElementById('customHeader')
     if (customHeaderTag && customHeaderTag.value) {
       // The data that got from server is encoded as URIComponent.
@@ -43,19 +56,6 @@ const App = () => {
         }
 
         parsed['FROM'] = '@@ CUSTOM @@'
-        return parsed
-      }
-    }
-
-    const customHeaderCookie = Utility.getCookie('custom-header')
-    if (customHeaderCookie) {
-      if (isJsonString(customHeaderCookie)) {
-        const parsed = JSON.parse(customHeaderCookie)
-        if (parsed['os']) {
-          parsed['os'] = Number(parsed['os'])
-        }
-
-        parsed['FROM'] = '@@ COOKIE @@'
         return parsed
       }
     }
