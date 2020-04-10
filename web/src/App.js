@@ -88,7 +88,6 @@ const App = () => {
 
       // *** Native App case
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-        //
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
@@ -98,16 +97,14 @@ const App = () => {
         }
 
         if (customHeader['isFirst'] === 'N') {
-          // /webview=new 형태로 이루어진 player종료
+          // ?webview=new 형태로 이루어진 player종료
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
-            if (isJsonString(nativeInfo)) {
-              if (window.location.href.indexOf('webview') === -1) {
-                const parsed = JSON.parse(nativeInfo)
-                globalCtx.action.updatePlayer(true)
-                globalCtx.action.updateMediaPlayerStatus(true)
-                globalCtx.action.updateNativePlayer(parsed)
-              }
+            if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+              const parsed = JSON.parse(nativeInfo)
+              globalCtx.action.updatePlayer(true)
+              globalCtx.action.updateMediaPlayerStatus(true)
+              globalCtx.action.updateNativePlayer(parsed)
             }
           }
         }
