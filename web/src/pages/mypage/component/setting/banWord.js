@@ -42,7 +42,6 @@ export default props => {
     let banWords = ''
     let wordIndex = 0
     words.forEach((item, index) => {
-      console.log('item text', item == false)
       if (item == false) return
       if (!wordIndex) {
         banWords = `${item}`
