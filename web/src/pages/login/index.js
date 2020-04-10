@@ -82,7 +82,6 @@ export default props => {
             }
           }
 
-          // return props.history.push('/')
           props.history.push('/')
           return (window.location.href = '/')
         }
