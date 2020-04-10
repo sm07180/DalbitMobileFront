@@ -138,12 +138,14 @@ const Notice = props => {
   const [numbers, setNumbers] = useState('')
 
   const toggler = noticeIdx => {
-    // const height = document.querySelector(`.idx${noticeIdx}`).offsetTop - 60
-    // window.scrollTo(0, height)
-    // setNumbers(noticeIdx)
-    setNumbers(noticeIdx)
     if (numbers === noticeIdx) {
       setNumbers('')
+    } else {
+      setNumbers(noticeIdx)
+      setTimeout(() => {
+        const height = document.querySelector(`.idx${noticeIdx}`).offsetTop - 60
+        window.scrollTo(0, height)
+      }, 10)
     }
   }
 
