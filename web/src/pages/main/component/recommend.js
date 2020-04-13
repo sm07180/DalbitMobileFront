@@ -137,15 +137,12 @@ export default props => {
           wrapperNode.appendChild(cloned)
           wrapperNode.removeChild(f_child)
         }
-
-        if (wrapperNode.children.length > 0) {
-          //   const centerNodeIdx = Math.floor(childrenLength / 2)
-          //   const targetNode = wrapperNode.childNodes[centerNodeIdx]
-          //   const bIdx = Number(targetNode.getAttribute('data-idx'))
-          //   onSwipe(bIdx)
-          //   wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
-          //   touchStartX = null
-          //   touchEndX = null
+        const childrenLength = wrapperNode.children.length
+        if (childrenLength > 0) {
+          const centerNodeIdx = Math.floor(childrenLength / 2)
+          const targetNode = wrapperNode.childNodes[centerNodeIdx]
+          const bIdx = Number(targetNode.getAttribute('data-idx'))
+          console.log('b idx', bIdx)
         }
       }
 

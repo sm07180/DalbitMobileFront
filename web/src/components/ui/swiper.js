@@ -50,11 +50,7 @@ export default props => {
         if (l_child) {
           const cloned = l_child.cloneNode(true)
           const f_child = wrapperNode.firstChild
-
-          // cloned.addEventListener('click', clickSwipEvent)
           wrapperNode.insertBefore(cloned, f_child)
-
-          // l_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(l_child)
         }
       } else if (direction === 'left') {
@@ -62,11 +58,7 @@ export default props => {
         const f_child = wrapperNode.firstChild
         if (f_child) {
           const cloned = f_child.cloneNode(true)
-
-          // cloned.addEventListener('click', clickSwipEvent)
           wrapperNode.appendChild(cloned)
-
-          // f_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(f_child)
         }
       }
