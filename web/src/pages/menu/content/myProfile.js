@@ -32,7 +32,6 @@ const myProfile = props => {
 
   let expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
   if (expCalc == 'Infinity') expCalc = 0
-  console.log('어떻게 인피니티가;;뜰수잇죠?', expCalc)
 
   const myProfileNo = ctx.profile.memNo
   //state
