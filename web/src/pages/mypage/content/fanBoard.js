@@ -378,10 +378,28 @@ export default props => {
               <CommentBox key={index} className={status === 1 ? 'show' : ''}>
                 <div className={modifyShow === boardIdx ? 'disableCommentWrap' : 'CommentWrap'}>
                   <div className="titlewrap">
-                    <Imgbox bg={profImg.thumb62x62} />
+                    {profile.memNo == writerNo ? (
+                      <a href={`/menu/profile`}>
+                        <Imgbox bg={profImg.thumb62x62} />
+                      </a>
+                    ) : (
+                      <a href={`/mypage/${writerNo}`}>
+                        <Imgbox bg={profImg.thumb62x62} />
+                      </a>
+                    )}
+
                     <div>
-                      <span>{nickNm}</span>
-                      <span>(@{memId})</span>
+                      {profile.memNo == writerNo ? (
+                        <a href={`/menu/profile`}>
+                          <span>{nickNm}</span>
+                          <span>(@{memId})</span>
+                        </a>
+                      ) : (
+                        <a href={`/mypage/${writerNo}`}>
+                          <span>{nickNm}</span>
+                          <span>(@{memId})</span>
+                        </a>
+                      )}
                       <span>{timeFormat(writeDt)}</span>
                     </div>
                     <BtnIcon
@@ -436,10 +454,28 @@ export default props => {
                       return (
                         <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
-                            <Imgbox bg={profImg.thumb62x62} />
+                            {profile.memNo == writerNo ? (
+                              <a href={`/menu/profile`}>
+                                <Imgbox bg={profImg.thumb62x62} />
+                              </a>
+                            ) : (
+                              <a href={`/mypage/${writerNo}`}>
+                                <Imgbox bg={profImg.thumb62x62} />
+                              </a>
+                            )}
+
                             <div>
-                              <span>{nickNm}</span>
-                              <span>(@{memId})</span>
+                              {profile.memNo == writerNo ? (
+                                <a href={`/menu/profile`}>
+                                  <span>{nickNm}</span>
+                                  <span>(@{memId})</span>
+                                </a>
+                              ) : (
+                                <a href={`/mypage/${writerNo}`}>
+                                  <span>{nickNm}</span>
+                                  <span>(@{memId})</span>
+                                </a>
+                              )}
                               <span>{timeFormat(writeDt)}</span>
                             </div>
                             <BtnIcon
@@ -718,7 +754,10 @@ const CommentBox = styled.div`
       display: flex;
       flex-wrap: wrap;
       width: calc(100% - 42px);
-      span:nth-child(1) {
+      a {
+        display: flex;
+      }
+      a span:nth-child(1) {
         display: block;
         max-width: 60.56%;
         overflow-x: hidden;
@@ -732,7 +771,7 @@ const CommentBox = styled.div`
         line-height: 1.43;
         margin-right: 4px;
       }
-      span:nth-child(2) {
+      a span:nth-child(2) {
         display: block;
         width: calc(39.44% - 4px);
         color: ${COLOR_MAIN};
@@ -741,7 +780,7 @@ const CommentBox = styled.div`
         letter-spacing: -0.03px;
         transform: skew(-0.03deg);
       }
-      span:nth-child(3) {
+      a + span {
         display: block;
         width: 100%;
         margin-top: 2px;

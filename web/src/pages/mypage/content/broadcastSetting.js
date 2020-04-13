@@ -99,6 +99,7 @@ const SelectWrap = styled.div`
   transform: skew(-0.03deg);
   z-index: 8;
   > div > div {
+    width: 154px;
     font-size: 14px !important;
     background-color: #fff;
     :before {
