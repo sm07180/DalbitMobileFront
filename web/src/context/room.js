@@ -12,7 +12,7 @@
     //render추가
     return (   <Room />   )
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
@@ -27,16 +27,14 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
-  const [roomPass, setRoomPass] = useState('')
   //interface
   Room.context = context
   Room.roomNo = roomNo
-  Room.roomPass = roomPass
-  Room.setRoomPass = str => setRoomPass(str)
   Room.setRoomNo = num => setRoomNo(num)
-
   //-----------------------------------------------------------
-
+  // useEffect(() => {
+  //   console.log('Room.roomNo : ' + Room.roomNo)
+  // }, [Room.roomNo])
   //-----------------------------------------------------------
   return <React.Fragment />
 }
@@ -71,11 +69,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    //RoomCheck
-    Hybrid('RoomCheck')
-
-    console.log('실행')
-    //
     Room.setRoomNo(roomNo)
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
