@@ -31,6 +31,11 @@ const makeContents = props => {
         }}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb150x150']})`}} />
         <div className="broadcast-content">
+          <div className="icon-wrap">
+            <div className="type-icon"></div>
+            <div className="type-text"></div>
+            <div className="gender-icon"></div>
+          </div>
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
           <div className="detail">
@@ -67,7 +72,7 @@ const LiveList = styled.div`
   .broadcast-img {
     width: 72px;
     height: 72px;
-    border-radius: 26px;
+    border-radius: 12px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -79,6 +84,40 @@ const LiveList = styled.div`
 
     & > div {
       margin: 5px 0;
+    }
+
+    .icon-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .type-icon {
+        width: 26px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: #febd56;
+      }
+
+      .type-text {
+        min-width: 30px;
+        height: 16px;
+        background-color: #bdbdbd;
+        border-radius: 8px;
+      }
+
+      .gender-icon {
+        width: 44px;
+        height: 16px;
+        border: 1px solid #27a2db;
+        border-radius: 10px;
+
+        &.man {
+          border-color: #27a2db;
+        }
+        &.woman {
+          border-color: #f35da3;
+        }
+      }
     }
 
     .title {
