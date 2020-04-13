@@ -31,6 +31,7 @@ export default () => {
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
+          console.log(_.isEqual(context.token, event.detail))
           if (_.isEqual(context.token, event.detail)) {
             Room.setAuth(true)
           } else {
