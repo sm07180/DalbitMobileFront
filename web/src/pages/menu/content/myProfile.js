@@ -99,8 +99,8 @@ const myProfile = props => {
       context.action.updateCloseFanCnt(true)
     }
   }
-  console.log(urlrStr)
-  console.log(myProfileNo)
+  //console.log(urlrStr)
+  //console.log(myProfileNo)
 
   return (
     <MyProfile webview={webview}>
@@ -383,7 +383,7 @@ const CountingWrap = styled.div`
   margin-top: 12px;
   span {
     display: inline-block;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: -0.35px;
     color: #707070;
     transform: skew(-0.03deg);

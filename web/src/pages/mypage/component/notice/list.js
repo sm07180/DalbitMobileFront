@@ -160,7 +160,7 @@ const List = props => {
           props.toggle(noticeIdx)
         }}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
-          <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
+          {isTop && <em></em>}
           <span className="text">{title}</span>
         </TitleWrap>
 
@@ -254,6 +254,12 @@ const TitleWrap = styled.div`
   font-size: 14px;
   transform: skew(-0.03deg);
   margin-left: 4px;
+  > em {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url(${IMG_SERVER}/images/api/ic_thumbtack.png) no-repeat center center / cover;
+  }
   > i {
     display: none;
   }

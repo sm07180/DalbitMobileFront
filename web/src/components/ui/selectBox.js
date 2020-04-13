@@ -57,45 +57,49 @@ export default props => {
   )
 }
 
-const selectListFadeIn = keyframes`
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`
-const selectListFadeOut = keyframes`
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  99% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    height: 0;
-    transform: scale(0);
-  }
-`
+// const selectListFadeIn = keyframes`
+//   0% {
+//     opacity: 0;
+//     transform: translateY(-10px);
+//   }
+//   100% {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+// `
+// const selectListFadeOut = keyframes`
+//   0% {
+//     opacity: 1;
+//     transform: translateY(0);
+//   }
+//   99% {
+//     opacity: 0;
+//     transform: translateY(-10px);
+//   }
+//   100% {
+//     height: 0;
+//     transform: scale(0);
+//   }
+// `
 
 const SelectListWrap = styled.div`
   border: 1px solid #8556f6;
   border-top: none;
-  animation-duration: 0.1s;
+  /* animation-duration: 0.1s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-timing-function: ease-in;
+  animation-timing-function: ease-in; */
 
   &.open {
-    animation-name: ${selectListFadeIn};
+    opacity: 1;
+    transform: translateY(0);
   }
 
   &.close {
-    animation-name: ${selectListFadeOut};
+    opacity: 0;
+    height: 0;
+    transform: translateY(-10px);
+    transform: scale(0);
   }
 
   &.init {

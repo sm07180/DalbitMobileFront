@@ -68,10 +68,10 @@ export default props => {
     if (res.result === 'success') {
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
 
@@ -820,7 +820,7 @@ const DetailBtn = styled.div`
   top: 52px;
   right: 0;
   display: none;
-  z-index: 8;
+  z-index: 9;
   flex-direction: column;
   width: 103px;
   padding: 10px 0;
