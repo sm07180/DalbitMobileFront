@@ -27,6 +27,7 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
+        alert(event.detail)
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
