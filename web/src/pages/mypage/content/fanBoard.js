@@ -68,10 +68,10 @@ export default props => {
     if (res.result === 'success') {
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
 
@@ -366,7 +366,7 @@ export default props => {
         <ListArea>
           <ListTitle>
             <span>게시글</span>
-            <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{count}</span>
+            <span style={{marginLeft: '4px', fontWeight: 'bold'}}>{count}</span>
           </ListTitle>
           {fanTotal.map((item, index) => {
             const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
@@ -820,7 +820,7 @@ const DetailBtn = styled.div`
   top: 52px;
   right: 0;
   display: none;
-  z-index: 8;
+  z-index: 9;
   flex-direction: column;
   width: 103px;
   padding: 10px 0;

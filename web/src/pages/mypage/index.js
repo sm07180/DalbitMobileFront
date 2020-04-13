@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 // component
 import Layout from 'pages/common/layout'
 import MyProfile from './content/myProfile.js'
@@ -38,6 +38,8 @@ import qs from 'query-string'
 
 export default props => {
   const {webview} = qs.parse(location.search)
+  const urlrStr = props.location.pathname.split('/')[2]
+  const history = useHistory()
   //navi
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '공지사항'},
@@ -53,6 +55,7 @@ export default props => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
   let {memNo, type} = useParams()
+
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   if (profile && profile.memNo !== memNo) {
