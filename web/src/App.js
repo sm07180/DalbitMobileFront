@@ -94,17 +94,11 @@ const App = () => {
 
         if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-
-          // const customHeaderCookie = Utility.getCookie('custom-header')
-          // if (customHeaderCookie) {
-          //   if (isJsonString(customHeaderCookie)) {
-          //     const parsed = JSON.parse(customHeaderCookie)
-          //     if (parsed['isFirst'] === 'Y') {
-          //       parsed['isFirst'] = 'N'
-          //       globalCtx.action.updateCustomHeader(parsed)
-          //     }
-          //   }
-          // }
+          if (customHeader['os'] === OS_TYPE['Android']) {
+            if (window.location.pathname === '/') {
+              window.location.reload()
+            }
+          }
         } else if (customHeader['isFirst'] === 'N') {
           // ?webview=new 형태로 이루어진 player종료
           const nativeInfo = Utility.getCookie('native-player-info')

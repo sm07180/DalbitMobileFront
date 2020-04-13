@@ -36,8 +36,6 @@ const GlobalProvider = props => {
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   const [search, setSearch] = useState('')
-  const [roomReady, setRoomReady] = useState(false)
-  const [reloadType, setReloadType] = useState(0)
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
   const [mypageReport, setMypageReport] = useState(false)
@@ -192,12 +190,6 @@ const GlobalProvider = props => {
     updateSearch: str => {
       setSearch(str)
     },
-    updateRoomReady: bool => {
-      setRoomReady(bool)
-    },
-    updateReloadType: num => {
-      setReloadType(num)
-    },
     updateLogoChange: status => {
       setLogoChange(status)
     },
@@ -242,8 +234,6 @@ const GlobalProvider = props => {
     cast_state,
     search,
     action,
-    roomReady,
-    reloadType,
     logoChange,
     player,
     mypageReport,
