@@ -71,24 +71,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    const nativeRoomCheck = () => {
-      if (Room.context !== undefined && Room.context !== null) {
-        Hybrid('RoomCheck')
-        return true
-      } else {
-        return false
-      }
-    }
-    console.log(Room.roomPass)
-    //test
-    console.log('---')
-    const _res = await nativeRoomCheck()
-
-    if (_res && Room.roomPass) {
-      alert('실행')
-    } else {
-      return
-    }
+    //roomCheck
+    Hybrid('RoomCheck')
     //RoomCheck
 
     // if (Room.context !== undefined && Room.context !== null) {
