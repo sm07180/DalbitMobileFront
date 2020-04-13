@@ -6,10 +6,9 @@ let touchEndX = null
 let swiping = false
 let touchStartStatus = false
 let autoIntervalId = null
-let tempSelectedNode = null
 
 export default props => {
-  const {onSwipe, selectedBIdx, clickSwipEvent, selectedWrapRef} = props
+  const {onSwipe, selectedBIdx, clickSwipEvent} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -48,42 +47,39 @@ export default props => {
       if (direction === 'right') {
         // right swipe
         const l_child = wrapperNode.lastChild
-        const cloned = l_child.cloneNode(true)
-        const f_child = wrapperNode.firstChild
-
-        cloned.addEventListener('click', clickSwipEvent)
-        wrapperNode.insertBefore(cloned, f_child)
-
-        l_child.removeEventListener('click', clickSwipEvent)
-        wrapperNode.removeChild(l_child)
+        if (l_child) {
+          const cloned = l_child.cloneNode(true)
+          const f_child = wrapperNode.firstChild
+          wrapperNode.insertBefore(cloned, f_child)
+          wrapperNode.removeChild(l_child)
+        }
       } else if (direction === 'left') {
         // left swipe
         const f_child = wrapperNode.firstChild
-        const cloned = f_child.cloneNode(true)
-
-        cloned.addEventListener('click', clickSwipEvent)
-        wrapperNode.appendChild(cloned)
-
-        f_child.removeEventListener('click', clickSwipEvent)
-        wrapperNode.removeChild(f_child)
+        if (f_child) {
+          const cloned = f_child.cloneNode(true)
+          wrapperNode.appendChild(cloned)
+          wrapperNode.removeChild(f_child)
+        }
       }
+      if (childrenLength > 0) {
+        const centerNodeIdx = Math.floor(childrenLength / 2)
+        const targetNode = wrapperNode.childNodes[centerNodeIdx]
+        const bIdx = Number(targetNode.getAttribute('data-idx'))
+        onSwipe(bIdx)
 
-      const centerNodeIdx = Math.floor(childrenLength / 2)
-      const targetNode = wrapperNode.childNodes[centerNodeIdx]
-      const bIdx = Number(targetNode.getAttribute('data-idx'))
-      onSwipe(bIdx)
-
-      wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
-      touchStartX = null
-      touchEndX = null
-      swiping = false
+        wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+        touchStartX = null
+        touchEndX = null
+        swiping = false
+      }
 
       autoSlideInterval()
     }, 300)
   }
 
   const autoSlideInterval = () => {
-    if (props.children.length) {
+    if (props.children.length > 1) {
       autoIntervalId = setInterval(() => {
         oneStepSlide('left')
       }, 3000)
@@ -136,49 +132,14 @@ export default props => {
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }
 
-  const setClickEventAllSlide = () => {
-    const wrapperNode = wrapperRef.current
-    wrapperNode.childNodes.forEach(child => {
-      child.addEventListener('click', clickSwipEvent)
-    })
-  }
-
-  const removeClickEventAllSlide = () => {
-    const wrapperNode = wrapperRef.current
-    if (wrapperNode) {
-      wrapperNode.childNodes.forEach(child => {
-        child.removeEventListener('click', clickSwipEvent)
-      })
-    }
-  }
-
-  const setTouchEventSelectedWrap = () => {
-    const selectedWrapNode = selectedWrapRef.current
-    tempSelectedNode = selectedWrapNode
-    selectedWrapNode.addEventListener('touchstart', touchStartEvent)
-    selectedWrapNode.addEventListener('touchmove', touchMoveEvent)
-    selectedWrapNode.addEventListener('touchend', touchEndEvent)
-  }
-
-  const removeTouchEventSelectedWrap = () => {
-    if (tempSelectedNode) {
-      tempSelectedNode.removeEventListener('touchstart', touchStartEvent)
-      tempSelectedNode.removeEventListener('touchmove', touchMoveEvent)
-      tempSelectedNode.removeEventListener('touchend', touchEndEvent)
-    }
-    tempSelectedNode = null
-  }
-
   useEffect(() => {
     initialSwipperWrapperStyle()
+
     window.addEventListener('resize', initialSwipperWrapperStyle)
-    setClickEventAllSlide()
-    setTouchEventSelectedWrap()
     autoSlideInterval()
+
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
-      removeClickEventAllSlide()
-      removeTouchEventSelectedWrap()
       setInitClosureVariable()
     }
   }, [])
@@ -195,6 +156,8 @@ export default props => {
       }
     })
   }, [selectedBIdx])
+
+  useEffect(() => {}, [])
 
   return (
     <Swiper
