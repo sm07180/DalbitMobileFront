@@ -27,13 +27,16 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        alert('native-push')
         alert(JSON.stringify(event.detail, null, 1))
         break
-      case 'native-room-check': //----------------------Native RoomCheck
+      case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
-          alert('native-room-check :' + event.detail)
-          Room.setRoomPass(event.detail)
+          console.log(_.isEqual(context.token, event.detail))
+          if (_.isEqual(context.token, event.detail)) {
+            Room.setAuth(true)
+          } else {
+            alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
+          }
         }
         break
       case 'native-navigator': //-----------------------Native navigator
@@ -105,7 +108,7 @@ export default () => {
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
     document.addEventListener('native-push', update) //푸쉬관련
-    document.addEventListener('native-room-check', update) //방인증정보
+    document.addEventListener('native-auth-check', update) //방인증정보
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -118,7 +121,7 @@ export default () => {
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
       document.removeEventListener('native-push', update)
-      document.removeEventListener('native-room-check', update)
+      document.removeEventListener('native-auth-check', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)

@@ -20,6 +20,7 @@ export default props => {
   const {webview} = qs.parse(location.search)
   //context
   const context = useContext(Context)
+  const MyMemNo = context.profile && context.profile.memNo
   //---------------------------------------------------------------------
   //map
   const creatList = () => {
@@ -28,9 +29,9 @@ export default props => {
       let rankName
       let link = ''
       if (webview) {
-        link = context.profile.memNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+        link = MyMemNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
       } else {
-        link = context.profile.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
       }
       if (rank == 1 || rank == 2 || rank == 3) {
         rankName = `medal top${rank}`
