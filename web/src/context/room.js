@@ -73,8 +73,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     const nativeRoomCheck = () => {
       if (Room.context !== undefined && Room.context !== null) {
-        console.log(Room.context.token)
-        Hybrid('RoomCheck', Room.context.token)
+        Hybrid('RoomCheck')
         return true
       } else {
         return false
