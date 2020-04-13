@@ -6,10 +6,9 @@ let touchEndX = null
 let swiping = false
 let touchStartStatus = false
 let autoIntervalId = null
-let tempSelectedNode = null
 
 export default props => {
-  const {onSwipe, selectedBIdx, clickSwipEvent, selectedWrapRef} = props
+  const {onSwipe, selectedBIdx, clickSwipEvent} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -52,10 +51,10 @@ export default props => {
           const cloned = l_child.cloneNode(true)
           const f_child = wrapperNode.firstChild
 
-          cloned.addEventListener('click', clickSwipEvent)
+          // cloned.addEventListener('click', clickSwipEvent)
           wrapperNode.insertBefore(cloned, f_child)
 
-          l_child.removeEventListener('click', clickSwipEvent)
+          // l_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(l_child)
         }
       } else if (direction === 'left') {
@@ -64,10 +63,10 @@ export default props => {
         if (f_child) {
           const cloned = f_child.cloneNode(true)
 
-          cloned.addEventListener('click', clickSwipEvent)
+          // cloned.addEventListener('click', clickSwipEvent)
           wrapperNode.appendChild(cloned)
 
-          f_child.removeEventListener('click', clickSwipEvent)
+          // f_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(f_child)
         }
       }
@@ -145,7 +144,7 @@ export default props => {
     initialSwipperWrapperStyle()
 
     window.addEventListener('resize', initialSwipperWrapperStyle)
-    autoSlideInterval()
+    // autoSlideInterval()
 
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)

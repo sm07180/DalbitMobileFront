@@ -11,7 +11,6 @@ import LiveIcon from '../static/ic_live.png'
 
 let touchStartX = null
 let touchEndX = null
-let swiping = false
 let touchStartStatus = false
 
 export default props => {
@@ -63,7 +62,7 @@ export default props => {
   }
 
   const touchEndEvent = e => {
-    if (!touchEndX || !touchStartStatus || swiping) {
+    if (!touchEndX || !touchStartStatus) {
       return
     }
 
@@ -96,6 +95,7 @@ export default props => {
     promiseSync
       .then(() => {
         slideWrapNode.style.transitionDuration = '0ms'
+        touchStartStatus = false
       })
       .then(() => {
         if (absDiff >= halfBaseWidth) {
@@ -114,7 +114,39 @@ export default props => {
     slideWrapRef.current.style.transform = 'translate3d(-33.3334%, 0, 0)'
   }
 
-  useEffect(() => {}, [selectedBIdx])
+  useEffect(() => {
+    const slideWrapNode = slideWrapRef.current
+    if (slideWrapNode) {
+      // if (direction === 'right') {
+      //   // right swipe
+      //   const l_child = wrapperNode.lastChild
+      //   if (l_child) {
+      //     const cloned = l_child.cloneNode(true)
+      //     const f_child = wrapperNode.firstChild
+      //     wrapperNode.insertBefore(cloned, f_child)
+      //     wrapperNode.removeChild(l_child)
+      //   }
+      // } else if (direction === 'left') {
+      //   // left swipe
+      //   const f_child = wrapperNode.firstChild
+      //   if (f_child) {
+      //     const cloned = f_child.cloneNode(true)
+      //     wrapperNode.appendChild(cloned)
+      //     wrapperNode.removeChild(f_child)
+      //   }
+      // }
+      // if (childrenLength > 0) {
+      //   const centerNodeIdx = Math.floor(childrenLength / 2)
+      //   const targetNode = wrapperNode.childNodes[centerNodeIdx]
+      //   const bIdx = Number(targetNode.getAttribute('data-idx'))
+      //   onSwipe(bIdx)
+      //   wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+      //   touchStartX = null
+      //   touchEndX = null
+      //   swiping = false
+      // }
+    }
+  }, [selectedBIdx])
 
   if (selectedBIdx === null) {
     return null
