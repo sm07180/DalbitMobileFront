@@ -91,6 +91,10 @@ const LiveList = styled.div`
       flex-direction: row;
       align-items: center;
 
+      & > div {
+        margin-right: 2px;
+      }
+
       .type-icon {
         width: 26px;
         height: 16px;
@@ -103,6 +107,7 @@ const LiveList = styled.div`
         height: 16px;
         background-color: #bdbdbd;
         border-radius: 8px;
+        color: #fff;
       }
 
       .gender-icon {
