@@ -15,10 +15,12 @@ import useChange from 'components/hooks/useChange'
 import Api from 'context/api'
 import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
+import {CustomerStore} from '../store'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
-import use from 'pages/setting/content/use'
-export default props => {
+import MyPersonal from './mypersonal'
+// static
+const Personal = props => {
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
     {value: 1, text: '회원정보'},
@@ -35,14 +37,9 @@ export default props => {
   //context
   const context = useContext(Context)
   const history = useHistory()
+  const store = useContext(CustomerStore)
+  Personal.store = store
   //hooks
-  const dropDown1 = useClick(update, {downDown: 1, questionName: '회원정보'}) //회원정보
-  const dropDown2 = useClick(update, {downDown: 2, questionName: '방송'}) //방송
-  const dropDown3 = useClick(update, {downDown: 3, questionName: '청취'}) //청취
-  const dropDown4 = useClick(update, {downDown: 4, questionName: '결제'}) //결제
-  const dropDown5 = useClick(update, {downDown: 5, questionName: '건의'}) //건의
-  const dropDown6 = useClick(update, {downDown: 6, questionName: '장애/버그'}) //장애/버그
-  const dropDown7 = useClick(update, {downDown: 7, questionName: '선물/아이'}) //선물/아이
   //
   const cancel = useClick(update, {cancel: '취소'})
   const submit = useClick(update, {submit: '문의하기'})
@@ -73,7 +70,7 @@ export default props => {
           title: '내용',
           msg: '내용을 입력해 주세요'
         })
-      } else if (obj.data.qnaType === '') {
+      } else if (obj.data.qnaType === 0) {
         context.action.alert({
           title: '문의 유형 선택',
           msg: '문의 유형을 선택해 주세요'
@@ -87,7 +84,7 @@ export default props => {
         }
       })
     }
-    console.log(res)
+    console.log(res.message)
   }
   //update
   function update(mode) {
@@ -104,7 +101,6 @@ export default props => {
         //console.log(JSON.stringify(changes))
         break
       case onChangeEvent !== undefined: //----------------------------상태변화
-        //console.log(JSON.stringify(changes))
         break
     }
   }
@@ -177,85 +173,135 @@ export default props => {
       setImgurl(changes.questionFile)
     }
   }, [changes.questionFile])
+  //추가 스테이트
+  const [personalType, setPersonalType] = useState(' 1:1 문의 작성')
+  const [walletType, setWalletType] = useState(0)
 
-  // } else if (changes.questionFile !== undefined) {
+  const [controllState, setcontrollState] = useState(false)
+
+  const changePersonalTypeClick = type => {
+    setPersonalType(type)
+    setWalletType(0)
+    setcontrollState(!controllState)
+  }
+
   //--------------------------------------------------------------------------
   return (
-    <Content>
-      <dl>
-        <dt>문의 유형 선택</dt>
-        <Select>
-          <SelectBoxs
-            type={'remove-init-data'}
-            boxList={selectBoxData}
-            onChangeEvent={typeActive}
-            inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
-          />
-        </Select>
-      </dl>
-      <dl>
-        <dt>E-mail</dt>
-        <dd>
-          <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
-        </dd>
-        <dd>
-          <p className="infoupload">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
-        </dd>
-      </dl>
-      <dl>
-        <dt>제목</dt>
-        <dd>
-          <input type="text" placeholder="내용을 입력해 주세요." name="title" onChange={onChange} />
-        </dd>
-      </dl>
-      <dl>
-        <dt>내용</dt>
-        <dd>
-          <textarea name="" id="" cols="30" rows="10" placeholder="내용을 입력해 주세요." name="contents" onChange={onChange} />
-        </dd>
-      </dl>
-      <dl>
-        <dt>첨부파일</dt>
-        <dd>
-          {/* 이미지첨부파일 */}
+    <>
+      <div>
+        <TitleWrap>
+          <PersonalTypeBtn
+            className={personalType === '나의 문의 내역' ? 'active' : ''}
+            onClick={() => {
+              changePersonalTypeClick('나의 문의 내역')
+            }}>
+            나의 문의내역
+          </PersonalTypeBtn>
+          <PersonalTypeBtn
+            className={personalType === ' 1:1 문의 작성' ? 'active' : ''}
+            onClick={() => {
+              changePersonalTypeClick(' 1:1 문의 작성')
+            }}>
+            1:1 문의 작성
+          </PersonalTypeBtn>
+        </TitleWrap>
 
-          <ImgUploader>
-            <div className="textinput">
-              <p className="urltext">{imgurls}</p>
-              <input id="imgUploadTxt" type="text" placeholder="파일을 첨부할 수 있습니다." value={changes.questionFile} />
-              <label htmlFor="imgUpload">
-                <span>첨부파일</span>
-              </label>
-              <input
-                type="file"
-                name="imgUpload"
-                id="imgUpload"
-                accept="image/jpg, image/jpeg, image/png"
-                onChange={e => {
-                  uploadSingleFile(e)
-                }}
-              />
+        {personalType === ' 1:1 문의 작성' && (
+          <Content>
+            <dl>
+              <dt>문의 유형 선택</dt>
+              <Select>
+                <SelectBoxs
+                  type={'remove-init-data'}
+                  boxList={selectBoxData}
+                  onChangeEvent={typeActive}
+                  inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
+                />
+              </Select>
+            </dl>
+            <dl>
+              <dt>E-mail</dt>
+              <dd>
+                <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
+              </dd>
+              <dd>
+                <p className="infoupload">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
+              </dd>
+            </dl>
+            <dl>
+              <dt>제목</dt>
+              <dd>
+                <input type="text" placeholder="내용을 입력해 주세요." name="title" onChange={onChange} />
+              </dd>
+            </dl>
+            <dl>
+              <dt>내용</dt>
+              <dd>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                  placeholder="내용을 입력해 주세요."
+                  name="contents"
+                  onChange={onChange}
+                />
+              </dd>
+            </dl>
+            <dl>
+              <dt>첨부파일</dt>
+              <dd>
+                {/* 이미지첨부파일 */}
+
+                <ImgUploader>
+                  <div className="textinput">
+                    <p className="urltext">{imgurls}</p>
+                    <input id="imgUploadTxt" type="text" placeholder="파일을 첨부할 수 있습니다." value={changes.questionFile} />
+                    <label htmlFor="imgUpload">
+                      <span>첨부파일</span>
+                    </label>
+                    <input
+                      type="file"
+                      name="imgUpload"
+                      id="imgUpload"
+                      accept="image/jpg, image/jpeg, image/png"
+                      onChange={e => {
+                        uploadSingleFile(e)
+                      }}
+                    />
+                  </div>
+                </ImgUploader>
+
+                <p className="infoupload">※ gif, jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
+              </dd>
+            </dl>
+            <div className="in_wrap">
+              <button {...cancel} className="cancel">
+                취소
+              </button>
+              <button {...submit} className="submit">
+                문의하기
+              </button>
             </div>
-          </ImgUploader>
-
-          <p className="infoupload">※ gif, jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
-        </dd>
-      </dl>
-      <div className="in_wrap">
-        <button {...cancel} className="cancel">
-          취소
-        </button>
-        <button {...submit} className="submit">
-          문의하기
-        </button>
+          </Content>
+        )}
+        {personalType === '나의 문의 내역' && <MyPersonal perPage={Store().page} {...props} />}
       </div>
-    </Content>
+    </>
   )
+}
+export default Personal
+//---------------------------------------------------------------------
+/**
+ * @title 스토어객체
+ */
+export const Store = () => {
+  return Personal.store
 }
 //style
 //----------------------------------------------------------------------------
 const Content = styled.div`
-  margin-top: 40px;
+  /* margin-top: 40px; */
   border-top: 1px solid ${COLOR_MAIN};
   .in_wrap {
     display: block;
@@ -417,4 +463,84 @@ const ImgUploader = styled.div`
     max-width: 110px;
     font-size: 14px;
   }
+`
+//styled-------------------------------------------------------------------------------
+const CoinChargeBtn = styled.button`
+  padding: 16px 44px;
+  color: #fff;
+  background-color: #8556f6;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+
+  &.white-btn {
+    border: 1px solid #8556f6;
+    background-color: #fff;
+    color: #8556f6;
+    margin-right: 12px;
+  }
+`
+const CoinCurrentStatus = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  user-select: none;
+
+  .text {
+    color: #9e9e9e;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
+    }
+  }
+  .coin-img {
+    width: 44px;
+    margin-left: 20px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 36px;
+      margin-left: 0;
+      margin-right: 3px;
+    }
+  }
+  .current-value {
+    color: #8556f6;
+    font-size: 28px;
+    letter-spacing: -0.7px;
+    font-weight: 600;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      font-size: 20px;
+    }
+  }
+`
+
+const PersonalTypeBtn = styled.button`
+  position: relative;
+  width: 44.55%;
+  border-radius: 20px;
+  border: solid 1px #e0e0e0;
+  padding: 11px 0;
+  font-size: 16px;
+  text-align: center;
+  color: #757575;
+  &:first-child {
+    margin-right: 6px;
+  }
+  &.active {
+    border: solid 1px ${COLOR_MAIN};
+    color: #8556f6;
+  }
+`
+const TitleWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0 16px 0;
+
+  font-size: 16px;
 `

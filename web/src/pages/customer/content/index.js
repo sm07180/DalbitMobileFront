@@ -41,11 +41,11 @@ const Index = props => {
       case 'faq': //FAQ
         return <Faq perPage={Store().page} {...props} />
       case 'personal': //1:1문의
-        return <Personal />
+        return <Personal perPage={Store().page} {...props} />
       case 'broadcast_guide': //방송 가이드(미정)
         return <h1>미정_감출것인지</h1>
       default:
-        return <Notice perPage={Store().page} {...props} />
+        return <Notice />
     }
   }
 
