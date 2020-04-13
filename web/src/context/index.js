@@ -32,7 +32,6 @@ const GlobalProvider = props => {
   const [gnb_visible, setGnbVisible] = useState(false)
   const [gnb_state, setGnbState] = useState('')
   const [login_state, setlogin] = useState(false)
-  const [mediaHandler, setMediaHandler] = useState(null)
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
   const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
   const [search, setSearch] = useState('')
@@ -152,11 +151,6 @@ const GlobalProvider = props => {
       setlogin(bool)
       setGnbVisible(false)
     },
-    // 오디오 정보
-    updateMediaHandler: instance => {
-      setMediaHandler(instance)
-    },
-
     /**
      * 오디오 글로벌 플레이어 상태
      * @param boolean status
@@ -229,7 +223,6 @@ const GlobalProvider = props => {
     popup_visible,
     gnb_visible,
     gnb_state,
-    mediaHandler,
     mediaPlayerStatus,
     cast_state,
     search,

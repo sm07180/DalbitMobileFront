@@ -334,31 +334,3 @@ const Figure = styled.figure`
     margin-right: 10px;
   }
 `
-
-/**
-   {pathCheck && mediaPlayerStatus && mediaHandler && mediaHandler.rtcPeerConn && (
-        <MediaPlayerWrap>
-          <MediaPlayer>
-            {mediaHandler.type === 'listener' && (
-              <>
-                <img style={{width: '60px', borderRadius: '50%'}} src={mediaHandler.connectedHostImage} />
-                <img
-                  src={stopSvg}
-                  style={{
-                    cursor: 'pointer',
-                    marginLeft: 'auto',
-                    width: '36px',
-                    height: '36px'
-                  }}
-                  onClick={() => {
-                    if (mediaHandler.rtcPeerConn) {
-                      mediaHandler.stop()
-                    }
-                  }}
-                />
-              </>
-            )}
-          </MediaPlayer>
-        </MediaPlayerWrap>
-      )}
- */
