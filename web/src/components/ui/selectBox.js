@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 export default props => {
-  const {boxList, onChangeEvent, inlineStyling, className, type} = props
+  const {boxList, onChangeEvent, inlineStyling, className, type, controllState} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [opened, setOpened] = useState(null)
 
@@ -27,6 +27,10 @@ export default props => {
   useEffect(() => {
     return () => {}
   }, [])
+
+  useEffect(() => {
+    selectBoxList(boxList[0].value, 0)
+  }, [controllState])
 
   return (
     <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? `wrapper ${className}` : 'wrapper'}>
