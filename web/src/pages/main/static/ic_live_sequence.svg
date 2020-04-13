@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_circle_plus" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#fff;stroke:#424242;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <path id="prefix__사각형_314" d="M0 0H24V24H0z" data-name="사각형 314" style="fill:transparent;opacity:.51"/>
+    <g id="prefix__그룹_10497" data-name="그룹 10497" transform="translate(3.721 4.333)">
+        <path id="prefix__선_118" d="M0 0L0 14.733" class="prefix__cls-2" data-name="선 118" transform="translate(14.616)"/>
+        <path id="prefix__사각형_817" d="M0 0H4.065V2.336H0z" class="prefix__cls-2" data-name="사각형 817" transform="translate(12.583 9.601)"/>
+        <path id="prefix__선_119" d="M0 0L2.3 0" class="prefix__cls-2" data-name="선 119" transform="translate(13.466)"/>
+        <path id="prefix__선_120" d="M2.3 0L0 0" class="prefix__cls-2" data-name="선 120" transform="translate(13.466 14.733)"/>
+        <path id="prefix__선_121" d="M0 0L0 14.733" class="prefix__cls-2" data-name="선 121" transform="translate(8.324)"/>
+        <path id="prefix__사각형_818" d="M0 0H4.065V2.336H0z" class="prefix__cls-2" data-name="사각형 818" transform="translate(6.292 6.198)"/>
+        <path id="prefix__선_122" d="M0 0L2.3 0" class="prefix__cls-2" data-name="선 122" transform="translate(7.175)"/>
+        <path id="prefix__선_123" d="M2.3 0L0 0" class="prefix__cls-2" data-name="선 123" transform="translate(7.175 14.733)"/>
+        <path id="prefix__선_124" d="M0 0L0 14.733" class="prefix__cls-2" data-name="선 124" transform="translate(2.033)"/>
+        <path id="prefix__사각형_819" d="M0 0H4.065V2.336H0z" class="prefix__cls-2" data-name="사각형 819" transform="translate(0 2.877)"/>
+        <path id="prefix__선_125" d="M0 0L2.3 0" class="prefix__cls-2" data-name="선 125" transform="translate(.883)"/>
+        <path id="prefix__선_126" d="M2.3 0L0 0" class="prefix__cls-2" data-name="선 126" transform="translate(.883 14.733)"/>
+    </g>
+</svg>
