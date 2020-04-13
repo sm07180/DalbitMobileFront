@@ -4,7 +4,6 @@
  */
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
 
 //context
 import {Context} from 'context'
@@ -12,9 +11,9 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 export default props => {
   const context = useContext(Context)
-  let history = useHistory()
-  const {url, name, memNo} = props
+  const {url, name, memNo, link} = props
   //---------------------------------------------------------------------
+
   return (
     <>
       {props && (
@@ -22,7 +21,7 @@ export default props => {
           url={url}
           className="figure"
           onClick={() => {
-            history.push(`/mypage/${memNo}`)
+            window.location.href = link
           }}>
           <img src={url} alt={name} />
         </Figure>

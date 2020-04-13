@@ -4,6 +4,7 @@
  */
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -16,7 +17,7 @@ import Figure from './Figure'
 
 export default props => {
   //---------------------------------------------------------------------
-
+  const {webview} = qs.parse(location.search)
   //context
   const context = useContext(Context)
   //---------------------------------------------------------------------
@@ -25,6 +26,12 @@ export default props => {
     return props.list.map((item, index) => {
       const {rank, level, nickNm, profImg, memNo} = item
       let rankName
+      let link = ''
+      if (webview) {
+        link = context.profile.memNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+      } else {
+        link = context.profile.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+      }
       if (rank == 1 || rank == 2 || rank == 3) {
         rankName = `medal top${rank}`
       }
@@ -33,8 +40,11 @@ export default props => {
           <h3 className={rankName}>
             <span>{rank}</span>
           </h3>
-          <Figure url={profImg.thumb120x120} memNo={memNo} />
-          <div>
+          <Figure url={profImg.thumb120x120} memNo={memNo} link={link} />
+          <div
+            onClick={() => {
+              window.location.href = link
+            }}>
             <strong>Lv {level}</strong>
             <p>{nickNm}</p>
           </div>
@@ -99,7 +109,8 @@ const RankList = styled.ul`
 
     div {
       overflow: hidden;
-      width: calc(100% - 200px);
+      max-width: calc(100% - 200px);
+      cursor: pointer;
       padding: 15px 0 13px 0;
       strong {
         display: inline-block;
@@ -141,7 +152,7 @@ const RankList = styled.ul`
       }
 
       div {
-        width: calc(100% - 125px);
+        max-width: calc(100% - 125px);
         padding: 11px 0 9px 0;
         strong {
           font-size: 14px;

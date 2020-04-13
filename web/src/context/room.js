@@ -27,26 +27,16 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
-  const [roomPass, setRoomPass] = useState(false)
+  const [roomPass, setRoomPass] = useState('')
   //interface
   Room.context = context
   Room.roomNo = roomNo
   Room.roomPass = roomPass
-  Room.setRoomPass = bool => setRoomPass(bool)
+  Room.setRoomPass = str => setRoomPass(str)
   Room.setRoomNo = num => setRoomNo(num)
-  //roomCheck
-  const roomCheck = event => {
-    //alert('roomCheck')
-    alert(JSON.stringify(event.detail, null, 1))
-    Room.setRoomNo(true)
-  }
+
   //-----------------------------------------------------------
-  useEffect(() => {
-    document.addEventListener('native-room-check', roomCheck) //푸쉬관련
-    return () => {
-      document.removeEventListener('native-room-check', roomCheck)
-    }
-  }, [])
+
   //-----------------------------------------------------------
   return <React.Fragment />
 }
@@ -81,32 +71,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    const nativeRoomCheck = () => {
-      if (Room.context !== undefined && Room.context !== null) {
-        console.log(Room.context.token)
-        Hybrid('RoomCheck', Room.context.token)
-        return true
-      } else {
-        return false
-      }
-    }
-    console.log(Room.roomPass)
-    console.log('---')
-    const _res = await nativeRoomCheck()
-    console.log(_res)
-    console.log(Room.roomPass)
-    if (_res && Room.roomPass) {
-      alert('실행')
-    } else {
-      return
-    }
     //RoomCheck
+    Hybrid('RoomCheck')
 
-    // if (Room.context !== undefined && Room.context !== null) {
-    //   console.log(Room.context.token)
-    //   Hybrid('RoomCheck', Room.context.token)
-    // }
-    alert('--실행시작')
+    console.log('실행')
     //
     Room.setRoomNo(roomNo)
     //방송강제퇴장
