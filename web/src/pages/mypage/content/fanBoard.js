@@ -366,7 +366,7 @@ export default props => {
         <ListArea>
           <ListTitle>
             <span>게시글</span>
-            <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{count}</span>
+            <span style={{marginLeft: '4px', fontWeight: 'bold'}}>{count}</span>
           </ListTitle>
           {fanTotal.map((item, index) => {
             const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
