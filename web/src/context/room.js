@@ -27,9 +27,12 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
+  const [roomPass, setRoomPass] = useState(false)
   //interface
   Room.context = context
   Room.roomNo = roomNo
+  Room.roomPass = roomPass
+  Room.setRoomPass = bool => setRoomPass(bool)
   Room.setRoomNo = num => setRoomNo(num)
   //roomCheck
   const roomCheck = event => {
@@ -77,11 +80,28 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    const nativeRoomCheck = () => {
+      if (Room.context !== undefined && Room.context !== null) {
+        console.log(Room.context.token)
+        Hybrid('RoomCheck', Room.context.token)
+        return true
+      } else {
+        return false
+      }
+    }
+    const _res = await nativeRoomCheck()
+    if (_res && Room.setRoomPass) {
+      alert('실행')
+    } else {
+      return
+    }
     //RoomCheck
+
     if (Room.context !== undefined && Room.context !== null) {
-      console.log('RoomCheck')
+      console.log(Room.context.token)
       Hybrid('RoomCheck', Room.context.token)
     }
+    return
     //
     Room.setRoomNo(roomNo)
     //방송강제퇴장
