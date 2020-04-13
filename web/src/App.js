@@ -84,6 +84,8 @@ const App = () => {
       // *** Native App case
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
+          console.log('dfdf', tokenInfo.data.authToken)
+          console.log('abab', authToken)
           Hybrid('GetLoginToken', tokenInfo.data)
         }
 
