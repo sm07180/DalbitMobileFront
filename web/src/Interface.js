@@ -27,13 +27,11 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        alert('native-push')
         alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
           if (_.isEqual(context.token, event.detail)) {
-            alert('native-auth-check :' + JSON.stringify(event.detail, null, 1))
             Room.setAuth(true)
           } else {
             alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
