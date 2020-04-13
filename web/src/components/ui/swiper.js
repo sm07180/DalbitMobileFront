@@ -8,7 +8,7 @@ let touchStartStatus = false
 let autoIntervalId = null
 
 export default props => {
-  const {onSwipe, selectedBIdx, clickSwipEvent} = props
+  const {onSwipe, selectedBIdx} = props
   const swiperRef = useRef()
   const wrapperRef = useRef()
 
@@ -82,7 +82,7 @@ export default props => {
     if (props.children.length > 1) {
       autoIntervalId = setInterval(() => {
         oneStepSlide('left')
-      }, 3000)
+      }, 5000)
     }
   }
 

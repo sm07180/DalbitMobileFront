@@ -19,7 +19,6 @@ export default props => {
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
-  const swiperRef = useRef()
 
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()

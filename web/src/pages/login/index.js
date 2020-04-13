@@ -16,6 +16,7 @@ import naverLogo from './static/naver_logo.png'
 import kakaoLogo from './static/kakao_logo.png'
 import googleLogo from './static/google_logo.png'
 import facebookLogo from './static/fb_logo.png'
+import appleLogo from './static/apple_logo.svg'
 
 import qs from 'query-string'
 import Api from 'context/api'
@@ -189,6 +190,21 @@ export default props => {
               </a>
             </div>
 
+            <SocialLoginWrap>
+              <div className="line-wrap">
+                {/* <button className="new-design-social-btn"></button> */}
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
+                  <img className="icon" src={facebookLogo} />
+                </button>
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('naver')}>
+                  <img className="icon" src={naverLogo} />
+                </button>
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
+                  <img className="icon" src={kakaoLogo} />
+                </button>
+              </div>
+            </SocialLoginWrap>
+
             {/* <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-btn" onClick={() => fetchSocialData('facebook')}>
@@ -222,14 +238,24 @@ export default props => {
 
 const SocialLoginWrap = styled.div`
   margin-top: 80px;
-  margin-bottom: 40px;
+  margin-bottom: 120px;
 
   .line-wrap {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    margin-top: 14px;
+
+    .new-design-social-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #eee;
+
+      .icon {
+        width: 36px;
+      }
+    }
 
     .social-btn {
       display: flex;
@@ -283,6 +309,10 @@ const Login = styled.div`
       padding: 16px;
       width: 100%;
       height: 56px;
+      border-radius: 28px;
+      color: #616161;
+      font-size: 16px;
+      letter-spacing: -0.4px;
     }
     input[type='password'] {
       margin-top: 12px;
@@ -294,31 +324,33 @@ const Login = styled.div`
       display: block;
       margin-top: 12px;
       width: 100%;
-      background-color: #8556f6;
+      background-color: #632beb;
       color: #fff;
       font-size: 20px;
-      font-weight: bold;
-      padding: 21px 0;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      padding: 17px 0;
+      border-radius: 28px;
     }
   }
 
   .link-wrap {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     padding: 26px 0;
 
     .link-text {
-      color: #8556f6;
+      color: #632beb;
       font-size: 16px;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.64px;
     }
 
     .bar {
       width: 1px;
       height: 16px;
       background-color: #e5e5e5;
-      margin: 0 15px;
+      margin: 0 10px;
     }
   }
 `
