@@ -20,6 +20,7 @@ import NoResult from 'components/ui/noResult'
 const rankArray = ['dj', 'fan']
 const dateArray = ['전일', '주간', '월간']
 let currentPage = 1
+let moreState = false
 
 export default props => {
   //---------------------------------------------------------------------
@@ -33,8 +34,10 @@ export default props => {
   const [dateType, setDateType] = useState(1)
   const [list, setList] = useState(-1)
   const [nextList, setNextList] = useState(false)
-  const [moreState, setMoreState] = useState(false)
+  //const [moreState, setMoreState] = useState(false)
   const [myRank, setMyRank] = useState('-')
+
+  let listItem = -1
 
   //---------------------------------------------------------------------
   //map
@@ -116,10 +119,12 @@ export default props => {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
       if (res.data.list == false) {
         if (!next) setList(0)
-        setMoreState(false)
+        // setMoreState(false)
+        moreState = false
       } else {
         if (next) {
-          setMoreState(true)
+          // setMoreState(true)
+          moreState = true
           setNextList(res.data.list)
         } else {
           setList(res.data.list)
@@ -135,12 +140,15 @@ export default props => {
   }
 
   const showMoreList = () => {
-    setList(list.concat(nextList))
-    fetch(rankType, dateType, 'next')
+    if (moreState) {
+      setList(list.concat(nextList))
+      fetch(rankType, dateType, 'next')
+    }
   }
 
   //---------------------------------------------------------------------
   //checkScroll
+  let addList = ''
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function() {
@@ -152,9 +160,7 @@ export default props => {
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       if (windowBottom >= docHeight - 30) {
-        // showMoreList()
-        console.log('---')
-        //현재페이지와 전체페이지비교
+        showMoreList()
       } else {
       }
     }, 50)
@@ -167,7 +173,7 @@ export default props => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [])
+  }, [nextList])
 
   useEffect(() => {
     fetch(rankType, dateType)
@@ -195,9 +201,8 @@ export default props => {
         <div className="date-type">{createDateButton()}</div>
       </div>
       {context.profile && creatMyRank()}
-      {/* {list ? <RankList list={list} /> : <NoResult />} */}
       {creatResult()}
-      {moreState && (
+      {/* {moreState && (
         <button
           className="more-btn"
           onClick={() => {
@@ -205,7 +210,7 @@ export default props => {
           }}>
           더보기
         </button>
-      )}
+      )} */}
     </Contents>
   )
 }
