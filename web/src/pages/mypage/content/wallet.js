@@ -24,6 +24,7 @@ export default props => {
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
   const [totalCoin, setTotalCoin] = useState(null)
   const [searching, setSearching] = useState(true)
+  const [controllState, setcontrollState] = useState(false)
 
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
   const [totalPageNumber, setTotalPageNumber] = useState(null)
@@ -31,6 +32,8 @@ export default props => {
 
   const changeCoinTypeClick = type => {
     setCoinType(type)
+    setWalletType(0)
+    setcontrollState(!controllState)
   }
 
   const returnCoinText = t => {
@@ -85,10 +88,18 @@ export default props => {
       </TopWrap>
       <TitleWrap>
         {/* <span className="text">내 지갑</span> */}
-        <CoinTypeBtn className={coinType === 'dal' ? 'active' : ''} onClick={() => changeCoinTypeClick('dal')}>
+        <CoinTypeBtn
+          className={coinType === 'dal' ? 'active' : ''}
+          onClick={() => {
+            changeCoinTypeClick('dal')
+          }}>
           달
         </CoinTypeBtn>
-        <CoinTypeBtn className={coinType === 'byeol' ? 'active' : ''} onClick={() => changeCoinTypeClick('byeol')}>
+        <CoinTypeBtn
+          className={coinType === 'byeol' ? 'active' : ''}
+          onClick={() => {
+            changeCoinTypeClick('byeol')
+          }}>
           별
         </CoinTypeBtn>
       </TitleWrap>
@@ -122,6 +133,7 @@ export default props => {
         walletData={listDetailed}
         returnCoinText={returnCoinText}
         setWalletType={setWalletType}
+        controllState={controllState}
       />
       {Array.isArray(listDetailed) && listDetailed.length > 0 && (
         <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
@@ -135,7 +147,7 @@ const CoinChargeBtn = styled.button`
   color: #fff;
   background-color: #8556f6;
   border-radius: 10px;
-  width: 150px;
+  width: 100%;
   box-sizing: border-box;
   font-size: 16px;
 

@@ -8,7 +8,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import NoResult from 'components/ui/noResult'
 
 export default props => {
-  const {searching, coinType, walletData, returnCoinText, setWalletType} = props
+  const {searching, coinType, walletData, returnCoinText, setWalletType, controllState} = props
 
   const selectWalletTypeData = [
     {value: 0, text: '전체'},
@@ -27,7 +27,12 @@ export default props => {
 
   return (
     <ListContainer>
-      <SelectBox className="mypage-wallet-select-box" boxList={selectWalletTypeData} onChangeEvent={setWalletType} />
+      <SelectBox
+        className="mypage-wallet-select-box"
+        boxList={selectWalletTypeData}
+        onChangeEvent={setWalletType}
+        controllState={controllState}
+      />
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(coinType)} 상세내역`}</span>
