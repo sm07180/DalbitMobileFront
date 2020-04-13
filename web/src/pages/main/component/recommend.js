@@ -127,37 +127,28 @@ export default props => {
     <RecommendWrap>
       <Room />
       <div
-        onClick={() => {
-          // const data = list[selectedBIdx]
-          // const {roomNo, memNo} = data
-          // //상대방 페이지이동
-          // if (roomNo === '') {
-          //   window.location.href = `/mypage/${memNo}`
-          // } else {
-          //   RoomJoin(roomNo + '')
-          // }
-        }}
+        onClick={() => {}}
         ref={selectedWrapRef}
         className="selected-wrap"
         style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}>
-        {/* {Array.isArray(list) && list.length > 0 && ( */}
-        {/* <> */}
-        <div
-          ref={slideWrapRef}
-          className="slide-wrap"
-          onTouchStart={touchStartEvent}
-          onTouchMove={touchMoveEvent}
-          onTouchEnd={touchEndEvent}>
-          <div className="broad-slide" b-idx={prevBIdx} style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}} />
-          <div
-            className="broad-slide"
-            b-idx={selectedBIdx}
-            style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
-          />
-          <div className="broad-slide" b-idx={nextBIdx} style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}} />
-        </div>
-        {/* </> */}
-        {/* )} */}
+        {Array.isArray(list) && list.length > 0 && (
+          <>
+            <div
+              ref={slideWrapRef}
+              className="slide-wrap"
+              onTouchStart={touchStartEvent}
+              onTouchMove={touchMoveEvent}
+              onTouchEnd={touchEndEvent}>
+              <div className="broad-slide" b-idx={prevBIdx} style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}} />
+              <div
+                className="broad-slide"
+                b-idx={selectedBIdx}
+                style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
+              />
+              <div className="broad-slide" b-idx={nextBIdx} style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}} />
+            </div>
+          </>
+        )}
         <img className="live-icon" src={LiveIcon} />
         {Array.isArray(list) && list.length > 0 && (
           <div className="counting">

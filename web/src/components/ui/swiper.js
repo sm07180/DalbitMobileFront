@@ -141,51 +141,14 @@ export default props => {
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }
 
-  const setClickEventAllSlide = () => {
-    const wrapperNode = wrapperRef.current
-    wrapperNode.childNodes.forEach(child => {
-      child.addEventListener('click', clickSwipEvent)
-    })
-  }
-
-  const removeClickEventAllSlide = () => {
-    const wrapperNode = wrapperRef.current
-    if (wrapperNode) {
-      wrapperNode.childNodes.forEach(child => {
-        child.removeEventListener('click', clickSwipEvent)
-      })
-    }
-  }
-
-  const setTouchEventSelectedWrap = () => {
-    // const selectedWrapNode = selectedWrapRef.current
-    // tempSelectedNode = selectedWrapNode
-    // selectedWrapNode.addEventListener('touchstart', touchStartEvent)
-    // selectedWrapNode.addEventListener('touchmove', touchMoveEvent)
-    // selectedWrapNode.addEventListener('touchend', touchEndEvent)
-  }
-
-  const removeTouchEventSelectedWrap = () => {
-    // if (tempSelectedNode) {
-    //   tempSelectedNode.removeEventListener('touchstart', touchStartEvent)
-    //   tempSelectedNode.removeEventListener('touchmove', touchMoveEvent)
-    //   tempSelectedNode.removeEventListener('touchend', touchEndEvent)
-    // }
-    // tempSelectedNode = null
-  }
-
   useEffect(() => {
     initialSwipperWrapperStyle()
 
     window.addEventListener('resize', initialSwipperWrapperStyle)
-    // setClickEventAllSlide()
-    // setTouchEventSelectedWrap()
-    // autoSlideInterval()
+    autoSlideInterval()
 
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
-      // removeClickEventAllSlide()
-      // removeTouchEventSelectedWrap()
       setInitClosureVariable()
     }
   }, [])
