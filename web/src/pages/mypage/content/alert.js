@@ -128,7 +128,7 @@ export default props => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}`)
+                      props.history.push(`/menu/profile`)
                     }}>
                     <figure>
                       <img src={alarmIco} />
