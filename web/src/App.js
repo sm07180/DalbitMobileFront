@@ -70,6 +70,7 @@ const App = () => {
   async function fetchData() {
     // Renew token
     const tokenInfo = await Api.getToken()
+
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -83,9 +84,7 @@ const App = () => {
 
       // *** Native App case
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-        if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
-          console.log('dfdf', tokenInfo.data.authToken)
-          console.log('abab', authToken)
+        if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
 
