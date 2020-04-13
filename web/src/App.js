@@ -64,10 +64,10 @@ const App = () => {
   }, [])
 
   const authToken = useMemo(() => {
-    const authTokenTag = document.getElementById('authToken')
-    if (authTokenTag && authTokenTag.value) {
-      return authTokenTag.value
-    }
+    // const authTokenTag = document.getElementById('authToken')
+    // if (authTokenTag && authTokenTag.value) {
+    //   return authTokenTag.value
+    // }
 
     return Utility.getCookie('authToken')
   }, [])
@@ -94,9 +94,16 @@ const App = () => {
 
         if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-          if (customHeader['os'] === OS_TYPE['Android']) {
-            if (window.location.pathname === '/') {
-              window.location.reload()
+
+          // replace custom header isFirst value 'Y' => 'N'
+          const customHeaderCookie = Utility.getCookie('custom-header')
+          if (customHeaderCookie) {
+            if (isJsonString(customHeaderCookie)) {
+              const parsed = JSON.parse(customHeaderCookie)
+              if (parsed['isFirst'] === 'Y') {
+                parsed['isFirst'] = 'N'
+                globalCtx.action.updateCustomHeader(parsed)
+              }
             }
           }
         } else if (customHeader['isFirst'] === 'N') {

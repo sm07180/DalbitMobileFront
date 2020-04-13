@@ -34,7 +34,6 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
-    console.log('reload', globalCtx.reload)
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
