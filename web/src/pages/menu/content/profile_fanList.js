@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
+import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
@@ -9,10 +10,12 @@ import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 export default props => {
+  const {webview} = qs.parse(location.search)
   const {name} = props
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
+  const MyMemNo = context.profile && context.profile.memNo
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
@@ -187,10 +190,18 @@ export default props => {
                     name === '팬 랭킹' &&
                     rankInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
+                      let link = ''
+                      if (webview) {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+                      } else {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                      }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
+                          <a href={link}>
+                            <Photo bg={profImg.thumb62x62}></Photo>
+                            <span>{nickNm}</span>
+                          </a>
                           {isFan === false && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
@@ -204,10 +215,18 @@ export default props => {
                     name === '스타' &&
                     starInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
+                      let link = ''
+                      if (webview) {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+                      } else {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                      }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
+                          <a href={link}>
+                            <Photo bg={profImg.thumb62x62}></Photo>
+                            <span>{nickNm}</span>
+                          </a>
                           {isFan === false && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
@@ -221,10 +240,18 @@ export default props => {
                     name === '팬' &&
                     fanInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
+                      let link = ''
+                      if (webview) {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+                      } else {
+                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                      }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
+                          <a href={link}>
+                            <Photo bg={profImg.thumb62x62}></Photo>
+                            <span>{nickNm}</span>
+                          </a>
                           {isFan === false && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
@@ -271,20 +298,21 @@ const List = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 7px;
-  > span {
-    display: block;
+  > a {
+    display: flex;
     flex: none;
-    max-width: 150px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: block;
+    max-width: 170px;
+  }
+  a span {
     margin-left: 10px;
     line-height: 40px;
     font-size: 14px;
+    display: block;
     color: #424242;
-    transform: skew(-0.03deg);
     letter-spacing: -0.35px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   > button {
     flex: none;
