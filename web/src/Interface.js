@@ -27,17 +27,16 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        alert(event.detail)
-        let push = decodeURIComponent(event.detail)
-        push = JSON.parse(push)
-        alert(push)
-        alert('push.roomNo : ' + push.roomNo)
-        alert(JSON.stringify(push, null, 1))
+
+        let pushMsg = decodeURIComponent(event.detail)
+        pushMsg = JSON.parse(pushMsg)
+        alert('push.roomNo : ' + pushMsg.roomNo)
+
         // alert(JSON.stringify(etc, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
-          if (_.isEqual(context.token, event.detail)) {
+          if (_.isEqual(context.token.authToken, event.detail.authToken)) {
             Room.setAuth(true)
           } else {
             Room.setAuth(false)
