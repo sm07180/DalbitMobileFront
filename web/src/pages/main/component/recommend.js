@@ -12,13 +12,14 @@ import LiveIcon from '../static/ic_live.png'
 let touchStartX = null
 let touchEndX = null
 let touchStartStatus = false
+let direction = null
 
 export default props => {
   //context
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
-  const selectedWrapRef = useRef()
   const slideWrapRef = useRef()
+  const swiperRef = useRef()
 
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()
@@ -71,7 +72,7 @@ export default props => {
 
     const halfBaseWidth = baseWidth / 2
     const diff = touchEndX - touchStartX
-    const direction = diff > 0 ? 'right' : 'left'
+    direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
 
     const slidingTime = 300 // unit is ms
@@ -115,36 +116,40 @@ export default props => {
   }
 
   useEffect(() => {
-    const slideWrapNode = slideWrapRef.current
-    if (slideWrapNode) {
-      // if (direction === 'right') {
-      //   // right swipe
-      //   const l_child = wrapperNode.lastChild
-      //   if (l_child) {
-      //     const cloned = l_child.cloneNode(true)
-      //     const f_child = wrapperNode.firstChild
-      //     wrapperNode.insertBefore(cloned, f_child)
-      //     wrapperNode.removeChild(l_child)
-      //   }
-      // } else if (direction === 'left') {
-      //   // left swipe
-      //   const f_child = wrapperNode.firstChild
-      //   if (f_child) {
-      //     const cloned = f_child.cloneNode(true)
-      //     wrapperNode.appendChild(cloned)
-      //     wrapperNode.removeChild(f_child)
-      //   }
-      // }
-      // if (childrenLength > 0) {
-      //   const centerNodeIdx = Math.floor(childrenLength / 2)
-      //   const targetNode = wrapperNode.childNodes[centerNodeIdx]
-      //   const bIdx = Number(targetNode.getAttribute('data-idx'))
-      //   onSwipe(bIdx)
-      //   wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
-      //   touchStartX = null
-      //   touchEndX = null
-      //   swiping = false
-      // }
+    const swiperNode = document.getElementsByClassName('dalbit-swiper')[0]
+    if (swiperNode && direction !== null) {
+      const wrapperNode = swiperNode.firstChild
+
+      if (direction === 'right') {
+        // right swipe
+        const l_child = wrapperNode.lastChild
+        if (l_child) {
+          const cloned = l_child.cloneNode(true)
+          const f_child = wrapperNode.firstChild
+          wrapperNode.insertBefore(cloned, f_child)
+          wrapperNode.removeChild(l_child)
+        }
+      } else if (direction === 'left') {
+        // left swipe
+        const f_child = wrapperNode.firstChild
+        if (f_child) {
+          const cloned = f_child.cloneNode(true)
+          wrapperNode.appendChild(cloned)
+          wrapperNode.removeChild(f_child)
+        }
+
+        if (wrapperNode.children.length > 0) {
+          //   const centerNodeIdx = Math.floor(childrenLength / 2)
+          //   const targetNode = wrapperNode.childNodes[centerNodeIdx]
+          //   const bIdx = Number(targetNode.getAttribute('data-idx'))
+          //   onSwipe(bIdx)
+          //   wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
+          //   touchStartX = null
+          //   touchEndX = null
+        }
+      }
+
+      direction = null
     }
   }, [selectedBIdx])
 
@@ -158,11 +163,7 @@ export default props => {
   return (
     <RecommendWrap>
       <Room />
-      <div
-        onClick={() => {}}
-        ref={selectedWrapRef}
-        className="selected-wrap"
-        style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}>
+      <div onClick={() => {}} className="selected-wrap" style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}>
         {Array.isArray(list) && list.length > 0 && (
           <>
             <div
@@ -190,11 +191,7 @@ export default props => {
         )}
       </div>
       {list && (
-        <CustomSwiper
-          onSwipe={selectBroadcast}
-          selectedBIdx={selectedBIdx}
-          clickSwipEvent={clickSwipEvent}
-          selectedWrapRef={selectedWrapRef}>
+        <CustomSwiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx} clickSwipEvent={clickSwipEvent}>
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (

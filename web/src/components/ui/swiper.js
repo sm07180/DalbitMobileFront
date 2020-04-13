@@ -82,7 +82,7 @@ export default props => {
         swiping = false
       }
 
-      autoSlideInterval()
+      // autoSlideInterval()
     }, 300)
   }
 
