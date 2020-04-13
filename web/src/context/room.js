@@ -27,14 +27,18 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
+  const [roomPass, setRoomPass] = useState(false)
   //interface
   Room.context = context
   Room.roomNo = roomNo
+  Room.roomPass = roomPass
+  Room.setRoomPass = bool => setRoomPass(bool)
   Room.setRoomNo = num => setRoomNo(num)
   //roomCheck
   const roomCheck = event => {
-    alert('roomCheck')
+    //alert('roomCheck')
     alert(JSON.stringify(event.detail, null, 1))
+    Room.setRoomNo(true)
   }
   //-----------------------------------------------------------
   useEffect(() => {
@@ -77,11 +81,32 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    //RoomCheck
-    if (Room.context !== undefined && Room.context !== null) {
-      console.log('RoomCheck')
-      Hybrid('RoomCheck', Room.context.token)
+    const nativeRoomCheck = () => {
+      if (Room.context !== undefined && Room.context !== null) {
+        console.log(Room.context.token)
+        Hybrid('RoomCheck', Room.context.token)
+        return true
+      } else {
+        return false
+      }
     }
+    console.log(Room.roomPass)
+    console.log('---')
+    const _res = await nativeRoomCheck()
+    console.log(_res)
+    console.log(Room.roomPass)
+    if (_res && Room.roomPass) {
+      alert('실행')
+    } else {
+      return
+    }
+    //RoomCheck
+
+    // if (Room.context !== undefined && Room.context !== null) {
+    //   console.log(Room.context.token)
+    //   Hybrid('RoomCheck', Room.context.token)
+    // }
+    alert('--실행시작')
     //
     Room.setRoomNo(roomNo)
     //방송강제퇴장

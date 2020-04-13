@@ -5,6 +5,7 @@
 
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import qs from 'query-string'
 // context
 import {Context} from 'context'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
@@ -13,6 +14,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import Api from 'context/api'
 //layout
 export default props => {
+  const {webview} = qs.parse(location.search)
   //ref
   const inputEl = useRef(null)
   //context
@@ -373,33 +375,26 @@ export default props => {
             let value = boardIdx
             let writeNumer = writerNo
             let boardNumer = boardNo
+            let link = ''
+            if (webview) {
+              link = profile.memNo == writerNo ? `/mypage/${writerNo}/initial?webview=${webview}` : `/menu/profile`
+            } else {
+              link = profile.memNo == writerNo ? `/mypage/${writerNo}` : `/menu/profile`
+            }
             if (status !== 1) return
             return (
               <CommentBox key={index} className={status === 1 ? 'show' : ''}>
                 <div className={modifyShow === boardIdx ? 'disableCommentWrap' : 'CommentWrap'}>
                   <div className="titlewrap">
-                    {profile.memNo == writerNo ? (
-                      <a href={`/menu/profile`}>
-                        <Imgbox bg={profImg.thumb62x62} />
-                      </a>
-                    ) : (
-                      <a href={`/mypage/${writerNo}`}>
-                        <Imgbox bg={profImg.thumb62x62} />
-                      </a>
-                    )}
+                    <a href={link}>
+                      <Imgbox bg={profImg.thumb62x62} />
+                    </a>
 
                     <div>
-                      {profile.memNo == writerNo ? (
-                        <a href={`/menu/profile`}>
-                          <span>{nickNm}</span>
-                          <span>(@{memId})</span>
-                        </a>
-                      ) : (
-                        <a href={`/mypage/${writerNo}`}>
-                          <span>{nickNm}</span>
-                          <span>(@{memId})</span>
-                        </a>
-                      )}
+                      <a href={link}>
+                        <span>{nickNm}</span>
+                        <span>(@{memId})</span>
+                      </a>
                       <span>{timeFormat(writeDt)}</span>
                     </div>
                     <BtnIcon
@@ -449,33 +444,26 @@ export default props => {
                       let value = boardIdx
                       const profileImg = profImg.thumb62x62
                       const parseDT = timeFormat(writeDt)
+                      let link = ''
+                      if (webview) {
+                        link = profile.memNo == writerNo ? `/mypage/${writerNo}/initial?webview=${webview}` : `/menu/profile`
+                      } else {
+                        link = profile.memNo == writerNo ? `/mypage/${writerNo}` : `/menu/profile`
+                      }
                       if (status !== 1) return
                       //console.log(boardIdx)
                       return (
                         <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
-                            {profile.memNo == writerNo ? (
-                              <a href={`/menu/profile`}>
-                                <Imgbox bg={profImg.thumb62x62} />
-                              </a>
-                            ) : (
-                              <a href={`/mypage/${writerNo}`}>
-                                <Imgbox bg={profImg.thumb62x62} />
-                              </a>
-                            )}
+                            <a href={link}>
+                              <Imgbox bg={profImg.thumb62x62} />
+                            </a>
 
                             <div>
-                              {profile.memNo == writerNo ? (
-                                <a href={`/menu/profile`}>
-                                  <span>{nickNm}</span>
-                                  <span>(@{memId})</span>
-                                </a>
-                              ) : (
-                                <a href={`/mypage/${writerNo}`}>
-                                  <span>{nickNm}</span>
-                                  <span>(@{memId})</span>
-                                </a>
-                              )}
+                              <a href={link}>
+                                <span>{nickNm}</span>
+                                <span>(@{memId})</span>
+                              </a>
                               <span>{timeFormat(writeDt)}</span>
                             </div>
                             <BtnIcon

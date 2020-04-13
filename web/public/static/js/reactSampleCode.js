@@ -28,13 +28,9 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-player-show', {
+    new CustomEvent('native-room-check', {
       detail: {
-        roomNo: '1111',
-        bjNickNm: '2222',
-        title: '3333',
-        bjProfImg: '4444',
-        auth: '555'
+        memNo: '81586743438500'
       }
     })
   )
