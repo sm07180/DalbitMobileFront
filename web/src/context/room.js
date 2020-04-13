@@ -12,7 +12,7 @@
     //render추가
     return (   <Room />   )
  */
-import React, {useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
@@ -31,10 +31,18 @@ const Room = () => {
   Room.context = context
   Room.roomNo = roomNo
   Room.setRoomNo = num => setRoomNo(num)
+  //roomCheck
+  const roomCheck = event => {
+    alert('roomCheck')
+    alert(JSON.stringify(event.detail, null, 1))
+  }
   //-----------------------------------------------------------
-  // useEffect(() => {
-  //   console.log('Room.roomNo : ' + Room.roomNo)
-  // }, [Room.roomNo])
+  useEffect(() => {
+    document.addEventListener('native-room-check', roomCheck) //푸쉬관련
+    return () => {
+      document.removeEventListener('native-room-check', roomCheck)
+    }
+  }, [])
   //-----------------------------------------------------------
   return <React.Fragment />
 }
@@ -69,6 +77,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    //RoomCheck
+    if (Room.context !== undefined && Room.context !== null) {
+      console.log('RoomCheck')
+      Hybrid('RoomCheck', Room.context.token)
+    }
+    //
     Room.setRoomNo(roomNo)
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})

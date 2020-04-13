@@ -1,3 +1,2 @@
-<textarea name="authToken" id="authToken" style="display:none;"><%=request.getHeader("authToken") == null ? "" : request.getHeader("authToken") %></textarea>
 <textarea name="customHeader" id="customHeader" style="display:none;"><%=request.getHeader("custom-header") == null ? "" : request.getHeader("custom-header") %></textarea>
 <textarea name="redirectUrl" id="redirectUrl" style="display:none;"><%=request.getHeader("redirectUrl") == null ? (session.getAttribute("redirectUrl") == null ? "" : (String)session.getAttribute("redirectUrl")) : request.getHeader("redirectUrl") %></textarea>
