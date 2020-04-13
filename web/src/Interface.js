@@ -19,6 +19,7 @@ export default () => {
   const context = useContext(Context)
   //history
   let history = useHistory()
+  //
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
@@ -28,6 +29,12 @@ export default () => {
          */
         alert('native-push')
         alert(JSON.stringify(event.detail, null, 1))
+        break
+      case 'native-room-check': //----------------------Native RoomCheck
+        if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
+          alert('native-room-check :' + event.detail)
+          Room.setRoomPass(event.detail)
+        }
         break
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
@@ -98,6 +105,8 @@ export default () => {
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
     document.addEventListener('native-push', update) //푸쉬관련
+    document.addEventListener('native-room-check', update) //방인증정보
+
     /*----react----*/
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
@@ -109,6 +118,7 @@ export default () => {
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
       document.removeEventListener('native-push', update)
+      document.removeEventListener('native-room-check', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
