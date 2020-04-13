@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-
+import Api from 'context/api'
+import {Context} from 'context'
 // component
 import Swiper from 'react-id-swiper'
 import NoRsult from 'components/ui/noResult'
@@ -12,7 +13,9 @@ import heartIcon from '../static/ic_heart_s.svg'
 
 export default props => {
   const {rankType, djRank, fanRank} = props
+  const globalCtx = useContext(Context)
 
+  const MyMemNo = globalCtx.profile.memNo
   if (djRank === undefined || fanRank === undefined) {
     return null
   }
@@ -29,7 +32,7 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <Link to={`/mypage/${memNo}`}>
+                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
@@ -51,7 +54,7 @@ export default props => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                <Link to={`/mypage/${memNo}`}>
+                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
