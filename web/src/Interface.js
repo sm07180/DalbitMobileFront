@@ -28,9 +28,9 @@ export default () => {
          * @title 네이티브 푸쉬관련
          */
         alert(JSON.stringify(event.detail, null, 1))
-        let detail = decodeURIComponent(event.detail)
-        // detail = JSON.parse(detail)
-
+        let push = decodeURIComponent(event.detail)
+        push = JSON.parse(push)
+        alert(JSON.stringify(push, null, 1))
         // alert(JSON.stringify(etc, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
