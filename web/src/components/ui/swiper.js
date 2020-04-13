@@ -74,7 +74,7 @@ export default props => {
         swiping = false
       }
 
-      // autoSlideInterval()
+      autoSlideInterval()
     }, 300)
   }
 
@@ -136,7 +136,7 @@ export default props => {
     initialSwipperWrapperStyle()
 
     window.addEventListener('resize', initialSwipperWrapperStyle)
-    // autoSlideInterval()
+    autoSlideInterval()
 
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)

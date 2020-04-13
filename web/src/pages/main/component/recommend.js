@@ -121,7 +121,6 @@ export default props => {
       const wrapperNode = swiperNode.firstChild
 
       if (direction === 'right') {
-        // right swipe
         const l_child = wrapperNode.lastChild
         if (l_child) {
           const cloned = l_child.cloneNode(true)
@@ -130,22 +129,30 @@ export default props => {
           wrapperNode.removeChild(l_child)
         }
       } else if (direction === 'left') {
-        // left swipe
         const f_child = wrapperNode.firstChild
         if (f_child) {
           const cloned = f_child.cloneNode(true)
           wrapperNode.appendChild(cloned)
           wrapperNode.removeChild(f_child)
         }
-        const childrenLength = wrapperNode.children.length
-        if (childrenLength > 0) {
-          const centerNodeIdx = Math.floor(childrenLength / 2)
-          const targetNode = wrapperNode.childNodes[centerNodeIdx]
-          const bIdx = Number(targetNode.getAttribute('data-idx'))
-          console.log('b idx', bIdx)
-        }
       }
 
+      const childrenLength = wrapperNode.children.length
+      if (childrenLength > 0) {
+        const middleIdx = Math.floor(childrenLength / 2)
+        wrapperNode.childNodes.forEach((child, idx) => {
+          if (middleIdx === idx) {
+            child.firstChild.style.opacity = 0
+          } else {
+            child.firstChild.style.opacity = 1
+            child.firstChild.style.backgroundColor = 'rgba(117,65,241, 0.6)'
+          }
+        })
+      }
+
+      touchStartX = null
+      touchEndX = null
+      touchStartStatus = false
       direction = null
     }
   }, [selectedBIdx])
