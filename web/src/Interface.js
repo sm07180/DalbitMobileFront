@@ -32,7 +32,7 @@ export default () => {
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
-          alert('native-auth-check :' + event.detail)
+          alert('native-auth-check :' + JSON.stringify(event.detail, null, 1))
           Room.setAuth(true)
           //Room.setRoomPass(event.detail)
         }

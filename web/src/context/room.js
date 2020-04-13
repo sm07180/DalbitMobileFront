@@ -72,6 +72,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    //authCheck
     Hybrid('AuthCheck')
     if (!Room.setAuth) {
       alert('Room.setAuth ' + Room.setAuth)
@@ -121,6 +122,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       )
       //하이브리드앱실행
       Hybrid('RoomJoin', data)
+      Room.setAuth(false)
       return true
     }
   }
