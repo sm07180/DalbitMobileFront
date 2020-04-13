@@ -27,9 +27,9 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        let detail = decodeURIComponent(event.detail)
-        alert(typeof detail)
-        alert(JSON.stringify(detail, null, 1))
+        let push = decodeURIComponent(event.detail)
+        alert(typeof push)
+        alert(JSON.stringify(push, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
