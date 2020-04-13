@@ -79,8 +79,9 @@ export default props => {
             }
           }
 
-          globalCtx.action.updateProfile(profileInfo.data)
-          return props.history.push('/')
+          // globalCtx.action.updateProfile(profileInfo.data)
+          // return props.history.push('/')
+          return (window.location.href = '/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({
