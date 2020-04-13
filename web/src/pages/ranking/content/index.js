@@ -32,6 +32,7 @@ export default props => {
   const [list, setList] = useState(-1)
   const [nextList, setNextList] = useState(false)
   const [moreState, setMoreState] = useState(false)
+  const [myRank, setMyRank] = useState('-')
 
   //---------------------------------------------------------------------
   //map
@@ -74,10 +75,13 @@ export default props => {
     return (
       <div className="my-rank">
         <h3>
-          <span>100</span>
+          <span>{myRank}</span>
         </h3>
-        <Figure url={profImg.thumb120x120} memNo={memNo} />
-        <div>
+        <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
+        <div
+          onClick={() => {
+            window.location.href = `/menu/profile`
+          }}>
           <strong>Lv {level}</strong>
           <p>{nickNm}</p>
         </div>
@@ -119,6 +123,7 @@ export default props => {
           setList(res.data.list)
           fetch(type, dateType, 'next')
         }
+        setMyRank(res.data.myRank == 0 ? '-' : res.data.myRank)
       }
     } else {
       context.action.alert({
@@ -257,8 +262,9 @@ const Contents = styled.div`
 
     div {
       overflow: hidden;
-      width: calc(100% - 200px);
+      max-width: calc(100% - 200px);
       padding: 15px 0 13px 0;
+      cursor: pointer;
       strong {
         display: inline-block;
         color: ${COLOR_MAIN};
@@ -341,7 +347,7 @@ const Contents = styled.div`
       }
 
       div {
-        width: calc(100% - 125px);
+        max-width: calc(100% - 125px);
         padding: 11px 0 9px 0;
         strong {
           font-size: 14px;
