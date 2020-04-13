@@ -30,7 +30,9 @@ const myProfile = props => {
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
 
-  const expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
+  let expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
+  if (expCalc == 'Infinity') expCalc = 0
+  console.log('어떻게 인피니티가;;뜰수잇죠?', expCalc)
 
   const myProfileNo = ctx.profile.memNo
   //state
@@ -339,6 +341,7 @@ const LevelStatus = styled.div`
   padding-right: 6px;
   line-height: 15px;
   box-sizing: border-box;
+  text-indent: 3px;
   @media (max-width: ${WIDTH_TABLET_S}) {
     line-height: 13px;
   }
