@@ -30,6 +30,7 @@ export default () => {
         alert(JSON.stringify(event.detail, null, 1))
         let push = decodeURIComponent(event.detail)
         push = JSON.parse(push)
+        alert('push.roomNo : ' + push.roomNo)
         alert(JSON.stringify(push, null, 1))
         // alert(JSON.stringify(etc, null, 1))
         break
