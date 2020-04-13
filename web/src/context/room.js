@@ -71,15 +71,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    //roomCheck
-    Hybrid('RoomCheck')
     //RoomCheck
+    Hybrid('RoomCheck')
 
-    // if (Room.context !== undefined && Room.context !== null) {
-    //   console.log(Room.context.token)
-    //   Hybrid('RoomCheck', Room.context.token)
-    // }
-    alert('--실행시작')
+    console.log('실행')
     //
     Room.setRoomNo(roomNo)
     //방송강제퇴장
