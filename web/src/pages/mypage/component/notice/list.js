@@ -9,6 +9,9 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
 //component
 import Checkbox from '../../content/checkbox'
+// static
+import DeleteIcon from '../images/ic_delete.svg'
+import ModifyIcon from '../images/ic_edit.svg'
 
 const List = props => {
   //context
@@ -175,10 +178,11 @@ const List = props => {
           </ListContent>
           <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
             <button onClick={WriteToggle}>
-              <i className="far fa-edit"></i>수정
+              <em></em>
+              수정
             </button>
             <button onClick={NoticeDelete}>
-              <i className="far fa-trash-alt"></i>
+              <em className="delete_icon"></em>
               삭제
             </button>
           </Buttons>
@@ -333,7 +337,21 @@ const Buttons = styled.div`
   background-color: #f8f8f8;
   border-top: 1px solid #efefef;
   border-bottom: 1px solid #efefef;
+  & em {
+    display: block;
+    width: 16px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(${ModifyIcon});
+    margin-right: 4px;
+    &.delete_icon {
+      background-image: url(${DeleteIcon});
+    }
+  }
+
   & button {
+    display: flex;
     padding: 12px 20px 12px 20px;
     font-size: 14px;
     line-height: 1.43;
