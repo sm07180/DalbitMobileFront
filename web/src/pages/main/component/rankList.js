@@ -15,7 +15,7 @@ export default props => {
   const {rankType, djRank, fanRank} = props
   const globalCtx = useContext(Context)
 
-  // const MyMemNo = globalCtx.profile.memNo
+  const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
   if (djRank === undefined || fanRank === undefined) {
     return null
   }
@@ -32,18 +32,18 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                {/* <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}> */}
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
-                <div className="nickname">{nickNm}</div>
-                <div className="info-wrap">
-                  <img src={peopleIcon} />
-                  <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
-                  <img src={heartIcon} className="heart-icon" />
-                  <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
-                </div>
-                {/* </Link> */}
+                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    <div className="counting">{rank}</div>
+                  </div>
+                  <div className="nickname">{nickNm}</div>
+                  <div className="info-wrap">
+                    <img src={peopleIcon} />
+                    <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
+                    <img src={heartIcon} className="heart-icon" />
+                    <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
+                  </div>
+                </Link>
               </div>
             )
           })}
@@ -54,12 +54,12 @@ export default props => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                {/* <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}> */}
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
-                <div className="nickname">{nickNm}</div>
-                {/* </Link> */}
+                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    <div className="counting">{rank}</div>
+                  </div>
+                  <div className="nickname">{nickNm}</div>
+                </Link>
               </div>
             )
           })}

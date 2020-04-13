@@ -27,7 +27,6 @@ const GlobalProvider = props => {
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
-  const [reload, setReload] = useState(false)
 
   const [popup_code, setPopup] = useState('')
   const [popup_visible, setVisible] = useState(false)
@@ -209,9 +208,6 @@ const GlobalProvider = props => {
     },
     updateBoardNumber: num => {
       setBoardNumber(num)
-    },
-    updateReload: status => {
-      setReload(status)
     }
   }
   //---------------------------------------------------------------------
@@ -240,8 +236,7 @@ const GlobalProvider = props => {
     closeFanCnt,
     closeStarCnt,
     closePresent,
-    boardNumber,
-    reload
+    boardNumber
   }
   return <Provider value={value}>{props.children}</Provider>
 }
