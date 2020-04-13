@@ -167,7 +167,7 @@ export default props => {
   return (
     <RecommendWrap>
       <Room />
-      <div onClick={() => {}} className="selected-wrap" style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}>
+      <div onClick={() => {}} className="selected-wrap">
         {Array.isArray(list) && list.length > 0 && (
           <>
             <div

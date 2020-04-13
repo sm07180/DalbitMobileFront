@@ -17,6 +17,8 @@ import Utility from 'components/lib/utility'
 //component
 import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
+//ui
+import SelectBoxs from 'components/ui/selectBox.js'
 
 export default props => {
   //-----------------------------------------------------------------------------
@@ -35,6 +37,13 @@ export default props => {
   const [page, setPage] = useState(1)
 
   let userTypeSetting = 0
+
+  const selectBoxData = [
+    {value: 0, text: '전체'},
+    {value: 0, text: '전체'},
+    {value: 1, text: '닉네임'},
+    {value: 2, text: 'ID'}
+  ]
 
   //-----------------------------------------------------------------------------
   //async
@@ -229,16 +238,23 @@ export default props => {
     getBlackList()
   }, [])
 
+  const typeActive = value => {
+    setChanges({...changes, searchType: value})
+  }
+
   //-----------------------------------------------------------------------------
   return (
     <Content>
       <div className="resulte-area">{createBlackResult()}</div>
       <SearchArea>
-        <select name="searchType" onChange={onChange}>
-          <option value="0">전체</option>
-          <option value="1">닉네임</option>
-          <option value="2">ID</option>
-        </select>
+        <div className="select-box">
+          <SelectBoxs
+            type={'remove-init-data'}
+            boxList={selectBoxData}
+            onChangeEvent={typeActive}
+            inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
+          />
+        </div>
         <input
           type="search"
           name="search"
@@ -276,8 +292,10 @@ const SearchArea = styled.div`
   }
   input {
     width: calc(100% - 117px);
+    margin-left: 116px;
     padding: 0 46px 0 12px;
     color: #424242;
+    font-size: 14px;
   }
   button {
     position: absolute;
@@ -287,6 +305,45 @@ const SearchArea = styled.div`
     height: 36px;
     background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat center;
     text-indent: -9999px;
+  }
+
+  .select-box {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    height: 46px;
+    width: 116px;
+    text-indent: 12px;
+    z-index: 8;
+    .options + div {
+      height: auto;
+      width: calc(100% + 2px);
+      margin-left: -1px;
+      border: 1px solid #e0e0e0;
+      .box-list {
+        padding: 0;
+        font-size: 14px;
+      }
+    }
+    > div {
+      border-right: 1px solid #e0e0e0;
+      width: 100%;
+      > div {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        color: #616161;
+        font-size: 14px;
+        :before {
+          background-color: #757575;
+        }
+        :after {
+          background-color: #757575;
+        }
+      }
+    }
   }
 `
 
