@@ -166,9 +166,10 @@ export default props => {
                 style={{
                   backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
                 }}>
-                <label htmlFor="profileImg" />
-                <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                <label htmlFor="profileImg">
+                  <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+                  <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                </label>
               </ProfileImg>
               <div className="nickname">
                 <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
@@ -364,6 +365,11 @@ const ProfileImg = styled.div`
     width: 100%;
     height: 100%;
     cursor: pointer;
+    input[type='file'] {
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
   }
 
   & > input[type='file'] {
