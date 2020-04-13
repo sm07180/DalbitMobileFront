@@ -400,7 +400,9 @@ export default props => {
                       </a>
                     </DetailBtn>
                   </div>
-                  <div className="content">{contents}</div>
+                  <div className="content">
+                    <pre>{contents}</pre>
+                  </div>
                   <button className="reply" onClick={() => ShowReplyBtnState(writeNumer, boardNumer)}>
                     답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
                   </button>

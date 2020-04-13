@@ -12,14 +12,15 @@ import Checkbox from '../../content/checkbox'
 
 const List = props => {
   //context
-  const initialState = {
-    click1: false
-  }
+
   const context = useContext(Context)
   const ctx = useContext(Context)
   var urlrStr = props.location.pathname.split('/')[2]
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
+  const initialState = {
+    click1: isTop
+  }
   //state
   const [opened, setOpened] = useState(false)
   const reducer = (state, action) => ({...state, ...action})
@@ -171,7 +172,9 @@ const List = props => {
           <ListContent>
             <div>{title}</div>
             <div> {timeFormat(writeDt)}</div>
-            <div>{contents}</div>
+            <div>
+              <pre>{contents}</pre>
+            </div>
           </ListContent>
           <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
             <button onClick={WriteToggle}>

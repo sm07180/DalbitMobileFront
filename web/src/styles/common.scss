@@ -68,6 +68,9 @@ option,
 button {
   cursor: pointer;
 }
+pre {
+  white-space: pre-line;
+}
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -354,9 +357,6 @@ input {
 //2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
 input[type='password'] {
   font-family: sans-serif;
-}
-input[type='password']::placeholder {
-  font-family: 'NanumSquare';
 }
 
 /*input number pc에서 화살표 지우기*/
