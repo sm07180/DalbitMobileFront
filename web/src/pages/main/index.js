@@ -36,11 +36,6 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   useEffect(() => {
-    const {reload} = qs.parse(location.search)
-    if (reload) {
-      window.location.href = '/'
-    }
-
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
