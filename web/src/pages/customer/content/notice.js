@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {useHistory} from 'react-router-dom'
 //styled component
 import styled from 'styled-components'
+import NewIcon from './static/ic_new.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 //components
@@ -138,6 +139,9 @@ function Notice(props) {
     }
   }, [Store().noticePage])
 
+  const timestamp = String(new Date().getTime()).substr(0, 10)
+  const IntTime = parseInt(timestamp)
+
   //--------------------------------------------------------
   return (
     <>
@@ -169,7 +173,8 @@ function Notice(props) {
         <PageWrap>
           <dl>
             {paginatedDated.map((item, index) => {
-              const {noticeType, writeDt, title, noticeIdx} = item
+              const {noticeType, writeDt, title, noticeIdx, writeTs} = item
+              //console.log((IntTime - writeTs) / 3600)
 
               if (paginatedDated === null) return
               return (
@@ -180,7 +185,10 @@ function Notice(props) {
                         {noticeType === 1 ? '공지사항' : ''}
                         {noticeType === 2 ? '이벤트' : ''}
                       </dt>
-                      <dd>{title}</dd>
+                      <dd>
+                        {(IntTime - writeTs) / 3600 < 3 && <em></em>}
+                        {title}
+                      </dd>
                       <dd>{timeFormat(writeDt)}</dd>
                     </TableWrap>
                   )}
@@ -190,7 +198,11 @@ function Notice(props) {
                         {noticeType === 1 ? '공지사항' : ''}
                         {noticeType === 2 ? '이벤트' : ''}
                       </dt>
-                      <dd>{title}</dd>
+
+                      <dd>
+                        {(IntTime - writeTs) / 3600 < 3 && <em></em>}
+                        {title}
+                      </dd>
                       <dd>{timeFormat(writeDt)}</dd>
                     </TableWrap>
                   )}
@@ -330,6 +342,15 @@ const TableWrap = styled.div`
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 0;
   cursor: pointer;
+  & em {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    background-position: center center;
+    background-size: cover;
+    background-image: url(${NewIcon});
+  }
   @media (max-width: ${WIDTH_MOBILE}) {
     flex-wrap: wrap;
   }
@@ -343,6 +364,8 @@ const TableWrap = styled.div`
     }
   }
   & dd {
+    display: flex;
+    align-items: center;
     width: calc(100% - 240px);
     font-size: 14px;
     color: #424242;
