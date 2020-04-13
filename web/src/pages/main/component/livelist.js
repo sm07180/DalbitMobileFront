@@ -7,6 +7,10 @@ import {broadcastLive} from 'constant/broadcast.js'
 
 import HeartIcon from '../static/ic_heart_s_g.svg'
 import HeadphoneIcon from '../static/ic_headphones_s.svg'
+import audioIcon from '../static/ico_audio.svg'
+import videoIcon from '../static/ico_video.svg'
+import maleIcon from '../static/ico_male.png'
+import femaleIcon from '../static/ico_female.png'
 
 function usePrevious(value) {
   const ref = useRef()
