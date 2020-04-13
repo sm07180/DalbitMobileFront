@@ -117,6 +117,7 @@ const SelectListWrap = styled.div`
     background-color: #fff;
     box-sizing: border-box;
     transform: skew(-0.03deg);
+    letter-spacing: -0.5px;
     &:hover {
       color: #8556f6;
       background-color: #f8f8f8;
@@ -133,6 +134,7 @@ const Selected = styled.div`
   font-size: 16px;
   color: #8556f6;
   outline: none;
+  letter-spacing: -0.5px;
 
   &.open {
     &::before {
