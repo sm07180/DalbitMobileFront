@@ -64,11 +64,6 @@ const App = () => {
   }, [])
 
   const authToken = useMemo(() => {
-    // const authTokenTag = document.getElementById('authToken')
-    // if (authTokenTag && authTokenTag.value) {
-    //   return authTokenTag.value
-    // }
-
     return Utility.getCookie('authToken')
   }, [])
 
