@@ -12,7 +12,7 @@ NanumSquareEB = 800
 */
 
 //SNS button guide font
-@import url('https://fonts.googleapis.com/css?family=Roboto:500&display=swap');
+//@import url('https://fonts.googleapis.com/css?family=Roboto:500&display=swap');
 
 // mixin & variables
 @import './global.scss';
@@ -40,7 +40,7 @@ $COLOR_POINT_P: #e84d70;
 }
 html,
 body {
-  font-family: 'NanumSquare', sans-serif;
+  font-family: sans-serif;
   font-size: 16px;
   font-weight: 400;
   -webkit-text-size-adjust: none;
@@ -48,7 +48,7 @@ body {
 }
 pre,
 textarea {
-  font-family: 'NanumSquare', sans-serif;
+  font-family: sans-serif;
 }
 textarea {
   outline: none;
@@ -58,7 +58,7 @@ input,
 select,
 option,
 button {
-  font-family: 'NanumSquare';
+  font-family: 'sans-serif';
   font: inherit;
   transform: skew(-0.03deg);
   outline: none;
@@ -67,6 +67,9 @@ select,
 option,
 button {
   cursor: pointer;
+}
+pre {
+  white-space: pre-line;
 }
 select {
   -webkit-appearance: none;
@@ -354,9 +357,6 @@ input {
 //2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
 input[type='password'] {
   font-family: sans-serif;
-}
-input[type='password']::placeholder {
-  font-family: 'NanumSquare';
 }
 
 /*input number pc에서 화살표 지우기*/

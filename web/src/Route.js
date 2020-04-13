@@ -29,7 +29,9 @@ const SelfAuth = React.lazy(() => import('pages/self_auth'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
-
+//Redirect
+const TempLogin = React.lazy(() => import('pages/common/redirect'))
+//
 export default () => {
   return (
     <React.Suspense
@@ -41,6 +43,7 @@ export default () => {
       <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
@@ -65,6 +68,9 @@ export default () => {
         <Route exact path="/navigator" component={Navigator} />
 
         <Route exact path="/error" component={ErrorPage} />
+
+        <Route exact path="/redirect" component={TempLogin} />
+
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>

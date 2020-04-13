@@ -69,21 +69,18 @@ export default props => {
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
         globalCtx.action.updateToken(loginInfo.data)
-
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
-          globalCtx.action.updateProfile(profileInfo.data)
-
           if (isHybrid()) {
             if (webview && webview === 'new') {
-              return Hybrid('GetLoginTokenNewWin', loginInfo.data)
+              Hybrid('GetLoginTokenNewWin', loginInfo.data)
             } else {
               Hybrid('GetLoginToken', loginInfo.data)
             }
           }
 
-          props.history.push('/')
-          return (window.location.href = '/')
+          globalCtx.action.updateProfile(profileInfo.data)
+          return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
         globalCtx.action.alert({

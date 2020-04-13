@@ -53,14 +53,17 @@ export default props => {
 //---------------------------------------------------------------------
 const Content = styled.div`
   min-height: 200px;
+  text-align: left;
   .list {
     display: inline-block;
-    margin-right: 13px;
-    margin-bottom: 20px;
+    width: 25%;
+    padding: 10px 7px;
+    box-sizing: border-box;
     button {
       display: inline-block;
-      width: 72px;
-      height: 72px;
+      width: 96%;
+      height: auto;
+
       border-radius: 26px;
       overflow: hidden;
       img {
@@ -74,6 +77,7 @@ const Content = styled.div`
       margin-top: 6px;
       width: 72px;
       text-overflow: ellipsis;
+      white-space: nowrap;
       overflow: hidden;
       font-size: 11px;
       font-weight: normal;

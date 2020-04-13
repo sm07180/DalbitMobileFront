@@ -138,17 +138,21 @@ const Notice = props => {
   const [numbers, setNumbers] = useState('')
 
   const toggler = noticeIdx => {
-    setNumbers(noticeIdx)
-    // if (numbers === noticeIdx) {
-    //   setNumbers('')
-    // }
+    if (numbers === noticeIdx) {
+      setNumbers('')
+    } else {
+      setNumbers(noticeIdx)
+      setTimeout(() => {
+        const height = document.querySelector(`.idx${noticeIdx}`).offsetTop - 60
+        window.scrollTo(0, height)
+      }, 10)
+    }
   }
-  useEffect(() => {
-    //console.log(numbers)
-  }, [numbers])
+
   return (
     <>
       <TopWrap>
+        <button onClick={() => window.history.back()}></button>
         <div className="title">방송국 공지</div>
       </TopWrap>
       <ListWrap>
@@ -157,7 +161,7 @@ const Notice = props => {
             listDetailed.map((list, idx) => {
               const {isTop, title, contents, writeDt, noticeIdx} = list
               return (
-                <a onClick={() => toggler(noticeIdx)} key={idx}>
+                <a key={idx} className={`idx${noticeIdx}`}>
                   <List
                     {...props}
                     isTop={isTop}
@@ -166,6 +170,7 @@ const Notice = props => {
                     writeDt={writeDt}
                     noticeIdx={noticeIdx}
                     numbers={numbers}
+                    toggle={toggler}
                   />
                 </a>
               )
@@ -216,6 +221,34 @@ const Notice = props => {
     </>
   )
 }
+const TopHistory = styled.div`
+  position: fixed;
+  top: 40px;
+  left: 0;
+  width: 100vw;
+
+  background-color: #fff;
+  z-index: 21;
+  & header {
+    padding: 16px 16px 16px 10px;
+    display: flex;
+
+    border-bottom: 1px solid #e0e0e0;
+    button:nth-child(1) {
+      width: 24px;
+      height: 24px;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+    }
+    h2 {
+      width: calc(100% - 24px);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.17;
+      letter-spacing: -0.45px;
+      text-align: center;
+    }
+  }
+`
 
 const GlobalWriteBtn = styled.button`
   display: none;
@@ -297,15 +330,21 @@ const TopWrap = styled.div`
   flex-direction: row;
   border-bottom: 1px solid ${COLOR_MAIN};
   align-items: center;
-  justify-content: space-between;
   margin-top: 24px;
+  margin-bottom: 0px;
   padding-bottom: 12px;
-
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
   .title {
+    width: calc(100% - 24px);
     color: ${COLOR_MAIN};
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -0.5px;
+    text-align: center;
   }
 `
 

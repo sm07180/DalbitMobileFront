@@ -3,7 +3,6 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -27,10 +26,7 @@ import PlusIcon from './static/ic_circle_plus.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
-  //---------------------------------------------------------------------
-
   //context
-  let history = useHistory()
   const globalCtx = useContext(Context)
 
   const [initData, setInitData] = useState({})

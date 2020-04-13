@@ -22,7 +22,6 @@ const levelBarWidth = 176
 
 const myProfile = props => {
   const {webview} = props
-
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -31,6 +30,7 @@ const myProfile = props => {
   const {profile} = props
 
   const myProfileNo = ctx.profile.memNo
+  //console.log(myProfileNo)
   //state
   const [reportShow, SetShowReport] = useState(false)
   if (profile === null) {
@@ -128,8 +128,9 @@ const myProfile = props => {
 
         <FanListWrap>
           {profile.fanRank.map((fan, index) => {
+            if (urlrStr === fan.memNo) return
             return (
-              <a href={`/mypage/${fan.memNo}`} key={index}>
+              <a href={myProfileNo !== fan.memNo ? `/mypage/${fan.memNo}` : `/menu/profile`} key={index}>
                 <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
               </a>
             )
@@ -149,14 +150,6 @@ const myProfile = props => {
       </ProfileImg>
 
       <ContentWrap>
-        <LevelWrap>
-          <LevelText>LEVEL {profile.level}</LevelText>
-          <LevelStatusBarWrap>
-            <LevelStatus
-              style={{width: `calc(${(profile.level / 100) * levelBarWidth}% + 20px)`}}>{`${profile.level}%`}</LevelStatus>
-          </LevelStatusBarWrap>
-        </LevelWrap>
-
         <NameWrap>
           <strong>{profile.nickNm}</strong>
           <span>{`@${profile.memId}`}</span>
@@ -355,6 +348,7 @@ const NameWrap = styled.div`
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
+    transform: skew(-0.03deg);
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -375,7 +369,7 @@ const CountingWrap = styled.div`
   margin-top: 12px;
   span {
     display: inline-block;
-    font-size: 14px;
+    font-size: 20px;
     letter-spacing: -0.35px;
     color: #707070;
     transform: skew(-0.03deg);
@@ -495,6 +489,11 @@ const FanListWrap = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 0;
   }
+  > a {
+    &.none {
+      display: none;
+    }
+  }
 `
 const FanRank = styled.div`
   display: inline-block;
@@ -505,6 +504,9 @@ const FanRank = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  &.none {
+    display: none;
+  }
 
   & > a {
     display: block;

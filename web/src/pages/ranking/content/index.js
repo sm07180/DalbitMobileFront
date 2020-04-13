@@ -76,7 +76,7 @@ export default props => {
         <h3>
           <span>100</span>
         </h3>
-        <Figure url={profImg.url} memNo={memNo} />
+        <Figure url={profImg.thumb120x120} memNo={memNo} />
         <div>
           <strong>Lv {level}</strong>
           <p>{nickNm}</p>

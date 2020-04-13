@@ -134,7 +134,7 @@ export default props => {
               <li key={index}>
                 <figure
                   style={{
-                    background: `url(${profImg.url}) no-repeat center center/ cover`
+                    background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
                   }}></figure>
                 <div>
                   <span>@{memId}</span>
@@ -172,7 +172,7 @@ export default props => {
               <li key={index}>
                 <figure
                   style={{
-                    background: `url(${profImg.url}) no-repeat center center/ cover`
+                    background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
                   }}></figure>
                 <div>
                   <span>@{memId}</span>

@@ -58,15 +58,21 @@ export default props => {
 
   //-----------------------------------------------------------------------------
   return (
-    <Content>
-      <TitleWrap style={{paddingBottom: '25px'}}>
-        <TitleText>{currentMenu.text}</TitleText>
-        <SelectWrap>
-          <SelectBoxs boxList={selectBoxData} onChangeEvent={selectMenu} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
-        </SelectWrap>
-      </TitleWrap>
-      {createContent()}
-    </Content>
+    <>
+      <TopWrap>
+        <button onClick={() => window.history.back()}></button>
+        <div className="title">방송설정</div>
+      </TopWrap>
+      <Content>
+        <TitleWrap style={{paddingBottom: '25px'}}>
+          <TitleText>{currentMenu.text}</TitleText>
+          <SelectWrap>
+            <SelectBoxs boxList={selectBoxData} onChangeEvent={selectMenu} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
+          </SelectWrap>
+        </TitleWrap>
+        {createContent()}
+      </Content>
+    </>
   )
 }
 
@@ -106,5 +112,26 @@ const SelectWrap = styled.div`
   > div .box-list {
     font-size: 14px !important;
     padding: 10px 10px;
+  }
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
   }
 `

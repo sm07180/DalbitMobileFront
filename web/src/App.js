@@ -64,11 +64,6 @@ const App = () => {
   }, [])
 
   const authToken = useMemo(() => {
-    const authTokenTag = document.getElementById('authToken')
-    if (authTokenTag && authTokenTag.value) {
-      return authTokenTag.value
-    }
-
     return Utility.getCookie('authToken')
   }, [])
 
@@ -88,26 +83,33 @@ const App = () => {
 
       // *** Native App case
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-        //
         if (customHeader['isFirst'] === 'Y' || tokenInfo.data.authToken !== authToken) {
           Hybrid('GetLoginToken', tokenInfo.data)
         }
 
         if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
-        }
 
-        if (customHeader['isFirst'] === 'N') {
-          // /webview=new 형태로 이루어진 player종료
+          // replace custom header isFirst value 'Y' => 'N'
+          const customHeaderCookie = Utility.getCookie('custom-header')
+          if (customHeaderCookie) {
+            if (isJsonString(customHeaderCookie)) {
+              const parsed = JSON.parse(customHeaderCookie)
+              if (parsed['isFirst'] === 'Y') {
+                parsed['isFirst'] = 'N'
+                globalCtx.action.updateCustomHeader(parsed)
+              }
+            }
+          }
+        } else if (customHeader['isFirst'] === 'N') {
+          // ?webview=new 형태로 이루어진 player종료
           const nativeInfo = Utility.getCookie('native-player-info')
           if (nativeInfo) {
-            if (isJsonString(nativeInfo)) {
-              if (window.location.href.indexOf('webview') === -1) {
-                const parsed = JSON.parse(nativeInfo)
-                globalCtx.action.updatePlayer(true)
-                globalCtx.action.updateMediaPlayerStatus(true)
-                globalCtx.action.updateNativePlayer(parsed)
-              }
+            if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+              const parsed = JSON.parse(nativeInfo)
+              globalCtx.action.updatePlayer(true)
+              globalCtx.action.updateMediaPlayerStatus(true)
+              globalCtx.action.updateNativePlayer(parsed)
             }
           }
         }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_star_m_p" width="24" height="24" viewBox="0 0 24 24">
+    <g id="prefix__사각형_477" data-name="사각형 477" style="opacity:0;stroke:#8556f6;fill:none">
+        <path d="M0 0H24V24H0z" style="stroke:none"/>
+        <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none"/>
+    </g>
+    <g id="prefix__별" transform="translate(1.406 2.926)">
+        <g id="prefix__그룹_9728" data-name="그룹 9728" transform="rotate(5.13 6.924 150.601)">
+            <path id="prefix__패스_4110" d="M4.458.364L4.8 2.006a.456.456 0 0 0 .27.328l1.545.652a.456.456 0 0 1 .045.814l-1.46.833a.456.456 0 0 0-.229.358l-.139 1.67a.456.456 0 0 1-.762.3l-1.239-1.13a.456.456 0 0 0-.411-.107L.787 6.1a.456.456 0 0 1-.519-.632l.691-1.524a.456.456 0 0 0-.026-.424L.067 2.085A.456.456 0 0 1 .508 1.4l1.666.185a.456.456 0 0 0 .4-.155L3.666.158a.456.456 0 0 1 .792.206z" data-name="패스 4110" style="stroke-linejoin:round;stroke-linecap:round;stroke-width:.8px;stroke:#8556f6;fill:none"/>
+        </g>
+        <path id="prefix__패스_4113" d="M7.794.412l2.3 3.037a1.036 1.036 0 0 0 .872.41l3.8-.169a1.036 1.036 0 0 1 .9 1.628l-2.185 3.121a1.036 1.036 0 0 0-.121.957l1.34 3.564a1.036 1.036 0 0 1-1.272 1.355l-3.645-1.108a1.036 1.036 0 0 0-.947.181L5.859 15.76a1.036 1.036 0 0 1-1.681-.791l-.072-3.806a1.036 1.036 0 0 0-.465-.845L.465 8.22A1.036 1.036 0 0 1 .7 6.377l3.6-1.244a1.036 1.036 0 0 0 .66-.7L5.969.76A1.036 1.036 0 0 1 7.794.412z" data-name="패스 4113" transform="matrix(.995 -.105 .105 .995 0 2.555)" style="fill:#fff;stroke-linejoin:round;stroke:#8556f6"/>
+    </g>
+</svg>

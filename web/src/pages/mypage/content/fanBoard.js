@@ -68,10 +68,10 @@ export default props => {
     if (res.result === 'success') {
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
 
@@ -336,6 +336,10 @@ export default props => {
   //------------------------------------------------------------------------
   return (
     <>
+      <TopWrap>
+        <button onClick={() => window.history.back()}></button>
+        <div className="title">팬 보드</div>
+      </TopWrap>
       {/* 전체영역 */}
       <FanBoard className="fanboard">
         <WriteArea className={active === true ? 'on' : ''}>
@@ -362,7 +366,7 @@ export default props => {
         <ListArea>
           <ListTitle>
             <span>게시글</span>
-            <span style={{marginLeft: '4px', fontFamily: 'NanumSquareEB', fontWeight: 'bold'}}>{count}</span>
+            <span style={{marginLeft: '4px', fontWeight: 'bold'}}>{count}</span>
           </ListTitle>
           {fanTotal.map((item, index) => {
             const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
@@ -396,7 +400,9 @@ export default props => {
                       </a>
                     </DetailBtn>
                   </div>
-                  <div className="content">{contents}</div>
+                  <div className="content">
+                    <pre>{contents}</pre>
+                  </div>
                   <button className="reply" onClick={() => ShowReplyBtnState(writeNumer, boardNumer)}>
                     답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
                   </button>
@@ -816,7 +822,7 @@ const DetailBtn = styled.div`
   top: 52px;
   right: 0;
   display: none;
-  z-index: 8;
+  z-index: 9;
   flex-direction: column;
   width: 103px;
   padding: 10px 0;
@@ -910,5 +916,26 @@ const MMwrap = styled.section`
       border: none;
       height: 52px;
     }
+  }
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 20px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
   }
 `

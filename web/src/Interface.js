@@ -22,6 +22,12 @@ export default () => {
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
+      case 'native-push': //----------------------------Native push
+        /**
+         * @title 네이티브 푸쉬관련
+         */
+
+        break
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
         history.push(url, {...info, type: 'native-navigator'})
@@ -90,6 +96,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //진행중
     document.addEventListener('native-end', update) //진행중
+    document.addEventListener('native-push', update) //푸쉬관련
     /*----react----*/
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)

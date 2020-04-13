@@ -9,17 +9,21 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
 //component
 import Checkbox from '../../content/checkbox'
+// static
+import DeleteIcon from '../images/ic_delete.svg'
+import ModifyIcon from '../images/ic_edit.svg'
 
 const List = props => {
   //context
-  const initialState = {
-    click1: false
-  }
+
   const context = useContext(Context)
   const ctx = useContext(Context)
   var urlrStr = props.location.pathname.split('/')[2]
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
+  const initialState = {
+    click1: isTop
+  }
   //state
   const [opened, setOpened] = useState(false)
   const reducer = (state, action) => ({...state, ...action})
@@ -143,11 +147,6 @@ const List = props => {
     WritBtnActive()
   }, [coment, comentContent])
   /////////////////////////////////////////////////////////////
-  const toggler = () => {
-    if (numbers === noticeIdx) {
-      setOpened(false)
-    }
-  }
   useEffect(() => {
     if (numbers === noticeIdx) {
       setOpened(true)
@@ -159,9 +158,13 @@ const List = props => {
   //-------------------------------------------------------------------------
   return (
     <Wrap>
-      <ListStyled className={numbers === noticeIdx && opened ? 'on' : ''} onClick={toggler}>
+      <ListStyled
+        className={numbers === noticeIdx && opened ? 'on' : ''}
+        onClick={() => {
+          props.toggle(noticeIdx)
+        }}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
-          <i className="fas fa-thumbtack" style={{color: '#ff9100'}} />
+          {isTop && <em></em>}
           <span className="text">{title}</span>
         </TitleWrap>
 
@@ -172,14 +175,17 @@ const List = props => {
           <ListContent>
             <div>{title}</div>
             <div> {timeFormat(writeDt)}</div>
-            <div>{contents}</div>
+            <div>
+              <pre>{contents}</pre>
+            </div>
           </ListContent>
           <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
             <button onClick={WriteToggle}>
-              <i className="far fa-edit"></i>수정
+              <em></em>
+              수정
             </button>
             <button onClick={NoticeDelete}>
-              <i className="far fa-trash-alt"></i>
+              <em className="delete_icon"></em>
               삭제
             </button>
           </Buttons>
@@ -255,6 +261,12 @@ const TitleWrap = styled.div`
   font-size: 14px;
   transform: skew(-0.03deg);
   margin-left: 4px;
+  > em {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url(${IMG_SERVER}/images/api/ic_thumbtack.png) no-repeat center center / cover;
+  }
   > i {
     display: none;
   }
@@ -328,7 +340,21 @@ const Buttons = styled.div`
   background-color: #f8f8f8;
   border-top: 1px solid #efefef;
   border-bottom: 1px solid #efefef;
+  & em {
+    display: block;
+    width: 16px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(${ModifyIcon});
+    margin-right: 4px;
+    &.delete_icon {
+      background-image: url(${DeleteIcon});
+    }
+  }
+
   & button {
+    display: flex;
     padding: 12px 20px 12px 20px;
     font-size: 14px;
     line-height: 1.43;

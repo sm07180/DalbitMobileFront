@@ -79,7 +79,7 @@ export default props => {
         price: selected.price
       })
     } else {
-      context.action.updatePopup('LOGIN')
+      props.history.push('/login')
     }
   }
 

@@ -42,7 +42,6 @@ export default props => {
     let banWords = ''
     let wordIndex = 0
     words.forEach((item, index) => {
-      console.log('item text', item == false)
       if (item == false) return
       if (!wordIndex) {
         banWords = `${item}`
@@ -51,7 +50,7 @@ export default props => {
       }
       wordIndex++
     })
-    if (banWords == '')
+    if (banWords == '' && type != 'remove')
       return context.action.alert({
         msg: `금지어를 입력해주세요.`
       })

@@ -335,6 +335,20 @@ export default props => {
   function uploadSingleFile(e) {
     let reader = new FileReader()
     reader.readAsDataURL(e.target.files[0])
+    const file = e.target.files[0]
+    const fileName = file.name
+    const fileSplited = fileName.split('.')
+    const fileExtension = fileSplited.pop()
+    const extValidator = ext => {
+      const list = ['jpg', 'jpeg', 'png']
+      return list.includes(ext)
+    }
+
+    if (!extValidator(fileExtension)) {
+      return context.action.alert({
+        msg: 'jpg, png 이미지만 사용 가능합니다.'
+      })
+    }
     reader.onload = function() {
       if (reader.result) {
         setImgData(reader.result)
@@ -733,7 +747,7 @@ export default props => {
           <input
             type="file"
             id="profileImg"
-            accept=".gif, .jpg, .png"
+            accept="image/jpg, image/jpeg, image/png"
             onChange={e => {
               uploadSingleFile(e)
             }}

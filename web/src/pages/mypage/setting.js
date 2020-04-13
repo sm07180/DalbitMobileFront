@@ -4,12 +4,12 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout'
-import {WIDTH_MOBILE} from 'context/config'
 
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 
@@ -157,13 +157,19 @@ export default props => {
         <Layout {...props}>
           <Content>
             <SettingWrap>
+              {/* 공통타이틀:TopWrap */}
+              <TopWrap>
+                <button onClick={() => window.history.back()}></button>
+                <div className="title">내 정보 관리</div>
+              </TopWrap>
               <ProfileImg
                 style={{
                   backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
                 }}>
-                <label htmlFor="profileImg" />
-                <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                <label htmlFor="profileImg">
+                  <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+                  <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                </label>
               </ProfileImg>
               <div className="nickname">
                 <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
@@ -286,10 +292,14 @@ const BirthDate = styled.div`
 
 const PasswordRedirectBtn = styled.button`
   width: 100%;
-  font-size: 16px;
-  color: #fff;
-  padding: 16px 0;
-  background-color: #9e9e9e;
+  a {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+    color: #fff;
+    padding: 16px 0;
+    background-color: #9e9e9e;
+  }
 `
 
 const PasswordCircle = styled.div`
@@ -355,6 +365,11 @@ const ProfileImg = styled.div`
     width: 100%;
     height: 100%;
     cursor: pointer;
+    input[type='file'] {
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
   }
 
   & > input[type='file'] {
@@ -375,5 +390,27 @@ const SettingWrap = styled.div`
 `
 
 const Content = styled.section`
-  margin: 70px 0 20px 0;
+  margin: 20px 0 20px 0;
+`
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
 `

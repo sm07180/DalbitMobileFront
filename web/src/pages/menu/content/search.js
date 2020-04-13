@@ -84,9 +84,9 @@ export default props => {
       </Header>
       {/* 검색바 */}
       <SearchBar update={update} />
-      <h1>사용자 검색</h1>
+      {member && <h1>사용자 검색</h1>}
       <List update={update} type="member" fetch={member} />
-      <h1>라이브 검색</h1>
+      {live && <h1>라이브 검색</h1>}
       <List update={update} type="live" fetch={live} />
     </Content>
   )
