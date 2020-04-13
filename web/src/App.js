@@ -86,9 +86,6 @@ const App = () => {
       if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
-        }
-
-        if (customHeader['isFirst'] === 'Y') {
           Utility.setCookie('native-player-info', '', -1)
 
           // replace custom header isFirst value 'Y' => 'N'
