@@ -18,6 +18,9 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
 
+import Swiper from 'react-id-swiper'
+import {broadcastLive} from 'constant/broadcast.js'
+
 // static
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
@@ -135,6 +138,14 @@ export default props => {
               </a>
             </div>
 
+            <div className="live-list-category">
+              {Object.keys(broadcastLive)
+                .sort((a, b) => Number(a) - Number(b))
+                .map((key, idx) => {
+                  return <div key={`list-${idx}`}>{broadcastLive[key]}</div>
+                })}
+            </div>
+
             <div className="content-wrap">
               <LiveList list={liveList} />
             </div>
@@ -148,6 +159,12 @@ export default props => {
 const Content = styled.div`
   .section {
     margin-top: 28px;
+
+    .live-list-category {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
 
     .title-wrap {
       display: flex;
