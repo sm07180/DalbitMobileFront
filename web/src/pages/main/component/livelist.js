@@ -46,14 +46,13 @@ const makeContents = props => {
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
           <div className="detail">
-            <div className="broadcast-type">{broadcastLive[roomType]}</div>
-            <div className="value">
-              <img src={HeartIcon} />
-              <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
-            </div>
             <div className="value">
               <img src={HeadphoneIcon} />
               <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
+            </div>
+            <div className="value">
+              <img src={HeartIcon} />
+              <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -158,7 +157,6 @@ const LiveList = styled.div`
         display: flex;
         align-items: center;
         flex-direction: row;
-        margin-left: 8px;
         color: #bdbdbd;
         font-size: 11px;
         letter-spacing: -0.28px;
