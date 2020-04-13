@@ -27,9 +27,10 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        alert(JSON.stringify(event.detail, null, 1))
+        alert(event.detail)
         let push = decodeURIComponent(event.detail)
         push = JSON.parse(push)
+        alert(push)
         alert('push.roomNo : ' + push.roomNo)
         alert(JSON.stringify(push, null, 1))
         // alert(JSON.stringify(etc, null, 1))
