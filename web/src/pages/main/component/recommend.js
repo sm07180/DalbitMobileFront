@@ -44,11 +44,10 @@ export default props => {
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
   const touchStartEvent = e => {
-    console.log(list.length)
-    // if (Array.isArray(list) && list.length > 0) {
-    touchStartStatus = true
-    touchStartX = e.touches[0].clientX
-    // }
+    if (Array.isArray(list) && list.length > 1) {
+      touchStartStatus = true
+      touchStartX = e.touches[0].clientX
+    }
   }
 
   const touchMoveEvent = e => {
@@ -75,7 +74,6 @@ export default props => {
     const diff = touchEndX - touchStartX
     const direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
-    console.log(halfBaseWidth, absDiff)
 
     const slidingTime = 300 // unit is ms
 
@@ -95,14 +93,28 @@ export default props => {
       setTimeout(() => resolve(), slidingTime)
     })
 
-    promiseSync.then(() => {
-      slideWrapNode.style.transitionDuration = '0ms'
-    })
+    promiseSync
+      .then(() => {
+        slideWrapNode.style.transitionDuration = '0ms'
+      })
+      .then(() => {
+        if (absDiff >= halfBaseWidth) {
+          if (direction === 'right') {
+            const targetBIdx = Number(slideWrapNode.firstChild.getAttribute('b-idx'))
+            setSelectedBIdx(targetBIdx)
+          } else if (direction === 'left') {
+            const targetBIdx = Number(slideWrapNode.lastChild.getAttribute('b-idx'))
+            setSelectedBIdx(targetBIdx)
+          }
+        }
+      })
   }
 
-  useEffect(() => {
-    console.log('selected b idx', selectedBIdx)
-  }, [selectedBIdx])
+  if (slideWrapRef.current) {
+    slideWrapRef.current.style.transform = 'translate3d(-33.3334%, 0, 0)'
+  }
+
+  useEffect(() => {}, [selectedBIdx])
 
   if (selectedBIdx === null) {
     return null
