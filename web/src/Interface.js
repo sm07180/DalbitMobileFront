@@ -26,7 +26,8 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-
+        alert('native-push')
+        alert(JSON.stringify(event.detail, null, 1))
         break
       case 'native-navigator': //-----------------------Native navigator
         const {url, info} = event.detail
@@ -94,8 +95,8 @@ export default () => {
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
-    document.addEventListener('native-start', update) //진행중
-    document.addEventListener('native-end', update) //진행중
+    document.addEventListener('native-start', update) //완료
+    document.addEventListener('native-end', update) //완료
     document.addEventListener('native-push', update) //푸쉬관련
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -105,8 +106,9 @@ export default () => {
       /*----native----*/
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
-      document.removeEventListener('native-start', update) //진행중
-      document.removeEventListener('native-end', update) //진행중
+      document.removeEventListener('native-start', update)
+      document.removeEventListener('native-end', update)
+      document.removeEventListener('native-push', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)

@@ -20,6 +20,7 @@ const Index = props => {
   //context
   const store = useContext(LiveStore)
   Index.store = store
+
   //checkScroll
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
@@ -43,6 +44,8 @@ const Index = props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
+    //reload
+
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
