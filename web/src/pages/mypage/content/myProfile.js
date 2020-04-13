@@ -130,9 +130,17 @@ const myProfile = props => {
           {profile.fanRank.map((fan, index) => {
             if (urlrStr === fan.memNo) return
             return (
-              <a href={myProfileNo !== fan.memNo ? `/mypage/${fan.memNo}` : `/menu/profile`} key={index}>
-                <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
-              </a>
+              <span key={index}>
+                {webview ? (
+                  <a href={myProfileNo !== fan.memNo ? `/mypage/${fan.memNo}/initial?webview=${webview}` : `/menu/profile`}>
+                    <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
+                  </a>
+                ) : (
+                  <a href={myProfileNo !== fan.memNo ? `/mypage/${fan.memNo}` : `/menu/profile`}>
+                    <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
+                  </a>
+                )}
+              </span>
             )
           })}
           {profile.fanRank.length > 0 && <button className="moreFan" onClick={() => context.action.updateClose(true)}></button>}
@@ -165,7 +173,17 @@ const myProfile = props => {
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
         </CountingWrap>
 
-        <ProfileMsg>{profile.profMsg}</ProfileMsg>
+        <ProfileMsg>
+          {/* <br />
+          < = &lt;
+          > = &gt;
+          {profile.profMsg} */}
+          {/* 안녕
+          <br />
+          하세요 */}
+          {profile.profMsg}
+          {/* <p dangerouslySetInnerHTML={{__html: profile.profMs.replace('&lt', <br />)}}></p> */}
+        </ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
