@@ -89,7 +89,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         return false
       }
     }
+    console.log(Room.setRoomPass)
+    console.log('---')
     const _res = await nativeRoomCheck()
+    console.log(_res)
+    console.log(Room.setRoomPass)
     if (_res && Room.setRoomPass) {
       alert('실행')
     } else {
