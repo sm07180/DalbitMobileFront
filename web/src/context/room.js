@@ -27,10 +27,13 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
+  const [auth, setAuth] = useState(false)
   //interface
   Room.context = context
   Room.roomNo = roomNo
+  Room.auth = auth
   Room.setRoomNo = num => setRoomNo(num)
+  Room.setAuth = bool => setAuth(bool)
   //-----------------------------------------------------------
   // useEffect(() => {
   //   console.log('Room.roomNo : ' + Room.roomNo)
@@ -69,6 +72,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    Hybrid('AuthCheck')
+    if (!Room.setAuth) {
+      alert('Room.setAuth ' + Room.setAuth)
+      return
+    }
     Room.setRoomNo(roomNo)
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
