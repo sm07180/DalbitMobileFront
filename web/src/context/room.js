@@ -75,7 +75,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //authCheck
     Hybrid('AuthCheck')
     if (!Room.setAuth) {
-      alert('Room.setAuth ' + Room.setAuth)
+      // alert('Room.setAuth ' + Room.setAuth)
       return
     }
     Room.setRoomNo(roomNo)
