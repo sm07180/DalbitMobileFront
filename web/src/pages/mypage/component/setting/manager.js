@@ -397,7 +397,6 @@ const Content = styled.div`
           white-space: nowrap;
         }
         em {
-          padding-top: 6px;
           color: #bdbdbd;
           font-style: normal;
           font-size: 12px;
