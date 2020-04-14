@@ -18,7 +18,9 @@ const CustomerProvider = props => {
   const [list, setList] = useState([])
   const [noticePage, setNoticePage] = useState('')
   const [faqPage, setFaqPage] = useState('')
+  const [personalPage, setPersonalPage] = useState('')
   const [page, setPage] = useState(10)
+  const [pagePersonal, setPagePersonal] = useState(10)
   //---------------------------------------------------------------------
   const action = {
     /**
@@ -46,12 +48,18 @@ const CustomerProvider = props => {
     updatefaqPage: num => {
       setFaqPage(num)
     },
+    updatePersonalPage: num => {
+      setPersonalPage(num)
+    },
     updateCountPage: num => {
       setPage(num)
+    },
+    updatepagePersonal: num => {
+      setPagePersonal(num)
     }
   }
   //---------------------------------------------------------------------
-  const value = {menuCode, action, list, noticePage, faqPage, page}
+  const value = {menuCode, action, list, noticePage, faqPage, page, personalPage, pagePersonal}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {CustomerStore, CustomerProvider}

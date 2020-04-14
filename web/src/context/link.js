@@ -6,7 +6,11 @@
 import {OS_TYPE} from 'context/config.js'
 
 export const StoreLink = async context => {
-  console.log(context)
+  if (!context.token.isLogin) {
+    window.location.href = '/login'
+    return
+  }
+
   if (context.customHeader['os'] === OS_TYPE['IOS']) {
     webkit.messageHandlers.openInApp.postMessage('')
   } else {

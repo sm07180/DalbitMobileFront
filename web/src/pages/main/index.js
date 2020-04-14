@@ -103,7 +103,7 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
-                  디제이 랭킹
+                  DJ 랭킹
                 </div>
                 <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
                   팬 랭킹

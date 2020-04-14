@@ -27,16 +27,20 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-        let push = decodeURIComponent(event.detail)
-        alert(typeof push)
-        alert(JSON.stringify(push, null, 1))
+
+        let pushMsg = decodeURIComponent(event.detail)
+        pushMsg = JSON.parse(pushMsg)
+        alert('push.roomNo : ' + pushMsg.roomNo)
+
+        // alert(JSON.stringify(etc, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
-          alert('_.isEqual(context.token, event.detail) : ' + _.isEqual(context.token, event.detail))
-          if (_.isEqual(context.token, event.detail)) {
+          if (context.token.authToken === event.detail.authToken) {
             Room.setAuth(true)
           } else {
+            Room.setAuth(false)
+            window.location.href = '/login'
             alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
           }
         }

@@ -5,6 +5,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import useChange from 'components/hooks/useChange'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -22,6 +23,8 @@ import SelectBoxs from 'components/ui/selectBox.js'
 
 export default props => {
   //-----------------------------------------------------------------------------
+  const {webview} = qs.parse(location.search)
+
   //contenxt
   const context = useContext(Context)
 
@@ -139,16 +142,19 @@ export default props => {
         <ul className="list-item search">
           {userList.map((item, index) => {
             const {memNo, nickNm, memId, profImg} = item
+            const link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <figure
-                  style={{
-                    background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                  }}></figure>
-                <div>
-                  <span>@{memId}</span>
-                  <p>{nickNm}</p>
-                </div>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}></figure>
+                  <div>
+                    <span>@{memId}</span>
+                    <p>{nickNm}</p>
+                  </div>
+                </a>
                 <button
                   onClick={() => {
                     context.action.confirm({
@@ -177,17 +183,20 @@ export default props => {
           {blackList.map((item, index) => {
             const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
+            const link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <figure
-                  style={{
-                    background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                  }}></figure>
-                <div>
-                  <span>@{memId}</span>
-                  <p>{nickNm}</p>
-                  <em>{date}</em>
-                </div>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}></figure>
+                  <div>
+                    <span>@{memId}</span>
+                    <p>{nickNm}</p>
+                    <em>{date}</em>
+                  </div>
+                </a>
                 <button
                   onClick={() => {
                     context.action.confirm({
@@ -352,17 +361,24 @@ const Content = styled.div`
     margin-top: -20px;
     li {
       display: flex;
+      position: relative;
       padding: 16px 0;
       border-bottom: 1px solid #e0e0e0;
 
       figure {
         flex-basis: 36px;
+        width: 36px;
         height: 36px;
         border-radius: 50%;
       }
 
+      a {
+        display: flex;
+        max-width: 70%;
+      }
+
       div {
-        width: calc(100% - 83px);
+        max-width: calc(100% - 36px);
         padding: 0 10px;
         * {
           display: block;
@@ -389,7 +405,9 @@ const Content = styled.div`
       }
 
       button {
-        flex-basis: 47px;
+        position: absolute;
+        right: 0;
+        width: 47px;
         height: 36px;
         margin-top: 9px;
         border-radius: 10px;

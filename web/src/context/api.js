@@ -1290,6 +1290,16 @@ export default class API {
     return await ajax({...obj, url: url || `/center/qna/add`, method: method || 'POST', data: data})
   }
   /**
+   * @brief 고객센터 1:1문의하기 조회
+   * @method "POST"
+   * @create 황상한 2020.04.13
+   */
+  static center_qna_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/center/qna/list`, method: method || 'GET', params: params})
+  }
+
+  /**
    * @brief 고객센터 1:1문의하기 작성
    * @method "POST"
    * @create 손완휘 2020.03.25

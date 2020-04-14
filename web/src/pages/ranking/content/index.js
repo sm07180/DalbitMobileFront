@@ -52,7 +52,7 @@ export default props => {
             setRankType(item)
             fetch(item, dateType)
           }}>
-          {item == 'dj' ? '달D랭킹' : '팬랭킹'}
+          {item == 'dj' ? 'DJ랭킹' : '팬랭킹'}
         </button>
       )
     })
