@@ -20,8 +20,8 @@ export default props => {
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
-  const search = qs.parse(window.location.href)
-  console.log(search)
+  // const search = qs.parse(window.location.href)
+  // console.log(search)
 
   //---------------------------------------------------------------------
 
