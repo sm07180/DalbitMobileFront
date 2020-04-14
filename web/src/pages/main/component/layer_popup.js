@@ -18,7 +18,7 @@ export default props => {
         <div className="each-line">
           <div className="text">정렬기준</div>
           <div className="tab-wrap">
-            {['추천', '인기', '좋아요', '청취자'].map((type, idx) => {
+            {['추천', '좋아요', '청취', '신입'].map((type, idx) => {
               return (
                 <div className="tab" key={`align-${idx}`}>
                   {type}
