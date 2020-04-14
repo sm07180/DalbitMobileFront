@@ -39,7 +39,7 @@ export default props => {
   const globalCtx = useContext(Context)
 
   const [initData, setInitData] = useState({})
-  const [liveList, setLiveList] = useState([])
+  const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
@@ -67,7 +67,7 @@ export default props => {
   }, [])
 
   const fetchLiveList = async () => {
-    setLiveList([])
+    setLiveList(null)
 
     const broadcastList = await Api.broad_list({
       params: {
@@ -204,7 +204,7 @@ export default props => {
             </div>
 
             <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
-              <LiveList list={liveList} />
+              {Array.isArray(liveList) ? liveList.length > 0 ? <LiveList list={liveList} /> : <NoResult /> : ''}
             </div>
           </div>
         </Content>
