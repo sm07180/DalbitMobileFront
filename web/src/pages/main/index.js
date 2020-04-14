@@ -340,7 +340,7 @@ const Content = styled.div`
             display: block;
             width: 24px;
             height: 24px;
-            margin-left: 10px;
+            margin-left: 5px;
             background-repeat: no-repeat;
             background-image: url(${refreshIcon});
           }
