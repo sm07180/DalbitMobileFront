@@ -18,10 +18,14 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
 
+import Swiper from 'react-id-swiper'
+import {broadcastLive} from 'constant/broadcast.js'
+
 // static
 import Mic from './static/ic_mike.svg'
-import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
+import sequenceIcon from './static/ic_live_sequence.svg'
+import refreshIcon from './static/ic_live_refresh.svg'
 
 import {RoomMake} from 'context/room'
 
@@ -32,6 +36,9 @@ export default props => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+
+  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
+  const [selectedLiveCategory, setSelectedLiveCategory] = useState('')
 
   useEffect(() => {
     ;(async () => {
@@ -58,6 +65,25 @@ export default props => {
       }
     })()
   }, [])
+
+  const windowScrollEvent = e => {
+    if (window.scrollY >= 574) {
+      setLiveCategoryFixed(true)
+    } else {
+      setLiveCategoryFixed(false)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [])
+
+  const swiperParams = {
+    slidesPerView: 'auto'
+  }
 
   return (
     <Layout {...props}>
@@ -128,14 +154,30 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="icon live" src={PlayIcon} />
+                <img className="icon refresh" src={refreshIcon} />
               </div>
               <a href="/live">
                 <img className="plus-icon" src={PlusIcon} />
               </a>
             </div>
 
-            <div className="content-wrap">
+            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
+              <div className="inner-wrapper">
+                <Swiper {...swiperParams}>
+                  {Object.keys(broadcastLive)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .map((key, idx) => {
+                      return (
+                        <div className={`list ${key === selectedLiveCategory ? 'active' : ''}`} key={`list-${idx}`}>
+                          {broadcastLive[key]}
+                        </div>
+                      )
+                    })}
+                </Swiper>
+              </div>
+            </div>
+
+            <div className="content-wrap" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
               <LiveList list={liveList} />
             </div>
           </div>
@@ -148,6 +190,56 @@ export default props => {
 const Content = styled.div`
   .section {
     margin-top: 28px;
+
+    .live-list-category {
+      position: relative;
+      display: flex;
+      height: 58px;
+      flex-direction: row;
+      align-items: center;
+      background-color: #fff;
+
+      &.fixed {
+        position: fixed;
+        top: 48px;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
+
+      .inner-wrapper {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        width: calc(100% - 16px);
+
+        .swiper-container {
+          overflow: hidden;
+
+          .list {
+            width: auto;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            letter-spacing: -0.35px;
+            padding: 7px 8px;
+            color: #424242;
+            margin: 0 2px;
+            background-color: #fff;
+
+            &.active {
+              border: none;
+              background-color: #632beb;
+              color: #fff;
+            }
+
+            &:first-child {
+              margin-left: 0;
+            }
+          }
+        }
+      }
+    }
 
     .title-wrap {
       display: flex;
@@ -175,6 +267,12 @@ const Content = styled.div`
           }
         }
         .icon {
+          &.refresh {
+            display: block;
+            width: 24px;
+            margin-left: 10px;
+          }
+
           &.live {
             display: block;
             width: 16px;
@@ -190,9 +288,6 @@ const Content = styled.div`
       margin-top: 10px;
       padding: 0 16px;
       padding-bottom: 20px;
-
-      &.my-star-slide {
-      }
 
       &.rank-slide {
         padding: 0;

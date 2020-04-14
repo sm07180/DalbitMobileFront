@@ -392,13 +392,13 @@ const CountingWrap = styled.div`
     display: inline-block;
     font-size: 20px;
     letter-spacing: -0.35px;
-    color: #707070;
+    color: ${COLOR_MAIN};
     transform: skew(-0.03deg);
-
+    font-weight: 600;
     em {
       display: inline-block;
       padding-left: 1px;
-      color: ${COLOR_MAIN};
+      color: #000;
       font-style: normal;
       font-weight: 600;
     }
