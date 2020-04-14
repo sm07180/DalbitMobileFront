@@ -27,7 +27,8 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, title, likeCnt, entryCnt} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt} = list
+    console.log('list', list)
     return (
       <LiveList
         key={`live-${idx}`}
@@ -37,9 +38,9 @@ const makeContents = props => {
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb150x150']})`}} />
         <div className="broadcast-content">
           <div className="icon-wrap">
-            <div className="type-icon"></div>
-            <div className="type-text"></div>
-            <div className="gender-icon"></div>
+            <img className="type-icon" src={audioIcon} />
+            <div className="type-text">{broadcastLive[roomType]}</div>
+            <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />
           </div>
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
@@ -100,32 +101,22 @@ const LiveList = styled.div`
       }
 
       .type-icon {
-        width: 26px;
-        height: 16px;
-        border-radius: 8px;
-        background-color: #febd56;
+        display: block;
+        margin-right: 2px;
       }
 
       .type-text {
         min-width: 30px;
-        height: 16px;
-        background-color: #bdbdbd;
+        background-color: #9e9e9e;
         border-radius: 8px;
         color: #fff;
+        font-size: 11px;
+        padding: 1px 6px;
       }
 
       .gender-icon {
+        display: block;
         width: 44px;
-        height: 16px;
-        border: 1px solid #27a2db;
-        border-radius: 10px;
-
-        &.man {
-          border-color: #27a2db;
-        }
-        &.woman {
-          border-color: #f35da3;
-        }
       }
     }
 
