@@ -520,6 +520,7 @@ const FanListWrap = styled.div`
     border: 1px solid #424242;
     border-radius: 50%;
     vertical-align: top;
+    margin-top: -5px;
     span {
       display: inline-block;
       position: absolute;

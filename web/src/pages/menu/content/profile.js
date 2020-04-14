@@ -422,7 +422,7 @@ const MenuMypage = styled.div`
         border-radius: 20px;
         background-color: #f2f2f2;
         box-sizing: border-box;
-        padding: 0 18px;
+        padding: 0 12px 0 18px;
         margin: 4px 0;
 
         .text {
