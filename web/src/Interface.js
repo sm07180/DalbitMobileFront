@@ -94,11 +94,11 @@ export default () => {
         //---------------------[분기처리끝]
         break
       case 'native-auth-check': //----------------------Native RoomCheck
-        if (context.token.authToken == event.detail.authToken) {
+        if (context.token.memNo === event.detail.memNo) {
           Room.setAuth(true)
         } else {
           Room.setAuth(false)
-          alert(context.token.memNo + ' : ' + event.detail.memNo)
+          //  alert(context.token.memNo + ' : ' + event.detail.memNo)
           window.location.href = '/login'
           // alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
         }
