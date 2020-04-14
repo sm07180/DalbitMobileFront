@@ -137,7 +137,17 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  RoomMake(globalCtx)
+                  async function fetchSelfAuth() {
+                    const selfAuth = await Api.self_auth_check({})
+                    if (selfAuth.result == 'success') {
+                      RoomMake(globalCtx)
+                    } else {
+                      props.history.push('/selfAuth', {
+                        type: 'cast'
+                      })
+                    }
+                  }
+                  fetchSelfAuth()
                 }}>
                 방송하기
               </div>
