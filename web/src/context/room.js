@@ -60,7 +60,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         title: join.messageKey,
         msg: join.message
       })
-    } else if (join.result === 'success') {
+    } else if (join.result === 'success' && join.data !== null) {
       Hybrid('RoomJoin', join.data)
       console.log(
         '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
