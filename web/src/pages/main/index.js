@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -29,12 +29,16 @@ import PlusIcon from './static/ic_circle_plus.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
+  const liveCategoryListRef = useRef()
+
   //context
   const globalCtx = useContext(Context)
 
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState([])
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+
+  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -61,6 +65,23 @@ export default props => {
       }
     })()
   }, [])
+
+  const windowScrollEvent = e => {
+    if (window.scrollY >= 574) {
+    } else {
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [])
+
+  const swiperParams = {
+    slidesPerView: 'auto'
+  }
 
   return (
     <Layout {...props}>
@@ -138,15 +159,23 @@ export default props => {
               </a>
             </div>
 
-            <div className="live-list-category">
-              {Object.keys(broadcastLive)
-                .sort((a, b) => Number(a) - Number(b))
-                .map((key, idx) => {
-                  return <div key={`list-${idx}`}>{broadcastLive[key]}</div>
-                })}
+            <div className="live-list-category" ref={liveCategoryListRef} style={liveCategoryFixed ? {display: 'fixed'} : {}}>
+              <div className="inner-wrapper">
+                <Swiper {...swiperParams}>
+                  {Object.keys(broadcastLive)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .map((key, idx) => {
+                      return (
+                        <div className="list" key={`list-${idx}`}>
+                          {broadcastLive[key]}
+                        </div>
+                      )
+                    })}
+                </Swiper>
+              </div>
             </div>
 
-            <div className="content-wrap">
+            <div className="content-wrap" style={{height: '1000px'}}>
               <LiveList list={liveList} />
             </div>
           </div>
@@ -161,9 +190,37 @@ const Content = styled.div`
     margin-top: 28px;
 
     .live-list-category {
+      position: relative;
       display: flex;
+      height: 40px;
       flex-direction: row;
       align-items: center;
+
+      .inner-wrapper {
+        position: absolute;
+        top: 0;
+        left: 16px;
+        width: calc(100% - 16px);
+
+        .swiper-container {
+          overflow: hidden;
+
+          .list {
+            width: auto;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            letter-spacing: -0.35px;
+            padding: 7px 8px;
+            color: #424242;
+            margin: 0 2px;
+
+            &:first-child {
+              margin-left: 0;
+            }
+          }
+        }
+      }
     }
 
     .title-wrap {

@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 
 export default props => {
-  const {list} = props
+  // const {list} = props
+  const list = [1, 2]
 
   const swiperParams = {
     slidesPerView: 'auto'
