@@ -357,7 +357,7 @@ const NameWrap = styled.div`
     display: inline-block;
   }
   strong {
-    color: #424242;
+    color: #000;
     font-size: 24px;
     line-height: 32px;
     font-weight: 800;

@@ -8,6 +8,7 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
+import Header from '../component/header.js'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 

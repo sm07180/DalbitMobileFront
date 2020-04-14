@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import qs from 'query-string'
 // context
 import {Context} from 'context'
+import Header from '../component/header.js'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 //api
@@ -338,10 +339,9 @@ export default props => {
   //------------------------------------------------------------------------
   return (
     <>
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">팬 보드</div>
-      </TopWrap>
+      <Header>
+        <div className="category-text">팬 보드</div>
+      </Header>
       {/* 전체영역 */}
       <FanBoard className="fanboard">
         <WriteArea className={active === true ? 'on' : ''}>

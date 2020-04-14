@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 //layout
 import Layout from 'pages/common/layout'
-
+import Header from './component/header'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -154,14 +154,13 @@ export default props => {
       {!token.isLogin ? (
         <Redirect to={`/`} />
       ) : (
-        <Layout {...props}>
+        <Layout {...props} status="no_gnb">
           <Content>
             <SettingWrap>
               {/* 공통타이틀:TopWrap */}
-              <TopWrap>
-                <button onClick={() => window.history.back()}></button>
-                <div className="title">내 정보 관리</div>
-              </TopWrap>
+              <Header>
+                <div className="category-text">내 정보 관리</div>
+              </Header>
               <ProfileImg
                 style={{
                   backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
@@ -382,7 +381,12 @@ const ProfileImg = styled.div`
 const SettingWrap = styled.div`
   width: 394px;
   margin: 0 auto;
-  padding-top: 20px;
+
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    left: 2%;
+  }
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 91.111%;
@@ -390,7 +394,7 @@ const SettingWrap = styled.div`
 `
 
 const Content = styled.section`
-  margin: 20px 0 20px 0;
+  margin: 0 0 20px 0;
 `
 const TopWrap = styled.div`
   display: flex;
