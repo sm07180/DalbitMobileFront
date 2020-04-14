@@ -147,7 +147,7 @@ const Now = styled.div`
   font-size: 24px;
   letter-spacing: -0.6px;
   font-weight: 800;
-  color: #8556f6;
+  color: #632beb;
 `
 const Total = styled.div`
   display: flex;
@@ -230,7 +230,7 @@ const UseBoost = styled.button`
   display: flex;
   width: 100%;
   height: 48px;
-  background-color: #8556f6;
+  background-color: #632beb;
   border-radius: 10px;
   color: #ffffff;
   font-size: 14px;

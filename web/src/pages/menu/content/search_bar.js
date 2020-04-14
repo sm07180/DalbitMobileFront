@@ -47,7 +47,7 @@ const Content = styled.div`
   margin-bottom: 36px;
   padding: 17px 16px 15px;
   border-radius: 28px;
-  border: solid 2px #8556f6;
+  border: solid 2px #632beb;
   .in_wrap {
     position: relative;
     input {

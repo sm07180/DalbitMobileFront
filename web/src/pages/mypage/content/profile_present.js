@@ -356,10 +356,10 @@ const PointButton = styled.button`
   width: calc(20% - 4px);
   height: 32px;
   border-style: solid;
-  border-color: ${props => (props.active == 'active' ? '#8556f6' : '#e0e0e0')};
+  border-color: ${props => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
   border-width: 1px;
   border-radius: 10px;
-  color: ${props => (props.active == 'active' ? '#8556f6' : '#616161')};
+  color: ${props => (props.active == 'active' ? '#632beb' : '#616161')};
   font-weight: 400;
   color: #616161;
   font-size: 12px;
@@ -395,7 +395,7 @@ const PointInput = styled.input`
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
-  border-color: ${props => (props.active === 'active' ? '#8556f6' : '#e0e0e0')};
+  border-color: ${props => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
 
   &::placeholder {
     color: #bdbdbd;

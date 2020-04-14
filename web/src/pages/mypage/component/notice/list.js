@@ -272,7 +272,7 @@ const TitleWrap = styled.div`
   }
 
   &.is-top {
-    color: #8556f6;
+    color: #632beb;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;

@@ -140,8 +140,8 @@ const Alert = styled.section`
     /* 취소 */
     &:nth-child(odd) {
       margin-right: 4px;
-      border: 1px solid #8556f6;
-      color: #8556f6;
+      border: 1px solid #632beb;
+      color: #632beb;
       background: #fff;
     }
     /* 확인 */

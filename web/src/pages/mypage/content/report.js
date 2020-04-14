@@ -484,7 +484,7 @@ export default props => {
                         </div>
                         <div>
                           <span>방송방(DJ)</span>
-                          <span style={{color: '#8556f6'}}>{value.bjNickNm}</span>
+                          <span style={{color: '#632beb'}}>{value.bjNickNm}</span>
                         </div>
                         <div>
                           <span>선물내역(달)</span>
@@ -568,7 +568,7 @@ const SectionIcon = styled.div`
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background-color: #8556f6;
+  background-color: #632beb;
   background-repeat: no-repeat;
   background-position: center;
 `
@@ -621,7 +621,7 @@ const TypeBtn = styled.button`
   width: 86px;
 
   &.active {
-    border-color: #8556f6;
+    border-color: #632beb;
   }
 `
 const TitleSubMsg = styled.div`
@@ -633,7 +633,7 @@ const TitleSubMsg = styled.div`
 `
 
 const TitleText = styled.div`
-  color: #8556f6;
+  color: #632beb;
   font-size: 20px;
   letter-spacing: -0.5px;
   font-weight: 600;
@@ -643,7 +643,7 @@ const TitleWrap = styled.div`
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #8556f6;
+  border-bottom: 1px solid #632beb;
   padding-bottom: 25px;
   margin-top: 40px;
 `

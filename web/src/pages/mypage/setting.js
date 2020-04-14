@@ -222,7 +222,7 @@ const SaveBtn = styled.button`
   text-align: center;
   font-size: 16px;
   letter-spacing: -0.4px;
-  background-color: #8556f6;
+  background-color: #632beb;
   cursor: pointer;
 `
 
@@ -264,7 +264,7 @@ const GenderTab = styled.div`
   user-select: none;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
-  background-color: #8556f6;
+  background-color: #632beb;
   color: #fff;
   cursor: pointer;
 

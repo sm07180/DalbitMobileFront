@@ -139,7 +139,7 @@ const LiveList = styled.div`
       align-items: center;
 
       .broadcast-type {
-        color: #8556f6;
+        color: #632beb;
         font-size: 11px;
         letter-spacing: -0.28px;
         margin-right: 10px;

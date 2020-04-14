@@ -87,7 +87,7 @@ export default props => {
 // `
 
 const SelectListWrap = styled.div`
-  border: 1px solid #8556f6;
+  border: 1px solid #632beb;
   border-top: none;
   /* animation-duration: 0.1s;
   animation-iteration-count: 1;
@@ -119,7 +119,7 @@ const SelectListWrap = styled.div`
     transform: skew(-0.03deg);
     letter-spacing: -0.5px;
     &:hover {
-      color: #8556f6;
+      color: #632beb;
       background-color: #f8f8f8;
     }
   }
@@ -130,9 +130,9 @@ const Selected = styled.div`
   width: 136px;
   padding: 11px 10px;
   box-sizing: border-box;
-  border: 1px solid #8556f6;
+  border: 1px solid #632beb;
   font-size: 16px;
-  color: #8556f6;
+  color: #632beb;
   outline: none;
   letter-spacing: -0.5px;
 
@@ -152,7 +152,7 @@ const Selected = styled.div`
     height: 2px;
     top: 20px;
     right: 20px;
-    background-color: #8556f6;
+    background-color: #632beb;
     transform: rotate(45deg);
     transition-property: transform;
     transition-duration: 0.1s;
@@ -166,7 +166,7 @@ const Selected = styled.div`
     height: 2px;
     top: 20px;
     right: 12px;
-    background-color: #8556f6;
+    background-color: #632beb;
     transform: rotate(-45deg);
     transition-property: transform;
     transition-duration: 0.1s;

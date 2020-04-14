@@ -184,7 +184,7 @@ const Choice = styled.button`
   font-weight: 800;
   line-height: 1.17;
   letter-spacing: -0.45px;
-  color: ${props => (props.active ? '#8556f6' : '#9e9e9e')};
+  color: ${props => (props.active ? '#632beb' : '#9e9e9e')};
 `
 
 const Separator = styled.section`
@@ -296,8 +296,8 @@ const Cancel = styled.button`
   border-radius: 10px;
   border-width: 1px;
   border-style: solid;
-  border-color: #8556f6;
-  color: #8556f6;
+  border-color: #632beb;
+  color: #632beb;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.13;
@@ -306,7 +306,7 @@ const Cancel = styled.button`
 const Charge = styled.button`
   width: 48%;
   height: 48px;
-  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
+  background: ${props => (props.active ? '#632beb' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;
@@ -318,7 +318,7 @@ const ChargeS = styled.button`
   display: flex;
   width: 100%;
   height: 48px;
-  background: ${props => (props.active ? '#8556f6' : '#bdbdbd')};
+  background: ${props => (props.active ? '#632beb' : '#bdbdbd')};
   border-radius: 10px;
   color: #ffffff;
   font-size: 16px;

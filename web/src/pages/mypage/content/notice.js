@@ -263,7 +263,7 @@ const GlobalWriteBtn = styled.button`
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background-color: #8556f6;
+    background-color: #632beb;
     &.on {
       display: flex;
     }
@@ -283,10 +283,10 @@ const WriteBtn = styled.button`
   position: relative;
   padding: 12px 20px 12px 36px;
   border-radius: 10px;
-  border: 1px solid #8556f6;
+  border: 1px solid #632beb;
   cursor: pointer;
   font-size: 14px;
-  color: #8556f6;
+  color: #632beb;
 
   &::after {
     position: absolute;

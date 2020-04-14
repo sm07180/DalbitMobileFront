@@ -61,7 +61,7 @@ export default props => {
         </Wrap>
       </div>
       <ButtonArea>
-        <LButton background={'#8556f6'} title={'완료'} clickEvent={() => context.action.updatePopupVisible(false)} />
+        <LButton background={'#632beb'} title={'완료'} clickEvent={() => context.action.updatePopupVisible(false)} />
       </ButtonArea>
     </Container>
   )

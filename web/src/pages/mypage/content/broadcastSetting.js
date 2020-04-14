@@ -86,11 +86,11 @@ const TitleWrap = styled.div`
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #8556f6;
+  border-bottom: 1px solid #632beb;
   padding-bottom: 25px;
 `
 const TitleText = styled.div`
-  color: #8556f6;
+  color: #632beb;
   font-size: 20px;
   letter-spacing: -0.5px;
   font-weight: 600;

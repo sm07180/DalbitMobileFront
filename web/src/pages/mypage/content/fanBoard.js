@@ -574,7 +574,7 @@ const CommentSubmitBtn = styled.button`
   font-size: 16px;
   color: #fff;
   padding: 16px 0;
-  background-color: #8556f6;
+  background-color: #632beb;
   position: relative;
 `
 const CommentSubmitBtnCancel = styled.button`

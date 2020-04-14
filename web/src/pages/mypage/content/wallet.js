@@ -144,16 +144,16 @@ export default props => {
 const CoinChargeBtn = styled.button`
   padding: 16px 44px;
   color: #fff;
-  background-color: #8556f6;
+  background-color: #632beb;
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
   font-size: 16px;
 
   &.white-btn {
-    border: 1px solid #8556f6;
+    border: 1px solid #632beb;
     background-color: #fff;
-    color: #8556f6;
+    color: #632beb;
     margin-right: 12px;
   }
 `
@@ -183,7 +183,7 @@ const CoinCurrentStatus = styled.div`
     }
   }
   .current-value {
-    color: #8556f6;
+    color: #632beb;
     font-size: 28px;
     letter-spacing: -0.7px;
     font-weight: 600;
@@ -194,7 +194,7 @@ const CoinCurrentStatus = styled.div`
   }
 `
 const CoinCountingView = styled.div`
-  border: 3px solid #8556f6;
+  border: 3px solid #632beb;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,7 +225,7 @@ const CoinTypeBtn = styled.button`
     content: '';
   }
   &.active {
-    color: #8556f6;
+    color: #632beb;
   }
 `
 const TitleWrap = styled.div`
@@ -238,7 +238,7 @@ const TitleWrap = styled.div`
   .text {
     font-size: 20px;
     letter-spacing: -0.5px;
-    color: #8556f6;
+    color: #632beb;
   }
 `
 // 탑 공통 타이틀 스타일

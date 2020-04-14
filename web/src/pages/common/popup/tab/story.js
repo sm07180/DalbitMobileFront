@@ -176,7 +176,7 @@ export default props => {
               <Counter>{count} / 100</Counter>
             </div>
           </ListenerMain>
-          <LButton title={'등록하기'} background={'#8556f6'} clickEvent={() => writeStory()} />
+          <LButton title={'등록하기'} background={'#632beb'} clickEvent={() => writeStory()} />
         </>
       )}
     </Container>

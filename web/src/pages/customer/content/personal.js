@@ -313,7 +313,7 @@ const Content = styled.div`
       width: 144px;
       padding: 16px 0;
       border-radius: 8px;
-      border: solid 1px #8556f6;
+      border: solid 1px #632beb;
       background-color: #ffffff;
       margin: 4px;
       @media (max-width: ${WIDTH_MOBILE_S}) {
@@ -468,16 +468,16 @@ const ImgUploader = styled.div`
 const CoinChargeBtn = styled.button`
   padding: 16px 44px;
   color: #fff;
-  background-color: #8556f6;
+  background-color: #632beb;
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
   font-size: 16px;
 
   &.white-btn {
-    border: 1px solid #8556f6;
+    border: 1px solid #632beb;
     background-color: #fff;
-    color: #8556f6;
+    color: #632beb;
     margin-right: 12px;
   }
 `
@@ -507,7 +507,7 @@ const CoinCurrentStatus = styled.div`
     }
   }
   .current-value {
-    color: #8556f6;
+    color: #632beb;
     font-size: 28px;
     letter-spacing: -0.7px;
     font-weight: 600;
@@ -532,7 +532,7 @@ const PersonalTypeBtn = styled.button`
   }
   &.active {
     border: solid 1px ${COLOR_MAIN};
-    color: #8556f6;
+    color: #632beb;
   }
 `
 const TitleWrap = styled.div`

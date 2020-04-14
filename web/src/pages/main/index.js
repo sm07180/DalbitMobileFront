@@ -327,7 +327,7 @@ const Content = styled.div`
 
 const SubMain = styled.div`
   height: 310px;
-  background: linear-gradient(#8556f6, #8556f6, #662eec);
+  background: linear-gradient(#632beb, #632beb, #662eec);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 

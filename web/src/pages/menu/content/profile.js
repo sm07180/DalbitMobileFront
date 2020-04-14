@@ -292,7 +292,7 @@ const MenuMypage = styled.div`
 
     .profile-info {
       display: none;
-      border: 1px solid #8556f6;
+      border: 1px solid #632beb;
       border-radius: 20px;
       transform: skew(-0.03deg);
       .time-info {
@@ -309,7 +309,7 @@ const MenuMypage = styled.div`
             align-items: center;
 
             .text {
-              color: #8556f6;
+              color: #632beb;
               font-size: 14px;
               letter-spacing: -0.35px;
               font-weight: bold;
@@ -351,7 +351,7 @@ const MenuMypage = styled.div`
           }
 
           .type {
-            color: #8556f6;
+            color: #632beb;
             font-size: 14px;
             letter-spacing: -0.35px;
             font-weight: 600;

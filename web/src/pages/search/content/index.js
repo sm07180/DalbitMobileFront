@@ -47,7 +47,7 @@ const SearchWrap = styled.div`
   & h1 {
     margin: 40px 0;
     text-align: center;
-    color: #8556f6;
+    color: #632beb;
     font-size: 28px;
     font-weight: 600;
     letter-spacing: -0.7px;
@@ -68,7 +68,7 @@ const SearchWrap = styled.div`
       font-weight: 600;
       line-height: 0.86;
       letter-spacing: -0.7px;
-      color: #8556f6;
+      color: #632beb;
     }
   }
 `

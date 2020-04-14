@@ -372,7 +372,7 @@ const Container = styled.div`
         transform: skew(-0.03deg);
       }
       & em {
-        color: #8556f6;
+        color: #632beb;
         font-size: 20px;
         font-weight: 600;
         font-style: normal;
@@ -437,7 +437,7 @@ const Container = styled.div`
       padding: 15px 0 15px 0;
       border-radius: 10px;
       border: 1px solid #bdbdbd;
-      /* background-color: #8556f6; */
+      /* background-color: #632beb; */
       background-color: #fff;
       /* color: #fff; */
       color: #9e9e9e;
@@ -447,13 +447,13 @@ const Container = styled.div`
     }
     & button:last-child {
       margin-right: 8px;
-      border: 1px solid #8556f6;
+      border: 1px solid #632beb;
       color: #fff;
-      background-color: #8556f6;
+      background-color: #632beb;
     }
     & .on {
-      border: 1px solid #8556f6;
-      color: #8556f6;
+      border: 1px solid #632beb;
+      color: #632beb;
     }
   }
 `
@@ -472,7 +472,7 @@ const GazeBar = styled.div`
   position: absolute;
   width: calc(${props => props.gaze}%);
   min-width: 15%;
-  background-color: #8556f6;
+  background-color: #632beb;
   border-radius: 10px;
   & p {
     padding-right: 5px;

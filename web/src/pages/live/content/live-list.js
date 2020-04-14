@@ -136,7 +136,7 @@ const Info = styled.div`
     line-height: 1.09;
     letter-spacing: -0.28px;
     text-align: left;
-    color: #8556f6;
+    color: #632beb;
   }
 `
 const List = styled.a`

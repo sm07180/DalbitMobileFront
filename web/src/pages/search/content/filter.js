@@ -334,7 +334,7 @@ const Wrap = styled.div`
 
     & p:first-child {
       float: left;
-      color: #8556f6;
+      color: #632beb;
       font-size: 20px;
       font-weight: 600;
       letter-spacing: -0.5px;
@@ -371,7 +371,7 @@ const SearchBar = styled.div`
   width: 100%;
   height: 68px;
   border-style: solid;
-  border-color: #8556f6;
+  border-color: #632beb;
   border-width: 3px;
   justify-content: space-between;
   align-items: center;
@@ -385,7 +385,7 @@ const SearchBar = styled.div`
     line-height: 1;
     letter-spacing: -0.6px;
     text-align: left;
-    color: #8556f6;
+    color: #632beb;
     outline: none;
   }
 `
@@ -454,7 +454,7 @@ const ListWrap = styled.button`
   }
   & h3 {
     margin-top: 12px;
-    color: #8556f6;
+    color: #632beb;
     font-size: 14px;
     letter-spacing: -0.35px;
     line-height: 1.4;

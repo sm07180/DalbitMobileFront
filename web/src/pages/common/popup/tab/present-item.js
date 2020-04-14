@@ -187,7 +187,7 @@ const Dj = styled.button`
   border-width: 1px;
   border-color: #bdbdbd;
   border-style: solid;
-  border-color: ${props => (props.active == 'active' ? '#8556f6' : '')};
+  border-color: ${props => (props.active == 'active' ? '#632beb' : '')};
   justify-content: center;
   align-items: center;
 `
@@ -215,7 +215,7 @@ const UserLevel = styled.div`
   font-weight: 800;
   line-height: 1.33;
   letter-spacing: -0.45px;
-  color: #8556f6;
+  color: #632beb;
 `
 
 const BarWrap = styled.div`
@@ -240,7 +240,7 @@ const Exp = styled.div`
   width: ${props => (props.exp ? props.exp + '%' : '0%')};
   /* width: 100%; */
   border-radius: 10px;
-  background-color: #8556f6;
+  background-color: #632beb;
   margin-left: 0px;
   flex-direction: row;
   justify-content: flex-end;
@@ -307,7 +307,7 @@ const SendDirect = styled.button`
   height: 48px;
   border-radius: 10px;
   border-style: solid;
-  border-color: #8556f6;
+  border-color: #632beb;
   border-width: 1px;
   justify-content: space-between;
   align-items: center;
@@ -319,7 +319,7 @@ const Plus = styled.div`
   display: flex;
   width: 16px;
   height: 16px;
-  background-color: #8556f6;
+  background-color: #632beb;
   align-items: center;
   justify-content: center;
   border-radius: 30px;
@@ -335,13 +335,13 @@ const MyPoint = styled.div`
   font-weight: 800;
   line-height: 0.78;
   letter-spacing: normal;
-  color: #8556f6;
+  color: #632beb;
 `
 const Send = styled.button`
   display: flex;
   width: 55%;
   height: 48px;
-  background-color: #8556f6;
+  background-color: #632beb;
   border-radius: 10px;
   margin-left: 8px;
   align-items: center;
@@ -364,13 +364,13 @@ const SecretSend = styled.button`
   align-items: center;
   justify-content: center;
 
-  color: #8556f6;
+  color: #632beb;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
   border-style: solid;
-  border-color: #8556f6;
+  border-color: #632beb;
   border-width: 1px;
 `
 const DjImg = styled.div`

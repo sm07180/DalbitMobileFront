@@ -315,8 +315,8 @@ export default props => {
                       width={150}
                       height={48}
                       background={'#fff'}
-                      color={'#8556f6'}
-                      borderColor={'#8556f6'}
+                      color={'#632beb'}
+                      borderColor={'#632beb'}
                       title={'취소하기'}
                       clickEvent={() => {
                         context.action.updatePopupVisible(false)
@@ -325,7 +325,7 @@ export default props => {
                     <BotButton
                       width={150}
                       height={48}
-                      background={charge != -1 ? '#8556f6' : '#bdbdbd'}
+                      background={charge != -1 ? '#632beb' : '#bdbdbd'}
                       disabled={charge != -1 ? false : true}
                       color={'#fff'}
                       title={'충전하기'}
@@ -369,7 +369,7 @@ const Container = styled.div`
     display: flex;
     width: 100%;
     border-bottom: 1px solid ${COLOR_MAIN};
-    color: #8556f6;
+    color: #632beb;
     font-size: 16px;
     font-weight: 600;
     line-height: 48px;
@@ -404,7 +404,7 @@ const Info = styled.div`
     display: flex;
     width: 100%;
     border-bottom: 1px solid #e0e0e0;
-    color: #8556f6;
+    color: #632beb;
     line-height: 48px;
     align-items: center;
     text-align: justify;
@@ -480,13 +480,13 @@ const ItemBox = styled.button`
   border-width: 1px;
   border-radius: 10px;
   border-color: #e0e0e0;
-  border-color: ${props => (props.active ? '#8556f6' : '#e0e0e0')};
+  border-color: ${props => (props.active ? '#632beb' : '#e0e0e0')};
 
   font-size: 14px;
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: -0.35px;
-  color: ${props => (props.active ? '#8556f6' : '#616161')};
+  color: ${props => (props.active ? '#632beb' : '#616161')};
   margin-bottom: 8px;
   transform: skew(-0.03deg);
 
@@ -683,10 +683,10 @@ const Useage = styled.button`
   width: 31%;
   height: 5vh;
   border-radius: 10px;
-  border-color: ${props => (props.active ? '#8556f6' : '#e0e0e0')};
+  border-color: ${props => (props.active ? '#632beb' : '#e0e0e0')};
   border-width: 1px;
   border-style: solid;
-  color: ${props => (props.active ? '#8556f6' : '#616161')};
+  color: ${props => (props.active ? '#632beb' : '#616161')};
 `
 
 const Event = styled.div`

@@ -229,7 +229,7 @@ const Wrap = styled.div`
     display: block;
     margin: 20px auto 186px auto;
     padding: 16px 135px;
-    background-color: #8556f6;
+    background-color: #632beb;
     color: #fff;
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {

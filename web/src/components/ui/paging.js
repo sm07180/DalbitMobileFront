@@ -105,7 +105,7 @@ const Page = styled.button`
 
   &.active {
     color: #fff;
-    border-color: #8556f6;
-    background-color: #8556f6;
+    border-color: #632beb;
+    background-color: #632beb;
   }
 `

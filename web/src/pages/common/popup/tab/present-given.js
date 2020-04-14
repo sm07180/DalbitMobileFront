@@ -163,7 +163,7 @@ const GivenThings = styled.div`
     font-weight: 400;
     line-height: 1.15;
     letter-spacing: -0.5px;
-    color: #8556f6;
+    color: #632beb;
   }
 `
 const History = styled.div`

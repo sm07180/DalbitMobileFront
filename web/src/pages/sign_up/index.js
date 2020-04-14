@@ -1114,7 +1114,7 @@ const CheckWrap = styled.div`
       /* cursor: pointer; */
       background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
       &:checked {
-        background: #8556f6 url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+        background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
       }
 
       &:after {

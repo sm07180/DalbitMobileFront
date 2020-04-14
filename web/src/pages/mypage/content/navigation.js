@@ -98,11 +98,11 @@ const Navigation = styled.div`
     }
 
     &.active {
-      border-top: 1px solid #8556f6;
+      border-top: 1px solid #632beb;
       border-left: none;
       border-right: none;
 
-      background-color: #8556f6;
+      background-color: #632beb;
       & > div {
         color: #fff;
       }
