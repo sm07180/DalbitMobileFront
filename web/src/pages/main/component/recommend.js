@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
+
 //context
 import Room, {RoomJoin} from 'context/room'
 // component
