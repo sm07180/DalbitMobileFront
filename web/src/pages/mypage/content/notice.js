@@ -9,6 +9,7 @@ import {Context} from 'context'
 // component
 import List from '../component/notice/list.js'
 import WritePage from '../component/notice/writePage.js'
+import Header from '../component/header.js'
 import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 import Checkbox from './checkbox'
@@ -151,10 +152,9 @@ const Notice = props => {
 
   return (
     <>
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">방송국 공지</div>
-      </TopWrap>
+      <Header>
+        <div className="category-text">방송국 공지</div>
+      </Header>
       <ListWrap>
         {Array.isArray(listDetailed) ? (
           listDetailed.length > 0 ? (

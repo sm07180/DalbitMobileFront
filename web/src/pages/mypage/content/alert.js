@@ -11,7 +11,7 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Utility from 'components/lib/utility'
-
+import Header from '../component/header.js'
 //room
 import Room, {RoomJoin} from 'context/room'
 
@@ -203,10 +203,9 @@ export default props => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">알림</div>
-      </TopWrap>
+      <Header>
+        <div className="category-text">알림</div>
+      </Header>
       <Content>
         {/* <TitleWrap style={{paddingBottom: '25px'}}>
           <TitleText>알림</TitleText>

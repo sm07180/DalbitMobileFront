@@ -24,6 +24,7 @@ import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
 import moment from 'moment'
 import NoResult from 'components/ui/noResult'
+import Header from '../component/header.js'
 
 //
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
@@ -290,10 +291,9 @@ export default props => {
   return (
     <>
       {/* 공통타이틀 */}
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">리포트</div>
-      </TopWrap>
+      <Header>
+        <div className="category-text">리포트</div>
+      </Header>
       <Report>
         <TitleWrap style={{paddingBottom: '25px'}}>
           <TitleText>리포트</TitleText>
