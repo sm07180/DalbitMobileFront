@@ -35,16 +35,16 @@ export default props => {
 
   const tabClick = (type, value) => {
     if (type === 'align') {
-      if (liveAlign === null) {
-        setLiveAlign(value)
-      } else {
+      if (liveAlign === value) {
         setLiveAlign(null)
+      } else {
+        setLiveAlign(value)
       }
     } else if (type === 'gender') {
-      if (liveGender === null) {
-        setLiveGender(value)
-      } else {
+      if (liveGender === value) {
         setLiveGender(null)
+      } else {
+        setLiveGender(value)
       }
     }
   }
