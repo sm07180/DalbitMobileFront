@@ -23,7 +23,6 @@ import {broadcastLive} from 'constant/broadcast.js'
 
 // static
 import Mic from './static/ic_mike.svg'
-import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
@@ -39,6 +38,7 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
+  const [selectedLiveCategory, setSelectedLiveCategory] = useState('')
 
   useEffect(() => {
     ;(async () => {
@@ -168,7 +168,7 @@ export default props => {
                     .sort((a, b) => Number(a) - Number(b))
                     .map((key, idx) => {
                       return (
-                        <div className="list" key={`list-${idx}`}>
+                        <div className={`list ${key === selectedLiveCategory ? 'active' : ''}`} key={`list-${idx}`}>
                           {broadcastLive[key]}
                         </div>
                       )
@@ -226,6 +226,12 @@ const Content = styled.div`
             color: #424242;
             margin: 0 2px;
             background-color: #fff;
+
+            &.active {
+              border: none;
+              background-color: #632beb;
+              color: #fff;
+            }
 
             &:first-child {
               margin-left: 0;
