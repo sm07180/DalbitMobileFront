@@ -106,11 +106,12 @@ const myProfile = props => {
     let result = []
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
+        let thisRank = index + 1
         result = result.concat(
           <a key={index}>
             <FanRank
               style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
-              className="rank3"></FanRank>
+              className={`rank${thisRank}`}></FanRank>
           </a>
         )
       } else {
