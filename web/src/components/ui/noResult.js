@@ -7,7 +7,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 
 //context
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import _ from 'lodash'
 
 export default props => {
@@ -52,15 +52,4 @@ const NoResult = styled.div`
     color: #616161;
     transform:skew(-0.03deg);
   }
-
-  /* &.mobile{
-    margin-top:0;
-    padding-top:104px;
-    background-size:162px !important;
-    & > span{
-      margin-top:20px;
-      font-size:14px;
-      transform:skew(-0.03deg);
-    }
-  } */
 `

@@ -18,6 +18,7 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
+import NoResult from 'components/ui/noResult.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
