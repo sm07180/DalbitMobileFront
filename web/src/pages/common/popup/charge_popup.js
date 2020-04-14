@@ -758,6 +758,5 @@ const FixedWrap = styled.div`
 `
 const InnerWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
-    padding-bottom: 300px;
   }
 `

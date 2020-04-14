@@ -149,7 +149,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 30px 0 0 0;
+    padding: 20px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -171,7 +171,7 @@ const Content = styled.section`
     }
     .charge-btn {
       width: 100%;
-      margin-top: 24px;
+      margin-top: 10px;
       border-radius: 10px;
       font-size: 14px;
       line-height: 48px;
@@ -239,16 +239,17 @@ const List = styled.div`
       margin-bottom: 16px;
 
       & > p {
+        margin-top: 2px;
         font-size: 14px;
         line-height: 28px;
         transform: skew(-0.03deg);
       }
     }
     .item-wrap {
-      padding: 5px 0 10px 0;
+      padding: 0 0 5px 0;
       img {
         width: calc(100% - 25px);
-        margin-bottom: 4px;
+        margin-bottom: 0px;
       }
       p {
         font-size: 12px;

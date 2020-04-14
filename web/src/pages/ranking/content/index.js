@@ -219,7 +219,7 @@ export default props => {
 const Contents = styled.div`
   width: 1210px;
   min-height: 300px;
-  margin: 76px auto 0 auto;
+  margin: 64px auto 0 auto;
   padding: 0 0 80px 0;
   h2 {
     padding-bottom: 60px;
@@ -246,7 +246,7 @@ const Contents = styled.div`
         }
       }
       &.rank-type button + button {
-        margin-left: 15px;
+        margin-left:10px;
       }
       &.date-type button {
         width: 68px;
@@ -351,13 +351,13 @@ const Contents = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     h2 {
-      padding-bottom: 26px;
+      padding-bottom: 16px;
       font-size: 24px;
     }
     .filter {
       & > div {
         button {
-          line-height: 30px;
+          line-height: 26px;
         }
         &.rank-type button {
           font-size: 16px;
@@ -369,7 +369,8 @@ const Contents = styled.div`
       }
     }
     .my-rank {
-      padding: 15px 5px;
+      margin-top: 8px;
+      padding: 10px 5px;
       h3 {
         flex-basis: 42px;
         height: 65px;

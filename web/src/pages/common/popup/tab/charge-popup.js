@@ -372,7 +372,7 @@ const Container = styled.div`
     color: #632beb;
     font-size: 16px;
     font-weight: 600;
-    line-height: 48px;
+    line-height: 44px;
     letter-spacing: -0.4px;
     text-align: center;
     align-items: center;
@@ -405,7 +405,7 @@ const Info = styled.div`
     width: 100%;
     border-bottom: 1px solid #e0e0e0;
     color: #632beb;
-    line-height: 48px;
+    line-height: 44px;
     align-items: center;
     text-align: justify;
     color: #616161;
@@ -446,7 +446,7 @@ const InfoWrap = styled.div`
   width: 100%;
   justify-content: center;
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 76px;
+    margin-top: 64px;
   }
 `
 const PaymentWrap = styled.div`
@@ -758,6 +758,6 @@ const FixedWrap = styled.div`
 `
 const InnerWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
-    padding-bottom: 300px;
+    /* padding-bottom: 300px; */
   }
 `

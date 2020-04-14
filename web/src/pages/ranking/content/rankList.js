@@ -11,6 +11,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import likeIcon from '../static/ico_like_g.svg'
 
 //component
 import Figure from './Figure'
@@ -25,7 +26,7 @@ export default props => {
   //map
   const creatList = () => {
     return props.list.map((item, index) => {
-      const {rank, level, nickNm, profImg, memNo} = item
+      const {rank, level, nickNm, profImg, memNo, likes} = item
       let rankName
       let link = ''
       if (webview) {
@@ -48,7 +49,9 @@ export default props => {
             }}>
             <strong>Lv {level}</strong>
             <p>{nickNm}</p>
+            <span><img src={likeIcon} />{likes}</span>
           </div>
+          {/* <button>팬 +</button> */}
         </li>
       )
     })
@@ -124,22 +127,27 @@ const RankList = styled.ul`
         overflow: hidden;
         width: 100%;
         margin-top: 10px;
-        line-height: 24px;
+        line-height: 18px;
         text-overflow: ellipsis;
         white-space: nowrap;
         transform: skew(-0.03deg);
+      }
+      span {
+        font-size: 12px;
+        line-height:18px;
+        img{vertical-align:top;margin-top:4px;}
       }
     }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     li {
-      padding: 15px 5px;
+      padding: 5px 5px;
       h3 {
         flex-basis: 42px;
         height: 65px;
         line-height: 65px;
-        background-size: 30px !important;
+        background-size: 26px !important;
 
         span {
           width: 24px;
@@ -148,18 +156,19 @@ const RankList = styled.ul`
         }
 
         &.medal span {
-          padding-top: 16px;
+          padding-top: 14px;
         }
       }
 
       div {
         max-width: calc(100% - 125px);
-        padding: 11px 0 9px 0;
+        padding: 0;
         strong {
+          margin-top: 4px;
           font-size: 14px;
         }
         p {
-          margin-top: 2px;
+          margin-top:0;
           font-size: 14px;
         }
       }

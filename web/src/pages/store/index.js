@@ -41,7 +41,7 @@ export default props => {
 const Content = styled.section`
   width: 1040px;
   min-height: 300px;
-  margin: 76px auto 0 auto;
+  margin: 64px auto 0 auto;
   padding: 0 0 120px 0;
   h2 {
     padding-bottom: 60px;
@@ -51,18 +51,18 @@ const Content = styled.section`
     text-align: center;
   }
   .mydal {
+    margin-top: -7px;
     color: #424242;
     font-size: 14px;
     font-weight: 600;
     line-height: 22px;
-    text-align: center;
+    text-align: right;
     transform: skew(-0.03deg);
     &:before {
       display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin-top: -2px;
-      margin-right: 5px;
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
       padding-right: 5px;
       vertical-align: top;
       background: url(${IMG_SERVER}/images/api/ic_moon_s@2x.png) no-repeat center center/ cover;
@@ -76,15 +76,18 @@ const Content = styled.section`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     h2 {
-      padding-bottom: 26px;
+      padding-bottom: 16px;
       font-size: 24px;
     }
+  }
+  .swiper-pagination {
+    margin-top: 0 !important;
   }
 `
 
 const Slider = styled.div`
   margin-top: 40px;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 20px;
+    margin-top: 12px;
   }
 `
