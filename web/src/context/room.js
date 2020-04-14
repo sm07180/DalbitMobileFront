@@ -12,7 +12,7 @@
     //render추가
     return (   <Room />   )
  */
-import React, {useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
