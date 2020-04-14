@@ -56,7 +56,9 @@ export default props => {
       </Close>
       <div className="wrap-message">
         {/* 타이틀 */}
-        {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
+        {__NODE_ENV === 'dev' && context.message.title && (
+          <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
+        )}
         {/* 메시지 */}
         {context.message.msg && <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>}
       </div>
