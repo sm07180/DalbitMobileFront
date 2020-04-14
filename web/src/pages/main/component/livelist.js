@@ -30,7 +30,7 @@ const makeContents = props => {
 
   return list.map((list, idx) => {
     const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt} = list
-    // console.log('list', list)
+
     return (
       <LiveList
         key={`live-${idx}`}
@@ -139,7 +139,7 @@ const LiveList = styled.div`
       align-items: center;
 
       .broadcast-type {
-        color: #632beb;
+        color: #8556f6;
         font-size: 11px;
         letter-spacing: -0.28px;
         margin-right: 10px;
