@@ -167,7 +167,7 @@ const PopupWrap = styled.div`
           text-align: center;
 
           &.active {
-            border: none;
+            border-color: transparent;
             background-color: #632beb;
             color: #fff;
           }

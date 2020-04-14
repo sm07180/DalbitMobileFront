@@ -263,9 +263,10 @@ const Content = styled.div`
             color: #424242;
             margin: 0 2px;
             background-color: #fff;
+            box-sizing: border-box;
 
             &.active {
-              border: none;
+              border-color: transparent;
               background-color: #632beb;
               color: #fff;
             }
