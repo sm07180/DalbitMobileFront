@@ -12,7 +12,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //styled component
 import styled from 'styled-components'
-
+import NoResult from 'components/ui/noResult'
 //----------------------------------------------------------
 
 function Faq(props) {
@@ -46,8 +46,12 @@ function Faq(props) {
       }
     })
     if (res.result === 'success') {
+      if (res.data.list == false) {
+        setNoResultShow(true)
+      } else {
+        setPersonalList(res.data.list)
+      }
       //console.log(res)
-      setPersonalList(res.data.list)
     } else if (res.result === 'fail') {
       //console.log(res)
     }
@@ -82,11 +86,19 @@ function Faq(props) {
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
     return `${date} ${time}`
   }
+  const [noResultshow, setNoResultShow] = useState(false)
   //--------------------------------------------------------
-
+  // useEffect(() => {
+  //   if (paginatedDated === null) {
+  //     setNoResultShow(true)
+  //   } else {
+  //     setNoResultShow(false)
+  //   }
+  // }, [])
   return (
     <>
       <PageWrap>
+        {noResultshow === true && <NoResult />}
         <dl>
           {paginatedDated.map((item, index) => {
             const {qnaIdx, qnaType, title, contents, answer, state, writeDt, writeTs} = item
