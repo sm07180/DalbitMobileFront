@@ -1,23 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_report_m" width="24" height="24" viewBox="0 0 24 24">
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
     <defs>
         <style>
-            .prefix__cls-2{fill:#fff;stroke:#424242;stroke-linecap:round;stroke-linejoin:round}
+            .prefix__cls-2{fill:#fff;stroke:#000;stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round}
         </style>
     </defs>
-    <g id="prefix__사각형_809" data-name="사각형 809" style="stroke:#707070;opacity:0;fill:#fff">
-        <path d="M0 0H24V24H0z" style="stroke:none"/>
-        <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none"/>
-    </g>
-    <g id="prefix__그룹_10461" data-name="그룹 10461" transform="translate(5 3.5)">
-        <path id="prefix__사각형_805" d="M0 0h9.659a3.165 3.165 0 0 1 3.165 3.165v9.3a3.165 3.165 0 0 1-3.165 3.165H0V0z" class="prefix__cls-2" data-name="사각형 805" transform="translate(.973 .5)"/>
-        <g id="prefix__그룹_10762" data-name="그룹 10762" transform="translate(0 .986)">
-            <path id="prefix__선_110" d="M0 0L1.946 0" class="prefix__cls-2" data-name="선 110" transform="translate(0 2.014)"/>
-            <path id="prefix__선_111" d="M0 0L1.946 0" class="prefix__cls-2" data-name="선 111" transform="translate(0 4.536)"/>
-            <path id="prefix__선_112" d="M0 0L1.946 0" class="prefix__cls-2" data-name="선 112" transform="translate(0 7.057)"/>
-            <path id="prefix__선_113" d="M0 0L1.946 0" class="prefix__cls-2" data-name="선 113" transform="translate(0 9.578)"/>
-            <path id="prefix__선_114" d="M0 0L1.946 0" class="prefix__cls-2" data-name="선 114" transform="translate(0 12.099)"/>
+    <g id="prefix__그룹_10466" data-name="그룹 10466" transform="translate(-280 -33)">
+        <g id="prefix__사각형_809" data-name="사각형 809" style="opacity:0;fill:#fff;stroke:#000;stroke-width:1.2px">
+            <path d="M0 0H32V32H0z" style="stroke:none" transform="translate(280 33)"/>
+            <path d="M0.6 0.6H31.400000000000002V31.400000000000002H0.6z" style="fill:none" transform="translate(280 33)"/>
         </g>
-        <path id="prefix__선_116" d="M0 0L4.996 0" class="prefix__cls-2" data-name="선 116" transform="translate(4.89 4.536)"/>
-        <path id="prefix__선_117" d="M0 0L4.996 0" class="prefix__cls-2" data-name="선 117" transform="translate(4.89 7.057)"/>
+        <g id="prefix__그룹_10461" data-name="그룹 10461" transform="translate(289 40.074)">
+            <path id="prefix__사각형_805" d="M0 0h9.976a3.165 3.165 0 0 1 3.165 3.165v12.156a3.165 3.165 0 0 1-3.165 3.165H0V0z" class="prefix__cls-2" data-name="사각형 805" transform="translate(1.081)"/>
+            <path id="prefix__선_110" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 110" transform="translate(0 2.239)"/>
+            <path id="prefix__선_111" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 111" transform="translate(0 5.041)"/>
+            <path id="prefix__선_112" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 112" transform="translate(0 7.842)"/>
+            <path id="prefix__선_113" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 113" transform="translate(0 10.644)"/>
+            <path id="prefix__선_114" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 114" transform="translate(0 13.446)"/>
+            <path id="prefix__선_115" d="M0 0L2.162 0" class="prefix__cls-2" data-name="선 115" transform="translate(0 16.248)"/>
+            <path id="prefix__선_116" d="M0 0L5.552 0" class="prefix__cls-2" data-name="선 116" transform="translate(5.434 5.041)"/>
+            <path id="prefix__선_117" d="M0 0L5.552 0" class="prefix__cls-2" data-name="선 117" transform="translate(5.434 7.842)"/>
+        </g>
     </g>
 </svg>
