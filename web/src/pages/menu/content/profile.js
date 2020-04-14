@@ -135,9 +135,11 @@ export default props => {
     <MenuMypage>
       <Header>
         <div className="category-text">마이 페이지</div>
-        <a href="/setting">
-          <img src={Setting} />
-        </a>
+        {token && token.isLogin && (
+          <a href="/setting">
+            <img src={Setting} />
+          </a>
+        )}
       </Header>
 
       {token && token.isLogin && profile ? (
