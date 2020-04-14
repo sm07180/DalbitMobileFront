@@ -35,12 +35,12 @@ const Room = () => {
   Room.setRoomNo = num => setRoomNo(num)
   Room.setAuth = bool => setAuth(bool)
   //-----------------------------------------------------------
-  useEffect(() => {
-    if (Room.auth) {
-      RoomJoin(Room.roomNo)
-    }
-    console.log('Room.roomNo : ' + Room.roomNo)
-  }, [Room.auth])
+  // useEffect(() => {
+  //   if (Room.auth) {
+  //     RoomJoin(Room.roomNo)
+  //   }
+  //   console.log('Room.roomNo : ' + Room.roomNo)
+  // }, [Room.auth])
   //-----------------------------------------------------------
   return <React.Fragment />
 }
