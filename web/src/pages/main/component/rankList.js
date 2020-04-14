@@ -93,7 +93,7 @@ const RankList = styled.div`
       .counting {
         color: #fff;
         border-radius: 50%;
-        background-color: #8556f6;
+        background-color: #632beb;
         width: 18px;
         height: 18px;
         font-size: 10px;
@@ -123,8 +123,8 @@ const RankList = styled.div`
 
       .text {
         color: #424242;
-        font-size: 11px;
-        letter-spacing: -0.28px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
         margin-left: 2px;
       }
 
