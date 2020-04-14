@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 // static
-import closeBtn from '../static/ic_close.svg'
+import closeBtn from './ic_back.svg'
 
 export default props => {
   const goBack = () => {
