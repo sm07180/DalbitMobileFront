@@ -27,7 +27,7 @@ export default () => {
         /**
          * @title 네이티브 푸쉬관련
          */
-
+        alert('1')
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = JSON.parse(pushMsg)
         alert(JSON.stringify(pushMsg, null, 1))
