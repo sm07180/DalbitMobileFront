@@ -75,6 +75,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //authCheck
     Hybrid('AuthCheck')
     //RoomAuth가 맞지않으면실행하지않음
+    alert('Room.auth ' + Room.auth)
     if (!Room.auth) return
 
     //방송강제퇴장
