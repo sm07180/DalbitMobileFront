@@ -41,6 +41,7 @@ export default () => {
          */
         let pushMsg = decodeURIComponent(event.detail.etc)
         pushMsg = pushMsg.trim()
+        alert(pushMsg)
         pushMsg = JSON.parse(pushMsg)
         const {push_type} = pushMsg
         let room_no, mem_no
