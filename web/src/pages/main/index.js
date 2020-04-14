@@ -162,7 +162,7 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="icon refresh" src={refreshIcon} />
+                <img className="icon refresh" src={refreshIcon} onClick={() => fetchLiveList()} />
               </div>
 
               <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
