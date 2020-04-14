@@ -100,46 +100,51 @@ const myProfile = props => {
       context.action.updateCloseFanCnt(true)
     }
   }
-  //console.log(urlrStr)
-  //console.log(myProfileNo)
+  const createFanList = () => {
+    console.log(urlrStr, myProfileNo)
+    if (profile.fanRank == false) {
+      return (
+        <>
+          <a>
+            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan3.png)`}} className="rank1"></FanRank>
+          </a>
+          <a>
+            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan2.png)`}} className="rank2"></FanRank>
+          </a>
+          <a>
+            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan1.png)`}} className="rank3"></FanRank>
+          </a>
+          <button className="moreFan">
+            <span></span>
+          </button>
+        </>
+      )
+    } else {
+      return (
+        <>
+          {profile.fanRank.map((fan, index) => {
+            return (
+              <a href={`/mypage/${fan.memNo}`} key={index} className={myProfileNo === fan.memNo ? 'none' : ''}>
+                <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}} className={`rank${fan.rank}`}></FanRank>
+              </a>
+            )
+          })}
+          <button className="moreFan" onClick={() => context.action.updateClose(true)}>
+            <span></span>
+          </button>
+        </>
+      )
+    }
+  }
 
   return (
     <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
-          {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-            <div className="notBjWrap">
-              {profile.isFan === 0 && (
-                <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                  팬
-                </button>
-              )}
-              {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-              {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                <></>
-              ) : (
-                <button
-                  onClick={() => {
-                    context.action.updateClosePresent(true)
-                  }}>
-                  <span></span>
-                  <em>선물</em>
-                </button>
-              )}
-            </div>
-          )}
+          <Link to="/private">내 정보 관리</Link>
         </InfoConfigBtn>
 
-        <FanListWrap>
-          {profile.fanRank.map((fan, index) => {
-            return (
-              <a href={`/mypage/${fan.memNo}`} key={index} className={myProfileNo === fan.memNo ? 'none' : ''}>
-                <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}}></FanRank>
-              </a>
-            )
-          })}
-          {profile.fanRank.length > 0 && <button className="moreFan" onClick={() => context.action.updateClose(true)}></button>}
-        </FanListWrap>
+        <FanListWrap>{createFanList()}</FanListWrap>
       </ButtonWrap>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
@@ -207,7 +212,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 20px 0 45px 0;
+    padding: 10px 0 16px 0;
     padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
   }
 `
@@ -347,7 +352,7 @@ const LevelStatus = styled.div`
 `
 //닉네임
 const NameWrap = styled.div`
-  margin-top: 21px;
+  margin-top: 10px;
   & > * {
     display: inline-block;
   }
@@ -359,7 +364,7 @@ const NameWrap = styled.div`
   }
   span {
     padding-left: 5px;
-    color: #bdbdbd;
+    color: #424242;
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
@@ -427,12 +432,12 @@ const CountingWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 `
 //프로필메세지
 const ProfileMsg = styled.p`
-  margin-top: 14px;
+  margin-top: 8px;
   color: #616161;
   font-size: 14px;
   line-height: 20px;
@@ -445,13 +450,17 @@ const ProfileMsg = styled.p`
 const InfoConfigBtn = styled.div`
   & > a {
     display: inline-block;
-    padding: 0 20px;
+    padding: 0 44px 0 17px;
     user-select: none;
-    border: 1px solid #bdbdbd;
+    border: 1px solid #424242;
     border-radius: 18px;
+    background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92% center;
+    background-size: 32px 32px;
     font-size: 14px;
+    font-weight: 600;
     line-height: 36px;
-    color: #9e9e9e;
+    letter-spacing: -0.5px;
+    color: #424242;
     cursor: pointer;
   }
 
@@ -500,7 +509,37 @@ const FanListWrap = styled.div`
   & .moreFan {
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_more_round.png) no-repeat center center / cover;
+    border: 1px solid #424242;
+    border-radius: 50%;
+    vertical-align: top;
+    span {
+      display: inline-block;
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 2px;
+      height: 2px;
+      margin: 0 auto;
+      background: #424242;
+      border-radius: 50%;
+
+      :after,
+      :before {
+        display: inline-block;
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        background: #424242;
+        content: '';
+      }
+      :after {
+        right: -5px;
+      }
+      :before {
+        left: -5px;
+      }
+    }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 0;
@@ -513,6 +552,7 @@ const FanListWrap = styled.div`
 `
 const FanRank = styled.div`
   display: inline-block;
+  position: relative;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -534,5 +574,26 @@ const FanRank = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 36px;
     height: 36px;
+  }
+
+  :after {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-size: 12px 12px !important;
+    content: '';
+  }
+  &.rank1:after {
+    background: url(${IMG_SERVER}/images/api/ic_gold.png) no-repeat;
+  }
+  &.rank2:after {
+    background: url(${IMG_SERVER}/images/api/ic_silver.png) no-repeat;
+  }
+  &.rank3:after {
+    background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
   }
 `

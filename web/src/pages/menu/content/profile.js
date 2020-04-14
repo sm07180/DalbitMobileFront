@@ -183,12 +183,12 @@ export default props => {
           </div>
 
           <div className="sub-nav">
-            <a href={`/private`}>
+            {/* <a href={`/private`}>
               <div className="list">
                 <span className="text">내 정보 관리</span>
                 <img className="icon" src={InfoIcon} />
               </div>
-            </a>
+            </a> */}
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
@@ -242,7 +242,7 @@ const LogoutBtn = styled.button`
   border-radius: 20px;
   padding: 13px 0;
   width: 100%;
-  color: #bdbdbd;
+  color: #757575;
   font-size: 12px;
   margin-top: 20px;
 `
@@ -252,7 +252,7 @@ const MenuMypage = styled.div`
 
   .log-in {
     /* /margin-top: 30px; */
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 
     .main-info {
       text-align: center;
@@ -282,6 +282,7 @@ const MenuMypage = styled.div`
     }
 
     .profile-info {
+      display: none;
       border: 1px solid #8556f6;
       border-radius: 20px;
       transform: skew(-0.03deg);
@@ -407,13 +408,13 @@ const MenuMypage = styled.div`
         justify-content: space-between;
         height: 40px;
         border-radius: 20px;
-        border: 1px solid #eee;
+        background-color: #f2f2f2;
         box-sizing: border-box;
         padding: 0 18px;
         margin: 4px 0;
 
         .text {
-          color: #424242;
+          color: #000000;
           font-size: 14px;
           letter-spacing: -0.35px;
           font-weight: 600;
