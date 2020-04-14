@@ -320,7 +320,7 @@ const LevelWrap = styled.div`
   margin-top: 3px;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
+    margin-top: 15px;
     align-items: center;
   }
 `
