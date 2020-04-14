@@ -60,10 +60,9 @@ export default props => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      <TopWrap>
-        <button onClick={() => window.history.back()}></button>
-        <div className="title">방송설정</div>
-      </TopWrap>
+      <Header>
+        <div className="category-text">내 방송 관리</div>
+      </Header>
       <Content>
         <TitleWrap style={{paddingBottom: '25px'}}>
           <TitleText>{currentMenu.text}</TitleText>
@@ -78,7 +77,7 @@ export default props => {
 }
 
 const Content = styled.div`
-  padding-top: 40px;
+  padding-top: 12px;
 `
 
 const TitleWrap = styled.div`
