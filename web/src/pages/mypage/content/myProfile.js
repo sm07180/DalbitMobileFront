@@ -479,7 +479,7 @@ const InfoConfigBtn = styled.div`
   }
   .notBjWrap {
     display: flex;
-
+    text-align: center;
     & button {
       display: flex;
       justify-content: center;
