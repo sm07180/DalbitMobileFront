@@ -371,7 +371,7 @@ const Content = styled.div`
       }
 
       &.live-list {
-        min-height: 300px;
+        min-height: 400px;
       }
     }
   }
