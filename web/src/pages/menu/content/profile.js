@@ -208,14 +208,15 @@ export default props => {
         <div className="log-out">
           <a href="/login">
             <img src={NeedLoginImg} />
+            <button className="loginBtn">로그인</button>
             <div className="text">
               <span className="bold">로그인</span> 해주세요
             </div>
-
-            <button className="loginBtn">로그인</button>
           </a>
           {__NODE_ENV === 'dev' && (
             <div>
+              <br />
+              <br />
               <div>custom-header</div>
               <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('custom-header')}</div>
 
@@ -376,6 +377,7 @@ const MenuMypage = styled.div`
       color: #424242;
       font-size: 20px;
       text-align: center;
+      letter-spacing: -0.8px;
 
       .bold {
         color: #8556f6;
@@ -385,11 +387,13 @@ const MenuMypage = styled.div`
 
     .loginBtn {
       display: block;
-      width: 120px;
-      height: 40px;
-      margin: 30px auto;
-      border: 2px solid #8556f6;
-      color: #424242;
+      width: 288px;
+      height: 50px;
+      margin: 16px auto;
+      background: #8556f6;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
       border-radius: 10px;
       transform: skew(-0.03deg);
     }

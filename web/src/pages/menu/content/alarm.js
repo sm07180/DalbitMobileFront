@@ -233,12 +233,12 @@ export default props => {
           <div className="log-out">
             <Link to="/login">
               <img src={NeedLoginImg} />
+
+              <button className="loginBtn">로그인</button>
+
               <div className="text">
                 <span className="bold">로그인</span> 해주세요
               </div>
-            </Link>
-            <Link to="/login">
-              <button className="loginBtn">로그인</button>
             </Link>
           </div>
         )}
@@ -275,10 +275,25 @@ const Content = styled.div`
       color: #424242;
       font-size: 20px;
       text-align: center;
+      letter-spacing: -0.8px;
+
       .bold {
         color: #8556f6;
         font-weight: 800;
       }
+    }
+
+    .loginBtn {
+      display: block;
+      width: 288px;
+      height: 50px;
+      margin: 16px auto;
+      background: #8556f6;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      border-radius: 10px;
+      transform: skew(-0.03deg);
     }
   }
 
