@@ -11,6 +11,7 @@ import {IMG_SERVER} from 'context/config'
 import _ from 'lodash'
 
 export default props => {
+  const {msg} = props
   const [text, setText] = useState('조회된 결과가 없습니다.')
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default props => {
   }, [])
   return (
     <NoResult className={props.className}>
-      <span>{text}</span>
+      <span>{msg ? msg : text}</span>
     </NoResult>
   )
 }
