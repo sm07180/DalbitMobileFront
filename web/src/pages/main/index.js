@@ -27,6 +27,7 @@ import Mic from './static/ic_broadcast.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
+import RankArrow from './static/ic_rank_arrow.svg'
 
 import {RoomMake} from 'context/room'
 
@@ -124,12 +125,14 @@ export default props => {
           <div className="section">
             <div className="title-wrap">
               <div className="title">
-                <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
+                {/* <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
                   DJ 랭킹
                 </div>
                 <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
                   팬 랭킹
-                </div>
+                </div> */}
+                <div className="txt">랭킹</div>
+                <img className="rank-arrow" src={RankArrow} />
               </div>
               <a href="/rank">
                 <img className="plus-icon" src={PlusIcon} />

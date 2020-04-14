@@ -122,7 +122,7 @@ const RankList = styled.div`
       margin-top: 6px;
 
       .text {
-        color: #bdbdbd;
+        color: #424242;
         font-size: 11px;
         letter-spacing: -0.28px;
         margin-left: 2px;
