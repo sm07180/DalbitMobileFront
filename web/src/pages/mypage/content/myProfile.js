@@ -13,6 +13,7 @@ import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
+import LiveIcon from '../component/ic_live.svg'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
@@ -283,7 +284,7 @@ const ProfileImg = styled.div`
     top: 0px;
     width: 52px;
     height: 26px;
-    background: url(${IMG_SERVER}/images/api/label_live.png) no-repeat center center / cover;
+    background: url(${LiveIcon}) no-repeat center center / cover;
   }
   & .reportIcon {
     position: absolute;

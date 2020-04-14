@@ -408,7 +408,7 @@ const MenuMypage = styled.div`
   }
 
   .sub-nav {
-    padding-bottom: 100px;
+    padding-bottom: 20px;
     transform: skew(-0.03deg);
     a {
       display: block;

@@ -137,17 +137,20 @@ function Faq(props) {
         </dl>
       </PageWrap>
       {/* 페이지네이션 */}
-      <PageNumber>
-        <button onClick={() => (page > 1 ? setPage(page - 1) : null)} className="prev" />
-        {numberPages.map((item, index) => {
-          return (
-            <button onClick={() => setPage(item + 1)} className={page === item + 1 ? 'on' : ''} key={index}>
-              {item + 1}
-            </button>
-          )
-        })}
-        <button onClick={() => (page + 1 <= numberPages.length ? setPage(page + 1) : null)} className="next" />
-      </PageNumber>
+      {noResultshow === false && (
+        <PageNumber>
+          <button onClick={() => (page > 1 ? setPage(page - 1) : null)} className="prev" />
+          {numberPages.map((item, index) => {
+            return (
+              <button onClick={() => setPage(item + 1)} className={page === item + 1 ? 'on' : ''} key={index}>
+                {item + 1}
+              </button>
+            )
+          })}
+          <button onClick={() => (page + 1 <= numberPages.length ? setPage(page + 1) : null)} className="next" />
+        </PageNumber>
+      )}
+
       {/* 컨텐츠 : 클릭 디테일 */}
     </>
   )

@@ -17,6 +17,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
+//svg
+import LiveIcon from '../component/ic_live.svg'
 
 const levelBarWidth = 176
 
@@ -273,7 +275,7 @@ const ProfileImg = styled.div`
     top: 0px;
     width: 52px;
     height: 26px;
-    background: url(${IMG_SERVER}/images/api/label_live.png) no-repeat center center / cover;
+    background: url(${LiveIcon}) no-repeat center center / cover;
   }
 `
 
