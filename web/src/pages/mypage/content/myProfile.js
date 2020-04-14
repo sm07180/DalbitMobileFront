@@ -100,39 +100,37 @@ const myProfile = props => {
   }
 
   const createFanList = () => {
-    if (profile.fanRank == false) {
-      return (
-        <>
-          <a>
-            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan3.png)`}} className="rank1"></FanRank>
+    let result = []
+    for (let index = 0; index < 3; index++) {
+      if (profile.fanRank[index] == undefined) {
+        result = result.concat(
+          <a key={index}>
+            <FanRank
+              style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
+              className="rank3"></FanRank>
           </a>
-          <a>
-            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan2.png)`}} className="rank2"></FanRank>
+        )
+      } else {
+        const {memNo, profImg, rank} = profile.fanRank[index]
+        let link = ''
+        if (memNo == myProfileNo) {
+          link = `/menu/profile`
+        } else {
+          link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
+        }
+        result = result.concat(
+          <a href={link} key={index}>
+            <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </a>
-          <a>
-            <FanRank style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan1.png)`}} className="rank3"></FanRank>
-          </a>
-          <button className="moreFan">
-            <span></span>
-          </button>
-        </>
-      )
-    } else {
-      return (
-        <>
-          {profile.fanRank.map((fan, index) => {
-            return (
-              <a href={`/mypage/${fan.memNo}`} key={index} className={myProfileNo === fan.memNo ? 'none' : ''}>
-                <FanRank style={{backgroundImage: `url(${fan.profImg['thumb88x88']})`}} className={`rank${fan.rank}`}></FanRank>
-              </a>
-            )
-          })}
-          <button className="moreFan" onClick={() => context.action.updateClose(true)}>
-            <span></span>
-          </button>
-        </>
-      )
+        )
+      }
     }
+    result = result.concat(
+      <button className="moreFan" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn">
+        <span></span>
+      </button>
+    )
+    return result
   }
 
   return (
