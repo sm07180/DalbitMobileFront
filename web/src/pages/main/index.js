@@ -55,18 +55,21 @@ export default props => {
         })
       }
     })()
-    ;(async () => {
-      const broadcastList = await Api.broad_list({
-        params: {
-          records: 30
-        }
-      })
-      if (broadcastList.result === 'success') {
-        const {list} = broadcastList.data
-        setLiveList(list)
-      }
-    })()
+    fetchLiveList()
   }, [])
+
+  const fetchLiveList = async () => {
+    const broadcastList = await Api.broad_list({
+      params: {
+        records: 10,
+        roomType: selectedLiveRoomType
+      }
+    })
+    if (broadcastList.result === 'success') {
+      const {list} = broadcastList.data
+      setLiveList(list)
+    }
+  }
 
   const windowScrollEvent = e => {
     if (window.scrollY >= 574) {
@@ -82,6 +85,10 @@ export default props => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
   }, [])
+
+  useEffect(() => {
+    fetchLiveList()
+  }, [selectedLiveRoomType])
 
   const swiperParams = {
     slidesPerView: 'auto'
@@ -180,7 +187,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
+            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
               <LiveList list={liveList} />
             </div>
           </div>
@@ -320,6 +327,10 @@ const Content = styled.div`
       &.rank-slide {
         padding: 0;
         min-height: 150px;
+      }
+
+      &.live-list {
+        min-height: 300px;
       }
     }
   }
