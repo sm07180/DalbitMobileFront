@@ -23,7 +23,7 @@ import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
 
 // static
-import Mic from './static/ic_mike.svg'
+import Mic from './static/ic_broadcast.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
@@ -93,9 +93,6 @@ export default props => {
         <SubMain>
           <div className="gnb">
             <div className="left-side">
-              <div className="tab">
-                <a href={'/live'}>라이브</a>
-              </div>
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
@@ -349,10 +346,12 @@ const SubMain = styled.div`
         padding-left: 34px;
         font-weight: 600;
         text-align: right;
+        letter-spacing: -0.4px;
         border-radius: 18px;
         background-color: #fff;
-        color: #8556f6;
+        color: #632beb;
         font-size: 16px;
+        font-weight: 600;
         box-sizing: border-box;
         transform: skew(-0.03deg);
 
