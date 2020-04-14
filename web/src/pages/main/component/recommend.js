@@ -198,7 +198,7 @@ export default props => {
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (
-              <div className="slide" data-idx={idx} key={`b-${idx}`} style={{backgroundImage: `url(${profImg['thumb88x88']})`}}>
+              <div className="slide" data-idx={idx} key={`b-${idx}`} style={{backgroundImage: `url(${profImg['url']})`}}>
                 <div className="slide-over" />
               </div>
             )
@@ -206,13 +206,15 @@ export default props => {
         </CustomSwiper>
       )}
       <div className="selected-title">{list[selectedBIdx]['title']}</div>
-      <div className="selected-nickname">
-        {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
-          // 🎉😝pqpq😝🎉
-          // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
-          return <span key={`splited-${idx}`}>{str}</span>
-        })}
-      </div>
+      {list[selectedBIdx]['nickNm'] !== 'banner' && (
+        <div className="selected-nickname">
+          {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+            // 🎉😝pqpq😝🎉
+            // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+            return <span key={`splited-${idx}`}>{str}</span>
+          })}
+        </div>
+      )}
     </RecommendWrap>
   )
 }

@@ -17,6 +17,8 @@ import WalletIcon from '../static/profile/ic_wallet_m.svg'
 import ReportIcon from '../static/profile/ic_report_m.svg'
 import AlarmIcon from '../static/profile/ic_alarm_m.svg'
 import SettingIcon from '../static/profile/ic_broadcastingsetting_m.svg'
+import CSIcon from '../static/profile/ic_cs_m.svg'
+import Setting from '../static/ic_setting.svg'
 
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
@@ -37,7 +39,8 @@ export default props => {
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},
     {type: 'alert', txt: '알림', icon: AlarmIcon},
-    {type: 'bcsetting', txt: '방송설정', icon: SettingIcon}
+    {type: 'bcsetting', txt: '방송설정', icon: SettingIcon},
+    {type: 'customer', txt: '고객센터', icon: CSIcon}
   ]
 
   const timeFormat = sec_time => {
@@ -132,6 +135,9 @@ export default props => {
     <MenuMypage>
       <Header>
         <div className="category-text">마이 페이지</div>
+        <a href="/setting">
+          <img src={Setting} />
+        </a>
       </Header>
 
       {token && token.isLogin && profile ? (
@@ -192,7 +198,7 @@ export default props => {
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
-                <a href={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <a href={type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                   <div className="list">
                     <span className="text">{txt}</span>
                     <img className="icon" src={icon} />

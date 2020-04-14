@@ -141,7 +141,7 @@ const myProfile = props => {
     <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
-          <Link to="/private">내 정보 관리</Link>
+          <a href="/private">내 정보 관리</a>
         </InfoConfigBtn>
 
         <FanListWrap>{createFanList()}</FanListWrap>

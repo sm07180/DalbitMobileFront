@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="16" viewBox="0 0 26 16">
+    <defs>
+        <style>
+            .prefix__cls-4{stroke:#fff;stroke-linecap:round;stroke-linejoin:round;fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__ico_audio_s" transform="translate(-102 -531)">
+        <rect id="prefix__사각형_829" width="26" height="16" data-name="사각형 829" rx="8" transform="translate(102 531)" style="fill:#febd56"/>
+        <g id="prefix__그룹_10479" data-name="그룹 10479" transform="translate(109 533.857)">
+            <path id="prefix__패스_4288" d="M4.041 1.266L0 .289v1.4a2.076 2.076 0 0 0 2.076 2.077h.157A2.076 2.076 0 0 0 4.31 1.69z" data-name="패스 4288" transform="translate(1.935 6.091)" style="stroke:#fff;stroke-linecap:round;fill:none"/>
+            <path id="prefix__패스_4287" d="M156.85 167.44l11.494 2.752v-7.756l-11.494 2.752z" data-name="패스 4287" transform="translate(-156.85 -161.62)" style="stroke-linejoin:round;stroke:#fff;stroke-linecap:round;fill:none"/>
+            <path id="prefix__선_128" d="M0 0L0 9.389" class="prefix__cls-4" data-name="선 128" transform="translate(11.494)"/>
+            <path id="prefix__선_129" d="M0 0L0 3.676" class="prefix__cls-4" data-name="선 129" transform="translate(0 2.856)"/>
+        </g>
+    </g>
+</svg>
