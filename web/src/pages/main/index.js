@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -31,6 +31,9 @@ import RankArrow from './static/ic_rank_arrow.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
+  // reference
+  const MainRef = useRef()
+
   //context
   const globalCtx = useContext(Context)
 
@@ -41,6 +44,10 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+  const [liveAlign, setLiveAlign] = useState(null)
+  const [liveGender, setLiveGender] = useState(null)
+
+  const [scrollToBottom, setScrollToBottom] = useState(null)
 
   useEffect(() => {
     ;(async () => {
@@ -64,7 +71,9 @@ export default props => {
     const broadcastList = await Api.broad_list({
       params: {
         records: 10,
-        roomType: selectedLiveRoomType
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
       }
     })
     if (broadcastList.result === 'success') {
@@ -78,6 +87,10 @@ export default props => {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
+    }
+
+    if (MainRef.current) {
+      // console.log('height', MainRef.current.clientHeight - window.innerHeight, window.scrollY)
     }
   }
 
@@ -98,7 +111,7 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <MainWrap>
+      <MainWrap ref={MainRef}>
         <SubMain>
           <div className="gnb">
             <div className="left-side">
@@ -194,7 +207,16 @@ export default props => {
             </div>
           </div>
         </Content>
-        {popup && <LayerPopup setPopup={setPopup} />}
+        {popup && (
+          <LayerPopup
+            setPopup={setPopup}
+            liveAlign={liveAlign}
+            setLiveAlign={setLiveAlign}
+            liveGender={liveGender}
+            setLiveGender={setLiveGender}
+            fetchLiveList={fetchLiveList}
+          />
+        )}
       </MainWrap>
     </Layout>
   )
