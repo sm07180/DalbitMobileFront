@@ -125,18 +125,18 @@ export default props => {
           <div className="section">
             <div className="title-wrap">
               <div className="title">
-                {/* <div className={`txt ${rankType === 'dj' ? '' : 'in-active'}`} onClick={() => setRankType('dj')}>
-                  DJ 랭킹
-                </div>
-                <div className={`txt ${rankType === 'fan' ? '' : 'in-active'}`} onClick={() => setRankType('fan')}>
-                  팬 랭킹
-                </div> */}
                 <div className="txt">랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </div>
-              <a href="/rank">
-                <img className="plus-icon" src={PlusIcon} />
-              </a>
+              <div className="right-side">
+                <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
+                  DJ
+                </span>
+                <span className="bar"></span>
+                <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
+                  팬
+                </span>
+              </div>
             </div>
 
             <div className="content-wrap rank-slide">
@@ -282,6 +282,30 @@ const Content = styled.div`
             display: block;
             width: 16px;
             margin-left: 10px;
+          }
+        }
+      }
+
+      .right-side {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .bar {
+          width: 1px;
+          height: 12px;
+          background-color: #9e9e9e;
+          margin: 0 10px;
+        }
+
+        .text {
+          color: #9e9e9e;
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: -0.36px;
+
+          &.active {
+            color: #632beb;
           }
         }
       }
