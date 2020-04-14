@@ -34,6 +34,9 @@ import {RoomMake} from 'context/room'
 export default props => {
   // reference
   const MainRef = useRef()
+  const SubMainRef = useRef()
+  const RankSectionRef = useRef()
+  const StarSectionRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -83,15 +86,15 @@ export default props => {
     }
   }
 
-  const windowScrollEvent = e => {
-    if (window.scrollY >= 574) {
+  const windowScrollEvent = () => {
+    const SubMainNode = SubMainRef.current
+    const RankSectionNode = RankSectionRef.current
+    const StarSectionNode = StarSectionRef.current
+
+    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
-    }
-
-    if (MainRef.current) {
-      // console.log('height', MainRef.current.clientHeight - window.innerHeight, window.scrollY)
     }
   }
 
@@ -113,7 +116,7 @@ export default props => {
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef}>
-        <SubMain>
+        <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
@@ -144,7 +147,7 @@ export default props => {
         </SubMain>
 
         <Content>
-          <div className="section">
+          <div className="section" ref={RankSectionRef}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">랭킹</div>
@@ -166,7 +169,7 @@ export default props => {
             </div>
           </div>
 
-          <div className="section">
+          <div className="section" ref={StarSectionRef}>
             <div
               className="content-wrap my-star-slide"
               style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
