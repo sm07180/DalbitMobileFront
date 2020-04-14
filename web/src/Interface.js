@@ -39,7 +39,7 @@ export default () => {
             6 : 이벤트 페이지>해당 이벤트 [board_idx]
             7 : 공지사항 페이지 [board_idx]
          */
-        let pushMsg = decodeURIComponent(event.detail.etc)
+        let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
         alert(pushMsg)
         pushMsg = JSON.parse(pushMsg)
