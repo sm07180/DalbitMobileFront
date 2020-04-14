@@ -50,8 +50,8 @@ export default props => {
   const [popup, setPopup] = useState(false)
   const [liveAlign, setLiveAlign] = useState(null)
   const [liveGender, setLiveGender] = useState(null)
-
-  const [scrollToBottom, setScrollToBottom] = useState(null)
+  const [livePage, setLivePage] = useState(1)
+  const [totalLivePage, setTotalLivePage] = useState(null)
 
   useEffect(() => {
     ;(async () => {
@@ -66,14 +66,14 @@ export default props => {
         })
       }
     })()
-    fetchLiveList()
   }, [])
 
-  const fetchLiveList = async () => {
+  const fetchLiveList = async type => {
     setLiveList(null)
 
     const broadcastList = await Api.broad_list({
       params: {
+        page: livePage,
         records: 10,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -81,12 +81,20 @@ export default props => {
       }
     })
     if (broadcastList.result === 'success') {
-      const {list} = broadcastList.data
-      setLiveList(list)
+      const {list, paging} = broadcastList.data
+      if (type === 'concat') {
+      } else {
+        setLiveList(list)
+      }
+      if (paging) {
+        const {total} = paging
+        setTotalLivePage(total)
+      }
     }
   }
 
   const windowScrollEvent = () => {
+    const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
     const StarSectionNode = StarSectionRef.current
@@ -96,6 +104,8 @@ export default props => {
     } else {
       setLiveCategoryFixed(false)
     }
+
+    console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
   }
 
   useEffect(() => {
