@@ -60,7 +60,7 @@ const Layout = props => {
       {/* 헤더설정 */}
       <Logo>
         <NavLink to="/" exact>
-          <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} />
+          <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
         </NavLink>
       </Logo>
       {/* global navigation */}
@@ -128,5 +128,8 @@ const Container = styled.div`
     position: absolute;
     right: 4.444%;
     top: 5px;
+  }
+  .logo {
+    width: 60%;
   }
 `
