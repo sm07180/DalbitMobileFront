@@ -78,8 +78,13 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //authCheck
     Hybrid('AuthCheck')
     //RoomAuth가 맞지않으면실행하지않음
-    alert('Room.auth ' + Room.auth)
-    if (!Room.auth) return
+    if (!Room.auth) {
+      setTimeout(() => {
+        RoomJoin(roomNo)
+        alert(roomNo, Room.auth)
+      }, 500)
+      return
+    }
 
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
