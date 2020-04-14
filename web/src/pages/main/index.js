@@ -41,6 +41,8 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+  const [liveAlign, setLiveAlign] = useState(null)
+  const [liveGender, setLiveGender] = useState(null)
 
   useEffect(() => {
     ;(async () => {
@@ -64,7 +66,9 @@ export default props => {
     const broadcastList = await Api.broad_list({
       params: {
         records: 10,
-        roomType: selectedLiveRoomType
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
       }
     })
     if (broadcastList.result === 'success') {
@@ -194,7 +198,16 @@ export default props => {
             </div>
           </div>
         </Content>
-        {popup && <LayerPopup setPopup={setPopup} />}
+        {popup && (
+          <LayerPopup
+            setPopup={setPopup}
+            liveAlign={liveAlign}
+            setLiveAlign={setLiveAlign}
+            liveGender={liveGender}
+            setLiveGender={setLiveGender}
+            fetchLiveList={fetchLiveList}
+          />
+        )}
       </MainWrap>
     </Layout>
   )

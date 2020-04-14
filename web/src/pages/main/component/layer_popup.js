@@ -4,24 +4,69 @@ import styled from 'styled-components'
 // static
 import CloseBtn from '../static/ic_close.svg'
 
+let prevAlign = null
+let prevGender = null
+
 export default props => {
-  const {setPopup} = props
+  const {setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
+  const alignSet = {1: '추천', 2: '인기'}
+  const genderSet = {f: '여자', m: '남자'}
+
+  useEffect(() => {
+    prevAlign = liveAlign
+    prevGender = liveGender
+
+    return () => {
+      prevAlign = null
+      prevGender = null
+    }
+  }, [])
+
+  const closePopup = () => {
+    setPopup(false)
+    setLiveAlign(prevAlign)
+    setLiveGender(prevGender)
+  }
+
+  const applyClick = () => {
+    setPopup(false)
+    fetchLiveList()
+  }
+
+  const tabClick = (type, value) => {
+    if (type === 'align') {
+      if (liveAlign === null) {
+        setLiveAlign(value)
+      } else {
+        setLiveAlign(null)
+      }
+    } else if (type === 'gender') {
+      if (liveGender === null) {
+        setLiveGender(value)
+      } else {
+        setLiveGender(null)
+      }
+    }
+  }
 
   return (
     <PopupWrap className="main-layer-popup">
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">상세조건</div>
-          <img src={CloseBtn} className="close-btn" onClick={() => setPopup(false)} />
+          <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
         </div>
 
         <div className="each-line">
           <div className="text">정렬기준</div>
           <div className="tab-wrap">
-            {['추천', '좋아요', '청취', '신입'].map((type, idx) => {
+            {Object.keys(alignSet).map((key, idx) => {
               return (
-                <div className="tab" key={`align-${idx}`}>
-                  {type}
+                <div
+                  className={`tab ${key === liveAlign ? 'active' : ''}`}
+                  key={`align-${idx}`}
+                  onClick={() => tabClick('align', key)}>
+                  {alignSet[key]}
                 </div>
               )
             })}
@@ -30,10 +75,13 @@ export default props => {
         <div className="each-line">
           <div className="text">DJ 타입 선택</div>
           <div className="tab-wrap">
-            {['여자', '남자'].map((type, idx) => {
+            {Object.keys(genderSet).map((key, idx) => {
               return (
-                <div className="tab" key={`gender-${idx}`}>
-                  {type}
+                <div
+                  className={`tab ${key === liveGender ? 'active' : ''}`}
+                  key={`gender-${idx}`}
+                  onClick={() => tabClick('gender', key)}>
+                  {genderSet[key]}
                 </div>
               )
             })}
@@ -41,7 +89,9 @@ export default props => {
         </div>
 
         <div className="btn-wrap">
-          <button className="apply-btn">적용</button>
+          <button className="apply-btn" onClick={applyClick}>
+            적용
+          </button>
         </div>
       </div>
     </PopupWrap>
@@ -116,8 +166,10 @@ const PopupWrap = styled.div`
           box-sizing: border-box;
           text-align: center;
 
-          .active {
+          &.active {
             border: none;
+            background-color: #632beb;
+            color: #fff;
           }
 
           &:first-child {
