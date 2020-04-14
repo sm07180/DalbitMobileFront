@@ -306,7 +306,7 @@ const RecommendWrap = styled.div`
     transform: skew(-0.03deg);
   }
   .selected-nickname {
-    color: #fff;
+    color: #febd56;
     font-size: 14px;
     letter-spacing: -0.35px;
     text-align: center;

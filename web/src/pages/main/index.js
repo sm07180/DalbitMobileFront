@@ -17,12 +17,13 @@ import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
+import LayerPopup from './component/layer_popup.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
 
 // static
-import Mic from './static/ic_mike.svg'
+import Mic from './static/ic_broadcast.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
@@ -39,6 +40,7 @@ export default props => {
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveCategory, setSelectedLiveCategory] = useState('')
+  const [popup, setPopup] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -91,9 +93,6 @@ export default props => {
         <SubMain>
           <div className="gnb">
             <div className="left-side">
-              <div className="tab">
-                <a href={'/live'}>라이브</a>
-              </div>
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
@@ -156,9 +155,8 @@ export default props => {
                 <div className="txt">실시간 LIVE</div>
                 <img className="icon refresh" src={refreshIcon} />
               </div>
-              <a href="/live">
-                <img className="plus-icon" src={PlusIcon} />
-              </a>
+
+              <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
             </div>
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
@@ -168,7 +166,10 @@ export default props => {
                     .sort((a, b) => Number(a) - Number(b))
                     .map((key, idx) => {
                       return (
-                        <div className={`list ${key === selectedLiveCategory ? 'active' : ''}`} key={`list-${idx}`}>
+                        <div
+                          className={`list ${key === selectedLiveCategory ? 'active' : ''}`}
+                          key={`list-${idx}`}
+                          onClick={() => setSelectedLiveCategory(key)}>
                           {broadcastLive[key]}
                         </div>
                       )
@@ -182,6 +183,7 @@ export default props => {
             </div>
           </div>
         </Content>
+        {popup && <LayerPopup setPopup={setPopup} />}
       </MainWrap>
     </Layout>
   )
@@ -344,10 +346,12 @@ const SubMain = styled.div`
         padding-left: 34px;
         font-weight: 600;
         text-align: right;
+        letter-spacing: -0.4px;
         border-radius: 18px;
         background-color: #fff;
-        color: #8556f6;
+        color: #632beb;
         font-size: 16px;
+        font-weight: 600;
         box-sizing: border-box;
         transform: skew(-0.03deg);
 
