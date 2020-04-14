@@ -68,7 +68,9 @@ export default props => {
 
   const windowScrollEvent = e => {
     if (window.scrollY >= 574) {
+      setLiveCategoryFixed(true)
     } else {
+      setLiveCategoryFixed(false)
     }
   }
 
@@ -82,6 +84,8 @@ export default props => {
   const swiperParams = {
     slidesPerView: 'auto'
   }
+
+  console.log('dfd', liveCategoryFixed)
 
   return (
     <Layout {...props}>
@@ -159,7 +163,7 @@ export default props => {
               </a>
             </div>
 
-            <div className="live-list-category" ref={liveCategoryListRef} style={liveCategoryFixed ? {display: 'fixed'} : {}}>
+            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`} ref={liveCategoryListRef}>
               <div className="inner-wrapper">
                 <Swiper {...swiperParams}>
                   {Object.keys(broadcastLive)
@@ -195,10 +199,19 @@ const Content = styled.div`
       height: 40px;
       flex-direction: row;
       align-items: center;
+      background-color: #fff;
+
+      &.fixed {
+        position: fixed;
+        top: 48px;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
 
       .inner-wrapper {
         position: absolute;
-        top: 0;
+        top: 3px;
         left: 16px;
         width: calc(100% - 16px);
 
@@ -214,6 +227,7 @@ const Content = styled.div`
             padding: 7px 8px;
             color: #424242;
             margin: 0 2px;
+            background-color: #fff;
 
             &:first-child {
               margin-left: 0;
