@@ -26,7 +26,7 @@ const Index = props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h1>안드로이드 결제</h1>
+      {/* <h1>안드로이드 결제</h1>
       <div>
         <button
           onClick={() => {
@@ -37,7 +37,7 @@ const Index = props => {
           }}>
           테스트
         </button>
-      </div>
+      </div> */}
       <Pay {...props} />
     </Content>
   )
