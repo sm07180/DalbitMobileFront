@@ -111,7 +111,7 @@ const PopupWrap = styled.div`
           color: #000;
 
           width: 25%;
-          padding: 6px 0;
+          padding: 7px 0;
           margin: 1px;
           box-sizing: border-box;
           text-align: center;
