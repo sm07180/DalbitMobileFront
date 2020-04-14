@@ -59,6 +59,8 @@ export default props => {
   }, [])
 
   const fetchLiveList = async () => {
+    setLiveList([])
+
     const broadcastList = await Api.broad_list({
       params: {
         records: 10,
@@ -162,7 +164,7 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="icon refresh" src={refreshIcon} onClick={() => fetchLiveList()} />
+                <button className="icon refresh" onClick={() => fetchLiveList()} />
               </div>
 
               <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
@@ -281,7 +283,10 @@ const Content = styled.div`
           &.refresh {
             display: block;
             width: 24px;
+            height: 24px;
             margin-left: 10px;
+            background-repeat: no-repeat;
+            background-image: url(${refreshIcon});
           }
 
           &.live {
