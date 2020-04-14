@@ -30,9 +30,10 @@ export default () => {
 
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = JSON.parse(pushMsg)
-        alert('push.roomNo : ' + pushMsg.roomNo)
+        alert(JSON.stringify(pushMsg, null, 1))
+        //
+        //   alert('push.roomNo : ' + pushMsg.roomNo)
 
-        // alert(JSON.stringify(etc, null, 1))
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
