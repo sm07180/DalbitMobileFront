@@ -2,7 +2,7 @@
  * @title 검색바
  * @todos 디자인과 기획과 상이한부분이 있음
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import API from 'context/api'
@@ -11,9 +11,11 @@ import Room, {RoomJoin} from 'context/room'
 import Header from '../component/header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
+import {Context} from 'context/index.js'
 //
 export default props => {
   //---------------------------------------------------------------------
+  const context = useContext(Context)
   //useState
   const [member, setMember] = useState(null)
   const [live, setLive] = useState(null)
@@ -31,6 +33,14 @@ export default props => {
     })
     if (res.result === 'success') {
       setMember(res.data)
+    } else if (res.result === 'fail' && res.code === 'C005') {
+      context.action.alert({
+        msg: `2글자 이상 입력해주세요.`
+      })
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
     }
   }
   //fetch (라이브검색)

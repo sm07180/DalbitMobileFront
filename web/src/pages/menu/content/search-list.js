@@ -29,7 +29,7 @@ export default props => {
     if (props.fetch === null || props.fetch === undefined) return
     const {list} = props.fetch
     if (list.length === 0) {
-      return <NoResult />
+      return <NoResult className={`search`} />
     } else {
       return list.map((list, idx) => {
         const {nickNm, profImg} = list
@@ -52,18 +52,30 @@ export default props => {
 }
 //---------------------------------------------------------------------
 const Content = styled.div`
-  min-height: 200px;
+  min-height: 196px;
   text-align: left;
+  .search {
+    margin-top: -10px;
+  }
+  & + h1 {
+    margin-top: 15px;
+  }
+  .list + .list {
+    margin-left: 3.6%;
+  }
+  .list:nth-child(4n + 1) {
+    margin-left: 0;
+  }
   .list {
     display: inline-block;
-    width: 25%;
-    padding: 10px 7px;
+    width: calc(25% - 2.7%);
+    /* margin: 0 13px 20px 13px; */
+    margin-bottom: 20px;
     box-sizing: border-box;
     button {
       display: inline-block;
       width: 96%;
       height: auto;
-
       border-radius: 26px;
       overflow: hidden;
       img {
