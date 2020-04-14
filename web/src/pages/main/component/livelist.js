@@ -85,10 +85,16 @@ const LiveList = styled.div`
   }
 
   .broadcast-content {
-    margin-left: 16px;
+    margin-left: 12px;
 
     & > div {
-      margin: 5px 0;
+      /* margin: 3px 0; */
+      &:nth-child(2) {
+        margin-top: 2px;
+      }
+      &:nth-child(4) {
+        margin-top: 3px;
+      }
     }
 
     .icon-wrap {
@@ -111,7 +117,7 @@ const LiveList = styled.div`
         border-radius: 8px;
         color: #fff;
         font-size: 11px;
-        padding: 1px 6px;
+        padding: 1px 6px 0px 6px;
       }
 
       .gender-icon {

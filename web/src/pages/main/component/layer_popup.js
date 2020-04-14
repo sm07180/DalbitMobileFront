@@ -192,7 +192,7 @@ const PopupWrap = styled.div`
         background-color: #632beb;
         color: #fff;
         font-size: 18px;
-        padding: 15px 0;
+        padding: 12px 0;
       }
     }
   }
