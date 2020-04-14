@@ -49,7 +49,10 @@ export default props => {
             }}>
             <strong>Lv {level}</strong>
             <p>{nickNm}</p>
-            <span><img src={likeIcon} />{likes}</span>
+            <span>
+              <img src={likeIcon} />
+              {likes}
+            </span>
           </div>
           {/* <button>팬 +</button> */}
         </li>
@@ -134,8 +137,11 @@ const RankList = styled.ul`
       }
       span {
         font-size: 12px;
-        line-height:18px;
-        img{vertical-align:top;margin-top:4px;}
+        line-height: 18px;
+        img {
+          vertical-align: top;
+          margin-top: 4px;
+        }
       }
     }
   }
@@ -168,7 +174,7 @@ const RankList = styled.ul`
           font-size: 14px;
         }
         p {
-          margin-top:0;
+          margin-top: 0;
           font-size: 14px;
         }
       }

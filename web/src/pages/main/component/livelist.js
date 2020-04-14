@@ -11,7 +11,7 @@ import videoIcon from '../static/ico_video.svg'
 import maleIcon from '../static/ico_male.png'
 import femaleIcon from '../static/ico_female.png'
 import hitIcon from '../static/ico_hit_g.svg'
-import likeIcon from '../static/ico_like_g.svg'
+import likeIcon from '../static/ico_like_g_s.svg'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -150,9 +150,12 @@ const LiveList = styled.div`
         font-size: 11px;
         letter-spacing: -0.3px;
 
+        &:nth-child(2) {
+          margin-left: 6px;
+        }
+
         img {
           display: block;
-          margin-right: 2px;
         }
       }
     }
