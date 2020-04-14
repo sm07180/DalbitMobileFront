@@ -26,15 +26,13 @@ export default () => {
       case 'native-push': //----------------------------Native push
         /**
          * @title 네이티브 푸쉬관련
+         * @param : 0:마이스타, 1:선물 받은 달, 2:팬, 3:댓글, 4:달빛 라이브, 5:이벤트 및 마케팅 정보
+         * @code etc:{}
          */
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = JSON.parse(pushMsg)
         console.log(pushMsg)
-
         alert(JSON.stringify(pushMsg, null, 1))
-        //
-        //   alert('push.roomNo : ' + pushMsg.roomNo)
-
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
