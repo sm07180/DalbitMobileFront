@@ -140,34 +140,6 @@ const myProfile = props => {
       <Header>
         <div className="category-text">프로필</div>
       </Header>
-      <ButtonWrap>
-        <InfoConfigBtn>
-          {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
-          {urlrStr !== myProfileNo && (
-            <div className="notBjWrap">
-              {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                <></>
-              ) : (
-                <button
-                  onClick={() => {
-                    context.action.updateClosePresent(true)
-                  }}>
-                  <span></span>
-                  <em>선물</em>
-                </button>
-              )}
-              {profile.isFan === 0 && (
-                <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                  팬
-                </button>
-              )}
-              {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
-            </div>
-          )}
-        </InfoConfigBtn>
-
-        <FanListWrap>{createFanList()}</FanListWrap>
-      </ButtonWrap>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
         {profile.roomNo !== '' && <div className="liveIcon"></div>}
@@ -194,7 +166,35 @@ const myProfile = props => {
           </span>
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
         </CountingWrap>
-
+        <ButtonWrap>
+          <InfoConfigBtn>
+            <FanListWrap>
+              <span>팬 랭킹</span>
+              {createFanList()}
+            </FanListWrap>
+            {urlrStr !== myProfileNo && (
+              <div className="notBjWrap">
+                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                  <></>
+                ) : (
+                  <button
+                    onClick={() => {
+                      context.action.updateClosePresent(true)
+                    }}>
+                    <span></span>
+                    <em>선물</em>
+                  </button>
+                )}
+                {profile.isFan === 0 && (
+                  <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                    팬
+                  </button>
+                )}
+                {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
+              </div>
+            )}
+          </InfoConfigBtn>
+        </ButtonWrap>
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
@@ -229,16 +229,14 @@ const MyProfile = styled.div`
 `
 //flex item3
 const ButtonWrap = styled.div`
-  flex-basis: 204px;
   padding-top: 35px;
-  text-align: right;
-  order: 3;
+
   @media (max-width: ${WIDTH_TABLET_S}) {
     display: flex;
-    justify-content: space-between;
-    flex-basis: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding-top: 0;
-    order: 1;
   }
 `
 
@@ -478,7 +476,7 @@ const InfoConfigBtn = styled.div`
     & button {
       display: flex;
       justify-content: center;
-      width: 66px;
+      width: 100px;
       height: 36px;
       color: #424242;
       font-size: 14px;
@@ -512,8 +510,18 @@ const InfoConfigBtn = styled.div`
 `
 //팬랭킹
 const FanListWrap = styled.div`
-  display: block;
-  margin-top: 33px;
+  display: flex;
+  align-items: center;
+  > span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: -0.35px;
+    text-align: left;
+    margin-right: 10px;
+    color: #000000;
+    transform: skew(-0.03deg);
+  }
   & .moreFan {
     width: 36px;
     height: 36px;

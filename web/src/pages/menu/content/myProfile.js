@@ -139,14 +139,6 @@ const myProfile = props => {
 
   return (
     <MyProfile webview={webview}>
-      <ButtonWrap>
-        <InfoConfigBtn>
-          <a href="/private">내 정보 관리</a>
-        </InfoConfigBtn>
-
-        <FanListWrap>{createFanList()}</FanListWrap>
-      </ButtonWrap>
-
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
         {profile.roomNo !== '' && <div className="liveIcon"></div>}
         <figure>
@@ -172,6 +164,7 @@ const myProfile = props => {
           <span>{`@${profile.memId}`}</span>
         </NameWrap>
 
+        <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
           <span onClick={() => fanContext()}>
             팬 <em>{profile.fanCnt}</em>
@@ -183,8 +176,16 @@ const myProfile = props => {
             <div onClick={() => context.action.updateMypageReport(true)}></div>
           )}
         </CountingWrap>
+        <ButtonWrap>
+          {/* <InfoConfigBtn>
+            <a href="/private">내 정보 관리</a>
+          </InfoConfigBtn> */}
 
-        <ProfileMsg>{profile.profMsg}</ProfileMsg>
+          <FanListWrap>
+            <span>팬 랭킹</span>
+            {createFanList()}
+          </FanListWrap>
+        </ButtonWrap>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
@@ -267,7 +268,6 @@ const ProfileImg = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
     order: 2;
   }
   & .liveIcon {
@@ -504,8 +504,19 @@ const InfoConfigBtn = styled.div`
 `
 //팬랭킹
 const FanListWrap = styled.div`
-  display: block;
-  margin-top: 33px;
+  display: flex;
+  align-items: center;
+
+  > span {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: -0.35px;
+    text-align: left;
+    margin-right: 10px;
+    color: #000000;
+    transform: skew(-0.03deg);
+  }
   & .moreFan {
     width: 36px;
     height: 36px;
@@ -542,7 +553,7 @@ const FanListWrap = styled.div`
     }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 0;
+    margin-top: 10px;
   }
   > a {
     &.none {

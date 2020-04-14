@@ -38,8 +38,8 @@ export default props => {
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},
-    {type: 'alert', txt: '알림', icon: AlarmIcon},
-    {type: 'bcsetting', txt: '방송설정', icon: SettingIcon},
+    {type: 'alert', txt: 'PUSH 알림 설정', icon: AlarmIcon},
+    {type: 'bcsetting', txt: '내 방송 관리', icon: SettingIcon},
     {type: 'customer', txt: '고객센터', icon: CSIcon}
   ]
 
@@ -189,12 +189,12 @@ export default props => {
           </div>
 
           <div className="sub-nav">
-            {/* <a href={`/private`}>
+            <a href={`/private`}>
               <div className="list">
                 <span className="text">내 정보 관리</span>
                 <img className="icon" src={InfoIcon} />
               </div>
-            </a> */}
+            </a>
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
@@ -431,7 +431,7 @@ const MenuMypage = styled.div`
         }
         .icon {
           display: block;
-          width: 24px;
+          width: 32px;
         }
       }
     }
