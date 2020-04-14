@@ -34,7 +34,7 @@ import Utility from 'components/lib/utility'
 
 export default props => {
   const subNavList = [
-    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '마이공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},

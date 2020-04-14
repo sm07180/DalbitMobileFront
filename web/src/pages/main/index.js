@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -18,6 +18,7 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
+import NoResult from 'components/ui/noResult.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
@@ -31,6 +32,9 @@ import RankArrow from './static/ic_rank_arrow.svg'
 import {RoomMake} from 'context/room'
 
 export default props => {
+  // reference
+  const MainRef = useRef()
+
   //context
   const globalCtx = useContext(Context)
 
@@ -43,6 +47,8 @@ export default props => {
   const [popup, setPopup] = useState(false)
   const [liveAlign, setLiveAlign] = useState(null)
   const [liveGender, setLiveGender] = useState(null)
+
+  const [scrollToBottom, setScrollToBottom] = useState(null)
 
   useEffect(() => {
     ;(async () => {
@@ -83,6 +89,10 @@ export default props => {
     } else {
       setLiveCategoryFixed(false)
     }
+
+    if (MainRef.current) {
+      // console.log('height', MainRef.current.clientHeight - window.innerHeight, window.scrollY)
+    }
   }
 
   useEffect(() => {
@@ -102,7 +112,7 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <MainWrap>
+      <MainWrap ref={MainRef}>
         <SubMain>
           <div className="gnb">
             <div className="left-side">
@@ -198,6 +208,7 @@ export default props => {
             </div>
           </div>
         </Content>
+
         {popup && (
           <LayerPopup
             setPopup={setPopup}
@@ -252,9 +263,10 @@ const Content = styled.div`
             color: #424242;
             margin: 0 2px;
             background-color: #fff;
+            box-sizing: border-box;
 
             &.active {
-              border: none;
+              border-color: transparent;
               background-color: #632beb;
               color: #fff;
             }

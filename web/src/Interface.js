@@ -9,10 +9,9 @@ import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 //context
 import {Context} from 'context'
+import Room, {RoomJoin} from 'context/room'
 //util
 import Utility from 'components/lib/utility'
-//components
-import Room from 'context/room'
 
 export default () => {
   //context
@@ -26,13 +25,73 @@ export default () => {
       case 'native-push': //----------------------------Native push
         /**
          * @title 네이티브 푸쉬관련
-         * @param : 0:마이스타, 1:선물 받은 달, 2:팬, 3:댓글, 4:달빛 라이브, 5:이벤트 및 마케팅 정보
-         * @code etc:{}
+         * @push_type
+            1 : 방송방 [room_no]
+            2 : 메인
+            31 : 마이페이지>팬 보드
+            32 : 마이페이지>내 지갑
+            33 : 마이페이지>캐스트>캐스트 정보 변경 페이지
+            34 : 마이페이지>알림>해당 알림 글
+            35 : 마이페이지
+            36 : 레벨 업 DJ 마이페이지 [mem_no]
+            4 : 등록 된 캐스트
+            5 : 스페셜 DJ 선정 페이지
+            6 : 이벤트 페이지>해당 이벤트 [board_idx]
+            7 : 공지사항 페이지 [board_idx]
          */
         let pushMsg = decodeURIComponent(event.detail)
+        pushMsg = pushMsg.trim()
+        // alert(pushMsg)
         pushMsg = JSON.parse(pushMsg)
-        console.log(pushMsg)
-        alert(JSON.stringify(pushMsg, null, 1))
+        const {push_type} = pushMsg
+        let room_no, mem_no
+        //---------------------[분기처리시작]
+        switch (push_type) {
+          case '1': //-----------------방송방 [room_no]
+            room_no = pushMsg.room_no
+            RoomJoin(room_no)
+            break
+          case '2': //------------------메인
+            window.location.href = '/'
+            break
+          case '31': //-----------------마이페이지>팬 보드
+            mem_no = pushMsg.mem_no
+            window.location.href = `/mypage/${mem_no}/fanboard`
+            break
+          case '32': //-----------------마이페이지>내 지갑
+            mem_no = pushMsg.mem_no
+            window.location.href = `/mypage/${mem_no}/wallet`
+            break
+          case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
+            mem_no = pushMsg.mem_no
+            window.location.href = `/mypage/${mem_no}/`
+            break
+          case '34': //-----------------마이페이지>알림>해당 알림 글
+            mem_no = pushMsg.mem_no
+            window.location.href = `/mypage/${mem_no}/alert`
+            break
+          case '35': //-----------------마이페이지
+            mem_no = pushMsg.mem_no
+            window.location.href = `/mypage/${mem_no}/`
+            break
+          case '4': //------------------등록 된 캐스트(미정)
+            window.location.href = `/`
+            break
+          case '5': //------------------스페셜 DJ 선정 페이지(미정)
+            window.location.href = `/`
+            break
+          case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
+            window.location.href = `/`
+            break
+          case '7': //------------------공지사항 페이지 [board_idx](미정)
+            window.location.href = `/`
+            break
+          default:
+            //------------------기본값
+            window.location.href = `/`
+            break
+        }
+        //---------------------[분기처리끝]
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {

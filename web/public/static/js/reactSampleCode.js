@@ -28,10 +28,8 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-room-check', {
-      detail: {
-        memNo: '81586743438500'
-      }
+    new CustomEvent('native-push', {
+      detail: `{"push_type":"32","room_no":"1111","mem_no":"11586413415350"}`
     })
   )
   return true
