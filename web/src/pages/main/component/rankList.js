@@ -16,6 +16,7 @@ export default props => {
   const globalCtx = useContext(Context)
 
   const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
+
   if (djRank === undefined || fanRank === undefined) {
     return null
   }

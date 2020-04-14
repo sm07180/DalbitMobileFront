@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
+
 //context
 import Room, {RoomJoin} from 'context/room'
 // component
@@ -267,6 +267,9 @@ const RecommendWrap = styled.div`
         width: 33.3334%;
         height: 100%;
         border-radius: 10px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
       }
     }
 
