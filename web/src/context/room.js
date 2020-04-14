@@ -81,8 +81,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (!Room.auth) {
       setTimeout(() => {
         RoomJoin(roomNo)
-        alert(roomNo, Room.auth)
-      }, 500)
+        alert(roomNo + ' : Room.auth : ' + Room.auth)
+      }, 1000)
       return
     }
 
