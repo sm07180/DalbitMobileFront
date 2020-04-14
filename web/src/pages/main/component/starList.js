@@ -28,13 +28,16 @@ export default props => {
         </div>
 
         {list.map((star, idx) => {
+          const {memNo, title} = star
           return (
             <div className="list" key={`star-list${idx}`}>
-              <div
-                className="image"
-                style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
-              />
-              <div className="text">{star.title}</div>
+              <Link to={`/mypage/${memNo}`}>
+                <div
+                  className="image"
+                  style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
+                />
+                <div className="text">{title}</div>
+              </Link>
             </div>
           )
         })}
