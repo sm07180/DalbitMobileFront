@@ -97,6 +97,7 @@ export default () => {
         if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
           if (context.token.authToken == event.detail.authToken) {
             Room.setAuth(true)
+            RoomJoin(Room.roomNo)
           } else {
             Room.setAuth(false)
             alert(context.token.memNo + ' : ' + event.detail.memNo)
