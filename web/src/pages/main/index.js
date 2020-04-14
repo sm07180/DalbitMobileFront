@@ -40,6 +40,7 @@ export default props => {
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveCategory, setSelectedLiveCategory] = useState('')
+  const [popup, setPopup] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -157,9 +158,8 @@ export default props => {
                 <div className="txt">실시간 LIVE</div>
                 <img className="icon refresh" src={refreshIcon} />
               </div>
-              <a href="/live">
-                <img className="plus-icon" src={PlusIcon} />
-              </a>
+
+              <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
             </div>
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
@@ -186,7 +186,7 @@ export default props => {
             </div>
           </div>
         </Content>
-        <LayerPopup />
+        {popup && <LayerPopup setPopup={setPopup} />}
       </MainWrap>
     </Layout>
   )
