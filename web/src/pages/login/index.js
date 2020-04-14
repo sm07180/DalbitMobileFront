@@ -236,7 +236,7 @@ export default props => {
 }
 
 const SocialLoginWrap = styled.div`
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 120px;
 
   .line-wrap {
@@ -296,8 +296,8 @@ const Login = styled.div`
   .logo {
     display: block;
     margin: 0 auto;
-    padding: 40px 0 50px;
-    width: 60%;
+    padding: 70px 0 50px;
+    width: 150px;
     max-width: 220px;
   }
 
