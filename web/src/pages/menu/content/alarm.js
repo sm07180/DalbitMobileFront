@@ -251,16 +251,7 @@ export default props => {
 const Content = styled.div`
   display: block;
   margin-top: 30px;
-  .loginBtn {
-    display: block;
-    width: 120px;
-    height: 40px;
-    margin: 30px auto;
-    border: 2px solid #8556f6;
-    color: #424242;
-    border-radius: 10px;
-    transform: skew(-0.03deg);
-  }
+
   .log-out {
     padding-top: 30px;
     box-sizing: border-box;
@@ -278,7 +269,7 @@ const Content = styled.div`
       letter-spacing: -0.8px;
 
       .bold {
-        color: #8556f6;
+        color: #632beb;
         font-weight: 800;
       }
     }
@@ -288,7 +279,7 @@ const Content = styled.div`
       width: 288px;
       height: 50px;
       margin: 16px auto;
-      background: #8556f6;
+      background: #632beb;
       font-size: 18px;
       font-weight: 600;
       color: #fff;

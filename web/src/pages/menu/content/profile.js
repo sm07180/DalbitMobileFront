@@ -388,7 +388,7 @@ const MenuMypage = styled.div`
       letter-spacing: -0.8px;
 
       .bold {
-        color: #8556f6;
+        color: #632beb;
         font-weight: 800;
       }
     }
@@ -398,7 +398,7 @@ const MenuMypage = styled.div`
       width: 288px;
       height: 50px;
       margin: 16px auto;
-      background: #8556f6;
+      background: #632beb;
       font-size: 18px;
       font-weight: 600;
       color: #fff;
