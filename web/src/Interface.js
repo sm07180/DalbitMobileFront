@@ -42,8 +42,11 @@ export default () => {
             Room.setAuth(true)
           } else {
             Room.setAuth(false)
+            alert(JSON.stringify(event.detail, null, 1))
+            alert(context.token.authToken)
+            alert(event.detail.authToken)
             window.location.href = '/login'
-            alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
+            // alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
           }
         }
         break
