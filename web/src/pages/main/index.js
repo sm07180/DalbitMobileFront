@@ -17,6 +17,7 @@ import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import StarList from './component/starList.js'
+import LayerPopup from './component/layer_popup.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
@@ -168,7 +169,10 @@ export default props => {
                     .sort((a, b) => Number(a) - Number(b))
                     .map((key, idx) => {
                       return (
-                        <div className={`list ${key === selectedLiveCategory ? 'active' : ''}`} key={`list-${idx}`}>
+                        <div
+                          className={`list ${key === selectedLiveCategory ? 'active' : ''}`}
+                          key={`list-${idx}`}
+                          onClick={() => setSelectedLiveCategory(key)}>
                           {broadcastLive[key]}
                         </div>
                       )
@@ -182,6 +186,7 @@ export default props => {
             </div>
           </div>
         </Content>
+        <LayerPopup />
       </MainWrap>
     </Layout>
   )
