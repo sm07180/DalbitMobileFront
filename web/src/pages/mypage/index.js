@@ -90,7 +90,7 @@ export default props => {
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}/initial`} />}
-      <Layout {...props} webview={webview}>
+      <Layout {...props} webview={webview} status="no_gnb">
         <Mypage webview={webview}>
           {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           {/* 초기 진입부 분기:type === 'initial' */}
@@ -129,13 +129,13 @@ const SubContent = styled.div`
 
 const Mypage = styled.div`
   margin: 0 auto 15px auto;
-  margin-top: ${props => (props.webview ? 0 : '60px')};
+  margin-top: ${props => (props.webview ? 0 : '0px')};
   width: 1210px;
 
   .close-btn {
     position: absolute;
     top: 6px;
-    right: 2%;
+    left: 2%;
   }
 
   @media (max-width: 1260px) {
@@ -157,13 +157,13 @@ const Sub = styled.div`
       justify-content: space-between;
       height: 40px;
       border-radius: 20px;
-      border: 1px solid #eee;
+      background-color: #f2f2f2;
       box-sizing: border-box;
       padding: 0 18px;
       margin: 4px 0;
 
       .text {
-        color: #424242;
+        color: #000000;
         font-size: 14px;
         letter-spacing: -0.35px;
         font-weight: 600;

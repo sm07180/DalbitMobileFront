@@ -9,6 +9,7 @@ import {OS_TYPE} from 'context/config.js'
 //styled
 import styled from 'styled-components'
 //component
+import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
@@ -100,17 +101,14 @@ const myProfile = props => {
 
   return (
     <MyProfile webview={webview}>
+      <Header>
+        <div className="category-text">프로필</div>
+      </Header>
       <ButtonWrap>
         <InfoConfigBtn>
           {urlrStr === myProfileNo && <Link to="/private">내 정보 관리</Link>}
           {urlrStr !== myProfileNo && (
             <div className="notBjWrap">
-              {profile.isFan === 0 && (
-                <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                  팬
-                </button>
-              )}
-              {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
               {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                 <></>
               ) : (
@@ -122,6 +120,12 @@ const myProfile = props => {
                   <em>선물</em>
                 </button>
               )}
+              {profile.isFan === 0 && (
+                <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                  팬
+                </button>
+              )}
+              {profile.isFan === 1 && <button onClick={() => fanRegist(myProfileNo)}>+ 팬등록</button>}
             </div>
           )}
         </InfoConfigBtn>
@@ -173,17 +177,7 @@ const myProfile = props => {
           {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
         </CountingWrap>
 
-        <ProfileMsg>
-          {/* <br />
-          < = &lt;
-          > = &gt;
-          {profile.profMsg} */}
-          {/* 안녕
-          <br />
-          하세요 */}
-          {profile.profMsg}
-          {/* <p dangerouslySetInnerHTML={{__html: profile.profMs.replace('&lt', <br />)}}></p> */}
-        </ProfileMsg>
+        <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
@@ -211,7 +205,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 20px 0 45px 0;
+    padding: 0px 0 16px 0;
     padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
   }
 `
@@ -350,19 +344,19 @@ const LevelStatus = styled.div`
 `
 //닉네임
 const NameWrap = styled.div`
-  margin-top: 21px;
+  margin-top: 10px;
   & > * {
     display: inline-block;
   }
   strong {
-    color: #424242;
+    color: #000;
     font-size: 24px;
     line-height: 32px;
     font-weight: 800;
   }
   span {
     padding-left: 5px;
-    color: #bdbdbd;
+    color: #424242;
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
@@ -389,13 +383,13 @@ const CountingWrap = styled.div`
     display: inline-block;
     font-size: 20px;
     letter-spacing: -0.35px;
-    color: #707070;
+    color: ${COLOR_MAIN};
     transform: skew(-0.03deg);
-
+    font-weight: 600;
     em {
       display: inline-block;
       padding-left: 1px;
-      color: ${COLOR_MAIN};
+      color: #000;
       font-style: normal;
       font-weight: 600;
     }
@@ -429,12 +423,12 @@ const CountingWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 `
 //프로필메세지
 const ProfileMsg = styled.p`
-  margin-top: 14px;
+  margin-top: 8px;
   color: #616161;
   font-size: 14px;
   line-height: 20px;
@@ -466,14 +460,16 @@ const InfoConfigBtn = styled.div`
     & button {
       display: flex;
       justify-content: center;
-      width: 62px;
+      width: 66px;
       height: 36px;
-      color: #9e9e9e;
+      color: #424242;
       font-size: 14px;
+      font-weight: 600;
       transform: skew(-0.03deg);
+      letter-spacing: -0.35px;
       margin-right: 4px;
       border-radius: 18px;
-      border: solid 1px #bdbdbd;
+      border: solid 1px #424242;
       &.fanRegist {
         border: solid 1px ${COLOR_MAIN};
         color: ${COLOR_MAIN};
@@ -486,7 +482,8 @@ const InfoConfigBtn = styled.div`
       }
       & em {
         display: block;
-        font-weight: normal;
+        font-weight: 600;
+        color: #424242;
         font-style: normal;
         line-height: 1.41;
         letter-spacing: -0.35px;

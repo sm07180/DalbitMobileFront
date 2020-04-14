@@ -107,6 +107,7 @@ const myProfile = props => {
     <MyProfile webview={webview}>
       <ButtonWrap>
         <InfoConfigBtn>
+          <Link to="/private">내 정보 관리</Link>
           {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
             <div className="notBjWrap">
               {profile.isFan === 0 && (
@@ -207,7 +208,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 20px 0 45px 0;
+    padding: 10px 0 16px 0;
     padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
   }
 `
@@ -347,7 +348,7 @@ const LevelStatus = styled.div`
 `
 //닉네임
 const NameWrap = styled.div`
-  margin-top: 21px;
+  margin-top: 10px;
   & > * {
     display: inline-block;
   }
@@ -359,7 +360,7 @@ const NameWrap = styled.div`
   }
   span {
     padding-left: 5px;
-    color: #bdbdbd;
+    color: #424242;
     font-size: 14px;
     line-height: 20px;
     vertical-align: middle;
@@ -427,12 +428,12 @@ const CountingWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 14px;
+    margin-top: 10px;
   }
 `
 //프로필메세지
 const ProfileMsg = styled.p`
-  margin-top: 14px;
+  margin-top: 8px;
   color: #616161;
   font-size: 14px;
   line-height: 20px;
@@ -447,11 +448,13 @@ const InfoConfigBtn = styled.div`
     display: inline-block;
     padding: 0 20px;
     user-select: none;
-    border: 1px solid #bdbdbd;
+    border: 1px solid #424242;
     border-radius: 18px;
     font-size: 14px;
+    font-weight: 600;
     line-height: 36px;
-    color: #9e9e9e;
+    letter-spacing: -0.35px;
+    color: #424242;
     cursor: pointer;
   }
 
