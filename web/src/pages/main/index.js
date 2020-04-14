@@ -207,6 +207,7 @@ export default props => {
             </div>
           </div>
         </Content>
+
         {popup && (
           <LayerPopup
             setPopup={setPopup}

@@ -1,11 +1,16 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
 // component
 import Swiper from 'react-id-swiper'
 
 export default props => {
   const {list} = props
+
+  if (list === undefined) {
+    return null
+  }
 
   const swiperParams = {
     slidesPerView: 'auto'
@@ -14,29 +19,25 @@ export default props => {
   return (
     <StarList>
       <Swiper {...swiperParams}>
-        {Array.isArray(list) && list.length > 0 && (
-          <div className="list">
-            <div className="image">
-              <div>나의</div>
-              <div style={{marginTop: '2px'}}>스타</div>
-            </div>
-            <div className="text"></div>
+        <div className="list">
+          <div className="image">
+            <div>나의</div>
+            <div style={{marginTop: '2px'}}>스타</div>
           </div>
-        )}
+          <div className="text"></div>
+        </div>
 
-        {Array.isArray(list) &&
-          list.length > 0 &&
-          list.map((star, idx) => {
-            return (
-              <div className="list" key={`start-list${idx}`}>
-                <div
-                  className="image"
-                  style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
-                />
-                <div className="text">{star.title}</div>
-              </div>
-            )
-          })}
+        {list.map((star, idx) => {
+          return (
+            <div className="list" key={`star-list${idx}`}>
+              <div
+                className="image"
+                style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
+              />
+              <div className="text">{star.title}</div>
+            </div>
+          )
+        })}
       </Swiper>
     </StarList>
   )
@@ -51,6 +52,7 @@ const StarList = styled.div`
   .swiper-container {
     padding-right: 16px;
   }
+
   .list {
     width: 72px;
     margin: 0 4px;
