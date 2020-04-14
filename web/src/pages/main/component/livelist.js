@@ -12,6 +12,8 @@ import audioIcon from '../static/ico_audio.svg'
 import videoIcon from '../static/ico_video.svg'
 import maleIcon from '../static/ico_male.png'
 import femaleIcon from '../static/ico_female.png'
+import hitIcon from '../static/ico_hit_g.svg'
+import likeIcon from '../static/ico_like_g.svg'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -46,11 +48,11 @@ const makeContents = props => {
           <div className="nickname">{bjNickNm}</div>
           <div className="detail">
             <div className="value">
-              <img src={HeadphoneIcon} />
+              <img src={hitIcon} />
               <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
             </div>
             <div className="value">
-              <img src={HeartIcon} />
+              <img src={likeIcon} />
               <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
             </div>
           </div>
@@ -146,9 +148,9 @@ const LiveList = styled.div`
         display: flex;
         align-items: center;
         flex-direction: row;
-        color: #bdbdbd;
+        color: #424242;
         font-size: 11px;
-        letter-spacing: -0.28px;
+        letter-spacing: -0.3px;
 
         img {
           display: block;
