@@ -10,7 +10,7 @@ let prevGender = null
 export default props => {
   const {setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
   const alignSet = {1: '추천', 2: '인기'}
-  const genderSet = {f: '여자', m: '남자'}
+  const genderSet = {f: '여자', m: '남자', s: '신입'}
 
   useEffect(() => {
     prevAlign = liveAlign
@@ -115,6 +115,7 @@ const PopupWrap = styled.div`
     width: calc(100% - 32px);
     max-width: 328px;
     padding: 20px;
+    padding-top: 12px;
     border-radius: 12px;
     background-color: #fff;
 
@@ -142,7 +143,7 @@ const PopupWrap = styled.div`
     }
 
     .each-line {
-      margin-top: 30px;
+      margin-top: 24px;
 
       .text {
         font-size: 16px;
@@ -157,10 +158,10 @@ const PopupWrap = styled.div`
         .tab {
           border: 1px solid #e0e0e0;
           border-radius: 12px;
-          font-size: 12px;
+          font-size: 14px;
           color: #000;
 
-          width: 25%;
+          width: 33.3334%;
           padding: 7px 0;
           margin: 1px;
           box-sizing: border-box;
@@ -192,6 +193,7 @@ const PopupWrap = styled.div`
         background-color: #632beb;
         color: #fff;
         font-size: 18px;
+        font-weight: 600;
         padding: 12px 0;
       }
     }
