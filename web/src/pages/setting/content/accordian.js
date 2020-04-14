@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 function Accordian(props) {
-  const [setActive, setActiveState] = useState('')
-  const [setHeight, setHeightState] = useState('0px')
+  const [setActive, setActiveState] = useState('active')
+  const [setHeight, setHeightState] = useState('600px')
   const [setRotate, setRotateState] = useState('accordion-icon')
 
   const content = useRef(null)
 
   function toggleAccordion() {
-    setActiveState(setActive === '' ? 'active' : '')
-    setHeightState(setActive === 'active' ? '0px' : `${content.current.scrollHeight}px`)
+    setActiveState(setActive === '' ? 'active' : 'active')
+    setHeightState(setActive === 'active' ? `${content.current.scrollHeight}px` : `${content.current.scrollHeight}px`)
     setRotateState(setActive === 'active' ? 'accordion-icon' : 'accordion-icon rotate')
   }
 
@@ -19,7 +19,7 @@ function Accordian(props) {
     <Wrap>
       <button className={`accordion ${setActive}`} onClick={toggleAccordion}>
         <p className="accordion-title">{props.title}</p>
-        <span className={`${setRotate}`}></span>
+        {/* <span className={`${setRotate}`}></span> */}
       </button>
       <div ref={content} style={{maxHeight: `${setHeight}`}} className="accordion-content">
         {props.children}
@@ -41,7 +41,7 @@ const Wrap = styled.section`
   & .accordion {
     color: #444;
     cursor: pointer;
-    padding: 2px 10px 6px 10px;
+    padding: 2px 10px 19px 10px;
     display: flex;
     align-items: center;
     border-bottom: solid 1px #f5f5f5;

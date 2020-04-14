@@ -79,9 +79,9 @@ const Index = props => {
         {/* <Accordion title="로그아웃" content="3" />
         <Accordion title="회원 탈퇴" content="4" />
         <Accordion title="버전관리" content="5" /> */}
-        <button className="otherbtn" onClick={() => check()}>
+        {/* <button className="otherbtn" onClick={() => check()}>
           로그아웃
-        </button>
+        </button> */}
         <button className="otherbtn" onClick={() => checklogin()}>
           회원탈퇴
         </button>
