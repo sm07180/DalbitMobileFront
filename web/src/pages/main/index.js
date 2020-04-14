@@ -24,7 +24,6 @@ import {broadcastLive} from 'constant/broadcast.js'
 
 // static
 import Mic from './static/ic_broadcast.svg'
-import PlusIcon from './static/ic_circle_plus.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
 import RankArrow from './static/ic_rank_arrow.svg'
@@ -40,7 +39,7 @@ export default props => {
   const [rankType, setRankType] = useState('dj') // type: dj, fan
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
-  const [selectedLiveCategory, setSelectedLiveCategory] = useState('')
+  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
 
   useEffect(() => {
@@ -170,9 +169,9 @@ export default props => {
                     .map((key, idx) => {
                       return (
                         <div
-                          className={`list ${key === selectedLiveCategory ? 'active' : ''}`}
+                          className={`list ${key === selectedLiveRoomType ? 'active' : ''}`}
                           key={`list-${idx}`}
-                          onClick={() => setSelectedLiveCategory(key)}>
+                          onClick={() => setSelectedLiveRoomType(key)}>
                           {broadcastLive[key]}
                         </div>
                       )
