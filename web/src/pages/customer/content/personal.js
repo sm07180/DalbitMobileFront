@@ -191,18 +191,18 @@ const Personal = props => {
       <div>
         <TitleWrap>
           <PersonalTypeBtn
-            className={personalType === '나의 문의 내역' ? 'active' : ''}
-            onClick={() => {
-              changePersonalTypeClick('나의 문의 내역')
-            }}>
-            나의 문의내역
-          </PersonalTypeBtn>
-          <PersonalTypeBtn
             className={personalType === ' 1:1 문의 작성' ? 'active' : ''}
             onClick={() => {
               changePersonalTypeClick(' 1:1 문의 작성')
             }}>
             1:1 문의 작성
+          </PersonalTypeBtn>
+          <PersonalTypeBtn
+            className={personalType === '나의 문의 내역' ? 'active' : ''}
+            onClick={() => {
+              changePersonalTypeClick('나의 문의 내역')
+            }}>
+            나의 문의내역
           </PersonalTypeBtn>
         </TitleWrap>
 

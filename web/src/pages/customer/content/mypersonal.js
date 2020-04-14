@@ -101,7 +101,7 @@ function Faq(props) {
         {noResultshow === true && <NoResult />}
         <dl>
           {paginatedDated.map((item, index) => {
-            const {qnaIdx, qnaType, title, contents, answer, state, writeDt, writeTs} = item
+            const {qnaIdx, qnaType, title, contents, answer, state, writeDt, writeTs, addFile} = item
             if (paginatedDated === null) return
             return (
               <div key={index}>
@@ -124,9 +124,11 @@ function Faq(props) {
 
                 <Detail className={Store().personalPage === qnaIdx && listhide !== '' ? 'on' : ''}>
                   <p dangerouslySetInnerHTML={{__html: contents.replace(/class/gi, 'className')}}></p>
+                  {addFile.url !== '' && <img src={addFile.url} className="addImg" />}
                   {answer !== '' && (
                     <div className="answerWrap">
                       <span className="icon">A</span>
+
                       <p dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}}></p>
                     </div>
                   )}
@@ -163,6 +165,11 @@ const Detail = styled.section`
   overflow: hidden;
   padding: 0;
   background-color: #f8f8f8;
+  & .addImg {
+    display: block;
+    margin-top: 10px;
+    max-height: 300px;
+  }
   & > div {
     display: flex;
     font-size: 14px;
