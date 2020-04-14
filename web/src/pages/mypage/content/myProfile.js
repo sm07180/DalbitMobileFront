@@ -140,6 +140,7 @@ const myProfile = props => {
       </Header>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+        {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>}
         {profile.roomNo !== '' && <div className="liveIcon"></div>}
         <figure>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
@@ -162,12 +163,11 @@ const myProfile = props => {
           <span onClick={() => starContext()}>
             스타 <em>{profile.starCnt}</em>
           </span>
-          {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)}></div>}
         </CountingWrap>
         <ButtonWrap>
           <InfoConfigBtn>
             <FanListWrap>
-              <span>팬 랭킹</span>
+              <span>팬랭킹</span>
               {createFanList()}
             </FanListWrap>
             {urlrStr !== myProfileNo && (
@@ -285,6 +285,14 @@ const ProfileImg = styled.div`
     height: 26px;
     background: url(${IMG_SERVER}/images/api/label_live.png) no-repeat center center / cover;
   }
+  & .reportIcon {
+    position: absolute;
+    top: -10px;
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/api/ic_report.png);
+    cursor: pointer;
+  }
 `
 
 const ContentWrap = styled.div`
@@ -312,7 +320,7 @@ const LevelWrap = styled.div`
   margin-top: 3px;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
+    margin-top: 15px;
     align-items: center;
   }
 `
@@ -526,6 +534,7 @@ const FanListWrap = styled.div`
     border: 1px solid #424242;
     border-radius: 50%;
     vertical-align: top;
+    margin: 10px 0 15px 0;
     span {
       display: inline-block;
       position: absolute;
@@ -554,9 +563,6 @@ const FanListWrap = styled.div`
         left: -5px;
       }
     }
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 0;
   }
   > a {
     &.none {
