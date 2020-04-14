@@ -66,8 +66,8 @@ export default props => {
         <img className="logo" src={Logo} onClick={reLoad} />
       )}
       <div className="icon-wrap">
-        <img className="icon" src={My} onClick={() => moveToMenu('profile')} />
-        <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} />
+        <img className="icon" src={My} onClick={() => moveToMenu('profile')} style={{marginLeft: '36px'}} />
+        {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
       </div>
     </GnbWrap>
   )

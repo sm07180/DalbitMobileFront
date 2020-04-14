@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_wallet_m" width="24" height="24" viewBox="0 0 24 24">
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
     <defs>
         <style>
-            .prefix__cls-2{fill:#fff;stroke:#424242;stroke-linecap:round;stroke-linejoin:round}
+            .prefix__cls-2{fill:#fff;stroke:#000;stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round}
         </style>
     </defs>
-    <g id="prefix__그룹_10761" data-name="그룹 10761" transform="translate(-284 7)">
-        <g id="prefix__사각형_808" data-name="사각형 808" style="stroke:#707070;opacity:0;fill:#fff">
-            <path d="M0 0H24V24H0z" style="stroke:none" transform="translate(284 -7)"/>
-            <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none" transform="translate(284 -7)"/>
+    <g id="prefix__그룹_10465" data-name="그룹 10465" transform="translate(-280 11)">
+        <g id="prefix__사각형_808" data-name="사각형 808" style="opacity:0;fill:#fff;stroke:#000;stroke-width:1.2px">
+            <path d="M0 0H32V32H0z" style="stroke:none" transform="translate(280 -11)"/>
+            <path d="M0.6 0.6H31.400000000000002V31.400000000000002H0.6z" style="fill:none" transform="translate(280 -11)"/>
         </g>
-        <g id="prefix__그룹_10460" data-name="그룹 10460" transform="translate(287.526 -1.6)">
-            <rect id="prefix__사각형_803" width="16.823" height="12.803" class="prefix__cls-2" data-name="사각형 803" rx="3.315"/>
-            <path id="prefix__사각형_804" d="M1.652 0h4.223v3.3H1.652A1.652 1.652 0 0 1 0 1.652 1.652 1.652 0 0 1 1.652 0z" class="prefix__cls-2" data-name="사각형 804" transform="translate(10.948 4.75)"/>
-            <path id="prefix__선_109" d="M0 0L0.215 0" class="prefix__cls-2" data-name="선 109" transform="translate(13.225 6.402)"/>
+        <g id="prefix__그룹_10460" data-name="그룹 10460" transform="translate(287 -1.844)">
+            <rect id="prefix__사각형_803" width="17.874" height="13.603" class="prefix__cls-2" data-name="사각형 803" rx="3.315"/>
+            <path id="prefix__사각형_804" d="M1.755 0h4.487v3.509H1.755A1.755 1.755 0 0 1 0 1.755 1.755 1.755 0 0 1 1.755 0z" class="prefix__cls-2" data-name="사각형 804" transform="translate(11.632 5.047)"/>
+            <path id="prefix__선_109" d="M0 0L0.229 0" class="prefix__cls-2" data-name="선 109" transform="translate(14.051 6.802)"/>
         </g>
     </g>
 </svg>
