@@ -115,7 +115,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
           break
       }
       return false
-    } else if (res.result === 'success') {
+    } else if (res.result === 'success' && res.data !== null) {
       //성공일때
       const {data} = res
       console.log(
