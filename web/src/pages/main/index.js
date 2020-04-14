@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -25,12 +25,12 @@ import {broadcastLive} from 'constant/broadcast.js'
 import Mic from './static/ic_mike.svg'
 import PlayIcon from './static/ic_play.svg'
 import PlusIcon from './static/ic_circle_plus.svg'
+import sequenceIcon from './static/ic_live_sequence.svg'
+import refreshIcon from './static/ic_live_refresh.svg'
 
 import {RoomMake} from 'context/room'
 
 export default props => {
-  const liveCategoryListRef = useRef()
-
   //context
   const globalCtx = useContext(Context)
 
@@ -84,8 +84,6 @@ export default props => {
   const swiperParams = {
     slidesPerView: 'auto'
   }
-
-  console.log('dfd', liveCategoryFixed)
 
   return (
     <Layout {...props}>
@@ -156,14 +154,14 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="icon live" src={PlayIcon} />
+                <img className="icon refresh" src={refreshIcon} />
               </div>
               <a href="/live">
                 <img className="plus-icon" src={PlusIcon} />
               </a>
             </div>
 
-            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`} ref={liveCategoryListRef}>
+            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="inner-wrapper">
                 <Swiper {...swiperParams}>
                   {Object.keys(broadcastLive)
@@ -179,7 +177,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap" style={{height: '1000px'}}>
+            <div className="content-wrap" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
               <LiveList list={liveList} />
             </div>
           </div>
@@ -196,7 +194,7 @@ const Content = styled.div`
     .live-list-category {
       position: relative;
       display: flex;
-      height: 40px;
+      height: 58px;
       flex-direction: row;
       align-items: center;
       background-color: #fff;
@@ -211,7 +209,7 @@ const Content = styled.div`
 
       .inner-wrapper {
         position: absolute;
-        top: 3px;
+        top: 12px;
         left: 16px;
         width: calc(100% - 16px);
 
@@ -263,6 +261,12 @@ const Content = styled.div`
           }
         }
         .icon {
+          &.refresh {
+            display: block;
+            width: 24px;
+            margin-left: 10px;
+          }
+
           &.live {
             display: block;
             width: 16px;
@@ -278,9 +282,6 @@ const Content = styled.div`
       margin-top: 10px;
       padding: 0 16px;
       padding-bottom: 20px;
-
-      &.my-star-slide {
-      }
 
       &.rank-slide {
         padding: 0;

@@ -12,8 +12,6 @@ import audioIcon from '../static/ico_audio.svg'
 import videoIcon from '../static/ico_video.svg'
 import maleIcon from '../static/ico_male.png'
 import femaleIcon from '../static/ico_female.png'
-import sequenceIcon from '../static/ic_live_sequence.svg'
-import refreshIcon from '../static/ic_live_refresh.svg'
 
 function usePrevious(value) {
   const ref = useRef()
