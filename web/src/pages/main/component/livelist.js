@@ -30,7 +30,7 @@ const makeContents = props => {
 
   return list.map((list, idx) => {
     const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt} = list
-    console.log('list', list)
+    // console.log('list', list)
     return (
       <LiveList
         key={`live-${idx}`}
