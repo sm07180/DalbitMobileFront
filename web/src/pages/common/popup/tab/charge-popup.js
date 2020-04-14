@@ -97,7 +97,7 @@ export default props => {
         payFetch()
       } else {
         context.action.updatePopupVisible(false)
-        props.history.push('/user/selfAuth', {
+        props.history.push('/selfAuth', {
           type: 'charge'
         })
       }
