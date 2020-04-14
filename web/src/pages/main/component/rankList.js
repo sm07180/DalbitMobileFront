@@ -8,8 +8,8 @@ import Swiper from 'react-id-swiper'
 import NoRsult from 'components/ui/noResult'
 
 // static
-import peopleIcon from '../static/ic_people_s.svg'
-import heartIcon from '../static/ic_heart_s.svg'
+import peopleIcon from '../static/ic_people.svg'
+import heartIcon from '../static/ico_like_g.svg'
 
 export default props => {
   const {rankType, djRank, fanRank} = props
