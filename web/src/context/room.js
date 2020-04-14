@@ -107,7 +107,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
           //----------------------------
           Room.context.action.alert({
             title: res.messageKey,
-            msg: res.message
+            msg: res.message,
+            callback: () => {
+              window.location.reload()
+            }
           })
           break
       }

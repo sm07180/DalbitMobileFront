@@ -4,7 +4,7 @@
  */
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-
+import qs from 'query-string'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -17,10 +17,11 @@ export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
-
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
+  const search = qs.parse(window.location.href)
+  console.log(search)
 
   //---------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ export default props => {
         return (
           <div
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
-            key={item.storeNo}
+            key={index}
             applestoreid={item.appleStoreId}
             onClick={() => {
               if (selected.num == index) {

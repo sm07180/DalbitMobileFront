@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {PayStore} from '../store'
 //components
 import Pay from './pay.js'
+//
 const Index = props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
