@@ -37,8 +37,6 @@ export default props => {
   //const [moreState, setMoreState] = useState(false)
   const [myRank, setMyRank] = useState('-')
 
-  let listItem = -1
-
   //---------------------------------------------------------------------
   //map
   const createRankButton = () => {
@@ -148,7 +146,6 @@ export default props => {
 
   //---------------------------------------------------------------------
   //checkScroll
-  let addList = ''
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function() {
@@ -246,7 +243,7 @@ const Contents = styled.div`
         }
       }
       &.rank-type button + button {
-        margin-left:10px;
+        margin-left: 10px;
       }
       &.date-type button {
         width: 68px;

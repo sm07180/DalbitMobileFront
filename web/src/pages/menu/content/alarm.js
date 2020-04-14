@@ -28,6 +28,9 @@ let currentPage = 1
 
 export default props => {
   //---------------------------------------------------------------------
+  //let
+  let timer
+
   //context
   const globalCtx = useContext(Context)
   const {profile} = globalCtx
@@ -197,6 +200,33 @@ export default props => {
   }
 
   //---------------------------------------------------------------------
+  //checkScroll
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      if (windowBottom >= docHeight - 30) {
+        showMoreList()
+      } else {
+      }
+    }, 50)
+  }
+  //---------------------------------------------------------------------
+
+  //useEffect
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
 
   //useEffect
   useEffect(() => {
@@ -216,17 +246,6 @@ export default props => {
         {isLogin ? (
           <>
             {createAlertResult()}
-            {moreState && (
-              <div className="more-btn-wrap">
-                <button
-                  className="more-btn"
-                  onClick={() => {
-                    props.history.push(`/mypage/${myMemNo}/alert`)
-                  }}>
-                  더보기
-                </button>
-              </div>
-            )}
             <Room />
           </>
         ) : (
