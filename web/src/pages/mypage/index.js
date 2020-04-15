@@ -12,6 +12,7 @@ import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
+import AppAlarm from './content/appAlarm'
 
 // static
 import closeBtn from 'pages/menu/static/ic_close.svg'
@@ -47,7 +48,8 @@ export default props => {
     {id: 2, type: 'initial', component: Initial, txt: 'initial'},
     {id: 3, type: 'wallet', component: Wallet, txt: '내 지갑'},
     {id: 4, type: 'report', component: Report, txt: '리포트'},
-    {id: 5, type: 'alert', component: Alert, txt: '알림'},
+    // {id: 5, type: 'alert', component: Alert, txt: '알림'},
+    {id: 5, type: 'appAlarm', component: AppAlarm, txt: '어플알람'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
   //context

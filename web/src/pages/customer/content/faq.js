@@ -41,7 +41,8 @@ function Faq(props) {
   const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = faqList.slice(pageStart, pageEnd)
-  const amountPages = Math.round(faqList.length / perPage)
+  //const amountPages = Math.round(faqList.length / perPage)
+  const amountPages = Math.floor((faqList.length - 1) / perPage)
   //pages
   let a = 0,
     b = amountPages

@@ -38,7 +38,8 @@ export default props => {
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},
-    {type: 'alert', txt: 'PUSH 알림 설정', icon: AlarmIcon},
+    {type: 'appAlarm', txt: 'PUSH 알림 설정', icon: CSIcon},
+    // {type: 'alert', txt: 'PUSH 알림 설정', icon: AlarmIcon},
     {type: 'bcsetting', txt: '내 방송 관리', icon: SettingIcon},
     {type: 'customer', txt: '고객센터', icon: CSIcon}
   ]

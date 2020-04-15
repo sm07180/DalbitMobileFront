@@ -1368,6 +1368,25 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/rest/pay/bank`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief 어플 알림 조회
+   * @method "GET"
+   * @create 황상한 2020.04.14
+   */
+  static appNotify_list = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'GET', params: params})
+  }
+
+  /**
+   * @brief 어플 알림 수정
+   * @method "POST"
+   * @create 황상한 2020.04.14
+   */
+  static appNotify_modify = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'POST', data: data})
+  }
 }
 API.customHeader = null
 API.authToken = null

@@ -44,7 +44,8 @@ function Notice(props) {
   const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = noticeList.slice(pageStart, pageEnd)
-  const amountPages = Math.round(noticeList.length / perPage)
+  //const amountPages = Math.round(noticeList.length / perPage)
+  const amountPages = Math.floor((noticeList.length - 1) / perPage)
   //pages
   let a = 0,
     b = amountPages
