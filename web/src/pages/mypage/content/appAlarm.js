@@ -146,7 +146,7 @@ export default props => {
           <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
         </div>
         <div>
-          <h2>마이 달D 알림</h2>
+          <h2>마이 DJ 알림</h2>
           <p>팬으로 등록 된 사용자의 방송 및 정보 변경 수신 알림</p>
           <button
             className={btn2 === 1 ? 'on' : ''}

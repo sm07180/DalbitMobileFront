@@ -106,6 +106,7 @@ function Notice(props) {
   }
   //set type select
   const setType = value => {
+    setPage(1)
     if (value === 0) {
       setNoticeNum(0)
     } else if (value === 1) {
