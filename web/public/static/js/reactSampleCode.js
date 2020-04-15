@@ -28,7 +28,7 @@ function native() {
   //   })
   // )
   document.dispatchEvent(
-    new CustomEvent('native-push', {
+    new CustomEvent('native-auth-check', {
       detail: `{"push_type":"32","room_no":"1111","mem_no":"11586413415350"}`
     })
   )
