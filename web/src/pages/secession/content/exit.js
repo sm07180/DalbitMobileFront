@@ -141,7 +141,8 @@ const Exit = props => {
         className={
           all === true && state.click1 === true && state.click2 === true && state.click6 === true ? 'submiton' : 'submit'
         }
-        onClick={Validate}>
+        onClick={Validate}
+        disabled={all ? false : true}>
         회원탈퇴
       </button>
     </Wrap>
@@ -223,13 +224,14 @@ const Wrap = styled.div`
   }
   & .submiton {
     display: block;
+    width: 100%;
     margin: 20px auto 186px auto;
     padding: 16px 135px;
     background-color: #632beb;
     color: #fff;
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 16px 37.5%;
+      padding: 16px 0;
       margin: 20px auto 116px auto;
     }
   }
