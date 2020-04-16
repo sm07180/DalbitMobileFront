@@ -200,19 +200,21 @@ const Detail = styled.section`
     }
   }
   & p {
-    width: calc(100% - 44px);
+    width: calc(100% - 42px);
     @media (max-width: ${WIDTH_MOBILE}) {
-      width: 100%;
+      width: calc(100% - 10px);
       margin-top: -1px;
       color: #424242;
       font-size: 14px;
       line-height: 1.43;
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
+      margin-left: 10px;
     }
   }
   & .answerWrap {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     margin-top: 30px;
   }
