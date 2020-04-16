@@ -100,13 +100,12 @@ native-push-foreground
         //---------------------[분기처리끝]
         break
       case 'native-push-foreground': //----------------------native-push-foreground
-        let pushMsg = decodeURIComponent(event.detail)
-        pushMsg = pushMsg.trim()
-        pushMsg = JSON.parse(pushMsg)
-        const {push_type} = pushMsg
-        let room_no, mem_no
+        let pushMsg1 = decodeURIComponent(event.detail)
+        pushMsg1 = pushMsg1.trim()
+        pushMsg1 = JSON.parse(pushMsg1)
+        const {push_type1} = pushMsg1
         //---------------------[분기처리시작]
-        switch (push_type) {
+        switch (push_type1) {
           default:
             //------------------기본값
             window.location.href = `/`
