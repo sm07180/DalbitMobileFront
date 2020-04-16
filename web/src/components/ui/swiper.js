@@ -35,7 +35,15 @@ export default props => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
     const moveBaseUnit = wrapperNode.clientWidth / childrenLength
-    const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
+
+    const slideCountIsOdd = wrapperNode.children.length % 2 === 1 ? true : false
+    const firstSlide = wrapperNode.firstChild
+    const halfWidthSlide = firstSlide.clientWidth / 2
+
+    const centerMoveSize = slideCountIsOdd
+      ? (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
+      : (swiperNode.clientWidth - wrapperNode.clientWidth) / 2 - halfWidthSlide
+
     let moveSize = null
 
     if (direction === 'right') {
@@ -136,7 +144,13 @@ export default props => {
   const initialSwipperWrapperStyle = () => {
     const swiperNode = swiperRef.current
     const wrapperNode = wrapperRef.current
-    const centerMoveSize = (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
+    const slideCountIsOdd = wrapperNode.children.length % 2 === 1 ? true : false
+    const firstSlide = wrapperNode.firstChild
+    const halfWidthSlide = firstSlide.clientWidth / 2
+
+    const centerMoveSize = slideCountIsOdd
+      ? (swiperNode.clientWidth - wrapperNode.clientWidth) / 2
+      : (swiperNode.clientWidth - wrapperNode.clientWidth) / 2 - halfWidthSlide
 
     swiperNode.style.height = `${wrapperNode.clientHeight}px`
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
