@@ -236,7 +236,7 @@ export default props => {
 }
 
 const SocialLoginWrap = styled.div`
-  margin-top: 60px;
+  margin-top: 40px;
   margin-bottom: 120px;
 
   .line-wrap {
