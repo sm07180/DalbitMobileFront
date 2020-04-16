@@ -37,7 +37,7 @@ const myProfile = props => {
     setZoom(true)
   }
 
-  let expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
+  let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
 
   const myProfileNo = ctx.profile.memNo
