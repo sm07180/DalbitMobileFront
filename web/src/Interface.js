@@ -45,17 +45,14 @@ native-push-foreground
       case 'native-push-background': //----------------------------native-push-foreground
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
-        // alert(pushMsg)
         pushMsg = JSON.parse(pushMsg)
         const {push_type} = pushMsg
         let room_no, mem_no
         //---------------------[분기처리시작]
         switch (push_type) {
           case '1': //-----------------방송방 [room_no]
-            if (Room.roomNo !== undefined && Room.roomNo === '') {
-              room_no = pushMsg.room_no
-              RoomJoin(room_no)
-            }
+            room_no = pushMsg.room_no
+            RoomJoin(room_no)
             break
           case '2': //------------------메인
             window.location.href = '/'
