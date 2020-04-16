@@ -184,6 +184,8 @@ const myProfile = props => {
           <span>{`@${profile.memId}`}</span>
         </NameWrap>
 
+        <ProfileMsg>{profile.profMsg}</ProfileMsg>
+
         <CountingWrap>
           <span onClick={() => fanContext()}>
             팬 <em>{profile.fanCnt}</em>
@@ -218,7 +220,6 @@ const myProfile = props => {
             )}
           </InfoConfigBtn>
         </ButtonWrap>
-        <ProfileMsg>{profile.profMsg}</ProfileMsg>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
