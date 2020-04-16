@@ -181,4 +181,5 @@ const SelectBoxWrap = styled.div`
   position: absolute;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 `
