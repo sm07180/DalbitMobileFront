@@ -116,7 +116,7 @@ function Faq(props) {
                     {qnaType === 5 && <span className="type">[ 건의 ]</span>}
                     {qnaType === 6 && <span className="type">[ 장애/버그 ]</span>}
                     {qnaType === 7 && <span className="type">[ 선물/아이템 ]</span>}
-                    <p>{title}</p>
+                    <p className="titleName">{title}</p>
                   </dt>
                   <em className={Store().personalPage === qnaIdx ? 'on' : ''}></em>
                   <dd>{timeFormat(writeDt)}</dd>
@@ -200,19 +200,21 @@ const Detail = styled.section`
     }
   }
   & p {
-    width: calc(100% - 44px);
+    width: calc(100% - 42px);
     @media (max-width: ${WIDTH_MOBILE}) {
-      width: 100%;
+      width: calc(100% - 10px);
       margin-top: -1px;
       color: #424242;
       font-size: 14px;
       line-height: 1.43;
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
+      margin-left: 10px;
     }
   }
   & .answerWrap {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     margin-top: 30px;
   }
@@ -339,5 +341,8 @@ const TableWrap = styled.div`
     text-align: center;
     letter-spacing: normal;
     transform: skew(-0.03deg);
+  }
+  & .titleName {
+    margin-left: 0;
   }
 `

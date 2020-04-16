@@ -101,11 +101,8 @@ export default props => {
     const RankSectionNode = RankSectionRef.current
     const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
-
-    if (
-      window.scrollY >=
-      SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + BannerSectionNode.clientHeight + 80
-    ) {
+    // BannerSectionNode.clientHeight
+    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
@@ -188,11 +185,11 @@ export default props => {
             </div>
           </div>
 
-          <div className="section" ref={BannerSectionRef}>
+          {/* <div className="section" ref={BannerSectionRef}>
             <div className="content-wrap">
               {Array.isArray(initData.recommend) && initData.recommend.length > 0 && <BannerList list={initData.recommend} />}
             </div>
-          </div>
+          </div> */}
 
           <div className="section" ref={StarSectionRef}>
             <div
@@ -209,7 +206,15 @@ export default props => {
                 <button className="icon refresh" onClick={() => fetchLiveList()} />
               </div>
 
-              <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
+              <div className="sequence-wrap">
+                <span className="text">
+                  {(() => {
+                    const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
+                    return liveAlign ? `${alignSet[liveAlign]}순` : ''
+                  })()}
+                </span>
+                <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
+              </div>
             </div>
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
@@ -379,6 +384,22 @@ const Content = styled.div`
           &.active {
             color: #632beb;
           }
+        }
+      }
+
+      .sequence-wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .text {
+          margin-left: 4px;
+          color: #424242;
+          font-size: 14px;
+          letter-spacing: -0.35px;
+        }
+        .sequence-icon {
+          display: block;
         }
       }
     }

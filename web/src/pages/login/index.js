@@ -240,16 +240,19 @@ const SocialLoginWrap = styled.div`
   margin-bottom: 120px;
 
   .line-wrap {
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-around; */
+    /* align-items: center; */
+    text-align: center;
 
     .new-design-social-btn {
+      display: inline-block;
       width: 50px;
       height: 50px;
       border-radius: 50%;
       background-color: #eee;
+      margin: 0 8px;
 
       .icon {
         width: 36px;
