@@ -48,8 +48,10 @@ export default () => {
         //---------------------[분기처리시작]
         switch (push_type) {
           case '1': //-----------------방송방 [room_no]
-            room_no = pushMsg.room_no
-            RoomJoin(room_no)
+            if (Room.roomNo !== undefined && Room.roomNo === '') {
+              room_no = pushMsg.room_no
+              RoomJoin(room_no)
+            }
             break
           case '2': //------------------메인
             window.location.href = '/'
@@ -145,7 +147,7 @@ export default () => {
         context.action.updateCastState(null)
         //종료시
         //App에서 방송종료 알림경우
-        if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
+        if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
           Room.setRoomNo('')
         }
         break
