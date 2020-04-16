@@ -260,7 +260,7 @@ const GenderTab = styled.div`
   user-select: none;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
-  background-color: #632beb;
+  background-color: #9e9e9e;
   color: #fff;
   cursor: not-allowed;
 
