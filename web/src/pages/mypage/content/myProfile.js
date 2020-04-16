@@ -229,7 +229,7 @@ const MyProfile = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 0px 0 16px 0;
-    padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')};
+    /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
 //flex item3

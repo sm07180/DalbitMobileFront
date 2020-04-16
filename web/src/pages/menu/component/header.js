@@ -10,7 +10,7 @@ export default props => {
   }
 
   return (
-    <Header>
+    <Header className="header-wrap">
       <div className="child-bundle">{props.children}</div>
       <div></div>
       <img className="close-btn" src={closeBtn} onClick={goBack} />
