@@ -37,17 +37,18 @@ const Layout = props => {
 
   return (
     <Container className="pure">
-      {/* 닫기버튼 */}
-
       {/* 헤더설정 */}
       {logo_status !== 'no' && (
-        <Logo>
-          <NavLink to="/" exact>
-            <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
-          </NavLink>
-        </Logo>
+        <>
+          <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
+          <Logo>
+            <NavLink to="/" exact>
+              <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
+            </NavLink>
+          </Logo>
+        </>
       )}
-      {/* global navigation */}
+
       <main>
         <article>{children}</article>
       </main>
@@ -110,8 +111,8 @@ const Container = styled.div`
   }
   .close-btn {
     position: absolute;
-    right: 4.444%;
-    top: 5px;
+    right: 10px;
+    top: 6px;
   }
   .logo {
     width: 150px;

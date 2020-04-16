@@ -15,7 +15,6 @@ let touchStartStatus = false
 let direction = null
 
 export default props => {
-  //context
   const {list} = props
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
@@ -163,6 +162,16 @@ export default props => {
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
 
+  const clickSlideDisplay = data => {
+    const {roomType} = data
+    if (roomType === 'link') {
+      const {roomNo} = data
+      if (roomNo !== '') {
+        window.location.href = roomNo
+      }
+    }
+  }
+
   return (
     <RecommendWrap>
       <Room />
@@ -175,13 +184,24 @@ export default props => {
               onTouchStart={touchStartEvent}
               onTouchMove={touchMoveEvent}
               onTouchEnd={touchEndEvent}>
-              <div className="broad-slide" b-idx={prevBIdx} style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}} />
+              <div
+                className="broad-slide"
+                b-idx={prevBIdx}
+                style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}}
+                onClick={() => clickSlideDisplay(list[prevBIdx])}
+              />
               <div
                 className="broad-slide"
                 b-idx={selectedBIdx}
                 style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
+                onClick={() => clickSlideDisplay(list[selectedBIdx])}
               />
-              <div className="broad-slide" b-idx={nextBIdx} style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}} />
+              <div
+                className="broad-slide"
+                b-idx={nextBIdx}
+                style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}}
+                onClick={() => clickSlideDisplay(list[nextBIdx])}
+              />
             </div>
           </>
         )}
