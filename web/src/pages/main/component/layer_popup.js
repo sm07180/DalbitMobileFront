@@ -14,10 +14,12 @@ export default props => {
   useEffect(() => {
     prevAlign = liveAlign
     prevGender = liveGender
+    document.body.style.overflow = 'hidden'
 
     return () => {
       prevAlign = null
       prevGender = null
+      document.body.style.overflow = ''
     }
   }, [])
 
