@@ -16,6 +16,7 @@ import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
+import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import NoResult from 'components/ui/noResult.js'
@@ -36,6 +37,7 @@ export default props => {
   const MainRef = useRef()
   const SubMainRef = useRef()
   const RankSectionRef = useRef()
+  const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
 
   //context
@@ -179,6 +181,12 @@ export default props => {
 
             <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
+            </div>
+          </div>
+
+          <div className="section" ref={BannerSectionRef}>
+            <div className="content-wrap">
+              {Array.isArray(initData.recommend) && initData.recommend.length > 0 && <BannerList list={initData.recommend} />}
             </div>
           </div>
 
@@ -373,10 +381,9 @@ const Content = styled.div`
 
     .content-wrap {
       position: relative;
-      min-height: 100px;
+      min-height: 50px;
       margin-top: 10px;
       padding: 0 16px;
-      padding-bottom: 20px;
 
       &.rank-slide {
         padding: 0;
