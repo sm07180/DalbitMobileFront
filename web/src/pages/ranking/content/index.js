@@ -30,6 +30,8 @@ export default props => {
   //context
   const context = useContext(Context)
 
+  const typeState = props.location.state
+
   //state
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(1)
@@ -177,7 +179,12 @@ export default props => {
   }, [nextList])
 
   useEffect(() => {
-    fetch(rankType, dateType)
+    if (typeState) {
+      setRankType(typeState)
+      fetch(typeState, dateType)
+    } else {
+      fetch(rankType, dateType)
+    }
     return () => {
       currentPage = 1
     }

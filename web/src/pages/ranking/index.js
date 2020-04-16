@@ -19,7 +19,7 @@ export default props => {
   return (
     <RankingProvider>
       <Layout {...props} status="no_gnb">
-        <Contents />
+        <Contents {...props} />
       </Layout>
     </RankingProvider>
   )

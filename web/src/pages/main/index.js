@@ -128,7 +128,7 @@ export default props => {
   ////
 
   const goRank = () => {
-    history.push(`/rank`)
+    history.push(`/rank`, rankType)
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
