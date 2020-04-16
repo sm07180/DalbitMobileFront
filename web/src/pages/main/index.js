@@ -35,7 +35,7 @@ import {RoomMake} from 'context/room'
 
 let concatenating = false
 let tempScrollEvent = null
-const records = 5
+const records = 10
 
 export default props => {
   // reference
@@ -142,7 +142,7 @@ export default props => {
     }
 
     if (
-      MainNode.clientHeight + gnbHeight - 100 < window.scrollY + window.innerHeight &&
+      MainNode.clientHeight + gnbHeight - 150 < window.scrollY + window.innerHeight &&
       !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
