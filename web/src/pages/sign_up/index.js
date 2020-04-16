@@ -13,11 +13,6 @@ import Api from 'context/api'
 import {Context} from 'context'
 import _ from 'lodash'
 
-import {Hybrid, isHybrid} from 'context/hybrid'
-
-// static
-import closeBtn from 'pages/menu/static/ic_close.svg'
-
 let intervalId = null
 let pickerHolder = true
 
@@ -92,14 +87,6 @@ export default props => {
     osName: context.customHeader.os,
     ...snsInfo
   })
-
-  const clickCloseBtn = () => {
-    if (isHybrid() && webview && webview === 'new') {
-      Hybrid('CloseLayerPopup')
-    } else {
-      window.history.back()
-    }
-  }
 
   const onLoginHandleChange = e => {
     //대소문자 구분없음, 소문자만 입력
@@ -916,7 +903,6 @@ export default props => {
   )
 }
 
-//---------------------------------------------------------------------
 const PhoneAuth = styled.div`
   overflow: hidden;
   button {
@@ -1128,9 +1114,6 @@ const CheckBox = styled.div`
   position: relative;
   border-top: 1px solid #e0e0e0;
 
-  input[type='checkbox'] {
-  }
-
   div {
     padding: 13px;
     * {
@@ -1141,22 +1124,11 @@ const CheckBox = styled.div`
       padding-right: 6px;
       color: #ec455f;
     }
-    &:last-child span {
-      /* color: #bdbdbd; */
-    }
   }
   button {
     background: url(${IMG_SERVER}/svg/ico_check_more.svg) no-repeat center;
   }
 `
-
-const JoinText = styled.p`
-  font-size: 14px;
-  line-height: 1.5;
-`
-
-const FormWrap = styled.div``
-
 const Button = styled.button`
   width: 100%;
   margin-top: 20px;

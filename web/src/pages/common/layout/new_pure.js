@@ -4,48 +4,40 @@
 import React, {useMemo, useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
+
 //context
-import {isHybrid, Hybrid} from 'context/hybrid'
 import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
 import {Context} from 'context'
 import Footer from 'pages/common/footer'
+
 //layout
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import qs from 'query-string'
-//
-import closeBtn from 'components/ui/ic_close.svg'
+
+import {Hybrid, isHybrid} from 'context/hybrid'
+import closeBtn from 'pages/menu/static/ic_close.svg'
 
 const Layout = props => {
   const {logo_status} = props
 
-  const [show, setShow] = useState(false)
   //context
   const context = useContext(Context)
   //initalize
   const {children} = props
-
-  // ~~/navigator/?router=/login 형태로 넘어올때
-  const isNavigator = useMemo(() => {
-    return isHybrid()
-    // if (props.location.state === undefined) return false
-    // if (props.location.state.type !== undefined && props.location.state.type === 'native-navigator') return true
-  })
   const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
-    if (webview && webview === 'new') {
+    if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/'
+      window.history.back()
     }
   }
 
   return (
     <Container className="pure">
       {/* 닫기버튼 */}
-
-      {isNavigator && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
 
       {/* 헤더설정 */}
       {logo_status !== 'no' && (
