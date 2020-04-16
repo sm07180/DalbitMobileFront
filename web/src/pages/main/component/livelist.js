@@ -40,7 +40,7 @@ const makeContents = props => {
           <div className="icon-wrap">
             <img className="type-icon" src={audioIcon} />
             <div className="type-text">{broadcastLive[roomType]}</div>
-            <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />
+            {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
           </div>
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
@@ -87,16 +87,6 @@ const LiveList = styled.div`
   .broadcast-content {
     width: calc(100% - 92px);
     margin-left: 12px;
-
-    & > div {
-      /* margin: 3px 0; */
-      /* &:nth-child(2) {
-        margin-top: 2px;
-      } */
-      /* &:nth-child(4) {
-        margin-top: 3px;
-      } */
-    }
 
     .title {
       margin-top: 4px;

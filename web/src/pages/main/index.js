@@ -50,7 +50,7 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [liveAlign, setLiveAlign] = useState(null)
+  const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState(null)
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
@@ -301,11 +301,14 @@ const Content = styled.div`
 
           .list {
             width: auto;
+            height: 30px;
+            line-height: 28px;
             border-radius: 10px;
             border: 1px solid #e0e0e0;
             font-size: 14px;
             letter-spacing: -0.35px;
-            padding: 7px 8px;
+            /* padding: 7px 8px; */
+            padding: 0 8px;
             color: #424242;
             margin: 0 2px;
             background-color: #fff;

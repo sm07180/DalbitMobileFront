@@ -9,8 +9,8 @@ let prevGender = null
 
 export default props => {
   const {setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
-  const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
-  const genderSet = {f: '여자', m: '남자'}
+  const alignSet = {1: '추천', 2: '인기', 3: '청취자'}
+  const genderSet = {f: '여자', m: '남자', d: '신입'}
 
   useEffect(() => {
     prevAlign = liveAlign
@@ -161,7 +161,7 @@ const PopupWrap = styled.div`
           font-size: 14px;
           color: #000;
 
-          width: 25%;
+          width: 33.3334%;
           padding: 7px 0;
           margin: 0 2px;
           box-sizing: border-box;
