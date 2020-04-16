@@ -167,8 +167,6 @@ export default props => {
     })
   }, [selectedBIdx])
 
-  useEffect(() => {}, [])
-
   return (
     <Swiper
       className="dalbit-swiper"
