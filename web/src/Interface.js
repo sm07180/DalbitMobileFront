@@ -22,8 +22,11 @@ export default () => {
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
-      case 'native-push': //----------------------------Native push
-        /**
+      /*
+      native-push-background
+native-push-foreground
+      */
+      /**
          * @title 네이티브 푸쉬관련
          * @push_type
             1 : 방송방 [room_no]
@@ -39,6 +42,7 @@ export default () => {
             6 : 이벤트 페이지>해당 이벤트 [board_idx]
             7 : 공지사항 페이지 [board_idx]
          */
+      case 'native-push-background': //----------------------------native-push-foreground
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
         // alert(pushMsg)
@@ -94,6 +98,20 @@ export default () => {
             break
         }
         //---------------------[분기처리끝]
+        break
+      case 'native-push-foreground': //----------------------native-push-foreground
+        let pushMsg = decodeURIComponent(event.detail)
+        pushMsg = pushMsg.trim()
+        pushMsg = JSON.parse(pushMsg)
+        const {push_type} = pushMsg
+        let room_no, mem_no
+        //---------------------[분기처리시작]
+        switch (push_type) {
+          default:
+            //------------------기본값
+            window.location.href = `/`
+            break
+        }
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
@@ -177,7 +195,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
-    document.addEventListener('native-push', update) //푸쉬관련
+    document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
 
     /*----react----*/
@@ -190,7 +208,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      document.removeEventListener('native-push', update)
+      document.removeEventListener('native-push-background', update)
       document.removeEventListener('native-auth-check', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)
