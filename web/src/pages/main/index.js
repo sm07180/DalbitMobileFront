@@ -131,6 +131,8 @@ export default props => {
     history.push(`/rank`)
   }
 
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef}>
@@ -214,7 +216,6 @@ export default props => {
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
-                    const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
                     return liveAlign ? `${alignSet[liveAlign]}순` : ''
                   })()}
                 </span>
@@ -257,6 +258,7 @@ export default props => {
 
         {popup && (
           <LayerPopup
+            alignSet={alignSet}
             setPopup={setPopup}
             liveAlign={liveAlign}
             setLiveAlign={setLiveAlign}

@@ -8,8 +8,7 @@ let prevAlign = null
 let prevGender = null
 
 export default props => {
-  const {setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
-  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
   useEffect(() => {
