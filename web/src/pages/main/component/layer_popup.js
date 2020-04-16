@@ -8,8 +8,7 @@ let prevAlign = null
 let prevGender = null
 
 export default props => {
-  const {setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
-  const alignSet = {1: '추천', 2: '인기', 3: '청취자'}
+  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
   useEffect(() => {
@@ -61,11 +60,12 @@ export default props => {
           <div className="text">정렬기준</div>
           <div className="tab-wrap">
             {Object.keys(alignSet).map((key, idx) => {
+              let NumberKey = Number(key)
               return (
                 <div
-                  className={`tab ${key === liveAlign ? 'active' : ''}`}
+                  className={`tab ${NumberKey === liveAlign ? 'active' : ''}`}
                   key={`align-${idx}`}
-                  onClick={() => tabClick('align', key)}>
+                  onClick={() => tabClick('align', NumberKey)}>
                   {alignSet[key]}
                 </div>
               )

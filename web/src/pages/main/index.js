@@ -131,6 +131,8 @@ export default props => {
     history.push(`/rank`)
   }
 
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef}>
@@ -138,7 +140,7 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <a href={'/live'}>라이브</a>
+                <a href={'/'}>라이브</a>
               </div>
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
@@ -211,14 +213,13 @@ export default props => {
                 <button className="icon refresh" onClick={() => fetchLiveList()} />
               </div>
 
-              <div className="sequence-wrap">
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
-                    const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
                     return liveAlign ? `${alignSet[liveAlign]}순` : ''
                   })()}
                 </span>
-                <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
+                <img className="sequence-icon" src={sequenceIcon} />
               </div>
             </div>
 
@@ -257,6 +258,7 @@ export default props => {
 
         {popup && (
           <LayerPopup
+            alignSet={alignSet}
             setPopup={setPopup}
             liveAlign={liveAlign}
             setLiveAlign={setLiveAlign}

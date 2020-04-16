@@ -246,9 +246,7 @@ const MyProfile = styled.div`
     width:100%;
     height: 100vh;
     z-index:22;
-    background-color:rgba(0,0,0,0.5)
-
-   
+    background-color:rgba(0,0,0,0.5);
     
   }
   .zoomImg {
@@ -506,6 +504,9 @@ const ProfileMsg = styled.p`
 `
 //상단버튼
 const InfoConfigBtn = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   & > a {
     display: inline-block;
     padding: 0 20px;
@@ -666,4 +667,3 @@ const FanRank = styled.div`
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
   }
 `
-const Zoom = styled.div``
