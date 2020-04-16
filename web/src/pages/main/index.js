@@ -24,6 +24,7 @@ import NoResult from 'components/ui/noResult.js'
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
 import {useHistory} from 'react-router-dom'
+
 // static
 import Mic from './static/ic_broadcast.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
@@ -34,6 +35,7 @@ import {RoomMake} from 'context/room'
 
 let concatenating = false
 let tempScrollEvent = null
+const records = 5
 
 export default props => {
   // reference
@@ -54,7 +56,7 @@ export default props => {
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
 
-  const [liveAlign, setLiveAlign] = useState(0)
+  const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
 
   const [livePage, setLivePage] = useState(1)
@@ -75,13 +77,12 @@ export default props => {
     })()
   }, [])
 
-  const fetchLiveList = async type => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
-
     const broadcastList = await Api.broad_list({
       params: {
-        page: livePage,
-        records: 6,
+        page: reset ? 1 : livePage,
+        records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
         gender: liveGender
@@ -90,9 +91,9 @@ export default props => {
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
       if (paging) {
-        const {total, next} = paging
-        // setLivePage(next)
-        setTotalLivePage(total)
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
       }
       setLiveList(list)
     }
@@ -104,7 +105,7 @@ export default props => {
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage,
-        records: 6,
+        records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
         gender: liveGender
@@ -113,11 +114,15 @@ export default props => {
 
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
-      console.log(liveList)
-      console.log('room type', selectedLiveRoomType)
-      // const currentList = [...liveList]
-      // const concatenated = currentList.concat(list)
-      // setLiveList(concatenated)
+      if (paging) {
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
+      }
+
+      const currentList = [...liveList]
+      const concatenated = currentList.concat(list)
+      setLiveList(concatenated)
     }
   }
 
@@ -140,10 +145,16 @@ export default props => {
       MainNode.clientHeight + gnbHeight === window.scrollY + window.innerHeight &&
       !concatenating &&
       Array.isArray(liveList) &&
-      liveList.length
+      liveList.length &&
+      livePage <= totalLivePage
     ) {
       concatLiveList()
     }
+  }
+
+  const resetFetchList = () => {
+    setLivePage(1)
+    fetchLiveList(true)
   }
 
   useEffect(() => {
@@ -152,11 +163,13 @@ export default props => {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
       window.removeEventListener('scroll', tempScrollEvent)
+      tempScrollEvent = null
+      concatenating = false
     }
   }, [])
 
   useEffect(() => {
-    fetchLiveList()
+    resetFetchList()
   }, [selectedLiveRoomType])
 
   useEffect(() => {
@@ -253,7 +266,7 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <button className="icon refresh" onClick={() => fetchLiveList()} />
+                <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
@@ -299,7 +312,7 @@ export default props => {
             setLiveAlign={setLiveAlign}
             liveGender={liveGender}
             setLiveGender={setLiveGender}
-            fetchLiveList={fetchLiveList}
+            resetFetchList={resetFetchList}
           />
         )}
       </MainWrap>
