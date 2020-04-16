@@ -14,7 +14,8 @@ import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import qs from 'query-string'
 //
-import closeBtn from 'pages/menu/static/ic_close.svg'
+import closeBtn from 'components/ui/ic_close.svg'
+
 const Layout = props => {
   const [show, setShow] = useState(false)
   //context
