@@ -15,6 +15,7 @@ export default props => {
   const selectBoxList = (value, idx) => {
     onChangeEvent(value)
     setSelectedIdx(idx)
+    setOpened(false)
   }
 
   const selectBlurEvent = () => {
