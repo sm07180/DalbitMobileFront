@@ -27,6 +27,13 @@ export default props => {
     setLiveGender(prevGender)
   }
 
+  const wrapClick = e => {
+    const target = e.target
+    if (target.id === 'main-layer-popup') {
+      closePopup()
+    }
+  }
+
   const applyClick = () => {
     setPopup(false)
     resetFetchList()
@@ -47,7 +54,7 @@ export default props => {
   }
 
   return (
-    <PopupWrap className="main-layer-popup">
+    <PopupWrap id="main-layer-popup" onClick={wrapClick}>
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">상세조건</div>
