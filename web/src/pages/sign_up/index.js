@@ -9,16 +9,7 @@ import Utility from 'components/lib/utility'
 import Datepicker from './style-datepicker'
 //import Button from './style-button'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {
-  IMG_SERVER,
-  PHOTO_SERVER,
-  WIDTH_PC,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_TABLET_S,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config'
+import {IMG_SERVER, PHOTO_SERVER, WIDTH_MOBILE_S} from 'context/config'
 import moment from 'moment'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -54,7 +45,6 @@ export default props => {
   const [currentPwd, setCurrentPwd] = useState() // 비밀번호 도움 텍스트 값. html에 뿌려줄 state
   const [currentPwdCheck, setCurrentPwdCheck] = useState() // 비밀번호 확인 도움 텍스트 값.
   const [currentNick, setCurrentNick] = useState() // 닉네임 확인 도움 텍스트 값.
-  const [currentName, setCurrentName] = useState() // 이름 확인 도움 텍스트 값.
   const [currentBirth, setCurrentBirth] = useState() // 생년월일 확인 도움 텍스트 값
   const [currentAuth1, setCurrentAuth1] = useState() // 휴대폰인증1 텍스트값
   const [currentAuth2, setCurrentAuth2] = useState() // 휴대폰인증2 텍스트값
@@ -79,15 +69,6 @@ export default props => {
   const dateYear = date.slice(0, 4) - 17
   let dateDefault = ''
 
-  let leadingZeros = (n, digits) => {
-    var zero = ''
-    n = n.toString()
-    if (n.length < digits) {
-      for (var i = 0; i < digits - n.length; i++) zero += '0'
-    }
-    return zero + n
-  }
-
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
     memId: '',
@@ -109,9 +90,6 @@ export default props => {
     osName: context.customHeader.os,
     ...snsInfo
   })
-
-  const {memId, loginPwd, loginPwdCheck, nickNm, name, gender, birth, image, memType, osName} = changes
-  const [fetch, setFetch] = useState(null)
 
   //회원가입 input onChange
   const onLoginHandleChange = e => {
@@ -234,10 +212,7 @@ export default props => {
 
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
-    //let memIdVal = idEntered.replace(/[^0-9]/gi, '')
-    //let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
     let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    //const memIdVal = Utility.phoneAddHypen(idEntered)
     const memIdVal = idEntered
     setChanges({
       ...changes,
@@ -245,10 +220,6 @@ export default props => {
     })
     if (!(memIdVal == undefined)) {
       if (memIdVal.length >= 11) {
-        // setValidate({
-        //   ...validate,
-        //   memId: true
-        // })
         if (!rgEx.test(memIdVal)) {
           setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
           setCurrentAuthBtn({
@@ -517,7 +488,6 @@ export default props => {
       setCurrentAuth1('인증번호 요청이 완료되었습니다.')
       document.getElementsByName('memId')[0].disabled = true
       setCurrentAuth2('')
-      //document.getElementsByClassName('auth-btn1')[0].innerText = '재전송'
       clearInterval(intervalId)
       setTime = 300
       setCurrentAuthBtn({
@@ -539,8 +509,6 @@ export default props => {
           })
         }
       }, 1000)
-
-      // setThisTimer(createAuthTimer)
     } else {
       setCurrentAuth1(resAuth.message)
     }
@@ -605,8 +573,6 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    // console.log(JSON.stringify(changes, null, 1))
-
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
       setValidate({...validate, term: true})
@@ -761,7 +727,7 @@ export default props => {
             type="text"
             name="nickNm"
             value={changes.nickNm}
-            /*onBlur={validateNick}*/ onChange={onLoginHandleChange}
+            onChange={onLoginHandleChange}
             placeholder="닉네임"
           />
           <span className={validate.nickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
@@ -813,7 +779,7 @@ export default props => {
           placeholder="생년월일"
           pickerState={pickerState}
         />
-        {/* <span className={[`holder ${pickerState ? 'off' : 'on'}`]}>생년월일</span> */}
+
         {currentBirth && (
           <HelpText state={validate.birth} className={validate.birth ? 'pass' : 'help'}>
             {currentBirth}
@@ -934,18 +900,6 @@ export default props => {
                 자세히 보기
               </button>
             </div>
-            {/* <div>
-              <input type="checkbox" name="term5" id="term5" checked={changes.term5 == 'y' ? true : false} value={termHandle(changes.term5)} onChange={termCheckHandle} />
-              <label htmlFor="term5">
-                <span>[선택]</span>마케팅 정보 제공 동의
-              </label>
-              <button
-                onClick={() => {
-                  context.action.updatePopup('TERMS', 'marketing')
-                }}>
-                자세히 보기
-              </button>
-            </div> */}
           </CheckBox>
         </CheckWrap>
         <Button onClick={() => fetchData()} disabled={!validatePass}>
@@ -957,8 +911,6 @@ export default props => {
 }
 
 //---------------------------------------------------------------------
-//styled
-//핸드폰 인증 영역
 const PhoneAuth = styled.div`
   overflow: hidden;
   button {
@@ -1014,15 +966,6 @@ const ProfileUpload = styled.div`
     margin: 0 auto;
     cursor: pointer;
 
-    img {
-      /* width: 88px;
-      height: 88px;
-      margin: -1px;
-      border-radius: 50%;
-      border: 1px solid ${COLOR_MAIN};
-      box-sizing: content-box; */
-    }
-
     span {
       display: block;
       position: absolute;
@@ -1035,12 +978,12 @@ const ProfileUpload = styled.div`
     }
   }
 
-  .img-text{
-    padding-top:18px;
-    font-size:12px;
-    color:#feac2c;
-    text-align:center;
-    transform:skew(-0.03deg);
+  .img-text {
+    padding-top: 18px;
+    font-size: 12px;
+    color: #feac2c;
+    text-align: center;
+    transform: skew(-0.03deg);
   }
 `
 //성별 선택 라디오 박스 영역
@@ -1096,8 +1039,8 @@ const CheckWrap = styled.div`
   height: 52px;
   border: 1px solid #e0e0e0;
   transition: height 0.5s ease-in-out;
+
   &.on {
-    /* height: 303px; */
     height: 253px;
   }
   div {
@@ -1111,7 +1054,7 @@ const CheckWrap = styled.div`
       appearance: none;
       border: none;
       outline: none;
-      /* cursor: pointer; */
+
       background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
       &:checked {
         background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
@@ -1154,7 +1097,6 @@ const CheckWrap = styled.div`
   & > div:first-child > button {
     background: url(${IMG_SERVER}/svg/ico_check_wrap.svg) no-repeat center;
     transform: rotate(180deg);
-    /* transition: transform 0.3s ease-in-out; */
 
     &.on {
       transform: rotate(0deg);
@@ -1208,33 +1150,6 @@ const JoinText = styled.p`
 `
 
 const FormWrap = styled.div``
-
-const Label = styled.div``
-
-const ValidateText = styled.p`
-  margin: 5px 0;
-  color: #909090;
-  font-size: 12px;
-  line-height: 1.5;
-  & + input {
-    margin-top: 15px;
-  }
-`
-
-const SelectWrap = styled.div`
-  select:nth-child(2) {
-    margin: 0 3%;
-  }
-`
-
-const Select = styled.select`
-  height: 48px;
-  width: 31.333%;
-  border: 1px solid #dadada;
-  border-radius: 5px;
-  text-indent: 10px;
-  color: #555;
-`
 
 const Button = styled.button`
   width: 100%;
