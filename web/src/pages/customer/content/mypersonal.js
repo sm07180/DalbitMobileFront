@@ -116,7 +116,7 @@ function Faq(props) {
                     {qnaType === 5 && <span className="type">[ 건의 ]</span>}
                     {qnaType === 6 && <span className="type">[ 장애/버그 ]</span>}
                     {qnaType === 7 && <span className="type">[ 선물/아이템 ]</span>}
-                    <p>{title}</p>
+                    <p className="titleName">{title}</p>
                   </dt>
                   <em className={Store().personalPage === qnaIdx ? 'on' : ''}></em>
                   <dd>{timeFormat(writeDt)}</dd>
@@ -341,5 +341,8 @@ const TableWrap = styled.div`
     text-align: center;
     letter-spacing: normal;
     transform: skew(-0.03deg);
+  }
+  & .titleName {
+    margin-left: 0;
   }
 `
