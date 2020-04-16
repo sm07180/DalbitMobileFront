@@ -22,7 +22,7 @@ import {COLOR_MAIN} from 'context/color'
 export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {webview} = qs.parse(location.search)
+  const {webview, redirect} = qs.parse(location.search)
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -77,6 +77,10 @@ export default props => {
             }
           }
 
+          if (redirect) {
+            const decodedUrl = decodeURIComponent(redirect)
+            return (window.location.href = decodedUrl)
+          }
           globalCtx.action.updateProfile(profileInfo.data)
           return props.history.push('/')
         }
@@ -116,8 +120,6 @@ export default props => {
       window.location.href = `${redirectUrl}`
     }
   }
-
-  useEffect(() => {}, [])
 
   return (
     <>
