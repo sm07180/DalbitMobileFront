@@ -65,12 +65,12 @@ export default props => {
     const slideWrapNode = slideWrapRef.current
     const baseWidth = slideWrapNode.clientWidth / 3
 
-    const halfBaseWidth = baseWidth / 2
+    const halfBaseWidth = baseWidth / 3.5
     const diff = touchEndX - touchStartX
     direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
 
-    const slidingTime = 300 // unit is ms
+    const slidingTime = 150 // unit is ms
 
     const promiseSync = new Promise((resolve, reject) => {
       slideWrapNode.style.transitionTimingFunction = 'ease-in'
