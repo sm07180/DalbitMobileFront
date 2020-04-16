@@ -37,7 +37,7 @@ export default props => {
     })
     if (res.result === 'success') {
       setAllBtnState(res.data)
-      console.log('성공')
+      //0000000000000000000console.log('성공')
       first = false
     } else if (res.result === 'fail') {
     }
@@ -58,7 +58,7 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      console.log('성공')
+      // console.log('성공')
     } else if (res.result === 'fail') {
     }
   }
@@ -73,7 +73,7 @@ export default props => {
   const [btn7, setBtn7] = useState(0)
   const [btn8, setBtn8] = useState(0)
   const ToggleBtn = (value, name) => {
-    console.log('수정')
+    // console.log('수정')
     first = false
     if (value === 0) {
       name(1)
@@ -106,7 +106,7 @@ export default props => {
   }
 
   useEffect(() => {
-    console.log('1')
+    // console.log('1')
     if (btn2 === 1 && btn3 === 1 && btn4 === 1 && btn5 === 1 && btn6 === 1 && btn7 === 1 && btn8 === 1) {
       setBtn1(1)
     } else {
@@ -115,12 +115,12 @@ export default props => {
   }, [btn2, btn3, btn4, btn5, btn6, btn7, btn8])
 
   useEffect(() => {
-    console.log('2')
+    //console.log('2')
     fetchDataList()
   }, [])
 
   useEffect(() => {
-    console.log('3')
+    // console.log('3')
     if (!first) fetchData()
   }, [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8])
 

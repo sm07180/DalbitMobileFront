@@ -153,7 +153,7 @@ const Notice = props => {
   return (
     <>
       <Header>
-        <div className="category-text">마이공지</div>
+        <div className="category-text">방송공지</div>
       </Header>
       <ListWrap>
         {Array.isArray(listDetailed) ? (

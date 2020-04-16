@@ -12,6 +12,7 @@ import {useHistory} from 'react-router-dom'
 //ui
 import Accordion from './accordian'
 import Use from './use'
+import Header from './header'
 //
 const Index = props => {
   //---------------------------------------------------------------------
@@ -66,7 +67,9 @@ const Index = props => {
   //---------------------------------------------------------------------
   return (
     <Container>
-      <h1>설정</h1>
+      <Header>
+        <div className="category-text">설정</div>
+      </Header>
       <div>
         {/* <Accordion title="알림설정" content={<h1>adasdas</h1>} /> */}
         <div className="accordian-box">
@@ -147,6 +150,6 @@ const Container = styled.div`
     width: 95%;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
-    margin: 76px auto 138px auto;
+    margin: 0px auto 138px auto;
   }
 `

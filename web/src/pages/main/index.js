@@ -99,9 +99,13 @@ export default props => {
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
+    const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
 
-    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
+    if (
+      window.scrollY >=
+      SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + BannerSectionNode.clientHeight + 80
+    ) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
@@ -227,7 +231,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
+            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '52px'} : {}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 ? (
                   <LiveList list={liveList} />
