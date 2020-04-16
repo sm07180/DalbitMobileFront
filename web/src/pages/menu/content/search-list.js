@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import API from 'context/api'
 // component
 import NoResult from 'components/ui/noResult'
+import PlayIcon from '../static/ic_play.svg'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -27,12 +28,13 @@ export default props => {
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
-    const {list} = props.fetch
-    if (list.length === 0) {
+    const list = props.fetch
+    console.log(list)
+    if (list == false || list == undefined) {
       return <NoResult className={`search`} />
     } else {
       return list.map((list, idx) => {
-        const {nickNm, profImg} = list
+        const {nickNm, profImg, roomNo} = list
         return (
           <div key={idx} className="list">
             <button
@@ -41,6 +43,7 @@ export default props => {
               }}>
               <img src={profImg.thumb150x150} />
             </button>
+            {roomNo !== '0' && <em></em>}
             <p>{nickNm}</p>
           </div>
         )
@@ -67,11 +70,21 @@ const Content = styled.div`
     margin-left: 0;
   }
   .list {
+    position: relative;
     display: inline-block;
     width: calc(25% - 2.7%);
     /* margin: 0 13px 20px 13px; */
     margin-bottom: 20px;
     box-sizing: border-box;
+    em {
+      display: block;
+      width: 16px;
+      height: 16px;
+      position: absolute;
+      right: 0;
+      bottom: 16px;
+      background: url(${PlayIcon}) no-repeat center center / cover;
+    }
     button {
       display: inline-block;
       width: 96%;
@@ -84,6 +97,7 @@ const Content = styled.div`
         vertical-align: top;
       }
     }
+
     p {
       display: block;
       margin-top: 6px;
