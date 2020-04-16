@@ -31,6 +31,11 @@ const myProfile = props => {
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
+  //zoom
+  const [Zoom, setZoom] = useState(false)
+  const figureZoom = () => {
+    setZoom(true)
+  }
 
   let expCalc = Math.floor((profile.expNext - profile.expBegin) / (profile.exp - profile.expBegin))
   if (expCalc == 'Infinity') expCalc = 0
@@ -149,9 +154,14 @@ const myProfile = props => {
     <MyProfile webview={webview}>
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
         {/* {profile.roomNo !== '' && <div className="liveIcon"></div>} */}
-        <figure>
+        <figure onClick={() => figureZoom()}>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
+        {Zoom === true && (
+          <div className="zoom" onClick={() => setZoom(false)}>
+            <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
+          </div>
+        )}
         <span>
           {profile.grade} / Lv.{profile.level}
         </span>
@@ -211,7 +221,27 @@ const MyProfile = styled.div`
   min-height: 300px;
   margin: 0 auto;
   padding: 40px 16px 57px 16px;
+  .zoom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100vh;
+    z-index:22;
+    background-color:rgba(0,0,0,0.5)
 
+   
+    
+  }
+  .zoomImg {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display: block;
+    width:95%;
+   height:auto;
+  }
   & > div {
     flex: 0 0 auto;
   }
