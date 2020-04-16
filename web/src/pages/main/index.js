@@ -23,7 +23,7 @@ import NoResult from 'components/ui/noResult.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
-
+import {useHistory} from 'react-router-dom'
 // static
 import Mic from './static/ic_broadcast.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
@@ -42,7 +42,7 @@ export default props => {
 
   //context
   const globalCtx = useContext(Context)
-
+  const history = useHistory()
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
@@ -125,6 +125,11 @@ export default props => {
   const swiperParams = {
     slidesPerView: 'auto'
   }
+  ////
+
+  const goRank = () => {
+    history.push(`/rank`)
+  }
 
   return (
     <Layout {...props}>
@@ -165,10 +170,10 @@ export default props => {
         <Content>
           <div className="section" ref={RankSectionRef}>
             <div className="title-wrap">
-              <div className="title">
+              <button className="title" onClick={() => goRank()}>
                 <div className="txt">랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
-              </div>
+              </button>
               <div className="right-side">
                 <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
