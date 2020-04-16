@@ -6,6 +6,7 @@ import React, {useEffect, useStet, useContext, useState} from 'react'
 //route
 import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
+import Room, {RoomJoin} from 'context/room'
 //styled
 import styled from 'styled-components'
 //component
@@ -134,7 +135,7 @@ const myProfile = props => {
     )
     return result
   }
-
+  console.log(profile.roomNo)
   return (
     <MyProfile webview={webview}>
       <Header>
@@ -143,7 +144,13 @@ const myProfile = props => {
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
         {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>}
-        {profile.roomNo !== '' && <div className="liveIcon"></div>}
+        {profile.roomNo !== '' && (
+          <button
+            className="liveIcon"
+            onClick={() => {
+              RoomJoin(profile.roomNo)
+            }}></button>
+        )}
         <figure>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
