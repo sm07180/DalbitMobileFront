@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import qs from 'query-string'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
 import PureLayout from 'pages/common/layout/new_pure.js'
@@ -18,6 +19,7 @@ let pickerHolder = true
 
 export default props => {
   let snsInfo = qs.parse(location.search)
+  const {webview, redirect} = qs.parse(location.search)
 
   if (_.hasIn(snsInfo, 'nickNm')) {
     snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
@@ -25,6 +27,8 @@ export default props => {
 
   //context
   const context = useContext(Context)
+  const globalCtx = useContext(Context)
+
   //useState
   const [allTerm, setAllTerm] = useState(false) // 약관동의 전체 체크
   const [boxState, setBoxState] = useState(false) // 약관동의 박스 열고닫음 상태값
@@ -400,6 +404,43 @@ export default props => {
 
   //---------------------------------------------------------------------
   //fetchData
+  const fetchPhoneLogin = async (phone, pw) => {
+    const loginInfo = await Api.member_login({
+      data: {
+        memType: changes.memType,
+        memId: changes.memId,
+        memPwd: changes.loginPwd
+      }
+    })
+
+    if (loginInfo.result === 'success') {
+      const {memNo} = loginInfo.data
+      globalCtx.action.updateToken(loginInfo.data)
+      const profileInfo = await Api.profile({params: {memNo}})
+      if (profileInfo.result === 'success') {
+        if (isHybrid()) {
+          if (webview && webview === 'new') {
+            Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          } else {
+            Hybrid('GetLoginToken', loginInfo.data)
+          }
+        }
+
+        if (redirect) {
+          const decodedUrl = decodeURIComponent(redirect)
+          return (window.location.href = decodedUrl)
+        }
+        globalCtx.action.updateProfile(profileInfo.data)
+        return props.history.push('/')
+      }
+    } else if (loginInfo.result === 'fail') {
+      globalCtx.action.alert({
+        title: '로그인 실패',
+        msg: `${loginInfo.message}`
+      })
+    }
+  }
+
   async function fetchData() {
     let resultImg = ''
     if (imgData == defaultImage) {
@@ -452,9 +493,9 @@ export default props => {
         //alert(res.message)
         context.action.alert({
           callback: () => {
-            window.location.href = '/'
+            fetchPhoneLogin()
           },
-          msg: '회원가입 완료되었습니다.'
+          msg: '회원가입 완료되었습니다. '
         })
       } else {
         context.action.alert({
