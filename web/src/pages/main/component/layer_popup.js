@@ -41,7 +41,7 @@ export default props => {
       }
     } else if (type === 'gender') {
       if (liveGender === value) {
-        setLiveGender(null)
+        setLiveGender('')
       } else {
         setLiveGender(value)
       }

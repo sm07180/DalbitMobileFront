@@ -51,7 +51,7 @@ export default props => {
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
   const [liveAlign, setLiveAlign] = useState(1)
-  const [liveGender, setLiveGender] = useState(null)
+  const [liveGender, setLiveGender] = useState('')
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
 
