@@ -43,7 +43,7 @@ export default props => {
   const history = useHistory()
   //navi
   let navigationList = [
-    {id: 0, type: 'notice', component: Notice, txt: '공지사항'},
+    {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
     {id: 2, type: 'initial', component: Initial, txt: 'initial'},
     {id: 3, type: 'wallet', component: Wallet, txt: '내 지갑'},
@@ -85,7 +85,7 @@ export default props => {
   }, [context.mypageFanCnt])
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
-    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
   return (

@@ -15,7 +15,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   return (
-    <Layout {...props}>
+    <Layout {...props} status="no_gnb">
       <SettingProvider>
         <Content {...props} />
       </SettingProvider>

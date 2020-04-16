@@ -15,7 +15,7 @@ import Tab from './tab'
 import Notice from './notice'
 import Faq from './faq'
 import Personal from './personal'
-import Header from 'components/ui/header'
+import Header from './header'
 //
 
 const Index = props => {
@@ -54,8 +54,9 @@ const Index = props => {
   return (
     <Container>
       <Header>
-        <div className="category-text">랭킹</div>
+        <div className="category-text">고객센터</div>
       </Header>
+      {/* <h1>고객센터</h1> */}
       {/* <Banner /> */}
       {/* 탭설정 */}
       <Tab />
@@ -75,13 +76,7 @@ export const Store = () => {
 //---------------------------------------------------------------------
 const Container = styled.div`
   width: 1210px;
-  margin: 0 auto;
-  .close-btn {
-    position: absolute;
-    top: 6px;
-    left: 2%;
-  }
-
+  margin: 0px auto 0 auto;
   & h1 {
     margin: 26px 0;
     text-align: center;

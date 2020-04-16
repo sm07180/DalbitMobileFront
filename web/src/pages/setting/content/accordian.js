@@ -32,6 +32,7 @@ export default Accordian
 
 const Wrap = styled.section`
   display: flex;
+  margin-top: 20px;
   flex-direction: column;
   & span {
     width: 36px;
