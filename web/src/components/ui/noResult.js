@@ -68,4 +68,8 @@ const NoResult = styled.div`
       margin-top: -4px;
     }
   }
+
+  &.no-top {
+    margin-top: 20px;
+  }
 `

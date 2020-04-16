@@ -8,16 +8,18 @@ let prevAlign = null
 let prevGender = null
 
 export default props => {
-  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, fetchLiveList} = props
+  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, resetFetchList} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
   useEffect(() => {
     prevAlign = liveAlign
     prevGender = liveGender
+    document.body.style.overflow = 'hidden'
 
     return () => {
       prevAlign = null
       prevGender = null
+      document.body.style.overflow = ''
     }
   }, [])
 
@@ -27,16 +29,25 @@ export default props => {
     setLiveGender(prevGender)
   }
 
+  const wrapClick = e => {
+    const target = e.target
+    if (target.id === 'main-layer-popup') {
+      closePopup()
+    }
+  }
+
+  const wrapTouch = e => {
+    e.preventDefault()
+  }
+
   const applyClick = () => {
     setPopup(false)
-    fetchLiveList()
+    resetFetchList()
   }
 
   const tabClick = (type, value) => {
     if (type === 'align') {
-      if (liveAlign === value) {
-        setLiveAlign(0)
-      } else {
+      if (liveAlign !== value) {
         setLiveAlign(value)
       }
     } else if (type === 'gender') {
@@ -49,7 +60,7 @@ export default props => {
   }
 
   return (
-    <PopupWrap className="main-layer-popup">
+    <PopupWrap id="main-layer-popup" onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">상세조건</div>

@@ -8,6 +8,8 @@ import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 //context
+import {Hybrid} from 'context/hybrid'
+import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin} from 'context/room'
 //util
@@ -44,7 +46,7 @@ native-push-foreground
          */
       case 'native-push-background': //----------------------------native-push-foreground
         let pushMsg = decodeURIComponent(event.detail)
-        
+
         pushMsg = pushMsg.trim()
         pushMsg = JSON.parse(pushMsg)
         const {push_type} = pushMsg
@@ -116,12 +118,35 @@ native-push-foreground
           Room.setAuth(true)
         } else {
           Room.setAuth(false)
-          //  alert(context.token.memNo + ' : ' + event.detail.memNo)
-          window.location.href = '/login'
-          // alert('native-auth-check가 맞지않습니다. 로그인으로 이동')
-        }
-
-        if (Room !== undefined && Room.roomNo !== undefined && Room.roomNo !== '') {
+          //--
+          ;(async () => {
+            const result = await Api.error_log({
+              data: {
+                os: '3',
+                appVer: '1.0',
+                dataType: 'REACT-event',
+                commandType: 'native-auth-check',
+                desc: `[_cookie] ${_cookie} [event.detail.authToken] ${event.detail.authToken} `
+              }
+            })
+            console.log(result)
+          })()
+          async function logout() {
+            const res = await Api.member_logout()
+            if (res.result === 'success') {
+              context.action.updateToken(res.data)
+              Hybrid('GetLogoutToken', res.data)
+              setTimeout(() => {
+                window.location.href = '/'
+              }, 500)
+            } else {
+              context.action.alert({
+                msg: res.message
+              })
+            }
+          }
+          //---
+          logout()
         }
         break
       case 'native-navigator': //-----------------------Native navigator

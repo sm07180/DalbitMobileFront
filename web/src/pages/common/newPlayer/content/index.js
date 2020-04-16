@@ -49,6 +49,14 @@ export default props => {
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
+  //--
+  useEffect(() => {
+    if (info.auth === 3) {
+      props.update({playerRemove: false})
+    } else {
+      props.update({playerRemove: true})
+    }
+  }, [info.auth])
 
   //---------------------------------------------------------------------
   return (
@@ -104,7 +112,7 @@ const MediaPlayerWrap = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 20px;
+  bottom: 12px;
   width: 100%;
   z-index: 100;
 `

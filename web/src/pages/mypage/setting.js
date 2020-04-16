@@ -140,12 +140,16 @@ export default props => {
     }
   }
 
+  const [firstSetting, setFirstSetting] = useState(false)
   useEffect(() => {
     if (profile) {
       setNickname(profile.nickNm)
       setProfileMsg(profile.profMsg)
       setPhotoPath(profile.profImg.path)
       setGender(profile.gender)
+      if (profile.gender == 'n') {
+        setFirstSetting(true)
+      }
     }
   }, [])
 
@@ -190,9 +194,21 @@ export default props => {
                 </PasswordRedirectBtn>
               </PasswordWrap>
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
-              <GenderWrap>
-                <GenderTab className={gender === 'm' ? '' : 'off'} /*onClick={() => setGender('m')}*/>남자</GenderTab>
-                <GenderTab className={gender === 'f' ? '' : 'off'} /*onClick={() => setGender('f')}*/>여자</GenderTab>
+              <GenderWrap className={firstSetting ? 'before' : 'after'}>
+                <GenderTab
+                  className={gender === 'm' ? '' : 'off'}
+                  onClick={() => {
+                    firstSetting && setGender('m')
+                  }}>
+                  남자
+                </GenderTab>
+                <GenderTab
+                  className={gender === 'f' ? '' : 'off'}
+                  onClick={() => {
+                    firstSetting && setGender('f')
+                  }}>
+                  여자
+                </GenderTab>
               </GenderWrap>
 
               <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
@@ -259,14 +275,14 @@ const GenderTab = styled.div`
   text-align: center;
   user-select: none;
   box-sizing: border-box;
-  border: 1px solid #e0e0e0;
-  background-color: #9e9e9e;
   color: #fff;
-  cursor: not-allowed;
+
+  & + & {
+    border-left: 1px solid #e0e0e0;
+  }
 
   &.off {
     color: #616161;
-    border: none;
     background-color: #eee;
   }
 `
@@ -274,7 +290,22 @@ const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
-  cursor: not-allowed;
+  &.before > div {
+    background-color: ${COLOR_MAIN};
+    &.off {
+      color: #616161;
+      background-color: #eee;
+    }
+  }
+
+  &.after > div {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
+    &.off {
+      color: #616161;
+      background-color: #eee;
+    }
+  }
 `
 
 const BirthDate = styled.div`

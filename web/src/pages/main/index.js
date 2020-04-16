@@ -24,6 +24,7 @@ import NoResult from 'components/ui/noResult.js'
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
 import {useHistory} from 'react-router-dom'
+
 // static
 import Mic from './static/ic_broadcast.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
@@ -31,6 +32,10 @@ import refreshIcon from './static/ic_live_refresh.svg'
 import RankArrow from './static/ic_rank_arrow.svg'
 
 import {RoomMake} from 'context/room'
+
+let concatenating = false
+let tempScrollEvent = null
+const records = 10
 
 export default props => {
   // reference
@@ -50,8 +55,10 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [liveAlign, setLiveAlign] = useState(0)
+
+  const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
+
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
 
@@ -70,13 +77,12 @@ export default props => {
     })()
   }, [])
 
-  const fetchLiveList = async type => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
-
     const broadcastList = await Api.broad_list({
       params: {
-        page: livePage,
-        records: 10,
+        page: reset ? 1 : livePage,
+        records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
         gender: liveGender
@@ -84,51 +90,101 @@ export default props => {
     })
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
-      if (type === 'concat') {
-      } else {
-        setLiveList(list)
-      }
       if (paging) {
-        const {total} = paging
-        setTotalLivePage(total)
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
       }
+      setLiveList(list)
+    }
+  }
+
+  const concatLiveList = async () => {
+    concatenating = true
+
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: livePage,
+        records: records,
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
+      }
+    })
+
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
+      }
+
+      const currentList = [...liveList]
+      const concatenated = currentList.concat(list)
+      setLiveList(concatenated)
     }
   }
 
   const windowScrollEvent = () => {
+    const gnbHeight = 48
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
     const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
     // BannerSectionNode.clientHeight
-    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
+
+    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 48) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
     }
 
-    //console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
+    if (
+      MainNode.clientHeight + gnbHeight - 150 < window.scrollY + window.innerHeight &&
+      !concatenating &&
+      Array.isArray(liveList) &&
+      liveList.length &&
+      livePage <= totalLivePage
+    ) {
+      concatLiveList()
+    }
+  }
+
+  const resetFetchList = () => {
+    setLivePage(1)
+    fetchLiveList(true)
   }
 
   useEffect(() => {
     window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
+      window.removeEventListener('scroll', tempScrollEvent)
+      tempScrollEvent = null
+      concatenating = false
     }
   }, [])
 
   useEffect(() => {
-    fetchLiveList()
+    resetFetchList()
   }, [selectedLiveRoomType])
+
+  useEffect(() => {
+    window.removeEventListener('scroll', tempScrollEvent)
+    window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
+    concatenating = false
+  }, [liveList])
 
   const swiperParams = {
     slidesPerView: 'auto'
   }
-  ////
 
   const goRank = () => {
-    history.push(`/rank`)
+    history.push(`/rank`, rankType)
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
@@ -210,10 +266,15 @@ export default props => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <button className="icon refresh" onClick={() => fetchLiveList()} />
+                <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
-              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
+              <div
+                className="sequence-wrap"
+                onClick={() => {
+                  // props.history.push('/#')
+                  setPopup(popup ? false : true)
+                }}>
                 <span className="text">
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
@@ -242,7 +303,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '52px'} : {}}>
+            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '28px'} : {}}>
               {Array.isArray(liveList) ? liveList.length > 0 ? <LiveList list={liveList} /> : <NoResult /> : ''}
             </div>
           </div>
@@ -256,7 +317,7 @@ export default props => {
             setLiveAlign={setLiveAlign}
             liveGender={liveGender}
             setLiveGender={setLiveGender}
-            fetchLiveList={fetchLiveList}
+            resetFetchList={resetFetchList}
           />
         )}
       </MainWrap>
@@ -301,7 +362,6 @@ const Content = styled.div`
             border: 1px solid #e0e0e0;
             font-size: 14px;
             letter-spacing: -0.35px;
-            /* padding: 7px 8px; */
             padding: 0 8px;
             color: #424242;
             margin: 0 2px;
@@ -422,7 +482,7 @@ const Content = styled.div`
       }
 
       &.live-list {
-        min-height: 400px;
+        padding-bottom: 100px;
       }
     }
   }

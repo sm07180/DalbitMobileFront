@@ -439,7 +439,7 @@ const PhoneAuth = styled.div`
     background: #a8a8a8;
   }
   & + & {
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .timer {
     display: block;
@@ -455,21 +455,10 @@ const PhoneAuth = styled.div`
 const FormWrap = styled.div`
   margin: 40px 0;
 `
-const Label = styled.div``
-
-const ValidateText = styled.p`
-  margin: 5px 0;
-  color: #909090;
-  font-size: 12px;
-  line-height: 1.5;
-  & + input {
-    margin-top: 15px;
-  }
-`
 
 const Button = styled.button`
+  display: block;
   width: 100%;
-  margin-top: 30px;
   background: ${COLOR_MAIN};
   color: #fff;
   line-height: 50px;

@@ -225,7 +225,7 @@ export default props => {
     if (userState === -1) {
       return null
     } else if (userState === 0) {
-      return <NoResult className="mobile" />
+      return <NoResult className="no-top" />
     } else {
       return createUserList()
     }
@@ -235,7 +235,7 @@ export default props => {
     if (blackState === -1) {
       return null
     } else if (blackState === 0) {
-      return <NoResult className="mobile" text="블랙리스트 회원이 없습니다." />
+      return <NoResult className="no-top" />
     } else {
       return createBlackList()
     }
