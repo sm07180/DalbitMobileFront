@@ -16,7 +16,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h1>실시간 LIVE</h1>
       <section>
         <button
           onClick={() => {

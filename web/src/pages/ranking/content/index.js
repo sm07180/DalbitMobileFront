@@ -16,6 +16,7 @@ import _ from 'lodash'
 import RankList from './rankList'
 import Figure from './Figure'
 import NoResult from 'components/ui/noResult'
+import Header from 'components/ui/header'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['전일', '주간', '월간']
@@ -192,7 +193,9 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Contents>
-      <h2>랭킹</h2>
+      <Header>
+        <div className="category-text">랭킹</div>
+      </Header>
       <div className="filter">
         <div className="rank-type">{createRankButton()}</div>
         <div className="date-type">{createDateButton()}</div>
@@ -216,7 +219,7 @@ export default props => {
 const Contents = styled.div`
   width: 1210px;
   min-height: 300px;
-  margin: 64px auto 0 auto;
+  margin: 0 auto;
   padding: 0 0 80px 0;
   h2 {
     padding-bottom: 60px;
@@ -226,10 +229,17 @@ const Contents = styled.div`
     text-align: center;
   }
 
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    left: 2%;
+  }
+
   /* 상단 filter 버튼들 */
   .filter {
     display: flex;
     justify-content: space-between;
+    margin-top: 15px;
     & > div {
       button {
         line-height: 40px;

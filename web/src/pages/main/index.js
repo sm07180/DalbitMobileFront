@@ -130,9 +130,12 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <a href={'/rank'}>랭킹</a>
+                <a href={'/live'}>라이브</a>
               </div>
               <div className="tab">
+                <a href={'/rank'}>랭킹</a>
+              </div>
+              {/* <div className="tab">
                 <Link
                   onClick={event => {
                     event.preventDefault()
@@ -141,7 +144,7 @@ export default props => {
                   to={'/store'}>
                   스토어
                 </Link>
-              </div>
+              </div> */}
             </div>
             <div className="right-side">
               <div
