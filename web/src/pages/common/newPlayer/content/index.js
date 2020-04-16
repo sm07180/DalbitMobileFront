@@ -49,6 +49,12 @@ export default props => {
       setInfo(context.nativePlayer)
     }
   }, [context.nativePlayer])
+  //--
+  useEffect(() => {
+    if (info.auth === 3) {
+      props.update({playerRemove: false})
+    }
+  }, [info.auth])
 
   //---------------------------------------------------------------------
   return (
