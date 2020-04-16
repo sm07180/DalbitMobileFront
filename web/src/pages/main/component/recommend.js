@@ -185,7 +185,7 @@ export default props => {
             </div>
           </>
         )}
-        <img className="live-icon" src={LiveIcon} />
+        {list[selectedBIdx]['nickNm'] !== 'banner' && <img className="live-icon" src={LiveIcon} />}
         {Array.isArray(list) && list.length > 0 && (
           <div className="counting">
             <span className="bold">{selectedBIdx + 1}</span>
