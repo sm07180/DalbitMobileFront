@@ -2,6 +2,9 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Link, Switch, Redirect} from 'react-router-dom'
 
+// component
+import Layout from 'pages/common/layout'
+
 // context
 import {Context} from 'context'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -122,7 +125,7 @@ export default props => {
   }
 
   return (
-    <>
+    <Layout {...props} status="no_gnb">
       <Switch>
         {token && token.isLogin ? (
           <Redirect to={'/'} />
@@ -230,7 +233,7 @@ export default props => {
           </Login>
         )}
       </Switch>
-    </>
+    </Layout>
   )
 }
 
