@@ -57,6 +57,7 @@ const makeContents = props => {
     )
   })
 }
+
 export default props => {
   return (
     <React.Fragment>

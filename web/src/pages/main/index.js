@@ -32,6 +32,9 @@ import RankArrow from './static/ic_rank_arrow.svg'
 
 import {RoomMake} from 'context/room'
 
+let concatenating = false
+let tempScrollEvent = null
+
 export default props => {
   // reference
   const MainRef = useRef()
@@ -50,8 +53,10 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+
   const [liveAlign, setLiveAlign] = useState(0)
   const [liveGender, setLiveGender] = useState('')
+
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
 
@@ -76,7 +81,7 @@ export default props => {
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage,
-        records: 10,
+        records: 6,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
         gender: liveGender
@@ -84,37 +89,64 @@ export default props => {
     })
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
-      if (type === 'concat') {
-      } else {
-        setLiveList(list)
-      }
       if (paging) {
-        const {total} = paging
+        const {total, next} = paging
+        setLivePage(next)
         setTotalLivePage(total)
       }
+      setLiveList(list)
+    }
+  }
+
+  const concatLiveList = async () => {
+    concatenating = true
+
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: livePage,
+        records: 6,
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
+      }
+    })
+
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      console.log(liveList)
+      console.log(selectedLiveRoomType)
+      // const currentList = [...liveList]
+      // const concatenated = currentList.concat(list)
+      // setLiveList(concatenated)
     }
   }
 
   const windowScrollEvent = () => {
+    const gnbHeight = 48
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
     const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
     // BannerSectionNode.clientHeight
-    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
+
+    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 48) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
     }
 
-    //console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
+    // if (MainNode.clientHeight + gnbHeight === window.scrollY + window.innerHeight && !concatenating) {
+    //   concatLiveList()
+    // }
   }
 
   useEffect(() => {
     window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
+      window.removeEventListener('scroll', tempScrollEvent)
     }
   }, [])
 
@@ -122,10 +154,16 @@ export default props => {
     fetchLiveList()
   }, [selectedLiveRoomType])
 
+  useEffect(() => {
+    window.removeEventListener('scroll', tempScrollEvent)
+    window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
+    concatenating = false
+  }, [liveList])
+
   const swiperParams = {
     slidesPerView: 'auto'
   }
-  ////
 
   const goRank = () => {
     history.push(`/rank`, rankType)
@@ -242,7 +280,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '52px'} : {}}>
+            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '28px'} : {}}>
               {Array.isArray(liveList) ? liveList.length > 0 ? <LiveList list={liveList} /> : <NoResult /> : ''}
             </div>
           </div>
@@ -301,7 +339,6 @@ const Content = styled.div`
             border: 1px solid #e0e0e0;
             font-size: 14px;
             letter-spacing: -0.35px;
-            /* padding: 7px 8px; */
             padding: 0 8px;
             color: #424242;
             margin: 0 2px;
@@ -422,7 +459,7 @@ const Content = styled.div`
       }
 
       &.live-list {
-        min-height: 400px;
+        padding-bottom: 100px;
       }
     }
   }
