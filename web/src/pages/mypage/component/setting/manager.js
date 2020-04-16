@@ -225,7 +225,7 @@ export default props => {
     if (userState === -1) {
       return null
     } else if (userState === 0) {
-      return <NoResult className="mobile" />
+      return <NoResult className="no-top" />
     } else {
       return createUserList()
     }
@@ -235,7 +235,7 @@ export default props => {
     if (managerState === -1) {
       return null
     } else if (managerState === 0) {
-      return <NoResult className="mobile" text="지정된 매니저가 없습니다." />
+      return <NoResult className="no-top" />
     } else {
       return createManagerList()
     }
