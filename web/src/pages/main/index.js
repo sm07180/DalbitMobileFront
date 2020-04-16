@@ -107,7 +107,7 @@ export default props => {
       setLiveCategoryFixed(false)
     }
 
-    console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
+    //console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
   }
 
   useEffect(() => {
