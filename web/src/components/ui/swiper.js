@@ -142,20 +142,37 @@ export default props => {
     wrapperNode.style.transform = `translate3d(${centerMoveSize}px, 0, 0)`
   }
 
+  const addEventToSlideNode = () => {
+    const wrapperNode = wrapperRef.current
+    wrapperNode.childNodes.forEach(child => {
+      child.addEventListener('click', clickCircleNode)
+    })
+  }
+
+  const removeEventToSlideNode = () => {
+    const wrapperNode = wrapperRef.current
+    wrapperNode.childNodes.forEach(child => {
+      child.removeEventListener('click', clickCircleNode)
+    })
+  }
+
   useEffect(() => {
     initialSwipperWrapperStyle()
 
     window.addEventListener('resize', initialSwipperWrapperStyle)
+    addEventToSlideNode()
     autoSlideInterval()
 
     return () => {
       window.removeEventListener('resize', initialSwipperWrapperStyle)
       setInitClosureVariable()
+      removeEventToSlideNode()
     }
   }, [])
 
   useEffect(() => {
     const wrapperNode = wrapperRef.current
+
     const middleIdx = Math.floor(wrapperNode.children.length / 2)
     wrapperNode.childNodes.forEach((child, idx) => {
       if (middleIdx === idx) {

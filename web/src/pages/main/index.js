@@ -269,7 +269,12 @@ export default props => {
                 <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
-              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
+              <div
+                className="sequence-wrap"
+                onClick={() => {
+                  // props.history.push('/#')
+                  setPopup(popup ? false : true)
+                }}>
                 <span className="text">
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
