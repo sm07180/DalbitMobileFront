@@ -17,6 +17,8 @@ import qs from 'query-string'
 import closeBtn from 'components/ui/ic_close.svg'
 
 const Layout = props => {
+  const {logo_status} = props
+
   const [show, setShow] = useState(false)
   //context
   const context = useContext(Context)
@@ -39,31 +41,20 @@ const Layout = props => {
     }
   }
 
-  //---------------------------------------------------------------------
-
-  useEffect(() => {}, [])
-  //---------------------------------------------------------------------
   return (
     <Container className="pure">
       {/* 닫기버튼 */}
 
-      {isNavigator && (
-        // <CloseButton
-        //   onClick={() => {
-        //     //Hybrid('CloseLayerPopup', '')
-        //     window.history.back()
-        //   }}>
-        //   닫기
-        // </CloseButton>
-        <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
-      )}
+      {isNavigator && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
 
       {/* 헤더설정 */}
-      <Logo>
-        <NavLink to="/" exact>
-          <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
-        </NavLink>
-      </Logo>
+      {logo_status !== 'no' && (
+        <Logo>
+          <NavLink to="/" exact>
+            <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
+          </NavLink>
+        </Logo>
+      )}
       {/* global navigation */}
       <main>
         <article>{children}</article>

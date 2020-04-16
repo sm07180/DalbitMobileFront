@@ -307,9 +307,8 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    <PureLayout>
+    <PureLayout logo_status={'no'}>
       <Content>
-        <Title>비밀번호 변경</Title>
         <FormWrap>
           <PhoneAuth>
             <input
