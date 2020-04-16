@@ -1387,6 +1387,15 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'POST', data: data})
   }
+  /**
+   * @brief Error
+   * @method "POST"
+   * @create 손완휘 2020.04.16
+   */
+  static error_log = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/error/log`, method: method || 'POST', data: data})
+  }
 }
 API.customHeader = null
 API.authToken = null
