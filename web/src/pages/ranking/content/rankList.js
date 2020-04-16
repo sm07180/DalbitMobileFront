@@ -12,6 +12,7 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import likeIcon from '../static/ico_like_g.svg'
+import peopleIcon from '../static/ic_people.svg'
 
 //component
 import Figure from './Figure'
@@ -22,11 +23,13 @@ export default props => {
   //context
   const context = useContext(Context)
   const MyMemNo = context.profile && context.profile.memNo
+  const rankType = props.rankType
+  console.log('rankTyperankType', rankType)
   //---------------------------------------------------------------------
   //map
   const creatList = () => {
     return props.list.map((item, index) => {
-      const {rank, level, nickNm, profImg, memNo, likes} = item
+      const {rank, level, nickNm, profImg, memNo, likes, listeners} = item
       let rankName
       let link = ''
       if (webview) {
@@ -38,7 +41,7 @@ export default props => {
         rankName = `medal top${rank}`
       }
       return (
-        <li key={index}>
+        <li key={index} className={rankType}>
           <h3 className={rankName}>
             <span>{rank}</span>
           </h3>
@@ -49,10 +52,18 @@ export default props => {
             }}>
             <strong>Lv {level}</strong>
             <p>{nickNm}</p>
-            <span>
-              <img src={likeIcon} />
-              {likes}
-            </span>
+            {rankType == 'dj' && (
+              <>
+                <span>
+                  <img src={peopleIcon} />
+                  {listeners}
+                </span>
+                <span>
+                  <img src={likeIcon} />
+                  {likes}
+                </span>
+              </>
+            )}
           </div>
           {/* <button>팬 +</button> */}
         </li>
@@ -114,6 +125,12 @@ const RankList = styled.ul`
       }
     }
 
+    &.fan {
+      div {
+        padding: 8px 0;
+      }
+    }
+
     div {
       overflow: hidden;
       width: calc(100% - 200px);
@@ -141,6 +158,14 @@ const RankList = styled.ul`
         img {
           vertical-align: top;
           margin-top: 4px;
+          padding-right: 2px;
+        }
+      }
+
+      span + span {
+        padding-left: 8px;
+        img {
+          padding-right: 0;
         }
       }
     }

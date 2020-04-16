@@ -196,7 +196,7 @@ export default props => {
     } else if (list === 0) {
       return <NoResult />
     } else {
-      return <RankList list={list} />
+      return <RankList list={list} rankType={rankType} />
     }
   }
 
