@@ -269,7 +269,7 @@ export default props => {
 //styled
 const Content = styled.div`
   display: block;
-  margin-top: 30px;
+  margin-top: 20px;
 
   .log-out {
     padding-top: 30px;
