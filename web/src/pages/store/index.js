@@ -15,6 +15,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 //components
 import Contents from './content'
+import Header from 'components/ui/header'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -23,9 +24,11 @@ export default props => {
   const {profile} = context
   //---------------------------------------------------------------------
   return (
-    <Layout {...props}>
+    <Layout {...props} status="no_gnb">
       <Content>
-        <h2>스토어</h2>
+        <Header>
+          <div className="category-text">스토어</div>
+        </Header>
         {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt.toLocaleString()}</p>}
         {/* 배너슬라이더 */}
         <Slider>
@@ -41,8 +44,13 @@ export default props => {
 const Content = styled.section`
   width: 1040px;
   min-height: 300px;
-  margin: 64px auto 0 auto;
+  margin: 0 auto;
   padding: 0 0 120px 0;
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    left: 2%;
+  }
   h2 {
     padding-bottom: 60px;
     font-size: 28px;
@@ -51,7 +59,8 @@ const Content = styled.section`
     text-align: center;
   }
   .mydal {
-    margin-top: -7px;
+    margin-top: 15px;
+    margin-bottom: -4px;
     color: #424242;
     font-size: 14px;
     font-weight: 600;
@@ -88,6 +97,6 @@ const Content = styled.section`
 const Slider = styled.div`
   margin-top: 40px;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 12px;
+    margin-top: 15px;
   }
 `
