@@ -79,8 +79,8 @@ export default props => {
     const res = await Api.report_broad({
       params: {
         dateType: active,
-        startDt: dateprev,
-        endDt: datenext,
+        startDt: changes.pickdataPrev,
+        endDt: changes.pickdataNext,
         page: currentPage,
         records: 3
       }
@@ -118,8 +118,8 @@ export default props => {
     const res = await Api.report_listen({
       params: {
         dateType: active,
-        startDt: dateprev,
-        endDt: datenext,
+        startDt: changes.pickdataPrev,
+        endDt: changes.pickdataNext,
         page: currentPage,
         records: 3
       }
@@ -151,78 +151,55 @@ export default props => {
   }
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
-  const date = moment(d).format('YYYYMMDD')
-  const dateYear = date.slice(0, 4) - 17
+  const dateToday = moment(d).format('YYYYMMDD')
+  const dateDayAgo = moment(d.setDate(d.getDate() - 1)).format('YYYYMMDD')
+  const dateWeekAgo = moment(d.setDate(d.getDate() - 7)).format('YYYYMMDD')
+  const dateMonthAgo = moment(d.setMonth(d.getMonth() - 1)).format('YYYYMMDD')
+
   let dateDefault = ''
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
-    pickdata: ''
+    pickdataPrev: dateToday,
+    pickdataNext: dateToday
   })
   const [dateprev, setDateprev] = useState('')
   const [datenext, setDatenext] = useState('')
   //---------------------------------------------------------------------
+  const afterSelected = () => {
+    setActive(4)
+    setPickerCssOn(true)
+  }
   //datepicker에서 올려준 값 받아서 pickdata 바로 변경하기
-  const pickerOnChange = value => {
+  const pickerOnChange = (value, btn) => {
     if (!changes.pickdata) {
       dateDefault = value
     } else {
-      validateBirth(value)
       setDateprev(value)
-      setActive(4)
     }
-    setPickerCssOn(true)
+
+    setChanges({
+      ...changes,
+      pickdataPrev: value
+    })
   }
 
   const pickerOnChangenext = value => {
     if (!changes.pickdata) {
       dateDefault = value
     } else {
-      validateBirth(value)
       setDatenext(value)
-      setActive(4)
-    }
-    setPickerCssOn(true)
-  }
-
-  const validateBirth = value => {
-    let year = value.slice(0, 4)
-    if (year == '') {
-    } else if (year <= dateYear || value == date) {
-      setCurrentPickdata('')
-      setValidate({
-        ...validate,
-        pickdata: true
-      })
-      if (pickerHolder) {
-        pickerHolder = false
-        setPickerState(true)
-      } else {
-        setPickerState(false)
-      }
-    } else {
-      if (pickerHolder) {
-        pickerHolder = false
-      }
-      setValidate({
-        ...validate,
-        pickdata: false
-      })
-      setPickerState(false)
-    }
-  }
-  //-------------------------
-  useEffect(() => {
-    let firstSetting = {}
-    if (!changes.pickdata) {
-      firstSetting = {pickdata: dateDefault}
-    } else if (!changes.pickdata) {
-      firstSetting = {pickdata: dateDefault}
     }
     setChanges({
       ...changes,
-      ...firstSetting
+      pickdataNext: value
     })
-  }, [])
+  }
+
+  //-------------------------
+
+  useEffect(() => {
+    // console.log(JSON.stringify(changes, null, 1))
+  }, [changes])
 
   useEffect(() => {
     setTimeout(() => {
@@ -243,6 +220,8 @@ export default props => {
     setbroadtotal([])
     setlistentotal([])
     setResultState(1)
+    setPickerCssOn(false)
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
   }
   //date format
   const dateFormat = strFormatFromServer => {
@@ -305,7 +284,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(0)
-              setPickerCssOn(false)
+              pickerOnChange(dateToday, 'btn')
             }}
             className={active === 0 ? 'on' : ''}>
             오늘
@@ -313,7 +292,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(1)
-              setPickerCssOn(false)
+              pickerOnChange(dateDayAgo, 'btn')
             }}
             className={active === 1 ? 'on' : ''}>
             어제
@@ -321,7 +300,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(2)
-              setPickerCssOn(false)
+              pickerOnChange(dateWeekAgo, 'btn')
             }}
             className={active === 2 ? 'on' : ''}>
             최근 7일
@@ -329,7 +308,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(3)
-              setPickerCssOn(false)
+              pickerOnChange(dateMonthAgo, 'btn')
             }}
             className={active === 3 ? 'on' : ''}>
             월간
@@ -339,10 +318,11 @@ export default props => {
               <Datepicker
                 text="날짜"
                 name="pickdata"
-                value={changes.pickdata}
+                value={changes.pickdataPrev}
                 change={pickerOnChange}
                 placeholder="날짜"
                 pickerState={pickerState}
+                afterSelected={afterSelected}
               />
               <span className="line">
                 <span></span>
@@ -350,10 +330,11 @@ export default props => {
               <Datepicker
                 text="날짜"
                 name="pickdata"
-                value={changes.pickdata}
+                value={changes.pickdataNext}
                 change={pickerOnChangenext}
                 placeholder="날짜"
                 pickerState={pickerState}
+                afterSelected={afterSelected}
               />
             </section>
             {selectType === 0 && (

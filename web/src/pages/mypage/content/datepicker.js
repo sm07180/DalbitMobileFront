@@ -24,14 +24,14 @@ export default props => {
 
   //useState
   //최신날짜로 했던거 바꾸기
-  const [selectedDate, setSelectedDate] = useState(props.value ? props.value : date)
+  const [selectedDate, setSelectedDate] = useState()
 
   const handleDateChange = date => {
-    setSelectedDate(date)
-    props.change(moment(date).format('YYYYMMDD'))
+    props.change(moment(props.value).format('YYYYMMDD'))
+    setSelectedDate(props.value)
   }
   useEffect(() => {
-    handleDateChange(selectedDate)
+    handleDateChange(props.value)
   }, [props.value])
 
   //---------------------------------------------------------------------
@@ -40,7 +40,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
-      <DatepickerWrap className={props.pickerState ? 'holder-on' : 'holder-off'}>
+      <DatepickerWrap /*className={props.pickerState ? 'holder-on' : 'holder-off'}*/>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             disableFuture
@@ -51,9 +51,13 @@ export default props => {
             label={props.text}
             value={selectedDate}
             onChange={handleDateChange}
-            placeholder={props.placeholder}
+            onAccept={e => {
+              props.change(moment(e).format('YYYYMMDD'))
+              props.afterSelected()
+            }}
+            // placeholder={props.placeholder}
           />
-          <span className="holder">{props.placeholder}</span>
+          {/* <span className="holder">{props.placeholder}</span> */}
         </MuiPickersUtilsProvider>
       </DatepickerWrap>
     </StylesProvider>
@@ -93,7 +97,8 @@ const DatepickerWrap = styled.div`
   .MuiInputBase-input.MuiInput-input {
     background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 98% 0%;
     background-size: 24px;
-    color: rgba(0, 0, 0, 0);
+    /* color: rgba(0, 0, 0, 0); */
+    color: #616161;
   }
   &.holder-on .MuiInputBase-input.MuiInput-input {
     color: rgba(0, 0, 0, 0);
