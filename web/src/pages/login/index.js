@@ -123,7 +123,7 @@ export default props => {
   useEffect(() => {}, [])
 
   return (
-    <Layout {...props} status={'no_gnb'}>
+    <>
       <Switch>
         {token && token.isLogin ? (
           <Redirect to={'/'} />
@@ -231,7 +231,7 @@ export default props => {
           </Login>
         )}
       </Switch>
-    </Layout>
+    </>
   )
 }
 
@@ -288,7 +288,7 @@ const SocialLoginWrap = styled.div`
 const Login = styled.div`
   position: relative;
   margin: 0 auto;
-  width: 91.111%;
+  width: 300px;
 
   .close-btn {
     position: absolute;
