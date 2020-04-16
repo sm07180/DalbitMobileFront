@@ -20,7 +20,6 @@ export default props => {
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
 
-  const copiedList = {...list}
   if (Array.isArray(list) && list.length % 2 === 0) {
     list.pop()
   }
@@ -172,7 +171,7 @@ export default props => {
     <RecommendWrap>
       <Room />
       <div onClick={() => {}} className="selected-wrap">
-        {Array.isArray(copiedList) && copiedList.length > 0 && (
+        {Array.isArray(list) && list.length > 0 && (
           <>
             <div
               ref={slideWrapRef}
@@ -180,29 +179,21 @@ export default props => {
               onTouchStart={touchStartEvent}
               onTouchMove={touchMoveEvent}
               onTouchEnd={touchEndEvent}>
-              <div
-                className="broad-slide"
-                b-idx={prevBIdx}
-                style={{backgroundImage: `url(${copiedList[prevBIdx]['bannerUrl']})`}}
-              />
+              <div className="broad-slide" b-idx={prevBIdx} style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}} />
               <div
                 className="broad-slide"
                 b-idx={selectedBIdx}
-                style={{backgroundImage: `url(${copiedList[selectedBIdx]['bannerUrl']})`}}
+                style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
               />
-              <div
-                className="broad-slide"
-                b-idx={nextBIdx}
-                style={{backgroundImage: `url(${copiedList[nextBIdx]['bannerUrl']})`}}
-              />
+              <div className="broad-slide" b-idx={nextBIdx} style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}} />
             </div>
           </>
         )}
         <img className="live-icon" src={LiveIcon} />
-        {Array.isArray(copiedList) && copiedList.length > 0 && (
+        {Array.isArray(list) && list.length > 0 && (
           <div className="counting">
             <span className="bold">{selectedBIdx + 1}</span>
-            <span>{copiedList ? `/ ${copiedList.length}` : ''}</span>
+            <span>{list ? `/ ${list.length}` : ''}</span>
           </div>
         )}
       </div>
