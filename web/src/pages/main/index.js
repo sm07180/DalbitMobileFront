@@ -50,7 +50,7 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [liveAlign, setLiveAlign] = useState(null)
+  const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState(null)
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
@@ -130,6 +130,8 @@ export default props => {
   const goRank = () => {
     history.push(`/rank`)
   }
+
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
   return (
     <Layout {...props}>
@@ -211,14 +213,13 @@ export default props => {
                 <button className="icon refresh" onClick={() => fetchLiveList()} />
               </div>
 
-              <div className="sequence-wrap">
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
-                    const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
                     return liveAlign ? `${alignSet[liveAlign]}순` : ''
                   })()}
                 </span>
-                <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
+                <img className="sequence-icon" src={sequenceIcon} />
               </div>
             </div>
 
@@ -257,6 +258,7 @@ export default props => {
 
         {popup && (
           <LayerPopup
+            alignSet={alignSet}
             setPopup={setPopup}
             liveAlign={liveAlign}
             setLiveAlign={setLiveAlign}
@@ -301,11 +303,14 @@ const Content = styled.div`
 
           .list {
             width: auto;
+            height: 30px;
+            line-height: 28px;
             border-radius: 10px;
             border: 1px solid #e0e0e0;
             font-size: 14px;
             letter-spacing: -0.35px;
-            padding: 7px 8px;
+            /* padding: 7px 8px; */
+            padding: 0 8px;
             color: #424242;
             margin: 0 2px;
             background-color: #fff;
