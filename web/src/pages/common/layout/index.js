@@ -2,6 +2,7 @@
  *
  */
 import React from 'react'
+import styled from 'styled-components'
 //context
 //layout
 import Gnb from 'pages/common/gnb'
@@ -19,7 +20,7 @@ const Layout = props => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <article>{children}</article>
+      <Article className={webview ? 'webview' : ''}>{children}</Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* 레이어팝업 */}
@@ -31,3 +32,11 @@ const Layout = props => {
 }
 export default Layout
 //---------------------------------------------------------------------
+
+const Article = styled.article`
+  &.webview {
+    .header-wrap .close-btn {
+      display: none;
+    }
+  }
+`
