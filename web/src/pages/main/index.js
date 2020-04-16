@@ -304,7 +304,15 @@ export default props => {
             </div>
 
             <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '28px'} : {}}>
-              {Array.isArray(liveList) ? liveList.length > 0 ? <LiveList list={liveList} /> : <NoResult /> : ''}
+              {Array.isArray(liveList) ? (
+                liveList.length > 0 ? (
+                  <LiveList list={liveList} />
+                ) : (
+                  <NoResult />
+                )
+              ) : (
+                <div style={{height: '300px'}}></div>
+              )}
             </div>
           </div>
         </Content>
