@@ -142,7 +142,7 @@ export default props => {
     }
 
     if (
-      MainNode.clientHeight + gnbHeight === window.scrollY + window.innerHeight &&
+      MainNode.clientHeight + gnbHeight - 100 < window.scrollY + window.innerHeight &&
       !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
