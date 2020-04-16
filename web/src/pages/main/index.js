@@ -446,7 +446,7 @@ const SubMain = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 8px;
+    padding: 12px 8px 8px;
     box-sizing: border-box;
 
     .left-side {
@@ -461,11 +461,11 @@ const SubMain = styled.div`
         padding: 0 8px;
 
         a {
+          display: block;
           width: 100%;
           height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          text-align: center;
+          line-height: 40px;
           font-weight: 600;
           transform: skew(-0.03deg);
         }
