@@ -12,6 +12,7 @@ import Api from 'context/api'
 //pages
 import Live from './live-index'
 import Filter from './live-filter'
+import Header from 'components/ui/header'
 
 const Index = props => {
   //---------------------------------------------------------------------
@@ -54,6 +55,9 @@ const Index = props => {
   //---------------------------------------------------------------------
   return (
     <Content>
+      <Header>
+        <div className="category-text">실시간 LIVE</div>
+      </Header>
       {/* 필터 */}
       <Filter />
       {/* 실시간라이브 */}
@@ -65,10 +69,15 @@ export default Index
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  margin-top: 76px;
-  padding-left: 16px;
-  padding-right: 16px;
+  width: 91.111%;
+  margin: 0 auto;
   box-sizing: border-box;
+
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    left: 2%;
+  }
 `
 //---------------------------------------------------------------------
 /**
