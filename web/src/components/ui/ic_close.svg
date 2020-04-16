@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_close" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#757575;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_297" d="M0 0H36V36H0z" data-name="사각형 297" style="fill:transparent;opacity:.51"/>
+    <g id="prefix__그룹_139" data-name="그룹 139" transform="translate(9.903 9.895)">
+        <path id="prefix__선_52" d="M0 0L15.714 15.714" class="prefix__cls-2" data-name="선 52"/>
+        <path id="prefix__선_53" d="M0 15.714L15.714 0" class="prefix__cls-2" data-name="선 53"/>
+    </g>
+</svg>

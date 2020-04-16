@@ -15,7 +15,7 @@ import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm from './content/appAlarm'
 
 // static
-import closeBtn from 'pages/menu/static/ic_close.svg'
+import closeBtn from './static/ic_back.svg'
 
 import InfoIcon from './static/profile/ic_info_m.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
