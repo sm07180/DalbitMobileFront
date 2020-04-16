@@ -150,11 +150,10 @@ export default props => {
     }
   }
   //생년월일 유효성에서 계산할 현재 년도 date
-  const d = new Date()
-  const dateToday = moment(d).format('YYYYMMDD')
-  const dateDayAgo = moment(d.setDate(d.getDate() - 1)).format('YYYYMMDD')
-  const dateWeekAgo = moment(d.setDate(d.getDate() - 7)).format('YYYYMMDD')
-  const dateMonthAgo = moment(d.setMonth(d.getMonth() - 1)).format('YYYYMMDD')
+  const dateToday = moment(new Date()).format('YYYYMMDD')
+  const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
+  const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
 
   let dateDefault = ''
   // changes 초기값 셋팅
