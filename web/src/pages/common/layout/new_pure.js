@@ -105,7 +105,7 @@ const CloseButton = styled.button`
   }
 `
 const Logo = styled.div`
-  padding: 60px 0 50px 0;
+  padding: 70px 0 50px 0;
   text-align: center;
 `
 const Container = styled.div`
@@ -131,6 +131,6 @@ const Container = styled.div`
     top: 5px;
   }
   .logo {
-    width: 60%;
+    width: 150px;
   }
 `

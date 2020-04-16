@@ -773,7 +773,7 @@ export default props => {
         </InputWrap>
         {/* 비밀번호, 전화번호 가입시에만 노출 */}
         {changes.memType == 'p' && (
-          <InputWrap>
+          <InputWrap style={{marginBottom: '16px'}}>
             <input
               autoComplete="new-password"
               type="password"
@@ -973,7 +973,7 @@ const PhoneAuth = styled.div`
     background: #a8a8a8;
   }
   & + & {
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .timer {
     display: block;
@@ -988,7 +988,7 @@ const PhoneAuth = styled.div`
 `
 //프로필 업로드 영역
 const ProfileUpload = styled.div`
-  margin: 40px 0 35px 0;
+  margin: 20px 0 16px 0;
   text-align: center;
   input {
     position: absolute;
@@ -1046,7 +1046,7 @@ const ProfileUpload = styled.div`
 //성별 선택 라디오 박스 영역
 const GenderRadio = styled.div`
   display: flex;
-  margin: 32px 0;
+  margin: 16px 0;
   label {
     flex: 1;
     border: 1px solid #e0e0e0;
@@ -1207,29 +1207,7 @@ const JoinText = styled.p`
   line-height: 1.5;
 `
 
-const FormWrap = styled.div`
-  margin: 40px 0;
-  /* span.holder {
-    display: block;
-    position: relative;
-    width: 116px;
-    margin-top: -49px;
-    margin-left: 1px;
-    padding-right: 40px;
-    line-height: 48px;
-    z-index: 1;
-    padding-left: 16px;
-    color: #616161;
-    transform: skew(-0.03deg);
-    background: #fff;
-    &.off {
-      display: none;
-    }
-  }
-  &.holder-off span.holder {
-    display: none;
-  } */
-`
+const FormWrap = styled.div``
 
 const Label = styled.div``
 
@@ -1260,7 +1238,8 @@ const Select = styled.select`
 
 const Button = styled.button`
   width: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   background: ${COLOR_MAIN};
   color: #fff;
   line-height: 50px;
@@ -1271,7 +1250,7 @@ const Button = styled.button`
 `
 const InputWrap = styled.div`
   position: relative;
-  margin: 32px 0;
+  margin-top: 16px;
   input {
     position: relative;
     margin-top: -1px;

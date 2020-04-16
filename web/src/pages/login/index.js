@@ -288,11 +288,10 @@ const SocialLoginWrap = styled.div`
 const Login = styled.div`
   position: relative;
   margin: 0 auto;
-  width: 300px;
 
   .close-btn {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 6px;
   }
 
@@ -305,6 +304,8 @@ const Login = styled.div`
   }
 
   .input-wrap {
+    width: 300px;
+    margin: 0 auto;
     input {
       display: block;
       border: 1px solid #e5e5e5;
