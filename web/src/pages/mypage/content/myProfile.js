@@ -33,6 +33,11 @@ const myProfile = props => {
   const {profile} = props
 
   const myProfileNo = ctx.profile.memNo
+  //zoom
+  const [Zoom, setZoom] = useState(false)
+  const figureZoom = () => {
+    setZoom(true)
+  }
   //console.log(myProfileNo)
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -143,7 +148,7 @@ const myProfile = props => {
       </>
     )
   }
-  console.log(profile.roomNo)
+
   return (
     <MyProfile webview={webview}>
       <Header>
@@ -159,9 +164,15 @@ const myProfile = props => {
               RoomJoin(profile.roomNo)
             }}></button>
         )}
-        <figure>
+        <figure onClick={() => figureZoom()}>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
+        {Zoom === true && (
+          <div className="zoom" onClick={() => setZoom(false)}>
+            <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
+          </div>
+        )}
+
         <span>
           {profile.grade} / Lv.{profile.level}
         </span>
@@ -228,7 +239,27 @@ const MyProfile = styled.div`
   min-height: 300px;
   margin: 0 auto;
   padding: 40px 16px 57px 16px;
+  .zoom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100vh;
+    z-index:22;
+    background-color:rgba(0,0,0,0.5)
 
+   
+    
+  }
+  .zoomImg {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display: block;
+    width:95%;
+   height:auto;
+  }
   & > div {
     flex: 0 0 auto;
   }
@@ -635,3 +666,4 @@ const FanRank = styled.div`
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
   }
 `
+const Zoom = styled.div``

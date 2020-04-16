@@ -117,7 +117,10 @@ const LiveList = styled.div`
         border-radius: 8px;
         color: #fff;
         font-size: 11px;
-        padding: 1px 6px 0px 6px;
+        /* padding: 1px 6px 0px 6px; */
+        padding: 0 6px;
+        height: 16px;
+        line-height: 16px;
       }
 
       .gender-icon {
