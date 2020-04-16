@@ -138,7 +138,7 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <a href={'/live'}>라이브</a>
+                <a href={'/'}>라이브</a>
               </div>
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
