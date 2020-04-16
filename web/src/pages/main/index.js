@@ -50,7 +50,7 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [liveAlign, setLiveAlign] = useState(1)
+  const [liveAlign, setLiveAlign] = useState(0)
   const [liveGender, setLiveGender] = useState('')
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
@@ -216,7 +216,7 @@ export default props => {
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
-                    return liveAlign ? `${alignSet[liveAlign]}순` : ''
+                    return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
                 </span>
                 <img className="sequence-icon" src={sequenceIcon} />
