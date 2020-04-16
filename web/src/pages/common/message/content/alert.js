@@ -48,6 +48,9 @@ export default props => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     refBtn.current.focus()
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [])
   //---------------------------------------------------------------------
   return (
