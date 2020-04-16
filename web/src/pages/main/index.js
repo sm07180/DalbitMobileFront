@@ -101,11 +101,8 @@ export default props => {
     const RankSectionNode = RankSectionRef.current
     const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
-
-    if (
-      window.scrollY >=
-      SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + BannerSectionNode.clientHeight + 80
-    ) {
+    // BannerSectionNode.clientHeight
+    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
@@ -188,11 +185,11 @@ export default props => {
             </div>
           </div>
 
-          <div className="section" ref={BannerSectionRef}>
+          {/* <div className="section" ref={BannerSectionRef}>
             <div className="content-wrap">
               {Array.isArray(initData.recommend) && initData.recommend.length > 0 && <BannerList list={initData.recommend} />}
             </div>
-          </div>
+          </div> */}
 
           <div className="section" ref={StarSectionRef}>
             <div
