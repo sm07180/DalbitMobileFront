@@ -14,7 +14,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   return (
-    <Layout {...props}>
+    <Layout {...props} status="no_gnb">
       <SecssionProvider>
         <Content {...props} />
       </SecssionProvider>
