@@ -75,8 +75,8 @@ const LiveList = styled.div`
   margin: 10px 0;
 
   .broadcast-img {
-    width: 72px;
-    height: 72px;
+    width: 80px;
+    height: 80px;
     border-radius: 12px;
     background-repeat: no-repeat;
     background-size: cover;
@@ -85,16 +85,39 @@ const LiveList = styled.div`
   }
 
   .broadcast-content {
+    width: calc(100% - 92px);
     margin-left: 12px;
 
     & > div {
       /* margin: 3px 0; */
-      &:nth-child(2) {
+      /* &:nth-child(2) {
         margin-top: 2px;
-      }
-      &:nth-child(4) {
+      } */
+      /* &:nth-child(4) {
         margin-top: 3px;
-      }
+      } */
+    }
+
+    .title {
+      margin-top: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .nickname {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 20px;
+      line-height: 20px;
+      margin-top: 3px;
+    }
+
+    .detail {
+      margin-top: 4px;
     }
 
     .icon-wrap {
