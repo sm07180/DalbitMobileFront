@@ -34,9 +34,7 @@ export default props => {
 
   const tabClick = (type, value) => {
     if (type === 'align') {
-      if (liveAlign === value) {
-        setLiveAlign(0)
-      } else {
+      if (liveAlign !== value) {
         setLiveAlign(value)
       }
     } else if (type === 'gender') {
