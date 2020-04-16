@@ -65,6 +65,7 @@ export default props => {
   }
   //useEffect
   useEffect(() => {
+    document.body.style.overflow = 'hidden'
     refBtn.current.focus()
   }, [])
   //---------------------------------------------------------------------
