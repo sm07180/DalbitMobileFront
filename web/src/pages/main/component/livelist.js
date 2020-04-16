@@ -21,8 +21,6 @@ function usePrevious(value) {
   return ref.current
 }
 
-//makeContents
-
 const makeContents = props => {
   const {list} = props
 
