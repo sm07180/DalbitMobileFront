@@ -16,7 +16,7 @@ export default props => {
   //title
 
   return (
-    <Layout {...props}>
+    <Layout {...props} status="no_gnb">
       <CustomerProvider>
         <Content {...props} />
       </CustomerProvider>
