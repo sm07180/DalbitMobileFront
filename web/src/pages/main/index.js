@@ -243,15 +243,7 @@ export default props => {
             </div>
 
             <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '52px'} : {}}>
-              {Array.isArray(liveList) ? (
-                liveList.length > 0 ? (
-                  <LiveList list={liveList} />
-                ) : (
-                  <NoResult msg={'현재 라이브 중인 방송이 없습니다'} />
-                )
-              ) : (
-                ''
-              )}
+              {Array.isArray(liveList) ? liveList.length > 0 ? <LiveList list={liveList} /> : <NoResult /> : ''}
             </div>
           </div>
         </Content>
