@@ -24,6 +24,9 @@ export default props => {
   if (_.hasIn(snsInfo, 'nickNm')) {
     snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
   }
+  if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
+    snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
+  }
 
   //context
   const context = useContext(Context)
@@ -610,6 +613,7 @@ export default props => {
   }, [])
 
   useEffect(() => {
+    // console.log(JSON.stringify(changes, null, 1))
     if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
       setAllTerm(true)
       setValidate({...validate, term: true})
