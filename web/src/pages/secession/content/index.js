@@ -40,13 +40,14 @@ const Container = styled.div`
   width: 740px;
   margin: 0 auto;
   @media (max-width: 1240px) {
+    position: relative;
     width: 91.111%;
   }
 
   .close-btn {
     position: absolute;
-    top: 6px;
-    left: 2%;
+    top: 8px;
+    left: 2px;
   }
 
   & h1 {
