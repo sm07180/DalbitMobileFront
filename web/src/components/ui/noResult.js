@@ -9,10 +9,11 @@ import styled from 'styled-components'
 //context
 import {IMG_SERVER} from 'context/config'
 import _ from 'lodash'
-
+import NoResultIcon from './ic_noResult.svg'
 export default props => {
   const {msg} = props
-  const [text, setText] = useState('조회된 결과가 없습니다.')
+  const [text, setText] = useState('조회 된 결과가')
+  const [brText, setBrText] = useState('없습니다.')
 
   useEffect(() => {
     if (_.hasIn(props, 'text')) {
@@ -21,7 +22,14 @@ export default props => {
   }, [])
   return (
     <NoResult className={props.className}>
-      <span>{msg ? msg : text}</span>
+      {msg ? (
+        msg
+      ) : (
+        <>
+          <span>{text}</span>
+          <span className="line">{brText}</span>
+        </>
+      )}
     </NoResult>
   )
 }
@@ -35,10 +43,11 @@ const NoResult = styled.div`
   justify-content: center;
   align-items: center;
   width: 100% !important;
-  margin-top:30px;
-  padding-top:170px;
-  background: url('${IMG_SERVER}/images/api/img_noresult.png') no-repeat center top;
-  background-size: 208px 158px !important;
+  margin-top: 114.9px;
+
+  padding-top: 67.4px;
+  background: url(${NoResultIcon}) no-repeat center top;
+  background-size: 81.4px 67.4px !important;
 
   & > span {
     display: flex;
@@ -48,9 +57,15 @@ const NoResult = styled.div`
     height: 26px;
     font-size: 14px;
     font-weight: 400;
-    line-height: 1.25;
     letter-spacing: -0.6px;
-    color: #616161;
-    transform:skew(-0.03deg);
+    color: #757575;
+    font-weight: 600;
+    transform: skew(-0.03deg);
+    :nth-child(1) {
+      margin-top: 10px;
+    }
+    &.line {
+      margin-top: -4px;
+    }
   }
 `

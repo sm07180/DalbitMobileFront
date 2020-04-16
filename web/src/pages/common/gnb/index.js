@@ -21,13 +21,16 @@ export default props => {
   }
 
   const globalCtx = useContext(Context)
-  const {logoChange} = globalCtx
+  const {logoChange, token} = globalCtx
 
   const reLoad = () => {
     window.location.href = '/'
   }
   const moveToMenu = category => {
-    window.location.href = `/menu/${category}`
+    if (!token.isLogin) {
+      return (window.location.href = '/login')
+    }
+    return (window.location.href = `/menu/${category}`)
   }
   const scrollEvent = () => {
     const gnbHeight = 48
