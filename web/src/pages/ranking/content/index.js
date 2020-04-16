@@ -157,11 +157,14 @@ export default props => {
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
-      if (windowBottom >= docHeight - 30) {
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 400) {
         showMoreList()
       } else {
       }
-    }, 50)
+    }, 10)
   }
   //---------------------------------------------------------------------
   //useEffect

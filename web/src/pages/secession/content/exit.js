@@ -77,32 +77,29 @@ const Exit = props => {
     // ) {
     //   setState(initialState)
     // }
-    console.log('1')
     if (all === false) {
-      console.log('2')
       setAll(true)
     } else if (all === true) {
-      console.log('3')
       setAll(false)
     }
   }
 
   useEffect(() => {
-    if (all) {
-      setState({click1: true, click2: true, click6: true})
-    } else {
-      //setState({click1: false, click2: false, click6: false})
-    }
+    // if (all) {
+    //   setState({click1: true, click2: true, click6: true})
+    // } else {
+    //   //setState({click1: false, click2: false, click6: false})
+    // }
   }, [all])
 
-  useEffect(() => {
-    if (state.click1 === true && state.click2 === true && state.click6 === true) {
-      setAll(true)
-    }
-    if (state.click1 === false || state.click2 === false || state.click6 === false) {
-      setAll(false)
-    }
-  }, [state])
+  // useEffect(() => {
+  //   if (state.click1 === true && state.click2 === true && state.click6 === true) {
+  //     setAll(true)
+  //   }
+  //   if (state.click1 === false || state.click2 === false || state.click6 === false) {
+  //     setAll(false)
+  //   }
+  // }, [state])
   return (
     <Wrap>
       <Checkbox
@@ -154,14 +151,15 @@ export default Exit
 //---------------------------------------------------------------------
 const Wrap = styled.div`
   margin: 0 auto;
+  padding-top: 10px;
   > div {
     padding: 10px 9px;
     margin-bottom: 24px;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 10px 16px;
+      padding: 10px 0;
     }
     @media (max-width: ${WIDTH_MOBILE_S}) {
-      padding: 10px 16px;
+      padding: 10px 0;
       margin-bottom: 10px;
     }
     & p {
@@ -191,19 +189,19 @@ const Wrap = styled.div`
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       font-size: 16px;
-      padding: 23px 16px;
+      padding: 23px 0;
     }
     > button {
       display: block;
       position: absolute;
       top: 50%;
-      right: 10px;
+      right: 0;
       width: 24px;
       height: 24px;
       background: url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center/ cover;
       transform: translateY(-50%);
       @media (max-width: ${WIDTH_MOBILE}) {
-        right: 16px;
+        /* right: 16px; */
       }
       &.on {
         background: url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center/ cover;
@@ -214,11 +212,12 @@ const Wrap = styled.div`
     display: block;
     margin: 20px auto 186px auto;
     padding: 16px 135px;
+    width: 100%;
     background-color: #bdbdbd;
     color: #fff;
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 16px 37.5%;
+      padding: 16px 0;
       margin: 20px auto 116px auto;
     }
   }
