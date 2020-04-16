@@ -53,6 +53,8 @@ export default props => {
   useEffect(() => {
     if (info.auth === 3) {
       props.update({playerRemove: false})
+    } else {
+      props.update({playerRemove: true})
     }
   }, [info.auth])
 
