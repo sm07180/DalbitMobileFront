@@ -8,6 +8,7 @@ import CustomSwiper from 'components/ui/swiper.js'
 
 // static
 import LiveIcon from '../static/ic_live.png'
+import EventIcon from '../static/ic_event.png'
 
 let touchStartX = null
 let touchEndX = null
@@ -205,7 +206,11 @@ export default props => {
             </div>
           </>
         )}
-        {list[selectedBIdx]['nickNm'] !== 'banner' && <img className="live-icon" src={LiveIcon} />}
+        {list[selectedBIdx]['nickNm'] !== 'banner' ? (
+          <img className="live-icon" src={LiveIcon} />
+        ) : (
+          <img className="live-icon" src={EventIcon} />
+        )}
         {Array.isArray(list) && list.length > 0 && (
           <div className="counting">
             <span className="bold">{selectedBIdx + 1}</span>
