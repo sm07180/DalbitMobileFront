@@ -20,10 +20,6 @@ export default props => {
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
 
-  if (Array.isArray(list) && list.length % 2 === 0) {
-    list.pop()
-  }
-
   const selectBroadcast = idx => {
     setSelectedBIdx(idx)
   }
