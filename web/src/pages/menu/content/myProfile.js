@@ -148,7 +148,7 @@ const myProfile = props => {
   return (
     <MyProfile webview={webview}>
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-        {profile.roomNo !== '' && <div className="liveIcon"></div>}
+        {/* {profile.roomNo !== '' && <div className="liveIcon"></div>} */}
         <figure>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
         </figure>
