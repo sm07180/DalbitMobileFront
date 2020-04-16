@@ -116,7 +116,7 @@ const RankList = styled.ul`
 
     div {
       overflow: hidden;
-      max-width: calc(100% - 200px);
+      width: calc(100% - 200px);
       cursor: pointer;
       padding: 15px 0 13px 0;
       strong {
@@ -167,7 +167,7 @@ const RankList = styled.ul`
       }
 
       div {
-        max-width: calc(100% - 125px);
+        width: calc(100% - 125px);
         padding: 0;
         strong {
           margin-top: 4px;
