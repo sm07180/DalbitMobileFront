@@ -91,7 +91,7 @@ export default props => {
       const {list, paging} = broadcastList.data
       if (paging) {
         const {total, next} = paging
-        setLivePage(next)
+        // setLivePage(next)
         setTotalLivePage(total)
       }
       setLiveList(list)
@@ -114,7 +114,7 @@ export default props => {
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
       console.log(liveList)
-      console.log(selectedLiveRoomType)
+      console.log('room type', selectedLiveRoomType)
       // const currentList = [...liveList]
       // const concatenated = currentList.concat(list)
       // setLiveList(concatenated)
@@ -136,9 +136,14 @@ export default props => {
       setLiveCategoryFixed(false)
     }
 
-    // if (MainNode.clientHeight + gnbHeight === window.scrollY + window.innerHeight && !concatenating) {
-    //   concatLiveList()
-    // }
+    if (
+      MainNode.clientHeight + gnbHeight === window.scrollY + window.innerHeight &&
+      !concatenating &&
+      Array.isArray(liveList) &&
+      liveList.length
+    ) {
+      concatLiveList()
+    }
   }
 
   useEffect(() => {
