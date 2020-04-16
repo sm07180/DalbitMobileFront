@@ -211,14 +211,14 @@ export default props => {
                 <button className="icon refresh" onClick={() => fetchLiveList()} />
               </div>
 
-              <div className="sequence-wrap">
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
                     const alignSet = {1: '추천', 2: '인기', 3: '신입', 4: '좋아요'}
                     return liveAlign ? `${alignSet[liveAlign]}순` : ''
                   })()}
                 </span>
-                <img className="sequence-icon" src={sequenceIcon} onClick={() => setPopup(popup ? false : true)} />
+                <img className="sequence-icon" src={sequenceIcon} />
               </div>
             </div>
 
