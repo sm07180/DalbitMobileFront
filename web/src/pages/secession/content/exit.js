@@ -77,35 +77,32 @@ const Exit = props => {
     // ) {
     //   setState(initialState)
     // }
+    console.log('1')
     if (all === false) {
+      console.log('2')
       setAll(true)
     } else if (all === true) {
+      console.log('3')
       setAll(false)
     }
   }
 
-  // useEffect(() => {
-  //   if (
-  //     state.click1 === true &&
-  //     state.click2 === true &&
-  //     state.click3 === true &&
-  //     state.click4 === true &&
-  //     state.click5 === true &&
-  //     state.click6 === true
-  //   ) {
-  //     setAll(true)
-  //   }
-  //   if (
-  //     state.click1 === false ||
-  //     state.click2 === false ||
-  //     state.click3 === false ||
-  //     state.click4 === false ||
-  //     state.click5 === false ||
-  //     state.click6 === false
-  //   ) {
-  //     setAll(false)
-  //   }
-  // }, [state])
+  useEffect(() => {
+    if (all) {
+      setState({click1: true, click2: true, click6: true})
+    } else {
+      //setState({click1: false, click2: false, click6: false})
+    }
+  }, [all])
+
+  useEffect(() => {
+    if (state.click1 === true && state.click2 === true && state.click6 === true) {
+      setAll(true)
+    }
+    if (state.click1 === false || state.click2 === false || state.click6 === false) {
+      setAll(false)
+    }
+  }, [state])
   return (
     <Wrap>
       <Checkbox
