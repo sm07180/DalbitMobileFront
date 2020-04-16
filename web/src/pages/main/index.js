@@ -16,6 +16,7 @@ import Layout from 'pages/common/layout'
 import Recommend from './component/recommend.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
+import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import NoResult from 'components/ui/noResult.js'
@@ -36,6 +37,7 @@ export default props => {
   const MainRef = useRef()
   const SubMainRef = useRef()
   const RankSectionRef = useRef()
+  const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
 
   //context
@@ -97,15 +99,19 @@ export default props => {
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
+    const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
 
-    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 80) {
+    if (
+      window.scrollY >=
+      SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + BannerSectionNode.clientHeight + 80
+    ) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
     }
 
-    console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
+    //console.log(MainNode.clientHeight + 48, window.scrollY + window.innerHeight)
   }
 
   useEffect(() => {
@@ -130,9 +136,12 @@ export default props => {
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
-                <a href={'/rank'}>랭킹</a>
+                <a href={'/live'}>라이브</a>
               </div>
               <div className="tab">
+                <a href={'/rank'}>랭킹</a>
+              </div>
+              {/* <div className="tab">
                 <Link
                   onClick={event => {
                     event.preventDefault()
@@ -141,7 +150,7 @@ export default props => {
                   to={'/store'}>
                   스토어
                 </Link>
-              </div>
+              </div> */}
             </div>
             <div className="right-side">
               <div
@@ -176,6 +185,12 @@ export default props => {
 
             <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
+            </div>
+          </div>
+
+          <div className="section" ref={BannerSectionRef}>
+            <div className="content-wrap">
+              {Array.isArray(initData.recommend) && initData.recommend.length > 0 && <BannerList list={initData.recommend} />}
             </div>
           </div>
 
@@ -216,7 +231,7 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '62px'} : {}}>
+            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '52px'} : {}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 ? (
                   <LiveList list={liveList} />
@@ -370,10 +385,9 @@ const Content = styled.div`
 
     .content-wrap {
       position: relative;
-      min-height: 100px;
+      min-height: 50px;
       margin-top: 10px;
       padding: 0 16px;
-      padding-bottom: 20px;
 
       &.rank-slide {
         padding: 0;

@@ -123,15 +123,19 @@ export default props => {
         const l_child = wrapperNode.lastChild
         if (l_child) {
           const cloned = l_child.cloneNode(true)
+          cloned.addEventListener('click', clickSwipEvent)
           const f_child = wrapperNode.firstChild
           wrapperNode.insertBefore(cloned, f_child)
+          l_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(l_child)
         }
       } else if (direction === 'left') {
         const f_child = wrapperNode.firstChild
         if (f_child) {
           const cloned = f_child.cloneNode(true)
+          cloned.addEventListener('click', clickSwipEvent)
           wrapperNode.appendChild(cloned)
+          f_child.removeEventListener('click', clickSwipEvent)
           wrapperNode.removeChild(f_child)
         }
       }
@@ -194,7 +198,7 @@ export default props => {
         )}
       </div>
       {list && (
-        <CustomSwiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx} clickSwipEvent={clickSwipEvent}>
+        <CustomSwiper onSwipe={selectBroadcast} selectedBIdx={selectedBIdx}>
           {list.map((broadcast, idx) => {
             const {profImg} = broadcast
             return (

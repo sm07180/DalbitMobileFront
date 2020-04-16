@@ -22,6 +22,12 @@ export default props => {
     autoIntervalId = null
   }
 
+  const clickCircleNode = e => {
+    const target = e.currentTarget
+    const bIdx = Number(target.getAttribute('data-idx'))
+    onSwipe(bIdx)
+  }
+
   const oneStepSlide = direction => {
     clearAutoSlideInterval()
 
@@ -49,8 +55,10 @@ export default props => {
         const l_child = wrapperNode.lastChild
         if (l_child) {
           const cloned = l_child.cloneNode(true)
+          cloned.addEventListener('click', clickCircleNode)
           const f_child = wrapperNode.firstChild
           wrapperNode.insertBefore(cloned, f_child)
+          l_child.removeEventListener('click', clickCircleNode)
           wrapperNode.removeChild(l_child)
         }
       } else if (direction === 'left') {
@@ -58,7 +66,9 @@ export default props => {
         const f_child = wrapperNode.firstChild
         if (f_child) {
           const cloned = f_child.cloneNode(true)
+          cloned.addEventListener('click', clickCircleNode)
           wrapperNode.appendChild(cloned)
+          f_child.removeEventListener('click', clickCircleNode)
           wrapperNode.removeChild(f_child)
         }
       }
@@ -156,8 +166,6 @@ export default props => {
       }
     })
   }, [selectedBIdx])
-
-  useEffect(() => {}, [])
 
   return (
     <Swiper

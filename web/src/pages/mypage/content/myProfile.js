@@ -102,17 +102,18 @@ const myProfile = props => {
   }
 
   const createFanList = () => {
+    if (profile.fanRank == false) return null
     let result = []
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
-        let thisRank = index + 1
-        result = result.concat(
-          <a key={index}>
-            <FanRank
-              style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
-              className={`rank${thisRank}`}></FanRank>
-          </a>
-        )
+        // let thisRank = index + 1
+        // result = result.concat(
+        //   <a key={index}>
+        //     <FanRank
+        //       style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
+        //       className={`rank${thisRank}`}></FanRank>
+        //   </a>
+        // )
       } else {
         const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
@@ -133,7 +134,14 @@ const myProfile = props => {
         <span></span>
       </button>
     )
-    return result
+    return (
+      <>
+        <FanListWrap>
+          <span>팬 랭킹</span>
+          {result}
+        </FanListWrap>
+      </>
+    )
   }
   console.log(profile.roomNo)
   return (
@@ -175,10 +183,7 @@ const myProfile = props => {
         </CountingWrap>
         <ButtonWrap>
           <InfoConfigBtn>
-            <FanListWrap>
-              <span>팬랭킹</span>
-              {createFanList()}
-            </FanListWrap>
+            {createFanList()}
             {urlrStr !== myProfileNo && (
               <div className="notBjWrap">
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
@@ -488,6 +493,7 @@ const InfoConfigBtn = styled.div`
   .notBjWrap {
     display: flex;
     text-align: center;
+    margin-top: 10px;
     & button {
       display: flex;
       justify-content: center;
@@ -527,6 +533,8 @@ const InfoConfigBtn = styled.div`
 const FanListWrap = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin: 10px 0 0 0;
   > span {
     display: block;
     font-size: 14px;
@@ -543,7 +551,7 @@ const FanListWrap = styled.div`
     border: 1px solid #424242;
     border-radius: 50%;
     vertical-align: top;
-    margin: 10px 0 15px 0;
+    margin-top: -5px;
     span {
       display: inline-block;
       position: absolute;
@@ -603,6 +611,7 @@ const FanRank = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 36px;
     height: 36px;
+    border: 1px solid #424242;
   }
 
   :after {

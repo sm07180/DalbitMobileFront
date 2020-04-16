@@ -21,7 +21,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <LiveProvider>
-      <Layout {...props}>
+      <Layout {...props} status="no_gnb">
         <Content {...props} />
       </Layout>
     </LiveProvider>

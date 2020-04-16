@@ -94,7 +94,8 @@ export default () => {
         //---------------------[분기처리끝]
         break
       case 'native-auth-check': //----------------------Native RoomCheck
-        if (context.token.memNo === event.detail.memNo) {
+        const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
+        if (_cookie === event.detail.authToken) {
           Room.setAuth(true)
         } else {
           Room.setAuth(false)

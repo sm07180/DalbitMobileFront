@@ -11,7 +11,7 @@ import Search from './static/ic_search.svg'
 import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
-import Mic from './static/ic_mike_w.svg'
+import Mic from './static/ic_broadcastng.svg'
 
 export default props => {
   const {webview} = props
@@ -106,9 +106,9 @@ const GnbWrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 82px;
+    width: 80px;
     height: 40px;
-    border-radius: 21px;
-    background: linear-gradient(#662eec, #632beb);
+    border-radius: 27px;
+    background: linear-gradient(#632beb, #4c13d5);
   }
 `
