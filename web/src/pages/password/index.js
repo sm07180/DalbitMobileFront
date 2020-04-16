@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import Api from 'context/api'
 
 import PureLayout from 'pages/common/layout/new_pure.js'
+import Header from 'components/ui/header'
 
 //context
 import Utility from 'components/lib/utility'
@@ -309,6 +310,9 @@ export default props => {
   return (
     <PureLayout logo_status={'no'}>
       <Content>
+        <Header>
+          <div className="category-text">비밀번호 변경</div>
+        </Header>
         <FormWrap>
           <PhoneAuth>
             <input
@@ -398,7 +402,13 @@ export default props => {
 
 const Content = styled.div`
   width: 400px;
-  margin: 30px auto 100px auto;
+  margin: 0 auto 100px auto;
+
+  .close-btn {
+    position: absolute;
+    top: 6px;
+    left: -2.8%;
+  }
 
   @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
