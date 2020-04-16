@@ -191,15 +191,15 @@ export default props => {
             </div>
           </div> */}
 
-          <div className="section" ref={StarSectionRef}>
+          <div className="section" ref={StarSectionRef} style={{marginTop: '24px'}}>
             <div
-              className="content-wrap my-star-slide"
+              className="content-wrap my-star-list"
               style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
               <StarList list={initData.myStar} />
             </div>
           </div>
 
-          <div className="section">
+          <div className="section" style={{marginTop: '24px'}}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
@@ -413,6 +413,10 @@ const Content = styled.div`
       &.rank-slide {
         padding: 0;
         min-height: 150px;
+      }
+
+      &.my-star-list {
+        min-height: 94px;
       }
 
       &.live-list {
