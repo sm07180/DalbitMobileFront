@@ -402,6 +402,7 @@ const Container = styled.div`
   margin: 0 auto;
   min-height: 360px;
   display: flex;
+  overflow-x: hidden;
   background-color: #fff;
   /* align-items: center; */
   flex-direction: column;

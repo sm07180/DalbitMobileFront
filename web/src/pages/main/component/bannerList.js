@@ -6,7 +6,8 @@ import Swiper from 'react-id-swiper'
 
 export default props => {
   const {list} = props
-
+  console.log(list)
+  const remoteNotice = () => {}
   return (
     <Banner>
       <Swiper>

@@ -405,7 +405,7 @@ const Container = styled.div`
   background-color: #fff;
   /* align-items: center; */
   flex-direction: column;
-
+  overflow-x: hidden;
   border-radius: 10px;
   & h2 {
     margin-top: 8px;

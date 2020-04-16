@@ -191,12 +191,8 @@ export default props => {
               </PasswordWrap>
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
               <GenderWrap>
-                <GenderTab className={gender === 'm' ? '' : 'off'} onClick={() => setGender('m')}>
-                  남자
-                </GenderTab>
-                <GenderTab className={gender === 'f' ? '' : 'off'} onClick={() => setGender('f')}>
-                  여자
-                </GenderTab>
+                <GenderTab className={gender === 'm' ? '' : 'off'} /*onClick={() => setGender('m')}*/>남자</GenderTab>
+                <GenderTab className={gender === 'f' ? '' : 'off'} /*onClick={() => setGender('f')}*/>여자</GenderTab>
               </GenderWrap>
 
               <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
@@ -266,7 +262,7 @@ const GenderTab = styled.div`
   border: 1px solid #e0e0e0;
   background-color: #632beb;
   color: #fff;
-  cursor: pointer;
+  cursor: not-allowed;
 
   &.off {
     color: #616161;
@@ -278,6 +274,7 @@ const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 20px;
+  cursor: not-allowed;
 `
 
 const BirthDate = styled.div`
@@ -390,6 +387,7 @@ const SettingWrap = styled.div`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 91.111%;
+    padding-bottom: 200px;
   }
 `
 
