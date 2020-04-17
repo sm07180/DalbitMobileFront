@@ -4,6 +4,7 @@
  *
  */
 import React, {useState, useContext, useEffect} from 'react'
+import {useParams} from 'react-router-dom'
 //context
 import {Store} from './index'
 import {Context} from 'context'
@@ -28,6 +29,7 @@ function Notice(props) {
   ]
 
   //context
+  let {memNo, num} = useParams()
   const context = useContext(Context)
   const history = useHistory()
 
@@ -44,7 +46,7 @@ function Notice(props) {
   const pageStart = page != 1 ? perPage * page - Store().page : 0
   const pageEnd = perPage * page
   const paginatedDated = noticeList.slice(pageStart, pageEnd)
-  //const amountPages = Math.round(noticeList.length / perPage)
+
   const amountPages = Math.floor((noticeList.length - 1) / perPage)
   //pages
   let a = 0,
@@ -70,7 +72,7 @@ function Notice(props) {
       //console.log(res.data.list)
       setNoticeList(res.data.list)
     } else if (res.result === 'fail') {
-      console.log(res)
+      // console.log(res)
     }
   }
   //api----디테일스
@@ -83,7 +85,7 @@ function Notice(props) {
     if (res.result === 'success') {
       setNoticeDetail(res.data)
     } else if (res.result === 'fail') {
-      console.log(res)
+      // console.log(res)
     }
   }
   //function---------------------------------------
@@ -144,19 +146,20 @@ function Notice(props) {
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 
-  const boardIndexNum = context.noticeIndexNum.split('/')[3]
   useEffect(() => {
     async function fetchData2() {
       const res = await Api.notice_list_detail({
         params: {
-          noticeIdx: boardIndexNum
+          noticeIdx: num
         }
       })
       if (res.result === 'success') {
         setNoticeDetail(res.data)
 
-        history.push(`/customer/notice/${boardIndexNum}`)
-        Store().action.updatenoticePage(boardIndexNum)
+        Store().action.updatenoticePage(num)
+        setTimeout(() => {
+          history.push(`/customer/notice/${num}`)
+        }, 50)
       } else if (res.result === 'fail') {
       }
     }

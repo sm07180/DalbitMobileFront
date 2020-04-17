@@ -352,7 +352,7 @@ const PageNumber = styled.nav`
 const TableWrap = styled.div`
   display: flex;
   border-bottom: 1px solid #e0e0e0;
-  padding: 16px 0;
+  padding: 10px 0;
   cursor: pointer;
   @media (max-width: ${WIDTH_MOBILE}) {
     position: relative;
