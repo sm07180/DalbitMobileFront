@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
 import API from 'context/api'
+import Room, {RoomJoin} from 'context/room'
 // component
 import NoResult from 'components/ui/noResult'
 import PlayIcon from '../static/ic_play.svg'
@@ -25,18 +26,34 @@ export default props => {
         break
     }
   }
+
+  // const JoinBroadProfile = (roomNo, memNo) => {
+  //   if (roomNo !== '0') {
+  //     RoomJoin(roomNo)
+  //     console.log(roomNo)
+  //   } else if (roomNo === '0') {
+  //     window.location.href = `/mypage/${memNo}/initial`
+  //   }
+  // }
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
     const list = props.fetch
     console.log(list)
+
     if (list == false || list == undefined) {
       return <NoResult className={`search`} />
     } else {
       return list.map((list, idx) => {
-        const {nickNm, profImg, roomNo} = list
+        const {nickNm, profImg, roomNo, memNo} = list
         return (
-          <div key={idx} className="list">
+          <div
+            key={idx}
+            className="list"
+            // onClick={() => {
+            //   JoinBroadProfile(roomNo, memNo)
+            // }}
+          >
             <button
               onClick={() => {
                 props.update({select: {...list, type: props.type}})

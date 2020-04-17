@@ -88,7 +88,7 @@ export default props => {
         //라이브중아님,사용자검색
         if (roomNo !== '' && roomNo !== '0' && type !== 'member') {
           RoomJoin(roomNo)
-        } else {
+        } else if (roomNo === '0') {
           window.location.href = `/mypage/${memNo}/`
         }
         break
