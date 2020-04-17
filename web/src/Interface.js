@@ -51,8 +51,8 @@ native-push-foreground
 
         //  alert(pushMsg)
         //  pushMsg = pushMsg.trim()
-        // pushMsg = JSON.parse(pushMsg)
-        return
+        pushMsg = JSON.parse(data)
+
         //  const {push_type} = pushMsg
 
         let room_no, mem_no
