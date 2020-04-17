@@ -48,7 +48,7 @@ native-push-foreground
         alert(event.detail)
 
         let pushMsg = decodeURIComponent(event.detail)
-
+        alert(pushMsg)
         //  alert(pushMsg)
         //  pushMsg = pushMsg.trim()
         // pushMsg = JSON.parse(pushMsg)
