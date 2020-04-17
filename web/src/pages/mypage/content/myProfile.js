@@ -157,12 +157,15 @@ const myProfile = props => {
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
         {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>}
+
         {profile.roomNo !== '' && (
           <button
             className="liveIcon"
             onClick={() => {
               RoomJoin(profile.roomNo)
-            }}></button>
+            }}>
+            <img src={LiveIcon}></img>
+          </button>
         )}
         <figure onClick={() => figureZoom()}>
           <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
@@ -325,9 +328,12 @@ const ProfileImg = styled.div`
     position: absolute;
     right: 0;
     top: 0px;
-    width: 60px;
-    height: 26px;
-    background: url(${LiveIcon}) no-repeat right center;
+    img{
+      padding:0 0 3px 3px;
+    }
+    /* width: 60px;
+    height: 30px;
+    background: url(${LiveIcon}) no-repeat right top; */
   }
   & .reportIcon {
     position: absolute;
