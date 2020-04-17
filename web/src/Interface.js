@@ -102,7 +102,7 @@ native-push-foreground
         break
       case 'native-push-foreground': //----------------------native-push-foreground
         //alert('native-push-foreground')
-        let pushMsg1 = decodeURIComponent(event.detail)
+        let pushMsg1 = event.detail
         // pushMsg1 = pushMsg1.trim()
         pushMsg1 = JSON.parse(pushMsg1)
         const {push_type1} = pushMsg1
