@@ -27,7 +27,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #d2d2d2;
-  padding: 14px 16px;
+  padding: 12px 16px;
   box-sizing: border-box;
   z-index: 1;
   .child-bundle {

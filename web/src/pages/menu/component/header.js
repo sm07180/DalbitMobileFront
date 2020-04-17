@@ -24,8 +24,10 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #d2d2d2;
-  padding: 6px 0;
   box-sizing: border-box;
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  padding: 6px 16px;
 
   .child-bundle {
     display: flex;
