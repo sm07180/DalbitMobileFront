@@ -46,6 +46,7 @@ native-push-foreground
          */
       case 'native-push-background': //----------------------------native-push-foreground
         alert(pushMsg)
+        return
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
 
