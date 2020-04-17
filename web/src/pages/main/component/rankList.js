@@ -1,10 +1,8 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
-import Api from 'context/api'
 import {Context} from 'context'
 
-import Utility from 'components/lib/utility'
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 // component
 import Swiper from 'react-id-swiper'
@@ -27,11 +25,6 @@ export default props => {
     slidesPerView: 'auto'
   }
 
-  const testLink = link => {
-    Utility.setCookie('prevUrl', window.location.href, 1)
-    window.location.href = link
-  }
-
   return (
     <RankList>
       {rankType === 'dj' ? (
@@ -39,24 +32,20 @@ export default props => {
           {djRank.map((dj, idx) => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
-              <div className="slide-wrap" key={`dj-${idx}`}>
-                {/* <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}> */}
-                <a
-                  onClick={e => {
-                    e.preventDefault()
-                    testLink(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
-                  }}>
-                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                    <div className="counting">{rank}</div>
-                  </div>
-                  <div className="nickname">{nickNm}</div>
-                  <div className="info-wrap">
-                    <img src={peopleIcon} />
-                    <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
-                    <img src={heartIcon} className="heart-icon" />
-                    <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
-                  </div>
-                </a>
+              <div
+                className="slide-wrap"
+                key={`dj-${idx}`}
+                onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  <div className="counting">{rank}</div>
+                </div>
+                <div className="nickname">{nickNm}</div>
+                <div className="info-wrap">
+                  <img src={peopleIcon} />
+                  <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
+                  <img src={heartIcon} className="heart-icon" />
+                  <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
+                </div>
               </div>
             )
           })}
@@ -66,13 +55,14 @@ export default props => {
           {fanRank.map((fan, idx) => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
-              <div className="slide-wrap" key={`fan-${idx}`}>
-                <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
-                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                    <div className="counting">{rank}</div>
-                  </div>
-                  <div className="nickname">{nickNm}</div>
-                </a>
+              <div
+                className="slide-wrap"
+                key={`fan-${idx}`}
+                onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  <div className="counting">{rank}</div>
+                </div>
+                <div className="nickname">{nickNm}</div>
               </div>
             )
           })}
