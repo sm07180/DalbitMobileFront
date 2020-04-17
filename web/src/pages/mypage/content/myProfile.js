@@ -9,19 +9,21 @@ import {OS_TYPE} from 'context/config.js'
 import Room, {RoomJoin} from 'context/room'
 //styled
 import styled from 'styled-components'
+
 //component
 import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LiveIcon from '../component/ic_live.svg'
+
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 
-const levelBarWidth = 176
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 const myProfile = props => {
   const {webview} = props
@@ -111,14 +113,6 @@ const myProfile = props => {
     let result = []
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
-        // let thisRank = index + 1
-        // result = result.concat(
-        //   <a key={index}>
-        //     <FanRank
-        //       style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
-        //       className={`rank${thisRank}`}></FanRank>
-        //   </a>
-        // )
       } else {
         const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
@@ -128,9 +122,9 @@ const myProfile = props => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <a href={link} key={index}>
+          <div key={`fan-${index}`} onClick={() => saveUrlAndRedirect(link)}>
             <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
-          </a>
+          </div>
         )
       }
     }

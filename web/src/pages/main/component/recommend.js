@@ -176,11 +176,11 @@ export default props => {
       const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '') {
-        if (!token.isLogin) {
-          window.location.href = '/login'
-        } else {
-          history.push(`${roomNo}`)
-        }
+        // if (!token.isLogin) {
+        //   window.location.href = '/login'
+        // } else {
+        history.push(`${roomNo}`)
+        // }
       }
     }
   }
