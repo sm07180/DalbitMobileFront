@@ -77,11 +77,13 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       if (obj) {
-        const {authToken} = obj
+        const {authToken, memNo} = obj
+        const firstLetterOfMemNo = String(memNo)[0]
+        const isOAuth = firstLetterOfMemNo !== '1' || firstLetterOfMemNo !== '8'
         Api.setAuthToken(authToken)
         Utility.setCookie('authToken', '', -1)
         Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-        setToken({...obj})
+        setToken({...obj, isOAuth})
       } else {
         Api.setAuthToken(null)
         Utility.setCookie('authToken', '', -1)
