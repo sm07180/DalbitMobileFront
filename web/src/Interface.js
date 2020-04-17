@@ -23,6 +23,7 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
+    alert('event.type : ' + event.type)
     switch (event.type) {
       /*
       native-push-background
@@ -45,6 +46,7 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
+        alert('native-push-background')
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
         alert(pushMsg)
@@ -101,6 +103,7 @@ native-push-foreground
         //---------------------[분기처리끝]
         break
       case 'native-push-foreground': //----------------------native-push-foreground
+        alert('native-push-foreground')
         let pushMsg1 = decodeURIComponent(event.detail)
         pushMsg1 = pushMsg1.trim()
         pushMsg1 = JSON.parse(pushMsg1)
