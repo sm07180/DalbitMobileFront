@@ -168,16 +168,18 @@ export default props => {
 
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
-
+  const {customHeader, token} = context || Room.context
   const clickSlideDisplay = data => {
     const {roomType} = data
     if (roomType === 'link') {
       const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '') {
-        // window.location.href = roomNo
-        history.push(`/customer/notice`)
-        //console.log(roomNo)
+        if (!token.isLogin) {
+          window.location.href = '/login'
+        } else {
+          history.push(`${roomNo}`)
+        }
       }
     }
   }
