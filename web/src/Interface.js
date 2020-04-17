@@ -23,6 +23,7 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
+    alert('event.type : ' + event.type)
     switch (event.type) {
       /*
       native-push-background
