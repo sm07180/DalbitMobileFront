@@ -20,7 +20,7 @@ export default props => {
     document.body.style.overflow = 'hidden'
 
     const layerWrapNode = layerWrapRef.current
-    layerWrapNode.style.overflow = 'hidden'
+    layerWrapNode.style.touchAction = 'none'
 
     return () => {
       prevAlign = null

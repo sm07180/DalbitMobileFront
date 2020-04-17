@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef, useContext} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
 //context
@@ -18,6 +18,7 @@ let direction = null
 
 export default props => {
   const {list} = props
+  // const context = useContext(Context)
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
 
@@ -168,6 +169,7 @@ export default props => {
     const {roomType} = data
     if (roomType === 'link') {
       const {roomNo} = data
+      // context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '') {
         window.location.href = roomNo
       }

@@ -146,23 +146,15 @@ export default props => {
           <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
         </div>
         <div>
-          <h2>마이 DJ 알림</h2>
-          <p>팬으로 등록 된 사용자의 방송 및 정보 변경 수신 알림</p>
+          <h2>DJ 알림</h2>
+          <p>팬으로 등록 된 DJ의 방송시작 및 정보 수신 알림</p>
           <button
             className={btn2 === 1 ? 'on' : ''}
             value="btn2"
             name="setBtn2"
             onClick={() => ToggleBtn(btn2, setBtn2)}></button>
         </div>
-        <div>
-          <h2>좋아요 알림</h2>
-          <p>등록 된 게시물의 좋아요 수신 알림</p>
-          <button
-            className={btn3 === 1 ? 'on' : ''}
-            value="btn3"
-            name="setBtn3"
-            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
-        </div>
+
         <div>
           <h2>선물 알림</h2>
           <p>달 선물 수신 알림</p>
@@ -174,7 +166,7 @@ export default props => {
         </div>
         <div>
           <h2>팬 알림</h2>
-          <p>새로운 FAN 등록 수신 알림</p>
+          <p>새로운 팬 등록 수신 알림</p>
           <button
             className={btn5 === 1 ? 'on' : ''}
             value="btn5"
@@ -183,12 +175,21 @@ export default props => {
         </div>
         <div>
           <h2>댓글 알림</h2>
-          <p>신규 댓글 수신 알림</p>
+          <p>팬 보드 신규 글 등록 알림</p>
           <button
             className={btn6 === 1 ? 'on' : ''}
             value="btn6"
             name="setBtn6"
             onClick={() => ToggleBtn(btn6, setBtn6)}></button>
+        </div>
+        <div>
+          <h2>좋아요 알림</h2>
+          <p>등록 된 게시물의 좋아요 수신 알림</p>
+          <button
+            className={btn3 === 1 ? 'on' : ''}
+            value="btn3"
+            name="setBtn3"
+            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
         </div>
         <div>
           <h2>공지 알림</h2>

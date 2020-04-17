@@ -95,7 +95,7 @@ const DatepickerWrap = styled.div`
     line-height: inherit;
   }
   .MuiInputBase-input.MuiInput-input {
-    background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 98% 0%;
+    background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 90% 48%;
     background-size: 24px;
     /* color: rgba(0, 0, 0, 0); */
     color: #616161;
