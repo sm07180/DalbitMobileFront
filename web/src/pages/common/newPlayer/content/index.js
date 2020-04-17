@@ -112,7 +112,7 @@ const MediaPlayerWrap = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
-  bottom: 12px;
+  bottom: 8px;
   width: 100%;
   z-index: 100;
 `
