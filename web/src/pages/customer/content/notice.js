@@ -228,7 +228,7 @@ function Notice(props) {
       </List>
       {/* 컨텐츠 : 클릭 디테일 */}
       <Detail className={Store().noticePage === '' ? 'on' : ''}>
-        <header>
+        <header onClick={GoNotice}>
           <span>{noticeDetail.title}</span>
           <span>{detailDate()}</span>
         </header>
