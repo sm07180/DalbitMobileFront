@@ -292,6 +292,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(0)
+              setPickerCssOn(false)
               pickerOnChange(dateToday, 'btn')
             }}
             className={active === 0 ? 'on' : ''}>
@@ -300,6 +301,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(1)
+              setPickerCssOn(false)
               pickerOnChange(dateDayAgo, 'dayAgo')
             }}
             className={active === 1 ? 'on' : ''}>
@@ -308,6 +310,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(2)
+              setPickerCssOn(false)
               pickerOnChange(dateWeekAgo, 'btn')
             }}
             className={active === 2 ? 'on' : ''}>
@@ -316,6 +319,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(3)
+              setPickerCssOn(false)
               pickerOnChange(dateMonthAgo, 'btn')
             }}
             className={active === 3 ? 'on' : ''}>
@@ -684,7 +688,9 @@ const Report = styled.div`
     /* border: 1px solid #e0e0e0; */
 
     &.on {
-      border: 1px solid ${COLOR_MAIN};
+      section {
+        border: 1px solid ${COLOR_MAIN};
+      }
     }
 
     > section {
