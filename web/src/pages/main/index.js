@@ -287,7 +287,6 @@ export default props => {
               <div
                 className="sequence-wrap"
                 onClick={() => {
-                  // props.history.push('/#')
                   setPopup(popup ? false : true)
                 }}>
                 <span className="text">

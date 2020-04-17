@@ -94,7 +94,7 @@ export default props => {
           right: '충전하기'
         },
         callback: () => {
-          props.history.push('/store')
+          window.location.href = '/store'
         }
       })
     } else {
