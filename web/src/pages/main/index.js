@@ -19,7 +19,7 @@ import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
-import NoResult from 'components/ui/noResult.js'
+import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
 import {broadcastLive} from 'constant/broadcast.js'
@@ -35,7 +35,7 @@ import {RoomMake} from 'context/room'
 
 let concatenating = false
 let tempScrollEvent = null
-const records = 10
+const records = 7
 
 export default props => {
   // reference
@@ -44,6 +44,7 @@ export default props => {
   const RankSectionRef = useRef()
   const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
+  const LiveSectionRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -127,22 +128,33 @@ export default props => {
   }
 
   const windowScrollEvent = () => {
-    const gnbHeight = 48
+    const GnbHeight = 48
+    const sectionMarginTop = 24
+    const LiveTabDefaultHeight = 48
+
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
     const RankSectionNode = RankSectionRef.current
-    const BannerSectionNode = BannerSectionRef.current
     const StarSectionNode = StarSectionRef.current
-    // BannerSectionNode.clientHeight
+    const LiveSectionNode = LiveSectionRef.current
 
-    if (window.scrollY >= SubMainNode.clientHeight + RankSectionNode.clientHeight + StarSectionNode.clientHeight + 48) {
+    const MainHeight = MainNode.clientHeight
+    const SubMainHeight = SubMainNode.clientHeight
+    const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop
+    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight + sectionMarginTop : 0
+    const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
+
+    const TopSectionHeight = SubMainHeight + RankSectionHeight + StarSectionHeight + LiveTabDefaultHeight
+
+    if (!liveCategoryFixed && window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
     }
 
+    const GAP = 200
     if (
-      MainNode.clientHeight + gnbHeight - 150 < window.scrollY + window.innerHeight &&
+      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
@@ -248,21 +260,16 @@ export default props => {
             </div>
           </div>
 
-          {/* <div className="section" ref={BannerSectionRef}>
-            <div className="content-wrap">
-              {Array.isArray(initData.recommend) && initData.recommend.length > 0 && <BannerList list={initData.recommend} />}
-            </div>
-          </div> */}
-
-          <div className="section" ref={StarSectionRef} style={{marginTop: '24px'}}>
-            <div
-              className="content-wrap my-star-list"
-              style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
+          <div
+            className="section"
+            ref={StarSectionRef}
+            style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
+            <div className="content-wrap my-star-list">
               <StarList list={initData.myStar} />
             </div>
           </div>
 
-          <div className="section" style={{marginTop: '24px'}}>
+          <div className="section" ref={LiveSectionRef}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
@@ -303,10 +310,9 @@ export default props => {
               </div>
             </div>
 
-            <div
-              className="content-wrap live-list"
-              // style={liveCategoryFixed ? {marginTop: '28px'} : {}}
-            >
+            {liveCategoryFixed && <div style={{height: '58px'}} />}
+
+            <div className="content-wrap live-list">
               {Array.isArray(liveList) ? (
                 liveList.length > 0 ? (
                   <LiveList list={liveList} />
@@ -314,7 +320,7 @@ export default props => {
                   <NoResult />
                 )
               ) : (
-                <div style={{height: '300px'}}></div>
+                <div style={{height: '315px'}}></div>
               )}
             </div>
           </div>
@@ -338,7 +344,7 @@ export default props => {
 
 const Content = styled.div`
   .section {
-    margin-top: 28px;
+    margin-top: 24px;
 
     .live-list-category {
       position: relative;
@@ -494,6 +500,7 @@ const Content = styled.div`
 
       &.live-list {
         padding-bottom: 100px;
+        height: 415px;
       }
     }
   }

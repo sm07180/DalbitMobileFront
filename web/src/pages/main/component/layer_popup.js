@@ -44,10 +44,6 @@ export default props => {
 
   const wrapTouch = e => {
     e.preventDefault()
-    const target = e.target
-    if (target.id === 'main-layer-popup') {
-      // target.style.touchAction = 'none'
-    }
   }
 
   const applyClick = () => {
