@@ -25,7 +25,7 @@ const Header = styled.div`
   border-bottom: 1px solid #d2d2d2;
   padding: 14px 0;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   .child-bundle {
     display: flex;
     flex-direction: row;

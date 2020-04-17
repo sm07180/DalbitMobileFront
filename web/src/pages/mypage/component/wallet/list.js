@@ -133,12 +133,12 @@ const ListWrap = styled.div`
     .date {
       width: 75px;
       font-size: 14px;
-      color: #bdbdbd;
+      color: #616161;
       font-size: 12px;
     }
 
     &.title {
-      margin-top: 26px;
+      margin-top: 18px;
       color: #632beb;
       font-size: 14px;
       letter-spacing: -0.35px;
@@ -159,7 +159,7 @@ const ListWrap = styled.div`
       .type,
       .date {
         color: #632beb;
-        font-size: 12px;
+        font-size: 16px;
         font-weight: 600;
       }
     }
@@ -205,7 +205,7 @@ const TopArea = styled.div`
 
 const ListContainer = styled.div`
   position: relative;
-  margin-top: 40px;
+  margin-top: 20px;
 
   .mypage-wallet-select-box {
     z-index: 1;

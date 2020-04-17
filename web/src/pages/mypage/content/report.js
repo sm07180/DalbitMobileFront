@@ -273,7 +273,7 @@ export default props => {
         <div className="category-text">리포트</div>
       </Header>
       <Report>
-        <TitleWrap style={{paddingBottom: '25px'}}>
+        <TitleWrap className="noneborder">
           <TitleText>리포트</TitleText>
           <SelectWrap>
             <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
@@ -497,7 +497,7 @@ export default props => {
 }
 
 const MobileDetailTab = styled.div`
-  padding: 16px 10px;
+  padding: 0px 10px;
   border-bottom: 1px solid #e0e0e0;
   div {
     display: flex;
@@ -573,14 +573,17 @@ const ShortSection = styled.div`
     background-color: #e0e0e0;
   }
   > div {
-    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
     color: #616161;
     transform: skew(-0.03deg);
     letter-spacing: -0.3px;
   }
   & .count {
     height: 16px;
-    margin-top: 3px;
+    margin-right: 20px;
     font-size: 14px;
     font-weight: 600;
     color: #424242;
@@ -605,7 +608,7 @@ const TypeBtn = styled.button`
   }
 `
 const TitleSubMsg = styled.div`
-  color: #bdbdbd;
+  color: #757575;
   font-size: 12px;
   height: auto;
   letter-spacing: -0.3px;
@@ -624,8 +627,13 @@ const TitleWrap = styled.div`
   justify-items: center;
   align-items: center;
   border-bottom: 1px solid #632beb;
-  padding-bottom: 25px;
-  margin-top: 40px;
+  padding-bottom: 12px;
+  margin-top: 18px;
+
+  &.noneborder {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 `
 
 const Report = styled.div`
@@ -641,14 +649,19 @@ const Report = styled.div`
       line-height: 40px;
       border: 1px solid #e0e0e0;
       font-size: 14px;
-      color: #757575;
-      margin-right: -1px;
+      color: #424242;
+      /* margin-right: -1px; */
+      margin-left: -1px;
       transform: none;
       &.on {
-        width: calc(25% + 1px);
+        /* width: calc(25% + 1px); */
         border: 1px solid ${COLOR_MAIN};
         color: ${COLOR_MAIN};
-        margin-right: 0;
+        /* margin-right: 0; */
+        z-index: 1;
+      }
+      &.on + button {
+        /* border-left: 0; */
       }
     }
   }
@@ -659,7 +672,7 @@ const Report = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e0e0e0;
+    /* border: 1px solid #e0e0e0; */
 
     &.on {
       border: 1px solid ${COLOR_MAIN};
@@ -668,8 +681,11 @@ const Report = styled.div`
     > section {
       width: 75%;
       display: flex;
-      padding: 0 1.5%;
-      padding-top: 2px;
+      /* padding: 0 calc(1.5% + 5px); */
+      padding-top: 5.5px;
+      padding-bottom: 4px;
+      border: 1px solid #e0e0e0;
+
       & .line {
         width: 10px;
         margin: 0 2.8%;

@@ -131,7 +131,7 @@ const SelectListWrap = styled.div`
 const Selected = styled.div`
   position: relative;
   width: 136px;
-  padding: 11px 10px;
+  padding: 8px 10px;
   box-sizing: border-box;
   border: 1px solid #632beb;
   font-size: 16px;
