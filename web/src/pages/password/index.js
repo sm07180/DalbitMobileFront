@@ -240,7 +240,7 @@ export default props => {
         //성공
         context.action.alert({
           callback: () => {
-            props.history.push('/')
+            window.location.href = '/'
           },
           msg: '비밀번호 변경(을) 성공하였습니다.'
         })

@@ -143,7 +143,26 @@ function Notice(props) {
 
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
-  // console.log(context.noticeIndexNum)
+  console.log(context.noticeIndexNum, context.noticeIndexNum !== '')
+  const boardIndexNum = context.noticeIndexNum.split('/')[3]
+  useEffect(() => {
+    async function fetchData2() {
+      const res = await Api.notice_list_detail({
+        params: {
+          noticeIdx: boardIndexNum
+        }
+      })
+      if (res.result === 'success') {
+        setNoticeDetail(res.data)
+
+        history.push(`/customer/notice/${boardIndexNum}`)
+        Store().action.updatenoticePage(boardIndexNum)
+      } else if (res.result === 'fail') {
+      }
+    }
+
+    fetchData2()
+  }, [context.noticeIndexNum])
   //--------------------------------------------------------
   return (
     <>
