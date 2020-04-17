@@ -3,9 +3,11 @@ import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
+
+import Utility from 'components/lib/utility'
+
 // component
 import Swiper from 'react-id-swiper'
-import NoRsult from 'components/ui/noResult'
 
 // static
 import peopleIcon from '../static/ic_people.svg'
@@ -25,6 +27,11 @@ export default props => {
     slidesPerView: 'auto'
   }
 
+  const testLink = link => {
+    Utility.setCookie('prevUrl', window.location.href, 1)
+    window.location.href = link
+  }
+
   return (
     <RankList>
       {rankType === 'dj' ? (
@@ -33,7 +40,12 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
+                {/* <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}> */}
+                <a
+                  onClick={e => {
+                    e.preventDefault()
+                    testLink(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                  }}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
