@@ -24,7 +24,6 @@ export default props => {
   const context = useContext(Context)
   const MyMemNo = context.profile && context.profile.memNo
   const rankType = props.rankType
-  console.log('rankTyperankType', rankType)
   //---------------------------------------------------------------------
   //map
   const creatList = () => {
