@@ -325,9 +325,9 @@ const ProfileImg = styled.div`
     position: absolute;
     right: 0;
     top: 0px;
-    width: 52px;
+    width: 60px;
     height: 26px;
-    background: url(${LiveIcon}) no-repeat center center / cover;
+    background: url(${LiveIcon}) no-repeat right center;
   }
   & .reportIcon {
     position: absolute;
