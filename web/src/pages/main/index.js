@@ -68,6 +68,10 @@ export default props => {
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
 
   useEffect(() => {
+    if (window.sessionStorage) {
+      sessionStorage.clear()
+    }
+
     ;(async () => {
       const initData = await Api.main_init_data()
       if (initData.result === 'success') {
