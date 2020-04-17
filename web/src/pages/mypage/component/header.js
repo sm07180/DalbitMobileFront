@@ -6,7 +6,12 @@ import closeBtn from './ic_back.svg'
 
 export default props => {
   const goBack = () => {
-    window.history.back()
+    alert(document.referrer)
+    if (document.referrer) {
+      window.location.href = document.referrer
+    } else {
+      window.history.back()
+    }
   }
 
   return (
