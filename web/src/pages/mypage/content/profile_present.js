@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
