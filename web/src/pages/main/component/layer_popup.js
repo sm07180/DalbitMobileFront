@@ -20,7 +20,7 @@ export default props => {
     document.body.style.overflow = 'hidden'
 
     const layerWrapNode = layerWrapRef.current
-    layerWrapNode.style.overflow = 'hidden'
+    layerWrapNode.style.touchAction = 'none'
 
     return () => {
       prevAlign = null
@@ -44,10 +44,6 @@ export default props => {
 
   const wrapTouch = e => {
     e.preventDefault()
-    const target = e.target
-    if (target.id === 'main-layer-popup') {
-      // target.style.touchAction = 'none'
-    }
   }
 
   const applyClick = () => {

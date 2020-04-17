@@ -377,7 +377,8 @@ const NicknameInput = styled.input.attrs({type: 'text'})`
 const ProfileImg = styled.div`
   position: relative;
   margin: 0 auto;
-  margin-bottom: 32px;
+  margin-bottom: 25px;
+  margin-top: 20px;
   border: 1px solid #8556f5;
   border-radius: 50%;
   width: 88px;
@@ -417,7 +418,8 @@ const SettingWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {
-    width: 91.111%;
+    width: 100%;
+    padding: 0 16px;
   }
 `
 

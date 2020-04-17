@@ -143,12 +143,15 @@ export default props => {
                   <em>내가 보유한 달</em>
                   <span>
                     {myDalCnt}
-                    <button
-                      onClick={() => {
-                        props.history.push('/store')
-                      }}>
-                      충전
-                    </button>
+
+                    {context.customHeader['os'] === OS_TYPE['IOS'] && (
+                      <button
+                        onClick={() => {
+                          webkit.messageHandlers.openInApp.postMessage('')
+                        }}>
+                        충전
+                      </button>
+                    )}
                   </span>
                 </MyPoint>
                 <Select>

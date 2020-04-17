@@ -6,6 +6,7 @@ import Api from 'context/api'
 
 // context
 import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
 
 // component
 import Paging from 'components/ui/paging.js'
@@ -19,6 +20,8 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import Header from '../component/header.js'
 export default props => {
   let history = useHistory()
+
+  const context = useContext(Context)
 
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
   const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
@@ -118,7 +121,17 @@ export default props => {
             //   }}>
             //   충전하기
             // </CoinChargeBtn>
-            <></>
+
+            <>
+              {context.customHeader['os'] === OS_TYPE['IOS'] && (
+                <CoinChargeBtn
+                  onClick={() => {
+                    webkit.messageHandlers.openInApp.postMessage('')
+                  }}>
+                  충전하기
+                </CoinChargeBtn>
+              )}
+            </>
           ) : (
             <>
               {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
