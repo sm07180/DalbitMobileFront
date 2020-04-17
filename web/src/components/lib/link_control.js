@@ -1,13 +1,11 @@
-import Utility from 'components/lib/utility'
-
 export const saveUrlAndRedirect = targetLink => {
-  Utility.setCookie(targetLink, window.location.href, 1)
+  sessionStorage.setItem(targetLink, window.location.href)
   window.location.href = targetLink
 }
 
 export const getUrlAndRedirect = () => {
-  const prevUrl = Utility.getCookie(location.pathname)
-  Utility.setCookie(location.pathname, '', -1)
+  const prevUrl = sessionStorage.getItem(location.pathname)
+  sessionStorage.removeItem(location.pathname)
 
   if (prevUrl) {
     window.location.href = prevUrl
