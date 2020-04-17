@@ -53,6 +53,7 @@ native-push-foreground
         //  pushMsg = pushMsg.trim()
         pushMsg = JSON.parse(data)
         const {push_type} = pushMsg
+        alert(push_type)
         let room_no, mem_no
         //---------------------[분기처리시작]
         switch (push_type) {
