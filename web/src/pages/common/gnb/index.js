@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
@@ -22,6 +22,9 @@ export default props => {
 
   const globalCtx = useContext(Context)
   const {logoChange, token} = globalCtx
+
+  // static
+  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
 
   const reLoad = () => {
     window.location.href = '/'
@@ -65,7 +68,11 @@ export default props => {
         <div
           className="mic-btn"
           onClick={() => {
-            RoomMake()
+            if (!broadcastBtnActive) {
+              RoomMake(globalCtx)
+              setBroadcastBtnActive(true)
+              setTimeout(() => setBroadcastBtnActive(false), 3000)
+            }
           }}>
           <img src={Mic} />
         </div>
