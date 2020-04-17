@@ -4,20 +4,11 @@ import styled from 'styled-components'
 // static
 import closeBtn from './ic_back.svg'
 
-import Utility from 'components/lib/utility'
+import {getUrlAndRedirect} from 'components/lib/link_control.js'
 
 export default props => {
   const goBack = () => {
-    const prevUrl = Utility.getCookie('prevUrl')
-    if (prevUrl) {
-      alert(prevUrl)
-      window.location.href = prevUrl
-    }
-    // if (document.referrer) {
-    //   window.location.href = document.referrer
-    // } else {
-    //   window.history.back()
-    // }
+    getUrlAndRedirect()
   }
 
   return (
