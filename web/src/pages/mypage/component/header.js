@@ -4,13 +4,20 @@ import styled from 'styled-components'
 // static
 import closeBtn from './ic_back.svg'
 
+import Utility from 'components/lib/utility'
+
 export default props => {
   const goBack = () => {
-    if (document.referrer) {
-      window.location.href = document.referrer
-    } else {
-      window.history.back()
+    const prevUrl = Utility.getCookie('prevUrl')
+    if (prevUrl) {
+      alert(prevUrl)
+      window.location.href = prevUrl
     }
+    // if (document.referrer) {
+    //   window.location.href = document.referrer
+    // } else {
+    //   window.history.back()
+    // }
   }
 
   return (

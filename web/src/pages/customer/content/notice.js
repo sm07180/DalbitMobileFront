@@ -18,7 +18,6 @@ import NewIcon from './static/ic_new.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 //components
-import Utility from 'components/lib/utility'
 
 ////////////////////////////////////////////////////////////////////////////////////
 function Notice(props) {
@@ -69,10 +68,8 @@ function Notice(props) {
       }
     })
     if (res.result === 'success') {
-      //console.log(res.data.list)
       setNoticeList(res.data.list)
     } else if (res.result === 'fail') {
-      // console.log(res)
     }
   }
   //api----디테일스
@@ -85,7 +82,6 @@ function Notice(props) {
     if (res.result === 'success') {
       setNoticeDetail(res.data)
     } else if (res.result === 'fail') {
-      // console.log(res)
     }
   }
   //function---------------------------------------

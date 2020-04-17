@@ -168,6 +168,7 @@ export default props => {
 
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
+  //클릭 배너 이동
   const {customHeader, token} = context || Room.context
   const clickSlideDisplay = data => {
     const {roomType} = data
