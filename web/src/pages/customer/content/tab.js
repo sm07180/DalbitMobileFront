@@ -47,6 +47,7 @@ export default props => {
       const push = () => {
         history.push(`/customer/${type}`)
         Store().action.updateCode(type)
+        Store().action.updatenoticePage('')
       }
       return (
         <button onClick={() => push()} key={index} className={Store().menuCode === type ? 'on' : ''}>
