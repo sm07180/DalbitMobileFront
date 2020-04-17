@@ -171,7 +171,6 @@ export default props => {
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
   const clickSlideDisplay = data => {
-    console.log(data)
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
