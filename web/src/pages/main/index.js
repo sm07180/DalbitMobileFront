@@ -49,6 +49,8 @@ export default props => {
   //context
   const globalCtx = useContext(Context)
   const history = useHistory()
+
+  // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
@@ -62,6 +64,8 @@ export default props => {
 
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
+
+  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -228,7 +232,11 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  RoomMake(globalCtx)
+                  if (!broadcastBtnActive) {
+                    RoomMake(globalCtx)
+                    setBroadcastBtnActive(true)
+                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  }
                 }}>
                 방송하기
               </div>
