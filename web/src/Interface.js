@@ -45,13 +45,10 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
-        alert(event.detail)
-        alert(typeof event.detail)
-
-        let pushMsg = event.detail
-        // pushMsg = pushMsg
-
+        let pushMsg = decodeURIComponent(event.detail)
+        //  pushMsg = pushMsg.trim()
         pushMsg = JSON.parse(pushMsg)
+        alert(pushMsg)
         const {push_type} = pushMsg
 
         let room_no, mem_no
@@ -106,7 +103,7 @@ native-push-foreground
       case 'native-push-foreground': //----------------------native-push-foreground
         //alert('native-push-foreground')
         let pushMsg1 = decodeURIComponent(event.detail)
-        pushMsg1 = pushMsg1.trim()
+        // pushMsg1 = pushMsg1.trim()
         pushMsg1 = JSON.parse(pushMsg1)
         const {push_type1} = pushMsg1
         //---------------------[분기처리시작]
