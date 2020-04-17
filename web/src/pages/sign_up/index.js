@@ -392,6 +392,10 @@ export default props => {
       } else {
         setPickerState(false)
       }
+      setChanges({
+        ...changes,
+        birth: value
+      })
     } else {
       if (pickerHolder) {
         pickerHolder = false

@@ -25,6 +25,8 @@ export default props => {
 
   const nicknameReference = useRef()
 
+  const {isOAuth} = token
+
   const profileImageUpload = e => {
     const target = e.currentTarget
     let reader = new FileReader()
@@ -178,21 +180,24 @@ export default props => {
                 <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
               </div>
               <UserId>{`@${profile.memId}`}</UserId>
-              <PasswordWrap>
-                <PasswordTextWrap>
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                </PasswordTextWrap>
-                <PasswordRedirectBtn>
-                  <Link to="/password">비밀번호 변경</Link>
-                </PasswordRedirectBtn>
-              </PasswordWrap>
+              {!isOAuth && (
+                <PasswordWrap>
+                  <PasswordTextWrap>
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                    <PasswordCircle />
+                  </PasswordTextWrap>
+
+                  <PasswordRedirectBtn>
+                    <Link to="/password">비밀번호 변경</Link>
+                  </PasswordRedirectBtn>
+                </PasswordWrap>
+              )}
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 <GenderTab
