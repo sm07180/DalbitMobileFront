@@ -106,7 +106,8 @@ const Container = styled.div`
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     main {
-      width: 91.111%;
+      width: 100%;
+      padding: 0 16px;
     }
   }
   .close-btn {

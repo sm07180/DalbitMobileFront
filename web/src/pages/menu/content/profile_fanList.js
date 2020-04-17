@@ -166,6 +166,15 @@ export default props => {
       fetchDataHoleFan()
     }
   }, [select])
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = ''
+      console.log('xz')
+    }
+  }, [])
   // console.log(starInfo)
   //------------------------------------------------------------
   return (

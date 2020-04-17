@@ -86,6 +86,7 @@ const Container = styled.div`
     letter-spacing: -0.7px;
   }
   @media (max-width: 1240px) {
-    width: 91.111%;
+    width: 100%;
+    padding: 0 16px;
   }
 `

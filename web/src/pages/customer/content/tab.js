@@ -66,28 +66,37 @@ export default props => {
 }
 //--------------------------------------------------------------------
 const Wrap = styled.div`
+  /* width: 109%; */
+  width: calc(100% + 32px);
+  margin-left: -16px;
   & > div {
     display: flex;
-    margin-top: 59px;
+    margin-top: -1px;
+    border-bottom: 1px solid ${COLOR_MAIN};
     & button {
       flex: 1;
-      height: 48px;
-      border: 1px solid #e0e0e0;
-      border-bottom: 1px solid ${COLOR_MAIN};
+      height: 40px;
+      border: 1px solid #d2d2d2;
+      border-bottom: 0;
       border-right: none;
       color: ${COLOR_MAIN};
-      font-size: 14px;
+      font-size: 15px;
+      letter-spacing: -0.3px;
       &:nth-child(3) {
-        border-right: 1px solid #e0e0e0;
+        border-right: 1px solid #d2d2d2;
       }
     }
     @media (max-width: ${WIDTH_MOBILE}) {
-      margin-top: 26px;
+      /* margin-top: 26px; */
     }
     & button.on {
       background-color: ${COLOR_MAIN};
       border: 1px solid ${COLOR_MAIN};
       color: #fff;
+      border-right: 0;
+    }
+    & button.on + button {
+      border-left: 0;
     }
   }
 `

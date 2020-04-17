@@ -22,12 +22,14 @@ export default props => {
 const Header = styled.div`
   position: relative;
   display: flex;
+  width: calc(100% + 32px);
+  margin-left: -16px;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #d2d2d2;
-  padding: 14px 0;
+  padding: 14px 16px;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  z-index: 1;
   .child-bundle {
     display: flex;
     flex-direction: row;
@@ -44,7 +46,7 @@ const Header = styled.div`
 
   .close-btn {
     position: absolute;
-    left: 0;
+    left: 6px;
     display: block;
     width: 36px;
   }

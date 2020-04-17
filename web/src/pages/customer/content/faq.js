@@ -148,7 +148,7 @@ function Faq(props) {
   return (
     <>
       {/* 컨텐츠 : 게시판 스타일 */}
-      <ContentInfo onClick={() => SetListhide('')}>
+      {/* <ContentInfo onClick={() => SetListhide('')}>
         <h2>
           {faqNum === 0 ? '전체' : ''}
           {faqNum === 1 ? '일반' : ''}
@@ -182,7 +182,7 @@ function Faq(props) {
             type={'remove-init-data'}
           />
         </div>
-      </ContentInfo>
+      </ContentInfo> */}
 
       <PageWrap>
         <dl>

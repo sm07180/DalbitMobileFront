@@ -149,7 +149,7 @@ function Notice(props) {
     <>
       <List className={Store().noticePage !== '' ? 'on' : ''}>
         {/* 컨텐츠 : 게시판 스타일 */}
-        <ContentInfo>
+        {/* <ContentInfo>
           <h2>
             {noticeNum === 0 ? '전체' : ''}
             {noticeNum === 1 ? '공지사항' : ''}
@@ -170,7 +170,7 @@ function Notice(props) {
           <div className="m-catecory">
             <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: 0, zIndex: 8}} />
           </div>
-        </ContentInfo>
+        </ContentInfo> */}
 
         <PageWrap>
           <dl>
@@ -251,8 +251,9 @@ const List = styled.section`
 
 const Detail = styled.section`
   display: block;
-  margin-top: 40px;
-  border-top: 1px solid ${COLOR_MAIN};
+  width:110%;
+  margin-lefT:-5%;
+  /* border-top: 1px solid ${COLOR_MAIN}; */
 
   & > header {
     display: flex;
@@ -278,7 +279,7 @@ const Detail = styled.section`
   & > div {
     border-top: 1px solid #f5f5f5;
     border-bottom: 1px solid #f5f5f5;
-    padding: 40px 20px 60px 20px;
+    padding: 20px;
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
@@ -300,19 +301,17 @@ const Detail = styled.section`
 `
 
 const PageWrap = styled.div`
-  margin-top: 25px;
-  border-top: 1px solid ${COLOR_MAIN};
+  
+  /* border-top: 1px solid ${COLOR_MAIN}; */
   & dl {
     width: 100%;
   }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 16px;
-  }
+  
 `
 const PageNumber = styled.nav`
   display: flex;
   justify-content: center;
-  margin: 40px 0 100px 0;
+  margin: 20px 0 100px 0;
   & > button {
     display: block;
     width: 36px;
@@ -342,7 +341,7 @@ const PageNumber = styled.nav`
 const TableWrap = styled.div`
   display: flex;
   border-bottom: 1px solid #e0e0e0;
-  padding: 16px 0;
+  padding: 10px 0;
   cursor: pointer;
   & em {
     display: inline-block;
@@ -359,7 +358,7 @@ const TableWrap = styled.div`
   & dt {
     width: 120px;
     color: ${COLOR_MAIN};
-    font-size: 14px;
+    font-size: 16px;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       display: none;
@@ -369,21 +368,22 @@ const TableWrap = styled.div`
     display: flex;
     align-items: center;
     width: calc(100% - 240px);
-    font-size: 14px;
-    color: #424242;
+    font-size: 16px;
+    color: #000;
     transform: skew(-0.03deg);
+    letter-spacing: -0.5px;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
     }
   }
   & dd:last-child {
     width: 120px;
-    font-size: 12px;
-    color: #bdbdbd;
+    font-size: 14px;
+    color: #616161;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 90%;
-      margin-top: 8px;
+      margin-top: 4px;
       line-height: 1.4;
     }
   }

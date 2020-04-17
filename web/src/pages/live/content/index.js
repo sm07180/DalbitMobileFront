@@ -69,7 +69,8 @@ export default Index
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  width: 91.111%;
+  width: 100%;
+  padding: 0 16px;
   margin: 0 auto;
   box-sizing: border-box;
 
