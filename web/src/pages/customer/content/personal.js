@@ -159,9 +159,6 @@ const Personal = props => {
   useEffect(() => {
     setChanges({...changes, qnaType: faqNum})
   }, [faqNum])
-
-  console.log(imgurls)
-
   useEffect(() => {
     setImgurl('파일을 첨부할 수 있습니다.')
   }, [])
