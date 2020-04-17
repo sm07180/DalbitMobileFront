@@ -63,6 +63,7 @@ native-push-foreground
             break
           case '31': //-----------------마이페이지>팬 보드
             mem_no = pushMsg.mem_no
+            alert(mem_no)
             window.location.href = `/mypage/${mem_no}/fanboard`
             break
           case '32': //-----------------마이페이지>내 지갑
