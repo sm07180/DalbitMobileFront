@@ -591,7 +591,7 @@ const TextCount = styled.div`
   width: calc(100% - 92px);
   font-size: 14px;
   padding: 17px 20px;
-  height: 50px;
+  height: 52px;
   box-sizing: border-box;
   border-top: 1px solid #ededed;
   border-bottom: 1px solid #d0d0d0;
@@ -655,7 +655,7 @@ const WriteArea = styled.div`
     display: block;
     margin-top: 10px;
     & button {
-      padding: 14px 0;
+      padding: 15px 0;
     }
   }
 `
