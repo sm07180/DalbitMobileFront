@@ -8,7 +8,7 @@ import Room, {RoomJoin} from 'context/room'
 // component
 import CustomSwiper from 'components/ui/swiper.js'
 import {IMG_SERVER} from 'context/config'
-
+import {Hybrid, isHybrid} from 'context/hybrid'
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
@@ -171,7 +171,9 @@ export default props => {
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
   const clickSlideDisplay = data => {
-    const {roomType} = data
+    console.log(data)
+    const {roomType, roomNo} = data
+
     if (roomType === 'link') {
       const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
@@ -181,6 +183,10 @@ export default props => {
         // } else {
         history.push(`${roomNo}`)
         // }
+      }
+    } else {
+      if (isHybrid() && roomNo) {
+        RoomJoin(roomNo)
       }
     }
   }
