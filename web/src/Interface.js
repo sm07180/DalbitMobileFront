@@ -45,7 +45,8 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
-        alert(pushMsg)
+        alert(event.detail)
+        alert(typeof event.detail)
         return
         let pushMsg = decodeURIComponent(event.detail)
         pushMsg = pushMsg.trim()
