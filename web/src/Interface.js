@@ -48,11 +48,10 @@ native-push-foreground
       case 'native-push-background': //----------------------------native-push-foreground
         const data = event.detail
         alert(data)
+        let pushMsg = JSON.parse(data)
 
-        //  alert(pushMsg)
-        //  pushMsg = pushMsg.trim()
-        pushMsg = JSON.parse(data)
         alert(pushMsg)
+        //  pushMsg = pushMsg.trim()
 
         const {push_type} = pushMsg
         alert(push_type)
