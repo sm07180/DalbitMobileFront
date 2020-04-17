@@ -360,7 +360,7 @@ export default props => {
         </WriteArea>
         <article className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
           <StartBottom>
-            <div>{placeholderTextStart}</div>
+            <div className="start">{placeholderTextStart}</div>
             <button>등록</button>
           </StartBottom>
         </article>
@@ -468,7 +468,7 @@ export default props => {
                             </div>
                             <BtnIcon
                               onClick={() => setShowBtnReply(boardIdx)}
-                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
+                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'onStart' : ''}></BtnIcon>
                             <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
                               <a
                                 className={writerNo === profile.memNo ? 'on' : ''}
@@ -486,7 +486,7 @@ export default props => {
                         </ReplyWrap>
                       )
                     })}
-                    <StartBottom className={hidden === false ? '' : 'disable'}>
+                    <StartBottom className={hidden === false ? 'bottomstart' : 'disable'}>
                       <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} maxLength={100} />
                       <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
                     </StartBottom>
@@ -543,8 +543,8 @@ const ReplyWrap = styled.div`
   padding: 0 20px;
   border-bottom: 1px solid #eeeeee;
 
-  &:last-child {
-    border-bottom: 1px solid none;
+  :last-child {
+    border-bottom: none !important;
   }
 
   &.disable {
@@ -573,9 +573,10 @@ const CommentSubmitBtn = styled.button`
   text-align: center;
   font-size: 16px;
   color: #fff;
-  padding: 16px 0;
+  padding: 14.5px 0;
   background-color: #632beb;
   position: relative;
+  margin-right: -1px;
 `
 const CommentSubmitBtnCancel = styled.button`
   width: 92px;
@@ -590,7 +591,7 @@ const TextCount = styled.div`
   width: calc(100% - 92px);
   font-size: 14px;
   padding: 17px 20px;
-  height: 50px;
+  height: 51px;
   box-sizing: border-box;
   border-top: 1px solid #ededed;
   border-bottom: 1px solid #d0d0d0;
@@ -653,11 +654,48 @@ const WriteArea = styled.div`
   &.onModify {
     display: block;
     margin-top: 10px;
+    & button {
+      padding: 15px 0;
+    }
   }
 `
 const StartBottom = styled.div`
   display: flex;
-  border: 1px solid #d0d0d0;
+  > div.start{
+    border: 1px solid #d0d0d0;
+  }
+
+  &.bottomstart {
+    border: none;
+    /* border-bottom: 1px solid #eeeeee; */
+    padding: 16px;
+
+    > div {
+      display: block;
+      width: auto;
+      padding: 16px 0 16px 16px;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.35px;
+      transform: skew(-0.03deg);
+      color: #bdbdbd;
+      font-size: 14px;
+      letter-spacing: -0.35px;
+      line-height: 1.43;
+      transform: skew(-0.03deg);
+    }
+
+    input {
+      display: block;
+      width: calc(100% - 68px);
+      padding: 16px 0 16px 16px;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.35px;
+      transform: skew(-0.03deg);
+      border:1px solid #d0d0d0;
+    }
+  }
   > div {
     display: block;
     width: calc(100% - 68px);
@@ -695,6 +733,8 @@ const StartBottom = styled.div`
     width: 68px;
     background-color: ${COLOR_MAIN};
     color: #fff;
+    /* border-bottom: 1px solid ${COLOR_MAIN};
+    border-top: 1px solid ${COLOR_MAIN}; */
   }
   &.on {
     margin-top: 18px;
@@ -806,34 +846,36 @@ const CommentBox = styled.div`
     width: calc(100% + 9.8%);
     margin-left: -4.9%;
     margin-bottom: -1px;
-    padding: 18px 4.445% 18px 4.445%;
-    border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee;
+    /* padding: 18px 4.445% 18px 4.445%; */
+    /* border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee; */
     background-color: #f8f8f8;
 
     & > div:first-child > .titlewrap {
-      padding-top: 0;
+      padding-top: 20px;
     }
   }
-
+  & .startBtn {
+    right: 10px;
+  }
   & .replyContent {
     display: block;
     position: relative;
     padding: 0 20px;
-    border-bottom: 1px solid #eeeeee;
+    /* border-bottom: 1px solid #eeeeee; */
 
     &:last-child {
-      border-bottom: 1px solid none;
+      /* border-bottom: 1px solid none; */
     }
   }
   & .disableReplyContent {
     display: none;
     position: relative;
     padding: 0 20px;
-    border-bottom: 1px solid #eeeeee;
+    /* border-bottom: 1px solid #eeeeee; */
 
     &:last-child {
-      border-bottom: 1px solid none;
+      /* border-bottom: 1px solid none; */
     }
   }
 `
@@ -901,6 +943,10 @@ const BtnIcon = styled.button`
   &.on {
     display: block;
   }
+  &.onStart {
+    right: 16px;
+    display: block;
+  }
 `
 
 const MMwrap = styled.section`
@@ -931,38 +977,19 @@ const MMwrap = styled.section`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 0 16px 16px;
+    padding: 0px 0 0px 16px;
     .cancelbtns {
-      height: 52px;
+      height: 42px;
       background-color: #bdbdbd;
     }
     .btnwraps {
+      margin: 10px 0;
       display: flex;
     }
     .modifyTextCount {
       border: none;
       height: 52px;
+      padding: 17px 0;
     }
-  }
-`
-const TopWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid ${COLOR_MAIN};
-  align-items: center;
-  margin-top: 20px;
-  padding-bottom: 12px;
-  button:nth-child(1) {
-    width: 24px;
-    height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
-  }
-  .title {
-    width: calc(100% - 24px);
-    color: ${COLOR_MAIN};
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: -0.5px;
-    text-align: center;
   }
 `

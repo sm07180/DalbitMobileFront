@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 
 // static
@@ -11,10 +11,16 @@ export default props => {
   const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, resetFetchList} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
+  // reference
+  const layerWrapRef = useRef()
+
   useEffect(() => {
     prevAlign = liveAlign
     prevGender = liveGender
     document.body.style.overflow = 'hidden'
+
+    const layerWrapNode = layerWrapRef.current
+    layerWrapNode.style.overflow = 'hidden'
 
     return () => {
       prevAlign = null
@@ -38,6 +44,10 @@ export default props => {
 
   const wrapTouch = e => {
     e.preventDefault()
+    const target = e.target
+    if (target.id === 'main-layer-popup') {
+      // target.style.touchAction = 'none'
+    }
   }
 
   const applyClick = () => {
@@ -60,7 +70,7 @@ export default props => {
   }
 
   return (
-    <PopupWrap id="main-layer-popup" onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
+    <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">상세조건</div>

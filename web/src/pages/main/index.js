@@ -303,7 +303,10 @@ export default props => {
               </div>
             </div>
 
-            <div className="content-wrap live-list" style={liveCategoryFixed ? {marginTop: '28px'} : {}}>
+            <div
+              className="content-wrap live-list"
+              // style={liveCategoryFixed ? {marginTop: '28px'} : {}}
+            >
               {Array.isArray(liveList) ? (
                 liveList.length > 0 ? (
                   <LiveList list={liveList} />

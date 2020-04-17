@@ -27,11 +27,15 @@ export default props => {
     window.location.href = '/'
   }
   const moveToMenu = category => {
+    return (window.location.href = `/menu/${category}`)
+  }
+  const moveToLogin = category => {
     if (!token.isLogin) {
       return (window.location.href = '/login')
     }
     return (window.location.href = `/menu/${category}`)
   }
+
   const scrollEvent = () => {
     const gnbHeight = 48
 
@@ -54,7 +58,7 @@ export default props => {
     <GnbWrap>
       <div className="icon-wrap">
         <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
-        <img className="icon" src={Alarm} onClick={() => moveToMenu('alarm')} />
+        <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
         {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
       </div>
       {logoChange ? (
@@ -69,7 +73,7 @@ export default props => {
         <img className="logo" src={Logo} onClick={reLoad} />
       )}
       <div className="icon-wrap">
-        <img className="icon" src={My} onClick={() => moveToMenu('profile')} style={{marginLeft: '36px'}} />
+        <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
         {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
       </div>
     </GnbWrap>

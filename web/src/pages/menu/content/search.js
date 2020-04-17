@@ -86,9 +86,10 @@ export default props => {
       case mode.select !== undefined: //-------------------------------검색결과 아이템선택
         const {roomNo, memNo, type} = mode.select
         //라이브중아님,사용자검색
-        if (roomNo !== '' && roomNo !== '0' && type !== 'member') {
+        if (roomNo !== '' && roomNo !== '0') {
           RoomJoin(roomNo)
-        } else {
+          // console.log('조인')
+        } else if (roomNo === '0') {
           window.location.href = `/mypage/${memNo}/`
         }
         break
