@@ -32,7 +32,7 @@ export default props => {
       let rankName
       let link = ''
       if (webview) {
-        link = MyMemNo !== memNo ? `/mypage/${memNo}/initial?webview=${webview}` : `/menu/profile`
+        link = MyMemNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
       } else {
         link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
       }
