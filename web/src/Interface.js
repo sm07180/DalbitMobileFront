@@ -14,6 +14,7 @@ import {Context} from 'context'
 import Room, {RoomJoin} from 'context/room'
 //util
 import Utility from 'components/lib/utility'
+import {decode} from 'punycode'
 
 export default () => {
   //context
@@ -45,10 +46,12 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
-        alert(event.detail)
+        const data = event.detail
+        alert(data)
 
-        let pushMsg = decodeURIComponent(event.detail)
-        alert(pushMsg)
+        const msg = decode(data)
+        // let pushMsg = decodeURIComponent(event.detail)
+        alert(msg)
         //  alert(pushMsg)
         //  pushMsg = pushMsg.trim()
         // pushMsg = JSON.parse(pushMsg)
