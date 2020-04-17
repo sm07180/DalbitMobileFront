@@ -142,7 +142,7 @@ export default props => {
         <ul className="list-item search">
           {userList.map((item, index) => {
             const {memNo, nickNm, memId, profImg} = item
-            const link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
                 <a href={link}>
@@ -183,7 +183,7 @@ export default props => {
           {managerList.map((item, index) => {
             const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
-            const link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
                 <a href={link}>

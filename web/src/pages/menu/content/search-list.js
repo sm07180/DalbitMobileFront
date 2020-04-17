@@ -27,14 +27,6 @@ export default props => {
     }
   }
 
-  // const JoinBroadProfile = (roomNo, memNo) => {
-  //   if (roomNo !== '0') {
-  //     RoomJoin(roomNo)
-  //     console.log(roomNo)
-  //   } else if (roomNo === '0') {
-  //     window.location.href = `/mypage/${memNo}/initial`
-  //   }
-  // }
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
