@@ -1,7 +1,9 @@
 import React, {useEffect, useState, useRef, useContext} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
+import {Context} from 'context'
 //context
+import {useHistory} from 'react-router-dom'
 import Room, {RoomJoin} from 'context/room'
 // component
 import CustomSwiper from 'components/ui/swiper.js'
@@ -17,7 +19,9 @@ let touchStartStatus = false
 let direction = null
 
 export default props => {
+  const context = useContext(Context)
   const {list} = props
+  const history = useHistory()
   // const context = useContext(Context)
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
@@ -169,9 +173,11 @@ export default props => {
     const {roomType} = data
     if (roomType === 'link') {
       const {roomNo} = data
-      // context.action.updatenoticeIndexNum(roomNo)
+      context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '') {
-        window.location.href = roomNo
+        // window.location.href = roomNo
+        history.push(`/customer/notice`)
+        //console.log(roomNo)
       }
     }
   }
