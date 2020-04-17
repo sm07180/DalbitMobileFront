@@ -47,9 +47,10 @@ native-push-foreground
       case 'native-push-background': //----------------------------native-push-foreground
         let pushMsg = decodeURIComponent(event.detail)
         //  pushMsg = pushMsg.trim()
-        pushMsg = JSON.parse(pushMsg)
+        // pushMsg = JSON.parse(pushMsg)
         alert(pushMsg)
-        const {push_type} = pushMsg
+        return
+        //  const {push_type} = pushMsg
 
         let room_no, mem_no
         //---------------------[분기처리시작]
