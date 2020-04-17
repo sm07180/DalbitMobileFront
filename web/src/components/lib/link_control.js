@@ -7,6 +7,8 @@ export const saveUrlAndRedirect = link => {
 
 export const getUrlAndRedirect = () => {
   const prevUrl = Utility.getCookie('prevUrl')
+  Utility.setCookie('prevUrl', '', -1)
+
   if (prevUrl) {
     window.location.href = prevUrl
   } else {
