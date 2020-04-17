@@ -178,8 +178,9 @@ native-push-foreground
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
+        //쿠키삭제
+        Utility.setCookie('native-player-info', '', -1)
         context.action.updatePlayer(false)
-
         context.action.updateMediaPlayerStatus(false)
         //방송종료
         context.action.updateCastState(false)

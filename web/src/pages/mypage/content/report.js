@@ -178,8 +178,17 @@ export default props => {
 
     setChanges({
       ...changes,
-      pickdataPrev: value
+      pickdataPrev: value,
+      pickdataNext: dateToday
     })
+
+    if (btn == 'dayAgo') {
+      setChanges({
+        ...changes,
+        pickdataPrev: value,
+        pickdataNext: value
+      })
+    }
   }
 
   const pickerOnChangenext = value => {
@@ -291,7 +300,7 @@ export default props => {
           <button
             onClick={() => {
               setActive(1)
-              pickerOnChange(dateDayAgo, 'btn')
+              pickerOnChange(dateDayAgo, 'dayAgo')
             }}
             className={active === 1 ? 'on' : ''}>
             어제

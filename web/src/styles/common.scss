@@ -37,6 +37,7 @@ $COLOR_POINT_P: #e84d70;
   padding: 0;
   border: 0;
   box-sizing: border-box;
+  // color: #424242;
 }
 html,
 body {
@@ -45,6 +46,8 @@ body {
   font-weight: 400;
   -webkit-text-size-adjust: none;
   height: 100vh;
+  color: #424242;
+  overflow-x: hidden;
 }
 pre,
 textarea {

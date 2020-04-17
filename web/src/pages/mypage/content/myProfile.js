@@ -202,7 +202,7 @@ const myProfile = props => {
             {createFanList()}
             {urlrStr !== myProfileNo && (
               <div className="notBjWrap">
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                {/* {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <></>
                 ) : (
                   <button
@@ -212,7 +212,7 @@ const myProfile = props => {
                     <span></span>
                     <em>선물</em>
                   </button>
-                )}
+                )} */}
                 {profile.isFan === 0 && (
                   <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
                     팬

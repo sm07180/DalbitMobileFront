@@ -1,13 +1,14 @@
 import React, {useEffect, useState, useRef} from 'react'
 import styled from 'styled-components'
-
+import Lottie from 'react-lottie'
 //context
 import Room, {RoomJoin} from 'context/room'
 // component
 import CustomSwiper from 'components/ui/swiper.js'
+import {IMG_SERVER} from 'context/config'
 
 // static
-import LiveIcon from '../static/ic_live.png'
+import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
 
 let touchStartX = null
@@ -207,8 +208,19 @@ export default props => {
           </>
         )}
         {list[selectedBIdx]['nickNm'] !== 'banner' ? (
-          <img className="live-icon" src={LiveIcon} />
+          <span className="live-icon">
+            <Lottie
+              options={{
+                width: 51,
+                height: 16,
+                loop: true,
+                autoPlay: true,
+                animationData: animationData
+              }}
+            />
+          </span>
         ) : (
+          // <img className="live-icon" src={LiveIcon} />
           <img className="live-icon" src={EventIcon} />
         )}
         {Array.isArray(list) && list.length > 0 && (

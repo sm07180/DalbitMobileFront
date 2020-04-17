@@ -112,12 +112,13 @@ export default props => {
 
         <div>
           {coinType === 'dal' ? (
-            <CoinChargeBtn
-              onClick={() => {
-                history.push('/store')
-              }}>
-              충전하기
-            </CoinChargeBtn>
+            // <CoinChargeBtn
+            //   onClick={() => {
+            //     history.push('/store')
+            //   }}>
+            //   충전하기
+            // </CoinChargeBtn>
+            <></>
           ) : (
             <>
               {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
