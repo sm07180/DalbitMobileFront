@@ -209,6 +209,7 @@ const CoinCurrentStatus = styled.div`
 `
 const CoinCountingView = styled.div`
   border: 3px solid #632beb;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;

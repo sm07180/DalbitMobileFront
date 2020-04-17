@@ -141,7 +141,7 @@ export default props => {
   const makeContent = () => {
     return (
       <Content>
-        <div>
+        <div className="holeAlarm">
           <h2 className="on">전체 알림 수신</h2>
           <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
         </div>
@@ -236,6 +236,11 @@ const Content = styled.div`
     min-height: 44px;
     padding: 8px 0;
     color: #616161;
+    &.holeAlarm {
+      h2 {
+        font-size: 16px;
+      }
+    }
     h2 {
       font-size: 14px;
       color: #424242;
@@ -251,8 +256,8 @@ const Content = styled.div`
       position: absolute;
       top: 50%;
       right: 0;
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
       background: url(${alarmOff}) no-repeat center center / cover;
       transform: translateY(-50%);
       &.on {
@@ -261,7 +266,7 @@ const Content = styled.div`
     }
     p {
       margin-top: 14px;
-      color: #bdbdbd;
+      color: #757575;
       font-size: 12px;
       line-height: 1.08;
       letter-spacing: -0.3px;

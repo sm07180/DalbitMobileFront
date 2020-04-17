@@ -323,7 +323,7 @@ const SearchArea = styled.div`
     top: 0;
 
     height: 46px;
-    width: 116px;
+    width: 100px;
     text-indent: 12px;
     z-index: 8;
     .options + div {

@@ -207,7 +207,7 @@ const Content = styled.div`
     }
   }
   .input-wrap + .input-wrap {
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .ban-add-btn {
