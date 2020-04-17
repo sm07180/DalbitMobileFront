@@ -143,7 +143,7 @@ function Notice(props) {
 
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
-
+  // console.log(context.noticeIndexNum)
   //--------------------------------------------------------
   return (
     <>
