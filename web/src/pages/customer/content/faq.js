@@ -315,19 +315,14 @@ const Detail = styled.section`
 `
 
 const PageWrap = styled.div`
-  margin-top: 25px;
-  border-top: 1px solid ${COLOR_MAIN};
   & dl {
     width: 100%;
-  }
-  @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 16px;
   }
 `
 const PageNumber = styled.nav`
   display: flex;
   justify-content: center;
-  margin: 40px 0 100px 0;
+  margin: 20px 0 100px 0;
   & > button {
     display: block;
     width: 36px;

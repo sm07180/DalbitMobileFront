@@ -540,7 +540,7 @@ const TitleWrap = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 40px 0 16px 0;
+  margin: 15px 0;
 
   font-size: 16px;
 `

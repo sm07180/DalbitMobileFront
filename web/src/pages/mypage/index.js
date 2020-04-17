@@ -7,7 +7,6 @@ import MyProfile from './content/myProfile.js'
 //import Navigation from './content/navigation.js'
 import Notice from './content/notice.js'
 import FanBoard from './content/fanBoard.js'
-import Initial from './content/initial.js'
 import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
@@ -17,21 +16,8 @@ import AppAlarm from './content/appAlarm'
 // static
 import closeBtn from './static/ic_back.svg'
 
-import InfoIcon from './static/profile/ic_info_m.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
-import WalletIcon from './static/profile/ic_wallet_m.svg'
-import ReportIcon from './static/profile/ic_report_m.svg'
-import AlarmIcon from './static/profile/ic_alarm_m.svg'
-import SettingIcon from './static/profile/ic_broadcastingsetting_m.svg'
-
-import TimeIcon from './static/profile/ic_time_m_p.svg'
-import HeadphoneIcon from './static/profile/ic_headphones_m_p.svg'
-import HeartIcon from './static/profile/ic_headphones_m_p.svg'
-import ByeolIcon from './static/profile/ic_star_m_p.svg'
-import DalIcon from './static/profile/ic_moon_m_p.svg'
-
-import NeedLoginImg from './static/profile/need_login.png'
 import {Context} from 'context'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
@@ -39,16 +25,14 @@ import qs from 'query-string'
 
 export default props => {
   const {webview} = qs.parse(location.search)
-  const urlrStr = props.location.pathname.split('/')[2]
-  const history = useHistory()
+
   //navi
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
-    {id: 2, type: 'initial', component: Initial, txt: 'initial'},
-    {id: 3, type: 'wallet', component: Wallet, txt: '내 지갑'},
-    {id: 4, type: 'report', component: Report, txt: '리포트'},
-    // {id: 5, type: 'alert', component: Alert, txt: '알림'},
+    {id: 2, type: 'wallet', component: Wallet, txt: '내 지갑'},
+    {id: 3, type: 'report', component: Report, txt: '리포트'},
+    // {id: 4, type: 'alert', component: Alert, txt: '알림'},
     {id: 5, type: 'appAlarm', component: AppAlarm, txt: '어플알람'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
@@ -56,7 +40,7 @@ export default props => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-  let {memNo, type} = useParams()
+  let {memNo, category} = useParams()
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -88,31 +72,32 @@ export default props => {
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      {memNo && !type && <Redirect to={webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}/initial`} />}
       <Layout {...props} webview={webview} status="no_gnb">
         <Mypage webview={webview}>
           {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
-          {/* 초기 진입부 분기:type === 'initial' */}
-          {type === 'initial' && <MyProfile profile={profileInfo} {...props} webview={webview} />}
-          {type === 'initial' && (
-            <Sub className={type === 'initial' ? 'on' : ''}>
-              {subNavList.map((value, idx) => {
-                const {type, txt, icon, component} = value
-                return (
-                  <a href={`/mypage/${memNo}/${type}`} key={idx}>
-                    <div className="list">
-                      <span className="text">{txt}</span>
-                      <img className="icon" src={icon} />
-                    </div>
-                  </a>
-                )
-              })}
-            </Sub>
+          {!category && (
+            <>
+              <MyProfile profile={profileInfo} {...props} webview={webview} />
+              <Sub>
+                {subNavList.map((value, idx) => {
+                  const {type, txt, icon, component} = value
+                  return (
+                    <a href={`/mypage/${memNo}/${type}`} key={idx}>
+                      <div className="list">
+                        <span className="text">{txt}</span>
+                        <img className="icon" src={icon} />
+                      </div>
+                    </a>
+                  )
+                })}
+              </Sub>
+            </>
           )}
-          {/* {type && <Navigation list={navigationList} memNo={memNo} type={type} webview={webview} />} */}
+
           <SubContent>
             {navigationList.map(value => {
               const {type, component} = value
@@ -147,9 +132,7 @@ const Mypage = styled.div`
 const Sub = styled.div`
   padding-bottom: 100px;
   transform: skew(-0.03deg);
-  &.on {
-    padding-bottom: 0;
-  }
+
   a {
     display: block;
     .list {

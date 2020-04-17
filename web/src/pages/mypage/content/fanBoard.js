@@ -377,7 +377,7 @@ export default props => {
             let boardNumer = boardNo
             let link = ''
             if (webview) {
-              link = profile.memNo !== writerNo ? `/mypage/${writerNo}/initial?webview=${webview}` : `/menu/profile`
+              link = profile.memNo !== writerNo ? `/mypage/${writerNo}?webview=${webview}` : `/menu/profile`
             } else {
               link = profile.memNo !== writerNo ? `/mypage/${writerNo}` : `/menu/profile`
             }
@@ -446,7 +446,7 @@ export default props => {
                       const parseDT = timeFormat(writeDt)
                       let link = ''
                       if (webview) {
-                        link = profile.memNo !== writerNo ? `/mypage/${writerNo}/initial?webview=${webview}` : `/menu/profile`
+                        link = profile.memNo !== writerNo ? `/mypage/${writerNo}?webview=${webview}` : `/menu/profile`
                       } else {
                         link = profile.memNo !== writerNo ? `/mypage/${writerNo}` : `/menu/profile`
                       }

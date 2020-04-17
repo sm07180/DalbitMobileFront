@@ -125,7 +125,7 @@ const myProfile = props => {
         if (memNo == myProfileNo) {
           link = `/menu/profile`
         } else {
-          link = webview ? `/mypage/${memNo}/initial?webview=${webview}` : `/mypage/${memNo}`
+          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
           <a href={link} key={index}>
