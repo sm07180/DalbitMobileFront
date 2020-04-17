@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 // component
 import Swiper from 'react-id-swiper'
 
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+
 export default props => {
   const {list} = props
 
@@ -30,14 +32,12 @@ export default props => {
         {list.map((star, idx) => {
           const {memNo, title} = star
           return (
-            <div className="list" key={`star-list${idx}`}>
-              <a href={`/mypage/${memNo}`}>
-                <div
-                  className="image"
-                  style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
-                />
-                <div className="text">{title}</div>
-              </a>
+            <div className="list" key={`star-list${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}`)}>
+              <div
+                className="image"
+                style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
+              />
+              <div className="text">{title}</div>
             </div>
           )
         })}
