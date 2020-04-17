@@ -47,9 +47,9 @@ native-push-foreground
       case 'native-push-background': //----------------------------native-push-foreground
         alert(event.detail)
         alert(typeof event.detail)
-        return
-        let pushMsg = decodeURIComponent(event.detail)
-        pushMsg = pushMsg.trim()
+
+        let pushMsg = event.detail
+        // pushMsg = pushMsg
 
         pushMsg = JSON.parse(pushMsg)
         const {push_type} = pushMsg
