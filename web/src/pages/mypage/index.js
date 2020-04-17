@@ -13,9 +13,10 @@ import Alert from './content/alert.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm from './content/appAlarm'
 
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+
 // static
 import closeBtn from './static/ic_back.svg'
-
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
 import {Context} from 'context'
@@ -86,12 +87,12 @@ export default props => {
                 {subNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
-                    <a href={`/mypage/${memNo}/${type}`} key={idx}>
+                    <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
                       <div className="list">
                         <span className="text">{txt}</span>
                         <img className="icon" src={icon} />
                       </div>
-                    </a>
+                    </div>
                   )
                 })}
               </Sub>
@@ -133,7 +134,7 @@ const Sub = styled.div`
   padding-bottom: 100px;
   transform: skew(-0.03deg);
 
-  a {
+  .link-list {
     display: block;
     .list {
       display: flex;

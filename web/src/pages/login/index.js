@@ -124,6 +124,12 @@ export default props => {
     }
   }
 
+  useEffect(() => {
+    if (window.sessionStorage) {
+      sessionStorage.clear()
+    }
+  }, [])
+
   return (
     <Layout {...props} status="no_gnb">
       <Switch>
