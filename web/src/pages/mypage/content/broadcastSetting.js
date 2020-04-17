@@ -64,7 +64,7 @@ export default props => {
         <div className="category-text">내 방송 관리</div>
       </Header>
       <Content>
-        <TitleWrap style={{paddingBottom: '25px'}}>
+        <TitleWrap>
           <TitleText>{currentMenu.text}</TitleText>
           <SelectWrap>
             <SelectBoxs boxList={selectBoxData} onChangeEvent={selectMenu} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
@@ -77,7 +77,7 @@ export default props => {
 }
 
 const Content = styled.div`
-  padding-top: 12px;
+  padding-top: 16px;
 `
 
 const TitleWrap = styled.div`
@@ -85,8 +85,8 @@ const TitleWrap = styled.div`
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #632beb;
-  padding-bottom: 25px;
+  /* border-bottom: 1px solid #632beb; */
+  /* padding-bottom: 25px; */
 `
 const TitleText = styled.div`
   color: #632beb;
