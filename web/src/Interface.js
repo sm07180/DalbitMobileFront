@@ -50,8 +50,9 @@ native-push-foreground
         const data = event.detail
         alert(data)
         let pushMsg = JSON.parse(data)
+        alert(typeof pushMsg)
         const {push_type} = pushMsg
-        alert(typeof pushMsg.mem_no)
+
         let room_no, mem_no
         //---------------------[분기처리시작]
         switch (push_type + '') {
