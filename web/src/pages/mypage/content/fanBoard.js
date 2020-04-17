@@ -360,7 +360,7 @@ export default props => {
         </WriteArea>
         <article className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
           <StartBottom>
-            <div>{placeholderTextStart}</div>
+            <div className="start">{placeholderTextStart}</div>
             <button>등록</button>
           </StartBottom>
         </article>
@@ -591,7 +591,7 @@ const TextCount = styled.div`
   width: calc(100% - 92px);
   font-size: 14px;
   padding: 17px 20px;
-  height: 52px;
+  height: 51px;
   box-sizing: border-box;
   border-top: 1px solid #ededed;
   border-bottom: 1px solid #d0d0d0;
@@ -661,11 +661,14 @@ const WriteArea = styled.div`
 `
 const StartBottom = styled.div`
   display: flex;
-  border: 1px solid #d0d0d0;
+  > div.start{
+    border: 1px solid #d0d0d0;
+  }
+
   &.bottomstart {
     border: none;
-    border-bottom: 1px solid #eeeeee;
-    padding: 0 20px;
+    /* border-bottom: 1px solid #eeeeee; */
+    padding: 16px;
 
     > div {
       display: block;
@@ -690,6 +693,7 @@ const StartBottom = styled.div`
       line-height: 1.43;
       letter-spacing: -0.35px;
       transform: skew(-0.03deg);
+      border:1px solid #d0d0d0;
     }
   }
   > div {
