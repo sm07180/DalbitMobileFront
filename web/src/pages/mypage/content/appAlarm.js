@@ -193,7 +193,7 @@ export default props => {
         </div>
         <div>
           <h2>공지 알림</h2>
-          <p>달빛 라디오 공지사항 수신 알림</p>
+          <p>달빛 라이브 공지사항 수신 알림</p>
           <button
             className={btn7 === 1 ? 'on' : ''}
             value="btn7"

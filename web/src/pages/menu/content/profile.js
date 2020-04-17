@@ -222,24 +222,6 @@ export default props => {
               <span className="bold">로그인</span> 해주세요
             </div>
           </a>
-          {__NODE_ENV === 'dev' && (
-            <div>
-              <br />
-              <br />
-              <div>custom-header</div>
-              <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('custom-header')}</div>
-
-              <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
-
-              <div>authToken</div>
-              <div style={{wordBreak: 'break-word'}}>{Utility.getCookie('authToken')}</div>
-
-              <div style={{height: '1px', backgroundColor: 'blue', margin: '10px 0'}}></div>
-
-              <div>from server</div>
-              <div style={{wordBreak: 'break-word'}}>{JSON.stringify(token)}</div>
-            </div>
-          )}
         </div>
       )}
     </MenuMypage>

@@ -89,7 +89,7 @@ function Notice(props) {
   //function---------------------------------------
   const GoNotice = () => {
     Store().action.updatenoticePage('')
-    history.push(`/customer`)
+    window.location.href = '/customer'
   }
   const typeActive = e => {
     const number = parseInt(e.target.value)

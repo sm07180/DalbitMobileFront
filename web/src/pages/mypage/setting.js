@@ -194,7 +194,7 @@ export default props => {
                   </PasswordTextWrap>
 
                   <PasswordRedirectBtn>
-                    <Link to="/password">비밀번호 변경</Link>
+                    <a href="/password">비밀번호 변경</a>
                   </PasswordRedirectBtn>
                 </PasswordWrap>
               )}

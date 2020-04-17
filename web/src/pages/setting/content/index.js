@@ -22,39 +22,6 @@ const Index = props => {
 
   const store = useContext(SettingStore)
   Index.store = store
-  const check = () => {
-    if (context.token.isLogin === true) {
-      context.action.confirm({
-        //콜백처리
-        callback: () => {
-          setTimeout(() => {
-            async function fetchData(obj) {
-              const res = await Api.member_logout({data: context.token.authToken})
-              if (res.result === 'success') {
-                //로그아웃성공
-                //쿠키삭제
-                // Utility.setCookie('custom-header', '', -1)
-                Hybrid('GetLogoutToken', res.data)
-                context.action.updateToken(res.data)
-                props.history.push('/')
-                context.action.updateGnbVisible(false)
-                context.action.updateProfile(null)
-              } else {
-                //Error 및 "result":"fail" 에러메시지
-                context.action.alert({
-                  msg: res.message
-                })
-              }
-            }
-            fetchData()
-          }, 50)
-        },
-        msg: `로그아웃 하시겠습니까?`
-      })
-    } else if (context.token.isLogin === false) {
-      window.location.href = '/login'
-    }
-  }
 
   const checklogin = () => {
     if (context.token.isLogin === true) {

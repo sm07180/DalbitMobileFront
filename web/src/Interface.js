@@ -23,7 +23,7 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
-    alert('event.type : ' + event.type)
+    //  alert('event.type : ' + event.type)
     switch (event.type) {
       /*
       native-push-background
@@ -103,7 +103,7 @@ native-push-foreground
         //---------------------[분기처리끝]
         break
       case 'native-push-foreground': //----------------------native-push-foreground
-        alert('native-push-foreground')
+        //alert('native-push-foreground')
         let pushMsg1 = decodeURIComponent(event.detail)
         pushMsg1 = pushMsg1.trim()
         pushMsg1 = JSON.parse(pushMsg1)

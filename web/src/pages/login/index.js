@@ -197,9 +197,11 @@ export default props => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
                 </button>
-                {/* <button className="new-design-social-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon" src={naverLogo} />
-                </button> */}
+                {__NODE_ENV === 'dev' && (
+                  <button className="new-design-social-btn" onClick={() => fetchSocialData('naver')}>
+                    <img className="icon" src={naverLogo} />
+                  </button>
+                )}
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>

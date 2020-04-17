@@ -137,7 +137,8 @@ const LiveList = styled.div`
 
       .gender-icon {
         display: block;
-        width: 44px;
+        width: 16px;
+        height: 16px;
       }
     }
 

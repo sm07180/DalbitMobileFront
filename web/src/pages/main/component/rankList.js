@@ -33,7 +33,7 @@ export default props => {
             const {rank, nickNm, memNo, profImg, likes, listeners} = dj
             return (
               <div className="slide-wrap" key={`dj-${idx}`}>
-                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
+                <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
@@ -44,7 +44,7 @@ export default props => {
                     <img src={heartIcon} className="heart-icon" />
                     <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
                   </div>
-                </Link>
+                </a>
               </div>
             )
           })}
@@ -55,12 +55,12 @@ export default props => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div className="slide-wrap" key={`fan-${idx}`}>
-                <Link to={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
+                <a href={MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`}>
                   <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                     <div className="counting">{rank}</div>
                   </div>
                   <div className="nickname">{nickNm}</div>
-                </Link>
+                </a>
               </div>
             )
           })}

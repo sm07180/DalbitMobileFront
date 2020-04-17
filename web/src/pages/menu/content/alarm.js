@@ -250,7 +250,7 @@ export default props => {
           </>
         ) : (
           <div className="log-out">
-            <Link to="/login">
+            <a href="/login">
               <img src={NeedLoginImg} />
 
               <button className="loginBtn">로그인</button>
@@ -258,7 +258,7 @@ export default props => {
               <div className="text">
                 <span className="bold">로그인</span> 해주세요
               </div>
-            </Link>
+            </a>
           </div>
         )}
       </Content>
