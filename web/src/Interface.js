@@ -49,7 +49,7 @@ native-push-foreground
         //decodeURIComponent 사용시 Error발생
         const data = event.detail
         alert(data)
-        let pushMsg = JSON.parse(data)
+        let pushMsg = JSON.parse(JSON.stringify(data))
         alert(typeof pushMsg)
         const {push_type} = pushMsg
 
