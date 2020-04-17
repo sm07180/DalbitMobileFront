@@ -46,9 +46,10 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
-        const data = decodeURIComponent(event.detail)
+        //decodeURIComponent 사용시 Error발생
+        const data = event.detail
         let pushMsg = JSON.parse(data)
-        //  pushMsg = pushMsg.trim()
+
         const {push_type} = pushMsg
         let room_no, mem_no
         //---------------------[분기처리시작]
