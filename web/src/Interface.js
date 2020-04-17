@@ -46,12 +46,14 @@ native-push-foreground
             7 : 공지사항 페이지 [board_idx]
          */
       case 'native-push-background': //----------------------------native-push-foreground
-        const data = decodeURIComponent(event.detail)
+        const data = event.detail
         alert(data)
 
         //  alert(pushMsg)
         //  pushMsg = pushMsg.trim()
         pushMsg = JSON.parse(data)
+        alert(pushMsg)
+
         const {push_type} = pushMsg
         alert(push_type)
         let room_no, mem_no
