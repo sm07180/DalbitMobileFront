@@ -23,9 +23,12 @@ const Header = styled.div`
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #d2d2d2;
-  padding: 14px 0;
+  /* padding: 14px 0; */
   box-sizing: border-box;
   /* margin-bottom: 10px; */
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  padding: 12px 16px;
   .child-bundle {
     display: flex;
     flex-direction: row;

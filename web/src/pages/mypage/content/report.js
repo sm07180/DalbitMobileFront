@@ -718,6 +718,7 @@ const Report = styled.div`
       }
     }
     .search {
+      height: 40.5px;
       width: 25%;
       color: #fff;
       background-color: ${COLOR_MAIN};

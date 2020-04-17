@@ -113,7 +113,7 @@ const Container = styled.div`
     width: 600px;
     margin: 0 auto;
     @media (max-width: 1240px) {
-      width: 95%;
+      width: 100%;
     }
   }
   & .otherbtn {
@@ -147,7 +147,8 @@ const Container = styled.div`
   }
 
   @media (max-width: 1240px) {
-    width: 95%;
+    width: 100%;
+    padding: 0 16px;
   }
   @media (max-width: ${WIDTH_MOBILE}) {
     margin: 0px auto 138px auto;
