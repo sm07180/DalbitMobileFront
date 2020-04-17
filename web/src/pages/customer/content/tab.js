@@ -3,7 +3,8 @@
  * @brief 고객센터 공통 탭
  *
  */
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect, useContext} from 'react'
+import {Context} from 'context'
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -15,6 +16,7 @@ import {useHistory} from 'react-router-dom'
 export default props => {
   //----------------------------------------------------------------------------
   let history = useHistory()
+  const context = useContext(Context)
   //info
   const tabInfo = [
     {
@@ -40,14 +42,20 @@ export default props => {
   ]
 
   //makeContents
+  const {customHeader, token} = context || Room.context
   const makeContents = () => {
     if (tabInfo === null) return
     return tabInfo.map((list, index) => {
       const {tab, type} = list
       const push = () => {
-        history.push(`/customer/${type}`)
-        Store().action.updateCode(type)
-        Store().action.updatenoticePage('')
+        console.log(type)
+        if (!token.isLogin && type === 'personal') {
+          history.push(`/login`)
+        } else {
+          history.push(`/customer/${type}`)
+          Store().action.updateCode(type)
+          Store().action.updatenoticePage('')
+        }
       }
       return (
         <button onClick={() => push()} key={index} className={Store().menuCode === type ? 'on' : ''}>
