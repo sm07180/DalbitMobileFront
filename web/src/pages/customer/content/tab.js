@@ -48,7 +48,6 @@ export default props => {
     return tabInfo.map((list, index) => {
       const {tab, type} = list
       const push = () => {
-        console.log(type)
         if (!token.isLogin && type === 'personal') {
           history.push(`/login`)
         } else {
