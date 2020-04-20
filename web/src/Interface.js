@@ -53,6 +53,8 @@ native-push-foreground
         let room_no, mem_no
         //개발쪽만 적용
         if (__NODE_ENV === 'dev') {
+          const {isLogin} = context.token
+          alert('isLogin : ' + isLogin)
           alert('push_type : ' + push_type)
           alert('mem_no : ' + pushMsg.mem_no)
         }
