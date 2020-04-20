@@ -288,7 +288,7 @@ const MediaPlayer = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    padding: 12px 22px;
+    padding: 3px 16px;
     .enter-btn {
       width: 85%;
     }
