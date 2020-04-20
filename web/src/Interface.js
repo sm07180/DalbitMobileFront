@@ -48,13 +48,14 @@ native-push-foreground
       case 'native-push-background': //----------------------------native-push-foreground
         //decodeURIComponent 사용시 Error발생
         const data = event.detail
-        // alert(data)
         let pushMsg = JSON.parse(data)
-        // alert(typeof pushMsg)
         const {push_type} = pushMsg
-        // alert('push_type : ' + push_type)
-        //  alert('mem_no : ' + pushMsg.mem_no)
         let room_no, mem_no
+        //개발쪽만 적용
+        if (__NODE_ENV === 'dev') {
+          alert('push_type : ' + push_type)
+          alert('mem_no : ' + pushMsg.mem_no)
+        }
         //---------------------[분기처리시작]
         switch (push_type + '') {
           case '1': //-----------------방송방 [room_no]
