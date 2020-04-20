@@ -47,10 +47,13 @@ native-push-foreground
          */
       case 'native-push-background': //----------------------------native-push-foreground
         //decodeURIComponent 사용시 Error발생
+
         const data = event.detail
         let pushMsg = JSON.parse(data)
         const {push_type} = pushMsg
         let room_no, mem_no
+        console.log('======================')
+        console.log(data)
         //개발쪽만 적용
         if (__NODE_ENV === 'dev') {
           const {isLogin} = context.token
