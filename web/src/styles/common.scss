@@ -374,7 +374,8 @@ input[type='number'] {
 }
 
 /*IOS input reset*/
-input {
+input,
+textarea {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
   border-radius: 0;

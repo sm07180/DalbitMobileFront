@@ -162,6 +162,7 @@ function Notice(props) {
 
     fetchData2()
   }, [context.noticeIndexNum])
+
   //--------------------------------------------------------
   return (
     <>
@@ -201,12 +202,17 @@ function Notice(props) {
                 <div key={index}>
                   {noticeType === noticeNum && (
                     <TableWrap onClick={() => Store().action.updatenoticePage(item)}>
-                      <dt>
+                      {/* <dt>
                         {noticeType === 1 ? '공지사항' : ''}
                         {noticeType === 2 ? '이벤트' : ''}
-                      </dt>
+                      </dt> */}
                       <dd>
                         {(IntTime - writeTs) / 3600 < 3 && <em></em>}
+                        <span>
+                          {noticeType === 1 ? '공지사항' : ''}
+                          {noticeType === 2 ? '이벤트' : ''}
+                        </span>
+                        <em></em>
                         {title}
                       </dd>
                       <dd>{timeFormat(writeDt)}</dd>
@@ -214,13 +220,16 @@ function Notice(props) {
                   )}
                   {noticeNum === 0 && (
                     <TableWrap onClick={() => Store().action.updatenoticePage(item)}>
-                      <dt>
+                      {/* <dt>
                         {noticeType === 1 ? '공지사항' : ''}
                         {noticeType === 2 ? '이벤트' : ''}
-                      </dt>
-
+                      </dt> */}
                       <dd>
                         {(IntTime - writeTs) / 3600 < 3 && <em></em>}
+                        <span>
+                          {noticeType === 1 ? '공지사항' : ''}
+                          {noticeType === 2 ? '이벤트' : ''}
+                        </span>
                         {title}
                       </dd>
                       <dd>{timeFormat(writeDt)}</dd>
@@ -271,6 +280,7 @@ const Detail = styled.section`
   display: block;
   width:110%;
   margin-lefT:-5%;
+  padding-bottom:1px;
   /* border-top: 1px solid ${COLOR_MAIN}; */
 
   & > header {
@@ -283,15 +293,15 @@ const Detail = styled.section`
       flex-direction: column;
     }
     & span:nth-child(1) {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
-      color: #424242;
+      color: #000;
       transform: skew(-0.03deg);
     }
     & span:nth-child(2) {
       margin-top: 8px;
-      font-size: 12px;
-      color: #bdbdbd;
+      font-size: 14px;
+      color: #757575;
     }
   }
   & > div {
@@ -307,8 +317,8 @@ const Detail = styled.section`
   }
   & > button {
     display: block;
-    margin: 40px auto 100px auto;
-    padding: 16px 40px;
+    margin: 20px auto 100px auto;
+    padding: 12px 24px;
     background-color: ${COLOR_MAIN};
     border-radius: 8px;
     color: #fff;
@@ -379,7 +389,7 @@ const TableWrap = styled.div`
     font-size: 16px;
     transform: skew(-0.03deg);
     @media (max-width: ${WIDTH_MOBILE}) {
-      display: none;
+      /* display: none; */
     }
   }
   & dd {
@@ -390,15 +400,22 @@ const TableWrap = styled.div`
     color: #000;
     transform: skew(-0.03deg);
     letter-spacing: -0.5px;
+    font-weight: 600;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 100%;
+    }
+
+    span {
+      color: ${COLOR_MAIN};
+      margin-right: 5px;
     }
   }
   & dd:last-child {
     width: 120px;
     font-size: 14px;
-    color: #616161;
+    color: #757575;
     transform: skew(-0.03deg);
+    font-weight: 400;
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 90%;
       margin-top: 4px;

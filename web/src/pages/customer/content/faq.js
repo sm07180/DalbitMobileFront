@@ -197,15 +197,15 @@ function Faq(props) {
                     <TableWrap
                       onClick={() => clickEvent(faqIdx)}
                       className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
-                      <dt>
-                        {faqType === 0 ? '전체' : ''}
-                        {faqType === 1 ? '일반' : ''}
-                        {faqType === 2 ? '방송' : ''}
-                        {faqType === 3 ? '결제' : ''}
-                        {faqType === 4 ? '기타' : ''}
-                      </dt>
                       <dd>
                         <span>Q</span>
+                        <em>
+                          {faqType === 0 ? '전체' : ''}
+                          {faqType === 1 ? '일반' : ''}
+                          {faqType === 2 ? '방송' : ''}
+                          {faqType === 3 ? '결제' : ''}
+                          {faqType === 4 ? '기타' : ''}
+                        </em>
                         {question}
                       </dd>
                       <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
@@ -225,15 +225,15 @@ function Faq(props) {
                     <TableWrap
                       onClick={() => clickEvent(faqIdx)}
                       className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
-                      <dt>
-                        {faqType === 0 ? '전체' : ''}
-                        {faqType === 1 ? '일반' : ''}
-                        {faqType === 2 ? '방송' : ''}
-                        {faqType === 3 ? '결제' : ''}
-                        {faqType === 4 ? '기타' : ''}
-                      </dt>
                       <dd>
                         <span>Q</span>
+                        <em>
+                          {faqType === 0 ? '전체' : ''}
+                          {faqType === 1 ? '일반' : ''}
+                          {faqType === 2 ? '방송' : ''}
+                          {faqType === 3 ? '결제' : ''}
+                          {faqType === 4 ? '기타' : ''}
+                        </em>
                         {question}
                       </dd>
                       <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
@@ -282,6 +282,7 @@ const Detail = styled.section`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+
     & .icon {
       display: inline-block;
       margin-right: 4px;
@@ -309,7 +310,7 @@ const Detail = styled.section`
     padding: 30px 0 30px 120px;
     transition: padding-top 0.2s ease-in-out;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 30px 0 30px 0px;
+      padding: 10px 0;
     }
   }
 `
@@ -369,8 +370,9 @@ const TableWrap = styled.div`
   }
   & dd {
     width: calc(100% - 144px);
-    font-size: 14px;
-    color: #424242;
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
     transform: skew(-0.03deg);
 
     @media (max-width: ${WIDTH_MOBILE}) {
@@ -400,13 +402,20 @@ const TableWrap = styled.div`
     width: 16px;
     height: 16px;
     line-height: 16px;
+    font-size: 13px;
     background-color: ${COLOR_MAIN};
     color: #fff;
     text-align: center;
     border-radius: 50%;
+    font-weight: 400;
     @media (max-width: ${WIDTH_MOBILE}) {
-      margin-right: 6px;
+      margin-right: 3px;
     }
+  }
+  & em {
+    margin-right: 3px;
+    color: ${COLOR_MAIN};
+    font-style: normal;
   }
   &.on {
     border-bottom: none;
@@ -451,7 +460,6 @@ const ContentInfo = styled.div`
     }
   }
   & .m-catecory {
-    display: none;
     @media (max-width: ${WIDTH_MOBILE}) {
       display: block;
     }

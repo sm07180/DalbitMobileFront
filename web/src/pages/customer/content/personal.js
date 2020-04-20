@@ -57,22 +57,18 @@ const Personal = props => {
     if (res.result === 'fail') {
       if (obj.data.email === undefined || obj.data.email === '') {
         context.action.alert({
-          title: '이메일 형식',
           msg: '이메일 형식을 확인해 주세요'
         })
       } else if (obj.data.title === undefined || obj.data.title === '') {
         context.action.alert({
-          title: '제목',
           msg: '제목을 입력해 주세요'
         })
       } else if (obj.data.contents === undefined || obj.data.contents === '') {
         context.action.alert({
-          title: '내용',
           msg: '내용을 입력해 주세요'
         })
       } else if (obj.data.qnaType === 0) {
         context.action.alert({
-          title: '문의 유형 선택',
           msg: '문의 유형을 선택해 주세요'
         })
       }
@@ -222,7 +218,7 @@ const Personal = props => {
                 <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
               </dd>
               <dd>
-                <p className="infoupload">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</p>
+                <p className="infoupload">※ 1:1 문의 답변은 입력한 E-mail로 발송</p>
               </dd>
             </dl>
             <dl>
@@ -269,7 +265,7 @@ const Personal = props => {
                   </div>
                 </ImgUploader>
 
-                <p className="infoupload">※ gif, jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</p>
+                <p className="infoupload">※ gif, jpg, png 파일을 최대 10MB까지 첨부</p>
               </dd>
             </dl>
             <div className="in_wrap">
@@ -299,23 +295,18 @@ export const Store = () => {
 //----------------------------------------------------------------------------
 const Content = styled.div`
   /* margin-top: 40px; */
-  border-top: 1px solid ${COLOR_MAIN};
   .in_wrap {
     display: block;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 100px;
     text-align: center;
     button {
       display: inline-block;
-      width: 144px;
-      padding: 16px 0;
+      padding: 12px 24px;
       border-radius: 8px;
       border: solid 1px #632beb;
       background-color: #ffffff;
       margin: 4px;
-      @media (max-width: ${WIDTH_MOBILE_S}) {
-        width: 124px;
-      }
     }
     .cancel {
       color: ${COLOR_MAIN};
@@ -330,8 +321,8 @@ const Content = styled.div`
     position: relative;
     display: block;
     width: 100%;
-    padding: 16px 0;
-    border-bottom: 1px solid #e0e0e0;
+    padding-top: 12px;
+
     :first-child {
       display: flex;
       & dt {
@@ -354,8 +345,7 @@ const Content = styled.div`
         position: relative;
         display: block;
         width: 100%;
-        margin-bottom: 10px;
-        font-size: 12px;
+        margin-bottom: 6px;
       }
     }
     dd {
@@ -371,13 +361,11 @@ const Content = styled.div`
         width: 100%;
       }
       .infoupload {
-        padding: 10px 1px 0 0;
+        padding: 6px 0 0 1px;
         color: #616161;
         font-size: 14px;
         transform: skew(-0.03deg);
-        @media (max-width: ${WIDTH_MOBILE}) {
-          font-size: 12px;
-        }
+        letter-spacing: -0.5px;
       }
     }
   }
@@ -386,17 +374,26 @@ const Content = styled.div`
   input[type='text'] {
     display: block;
     width: 100%;
-    padding: 12px 10px;
+    padding: 8px 10px;
     font-size: 14px !important;
     font-family: inherit;
     font-size: inherit;
-    border: solid 1px #e0e0e0;
+    border: solid 1px #bdbdbd;
     background-color: #ffffff;
     box-sizing: border-box;
   }
+
+  input[type='text']::placeholder,
+  textarea::placeholder {
+    color: #757575;
+  }
+
+  textarea {
+    height: 118px;
+  }
 `
 const Select = styled.div`
-  height: 42px;
+  height: 36px;
   width: 328px;
   z-index: 8;
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -406,7 +403,7 @@ const Select = styled.div`
     width: 100%;
     > div {
       width: 100%;
-      border: solid 1px #e0e0e0;
+      border: solid 1px #bdbdbd;
 
       color: #616161;
       font-size: 14px;
@@ -423,21 +420,20 @@ const Select = styled.div`
 const ImgUploader = styled.div`
   position: relative;
   width: 100%;
-  padding-right: 110px;
+  padding-right: 80px;
   box-sizing: border-box;
   text-align: left;
   .urltext {
     width: 100%;
     background-color: #f5f5f5;
     font-size: 14px;
-    color: #bdbdbd;
+    color: #757575;
     transform: skew(-0.03deg);
     padding: 12px 0 12px 10px !important;
     letter-spacing: -0.42px;
     overflow-x: hidden;
     text-overflow: ellipsis;
     @media (max-width: ${WIDTH_MOBILE}) {
-      font-size: 12px;
       padding: 12px 0 12px 6px !important;
     }
   }
@@ -453,7 +449,9 @@ const ImgUploader = styled.div`
     top: 0px;
     right: 0;
     display: inline-block;
-    padding: 10px 25px;
+    width: 78px;
+    text-align: center;
+    padding: 10px 0;
     color: ${COLOR_MAIN};
     border-radius: 8px;
     border: 1px solid ${COLOR_MAIN};
@@ -517,19 +515,21 @@ const CoinCurrentStatus = styled.div`
 
 const PersonalTypeBtn = styled.button`
   position: relative;
-  width: 44.55%;
+  width: 114px;
   border-radius: 20px;
-  border: solid 1px #e0e0e0;
-  padding: 11px 0;
-  font-size: 16px;
+  border: solid 1px #9e9e9e;
+  padding: 7px 0;
+  font-size: 15px;
   text-align: center;
-  color: #757575;
+  color: #616161;
+  letter-spacing: -0.5px;
   &:first-child {
     margin-right: 6px;
   }
   &.active {
     border: solid 1px ${COLOR_MAIN};
     color: #632beb;
+    font-weight: 600;
   }
 `
 const TitleWrap = styled.div`
@@ -537,7 +537,7 @@ const TitleWrap = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 15px 0;
+  margin: 15px 0 6px 0;
 
   font-size: 16px;
 `

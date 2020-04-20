@@ -201,7 +201,7 @@ const Detail = styled.section`
     padding: 30px 0 30px 120px;
     transition: padding-top 0.2s ease-in-out;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 24px 16px;
+      padding: 16px 10px;
     }
   }
   & p {
@@ -209,8 +209,8 @@ const Detail = styled.section`
     @media (max-width: ${WIDTH_MOBILE}) {
       width: calc(100% - 10px);
       margin-top: -1px;
-      color: #424242;
-      font-size: 14px;
+      color: #000;
+      font-size: 15px;
       line-height: 1.43;
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
@@ -238,7 +238,7 @@ const PageWrap = styled.div`
 const PageNumber = styled.nav`
   display: flex;
   justify-content: center;
-  margin: 40px 0 100px 0;
+  margin: 20px 0 100px 0;
   & > button {
     display: block;
     width: 36px;
@@ -269,7 +269,7 @@ const TableWrap = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  padding: 14px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
   & .newIcon {
@@ -299,12 +299,13 @@ const TableWrap = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
+    font-weight: 600;
   }
 
   dd {
     margin-top: 4px;
-    font-size: 12px;
-    color: #bdbdbd;
+    font-size: 14px;
+    color: #757575;
     line-height: 1.08;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
@@ -317,14 +318,14 @@ const TableWrap = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-left: 4px;
-    font-size: 14px;
+    font-size: 16px;
     color: #424242;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
   }
   & .type {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     color: #424242;
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);

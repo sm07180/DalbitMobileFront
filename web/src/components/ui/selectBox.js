@@ -98,6 +98,7 @@ const SelectListWrap = styled.div`
   animation-timing-function: ease-in; */
 
   &.open {
+    margin-top: -1px;
     opacity: 1;
     transform: translateY(0);
   }
@@ -115,7 +116,7 @@ const SelectListWrap = styled.div`
 
   .box-list {
     padding: 11px 10px;
-    color: #757575;
+    color: #424242;
     font-size: 16px;
     background-color: #fff;
     box-sizing: border-box;
@@ -153,7 +154,7 @@ const Selected = styled.div`
     content: '';
     width: 12px;
     height: 2px;
-    top: 20px;
+    top: 16px;
     right: 20px;
     background-color: #632beb;
     transform: rotate(45deg);
@@ -167,7 +168,7 @@ const Selected = styled.div`
     content: '';
     width: 12px;
     height: 2px;
-    top: 20px;
+    top: 16px;
     right: 12px;
     background-color: #632beb;
     transform: rotate(-45deg);

@@ -16,6 +16,7 @@ import {Context} from 'context'
 import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
+import {COLOR_MAIN} from 'context/color'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -106,8 +107,8 @@ const Alert = styled.section`
   }
   /* 메시지 */
   .msg {
-    padding: 62px 20px;
-    font-size: 16px;
+    padding: 40px 20px;
+    font-size: 18px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -127,7 +128,7 @@ const Alert = styled.section`
     border-radius: 30px;
     height: 48px;
     border-radius: 10px;
-    background-color: #8555f6;
+    background-color: ${COLOR_MAIN};
   }
 `
 const Close = styled.a`
