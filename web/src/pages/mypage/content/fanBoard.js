@@ -573,7 +573,7 @@ const CommentSubmitBtn = styled.button`
   text-align: center;
   font-size: 16px;
   color: #fff;
-  padding: 14.5px 0;
+  padding: 15px 0;
   background-color: #632beb;
   position: relative;
   margin-right: -1px;
