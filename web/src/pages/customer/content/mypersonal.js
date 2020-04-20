@@ -12,6 +12,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //styled component
 import styled from 'styled-components'
+import NewIcon from './static/ic_new.svg'
 import NoResult from 'components/ui/noResult'
 //----------------------------------------------------------
 
@@ -87,6 +88,9 @@ function Faq(props) {
     return `${date} ${time}`
   }
   const [noResultshow, setNoResultShow] = useState(false)
+  //time
+  const timestamp = String(new Date().getTime()).substr(0, 10)
+  const IntTime = parseInt(timestamp)
   //--------------------------------------------------------
   // useEffect(() => {
   //   if (paginatedDated === null) {
@@ -101,12 +105,13 @@ function Faq(props) {
         {noResultshow === true && <NoResult />}
         <dl>
           {paginatedDated.map((item, index) => {
-            const {qnaIdx, qnaType, title, contents, answer, state, writeDt, writeTs, addFile} = item
+            const {qnaIdx, qnaType, title, contents, answer, state, writeDt, addFile, opTs} = item
             if (paginatedDated === null) return
             return (
               <div key={index}>
                 <TableWrap onClick={() => clickEvent(qnaIdx)} key={index}>
                   <dt>
+                    {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>}
                     {state === 0 && <span className="state">처리중</span>}
                     {state === 1 && <span className="stateComplete">처리완료</span>}
                     {qnaType === 1 && <span className="type">[ 회원정보 ]</span>}
@@ -266,6 +271,16 @@ const TableWrap = styled.div`
   flex-direction: column;
   padding: 14px 0;
   border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  & .newIcon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    background-position: center center;
+    background-size: cover;
+    background-image: url(${NewIcon});
+  }
   em {
     display: block;
     position: absolute;
