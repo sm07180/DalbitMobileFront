@@ -180,7 +180,7 @@ export default props => {
                 <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
               </div>
               <UserId>{`@${profile.memId}`}</UserId>
-              {!isOAuth && (
+              {profile.memNo[0] == '1' && (
                 <PasswordWrap>
                   <PasswordTextWrap>
                     <PasswordCircle />
