@@ -363,6 +363,7 @@ const Content = styled.div`
       height: 58px;
       flex-direction: row;
       align-items: center;
+      justify-content: center;
       background-color: #fff;
 
       &.fixed {
@@ -374,11 +375,7 @@ const Content = styled.div`
       }
 
       .inner-wrapper {
-        position: absolute;
-        top: 12px;
-        left: 16px;
-        width: calc(100% - 16px);
-
+        width: calc(100% - 32px);
         .swiper-container {
           overflow: hidden;
 
