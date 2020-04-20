@@ -508,7 +508,7 @@ const Content = styled.div`
 
       &.live-list {
         padding-bottom: 100px;
-        height: 415px;
+        min-height: 515px;
       }
     }
   }
