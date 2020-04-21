@@ -90,7 +90,6 @@ export default props => {
             const {data} = res
             const {roomType} = data
             if (roomType) {
-              console.log(roomType)
               setCategoryList(roomType)
             }
           }
