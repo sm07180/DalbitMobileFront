@@ -13,4 +13,4 @@ function pushBackground(event) {
 }
 
 //--------------------------------------------------------------------
-document.addEventListener('native-push-background', pushBackground)
+//document.addEventListener('native-push-background', pushBackground)
