@@ -66,6 +66,7 @@ export default props => {
   const [totalLivePage, setTotalLivePage] = useState(null)
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
+  const [categoryList, setCategoryList] = useState([])
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -81,6 +82,18 @@ export default props => {
           djRank,
           fanRank,
           myStar
+        })
+
+        Api.splash().then(res => {
+          const {result} = res
+          if (result === 'success') {
+            const {data} = res
+            const {roomType} = data
+            if (roomType) {
+              console.log(roomType)
+              setCategoryList(roomType)
+            }
+          }
         })
       }
     })()
@@ -304,20 +317,22 @@ export default props => {
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="inner-wrapper">
-                <Swiper {...swiperParams}>
-                  {Object.keys(broadcastLive)
-                    .sort((a, b) => Number(a) - Number(b))
-                    .map((key, idx) => {
-                      return (
-                        <div
-                          className={`list ${key === selectedLiveRoomType ? 'active' : ''}`}
-                          key={`list-${idx}`}
-                          onClick={() => setSelectedLiveRoomType(key)}>
-                          {broadcastLive[key]}
-                        </div>
-                      )
-                    })}
-                </Swiper>
+                {Array.isArray(categoryList) && categoryList.length > 0 && (
+                  <Swiper {...swiperParams}>
+                    {categoryList
+                      .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
+                      .map((key, idx) => {
+                        return (
+                          <div
+                            className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                            key={`list-${idx}`}
+                            onClick={() => setSelectedLiveRoomType(key.cd)}>
+                            {key.cdNm}
+                          </div>
+                        )
+                      })}
+                  </Swiper>
+                )}
               </div>
             </div>
 
