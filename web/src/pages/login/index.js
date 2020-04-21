@@ -48,7 +48,8 @@ export default props => {
     if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.history.back()
+      window.location.href = '/'
+      // window.history.back()
     }
   }
 
