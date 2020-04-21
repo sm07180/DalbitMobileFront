@@ -433,7 +433,7 @@ const PhoneAuth = styled.div`
     background: ${COLOR_MAIN};
     color: #fff;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 38px;
   }
   button:disabled {
     background: #a8a8a8;
@@ -447,13 +447,13 @@ const PhoneAuth = styled.div`
     right: 31%;
     color: ${COLOR_MAIN};
     font-size: 14px;
-    line-height: 50px;
+    line-height: 38px;
     z-index: 3;
     transform: skew(-0.03deg);
   }
 `
 const FormWrap = styled.div`
-  margin: 40px 0;
+  margin: 24px 0;
 `
 
 const Button = styled.button`
@@ -469,7 +469,7 @@ const Button = styled.button`
 `
 const InputWrap = styled.div`
   position: relative;
-  margin: 32px 0;
+  margin: 20px 0;
   input {
     position: relative;
     margin-top: -1px;
@@ -492,7 +492,7 @@ const InputWrap = styled.div`
 const HelpText = styled.div`
   display: block;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 8px 10px;
   background: #f8f8f8;
   text-align: center;
   transform: skew(-0.03deg);

@@ -185,7 +185,7 @@ const Container = styled.div`
     }
   }
   & p {
-    margin: 12px 0 20px 0;
+    margin: 12px 0 16px 0;
     color: #616161;
     font-size: 14px;
     letter-spacing: -0.35px;
@@ -197,11 +197,11 @@ const BTN = styled.button`
   display: block;
   width: 100%;
   margin-top: 4px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #bdbdbd;
   border-radius: 10px;
   padding: 8px 0;
   color: #616161;
-  font-size: 12px;
+  font-size: 14px;
   transform: skew(-0.03deg);
   outline: none;
   &.on {
@@ -214,10 +214,10 @@ const SubmitBTN = styled.button`
   display: block;
   width: calc(50% - 4px);
   margin-top: 12px;
-  padding: 16px 0;
+  padding: 12px 0;
   border-radius: 10px;
   background-color: #bdbdbd;
-  font-size: 14px;
+  font-size: 16px;
   color: #fff;
   letter-spacing: -0.4px;
   :first-child {

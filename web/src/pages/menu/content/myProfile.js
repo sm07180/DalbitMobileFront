@@ -413,7 +413,6 @@ const NameWrap = styled.div`
       display: block;
     }
     span {
-      padding: 2px 0 0 0;
       transform: skew(-0.03deg);
     }
   }
@@ -425,7 +424,7 @@ const CountingWrap = styled.div`
   margin-top: 12px;
   span {
     display: inline-block;
-    font-size: 20px;
+    font-size: 18px;
     letter-spacing: -0.35px;
     color: ${COLOR_MAIN};
     transform: skew(-0.03deg);
@@ -487,7 +486,7 @@ const InfoConfigBtn = styled.div`
     display: inline-block;
     padding: 0 44px 0 17px;
     user-select: none;
-    border: 1px solid #424242;
+    border: 1px solid #757575;
     border-radius: 18px;
     background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92% center;
     background-size: 32px 32px;
@@ -556,7 +555,7 @@ const FanListWrap = styled.div`
   & .moreFan {
     width: 36px;
     height: 36px;
-    border: 1px solid #424242;
+    border: 1px solid #757575;
     border-radius: 50%;
     vertical-align: top;
     margin-top: -5px;
@@ -604,7 +603,7 @@ const FanRank = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  margin-right: 5px;
+  margin-right: 3px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -622,7 +621,7 @@ const FanRank = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 36px;
     height: 36px;
-    border: 1px solid #424242;
+    border: 1px solid #757575;
   }
 
   :after {

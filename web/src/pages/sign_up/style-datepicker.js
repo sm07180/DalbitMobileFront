@@ -111,9 +111,9 @@ const DatepickerWrap = styled.div`
     left: 1px;
     top: 1px;
     padding-right: 40px;
-    line-height: 48px;
+    line-height: 36px;
     z-index: -1;
-    padding-left: 16px;
+    padding-left: 12px;
     color: #616161;
     transform: skew(-0.03deg);
     background: #fff;

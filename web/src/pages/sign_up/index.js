@@ -697,7 +697,7 @@ export default props => {
     <PureLayout>
       {changes.memType == 'p' && (
         <>
-          <PhoneAuth>
+          <PhoneAuth className="top">
             <input
               type="tel"
               name="memId"
@@ -954,13 +954,16 @@ export default props => {
 
 const PhoneAuth = styled.div`
   overflow: hidden;
+  &.top {
+    margin-top: -20px;
+  }
   button {
     float: left;
     width: 28%;
     background: ${COLOR_MAIN};
     color: #fff;
     font-weight: 600;
-    line-height: 50px;
+    line-height: 38px;
   }
   button:disabled {
     background: #a8a8a8;
@@ -974,7 +977,7 @@ const PhoneAuth = styled.div`
     right: 31%;
     color: ${COLOR_MAIN};
     font-size: 14px;
-    line-height: 50px;
+    line-height: 38px;
     z-index: 3;
     transform: skew(-0.03deg);
   }
@@ -1020,9 +1023,11 @@ const ProfileUpload = styled.div`
   }
 
   .img-text {
-    padding-top: 18px;
-    font-size: 12px;
+    padding-top: 12px;
+    font-size: 14px;
     color: #feac2c;
+    font-weight: 600;
+    letter-spacing: -0.5px;
     text-align: center;
     transform: skew(-0.03deg);
   }
@@ -1033,9 +1038,9 @@ const GenderRadio = styled.div`
   margin: 16px 0;
   label {
     flex: 1;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #bdbdbd;
     color: #757575;
-    line-height: 48px;
+    line-height: 40px;
     text-align: center;
     transform: skew(-0.03deg);
     input {
@@ -1077,12 +1082,12 @@ const GenderRadio = styled.div`
 const CheckWrap = styled.div`
   overflow: hidden;
   position: relative;
-  height: 52px;
-  border: 1px solid #e0e0e0;
+  height: 42px;
+  border: 1px solid #bdbdbd;
   transition: height 0.5s ease-in-out;
 
   &.on {
-    height: 253px;
+    height: 205px;
   }
   div {
     position: relative;
@@ -1091,7 +1096,7 @@ const CheckWrap = styled.div`
       position: relative;
       width: 24px;
       height: 24px;
-      margin: 0 15px 0 0;
+      margin: 0 6px 0 0;
       appearance: none;
       border: none;
       outline: none;
@@ -1123,8 +1128,8 @@ const CheckWrap = styled.div`
     }
     button {
       position: absolute;
-      right: 13px;
-      top: 13px;
+      right: 12px;
+      top: 8px;
       width: 24px;
       height: 24px;
       text-indent: -9999px;
@@ -1144,13 +1149,16 @@ const CheckWrap = styled.div`
     }
   }
   & > div:first-child {
-    padding: 13px;
+    padding: 8px 12px;
+    label {
+      margin-left: -5px;
+    }
   }
 
   @media (max-width: ${WIDTH_MOBILE_S}) {
     div {
       & input {
-        margin: 0 8px 0 0;
+        margin: 0 5px 0 0;
       }
       label {
         letter-spacing: -1px;
@@ -1164,7 +1172,7 @@ const CheckBox = styled.div`
   border-top: 1px solid #e0e0e0;
 
   div {
-    padding: 13px;
+    padding: 8px 12px;
     * {
       line-height: 24px;
       vertical-align: top;
@@ -1184,7 +1192,7 @@ const Button = styled.button`
   margin-bottom: 20px;
   background: ${COLOR_MAIN};
   color: #fff;
-  line-height: 50px;
+  line-height: 38px;
 
   &:disabled {
     background: #a8a8a8;
@@ -1199,7 +1207,7 @@ const InputWrap = styled.div`
   }
   input + span {
     position: absolute;
-    top: 19px;
+    top: 10px;
     right: 12px;
     color: #bdbdbd;
     font-size: 12px;
