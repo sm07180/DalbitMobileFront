@@ -98,10 +98,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     console.log('실행')
     //방송강제퇴장
-    if (Room.roomNo !== roomNo) {
-      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-      console.log(exit)
-    }
+    const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(res)
