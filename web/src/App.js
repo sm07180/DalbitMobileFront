@@ -77,7 +77,7 @@ const App = () => {
 
       // Send info to Native App (authToken, memNo, isLogin)
       if (isHybrid()) {
-        Hybrid('GetUpdateToken', tokenInfo.data)
+        // Hybrid('GetUpdateToken', tokenInfo.data)
       }
 
       if (tokenInfo.data.isLogin) {
