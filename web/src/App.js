@@ -76,7 +76,7 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
       //
       if (__NODE_ENV === 'dev') {
-        alert(JSON.stringify(customHeader, null, 1))
+        // alert(JSON.stringify(customHeader, null, 1))
       }
       //
       if (tokenInfo.data.isLogin) {
