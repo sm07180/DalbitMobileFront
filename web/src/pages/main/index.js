@@ -172,7 +172,7 @@ export default props => {
       setLiveCategoryFixed(false)
     }
 
-    const GAP = 200
+    const GAP = 300
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
