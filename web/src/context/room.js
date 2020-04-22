@@ -64,6 +64,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
 
   if (Room.roomNo === roomNo) {
+    Hybrid('RoomJoin', Room.roomInfo)
+    return
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     if (join.result === 'fail') {
       Room.context.action.alert({
@@ -101,12 +103,18 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
+    const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+    if (__NODE_ENV === 'dev') {
+      alert(Room.roomNo)
+    }
+    /*
     if (Room.roomNo !== roomNo && Room.roomNo !== '') {
       const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
       if (__NODE_ENV === 'dev') {
         alert(JSON.stringify(exit, null, 1))
       }
     }
+    */
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
