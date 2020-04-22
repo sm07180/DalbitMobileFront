@@ -22,7 +22,7 @@ const App = () => {
 
   const [ready, setReady] = useState(false)
 
-  const isJsonString = str => {
+  const isJsonString = (str) => {
     try {
       var parsed = JSON.parse(str)
       return typeof parsed === 'object'
@@ -33,6 +33,7 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
+    alert(JSON.stringify(customHeaderTag, null, 1))
     if (customHeaderTag && customHeaderTag.value) {
       // The data that got from server is encoded as URIComponent.
       const decodeValue = decodeURIComponent(customHeaderTag.value)
