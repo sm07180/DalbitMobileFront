@@ -156,7 +156,7 @@ export default props => {
 }
 //styled-------------------------------------------------------------------------------
 const CoinChargeBtn = styled.button`
-  padding: 10px 44px;
+  padding: 10px 16px;
   color: #fff;
   background-color: #632beb;
   border-radius: 10px;
@@ -208,7 +208,7 @@ const CoinCurrentStatus = styled.div`
   }
 `
 const CoinCountingView = styled.div`
-  border: 3px solid #632beb;
+  border: 2px solid #632beb;
   border-radius: 12px;
   display: flex;
   justify-content: space-between;
@@ -217,7 +217,7 @@ const CoinCountingView = styled.div`
   padding: 30px;
   box-sizing: border-box;
   @media (max-width: ${WIDTH_MOBILE}) {
-    padding: 20px 16px;
+    padding: 20px 12px;
     height: 65px;
   }
 `

@@ -170,7 +170,9 @@ export default props => {
             )
           })}
         </ul>
-        <Paging setPage={setPagination} totalPage={totalPageNumber} currentPage={page} />
+        <div className="paging-wrap">
+          <Paging setPage={setPagination} totalPage={totalPageNumber} currentPage={page} />
+        </div>
       </>
     )
   }
@@ -286,22 +288,21 @@ export default props => {
 
 const SearchArea = styled.div`
   position: relative;
-  margin: 12px 0;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #bdbdbd;
   * {
     height: 46px;
     line-height: 46px;
   }
   select {
-    width: 116px;
-    border-right: 1px solid #e0e0e0;
+    width: 100px;
+    border-right: 1px solid #bdbdbd;
     color: #707070;
     text-indent: 12px;
     background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
   }
   input {
-    width: calc(100% - 117px);
-    margin-left: 116px;
+    width: calc(100% - 101px);
+    margin-left: 100px;
     padding: 0 46px 0 12px;
     color: #424242;
     font-size: 14px;
@@ -330,14 +331,14 @@ const SearchArea = styled.div`
       height: auto;
       width: calc(100% + 2px);
       margin-left: -1px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid #bdbdbd;
       .box-list {
         padding: 0;
         font-size: 14px;
       }
     }
     > div {
-      border-right: 1px solid #e0e0e0;
+      border-right: 1px solid #bdbdbd;
       width: 100%;
       > div {
         width: 100%;
@@ -351,6 +352,10 @@ const SearchArea = styled.div`
         :after {
           background-color: #757575;
         }
+        :before,
+        :after {
+          top: 24px;
+        }
       }
     }
   }
@@ -358,12 +363,10 @@ const SearchArea = styled.div`
 
 const Content = styled.div`
   .list-item {
-    margin-top: -20px;
     li {
       display: flex;
       position: relative;
-      padding: 16px 0;
-      border-bottom: 1px solid #e0e0e0;
+      padding: 8px 0;
 
       figure {
         flex-basis: 36px;
@@ -419,7 +422,7 @@ const Content = styled.div`
   .list-item.search {
     margin-top: 0;
     margin-bottom: 30px;
-    border-top: 1px solid ${COLOR_MAIN};
+
     div {
       padding-top: 3px;
     }
@@ -431,5 +434,8 @@ const Content = styled.div`
   .resulte-area {
     min-height: 100px;
     padding: 20px 0;
+  }
+  .paging-wrap {
+    margin-top: -20px;
   }
 `

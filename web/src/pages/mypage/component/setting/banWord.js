@@ -192,15 +192,15 @@ const Content = styled.div`
   .input-wrap {
     display: flex;
     input {
-      width: calc(100% - 102px);
+      width: calc(100% - 84px);
       padding: 0 12px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid #bdbdbd;
       border-right: 0;
       color: #424242;
-      line-height: 48px;
+      line-height: 40px;
     }
     button {
-      flex-basis: 102px;
+      flex-basis: 84px;
       background: #bdbdbd;
       color: #fff;
       font-size: 16px;
@@ -216,7 +216,8 @@ const Content = styled.div`
     padding: 0 15px;
     border: 1px dashed #e0e0e0;
     color: ${COLOR_MAIN};
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     line-height: 56px;
     text-align: left;
     &:after,
@@ -243,9 +244,9 @@ const Content = styled.div`
 
   p.info {
     position: relative;
-    margin-top: 40px;
+    margin-top: 16px;
     padding-left: 8px;
-    color: #bdbdbd;
+    color: #9e9e9e;
     font-size: 14px;
     line-height: 20px;
     transform: skew(-0.03deg);
@@ -294,11 +295,12 @@ const Content = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     p.info {
-      font-size: 12px;
+      font-size: 13px;
+      letter-spacing: -0.5px;
     }
     .btn-wrap {
       button {
-        font-size: 14px;
+        font-size: 16px;
       }
     }
     .input-wrap {

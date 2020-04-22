@@ -28,7 +28,7 @@ const Index = props => {
   //resize page func
   useEffect(() => {
     if (window.innerWidth <= 600) {
-      Store().action.updateCountPage(5)
+      Store().action.updateCountPage(7)
     } else if (window.innerWidth > 600) {
       Store().action.updateCountPage(10)
     }
