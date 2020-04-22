@@ -22,7 +22,6 @@ import LayerPopup from './component/layer_popup.js'
 import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
-import {broadcastLive} from 'constant/broadcast.js'
 import {useHistory} from 'react-router-dom'
 
 // static
@@ -83,19 +82,19 @@ export default props => {
           fanRank,
           myStar
         })
-
-        Api.splash().then(res => {
-          const {result} = res
-          if (result === 'success') {
-            const {data} = res
-            const {roomType} = data
-            if (roomType) {
-              setCategoryList(roomType)
-            }
-          }
-        })
       }
     })()
+
+    Api.splash().then(res => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          setCategoryList(roomType)
+        }
+      }
+    })
   }, [])
 
   const fetchLiveList = async reset => {
@@ -172,7 +171,7 @@ export default props => {
       setLiveCategoryFixed(false)
     }
 
-    const GAP = 200
+    const GAP = 300
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
