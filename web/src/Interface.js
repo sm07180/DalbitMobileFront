@@ -43,7 +43,6 @@ export default () => {
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
         if (_cookie === event.detail.authToken) {
           Room.setAuth(true)
-          Room.setActive(true)
         } else {
           Room.setAuth(false)
           //--
@@ -93,12 +92,11 @@ export default () => {
         context.action.updateNativePlayer(event.detail)
         break
       case 'native-start': //---------------------------Native player-show (Android & IOS)
-        //RoomJoin 더블클릭일때
-        Room.setActive(true)
         //시작
         //App에서 방송종료 알림경우
         if (Room !== undefined) {
           Room.setRoomNo(event.detail.roomNo)
+          Room.setActive(true)
         }
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
@@ -124,8 +122,8 @@ export default () => {
         //App에서 방송종료 알림경우
         if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
           Room.setRoomNo('')
+          Room.setActive(true)
         }
-        Room.setActive(true)
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail

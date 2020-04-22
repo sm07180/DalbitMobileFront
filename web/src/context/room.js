@@ -90,16 +90,16 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       }, 100)
       return
     }
-    Room.setActive(false)
     if (__NODE_ENV === 'dev') {
     }
-    console.log('실행')
-
+    Room.setActive(false)
     //---
     alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
     //방송강제퇴장
-    const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-    alert(JSON.stringify(exit, null, 1))
+    if (Room.roomNo !== '') {
+      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+      alert(JSON.stringify(exit, null, 1))
+    }
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
