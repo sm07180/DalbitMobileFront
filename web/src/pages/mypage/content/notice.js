@@ -204,14 +204,6 @@ const Notice = props => {
       )}
 
       <Write className={writeShow && 'on'}>
-        {/* <header>
-          <button onClick={() => setWriteShow(false)}></button>
-          <h2>공지 작성하기</h2>
-          <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
-            등록
-          </TitleBtn>
-        </header> */}
-
         <Header click={WriteToggle}>
           <div className="category-text">공지 작성하기</div>
           <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
