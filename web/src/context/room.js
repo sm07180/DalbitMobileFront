@@ -92,7 +92,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       return
     }
     if (__NODE_ENV === 'dev') {
-      alert('Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
+      //   alert('Room.active : ' + Room.active + ' : ' + 'Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
       //   const {isLogin} = context.token
     }
 
