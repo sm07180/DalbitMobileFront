@@ -124,6 +124,7 @@ export default () => {
         if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
           Room.setRoomNo('')
         }
+        Room.setActive(true)
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
