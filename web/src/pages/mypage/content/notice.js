@@ -154,6 +154,9 @@ const Notice = props => {
     <>
       <Header>
         <div className="category-text">방송공지</div>
+        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
+          작성
+        </button>
       </Header>
       <ListWrap>
         {Array.isArray(listDetailed) ? (
@@ -181,29 +184,38 @@ const Notice = props => {
               <br />
               <br />
               <br />
+              <br />
+              <br />
+              <br />
             </>
           )
         ) : (
           <div className="search" />
         )}
+        {/* <GlobalWriteBtn onClick={() => WriteToggle()} className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
+          <div className="inner" />
+        </GlobalWriteBtn> */}
       </ListWrap>
       {/* {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />} */}
       {Array.isArray(listDetailed) && listDetailed.length > 0 && listDetailed !== 'search' && (
         <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
       )}
 
-      <GlobalWriteBtn onClick={() => WriteToggle()} className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
-        <div className="inner" />
-      </GlobalWriteBtn>
-
       <Write className={writeShow && 'on'}>
-        <header>
+        {/* <header>
           <button onClick={() => setWriteShow(false)}></button>
           <h2>공지 작성하기</h2>
           <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
             등록
           </TitleBtn>
-        </header>
+        </header> */}
+
+        <Header>
+          <div className="category-text">공지 작성하기</div>
+          <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
+            등록
+          </TitleBtn>
+        </Header>
         <section>
           <div className="titleWrite">
             <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} />
@@ -212,7 +224,10 @@ const Notice = props => {
           <div className="contentWrite">
             <textarea placeholder="작성하고자 하는 글의 내용을 입력해주세요." maxLength="189" onChange={textChangeContent} />
           </div>
-          <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+          <div className="checkbox-wrap">
+            <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+          </div>
+
           <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
             등록
           </WriteSubmit>
@@ -233,7 +248,7 @@ const TopHistory = styled.div`
     padding: 16px 16px 16px 10px;
     display: flex;
 
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #bdbdbd;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
@@ -257,9 +272,9 @@ const GlobalWriteBtn = styled.button`
     display: none;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    bottom: 22px;
-    right: 50px;
+    position: absolute;
+    bottom: 12px;
+    right: 0px;
     width: 52px;
     height: 52px;
     border-radius: 50%;
@@ -315,6 +330,9 @@ const WriteBtn = styled.button`
 `
 
 const ListWrap = styled.div`
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  position: relative;
   .search {
     min-height: 200px;
   }
@@ -358,11 +376,15 @@ const Write = styled.div`
   background-color: #fff;
   z-index: 21;
 
+  .checkbox-wrap > div:first-child {
+    margin: 8px 0 18px 0;
+  }
+
   & header {
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #d2d2d2;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
@@ -378,11 +400,11 @@ const Write = styled.div`
   }
 
   & section {
-    padding: 32px 16px 0 16px;
+    padding: 20px 16px 0 16px;
     .titleWrite {
       input {
-        padding: 16px;
-        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        border: 1px solid #bdbdbd;
         width: 100%;
         &:focus {
           border: 1px solid ${COLOR_MAIN};
@@ -396,18 +418,18 @@ const Write = styled.div`
       }
     }
     .contentWrite {
-      margin-top: 20px;
+      margin-top: 12px;
 
       textarea {
         &:focus {
           border: 1px solid ${COLOR_MAIN};
         }
-        padding: 16px;
-        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        border: 1px solid #bdbdbd;
         width: 100%;
         min-height: 310px;
 
-        color: #616161;
+        color: #000;
         font-size: 16px;
         letter-spacing: -0.8px;
         line-height: 1.5;
@@ -446,11 +468,14 @@ const WriteSubmit = styled.button`
   }
 `
 const TitleBtn = styled.button`
+  position: absolute;
+  right: 16px;
   font-size: 16px;
   line-height: 1.25;
   letter-spacing: -0.4px;
   text-align: left;
-  color: #9e9e9e;
+  color: #757575;
+  font-weight: bold;
   transform: skew(-0.03deg);
 
   &.on {

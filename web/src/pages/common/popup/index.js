@@ -119,7 +119,7 @@ const Wrap = styled.div`
 
   &.round {
     width: 500px;
-    padding: 30px 0;
+    padding: 16px 0;
     height: 80%;
     max-height: auto;
     border-radius: 10px;
@@ -153,7 +153,7 @@ const Wrap = styled.div`
     width: 36px;
     height: 36px;
     top: -35px;
-    right: -12px;
+    right: 0;
     background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
     text-indent: -9999px;
     cursor: pointer;

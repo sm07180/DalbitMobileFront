@@ -258,9 +258,11 @@ const TitleWrap = styled.div`
   flex-direction: row;
   align-items: center;
   color: #424242;
-  font-size: 14px;
+  font-size: 16px;
+  padding: 0 8px;
   transform: skew(-0.03deg);
   margin-left: 4px;
+  font-weight: 600;
   > em {
     display: block;
     width: 20px;
@@ -273,7 +275,7 @@ const TitleWrap = styled.div`
 
   &.is-top {
     color: #632beb;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.35px;
     > i {
@@ -286,9 +288,9 @@ const TitleWrap = styled.div`
 `
 
 const ListContent = styled.div`
-  padding: 24px 18px;
+  padding: 20px 16px;
   background-color: #f8f8f8;
-  color: #616161;
+  color: #424242;
   font-size: 14px;
   letter-spacing: -0.35px;
   div:nth-child(1) {
@@ -300,8 +302,8 @@ const ListContent = styled.div`
   }
   div:nth-child(2) {
     margin-top: 6px;
-    font-size: 12px;
-    color: #bdbdbd;
+    font-size: 13px;
+    color: #757575;
     line-height: 1.08;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
@@ -322,7 +324,7 @@ const ListStyled = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 47px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #d8d8d8;
   cursor: pointer;
   user-select: none;
 
@@ -338,8 +340,8 @@ const Buttons = styled.div`
   display: none;
   justify-content: flex-end;
   background-color: #f8f8f8;
-  border-top: 1px solid #efefef;
-  border-bottom: 1px solid #efefef;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
   & em {
     display: block;
     width: 16px;
@@ -355,12 +357,13 @@ const Buttons = styled.div`
 
   & button {
     display: flex;
+    position: relative;
     padding: 12px 20px 12px 20px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.43;
     letter-spacing: -0.35px;
     text-align: left;
-    color: #9e9e9e;
+    color: #616161;
     transform: skew(-0.03deg);
     > i {
       display: inline-block;
@@ -368,6 +371,16 @@ const Buttons = styled.div`
       font-size: 14px;
       color: #bdbdbd;
     }
+  }
+  & button + button ::before {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 1px;
+    height: 16px;
+    background: #e0e0e0;
+    content: '';
   }
   &.on {
     display: flex;

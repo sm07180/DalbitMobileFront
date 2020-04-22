@@ -84,8 +84,7 @@ export default props => {
 //---------------------------------------------------------------------
 const Alert = styled.section`
   position: relative;
-  min-width: 300px;
-  max-width: 500px;
+  width: 320px;
   padding: 5px;
   border-radius: 10px;
   background: #fff;
@@ -108,12 +107,12 @@ const Alert = styled.section`
   /* 메시지 */
   .msg {
     padding: 40px 20px;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.71;
-    letter-spacing: -0.35px;
+    letter-spacing: -0.5px;
     word-break: break-all;
     text-align: center;
     transform: skew(-0.03deg);
