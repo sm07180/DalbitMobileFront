@@ -101,7 +101,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
-    if (Room.roomNo !== roomNo) {
+    if (Room.roomNo !== roomNo && Room.roomNo !== '') {
       const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
       if (__NODE_ENV === 'dev') {
         alert(JSON.stringify(exit, null, 1))
