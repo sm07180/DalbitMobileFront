@@ -204,6 +204,7 @@ export default props => {
   const [hidden, setHidden] = useState(false)
   const [modifyInfo, setModifyInfo] = useState({})
   const [btnState, setBtnState] = useState(false)
+  console.log(modifyInfo)
   //등록
   const submitClick = () => {
     fetchDataUpload()
@@ -212,6 +213,8 @@ export default props => {
   }
   //대댓글보기
   const ShowReplyBtnState = (writeNumer, boardNumer) => {
+    sethideSecondcomment(false)
+    sethidebigSecondcomment(false)
     if (btnState === true) {
       setBtnState(false)
     } else {
@@ -239,6 +242,10 @@ export default props => {
     setTimeout(() => {
       showReply(writeNumer, boardNumer)
     }, 100)
+    setTimeout(() => {
+      sethideSecondcomment(false)
+      sethidebigSecondcomment(false)
+    }, 200)
     setReplyRegist('')
   }
   //대댓글 value
@@ -290,13 +297,15 @@ export default props => {
     setModifyInComment(target.value)
   }
   //대댓글수정
-  const replyModify = (contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT) => {
+  const replyModify = (contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT, writerNo) => {
     setModifyInComment(contents)
     setModifyInShow(boardIdx)
     setModifyNumber(boardIdx)
     setHidden(true)
     clickRefresh()
-    setModifyInfo({profileImg, nickNm, memId, parseDT})
+    setModifyInfo({profileImg, nickNm, memId, parseDT, boardIdx, memId, writerNo})
+    sethideSecondcomment(true)
+    sethidebigSecondcomment(false)
   }
   //수정취소
   const moidfyCancel = () => {
@@ -305,6 +314,8 @@ export default props => {
     setModifyInShow('')
     setModifyComment('')
     setModifyShow('')
+    sethideSecondcomment(false)
+    sethidebigSecondcomment(false)
   }
 
   //dateformat
@@ -337,17 +348,38 @@ export default props => {
     }
   }, [hidden])
   //------------------------------------------------------------------------
+  const [daeSubmit, setDaeSubmit] = useState(false)
+  const toggleDae = () => {
+    setDaeSubmit(true)
+    setHidden(true)
+  }
+  //------------------------------------------------------------------------
+  const [hideSecondcomment, sethideSecondcomment] = useState(false)
+  const [hidebigSecondcomment, sethidebigSecondcomment] = useState(false)
+  const ToggleDae = () => {
+    if (hideSecondcomment === false) {
+      sethideSecondcomment(true)
+      sethidebigSecondcomment(true)
+    }
+  }
   return (
     <>
       <Header>
         <div className="category-text">팬 보드</div>
       </Header>
       {/* 전체영역 */}
-      <FanBoard className="fanboard">
-        <WriteArea className={active === true ? 'on' : ''}>
+      <FanBoard>
+        {/* 초기등록창 */}
+        <InitialSubmit className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
+          <div className="start">{placeholderTextStart}</div>
+          <button>등록</button>
+        </InitialSubmit>
+        <InitialBigSubmit className={active === true ? 'on' : ''}>
           <WriteAreaTop>
             <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
-            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}}>{profile.nickNm}</div>
+            <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}} className="nick">
+              {profile.nickNm}
+            </div>
           </WriteAreaTop>
           <Textarea placeholder={placeholderText} onChange={textChange} value={comment} />
           <WriteAreaBottom>
@@ -357,18 +389,14 @@ export default props => {
             </TextCount>
             <CommentSubmitBtn onClick={submitClick}>등록</CommentSubmitBtn>
           </WriteAreaBottom>
-        </WriteArea>
-        <article className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
-          <StartBottom>
-            <div className="start">{placeholderTextStart}</div>
-            <button>등록</button>
-          </StartBottom>
-        </article>
-        {/* 팬보드 큰댓글 등록 영역---- */}
+        </InitialBigSubmit>
+        {/* 리스트영역 */}
         <ListArea>
           <ListTitle>
             <span>게시글</span>
-            <span style={{marginLeft: '4px', fontWeight: 'bold'}}>{count}</span>
+            <span style={{marginLeft: '4px', fontWeight: 'bold'}} className="titlecount">
+              {count}
+            </span>
           </ListTitle>
           {fanTotal.map((item, index) => {
             const {profImg, nickNm, writeDt, writerNo, contents, replyCnt, boardIdx, status, boardNo, memId} = item
@@ -382,6 +410,7 @@ export default props => {
               link = profile.memNo !== writerNo ? `/mypage/${writerNo}` : `/menu/profile`
             }
             if (status !== 1) return
+
             return (
               <CommentBox key={index} className={status === 1 ? 'show' : ''}>
                 <div className={modifyShow === boardIdx ? 'disableCommentWrap' : 'CommentWrap'}>
@@ -422,21 +451,46 @@ export default props => {
                 </div>
                 {/* 댓글수정 */}
                 <WriteArea className={modifyShow === boardIdx ? 'onModify' : ''}>
-                  <WriteAreaTop>
-                    <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
-                    <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}}>{profile.nickNm}</div>
-                  </WriteAreaTop>
-                  <Textarea placeholder={placeholderText} onChange={textModify} value={modifyComment} />
-                  <WriteAreaBottom>
-                    <TextCount>
-                      <span style={{color: '#424242'}}>{`${modifyComment.length * 2}`}</span>
-                      <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
-                    </TextCount>
-                    <CommentSubmitBtnCancel onClick={() => moidfyCancel()}>취소</CommentSubmitBtnCancel>
-                    <CommentSubmitBtn onClick={() => fetchDataEdit(boardNumer)}>수정</CommentSubmitBtn>
-                  </WriteAreaBottom>
+                  <div className="titlewrap">
+                    <a href={link}>
+                      <Imgbox bg={profImg.thumb62x62} />
+                    </a>
+
+                    <div>
+                      <a href={link}>
+                        <span>{nickNm}</span>
+                        <span>(@{memId})</span>
+                      </a>
+                      <span>{timeFormat(writeDt)}</span>
+                    </div>
+                    {/* <BtnIcon
+                      onClick={() => setShowBtn(boardIdx)}
+                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
+                    <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
+                      <a
+                        className={writerNo === profile.memNo ? 'on' : ''}
+                        onClick={() => FanboardModify(contents, boardIdx, boardNumer)}>
+                        수정하기
+                      </a>
+                      <a
+                        className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                        onClick={() => DeleteComment(value)}>
+                        삭제하기
+                      </a>
+                    </DetailBtn> */}
+                  </div>
+                  <div className="modiInput">
+                    <Textarea placeholder={placeholderText} onChange={textModify} value={modifyComment} />
+                    <WriteAreaBottomModify>
+                      <TextCountModify>
+                        <span style={{color: '#424242'}}>{`${modifyComment.length * 2}`}</span>
+                        <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
+                      </TextCountModify>
+                      <CommentSubmitBtnCancelModify onClick={() => moidfyCancel()}>취소</CommentSubmitBtnCancelModify>
+                      <CommentSubmitBtnModify onClick={() => fetchDataEdit(boardNumer)}>수정</CommentSubmitBtnModify>
+                    </WriteAreaBottomModify>
+                  </div>
                 </WriteArea>
-                {/*  큰댓글 컨텐츠 영역---- */}
                 {boardNumer === broadNumbers && btnState === true && (
                   <div className="replyWrap">
                     {replyInfo.map((reply, index) => {
@@ -451,7 +505,7 @@ export default props => {
                         link = profile.memNo !== writerNo ? `/mypage/${writerNo}` : `/menu/profile`
                       }
                       if (status !== 1) return
-                      //console.log(boardIdx)
+
                       return (
                         <ReplyWrap key={index} className={modifyInShow === boardIdx ? 'disable' : ''}>
                           <div className="titlewrap">
@@ -466,31 +520,56 @@ export default props => {
                               </a>
                               <span>{timeFormat(writeDt)}</span>
                             </div>
-                            <BtnIcon
-                              onClick={() => setShowBtnReply(boardIdx)}
-                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'onStart' : ''}></BtnIcon>
-                            <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
-                              <a
-                                className={writerNo === profile.memNo ? 'on' : ''}
-                                onClick={() => replyModify(contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT)}>
-                                수정하기
-                              </a>
-                              <a
-                                className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
-                                onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
-                                삭제하기
-                              </a>
-                            </DetailBtn>
                           </div>
+                          <BtnIcon
+                            onClick={() => setShowBtnReply(boardIdx)}
+                            className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'onStart' : ''}></BtnIcon>
+                          <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
+                            <a
+                              className={writerNo === profile.memNo ? 'on' : ''}
+                              onClick={() =>
+                                replyModify(contents, boardNumer, boardIdx, profileImg, nickNm, memId, parseDT, writerNo, status)
+                              }>
+                              수정하기
+                            </a>
+                            <a
+                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                              onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
+                              삭제하기
+                            </a>
+                          </DetailBtn>
+
                           <div className="content">{contents}</div>
                         </ReplyWrap>
                       )
                     })}
-                    <StartBottom className={hidden === false ? 'bottomstart' : 'disable'}>
-                      <input placeholder={placeholderTextStart} onChange={textChangeReply} value={replyRegist} maxLength={100} />
-                      <button onClick={() => uploadReply(writeNumer, boardNumer)}>등록</button>
-                    </StartBottom>
-                    <MMwrap className={hidden === true ? '' : 'disable'}>
+                    <ReplySubmit onClick={() => ToggleDae()} className={hideSecondcomment === true && 'hide'}>
+                      <div className="start">{placeholderTextStart}</div>
+                      <button>등록</button>
+                    </ReplySubmit>
+                    <SecoundBigSubmit className={hidebigSecondcomment === true && 'on'}>
+                      <WriteAreaTop>
+                        <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
+                        <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}} className="nick">
+                          {profile.nickNm}
+                        </div>
+                      </WriteAreaTop>
+                      <SecoundTextarea
+                        placeholder={placeholderTextStart}
+                        onChange={textChangeReply}
+                        value={replyRegist}
+                        maxLength={49}
+                      />
+                      <WriteAreaBottom>
+                        <TextCount>
+                          <span style={{color: '#424242'}}>{`${replyRegist.length * 2}`}</span>
+                          <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
+                        </TextCount>
+                        <CommentSubmitBtn onClick={() => uploadReply(writeNumer, boardNumer)}>등록</CommentSubmitBtn>
+                      </WriteAreaBottom>
+                    </SecoundBigSubmit>
+
+                    <DaeModifyWrap className={hidden === true ? '' : 'disable'}>
                       <StartBottom>
                         <div className="titlewrap">
                           <Imgbox bg={modifyInfo.profileImg} />
@@ -500,106 +579,67 @@ export default props => {
                             <span>{modifyInfo.parseDT}</span>
                           </div>
                         </div>
-
-                        <input
-                          placeholder={placeholderTextStart}
-                          onChange={textChangeReplyModify}
-                          value={modifyInComment}
-                          maxLength={49}
-                          ref={inputEl}
-                        />
-                        <div className="countmodify">
-                          <TextCount className="modifyTextCount">
-                            <span style={{color: '#424242'}}>{`${modifyInComment.length * 2}`}</span>
-                            <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
-                          </TextCount>
-                          <div className="btnwraps">
-                            <button onClick={() => moidfyCancel()} className="cancelbtns">
-                              취소
-                            </button>
-                            <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)} className="modifybtns">
-                              수정
-                            </button>
+                        <article className="modifyborder">
+                          <textarea
+                            placeholder={placeholderTextStart}
+                            onChange={textChangeReplyModify}
+                            value={modifyInComment}
+                            maxLength={49}
+                            ref={inputEl}
+                            className="modifyInput"
+                          />
+                          <div className="countmodify">
+                            <TextCount className="modifyTextCount">
+                              <span style={{color: '#424242'}}>{`${modifyInComment.length * 2}`}</span>
+                              <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
+                            </TextCount>
+                            <div className="btnwraps">
+                              <button onClick={() => moidfyCancel()} className="cancelbtns">
+                                취소
+                              </button>
+                              <button onClick={() => fetchDataEditReply(writeNumer, boardNumer)} className="modifybtns">
+                                수정
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        </article>
                       </StartBottom>
-                    </MMwrap>
+                    </DaeModifyWrap>
                   </div>
                 )}
               </CommentBox>
             )
           })}
-          {/*  대댓글 컨텐츠 영역---- */}
         </ListArea>
       </FanBoard>
       <BG onClick={clickRefresh} className={showBtn !== '' || showBtnReply !== '' ? 'on' : ''}></BG>
     </>
   )
 }
-
-const ReplyWrap = styled.div`
-  display: block;
-  position: relative;
-  padding: 0 20px;
-  border-bottom: 1px solid #eeeeee;
-
-  :last-child {
-    border-bottom: none !important;
-  }
-
-  &.disable {
-    display: none;
+//팬보드 전체 영역
+const FanBoard = styled.div`
+  margin-top: 16px;
+`
+//초기 등록 버튼
+const InitialBigSubmit = styled.div`
+  display: none;
+  border: solid 1px #d0d0d0;
+  &.on {
+    display: block;
   }
 `
-const ListTitle = styled.div`
-  font-size: 16px;
-  color: #616161;
-  padding-bottom: 16px;
-  letter-spacing: -0.4px;
-  border-bottom: 1px solid #bdbdbd;
-
-  & > span {
-    vertical-align: center;
-    transform: skew(-0.03deg);
+const WriteAreaTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 11.5px 20px 0 20px;
+  & .nick {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: 000;
   }
 `
-
-const ListArea = styled.div`
-  margin: 24px 0;
-`
-
-const CommentSubmitBtn = styled.button`
-  width: 92px;
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  padding: 15px 0;
-  background-color: #632beb;
-  position: relative;
-  margin-right: -1px;
-`
-const CommentSubmitBtnCancel = styled.button`
-  width: 92px;
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  padding: 16px 0;
-  background-color: #bdbdbd;
-  position: relative;
-`
-const TextCount = styled.div`
-  width: calc(100% - 92px);
-  font-size: 14px;
-  padding: 17px 20px;
-  height: 51px;
-  box-sizing: border-box;
-  border-top: 1px solid #ededed;
-  border-bottom: 1px solid #d0d0d0;
-  & span {
-    transform: skew(-0.03deg);
-  }
-`
-
 const WriteAreaBottom = styled.div`
   display: flex;
   flex-direction: row;
@@ -607,13 +647,43 @@ const WriteAreaBottom = styled.div`
   align-items: center;
   width: 100%;
 `
+const TextCount = styled.div`
+  width: calc(100% - 68px);
+  font-size: 14px;
+  padding: 17px 20px;
+  height: 51px;
+  box-sizing: border-box;
+  border-top: 1px solid #ededed;
+`
+const CommentSubmitBtn = styled.button`
+  display: block;
+  width: 68px;
+  height: 51px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  z-index: 2;
+  border-top: solid 1px #632beb;
+  background-color: #632beb;
+  position: relative;
+  margin-right: -1px;
+`
+
+const OwnPhoto = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+`
 const Textarea = styled.textarea`
   display: block;
   width: 100%;
   font-size: 14px;
   height: 106px;
   font-family: inherit;
-  padding: 18px 20px;
+  padding: 16px 20px;
   box-sizing: border-box;
 
   &::placeholder {
@@ -628,34 +698,368 @@ const Textarea = styled.textarea`
   }
 `
 
-const OwnPhoto = styled.div`
+const InitialSubmit = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 36px;
+  background-color: #ffffff;
+  & div {
+    width: calc(100% - 60px);
+    height: 100%;
+    line-height: 36px;
+    border: solid 1px #bdbdbd;
+    padding-left: 10px;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    color: #757575;
+  }
+
+  & button {
+    display: block;
+    height: 100%;
+    width: 60px;
+    z-index: 2;
+    border: solid 1px #632beb;
+    background-color: #632beb;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: #ffffff;
+  }
+  &.on {
+    display: none;
+  }
+`
+//리스트영역
+const ListArea = styled.div`
+  margin: 18px 0;
+`
+const ListTitle = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  padding-bottom: 10px;
+  letter-spacing: -0.4px;
+  border-bottom: 1px solid #bdbdbd;
+  & .titlecount {
+    color: #632beb;
+  }
+  & > span {
+    vertical-align: center;
+
+    transform: skew(-0.03deg);
+  }
+`
+const CommentBox = styled.div`
+  position: relative;
+  display: block;
+  width: 100%;
+  border-bottom: 1px solid #eeeeee;
+  & .CommentWrap {
+    display: block;
+  }
+  & .disableCommentWrap {
+    display: none;
+  }
+  & .titlewrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0 12px 0;
+    div:nth-child(2) {
+      display: flex;
+      flex-wrap: wrap;
+      width: calc(100% - 42px);
+      a {
+        display: flex;
+      }
+      a span:nth-child(1) {
+        display: block;
+        max-width: 60.56%;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #424242;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.35px;
+        transform: skew(-0.03deg);
+        line-height: 1.43;
+        margin-right: 4px;
+      }
+      a span:nth-child(2) {
+        display: block;
+        width: calc(39.44% - 4px);
+        color: ${COLOR_MAIN};
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.03px;
+        transform: skew(-0.03deg);
+      }
+      a + span {
+        display: block;
+        width: 100%;
+        font-weight: 600;
+
+        color: #616161;
+        font-size: 14px;
+        letter-spacing: -0.3px;
+        transform: skew(-0.03deg);
+      }
+    }
+  }
+  .content {
+    width: 100%;
+    margin-bottom: 17px;
+    font-size: 16px;
+    color: #424242;
+    line-height: 1.57;
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+    word-break: break-word;
+  }
+  .reply {
+    display: block;
+    padding: 0 8px;
+    height: 28px;
+    margin-bottom: 12px;
+    border: solid 1px #e0e0e0;
+    font-size: 14px;
+    color: #424242;
+    transform: skew(-0.03deg);
+    > span {
+      color: ${COLOR_MAIN};
+    }
+  }
+  & .replyWrap {
+    width: calc(100% + 9.8%);
+    margin-left: -4.9%;
+    margin-bottom: -1px;
+    /* padding: 12px 0; */
+    /* padding: 0px 0 17px 0; */
+    background-color: #f8f8f8;
+    & > div:first-child > .titlewrap {
+      padding-top: 12px;
+    }
+  }
+  & .startBtn {
+    right: 10px;
+  }
+  & .replyContent {
+    display: block;
+    position: relative;
+    padding: 0 20px;
+
+    &:last-child {
+    }
+  }
+  & .disableReplyContent {
+    display: none;
+    position: relative;
+    padding: 0 20px;
+
+    &:last-child {
+    }
+  }
+`
+const Imgbox = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  background: url(${props => props.bg}) no-repeat center center / cover;
 `
-
-const WriteAreaTop = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px 20px 0 20px;
-`
-
-const WriteArea = styled.div`
-  border: 1px solid #d0d0d0;
-  border-bottom: none;
+const BtnIcon = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 0;
   display: none;
+  width: 36px;
+  height: 36px;
+  background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
+  z-index: 8;
   &.on {
     display: block;
   }
-  &.onModify {
+  &.onStart {
+    right: 16px;
     display: block;
-    margin-top: 10px;
-    & button {
-      padding: 15px 0;
+  }
+`
+const DetailBtn = styled.div`
+  position: absolute;
+  top: 36px;
+  right: 24px;
+  display: none;
+  z-index: 9;
+  flex-direction: column;
+  width: 103px;
+  padding: 10px 0;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  &.active {
+    display: flex;
+    background-color: #fff;
+  }
+  & a {
+    display: none;
+    text-align: center;
+    padding: 6px;
+    font-size: 14px;
+    z-index: 9;
+    letter-spacing: -0.35px;
+    color: #757575;
+    background-color: #fff;
+    transform: skew(-0.03deg);
+    &.on {
+      display: block;
+    }
+  }
+  & a:hover {
+    background-color: #f8f8f8;
+  }
+`
+/////댓글
+const ReplyWrap = styled.div`
+  display: block;
+  position: relative;
+  padding: 0 20px;
+  border-top: 1px solid #e0e0e0;
+  :last-child {
+    border-bottom: none !important;
+  }
+  &.disable {
+    display: none;
+  }
+`
+////댓글 등록 인풋
+const ReplySubmit = styled.div`
+  display: flex;
+  align-items: center;
+  width: calc(100% - 40px);
+  height: 36px;
+  padding: 12px 0;
+  box-sizing: content-box;
+  margin: 0px auto 0px auto;
+
+  & div {
+    width: calc(100% - 60px);
+    height: 100%;
+    line-height: 36px;
+    border: solid 1px #bdbdbd;
+    padding-left: 10px;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    color: #757575;
+    background-color: #ffffff;
+  }
+  & button {
+    display: block;
+    height: 100%;
+    width: 60px;
+    z-index: 2;
+    border: solid 1px #632beb;
+    background-color: #632beb;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: #ffffff;
+  }
+  &.hide {
+    display: none;
+  }
+`
+//대댓글 등록 버튼
+const SecoundBigSubmit = styled.div`
+  display: none;
+  width: calc(100% - 40px);
+  background-color: #fff;
+  margin: 0 auto;
+  border: solid 1px #d0d0d0;
+  &.on {
+    display: block;
+  }
+`
+//대댓글 텍스트 아리아
+const SecoundTextarea = styled.textarea`
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  height: 106px;
+  font-family: inherit;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  background-color: #fff;
+
+  &::placeholder {
+    color: #bdbdbd;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    line-height: 1.57;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`
+//대댓글수정
+const DaeModifyWrap = styled.section`
+  position: relative;
+  width: 100%;
+  border-top: solid 1px #bdbdbd;
+  border-bottom: solid 1px #bdbdbd;
+  & .modifyborder {
+    margin: 0px 20px 12px 20px;
+    border: solid 1px #bdbdbd;
+    & .modifyInput {
+      display: block;
+      width: 100%;
+      min-height: 72px;
+      padding: 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: -0.4px;
+      text-align: left;
+      color: #000000;
+    }
+  }
+  & .titlewrap {
+    padding: 12px 20px;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    border: none;
+  }
+  &.disable {
+    display: none;
+  }
+  & div:nth-child(2) > div {
+    padding: 0;
+  }
+  & .countmodify {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .cancelbtns {
+      height: 36px;
+      background-color: #bdbdbd;
+    }
+    .btnwraps {
+      display: flex;
+      & button {
+        width: 59px;
+      }
+    }
+    .modifyTextCount {
+      border: none;
+      height: 36px;
+      line-height: 36px;
+      padding-left: 12px;
+      background-color: #fff;
+      border-top: solid 1px #bdbdbd;
+      /* height: 52px; */
     }
   }
 `
@@ -663,6 +1067,28 @@ const StartBottom = styled.div`
   display: flex;
   > div.start{
     border: 1px solid #d0d0d0;
+  }
+  & span {
+    font-size: 14px;
+ 
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  text-align: left;
+  color: #000000;
+
+  :nth-child(2) {
+    font-size: 14px;
+    color: #632beb;
+  }
+  :nth-child(3) {
+    font-size: 14px;
+  font-weight: 600;
+  line-height: 1.43;
+  letter-spacing: -0.35px;
+  text-align: left;
+  color: #616161;
+  }
+
   }
 
   &.bottomstart {
@@ -748,145 +1174,93 @@ const StartBottom = styled.div`
     margin-top: 18px;
   }
 `
-//mother
-const FanBoard = styled.div`
-  margin-top: 24px;
-  /* 등록 숨김 */
-  article {
-    display: block;
-    cursor: pointer;
-    &.on {
-      display: none;
-    }
-  }
-  & .CommentWrap {
-    display: block;
-  }
-  & .disableCommentWrap {
-    display: none;
-  }
-`
-const CommentBox = styled.div`
-  position: relative;
+//큰댓글 수정
+const WriteArea = styled.div`
+  border-bottom: none;
   display: none;
+  &.on {
+    display: block;
+  }
+  &.onModify {
+    display: block;
+    margin-top: 10px;
+    & button {
+      padding: 15px 0;
+    }
+  }
+  & .modiInput {
+    border: 1px solid #d0d0d0;
+  }
+`
+const CommentSubmitBtnCancel = styled.button`
+  width: 92px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  padding: 16px 0;
+  background-color: #bdbdbd;
+  position: relative;
+`
+const TextCountModify = styled.div`
+  width: calc(100% - 68px);
+  padding-left: 12px;
+  font-size: 14px;
+  line-height: 36px;
+  height: 36px;
+  box-sizing: border-box;
+  border-top: solid 1px #d0d0d0;
+`
+const WriteAreaBottomModify = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  border-bottom: 1px solid #eeeeee;
-  &.show {
+`
+const CommentSubmitBtnCancelModify = styled.button`
+  width: 59px;
+  padding: 0;
+  text-align: center;
+  font-size: 16px;
+  padding: 0 !important;
+  color: #fff;
+  height: 36px;
+  background-color: #bdbdbd;
+  position: relative;
+`
+const CommentSubmitBtnModify = styled.button`
+  display: block;
+  width: 59px;
+  height: 36px;
+  padding: 0 !important;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  z-index: 2;
+  border-top: solid 1px #632beb;
+  background-color: #632beb;
+  position: relative;
+  margin-right: -1px;
+`
+//대댓글 수정 아이콘
+const BtnIconModify = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 0;
+  display: none;
+  width: 36px;
+  height: 36px;
+  background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
+  z-index: 8;
+  &.on {
     display: block;
   }
-  & .titlewrap {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0;
-    div:nth-child(2) {
-      display: flex;
-      flex-wrap: wrap;
-      width: calc(100% - 42px);
-      a {
-        display: flex;
-      }
-      a span:nth-child(1) {
-        display: block;
-        max-width: 60.56%;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #424242;
-        font-size: 14px;
-        font-weight: 600;
-        letter-spacing: -0.35px;
-        transform: skew(-0.03deg);
-        line-height: 1.43;
-        margin-right: 4px;
-      }
-      a span:nth-child(2) {
-        display: block;
-        width: calc(39.44% - 4px);
-        color: ${COLOR_MAIN};
-        font-size: 12px;
-        line-height: 1.8;
-        letter-spacing: -0.03px;
-        transform: skew(-0.03deg);
-      }
-      a + span {
-        display: block;
-        width: 100%;
-        margin-top: 2px;
-        color: #9e9e9e;
-        font-size: 12px;
-        letter-spacing: -0.3px;
-        transform: skew(-0.03deg);
-      }
-    }
-  }
-  .content {
-    width: 100%;
-    margin: 0 0 16px 0;
-    font-size: 14px;
-    color: #424242;
-    line-height: 1.57;
-    letter-spacing: -0.35px;
-    transform: skew(-0.03deg);
-    word-break: break-word;
-  }
-  .reply {
+  &.onStart {
+    right: 16px;
     display: block;
-    padding: 0 8px;
-    height: 28px;
-    margin-bottom: 12px;
-    border: solid 1px #e0e0e0;
-    font-size: 14px;
-    color: #424242;
-    transform: skew(-0.03deg);
-    > span {
-      color: ${COLOR_MAIN};
-    }
-  }
-  & .replyWrap {
-    width: calc(100% + 9.8%);
-    margin-left: -4.9%;
-    margin-bottom: -1px;
-    /* padding: 18px 4.445% 18px 4.445%; */
-    /* border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee; */
-    background-color: #f8f8f8;
-
-    & > div:first-child > .titlewrap {
-      padding-top: 20px;
-    }
-  }
-  & .startBtn {
-    right: 10px;
-  }
-  & .replyContent {
-    display: block;
-    position: relative;
-    padding: 0 20px;
-    /* border-bottom: 1px solid #eeeeee; */
-
-    &:last-child {
-      /* border-bottom: 1px solid none; */
-    }
-  }
-  & .disableReplyContent {
-    display: none;
-    position: relative;
-    padding: 0 20px;
-    /* border-bottom: 1px solid #eeeeee; */
-
-    &:last-child {
-      /* border-bottom: 1px solid none; */
-    }
   }
 `
-const Imgbox = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center / cover;
-`
-
-const DetailBtn = styled.div`
+const DetailBtnModify = styled.div`
   position: absolute;
   top: 52px;
   right: 0;
@@ -929,67 +1303,5 @@ const BG = styled.div`
   height: 100vh;
   &.on {
     display: block;
-  }
-`
-const BtnIcon = styled.button`
-  position: absolute;
-  top: 16px;
-  right: 0;
-  display: none;
-  width: 36px;
-  height: 36px;
-  background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
-  z-index: 8;
-  &.on {
-    display: block;
-  }
-  &.onStart {
-    right: 16px;
-    display: block;
-  }
-`
-
-const MMwrap = styled.section`
-  width: 100%;
-
-  & .titlewrap {
-    padding: 16px 20px;
-  }
-  > div {
-    display: flex;
-    flex-direction: column;
-    border: none;
-    > input {
-      padding: 16px 4px;
-      margin: 0 16px;
-      width: calc(100% - 32px);
-    }
-  }
-  &.disable {
-    display: none;
-  }
-  & div:nth-child(2) > div {
-    padding: 0;
-  }
-  & .countmodify {
-    width: calc(100% - 16px);
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 0 0px 16px;
-    .cancelbtns {
-      height: 42px;
-      background-color: #bdbdbd;
-    }
-    .btnwraps {
-      margin: 10px 0;
-      display: flex;
-    }
-    .modifyTextCount {
-      border: none;
-      height: 52px;
-      padding: 17px 0;
-    }
   }
 `
