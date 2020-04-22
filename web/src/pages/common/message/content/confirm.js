@@ -18,6 +18,7 @@ import {Context} from 'context'
 import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
+import {COLOR_MAIN} from 'context/color'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -95,12 +96,11 @@ export default props => {
 //---------------------------------------------------------------------
 const Alert = styled.section`
   position: relative;
-  min-width: 300px;
-  max-width: 400px;
+  width: 320px;
   padding: 5px;
   border-radius: 10px;
   background: #fff;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   box-sizing: border-box;
   .wrap-message {
     width: 100%;
@@ -119,11 +119,11 @@ const Alert = styled.section`
   /* 메시지 */
   .msg {
     padding: 38px 20px;
-    font-size: 14px;
+    font-size: 17px;
 
     line-height: 1.71;
-    letter-spacing: -0.35px;
-    word-break: break-all;
+    letter-spacing: -0.5px;
+    word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
     em {
@@ -140,7 +140,7 @@ const Alert = styled.section`
     color: #fff;
     height: 48px;
     border-radius: 10px;
-    background-color: #8555f6;
+    background-color: ${COLOR_MAIN};
     /* 취소 */
     &:nth-child(odd) {
       margin-right: 4px;

@@ -326,6 +326,7 @@ const List = styled.div`
   > button {
     flex: none;
     margin-left: auto;
+    margin-right: 1px;
     width: 53px;
     height: 26px;
     border: 1px solid ${COLOR_MAIN};

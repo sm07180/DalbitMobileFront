@@ -22,7 +22,6 @@ import LayerPopup from './component/layer_popup.js'
 import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
-import {broadcastLive} from 'constant/broadcast.js'
 import {useHistory} from 'react-router-dom'
 
 // static
@@ -66,6 +65,7 @@ export default props => {
   const [totalLivePage, setTotalLivePage] = useState(null)
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
+  const [categoryList, setCategoryList] = useState([])
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -84,6 +84,17 @@ export default props => {
         })
       }
     })()
+
+    Api.splash().then(res => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          setCategoryList(roomType)
+        }
+      }
+    })
   }, [])
 
   const fetchLiveList = async reset => {
@@ -160,7 +171,7 @@ export default props => {
       setLiveCategoryFixed(false)
     }
 
-    const GAP = 200
+    const GAP = 300
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
@@ -177,10 +188,28 @@ export default props => {
     fetchLiveList(true)
   }
 
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
   useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+      }
+    }
+  }, [popup])
+
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
     return () => {
+      window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
       window.removeEventListener('scroll', tempScrollEvent)
       tempScrollEvent = null
@@ -288,11 +317,7 @@ export default props => {
                 <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
-              <div
-                className="sequence-wrap"
-                onClick={() => {
-                  setPopup(popup ? false : true)
-                }}>
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
@@ -304,20 +329,22 @@ export default props => {
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="inner-wrapper">
-                <Swiper {...swiperParams}>
-                  {Object.keys(broadcastLive)
-                    .sort((a, b) => Number(a) - Number(b))
-                    .map((key, idx) => {
-                      return (
-                        <div
-                          className={`list ${key === selectedLiveRoomType ? 'active' : ''}`}
-                          key={`list-${idx}`}
-                          onClick={() => setSelectedLiveRoomType(key)}>
-                          {broadcastLive[key]}
-                        </div>
-                      )
-                    })}
-                </Swiper>
+                {Array.isArray(categoryList) && categoryList.length > 0 && (
+                  <Swiper {...swiperParams}>
+                    {categoryList
+                      .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
+                      .map((key, idx) => {
+                        return (
+                          <div
+                            className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                            key={`list-${idx}`}
+                            onClick={() => setSelectedLiveRoomType(key.cd)}>
+                            {key.cdNm}
+                          </div>
+                        )
+                      })}
+                  </Swiper>
+                )}
               </div>
             </div>
 

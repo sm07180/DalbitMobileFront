@@ -43,7 +43,9 @@ export default props => {
 
   const scrollOnUpdate = () => {
     if (document.getElementsByClassName('round')[0]) {
-      termsArea.current.children[0].children[0].style.maxHeight = `calc(${document.getElementsByClassName('round')[0].offsetHeight}px - 41px)`
+      termsArea.current.children[0].children[0].style.maxHeight = `calc(${
+        document.getElementsByClassName('round')[0].offsetHeight
+      }px - 41px)`
     }
   }
 
@@ -76,17 +78,17 @@ const Terms = styled.div`
     display: none;
   }
   h2 {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #bdbdbd;
     color: #424242;
     font-size: 24px;
     font-weight: 400;
   }
 
   h3 {
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 12px;
     font-size: 16px;
     color: #424242;
     font-weight: 600;
@@ -95,12 +97,14 @@ const Terms = styled.div`
   p {
     margin-top: 15px;
     font-size: 14px;
-    line-height: 22px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
   }
 
   li {
     font-size: 14px;
-    line-height: 22px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {

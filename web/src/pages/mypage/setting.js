@@ -216,7 +216,7 @@ export default props => {
                 </GenderTab>
               </GenderWrap>
 
-              <GenderAlertMsg>* 생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
+              <GenderAlertMsg>* 생년월일 수정은 고객센터로 문의해주세요.</GenderAlertMsg>
 
               <div className="msg-wrap">
                 <MsgTitle>프로필 메세지</MsgTitle>
@@ -232,7 +232,7 @@ export default props => {
 }
 
 const SaveBtn = styled.button`
-  margin-top: 60px;
+  margin-top: 20px;
   width: 100%;
   padding: 16px 0;
   color: #fff;
@@ -249,7 +249,7 @@ const MsgText = styled.textarea`
   border: 1px solid #e0e0e0;
   resize: none;
   padding: 16px;
-  height: 178px;
+  height: 116px;
   font-family: inherit;
   color: #000000;
   transform: skew(-0.03deg);
@@ -259,63 +259,64 @@ const MsgText = styled.textarea`
 `
 
 const MsgTitle = styled.div`
-  margin-left: 16px;
   color: #616161;
   letter-spacing: -0.4px;
   font-size: 16px;
   margin-top: 24px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `
 
 const GenderAlertMsg = styled.div`
-  color: #bdbdbd;
-  font-size: 12px;
-  margin-top: 12px;
+  color: #616161;
+  font-size: 14px;
+  margin-top: 8px;
+  letter-spacing: -0.5px;
   transform: skew(-0.03deg);
 `
 
 const GenderTab = styled.div`
   width: 50%;
-  padding: 16px 0;
+  padding: 9px 0;
   text-align: center;
   user-select: none;
   box-sizing: border-box;
-  color: #fff;
+  color: #616161;
 
   & + & {
-    border-left: 1px solid #e0e0e0;
+    border-left: 1px solid #bdbdbd;
   }
 
   &.off {
-    color: #616161;
-    background-color: #eee;
+    color: #9e9e9e;
+    background-color: #fff;
   }
 `
 const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
+  margin-top: 12px;
+  border: 1px solid #bdbdbd;
   &.before > div {
     background-color: ${COLOR_MAIN};
     &.off {
-      color: #616161;
-      background-color: #eee;
+      color: #9e9e9e;
+      background-color: #fff;
     }
   }
 
   &.after > div {
-    background-color: #9e9e9e;
+    background-color: #eee;
     cursor: not-allowed;
     &.off {
-      color: #616161;
-      background-color: #eee;
+      color: #9e9e9e;
+      background-color: #fff;
     }
   }
 `
 
 const BirthDate = styled.div`
-  margin-top: 20px;
-  padding: 16px;
+  margin-top: 12px;
+  padding: 9px 10px;
   background-color: #eee;
   box-sizing: border-box;
   color: #616161;
@@ -329,7 +330,7 @@ const PasswordRedirectBtn = styled.button`
     width: 100%;
     font-size: 16px;
     color: #fff;
-    padding: 16px 0;
+    padding: 11px 0;
     background-color: #9e9e9e;
   }
 `
@@ -360,12 +361,12 @@ const PasswordWrap = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 12px;
 `
 
 const UserId = styled.div`
-  margin-top: 20px;
-  padding: 16px;
+  margin-top: 12px;
+  padding: 9px 10px;
   background-color: #eee;
   box-sizing: border-box;
   color: #616161;
@@ -374,15 +375,15 @@ const UserId = styled.div`
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
-  border: 1px solid #e5e5e5;
-  padding: 16px;
+  border: 1px solid #bdbdbd;
+  padding: 8px 10px;
   width: 100%;
 `
 
 const ProfileImg = styled.div`
   position: relative;
   margin: 0 auto;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
   margin-top: 20px;
   border: 1px solid #8556f5;
   border-radius: 50%;

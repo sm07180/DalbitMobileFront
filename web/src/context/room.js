@@ -52,9 +52,11 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
+  console.log(Room.roomNo + ' : ' + roomNo)
   /**
    * @title Room.roomNo , roomNo 비교
    */
+
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(join)
@@ -80,12 +82,15 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
+        //재귀함수
         RoomJoin(roomNo)
-        //   alert(roomNo + ' : Room.auth : ' + Room.auth)
       }, 100)
       return
     }
-
+    if (__NODE_ENV === 'dev') {
+      alert('Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
+      //   const {isLogin} = context.token
+    }
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
     console.log(exit)
@@ -93,6 +98,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(res)
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
+    //
+    Room.roomNo = roomNo
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {

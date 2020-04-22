@@ -155,7 +155,7 @@ const Wrap = styled.div`
   padding-top: 10px;
   > div {
     padding: 10px 9px;
-    margin-bottom: 24px;
+    margin-bottom: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding: 10px 0;
     }
@@ -172,12 +172,12 @@ const Wrap = styled.div`
         margin-top: 16px;
       }
       @media (max-width: ${WIDTH_MOBILE}) {
-        font-size: 12px;
+        font-size: 13px;
         max-width: 89.44%;
       }
       @media (max-width: ${WIDTH_MOBILE_S}) {
         max-width: 100%;
-        line-height: 1.83;
+        line-height: 18px;
       }
     }
   }
@@ -219,7 +219,7 @@ const Wrap = styled.div`
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
       padding: 16px 0;
-      margin: 20px auto 116px auto;
+      margin: 10px auto;
     }
   }
   & .submiton {

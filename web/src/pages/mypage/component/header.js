@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 // static
 import closeBtn from './ic_back.svg'
@@ -8,7 +9,11 @@ import {getUrlAndRedirect} from 'components/lib/link_control.js'
 
 export default props => {
   const goBack = () => {
-    getUrlAndRedirect()
+    if (props.click == undefined) {
+      getUrlAndRedirect()
+    } else {
+      props.click()
+    }
   }
 
   return (
@@ -31,6 +36,14 @@ const Header = styled.div`
   width: calc(100% + 32px);
   margin-left: -16px;
   padding: 12px 16px;
+
+  .write-btn {
+    position: absolute;
+    right: 16px;
+    color: ${COLOR_MAIN};
+    font-weight: bold;
+    font-size: 17px;
+  }
   .child-bundle {
     display: flex;
     flex-direction: row;

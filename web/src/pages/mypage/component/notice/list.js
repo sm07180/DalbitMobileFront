@@ -12,6 +12,7 @@ import Checkbox from '../../content/checkbox'
 // static
 import DeleteIcon from '../images/ic_delete.svg'
 import ModifyIcon from '../images/ic_edit.svg'
+import Header from '../../component/header.js'
 
 const List = props => {
   //context
@@ -116,6 +117,8 @@ const List = props => {
   const WriteToggle = () => {
     if (writeShow === false) {
       setWriteShow(true)
+    } else {
+      setWriteShow(false)
     }
   }
   //active
@@ -191,13 +194,12 @@ const List = props => {
           </Buttons>
 
           <Write className={writeShow && 'on'}>
-            <header>
-              <button onClick={modifyBtn}></button>
-              <h2>공지 수정하기</h2>
+            <Header click={WriteToggle}>
+              <div className="category-text">공지 수정하기</div>
               <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
               </TitleBtn>
-            </header>
+            </Header>
             <section>
               <div className="titleWrite">
                 <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />
@@ -211,7 +213,9 @@ const List = props => {
                   value={comentContent}
                 />
               </div>
-              <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+              <div className="checkbox-wrap">
+                <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+              </div>
               <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
               </WriteSubmit>
@@ -258,9 +262,11 @@ const TitleWrap = styled.div`
   flex-direction: row;
   align-items: center;
   color: #424242;
-  font-size: 14px;
+  font-size: 16px;
+  padding: 0 8px;
   transform: skew(-0.03deg);
   margin-left: 4px;
+  font-weight: 600;
   > em {
     display: block;
     width: 20px;
@@ -273,7 +279,7 @@ const TitleWrap = styled.div`
 
   &.is-top {
     color: #632beb;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.35px;
     > i {
@@ -286,9 +292,9 @@ const TitleWrap = styled.div`
 `
 
 const ListContent = styled.div`
-  padding: 24px 18px;
+  padding: 20px 16px;
   background-color: #f8f8f8;
-  color: #616161;
+  color: #424242;
   font-size: 14px;
   letter-spacing: -0.35px;
   div:nth-child(1) {
@@ -300,8 +306,8 @@ const ListContent = styled.div`
   }
   div:nth-child(2) {
     margin-top: 6px;
-    font-size: 12px;
-    color: #bdbdbd;
+    font-size: 13px;
+    color: #757575;
     line-height: 1.08;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
@@ -322,7 +328,7 @@ const ListStyled = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 47px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #d8d8d8;
   cursor: pointer;
   user-select: none;
 
@@ -338,8 +344,8 @@ const Buttons = styled.div`
   display: none;
   justify-content: flex-end;
   background-color: #f8f8f8;
-  border-top: 1px solid #efefef;
-  border-bottom: 1px solid #efefef;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
   & em {
     display: block;
     width: 16px;
@@ -355,12 +361,13 @@ const Buttons = styled.div`
 
   & button {
     display: flex;
+    position: relative;
     padding: 12px 20px 12px 20px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.43;
     letter-spacing: -0.35px;
     text-align: left;
-    color: #9e9e9e;
+    color: #616161;
     transform: skew(-0.03deg);
     > i {
       display: inline-block;
@@ -368,6 +375,16 @@ const Buttons = styled.div`
       font-size: 14px;
       color: #bdbdbd;
     }
+  }
+  & button + button ::before {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 1px;
+    height: 16px;
+    background: #e0e0e0;
+    content: '';
   }
   &.on {
     display: flex;
@@ -383,12 +400,16 @@ const Write = styled.div`
   height: 100vh;
   background-color: #fff;
   z-index: 21;
+
+  .checkbox-wrap > div:first-child {
+    margin: 8px 0 18px 0;
+  }
+
   & header {
     padding: 16px 16px 16px 10px;
-
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #d2d2d2;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
@@ -397,52 +418,43 @@ const Write = styled.div`
     h2 {
       font-size: 18px;
       font-weight: 600;
-      line-height: 24px;
+      line-height: 1.17;
       letter-spacing: -0.45px;
       text-align: center;
-    }
-
-    .submit {
-      font-size: 16px;
-      line-height: 1.25;
-      letter-spacing: -0.4px;
-      text-align: left;
-      color: #9e9e9e;
-      transform: skew(-0.03deg);
     }
   }
 
   & section {
-    padding: 32px 16px 0 16px;
+    padding: 20px 16px 0 16px;
     .titleWrite {
       input {
+        padding: 8px 12px;
+        border: 1px solid #bdbdbd;
         width: 100%;
-        padding: 16px;
-        border: 1px solid #e0e0e0;
         &:focus {
           border: 1px solid ${COLOR_MAIN};
         }
         &::placeholder {
           color: #616161;
           font-size: 16px;
-
           line-height: 1.5;
           transform: skew(-0.03deg);
         }
       }
     }
     .contentWrite {
-      margin-top: 20px;
+      margin-top: 12px;
+
       textarea {
         &:focus {
           border: 1px solid ${COLOR_MAIN};
         }
-        padding: 16px;
-        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        border: 1px solid #bdbdbd;
         width: 100%;
         min-height: 310px;
 
-        color: #616161;
+        color: #000;
         font-size: 16px;
         letter-spacing: -0.8px;
         line-height: 1.5;
@@ -464,6 +476,7 @@ const Write = styled.div`
     display: block;
   }
 `
+
 const WriteSubmit = styled.button`
   display: block;
   padding: 16px 0;
@@ -484,11 +497,14 @@ const Wrap = styled.div`
   position: relative;
 `
 const TitleBtn = styled.button`
+  position: absolute;
+  right: 16px;
   font-size: 16px;
   line-height: 1.25;
   letter-spacing: -0.4px;
   text-align: left;
-  color: #9e9e9e;
+  color: #757575;
+  font-weight: bold;
   transform: skew(-0.03deg);
 
   &.on {

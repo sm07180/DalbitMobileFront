@@ -22,16 +22,18 @@ function debug(obj) {
   )
 }
 function native() {
-  // document.dispatchEvent(
-  //   new CustomEvent('native-goLogin', {
-  //     detail: {title: 'text', auth: '111112222CCCCCDDDDD'}
-  //   })
-  // )
   document.dispatchEvent(
-    new CustomEvent('native-auth-check', {
-      detail: `{"push_type":"32","room_no":"1111","mem_no":"11586413415350"}`
+    new CustomEvent('native-push-background', {
+      detail: `{"push_type":"32","mem_no":"11584404133573"}`
     })
   )
   return true
-  //document.dispatchEvent(new Event('REACT-callback'))
+}
+function native1() {
+  document.dispatchEvent(
+    new CustomEvent('native-push-background', {
+      detail: `{"push_type":"1","room_no":"1111"}`
+    })
+  )
+  return true
 }
