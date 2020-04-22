@@ -282,9 +282,11 @@ export default props => {
               setCurrentNick('사용 가능한 닉네임 입니다.')
             }
           } else if (resNick.result === 'fail') {
+            nmVal = {...nmVal, nickNm: false}
             if (resNick.code == '0') {
               setCurrentNick('닉네임 중복입니다.')
             } else {
+              setCurrentNick('사용 불가능한 닉네임 입니다.')
               context.action.alert({
                 msg: resNick.message
               })
