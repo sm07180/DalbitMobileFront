@@ -100,7 +100,7 @@ const Alert = styled.section`
   padding: 5px;
   border-radius: 10px;
   background: #fff;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   box-sizing: border-box;
   .wrap-message {
     width: 100%;
