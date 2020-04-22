@@ -44,7 +44,7 @@ export default props => {
       params: {
         memNo: urlrStr,
         page: 1,
-        records: 1000
+        records: 100
       }
     })
     if (res.result === 'success') {
@@ -71,10 +71,6 @@ export default props => {
     if (res.result === 'success') {
       setReplyInfo(res.data.list)
     } else if (res.result === 'fail') {
-      // context.action.alert({
-      //   callback: () => {},
-      //   msg: res.message
-      // })
     }
   }
 
@@ -107,7 +103,6 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      //console.log(res)
     } else if (res.result === 'fail') {
       context.action.alert({
         callback: () => {},
@@ -242,17 +237,16 @@ export default props => {
     fetchDataList()
     setTimeout(() => {
       showReply(writeNumer, boardNumer)
-    }, 100)
+    }, 50)
     setTimeout(() => {
       sethideSecondcomment(false)
       sethidebigSecondcomment(false)
-    }, 200)
+    }, 100)
     setReplyRegist('')
   }
   //대댓글 value
   const textChangeReply = e => {
     const target = e.currentTarget
-
     if (target.value.length > MaxCommentLength) return
     setReplyRegist(target.value)
   }
@@ -349,11 +343,7 @@ export default props => {
     }
   }, [hidden])
   //------------------------------------------------------------------------
-  const [daeSubmit, setDaeSubmit] = useState(false)
-  const toggleDae = () => {
-    setDaeSubmit(true)
-    setHidden(true)
-  }
+
   //------------------------------------------------------------------------
   const [hideSecondcomment, sethideSecondcomment] = useState(false)
   const [hidebigSecondcomment, sethidebigSecondcomment] = useState(false)
@@ -363,6 +353,7 @@ export default props => {
       sethidebigSecondcomment(true)
     }
   }
+  //초기하 상세버튼
   const refreshFanBtn = boardIdx => {
     setShowBtnReply('')
     setShowBtn(boardIdx)
@@ -472,21 +463,6 @@ export default props => {
                       </a>
                       <span>{timeFormat(writeDt)}</span>
                     </div>
-                    {/* <BtnIcon
-                      onClick={() => setShowBtn(boardIdx)}
-                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
-                    <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
-                      <a
-                        className={writerNo === profile.memNo ? 'on' : ''}
-                        onClick={() => FanboardModify(contents, boardIdx, boardNumer)}>
-                        수정하기
-                      </a>
-                      <a
-                        className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
-                        onClick={() => DeleteComment(value)}>
-                        삭제하기
-                      </a>
-                    </DetailBtn> */}
                   </div>
                   <div className="modiInput">
                     <Textarea placeholder={placeholderText} onChange={textModify} value={modifyComment} />
