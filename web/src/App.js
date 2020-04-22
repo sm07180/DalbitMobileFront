@@ -75,11 +75,6 @@ const App = () => {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
 
-      // Send info to Native App (authToken, memNo, isLogin)
-      if (isHybrid()) {
-        // Hybrid('GetUpdateToken', tokenInfo.data)
-      }
-
       if (tokenInfo.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
         if (profileInfo.result === 'success') {
@@ -89,6 +84,9 @@ const App = () => {
 
       // *** Native App case
       if (isHybrid()) {
+        //#토큰업데이트
+        Hybrid('GetUpdateToken', tokenInfo.data)
+
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
           Utility.setCookie('native-player-info', '', -1)
