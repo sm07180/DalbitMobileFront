@@ -27,6 +27,7 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
+  const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
   const [active, setActive] = useState(true)
   //interface
@@ -34,9 +35,11 @@ const Room = () => {
   Room.roomNo = roomNo
   Room.auth = auth
   Room.active = active
-  Room.setActive = bool => setActive(bool)
-  Room.setRoomNo = num => setRoomNo(num)
-  Room.setAuth = bool => setAuth(bool)
+  Room.roomInfo = roomInfo
+  Room.setRoomInfo = (obj) => setRoomInfo(obj)
+  Room.setActive = (bool) => setActive(bool)
+  Room.setRoomNo = (num) => setRoomNo(num)
+  Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
   // useEffect(() => {
   //   if (Room.auth) {
@@ -60,15 +63,19 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    * @title Room.roomNo , roomNo 비교
    */
 
-  if (Room.roomNo === roomNo && Room.roomNo !== '') {
+  if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(join)
     if (join.result === 'fail') {
       Room.context.action.alert({
         title: join.messageKey,
         msg: join.message
       })
     } else if (join.result === 'success' && join.data !== null) {
+      //
+      if (__NODE_ENV === 'dev') {
+        // alert(JSON.stringify(join.data, null, 1))
+      }
+      //
       Hybrid('RoomJoin', join.data)
       console.log(
         '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
@@ -80,30 +87,30 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    if (!Room.active) return
     //authCheck
     Hybrid('AuthCheck')
+    if (!Room.active) return
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
         //재귀함수
         RoomJoin(roomNo)
-      }, 100)
+      }, 50)
       return
     }
-    Room.setActive(false)
     if (__NODE_ENV === 'dev') {
     }
-    console.log('실행')
     //방송강제퇴장
-    const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-    //---
-    alert('roomNo : ' + roomNo)
-    alert(JSON.stringify(exit, null, 1))
+    if (Room.roomNo !== roomNo && Room.roomNo !== '') {
+      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+      if (__NODE_ENV === 'dev') {
+        alert(JSON.stringify(exit, null, 1))
+      }
+    }
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    Room.roomNo = roomNo
+
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
@@ -143,9 +150,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#000;background:orange;'
       )
       //하이브리드앱실행
-      Hybrid('RoomJoin', data)
+      Room.setRoomInfo(data)
+      Room.setRoomNo(roomNo)
       Room.setActive(false)
       Room.setAuth(false)
+      Hybrid('RoomJoin', data)
       return true
     }
   }
@@ -154,7 +163,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
  * @title 방송방종료
  * @param {roomNo} string           //방송방번호
  */
-export const RoomExit = async roomNo => {
+export const RoomExit = async (roomNo) => {
   const res = await Api.broad_exit({data: {roomNo: roomNo}})
   if (res.result === 'fail') {
     Room.context.action.alert({
@@ -170,7 +179,7 @@ export const RoomExit = async roomNo => {
  * @title 방송방생성
  * @param {context} object            //context
  */
-export const RoomMake = async context => {
+export const RoomMake = async (context) => {
   /**
    * @title 방송방체크
    * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))
@@ -197,7 +206,7 @@ export const RoomMake = async context => {
           msg: res.message,
           //방송하기_클릭
           callback: () => {
-            ;(async function() {
+            ;(async function () {
               const reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
               console.log(reToken)
               if (reToken.result === 'success') {
@@ -211,7 +220,7 @@ export const RoomMake = async context => {
           },
           //방송종료_클릭
           cancelCallback: () => {
-            ;(async function() {
+            ;(async function () {
               const exit = await Api.broad_exit({data: {roomNo: roomNo}})
               //success,fail노출
               context.action.alert({

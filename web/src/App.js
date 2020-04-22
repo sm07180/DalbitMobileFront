@@ -22,7 +22,7 @@ const App = () => {
 
   const [ready, setReady] = useState(false)
 
-  const isJsonString = str => {
+  const isJsonString = (str) => {
     try {
       var parsed = JSON.parse(str)
       return typeof parsed === 'object'
@@ -74,7 +74,11 @@ const App = () => {
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-
+      //
+      if (__NODE_ENV === 'dev') {
+        // alert(JSON.stringify(customHeader, null, 1))
+      }
+      //
       if (tokenInfo.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
         if (profileInfo.result === 'success') {
