@@ -6,7 +6,7 @@ import React, {useMemo, useState, useEffect, useContext} from 'react'
 
 //context
 import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
 import Utility from 'components/lib/utility'
@@ -83,7 +83,10 @@ const App = () => {
       }
 
       // *** Native App case
-      if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
+      if (isHybrid()) {
+        //#토큰업데이트
+        Hybrid('GetUpdateToken', tokenInfo.data)
+        //
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
           Utility.setCookie('native-player-info', '', -1)

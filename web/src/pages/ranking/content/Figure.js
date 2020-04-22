@@ -44,9 +44,9 @@ const Figure = styled.figure`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-basis: 65px !important;
-    width: 65px;
-    height: 65px;
+    flex-basis: 59px !important;
+    width: 59px;
+    height: 59px;
     margin: 0 12px 0 0;
   }
 `

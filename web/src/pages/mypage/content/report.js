@@ -511,7 +511,7 @@ export default props => {
 
 const MobileDetailTab = styled.div`
   padding: 0px 10px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #bdbdbd;
   div {
     display: flex;
     justify-content: space-between;
@@ -571,7 +571,7 @@ const ShortSection = styled.div`
   flex-direction: row;
   align-items: center;
   width: 50%;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #bdbdbd;
   padding: 12px 0;
   &:nth-child(1):before,
   &:nth-child(3):before {
@@ -611,7 +611,7 @@ const BroadcastShort = styled.div`
 
 const TypeBtn = styled.button`
   color: #757575;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #bdbdbd;
   border-radius: 25px;
   padding: 15px;
   width: 86px;
@@ -652,7 +652,7 @@ const TitleWrap = styled.div`
 const Report = styled.div`
   & .radioWrap {
     display: flex;
-    margin-top: 20px;
+    margin-top: 16px;
     flex-wrap: wrap;
     & button {
       display: block;
@@ -660,7 +660,7 @@ const Report = styled.div`
       height: 40px;
       letter-spacing: -0.35px;
       line-height: 40px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid #bdbdbd;
       font-size: 14px;
       color: #424242;
       /* margin-right: -1px; */
@@ -680,12 +680,12 @@ const Report = styled.div`
   }
 
   & .datebox {
-    margin-top: 16px;
+    margin-top: 12px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* border: 1px solid #e0e0e0; */
+    /* border: 1px solid #bdbdbd; */
 
     &.on {
       section {
@@ -697,9 +697,9 @@ const Report = styled.div`
       width: 75%;
       display: flex;
       /* padding: 0 calc(1.5% + 5px); */
-      padding-top: 5.5px;
-      padding-bottom: 4px;
-      border: 1px solid #e0e0e0;
+      height: 40px;
+      padding: 5px 0;
+      border: 1px solid #bdbdbd;
 
       & .line {
         width: 10px;
@@ -712,7 +712,7 @@ const Report = styled.div`
           display: block;
           width: 10px;
           height: 1px;
-          background-color: #e0e0e0;
+          background-color: #757575;
         }
       }
       > div {
@@ -724,11 +724,12 @@ const Report = styled.div`
       }
     }
     .search {
-      height: 40.5px;
+      height: 40px;
       width: 25%;
       color: #fff;
       background-color: ${COLOR_MAIN};
       border-color: ${COLOR_MAIN};
+      border: 0;
     }
   }
 `

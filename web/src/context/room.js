@@ -28,10 +28,13 @@ const Room = () => {
   //useState
   const [roomNo, setRoomNo] = useState('')
   const [auth, setAuth] = useState(false)
+  const [active, setActive] = useState(true)
   //interface
   Room.context = context
   Room.roomNo = roomNo
   Room.auth = auth
+  Room.active = active
+  Room.setActive = bool => setActive(bool)
   Room.setRoomNo = num => setRoomNo(num)
   Room.setAuth = bool => setAuth(bool)
   //-----------------------------------------------------------
@@ -52,12 +55,12 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
-  console.log(Room.roomNo + ' : ' + roomNo)
+  //console.log(Room.roomNo + ' : ' + roomNo)
   /**
    * @title Room.roomNo , roomNo 비교
    */
 
-  if (Room.roomNo === roomNo) {
+  if (Room.roomNo === roomNo && Room.roomNo !== '') {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(join)
     if (join.result === 'fail') {
@@ -77,6 +80,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    if (!Room.active) return
     //authCheck
     Hybrid('AuthCheck')
     //RoomAuth가 맞지않으면실행하지않음
@@ -87,19 +91,20 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       }, 100)
       return
     }
+    Room.setActive(false)
     if (__NODE_ENV === 'dev') {
-      alert('Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
-      //   const {isLogin} = context.token
     }
+    console.log('실행')
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-    console.log(exit)
+    //---
+    alert('roomNo : ' + roomNo)
+    alert(JSON.stringify(exit, null, 1))
+    //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(res)
-    //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
-    //
     Room.roomNo = roomNo
+    //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
@@ -139,6 +144,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       )
       //하이브리드앱실행
       Hybrid('RoomJoin', data)
+      Room.setActive(false)
       Room.setAuth(false)
       return true
     }
