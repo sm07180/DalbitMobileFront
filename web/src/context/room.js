@@ -106,19 +106,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     } else {
       const exit2 = await Api.broad_exit({data: {roomNo: Room.roomNo}})
     }
-
-    /*
-    if (Room.roomNo !== roomNo && Room.roomNo !== '') {
-      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-      if (__NODE_ENV === 'dev') {
-        alert(JSON.stringify(exit, null, 1))
-      }
-    }
-    */
-    //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
@@ -162,7 +151,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setRoomNo(roomNo)
       Room.setActive(false)
       Room.setAuth(false)
-      Hybrid('RoomJoin', data)
+      //--
+      setTimeout(() => {
+        Hybrid('RoomJoin', data)
+      }, 100)
       return true
     }
   }
