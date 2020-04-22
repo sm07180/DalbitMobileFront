@@ -91,7 +91,9 @@ export default () => {
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break
-      case 'native-start': //---------------------------Native player-show (Android)
+      case 'native-start': //---------------------------Native player-show (Android & IOS)
+        //RoomJoin 더블클릭일때
+        Room.setActive(true)
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
