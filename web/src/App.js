@@ -33,7 +33,7 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
-    alert(JSON.stringify(customHeaderTag, null, 1))
+    // alert(JSON.stringify(customHeaderTag, null, 1))
     if (customHeaderTag && customHeaderTag.value) {
       // The data that got from server is encoded as URIComponent.
       const decodeValue = decodeURIComponent(customHeaderTag.value)
