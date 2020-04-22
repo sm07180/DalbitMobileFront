@@ -34,9 +34,9 @@ const Room = () => {
   Room.roomNo = roomNo
   Room.auth = auth
   Room.active = active
-  Room.setActive = bool => setActive(bool)
-  Room.setRoomNo = num => setRoomNo(num)
-  Room.setAuth = bool => setAuth(bool)
+  Room.setActive = (bool) => setActive(bool)
+  Room.setRoomNo = (num) => setRoomNo(num)
+  Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
   // useEffect(() => {
   //   if (Room.auth) {
@@ -68,6 +68,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         msg: join.message
       })
     } else if (join.result === 'success' && join.data !== null) {
+      //
+      if (__NODE_ENV === 'dev') {
+        alert(JSON.stringify(join.data, null, 1))
+      }
+      //
       Hybrid('RoomJoin', join.data)
       console.log(
         '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
@@ -155,7 +160,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
  * @title 방송방종료
  * @param {roomNo} string           //방송방번호
  */
-export const RoomExit = async roomNo => {
+export const RoomExit = async (roomNo) => {
   const res = await Api.broad_exit({data: {roomNo: roomNo}})
   if (res.result === 'fail') {
     Room.context.action.alert({
@@ -171,7 +176,7 @@ export const RoomExit = async roomNo => {
  * @title 방송방생성
  * @param {context} object            //context
  */
-export const RoomMake = async context => {
+export const RoomMake = async (context) => {
   /**
    * @title 방송방체크
    * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))
@@ -198,7 +203,7 @@ export const RoomMake = async context => {
           msg: res.message,
           //방송하기_클릭
           callback: () => {
-            ;(async function() {
+            ;(async function () {
               const reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
               console.log(reToken)
               if (reToken.result === 'success') {
@@ -212,7 +217,7 @@ export const RoomMake = async context => {
           },
           //방송종료_클릭
           cancelCallback: () => {
-            ;(async function() {
+            ;(async function () {
               const exit = await Api.broad_exit({data: {roomNo: roomNo}})
               //success,fail노출
               context.action.alert({
