@@ -78,18 +78,34 @@ export default props => {
 
   const creatMyRank = () => {
     const {profImg, level, nickNm, memNo} = context.profile
+    // return (
+    //   <div className="my-rank">
+    //     <h3>
+    //       <span>{myRank}</span>
+    //     </h3>
+    //     <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
+    //     <div
+    //       onClick={() => {
+    //         window.location.href = `/menu/profile`
+    //       }}>
+    //       <strong>Lv {level}</strong>
+    //       <p>{nickNm}</p>
+    //     </div>
+    //   </div>
+    // )
+
     return (
       <div className="my-rank">
-        <h3>
+        <div className="figure-wrap">
+          <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
+        </div>
+        <h3 className="flag">
           <span>{myRank}</span>
         </h3>
-        <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
-        <div
-          onClick={() => {
-            window.location.href = `/menu/profile`
-          }}>
-          <strong>Lv {level}</strong>
-          <p>{nickNm}</p>
+        <div className="text">
+          <span>
+            Lv {level} {nickNm}
+          </span>
         </div>
       </div>
     )
@@ -212,15 +228,6 @@ export default props => {
       </div>
       {context.profile && creatMyRank()}
       {creatResult()}
-      {/* {moreState && (
-        <button
-          className="more-btn"
-          onClick={() => {
-            showMoreList()
-          }}>
-          더보기
-        </button>
-      )} */}
     </Contents>
   )
 }
@@ -284,56 +291,61 @@ const Contents = styled.div`
 
   /* 내 랭킹 */
   .my-rank {
-    display: flex;
-    margin-top: 18px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #f5f5f5;
+    position: relative;
+    margin-top: 66px;
+    height: 88px;
+    border-radius: 24px;
+    background-image: linear-gradient(to right, #632beb, #8556f6);
 
-    & > * {
-      flex: 0 0 auto;
-    }
-
-    h3 {
-      flex-basis: 80px;
-      line-height: 80px;
+    .figure-wrap {
+      position: relative;
+      padding-top: 1px;
       text-align: center;
-      span {
+      figure {
         display: inline-block;
-        width: 32px;
-        line-height: 32px;
-        border-radius: 50%;
-        background: #424242;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 800;
-        vertical-align: middle;
-        transform: skew(-0.03deg);
-        z-index: -1;
+        margin: -42px 0 0 0;
+        width: 83px;
+        height: 83px;
+      }
+
+      figure:after {
+        display: block;
+        position: absolute;
+        left: calc(50% - 51px);
+        top: -47px;
+        width: 102px;
+        height: 94px;
+        background: url(${IMG_SERVER}/images/api/r_crown.svg) no-repeat;
+        content: '';
       }
     }
 
-    div {
-      overflow: hidden;
-      max-width: calc(100% - 200px);
-      padding: 15px 0 13px 0;
-      cursor: pointer;
-      strong {
-        display: inline-block;
-        color: ${COLOR_MAIN};
-        font-size: 16px;
-        font-weight: 800;
-        transform: skew(-0.03deg);
+    .flag {
+      position: relative;
+      width: 88px;
+      height: 34px;
+      margin: -22px auto 0 auto;
+      background: url(${IMG_SERVER}/images/api/r_flag.svg) no-repeat;
+      text-align: center;
+      z-index: 2;
+      span {
+        display: block;
+        margin-top: -5px;
+        padding-top: 3px;
+        padding-right: 4px;
+        font-size: 14px;
+        color: #573500;
+        font-weight: 600;
+        letter-spacing: -0.35px;
       }
-      p {
-        overflow: hidden;
-        width: 100%;
-        margin-top: 10px;
-        line-height: 24px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        transform: skew(-0.03deg);
-      }
+    }
+
+    .text {
+      padding-top: 2px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
     }
   }
 
@@ -381,33 +393,6 @@ const Contents = styled.div`
         }
         &.date-type button {
           width: 48px;
-          font-size: 14px;
-        }
-      }
-    }
-    .my-rank {
-      margin-top: 8px;
-      padding: 10px 5px;
-      h3 {
-        flex-basis: 42px;
-        height: 65px;
-        line-height: 65px;
-        background-size: 30px !important;
-        span {
-          width: 24px;
-          line-height: 24px;
-          font-size: 10px;
-        }
-      }
-
-      div {
-        max-width: calc(100% - 125px);
-        padding: 11px 0 9px 0;
-        strong {
-          font-size: 14px;
-        }
-        p {
-          margin-top: 2px;
           font-size: 14px;
         }
       }

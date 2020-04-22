@@ -77,12 +77,12 @@ export default props => {
 const Contents = styled.div``
 
 const RankList = styled.ul`
-  margin-top: 20px;
-  border-top: 1px solid ${COLOR_MAIN};
+  margin-top: 18px;
+  border-top: 1px solid #e0e0e0;
 
   li {
     display: flex;
-    padding: 12px;
+    padding: 9px 0;
     border-bottom: 1px solid #e0e0e0;
 
     & > * {
@@ -90,16 +90,16 @@ const RankList = styled.ul`
     }
 
     h3 {
-      flex-basis: 80px;
-      line-height: 80px;
+      flex-basis: 60px;
+      line-height: 43px;
       text-align: center;
       span {
         display: inline-block;
         width: 32px;
         line-height: 32px;
         border-radius: 50%;
-        background: #424242;
-        color: #fff;
+        background: #e0e0e0;
+        color: #000;
         font-size: 14px;
         font-weight: 800;
         vertical-align: middle;
@@ -114,13 +114,13 @@ const RankList = styled.ul`
         }
       }
       &.top1 {
-        background: url(${IMG_SERVER}/images/api/ic_r_gold.png) no-repeat center center;
+        background: url(${IMG_SERVER}/images/api/r_gold.svg) no-repeat center center;
       }
       &.top2 {
-        background: url(${IMG_SERVER}/images/api/ic_r_silver.png) no-repeat center center;
+        background: url(${IMG_SERVER}/images/api/r_sliver.svg) no-repeat center center;
       }
       &.top3 {
-        background: url(${IMG_SERVER}/images/api/ic_r_bronze.png) no-repeat center center;
+        background: url(${IMG_SERVER}/images/api/r_bronze.svg) no-repeat center center;
       }
     }
 
@@ -134,7 +134,7 @@ const RankList = styled.ul`
       overflow: hidden;
       width: calc(100% - 200px);
       cursor: pointer;
-      padding: 15px 0 13px 0;
+      padding: 0;
       strong {
         display: inline-block;
         color: ${COLOR_MAIN};
@@ -145,7 +145,6 @@ const RankList = styled.ul`
       p {
         overflow: hidden;
         width: 100%;
-        margin-top: 10px;
         line-height: 18px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -172,29 +171,42 @@ const RankList = styled.ul`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     li {
-      padding: 5px 5px;
+      padding: 9px 0;
       h3 {
-        flex-basis: 42px;
-        height: 65px;
+        margin-right: 10px;
+        flex-basis: 59px;
+        height: 59px;
         line-height: 65px;
-        background-size: 26px !important;
+        /* background-size: 26px !important; */
 
         span {
-          width: 24px;
-          line-height: 24px;
+          width: 26px;
+          margin-top: -10px;
+          line-height: 26px;
           font-size: 10px;
         }
 
         &.medal span {
-          padding-top: 14px;
+          padding-top: 0px;
+          margin-top: -14px;
+        }
+
+        &.medal.top1 span {
+          color: #ffe889;
+        }
+        &.medal.top2 span {
+          color: #f4f7f6;
+        }
+        &.medal.top3 span {
+          color: #fcfcfc;
         }
       }
 
       div {
-        width: calc(100% - 125px);
+        width: calc(100% - 140px);
         padding: 0;
         strong {
-          margin-top: 4px;
+          margin-top: 0px;
           font-size: 14px;
         }
         p {
