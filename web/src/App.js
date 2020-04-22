@@ -86,7 +86,7 @@ const App = () => {
       if (isHybrid()) {
         //#토큰업데이트
         Hybrid('GetUpdateToken', tokenInfo.data)
-
+        //
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
           Utility.setCookie('native-player-info', '', -1)
