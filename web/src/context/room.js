@@ -93,17 +93,14 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     Room.setActive(false)
     if (__NODE_ENV === 'dev') {
-      //   alert('Room.active : ' + Room.active + ' : ' + 'Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
-      //   const {isLogin} = context.token
     }
     console.log('실행')
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(res)
-    //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     Room.roomNo = roomNo
+    //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
