@@ -227,7 +227,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
-    document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
+    //document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
 
     /*----react----*/
@@ -240,7 +240,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      document.removeEventListener('native-push-background', update)
+      //document.removeEventListener('native-push-background', update)
       document.removeEventListener('native-auth-check', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)
