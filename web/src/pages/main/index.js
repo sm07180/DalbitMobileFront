@@ -22,7 +22,6 @@ import LayerPopup from './component/layer_popup.js'
 import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
-import {broadcastLive} from 'constant/broadcast.js'
 import {useHistory} from 'react-router-dom'
 
 // static
