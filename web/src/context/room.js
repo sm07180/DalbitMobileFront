@@ -56,10 +56,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
    * @title Room.roomNo , roomNo 비교
    */
-  if (__NODE_ENV === 'dev') {
-    alert('Room.roomNo : ' + Room.roomNo + ' , roomNo : ' + roomNo)
-    //   const {isLogin} = context.token
-  }
+
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(join)
@@ -85,13 +82,15 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
-        //const _exit = await Api.broad_exit({data: {roomNo: roomNo}})
+        //재귀함수
         RoomJoin(roomNo)
-        //   alert(roomNo + ' : Room.auth : ' + Room.auth)
       }, 100)
       return
     }
-
+    if (__NODE_ENV === 'dev') {
+      alert('Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
+      //   const {isLogin} = context.token
+    }
     //방송강제퇴장
     const exit = await Api.broad_exit({data: {roomNo: roomNo}})
     console.log(exit)
