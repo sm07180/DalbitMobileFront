@@ -43,6 +43,7 @@ export default () => {
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
         if (_cookie === event.detail.authToken) {
           Room.setAuth(true)
+          Room.setActive(true)
         } else {
           Room.setAuth(false)
           //--
