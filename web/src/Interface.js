@@ -102,7 +102,6 @@ export default () => {
         const _android = JSON.stringify(event.detail)
         Utility.setCookie('native-player-info', _android, 100)
         context.action.updatePlayer(true)
-
         context.action.updateMediaPlayerStatus(true)
         context.action.updateNativePlayer(event.detail)
         break

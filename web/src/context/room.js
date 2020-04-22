@@ -55,12 +55,12 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
-  console.log(Room.roomNo + ' : ' + roomNo)
+  //console.log(Room.roomNo + ' : ' + roomNo)
   /**
    * @title Room.roomNo , roomNo 비교
    */
 
-  if (Room.roomNo === roomNo) {
+  if (Room.roomNo === roomNo && Room.roomNo !== '') {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     console.log(join)
     if (join.result === 'fail') {
@@ -91,11 +91,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       }, 100)
       return
     }
+    Room.setActive(false)
     if (__NODE_ENV === 'dev') {
       //   alert('Room.active : ' + Room.active + ' : ' + 'Room.roomNo : ' + Room.roomNo + '\n , roomNo : ' + roomNo)
       //   const {isLogin} = context.token
     }
-
+    console.log('실행')
     //방송강제퇴장
     if (Room.roomNo !== roomNo) {
       const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
