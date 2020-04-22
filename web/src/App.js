@@ -33,7 +33,6 @@ const App = () => {
 
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader')
-    // alert(JSON.stringify(customHeaderTag, null, 1))
     if (customHeaderTag && customHeaderTag.value) {
       // The data that got from server is encoded as URIComponent.
       const decodeValue = decodeURIComponent(customHeaderTag.value)
@@ -75,7 +74,11 @@ const App = () => {
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-
+      //
+      if (__NODE_ENV === 'dev') {
+        alert(JSON.stringify(customHeader, null, 1))
+      }
+      //
       if (tokenInfo.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
         if (profileInfo.result === 'success') {
