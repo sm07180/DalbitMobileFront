@@ -87,7 +87,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       setTimeout(() => {
         //재귀함수
         RoomJoin(roomNo)
-      }, 100)
+      }, 50)
       return
     }
     if (__NODE_ENV === 'dev') {
@@ -97,8 +97,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //    alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
     //방송강제퇴장
     //const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-    const exit1 = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-
+    const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+    alert(JSON.stringify(exit, null, 1))
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
@@ -143,7 +143,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       )
       //하이브리드앱실행
       Hybrid('RoomJoin', data)
-
+      Room.setRoomNo(roomNo)
+      alert('roomNo ' + roomNo)
       Room.setActive(false)
       Room.setAuth(false)
       return true
