@@ -69,9 +69,32 @@ export default props => {
 
 const LiveList = styled.div`
   display: flex;
+  position: relative;
   flex-direction: row;
   align-items: center;
-  margin: 10px 0;
+  padding: 6px 7px;
+  margin: 10px -8px;
+
+  :before {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+    border-radius: 15px;
+    background: #f5f5f5;
+
+    content: '';
+  }
+  @media (hover: hover) {
+    &:hover:before {
+      display: block;
+    }
+  }
 
   .broadcast-img {
     width: 80px;

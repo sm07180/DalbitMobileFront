@@ -188,10 +188,28 @@ export default props => {
     fetchLiveList(true)
   }
 
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
   useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+      }
+    }
+  }, [popup])
+
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
     return () => {
+      window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
       window.removeEventListener('scroll', tempScrollEvent)
       tempScrollEvent = null
@@ -299,11 +317,7 @@ export default props => {
                 <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
-              <div
-                className="sequence-wrap"
-                onClick={() => {
-                  setPopup(popup ? false : true)
-                }}>
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
