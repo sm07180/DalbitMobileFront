@@ -94,6 +94,11 @@ export default () => {
       case 'native-start': //---------------------------Native player-show (Android & IOS)
         //RoomJoin 더블클릭일때
         Room.setActive(true)
+        //시작
+        //App에서 방송종료 알림경우
+        if (Room !== undefined) {
+          Room.setRoomNo(event.detail.roomNo)
+        }
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
