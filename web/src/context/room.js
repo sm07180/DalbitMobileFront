@@ -89,7 +89,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     //authCheck
     Hybrid('AuthCheck')
-    if (!Room.active) return
+    //##    if (!Room.active) return
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
@@ -101,12 +101,20 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
+    if (Room.roomNo === '') {
+      const exit1 = await Api.broad_exit({data: {roomNo: roomNo}})
+    } else {
+      const exit2 = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+    }
+
+    /*
     if (Room.roomNo !== roomNo && Room.roomNo !== '') {
       const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
       if (__NODE_ENV === 'dev') {
         alert(JSON.stringify(exit, null, 1))
       }
     }
+    */
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
