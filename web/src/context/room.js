@@ -94,12 +94,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     Room.setActive(false)
     //---
-    alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
+    //    alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
     //방송강제퇴장
-    if (Room.roomNo !== '') {
-      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-      alert(JSON.stringify(exit, null, 1))
-    }
+    const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+    const exit1 = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
