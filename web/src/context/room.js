@@ -64,8 +64,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
 
   if (Room.roomNo === roomNo) {
-    Hybrid('RoomJoin', Room.roomInfo)
-    return
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     if (join.result === 'fail') {
       Room.context.action.alert({
@@ -91,7 +89,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     //authCheck
     Hybrid('AuthCheck')
-    if (!Room.active) return
+    //##    if (!Room.active) return
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
