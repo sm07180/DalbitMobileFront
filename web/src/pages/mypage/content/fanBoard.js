@@ -213,6 +213,7 @@ export default props => {
   }
   //대댓글보기
   const ShowReplyBtnState = (writeNumer, boardNumer) => {
+    setActive(false)
     sethideSecondcomment(false)
     sethidebigSecondcomment(false)
     if (btnState === true) {
@@ -362,6 +363,14 @@ export default props => {
       sethidebigSecondcomment(true)
     }
   }
+  const refreshFanBtn = boardIdx => {
+    setShowBtnReply('')
+    setShowBtn(boardIdx)
+  }
+  const refreshReplyBtn = boardIdx => {
+    setShowBtnReply(boardIdx)
+    setShowBtn('')
+  }
   return (
     <>
       <Header>
@@ -427,9 +436,9 @@ export default props => {
                       <span>{timeFormat(writeDt)}</span>
                     </div>
                     <BtnIcon
-                      onClick={() => setShowBtn(boardIdx)}
+                      onClick={() => refreshFanBtn(boardIdx)}
                       className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
-                    <DetailBtn className={showBtn === boardIdx ? 'active' : ''}>
+                    <DetailBtn className={showBtn === boardIdx ? 'activeFan' : ''}>
                       <a
                         className={writerNo === profile.memNo ? 'on' : ''}
                         onClick={() => FanboardModify(contents, boardIdx, boardNumer)}>
@@ -521,8 +530,9 @@ export default props => {
                               <span>{timeFormat(writeDt)}</span>
                             </div>
                           </div>
+
                           <BtnIcon
-                            onClick={() => setShowBtnReply(boardIdx)}
+                            onClick={() => refreshReplyBtn(boardIdx)}
                             className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'onStart' : ''}></BtnIcon>
                           <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
                             <a
@@ -706,7 +716,7 @@ const InitialSubmit = styled.div`
   background-color: #ffffff;
   & div {
     width: calc(100% - 60px);
-    height: 100%;
+    height: 36px;
     line-height: 36px;
     border: solid 1px #bdbdbd;
     padding-left: 10px;
@@ -835,6 +845,7 @@ const CommentBox = styled.div`
     width: calc(100% + 9.8%);
     margin-left: -4.9%;
     margin-bottom: -1px;
+
     /* padding: 12px 0; */
     /* padding: 0px 0 17px 0; */
     background-color: #f8f8f8;
@@ -899,6 +910,11 @@ const DetailBtn = styled.div`
   &.active {
     display: flex;
     background-color: #fff;
+  }
+  &.activeFan {
+    display: flex;
+    background-color: #fff;
+    right: 0px;
   }
   & a {
     display: none;

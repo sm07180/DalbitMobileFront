@@ -469,7 +469,7 @@ export default props => {
                     return (
                       <MobileDetailTab key={idx}>
                         <div>
-                          <span>청취시작</span> <span>{timeFormat(value.listenDt)}</span>
+                          <span>청취시작</span> <span>{timeFormat(value.startDt)}</span>
                         </div>
                         <div>
                           <span>청취종료</span>
