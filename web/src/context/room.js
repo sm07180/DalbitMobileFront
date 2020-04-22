@@ -27,6 +27,7 @@ const Room = () => {
   const context = useContext(Context)
   //useState
   const [roomNo, setRoomNo] = useState('')
+  const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
   const [active, setActive] = useState(true)
   //interface
@@ -34,6 +35,8 @@ const Room = () => {
   Room.roomNo = roomNo
   Room.auth = auth
   Room.active = active
+  Room.roomInfo = roomInfo
+  Room.setRoomInfo = (obj) => setRoomInfo(obj)
   Room.setActive = (bool) => setActive(bool)
   Room.setRoomNo = (num) => setRoomNo(num)
   Room.setAuth = (bool) => setAuth(bool)
@@ -70,7 +73,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     } else if (join.result === 'success' && join.data !== null) {
       //
       if (__NODE_ENV === 'dev') {
-        alert(JSON.stringify(join.data, null, 1))
+        // alert(JSON.stringify(join.data, null, 1))
       }
       //
       Hybrid('RoomJoin', join.data)
@@ -84,9 +87,9 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
-    // if (!Room.active) return
     //authCheck
     Hybrid('AuthCheck')
+    if (!Room.active) return
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
@@ -97,14 +100,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     if (__NODE_ENV === 'dev') {
     }
-    Room.setActive(false)
-    //---
-    //    alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
     //방송강제퇴장
-    //const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-    alert('Room.roomNo  : ' + Room.roomNo)
-    const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
-    alert(JSON.stringify(exit, null, 1))
+    if (Room.roomNo !== roomNo) {
+      const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+    }
     //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
@@ -148,10 +147,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#000;background:orange;'
       )
       //하이브리드앱실행
-      Hybrid('RoomJoin', data)
+      Room.setRoomInfo(data)
       Room.setRoomNo(roomNo)
       Room.setActive(false)
       Room.setAuth(false)
+      Hybrid('RoomJoin', data)
       return true
     }
   }
