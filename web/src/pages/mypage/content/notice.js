@@ -94,6 +94,8 @@ const Notice = props => {
   const WriteToggle = () => {
     if (writeShow === false) {
       setWriteShow(true)
+    } else {
+      setWriteShow(false)
     }
   }
   const WritBtnActive = () => {
@@ -210,7 +212,7 @@ const Notice = props => {
           </TitleBtn>
         </header> */}
 
-        <Header>
+        <Header click={WriteToggle}>
           <div className="category-text">공지 작성하기</div>
           <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
             등록
