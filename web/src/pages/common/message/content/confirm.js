@@ -123,7 +123,7 @@ const Alert = styled.section`
 
     line-height: 1.71;
     letter-spacing: -0.5px;
-    word-break: break-all;
+    word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
     em {
