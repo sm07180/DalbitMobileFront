@@ -82,19 +82,19 @@ export default props => {
           fanRank,
           myStar
         })
-
-        Api.splash().then(res => {
-          const {result} = res
-          if (result === 'success') {
-            const {data} = res
-            const {roomType} = data
-            if (roomType) {
-              setCategoryList(roomType)
-            }
-          }
-        })
       }
     })()
+
+    Api.splash().then(res => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          setCategoryList(roomType)
+        }
+      }
+    })
   }, [])
 
   const fetchLiveList = async reset => {
