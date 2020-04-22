@@ -62,13 +62,13 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
 
   if (Room.roomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
-    console.log(join)
     if (join.result === 'fail') {
       Room.context.action.alert({
         title: join.messageKey,
         msg: join.message
       })
     } else if (join.result === 'success' && join.data !== null) {
+      Room.setRoomNo(roomNo)
       Hybrid('RoomJoin', join.data)
       console.log(
         '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
@@ -95,17 +95,18 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     console.log('실행')
+
+    //---
+    alert('_roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
     //방송강제퇴장
     if (Room.roomNo !== '') {
       const exit = await Api.broad_exit({data: {roomNo: Room.roomNo}})
       alert(JSON.stringify(exit, null, 1))
     }
     //---
-    alert('roomNo : ' + roomNo + ' Room.roomNo  ' + Room.roomNo)
-    //---
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
-    Room.setRoomNo(roomNo)
+
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
@@ -146,6 +147,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       )
       //하이브리드앱실행
       Hybrid('RoomJoin', data)
+      Room.setRoomNo(roomNo)
       Room.setActive(false)
       Room.setAuth(false)
       return true
