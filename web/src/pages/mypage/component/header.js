@@ -9,7 +9,11 @@ import {getUrlAndRedirect} from 'components/lib/link_control.js'
 
 export default props => {
   const goBack = () => {
-    getUrlAndRedirect()
+    if (props.click == undefined) {
+      getUrlAndRedirect()
+    } else {
+      props.click()
+    }
   }
 
   return (
