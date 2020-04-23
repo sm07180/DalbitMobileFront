@@ -102,11 +102,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
-    if (sessionRoomNo === undefined) {
-      await Api.broad_exit({data: {roomNo: roomNo}})
-    } else {
+    if (sessionRoomNo !== undefined) {
       await Api.broad_exit({data: {roomNo: sessionRoomNo}})
     }
+    alert(sessionRoomNo)
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
