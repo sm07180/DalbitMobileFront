@@ -371,9 +371,7 @@ export default props => {
       <FanBoard>
         {/* 초기등록창 */}
         <InitialSubmit className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
-          <div className="start">
-            <p>{placeholderTextStart}</p>
-          </div>
+          <div className="start">{placeholderTextStart}</div>
           <button>등록</button>
         </InitialSubmit>
         <InitialBigSubmit className={active === true ? 'on' : ''}>
@@ -531,9 +529,7 @@ export default props => {
                       )
                     })}
                     <ReplySubmit onClick={() => ToggleDae()} className={hideSecondcomment === true && 'hide'}>
-                      <div className="start">
-                        <p>{placeholderTextStart}</p>
-                      </div>
+                      <div className="start">{placeholderTextStart}</div>
                       <button>등록</button>
                     </ReplySubmit>
                     <SecoundBigSubmit className={hidebigSecondcomment === true && 'on'}>
@@ -697,12 +693,12 @@ const InitialSubmit = styled.div`
     width: calc(100% - 60px);
     border: solid 1px #bdbdbd;
     padding-left: 10px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    color: #757575;
     p {
-      height: 36px;
-      line-height: 36px;
-      font-size: 16px;
-      letter-spacing: -0.4px;
-      color: #757575;
     }
   }
 
@@ -941,16 +937,14 @@ const ReplySubmit = styled.div`
   & div {
     width: calc(100% - 60px);
     height: 36px;
-
     border: solid 1px #bdbdbd;
     padding-left: 10px;
-
     background-color: #ffffff;
+    line-height: 36px;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+    color: #757575;
     p {
-      line-height: 36px;
-      font-size: 16px;
-      letter-spacing: -0.4px;
-      color: #757575;
     }
   }
   & button {
@@ -1190,7 +1184,7 @@ const WriteArea = styled.div`
     }
   }
   & .modiInput {
-    border: 1px solid #d0d0d0;
+    border: 1px solid #bdbdbd;
   }
 `
 const CommentSubmitBtnCancel = styled.button`
@@ -1209,7 +1203,7 @@ const TextCountModify = styled.div`
   line-height: 36px;
   height: 36px;
   box-sizing: border-box;
-  border-top: solid 1px #d0d0d0;
+  border-top: solid 1px #bdbdbd;
 `
 const WriteAreaBottomModify = styled.div`
   display: flex;
