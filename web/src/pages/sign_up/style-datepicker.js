@@ -71,6 +71,7 @@ export default props => {
 
 const DatepickerWrap = styled.div`
   position: relative;
+  margin: 16px 0;
   .MuiFormControl-root {
     width: 100%;
     margin: 0;
