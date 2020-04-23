@@ -87,6 +87,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     return false
   } else {
     //-------------------------------------------------------------
+    const sessionRoomNo = sessionStorage.getItem('room_no')
     //authCheck
     Hybrid('AuthCheck')
     //##    if (!Room.active) return
@@ -101,10 +102,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
-    if (Room.roomNo === '') {
+    if (sessionRoomNo === null) {
       const exit1 = await Api.broad_exit({data: {roomNo: roomNo}})
     } else {
-      const exit2 = await Api.broad_exit({data: {roomNo: Room.roomNo}})
+      const exit2 = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
     }
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
@@ -152,6 +153,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setActive(false)
       Room.setAuth(false)
       //--
+      sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
       return true
     }

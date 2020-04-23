@@ -76,8 +76,6 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
       //
       if (__NODE_ENV === 'dev') {
-        alert(sessionStorage.getItem('room_no'))
-        sessionStorage.setItem('room_no', '11111')
       }
       //
       if (tokenInfo.data.isLogin) {
