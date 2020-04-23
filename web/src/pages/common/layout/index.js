@@ -10,6 +10,7 @@ import NewPlayer from 'pages/common/newPlayer'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
+import Ip from 'pages/common/ip'
 //
 const Layout = props => {
   const {children, webview} = props
@@ -27,6 +28,8 @@ const Layout = props => {
       <Popup {...props} />
       {/* 메시지팝업 */}
       <Message {...props} />
+      {/* IP노출 */}
+      {__NODE_ENV === 'dev' && <Ip {...props} />}
     </React.Fragment>
   )
 }
