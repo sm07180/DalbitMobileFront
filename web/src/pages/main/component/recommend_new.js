@@ -9,7 +9,7 @@ import Room, {RoomJoin} from 'context/room'
 import CustomSwiper from 'components/ui/swiper.js'
 import {IMG_SERVER} from 'context/config'
 import {Hybrid, isHybrid} from 'context/hybrid'
-import SlideItem from './recommend_item.js'
+
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
