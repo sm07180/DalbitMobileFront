@@ -176,12 +176,10 @@ export default props => {
     if (roomType === 'link') {
       const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
-      if (roomNo !== '') {
-        // if (!token.isLogin) {
-        //   window.location.href = '/login'
-        // } else {
+      if (roomNo !== '' && !roomNo.startsWith('http')) {
         history.push(`${roomNo}`)
-        // }
+      } else if (roomNo !== '' && roomNo.startsWith('http')) {
+        window.location.href = `${roomNo}`
       }
     } else {
       if (isHybrid() && roomNo) {
