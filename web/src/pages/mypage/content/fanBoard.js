@@ -527,7 +527,7 @@ export default props => {
                             </a>
                           </DetailBtn>
 
-                          <div className="content">{contents}</div>
+                          <div className="content daeContent">{contents}</div>
                         </ReplyWrap>
                       )
                     })}
@@ -816,6 +816,9 @@ const CommentBox = styled.div`
     transform: skew(-0.03deg);
     word-break: break-word;
   }
+  .daeContent {
+    margin-bottom: 10px;
+  }
   .reply {
     display: block;
     padding: 0 8px;
@@ -941,7 +944,7 @@ const ReplySubmit = styled.div`
   align-items: center;
   width: calc(100% - 40px);
   height: 36px;
-  padding: 12px 0;
+  padding: 6px 0 12px 0;
   box-sizing: content-box;
   margin: 0px auto 0px auto;
 
