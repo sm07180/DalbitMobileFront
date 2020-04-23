@@ -103,10 +103,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     //방송강제퇴장
     if (sessionRoomNo === undefined) {
-      const exit1 = await Api.broad_exit({data: {roomNo: roomNo}})
+      await Api.broad_exit({data: {roomNo: roomNo}})
     } else {
-      const exit2 = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
+      await Api.broad_exit({data: {roomNo: sessionRoomNo}})
     }
+    console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
