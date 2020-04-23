@@ -89,6 +89,9 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
         sessionStorage.removeItem('room_no')
+        Room.context.action.updatePlayer(false)
+        Hybrid('ExitRoom', '')
+        //--쿠기
       } else {
       }
       console.log(exit)
