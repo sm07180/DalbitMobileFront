@@ -6,6 +6,7 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import {Hybrid, isHybrid} from 'context/hybrid'
+
 import qs from 'query-string'
 
 //context
@@ -18,31 +19,32 @@ export default props => {
   //context
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
-  const
-  
+
   const mainRemote = () => {
     window.location.href = '/'
   }
-  // const clickCloseBtn = () => {
-  //   if (isHybrid() && webview && webview === 'new') {
-  //     Hybrid('CloseLayerPopup')
-  //   } else {
-  //     window.location.href = '/'
-  //     // window.history.back()
-  //   }
-  // }
+  const clickCloseBtn = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.location.href = '/'
+      // window.history.back()
+    }
+  }
   //---------------------------------------------------------------------
   return (
     <Content>
-      {/* <button onClick={() => clickCloseBtn()} className="MainRemote"></button> */}
       <h2 className="line">이용약관</h2>
       <h3>제 1 조 (목적)</h3>
+      <br />
       <p>
         본 약관은 주식회사 인포렉스(이하 “회사”라고 함)가 제공하는 달빛라이브 서비스의 이용과 관련하여 “회사”와 “회원” 간의 권리,
         의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
       </p>
+      <br />
 
       <h3>제 2 조 (용어 정의)</h3>
+      <br />
       <p>이 약관에서 사용하는 용어의 정의는 다음과 같습니다.</p>
       <ol className="depth1">
         <li>
@@ -73,6 +75,7 @@ export default props => {
         <li>“환전”이라 함은 “회원” 또는 “방송자”가 받은 “별”을 현금으로 전환하는 행위를 말합니다.</li>
         <li>“환불”이라 함은 “회원”이 충전한 “달”을 환불 수수료를 제한 후 현금으로 되돌려 받는 것을 말합니다.</li>
       </ol>
+      <br />
 
       <h3>제 3 조 (약관의 명시, 효력 및 개정)</h3>
       <ol className="depth1">
@@ -97,7 +100,7 @@ export default props => {
           “회원”과의 “서비스” 이용계약을 해지할 수 있습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 4 조 (이용 계약의 성립)</h3>
       <ol className="depth1">
         <li>
@@ -109,7 +112,7 @@ export default props => {
           등 이용제한을 할 수 있습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 5 조 (서비스 이용)</h3>
       <ol className="depth1">
         <li>“회원”은 “회사”가 제공하는 방식을 통해 “서비스”에 가입할 수 있습니다.</li>
@@ -129,7 +132,7 @@ export default props => {
         다만, “서비스” 설비의 정기점검 등의 사유로 회사가 “서비스”를 특정 범위로 분할하여 별도로 “서비스” 이용의 날짜와 시간을
         정할 수 있습니다.
       </p>
-
+      <br />
       <h3>제 6 조 (공개 게시물 등의 관리)</h3>
       <ol className="depth1">
         <li>
@@ -163,7 +166,7 @@ export default props => {
           있으며, 게시 중단일로부터 30일 이내에 재 게시를 요청하지 아니한 경우 “회사”는 이를 삭제할 수 있습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 7 조 (서비스와 게시물에 대한 권리 및 지적재산권)</h3>
       <ol className="depth1">
         <li>
@@ -210,7 +213,7 @@ export default props => {
         </li>
         <li>본 조 제3항의 “회원”의 사용 허락은 “회사”가 공지, 이용안내에서 정한 바에 따라 장래에 대하여 철회할 수 있습니다.</li>
       </ol>
-
+      <br />
       <h3>제 8 조 (서비스 이용의 제한 등)</h3>
       <ol className="depth1">
         <li>
@@ -246,7 +249,7 @@ export default props => {
           “회원”은 “회사”의 통지를 받은 날로부터 30일 이내에 이에 대한 항변의 기회를 가집니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 9 조 (회원의 의무)</h3>
       <ol className="depth1">
         <li>
@@ -293,7 +296,7 @@ export default props => {
         <li>“회원”은 “회사”에게 허위정보를 제공하였을 경우 발생하는 불이익에 대해서는 보호받지 못합니다.</li>
         <li>“회사”는 “회원”의 이용 제한이 정당한 경우 이로 인하여 “회원”이 입은 손해에 대해 배상하지 않습니다.</li>
       </ol>
-
+      <br />
       <h3>제 10 조 (양도금지)</h3>
       <ol className="depth1">
         <li>“회원”은 “서비스”의 결제정책에 맞는 결제를 진행합니다.</li>
@@ -302,7 +305,7 @@ export default props => {
           없습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 11 조 (정보의 제공 및 광고의 게재)</h3>
       <ol className="depth1">
         <li>
@@ -319,7 +322,7 @@ export default props => {
           결과로써 발생하는 손실 또는 손해에 대해서는 책임을 지지 않습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 12 조 (탈퇴)</h3>
       <ol className="depth1">
         <li>
@@ -333,7 +336,7 @@ export default props => {
         </li>
         <li>“서비스” 이용계약이 해지되어 “회원”에게 환불할 금액이 있는 경우 “회사”는 제18조에 따라 환불합니다.</li>
       </ol>
-
+      <br />
       <h3>제 13 조 (달의 결제 및 유효기간)</h3>
       <ol className="depth1">
         <li>“달”을 결제하기 위해서는 달빛라이브 서비스에 “회원”의 계정이 있어야 합니다.</li>
@@ -351,7 +354,7 @@ export default props => {
           없는 한 “회원”의 손해를 배상할 책임이 없습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 14 조 (달과 별의 유효기간)</h3>
       <ol className="depth1">
         <li>
@@ -361,7 +364,7 @@ export default props => {
         <li>“달”에서 “별”로 환전하여 결제한 “아이템” 또한 5년이 경과한 후에는 사용권을 상실합니다.</li>
         <li>“별”은 선물 받은 날로부터 12개월 이내 미 환전 시 사용권을 상실합니다.</li>
       </ol>
-
+      <br />
       <h3>제 15 조 (결제 승인에 대한 제한)</h3>
       <ol className="depth1">
         <li>
@@ -383,7 +386,7 @@ export default props => {
           </ol>
         </li>
       </ol>
-
+      <br />
       <h3>제 16 조 (청약철회 및 해제/해지)</h3>
       <ol className="depth1">
         <li>
@@ -417,7 +420,7 @@ export default props => {
         <li>“회사”는 “회원”의 “청약 철회 등”의 의사표시를 수신한 후 지체 없이 그 처리 내용에 대하여 “회원”에게 회신합니다.</li>
         <li>기타 본 약관에서 정하지 않는 부분은 전자상거래법 등 관련 법령에서 정하는 바에 의합니다.</li>
       </ol>
-
+      <br />
       <h3>제 17 조 (환불)</h3>
       <ol className="depth1">
         <li>“회원”이 착오로 납입한 금액에 대하여 “회사”는 초과금액을 “환불”하여야 합니다.</li>
@@ -442,7 +445,7 @@ export default props => {
           사용기간이 경과한 “달”은 “환불”하지 않습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 18 조 (환전)</h3>
       <ol className="depth1">
         <li>
@@ -465,7 +468,7 @@ export default props => {
         <li>“환전” 절차 및 승인에 대한 구체적인 내용은 달빛라이브 운영정책 등 “회사”에서 정한 별도의 기준에 따릅니다.</li>
         <li>“환전” 시 원천징수세액, 계좌이체 수수료, 기타 수수료 등이 공제됩니다.</li>
       </ol>
-
+      <br />
       <h3>제 19 조 (책임제한)</h3>
       <ol className="depth1">
         <li>
@@ -486,7 +489,7 @@ export default props => {
           한 책임을 지지 않습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 20 조 (손해배상)</h3>
       <ol className="depth1">
         <li>
@@ -495,7 +498,7 @@ export default props => {
         </li>
         <li>“회사”의 귀책사유로 “회원”에게 손해가 발생한 경우, “회원”에게 발생한 손해를 배상합니다.</li>
       </ol>
-
+      <br />
       <h3>제 21 조 (약관 외 준칙)</h3>
       <ol className="depth1">
         <li>
@@ -504,7 +507,7 @@ export default props => {
         </li>
         <li> “회사”는 본 약관 외에 운영정책, 개인정보처리방침 등 개별 약관을 둘 수 있습니다.</li>
       </ol>
-
+      <br />
       <h3>제 22 조 (면책)</h3>
       <ol className="depth1">
         <li>
@@ -538,13 +541,13 @@ export default props => {
           “회사”에 귀책사유가 없는 한 이로 인하여 발생한 손해를 배상할 책임이 없습니다.
         </li>
       </ol>
-
+      <br />
       <h3>제 23 조 (분쟁의 해결)</h3>
       <p>
         본 약관은 대한민국 법에 의하여 해석되고 이행되며 “서비스” 이용과 관련하여 “회사”와 “회원”간에 발생한 분쟁에 대해서는
         민사소송법상의 주소지를 관할하는 법원을 합의관할로 합니다.
       </p>
-
+      <br />
       <h3>제 24 조 (규정의 준용)</h3>
       <p>본 약관에 명시되지 않은 사항에 대해서는 관련 법령에 의하고, 법에 명시되지 않은 부분에 대하여는 관습에 의합니다.</p>
       <br />
