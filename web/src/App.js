@@ -76,6 +76,8 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
       //
       if (__NODE_ENV === 'dev') {
+        alert(localStorage.getItem('room_no'))
+        localStorage.setItem('room_no', '11111')
         // alert(JSON.stringify(customHeader, null, 1))
       }
       //
