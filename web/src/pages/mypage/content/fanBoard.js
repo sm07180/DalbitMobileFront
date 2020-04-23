@@ -371,7 +371,9 @@ export default props => {
       <FanBoard>
         {/* 초기등록창 */}
         <InitialSubmit className={active === true ? 'on' : ''} onClick={() => setActive(true)}>
-          <div className="start">{placeholderTextStart}</div>
+          <div className="start">
+            <p>{placeholderTextStart}</p>
+          </div>
           <button>등록</button>
         </InitialSubmit>
         <InitialBigSubmit className={active === true ? 'on' : ''}>
@@ -418,7 +420,6 @@ export default props => {
                     <a href={link}>
                       <Imgbox bg={profImg.thumb62x62} />
                     </a>
-
                     <div>
                       <a href={link}>
                         <span>{nickNm}</span>
@@ -530,7 +531,9 @@ export default props => {
                       )
                     })}
                     <ReplySubmit onClick={() => ToggleDae()} className={hideSecondcomment === true && 'hide'}>
-                      <div className="start">{placeholderTextStart}</div>
+                      <div className="start">
+                        <p>{placeholderTextStart}</p>
+                      </div>
                       <button>등록</button>
                     </ReplySubmit>
                     <SecoundBigSubmit className={hidebigSecondcomment === true && 'on'}>
@@ -692,13 +695,15 @@ const InitialSubmit = styled.div`
   background-color: #ffffff;
   & div {
     width: calc(100% - 60px);
-    height: 36px;
-    line-height: 36px;
     border: solid 1px #bdbdbd;
     padding-left: 10px;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: #757575;
+    p {
+      height: 36px;
+      line-height: 36px;
+      font-size: 16px;
+      letter-spacing: -0.4px;
+      color: #757575;
+    }
   }
 
   & button {
@@ -935,14 +940,18 @@ const ReplySubmit = styled.div`
 
   & div {
     width: calc(100% - 60px);
-    height: 100%;
-    line-height: 36px;
+    height: 36px;
+
     border: solid 1px #bdbdbd;
     padding-left: 10px;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    color: #757575;
+
     background-color: #ffffff;
+    p {
+      line-height: 36px;
+      font-size: 16px;
+      letter-spacing: -0.4px;
+      color: #757575;
+    }
   }
   & button {
     display: block;
