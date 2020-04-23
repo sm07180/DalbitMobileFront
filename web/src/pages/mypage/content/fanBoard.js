@@ -11,6 +11,7 @@ import {Context} from 'context'
 import Header from '../component/header.js'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import BJicon from '../component/bj.svg'
 //api
 import Api from 'context/api'
 //layout
@@ -377,6 +378,7 @@ export default props => {
         <InitialBigSubmit className={active === true ? 'on' : ''}>
           <WriteAreaTop>
             <OwnPhoto style={{backgroundImage: `url(${profile.profImg['thumb62x62']})`}} />
+
             <div style={{fontSize: '16px', letterSpacing: '-0.4px', marginLeft: '10px'}} className="nick">
               {profile.nickNm}
             </div>
@@ -419,6 +421,7 @@ export default props => {
                       <Imgbox bg={profImg.thumb62x62} />
                     </a>
                     <div>
+                      {writerNo === profile.memNo && <em className="bjIcon"></em>}
                       <a href={link}>
                         <span>{nickNm}</span>
                         <span>(@{memId})</span>
@@ -743,6 +746,15 @@ const CommentBox = styled.div`
   display: block;
   width: 100%;
   border-bottom: 1px solid #eeeeee;
+
+  & .bjIcon {
+    display: block;
+    width: 23px;
+    height: 16px;
+    margin-top: 2px;
+    margin-right: 4px;
+    background: url(${BJicon}) no-repeat center center / cover;
+  }
   & .CommentWrap {
     display: block;
   }
