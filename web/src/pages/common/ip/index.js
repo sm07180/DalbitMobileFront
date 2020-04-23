@@ -19,7 +19,16 @@ export default () => {
 
   return (
     <select
-      style={{position: 'fixed', bottom: '100px', right: '10px', backgroundColor: 'blue', color: 'white', zIndex: '500'}}
+      style={{
+        position: 'fixed',
+        bottom: '100px',
+        right: '10px',
+        backgroundColor: 'blue',
+        color: 'white',
+        zIndex: '500',
+        padding: '4px'
+      }}
+      value={location.origin}
       onChange={e => {
         window.location.href = e.target.value
       }}>
