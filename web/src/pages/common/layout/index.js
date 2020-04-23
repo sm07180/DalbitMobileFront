@@ -29,7 +29,7 @@ const Layout = props => {
       {/* 메시지팝업 */}
       <Message {...props} />
       {/* IP노출 */}
-      <Ip {...props} />
+      {__NODE_ENV === 'dev' && <Ip {...props} />}
     </React.Fragment>
   )
 }
