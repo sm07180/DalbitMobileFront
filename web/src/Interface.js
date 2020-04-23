@@ -166,9 +166,11 @@ export default () => {
       */
     const {push_type} = pushMsg
     let room_no, mem_no
+
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      //   const {isLogin} = context.token
+      const {isLogin} = context.token
+      alert('isLogin : ' + isLogin)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
