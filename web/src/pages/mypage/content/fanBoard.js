@@ -694,7 +694,7 @@ const InitialSubmit = styled.div`
     border: solid 1px #bdbdbd;
     padding-left: 10px;
     height: 36px;
-    line-height: 36px;
+    line-height: 32px;
     font-size: 16px;
     letter-spacing: -0.4px;
     color: #757575;
@@ -940,7 +940,7 @@ const ReplySubmit = styled.div`
     border: solid 1px #bdbdbd;
     padding-left: 10px;
     background-color: #ffffff;
-    line-height: 36px;
+    line-height: 32px;
     font-size: 16px;
     letter-spacing: -0.4px;
     color: #757575;
