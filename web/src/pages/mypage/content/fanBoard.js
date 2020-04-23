@@ -536,7 +536,7 @@ export default props => {
                     <ReplySubmit
                       onClick={() => ToggleDae()}
                       className={hideSecondcomment === true && 'hide'}
-                      className={replynum === 0 && 'padding6'}>
+                      style={{padding: replynum === 0 ? '12px 0px' : '6px 0 12px 0'}}>
                       <div className="start">{placeholderTextStart}</div>
                       <button>등록</button>
                     </ReplySubmit>
