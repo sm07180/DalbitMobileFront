@@ -74,7 +74,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     //authCheck
     Hybrid('AuthCheck')
-    //##    if (!Room.active) return
+    if (sessionRoomActive === 'N') return
+    //##
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
@@ -87,6 +88,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     //방송강제퇴장
     if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
+      alert(sessionRoomNo)
       await Api.broad_exit({data: {roomNo: sessionRoomNo}})
     }
     console.log('sessionRoomNo : ' + sessionRoomNo)
@@ -131,6 +133,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setActive(false)
       Room.setAuth(false)
       //--
+      sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
       return true
