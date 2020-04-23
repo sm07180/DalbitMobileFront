@@ -5,6 +5,9 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
+import {Hybrid, isHybrid} from 'context/hybrid'
+import qs from 'query-string'
+
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -14,13 +17,23 @@ import closeBtn from './close.svg'
 export default props => {
   //context
   const context = useContext(Context)
+  const {webview, redirect} = qs.parse(location.search)
+  console.log(webview)
   const mainRemote = () => {
     window.location.href = '/'
+  }
+  const clickCloseBtn = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.location.href = '/'
+      // window.history.back()
+    }
   }
   //---------------------------------------------------------------------
   return (
     <Content>
-      <button onClick={() => mainRemote()} className="MainRemote"></button>
+      <button onClick={() => clickCloseBtn()} className="MainRemote"></button>
       <h2 className="line">이용약관</h2>
       <h3>제 1 조 (목적)</h3>
       <p>
