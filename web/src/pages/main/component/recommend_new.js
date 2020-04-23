@@ -13,6 +13,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
+import {RuleList} from 'jss'
 
 let touchStartX = null
 let touchEndX = null
@@ -25,7 +26,7 @@ export default props => {
   const history = useHistory()
   // const context = useContext(Context)
   const [selectedBIdx, setSelectedBIdx] = useState(null)
-  // const [blobList, setBlobList] = useState([])
+  const [blobList, setBlobList] = useState([])
   const slideWrapRef = useRef()
 
   const selectBroadcast = idx => {
@@ -33,25 +34,32 @@ export default props => {
   }
 
   useEffect(() => {
-    // const tempBlobList = []
-    // if (Array.isArray(list) && list.length) {
-    //   list.forEach(line => {
-    //     const {bannerUrl} = line
-    //     fetch(bannerUrl)
-    //       .then(res => res.blob())
-    //       .then(blob => {
-    //         const cacheUrl = URL.createObjectURL(blob)
-    //         tempBlobList.push(cacheUrl)
-    //       })
-    //   })
-    //   setBlobList(tempBlobList)
-    //   console.log(tempBlobList)
-    // }
-    // return () => {
-    //   tempBlobList.forEach(url => {
-    //     URL.revokeObjectURL(url)
-    //   })
-    // }
+    if (window.sessionStorage.getItem('bannerList')) {
+      const list = JSON.parse(window.sessionStorage.getItem('bannerList'))
+      list.forEach(url => {
+        URL.revokeObjectURL(url)
+      })
+      sessionStorage.removeItem('bannerList')
+    }
+
+    const tempBlobList = []
+    if (Array.isArray(list) && list.length) {
+      let count = 0
+      list.forEach((line, idx) => {
+        const {bannerUrl} = line
+        fetch(bannerUrl)
+          .then(res => res.blob())
+          .then(blob => {
+            count++
+            const cacheUrl = URL.createObjectURL(blob)
+            tempBlobList[idx] = cacheUrl
+            if (count === list.length) {
+              setBlobList(tempBlobList)
+              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
+            }
+          })
+      })
+    }
   }, [list])
 
   const clickSwipEvent = e => {
@@ -225,19 +233,21 @@ export default props => {
               <div
                 className="broad-slide"
                 b-idx={prevBIdx}
-                style={{backgroundImage: `url(${list[prevBIdx]['bannerUrl']})`}}
+                style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[prevBIdx])}
               />
               <div
                 className="broad-slide"
                 b-idx={selectedBIdx}
-                style={{backgroundImage: `url(${list[selectedBIdx]['bannerUrl']})`}}
+                style={{
+                  backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
+                }}
                 onClick={() => clickSlideDisplay(list[selectedBIdx])}
               />
               <div
                 className="broad-slide"
                 b-idx={nextBIdx}
-                style={{backgroundImage: `url(${list[nextBIdx]['bannerUrl']})`}}
+                style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[nextBIdx])}
               />
             </div>
