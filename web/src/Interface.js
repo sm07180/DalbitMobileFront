@@ -95,9 +95,7 @@ export default () => {
         //시작
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_active')
-        // if (Room !== undefined) {
-        //   Room.setActive(true)
-        // }
+
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
@@ -122,9 +120,7 @@ export default () => {
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_no')
         sessionStorage.removeItem('room_active')
-        if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
-          Room.setActive(true)
-        }
+
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail

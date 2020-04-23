@@ -28,14 +28,11 @@ const Room = () => {
   //useState
   const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
-  const [active, setActive] = useState(true)
   //interface
   Room.context = context
   Room.auth = auth
-  Room.active = active
   Room.roomInfo = roomInfo
   Room.setRoomInfo = (obj) => setRoomInfo(obj)
-  Room.setActive = (bool) => setActive(bool)
   Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
 
@@ -130,7 +127,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       const {data} = res
       //하이브리드앱실행
       Room.setRoomInfo(data)
-      Room.setActive(false)
       Room.setAuth(false)
       //--
       sessionStorage.setItem('room_active', 'N')
@@ -167,7 +163,6 @@ export const RoomMake = async (context) => {
    */
   async function broadCheck(obj) {
     const res = await Api.broad_check()
-    console.log(res)
     //진행중인 방송이 없습니다
     if (res.code === '0') return true
     //진행중인 방송이 있습니다
