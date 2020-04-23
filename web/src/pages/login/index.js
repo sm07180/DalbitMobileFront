@@ -23,7 +23,7 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
-export default props => {
+export default (props) => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -35,12 +35,12 @@ export default props => {
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
 
-  const changePhoneNum = e => {
+  const changePhoneNum = (e) => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = e => {
+  const changePassword = (e) => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -110,7 +110,7 @@ export default props => {
     }
   }
 
-  const fetchSocialData = async vendor => {
+  const fetchSocialData = async (vendor) => {
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
@@ -129,7 +129,7 @@ export default props => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach(key => {
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -165,7 +165,7 @@ export default props => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
@@ -207,9 +207,9 @@ export default props => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
-                <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
+                {/* <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
                   <img className="icon" src={appleLogo} />
-                </button>
+                </button> */}
 
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
