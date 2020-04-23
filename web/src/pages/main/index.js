@@ -65,7 +65,7 @@ export default props => {
   const [totalLivePage, setTotalLivePage] = useState(null)
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
-  const [categoryList, setCategoryList] = useState([])
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -91,7 +91,8 @@ export default props => {
         const {data} = res
         const {roomType} = data
         if (roomType) {
-          setCategoryList(roomType)
+          const concatenated = categoryList.concat(roomType)
+          setCategoryList(concatenated)
         }
       }
     })
@@ -329,7 +330,7 @@ export default props => {
 
             <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="inner-wrapper">
-                {Array.isArray(categoryList) && categoryList.length > 0 && (
+                {Array.isArray(categoryList) && categoryList.length > 1 && (
                   <Swiper {...swiperParams}>
                     {categoryList
                       .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
