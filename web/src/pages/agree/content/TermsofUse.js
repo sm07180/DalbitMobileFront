@@ -18,22 +18,23 @@ export default props => {
   //context
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
-  console.log(webview)
+  const
+  
   const mainRemote = () => {
     window.location.href = '/'
   }
-  const clickCloseBtn = () => {
-    if (isHybrid() && webview && webview === 'new') {
-      Hybrid('CloseLayerPopup')
-    } else {
-      window.location.href = '/'
-      // window.history.back()
-    }
-  }
+  // const clickCloseBtn = () => {
+  //   if (isHybrid() && webview && webview === 'new') {
+  //     Hybrid('CloseLayerPopup')
+  //   } else {
+  //     window.location.href = '/'
+  //     // window.history.back()
+  //   }
+  // }
   //---------------------------------------------------------------------
   return (
     <Content>
-      <button onClick={() => clickCloseBtn()} className="MainRemote"></button>
+      {/* <button onClick={() => clickCloseBtn()} className="MainRemote"></button> */}
       <h2 className="line">이용약관</h2>
       <h3>제 1 조 (목적)</h3>
       <p>
