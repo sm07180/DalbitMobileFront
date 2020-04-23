@@ -783,7 +783,6 @@ const CommentBox = styled.div`
         font-weight: 600;
         letter-spacing: -0.35px;
         transform: skew(-0.03deg);
-        line-height: 1.43;
         margin-right: 4px;
       }
       a span:nth-child(2) {

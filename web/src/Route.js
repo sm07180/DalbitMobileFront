@@ -26,6 +26,7 @@ const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
+const Agree = React.lazy(() => import('pages/agree'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
@@ -66,6 +67,9 @@ export default () => {
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
+
+        <Route exact path="/agree" component={Agree} />
+        <Route exact path="/agree/:title" component={Agree} />
 
         <Route exact path="/error" component={ErrorPage} />
 
