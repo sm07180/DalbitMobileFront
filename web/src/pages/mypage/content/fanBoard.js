@@ -200,7 +200,8 @@ export default props => {
   const [hidden, setHidden] = useState(false)
   const [modifyInfo, setModifyInfo] = useState({})
   const [btnState, setBtnState] = useState(false)
-  console.log(modifyInfo)
+  const [replynum, setReplyNum] = useState(0)
+  console.log(replynum)
   //등록
   const submitClick = () => {
     fetchDataUpload()
@@ -208,7 +209,8 @@ export default props => {
     setActive(false)
   }
   //대댓글보기
-  const ShowReplyBtnState = (writeNumer, boardNumer) => {
+  const ShowReplyBtnState = (writeNumer, boardNumer, replyCnt) => {
+    setReplyNum(replyCnt)
     setActive(false)
     sethideSecondcomment(false)
     sethidebigSecondcomment(false)
@@ -447,7 +449,7 @@ export default props => {
                   <div className="content">
                     <pre>{contents}</pre>
                   </div>
-                  <button className="reply" onClick={() => ShowReplyBtnState(writeNumer, boardNumer)}>
+                  <button className="reply" onClick={() => ShowReplyBtnState(writeNumer, boardNumer, replyCnt)}>
                     답글 {replyCnt !== 0 && <span>{replyCnt}</span>}
                   </button>
                 </div>
@@ -531,7 +533,10 @@ export default props => {
                         </ReplyWrap>
                       )
                     })}
-                    <ReplySubmit onClick={() => ToggleDae()} className={hideSecondcomment === true && 'hide'}>
+                    <ReplySubmit
+                      onClick={() => ToggleDae()}
+                      className={hideSecondcomment === true && 'hide'}
+                      className={replynum === 0 && 'padding6'}>
                       <div className="start">{placeholderTextStart}</div>
                       <button>등록</button>
                     </ReplySubmit>
@@ -947,7 +952,9 @@ const ReplySubmit = styled.div`
   padding: 6px 0 12px 0;
   box-sizing: content-box;
   margin: 0px auto 0px auto;
-
+  &.padding6 {
+    padding: 12px 0;
+  }
   & div {
     width: calc(100% - 60px);
     height: 36px;
