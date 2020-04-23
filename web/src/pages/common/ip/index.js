@@ -18,7 +18,7 @@ export default () => {
   }, [])
 
   return (
-    <select style={{position: 'fixed', bottom: '10px', backgroundColor: 'blue', color: 'white'}}>
+    <select style={{position: 'fixed', bottom: '10px', right: '10px', backgroundColor: 'blue', color: 'white'}}>
       {redirectList.map((info, idx) => {
         return (
           <option
