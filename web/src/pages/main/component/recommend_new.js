@@ -29,6 +29,8 @@ export default props => {
   const [blobList, setBlobList] = useState([])
   const slideWrapRef = useRef()
 
+  const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
+
   const selectBroadcast = idx => {
     setSelectedBIdx(idx)
   }
@@ -105,7 +107,7 @@ export default props => {
     const slideWrapNode = slideWrapRef.current
     const baseWidth = slideWrapNode.clientWidth / 3
 
-    const halfBaseWidth = baseWidth / 5
+    const halfBaseWidth = baseWidth / 16
     const diff = touchEndX - touchStartX
     direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
@@ -234,22 +236,54 @@ export default props => {
                 className="broad-slide"
                 b-idx={prevBIdx}
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
-                onClick={() => clickSlideDisplay(list[prevBIdx])}
-              />
+                onClick={() => clickSlideDisplay(list[prevBIdx])}>
+                <div className="text-wrap">
+                  <div className="selected-title">{list[prevBIdx]['title']}</div>
+                  {list[prevBIdx]['nickNm'] !== 'banner' && (
+                    <div className="selected-nickname">
+                      {list[prevBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                        // 🎉😝pqpq😝🎉
+                        // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+                        return <span key={`splited-${idx}`}>{str}</span>
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div
                 className="broad-slide"
                 b-idx={selectedBIdx}
                 style={{
                   backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                 }}
-                onClick={() => clickSlideDisplay(list[selectedBIdx])}
-              />
+                onClick={() => clickSlideDisplay(list[selectedBIdx])}>
+                <div className="text-wrap">
+                  <div className="selected-title">{list[selectedBIdx]['title']}</div>
+                  {list[selectedBIdx]['nickNm'] !== 'banner' && (
+                    <div className="selected-nickname">
+                      {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                        return <span key={`splited-${idx}`}>{str}</span>
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
               <div
                 className="broad-slide"
                 b-idx={nextBIdx}
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
-                onClick={() => clickSlideDisplay(list[nextBIdx])}
-              />
+                onClick={() => clickSlideDisplay(list[nextBIdx])}>
+                <div className="text-wrap">
+                  <div className="selected-title">{list[nextBIdx]['title']}</div>
+                  {list[nextBIdx]['nickNm'] !== 'banner' && (
+                    <div className="selected-nickname">
+                      {list[nextBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                        return <span key={`splited-${idx}`}>{str}</span>
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </>
         )}
@@ -294,6 +328,7 @@ const RecommendWrap = styled.div`
     overflow: hidden;
 
     .slide-wrap {
+      transition: all 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
       position: absolute;
       width: 300%;
       height: 100%;
@@ -302,6 +337,7 @@ const RecommendWrap = styled.div`
       flex-direction: row;
 
       .broad-slide {
+        position: relative;
         width: 33.3334%;
         height: 100%;
         background-size: cover;
@@ -312,8 +348,8 @@ const RecommendWrap = styled.div`
 
     .live-icon {
       position: absolute;
-      top: 49px;
-      left: 10px;
+      top: 51px;
+      left: 8px;
       width: 51px;
     }
     .counting {
@@ -323,8 +359,8 @@ const RecommendWrap = styled.div`
       position: absolute;
       width: 46px;
       height: 16px;
-      right: 10px;
-      top: 49px;
+      right: 8px;
+      top: 51px;
       border-radius: 10px;
       background-color: rgba(0, 0, 0, 0.5);
       font-size: 10px;
@@ -335,6 +371,15 @@ const RecommendWrap = styled.div`
         margin-right: 4px;
       }
     }
+  }
+
+  .text-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    padding-top: 30px;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25) 34%, rgba(0, 0, 0, 0.6));
+    bottom: 0;
   }
 
   .selected-title {

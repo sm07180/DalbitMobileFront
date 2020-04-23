@@ -13,8 +13,7 @@ import {StoreLink} from 'context/link'
 
 // components
 import Layout from 'pages/common/layout'
-import Recommend from './component/recommend.js'
-// import Recommend from './component/recommend_new.js'
+import Recommend from './component/recommend_new.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
@@ -26,12 +25,13 @@ import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 
 // static
-import Mic from './static/ic_broadcast.svg'
+import Mic from './static/ic_broadcastng.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
 import RankArrow from './static/ic_rank_arrow.svg'
 
 import {RoomMake} from 'context/room'
+import {COLOR_MAIN} from 'context/color.js'
 
 let concatenating = false
 let tempScrollEvent = null
@@ -550,16 +550,18 @@ const Content = styled.div`
 
 const SubMain = styled.div`
   height: 310px;
-  background: linear-gradient(#632beb, #632beb, #662eec);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  background: #fff;
 
   .gnb {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 8px 8px;
+    /* padding: 12px 8px 8px; */
+    height: 42px;
     box-sizing: border-box;
+    background: rgba(99, 43, 235, 0.7);
+    z-index: 1;
 
     .left-side {
       display: flex;
@@ -590,15 +592,15 @@ const SubMain = styled.div`
         align-items: center;
         position: relative;
         width: 106px;
-        height: 36px;
+        height: 34px;
         margin-right: 8px;
         padding-left: 34px;
         font-weight: 600;
         text-align: right;
         letter-spacing: -0.4px;
         border-radius: 18px;
-        background-color: #fff;
-        color: #632beb;
+        background-color: ${COLOR_MAIN};
+        color: #fff;
         font-size: 16px;
         font-weight: 600;
         box-sizing: border-box;
