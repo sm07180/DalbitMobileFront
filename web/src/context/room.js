@@ -152,9 +152,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setActive(false)
       Room.setAuth(false)
       //--
-      setTimeout(() => {
-        Hybrid('RoomJoin', data)
-      }, 100)
+      Hybrid('RoomJoin', data)
       return true
     }
   }
