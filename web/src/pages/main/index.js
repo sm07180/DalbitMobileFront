@@ -13,8 +13,8 @@ import {StoreLink} from 'context/link'
 
 // components
 import Layout from 'pages/common/layout'
-// import Recommend from './component/recommend.js'
-import Recommend from './component/recommend_new.js'
+import Recommend from './component/recommend.js'
+// import Recommend from './component/recommend_new.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
