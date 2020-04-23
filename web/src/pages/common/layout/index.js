@@ -12,7 +12,7 @@ import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 import Ip from 'pages/common/ip'
 //
-const Layout = (props) => {
+const Layout = props => {
   const {children, webview} = props
   //---------------------------------------------------------------------
   return (

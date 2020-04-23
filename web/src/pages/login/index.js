@@ -127,7 +127,12 @@ export default props => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      sessionStorage.clear()
+      const exceptionList = ['room_no', 'room_info', 'push_type']
+      Object.keys(window.sessionStorage).forEach(key => {
+        if (!exceptionList.includes(key)) {
+          sessionStorage.removeItem(key)
+        }
+      })
     }
   }, [])
 

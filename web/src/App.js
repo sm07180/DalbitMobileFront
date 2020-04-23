@@ -22,7 +22,7 @@ const App = () => {
 
   const [ready, setReady] = useState(false)
 
-  const isJsonString = (str) => {
+  const isJsonString = str => {
     try {
       var parsed = JSON.parse(str)
       return typeof parsed === 'object'
