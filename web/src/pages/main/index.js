@@ -599,7 +599,7 @@ const SubMain = styled.div`
         text-align: right;
         letter-spacing: -0.4px;
         border-radius: 18px;
-        background-color: ${COLOR_MAIN};
+        background-color: #000;
         color: #fff;
         font-size: 16px;
         font-weight: 600;
