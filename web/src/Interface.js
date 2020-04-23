@@ -95,7 +95,6 @@ export default () => {
         //시작
         //App에서 방송종료 알림경우
         if (Room !== undefined) {
-          Room.setRoomNo(event.detail.roomNo)
           Room.setActive(true)
         }
         //(BJ)일경우 방송하기:방송중
@@ -120,8 +119,9 @@ export default () => {
         context.action.updateCastState(null)
         //종료시
         //App에서 방송종료 알림경우
+        sessionStorage.removeItem('room_no')
+
         if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
-          Room.setRoomNo('')
           Room.setActive(true)
         }
         break

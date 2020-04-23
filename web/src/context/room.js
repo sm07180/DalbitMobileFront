@@ -26,27 +26,19 @@ const Room = () => {
   //context
   const context = useContext(Context)
   //useState
-  const [roomNo, setRoomNo] = useState('')
   const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
   const [active, setActive] = useState(true)
   //interface
   Room.context = context
-  Room.roomNo = roomNo
   Room.auth = auth
   Room.active = active
   Room.roomInfo = roomInfo
   Room.setRoomInfo = (obj) => setRoomInfo(obj)
   Room.setActive = (bool) => setActive(bool)
-  Room.setRoomNo = (num) => setRoomNo(num)
   Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
-  // useEffect(() => {
-  //   if (Room.auth) {
-  //     RoomJoin(Room.roomNo)
-  //   }
-  //   console.log('Room.roomNo : ' + Room.roomNo)
-  // }, [Room.auth])
+
   //-----------------------------------------------------------
   return <React.Fragment />
 }
@@ -58,12 +50,14 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
-  //console.log(Room.roomNo + ' : ' + roomNo)
+  const sessionRoomNo = sessionStorage.getItem('room_no')
+  const sessionRoomActive = sessionStorage.getItem('room_active')
+
   /**
    * @title Room.roomNo , roomNo 비교
    */
 
-  if (Room.roomNo === roomNo) {
+  if (sessionRoomNo === roomNo) {
     const join = await Api.broad_join({data: {roomNo: roomNo}})
     if (join.result === 'fail') {
       Room.context.action.alert({
@@ -71,23 +65,13 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         msg: join.message
       })
     } else if (join.result === 'success' && join.data !== null) {
-      //
-      if (__NODE_ENV === 'dev') {
-        // alert(JSON.stringify(join.data, null, 1))
-      }
-      //
       Hybrid('RoomJoin', join.data)
-      console.log(
-        '%c' + `Native: Room.roomNo === roomNo,RoomJoin실행`,
-        'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:navy;'
-      )
     }
     //
     if (callbackFunc !== undefined) callbackFunc()
     return false
   } else {
     //-------------------------------------------------------------
-    const sessionRoomNo = sessionStorage.getItem('room_no')
     //authCheck
     Hybrid('AuthCheck')
     //##    if (!Room.active) return
@@ -102,10 +86,9 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
-    if (sessionRoomNo !== undefined) {
+    if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
       await Api.broad_exit({data: {roomNo: sessionRoomNo}})
     }
-    alert(sessionRoomNo)
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     const res = await Api.broad_join({data: {roomNo: roomNo}})
@@ -143,13 +126,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     } else if (res.result === 'success' && res.data !== null) {
       //성공일때
       const {data} = res
-      console.log(
-        '%c' + `Native: RoomJoin실행`,
-        'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#000;background:orange;'
-      )
       //하이브리드앱실행
       Room.setRoomInfo(data)
-      Room.setRoomNo(roomNo)
       Room.setActive(false)
       Room.setAuth(false)
       //--
