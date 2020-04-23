@@ -96,13 +96,13 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       setTimeout(() => {
         //재귀함수
         RoomJoin(roomNo)
-      }, 50)
+      }, 80)
       return
     }
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
-    if (sessionRoomNo === null) {
+    if (sessionRoomNo === undefined) {
       const exit1 = await Api.broad_exit({data: {roomNo: roomNo}})
     } else {
       const exit2 = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
