@@ -122,9 +122,7 @@ export default props => {
                     onClick={() => {
                       props.history.push(`/mypage/${myMemNo}/wallet`)
                     }}>
-                    <figure>
-                      <img src={moonIco} />
-                    </figure>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
@@ -136,9 +134,10 @@ export default props => {
                     onClick={() => {
                       props.history.push(`/mypage/${myMemNo}`)
                     }}>
-                    <figure>
+                    {/* <figure>
                       <img src={alarmIco} />
-                    </figure>
+                    </figure> */}
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
@@ -150,9 +149,7 @@ export default props => {
                     onClick={() => {
                       props.history.push(`/mypage/${myMemNo}/fanboard`)
                     }}>
-                    <figure>
-                      <img src={alarmIco} />
-                    </figure>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
@@ -175,9 +172,7 @@ export default props => {
               default:
                 return (
                   <li key={index}>
-                    <figure>
-                      <img src={alarmIco} />
-                    </figure>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
