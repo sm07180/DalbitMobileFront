@@ -7,11 +7,10 @@ import _ from 'lodash'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
-import Room, {RoomJoin} from 'context/room'
 // etc
 import Content from './content'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -21,8 +20,8 @@ export default props => {
   function update(mode) {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
+        sessionStorage.removeItem('room_no')
         Hybrid('ExitRoom', '')
-        Room.roomNo = ''
         context.action.updatePlayer(false)
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
@@ -43,7 +42,6 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <React.Fragment>
-      <Room />
       {/* 미디어 플레이어 */}
       {context.player && visible && <Content {...props} update={update} />}
     </React.Fragment>
