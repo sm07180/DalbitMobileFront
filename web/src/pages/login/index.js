@@ -8,6 +8,7 @@ import Layout from 'pages/common/layout'
 // context
 import {Context} from 'context'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import {OS_TYPE} from 'context/config.js'
 
 // static
 import {IMG_SERVER} from 'context/config'
@@ -206,6 +207,12 @@ export default props => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
+                {globalCtx.customHeader['os'] === OS_TYPE['IOS'] && (
+                  <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
+                    <img className="icon" src={appleLogo} />
+                  </button>
+                )}
+
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
                 </button>

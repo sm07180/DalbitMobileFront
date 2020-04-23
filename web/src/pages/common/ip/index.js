@@ -18,14 +18,23 @@ export default () => {
   }, [])
 
   return (
-    <select style={{position: 'fixed', bottom: '10px', backgroundColor: 'blue', color: 'white'}}>
+    <select
+      style={{
+        position: 'fixed',
+        bottom: '100px',
+        right: '10px',
+        backgroundColor: 'blue',
+        color: 'white',
+        zIndex: '500',
+        padding: '4px'
+      }}
+      value={location.origin}
+      onChange={e => {
+        window.location.href = e.target.value
+      }}>
       {redirectList.map((info, idx) => {
         return (
-          <option
-            key={`url-${idx}`}
-            onClick={() => {
-              window.location.href = info.value
-            }}>
+          <option key={`url-${idx}`} value={info.value}>
             {info.text}
           </option>
         )

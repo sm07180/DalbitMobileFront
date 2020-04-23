@@ -94,10 +94,8 @@ export default () => {
       case 'native-start': //---------------------------Native player-show (Android & IOS)
         //시작
         //App에서 방송종료 알림경우
-        if (Room !== undefined) {
-          Room.setRoomNo(event.detail.roomNo)
-          Room.setActive(true)
-        }
+        sessionStorage.removeItem('room_active')
+
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
@@ -120,10 +118,9 @@ export default () => {
         context.action.updateCastState(null)
         //종료시
         //App에서 방송종료 알림경우
-        if (Room !== undefined && Room.roomNo !== undefined && room_no !== '') {
-          Room.setRoomNo('')
-          Room.setActive(true)
-        }
+        sessionStorage.removeItem('room_no')
+        sessionStorage.removeItem('room_active')
+
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail

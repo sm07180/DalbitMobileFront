@@ -750,7 +750,7 @@ export default props => {
         </>
       )}
       {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
-      <ProfileUpload imgUrl={imgData}>
+      <ProfileUpload imgUrl={imgData} className={changes.memType !== 'p' && 'top'}>
         <label htmlFor="profileImg">
           <div></div>
           <span>클릭 이미지 파일 추가</span>
@@ -988,6 +988,9 @@ const PhoneAuth = styled.div`
 const ProfileUpload = styled.div`
   margin: 20px 0 16px 0;
   text-align: center;
+  &.top {
+    margin-top: -20px;
+  }
   input {
     position: absolute;
     height: 0;
