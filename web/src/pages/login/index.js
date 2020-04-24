@@ -71,6 +71,7 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
@@ -119,10 +120,15 @@ export default (props) => {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       }
     })
-
+    console.log(res)
     if (res.status === 200) {
+      console.log('---성공')
+      console.log(res)
+      alert(JSON.stringify(res, null, 1))
       const redirectUrl = await res.text()
-      window.location.href = `${redirectUrl}`
+      alert(redirectUrl)
+      console.log('redirectUrl : ' + redirectUrl)
+      window.location.href = redirectUrl
     }
   }
 
@@ -207,10 +213,9 @@ export default (props) => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
-                {/* <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
                   <img className="icon" src={appleLogo} />
-                </button> */}
-
+                </button>
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
                 </button>

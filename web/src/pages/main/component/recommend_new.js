@@ -6,14 +6,12 @@ import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Room, {RoomJoin} from 'context/room'
 // component
-import CustomSwiper from 'components/ui/swiper.js'
 import {IMG_SERVER} from 'context/config'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
-import {RuleList} from 'jss'
 
 let touchStartX = null
 let touchEndX = null
@@ -24,57 +22,11 @@ export default props => {
   const context = useContext(Context)
   const {list} = props
   const history = useHistory()
-  // const context = useContext(Context)
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const [blobList, setBlobList] = useState([])
   const slideWrapRef = useRef()
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
-
-  const selectBroadcast = idx => {
-    setSelectedBIdx(idx)
-  }
-
-  useEffect(() => {
-    if (window.sessionStorage.getItem('bannerList')) {
-      const list = JSON.parse(window.sessionStorage.getItem('bannerList'))
-      list.forEach(url => {
-        URL.revokeObjectURL(url)
-      })
-      sessionStorage.removeItem('bannerList')
-    }
-
-    const tempBlobList = []
-    if (Array.isArray(list) && list.length) {
-      let count = 0
-      list.forEach((line, idx) => {
-        const {bannerUrl} = line
-        fetch(bannerUrl)
-          .then(res => res.blob())
-          .then(blob => {
-            count++
-            const cacheUrl = URL.createObjectURL(blob)
-            tempBlobList[idx] = cacheUrl
-            if (count === list.length) {
-              setBlobList(tempBlobList)
-              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
-            }
-          })
-      })
-    }
-  }, [list])
-
-  const clickSwipEvent = e => {
-    const target = e.currentTarget
-    const bIdx = Number(target.getAttribute('data-idx'))
-    selectBroadcast(bIdx)
-  }
-
-  useEffect(() => {
-    if (Array.isArray(list) && list.length) {
-      setSelectedBIdx(Math.floor(list.length / 2))
-    }
-  }, [list])
 
   const touchStartEvent = e => {
     if (touchStartStatus) {
@@ -129,64 +81,103 @@ export default props => {
       setTimeout(() => resolve(), slidingTime)
     })
 
-    promiseSync
-      .then(() => {
+    promiseSync.then(() => {
+      if (absDiff >= halfBaseWidth) {
+        if (direction === 'right') {
+          const targetBIdx = Number(slideWrapNode.firstChild.getAttribute('b-idx'))
+          setSelectedBIdx(targetBIdx)
+        } else if (direction === 'left') {
+          const targetBIdx = Number(slideWrapNode.lastChild.getAttribute('b-idx'))
+          setSelectedBIdx(targetBIdx)
+        }
+
         slideWrapNode.style.transitionDuration = '0ms'
         slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
         touchStartStatus = false
-      })
-      .then(() => {
-        if (absDiff >= halfBaseWidth) {
-          if (direction === 'right') {
-            const targetBIdx = Number(slideWrapNode.firstChild.getAttribute('b-idx'))
-            setSelectedBIdx(targetBIdx)
-          } else if (direction === 'left') {
-            const targetBIdx = Number(slideWrapNode.lastChild.getAttribute('b-idx'))
-            setSelectedBIdx(targetBIdx)
-          }
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (window.sessionStorage.getItem('bannerList')) {
+      const list = JSON.parse(window.sessionStorage.getItem('bannerList'))
+      list.forEach(url => {
+        if (url) {
+          URL.revokeObjectURL(url)
         }
       })
-  }
+      sessionStorage.removeItem('bannerList')
+    }
+  }, [])
+
+  useEffect(() => {
+    const tempBlobList = []
+    if (Array.isArray(list) && list.length) {
+      setSelectedBIdx(Math.floor(list.length / 2))
+
+      let count = 0
+      list.forEach((line, idx) => {
+        const {bannerUrl} = line
+        fetch(bannerUrl)
+          .then(res => res.blob())
+          .then(blob => {
+            count++
+            const cacheUrl = URL.createObjectURL(blob)
+            tempBlobList[idx] = cacheUrl
+            if (count === list.length) {
+              setBlobList(tempBlobList)
+              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
+            }
+          })
+          .catch(() => {
+            count++
+            if (count === list.length) {
+              setBlobList(tempBlobList)
+              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
+            }
+          })
+      })
+
+      const slidingTime = 150 // unit is ms
+
+      const intervalId = setInterval(() => {
+        const slideWrapNode = slideWrapRef.current
+        const baseWidth = slideWrapNode.clientWidth / 3
+
+        if (!touchStartStatus) {
+          const promiseSync = new Promise((resolve, reject) => {
+            touchStartStatus = true
+            slideWrapNode.style.transitionDuration = `${slidingTime}ms`
+            slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
+            setTimeout(() => resolve(), slidingTime)
+          })
+
+          promiseSync.then(() => {
+            setSelectedBIdx(selectedBIdx => {
+              const nextIdx = selectedBIdx + 1
+              if (nextIdx < list.length) {
+                return nextIdx
+              } else {
+                return 0
+              }
+            })
+
+            slideWrapNode.style.transitionDuration = '0ms'
+            slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
+            touchStartStatus = false
+          })
+        }
+      }, 5000)
+
+      return () => {
+        clearInterval(intervalId)
+      }
+    }
+  }, [list])
 
   useEffect(() => {
     const swiperNode = document.getElementsByClassName('dalbit-swiper')[0]
     if (swiperNode && direction !== null) {
-      const wrapperNode = swiperNode.firstChild
-
-      if (direction === 'right') {
-        const l_child = wrapperNode.lastChild
-        if (l_child) {
-          const cloned = l_child.cloneNode(true)
-          cloned.addEventListener('click', clickSwipEvent)
-          const f_child = wrapperNode.firstChild
-          wrapperNode.insertBefore(cloned, f_child)
-          l_child.removeEventListener('click', clickSwipEvent)
-          wrapperNode.removeChild(l_child)
-        }
-      } else if (direction === 'left') {
-        const f_child = wrapperNode.firstChild
-        if (f_child) {
-          const cloned = f_child.cloneNode(true)
-          cloned.addEventListener('click', clickSwipEvent)
-          wrapperNode.appendChild(cloned)
-          f_child.removeEventListener('click', clickSwipEvent)
-          wrapperNode.removeChild(f_child)
-        }
-      }
-
-      const childrenLength = wrapperNode.children.length
-      if (childrenLength > 0) {
-        const middleIdx = Math.floor(childrenLength / 2)
-        wrapperNode.childNodes.forEach((child, idx) => {
-          if (middleIdx === idx) {
-            child.firstChild.style.opacity = 0
-          } else {
-            child.firstChild.style.opacity = 1
-            child.firstChild.style.backgroundColor = 'rgba(117,65,241, 0.6)'
-          }
-        })
-      }
-
       touchStartX = null
       touchEndX = null
       touchStartStatus = false
