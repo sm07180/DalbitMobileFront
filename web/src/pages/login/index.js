@@ -35,6 +35,8 @@ export default props => {
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
 
+  const [appleAlert, setAppleAlert] = useState(false)
+
   const changePhoneNum = e => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
@@ -112,6 +114,14 @@ export default props => {
   }
 
   const fetchSocialData = async vendor => {
+    if (vendor === 'apple') {
+      setTimeout(() => {
+        setAppleAlert(true)
+      }, 1000)
+    } else {
+      setAppleAlert(false)
+    }
+
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
@@ -223,6 +233,7 @@ export default props => {
                   <img className="icon" src={kakaoLogo} />
                 </button>
               </div>
+              {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
 
             {/* <SocialLoginWrap>
@@ -303,6 +314,19 @@ const SocialLoginWrap = styled.div`
         text-align: center;
       }
     }
+  }
+
+  .apple-alert {
+    width: 240px;
+    height: 34px;
+    border-radius: 17px;
+    margin: 0 auto;
+    margin-top: 10px;
+    background-color: #000;
+    text-align: center;
+    color: #ffd500;
+    line-height: 34px;
+    font-size: 14px;
   }
 `
 
