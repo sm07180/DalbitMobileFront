@@ -234,8 +234,8 @@ export default () => {
       pushBack(_parse)
     }
     if (__NODE_ENV === 'dev') {
-      // alert(window.location.href)
-      // alert(JSON.stringify(_parse, null, 1))
+      alert(window.location.href)
+      alert(JSON.stringify(_parse, null, 1))
     }
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
