@@ -128,8 +128,8 @@ export default props => {
     if (res.status === 200) {
       const redirectUrl = await res.text()
       // alert(redirectUrl)
-      // window.location.href = redirectUrl
-      window.location.href = JSON.stringify(redirectUrl)
+      window.location.href = redirectUrl
+      // window.location.href = JSON.stringify(redirectUrl)
     }
   }
 
