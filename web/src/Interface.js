@@ -194,15 +194,18 @@ export default () => {
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         mem_no = getMemNo('/')
-        window.location.href = `/mypage/${mem_no}/`
+        if (isLogin) window.location.href = `/mypage/${mem_no}/`
+        //  window.location.href = `/mypage/${mem_no}/`
         break
       case '34': //-----------------마이페이지>알림>해당 알림 글
         mem_no = getMemNo('/alert')
-        window.location.href = `/mypage/${mem_no}/alert`
+        if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        //  window.location.href = `/mypage/${mem_no}/alert`
         break
       case '35': //-----------------마이페이지
         mem_no = getMemNo('/')
-        window.location.href = `/mypage/${mem_no}/`
+        if (isLogin) window.location.href = `/mypage/${mem_no}/`
+        //  window.location.href = `/mypage/${mem_no}/`
         break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
@@ -256,5 +259,9 @@ export default () => {
       document.removeEventListener('react-gnb-close', update)
     }
   }, [])
-  return <React.Fragment />
+  return (
+    <React.Fragment>
+      <Room />
+    </React.Fragment>
+  )
 }
