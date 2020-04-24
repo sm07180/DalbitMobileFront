@@ -6,8 +6,8 @@
 function pushBackground(event) {
   //alert(event.type)
   try {
-    //  var info = decodeURIComponent(event.detail)
-    var info = event.detail
+    var info = decodeURIComponent(event.detail)
+    // var info = event.detail
   } catch (error) {
     //    alert(error)
     console.error(error)
