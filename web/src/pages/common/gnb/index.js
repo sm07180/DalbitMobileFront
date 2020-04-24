@@ -95,7 +95,8 @@ const GnbWrap = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 48px;
+  height: 49px;
+  margin-top: -1px;
   background-color: #fff;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;

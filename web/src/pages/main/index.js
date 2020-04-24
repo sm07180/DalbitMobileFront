@@ -154,7 +154,7 @@ export default props => {
   }
 
   const windowScrollEvent = () => {
-    const GnbHeight = 48
+    const GnbHeight = 49
     const sectionMarginTop = 24
     const LiveTabDefaultHeight = 48
 
