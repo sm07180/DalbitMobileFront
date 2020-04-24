@@ -150,13 +150,12 @@ export default () => {
   function pushBack(event) {
     let pushMsg = event.detail
     const customHeader = JSON.parse(Api.customHeader)
-    alert(customHeader['os'])
-
+    //IOS일때 decode
     if (customHeader['os'] === OS_TYPE['IOS']) {
       pushMsg = decodeURIComponent(pushMsg)
     } else {
     }
-
+    pushMsg = JSON.parse(pushMsg)
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
@@ -180,8 +179,6 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
-      alert(event.detail)
-      alert('react_isLogin1 : ' + isLogin)
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
