@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
-
+import ExifOrientationImg from 'react-exif-orientation-img'
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -173,7 +173,7 @@ export default props => {
                 }}>
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                  <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                  <ExifOrientationImg src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
                 </label>
               </ProfileImg>
               <div className="nickname">
