@@ -128,7 +128,7 @@ export default props => {
     if (res.status === 200) {
       const redirectUrl = await res.text()
       setTimeout(function() {
-        document.location.href = redirectUrl
+        window.location.href = redirectUrl
       }, 250)
       // alert(redirectUrl)
       // window.location.href = redirectUrl
