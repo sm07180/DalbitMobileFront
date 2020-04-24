@@ -58,34 +58,46 @@ export default props => {
   }, [logoChange])
 
   return (
-    <GnbWrap>
-      <div className="icon-wrap">
-        <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
-        <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
-        {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
-      </div>
-      {logoChange ? (
-        <div
-          className="mic-btn"
-          onClick={() => {
-            if (!broadcastBtnActive) {
-              RoomMake(globalCtx)
-              setBroadcastBtnActive(true)
-              setTimeout(() => setBroadcastBtnActive(false), 3000)
-            }
-          }}>
-          <img src={Mic} />
+    <>
+      <HiddenBg />
+      <GnbWrap>
+        <div className="icon-wrap">
+          <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+          <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
+          {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
         </div>
-      ) : (
-        <img className="logo" src={Logo} onClick={reLoad} />
-      )}
-      <div className="icon-wrap">
-        <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
-        {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
-      </div>
-    </GnbWrap>
+        {logoChange ? (
+          <div
+            className="mic-btn"
+            onClick={() => {
+              if (!broadcastBtnActive) {
+                RoomMake(globalCtx)
+                setBroadcastBtnActive(true)
+                setTimeout(() => setBroadcastBtnActive(false), 3000)
+              }
+            }}>
+            <img src={Mic} />
+          </div>
+        ) : (
+          <img className="logo" src={Logo} onClick={reLoad} />
+        )}
+        <div className="icon-wrap">
+          <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
+          {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
+        </div>
+      </GnbWrap>
+    </>
   )
 }
+
+const HiddenBg = styled.div`
+  position: fixed;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #fff;
+`
 
 const GnbWrap = styled.div`
   display: flex;
@@ -95,7 +107,7 @@ const GnbWrap = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 49px;
+  height: 48px;
   margin-top: -1px;
   background-color: #fff;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
