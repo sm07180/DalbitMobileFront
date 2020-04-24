@@ -5,8 +5,6 @@
  */
 function pushBackground(event) {
   //alert(event.type)
-  alert('test1')
-  alert(event.detail)
 
   try {
     var info = decodeURIComponent(event.detail)
@@ -27,7 +25,6 @@ function pushBackground(event) {
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
 
   alert(info)
-  //alert(JSON.stringify(info, null, 1))
 }
 
 //--------------------------------------------------------------------
