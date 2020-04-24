@@ -112,10 +112,9 @@ export default props => {
   }
 
   const fetchSocialData = async vendor => {
-    // if (vendor === 'apple') {
-    //   window.location.href = `${__SOCIAL_URL}/${vendor}?target=mobile`
-    //   return
-    // }
+    if (vendor === 'apple') {
+      return (window.location.href = `https://appleid.apple.com/auth/authorize?client_id=com.inforex.iosRadio.SignIn&redirect_uri=https%3A%2F%2Fwww.dalbitlive.com%2Fsocial%2Fapple%2Fcallback&response_type=code%20id_token&scope=name%20email&state=yakdvjbvkf-www&response_mode=form_post`)
+    }
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
@@ -127,9 +126,9 @@ export default props => {
 
     if (res.status === 200) {
       const redirectUrl = await res.text()
-      setTimeout(function() {
-        window.location.href = redirectUrl
-      }, 250)
+      // alert(redirectUrl)
+      window.location.href = `${redirectUrl}`
+
       // alert(redirectUrl)
       // window.location.href = redirectUrl
       // window.location.href = JSON.stringify(redirectUrl)
