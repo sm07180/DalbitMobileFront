@@ -233,9 +233,9 @@ export default () => {
     if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
       pushBack(_parse)
       if (__NODE_ENV === 'dev') {
-        // alert('----------')
-        // alert(window.location.href)
-        // alert(JSON.stringify(_parse, null, 1))
+        alert('----------1')
+        alert(window.location.href)
+        alert(JSON.stringify(_parse, null, 1))
       }
     }
 
