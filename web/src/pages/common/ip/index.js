@@ -8,8 +8,8 @@ export default () => {
   const [redirectList, setRedirectList] = useState([])
   useEffect(() => {
     fetch('https://devwww2.dalbitlive.com/ctrl/check/ip')
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         const {list} = json
         if (Array.isArray(list) && list.length) {
           setRedirectList(list)
@@ -20,16 +20,17 @@ export default () => {
   return (
     <select
       style={{
+        display: 'inline-block',
         position: 'fixed',
         bottom: '100px',
         right: '10px',
         backgroundColor: 'blue',
         color: 'white',
         zIndex: '500',
-        padding: '4px'
+        padding: '5px 5px'
       }}
       value={location.origin}
-      onChange={e => {
+      onChange={(e) => {
         window.location.href = e.target.value
       }}>
       {redirectList.map((info, idx) => {

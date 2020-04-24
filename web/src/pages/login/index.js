@@ -207,10 +207,9 @@ export default (props) => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
-                {/* <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
                   <img className="icon" src={appleLogo} />
-                </button> */}
-
+                </button>
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
                 </button>
