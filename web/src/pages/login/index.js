@@ -71,6 +71,7 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
@@ -123,7 +124,9 @@ export default (props) => {
     if (res.status === 200) {
       console.log('---성공')
       console.log(res)
+      alert(JSON.stringify(res, null, 1))
       const redirectUrl = await res.text()
+      alert(redirectUrl)
       console.log('redirectUrl : ' + redirectUrl)
       window.location.href = redirectUrl
     }
