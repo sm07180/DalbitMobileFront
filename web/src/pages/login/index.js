@@ -112,10 +112,10 @@ export default props => {
   }
 
   const fetchSocialData = async vendor => {
-    if (vendor === 'apple') {
-      window.location.href = `${__SOCIAL_URL}/${vendor}?target=mobile`
-      return
-    }
+    // if (vendor === 'apple') {
+    //   window.location.href = `${__SOCIAL_URL}/${vendor}?target=mobile`
+    //   return
+    // }
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
