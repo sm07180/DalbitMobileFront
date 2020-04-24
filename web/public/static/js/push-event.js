@@ -5,6 +5,7 @@
  */
 function pushBackground(event) {
   //alert(event.type)
+  alert(event.detail)
 
   try {
     var info = decodeURIComponent(event.detail)
@@ -24,7 +25,7 @@ function pushBackground(event) {
   window.sessionStorage.setItem('push_type', 'Y')
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
 
-  //alert(info)
+  alert(info)
   //alert(JSON.stringify(info, null, 1))
 }
 

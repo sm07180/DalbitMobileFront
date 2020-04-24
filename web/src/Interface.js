@@ -228,15 +228,17 @@ export default () => {
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
-    if (__NODE_ENV === 'dev') {
-      alert('----------2')
-      alert(window.location.href)
-      alert(JSON.stringify(_parse, null, 1))
-    }
     /*----push알람----*/
-    const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
-    if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
-      pushBack(_parse)
+    if (window.location.href.indexOf('push_redirect') !== -1) {
+      const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
+      if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
+        pushBack(_parse)
+      }
+      if (__NODE_ENV === 'dev') {
+        alert('----------2')
+        alert(window.location.href)
+        alert(JSON.stringify(_parse, null, 1))
+      }
     }
 
     /*----native----*/
