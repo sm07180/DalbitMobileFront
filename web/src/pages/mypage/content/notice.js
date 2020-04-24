@@ -135,8 +135,7 @@ const Notice = props => {
       }
     })()
   }, [page])
-  console.log(ctx.profile.memNo)
-  console.log(urlrStr)
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
