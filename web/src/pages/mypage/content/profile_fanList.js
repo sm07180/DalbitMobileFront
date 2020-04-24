@@ -372,6 +372,7 @@ const FixedBg = styled.div`
   }
   .scrollWrap {
     width: 100vw;
+    overflow-x: hidden;
     max-height: 420px;
     flex: none;
   }
@@ -429,6 +430,9 @@ const Container = styled.div`
     letter-spacing: -0.35px;
     text-align: left;
     transform: skew(-0.03deg);
+  }
+  & .scroll-box {
+    width: auto;
   }
 `
 const BTN = styled.button`

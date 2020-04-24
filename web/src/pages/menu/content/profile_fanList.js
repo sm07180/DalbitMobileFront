@@ -438,6 +438,9 @@ const Container = styled.div`
     text-align: left;
     transform: skew(-0.03deg);
   }
+  & .scroll-box {
+    width: auto;
+  }
 `
 const BTN = styled.button`
   display: block;
