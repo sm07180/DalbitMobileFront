@@ -156,7 +156,6 @@ export default () => {
         return false
       }
     }
-
     let pushMsg = event.detail
     const customHeader = JSON.parse(Api.customHeader)
     //IOS일때 decode
@@ -167,7 +166,6 @@ export default () => {
     if (isJsonString(pushMsg)) {
       pushMsg = JSON.parse(pushMsg)
     }
-
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
@@ -190,7 +188,6 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      const {isLogin} = context.token
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
@@ -211,9 +208,13 @@ export default () => {
         // window.location.href = `/mypage/${mem_no}/fanboard`
         break
       case '32': //-----------------마이페이지>내 지갑
-        //mem_no = getMemNo('/wallet')
-        //if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
-        window.location.href = `/mypage/${mem_no}/wallet`
+        if (!mem_no) {
+          window.location.href = `/`
+        } else {
+          mem_no = getMemNo('/wallet')
+          if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+        }
+
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         mem_no = getMemNo('/')
