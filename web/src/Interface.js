@@ -120,7 +120,6 @@ export default () => {
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_no')
         sessionStorage.removeItem('room_active')
-
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
@@ -164,6 +163,7 @@ export default () => {
         6 : 이벤트 페이지>해당 이벤트 [board_idx]
         7 : 공지사항 페이지 [board_idx]
       */
+    const {isLogin} = context.token
     const {push_type} = pushMsg
     let room_no, mem_no
 
@@ -183,11 +183,14 @@ export default () => {
         break
       case '31': //-----------------마이페이지>팬 보드
         mem_no = getMemNo('/fanboard')
-        window.location.href = `/mypage/${mem_no}/fanboard`
+        if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        //if (!isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        // window.location.href = `/mypage/${mem_no}/fanboard`
         break
       case '32': //-----------------마이페이지>내 지갑
         mem_no = getMemNo('/wallet')
-        window.location.href = `/mypage/${mem_no}/wallet`
+        if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+        // window.location.href = `/mypage/${mem_no}/wallet`
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         mem_no = getMemNo('/')
