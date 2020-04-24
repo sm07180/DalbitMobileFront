@@ -139,7 +139,7 @@ const Selected = styled.div`
   color: #632beb;
   outline: none;
   letter-spacing: -0.5px;
-  line-height: 32px;
+  line-height: 36px;
   height: 36px;
   padding-left: 10px;
   &.open {
