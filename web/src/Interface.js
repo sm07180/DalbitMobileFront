@@ -150,8 +150,8 @@ export default () => {
   function pushBack(event) {
     let pushMsg = event.detail
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      alert('ios')
       pushMsg = decodeURIComponent(pushMsg)
+    } else {
     }
 
     /**
@@ -178,7 +178,7 @@ export default () => {
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
       alert(event.detail)
-      alert('react_isLogin : ' + isLogin)
+      alert('react_isLogin1 : ' + isLogin)
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
