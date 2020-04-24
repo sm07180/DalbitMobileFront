@@ -112,10 +112,6 @@ export default props => {
   }
 
   const fetchSocialData = async vendor => {
-    // if (vendor === 'apple') {
-    //   window.location.href = `${__SOCIAL_URL}/${vendor}?target=mobile`
-    //   return
-    // }
     const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
       method: 'get',
       headers: {
@@ -127,12 +123,7 @@ export default props => {
 
     if (res.status === 200) {
       const redirectUrl = await res.text()
-      setTimeout(function() {
-        window.location.href = redirectUrl
-      }, 250)
-      // alert(redirectUrl)
-      // window.location.href = redirectUrl
-      // window.location.href = JSON.stringify(redirectUrl)
+      return (window.location.href = `${redirectUrl}`)
     }
   }
 
