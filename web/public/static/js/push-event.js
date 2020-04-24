@@ -11,8 +11,8 @@ function pushBackground(event) {
   window.sessionStorage.setItem('push_type', 'Y')
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
 
-  alert(info)
-  alert(JSON.stringify(info, null, 1))
+  //alert(info)
+  //alert(JSON.stringify(info, null, 1))
 }
 
 //--------------------------------------------------------------------
