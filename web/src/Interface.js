@@ -155,6 +155,8 @@ export default () => {
       pushMsg = decodeURIComponent(pushMsg)
     } else {
     }
+    alert(typeof pushMsg)
+    alert(customHeader['os'] === OS_TYPE['IOS'])
     pushMsg = JSON.parse(pushMsg)
     /**
      * @title 네이티브 푸쉬관련
