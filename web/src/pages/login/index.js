@@ -23,7 +23,7 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
-export default (props) => {
+export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -35,12 +35,12 @@ export default (props) => {
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
 
-  const changePhoneNum = (e) => {
+  const changePhoneNum = e => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = (e) => {
+  const changePassword = e => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -111,7 +111,7 @@ export default (props) => {
     }
   }
 
-  const fetchSocialData = async (vendor) => {
+  const fetchSocialData = async vendor => {
     if (vendor === 'apple') {
       window.location.href = `${__SOCIAL_URL}/${vendor}?target=mobile`
       return
@@ -127,14 +127,15 @@ export default (props) => {
 
     if (res.status === 200) {
       const redirectUrl = await res.text()
-      window.location = redirectUrl
+      alert(redirectUrl)
+      // window.location.href = JSON.stringify(redirectUrl)
     }
   }
 
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -170,7 +171,7 @@ export default (props) => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
