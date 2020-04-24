@@ -122,13 +122,8 @@ export default (props) => {
     })
     console.log(res)
     if (res.status === 200) {
-      console.log('---성공')
-      console.log(res)
-      alert(JSON.stringify(res, null, 1))
       const redirectUrl = await res.text()
-      alert(redirectUrl)
-      console.log('redirectUrl : ' + redirectUrl)
-      window.location.href = redirectUrl
+      window.location = redirectUrl
     }
   }
 
