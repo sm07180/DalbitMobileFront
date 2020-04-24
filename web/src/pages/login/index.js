@@ -71,6 +71,7 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+        alert(memNo)
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
@@ -119,10 +120,13 @@ export default (props) => {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       }
     })
-
+    console.log(res)
     if (res.status === 200) {
+      console.log('---성공')
+      console.log(res)
       const redirectUrl = await res.text()
-      window.location.href = `${redirectUrl}`
+      console.log('redirectUrl : ' + redirectUrl)
+      window.location.href = redirectUrl
     }
   }
 
