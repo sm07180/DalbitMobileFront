@@ -172,6 +172,9 @@ export default () => {
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
       alert('react_isLogin : ' + isLogin)
+      alert('push_type :' + push_type)
+      alert('room_no :' + pushMsg.room_no)
+      alert('mem_no :' + pushMsg.mem_no)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
