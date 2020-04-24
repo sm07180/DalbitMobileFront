@@ -440,6 +440,7 @@ const Container = styled.div`
   }
   & .scroll-box {
     width: auto;
+    overflow-x: hidden;
   }
 `
 const BTN = styled.button`
