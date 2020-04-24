@@ -170,7 +170,7 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
-      alert('isLogin : ' + isLogin)
+      //alert('isLogin : ' + isLogin)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
