@@ -188,8 +188,7 @@ export default props => {
     }
   }
   //placeholder
-  const placeholderText =
-    '팬 보드에 글을 남겨주세요. 타인에게 불쾌감을 주는 욕설 또는 비하글은 이용약관 및 관련 법률에 의해 제재를 받을 수 있습니다.'
+  const placeholderText = '팬 보드에 글을 남겨주세요. '
   const placeholderTextStart = '팬 보드에 글을 남겨주세요. '
   //modiy-state
   const [modifyShow, setModifyShow] = useState('')
@@ -201,7 +200,7 @@ export default props => {
   const [modifyInfo, setModifyInfo] = useState({})
   const [btnState, setBtnState] = useState(false)
   const [replynum, setReplyNum] = useState(0)
-  console.log(replynum)
+
   //등록
   const submitClick = () => {
     fetchDataUpload()
@@ -222,13 +221,7 @@ export default props => {
     context.action.updateBoardNumber(boardNumer)
     showReply(writeNumer, boardNumer)
   }
-  useEffect(() => {
-    if (context.boardNumber === broadNumbers) {
-      setBtnState(true)
-    } else if (context.boardNumber !== broadNumbers) {
-      setBtnState(false)
-    }
-  }, [context.boardNumber])
+
   const showReply = (writeNumer, boardNumer) => {
     fetchDataReplyList(writeNumer, boardNumer)
     setBroadNumbers(boardNumer)
@@ -346,7 +339,13 @@ export default props => {
     }
   }, [hidden])
   //------------------------------------------------------------------------
-
+  useEffect(() => {
+    if (context.boardNumber === broadNumbers) {
+      setBtnState(true)
+    } else if (context.boardNumber !== broadNumbers) {
+      setBtnState(false)
+    }
+  }, [context.boardNumber])
   //------------------------------------------------------------------------
   const [hideSecondcomment, sethideSecondcomment] = useState(false)
   const [hidebigSecondcomment, sethidebigSecondcomment] = useState(false)
@@ -551,12 +550,12 @@ export default props => {
                         placeholder={placeholderTextStart}
                         onChange={textChangeReply}
                         value={replyRegist}
-                        maxLength={49}
+                        maxLength={99}
                       />
                       <WriteAreaBottom>
                         <TextCount>
                           <span style={{color: '#424242'}}>{`${replyRegist.length * 2}`}</span>
-                          <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength}`}</span>
+                          <span style={{color: '#9e9e9e'}}>{` / ${MaxCommentLength * 2}`}</span>
                         </TextCount>
                         <CommentSubmitBtn onClick={() => uploadReply(writeNumer, boardNumer)}>등록</CommentSubmitBtn>
                       </WriteAreaBottom>
@@ -616,7 +615,7 @@ const FanBoard = styled.div`
 //초기 등록 버튼
 const InitialBigSubmit = styled.div`
   display: none;
-  border: solid 1px #d0d0d0;
+  border: solid 1px #bdbdbd;
   &.on {
     display: block;
   }
@@ -643,15 +642,16 @@ const WriteAreaBottom = styled.div`
 const TextCount = styled.div`
   width: calc(100% - 68px);
   font-size: 14px;
-  padding: 17px 20px;
-  height: 51px;
+  padding: 0px 20px;
+  line-height: 32px;
+  height: 36px;
   box-sizing: border-box;
-  border-top: 1px solid #ededed;
+  border-top: 1px solid #bdbdbd;
 `
 const CommentSubmitBtn = styled.button`
   display: block;
   width: 68px;
-  height: 51px;
+  height: 36px;
   text-align: center;
   font-size: 16px;
   color: #fff;
@@ -673,15 +673,15 @@ const OwnPhoto = styled.div`
 const Textarea = styled.textarea`
   display: block;
   width: 100%;
-  font-size: 14px;
-  height: 106px;
+  font-size: 16px;
+  height: 72px;
   font-family: inherit;
-  padding: 16px 20px;
+  padding: 12px 20px;
   box-sizing: border-box;
 
   &::placeholder {
-    color: #bdbdbd;
-    font-size: 14px;
+    color: #757575;
+    font-size: 16px;
     letter-spacing: -0.35px;
     line-height: 1.57;
   }
@@ -750,7 +750,7 @@ const CommentBox = styled.div`
   position: relative;
   display: block;
   width: 100%;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #bdbdbd;
 
   & .bjIcon {
     display: block;
@@ -795,7 +795,7 @@ const CommentBox = styled.div`
         width: calc(39.44% - 4px);
         color: ${COLOR_MAIN};
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 400;
         letter-spacing: -0.03px;
         transform: skew(-0.03deg);
       }
@@ -990,7 +990,7 @@ const SecoundBigSubmit = styled.div`
   width: calc(100% - 40px);
   background-color: #fff;
   margin: 0 auto;
-  border: solid 1px #d0d0d0;
+  border: solid 1px #bdbdbd;
   &.on {
     display: block;
   }
@@ -1000,9 +1000,9 @@ const SecoundTextarea = styled.textarea`
   display: block;
   width: 100%;
   font-size: 14px;
-  height: 106px;
+  height: 72px;
   font-family: inherit;
-  padding: 18px 20px;
+  padding: 12px 20px;
   box-sizing: border-box;
   background-color: #fff;
 
@@ -1039,7 +1039,7 @@ const DaeModifyWrap = styled.section`
     }
   }
   & .titlewrap {
-    padding: 12px 20px;
+    padding: 12px 12px;
   }
   > div {
     display: flex;
@@ -1206,6 +1206,7 @@ const WriteArea = styled.div`
   }
   & .modiInput {
     border: 1px solid #bdbdbd;
+    border-bottom: none;
   }
 `
 const CommentSubmitBtnCancel = styled.button`
