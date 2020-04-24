@@ -135,7 +135,8 @@ const Notice = props => {
       }
     })()
   }, [page])
-
+  console.log(ctx.profile.memNo)
+  console.log(urlrStr)
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
@@ -156,9 +157,11 @@ const Notice = props => {
     <>
       <Header>
         <div className="category-text">방송공지</div>
-        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
-          작성
-        </button>
+        {urlrStr === ctx.profile.memNo && (
+          <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
+            작성
+          </button>
+        )}
       </Header>
       <ListWrap>
         {Array.isArray(listDetailed) ? (
