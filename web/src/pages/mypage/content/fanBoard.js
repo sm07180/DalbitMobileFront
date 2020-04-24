@@ -550,7 +550,7 @@ export default props => {
                         placeholder={placeholderTextStart}
                         onChange={textChangeReply}
                         value={replyRegist}
-                        maxLength={99}
+                        maxLength={100}
                       />
                       <WriteAreaBottom>
                         <TextCount>
@@ -999,7 +999,7 @@ const SecoundBigSubmit = styled.div`
 const SecoundTextarea = styled.textarea`
   display: block;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   height: 72px;
   font-family: inherit;
   padding: 12px 20px;
@@ -1007,8 +1007,8 @@ const SecoundTextarea = styled.textarea`
   background-color: #fff;
 
   &::placeholder {
-    color: #bdbdbd;
-    font-size: 14px;
+    color: #757575;
+    font-size: 16px;
     letter-spacing: -0.35px;
     line-height: 1.57;
   }
