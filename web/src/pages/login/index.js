@@ -71,7 +71,6 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
-        alert(memNo)
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
