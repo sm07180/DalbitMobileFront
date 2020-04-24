@@ -149,8 +149,9 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    alert(customHeader['os'])
     const customHeader = JSON.parse(Api.customHeader)
+    alert(customHeader['os'])
+
     if (customHeader['os'] === OS_TYPE['IOS']) {
       pushMsg = decodeURIComponent(pushMsg)
     } else {
