@@ -132,14 +132,16 @@ const SelectListWrap = styled.div`
 const Selected = styled.div`
   position: relative;
   width: 136px;
-  padding: 8px 10px;
+
   box-sizing: border-box;
   border: 1px solid #632beb;
   font-size: 16px;
   color: #632beb;
   outline: none;
   letter-spacing: -0.5px;
-
+  line-height: 32px;
+  height: 36px;
+  padding-left: 10px;
   &.open {
     &::before {
       transform: rotate(135deg);
@@ -159,8 +161,8 @@ const Selected = styled.div`
     background-color: #632beb;
     transform: rotate(45deg);
     transition-property: transform;
-    transition-duration: 0.1s;
-    transition-timing-function: ease-in;
+    /* transition-duration: 0.1s;
+    transition-timing-function: ease-in; */
   }
 
   &::after {
@@ -173,8 +175,8 @@ const Selected = styled.div`
     background-color: #632beb;
     transform: rotate(-45deg);
     transition-property: transform;
-    transition-duration: 0.1s;
-    transition-timing-function: ease-in;
+    /* transition-duration: 0.1s;
+    transition-timing-function: ease-in; */
   }
 `
 

@@ -439,7 +439,7 @@ const Container = styled.div`
     transform: skew(-0.03deg);
   }
   & .scroll-box {
-    width: auto;
+    width: auto !important;
     overflow-x: hidden;
   }
 `
