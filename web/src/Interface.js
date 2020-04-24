@@ -146,7 +146,8 @@ export default () => {
     }
   }
   //푸쉬서버에서 받는형태
-  function pushBack(pushMsg) {
+  function pushBack(event) {
+    let pushMsg = event.detail
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
@@ -170,7 +171,7 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
-      //alert('isLogin : ' + isLogin)
+      alert('react_isLogin : ' + isLogin)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
@@ -245,7 +246,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
-    //document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
+    document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
 
     /*----react----*/
@@ -258,7 +259,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      //document.removeEventListener('native-push-background', update)
+      document.removeEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
       /*----react----*/
       document.removeEventListener('react-debug', update)

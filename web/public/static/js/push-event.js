@@ -23,9 +23,7 @@ function pushBackground(event) {
 
   window.sessionStorage.setItem('push_type', 'Y')
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
-
-  alert(info)
 }
 
 //--------------------------------------------------------------------
-document.addEventListener('native-push-background', pushBackground)
+//document.addEventListener('native-push-background', pushBackground)
