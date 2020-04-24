@@ -148,6 +148,15 @@ export default () => {
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
+    const isJsonString = (str) => {
+      try {
+        var parsed = JSON.parse(str)
+        return typeof parsed === 'object'
+      } catch (e) {
+        return false
+      }
+    }
+
     let pushMsg = event.detail
     const customHeader = JSON.parse(Api.customHeader)
     //IOS일때 decode
@@ -155,9 +164,10 @@ export default () => {
       pushMsg = decodeURIComponent(pushMsg)
     } else {
     }
-    alert(typeof pushMsg)
-    alert(customHeader['os'] === OS_TYPE['IOS'])
-    pushMsg = JSON.parse(pushMsg)
+    if (isJsonString(pushMsg)) {
+      pushMsg = JSON.parse(pushMsg)
+    }
+
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
