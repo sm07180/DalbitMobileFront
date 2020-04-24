@@ -124,7 +124,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
             title: res.messageKey,
             msg: res.message,
             callback: () => {
-              window.location.reload()
+              // window.location.reload()
+              window.location.href = '/'
             }
           })
           break
