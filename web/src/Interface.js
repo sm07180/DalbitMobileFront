@@ -234,6 +234,8 @@ export default () => {
       pushBack(_parse)
     }
     if (__NODE_ENV === 'dev') {
+      alert(window.location.href)
+
       alert(JSON.stringify(_parse, null, 1))
     }
     /*----native----*/
