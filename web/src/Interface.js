@@ -232,12 +232,13 @@ export default () => {
     const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
     if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
       pushBack(_parse)
+      if (__NODE_ENV === 'dev') {
+        // alert('----------')
+        // alert(window.location.href)
+        // alert(JSON.stringify(_parse, null, 1))
+      }
     }
-    if (__NODE_ENV === 'dev') {
-      //  alert('----------')
-      //  alert(window.location.href)
-      // alert(JSON.stringify(_parse, null, 1))
-    }
+
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료

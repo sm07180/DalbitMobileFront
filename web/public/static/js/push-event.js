@@ -1,11 +1,13 @@
 /**
  * @title : 푸쉬알람
  * @params "detail" 속성으로 전달
+ * @notice : ios decodeURIComponent 확인
  */
 function pushBackground(event) {
   //alert(event.type)
   try {
-    var info = decodeURIComponent(event.detail)
+    //  var info = decodeURIComponent(event.detail)
+    var info = event.detail
   } catch (error) {
     //    alert(error)
     console.error(error)
