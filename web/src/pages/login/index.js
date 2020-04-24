@@ -122,13 +122,35 @@ export default (props) => {
     })
     console.log(res)
     if (res.status === 200) {
-      console.log('---성공')
-      console.log(res)
-      alert(JSON.stringify(res, null, 1))
+      /**
+       * @title webview IOS 디바이스이동 이슈때문에적용
+       * @param {*} url
+       */
+      function windowLocation(url) {
+        var X = setTimeout(function () {
+          window.location.replace(url)
+          return true
+        }, 300)
+
+        if ((window.location = url)) {
+          clearTimeout(X)
+          return true
+        } else {
+          if ((window.location.href = url)) {
+            clearTimeout(X)
+            return true
+          } else {
+            clearTimeout(X)
+            window.location.replace(url)
+            return true
+          }
+        }
+        return false
+      }
+
       const redirectUrl = await res.text()
-      alert(redirectUrl)
-      console.log('redirectUrl : ' + redirectUrl)
-      window.location.href = redirectUrl
+      windowLocation(redirectUrl)
+      //window.location = redirectUrl
     }
   }
 
