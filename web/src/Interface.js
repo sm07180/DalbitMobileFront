@@ -9,6 +9,7 @@ import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 import qs from 'qs'
 //context
+import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -148,6 +149,11 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
+    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+      alert('ios')
+      pushMsg = decodeURIComponent(pushMsg)
+    }
+
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
