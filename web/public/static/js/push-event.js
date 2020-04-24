@@ -4,10 +4,17 @@
  */
 function pushBackground(event) {
   //alert(event.type)
-  var info = event.detail
-  var push_type = JSON.parse(event.detail).push_type || ''
-  var room_no = JSON.parse(event.detail).room_no || ''
-  var mem_no = JSON.parse(event.detail).mem_no || ''
+  try {
+    var info = decodeURIComponent(event.detail)
+  } catch (error) {
+    console.error(error)
+    // expected output: ReferenceError: nonExistentFunction is not defined
+    // Note - error messages will vary depending on browser
+  }
+
+  var push_type = JSON.parse(info).push_type || ''
+  var room_no = JSON.parse(info).room_no || ''
+  var mem_no = JSON.parse(info).mem_no || ''
   window.sessionStorage.setItem('push_type', 'Y')
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
 
