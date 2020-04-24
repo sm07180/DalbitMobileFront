@@ -171,6 +171,7 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       const {isLogin} = context.token
+      alert(event.detail)
       alert('react_isLogin : ' + isLogin)
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
@@ -233,16 +234,16 @@ export default () => {
   //useEffect addEventListener
   useEffect(() => {
     /*----push알람----*/
-    if (window.location.href.indexOf('push_redirect') !== -1) {
-      const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
-      if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
-        pushBack(_parse)
-      }
-      if (__NODE_ENV === 'dev') {
-        alert('----------2')
-        alert(window.location.href)
-      }
-    }
+    // if (window.location.href.indexOf('push_redirect') !== -1) {
+    //   const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
+    //   if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
+    //     pushBack(_parse)
+    //   }
+    //   if (__NODE_ENV === 'dev') {
+    //     alert('----------2')
+    //     alert(window.location.href)
+    //   }
+    // }
 
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
