@@ -237,7 +237,6 @@ export default () => {
       if (__NODE_ENV === 'dev') {
         alert('----------2')
         alert(window.location.href)
-        alert(JSON.stringify(_parse, null, 1))
       }
     }
 

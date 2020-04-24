@@ -5,6 +5,7 @@
  */
 function pushBackground(event) {
   //alert(event.type)
+  alert('test1')
   alert(event.detail)
 
   try {
