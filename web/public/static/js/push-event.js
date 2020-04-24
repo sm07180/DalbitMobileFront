@@ -20,7 +20,8 @@ function pushBackground(event) {
   var room_no = JSON.parse(info).room_no || ''
   var mem_no = JSON.parse(info).mem_no || ''
   //
-  alert(push_type)
+  if (push_type === null || push_type === undefined || push_type === '') return
+  alert('push_type : ' + push_type)
   window.sessionStorage.setItem('push_type', 'Y')
   window.location.replace(`/?push_redirect&push_type=${push_type}&room_no=${room_no}&mem_no=${mem_no}`)
 
