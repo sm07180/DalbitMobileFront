@@ -35,8 +35,8 @@ import {COLOR_MAIN} from 'context/color.js'
 
 let concatenating = false
 let tempScrollEvent = null
-//7->30
-const records = 30
+//7->50
+const records = 50
 
 export default (props) => {
   // reference
