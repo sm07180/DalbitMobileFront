@@ -165,6 +165,8 @@ export default () => {
     }
     if (isJsonString(pushMsg)) {
       pushMsg = JSON.parse(pushMsg)
+    } else {
+      return false
     }
     /**
      * @title 네이티브 푸쉬관련
