@@ -84,10 +84,10 @@ export default (props) => {
             alert('memNo : ' + memNo)
             alert('_parse.mypage : ' + `${_parse.mypage}`)
           }
-          if (_parse.mypage && _parse.mypage !== '') {
+          if (_parse.mypage && _parse.mypage !== '/') {
             window.location.href = `/mypage/${memNo}/${_parse.mypage}`
           } else {
-            window.location.href = `/mypage/${memNo}/`
+            window.location.href = `/mypage/${memNo}`
           }
           return
         }
