@@ -22,6 +22,15 @@ export const isHybrid = () => {
   }
   return false
 }
+
+export const isAndroid = () => {
+  const customHeader = JSON.parse(Api.customHeader)
+  if (customHeader['os'] === OS_TYPE['Android']) {
+    return true
+  }
+  return false
+}
+
 /**
  *
  * @param string  func          //*function 이름 (Method)55

@@ -14,6 +14,8 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import camera from 'images/camera.svg'
 import {encode} from 'punycode'
 
+import {isAndroid} from 'context/hybrid'
+
 export default props => {
   const context = useContext(Context)
   const {profile, token} = context
@@ -49,51 +51,106 @@ export default props => {
       })
     }
 
-    // reader.readAsArrayBuffer(file)
-    reader.readAsDataURL(file)
+    reader.readAsArrayBuffer(file)
+    // reader.readAsDataURL(file)
 
-    // function getOrientation(buffer) {
-    //   var view = new DataView(buffer)
-    //   if (view.getUint16(0, false) !== 0xffd8) return -2
-    //   var length = view.byteLength,
-    //     offset = 2
-    //   while (offset < length) {
-    //     var marker = view.getUint16(offset, false)
-    //     offset += 2
-    //     if (marker === 0xffe1) {
-    //       if (view.getUint32((offset += 2), false) !== 0x45786966) return -1
-    //       var little = view.getUint16((offset += 6), false) === 0x4949
-    //       offset += view.getUint32(offset + 4, little)
-    //       var tags = view.getUint16(offset, little)
-    //       offset += 2
-    //       for (var i = 0; i < tags; i++) {
-    //         if (view.getUint16(offset + i * 12, little) === 0x0112) return view.getUint16(offset + i * 12 + 8, little)
-    //       }
-    //     } else if ((marker & 0xff00) !== 0xff00) {
-    //       break
-    //     } else {
-    //       offset += view.getUint16(offset, false)
-    //     }
-    //   }
-    //   return -1
-    // }
+    function getOrientation(buffer) {
+      var view = new DataView(buffer)
+      if (view.getUint16(0, false) !== 0xffd8) return -2
+      var length = view.byteLength,
+        offset = 2
+      while (offset < length) {
+        var marker = view.getUint16(offset, false)
+        offset += 2
+        if (marker === 0xffe1) {
+          if (view.getUint32((offset += 2), false) !== 0x45786966) return -1
+          var little = view.getUint16((offset += 6), false) === 0x4949
+          offset += view.getUint32(offset + 4, little)
+          var tags = view.getUint16(offset, little)
+          offset += 2
+          for (var i = 0; i < tags; i++) {
+            if (view.getUint16(offset + i * 12, little) === 0x0112) return view.getUint16(offset + i * 12 + 8, little)
+          }
+        } else if ((marker & 0xff00) !== 0xff00) {
+          break
+        } else {
+          offset += view.getUint16(offset, false)
+        }
+      }
+      return -1
+    }
 
     //캔버스로 그려서 dataurl 로 뽑아내는 함수
-    function drawAdjustImage(img) {
+    function drawAdjustImage(img, orientation) {
       const cnvs = document.createElement('canvas')
-      var ctx = cnvs.getContext('2d')
-      cnvs.width = img.width
-      cnvs.height = img.height
-      ctx.drawImage(img, 0, 0, img.width, img.height)
+      const ctx = cnvs.getContext('2d')
+      let dx = 0
+      let dy = 0
+      let dw
+      let dh
+      let deg = 0
+      let vt = 1
+      let hr = 1
+      let rad
+      let sin
+      let cos
+
+      cnvs.width = orientation >= 5 ? img.height : img.width
+      cnvs.height = orientation >= 5 ? img.width : img.height
+
+      switch (orientation) {
+        case 2: // flip horizontal
+          hr = -1
+          dx = cnvs.width
+          break
+        case 3: // rotate 180 degrees
+          deg = 180
+          dx = cnvs.width
+          dy = cnvs.height
+          break
+        case 4: // flip upside down
+          vt = -1
+          dy = cnvs.height
+          break
+        case 5: // flip upside down and rotate 90 degrees clock wise
+          vt = -1
+          deg = 90
+          break
+        case 6: // rotate 90 degrees clock wise
+          deg = 90
+          dx = cnvs.width
+          break
+        case 7: // flip upside down and rotate 270 degrees clock wise
+          vt = -1
+          deg = 270
+          dx = cnvs.width
+          dy = cnvs.height
+          break
+        case 8: // rotate 270 degrees clock wise
+          deg = 270
+          dy = cnvs.height
+          break
+      }
+      rad = deg * (Math.PI / 180)
+      sin = Math.sin(rad)
+      cos = Math.cos(rad)
+      ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
+
+      dw = orientation >= 5 ? cnvs.height : cnvs.width
+      dh = orientation >= 5 ? cnvs.width : cnvs.height
+      ctx.drawImage(img, 0, 0, dw, dh)
       return cnvs.toDataURL('image/jpeg', 1.0)
     }
 
     reader.onload = async () => {
       if (reader.result) {
+        const arrayBuffer = reader.result
+        const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(file)
         const img = new Image()
-        img.src = reader.result
+        img.src = cacheURL
 
         setPhotoUploading(true)
+        setTempPhoto(cacheURL)
 
         img.onload = async () => {
           const limitSize = 1280
@@ -101,10 +158,14 @@ export default props => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-
-          const encodedDataAsBase64 = drawAdjustImage(img)
-          setTempPhoto(encodedDataAsBase64)
-          uploadImageToServer(encodedDataAsBase64)
+          if (isAndroid()) {
+            const encodedDataAsBase64 = drawAdjustImage(img)
+            uploadImageToServer(encodedDataAsBase64)
+          } else {
+            const orientation = getOrientation(arrayBuffer)
+            const encodedDataAsBase64 = drawAdjustImage(img, orientation)
+            uploadImageToServer(encodedDataAsBase64)
+          }
         }
 
         async function uploadImageToServer(data) {
@@ -224,11 +285,16 @@ export default props => {
               </Header>
 
               <ProfileImg
-                style={{
-                  backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
-                }}>
+                style={
+                  {
+                    // backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
+                  }
+                }>
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+                  <img
+                    src={tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}
+                    className="backImg"></img>
                   <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
                 </label>
               </ProfileImg>
@@ -442,14 +508,21 @@ const ProfileImg = styled.div`
   margin: 0 auto;
   margin-bottom: 16px;
   margin-top: 20px;
-  border: 1px solid #8556f5;
+  /* border: 1px solid #8556f5; */
   border-radius: 50%;
   width: 88px;
   height: 88px;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
+  /* cursor: pointer; */
+  /* background-size: cover;
+  background-position: center; */
 
+  .backImg {
+    display: block;
+    width: 88px;
+    height: 88px;
+    border: 1px solid #8556f5;
+    border-radius: 50%;
+  }
   label {
     display: block;
     position: relative;
