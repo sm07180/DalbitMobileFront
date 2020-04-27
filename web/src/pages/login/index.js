@@ -76,10 +76,14 @@ export default (props) => {
         /**
          * @마이페이지 redirect
          */
-        if (__NODE_ENV === 'dev') {
-        }
+
         const _parse = qs.parse(location.search)
         if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          if (__NODE_ENV === 'dev') {
+            alert(JSON.stringify(_parse, null, 1))
+            alert('memNo : ' + memNo)
+            alert('_parse.mypage : ' + `${_parse.mypage}`)
+          }
           if (_parse.mypage && _parse.mypage !== '') {
             window.location.href = `/mypage/${memNo}/${_parse.mypage}`
           } else {
