@@ -298,6 +298,7 @@ const GenderWrap = styled.div`
   border: 1px solid #bdbdbd;
   &.before > div {
     background-color: ${COLOR_MAIN};
+    color: #fff;
     &.off {
       color: #9e9e9e;
       background-color: #fff;
