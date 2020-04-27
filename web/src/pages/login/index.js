@@ -96,7 +96,7 @@ export default (props) => {
            */
 
           const _parse = qs.parse(location.search)
-          console.log(__parse)
+          console.log(_parse)
           if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
             console.log(_parse.mypage_redirect)
             let mypageURL

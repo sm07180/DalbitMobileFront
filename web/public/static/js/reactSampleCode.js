@@ -24,7 +24,7 @@ function debug(obj) {
 function native() {
   document.dispatchEvent(
     new CustomEvent('native-push-background', {
-      detail: `{"push_type":"32","mem_no":"11584404133573"}`
+      detail: `{"push_type":"32","mem_no":"11583120797169"}`
     })
   )
   return true
