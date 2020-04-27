@@ -148,6 +148,8 @@ export default () => {
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
+    let pushMsg = event.detail
+    const customHeader = JSON.parse(Api.customHeader)
     const isJsonString = (str) => {
       try {
         var parsed = JSON.parse(str)
@@ -156,15 +158,21 @@ export default () => {
         return false
       }
     }
-    let pushMsg = event.detail
-    const customHeader = JSON.parse(Api.customHeader)
-    //IOS일때 decode
+    //-----IOS일때 decode
     if (customHeader['os'] === OS_TYPE['IOS']) {
       pushMsg = decodeURIComponent(pushMsg)
-    } else {
+      if (isJsonString(pushMsg)) {
+        pushMsg = JSON.parse(pushMsg)
+      } else {
+        return false
+      }
     }
-    if (isJsonString(pushMsg)) {
-      pushMsg = JSON.parse(pushMsg)
+    //-----Android
+    if (customHeader['os'] === OS_TYPE['Android']) {
+      alert(JSON.stringify(pushMsg, null, 1))
+      alert(typeof pushMsg)
+      alert(pushMsg.push_type)
+      //return
     }
     /**
      * @title 네이티브 푸쉬관련
