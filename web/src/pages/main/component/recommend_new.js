@@ -99,14 +99,14 @@ export default props => {
   }
 
   useEffect(() => {
-    if (window.sessionStorage.getItem('bannerList')) {
-      const list = JSON.parse(window.sessionStorage.getItem('bannerList'))
+    if (window.localStorage.getItem('bannerList')) {
+      const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach(url => {
         if (url) {
           URL.revokeObjectURL(url)
         }
       })
-      sessionStorage.removeItem('bannerList')
+      localStorage.removeItem('bannerList')
     }
   }, [])
 
@@ -126,14 +126,14 @@ export default props => {
             tempBlobList[idx] = cacheUrl
             if (count === list.length) {
               setBlobList(tempBlobList)
-              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
+              localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
           })
           .catch(() => {
             count++
             if (count === list.length) {
               setBlobList(tempBlobList)
-              sessionStorage.setItem('bannerList', JSON.stringify(tempBlobList))
+              localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
           })
       })
