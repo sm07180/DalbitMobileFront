@@ -170,8 +170,8 @@ export default () => {
     //-----Android
     if (customHeader['os'] === OS_TYPE['Android']) {
       alert(JSON.stringify(pushMsg, null, 1))
-      alert(isJsonString(pushMsg))
-
+      alert(typeof pushMsg)
+      alert(pushMsg.push_type)
       //return
     }
     /**
