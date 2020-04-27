@@ -1021,10 +1021,12 @@ const SignUpWrap = styled.div`
 
     &.require:after {
       display: inline-block;
-      padding-left: 3px;
+      width: 16px;
+      height: 16px;
       font-weight: bold;
-      color: #e84d6f;
-      content: '*';
+      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
+      content: '';
+      vertical-align: bottom;
     }
 
     span {
@@ -1040,7 +1042,7 @@ const PhoneAuth = styled.div`
   }
   button {
     float: left;
-    width: 28%;
+    width: 26%;
     background: ${COLOR_MAIN};
     color: #fff;
     font-weight: 600;
@@ -1136,6 +1138,17 @@ const GenderRadio = styled.div`
     border-radius: 4px 0 0 4px;
     text-align: center;
     transform: skew(-0.03deg);
+
+    &:before {
+      display: inline-block;
+      width: 10px;
+      height: 16px;
+      margin-right: 5px;
+      background: url(${IMG_SERVER}/images/api/ico_male.svg) no-repeat center;
+      content: '';
+      vertical-align: top;
+      margin-top: 12px;
+    }
     input {
       position: absolute;
       left: 0;
@@ -1162,6 +1175,16 @@ const GenderRadio = styled.div`
   label + label {
     border-left: 0;
     border-radius: 0 4px 4px 0;
+    &:before {
+      display: inline-block;
+      width: 10px;
+      height: 16px;
+      margin-right: 5px;
+      background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
+      content: '';
+      vertical-align: top;
+      margin-top: 12px;
+    }
     input {
       margin-left: 0;
     }
@@ -1172,6 +1195,7 @@ const GenderRadio = styled.div`
   }
   label.on {
     color: ${COLOR_MAIN};
+    font-weight: bold;
   }
 `
 //약관 동의 박스 영역
@@ -1292,6 +1316,7 @@ const Button = styled.button`
   line-height: 44px;
   font-size: 18px;
   border-radius: 4px;
+  font-weight: bold;
 
   &:disabled,
   &.off {

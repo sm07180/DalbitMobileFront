@@ -174,14 +174,14 @@ export default props => {
   const validateID = idEntered => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
-    let rgEx = /(01[0123456789])[-](\d{4}|\d{3})[-]\d{4}$/g
-    const loginIdVal = Utility.phoneAddHypen(idEntered)
+    let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
+    const loginIdVal = idEntered
     setChanges({
       ...changes,
       loginID: loginIdVal
     })
     if (!(loginIdVal == undefined)) {
-      if (loginIdVal.length >= 13) {
+      if (loginIdVal.length >= 11) {
         // setValidate({
         //   ...validate,
         //   loginID: true
@@ -315,14 +315,18 @@ export default props => {
         </Header>
         <FormWrap>
           <PhoneAuth>
+            <label className="input-label" htmlFor="loginID" style={{maginTop: '0px'}}>
+              휴대폰 번호
+            </label>
             <input
               type="tel"
               name="loginID"
+              id="loginID"
               value={changes.loginID}
               onChange={onLoginHandleChange}
-              placeholder="휴대폰 번호"
+              placeholder="휴대폰 번호를 입력해주세요"
               className="auth"
-              maxLength="13"
+              maxLength="11"
             />
             <button
               className="auth-btn1"
@@ -339,10 +343,14 @@ export default props => {
             </HelpText>
           )}
           <PhoneAuth>
+            <label className="input-label" htmlFor="auth">
+              인증번호
+            </label>
             <input
               type="number"
               name="auth"
-              placeholder="인증번호"
+              id="auth"
+              placeholder="인증번호를 입력해주세요"
               className="auth"
               value={changes.auth}
               onChange={onLoginHandleChange}
@@ -363,12 +371,16 @@ export default props => {
             </HelpText>
           )}
           <InputWrap>
+            <label className="input-label" htmlFor="loginPwd">
+              신규 비밀번호
+            </label>
             <input
               type="password"
               name="loginPwd"
+              id="loginPwd"
               value={changes.loginPwd}
               onChange={onLoginHandleChange}
-              placeholder="신규 비밀번호"
+              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
               maxLength="20"
             />
             {/* <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span> */}
@@ -377,12 +389,16 @@ export default props => {
                 {currentPwd}
               </HelpText>
             )}
+            <label className="input-label" htmlFor="loginPwdCheck" style={{marginTop: '16px'}}>
+              비밀번호 재확인
+            </label>
             <input
               type="password"
               name="loginPwdCheck"
+              id="loginPwdCheck"
               defaultValue={changes.loginPwdCheck}
               onChange={onLoginHandleChange}
-              placeholder="비밀번호 재 확인"
+              placeholder="비밀번호를 다시 확인해주세요"
               maxLength="20"
             />
             {currentPwdCheck && (
@@ -413,6 +429,31 @@ const Content = styled.div`
   @media (max-width: ${WIDTH_TABLET}) {
     width: 100%;
   }
+
+  .input-label {
+    display: block;
+    width: 100%;
+    color: #424242;
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+    &.require:after {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      font-weight: bold;
+      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
+      content: '';
+      vertical-align: bottom;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
 `
 //---------------------------------------------------------------------
 //styled
@@ -429,11 +470,12 @@ const PhoneAuth = styled.div`
   overflow: hidden;
   button {
     float: left;
-    width: 28%;
+    width: 26%;
     background: ${COLOR_MAIN};
     color: #fff;
     font-weight: 600;
-    line-height: 38px;
+    line-height: 40px;
+    border-radius: 0 4px 4px 0 !important;
   }
   button:disabled {
     background: #a8a8a8;
@@ -451,6 +493,9 @@ const PhoneAuth = styled.div`
     z-index: 3;
     transform: skew(-0.03deg);
   }
+  input {
+    border-radius: 4px 0 0 4px !important;
+  }
 `
 const FormWrap = styled.div`
   margin: 24px 0;
@@ -461,7 +506,10 @@ const Button = styled.button`
   width: 100%;
   background: ${COLOR_MAIN};
   color: #fff;
-  line-height: 50px;
+  line-height: 44px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 4px;
 
   &:disabled {
     background: #a8a8a8;
@@ -469,7 +517,7 @@ const Button = styled.button`
 `
 const InputWrap = styled.div`
   position: relative;
-  margin: 20px 0;
+  margin: 30px 0 24px 0;
   input {
     position: relative;
     margin-top: -1px;
