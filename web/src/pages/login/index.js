@@ -93,12 +93,13 @@ export default (props) => {
           }
           if (__NODE_ENV === 'dev') {
             alert('mypageURL : ' + mypageURL)
-            window.location.href = mypageURL
+            return (window.location.href = mypageURL)
           }
-          return
         }
         //---마이페이지 Redirect종료
-
+        if (__NODE_ENV === 'dev') {
+          alert('mypageURL11111 : ' + mypageURL)
+        }
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
         if (profileInfo.result === 'success') {
