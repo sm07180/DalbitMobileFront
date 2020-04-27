@@ -45,7 +45,6 @@ export default props => {
         처리하도록 하겠습니다.
       </p>
       <br />
-      <br />
       <p>
         청소년보호책임자
         <br />
