@@ -220,8 +220,9 @@ export default () => {
         if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
         break
       case '32': //-----------------마이페이지>내 지갑
-        mem_no = getMemNo('/wallet')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+        // mem_no = getMemNo('/wallet')
+        // if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+        window.location.href = `/mypage/${mem_no}`
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         mem_no = getMemNo('/')
