@@ -74,10 +74,7 @@ const App = () => {
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-      //
-      if (__NODE_ENV === 'dev') {
-      }
-      //
+
       if (tokenInfo.data.isLogin) {
         const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
         if (profileInfo.result === 'success') {
