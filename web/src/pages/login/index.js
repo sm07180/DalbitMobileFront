@@ -96,7 +96,9 @@ export default (props) => {
            */
 
           const _parse = qs.parse(location.search)
+          console.log(__parse)
           if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+            console.log(_parse.mypage_redirect)
             let mypageURL
             if (__NODE_ENV === 'dev') {
               alert(JSON.stringify(_parse, null, 1))
@@ -111,14 +113,9 @@ export default (props) => {
             }
             if (__NODE_ENV === 'dev') {
               alert('mypageURL : ' + mypageURL)
-              return (window.location.href = mypageURL)
+              //      return (window.location.href = mypageURL)
             }
           }
-          //---마이페이지 Redirect종료
-          if (__NODE_ENV === 'dev') {
-            alert('mypageURL11111 : ' + mypageURL)
-          }
-
           //--##
           return props.history.push('/')
         }
