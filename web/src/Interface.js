@@ -238,7 +238,7 @@ export default () => {
         if (isLogin) window.location.href = `/mypage/${mem_no}/`
         //  window.location.href = `/mypage/${mem_no}/`
         break
-      case '36': //-----------------마이페이지
+      case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         if (isLogin) window.location.href = `/mypage/${mem_no}/`
         //  window.location.href = `/mypage/${mem_no}/`
         break
