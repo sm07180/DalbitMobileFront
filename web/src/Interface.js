@@ -238,6 +238,10 @@ export default () => {
         if (isLogin) window.location.href = `/mypage/${mem_no}/`
         //  window.location.href = `/mypage/${mem_no}/`
         break
+      case '36': //-----------------마이페이지
+        if (isLogin) window.location.href = `/mypage/${mem_no}/`
+        //  window.location.href = `/mypage/${mem_no}/`
+        break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break
