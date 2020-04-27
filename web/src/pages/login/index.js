@@ -97,25 +97,27 @@ export default (props) => {
 
           const _parse = qs.parse(location.search)
           console.log(_parse)
-          if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-            console.log(_parse.mypage_redirect)
-            let mypageURL
-            if (__NODE_ENV === 'dev') {
-              alert(JSON.stringify(_parse, null, 1))
-              alert('memNo : ' + memNo)
-              alert('_parse.mypage : ' + `${_parse.mypage}`)
-              alert(`${_parse.mypage}` === '/')
-            }
-            if (_parse.mypage !== '/') {
-              mypageURL = `/mypage/${memNo}${_parse.mypage}`
-            } else {
-              mypageURL = `/mypage/${memNo}`
-            }
-            if (__NODE_ENV === 'dev') {
-              alert('mypageURL : ' + mypageURL)
-              //      return (window.location.href = mypageURL)
-            }
-          }
+          console.log(window.location.search)
+          alert(window.location.search)
+          // if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          //   console.log(_parse.mypage_redirect)
+          //   let mypageURL
+          //   if (__NODE_ENV === 'dev') {
+          //     alert(JSON.stringify(_parse, null, 1))
+          //     alert('memNo : ' + memNo)
+          //     alert('_parse.mypage : ' + `${_parse.mypage}`)
+          //     alert(`${_parse.mypage}` === '/')
+          //   }
+          //   if (_parse.mypage !== '/') {
+          //     mypageURL = `/mypage/${memNo}${_parse.mypage}`
+          //   } else {
+          //     mypageURL = `/mypage/${memNo}`
+          //   }
+          //   if (__NODE_ENV === 'dev') {
+          //     alert('mypageURL : ' + mypageURL)
+          //     //      return (window.location.href = mypageURL)
+          //   }
+          // }
           //--##
           return props.history.push('/')
         }
