@@ -172,7 +172,6 @@ export default props => {
 
     return () => {
       document.body.style.overflow = ''
-      console.log('xz')
     }
   }, [])
   // console.log(starInfo)
