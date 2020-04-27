@@ -161,7 +161,12 @@ export default () => {
     //IOS일때 decode
     if (customHeader['os'] === OS_TYPE['IOS']) {
       pushMsg = decodeURIComponent(pushMsg)
-    } else {
+    } else if (customHeader['os'] === OS_TYPE['Android']) {
+      //Android
+      alert(JSON.stringify(pushMsg, null, 1))
+      return
+    }
+    {
     }
     if (isJsonString(pushMsg)) {
       pushMsg = JSON.parse(pushMsg)
