@@ -121,9 +121,9 @@ export default props => {
     setComment(target.value)
 
     if (lineBreakLenght >= 2) {
-      target.style.height = `106px`
+      target.style.height = `84px`
     } else {
-      target.style.height = `106px`
+      target.style.height = `84px`
     }
   }
   //댓글 삭제
@@ -643,7 +643,7 @@ const TextCount = styled.div`
   width: calc(100% - 68px);
   font-size: 14px;
   padding: 0px 20px;
-  line-height: 32px;
+  line-height: 34px;
   height: 36px;
   box-sizing: border-box;
   border-top: 1px solid #bdbdbd;
@@ -674,7 +674,7 @@ const Textarea = styled.textarea`
   display: block;
   width: 100%;
   font-size: 16px;
-  height: 72px;
+  height: 84px;
   font-family: inherit;
   padding: 12px 20px;
   box-sizing: border-box;
@@ -702,7 +702,7 @@ const InitialSubmit = styled.div`
     border: solid 1px #bdbdbd;
     padding-left: 10px;
     height: 36px;
-    line-height: 32px;
+    line-height: 34px;
     font-size: 16px;
     letter-spacing: -0.4px;
     color: #757575;
@@ -961,7 +961,7 @@ const ReplySubmit = styled.div`
     border: solid 1px #bdbdbd;
     padding-left: 10px;
     background-color: #ffffff;
-    line-height: 32px;
+    line-height: 34px;
     font-size: 16px;
     letter-spacing: -0.4px;
     color: #757575;
@@ -1000,7 +1000,7 @@ const SecoundTextarea = styled.textarea`
   display: block;
   width: 100%;
   font-size: 16px;
-  height: 72px;
+  height: 84px;
   font-family: inherit;
   padding: 12px 20px;
   box-sizing: border-box;
@@ -1029,7 +1029,7 @@ const DaeModifyWrap = styled.section`
     & .modifyInput {
       display: block;
       width: 100%;
-      min-height: 72px;
+      min-height: 84px;
       padding: 12px;
       font-size: 16px;
       line-height: 1.5;
