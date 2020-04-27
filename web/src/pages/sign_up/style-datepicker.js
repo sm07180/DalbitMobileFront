@@ -71,7 +71,7 @@ export default props => {
 
 const DatepickerWrap = styled.div`
   position: relative;
-  margin: 16px 0;
+
   .MuiFormControl-root {
     width: 100%;
     margin: 0;
@@ -104,7 +104,7 @@ const DatepickerWrap = styled.div`
     color: rgba(0, 0, 0, 0);
   }
   &.holder-off .MuiInputBase-input.MuiInput-input {
-    color: #616161;
+    color: #000;
   }
   span.holder {
     display: inline-block;
@@ -115,11 +115,14 @@ const DatepickerWrap = styled.div`
     line-height: 36px;
     z-index: -1;
     padding-left: 12px;
-    color: #616161;
+    color: #bdbdbd;
     transform: skew(-0.03deg);
     background: #fff;
   }
   &.holder-off span.holder {
+    display: none;
+  }
+  .MuiInput-underline:before {
     display: none;
   }
 `

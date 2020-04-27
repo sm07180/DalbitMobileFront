@@ -34,7 +34,7 @@ export default props => {
 
   //useState
   const [allTerm, setAllTerm] = useState(false) // 약관동의 전체 체크
-  const [boxState, setBoxState] = useState(false) // 약관동의 박스 열고닫음 상태값
+  const [boxState, setBoxState] = useState(true) // 약관동의 박스 열고닫음 상태값
   const [validate, setValidate] = useState({
     // 유효성 체크
     memId: false,
@@ -697,262 +697,341 @@ export default props => {
 
   return (
     <PureLayout>
-      {changes.memType == 'p' && (
-        <>
-          <PhoneAuth className="top">
-            <input
-              type="tel"
-              name="memId"
-              value={changes.memId}
-              onChange={onLoginHandleChange}
-              placeholder="휴대폰 번호"
-              className="auth"
-              maxLength="11"
-            />
-            <button
-              className="auth-btn1"
-              disabled={currentAuthBtn.request}
-              onClick={() => {
-                fetchAuth()
-              }}>
-              인증요청
-            </button>
-          </PhoneAuth>
-          {currentAuth1 && (
-            <HelpText state={validate.memId} className={validate.memId ? 'pass' : 'help'}>
-              {currentAuth1}
-            </HelpText>
-          )}
-          <PhoneAuth>
-            <input
-              type="number"
-              name="auth"
-              placeholder="인증번호"
-              className="auth"
-              value={changes.auth}
-              onChange={onLoginHandleChange}
-            />
-            <span className="timer">{timeText}</span>
-            <button
-              className="auth-btn2"
-              disabled={currentAuthBtn.check}
-              onClick={() => {
-                fetchAuthCheck()
-              }}>
-              인증확인
-            </button>
-          </PhoneAuth>
-          {currentAuth2 && (
-            <HelpText state={validate.auth} className={validate.auth ? 'pass' : 'help'}>
-              {currentAuth2}
-            </HelpText>
-          )}
-        </>
-      )}
-      {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
-      <ProfileUpload imgUrl={imgData} className={changes.memType !== 'p' && 'top'}>
-        <label htmlFor="profileImg">
-          <div></div>
-          <span>클릭 이미지 파일 추가</span>
-        </label>
-        <input
-          type="file"
-          id="profileImg"
-          accept="image/jpg, image/jpeg, image/png"
-          onChange={e => {
-            uploadSingleFile(e)
-          }}
-        />
-        <p className="img-text">프로필 사진을 등록해주세요!</p>
-      </ProfileUpload>
-      {/* 닉네임 */}
-      <InputWrap type="닉네임">
-        <input
-          autoComplete="off"
-          type="text"
-          name="nickNm"
-          value={changes.nickNm}
-          onChange={onLoginHandleChange}
-          placeholder="닉네임"
-        />
-        <span className={validate.nickNm ? 'off' : 'on'}>2~20자 한글/영문/숫자</span>
-        {currentNick && (
-          <HelpText state={validate.nickNm} className={validate.nickNm ? 'pass' : 'help'}>
-            {currentNick}
-          </HelpText>
+      <SignUpWrap>
+        {changes.memType == 'p' && (
+          <>
+            <PhoneAuth className="top">
+              <label className="input-label require" htmlFor="memId" style={{maginTop: '0px'}}>
+                휴대폰 번호
+              </label>
+              <input
+                type="tel"
+                id="memId"
+                name="memId"
+                value={changes.memId}
+                onChange={onLoginHandleChange}
+                placeholder="휴대폰 번호를 입력해주세요"
+                className="auth"
+                maxLength="11"
+              />
+              <button
+                className="auth-btn1"
+                disabled={currentAuthBtn.request}
+                onClick={() => {
+                  fetchAuth()
+                }}>
+                인증요청
+              </button>
+            </PhoneAuth>
+            {currentAuth1 && (
+              <HelpText state={validate.memId} className={validate.memId ? 'pass' : 'help'}>
+                {currentAuth1}
+              </HelpText>
+            )}
+            <PhoneAuth>
+              <label className="input-label require" htmlFor="auth">
+                인증번호
+              </label>
+              <input
+                type="number"
+                name="auth"
+                id="auth"
+                placeholder="인증번호를 입력해주세요"
+                className="auth"
+                value={changes.auth}
+                onChange={onLoginHandleChange}
+              />
+              <span className="timer">{timeText}</span>
+              <button
+                className="auth-btn2"
+                disabled={currentAuthBtn.check}
+                onClick={() => {
+                  fetchAuthCheck()
+                }}>
+                인증확인
+              </button>
+            </PhoneAuth>
+            {currentAuth2 && (
+              <HelpText state={validate.auth} className={validate.auth ? 'pass' : 'help'}>
+                {currentAuth2}
+              </HelpText>
+            )}
+          </>
         )}
-      </InputWrap>
-      {/* 비밀번호, 전화번호 가입시에만 노출 */}
-      {changes.memType == 'p' && (
-        <InputWrap style={{marginBottom: '16px'}}>
+        {/* 프로필 이미지 등록, 전화번호 가입시에만 노출 */}
+        <ProfileUpload imgUrl={imgData} className={changes.memType !== 'p' && 'top'}>
+          <label htmlFor="profileImg">
+            <div></div>
+            <span>클릭 이미지 파일 추가</span>
+          </label>
           <input
-            autoComplete="new-password"
-            type="password"
-            name="loginPwd"
-            value={changes.loginPwd}
-            onChange={onLoginHandleChange}
-            placeholder="비밀번호"
-            maxLength="20"
+            type="file"
+            id="profileImg"
+            accept="image/jpg, image/jpeg, image/png"
+            onChange={e => {
+              uploadSingleFile(e)
+            }}
           />
-          <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span>
-          {currentPwd && (
-            <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
-              {currentPwd}
-            </HelpText>
-          )}
+          <p className="img-text">프로필 사진을 등록(선택사항)</p>
+        </ProfileUpload>
+        {/* 닉네임 */}
+        <InputWrap type="닉네임">
+          <label className="input-label require" htmlFor="nickNm">
+            닉네임
+          </label>
           <input
-            type="password"
-            name="loginPwdCheck"
-            defaultValue={changes.loginPwdCheck}
+            autoComplete="off"
+            type="text"
+            name="nickNm"
+            id="nickNm"
+            value={changes.nickNm}
             onChange={onLoginHandleChange}
-            placeholder="비밀번호 확인"
-            maxLength="20"
+            placeholder="닉네임은 2~20자 이내로 입력해주세요"
           />
-          {currentPwdCheck && (
-            <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
-              {currentPwdCheck}
+          {currentNick && (
+            <HelpText state={validate.nickNm} className={validate.nickNm ? 'pass' : 'help'}>
+              {currentNick}
             </HelpText>
           )}
         </InputWrap>
-      )}
-      {/* 생년월일 */}
-      <Datepicker
-        text="생년월일"
-        name="birth"
-        value={changes.birth}
-        change={pickerOnChange}
-        placeholder="생년월일"
-        pickerState={pickerState}
-      />
+        {/* 비밀번호, 전화번호 가입시에만 노출 */}
+        {changes.memType == 'p' && (
+          <InputWrap>
+            <label className="input-label require" htmlFor="loginPwd">
+              비밀번호
+            </label>
+            <input
+              autoComplete="new-password"
+              type="password"
+              name="loginPwd"
+              id="loginPwd"
+              value={changes.loginPwd}
+              onChange={onLoginHandleChange}
+              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+              maxLength="20"
+            />
+            {currentPwd && (
+              <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
+                {currentPwd}
+              </HelpText>
+            )}
+            <label className="input-label require" htmlFor="loginPwdCheck" style={{marginTop: '16px'}}>
+              비밀번호 확인
+            </label>
+            <input
+              type="password"
+              name="loginPwdCheck"
+              defaultValue={changes.loginPwdCheck}
+              onChange={onLoginHandleChange}
+              placeholder="비밀번호를 다시 확인해주세요"
+              maxLength="20"
+            />
+            {currentPwdCheck && (
+              <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
+                {currentPwdCheck}
+              </HelpText>
+            )}
+          </InputWrap>
+        )}
+        {/* 생년월일 */}
+        <InputWrap>
+          <label className="input-label require">생년월일</label>
+          <Datepicker
+            text="YYYY / MM / DD"
+            name="birth"
+            value={changes.birth}
+            change={pickerOnChange}
+            placeholder="YYYY / MM / DD"
+            pickerState={pickerState}
+          />
 
-      {currentBirth && (
-        <HelpText state={validate.birth} className={validate.birth ? 'pass' : 'help'}>
-          {currentBirth}
-        </HelpText>
-      )}
-      {/* 성별 */}
-      <GenderRadio>
-        <label htmlFor="genderMale" className={changes.gender == 'm' ? 'on' : 'off'}>
-          <input
-            type="checkbox"
-            name="gender"
-            id="genderMale"
-            value="m"
-            defaultChecked={changes.gender === 'm'}
-            onChange={onLoginHandleChange}
-          />
-          남자
-        </label>
-        <label htmlFor="genderFemale" className={changes.gender == 'f' ? 'on' : 'off'}>
-          <input
-            type="checkbox"
-            name="gender"
-            id="genderFemale"
-            value="f"
-            defaultChecked={changes.gender === 'f'}
-            onChange={onLoginHandleChange}
-          />
-          여자
-        </label>
-      </GenderRadio>
-      {/* 약관동의 */}
-      <CheckWrap className={boxState ? 'on' : ''}>
-        <div>
-          <input type="checkbox" name="allTerm" id="allTerm" checked={allTerm} onChange={selectAllTerm} />{' '}
-          <label htmlFor="allTerm">약관 전체 동의</label>
-          <button
-            className={boxState ? 'on' : 'off'}
-            onClick={() => {
-              setBoxState(!boxState)
-            }}>
-            펼치기
-          </button>
-        </div>
-        <CheckBox>
-          <div>
-            <input
-              type="checkbox"
-              name="term1"
-              id="term1"
-              checked={changes.term1 == 'y' ? true : false}
-              value={termHandle(changes.term1)}
-              onChange={termCheckHandle}
-            />
-            <label htmlFor="term1">
-              <span>[필수]</span>서비스 이용약관 동의(필수)
+          {currentBirth && (
+            <HelpText state={validate.birth} className={validate.birth ? 'pass' : 'help'}>
+              {currentBirth}
+            </HelpText>
+          )}
+        </InputWrap>
+        {/* 성별 */}
+        <InputWrap>
+          <label className="input-label">
+            성별 <span>(선택사항)</span>
+          </label>
+          <GenderRadio>
+            <label htmlFor="genderMale" className={changes.gender == 'm' ? 'on' : 'off'}>
+              <input
+                type="checkbox"
+                name="gender"
+                id="genderMale"
+                value="m"
+                defaultChecked={changes.gender === 'm'}
+                onChange={onLoginHandleChange}
+              />
+              남자
             </label>
+            <label htmlFor="genderFemale" className={changes.gender == 'f' ? 'on' : 'off'}>
+              <input
+                type="checkbox"
+                name="gender"
+                id="genderFemale"
+                value="f"
+                defaultChecked={changes.gender === 'f'}
+                onChange={onLoginHandleChange}
+              />
+              여자
+            </label>
+          </GenderRadio>
+        </InputWrap>
+        {/* 약관동의 */}
+        <CheckWrap className={boxState ? 'on' : ''}>
+          <div>
+            <input type="checkbox" name="allTerm" id="allTerm" checked={allTerm} onChange={selectAllTerm} />{' '}
+            <label htmlFor="allTerm">약관 전체 동의</label>
             <button
+              className={boxState ? 'on' : 'off'}
               onClick={() => {
-                context.action.updatePopup('TERMS', 'service')
+                setBoxState(!boxState)
               }}>
-              자세히 보기
+              펼치기
             </button>
           </div>
-          <div>
-            <input
-              type="checkbox"
-              name="term2"
-              id="term2"
-              checked={changes.term2 == 'y' ? true : false}
-              value={termHandle(changes.term2)}
-              onChange={termCheckHandle}
-            />
-            <label htmlFor="term2">
-              <span>[필수]</span>개인정보 취급방침
-            </label>
-            <button
-              onClick={() => {
-                context.action.updatePopup('TERMS', 'privacy')
-              }}>
-              자세히 보기
-            </button>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="term3"
-              id="term3"
-              checked={changes.term3 == 'y' ? true : false}
-              value={termHandle(changes.term3)}
-              onChange={termCheckHandle}
-            />
-            <label htmlFor="term3">
-              <span>[필수]</span>청소년 보호정책
-            </label>
-            <button
-              onClick={() => {
-                context.action.updatePopup('TERMS', 'youthProtect')
-              }}>
-              자세히 보기
-            </button>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="term4"
-              id="term4"
-              checked={changes.term4 == 'y' ? true : false}
-              value={termHandle(changes.term4)}
-              onChange={termCheckHandle}
-            />
-            <label htmlFor="term4">
-              <span>[필수]</span>운영정책
-            </label>
-            <button
-              onClick={() => {
-                context.action.updatePopup('TERMS', 'operating')
-              }}>
-              자세히 보기
-            </button>
-          </div>
-        </CheckBox>
-      </CheckWrap>
-      <Button onClick={() => fetchData()} disabled={!validatePass}>
-        회원가입 완료
-      </Button>
+          <CheckBox>
+            <div>
+              <input
+                type="checkbox"
+                name="term1"
+                id="term1"
+                checked={changes.term1 == 'y' ? true : false}
+                value={termHandle(changes.term1)}
+                onChange={termCheckHandle}
+              />
+              <label htmlFor="term1">
+                <span>[필수]</span>서비스 이용약관 동의
+              </label>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'service')
+                }}>
+                자세히 보기
+              </button>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="term2"
+                id="term2"
+                checked={changes.term2 == 'y' ? true : false}
+                value={termHandle(changes.term2)}
+                onChange={termCheckHandle}
+              />
+              <label htmlFor="term2">
+                <span>[필수]</span>개인정보 취급방침
+              </label>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'privacy')
+                }}>
+                자세히 보기
+              </button>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="term3"
+                id="term3"
+                checked={changes.term3 == 'y' ? true : false}
+                value={termHandle(changes.term3)}
+                onChange={termCheckHandle}
+              />
+              <label htmlFor="term3">
+                <span>[필수]</span>청소년 보호정책
+              </label>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'youthProtect')
+                }}>
+                자세히 보기
+              </button>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="term4"
+                id="term4"
+                checked={changes.term4 == 'y' ? true : false}
+                value={termHandle(changes.term4)}
+                onChange={termCheckHandle}
+              />
+              <label htmlFor="term4">
+                <span>[필수]</span>운영정책
+              </label>
+              <button
+                onClick={() => {
+                  context.action.updatePopup('TERMS', 'operating')
+                }}>
+                자세히 보기
+              </button>
+            </div>
+          </CheckBox>
+        </CheckWrap>
+        <Button
+          onClick={() => {
+            if (!validatePass) {
+              let message = ''
+              if (!validate.auth && changes.memType === 'p') {
+                message = '휴대폰 본인인증을 진행해주세요.'
+              } else if (!validate.nickNm) {
+                message = '닉네임은 2~20자 이내로 입력해주세요.'
+              } else if (!validate.loginPwd && changes.memType === 'p') {
+                message = '비밀번호는 8~20자 영문/숫자/특수문자 중 2가지 이상 조합으로 입력해주세요.'
+              } else if (!validate.loginPwdCheck && changes.memType === 'p') {
+                message = '비밀번호를 다시 확인해주세요.'
+              } else if (!validate.birth) {
+                message = '생년월일을 선택해주세요.'
+              } else if (!validate.term) {
+                message = '필수 약관에 모두 동의해주세요.'
+              }
+              context.action.alert({
+                callback: () => {
+                  return null
+                },
+                msg: `${message}`
+              })
+            } else {
+              fetchData()
+            }
+          }}
+          className={`${validatePass ? 'on' : 'off'}`}>
+          회원가입
+        </Button>
+      </SignUpWrap>
     </PureLayout>
   )
 }
+
+const SignUpWrap = styled.div`
+  .input-label {
+    display: block;
+    width: 100%;
+    color: #424242;
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+    &.require:after {
+      display: inline-block;
+      padding-left: 3px;
+      font-weight: bold;
+      color: #e84d6f;
+      content: '*';
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+`
 
 const PhoneAuth = styled.div`
   overflow: hidden;
@@ -965,9 +1044,14 @@ const PhoneAuth = styled.div`
     background: ${COLOR_MAIN};
     color: #fff;
     font-weight: 600;
-    line-height: 38px;
+    line-height: 40px;
+    border-radius: 0 4px 4px 0 !important;
+    &.off {
+      background: #a8a8a8;
+    }
   }
-  button:disabled {
+  button:disabled,
+  button.off {
     background: #a8a8a8;
   }
   & + & {
@@ -979,9 +1063,12 @@ const PhoneAuth = styled.div`
     right: 31%;
     color: ${COLOR_MAIN};
     font-size: 14px;
-    line-height: 38px;
+    line-height: 40px;
     z-index: 3;
     transform: skew(-0.03deg);
+  }
+  input {
+    border-radius: 4px 0 0 4px !important;
   }
 `
 //프로필 업로드 영역
@@ -1040,12 +1127,13 @@ const ProfileUpload = styled.div`
 //성별 선택 라디오 박스 영역
 const GenderRadio = styled.div`
   display: flex;
-  margin: 16px 0;
+  margin: 0 0 16px 0;
   label {
     flex: 1;
     border: 1px solid #bdbdbd;
     color: #757575;
     line-height: 40px;
+    border-radius: 4px 0 0 4px;
     text-align: center;
     transform: skew(-0.03deg);
     input {
@@ -1066,17 +1154,20 @@ const GenderRadio = styled.div`
       position: absolute;
       width: 100%;
       height: 100%;
+      border-radius: 4px 0 0 4px;
       border: 1px solid ${COLOR_MAIN};
       content: '';
     }
   }
   label + label {
     border-left: 0;
+    border-radius: 0 4px 4px 0;
     input {
       margin-left: 0;
     }
     input::after {
       margin-left: -1px;
+      border-radius: 0 4px 4px 0 !important;
     }
   }
   label.on {
@@ -1090,6 +1181,7 @@ const CheckWrap = styled.div`
   height: 42px;
   border: 1px solid #bdbdbd;
   transition: height 0.5s ease-in-out;
+  border-radius: 4px;
 
   &.on {
     height: 205px;
@@ -1197,9 +1289,12 @@ const Button = styled.button`
   margin-bottom: 20px;
   background: ${COLOR_MAIN};
   color: #fff;
-  line-height: 38px;
+  line-height: 44px;
+  font-size: 18px;
+  border-radius: 4px;
 
-  &:disabled {
+  &:disabled,
+  &.off {
     background: #a8a8a8;
   }
 `
