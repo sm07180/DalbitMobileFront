@@ -79,16 +79,21 @@ export default (props) => {
 
         const _parse = qs.parse(location.search)
         if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          let mypageURL
           if (__NODE_ENV === 'dev') {
             alert(JSON.stringify(_parse, null, 1))
             alert('memNo : ' + memNo)
-            alert('_parse.mypage1 : ' + `${_parse.mypage}`)
+            alert('_parse.mypage : ' + `${_parse.mypage}`)
             alert(`${_parse.mypage}` === '/')
           }
           if (_parse.mypage !== '/') {
-            window.location.href = `/mypage/${memNo}${_parse.mypage}`
+            mypageURL = `/mypage/${memNo}${_parse.mypage}`
           } else {
-            window.location.href = `/mypage/${memNo}`
+            mypageURL = `/mypage/${memNo}`
+          }
+          if (__NODE_ENV === 'dev') {
+            alert('mypageURL : ' + mypageURL)
+            window.location.href = mypageURL
           }
           return
         }
