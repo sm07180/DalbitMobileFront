@@ -7,7 +7,6 @@
 import React, {useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
-import qs from 'qs'
 //context
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
@@ -143,12 +142,13 @@ export default () => {
     if (_.hasIn(context, 'profile.memNo')) {
       return context.profile.memNo
     } else {
-      window.location.href = `/login/?redirect=${redirect}`
+      window.location.href = `/login/?mypage_redirect=yes&mypage=${redirect}`
     }
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
+
     const customHeader = JSON.parse(Api.customHeader)
     const isJsonString = (str) => {
       try {
@@ -169,11 +169,13 @@ export default () => {
     }
     //-----Android
     if (customHeader['os'] === OS_TYPE['Android']) {
-      alert(JSON.stringify(pushMsg, null, 1))
-      alert(typeof pushMsg)
-      alert(pushMsg.push_type)
-      //return
+      if (typeof pushMsg !== 'object') return
     }
+    //--PC
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
+      pushMsg = JSON.parse(pushMsg)
+    }
+
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
@@ -196,9 +198,10 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
-      alert('mem_no :' + pushMsg.mem_no)
+      // alert('isLogin :' + isLogin)
+      // alert('push_type :' + push_type)
+      // alert('room_no :' + pushMsg.room_no)
+      // alert('mem_no :' + pushMsg.mem_no)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
@@ -212,17 +215,10 @@ export default () => {
       case '31': //-----------------마이페이지>팬 보드
         mem_no = getMemNo('/fanboard')
         if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
-        //if (!isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
-        // window.location.href = `/mypage/${mem_no}/fanboard`
         break
       case '32': //-----------------마이페이지>내 지갑
-        if (!mem_no) {
-          window.location.href = `/`
-        } else {
-          mem_no = getMemNo('/wallet')
-          if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
-        }
-
+        mem_no = getMemNo('/wallet')
+        if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         mem_no = getMemNo('/')
@@ -232,7 +228,6 @@ export default () => {
       case '34': //-----------------마이페이지>알림>해당 알림 글
         mem_no = getMemNo('/alert')
         if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
-        //  window.location.href = `/mypage/${mem_no}/alert`
         break
       case '35': //-----------------마이페이지
         mem_no = getMemNo('/')
@@ -260,18 +255,6 @@ export default () => {
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
-    /*----push알람----*/
-    // if (window.location.href.indexOf('push_redirect') !== -1) {
-    //   const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
-    //   if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
-    //     pushBack(_parse)
-    //   }
-    //   if (__NODE_ENV === 'dev') {
-    //     alert('----------2')
-    //     alert(window.location.href)
-    //   }
-    // }
-
     /*----native----*/
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료

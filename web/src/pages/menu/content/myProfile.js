@@ -172,7 +172,10 @@ const myProfile = props => {
           <LevelWrap>
             <LevelText>LEVEL {profile.level}</LevelText>
             <LevelStatusBarWrap>
-              <LevelStatus style={{width: `calc(${expCalc}% + 20px)`}}>{`${expCalc}%`}</LevelStatus>
+              <LevelStatus
+                style={{
+                  width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
+                }}>{`${expCalc}%`}</LevelStatus>
             </LevelStatusBarWrap>
           </LevelWrap>
         )}
