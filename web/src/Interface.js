@@ -142,12 +142,13 @@ export default () => {
     if (_.hasIn(context, 'profile.memNo')) {
       return context.profile.memNo
     } else {
-      window.location.href = `/login/?redirect=${redirect}`
+      window.location.href = `/login/?mypage_redirect=yes&mypage=${redirect}`
     }
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
+
     const customHeader = JSON.parse(Api.customHeader)
     const isJsonString = (str) => {
       try {
@@ -170,6 +171,11 @@ export default () => {
     if (customHeader['os'] === OS_TYPE['Android']) {
       if (typeof pushMsg !== 'object') return
     }
+    //--PC
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
+      pushMsg = JSON.parse(pushMsg)
+    }
+
     /**
      * @title 네이티브 푸쉬관련
      * @push_type
@@ -194,8 +200,8 @@ export default () => {
     if (__NODE_ENV === 'dev') {
       alert('isLogin :' + isLogin)
       alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
-      alert('mem_no :' + pushMsg.mem_no)
+      // alert('room_no :' + pushMsg.room_no)
+      // alert('mem_no :' + pushMsg.mem_no)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {

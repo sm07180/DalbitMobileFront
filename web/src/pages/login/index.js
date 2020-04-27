@@ -23,7 +23,7 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
-export default props => {
+export default (props) => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -37,12 +37,12 @@ export default props => {
 
   const [appleAlert, setAppleAlert] = useState(false)
 
-  const changePhoneNum = e => {
+  const changePhoneNum = (e) => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = e => {
+  const changePassword = (e) => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -73,6 +73,21 @@ export default props => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+        /**
+         * @마이페이지 redirect
+         */
+        if (__NODE_ENV === 'dev') {
+        }
+        const _parse = qs.parse(location.search)
+        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          if (_parse.mypage && _parse.mypage !== '') {
+            window.location.href = `/mypage/${memNo}/${_parse.mypage}`
+          } else {
+            window.location.href = `/mypage/${memNo}/`
+          }
+          return
+        }
+        //---마이페이지 Redirect종료
 
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
@@ -87,6 +102,8 @@ export default props => {
 
           if (redirect) {
             const decodedUrl = decodeURIComponent(redirect)
+            console.log(redirect)
+            alert(decodedUrl)
             return (window.location.href = decodedUrl)
           }
           globalCtx.action.updateProfile(profileInfo.data)
@@ -113,7 +130,7 @@ export default props => {
     }
   }
 
-  const fetchSocialData = async vendor => {
+  const fetchSocialData = async (vendor) => {
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -140,7 +157,7 @@ export default props => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach(key => {
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -176,7 +193,7 @@ export default props => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
