@@ -498,7 +498,7 @@ const PhoneAuth = styled.div`
   }
 `
 const FormWrap = styled.div`
-  margin: 24px 0;
+  margin: 14px 0;
 `
 
 const Button = styled.button`
