@@ -74,8 +74,20 @@ export default (props) => {
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
 
+        //--##
+        /**
+         * @마이페이지 redirect
+         */
+        let mypageURL = ''
+        const _parse = qs.parse(location.search)
+        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          mypageURL = `/mypage/${memNo}`
+          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+        }
+
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
+
         if (profileInfo.result === 'success') {
           if (isHybrid()) {
             if (webview && webview === 'new') {
@@ -90,35 +102,12 @@ export default (props) => {
             return (window.location.href = decodedUrl)
           }
           globalCtx.action.updateProfile(profileInfo.data)
-          //--##
-          /**
-           * @마이페이지 redirect
-           */
 
-          const _parse = qs.parse(location.search)
-          console.log(_parse)
-          console.log(window.location.search)
-          alert(window.location.search)
-          // if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-          //   console.log(_parse.mypage_redirect)
-          //   let mypageURL
-          //   if (__NODE_ENV === 'dev') {
-          //     alert(JSON.stringify(_parse, null, 1))
-          //     alert('memNo : ' + memNo)
-          //     alert('_parse.mypage : ' + `${_parse.mypage}`)
-          //     alert(`${_parse.mypage}` === '/')
-          //   }
-          //   if (_parse.mypage !== '/') {
-          //     mypageURL = `/mypage/${memNo}${_parse.mypage}`
-          //   } else {
-          //     mypageURL = `/mypage/${memNo}`
-          //   }
-          //   if (__NODE_ENV === 'dev') {
-          //     alert('mypageURL : ' + mypageURL)
-          //     //      return (window.location.href = mypageURL)
-          //   }
-          // }
-          //--##
+          //--##마이페이지 Redirect
+          if (mypageURL !== '') {
+            return (window.location.href = mypageURL)
+          }
+
           return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
