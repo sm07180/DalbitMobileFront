@@ -82,11 +82,11 @@ export default (props) => {
           if (__NODE_ENV === 'dev') {
             alert(JSON.stringify(_parse, null, 1))
             alert('memNo : ' + memNo)
-            alert('_parse.mypage : ' + `${_parse.mypage}`)
+            alert('_parse.mypage1 : ' + `${_parse.mypage}`)
             alert(`${_parse.mypage}` === '/')
           }
           if (_parse.mypage !== '/') {
-            window.location.href = `/mypage/${memNo}/${_parse.mypage}`
+            window.location.href = `/mypage/${memNo}${_parse.mypage}`
           } else {
             window.location.href = `/mypage/${memNo}`
           }
