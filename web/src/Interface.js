@@ -142,13 +142,16 @@ export default () => {
     if (_.hasIn(context, 'profile.memNo')) {
       return context.profile.memNo
     } else {
-      window.location.href = `/login/?mypage_redirect=yes&mypage=${redirect}`
+      /**
+       * @비회원일때
+       */
+      window.location.href = '/'
+      //window.location.href = `/login/?mypage_redirect=yes&mypage=${redirect}`
     }
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-
     const customHeader = JSON.parse(Api.customHeader)
     const isJsonString = (str) => {
       try {
@@ -198,10 +201,10 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      alert('isLogin :' + isLogin)
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
-      alert('mem_no :' + pushMsg.mem_no)
+      // alert('isLogin :' + isLogin)
+      // alert('push_type :' + push_type)
+      // alert('room_no :' + pushMsg.room_no)
+      // alert('mem_no :' + pushMsg.mem_no)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
