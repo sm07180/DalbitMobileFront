@@ -102,8 +102,6 @@ export default (props) => {
 
           if (redirect) {
             const decodedUrl = decodeURIComponent(redirect)
-            console.log(redirect)
-            alert(decodedUrl)
             return (window.location.href = decodedUrl)
           }
           globalCtx.action.updateProfile(profileInfo.data)
