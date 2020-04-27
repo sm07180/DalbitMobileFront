@@ -422,7 +422,7 @@ export default props => {
                       <Imgbox bg={profImg.thumb62x62} />
                     </a>
                     <div>
-                      {writerNo === profile.memNo && <em className="bjIcon"></em>}
+                      {writerNo === urlrStr && <em className="bjIcon"></em>}
                       <a href={link}>
                         <span>{nickNm}</span>
                         <span>(@{memId})</span>

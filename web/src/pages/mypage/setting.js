@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
-import ExifOrientationImg from 'react-exif-orientation-img'
+
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -12,6 +12,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
+import {encode} from 'punycode'
 
 export default props => {
   const context = useContext(Context)
@@ -24,7 +25,6 @@ export default props => {
   const [photoUploading, setPhotoUploading] = useState(false)
 
   const nicknameReference = useRef()
-
   const {isOAuth} = token
 
   const profileImageUpload = e => {
@@ -49,29 +49,83 @@ export default props => {
       })
     }
 
-    reader.readAsDataURL(target.files[0])
+    // reader.readAsArrayBuffer(file)
+    reader.readAsDataURL(file)
+
+    // function getOrientation(buffer) {
+    //   var view = new DataView(buffer)
+    //   if (view.getUint16(0, false) !== 0xffd8) return -2
+    //   var length = view.byteLength,
+    //     offset = 2
+    //   while (offset < length) {
+    //     var marker = view.getUint16(offset, false)
+    //     offset += 2
+    //     if (marker === 0xffe1) {
+    //       if (view.getUint32((offset += 2), false) !== 0x45786966) return -1
+    //       var little = view.getUint16((offset += 6), false) === 0x4949
+    //       offset += view.getUint32(offset + 4, little)
+    //       var tags = view.getUint16(offset, little)
+    //       offset += 2
+    //       for (var i = 0; i < tags; i++) {
+    //         if (view.getUint16(offset + i * 12, little) === 0x0112) return view.getUint16(offset + i * 12 + 8, little)
+    //       }
+    //     } else if ((marker & 0xff00) !== 0xff00) {
+    //       break
+    //     } else {
+    //       offset += view.getUint16(offset, false)
+    //     }
+    //   }
+    //   return -1
+    // }
+
+    //캔버스로 그려서 dataurl 로 뽑아내는 함수
+    function drawAdjustImage(img) {
+      const cnvs = document.createElement('canvas')
+      var ctx = cnvs.getContext('2d')
+      cnvs.width = img.width
+      cnvs.height = img.height
+      ctx.drawImage(img, 0, 0, img.width, img.height)
+      return cnvs.toDataURL('image/jpeg', 1.0)
+    }
 
     reader.onload = async () => {
       if (reader.result) {
+        const img = new Image()
+        img.src = reader.result
+
         setPhotoUploading(true)
-        const res = await Api.image_upload({
-          data: {
-            dataURL: reader.result,
-            uploadType: 'profile'
+
+        img.onload = async () => {
+          const limitSize = 1280
+          if (img.width > limitSize || img.height > limitSize) {
+            img.width = img.width / 5
+            img.height = img.height / 5
           }
-        })
-        if (res.result === 'success') {
-          setTempPhoto(reader.result)
-          setPhotoPath(res.data.path)
-          setPhotoUploading(false)
-        } else {
-          context.action.alert({
-            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
-            title: '',
-            callback: () => {
-              context.action.alert({visible: false})
+
+          const encodedDataAsBase64 = drawAdjustImage(img)
+          setTempPhoto(encodedDataAsBase64)
+          uploadImageToServer(encodedDataAsBase64)
+        }
+
+        async function uploadImageToServer(data) {
+          const res = await Api.image_upload({
+            data: {
+              dataURL: data,
+              uploadType: 'profile'
             }
           })
+          if (res.result === 'success') {
+            setPhotoPath(res.data.path)
+            setPhotoUploading(false)
+          } else {
+            context.action.alert({
+              msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+              title: '',
+              callback: () => {
+                context.action.alert({visible: false})
+              }
+            })
+          }
         }
       }
     }
@@ -154,6 +208,7 @@ export default props => {
       }
     }
   }, [])
+  ////
 
   return (
     <Switch>
@@ -167,37 +222,38 @@ export default props => {
               <Header>
                 <div className="category-text">내 정보 관리</div>
               </Header>
+
               <ProfileImg
                 style={{
                   backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
                 }}>
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                  <ExifOrientationImg src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
+                  <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
                 </label>
               </ProfileImg>
               <div className="nickname">
                 <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
               </div>
               <UserId>{`@${profile.memId}`}</UserId>
-              {profile.memNo[0] == '1' && (
-                <PasswordWrap>
-                  <PasswordTextWrap>
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                    <PasswordCircle />
-                  </PasswordTextWrap>
 
-                  <PasswordRedirectBtn>
-                    <a href="/password">비밀번호 변경</a>
-                  </PasswordRedirectBtn>
-                </PasswordWrap>
-              )}
+              <PasswordWrap>
+                <PasswordTextWrap>
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                  <PasswordCircle />
+                </PasswordTextWrap>
+
+                <PasswordRedirectBtn>
+                  <a href="/password">비밀번호 변경</a>
+                </PasswordRedirectBtn>
+              </PasswordWrap>
+
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 <GenderTab
@@ -399,6 +455,7 @@ const ProfileImg = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+
     cursor: pointer;
     input[type='file'] {
       position: absolute;
@@ -432,6 +489,19 @@ const SettingWrap = styled.div`
 
 const Content = styled.section`
   margin: 0 0 20px 0;
+  canvas {
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 16px;
+    margin-top: 20px;
+    border: 1px solid #8556f5;
+    border-radius: 50%;
+    width: 88px;
+    height: 88px;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+  }
 `
 const TopWrap = styled.div`
   display: flex;
