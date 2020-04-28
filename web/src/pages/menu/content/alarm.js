@@ -115,24 +115,24 @@ export default props => {
                   </li>
                 )
                 break
-              case 2: //달 알림//완료
+              case 32: //달 알림//완료
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}/wallet`)
+                      window.location.href = `/mypage/${myMemNo}/wallet`
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
                 break
-              case 3: // 팬 알림
+              case 35: // 팬 등록
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}`)
+                      window.location.href = `/mypage/${memNo}`
                     }}>
                     {/* <figure>
                       <img src={alarmIco} />
@@ -142,12 +142,12 @@ export default props => {
                   </li>
                 )
                 break
-              case 4: //팬보드 알림
+              case 31: //팬보드 알림
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}/fanboard`)
+                      window.location.href = `/mypage/${MemNo}/fanboard`
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
@@ -159,11 +159,24 @@ export default props => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/customer/notice`)
+                      window.location.href = `/customer/notice`
                     }}>
                     <figure>
                       <img src={alarmIco} />
                     </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+
+              case 36: //팬 레벨업
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )
