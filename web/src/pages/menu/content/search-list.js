@@ -31,7 +31,7 @@ export default props => {
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
     const list = props.fetch
-    console.log(list)
+    //console.log(list)
 
     if (list == false || list == undefined) {
       return <NoResult className={`search`} />

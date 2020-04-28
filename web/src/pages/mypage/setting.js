@@ -50,10 +50,11 @@ export default props => {
         }
       })
     }
-
+    //파일을 배열 버퍼로 읽는 최신 약속 기반 API입니다
     reader.readAsArrayBuffer(file)
     // reader.readAsDataURL(file)
 
+    //오리엔테이션 뽑아내는 함수
     function getOrientation(buffer) {
       var view = new DataView(buffer)
       if (view.getUint16(0, false) !== 0xffd8) return -2
@@ -145,6 +146,7 @@ export default props => {
     reader.onload = async () => {
       if (reader.result) {
         const arrayBuffer = reader.result
+        //createObjectURL 주어진 객체를 가리키는 URL을 DOMString으로 반환합니다
         const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(file)
         const img = new Image()
         img.src = cacheURL

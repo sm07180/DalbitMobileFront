@@ -26,6 +26,7 @@ export default props => {
   const [live, setLive] = useState(null)
   const [moreState, setMoreState] = useState(false)
   //---------------------------------------------------------------------
+
   //fetch 사용자검색
   async function fetchMember(query, next) {
     if (query === undefined) return
@@ -38,27 +39,34 @@ export default props => {
         records: 12
       }
     })
-    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-      if (res.data.list == false) {
-        if (!next) {
-          setMember(false)
-        }
-        setMoreState(false)
-      } else {
-        if (next) {
-          setMoreState(true)
-          setNextMember(res.data.list)
+    if (query.length > 1) {
+      if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+        if (res.data.list == false) {
+          if (!next) {
+            setMember(false)
+          }
+          setMoreState(false)
         } else {
-          setMember(res.data.list)
-          fetchMember(query, 'next')
+          if (next) {
+            setMoreState(true)
+            setNextMember(res.data.list)
+          } else {
+            setMember(res.data.list)
+            fetchMember(query, 'next')
+          }
         }
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
       }
-    } else {
+    } else if (query.length < 2) {
       context.action.alert({
-        msg: res.message
+        msg: '검색어를 두 글자 이상 입력해주세요'
       })
     }
   }
+
   //fetch (라이브검색)
   async function fetchLive(query) {
     if (query === undefined) return
@@ -110,10 +118,11 @@ export default props => {
 
   const showMoreList = () => {
     setMember(member.concat(nextMember))
-    console.log('query', query)
+    // console.log('query', query)
     fetchMember(query, 'next')
   }
   //---------------------------------------------------------------------
+  console.log()
   return (
     <Content>
       <Room />

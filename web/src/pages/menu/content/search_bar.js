@@ -1,7 +1,7 @@
 /**
  * @title 검색바
  */
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 //hooks
 import useChange from 'components/hooks/useChange'
@@ -12,6 +12,7 @@ export default props => {
   //---------------------------------------------------------------------
   //hooks
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const [filter, setFilter] = useState('')
   //update
   function update(mode) {
     switch (true) {
@@ -21,6 +22,10 @@ export default props => {
   }
   //handleKeyPress
   const handleKeyPress = e => {
+    const {currentTarget} = e
+    if (currentTarget.value.length < 2) {
+      return
+    }
     if (e.key === 'Enter') {
       props.update({search: changes})
     }
