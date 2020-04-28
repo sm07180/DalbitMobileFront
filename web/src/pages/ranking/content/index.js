@@ -17,6 +17,10 @@ import RankList from './rankList'
 import Figure from './Figure'
 import NoResult from 'components/ui/noResult'
 import Header from 'components/ui/header'
+import LayerPopup from './layer_popup'
+
+//static
+import iconQ from '../static/ic_question.svg'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['전일', '주간', '월간']
@@ -37,8 +41,25 @@ export default props => {
   const [dateType, setDateType] = useState(1)
   const [list, setList] = useState(-1)
   const [nextList, setNextList] = useState(false)
+  const [popup, setPopup] = useState(false)
   //const [moreState, setMoreState] = useState(false)
   const [myRank, setMyRank] = useState('-')
+
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
+  useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/rank/#layer')
+      }
+    }
+  }, [popup])
 
   //---------------------------------------------------------------------
   //map
@@ -78,22 +99,6 @@ export default props => {
 
   const creatMyRank = () => {
     const {profImg, level, nickNm, memNo} = context.profile
-    // return (
-    //   <div className="my-rank">
-    //     <h3>
-    //       <span>{myRank}</span>
-    //     </h3>
-    //     <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
-    //     <div
-    //       onClick={() => {
-    //         window.location.href = `/menu/profile`
-    //       }}>
-    //       <strong>Lv {level}</strong>
-    //       <p>{nickNm}</p>
-    //     </div>
-    //   </div>
-    // )
-
     return (
       <div className="my-rank">
         <div className="figure-wrap">
@@ -107,6 +112,9 @@ export default props => {
             Lv {level} {nickNm}
           </span>
         </div>
+        <button className="rank-info-btn" onClick={() => setPopup(popup ? false : true)}>
+          <img src={iconQ} alt="랭킹 산정 방법" />
+        </button>
       </div>
     )
   }
@@ -201,8 +209,12 @@ export default props => {
     } else {
       fetch(rankType, dateType)
     }
+
+    window.addEventListener('popstate', popStateEvent)
+
     return () => {
       currentPage = 1
+      window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
 
@@ -228,6 +240,8 @@ export default props => {
       </div>
       {context.profile && creatMyRank()}
       {creatResult()}
+
+      {popup && <LayerPopup setPopup={setPopup} />}
     </Contents>
   )
 }
@@ -296,6 +310,14 @@ const Contents = styled.div`
     height: 88px;
     border-radius: 24px;
     background-image: linear-gradient(to right, #632beb, #8556f6);
+
+    .rank-info-btn {
+      position: absolute;
+      right: 9px;
+      top: 3px;
+      width: 30px;
+      height: 30px;
+    }
 
     .figure-wrap {
       position: relative;
