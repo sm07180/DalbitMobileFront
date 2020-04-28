@@ -319,6 +319,7 @@ const Content = styled.div`
         }
       }
       p {
+        width: calc(100% - 46px);
         color: #424242;
         font-size: 14px;
         line-height: 18px;
