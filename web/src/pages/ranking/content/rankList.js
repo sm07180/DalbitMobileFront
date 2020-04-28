@@ -183,6 +183,7 @@ const RankList = styled.ul`
           width: 26px;
           margin-top: -10px;
           line-height: 26px;
+          height: 26px;
           font-size: 10px;
         }
 
