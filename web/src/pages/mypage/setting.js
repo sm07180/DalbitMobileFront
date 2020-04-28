@@ -57,20 +57,37 @@ export default props => {
     //오리엔테이션 뽑아내는 함수
     function getOrientation(buffer) {
       var view = new DataView(buffer)
-      if (view.getUint16(0, false) !== 0xffd8) return -2
+      if (view.getUint16(0, false) !== 0xffd8) {
+        return {
+          buffer: view.buffer,
+          orientation: -2
+        }
+      }
       var length = view.byteLength,
         offset = 2
       while (offset < length) {
         var marker = view.getUint16(offset, false)
         offset += 2
         if (marker === 0xffe1) {
-          if (view.getUint32((offset += 2), false) !== 0x45786966) return -1
+          if (view.getUint32((offset += 2), false) !== 0x45786966) {
+            return {
+              buffer: view.buffer,
+              orientation: -1
+            }
+          }
           var little = view.getUint16((offset += 6), false) === 0x4949
           offset += view.getUint32(offset + 4, little)
           var tags = view.getUint16(offset, little)
           offset += 2
           for (var i = 0; i < tags; i++) {
-            if (view.getUint16(offset + i * 12, little) === 0x0112) return view.getUint16(offset + i * 12 + 8, little)
+            if (view.getUint16(offset + i * 12, little) === 0x0112) {
+              const orientation = view.getUint16(offset + i * 12 + 8, little)
+              view.setUint16(offset + i * 12 + 8, 1, little)
+              return {
+                buffer: view.buffer,
+                orientation
+              }
+            }
           }
         } else if ((marker & 0xff00) !== 0xff00) {
           break
@@ -78,7 +95,11 @@ export default props => {
           offset += view.getUint16(offset, false)
         }
       }
-      return -1
+
+      return {
+        buffer: view.buffer,
+        orientation: -1
+      }
     }
 
     //캔버스로 그려서 dataurl 로 뽑아내는 함수
@@ -145,14 +166,17 @@ export default props => {
 
     reader.onload = async () => {
       if (reader.result) {
-        const arrayBuffer = reader.result
+        const originalBuffer = reader.result
+        const {buffer, orientation} = getOrientation(originalBuffer)
+        const blob = new Blob([buffer])
         //createObjectURL 주어진 객체를 가리키는 URL을 DOMString으로 반환합니다
-        const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(file)
+        const originalCacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(file)
+        const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
 
         setPhotoUploading(true)
-        setTempPhoto(cacheURL)
+        setTempPhoto(originalCacheURL)
 
         img.onload = async () => {
           const limitSize = 1280
@@ -160,14 +184,9 @@ export default props => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-          if (isAndroid()) {
-            const encodedDataAsBase64 = drawAdjustImage(img)
-            uploadImageToServer(encodedDataAsBase64)
-          } else {
-            const orientation = getOrientation(arrayBuffer)
-            const encodedDataAsBase64 = drawAdjustImage(img, orientation)
-            uploadImageToServer(encodedDataAsBase64)
-          }
+
+          const encodedDataAsBase64 = drawAdjustImage(img, orientation)
+          uploadImageToServer(encodedDataAsBase64)
         }
 
         async function uploadImageToServer(data) {
