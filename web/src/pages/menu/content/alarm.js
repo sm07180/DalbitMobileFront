@@ -120,7 +120,7 @@ export default props => {
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/mypage/${myMemNo}/wallet`
+                      window.location.href = `/mypage/${memNo}`
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
