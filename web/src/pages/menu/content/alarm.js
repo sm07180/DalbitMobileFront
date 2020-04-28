@@ -147,7 +147,7 @@ export default props => {
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/mypage/${MemNo}/fanboard`
+                      window.location.href = `/mypage/${memNo}/fanboard`
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
