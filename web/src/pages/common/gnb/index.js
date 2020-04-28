@@ -67,17 +67,19 @@ export default props => {
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
         </div>
         {logoChange ? (
-          <div
-            className="mic-btn"
-            onClick={() => {
-              if (!broadcastBtnActive) {
-                RoomMake(globalCtx)
-                setBroadcastBtnActive(true)
-                setTimeout(() => setBroadcastBtnActive(false), 3000)
-              }
-            }}>
-            <img src={Mic} />
-          </div>
+          <MicWrap>
+            <div
+              className="mic-btn"
+              onClick={() => {
+                if (!broadcastBtnActive) {
+                  RoomMake(globalCtx)
+                  setBroadcastBtnActive(true)
+                  setTimeout(() => setBroadcastBtnActive(false), 3000)
+                }
+              }}>
+              <img src={Mic} />
+            </div>
+          </MicWrap>
         ) : (
           <img className="logo" src={Logo} onClick={reLoad} />
         )}
@@ -100,6 +102,7 @@ const HiddenBg = styled.div`
 `
 
 const GnbWrap = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,8 +136,24 @@ const GnbWrap = styled.div`
     justify-content: center;
     align-items: center;
     width: 80px;
-    height: 40px;
+    height: 50px;
+
     border-radius: 27px;
     background: linear-gradient(#632beb, #4c13d5);
   }
+`
+const MicWrap = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 86px;
+  top: 4px;
+  left: 50%;
+  border-radius: 27px;
+  z-index: 50;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
 `
