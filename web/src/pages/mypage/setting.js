@@ -301,28 +301,45 @@ export default props => {
                 </label>
               </ProfileImg>
               <div className="nickname">
-                <NicknameInput ref={nicknameReference} autoComplete="off" value={nickname} onChange={changeNickname} />
+                <label htmlFor="nickName" className="input-label">
+                  닉네임
+                </label>
+                <NicknameInput
+                  id="nickName"
+                  ref={nicknameReference}
+                  autoComplete="off"
+                  value={nickname}
+                  onChange={changeNickname}
+                />
               </div>
+              <label className="input-label">아이디</label>
               <UserId>{`@${profile.memId}`}</UserId>
 
-              <PasswordWrap>
-                <PasswordTextWrap>
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                  <PasswordCircle />
-                </PasswordTextWrap>
+              {profile.memNo[0] === '1' && (
+                <>
+                  <label className="input-label">비밀번호</label>
+                  <PasswordWrap>
+                    <PasswordTextWrap>
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                      <PasswordCircle />
+                    </PasswordTextWrap>
 
-                <PasswordRedirectBtn>
-                  <a href="/password">비밀번호 변경</a>
-                </PasswordRedirectBtn>
-              </PasswordWrap>
+                    <PasswordRedirectBtn>
+                      <a href="/password">비밀번호 변경</a>
+                    </PasswordRedirectBtn>
+                  </PasswordWrap>
+                </>
+              )}
 
+              <label className="input-label">생년월일</label>
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
+              <label className="input-label">성별</label>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 <GenderTab
                   className={gender === 'm' ? '' : 'off'}
@@ -343,7 +360,7 @@ export default props => {
               <GenderAlertMsg>* 생년월일 수정은 고객센터로 문의해주세요.</GenderAlertMsg>
 
               <div className="msg-wrap">
-                <MsgTitle>프로필 메세지</MsgTitle>
+                <label className="input-label">프로필 메세지</label>
                 <MsgText value={profileMsg} onChange={changeMsg} />
               </div>
               <SaveBtn onClick={saveUpload}>저장</SaveBtn>
@@ -358,13 +375,17 @@ export default props => {
 const SaveBtn = styled.button`
   margin-top: 20px;
   width: 100%;
-  padding: 16px 0;
-  color: #fff;
-  text-align: center;
-  font-size: 16px;
   letter-spacing: -0.4px;
   background-color: #632beb;
   cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: #632beb;
+  color: #fff;
+  line-height: 44px;
+  font-size: 18px;
+  border-radius: 4px;
+  font-weight: bold;
 `
 
 const MsgText = styled.textarea`
@@ -380,6 +401,7 @@ const MsgText = styled.textarea`
   font-size: 14px;
   line-height: 20px;
   outline: none;
+  border-radius: 4px;
 `
 
 const MsgTitle = styled.div`
@@ -405,9 +427,33 @@ const GenderTab = styled.div`
   user-select: none;
   box-sizing: border-box;
   color: #616161;
+  border-radius: 4px 0 0 4px;
+
+  ::before {
+    display: inline-block;
+    width: 10px;
+    height: 16px;
+    margin-right: 5px;
+    background: url(${IMG_SERVER}/images/api/ico_male.svg) no-repeat center;
+    content: '';
+    vertical-align: top;
+    margin-top: 2px;
+  }
 
   & + & {
     border-left: 1px solid #bdbdbd;
+    border-radius: 0 4px 4px 0;
+
+    ::before {
+      display: inline-block;
+      width: 10px;
+      height: 16px;
+      margin-right: 5px;
+      background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
+      content: '';
+      vertical-align: top;
+      margin-top: 2px;
+    }
   }
 
   &.off {
@@ -418,8 +464,8 @@ const GenderTab = styled.div`
 const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 12px;
   border: 1px solid #bdbdbd;
+  border-radius: 4px;
   &.before > div {
     background-color: ${COLOR_MAIN};
     color: #fff;
@@ -440,12 +486,12 @@ const GenderWrap = styled.div`
 `
 
 const BirthDate = styled.div`
-  margin-top: 12px;
   padding: 9px 10px;
   background-color: #eee;
   box-sizing: border-box;
   color: #616161;
   cursor: not-allowed;
+  border-radius: 4px;
 `
 
 const PasswordRedirectBtn = styled.button`
@@ -457,6 +503,7 @@ const PasswordRedirectBtn = styled.button`
     color: #fff;
     padding: 11px 0;
     background-color: #9e9e9e;
+    border-radius: 4px;
   }
 `
 
@@ -480,29 +527,30 @@ const PasswordTextWrap = styled.div`
   box-sizing: border-box;
   padding-left: 18px;
   cursor: not-allowed;
+  border-radius: 4px;
 `
 
 const PasswordWrap = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  margin-top: 12px;
 `
 
 const UserId = styled.div`
-  margin-top: 12px;
   padding: 9px 10px;
   background-color: #eee;
   box-sizing: border-box;
   color: #616161;
   letter-spacing: -0.4px;
   cursor: not-allowed;
+  border-radius: 4px;
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
   border: 1px solid #bdbdbd;
   padding: 8px 10px;
   width: 100%;
+  border-radius: 4px;
 `
 
 const ProfileImg = styled.div`
@@ -576,6 +624,31 @@ const Content = styled.section`
     cursor: pointer;
     background-size: cover;
     background-position: center;
+  }
+
+  .input-label {
+    display: block;
+    width: 100%;
+    color: #424242;
+    font-size: 14px;
+    line-height: 16px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: bold;
+
+    &.require:after {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      font-weight: bold;
+      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
+      content: '';
+      vertical-align: bottom;
+    }
+
+    span {
+      font-size: 12px;
+    }
   }
 `
 const TopWrap = styled.div`
