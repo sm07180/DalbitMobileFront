@@ -154,12 +154,12 @@ export default props => {
                   </li>
                 )
                 break
-              case 5: // 공지 알림
+              case 5: // 스페셜 dj선정
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/customer/notice`
+                      window.location.href = `/`
                     }}>
                     <figure>
                       <img src={alarmIco} />
@@ -169,7 +169,23 @@ export default props => {
                 )
                 break
 
-              case 36: //팬 레벨업
+              case 6: // 이벤트 페이지
+                return (
+                  <li
+                    key={index}
+                    // onClick={() => {
+                    //   window.location.href = `/customer/notice`
+                    // }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+
+              case 36: //DJ 레벨업(팬)
                 return (
                   <li
                     key={index}
@@ -185,7 +201,9 @@ export default props => {
               default:
                 return (
                   <li key={index}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
                     {textArea}
                   </li>
                 )
