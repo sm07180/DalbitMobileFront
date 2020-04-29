@@ -208,6 +208,10 @@ export default props => {
       if (window.location.hash === '') {
         window.history.pushState('layer', '', '/#layer')
       }
+    } else if (!popup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+      }
     }
   }, [popup])
 
