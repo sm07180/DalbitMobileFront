@@ -23,7 +23,6 @@ export default props => {
 
   const closePopup = () => {
     setPopup(false)
-    window.history.pushState('layer', '', '/rank')
   }
 
   const wrapClick = e => {
@@ -39,7 +38,6 @@ export default props => {
 
   const applyClick = () => {
     setPopup(false)
-    window.history.pushState('layer', '', '/rank')
   }
 
   return (
