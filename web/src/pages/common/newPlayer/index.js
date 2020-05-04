@@ -33,12 +33,7 @@ export default props => {
             const res = await Api.splash()
             if (res.result === 'success') {
               if (res.data.roomState.cd === '4') {
-                context.action.alert({
-                  callback: () => {
-                    window.location.href = '/'
-                  },
-                  msg: '종료된 방송입니다^^^^..'
-                })
+                alert('종료된 방송입니다.')
               } else {
                 Hybrid('EnterRoom', '')
               }
