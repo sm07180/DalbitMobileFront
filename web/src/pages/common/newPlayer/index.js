@@ -28,7 +28,7 @@ export default props => {
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
         //
-        alert('데브테스트')
+
         if (__NODE_ENV === 'dev') {
           // const commonData = async obj => {
           //   const res = await Api.broad_list()
@@ -40,12 +40,9 @@ export default props => {
           //     }
           //   }
           setRoomNo(sessionStorage.getItem('room_no'))
-          const res = await Api.broad_join({data: {roomNo: RoomNo}})
-          const {code, result, data} = res
-          
-          alert('1ㄴ:', res)
-          alert('2:',res.data)
-          
+          setTimeout(() => {
+            alert('빌드테스트;', RoomNo)
+          }, 100)
         }
 
         break
