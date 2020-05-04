@@ -48,7 +48,10 @@ export default props => {
             context.action.alert({
             msg: '종료된 방송입니다0.',
             callback: () => {
-              window.location.href ='/'
+              sessionStorage.removeItem('room_no')
+              setTimeout(() => {
+                window.location.href ='/'
+              }, 100);
             }
           })
         }else {
