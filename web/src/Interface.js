@@ -249,8 +249,13 @@ export default () => {
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
-        if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        //  window.location.href = `/mypage/${mem_no}/`
+        mem_no = pushMsg.mem_no
+        if (mem_no !== undefined) {
+          window.location.href = `/mypage/${mem_no}/`
+        } else {
+          window.location.href = `/`
+        }
+
         break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
