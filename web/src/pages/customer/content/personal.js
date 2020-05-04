@@ -454,7 +454,8 @@ const ImgUploader = styled.div`
     display: inline-block;
     width: 78px;
     text-align: center;
-    padding: 10px 0;
+    height: 40px;
+    line-height: 40px;
     color: ${COLOR_MAIN};
     border-radius: 8px;
     border: 1px solid ${COLOR_MAIN};
