@@ -201,10 +201,10 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      alert('isLogin :' + isLogin)
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
-      alert('mem_no :' + pushMsg.mem_no)
+      // alert('isLogin :' + isLogin)
+      // alert('push_type :' + push_type)
+      // alert('room_no :' + pushMsg.room_no)
+      // alert('mem_no :' + pushMsg.mem_no)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
@@ -255,7 +255,6 @@ export default () => {
         } else {
           window.location.href = `/`
         }
-
         break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
