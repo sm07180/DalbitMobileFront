@@ -102,11 +102,12 @@ const App = () => {
           }
         } else if (customHeader['isFirst'] === 'N') {
           if (__NODE_ENV === 'dev') {
-            alert('토큰데이터', tokenInfo.data.authToken)
-            alert('어써토큰', authToken)
+            alert(tokenInfo.data.authToken)
+            alert(authToken)
             if (tokenInfo.data.authToken !== authToken) {
               //#토큰업데이트
               Hybrid('GetUpdateToken', tokenInfo.data)
+              alert('들어갔다')
             }
           }
 
