@@ -32,7 +32,7 @@ export default props => {
           const commonData = async obj => {
             const res = await Api.splash()
             if (res.result === 'success') {
-              alert(res.data.roomState.cdNm)
+              alert(res.data.roomState)
             }
           }
           commonData()
