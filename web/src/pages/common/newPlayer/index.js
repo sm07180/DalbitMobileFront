@@ -28,13 +28,13 @@ export default props => {
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
         //
         if (__NODE_ENV === 'dev') {
-          // const commonData = async obj => {
-          //   const res = await Api.splash()
-          //   if (res.result === 'success') {
-          //     setList(res.data)
-          //   }
-          // }
-          alert('체크')
+          const commonData = async obj => {
+            const res = await Api.splash()
+            if (res.result === 'success') {
+              alert('체크', res)
+            }
+          }
+          commonData()
           // commonData()
           // setTimeout(() => {
           //   if (list !== 4) {
