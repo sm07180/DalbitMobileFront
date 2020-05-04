@@ -111,12 +111,17 @@ export default props => {
       </BTN>
     )
   })
+  //close
 
   //------------------------------------------------------------
   return (
     <FixedBg className={allFalse === true ? 'on' : ''}>
       <div className="wrapper">
+        {context.mypageReport === true && (
+          <button className="fake" onClick={() => context.action.updateMypageReport(false)}></button>
+        )}
         <Container>
+          <button className="close" onClick={() => ClearReport()}></button>
           <div className="reportTitle"></div>
           <h2>신고</h2>
           <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
@@ -144,6 +149,7 @@ const FixedBg = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 24;
   .wrapper {
+    z-index: -1;
     width: 100vw;
     height: 100vh;
     position: relative;
@@ -155,6 +161,22 @@ const FixedBg = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+  }
+  .close {
+    display: block;
+    position: absolute;
+    top: -36px;
+    right: -6px;
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+  }
+  .fake {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
   }
 `
 const Container = styled.div`

@@ -96,9 +96,10 @@ function Notice(props) {
 
   const NoticeUrl = () => {
     const index = Store().noticePage.noticeIdx
-
+    console.log(index)
     if (index !== '') {
       history.push(`/customer/notice/${index}`)
+
       fetchData2()
     }
   }
@@ -162,6 +163,14 @@ function Notice(props) {
 
     fetchData2()
   }, [context.noticeIndexNum])
+  //////////////////////////////////
+  useEffect(() => {
+    if (Store().noticePage !== undefined) {
+      window.onpopstate = e => {
+        window.location.href = `/customer`
+      }
+    }
+  }, [])
 
   //--------------------------------------------------------
   return (

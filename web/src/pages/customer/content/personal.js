@@ -50,6 +50,7 @@ const Personal = props => {
   //useState
 
   //--------------------------------------------------------------------------
+
   //fetch
   async function fetchData(obj) {
     //console.log(JSON.stringify(obj, null, 1))
@@ -57,27 +58,31 @@ const Personal = props => {
     if (res.result === 'fail') {
       if (obj.data.email === undefined || obj.data.email === '') {
         context.action.alert({
-          msg: '이메일 형식을 확인해 주세요'
+          msg: '이메일 주소를 입력해주세요.'
         })
       } else if (obj.data.title === undefined || obj.data.title === '') {
         context.action.alert({
-          msg: '제목을 입력해 주세요'
+          msg: '문의 제목을 입력해주세요.'
         })
       } else if (obj.data.contents === undefined || obj.data.contents === '') {
         context.action.alert({
-          msg: '내용을 입력해 주세요'
+          msg: '문의 내용을 입력해주세요.'
         })
       } else if (obj.data.qnaType === 0) {
         context.action.alert({
-          msg: '문의 유형을 선택해 주세요'
+          msg: '문의 유형을 선택해주세요.'
         })
       }
-    } else if (res.result === 'success') {
+    } else if (res.result === 'success' && obj.data.email.match(/@/)) {
       context.action.alert({
         msg: '1:1문의를 접수하였습니다.',
         callback: () => {
           window.location.href = '/'
         }
+      })
+    } else if (!obj.data.email.match(/@/)) {
+      context.action.alert({
+        msg: '이메일 형식을 확인 후 다시 입력해주세요'
       })
     }
     console.log(res.message)
@@ -86,12 +91,27 @@ const Personal = props => {
   function update(mode) {
     switch (true) {
       case mode.cancel !== undefined: //------------------------------취소
-        context.action.alert({
-          msg: '취소되었습니다.'
+        context.action.confirm({
+          //콜백처리
+          callback: () => {
+            window.location.reload()
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {},
+          msg: '취소할 경우 작성 내용이 초기화됩니다. 취소하시겠습니까?'
         })
         break
       case mode.submit !== undefined: //------------------------------문의하기
-        fetchData({data: changes})
+        context.action.confirm({
+          //콜백처리
+          callback: () => {
+            fetchData({data: changes})
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {},
+          msg: '1:1 문의를 등록하시겠습니까?'
+        })
+
         break
       case mode.onChange !== undefined: //----------------------------상태변화
         //console.log(JSON.stringify(changes))
