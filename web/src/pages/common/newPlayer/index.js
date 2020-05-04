@@ -31,7 +31,7 @@ export default props => {
           const commonData = async obj => {
             const res = await Api.splash()
             if (res.result === 'success') {
-              setList(res.data.roomState)
+              setList(res.data)
               alert(res.data)
             }
           }
