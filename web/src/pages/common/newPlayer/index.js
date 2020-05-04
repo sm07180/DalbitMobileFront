@@ -10,12 +10,13 @@ import {Hybrid} from 'context/hybrid'
 // etc
 import Content from './content'
 
-export default (props) => {
+export default props => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
   //useState
   const [visible, setVisible] = useState(true)
+  const [list, setList] = useState([])
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
@@ -25,7 +26,29 @@ export default (props) => {
         context.action.updatePlayer(false)
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
-        Hybrid('EnterRoom', '')
+        //
+        if (__NODE_ENV === 'dev') {
+          const commonData = async obj => {
+            const res = await Api.splash()
+            if (res.result === 'success') {
+              setList(res.data.roomState)
+            }
+          }
+          commonData()
+          if (list !== 4) {
+            alert('방송진입')
+            setTimeout(() => {
+              Hybrid('EnterRoom', '')
+            }, 100)
+          } else if (list === 4) {
+            context.action.alert({
+              callback: () => {},
+              msg: '종료된 방송입니다..'
+            })
+          }
+          // rest
+        }
+
         break
       case mode.playerRemove !== undefined: //-------------------------방송방 제거
         setVisible(mode.playerRemove)
