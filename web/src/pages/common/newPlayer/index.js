@@ -32,7 +32,16 @@ export default props => {
           const commonData = async obj => {
             const res = await Api.splash()
             if (res.result === 'success') {
-              alert('check 1', res.data.roomState)
+              if (res.data.roomState.cd === '4') {
+                context.action.alert({
+                  callback: () => {
+                    window.location.href = '/'
+                  },
+                  msg: '종료된 방송입니다^^^^..'
+                })
+              } else {
+                Hybrid('EnterRoom', '')
+              }
             }
           }
           commonData()
