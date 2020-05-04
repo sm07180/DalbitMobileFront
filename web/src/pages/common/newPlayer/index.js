@@ -29,32 +29,19 @@ export default props => {
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
         //
         if (__NODE_ENV === 'dev') {
-          const commonData = async obj => {
-            const res = await Api.broad_list()
-            if (res.result === 'success') {
-              if (res.data.list.state === '4') {
-                alert(res.data.list.state, '종료된 방송입니다.')
-              } else {
-                Hybrid('EnterRoom', '')
-              }
-            }
-          }
-          commonData()
-          // commonData()
-          // setTimeout(() => {
-          //   if (list !== 4) {
-          //     alert('방송진입')
-          //     setTimeout(() => {
+          // const commonData = async obj => {
+          //   const res = await Api.broad_list()
+          //   if (res.result === 'success') {
+          //     if (res.data.list.state === '4') {
+          //       alert(res.data.list.state, '종료된 방송입니다.')
+          //     } else {
           //       Hybrid('EnterRoom', '')
-          //     }, 100)
-          //   } else if (list === 4) {
-          //     context.action.alert({
-          //       callback: () => {},
-          //       msg: '종료된 방송입니다^^^^..'
-          //     })
+          //     }
           //   }
-          // }, 200)
-          // rest
+
+          // const res = await Api.broad_join({data: {roomNo}})
+          // const {code, result, data} = res
+          alert(sessionStorage)
         }
 
         break
