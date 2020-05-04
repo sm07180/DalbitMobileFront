@@ -234,9 +234,13 @@ export default () => {
         if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
         break
       case '35': //-----------------마이페이지
-        mem_no = getMemNo('/')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        //  window.location.href = `/mypage/${mem_no}/`
+        //mem_no = getMemNo('/')
+        //if (isLogin) window.location.href = `/mypage/${mem_no}/`
+        if (mem_no) {
+          window.location.href = `/mypage/${mem_no}/`
+        } else {
+          window.location.href = `/`
+        }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         if (isLogin) window.location.href = `/mypage/${mem_no}/`
