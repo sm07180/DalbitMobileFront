@@ -20,6 +20,7 @@ const Pay = React.lazy(() => import('pages/pay'))
 const Store = React.lazy(() => import('pages/store'))
 const Customer = React.lazy(() => import('pages/customer'))
 const Setting = React.lazy(() => import('pages/setting'))
+const Event = React.lazy(() => import('pages/event'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
@@ -49,6 +50,7 @@ export default () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
+        <Route exact path="/event" component={Event} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
