@@ -45,18 +45,21 @@ export default props => {
           const {code, result, data} = res
   
           if (code === '-3') {
-            context.action.alert({
-            msg: '종료된 방송입니다0.',
-            callback: () => {
-              sessionStorage.removeItem('room_no')
-              setTimeout(() => {
-                window.location.href ='/'
-              }, 100);
-            }
-          })
-        }else {
-          Hybrid('EnterRoom', '')
-        }
+            alert("종료다");
+          }
+        //   if (code === '-3') {
+        //     context.action.alert({
+        //     msg: '종료된 방송입니다0.',
+        //     callback: () => {
+        //       sessionStorage.removeItem('room_no')
+        //       setTimeout(() => {
+        //         window.location.href ='/'
+        //       }, 100);
+        //     }
+        //   })
+        // }else {
+        //   Hybrid('EnterRoom', '')
+        // }
       }
             
         
