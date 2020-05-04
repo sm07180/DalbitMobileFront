@@ -33,7 +33,7 @@ export default props => {
             const res = await Api.broad_list()
             if (res.result === 'success') {
               if (res.data.list.state === '4') {
-                alert('종료된 방송입니다.')
+                alert(res.data.list.state, '종료된 방송입니다.')
               } else {
                 Hybrid('EnterRoom', '')
               }
