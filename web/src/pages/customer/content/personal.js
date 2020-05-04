@@ -53,39 +53,24 @@ const Personal = props => {
 
   //fetch
   async function fetchData(obj) {
-    //console.log(JSON.stringify(obj, null, 1))
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
-      if (obj.data.email === undefined || obj.data.email === '') {
-        context.action.alert({
-          msg: '이메일 주소를 입력해주세요.'
-        })
-      } else if (obj.data.title === undefined || obj.data.title === '') {
-        context.action.alert({
-          msg: '문의 제목을 입력해주세요.'
-        })
-      } else if (obj.data.contents === undefined || obj.data.contents === '') {
-        context.action.alert({
-          msg: '문의 내용을 입력해주세요.'
-        })
-      } else if (obj.data.qnaType === 0) {
-        context.action.alert({
-          msg: '문의 유형을 선택해주세요.'
-        })
-      }
-    } else if (res.result === 'success' && obj.data.email.match(/@/)) {
-      context.action.alert({
-        msg: '1:1문의를 접수하였습니다.',
+    } else if (res.result === 'success') {
+      context.action.confirm({
+        msg: '1:1 문의를 등록하시겠습니까?',
         callback: () => {
-          window.location.href = '/'
+          //alert
+          setTimeout(() => {
+            context.action.alert({
+              msg: '1:1 문의 등록을 완료하였습니다.',
+              callback: () => {
+                window.location.href = '/'
+              }
+            })
+          }, 0)
         }
       })
-    } else if (!obj.data.email.match(/@/)) {
-      context.action.alert({
-        msg: '이메일 형식을 확인 후 다시 입력해주세요'
-      })
     }
-    console.log(res.message)
   }
   //update
   function update(mode) {
@@ -102,16 +87,40 @@ const Personal = props => {
         })
         break
       case mode.submit !== undefined: //------------------------------문의하기
-        context.action.confirm({
-          //콜백처리
-          callback: () => {
-            fetchData({data: changes})
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {},
-          msg: '1:1 문의를 등록하시겠습니까?'
-        })
-
+        let submitObj = {data: changes}
+        var validationCheck = false
+        var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+        if (submitObj.data.qnaType === 0) {
+          context.action.alert({
+            msg: '문의 유형을 선택해주세요.'
+          })
+          return false
+        } else if (submitObj.data.email === undefined || submitObj.data.email === '') {
+          context.action.alert({
+            msg: '이메일 주소를 입력해주세요.'
+          })
+          return false
+        } else if (!submitObj.data.email.match(regExp)) {
+          context.action.alert({
+            msg: '이메일 형식을 확인 후 다시 입력해주세요'
+          })
+          return false
+        } else if (submitObj.data.title === undefined || submitObj.data.title === '') {
+          context.action.alert({
+            msg: '문의 제목을 입력해주세요.'
+          })
+          return false
+        } else if (submitObj.data.contents === undefined || submitObj.data.contents === '') {
+          context.action.alert({
+            msg: '문의 내용을 입력해주세요.'
+          })
+          return false
+        } else {
+          validationCheck = true
+        }
+        if (validationCheck) {
+          fetchData({data: changes})
+        }
         break
       case mode.onChange !== undefined: //----------------------------상태변화
         //console.log(JSON.stringify(changes))
