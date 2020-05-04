@@ -41,7 +41,7 @@ export default props => {
           setRoomNo(sessionStorage.getItem('room_no'))
           const res = await Api.broad_join({data: {roomNo: RoomNo}})
           const {code, result, data} = res
-          alert('1:', res)
+          alert('1ㄴ:', res)
           alert('2:',res.data)
           
         }
