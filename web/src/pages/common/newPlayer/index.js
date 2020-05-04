@@ -49,6 +49,7 @@ export default props => {
                 msg: '종료된 방송입니다.',
                 callback: () => {
                   sessionStorage.removeItem('room_no')
+                  context.action.updatePlayer(false)
                   setTimeout(() => {
                     window.location.href = '/'
                   }, 100)
