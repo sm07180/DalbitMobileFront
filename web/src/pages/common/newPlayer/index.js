@@ -9,6 +9,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 // etc
 import Content from './content'
+import Api from 'context/api'
 
 export default props => {
   //---------------------------------------------------------------------
