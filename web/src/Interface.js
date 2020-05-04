@@ -236,7 +236,7 @@ export default () => {
       case '35': //-----------------마이페이지
         //mem_no = getMemNo('/')
         //if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        alert(mem_no)
+        mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
           window.location.href = `/mypage/${mem_no}/`
         } else {
