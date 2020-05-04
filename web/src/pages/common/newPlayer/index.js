@@ -35,17 +35,19 @@ export default props => {
             }
           }
           commonData()
-          if (list !== 4) {
-            alert('방송진입')
-            setTimeout(() => {
-              Hybrid('EnterRoom', '')
-            }, 100)
-          } else if (list === 4) {
-            context.action.alert({
-              callback: () => {},
-              msg: '종료된 방송입니다..'
-            })
-          }
+          setTimeout(() => {
+            if (list !== 4) {
+              alert('방송진입')
+              setTimeout(() => {
+                Hybrid('EnterRoom', '')
+              }, 100)
+            } else if (list === 4) {
+              context.action.alert({
+                callback: () => {},
+                msg: '종료된 방송입니다^^^^..'
+              })
+            }
+          }, 200)
           // rest
         }
 
