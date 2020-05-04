@@ -17,7 +17,7 @@ export default props => {
   const context = useContext(Context)
   //useState
   const [visible, setVisible] = useState(true)
-  const [list, setList] = useState([])
+  const [RoomNo, setRoomNo] = useState([])
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
@@ -38,10 +38,11 @@ export default props => {
           //       Hybrid('EnterRoom', '')
           //     }
           //   }
-
-          // const res = await Api.broad_join({data: {roomNo}})
-          // const {code, result, data} = res
-          alert(sessionStorage.getItem('room_no'))
+          setRoomNo(sessionStorage.getItem('room_no'))
+          const res = await Api.broad_join({data: {roomNo: RoomNo}})
+          const {code, result, data} = res
+          alert(res.data)
+          
         }
 
         break
