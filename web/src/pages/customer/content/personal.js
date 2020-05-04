@@ -445,16 +445,19 @@ const ImgUploader = styled.div`
   text-align: left;
   .urltext {
     width: 100%;
+    padding: 0 10px;
     background-color: #f5f5f5;
     font-size: 14px;
+    height: 40px;
+    line-height: 40px;
     color: #757575;
     transform: skew(-0.03deg);
-    padding: 12px 0 12px 10px !important;
+    /* padding: 12px 0 12px 10px !important; */
     letter-spacing: -0.42px;
     overflow-x: hidden;
     text-overflow: ellipsis;
     @media (max-width: ${WIDTH_MOBILE}) {
-      padding: 12px 0 12px 6px !important;
+      /* padding: 12px 0 12px 6px !important; */
     }
   }
   #imgUpload {
@@ -471,7 +474,8 @@ const ImgUploader = styled.div`
     display: inline-block;
     width: 78px;
     text-align: center;
-    padding: 10px 0;
+    height: 40px;
+    line-height: 40px;
     color: ${COLOR_MAIN};
     border-radius: 8px;
     border: 1px solid ${COLOR_MAIN};
@@ -536,9 +540,11 @@ const CoinCurrentStatus = styled.div`
 const PersonalTypeBtn = styled.button`
   position: relative;
   width: 114px;
+  height: 36px;
+  line-height: 36px;
   border-radius: 20px;
   border: solid 1px #9e9e9e;
-  padding: 7px 0;
+  /* padding: 7px 0; */
   font-size: 15px;
   text-align: center;
   color: #616161;
