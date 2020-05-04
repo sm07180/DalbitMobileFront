@@ -40,8 +40,23 @@ export default props => {
           //     }
           //   }
           let roomNo = sessionStorage.getItem('room_no')
-          alert(roomNo)
+
+          const res = await Api.broad_join({data: {roomNo}})
+          const {code, result, data} = res
+  
+          if (code === '-3') {
+            context.action.alert({
+            msg: '종료된 방송입니다.',
+            callback: () => {
+              window.location.href ='/'
+            }
+          })
+        }else {
+          Hybrid('EnterRoom', '')
         }
+      }
+            
+        
 
         break
       case mode.playerRemove !== undefined: //-------------------------방송방 제거
