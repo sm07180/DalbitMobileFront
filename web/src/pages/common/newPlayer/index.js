@@ -39,10 +39,8 @@ export default props => {
           //       Hybrid('EnterRoom', '')
           //     }
           //   }
-          setRoomNo(sessionStorage.getItem('room_no'))
-          setTimeout(() => {
-            alert(RoomNo)
-          }, 200)
+          let roomNo = sessionStorage.getItem('room_no')
+          alert(roomNo)
         }
 
         break
