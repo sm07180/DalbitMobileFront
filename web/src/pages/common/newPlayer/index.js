@@ -30,9 +30,9 @@ export default props => {
         //
         if (__NODE_ENV === 'dev') {
           const commonData = async obj => {
-            const res = await Api.splash()
+            const res = await Api.broad_list()
             if (res.result === 'success') {
-              if (res.data.roomState.cd === '4') {
+              if (res.data.list.state === '4') {
                 alert('종료된 방송입니다.')
               } else {
                 Hybrid('EnterRoom', '')
