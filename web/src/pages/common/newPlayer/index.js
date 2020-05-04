@@ -40,29 +40,26 @@ export default props => {
           //     }
           //   }
           let roomNo = sessionStorage.getItem('room_no')
+          async function commonJoin() {
+            const res = await Api.broad_join({data: {roomNo}})
+            const {code, result, data} = res
 
-          const res = await Api.broad_join({data: {roomNo}})
-          const {code, result, data} = res
-  
-          if (code === '-3') {
-            alert("종료다");
+            if (code === '-3') {
+              context.action.alert({
+                msg: '종료된 방송입니다.',
+                callback: () => {
+                  sessionStorage.removeItem('room_no')
+                  setTimeout(() => {
+                    window.location.href = '/'
+                  }, 100)
+                }
+              })
+            } else {
+              Hybrid('EnterRoom', '')
+            }
           }
-        //   if (code === '-3') {
-        //     context.action.alert({
-        //     msg: '종료된 방송입니다0.',
-        //     callback: () => {
-        //       sessionStorage.removeItem('room_no')
-        //       setTimeout(() => {
-        //         window.location.href ='/'
-        //       }, 100);
-        //     }
-        //   })
-        // }else {
-        //   Hybrid('EnterRoom', '')
-        // }
-      }
-            
-        
+          commonJoin()
+        }
 
         break
       case mode.playerRemove !== undefined: //-------------------------방송방 제거
