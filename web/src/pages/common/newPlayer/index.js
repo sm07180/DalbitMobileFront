@@ -41,8 +41,8 @@ export default props => {
           //   }
           setRoomNo(sessionStorage.getItem('room_no'))
           setTimeout(() => {
-            alert('빌드테스트;', RoomNo)
-          }, 100)
+            alert(RoomNo)
+          }, 200)
         }
 
         break
