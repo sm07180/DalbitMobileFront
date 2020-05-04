@@ -46,7 +46,7 @@ export default props => {
   
           if (code === '-3') {
             context.action.alert({
-            msg: '종료된 방송입니다.',
+            msg: '종료된 방송입니다0.',
             callback: () => {
               window.location.href ='/'
             }
