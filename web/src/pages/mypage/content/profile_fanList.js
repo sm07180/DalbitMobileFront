@@ -168,6 +168,17 @@ export default props => {
   }, [select])
   // console.log(starInfo)
   //------------------------------------------------------------
+  useEffect(() => {
+    window.onpopstate = e => {
+      if (name === '팬 랭킹') {
+        context.action.updateClose(false)
+      } else if (name === '팬') {
+        context.action.updateCloseFanCnt(false)
+      } else if (name === '스타') {
+        context.action.updateCloseStarCnt(false)
+      }
+    }
+  }, [])
   return (
     <>
       <HoleWrap>
