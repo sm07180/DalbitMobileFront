@@ -101,14 +101,9 @@ const App = () => {
             }
           }
         } else if (customHeader['isFirst'] === 'N') {
-          if (__NODE_ENV === 'dev') {
-            alert(tokenInfo.data.authToken)
-            alert(authToken)
-            if (tokenInfo.data.authToken !== authToken) {
-              //#토큰업데이트
-              Hybrid('GetUpdateToken', tokenInfo.data)
-              alert('들어갔다')
-            }
+          if (tokenInfo.data.authToken !== authToken) {
+            //#토큰업데이트
+            Hybrid('GetUpdateToken', tokenInfo.data)
           }
 
           // ?webview=new 형태로 이루어진 player종료
