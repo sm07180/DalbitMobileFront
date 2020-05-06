@@ -84,13 +84,15 @@ const Container = styled.div`
     }
   }
   & .otherbtn {
+    margin-top: 20px;
     position: relative;
     width: 100%;
     display: block;
     padding: 19px 10px;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: 700;
     letter-spacing: -0.5px;
-    color: #7c4dec;
+    color: #9e9e9e;
     text-align: left;
     & span {
       position: absolute;
