@@ -122,14 +122,17 @@ export default () => {
         sessionStorage.removeItem('room_active')
         break
       case 'native-google-login': //-------------------------Google 로그인
-        context.action.alert(event.detail)
+        if (__NODE_ENV === 'dev') {
+          alert(JSON.stringify(event.detail, null, 1))
+          context.action.alert({msg: event.detail})
+        }
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
          * @example debug({title:'타이틀내용',msg:'메시지내용', callback: () => { alert('test')      }})
          */
-        context.action.alert(detail)
+        //context.action.alert(detail)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
