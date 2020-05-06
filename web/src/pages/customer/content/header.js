@@ -7,7 +7,7 @@ import closeBtn from './static/ic_back.svg'
 export default props => {
   const history = useHistory()
   const goBack = () => {
-    history.push(`/`)
+    window.history.back()
   }
 
   return (
