@@ -132,6 +132,7 @@ export default (props) => {
   }
 
   const fetchSocialData = async (vendor) => {
+    const customHeader = JSON.parse(Api.customHeader)
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -140,18 +141,26 @@ export default (props) => {
       setAppleAlert(false)
     }
 
-    const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
-      method: 'get',
-      headers: {
-        authToken: Api.authToken,
-        'custom-header': Api.customHeader,
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    if(vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])){
+      if(customHeader['os'] === OS_TYPE['Android']) {
+          window.android.openGoogleSignIn();
+      }else if(customHeader['os'] === OS_TYPE['IOS']){
+          webkit.messageHandlers.openGoogleSignIn.postMessage("");
       }
-    })
+    }else{
+        const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
+            method: 'get',
+            headers: {
+                authToken: Api.authToken,
+                'custom-header': Api.customHeader,
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            }
+        })
 
-    if (res.status === 200) {
-      const redirectUrl = await res.text()
-      return (window.location.href = `${redirectUrl}`)
+        if (res.status === 200) {
+            const redirectUrl = await res.text()
+            return (window.location.href = `${redirectUrl}`)
+        }
     }
   }
 
@@ -246,7 +255,11 @@ export default (props) => {
                   <img className="icon" src={naverLogo} />
                 </button>
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon" src={kakaoLogo} />
+                    <img className="icon" src={kakaoLogo} />
+                </button>
+
+                <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
+                    <img className="icon" src={googleLogo} />
                 </button>
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
