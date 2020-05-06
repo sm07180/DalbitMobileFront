@@ -121,6 +121,9 @@ export default () => {
         sessionStorage.removeItem('room_no')
         sessionStorage.removeItem('room_active')
         break
+      case 'native-google-login': //-------------------------Google 로그인
+        context.action.alert(event.detail)
+        break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
