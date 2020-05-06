@@ -257,7 +257,6 @@ export default (props) => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                     <img className="icon" src={kakaoLogo} />
                 </button>
-
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                 </button>
