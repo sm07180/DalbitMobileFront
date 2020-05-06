@@ -73,7 +73,7 @@ function Notice(props) {
     }
   }
   //api----디테일스
-  async function fetchData2() {
+  async function fetchDataDetail() {
     const res = await Api.notice_list_detail({
       params: {
         noticeIdx: details
@@ -96,11 +96,11 @@ function Notice(props) {
 
   const NoticeUrl = () => {
     const index = Store().noticePage.noticeIdx
-    console.log(index)
+
     if (index !== '') {
       history.push(`/customer/notice/${index}`)
 
-      fetchData2()
+      fetchDataDetail()
     }
   }
   //set type select
@@ -144,7 +144,7 @@ function Notice(props) {
   const IntTime = parseInt(timestamp)
 
   useEffect(() => {
-    async function fetchData2() {
+    async function fetchDataDetail() {
       const res = await Api.notice_list_detail({
         params: {
           noticeIdx: num
@@ -161,7 +161,7 @@ function Notice(props) {
       }
     }
 
-    fetchData2()
+    fetchDataDetail()
   }, [context.noticeIndexNum])
   //////////////////////////////////
   useEffect(() => {
