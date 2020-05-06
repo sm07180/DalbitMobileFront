@@ -257,9 +257,11 @@ export default (props) => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                     <img className="icon" src={kakaoLogo} />
                 </button>
+                {__NODE_ENV === 'dev' && (
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                 </button>
+                )}
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
