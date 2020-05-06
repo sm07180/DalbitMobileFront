@@ -122,7 +122,10 @@ export default () => {
         sessionStorage.removeItem('room_active')
         break
       case 'native-google-login': //-------------------------Google 로그인
-        context.action.alert({msg: event.detail})
+        if (__NODE_ENV === 'dev') {
+          alert(JSON.stringify(event.detail, null, 1))
+          context.action.alert({msg: event.detail})
+        }
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
