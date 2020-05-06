@@ -291,7 +291,9 @@ const Detail = styled.section`
   margin-lefT:-5%;
   padding-bottom:1px;
   /* border-top: 1px solid ${COLOR_MAIN}; */
-
+  @media (min-width: 768px) {
+  padding:0 20px;
+}
   & > header {
     display: flex;
     justify-content: space-between;
@@ -301,6 +303,7 @@ const Detail = styled.section`
       flex-wrap: wrap;
       flex-direction: column;
     }
+   
     & span:nth-child(1) {
       font-size: 16px;
       font-weight: 600;
