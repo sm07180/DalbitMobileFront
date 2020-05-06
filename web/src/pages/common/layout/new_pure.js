@@ -18,7 +18,7 @@ import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import closeBtn from 'pages/menu/static/ic_close.svg'
 
-const Layout = props => {
+const Layout = (props) => {
   const {logo_status} = props
 
   //context
@@ -43,7 +43,7 @@ const Layout = props => {
           <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
           <Logo>
             <NavLink to="/" exact>
-              <img src={`${IMG_SERVER}/images/api/logo_p_l.png`} className="logo" />
+              <img src="https://image.dalbitlive.com/images/api/logo_p_l_new.png" className="logo" />
             </NavLink>
           </Logo>
         </>

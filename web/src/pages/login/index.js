@@ -177,7 +177,7 @@ export default (props) => {
             <div>
               <img
                 className="logo"
-                src={`${IMG_SERVER}/images/api/logo_p_l.png`}
+                src="https://image.dalbitlive.com/images/api/logo_p_l_new.png"
                 onClick={() => {
                   if (!webview) {
                     window.location.href = '/'

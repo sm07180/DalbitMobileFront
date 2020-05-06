@@ -6,14 +6,14 @@ import {RoomMake} from 'context/room'
 
 // static image
 //import Logo from './static/logo@2x.png'
-import Logo from './static/logo_beta.png'
+import Logo from './static/logo_real.png'
 import Search from './static/ic_search.svg'
 import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng.svg'
 
-export default props => {
+export default (props) => {
   const {webview} = props
 
   if (webview && webview === 'new') {
@@ -29,10 +29,10 @@ export default props => {
   const reLoad = () => {
     window.location.href = '/'
   }
-  const moveToMenu = category => {
+  const moveToMenu = (category) => {
     return (window.location.href = `/menu/${category}`)
   }
-  const moveToLogin = category => {
+  const moveToLogin = (category) => {
     if (!token.isLogin) {
       return (window.location.href = '/login')
     }
