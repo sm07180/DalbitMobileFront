@@ -42,17 +42,18 @@ const Wrap = styled.section`
   & .accordion {
     color: #444;
     cursor: pointer;
-    padding: 2px 10px 19px 10px;
+    padding: 2px 10px 12px 10px;
     display: flex;
     align-items: center;
-    border-bottom: solid 1px #f5f5f5;
+    border-bottom: solid 1px #bdbdbd;
     outline: none;
     transition: background-color 0.6s ease;
   }
 
   & .accordion-title {
-    font-size: 16px;
-    color: #7c4dec;
+    font-size: 17px;
+    font-weight: 700;
+    color: #632beb;
     letter-spacing: -0.5px;
   }
 

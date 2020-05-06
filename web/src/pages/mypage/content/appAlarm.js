@@ -234,7 +234,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     min-height: 44px;
-    padding: 8px 0;
+    padding: 12px 0 12px 0;
     color: #616161;
     &.holeAlarm {
       h2 {
@@ -242,22 +242,23 @@ const Content = styled.div`
       }
     }
     h2 {
-      font-size: 14px;
+      font-size: 16px;
       color: #424242;
-      font-weight: normal;
+      font-weight: 600;
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
       &.on {
         font-weight: 600;
-        color: #424242;
+        color: #000;
+        font-size: 18px;
       }
     }
     button {
       position: absolute;
       top: 50%;
       right: 0;
-      width: 44px;
-      height: 44px;
+      width: 50px;
+      height: 50px;
       background: url(${alarmOff}) no-repeat center center / cover;
       transform: translateY(-50%);
       &.on {
@@ -265,11 +266,11 @@ const Content = styled.div`
       }
     }
     p {
-      margin-top: 14px;
-      color: #757575;
-      font-size: 12px;
+      margin-top: 8px;
+      color: #616161;
+      font-size: 13px;
       line-height: 1.08;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.5px;
       text-align: left;
       transform: skew(-0.03deg);
     }
