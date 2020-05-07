@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -59,6 +59,7 @@ export default (props) => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -207,10 +208,12 @@ export default (props) => {
     if (popup) {
       if (window.location.hash === '') {
         window.history.pushState('layer', '', '/#layer')
+        setScrollY(window.scrollY)
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
         window.history.back()
+        setTimeout(() => window.scrollTo(0, scrollY))
       }
     }
   }, [popup])

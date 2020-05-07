@@ -55,7 +55,21 @@ export default props => {
     let sortlist = store.liveSortList
     if (sortlist === null) return
     return sortlist.list.map((live, index) => {
-      const {state, roomType, title, bjNickNm, reco, nowpeople, entryCnt, newby, likeCnt, bgImg, roomNo, bjProfImg, gstProfImg} = live
+      const {
+        state,
+        roomType,
+        title,
+        bjNickNm,
+        reco,
+        nowpeople,
+        entryCnt,
+        newby,
+        likeCnt,
+        bgImg,
+        roomNo,
+        bjProfImg,
+        gstProfImg
+      } = live
       let mode = '해당사항없음'
       if (state === 1) mode = '1'
       if (state === 2) mode = '2'
@@ -165,7 +179,13 @@ export default props => {
         <CategoryInfo Info={categoryInfo} />
       </LiveFilter>
       <LiveWrap onWheel={handleOnWheel} ref={settingArea}>
-        <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide className="scrollCustom">
+        <Scrollbars
+          ref={scrollbars}
+          autoHeight
+          autoHeightMax={'100%'}
+          onUpdate={scrollOnUpdate}
+          autoHide
+          className="scrollCustom">
           {makeContents()}
         </Scrollbars>
       </LiveWrap>
