@@ -46,6 +46,7 @@ const GlobalProvider = (props) => {
   const [closePresent, setClosePresent] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
+  const [bannerCheck, setBannerCheck] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -214,6 +215,9 @@ const GlobalProvider = (props) => {
     },
     updatenoticeIndexNum: (num) => {
       setNoticeIndexNum(num)
+    },
+    updateBannerCheck: bool => {
+      setBannerCheck(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -243,7 +247,8 @@ const GlobalProvider = (props) => {
     closeStarCnt,
     closePresent,
     boardNumber,
-    noticeIndexNum
+    noticeIndexNum,
+    bannerCheck
   }
   return <Provider value={value}>{props.children}</Provider>
 }

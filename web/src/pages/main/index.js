@@ -3,6 +3,7 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -38,7 +39,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default (props) => {
+export default props => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -50,6 +51,7 @@ export default (props) => {
   //context
   const globalCtx = useContext(Context)
   const history = useHistory()
+  //const context = useContext(Context)
 
   // state
   const [initData, setInitData] = useState({})
@@ -73,7 +75,7 @@ export default (props) => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -93,7 +95,7 @@ export default (props) => {
       }
     })()
 
-    Api.splash().then((res) => {
+    Api.splash().then(res => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -106,7 +108,7 @@ export default (props) => {
     })
   }, [])
 
-  const fetchLiveList = async (reset) => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -196,7 +198,7 @@ export default (props) => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = (e) => {
+  const popStateEvent = e => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -248,6 +250,11 @@ export default (props) => {
 
   const goRank = () => {
     history.push(`/rank`, rankType)
+  }
+  //go event
+  const goEvent = () => {
+    globalCtx.action.updatenoticeIndexNum(`/customer/notice/3`)
+    history.push(`/customer/notice/3`)
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
@@ -314,7 +321,7 @@ export default (props) => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
-
+          <button className="event-section" onClick={() => goEvent()}></button>
           <div
             className="section"
             ref={StarSectionRef}
@@ -395,6 +402,14 @@ export default (props) => {
 }
 
 const Content = styled.div`
+  .event-section {
+    display: block;
+    width: calc(100% - 32px);
+    height: 65px;
+    margin: 25px 16px 16px 16px;
+    border-radius: 12px;
+    background: url(${IMG_SERVER}/images/api/mobile_200507.png) no-repeat center center / cover;
+  }
   .section {
     margin-top: 24px;
 
