@@ -87,7 +87,7 @@ function Notice(props) {
   //function---------------------------------------
   const GoNotice = () => {
     Store().action.updatenoticePage('')
-    window.location.href = '/customer'
+    //window.location.href = '/customer'
   }
   const typeActive = e => {
     const number = parseInt(e.target.value)
@@ -156,14 +156,15 @@ function Notice(props) {
         Store().action.updatenoticePage(num)
         setTimeout(() => {
           history.push(`/customer/notice/${num}`)
-        }, 50)
+        }, 10)
       } else if (res.result === 'fail') {
       }
     }
 
     fetchDataDetail()
   }, [context.noticeIndexNum])
-  //////////////////////////////////
+  console.log(typeof context.noticeIndexNum.split('/')[3])
+  ////////////////////////////////
   useEffect(() => {
     if (Store().noticePage !== undefined) {
       window.onpopstate = e => {
@@ -171,6 +172,11 @@ function Notice(props) {
       }
     }
   }, [])
+  useEffect(() => {
+    if (history.location.pathname.split('/')[4] === 'undefined') {
+      history.push(`/customer`)
+    }
+  }, [Store().noticePage])
 
   //--------------------------------------------------------
   return (

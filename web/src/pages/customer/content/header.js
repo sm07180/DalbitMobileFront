@@ -1,13 +1,20 @@
-import React from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 // static
 import closeBtn from './static/ic_back.svg'
-
+import {Store} from './index'
+import {Context} from 'context'
 export default props => {
   const history = useHistory()
+  const context = useContext(Context)
+
   const goBack = () => {
-    window.history.back()
+    if (context.noticeIndexNum.split('/')[3] !== undefined) {
+      window.location.href = '/'
+    } else {
+      window.history.back()
+    }
   }
 
   return (
