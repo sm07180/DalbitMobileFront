@@ -739,6 +739,7 @@ export default props => {
                 placeholder="인증번호를 입력해주세요"
                 className="auth"
                 value={changes.auth}
+                autoComplete="off"
                 onChange={onLoginHandleChange}
               />
               <span className="timer">{timeText}</span>
