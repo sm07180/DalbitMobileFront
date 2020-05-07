@@ -28,9 +28,9 @@ const CheckWrap = styled.div`
     border: none;
     outline: none;
     cursor: pointer;
-    background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
+    background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center / cover;
     &.on {
-      background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+      background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center / cover;
     }
   }
 `
