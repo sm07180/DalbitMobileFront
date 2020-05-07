@@ -28,10 +28,13 @@ const Room = () => {
   //useState
   const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
+  const [itv, setItv] = useState(0)
   //interface
   Room.context = context
   Room.auth = auth
+  Room.itv = itv
   Room.roomInfo = roomInfo
+  Room.setItv = (num) => setItv(num)
   Room.setRoomInfo = (obj) => setRoomInfo(obj)
   Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
@@ -72,16 +75,36 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     //authCheck
     Hybrid('AuthCheck')
-    if (sessionRoomActive === 'N') return
+    //방입장중
+    if (sessionRoomActive === 'N') {
+      Room.context.action.alert({
+        msg: '방입장 대기중입니다.'
+      })
+      //return
+    }
+    sessionStorage.setItem('room_active', 'N')
     //##
+
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
         //재귀함수
+        Room.setItv(Room.itv + 1)
+        if (Room.itv * 80 >= 5000) {
+          Room.context.action.alert({
+            msg: '새로고침합니다.',
+            callback: () => {
+              // window.location.reload()
+              window.location.href = '/'
+            }
+          })
+          return
+        }
         RoomJoin(roomNo)
       }, 80)
       return
     }
+
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
@@ -138,6 +161,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setRoomInfo(data)
       Room.setAuth(false)
       //--
+      Room.setItv(0)
+      Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)

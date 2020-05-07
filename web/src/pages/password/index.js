@@ -352,6 +352,7 @@ export default props => {
               id="auth"
               placeholder="인증번호를 입력해주세요"
               className="auth"
+              autoComplete="off"
               value={changes.auth}
               onChange={onLoginHandleChange}
             />

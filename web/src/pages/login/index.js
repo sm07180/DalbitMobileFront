@@ -36,6 +36,7 @@ export default (props) => {
   const [password, setPassword] = useState('')
 
   const [appleAlert, setAppleAlert] = useState(false)
+  const customHeader = JSON.parse(Api.customHeader)
 
   const changePhoneNum = (e) => {
     const target = e.currentTarget
@@ -132,7 +133,6 @@ export default (props) => {
   }
 
   const fetchSocialData = async (vendor) => {
-    const customHeader = JSON.parse(Api.customHeader)
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -144,13 +144,6 @@ export default (props) => {
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
       //OS분기
       Hybrid('openGoogleSignIn')
-      /*
-      if(customHeader['os'] === OS_TYPE['Android']) {
-          window.android.openGoogleSignIn();
-      }else if(customHeader['os'] === OS_TYPE['IOS']){
-          webkit.messageHandlers.openGoogleSignIn.postMessage("");
-      }
-      */
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
         method: 'get',
@@ -261,7 +254,7 @@ export default (props) => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>
-                {__NODE_ENV === 'dev' && (
+                {( (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) || (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBuild'] > 52)) && (
                   <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                   </button>

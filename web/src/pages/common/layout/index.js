@@ -36,7 +36,7 @@ const Layout = (props) => {
       {/* 메시지팝업 */}
       <Message {...props} />
       {/* IP노출 */}
-      {__NODE_ENV === 'dev' && <Ip {...props} />}
+      <Ip {...props} />
     </React.Fragment>
   )
 }
