@@ -95,7 +95,6 @@ export default () => {
         //시작
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_active')
-
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
