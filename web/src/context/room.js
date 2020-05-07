@@ -80,8 +80,9 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.context.action.alert({
         msg: '방입장 대기중입니다.'
       })
-      return
+      //return
     }
+    sessionStorage.setItem('room_active', 'N')
     //##
 
     //RoomAuth가 맞지않으면실행하지않음
@@ -103,6 +104,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       }, 80)
       return
     }
+
     if (__NODE_ENV === 'dev') {
     }
     //방송강제퇴장
@@ -160,6 +162,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setAuth(false)
       //--
       Room.setItv(0)
+      Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
