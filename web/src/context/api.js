@@ -1396,6 +1396,16 @@ export default class API {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/error/log`, method: method || 'POST', data: data})
   }
+
+    /**
+     * @brief Google Login Check
+     * @method "POST"
+     * @create 이재은 2020.05.07
+     */
+  static google_login = async obj => {
+      const {data} = obj
+      return await ajax({url: `/social/google/callback`, method: 'POST', data})
+  }
 }
 API.customHeader = null
 API.authToken = null
