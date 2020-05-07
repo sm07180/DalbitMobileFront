@@ -168,7 +168,7 @@ function Notice(props) {
   useEffect(() => {
     if (Store().noticePage !== undefined) {
       window.onpopstate = e => {
-        window.location.href = `/customer`
+        window.history.back()
       }
     }
   }, [])
