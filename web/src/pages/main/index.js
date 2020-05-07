@@ -546,7 +546,7 @@ const Content = styled.div`
       }
 
       &.live-list {
-        padding-bottom: 40px;
+        /* padding-bottom: 40px; */
         /* min-height: 515px; */
       }
     }
