@@ -65,7 +65,7 @@ export default props => {
 
 const Container = styled.div`
   display: flex;
-  margin: 40px 0;
+  margin: 20px 0 100px 0;
   width: 100%;
   justify-content: center;
   align-items: center;
