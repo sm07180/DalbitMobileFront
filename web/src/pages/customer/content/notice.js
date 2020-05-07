@@ -163,7 +163,7 @@ function Notice(props) {
 
     fetchDataDetail()
   }, [context.noticeIndexNum])
-  console.log(typeof context.noticeIndexNum.split('/')[3])
+
   ////////////////////////////////
   useEffect(() => {
     if (Store().noticePage !== undefined) {
