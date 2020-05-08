@@ -226,10 +226,9 @@ export default props => {
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
 
-    console.log('getItem', sessionStorage.getItem('popup_notice'))
-    if (sessionStorage.getItem('popup_notice') === null) {
-      sessionStorage.setItem('popup_notice', 'y')
-    }
+    // if (sessionStorage.getItem('popup_notice') === null) {
+    //   sessionStorage.setItem('popup_notice', 'y')
+    // }
 
     return () => {
       window.removeEventListener('popstate', popStateEvent)
@@ -404,10 +403,7 @@ export default props => {
           />
         )}
 
-        {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
-
-        {/* {popupNotice && cookies ? <LayerPopupNotice closePopUp={closePopUp} setPopup={setPopupNotice}/> : <span>Is Closed</span>}
-        {hasCookies ? <button onClick={removeCookies}>Remove Cookies</button> : null} */}
+        {/* {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
       </MainWrap>
     </Layout>
   )
