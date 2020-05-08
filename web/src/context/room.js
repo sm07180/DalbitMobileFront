@@ -53,11 +53,15 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const sessionRoomNo = sessionStorage.getItem('room_no')
   const sessionRoomActive = sessionStorage.getItem('room_active')
 
-    if (sessionRoomActive === 'N') {
-        Room.context.action.alert({
-            msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-        })
+  if (sessionRoomActive === 'N') {
+    Room.context.action.alert({
+      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+    })
+  } else {
+    if (sessionStorage.getItem('room_active') === null) {
+      sessionStorage.setItem('room_active', 'N')
     }
+  }
 
   /**
    * @title Room.roomNo , roomNo 비교
@@ -72,6 +76,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       })
     } else if (join.result === 'success' && join.data !== null) {
       Hybrid('RoomJoin', join.data)
+      Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_no', roomNo)
     }
     //
@@ -81,17 +86,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //-------------------------------------------------------------
     //authCheck
     //Hybrid('AuthCheck')
-    //방입장중
-    if (sessionRoomActive !== 'N') {
-      Room.context.action.alert({
-        msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-      })
-    }
-    //##
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
-    console.log(sessionStorage.getItem('room_active'))
     //RoomAuth가 맞지않으면실행하지않음
     /*if (!Room.auth) {
       setTimeout(() => {
@@ -112,9 +106,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       return
     }*/
 
-    if (__NODE_ENV === 'dev') {
-    }
-    //sessionStorage.setItem('room_active', 'N')
     //방송강제퇴장
     if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
@@ -169,7 +160,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setRoomInfo(data)
       Room.setAuth(false)
       //--
-      Room.setItv(0)
+      //Room.setItv(0)
       Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
