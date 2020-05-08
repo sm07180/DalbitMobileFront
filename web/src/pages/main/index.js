@@ -20,6 +20,7 @@ import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
+import LayerPopupNotice from './component/layer_popup_notice.js'
 import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
@@ -60,6 +61,7 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+  const [popupNotice, setPopupNotice] = useState(true)
   const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
@@ -73,7 +75,7 @@ export default props => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type']
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
       Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
@@ -223,6 +225,12 @@ export default props => {
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
+
+    console.log('getItem', sessionStorage.getItem('popup_notice'))
+    if (sessionStorage.getItem('popup_notice') === null) {
+      sessionStorage.setItem('popup_notice', 'y')
+    }
+
     return () => {
       window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
@@ -395,6 +403,11 @@ export default props => {
             resetFetchList={resetFetchList}
           />
         )}
+
+        {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
+
+        {/* {popupNotice && cookies ? <LayerPopupNotice closePopUp={closePopUp} setPopup={setPopupNotice}/> : <span>Is Closed</span>}
+        {hasCookies ? <button onClick={removeCookies}>Remove Cookies</button> : null} */}
       </MainWrap>
     </Layout>
   )
