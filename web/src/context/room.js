@@ -53,6 +53,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const sessionRoomNo = sessionStorage.getItem('room_no')
   const sessionRoomActive = sessionStorage.getItem('room_active')
 
+    if (sessionRoomActive === 'N') {
+        Room.context.action.alert({
+            msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+        })
+    }
+
   /**
    * @title Room.roomNo , roomNo 비교
    */
@@ -74,14 +80,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   } else {
     //-------------------------------------------------------------
     //authCheck
-    Hybrid('AuthCheck')
+    //Hybrid('AuthCheck')
     //방입장중
-    if (Room.itv > 5 && sessionRoomActive === 'N') {
+    if (sessionRoomActive !== 'N') {
       Room.context.action.alert({
-        msg: '방에 입장중입니다.\n 잠시만 기다려주세요.',
-        callback: () => {
-          sessionStorage.removeItem('room_active')
-        }
+        msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
       })
     }
     //##
@@ -90,7 +93,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     console.log(sessionStorage.getItem('room_active'))
     //RoomAuth가 맞지않으면실행하지않음
-    if (!Room.auth) {
+    /*if (!Room.auth) {
       setTimeout(() => {
         //재귀함수
         Room.setItv(Room.itv + 1)
@@ -107,7 +110,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         RoomJoin(roomNo)
       }, 80)
       return
-    }
+    }*/
 
     if (__NODE_ENV === 'dev') {
     }
