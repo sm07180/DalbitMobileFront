@@ -123,12 +123,12 @@ export default () => {
         sessionStorage.removeItem('room_active')
         break
       case 'native-google-login': //-------------------------Google 로그인
-        const googleLogin = async() => {
+        const googleLogin = async () => {
           const customHeader = JSON.parse(Api.customHeader)
           const {webview, redirect} = qs.parse(location.search)
-          let inputData = event.detail;
+          let inputData = event.detail
           if (customHeader['os'] === OS_TYPE['IOS']) {
-              inputData = JSON.parse(decodeURIComponent(event.detail))
+            inputData = JSON.parse(decodeURIComponent(event.detail))
           }
           const google_result = await Api.google_login({data: inputData})
 
@@ -137,54 +137,54 @@ export default () => {
               data: google_result.data
             })
             if (loginInfo.result === 'success') {
-                const {memNo} = loginInfo.data
+              const {memNo} = loginInfo.data
 
-                //--##
-                /**
-                 * @마이페이지 redirect
-                 */
-                let mypageURL = ''
-                const _parse = qs.parse(location.search)
-                if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-                    mypageURL = `/mypage/${memNo}`
-                    if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+              //--##
+              /**
+               * @마이페이지 redirect
+               */
+              let mypageURL = ''
+              const _parse = qs.parse(location.search)
+              if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+                mypageURL = `/mypage/${memNo}`
+                if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+              }
+
+              context.action.updateToken(loginInfo.data)
+              const profileInfo = await Api.profile({params: {memNo}})
+
+              if (profileInfo.result === 'success') {
+                if (webview && webview === 'new') {
+                  Hybrid('GetLoginTokenNewWin', loginInfo.data)
+                } else {
+                  Hybrid('GetLoginToken', loginInfo.data)
                 }
 
-                context.action.updateToken(loginInfo.data)
-                const profileInfo = await Api.profile({params: {memNo}})
-
-                if (profileInfo.result === 'success') {
-                    if (webview && webview === 'new') {
-                        Hybrid('GetLoginTokenNewWin', loginInfo.data)
-                    } else {
-                        Hybrid('GetLoginToken', loginInfo.data)
-                    }
-
-                    if (redirect) {
-                        const decodedUrl = decodeURIComponent(redirect)
-                        return (window.location.href = decodedUrl)
-                    }
-                    context.action.updateProfile(profileInfo.data)
-
-                    //--##마이페이지 Redirect
-                    if (mypageURL !== '') {
-                        return (window.location.href = mypageURL)
-                    }
-
-                    return props.history.push('/')
+                if (redirect) {
+                  const decodedUrl = decodeURIComponent(redirect)
+                  return (window.location.href = decodedUrl)
                 }
-            }else if(loginInfo.code + "" == "1"){
-              window.location.replace("/signup?" + qs.stringify(google_result.data))
-            }else{
+                context.action.updateProfile(profileInfo.data)
+
+                //--##마이페이지 Redirect
+                if (mypageURL !== '') {
+                  return (window.location.href = mypageURL)
+                }
+
+                return props.history.push('/')
+              }
+            } else if (loginInfo.code + '' == '1') {
+              window.location.replace('/signup?' + qs.stringify(google_result.data))
+            } else {
               context.action.alert({
                 title: '로그인 실패',
                 msg: `${loginInfo.message}`
               })
             }
-          }else{
-              context.action.alert({
-                msg: `${google_result.message}`
-              })
+          } else {
+            context.action.alert({
+              msg: `${google_result.message}`
+            })
           }
         }
         googleLogin()
@@ -352,7 +352,7 @@ export default () => {
     document.addEventListener('native-end', update) //완료
     document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
-      document.addEventListener('native-google-login', update) //구글로그인
+    document.addEventListener('native-google-login', update) //구글로그인
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -366,7 +366,7 @@ export default () => {
       document.removeEventListener('native-end', update)
       document.removeEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
-        document.addEventListener('native-google-login', update) //구글로그인
+      document.addEventListener('native-google-login', update) //구글로그인
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
