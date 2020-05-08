@@ -76,11 +76,10 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //authCheck
     Hybrid('AuthCheck')
     //방입장중
-    if (Room.itv > 1 && sessionRoomActive === 'N') {
+    if (Room.itv > 10 && sessionRoomActive === 'N') {
       Room.context.action.alert({
         msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
       })
-      return
     }
     //##
     if (sessionStorage.getItem('room_active') === null) {
