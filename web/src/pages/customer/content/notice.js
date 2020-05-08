@@ -293,8 +293,8 @@ const List = styled.section`
 
 const Detail = styled.section`
   display: block;
-  width:110%;
-  margin-lefT:-5%;
+  width:calc(100% + 32px);
+  margin-lefT:-16px;
   padding-bottom:1px;
   /* border-top: 1px solid ${COLOR_MAIN}; */
   @media (min-width: 768px) {
