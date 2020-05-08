@@ -51,9 +51,9 @@ export default Room
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
   const sessionRoomNo = sessionStorage.getItem('room_no')
-  const sessionRoomActive = sessionStorage.getItem('room_active')
+  //const sessionRoomActive = sessionStorage.getItem('room_active')
 
-  if (sessionRoomActive === 'N') {
+  if (sessionStorage.getItem('room_active') === 'N') {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
     })
