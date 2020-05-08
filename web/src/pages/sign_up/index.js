@@ -740,6 +740,11 @@ export default props => {
                 className="auth"
                 value={changes.auth}
                 autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                inputMode="decimal"
+                pattern="\d*"
                 onChange={onLoginHandleChange}
               />
               <span className="timer">{timeText}</span>
