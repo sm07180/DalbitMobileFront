@@ -76,15 +76,17 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //authCheck
     Hybrid('AuthCheck')
     //방입장중
-    if (sessionRoomActive === 'N') {
+    if (Room.itv > 1 && sessionRoomActive === 'N') {
       Room.context.action.alert({
-        msg: '방입장 대기중입니다.'
+        msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
       })
-      //return
+      return
     }
-    sessionStorage.setItem('room_active', 'N')
     //##
-
+    if (sessionStorage.getItem('room_active') === null) {
+      sessionStorage.setItem('room_active', 'N')
+    }
+    console.log(sessionStorage.getItem('room_active'))
     //RoomAuth가 맞지않으면실행하지않음
     if (!Room.auth) {
       setTimeout(() => {
@@ -92,7 +94,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
         Room.setItv(Room.itv + 1)
         if (Room.itv * 80 >= 5000) {
           Room.context.action.alert({
-            msg: '새로고침합니다.',
+            msg: `방송방 입장이 원활하지 않습니다.\n잠시 후 다시 시도해주십시오.\n정식 오픈 전 미진한 상황에서도\n 이용해주셔서 감사드립니다.`,
             callback: () => {
               // window.location.reload()
               window.location.href = '/'
@@ -107,6 +109,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
 
     if (__NODE_ENV === 'dev') {
     }
+    //sessionStorage.setItem('room_active', 'N')
     //방송강제퇴장
     if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
