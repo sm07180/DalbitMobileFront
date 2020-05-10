@@ -9,7 +9,7 @@ import CloseBtn from '../static/ic_close.svg'
 let prevAlign = null
 let prevGender = null
 
-export default props => {
+export default (props) => {
   const {setPopup} = props
 
   // reference
@@ -27,14 +27,14 @@ export default props => {
     setPopup(false)
   }
 
-  const wrapClick = e => {
+  const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = e => {
+  const wrapTouch = (e) => {
     e.preventDefault()
   }
 
@@ -53,15 +53,17 @@ export default props => {
       <div className="content-wrap">
         <div className="each-line">
           <p className="text">
-            잠시 후 오후 4시 부터 약 10분간 서버점검이 진행됩니다. <br />
-            채팅방 퇴장메시지 반복노출 현상 해결 및 방송시간을 5시간으로 조정합니다. <br />
-            방송방은 정상 유지될 것이나, 경우에 따라 채팅이 안써진다던가 소리가 안나는 등의 비정상 상황이 생길경우 방송방을 다시
-            만들어주시기 바랍니다. <br />
-            하루빨리 정식 서비스를 오픈할 수 있도록 작업에 최선을 다하겠습니다. <br />
+            안녕하세요! 달빛라이브입니다. <br />
+            오픈베타 기간에도 서비스를 이용해주심에 감사드립니다. 현재 여러가지 문제들이 발생하고 있습니다. 이용하시는데 불편을
+            드려 너무너무 죄송한 마음입니다. <br /> <br />
+            안정적 서비스를 제공하기 위한 과정이라고는 하지만, 앱 접속에러와 비정상종료 현상은 그 이상의 문제라 반성하고 있습니다.
+            <br /> <br />
+            복구&보완작업중이니 불편하시더라도 조금만 더 기다려주시고, 넓은아량으로 이해해주시기를 부탁드립니다. <br /> <br />
+            감사합니다. <br /> <br />
             <br />- 달빛라이브 운영자 올림
           </p>
 
-          <Checkbox title="오늘하루 열지 않음" fnChange={v => setState({click1: v})} checked={state.click1} />
+          <Checkbox title="오늘하루 열지 않음" fnChange={(v) => setState({click1: v})} checked={state.click1} />
         </div>
         <div className="btn-wrap">
           <button className="apply-btn" onClick={applyClick}>
