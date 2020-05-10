@@ -25,7 +25,7 @@ import NoResult from './component/NoResult.js'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
-
+import Utility from 'components/lib/utility'
 // static
 import Mic from './static/ic_broadcastng.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
@@ -404,7 +404,7 @@ export default (props) => {
         )}
 
         {/* {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {popupNotice && sessionStorage.getItem('popup_notice') !== 'n' && <LayerPopupNotice setPopup={setPopupNotice} />}
+        {popupNotice && Utility.getCookie('popup_notice') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />}
       </MainWrap>
     </Layout>
   )
