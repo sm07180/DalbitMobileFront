@@ -13,7 +13,7 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {profile, token} = context
   const [nickname, setNickname] = useState('')
@@ -26,14 +26,14 @@ export default props => {
   const nicknameReference = useRef()
   const {isOAuth} = token
 
-  const profileImageUpload = e => {
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -210,7 +210,7 @@ export default props => {
     }
   }
 
-  const changeNickname = e => {
+  const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
@@ -218,7 +218,7 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = e => {
+  const changeMsg = (e) => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
   }
@@ -291,8 +291,17 @@ export default props => {
 
   if (!profile) {
     const {memNo} = token
-    Api.profile({params: {memNo: memNo}}).then(profileInfo => {
+    // Api.mypage().then((info) => {
+    //   console.log(info)
+    //   context.action.updateProfile(info.data)
+    // })
+    Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
       context.action.updateProfile(profileInfo.data)
+      Api.mypage().then((result) => {
+        const birth = result.data.birth
+        const info = {...profileInfo.data, birth: birth}
+        context.action.updateProfile(info)
+      })
     })
     return null
   }
@@ -332,7 +341,7 @@ export default props => {
                   id="nickName"
                   ref={nicknameReference}
                   autoComplete="off"
-                  value={nickname}
+                  value={profile.nickNm}
                   onChange={changeNickname}
                 />
               </div>
@@ -366,14 +375,15 @@ export default props => {
               <label className="input-label">성별</label>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 <GenderTab
-                  className={gender === 'm' ? '' : 'off'}
+                  className={profile.gender === 'm' ? '' : 'off'}
                   onClick={() => {
                     firstSetting && setGender('m')
                   }}>
                   남자
                 </GenderTab>
+
                 <GenderTab
-                  className={gender === 'f' ? '' : 'off'}
+                  className={profile.gender === 'f' ? '' : 'off'}
                   onClick={() => {
                     firstSetting && setGender('f')
                   }}>
@@ -385,7 +395,7 @@ export default props => {
 
               <div className="msg-wrap">
                 <label className="input-label">프로필 메세지</label>
-                <MsgText value={profileMsg} onChange={changeMsg} />
+                <MsgText value={profile.profMsg} onChange={changeMsg} />
               </div>
               <SaveBtn onClick={saveUpload}>저장</SaveBtn>
             </SettingWrap>
