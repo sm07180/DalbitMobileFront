@@ -212,6 +212,7 @@ export default (props) => {
 
   const changeNickname = (e) => {
     const {currentTarget} = e
+    console.log('test')
     console.log(currentTarget.value)
     if (currentTarget.value.length > 20) {
       return
@@ -342,7 +343,7 @@ export default (props) => {
                   id="nickName"
                   ref={nicknameReference}
                   autoComplete="off"
-                  value={profile.nickNm}
+                  defaultValue={profile.nickNm}
                   onChange={changeNickname}
                 />
               </div>
