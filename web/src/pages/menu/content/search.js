@@ -117,9 +117,10 @@ export default props => {
   }, [])
 
   const showMoreList = () => {
-    setMember(member.concat(nextMember))
-    // console.log('query', query)
-    fetchMember(query, 'next')
+    if (query.length > 1) {
+      setMember(member.concat(nextMember))
+      fetchMember(query, 'next')
+    } else return
   }
   //---------------------------------------------------------------------
   console.log()
