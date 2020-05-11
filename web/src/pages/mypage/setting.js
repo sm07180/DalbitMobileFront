@@ -212,6 +212,7 @@ export default (props) => {
 
   const changeNickname = (e) => {
     const {currentTarget} = e
+    console.log(currentTarget.value)
     if (currentTarget.value.length > 20) {
       return
     }
@@ -224,7 +225,7 @@ export default (props) => {
   }
 
   const saveUpload = async () => {
-    if (!nickname) {
+    if (!profile.nickNm) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
         callback: () => {
@@ -246,10 +247,10 @@ export default (props) => {
     }
 
     const data = {
-      gender: gender,
-      nickNm: nickname,
+      gender: profile.gender,
+      nickNm: profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg
+      profMsg: profile.profMsg
     }
 
     if (photoPath) {
