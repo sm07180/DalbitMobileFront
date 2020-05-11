@@ -30,16 +30,16 @@ export default props => {
   //fetch 사용자검색
   async function fetchMember(query, next) {
     if (query === undefined) return
-    currentPage = next ? ++currentPage : 1
-    const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
-    const res = await API.member_search({
-      params: {
-        search: query || qs,
-        page: currentPage,
-        records: 12
-      }
-    })
     if (query.length > 1) {
+      currentPage = next ? ++currentPage : 1
+      const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
+      const res = await API.member_search({
+        params: {
+          search: query || qs,
+          page: currentPage,
+          records: 12
+        }
+      })
       if (res.result == 'success' && _.hasIn(res, 'data.list')) {
         if (res.data.list == false) {
           if (!next) {
@@ -60,7 +60,7 @@ export default props => {
           msg: res.message
         })
       }
-    } else if (query.length < 2) {
+    } else {
       context.action.alert({
         msg: '검색어를 두 글자 이상 입력해주세요'
       })
@@ -69,7 +69,7 @@ export default props => {
 
   //fetch (라이브검색)
   async function fetchLive(query) {
-    if (query === undefined) return
+    /*if (query === undefined) return
     const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
     const res = await API.live_search({
       params: {
@@ -80,7 +80,7 @@ export default props => {
     })
     if (res.result === 'success') {
       setLive(res.data)
-    }
+    }*/
   }
   //update
 

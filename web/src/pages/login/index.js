@@ -142,10 +142,11 @@ export default (props) => {
     }
 
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
-      //OS분기
-      Hybrid('openGoogleSignIn')
+      //TODO: 새창로그인 여부 추가
+      //Hybrid('openGoogleSignIn', {'webview' : webview})
+        Hybrid('openGoogleSignIn')
     } else {
-      const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
+      const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',
         headers: {
           authToken: Api.authToken,

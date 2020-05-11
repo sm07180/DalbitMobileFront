@@ -174,7 +174,12 @@ export default () => {
                 return props.history.push('/')
               }
             } else if (loginInfo.code + '' == '1') {
-              window.location.replace('/signup?' + qs.stringify(google_result.data))
+                if (webview && webview === 'new') {
+                    //TODO: 추후 웹브릿지 연결
+                    window.location.replace('/signup?' + qs.stringify(google_result.data))
+                }else{
+                    window.location.replace('/signup?' + qs.stringify(google_result.data))
+                }
             } else {
               context.action.alert({
                 title: '로그인 실패',
