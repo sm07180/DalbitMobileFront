@@ -176,7 +176,7 @@ export default () => {
             } else if (loginInfo.code + '' == '1') {
                 if (webview && webview === 'new') {
                     //TODO: 추후 웹브릿지 연결
-                    window.location.replace('/signup?' + qs.stringify(google_result.data))
+                    window.location.replace('/signup?' + qs.stringify(google_result.data)+"&webview=new")
                 }else{
                     window.location.replace('/signup?' + qs.stringify(google_result.data))
                 }
