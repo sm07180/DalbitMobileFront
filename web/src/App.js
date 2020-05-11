@@ -74,13 +74,12 @@ const App = () => {
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-      // && window.location.pathname !== '/' && window.location.pathname !== '/rank' 문제
+
       if (tokenInfo.data.isLogin) {
-        Api.profile({params: {memNo: tokenInfo.data.memNo}}).then((profileInfo) => {
-          if (profileInfo.result === 'success') {
-            globalCtx.action.updateProfile(profileInfo.data)
-          }
-        })
+        const profileInfo = await Api.profile({params: {memNo: tokenInfo.data.memNo}})
+        if (profileInfo.result === 'success') {
+          globalCtx.action.updateProfile(profileInfo.data)
+        }
       }
 
       // *** Native App case
