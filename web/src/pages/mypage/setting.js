@@ -212,8 +212,6 @@ export default (props) => {
 
   const changeNickname = (e) => {
     const {currentTarget} = e
-    console.log('test')
-    console.log(currentTarget.value)
     if (currentTarget.value.length > 20) {
       return
     }
@@ -246,14 +244,12 @@ export default (props) => {
         }
       })
     }
-
     const data = {
       gender: profile.gender,
-      nickNm: profile.nickNm,
+      nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profile.profMsg
+      profMsg: profileMsg
     }
-
     if (photoPath) {
       data['profImg'] = photoPath
     }
@@ -397,7 +393,7 @@ export default (props) => {
 
               <div className="msg-wrap">
                 <label className="input-label">프로필 메세지</label>
-                <MsgText value={profile.profMsg} onChange={changeMsg} />
+                <MsgText defaultValue={profile.profMsg} onChange={changeMsg} />
               </div>
               <SaveBtn onClick={saveUpload}>저장</SaveBtn>
             </SettingWrap>
