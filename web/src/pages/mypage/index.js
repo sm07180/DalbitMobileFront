@@ -56,12 +56,13 @@ export default props => {
       Hybrid('CloseLayerPopup')
     }
   }
-  //api:profile
+
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
+        context.action.updateProfile(profileInfo.data)
       }
     }
     if (memNo) {
@@ -73,6 +74,14 @@ export default props => {
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
+
+  if (!profileInfo) {
+    return null
+  }
+
+  if (!profile) {
+    return null
+  }
 
   return (
     <Switch>

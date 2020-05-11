@@ -102,15 +102,6 @@ export default props => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-  //console.log(profile.memNo)
-
-  const [profileInfo, setProfileInfo] = useState(null)
-
-  // if (profile && profile.memNo !== memNo) {
-  //   navigationList = navigationList.slice(0, 2)
-  // } else if (profile && profile.memNo === memNo) {
-  //   memNo = profile.memNo
-  // }
 
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -118,20 +109,6 @@ export default props => {
     }
   }
 
-  // useEffect(() => {
-  //   const settingProfileInfo = async memNo => {
-  //     const profileInfo = await Api.profile({params: {memNo: memNo}})
-  //     if (profileInfo.result === 'success') {
-  //       setProfileInfo(profileInfo.data)
-  //     }
-  //   }
-
-  //   if (memNo) {
-  //     settingProfileInfo(memNo)
-  //   }
-  // }, [context.mypageFanCnt])
-
-  //console.log(profileInfo)
   return (
     <MenuMypage>
       <Header>

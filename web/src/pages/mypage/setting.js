@@ -12,9 +12,6 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
-import {encode} from 'punycode'
-
-import {isAndroid} from 'context/hybrid'
 
 export default props => {
   const context = useContext(Context)
@@ -291,6 +288,14 @@ export default props => {
     }
   }, [])
   ////
+
+  if (!profile) {
+    const {memNo} = token
+    Api.profile({params: {memNo: memNo}}).then(profileInfo => {
+      context.action.updateProfile(profileInfo.data)
+    })
+    return null
+  }
 
   return (
     <Switch>
