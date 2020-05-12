@@ -33,3 +33,5 @@ document.addEventListener('native-push-background', update)
 // React => Native
 Hybrid('GetLoginToken', tokenInfo.data)
 ```
+
+> src/Route.js

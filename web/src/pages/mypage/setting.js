@@ -261,7 +261,7 @@ export default (props) => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          props.history.push('/')
+          props.history.push('/menu/profile')
         }
       })
     } else {
