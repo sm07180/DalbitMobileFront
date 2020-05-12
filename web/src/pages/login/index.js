@@ -23,7 +23,7 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
-export default (props) => {
+export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -38,12 +38,12 @@ export default (props) => {
   const [appleAlert, setAppleAlert] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
-  const changePhoneNum = (e) => {
+  const changePhoneNum = e => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = (e) => {
+  const changePassword = e => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -112,10 +112,16 @@ export default (props) => {
           return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
-        globalCtx.action.alert({
-          title: '로그인 실패',
-          msg: `${loginInfo.message}`
-        })
+        if (loginInfo.code === '-1') {
+          globalCtx.action.alert({
+            msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
+          })
+        } else {
+          globalCtx.action.alert({
+            title: '로그인 실패',
+            msg: `${loginInfo.message}`
+          })
+        }
       }
       setFetching(false)
     }
@@ -123,16 +129,33 @@ export default (props) => {
     const inputPhoneNode = inputPhoneRef.current
     const inputPasswordNode = inputPasswordRef.current
 
-    if (phoneNum === '') {
-      inputPhoneNode.focus()
-    } else if (password === '') {
-      inputPasswordNode.focus()
+    if (phoneNum === '' && password === '') {
+      globalCtx.action.alert({
+        msg: `아이디(전화번호)와 비밀번호를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPhoneNode.focus()
+        }
+      })
+    } else if (phoneNum === '' && password !== '') {
+      globalCtx.action.alert({
+        msg: `아이디(전화번호)를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPhoneNode.focus()
+        }
+      })
+    } else if (password === '' && phoneNum !== '') {
+      globalCtx.action.alert({
+        msg: `비밀번호를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPasswordNode.focus()
+        }
+      })
     } else {
       fetchPhoneLogin(phoneNum, password)
     }
   }
 
-  const fetchSocialData = async (vendor) => {
+  const fetchSocialData = async vendor => {
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -144,7 +167,7 @@ export default (props) => {
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
       //TODO: 새창로그인 여부 추가
       //Hybrid('openGoogleSignIn', {'webview' : webview})
-        Hybrid('openGoogleSignIn')
+      Hybrid('openGoogleSignIn')
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',
@@ -165,7 +188,7 @@ export default (props) => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -201,7 +224,7 @@ export default (props) => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
@@ -255,7 +278,9 @@ export default (props) => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>
-                {( (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) || (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
+                {((customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) ||
+                  (customHeader['os'] === OS_TYPE['IOS'] &&
+                    (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
                   <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                   </button>
