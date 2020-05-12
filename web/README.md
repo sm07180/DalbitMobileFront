@@ -90,3 +90,15 @@ switch (context.popup_code) {
 ```
 
 위의 function에서 case를 추가하면된다.
+
+
+
+```
+git status
+git commit -m 'Message'
+git add .
+git reset .
+<remote>
+git pull
+git push
+```
