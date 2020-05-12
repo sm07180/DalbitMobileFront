@@ -244,18 +244,20 @@ export default (props) => {
         }
       })
     }
+    //##submit
     const data = {
       gender: profile.gender,
       nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg
+      profMsg: profileMsg || profile.profMsg
     }
+
     if (photoPath) {
       data['profImg'] = photoPath
     }
-
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
+      console.log(res.data)
       context.action.updateProfile(res.data)
       return context.action.alert({
         msg: '저장되었습니다.',
@@ -294,10 +296,10 @@ export default (props) => {
     //   context.action.updateProfile(info.data)
     // })
     Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
-      context.action.updateProfile(profileInfo.data)
+      //   context.action.updateProfile(profileInfo.data)
       Api.mypage().then((result) => {
         const birth = result.data.birth
-        const info = {...profileInfo.data, birth: birth}
+        const info = {...profileInfo.data, ...result.data}
         context.action.updateProfile(info)
       })
     })
