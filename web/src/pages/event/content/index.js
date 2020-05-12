@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
+import {EventStore} from '../store'
 import API from 'context/api'
 
 //component
@@ -10,6 +11,8 @@ import Header from 'components/ui/header'
 
 export default props => {
   const context = useContext(Context)
+  const store = useContext(EventStore)
+  const location = window.location.pathname.replace('/event/', '')
 
   //Maneger가데이터
   const runningEInfo = [
@@ -80,6 +83,38 @@ export default props => {
     }
   ]
 
+  const EventeUrl = () => {
+    const index = store.eventPage
+    if (index !== '') {
+      props.history.push(`/event/${index}`)
+      //fetchData2()
+    } else {
+      store.action.updateEventPage('')
+    }
+  }
+
+  useEffect(() => {
+    if (store.eventPage !== '') {
+      EventeUrl()
+    }
+  }, [store.eventPage])
+
+  useEffect(() => {
+    if (store.eventPage !== undefined) {
+      window.onpopstate = e => {
+        window.location.href = `/event`
+      }
+    }
+
+    if (location !== '/event' && location !== '') {
+      store.action.updateEventPage(location)
+    }
+
+    return () => {
+      store.action.updateEventPage('')
+    }
+  }, [])
+
   return (
     <>
       <Container>
@@ -87,10 +122,10 @@ export default props => {
           <div className="category-text">이벤트</div>
         </Header>
         <p>달빛라이브</p>
-        <Wrap>
+        <Wrap className={store.eventPage === '' ? 'on' : 'off'}>
           {runningEInfo.map((post, index) => {
             return (
-              <li key={index} bg={post.url}>
+              <li key={index} bg={post.url} onClick={() => store.action.updateEventPage(index)}>
                 <IMGBOX bg={post.url}></IMGBOX>
                 <InfoBOX>
                   <p>{post.title}</p>
@@ -101,6 +136,8 @@ export default props => {
             )
           })}
         </Wrap>
+
+        <Detail className={store.eventPage === '' ? 'off' : 'on'}>여기는 디테일 {store.eventPage}번째 내용입니다.</Detail>
       </Container>
     </>
   )
@@ -132,6 +169,13 @@ const Wrap = styled.ul`
   display: flex;
   flex-wrap: wrap;
   margin-top: 26px;
+
+  &.off {
+    display: none;
+  }
+  &.on {
+    display: block;
+  }
   & li {
     width: calc(33.33% - 17.4px);
     height: 360px;
@@ -189,4 +233,13 @@ const InfoBOX = styled.div`
   height: 20%;
   padding: 20px;
   box-sizing: border-box;
+`
+
+const Detail = styled.section`
+  display: none;
+  border: 1px solid #000;
+
+  &.on {
+    display: block;
+  }
 `

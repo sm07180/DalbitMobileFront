@@ -50,7 +50,6 @@ export default () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
-        <Route exact path="/event" component={Event} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
