@@ -24,10 +24,12 @@ export default props => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
 
-  if (!profile) {
+  if (!profile && window.location.pathname !== '/menu/search') {
     const {memNo} = token
     Api.profile({params: {memNo: memNo}}).then(profileInfo => {
-      globalCtx.action.updateProfile(profileInfo.data)
+      if (profileInfo.result === 'success') {
+        globalCtx.action.updateProfile(profileInfo.data)
+      }
     })
     return null
   }

@@ -57,6 +57,11 @@ export default props => {
     }
   }
 
+  if (!token.isLogin) {
+    props.history.push('/login')
+    return null
+  }
+
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
@@ -69,17 +74,14 @@ export default props => {
       settingProfileInfo(memNo)
     }
   }, [context.mypageFanCnt])
+
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
 
-  if (!profileInfo) {
-    return null
-  }
-
-  if (!profile) {
+  if (!profileInfo || !profile) {
     return null
   }
 

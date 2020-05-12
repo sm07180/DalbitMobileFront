@@ -120,17 +120,10 @@ export default props => {
         )}
       </Header>
 
-      {token && token.isLogin && profile ? (
+      {token && token.isLogin && (
         <>
           <div className="log-in">
             <MyProfile profile={profile} {...props} webview={webview} />
-            {/* <div className="main-info">
-              <div
-                className="photo"
-                style={profile['profImg'] ? {backgroundImage: `url(${profile['profImg']['thumb190x190']})`} : {}}></div>
-              <div className="nickname">{profile.nickNm}</div>
-              <div className="mem-id">{profile.memId}</div>
-            </div> */}
 
             <div className="profile-info">
               <div className="time-info">
@@ -190,16 +183,6 @@ export default props => {
             <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
           </div>
         </>
-      ) : (
-        <div className="log-out">
-          <a href="/login">
-            <img src={NeedLoginImg} />
-            <button className="loginBtn">로그인</button>
-            <div className="text">
-              <span className="bold">로그인</span> 해주세요
-            </div>
-          </a>
-        </div>
       )}
     </MenuMypage>
   )
