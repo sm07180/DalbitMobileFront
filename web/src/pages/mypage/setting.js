@@ -13,7 +13,7 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {profile, token} = context
   const [nickname, setNickname] = useState('')
@@ -26,14 +26,14 @@ export default props => {
   const nicknameReference = useRef()
   const {isOAuth} = token
 
-  const profileImageUpload = e => {
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -210,7 +210,7 @@ export default props => {
     }
   }
 
-  const changeNickname = e => {
+  const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
@@ -218,7 +218,7 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = e => {
+  const changeMsg = (e) => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
   }
@@ -261,7 +261,7 @@ export default props => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          // props.history.push('/')
+          props.history.push('/')
         }
       })
     } else {
@@ -286,7 +286,7 @@ export default props => {
   }, [])
 
   if (!profile) {
-    Api.mypage().then(result => {
+    Api.mypage().then((result) => {
       context.action.updateProfile(result.data)
     })
     return null
