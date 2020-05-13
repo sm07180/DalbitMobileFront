@@ -22,6 +22,7 @@ import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupNotice from './component/layer_popup_notice.js'
 import NoResult from './component/NoResult.js'
+import {OS_TYPE} from 'context/config.js'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -72,6 +73,7 @@ export default (props) => {
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
+  const customHeader = JSON.parse(Api.customHeader)
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -327,7 +329,8 @@ export default (props) => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
-          <button className="event-section" onClick={() => goEvent()}></button>
+          {/* IOS 심사 일떼 배너 미노출*/}
+          {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
           <div
             className="section"
             ref={StarSectionRef}
