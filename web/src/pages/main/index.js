@@ -420,7 +420,7 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/images/api/mobile_200507.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/banner/200513/mobile_main_bottomranking.png) no-repeat center center / cover;
   }
   .section {
     margin-top: 24px;

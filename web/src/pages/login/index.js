@@ -72,57 +72,72 @@ export default props => {
         }
       })
 
-      if (loginInfo.result === 'success') {
-        const {memNo} = loginInfo.data
+        if (loginInfo.result === 'success') {
+            const {memNo} = loginInfo.data
 
-        //--##
-        /**
-         * @마이페이지 redirect
-         */
-        let mypageURL = ''
-        const _parse = qs.parse(location.search)
-        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-          mypageURL = `/mypage/${memNo}`
-          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
-        }
-
-        globalCtx.action.updateToken(loginInfo.data)
-        const profileInfo = await Api.profile({params: {memNo}})
-
-        if (profileInfo.result === 'success') {
-          if (isHybrid()) {
-            if (webview && webview === 'new') {
-              Hybrid('GetLoginTokenNewWin', loginInfo.data)
-            } else {
-              Hybrid('GetLoginToken', loginInfo.data)
+            //--##
+            /**
+             * @마이페이지 redirect
+             */
+            let mypageURL = ''
+            const _parse = qs.parse(location.search)
+            if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+                mypageURL = `/mypage/${memNo}`
+                if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
             }
-          }
 
-          if (redirect) {
-            const decodedUrl = decodeURIComponent(redirect)
-            return (window.location.href = decodedUrl)
-          }
-          globalCtx.action.updateProfile(profileInfo.data)
+            globalCtx.action.updateToken(loginInfo.data)
+            const profileInfo = await Api.profile({params: {memNo}})
 
-          //--##마이페이지 Redirect
-          if (mypageURL !== '') {
-            return (window.location.href = mypageURL)
-          }
+            if (profileInfo.result === 'success') {
+                if (isHybrid()) {
+                    if (webview && webview === 'new') {
+                        Hybrid('GetLoginTokenNewWin', loginInfo.data)
+                    } else {
+                        Hybrid('GetLoginToken', loginInfo.data)
+                    }
+                }
 
-          return props.history.push('/')
+                if (redirect) {
+                    const decodedUrl = decodeURIComponent(redirect)
+                    return (window.location.href = decodedUrl)
+                }
+                globalCtx.action.updateProfile(profileInfo.data)
+
+                //--##마이페이지 Redirect
+                if (mypageURL !== '') {
+                    return (window.location.href = mypageURL)
+                }
+
+                return props.history.push('/')
+            }
+        } else if (loginInfo.result === 'fail') {
+            if (loginInfo.code === '-1') {
+                globalCtx.action.alert({
+                    msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
+                })
+            } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
+                let msg = loginInfo.data.opMsg;
+                if(msg === undefined || msg === null || msg === ''){
+                    msg = loginInfo.message
+                }
+                globalCtx.action.alert({
+                    title: '달빛라이브 사용 제한',
+                    msg: `${msg}`,
+                    callback: () => {
+                        if (webview && webview === 'new') {
+                            Hybrid('CloseLayerPopUp')
+                        }
+                    }
+                })
+            } else {
+                globalCtx.action.alert({
+                    title: '로그인 실패',
+                    msg: `${loginInfo.message}`
+                })
+            }
         }
-      } else if (loginInfo.result === 'fail') {
-        if (loginInfo.code === '-1') {
-          globalCtx.action.alert({
-            msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
-          })
-        } else {
-          globalCtx.action.alert({
-            title: '로그인 실패',
-            msg: `${loginInfo.message}`
-          })
-        }
-      }
+
       setFetching(false)
     }
 
