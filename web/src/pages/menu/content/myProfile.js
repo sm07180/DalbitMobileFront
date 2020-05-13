@@ -188,9 +188,10 @@ const myProfile = props => {
 
   return (
     <MyProfile webview={webview}>
-      <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+      <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
         <figure onClick={() => figureZoom()}>
-          <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
+          <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+          <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
         </figure>
         {Zoom === true && (
           <div className="zoom" onClick={() => setZoom(false)}>
@@ -280,7 +281,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 10px 0 16px 0;
+    padding: 16px 0 16px 0;
     /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
@@ -310,14 +311,27 @@ const ProfileImg = styled.div`
   order: 1;
 
   figure {
-    width: 120px;
-    height: 120px;
+    position: relative;
+    width: 100px;
+    height: 100px;
     margin: 6px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
 
     img {
       display: none;
+    }
+
+    .holder {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
   }
 
