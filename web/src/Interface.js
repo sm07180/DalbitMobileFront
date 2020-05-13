@@ -182,25 +182,24 @@ export default () => {
                     window.location.replace('/signup?' + qs.stringify(google_result.data))
                 }
             } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-                    let msg = loginInfo.data.opMsg;
-                    if(msg === undefined || msg === null || msg === ''){
-                        msg = loginInfo.message
-                    }
-                    globalCtx.action.alert({
-                        title: '달빛라이브 사용 제한',
-                        msg: `${msg}`,
-                        callback: () => {
-                            if (webview && webview === 'new') {
-                                Hybrid('CloseLayerPopUp')
-                            }
-                        }
-                    })
-            } else {
-                    context.action.alert({
-                        title: '로그인 실패',
-                        msg: `${loginInfo.message}`
-                    })
+                let msg = loginInfo.data.opMsg;
+                if(msg === undefined || msg === null || msg === ''){
+                    msg = loginInfo.message
                 }
+                globalCtx.action.alert({
+                    title: '달빛라이브 사용 제한',
+                    msg: `${msg}`,
+                    callback: () => {
+                        if (webview && webview === 'new') {
+                            Hybrid('CloseLayerPopUp')
+                        }
+                    }
+                })
+            } else {
+                context.action.alert({
+                    title: '로그인 실패',
+                    msg: `${loginInfo.message}`
+                })
             }
 
           } else {
