@@ -136,56 +136,73 @@ export default () => {
             const loginInfo = await Api.member_login({
               data: google_result.data
             })
+
             if (loginInfo.result === 'success') {
-              const {memNo} = loginInfo.data
+                const {memNo} = loginInfo.data
 
-              //--##
-              /**
-               * @마이페이지 redirect
-               */
-              let mypageURL = ''
-              const _parse = qs.parse(location.search)
-              if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-                mypageURL = `/mypage/${memNo}`
-                if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
-              }
-
-              context.action.updateToken(loginInfo.data)
-              const profileInfo = await Api.profile({params: {memNo}})
-
-              if (profileInfo.result === 'success') {
-                if (webview && webview === 'new') {
-                  Hybrid('GetLoginTokenNewWin', loginInfo.data)
-                } else {
-                  Hybrid('GetLoginToken', loginInfo.data)
+                //--##
+                /**
+                 * @마이페이지 redirect
+                 */
+                let mypageURL = ''
+                const _parse = qs.parse(location.search)
+                if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+                    mypageURL = `/mypage/${memNo}`
+                    if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
                 }
 
-                if (redirect) {
-                  const decodedUrl = decodeURIComponent(redirect)
-                  return (window.location.href = decodedUrl)
-                }
-                context.action.updateProfile(profileInfo.data)
+                context.action.updateToken(loginInfo.data)
+                const profileInfo = await Api.profile({params: {memNo}})
 
-                //--##마이페이지 Redirect
-                if (mypageURL !== '') {
-                  return (window.location.href = mypageURL)
-                }
+                if (profileInfo.result === 'success') {
+                    if (webview && webview === 'new') {
+                        Hybrid('GetLoginTokenNewWin', loginInfo.data)
+                    } else {
+                        Hybrid('GetLoginToken', loginInfo.data)
+                    }
 
-                return props.history.push('/')
-              }
+                    if (redirect) {
+                        const decodedUrl = decodeURIComponent(redirect)
+                        return (window.location.href = decodedUrl)
+                    }
+                    context.action.updateProfile(profileInfo.data)
+
+                    //--##마이페이지 Redirect
+                    if (mypageURL !== '') {
+                        return (window.location.href = mypageURL)
+                    }
+
+                    return props.history.push('/')
+                }
             } else if (loginInfo.code + '' == '1') {
                 if (webview && webview === 'new') {
                     //TODO: 추후 웹브릿지 연결
-                    window.location.replace('/signup?' + qs.stringify(google_result.data)+"&webview=new")
-                }else{
+                    window.location.replace('/signup?' + qs.stringify(google_result.data) + "&webview=new")
+                } else {
                     window.location.replace('/signup?' + qs.stringify(google_result.data))
                 }
+            } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
+                    let msg = loginInfo.data.opMsg;
+                    if(msg === undefined || msg === null || msg === ''){
+                        msg = loginInfo.message
+                    }
+                    globalCtx.action.alert({
+                        title: '달빛라이브 사용 제한',
+                        msg: `${msg}`,
+                        callback: () => {
+                            if (webview && webview === 'new') {
+                                Hybrid('CloseLayerPopUp')
+                            }
+                        }
+                    })
             } else {
-              context.action.alert({
-                title: '로그인 실패',
-                msg: `${loginInfo.message}`
-              })
+                    context.action.alert({
+                        title: '로그인 실패',
+                        msg: `${loginInfo.message}`
+                    })
+                }
             }
+
           } else {
             context.action.alert({
               msg: `${google_result.message}`
