@@ -329,8 +329,9 @@ export default (props) => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
-          {/* IOS 심사 일떼 배너 미노출*/}
-          {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
+          {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
+          {/* {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>} */}
+          <button className="event-section" onClick={() => goEvent()}></button>
           <div
             className="section"
             ref={StarSectionRef}
@@ -420,7 +421,7 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/images/api/mobile_200507.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/banner/200513/mobile_main_bottomranking.png) no-repeat center center / cover;
   }
   .section {
     margin-top: 24px;
