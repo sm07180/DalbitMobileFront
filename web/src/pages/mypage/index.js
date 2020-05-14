@@ -75,6 +75,7 @@ export default props => {
     }
   }, [context.mypageFanCnt])
 
+  //마이페이지 로직추가
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
