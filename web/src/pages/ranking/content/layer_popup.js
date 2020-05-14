@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import CloseBtn from '../static/ic_close.svg'
 import {COLOR_MAIN} from 'context/color'
 
-export default props => {
+export default (props) => {
   const {setPopup} = props
 
   const typePop = props.dateType
@@ -27,14 +27,14 @@ export default props => {
     setPopup(false)
   }
 
-  const wrapClick = e => {
+  const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'rank-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = e => {
+  const wrapTouch = (e) => {
     e.preventDefault()
   }
 
@@ -65,7 +65,17 @@ export default props => {
           <br />
         </p>
         <br />
-        <p>데이터 집계는 매월 1일부터 마지막 일까지 종료된 방송방 기준으로 집계되며 매월 1일 05:00 전월 데이터가 반영됩니다.</p>
+        {typePop === 1 && (
+          <p>데이터 집계는 매일 00:00부터 23:59:59까지 종료된 방송방 기준으로 집계되며 매일 05:00 전일 데이터가 반영됩니다.</p>
+        )}
+        {typePop === 2 && (
+          <p>
+            데이터 집계는 매주 월요일부터 일요일까지 종료된 방송방 기준으로 집계되며 매주 월요일 05:00 전주 데이터가 반영됩니다.
+          </p>
+        )}
+        {typePop === 3 && (
+          <p>데이터 집계는 매월 1일부터 마지막 일까지 종료된 방송방 기준으로 집계되며 매월 1일 05:00 전월 데이터가 반영됩니다.</p>
+        )}
         <div className="btn-wrap">
           <button className="apply-btn" onClick={applyClick}>
             확인
