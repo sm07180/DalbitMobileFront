@@ -12,7 +12,7 @@ import {PayStore} from '../store'
 //components
 import Pay from './pay.js'
 //
-const Index = props => {
+const Index = (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   //context
@@ -23,7 +23,7 @@ const Index = props => {
   //---------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    window.location.href = '/'
+    //window.location.href = '/'
   }, [])
   //---------------------------------------------------------------------
   return (

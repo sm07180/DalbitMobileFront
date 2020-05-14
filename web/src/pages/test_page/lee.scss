@@ -12,12 +12,14 @@
     text-align: center;
   }
 
-  &__button--back {
-    display: block;
-    position: absolute;
-    top: 6px;
-    left: 2%;
-    width: 36px;
+  &__button {
+    &--back {
+      display: block;
+      position: absolute;
+      top: 6px;
+      left: 2%;
+      width: 36px;
+    }
   }
 }
 
