@@ -136,6 +136,16 @@ const Notice = props => {
     })()
   }, [page])
 
+  useEffect(() => {
+    const settingProfileInfo = async memNo => {
+      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profileInfo.result === 'success') {
+        ctx.action.updateProfile(profileInfo.data)
+      }
+    }
+    settingProfileInfo()
+  }, [])
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
