@@ -75,6 +75,16 @@ export default props => {
     }
   }, [context.mypageFanCnt])
 
+  useEffect(() => {
+    const settingProfileInfo = async memNo => {
+      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profileInfo.result === 'success') {
+        context.action.updateProfile(profileInfo.data)
+      }
+    }
+    settingProfileInfo()
+  }, [])
+
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
