@@ -23,7 +23,7 @@ import LayerPopup from './layer_popup'
 import iconQ from '../static/ic_question.svg'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['전일', '주간', '월간']
+const dateArray = ['일간', '주간', '월간']
 let currentPage = 1
 let moreState = false
 
@@ -258,7 +258,7 @@ export default props => {
       )}
       {creatResult()}
 
-      {popup && <LayerPopup setPopup={setPopup} />}
+      {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
     </Contents>
   )
 }

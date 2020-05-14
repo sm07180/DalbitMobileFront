@@ -7,6 +7,8 @@ import {COLOR_MAIN} from 'context/color'
 
 export default props => {
   const {setPopup} = props
+
+  const typePop = props.dateType
   // reference
   const layerWrapRef = useRef()
 
@@ -44,24 +46,26 @@ export default props => {
     <PopupWrap id="rank-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
         <div className="title-wrap">
-          <div className="text">랭킹 산정 방식</div>
+          {typePop === 1 && <div className="text">일간 랭킹 산정 방식</div>}
+          {typePop === 2 && <div className="text">주간 랭킹 산정 방식</div>}
+          {typePop === 3 && <div className="text">월간 랭킹 산정 방식</div>}
           <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
         </div>
-        <h5>DJ랭킹</h5>
+        <h5>DJ</h5>
         <p>
           <strong>
-            방송시간(30%) + 팬 수(20%) +<br />
-            받은 별(30%) + 좋아요(20%)
+            받은별(30%) + 좋아요(20%) +<br />
+            누적 청취자(20%) + 방송시간(30%)
           </strong>
           <br />
-          비율로 계산
         </p>
-        <h5>팬 랭킹</h5>
+        <h5>FAN</h5>
         <p>
-          <strong>보낸 선물(60%) + 청취시간(40%)</strong>
+          <strong>보낸 달(60%) + 청취시간(40%)</strong>
           <br />
-          비율로 계산
         </p>
+        <br />
+        <p>데이터 집계는 매월 1일부터 마지막 일까지 종료된 방송방 기준으로 집계되며 매월 1일 05:00 전월 데이터가 반영됩니다.</p>
         <div className="btn-wrap">
           <button className="apply-btn" onClick={applyClick}>
             확인
