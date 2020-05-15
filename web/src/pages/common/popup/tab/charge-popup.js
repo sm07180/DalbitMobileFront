@@ -168,7 +168,8 @@ export default props => {
     const obj = {
       data: {
         Prdtnm: context.popup_code[1].name,
-        Prdtprice: context.popup_code[1].price
+        Prdtprice: context.popup_code[1].price,
+        itemNo: context.popup_code[1].itemNo
       }
     }
     const res = await Api[payType]({...obj})

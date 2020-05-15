@@ -57,7 +57,8 @@ export default props => {
                 setSelected({
                   num: index,
                   name: item.itemNm,
-                  price: item.salePrice
+                  price: item.salePrice,
+                  itemNo: item.itemNo
                 })
               }
             }}>
@@ -76,7 +77,8 @@ export default props => {
     if (context.token.isLogin) {
       context.action.updatePopup('CHARGE', {
         name: selected.name,
-        price: selected.price
+        price: selected.price,
+        itemNo: selected.itemNo
       })
     } else {
       window.location.href = '/login'
