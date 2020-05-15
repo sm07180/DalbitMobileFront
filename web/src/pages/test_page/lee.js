@@ -1,10 +1,18 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom';
+
 
 import './lee.scss'
 import BackBtn from './static/ic_back.svg'
 
+
+
 export default () => {
   const [status, setStatus] = useState(1)
+
+  const Routing = () => {
+    
+  }
 
   const tempFunc = () => {
     if (status === 1) {
@@ -118,7 +126,9 @@ export default () => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton">입금계좌 받기</button>
+        <button className="chargeButton">
+          
+        </button>
       </div>
     </>
   )

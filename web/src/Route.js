@@ -75,6 +75,7 @@ export default () => {
         <Route exact path="/agree/:title" component={Agree} />
 
         <Route exact path="/temp_test" component={TestPage} />
+        <Route exact path="/temp_test/:path" component={TestPage} />
 
         <Route exact path="/error" component={ErrorPage} />
 

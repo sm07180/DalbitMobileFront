@@ -15,13 +15,13 @@ export default () => {
         <h1 className="header__title">달 충전 결제 대기중</h1>
       </div>
       <div className="content">
-        <div class="payHold">
+        <div className="payHold">
           <h2 className="payHold__title">
             <img src={IconMoney} className="payHold__object" />
             결제대기중
-            <i class="payHold__dot"></i>
-            <i class="payHold__dot"></i>
-            <i class="payHold__dot"></i>
+            <i className="payHold__dot"></i>
+            <i className="payHold__dot"></i>
+            <i className="payHold__dot"></i>
           </h2>
 
           <div className="payHold__sub">
@@ -67,6 +67,7 @@ export default () => {
 
       <div className="hm">{/* 환전하기 나누기 여백 */}</div>
 
+<<<<<<< HEAD
       <div className="header">
         <img src={BackBtn} className="header__button--back" />
         <h1 className="header__title">환전하기</h1>
@@ -206,30 +207,13 @@ export default () => {
 
         <button className="privacyButton">환전 신청하기</button>
       </div>
+=======
+      
+>>>>>>> ae588c0ab1f251103acf9b22c72e50ec74ff76a6
 
       <div className="hm">{/* 환전 유의 사항 나누기 여백 */}</div>
 
-      <div className="header">
-        <img src={BackBtn} className="header__button--back" />
-        <h1 className="header__title">환전 유의 사항</h1>
-      </div>
-      <div className="content">
-        <div className="exchange">
-          <div className="exchange__list">
-            <i className="exchange__list--icon">∙</i> 회원가입자와 신청자가 일치하지 않을 경우 환전신청 승인이 거절됩니다.
-          </div>
-          <div className="exchange__list">
-            <i className="exchange__list--icon">∙</i> 이전에 등록하신 정보가 있는 경우, 재입력 불편함이 없도록 이전 정보가
-            보여집니다.
-          </div>
-          <div className="exchange__list">
-            <i className="exchange__list--icon">∙</i> 환전신청 내역은 관리자가 확인 후 운영원칙을 위반한 경우는 환전이 거부됩니다.
-          </div>
-          <div className="exchange__list">
-            <i className="exchange__list--icon">∙</i> 입력하신 입금정보가 불일치할 경우 환전되지 않습니다.
-          </div>
-        </div>
-      </div>
+      
     </>
   )
 }
