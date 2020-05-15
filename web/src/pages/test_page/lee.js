@@ -73,16 +73,16 @@ export default () => {
               <span className="depositInfo__value--point">55,000 원</span> (부가세 포함)
             </div>
 
-            <div class="depositInfo__label">입금은행</div>
-            <div class="depositInfo__value">국민은행</div>
+            <div className="depositInfo__label">입금은행</div>
+            <div className="depositInfo__value">국민은행</div>
 
-            <div class="depositInfo__label">입금자명</div>
-            <div class="depositInfo__value">
+            <div className="depositInfo__label">입금자명</div>
+            <div className="depositInfo__value">
               <input type="text" value="달나라" className="depositInfo__input"></input>
             </div>
 
-            <div class="depositInfo__label">휴대폰번호</div>
-            <div class="depositInfo__value">
+            <div className="depositInfo__label">휴대폰번호</div>
+            <div className="depositInfo__value">
               <input type="text" value="01012341234" className="depositInfo__input"></input>
             </div>
           </div>
