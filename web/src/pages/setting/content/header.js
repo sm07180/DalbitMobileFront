@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 // static
-import closeBtn from '../../'
+//import closeBtn from '../../'
 
 export default props => {
   const goBack = () => {
