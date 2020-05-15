@@ -1,14 +1,24 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
-import SelectBoxWrap from './component/select'
+import { Link } from 'react-router-dom'
 
 import './lee.scss'
 import BackBtn from './static/ic_back.svg'
 
-export default () => {
-  const [status, setStatus] = useState(1)
+import SelectBoxWrap from './component/select';
 
-  const Routing = () => {}
+const list = [
+    {value: 0, text: "주민번호"},
+    {value: 1, text: "핸드폰번호"}
+]
+
+export default () => {
+    const [status, setStatus] = useState(1)
+
+    const [receipt, setReceipt] = useState(0)
+
+    const handleEvent = (value) => {
+        setReceipt(value);
+    }
 
   const tempFunc = () => {
     if (status === 1) {
@@ -16,10 +26,10 @@ export default () => {
     } else if (status === 2) {
       return (
         <div className="receipt__sub">
-          <label className="receipt__label">주민번호</label>{' '}
+          <label className="receipt__label"><SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} /></label>{' '}
           <input className="receipt__input">
-            {' '}
-            <SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} />
+            
+            
           </input>
         </div>
       )
@@ -107,8 +117,8 @@ export default () => {
         </div>
 
         <div className="notice">
-          <p class="notice__title">
-            <span class="notice__title--icon">!</span> 달 충전 안내
+          <p className="notice__title">
+            <span className="notice__title--icon">!</span> 달 충전 안내
           </p>
 
           <ul>
@@ -126,7 +136,13 @@ export default () => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton"></button>
+        <button className="chargeButton">
+            <Link to={{
+            pathname: '/temp_test/waitPayment',
+            state: {
+              status: status
+            }
+          }}>입금계좌 받기</Link></button>
       </div>
     </>
   )

@@ -24,6 +24,7 @@ export default props => {
   const context = useContext(Context)
   //profileGlobal info
   const {profile} = ctx
+
   var urlrStr = props.location.pathname.split('/')[2]
   //state
   const [comment, setComment] = useState('')
@@ -364,6 +365,16 @@ export default props => {
     setShowBtnReply(boardIdx)
     setShowBtn('')
   }
+  ///
+  useEffect(() => {
+    const settingProfileInfo = async memNo => {
+      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profileInfo.result === 'success') {
+        context.action.updateProfile(profileInfo.data)
+      }
+    }
+    settingProfileInfo()
+  }, [])
   return (
     <>
       <Header>
@@ -431,15 +442,15 @@ export default props => {
                     </div>
                     <BtnIcon
                       onClick={() => refreshFanBtn(boardIdx)}
-                      className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}></BtnIcon>
+                      className={writerNo === context.token.memNo || urlrStr === context.token.memNo ? 'on' : ''}></BtnIcon>
                     <DetailBtn className={showBtn === boardIdx ? 'activeFan' : ''}>
                       <a
-                        className={writerNo === profile.memNo ? 'on' : ''}
+                        className={writerNo === context.token.memNo ? 'on' : ''}
                         onClick={() => FanboardModify(contents, boardIdx, boardNumer)}>
                         수정하기
                       </a>
                       <a
-                        className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                        className={writerNo === context.token.memNo || urlrStr === context.token.memNo ? 'on' : ''}
                         onClick={() => DeleteComment(value)}>
                         삭제하기
                       </a>
@@ -512,7 +523,9 @@ export default props => {
 
                           <BtnIcon
                             onClick={() => refreshReplyBtn(boardIdx)}
-                            className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'onStart' : ''}></BtnIcon>
+                            className={
+                              writerNo === context.token.memNo || urlrStr === context.token.memNo ? 'onStart' : ''
+                            }></BtnIcon>
                           <DetailBtn className={showBtnReply === boardIdx ? 'active' : ''}>
                             <a
                               className={writerNo === profile.memNo ? 'on' : ''}
@@ -522,7 +535,7 @@ export default props => {
                               수정하기
                             </a>
                             <a
-                              className={writerNo === profile.memNo || urlrStr === profile.memNo ? 'on' : ''}
+                              className={writerNo === context.token.memNo || urlrStr === context.token.memNo ? 'on' : ''}
                               onClick={() => DeleteComment(value, writeNumer, boardNumer)}>
                               삭제하기
                             </a>
