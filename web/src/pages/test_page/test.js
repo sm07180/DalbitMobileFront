@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import './lee.scss'
 import BackBtn from './static/ic_back.svg'
 
-import Select from './component/select';
+import SelectBoxWrap from './component/select';
 
 const list = [
     {value: 0, text: "주민번호"},
@@ -26,14 +26,11 @@ export default () => {
     } else if (status === 2) {
       return (
         <div className="receipt__sub">
-          
-            <Select 
-                boxList={list}
-                onChangeEvent={handleEvent}
-            />
-          
-          <input className="receipt__input"></input>
-          {/* <label className="receipt__label">주민번호</label> <input className="receipt__input"></input> */}
+          <label className="receipt__label"><SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} /></label>{' '}
+          <input className="receipt__input">
+            
+            
+          </input>
         </div>
       )
     } else {
