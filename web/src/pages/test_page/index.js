@@ -1,13 +1,12 @@
-import React from 'react';
-
+import React from 'react'
 import Seo from './seo.js'
+import Lee from './Lee.js'
 
 export default () => {
   return (
     <div className="test-page">
       <Seo />
-      {false && <Lee />}
+      <Lee />
     </div>
   )
 }
-

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {component} from 'react'
 import './seo.scss'
 import BackBtn from './static/ic_back.svg'
 import IconMoney from './static/ic_money.svg'
 import IconNotice from './static/ic_notice.svg'
 import check from './static/ico-checkbox-off.svg'
+
+import SelectBoxWrap from './component/select'
 
 export default () => {
   return (
@@ -55,6 +57,12 @@ export default () => {
             <div className="deposit__value">홍길동</div>
           </div>
         </div>
+        <div className="inquiry">
+          <span className="inquriy__title">결제 문의</span>
+          <span className="inquiry__number">1522-0251</span>
+        </div>
+
+        <button className="chargeButton">확인</button>
       </div>
 
       <div className="hm">{/* 환전하기 나누기 여백 */}</div>
@@ -113,7 +121,7 @@ export default () => {
           </div>
         </div>
 
-        <div className="comon__title">입금 정보</div>
+        <div className="charge__title">입금 정보</div>
 
         <div className="PayView">
           <div className="PayView__list">
@@ -126,7 +134,7 @@ export default () => {
           <div className="PayView__list">
             <div className="PayView__title">은행</div>
             <div className="PayView__input">
-              <input type="text" value="신한은행" className="PayView__input--text" />
+              <SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} />
             </div>
           </div>
 
