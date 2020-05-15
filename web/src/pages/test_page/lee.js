@@ -1,18 +1,14 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom';
-
+import {Link} from 'react-router-dom'
+import SelectBoxWrap from './component/select'
 
 import './lee.scss'
 import BackBtn from './static/ic_back.svg'
 
-
-
 export default () => {
   const [status, setStatus] = useState(1)
 
-  const Routing = () => {
-    
-  }
+  const Routing = () => {}
 
   const tempFunc = () => {
     if (status === 1) {
@@ -20,7 +16,11 @@ export default () => {
     } else if (status === 2) {
       return (
         <div className="receipt__sub">
-          <label className="receipt__label">주민번호</label> <input className="receipt__input"></input>
+          <label className="receipt__label">주민번호</label>{' '}
+          <input className="receipt__input">
+            {' '}
+            <SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} />
+          </input>
         </div>
       )
     } else {
@@ -126,9 +126,7 @@ export default () => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton">
-          
-        </button>
+        <button className="chargeButton"></button>
       </div>
     </>
   )
