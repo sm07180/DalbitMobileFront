@@ -67,7 +67,6 @@ export default () => {
 
       <div className="hm">{/* 환전하기 나누기 여백 */}</div>
 
-<<<<<<< HEAD
       <div className="header">
         <img src={BackBtn} className="header__button--back" />
         <h1 className="header__title">환전하기</h1>
@@ -207,9 +206,6 @@ export default () => {
 
         <button className="privacyButton">환전 신청하기</button>
       </div>
-=======
-      
->>>>>>> ae588c0ab1f251103acf9b22c72e50ec74ff76a6
 
       <div className="hm">{/* 환전 유의 사항 나누기 여백 */}</div>
 

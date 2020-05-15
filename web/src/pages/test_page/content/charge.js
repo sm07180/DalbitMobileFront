@@ -5,6 +5,8 @@ import BackBtn from '../static/ic_back.svg'
 import IconNotice from '../static/ic_notice.svg'
 import check from '../static/ico-checkbox-off.svg'
 
+import SelectBoxWrap from '../component/select';
+
 export default () => {
     const [status, setStatus] = useState(0);
     return (
@@ -79,7 +81,7 @@ export default () => {
                             <div className="PayView__list">
                                 <div className="PayView__title">은행</div>
                                 <div className="PayView__input">
-                                <input type="text" value="신한은행" className="PayView__input--text" />
+                                <SelectBoxWrap boxList={[{value: 0, text: '주민번호'}]} onChangeEvent={() => console.log('hi')} />
                                 </div>
                             </div>
 
