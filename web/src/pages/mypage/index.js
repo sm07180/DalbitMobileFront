@@ -40,7 +40,7 @@ export default props => {
   //context
   const context = useContext(Context)
   const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const {token, profile} = context
   let {memNo, category} = useParams()
   var urlrStr = props.location.pathname.split('/')[2]
   //프로필정보
@@ -73,32 +73,36 @@ export default props => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt, memNo])
-
+  }, [context.mypageFanCnt])
+  const [codes, setCodes] = useState('')
   useEffect(() => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.code === '-2') {
-        context.action.alert({
-          callback: () => {
-            window.history.back()
-          },
-          msg: '탈퇴한 회원입니다.'
-        })
+        setCodes('-2')
       }
     }
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [memNo])
+  }, [])
+  useEffect(() => {
+    if (codes === '-2') {
+      context.action.alert({
+        callback: () => {
+          window.history.back()
+        },
+        msg: '탈퇴한 회원입니다.'
+      })
+    }
+  }, [codes])
 
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
-
-  if (!profileInfo || !profile) {
+  if (codes !== '' && codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
 
@@ -107,7 +111,7 @@ export default props => {
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout {...props} webview={webview} status="no_gnb">
         <Mypage webview={webview}>
-          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
+          {/* {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} />
@@ -125,7 +129,7 @@ export default props => {
                 })}
               </Sub>
             </>
-          )}
+          )} */}
 
           <SubContent>
             {navigationList.map(value => {
