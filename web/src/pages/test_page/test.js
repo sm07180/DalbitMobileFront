@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom'
 
 import './lee.scss'
 import BackBtn from './static/ic_back.svg'
@@ -29,7 +30,6 @@ export default () => {
             <Select 
                 boxList={list}
                 onChangeEvent={handleEvent}
-                
             />
           
           <input className="receipt__input"></input>
@@ -139,7 +139,13 @@ export default () => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton">입금계좌 받기</button>
+        <button className="chargeButton">
+            <Link to={{
+            pathname: '/temp_test/waitPayment',
+            state: {
+              status: status
+            }
+          }}>입금계좌 받기</Link></button>
       </div>
     </>
   )
