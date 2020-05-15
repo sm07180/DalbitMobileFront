@@ -8,8 +8,8 @@ import {broadcastLive} from 'constant/broadcast.js'
 
 import audioIcon from '../static/ico_audio.svg'
 import videoIcon from '../static/ico_video.svg'
-import maleIcon from '../static/ico_male.png'
-import femaleIcon from '../static/ico_female.png'
+import maleIcon from '../static/ico_male.svg'
+import femaleIcon from '../static/ico_female.svg  '
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
 
