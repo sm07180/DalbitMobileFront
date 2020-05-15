@@ -42,7 +42,7 @@ export default props => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
   let {memNo, category} = useParams()
-
+  var urlrStr = props.location.pathname.split('/')[2]
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   if (profile && profile.memNo !== memNo) {
@@ -73,18 +73,24 @@ export default props => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt])
+  }, [context.mypageFanCnt, memNo])
 
-  //마이페이지 로직추가
   useEffect(() => {
     const settingProfileInfo = async memNo => {
-      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
-      if (profileInfo.result === 'success') {
-        context.action.updateProfile(profileInfo.data)
+      const profileInfo = await Api.profile({params: {memNo: memNo}})
+      if (profileInfo.code === '-2') {
+        context.action.alert({
+          callback: () => {
+            window.history.back()
+          },
+          msg: '탈퇴한 회원입니다.'
+        })
       }
     }
-    settingProfileInfo()
-  }, [])
+    if (memNo) {
+      settingProfileInfo(memNo)
+    }
+  }, [memNo])
 
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
