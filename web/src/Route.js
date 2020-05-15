@@ -34,7 +34,7 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 //Redirect
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 
-const TestPage = React.lazy(() => import('pages/test_page'))
+//const TestPage = React.lazy(() => import('pages/test_page'))
 //
 export default () => {
   return (
@@ -73,9 +73,9 @@ export default () => {
 
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-
+        {/* 
         <Route exact path="/temp_test" component={TestPage} />
-        <Route exact path="/temp_test/:path" component={TestPage} />
+        <Route exact path="/temp_test/:path" component={TestPage} /> */}
 
         <Route exact path="/error" component={ErrorPage} />
 
