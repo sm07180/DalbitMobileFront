@@ -52,16 +52,16 @@ export default props => {
               } else {
                 setSelected({
                   num: index,
-                  name: item.storeNm,
-                  price: item.price
+                  name: item.itemNm,
+                  price: item.salePrice
                 })
               }
             }}>
             <div className="item-wrap">
               <img src={item.img}></img>
-              <p>{item.storeNm}</p>
+              <p>{item.itemNm}</p>
             </div>
-            <p>{Utility.addComma(item.price)}원</p>
+            <p>{Utility.addComma(item.salePrice)}원</p>
           </div>
         )
       })
