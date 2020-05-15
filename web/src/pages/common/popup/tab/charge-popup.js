@@ -751,11 +751,7 @@ const Select = styled.button`
 `
 
 const FixedWrap = styled.div`
-  @media (max-width: ${WIDTH_MOBILE}) {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  padding-bottom: 20px;
 `
 const InnerWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
