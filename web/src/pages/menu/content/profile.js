@@ -102,15 +102,6 @@ export default props => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-  //console.log(profile.memNo)
-
-  const [profileInfo, setProfileInfo] = useState(null)
-
-  // if (profile && profile.memNo !== memNo) {
-  //   navigationList = navigationList.slice(0, 2)
-  // } else if (profile && profile.memNo === memNo) {
-  //   memNo = profile.memNo
-  // }
 
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -118,20 +109,6 @@ export default props => {
     }
   }
 
-  // useEffect(() => {
-  //   const settingProfileInfo = async memNo => {
-  //     const profileInfo = await Api.profile({params: {memNo: memNo}})
-  //     if (profileInfo.result === 'success') {
-  //       setProfileInfo(profileInfo.data)
-  //     }
-  //   }
-
-  //   if (memNo) {
-  //     settingProfileInfo(memNo)
-  //   }
-  // }, [context.mypageFanCnt])
-
-  //console.log(profileInfo)
   return (
     <MenuMypage>
       <Header>
@@ -143,17 +120,10 @@ export default props => {
         )}
       </Header>
 
-      {token && token.isLogin && profile ? (
+      {token && token.isLogin && (
         <>
           <div className="log-in">
             <MyProfile profile={profile} {...props} webview={webview} />
-            {/* <div className="main-info">
-              <div
-                className="photo"
-                style={profile['profImg'] ? {backgroundImage: `url(${profile['profImg']['thumb190x190']})`} : {}}></div>
-              <div className="nickname">{profile.nickNm}</div>
-              <div className="mem-id">{profile.memId}</div>
-            </div> */}
 
             <div className="profile-info">
               <div className="time-info">
@@ -213,16 +183,6 @@ export default props => {
             <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
           </div>
         </>
-      ) : (
-        <div className="log-out">
-          <a href="/login">
-            <img src={NeedLoginImg} />
-            <button className="loginBtn">로그인</button>
-            <div className="text">
-              <span className="bold">로그인</span> 해주세요
-            </div>
-          </a>
-        </div>
       )}
     </MenuMypage>
   )

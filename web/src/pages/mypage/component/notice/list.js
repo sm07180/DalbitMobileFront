@@ -271,7 +271,7 @@ const TitleWrap = styled.div`
     display: block;
     width: 20px;
     height: 20px;
-    background: url(${IMG_SERVER}/images/api/ic_thumbtack.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_thumbtack.svg) no-repeat center center / cover;
   }
   > i {
     display: none;

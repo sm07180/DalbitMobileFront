@@ -125,6 +125,7 @@ export default props => {
             check: false
           })
         }
+          e.target.blur()
       } else if (e.target.value.length > 6) {
         setChanges({
           ...changes,
@@ -619,29 +620,38 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    // console.log(JSON.stringify(changes, null, 1))
-    if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
-      setAllTerm(true)
-      setValidate({...validate, term: true})
-    } else {
-      setAllTerm(false)
-      setValidate({...validate, term: false})
-    }
-
     if (!(changes.memType == 'p')) {
-      validateSetting = {
-        ...validateSetting,
-        memId: true,
-        loginPwd: true,
-        loginPwdCheck: true
-      }
-      setValidate(
-        {
-          ...validate,
-          ...validateSetting
+      if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
+        validateSetting = {
+          ...validateSetting,
+          memId: true,
+          loginPwd: true,
+          loginPwdCheck: true,
+          term: true
         }
-        //
-      )
+        setAllTerm(true)
+      } else {
+        validateSetting = {
+          ...validateSetting,
+          memId: true,
+          loginPwd: true,
+          loginPwdCheck: true,
+          term: false
+        }
+        setAllTerm(false)
+      }
+      setValidate({
+        ...validate,
+        ...validateSetting
+      })
+    } else {
+      if (changes.term1 == 'y' && changes.term2 == 'y' && changes.term3 == 'y' && changes.term4 == 'y') {
+        setAllTerm(true)
+        setValidate({...validate, term: true})
+      } else {
+        setAllTerm(false)
+        setValidate({...validate, term: false})
+      }
     }
   }, [changes])
 
@@ -672,6 +682,7 @@ export default props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
+    // console.log(JSON.stringify(validate, null, 1))
     if (changes.memType == 'p') {
       if (
         validate.memId &&
@@ -739,6 +750,12 @@ export default props => {
                 placeholder="인증번호를 입력해주세요"
                 className="auth"
                 value={changes.auth}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                inputMode="decimal"
+                pattern="\d*"
                 onChange={onLoginHandleChange}
               />
               <span className="timer">{timeText}</span>
@@ -1222,9 +1239,9 @@ const CheckWrap = styled.div`
       border: none;
       outline: none;
 
-      background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center / cover;
+      background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center / cover;
       &:checked {
-        background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center / cover;
+        background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center / cover;
       }
 
       &:after {

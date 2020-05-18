@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 // static
 import closeBtn from './ic_back.svg'
+//import closeBtn from '../../'
 
 export default props => {
   const goBack = () => {

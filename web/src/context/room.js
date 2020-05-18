@@ -28,10 +28,13 @@ const Room = () => {
   //useState
   const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
+  const [itv, setItv] = useState(0)
   //interface
   Room.context = context
   Room.auth = auth
+  Room.itv = itv
   Room.roomInfo = roomInfo
+  Room.setItv = (num) => setItv(num)
   Room.setRoomInfo = (obj) => setRoomInfo(obj)
   Room.setAuth = (bool) => setAuth(bool)
   //-----------------------------------------------------------
@@ -47,8 +50,23 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
+
   const sessionRoomNo = sessionStorage.getItem('room_no')
-  const sessionRoomActive = sessionStorage.getItem('room_active')
+  //const sessionRoomActive = sessionStorage.getItem('room_active')
+
+  if (sessionStorage.getItem('room_active') === 'N') {
+    Room.context.action.alert({
+      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+    })
+  } else {
+    if (sessionStorage.getItem('room_active') === null) {
+      sessionStorage.setItem('room_active', 'N')
+    }
+  }
 
   /**
    * @title Room.roomNo , roomNo 비교
@@ -63,6 +81,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       })
     } else if (join.result === 'success' && join.data !== null) {
       Hybrid('RoomJoin', join.data)
+      Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_no', roomNo)
     }
     //
@@ -71,19 +90,27 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   } else {
     //-------------------------------------------------------------
     //authCheck
-    Hybrid('AuthCheck')
-    if (sessionRoomActive === 'N') return
-    //##
+    //Hybrid('AuthCheck')
     //RoomAuth가 맞지않으면실행하지않음
-    if (!Room.auth) {
+    /*if (!Room.auth) {
       setTimeout(() => {
         //재귀함수
+        Room.setItv(Room.itv + 1)
+        if (Room.itv * 80 >= 5000) {
+          Room.context.action.alert({
+            msg: `방송방 입장이 원활하지 않습니다.\n잠시 후 다시 시도해주십시오.\n정식 오픈 전 미진한 상황에서도\n 이용해주셔서 감사드립니다.`,
+            callback: () => {
+              // window.location.reload()
+              window.location.href = '/'
+            }
+          })
+          return
+        }
         RoomJoin(roomNo)
       }, 80)
       return
-    }
-    if (__NODE_ENV === 'dev') {
-    }
+    }*/
+
     //방송강제퇴장
     if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
@@ -138,6 +165,8 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.setRoomInfo(data)
       Room.setAuth(false)
       //--
+      //Room.setItv(0)
+      Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
@@ -166,6 +195,11 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
+
   /**
    * @title 방송방체크
    * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))

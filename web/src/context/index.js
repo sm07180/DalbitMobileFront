@@ -34,7 +34,7 @@ const GlobalProvider = props => {
   const [gnb_state, setGnbState] = useState('')
   const [login_state, setlogin] = useState(false)
   const [mediaPlayerStatus, setMediaPlayerStatus] = useState(false)
-  const [cast_state, setCastState] = useState(false) // 방장이 방종료할때까지 가지고 있는 값. GNB 방송하기->방송중 표현시 사용 create 2020.03.04 이은비
+  const [cast_state, setCastState] = useState(false)
   const [search, setSearch] = useState('')
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
@@ -46,6 +46,7 @@ const GlobalProvider = props => {
   const [closePresent, setClosePresent] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
+  const [bannerCheck, setBannerCheck] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
@@ -214,6 +215,9 @@ const GlobalProvider = props => {
     },
     updatenoticeIndexNum: num => {
       setNoticeIndexNum(num)
+    },
+    updateBannerCheck: bool => {
+      setBannerCheck(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -243,7 +247,8 @@ const GlobalProvider = props => {
     closeStarCnt,
     closePresent,
     boardNumber,
-    noticeIndexNum
+    noticeIndexNum,
+    bannerCheck
   }
   return <Provider value={value}>{props.children}</Provider>
 }

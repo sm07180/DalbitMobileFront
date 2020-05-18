@@ -73,7 +73,7 @@ function Notice(props) {
     }
   }
   //api----디테일스
-  async function fetchData2() {
+  async function fetchDataDetail() {
     const res = await Api.notice_list_detail({
       params: {
         noticeIdx: details
@@ -87,7 +87,7 @@ function Notice(props) {
   //function---------------------------------------
   const GoNotice = () => {
     Store().action.updatenoticePage('')
-    window.location.href = '/customer'
+    //window.location.href = '/customer'
   }
   const typeActive = e => {
     const number = parseInt(e.target.value)
@@ -96,11 +96,11 @@ function Notice(props) {
 
   const NoticeUrl = () => {
     const index = Store().noticePage.noticeIdx
-    console.log(index)
+
     if (index !== '') {
       history.push(`/customer/notice/${index}`)
 
-      fetchData2()
+      fetchDataDetail()
     }
   }
   //set type select
@@ -144,7 +144,7 @@ function Notice(props) {
   const IntTime = parseInt(timestamp)
 
   useEffect(() => {
-    async function fetchData2() {
+    async function fetchDataDetail() {
       const res = await Api.notice_list_detail({
         params: {
           noticeIdx: num
@@ -156,21 +156,27 @@ function Notice(props) {
         Store().action.updatenoticePage(num)
         setTimeout(() => {
           history.push(`/customer/notice/${num}`)
-        }, 50)
+        }, 10)
       } else if (res.result === 'fail') {
       }
     }
 
-    fetchData2()
+    fetchDataDetail()
   }, [context.noticeIndexNum])
-  //////////////////////////////////
+
+  ////////////////////////////////
   useEffect(() => {
     if (Store().noticePage !== undefined) {
       window.onpopstate = e => {
-        window.location.href = `/customer`
+        window.history.back()
       }
     }
   }, [])
+  useEffect(() => {
+    if (history.location.pathname.split('/')[4] === 'undefined') {
+      history.push(`/customer`)
+    }
+  }, [Store().noticePage])
 
   //--------------------------------------------------------
   return (
@@ -220,6 +226,8 @@ function Notice(props) {
                         <span>
                           {noticeType === 1 ? '공지사항' : ''}
                           {noticeType === 2 ? '이벤트' : ''}
+                          {noticeType === 3 ? '정기정검' : ''}
+                          {noticeType === 4 ? '업데이트' : ''}
                         </span>
                         <em></em>
                         {title}
@@ -238,6 +246,8 @@ function Notice(props) {
                         <span>
                           {noticeType === 1 ? '공지사항' : ''}
                           {noticeType === 2 ? '이벤트' : ''}
+                          {noticeType === 3 ? '정기정검' : ''}
+                          {noticeType === 4 ? '업데이트' : ''}
                         </span>
                         {title}
                       </dd>
@@ -287,8 +297,8 @@ const List = styled.section`
 
 const Detail = styled.section`
   display: block;
-  width:110%;
-  margin-lefT:-5%;
+  width:calc(100% + 32px);
+  margin-lefT:-16px;
   padding-bottom:1px;
   /* border-top: 1px solid ${COLOR_MAIN}; */
   @media (min-width: 768px) {

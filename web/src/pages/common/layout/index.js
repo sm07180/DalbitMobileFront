@@ -1,10 +1,13 @@
 /**
  *
  */
-import React from 'react'
+import React, {useMemo, useContext} from 'react'
 import styled from 'styled-components'
 //context
+import {Context} from 'context'
+
 //layout
+import {Global} from 'App'
 import Gnb from 'pages/common/gnb'
 import NewPlayer from 'pages/common/newPlayer'
 import Popup from 'pages/common/popup'
@@ -14,14 +17,19 @@ import Ip from 'pages/common/ip'
 //
 const Layout = props => {
   const {children, webview} = props
+  const context = useContext(Context)
+  const playerCls = useMemo(() => {
+    return context.player ? 'player_show' : ''
+  })
   //---------------------------------------------------------------------
+
   return (
     <React.Fragment>
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <Article className={webview ? 'webview' : ''}>{children}</Article>
+      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* 레이어팝업 */}
@@ -29,7 +37,7 @@ const Layout = props => {
       {/* 메시지팝업 */}
       <Message {...props} />
       {/* IP노출 */}
-      {__NODE_ENV === 'dev' && <Ip {...props} />}
+      <Ip {...props} />
     </React.Fragment>
   )
 }
@@ -41,5 +49,9 @@ const Article = styled.article`
     .header-wrap .close-btn {
       display: none;
     }
+  }
+  /* player가 노출시 padding-bottom추가 */
+  &.player_show {
+    padding-bottom: 60px;
   }
 `

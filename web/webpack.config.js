@@ -16,7 +16,7 @@ const ENV_URL = {
     PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com'),
     SOCIAL_URL: JSON.stringify('https://devwww2.dalbitlive.com/social')
   },
-  stage: {
+  stage: {    
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://devimage.dalbitlive.com'),

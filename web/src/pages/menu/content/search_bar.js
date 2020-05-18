@@ -30,17 +30,21 @@ export default props => {
       props.update({search: changes})
     }
   }
+  //submit
+  const handleSubmit = e => {
+    e.preventDefault()
+    props.update({search: changes})
+  }
   //---------------------------------------------------------------------
   return (
     <Content>
       <div className="in_wrap">
-        <input type="text" name="query" placeholder="검색어를 입력해 보세요." onKeyPress={handleKeyPress} onChange={onChange} />
-        <button
-          onClick={() => {
-            props.update({search: changes})
-          }}>
-          <img className="ico" src={SearchIco} />
-        </button>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="query" placeholder="검색어를 입력해 보세요." onKeyPress={handleKeyPress} onChange={onChange} />
+          <button type="submit">
+            <img className="ico" src={SearchIco} />
+          </button>
+        </form>
       </div>
     </Content>
   )

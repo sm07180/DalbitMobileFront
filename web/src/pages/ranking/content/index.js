@@ -23,7 +23,7 @@ import LayerPopup from './layer_popup'
 import iconQ from '../static/ic_question.svg'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['전일', '주간', '월간']
+const dateArray = ['일간', '주간', '월간']
 let currentPage = 1
 let moreState = false
 
@@ -44,6 +44,7 @@ export default props => {
   const [popup, setPopup] = useState(false)
   //const [moreState, setMoreState] = useState(false)
   const [myRank, setMyRank] = useState('-')
+  const [myProfile, setMyProfile] = useState(false)
 
   const popStateEvent = e => {
     if (e.state === null) {
@@ -102,26 +103,19 @@ export default props => {
   }
 
   const creatMyRank = () => {
-    const {profImg, level, nickNm, memNo} = context.profile
-    return (
-      <div className="my-rank">
-        <div className="figure-wrap">
-          <Figure url={profImg.thumb120x120} memNo={memNo} link={`/menu/profile`} />
-        </div>
-        <h3 className="flag">
-          <span>{myRank}</span>
-        </h3>
-        <div className="text">
-          <span>
-            Lv {level} {nickNm}
-          </span>
-        </div>
-        <button className="rank-info-btn" onClick={() => setPopup(popup ? false : true)}>
-          <img src={iconQ} alt="랭킹 산정 방법" />
-        </button>
-      </div>
-    )
+    if (context.token.isLogin) {
+      const settingProfileInfo = async memNo => {
+        const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+        if (profileInfo.result === 'success') {
+          setMyProfile(profileInfo.data)
+        }
+      }
+      settingProfileInfo()
+    } else {
+      return null
+    }
   }
+
   //---------------------------------------------------------------------
   //fetch
   async function fetch(type, dateType, next) {
@@ -214,6 +208,8 @@ export default props => {
       fetch(rankType, dateType)
     }
 
+    creatMyRank()
+
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
@@ -242,10 +238,27 @@ export default props => {
         <div className="rank-type">{createRankButton()}</div>
         <div className="date-type">{createDateButton()}</div>
       </div>
-      {context.profile && creatMyRank()}
+      {myProfile && (
+        <div className="my-rank">
+          <div className="figure-wrap">
+            <Figure url={myProfile.profImg.thumb120x120} memNo={myProfile.memNo} link={`/menu/profile`} />
+          </div>
+          <h3 className="flag">
+            <span>{myRank}</span>
+          </h3>
+          <div className="text">
+            <span>
+              Lv {myProfile.level} {myProfile.nickNm}
+            </span>
+          </div>
+          <button className="rank-info-btn" onClick={() => setPopup(popup ? false : true)}>
+            <img src={iconQ} alt="랭킹 산정 방법" />
+          </button>
+        </div>
+      )}
       {creatResult()}
 
-      {popup && <LayerPopup setPopup={setPopup} />}
+      {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
     </Contents>
   )
 }

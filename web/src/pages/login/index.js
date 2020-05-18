@@ -23,7 +23,7 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
-export default (props) => {
+export default props => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -36,13 +36,14 @@ export default (props) => {
   const [password, setPassword] = useState('')
 
   const [appleAlert, setAppleAlert] = useState(false)
+  const customHeader = JSON.parse(Api.customHeader)
 
-  const changePhoneNum = (e) => {
+  const changePhoneNum = e => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = (e) => {
+  const changePassword = e => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -71,67 +72,105 @@ export default (props) => {
         }
       })
 
-      if (loginInfo.result === 'success') {
-        const {memNo} = loginInfo.data
+        if (loginInfo.result === 'success') {
+            const {memNo} = loginInfo.data
 
-        //--##
-        /**
-         * @마이페이지 redirect
-         */
-        let mypageURL = ''
-        const _parse = qs.parse(location.search)
-        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-          mypageURL = `/mypage/${memNo}`
-          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
-        }
-
-        globalCtx.action.updateToken(loginInfo.data)
-        const profileInfo = await Api.profile({params: {memNo}})
-
-        if (profileInfo.result === 'success') {
-          if (isHybrid()) {
-            if (webview && webview === 'new') {
-              Hybrid('GetLoginTokenNewWin', loginInfo.data)
-            } else {
-              Hybrid('GetLoginToken', loginInfo.data)
+            //--##
+            /**
+             * @마이페이지 redirect
+             */
+            let mypageURL = ''
+            const _parse = qs.parse(location.search)
+            if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+                mypageURL = `/mypage/${memNo}`
+                if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
             }
-          }
 
-          if (redirect) {
-            const decodedUrl = decodeURIComponent(redirect)
-            return (window.location.href = decodedUrl)
-          }
-          globalCtx.action.updateProfile(profileInfo.data)
+            globalCtx.action.updateToken(loginInfo.data)
+            const profileInfo = await Api.profile({params: {memNo}})
 
-          //--##마이페이지 Redirect
-          if (mypageURL !== '') {
-            return (window.location.href = mypageURL)
-          }
+            if (profileInfo.result === 'success') {
+                if (isHybrid()) {
+                    if (webview && webview === 'new') {
+                        Hybrid('GetLoginTokenNewWin', loginInfo.data)
+                    } else {
+                        Hybrid('GetLoginToken', loginInfo.data)
+                    }
+                }
 
-          return props.history.push('/')
+                if (redirect) {
+                    const decodedUrl = decodeURIComponent(redirect)
+                    return (window.location.href = decodedUrl)
+                }
+                globalCtx.action.updateProfile(profileInfo.data)
+
+                //--##마이페이지 Redirect
+                if (mypageURL !== '') {
+                    return (window.location.href = mypageURL)
+                }
+
+                return props.history.push('/')
+            }
+        } else if (loginInfo.result === 'fail') {
+            if (loginInfo.code === '-1') {
+                globalCtx.action.alert({
+                    msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
+                })
+            } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
+                let msg = loginInfo.data.opMsg;
+                if(msg === undefined || msg === null || msg === ''){
+                    msg = loginInfo.message
+                }
+                globalCtx.action.alert({
+                    title: '달빛라이브 사용 제한',
+                    msg: `${msg}`,
+                    callback: () => {
+                        if (webview && webview === 'new') {
+                            Hybrid('CloseLayerPopUp')
+                        }
+                    }
+                })
+            } else {
+                globalCtx.action.alert({
+                    title: '로그인 실패',
+                    msg: `${loginInfo.message}`
+                })
+            }
         }
-      } else if (loginInfo.result === 'fail') {
-        globalCtx.action.alert({
-          title: '로그인 실패',
-          msg: `${loginInfo.message}`
-        })
-      }
+
       setFetching(false)
     }
 
     const inputPhoneNode = inputPhoneRef.current
     const inputPasswordNode = inputPasswordRef.current
 
-    if (phoneNum === '') {
-      inputPhoneNode.focus()
-    } else if (password === '') {
-      inputPasswordNode.focus()
+    if (phoneNum === '' && password === '') {
+      globalCtx.action.alert({
+        msg: `아이디(전화번호)와 비밀번호를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPhoneNode.focus()
+        }
+      })
+    } else if (phoneNum === '' && password !== '') {
+      globalCtx.action.alert({
+        msg: `아이디(전화번호)를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPhoneNode.focus()
+        }
+      })
+    } else if (password === '' && phoneNum !== '') {
+      globalCtx.action.alert({
+        msg: `비밀번호를 입력하고 다시 로그인해주세요.`,
+        callback: () => {
+          inputPasswordNode.focus()
+        }
+      })
     } else {
       fetchPhoneLogin(phoneNum, password)
     }
   }
 
-  const fetchSocialData = async (vendor) => {
+  const fetchSocialData = async vendor => {
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -140,25 +179,31 @@ export default (props) => {
       setAppleAlert(false)
     }
 
-    const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile`, {
-      method: 'get',
-      headers: {
-        authToken: Api.authToken,
-        'custom-header': Api.customHeader,
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      }
-    })
+    if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
+      //TODO: 새창로그인 여부 추가
+      //Hybrid('openGoogleSignIn', {'webview' : webview})
+      Hybrid('openGoogleSignIn')
+    } else {
+      const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
+        method: 'get',
+        headers: {
+          authToken: Api.authToken,
+          'custom-header': Api.customHeader,
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        }
+      })
 
-    if (res.status === 200) {
-      const redirectUrl = await res.text()
-      return (window.location.href = `${redirectUrl}`)
+      if (res.status === 200) {
+        const redirectUrl = await res.text()
+        return (window.location.href = `${redirectUrl}`)
+      }
     }
   }
 
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -194,7 +239,7 @@ export default (props) => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
@@ -248,6 +293,13 @@ export default (props) => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>
+                {((customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) ||
+                  (customHeader['os'] === OS_TYPE['IOS'] &&
+                    (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
+                  <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
+                    <img className="icon" src={googleLogo} />
+                  </button>
+                )}
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>

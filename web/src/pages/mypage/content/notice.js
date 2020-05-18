@@ -41,6 +41,7 @@ const Notice = props => {
   const [comentContent, setCommentContent] = useState('')
   const [writeShow, setWriteShow] = useState(false)
   const [writeBtnState, setWriteBtnState] = useState(false)
+  const [thisMemNo, setThisMemNo] = useState(false)
   //공지제목 등록 온체인지
   const textChange = e => {
     const target = e.currentTarget
@@ -136,6 +137,28 @@ const Notice = props => {
     })()
   }, [page])
 
+  useEffect(() => {
+    const settingProfileInfo = async memNo => {
+      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      if (profileInfo.result === 'success') {
+        setThisMemNo(profileInfo.data.memNo)
+      }
+    }
+    settingProfileInfo()
+  }, [])
+
+  const createWriteBtn = () => {
+    if (urlrStr === thisMemNo) {
+      return (
+        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
+          작성
+        </button>
+      )
+    } else {
+      return null
+    }
+  }
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
@@ -156,11 +179,7 @@ const Notice = props => {
     <>
       <Header>
         <div className="category-text">방송공지</div>
-        {urlrStr === ctx.profile.memNo && (
-          <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
-            작성
-          </button>
-        )}
+        {createWriteBtn()}
       </Header>
       <ListWrap>
         {Array.isArray(listDetailed) ? (

@@ -58,10 +58,6 @@ export default props => {
       if (profile.result === 'success') {
         context.action.updateProfile(profile.data)
       }
-      // context.action.alert({
-      //   msg: res.message,
-      //   callback: () => {}
-      // })
     }
     setState(!state)
   }

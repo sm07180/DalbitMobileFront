@@ -26,9 +26,11 @@ export default props => {
   const [fanInfo, setFanInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
+
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
+
   //api
   const fetchData = async () => {
     const res = await Api.mypage_fan_ranking({
@@ -40,9 +42,7 @@ export default props => {
     })
     if (res.result === 'success') {
       setRankInfo(res.data.list)
-      //console.log(res)
     } else {
-      console.log(res)
     }
     return
   }
@@ -155,7 +155,7 @@ export default props => {
       context.action.updateCloseStarCnt(false)
     }
   }
-  //console.log(name)
+
   //------------------------------------------------------------
   useEffect(() => {
     if (name === '스타') {

@@ -12,11 +12,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
-import {encode} from 'punycode'
 
-import {isAndroid} from 'context/hybrid'
-
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {profile, token} = context
   const [nickname, setNickname] = useState('')
@@ -29,14 +26,14 @@ export default props => {
   const nicknameReference = useRef()
   const {isOAuth} = token
 
-  const profileImageUpload = e => {
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -213,7 +210,7 @@ export default props => {
     }
   }
 
-  const changeNickname = e => {
+  const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
@@ -221,13 +218,13 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = e => {
+  const changeMsg = (e) => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
   }
 
   const saveUpload = async () => {
-    if (!nickname) {
+    if (!profile.nickNm) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
         callback: () => {
@@ -247,27 +244,24 @@ export default props => {
         }
       })
     }
-
+    //##submit
     const data = {
-      gender: gender,
-      nickNm: nickname,
+      gender: profile.gender,
+      nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg
-    }
-
-    if (photoPath) {
-      data['profImg'] = photoPath
+      profMsg: profileMsg || profile.profMsg,
+      profImg: photoPath || profile.profImg.path
     }
 
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
-      context.action.updateProfile(res.data)
+      context.action.updateProfile({...res.data, birth: profile.birth})
       return context.action.alert({
         msg: '저장되었습니다.',
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          props.history.push('/')
+          props.history.push('/menu/profile')
         }
       })
     } else {
@@ -290,7 +284,13 @@ export default props => {
       }
     }
   }, [])
-  ////
+
+  if (!profile) {
+    Api.mypage().then((result) => {
+      context.action.updateProfile(result.data)
+    })
+    return null
+  }
 
   return (
     <Switch>
@@ -305,12 +305,7 @@ export default props => {
                 <div className="category-text">내 정보 관리</div>
               </Header>
 
-              <ProfileImg
-                style={
-                  {
-                    // backgroundImage: `url(${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''})`
-                  }
-                }>
+              <ProfileImg>
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
                   <img
@@ -327,14 +322,14 @@ export default props => {
                   id="nickName"
                   ref={nicknameReference}
                   autoComplete="off"
-                  value={nickname}
+                  defaultValue={profile.nickNm}
                   onChange={changeNickname}
                 />
               </div>
               <label className="input-label">아이디</label>
               <UserId>{`@${profile.memId}`}</UserId>
 
-              {profile.memNo[0] === '1' && (
+              {token.memNo[0] === '1' && (
                 <>
                   <label className="input-label">비밀번호</label>
                   <PasswordWrap>
@@ -361,14 +356,15 @@ export default props => {
               <label className="input-label">성별</label>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 <GenderTab
-                  className={gender === 'm' ? '' : 'off'}
+                  className={profile.gender === 'm' ? '' : 'off'}
                   onClick={() => {
                     firstSetting && setGender('m')
                   }}>
                   남자
                 </GenderTab>
+
                 <GenderTab
-                  className={gender === 'f' ? '' : 'off'}
+                  className={profile.gender === 'f' ? '' : 'off'}
                   onClick={() => {
                     firstSetting && setGender('f')
                   }}>
@@ -380,7 +376,7 @@ export default props => {
 
               <div className="msg-wrap">
                 <label className="input-label">프로필 메세지</label>
-                <MsgText value={profileMsg} onChange={changeMsg} />
+                <MsgText defaultValue={profile.profMsg} onChange={changeMsg} />
               </div>
               <SaveBtn onClick={saveUpload}>저장</SaveBtn>
             </SettingWrap>

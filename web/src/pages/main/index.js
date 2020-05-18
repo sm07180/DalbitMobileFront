@@ -2,7 +2,8 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -19,11 +20,13 @@ import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
+import LayerPopupNotice from './component/layer_popup_notice.js'
 import NoResult from './component/NoResult.js'
+import {OS_TYPE} from 'context/config.js'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
-
+import Utility from 'components/lib/utility'
 // static
 import Mic from './static/ic_broadcastng.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
@@ -38,7 +41,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default props => {
+export default (props) => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -59,6 +62,8 @@ export default props => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
+  const [popupNotice, setPopupNotice] = useState(true)
+  const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -68,11 +73,12 @@ export default props => {
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
+  const customHeader = JSON.parse(Api.customHeader)
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach(key => {
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -92,7 +98,7 @@ export default props => {
       }
     })()
 
-    Api.splash().then(res => {
+    Api.splash().then((res) => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -105,7 +111,7 @@ export default props => {
     })
   }, [])
 
-  const fetchLiveList = async reset => {
+  const fetchLiveList = async (reset) => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -172,7 +178,7 @@ export default props => {
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
     const TopSectionHeight = SubMainHeight + RankSectionHeight + StarSectionHeight + LiveTabDefaultHeight
-    if (window.scrollY >= TopSectionHeight) {
+    if (window.scrollY >= TopSectionHeight + 85) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
@@ -195,7 +201,7 @@ export default props => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -207,10 +213,12 @@ export default props => {
     if (popup) {
       if (window.location.hash === '') {
         window.history.pushState('layer', '', '/#layer')
+        setScrollY(window.scrollY)
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
         window.history.back()
+        setTimeout(() => window.scrollTo(0, scrollY))
       }
     }
   }, [popup])
@@ -219,6 +227,11 @@ export default props => {
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
+
+    // if (sessionStorage.getItem('popup_notice') === null) {
+    //   sessionStorage.setItem('popup_notice', 'y')
+    // }
+
     return () => {
       window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
@@ -246,6 +259,11 @@ export default props => {
   const goRank = () => {
     history.push(`/rank`, rankType)
   }
+  //go event
+  const goEvent = () => {
+    globalCtx.action.updatenoticeIndexNum(`/customer/notice/3`)
+    history.push(`/customer/notice/3`)
+  }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
@@ -261,7 +279,7 @@ export default props => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-              {/* <div className="tab">
+              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') &&  <div className="tab">
                 <Link
                   onClick={event => {
                     event.preventDefault()
@@ -270,7 +288,7 @@ export default props => {
                   to={'/store'}>
                   스토어
                 </Link>
-              </div> */}
+              </div> }
             </div>
             <div className="right-side">
               <div
@@ -311,7 +329,9 @@ export default props => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
-
+          {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
+          {/* {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>} */}
+          <button className="event-section" onClick={() => goEvent()}></button>
           <div
             className="section"
             ref={StarSectionRef}
@@ -386,12 +406,23 @@ export default props => {
             resetFetchList={resetFetchList}
           />
         )}
+
+        {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {/*popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} /> */}
       </MainWrap>
     </Layout>
   )
 }
 
 const Content = styled.div`
+  .event-section {
+    display: block;
+    width: calc(100% - 32px);
+    height: 65px;
+    margin: 25px 16px 16px 16px;
+    border-radius: 12px;
+    background: url(${IMG_SERVER}/banner/200513/mobile_main_bottomranking.png) no-repeat center center / cover;
+  }
   .section {
     margin-top: 24px;
 
@@ -546,8 +577,8 @@ const Content = styled.div`
       }
 
       &.live-list {
-        padding-bottom: 100px;
-        min-height: 515px;
+        /* padding-bottom: 40px; */
+        /* min-height: 515px; */
       }
     }
   }

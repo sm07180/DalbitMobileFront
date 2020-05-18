@@ -199,13 +199,13 @@ const Wrap = styled.div`
       right: 0;
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/ico-checkbox-off.png) no-repeat center center/ cover;
+      background: url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center/ cover;
       transform: translateY(-50%);
       @media (max-width: ${WIDTH_MOBILE}) {
         /* right: 16px; */
       }
       &.on {
-        background: url(${IMG_SERVER}/images/api/ico-checkbox-on.png) no-repeat center center/ cover;
+        background: url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center/ cover;
       }
     }
   }

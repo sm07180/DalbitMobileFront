@@ -2,7 +2,7 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import _ from 'lodash'
 //context
 import {Context} from 'context'
@@ -11,7 +11,7 @@ import {Hybrid} from 'context/hybrid'
 import Content from './content'
 import Api from 'context/api'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)

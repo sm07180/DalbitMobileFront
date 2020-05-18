@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useContext} from 'react'
 import {Switch, Route, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -7,8 +7,11 @@ import Profile from './content/profile.js'
 import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
+import {Context} from 'context'
+
 // component
 import Layout from 'pages/common/layout'
+import Api from 'context/api'
 
 export default props => {
   const categoryList = [
@@ -17,6 +20,19 @@ export default props => {
     {type: 'alarm', component: Alarm},
     {type: 'search', component: Search}
   ]
+
+  const globalCtx = useContext(Context)
+  const {token, profile} = globalCtx
+
+  if (!profile && window.location.pathname !== '/menu/search') {
+    const {memNo} = token
+    Api.profile({params: {memNo: memNo}}).then(profileInfo => {
+      if (profileInfo.result === 'success') {
+        globalCtx.action.updateProfile(profileInfo.data)
+      }
+    })
+    return null
+  }
 
   return (
     <Layout {...props} status="no_gnb">

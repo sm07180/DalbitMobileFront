@@ -33,6 +33,8 @@ const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 //Redirect
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
+
+//const TestPage = React.lazy(() => import('pages/test_page'))
 //
 export default () => {
   return (
@@ -50,7 +52,6 @@ export default () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/store" component={Store} />
-        <Route exact path="/event" component={Event} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
@@ -72,6 +73,9 @@ export default () => {
 
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
+        {/* 
+        <Route exact path="/temp_test" component={TestPage} />
+        <Route exact path="/temp_test/:path" component={TestPage} /> */}
 
         <Route exact path="/error" component={ErrorPage} />
 

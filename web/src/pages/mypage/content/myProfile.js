@@ -2,9 +2,8 @@
  * @file /mypage/content/my-profile.js
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
-import React, {useEffect, useStet, useContext, useState} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 //route
-import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import Room, {RoomJoin} from 'context/room'
 //styled
@@ -27,26 +26,26 @@ import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 const myProfile = props => {
   const {webview} = props
+
   //context
-  const ctx = useContext(Context)
   const context = useContext(Context)
+  const {mypageReport, close, closeFanCnt, closeStarCnt, closePresent} = context
+
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
 
-  const myProfileNo = ctx.profile.memNo
+  const myProfileNo = context.profile.memNo
   //zoom
   const [Zoom, setZoom] = useState(false)
   const figureZoom = () => {
     setZoom(true)
   }
-  //console.log(myProfileNo)
-  //state
+
+  const [popup, setPopup] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
   const [reportShow, SetShowReport] = useState(false)
-  if (profile === null) {
-    return <div style={{minHeight: '400px'}}></div>
-  }
-  //api
+
   async function fetchDataFanRegist(myProfileNo) {
     const res = await Api.fan_change({
       data: {
@@ -60,7 +59,6 @@ const myProfile = props => {
         },
         msg: '팬등록에 성공하였습니다.'
       })
-      //console.log(res)
     } else if (res.result === 'fail') {
       context.action.alert({
         callback: () => {},
@@ -141,6 +139,52 @@ const myProfile = props => {
         </FanListWrap>
       </>
     )
+  }
+
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+      context.action.updateMypageReport(false)
+      context.action.updateClose(false)
+      context.action.updateCloseFanCnt(false)
+      context.action.updateCloseStarCnt(false)
+      context.action.updateClosePresent(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
+  useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+        setScrollY(window.scrollY)
+      }
+    } else if (!popup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+        setTimeout(() => window.scrollTo(0, scrollY))
+      }
+    }
+  }, [popup])
+
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
+    return () => {
+      window.removeEventListener('popstate', popStateEvent)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mypageReport || close || closeFanCnt || closeStarCnt || closePresent) {
+      setPopup(true)
+    } else {
+      setPopup(false)
+    }
+  }, [mypageReport, close, closeFanCnt, closeStarCnt, closePresent])
+
+  if (profile === null) {
+    return <div style={{minHeight: '400px'}}></div>
   }
 
   return (
@@ -228,6 +272,7 @@ const myProfile = props => {
 }
 
 export default myProfile
+
 //styled======================================
 const MyProfile = styled.div`
   display: flex;
@@ -322,12 +367,9 @@ const ProfileImg = styled.div`
     position: absolute;
     right: 0;
     top: 0px;
-    img{
-      padding:0 0 3px 3px;
+    img {
+      padding: 0 0 3px 3px;
     }
-    /* width: 60px;
-    height: 30px;
-    background: url(${LiveIcon}) no-repeat right top; */
   }
   & .reportIcon {
     position: absolute;

@@ -84,6 +84,7 @@ export default props => {
             check: false
           })
         }
+        e.target.blur()
       } else if (e.target.value.length > 6) {
         setChanges({
           ...changes,
@@ -352,6 +353,12 @@ export default props => {
               id="auth"
               placeholder="인증번호를 입력해주세요"
               className="auth"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+              inputMode="decimal"
+              pattern="\d*"
               value={changes.auth}
               onChange={onLoginHandleChange}
             />

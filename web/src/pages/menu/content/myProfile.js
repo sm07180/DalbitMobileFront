@@ -11,23 +11,27 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
-// import ProfilePresent from './profile_present'
+
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
+
 //svg
 import LiveIcon from '../component/ic_live.svg'
-
-const levelBarWidth = 176
 
 const myProfile = props => {
   const {webview} = props
 
+  const [popup, setPopup] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+
   //context
-  const ctx = useContext(Context)
   const context = useContext(Context)
+
+  const {mypageReport, close, closeFanCnt, closeStarCnt} = context
+
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
@@ -40,7 +44,7 @@ const myProfile = props => {
   let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
 
-  const myProfileNo = ctx.profile.memNo
+  const myProfileNo = context.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
   if (profile === null) {
@@ -60,7 +64,6 @@ const myProfile = props => {
         },
         msg: '팬등록에 성공하였습니다.'
       })
-      //console.log(res)
     } else if (res.result === 'fail') {
       context.action.alert({
         callback: () => {},
@@ -112,14 +115,6 @@ const myProfile = props => {
     let result = []
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
-        // let thisRank = index + 1
-        // result = result.concat(
-        //   <a key={index}>
-        //     <FanRank
-        //       style={{backgroundImage: `url(${IMG_SERVER}/images/api/default_fan${index + 1}.png)`}}
-        //       className={`rank${thisRank}`}></FanRank>
-        //   </a>
-        // )
       } else {
         const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
@@ -150,12 +145,53 @@ const myProfile = props => {
     )
   }
 
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+      context.action.updateMypageReport(false)
+      context.action.updateClose(false)
+      context.action.updateCloseFanCnt(false)
+      context.action.updateCloseStarCnt(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
+  useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+        setScrollY(window.scrollY)
+      }
+    } else if (!popup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+        setTimeout(() => window.scrollTo(0, scrollY))
+      }
+    }
+  }, [popup])
+
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
+    return () => {
+      window.removeEventListener('popstate', popStateEvent)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mypageReport || close || closeFanCnt || closeStarCnt) {
+      setPopup(true)
+    } else {
+      setPopup(false)
+    }
+  }, [mypageReport, close, closeFanCnt, closeStarCnt])
+
   return (
     <MyProfile webview={webview}>
-      <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-        {/* {profile.roomNo !== '' && <div className="liveIcon"></div>} */}
+      <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
         <figure onClick={() => figureZoom()}>
-          <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
+          <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+          <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
         </figure>
         {Zoom === true && (
           <div className="zoom" onClick={() => setZoom(false)}>
@@ -197,13 +233,7 @@ const myProfile = props => {
             <div onClick={() => context.action.updateMypageReport(true)}></div>
           )}
         </CountingWrap>
-        <ButtonWrap>
-          {/* <InfoConfigBtn>
-            <a href="/private">내 정보 관리</a>
-          </InfoConfigBtn> */}
-
-          {createFanList()}
-        </ButtonWrap>
+        <ButtonWrap>{createFanList()}</ButtonWrap>
       </ContentWrap>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
@@ -251,7 +281,7 @@ const MyProfile = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 10px 0 16px 0;
+    padding: 16px 0 16px 0;
     /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
@@ -281,14 +311,27 @@ const ProfileImg = styled.div`
   order: 1;
 
   figure {
-    width: 120px;
-    height: 120px;
+    position: relative;
+    width: 100px;
+    height: 100px;
     margin: 6px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
 
     img {
       display: none;
+    }
+
+    .holder {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
     }
   }
 

@@ -168,7 +168,8 @@ export default props => {
     const obj = {
       data: {
         Prdtnm: context.popup_code[1].name,
-        Prdtprice: context.popup_code[1].price
+        Prdtprice: context.popup_code[1].price,
+        itemNo: context.popup_code[1].itemNo
       }
     }
     const res = await Api[payType]({...obj})
@@ -750,11 +751,7 @@ const Select = styled.button`
 `
 
 const FixedWrap = styled.div`
-  @media (max-width: ${WIDTH_MOBILE}) {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  padding-bottom: 20px;
 `
 const InnerWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
