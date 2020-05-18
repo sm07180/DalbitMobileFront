@@ -18,6 +18,10 @@ const Index = (props) => {
     alert('pay')
     alert(JSON.stringify(props.location.search, null, 1))
   }
+  if (__NODE_ENV === 'dev' && props.location.search.indexOf('webview=new') !== -1) {
+    alert('webview=new')
+    alert(JSON.stringify(props.location.search, null, 1))
+  }
   const context = useContext(Context)
   //context
 
