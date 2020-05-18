@@ -208,12 +208,7 @@ export default (props) => {
   }
 
   const updateDispatch = (event) => {
-    console.log(event)
     //개발쪽만 적용
-    if (__NODE_ENV === 'dev') {
-      alert(JSON.stringify(event.detail, null, 1))
-    }
-
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,
