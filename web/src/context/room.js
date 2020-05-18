@@ -55,11 +55,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
 
-  if (_day === '18' && _hour === 14 && _min > 0 && _min <= 30) {
-    alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
-    return
-  }
-
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
 
@@ -204,11 +199,6 @@ export const RoomMake = async (context) => {
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
-
-  if (_day === '18' && _hour === 14 && _min > 0 && _min <= 30) {
-    alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
-    return
-  }
 
   /**
    * @title 방송방체크
