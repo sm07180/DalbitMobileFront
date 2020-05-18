@@ -408,7 +408,7 @@ export default (props) => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/*20.05.18 주석 {popupNotice && Utility.getCookie('popup_notice') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {popupNotice && Utility.getCookie('popup_notice') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />}
       </MainWrap>
     </Layout>
   )
