@@ -13,8 +13,8 @@ import Content from './content'
 export default (props) => {
   //---------------------------------------------------------------------
   //context
-  if (__NODE_ENV === 'dev') {
-    alert('success')
+  if (__NODE_ENV === 'dev' && props.location.state.result === 'success') {
+    alert(props.location.state.message)
     alert(JSON.stringify(props, null, 1))
   }
   /**
