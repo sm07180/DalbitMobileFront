@@ -14,7 +14,10 @@ import Pay from './pay.js'
 //
 const Index = (props) => {
   //---------------------------------------------------------------------
-
+  if (__NODE_ENV === 'dev' && props.location.search !== '') {
+    alert('pay1')
+    alert(JSON.stringify(props.location.search, null, 1))
+  }
   const context = useContext(Context)
   //context
 
@@ -30,10 +33,6 @@ const Index = (props) => {
       alert('webview=new')
       context.action.updatePlayer(false)
       context.action.updateMediaPlayerStatus(false)
-    }
-    if (__NODE_ENV === 'dev' && props.location.search !== '') {
-      alert('pay')
-      alert(JSON.stringify(props.location.search, null, 1))
     }
   }, [])
   //---------------------------------------------------------------------
