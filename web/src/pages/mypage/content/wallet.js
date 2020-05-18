@@ -123,14 +123,14 @@ export default props => {
             // </CoinChargeBtn>
 
             <>
-              {context.customHeader['os'] === OS_TYPE['IOS'] && (
+              {/*context.customHeader['os'] === OS_TYPE['IOS'] && (
                 <CoinChargeBtn
                   onClick={() => {
                     webkit.messageHandlers.openInApp.postMessage('')
                   }}>
                   충전하기
                 </CoinChargeBtn>
-              )}
+              )*/}
             </>
           ) : (
             <>
