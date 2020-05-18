@@ -10,9 +10,13 @@ import Layout from 'pages/common/layout'
 //components
 import Content from './content'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
+  if (__NODE_ENV === 'dev') {
+    alert('success')
+    alert(JSON.stringify(props, null, 1))
+  }
   /**
    *
    * @returns
