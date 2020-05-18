@@ -30,6 +30,10 @@ const Index = (props) => {
       context.action.updatePlayer(false)
       context.action.updateMediaPlayerStatus(false)
     }
+    if (__NODE_ENV === 'dev' && props.result === 'success') {
+      alert('success')
+      alert(JSON.stringify(props, null, 1))
+    }
   }, [])
   //---------------------------------------------------------------------
   return (
