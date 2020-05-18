@@ -130,7 +130,7 @@ const PopupWrap = styled.div`
 
       .text {
         overflow: auto;
-        height: 300px;
+        max-height: 300px;
         font-size: 15px;
         font-weight: 500;
         margin-bottom: 10px;
