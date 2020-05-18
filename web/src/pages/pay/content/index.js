@@ -14,6 +14,10 @@ import Pay from './pay.js'
 //
 const Index = (props) => {
   //---------------------------------------------------------------------
+  if (__NODE_ENV === 'dev' && props.location.search !== '') {
+    alert('pay')
+    alert(JSON.stringify(props.location.search, null, 1))
+  }
   const context = useContext(Context)
   //context
 
