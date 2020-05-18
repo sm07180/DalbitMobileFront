@@ -102,7 +102,8 @@ export default props => {
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
-  if (codes !== '' && codes !== '-2' && (!profileInfo || !profile)) {
+  if (codes !== '-2' && (!profileInfo || !profile)) {
+    console.log('1234')
     return null
   }
 
@@ -111,7 +112,7 @@ export default props => {
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout {...props} webview={webview} status="no_gnb">
         <Mypage webview={webview}>
-          {/* {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
+          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} />
@@ -129,7 +130,7 @@ export default props => {
                 })}
               </Sub>
             </>
-          )} */}
+          )}
 
           <SubContent>
             {navigationList.map(value => {
