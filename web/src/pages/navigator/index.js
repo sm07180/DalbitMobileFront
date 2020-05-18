@@ -14,7 +14,10 @@ export default (props) => {
   //queryString
   const queryString = useMemo(() => {
     if (props.location.search === undefined) return ''
-
+    if (__NODE_ENV === 'dev') {
+      alert('navigator')
+      alert(JSON.stringify(props.location.search, null, 1))
+    }
     return qs.parse(props.location.search, {ignoreQueryPrefix: true})
   })
   //useEffect
