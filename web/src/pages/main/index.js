@@ -330,8 +330,7 @@ export default (props) => {
             </div>
           </div>
           {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
-          {/* {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>} */}
-          <button className="event-section" onClick={() => goEvent()}></button>
+          { customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
           <div
             className="section"
             ref={StarSectionRef}
