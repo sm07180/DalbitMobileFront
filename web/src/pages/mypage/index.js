@@ -103,7 +103,6 @@ export default props => {
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
   if (codes !== '-2' && (!profileInfo || !profile)) {
-    console.log('1234')
     return null
   }
 
