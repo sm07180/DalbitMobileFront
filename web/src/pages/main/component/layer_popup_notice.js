@@ -40,8 +40,7 @@ export default (props) => {
 
   const applyClick = () => {
     if (state.click1) {
-      console.log('state.click1', state.click1)
-      Utility.setCookie('popup_notice', 'Y', 1)
+      Utility.setCookie('popup_notice1', 'Y', 1)
       sessionStorage.setItem('popup_notice', 'n')
     }
     setPopup(false)
