@@ -30,7 +30,8 @@ const Index = (props) => {
       alert('webview=new')
       context.action.updatePlayer(false)
       context.action.updateMediaPlayerStatus(false)
-    } else if (__NODE_ENV === 'dev' && props.location.search !== '') {
+    }
+    if (__NODE_ENV === 'dev' && props.location.search !== '') {
       alert('pay')
       alert(JSON.stringify(props.location.search, null, 1))
     }
