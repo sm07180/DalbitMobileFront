@@ -17,7 +17,9 @@ export default (props) => {
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
       alert(props.location.state.message)
-      alert(JSON.stringify(props, null, 1))
+      //  alert(JSON.stringify(props, null, 1))
+      Hybrid('CloseLayerPopUp')
+      //--------------------결제완료
     }
   }
   /**
