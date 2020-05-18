@@ -50,9 +50,15 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
-  alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
 
-  return
+  if (_day === '18' && _hour === 14 && _min > 0 && _min <= 30) {
+    alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
+    return
+  }
 
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
@@ -194,8 +200,16 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
-  alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
-  return
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
+
+  if (_day === '18' && _hour === 14 && _min > 0 && _min <= 30) {
+    alert('현재 미디어서버 업그레이드 작업(2시~2시30분)이 진행중입니다. \n잠시만 기다려주십시오')
+    return
+  }
+
   /**
    * @title 방송방체크
    * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))
