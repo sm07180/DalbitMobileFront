@@ -14,6 +14,8 @@ import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng.svg'
 
 export default (props) => {
+  //context
+  const context = useContext(Context)
   const {webview} = props
 
   if (webview && webview === 'new') {
@@ -64,6 +66,8 @@ export default (props) => {
         <div className="icon-wrap">
           <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
           <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
+
+          {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
         </div>
         {logoChange ? (
@@ -117,12 +121,25 @@ const GnbWrap = styled.div`
   padding: 0 6px;
 
   .icon-wrap {
+    position: relative;
     display: flex;
     flex-direction: row;
 
     .icon {
+      position: relative;
       display: block;
       width: 36px;
+    }
+    .news {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 5px;
+      height: 5px;
+      background: #ff0000;
+      z-index: 11;
+      border-radius: 50%;
+      content: '1';
     }
   }
 

@@ -15,7 +15,7 @@ import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 import Ip from 'pages/common/ip'
 //
-const Layout = props => {
+const Layout = (props) => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
@@ -26,6 +26,9 @@ const Layout = props => {
   return (
     <React.Fragment>
       {/* GNB */}
+      {/* <Top>
+        <h1>test</h1>
+      </Top> */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
@@ -43,7 +46,12 @@ const Layout = props => {
 }
 export default Layout
 //---------------------------------------------------------------------
+const Top = styled.div`
+  margin-top: 49px;
+  margin-bottom: 50px;
 
+  position: relative;
+`
 const Article = styled.article`
   &.webview {
     .header-wrap .close-btn {

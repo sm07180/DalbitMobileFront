@@ -21,7 +21,6 @@ import qs from 'query-string'
 export default () => {
   //context
   const context = useContext(Context)
-
   //history
   let history = useHistory()
   //
@@ -30,11 +29,20 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        // pushMsg1 = pushMsg1.trim()
         pushMsg = JSON.parse(pushMsg)
+        switch (pushMsg.push_type) {
+          case '1': //팝업메시지
+            context.action.alert({msg: pushMsg.content})
+            break
+          case '2': //스티커 상단
+            alert('스티커 상단')
+            break
+          case '3': //알림(종표시)
+            context.action.updateNews(true) //true,false
+            break
+        }
 
         // alert(JSON.stringify(pushMsg, null, 1))
-        context.action.alert({msg: pushMsg.content})
         //---------------------[분기처리시작]
 
         break
