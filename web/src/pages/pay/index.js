@@ -22,7 +22,7 @@ export default (props) => {
       alert(props.location.state.message)
       alert(JSON.stringify(props.location.state, null, 1))
       Hybrid('CloseLayerPopup')
-
+      window.location.href = '/'
       //--------------------결제완료
     }
   }
@@ -35,15 +35,6 @@ export default (props) => {
     <PayProvider>
       <Layout {...props} status="no_gnb">
         <Content {...props} />
-        {/* {__NODE_ENV === 'dev' && (
-          <button
-            onClick={() => {
-              alert('CloseLayerPopup')
-              Hybrid('CloseLayerPopup')
-            }}>
-            레이어닫기
-          </button>
-        )} */}
       </Layout>
     </PayProvider>
   )
