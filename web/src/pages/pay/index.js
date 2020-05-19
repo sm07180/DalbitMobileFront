@@ -22,6 +22,8 @@ export default (props) => {
       alert(props.location.state.message)
       alert(JSON.stringify(props.location.state, null, 1))
       Hybrid('CloseLayerPopup')
+      //메인에서 스토어에서 뒤로가기 막아야함
+
       window.location.href = '/'
       //--------------------결제완료
     }
