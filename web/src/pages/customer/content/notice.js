@@ -226,6 +226,8 @@ function Notice(props) {
                         <span>
                           {noticeType === 1 ? '공지사항' : ''}
                           {noticeType === 2 ? '이벤트' : ''}
+                          {noticeType === 3 ? '정기정검' : ''}
+                          {noticeType === 4 ? '업데이트' : ''}
                         </span>
                         <em></em>
                         {title}
@@ -244,6 +246,8 @@ function Notice(props) {
                         <span>
                           {noticeType === 1 ? '공지사항' : ''}
                           {noticeType === 2 ? '이벤트' : ''}
+                          {noticeType === 3 ? '정기정검' : ''}
+                          {noticeType === 4 ? '업데이트' : ''}
                         </span>
                         {title}
                       </dd>

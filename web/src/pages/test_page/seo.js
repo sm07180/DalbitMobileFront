@@ -73,10 +73,10 @@ export default () => {
       </div>
 
       <div className="content">
-        <div class="myStar">
+        <div className="myStar">
           <div className="charge__title">
             <div className="mystar__title">환전 정보</div>
-            <div class="charge__title--point">
+            <div className="charge__title--point">
               유의사항
               <img src={IconNotice} className="charge__title--object" />
             </div>
@@ -85,11 +85,11 @@ export default () => {
           <p className="myStar__notice">* 별은 500개 이상이어야 환전 신청이 가능하며, 별 1개당 KRW 60으로 환전됩니다.</p>
 
           <div className="point">
-            <div class="point__list point__list--left">
+            <div className="point__list point__list--left">
               <div className="point__label">보유 별</div>
               <div className="point__value">500</div>
             </div>
-            <div class="point__list">
+            <div className="point__list">
               <div className="point__label">환전 신청 별</div>
               <input type="text" className="point__value  point__value--input" value="90" />
             </div>
@@ -193,7 +193,7 @@ export default () => {
           </div>
         </div>
 
-        <div class="privacy">
+        <div className="privacy">
           <div className="privacy__title">
             <img src={check} className="privacy__checkBox" />
             개인정보 수집 및 이용에 동의합니다.
@@ -208,8 +208,6 @@ export default () => {
       </div>
 
       <div className="hm">{/* 환전 유의 사항 나누기 여백 */}</div>
-
-      
     </>
   )
 }

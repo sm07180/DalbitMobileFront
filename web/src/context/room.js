@@ -50,6 +50,11 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
+
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
 
@@ -190,6 +195,11 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
+  const today = new Date()
+  const _day = today.getUTCDate() + ''
+  const _hour = Number(today.getHours())
+  const _min = Number(today.getMinutes())
+
   /**
    * @title 방송방체크
    * @code (1: 방송중, 2:마이크Off, 3:통화중, 4:방송종료, 5: 비정상(dj 종료된상태))

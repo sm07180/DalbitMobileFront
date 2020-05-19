@@ -14,6 +14,7 @@ import Pay from './pay.js'
 //
 const Index = (props) => {
   //---------------------------------------------------------------------
+
   const context = useContext(Context)
   //context
 
@@ -21,9 +22,14 @@ const Index = (props) => {
   Index.store = store
 
   //---------------------------------------------------------------------
-  //useEffect
+  /**
+   * 결제완료페이지
+   */
   useEffect(() => {
-    //window.location.href = '/'
+    if (__NODE_ENV === 'dev' && props.location.search.indexOf('webview=new') !== -1) {
+      context.action.updatePlayer(false)
+      context.action.updateMediaPlayerStatus(false)
+    }
   }, [])
   //---------------------------------------------------------------------
   return (

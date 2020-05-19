@@ -15,13 +15,14 @@ import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 import Ip from 'pages/common/ip'
 //
-const Layout = (props) => {
+const Layout = props => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
     return context.player ? 'player_show' : ''
   })
   //---------------------------------------------------------------------
+
   return (
     <React.Fragment>
       {/* GNB */}

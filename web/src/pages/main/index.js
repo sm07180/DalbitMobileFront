@@ -279,7 +279,7 @@ export default (props) => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-              {/* <div className="tab">
+              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') &&  <div className="tab">
                 <Link
                   onClick={event => {
                     event.preventDefault()
@@ -288,7 +288,7 @@ export default (props) => {
                   to={'/store'}>
                   스토어
                 </Link>
-              </div> */}
+              </div> }
             </div>
             <div className="right-side">
               <div
@@ -330,8 +330,7 @@ export default (props) => {
             </div>
           </div>
           {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
-          {/* {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>} */}
-          <button className="event-section" onClick={() => goEvent()}></button>
+          { customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
           <div
             className="section"
             ref={StarSectionRef}
@@ -407,8 +406,8 @@ export default (props) => {
           />
         )}
 
-        {/*이전 {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/* 20.05.12. {popupNotice && Utility.getCookie('popup_notice') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {/*popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} /> */}
       </MainWrap>
     </Layout>
   )

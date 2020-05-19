@@ -125,6 +125,7 @@ export default props => {
             check: false
           })
         }
+          e.target.blur()
       } else if (e.target.value.length > 6) {
         setChanges({
           ...changes,

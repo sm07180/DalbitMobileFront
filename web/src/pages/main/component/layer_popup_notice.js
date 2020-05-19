@@ -40,8 +40,7 @@ export default (props) => {
 
   const applyClick = () => {
     if (state.click1) {
-      console.log('state.click1', state.click1)
-      Utility.setCookie('popup_notice', 'Y', 1)
+      Utility.setCookie('popup_notice1', 'Y', 1)
       sessionStorage.setItem('popup_notice', 'n')
     }
     setPopup(false)
@@ -55,12 +54,17 @@ export default (props) => {
         <div className="each-line">
           <p className="text">
             안녕하세요! 달빛라이브입니다. <br />
-            오픈베타 기간에도 서비스를 이용해주심에 감사드립니다. 현재 여러가지 문제들이 발생하고 있습니다. <br /> 이용하시는데
-            불편을 드려 너무너무 죄송한 마음입니다. <br /> <br />
-            안정적 서비스를 제공하기 위한 과정이라고는 하지만, 앱 접속에러와 비정상종료 현상은 그 이상의 문제라 반성하고 있습니다.
-            <br /> <br />
-            복구&보완작업중이니 불편하시더라도 조금만 더 기다려주시고, 넓은아량으로 이해해주시기를 부탁드립니다. <br /> <br />
-            감사합니다. <br /> <br />
+            <br />
+            금일 오후2시부터 약 30분동안 미디어서버 업데이트 작업이 진행됩니다. 해당시간 동안은 방에 참여 또는 생성할 수 없습니다.
+            <br />
+            <br />
+            베타기간 발견된 문제를 해결해 더 안정적인 서비스를 위한 작업이니만큼 불편하시더라도 잠시만 기다려주시기를 부탁드립니다
+            <br />
+            <br />
+            조만간 정식 오픈 관련해서 일정을 공지하도록 하겠습니다. 오늘도 최선을 다하겠습니다.
+            <br />
+            <br />
+            고맙습니다. <br />
             <br />- 달빛라이브 운영자 올림
           </p>
 
@@ -124,7 +128,9 @@ const PopupWrap = styled.div`
       margin-top: 24px;
 
       .text {
-        font-size: 16px;
+        overflow: auto;
+        max-height: 300px;
+        font-size: 15px;
         font-weight: 500;
         margin-bottom: 10px;
       }

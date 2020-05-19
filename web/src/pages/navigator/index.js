@@ -7,14 +7,14 @@ import qs from 'qs'
 //context
 import {Context} from 'context'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
   //queryString
   const queryString = useMemo(() => {
     if (props.location.search === undefined) return ''
-    //alert(JSON.stringify(props.location.search, null, 1))
+
     return qs.parse(props.location.search, {ignoreQueryPrefix: true})
   })
   //useEffect

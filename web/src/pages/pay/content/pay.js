@@ -13,7 +13,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
@@ -53,7 +53,8 @@ export default props => {
                 setSelected({
                   num: index,
                   name: item.itemNm,
-                  price: item.salePrice
+                  price: item.salePrice,
+                  itemNo: item.itemNo
                 })
               }
             }}>
@@ -72,7 +73,8 @@ export default props => {
     if (context.token.isLogin) {
       context.action.updatePopup('CHARGE', {
         name: selected.name,
-        price: selected.price
+        price: selected.price,
+        itemNo: selected.itemNo
       })
     } else {
       props.history.push('/login')

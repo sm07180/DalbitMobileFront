@@ -9,10 +9,17 @@ import {PayProvider} from './store'
 import Layout from 'pages/common/layout'
 //components
 import Content from './content'
+import _ from 'lodash'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
+  if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
+    if (props.location.state.result === 'success') {
+      alert(props.location.state.message)
+      alert(JSON.stringify(props, null, 1))
+    }
+  }
   /**
    *
    * @returns
