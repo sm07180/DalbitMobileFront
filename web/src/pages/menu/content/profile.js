@@ -32,16 +32,25 @@ import Api from 'context/api'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
+import FaqIcon2 from '../static/ic_faq_b.svg'
+import QuireIcon from '../static/ic_inquiry_b.svg'
+import BroadNoticeIcon from '../static/ic_notice.svg'
+
 export default props => {
   const subNavList = [
-    {type: 'notice', txt: '방송공지', icon: NoticeIcon},
+    {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon},
     {type: 'appAlarm', txt: 'PUSH 알림 설정', icon: AlarmIcon},
     // {type: 'alert', txt: 'PUSH 알림 설정', icon: AlarmIcon},
-    {type: 'bcsetting', txt: '내 방송 관리', icon: SettingIcon},
-    {type: 'customer', txt: '고객센터', icon: CSIcon}
+    {type: 'bcsetting', txt: '내 방송 관리', icon: SettingIcon}
+    // {type: 'customer', txt: '고객센터', icon: CSIcon}
+  ]
+  const customerList = [
+    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'faq', txt: 'FAQ', icon: FaqIcon2},
+    {type: '1on1', txt: '1:1문의', icon: QuireIcon}
   ]
 
   const timeFormat = sec_time => {
@@ -179,7 +188,19 @@ export default props => {
                 </a>
               )
             })}
-
+            <div className="addCustomer">
+              {customerList.map((value, idx) => {
+                const {type, txt, icon} = value
+                return (
+                  <a href={`/customer/${type}`} key={`list-${idx}`}>
+                    <div className="list">
+                      <span className="text">{txt}</span>
+                      <img className="icon" src={icon} />
+                    </div>
+                  </a>
+                )
+              })}
+            </div>
             <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
           </div>
         </>
@@ -349,7 +370,9 @@ const MenuMypage = styled.div`
       transform: skew(-0.03deg);
     }
   }
-
+  .addCustomer {
+    margin-top: 16px;
+  }
   .sub-nav {
     padding-bottom: 20px;
     transform: skew(-0.03deg);

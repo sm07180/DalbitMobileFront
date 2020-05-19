@@ -17,6 +17,9 @@ export default props => {
   //----------------------------------------------------------------------------
   let history = useHistory()
   const context = useContext(Context)
+
+  const typeTab = history.location.pathname.split('/')[2]
+
   //info
   const tabInfo = [
     {
@@ -64,6 +67,13 @@ export default props => {
     })
   }
   //----------------------------------------------------------------------------
+  useEffect(() => {
+    if (typeTab === 'faq') {
+      Store().action.updateCode('faq')
+    } else if (typeTab === '1on1') {
+      Store().action.updateCode('personal')
+    }
+  }, [typeTab])
   return (
     <Wrap>
       <div>{makeContents()}</div>

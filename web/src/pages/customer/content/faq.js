@@ -112,7 +112,6 @@ function Faq(props) {
       SetListhide('')
     }
   }
-  useEffect(() => {})
 
   //set type select
   const setType = value => {
@@ -144,6 +143,7 @@ function Faq(props) {
     }
   }, [Store().faqPage])
   //--------------------------------------------------------
+
   //Store().faqPage === faqIdx && listhide !== ''
   return (
     <>
