@@ -18,9 +18,9 @@ export default (props) => {
   //context
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
-      alert('결제완료_화면노출필요')
+      alert('### 결제완료_화면디자인필요 ###')
       alert(props.location.state.message)
-      //  alert(JSON.stringify(props, null, 1))
+      alert(JSON.stringify(props.location.state, null, 1))
       Hybrid('CloseLayerPopup')
 
       //--------------------결제완료
@@ -35,7 +35,7 @@ export default (props) => {
     <PayProvider>
       <Layout {...props} status="no_gnb">
         <Content {...props} />
-        {__NODE_ENV === 'dev' && (
+        {/* {__NODE_ENV === 'dev' && (
           <button
             onClick={() => {
               alert('CloseLayerPopup')
@@ -43,7 +43,7 @@ export default (props) => {
             }}>
             레이어닫기
           </button>
-        )}
+        )} */}
       </Layout>
     </PayProvider>
   )
