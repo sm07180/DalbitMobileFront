@@ -18,9 +18,10 @@ export default (props) => {
   //context
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
+      alert('결제완료_화면노출필요')
       alert(props.location.state.message)
       //  alert(JSON.stringify(props, null, 1))
-      Hybrid('CloseLayerPopUp')
+      Hybrid('CloseLayerPopup')
 
       //--------------------결제완료
     }
@@ -38,7 +39,7 @@ export default (props) => {
           <button
             onClick={() => {
               alert('test')
-              Hybrid('CloseLayerPopUp')
+              Hybrid('CloseLayerPopup')
             }}>
             레이어닫기
           </button>
