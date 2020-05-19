@@ -29,17 +29,14 @@ export default () => {
   function update(event) {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
-        let pushMsg1 = event.detail
+        let pushMsg = event.detail
         // pushMsg1 = pushMsg1.trim()
-        pushMsg1 = JSON.parse(pushMsg1)
-        const {push_type1} = pushMsg1
+        pushMsg = JSON.parse(pushMsg)
+
+        // alert(JSON.stringify(pushMsg, null, 1))
+        context.action.alert({msg: pushMsg.content})
         //---------------------[분기처리시작]
-        switch (push_type1) {
-          default:
-            //------------------기본값
-            window.location.href = `/`
-            break
-        }
+
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
@@ -366,6 +363,7 @@ export default () => {
   //useEffect addEventListener
   useEffect(() => {
     /*----native----*/
+    document.addEventListener('native-push-foreground', update) //완료
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
