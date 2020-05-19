@@ -194,8 +194,10 @@ const myProfile = props => {
       </Header>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-        {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>}
-
+        {urlrStr !== context.token.memNo && (
+          <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
+        )}
+        <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
         {profile.roomNo !== '' && (
           <button
             className="liveIcon"
@@ -238,7 +240,7 @@ const myProfile = props => {
         <ButtonWrap>
           <InfoConfigBtn>
             {createFanList()}
-            {urlrStr !== myProfileNo && (
+            {urlrStr !== context.token.memNo && (
               <div className="notBjWrap">
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <></>
@@ -333,6 +335,18 @@ const ProfileImg = styled.div`
   background-position: center;
   text-align: center;
   order: 1;
+  .holder {
+    display: block;
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 162px;
+    height: 162px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
   figure {
     width: 120px;
