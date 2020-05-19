@@ -8,6 +8,8 @@ import {PayProvider} from './store'
 //layout
 import Layout from 'pages/common/layout'
 //components
+import {Hybrid} from 'context/hybrid'
+
 import Content from './content'
 import _ from 'lodash'
 //
@@ -19,6 +21,7 @@ export default (props) => {
       alert(props.location.state.message)
       //  alert(JSON.stringify(props, null, 1))
       Hybrid('CloseLayerPopUp')
+
       //--------------------결제완료
     }
   }
@@ -31,6 +34,15 @@ export default (props) => {
     <PayProvider>
       <Layout {...props} status="no_gnb">
         <Content {...props} />
+        {__NODE_ENV === 'dev' && (
+          <button
+            onClick={() => {
+              alert('test')
+              Hybrid('CloseLayerPopUp')
+            }}>
+            레이어닫기
+          </button>
+        )}
       </Layout>
     </PayProvider>
   )
