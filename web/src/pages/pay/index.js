@@ -38,7 +38,7 @@ export default (props) => {
         {__NODE_ENV === 'dev' && (
           <button
             onClick={() => {
-              alert('test')
+              alert('CloseLayerPopup')
               Hybrid('CloseLayerPopup')
             }}>
             레이어닫기
