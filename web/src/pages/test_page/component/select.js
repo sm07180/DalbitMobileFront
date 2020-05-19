@@ -103,7 +103,7 @@ const SelectListWrap = styled.div`
     padding: 0px 10px;
 
     color: #424242;
-    font-size: 16px;
+    font-size: 14px;
     background-color: #fff;
     box-sizing: border-box;
     transform: skew(-0.03deg);
@@ -124,7 +124,7 @@ const Selected = styled.div`
 
   box-sizing: border-box;
   border: 1px solid #632beb;
-  font-size: 16px;
+  font-size: 14px;
   color: #632beb;
   outline: none;
   letter-spacing: -0.5px;
@@ -143,10 +143,10 @@ const Selected = styled.div`
   &::before {
     position: absolute;
     content: '';
-    width: 12px;
+    width: 10px;
     height: 2px;
     top: 16px;
-    right: 20px;
+    right: 9px;
     background-color: #632beb;
     transform: rotate(45deg);
     transition-property: transform;
@@ -157,10 +157,10 @@ const Selected = styled.div`
   &::after {
     position: absolute;
     content: '';
-    width: 12px;
+    width: 10px;
     height: 2px;
     top: 16px;
-    right: 12px;
+    right: 3px;
     background-color: #632beb;
     transform: rotate(-45deg);
     transition-property: transform;
