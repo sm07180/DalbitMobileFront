@@ -18,14 +18,10 @@ export default props => {
   }, [])
 
   const authClick = () => {
-    alert(props.location.state.result)
     if (props.location.state.result === 'success') {
-      alert(props.location.state.returntype) // native-navigator
       if (props.location.state.returntype === 'store') {
-        alert('store')
         window.location.href = '/store?webview=new'
       } else if (props.location.state.returntype === 'room') {
-        alert('room')
         window.location.href = '/pay?webview=new'
       }
     }
