@@ -223,12 +223,15 @@ function Notice(props) {
                       </dt> */}
                       <dd>
                         {(IntTime - writeTs) / 3600 < 3 && <em></em>}
-                        <span>
-                          {noticeType === 1 ? '공지사항' : ''}
-                          {noticeType === 2 ? '이벤트' : ''}
-                          {noticeType === 3 ? '정기정검' : ''}
-                          {noticeType === 4 ? '업데이트' : ''}
-                        </span>
+                        {noticeType !== 0 && (
+                          <span>
+                            {noticeType === 1 ? '공지사항 ' : ''}
+                            {noticeType === 2 ? '이벤트 ' : ''}
+                            {noticeType === 3 ? '정기정검 ' : ''}
+                            {noticeType === 4 ? '업데이트 ' : ''}
+                          </span>
+                        )}
+
                         <em></em>
                         {title}
                       </dd>
@@ -243,12 +246,14 @@ function Notice(props) {
                       </dt> */}
                       <dd>
                         {(IntTime - writeTs) / 3600 < 3 && <em></em>}
-                        <span>
-                          {noticeType === 1 ? '공지사항' : ''}
-                          {noticeType === 2 ? '이벤트' : ''}
-                          {noticeType === 3 ? '정기정검' : ''}
-                          {noticeType === 4 ? '업데이트' : ''}
-                        </span>
+                        {noticeType !== 0 && (
+                          <span>
+                            {noticeType === 1 ? '공지사항 ' : ''}
+                            {noticeType === 2 ? '이벤트 ' : ''}
+                            {noticeType === 3 ? '정기정검 ' : ''}
+                            {noticeType === 4 ? '업데이트 ' : ''}
+                          </span>
+                        )}
                         {title}
                       </dd>
                       <dd>{timeFormat(writeDt)}</dd>

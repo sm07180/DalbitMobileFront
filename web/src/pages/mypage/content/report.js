@@ -758,7 +758,7 @@ const Submit = styled.button`
   justify-content: center;
   width: 113px;
   border-radius: 24px;
-  margin: 31px auto 0 auto;
+  margin: 31px auto 30px auto;
   padding: 6px 0;
   border: 1px solid #bdbdbd;
   font-size: 14px;
