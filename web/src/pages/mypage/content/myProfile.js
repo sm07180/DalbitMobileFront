@@ -224,7 +224,10 @@ const myProfile = props => {
       <ContentWrap>
         <NameWrap>
           <strong>{profile.nickNm}</strong>
-          <span>{`@${profile.memId}`}</span>
+          <div>
+            <span>{`@${profile.memId}`}</span>
+            {profile.isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+          </div>
         </NameWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
@@ -351,7 +354,7 @@ const ProfileImg = styled.div`
   figure {
     width: 120px;
     height: 120px;
-    margin: 6px auto 0 auto;
+    margin: 10px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
 
@@ -364,6 +367,7 @@ const ProfileImg = styled.div`
     display: inline-block;
     position: relative;
     padding: 0 13px;
+    margin-top: 20px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
@@ -402,7 +406,7 @@ const ContentWrap = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
-    margin: 0 auto;
+    margin: 20px auto;
     order: 3;
 
     & > div {
@@ -469,6 +473,21 @@ const NameWrap = styled.div`
   margin-top: 10px;
   & > * {
     display: inline-block;
+  }
+  .specialIcon {
+    display: inline-block;
+    width: 62px;
+    height: 16px;
+    margin-left: 4px;
+    border-radius: 10px;
+    background-color: #ec455f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
   }
   strong {
     color: #000;
