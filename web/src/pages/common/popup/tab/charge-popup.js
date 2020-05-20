@@ -24,12 +24,12 @@ const chargeData = [
     id: 2,
     type: '무통장 입금(계좌이체)',
     fetch: 'pay_virtual'
-  },
-  {
-    id: 3,
-    type: '실시간 계좌이체',
-    fetch: 'pay_bank'
   }
+  // {
+  //   id: 3,
+  //   type: '실시간 계좌이체',
+  //   fetch: 'pay_bank'
+  // }
 ]
 
 const receiptData = [
@@ -267,7 +267,7 @@ export default props => {
               </InfoWrap>
               <PaymentWrap>
                 <Payment>
-                  <div className="subTitle">결제수단</div>
+                  <div className="subTitle two">결제수단</div>
                   <ItemArea>
                     {chargeData.map((data, idx) => {
                       return (
@@ -383,6 +383,10 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     transform: skew(-0.03deg);
+
+    &.two {
+      line-height: 44px;
+    }
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -471,7 +475,6 @@ const Payment = styled.div`
 
   .subTitle {
     line-height: 22px;
-    border-bottom: 0;
   }
 `
 const ItemBox = styled.button`
@@ -497,6 +500,9 @@ const ItemBox = styled.button`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 49%;
+  }
+  & + & + & {
+    width: 100%;
   }
 `
 const ItemArea = styled.div`
