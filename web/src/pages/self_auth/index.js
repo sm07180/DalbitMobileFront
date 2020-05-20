@@ -115,9 +115,11 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const thisPageCoda = isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
+    const thisPageCode = isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
     const res = await Api.self_auth_req({
-      pageCode: thisPageCoda
+      params: {
+        pageCode: thisPageCode
+      }
     })
     if (res.result == 'success' && res.code == 0) {
       //alert(JSON.stringify(res, null, 1))
