@@ -20,7 +20,8 @@ export default props => {
     if (_.hasIn(props, 'location.state.result')) {
       if (props.location.state.result === 'success') {
         if (props.location.state.type === 'store') {
-          window.location.href = '/pay?webview=new'
+          alert('store')
+          window.location.href = '/store?webview=new'
         } else if (props.location.state.type === 'room') {
           alert('room')
           Hybrid('CloseLayerPopup')
