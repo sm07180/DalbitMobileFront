@@ -13,18 +13,18 @@ import {Hybrid} from 'context/hybrid'
 import Content from './content'
 import _ from 'lodash'
 //
-export default (props) => {
+export default props => {
   //---------------------------------------------------------------------
   //context
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
-      alert('### 결제완료_화면디자인필요 ###')
-      alert(props.location.state.message)
-      alert(JSON.stringify(props.location.state, null, 1))
-      Hybrid('CloseLayerPopup')
+      // alert('### 결제완료_화면디자인필요 ###')
+      // alert(props.location.state.message)
+      // alert(JSON.stringify(props.location.state, null, 1))
+      // Hybrid('CloseLayerPopup')
       //메인에서 스토어에서 뒤로가기 막아야함
 
-      window.location.href = '/'
+      window.location.href = '/pay'
       //--------------------결제완료
     }
   }
