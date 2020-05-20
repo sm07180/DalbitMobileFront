@@ -34,7 +34,7 @@ export default props => {
       } else if (props.location.state.state === 'pay') {
         window.location.href = '/pay?webview=new'
         alert('pay setPayState(true)')
-        setPayState(true)
+        return setPayState(true)
         alert('setPayState(true) 완료')
       }
     }
