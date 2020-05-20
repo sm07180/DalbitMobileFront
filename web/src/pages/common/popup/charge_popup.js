@@ -53,7 +53,7 @@ function payRequest(obj) {
 }
 
 let payType = ''
-export default (props) => {
+export default props => {
   const context = useContext(Context)
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
@@ -67,9 +67,13 @@ export default (props) => {
   const [pick, setPick] = useState('주민등록번호')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+
+  let isStoreCharge = false
+  if (props.hasOwnProperty('isState') && props.isState === 'store') isStoreCharge = true
+
   //-------------------------------------------------------- func start
   // input 분기
-  const handleChange = (e) => {
+  const handleChange = e => {
     if (e.target.name === 'name') {
       setName(e.target.value)
     } else if (e.target.name === 'phone') {
@@ -80,7 +84,7 @@ export default (props) => {
   }
 
   // 무통장입금 - 소득공제용 - select
-  const choice = (index) => {
+  const choice = index => {
     if (index === 0) {
       setPick('주민등록번호')
       setSelect(false)
@@ -98,7 +102,7 @@ export default (props) => {
       } else {
         context.action.updatePopupVisible(false)
         props.history.push('/user/selfAuth', {
-          type: 'charge'
+          type: isStoreCharge ? 'charge' : 'roomCharge'
         })
       }
     }
@@ -106,7 +110,7 @@ export default (props) => {
   }
 
   // 무통장입금 - 현금영수증 Component
-  const receipt = (props) => {
+  const receipt = props => {
     return (
       <div className="receipt">
         <span>현금영수증</span>
@@ -186,7 +190,7 @@ export default (props) => {
         return input
       }
 
-      Object.keys(res.data).forEach((key) => {
+      Object.keys(res.data).forEach(key => {
         ft.append(makeHiddenInput(key, res.data[key]))
       })
 
@@ -207,7 +211,7 @@ export default (props) => {
     }
   }
 
-  const updateDispatch = (event) => {
+  const updateDispatch = event => {
     //개발쪽만 적용
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
@@ -478,13 +482,13 @@ const ItemBox = styled.button`
   border-width: 1px;
   border-radius: 10px;
   border-color: #e0e0e0;
-  border-color: ${(props) => (props.active ? '#632beb' : '#e0e0e0')};
+  border-color: ${props => (props.active ? '#632beb' : '#e0e0e0')};
 
   font-size: 14px;
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: -0.35px;
-  color: ${(props) => (props.active ? '#632beb' : '#616161')};
+  color: ${props => (props.active ? '#632beb' : '#616161')};
   margin-bottom: 8px;
   transform: skew(-0.03deg);
 
@@ -681,10 +685,10 @@ const Useage = styled.button`
   width: 31%;
   height: 5vh;
   border-radius: 10px;
-  border-color: ${(props) => (props.active ? '#632beb' : '#e0e0e0')};
+  border-color: ${props => (props.active ? '#632beb' : '#e0e0e0')};
   border-width: 1px;
   border-style: solid;
-  color: ${(props) => (props.active ? '#632beb' : '#616161')};
+  color: ${props => (props.active ? '#632beb' : '#616161')};
 `
 
 const Event = styled.div`
@@ -736,7 +740,7 @@ const Select = styled.button`
   color: #616161;
   align-items: center;
   justify-content: space-between;
-  justify-content: ${(props) => (props.active ? 'space-between' : 'center')};
+  justify-content: ${props => (props.active ? 'space-between' : 'center')};
   padding: 0px 3px 0px 3px;
   transform: skew(-0.03deg);
   & > div {

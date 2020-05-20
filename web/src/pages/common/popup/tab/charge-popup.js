@@ -67,6 +67,9 @@ export default props => {
   const [pick, setPick] = useState('주민등록번호')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+
+  let isState = context.popup_code[1].isState === 'charge' ? 'charge' : 'roomCharge'
+
   //-------------------------------------------------------- func start
   // input 분기
   const handleChange = e => {
@@ -98,7 +101,8 @@ export default props => {
       } else {
         context.action.updatePopupVisible(false)
         props.history.push('/selfAuth', {
-          type: 'charge'
+          type: 'charge',
+          isState: isState
         })
       }
     }

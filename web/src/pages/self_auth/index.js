@@ -37,14 +37,18 @@ export default props => {
   let authType = ''
   if (_.hasIn(props.location.state, 'type')) {
     authType = props.location.state.type
+    console.log('authType', authType)
   } else {
     authType = 'default'
   }
+
+  const {isState} = props.location.state
 
   //인증 타입에 따른 본인인증 페이지 텍스트
   const authText = {
     default: ['', '최초 한번'],
     charge: ['유료결제를 위해', '최초 결제 시'],
+    roomCharge: ['유료결제를 위해', '최초 결제 시'],
     cast: ['방송 개설을 위해', '최초 방송방 개설 시']
   }
 
@@ -112,7 +116,10 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const res = await Api.self_auth_req({})
+    const thisPageCoda = isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
+    const res = await Api.self_auth_req({
+      pageCode: thisPageCoda
+    })
     if (res.result == 'success' && res.code == 0) {
       //alert(JSON.stringify(res, null, 1))
       setFormState({
@@ -173,7 +180,7 @@ export default props => {
           </>
         ) : (
           <>
-            <h4>{authText[authType][0]} 본인인증 절차가 필요합니다.</h4>
+            <h4>{authText[authType][0]} 본인인증 절차가 필요합니다</h4>
             <p>
               본인인증은 {authText[authType][1]} 필요합니다.
               <br />
