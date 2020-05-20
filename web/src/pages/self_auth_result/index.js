@@ -20,6 +20,7 @@ export default props => {
   const authClick = () => {
     alert(props.location.state.result)
     if (props.location.state.result === 'success') {
+      alert(props.location.state.type)
       if (props.location.state.type === 'store') {
         alert('store')
         window.location.href = '/store?webview=new'
