@@ -390,6 +390,7 @@ const ContentWrap = styled.div`
     }
   }
   .expWrap {
+    width: 280px;
     display: flex;
     justify-content: space-between;
     margin: 8px auto 10px auto;
