@@ -26,7 +26,7 @@ export default props => {
         window.location.href = '/store?webview=new'
       } else if (props.location.state.returntype === 'room') {
         alert('room')
-        Hybrid('CloseLayerPopup')
+        window.location.href = '/pay?webview=new'
       }
     }
   }
