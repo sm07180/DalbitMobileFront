@@ -37,7 +37,6 @@ export default props => {
   let authType = ''
   if (_.hasIn(props.location.state, 'type')) {
     authType = props.location.state.type
-    console.log('authType', authType)
   } else {
     authType = 'default'
   }
