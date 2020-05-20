@@ -31,6 +31,7 @@ export default props => {
       if (props.location.state.state === 'auth') {
         window.location.href = '/pay?webview=new'
       } else if (props.location.state.state === 'pay') {
+        alert('결제완료,  setPayState(true)')
         setPayState(true)
       }
     }
