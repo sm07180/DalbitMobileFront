@@ -16,18 +16,27 @@ export default props => {
     // alert('결과페이지 진입')
   }, [])
 
-  /**
-   *
-   * @returns
-   */
+  function authClick() {
+    if (_.hasIn(props, 'location.state.result')) {
+      if (props.location.state.result === 'success') {
+        if (props.location.state.type === 'store') {
+          window.location.href = '/pay?webview=new'
+        } else if (props.location.state.type === 'room') {
+          alert('room')
+          Hybrid('CloseLayerPopup')
+        }
+      }
+    }
+  }
+
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
       <ChargeWrap>
-        <h4>결제가 완료되었습니다.</h4>
+        <h4>본인 인증이 완료되었습니다.</h4>
         <button
           onClick={() => {
-            Hybrid('CloseLayerPopup')
+            authClick()
           }}>
           확인
         </button>

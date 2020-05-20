@@ -29,8 +29,8 @@ export default props => {
 
       if (props.location.state.state === 'auth') {
         window.location.href = '/pay?webview=new'
+        //window.location.href = '/selfauth_result?webview=new'
       } else if (props.location.state.state === 'pay') {
-        alert('pay_result')
         window.location.href = '/pay_result?webview=new'
       }
     }
