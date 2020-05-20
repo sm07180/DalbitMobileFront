@@ -28,12 +28,8 @@ export default props => {
       //메인에서 스토어에서 뒤로가기 막아야함
       //window.location.href = '/pay?webview=new'
       //--------------------결제완료
-      if (props.location.state.state === 'auth') {
-        window.location.href = '/pay?webview=new'
-      } else if (props.location.state.state === 'pay') {
-        alert('결제완료,  setPayState(true)')
-        setPayState(true)
-      }
+      window.location.href = '/pay?webview=new'
+      if (props.location.state.state === 'pay') setPayState(true)
     }
   }
   /**
