@@ -19,15 +19,13 @@ export default props => {
 
   const authClick = () => {
     alert(props.location.state.result)
-    if (_.hasIn(props, 'location.state.result')) {
-      if (props.location.state.result === 'success') {
-        if (props.location.state.type === 'store') {
-          alert('store')
-          window.location.href = '/store?webview=new'
-        } else if (props.location.state.type === 'room') {
-          alert('room')
-          Hybrid('CloseLayerPopup')
-        }
+    if (props.location.state.result === 'success') {
+      if (props.location.state.type === 'store') {
+        alert('store')
+        window.location.href = '/store?webview=new'
+      } else if (props.location.state.type === 'room') {
+        alert('room')
+        Hybrid('CloseLayerPopup')
       }
     }
   }
