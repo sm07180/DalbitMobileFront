@@ -17,6 +17,7 @@ const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
+const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 const Customer = React.lazy(() => import('pages/customer'))
 const Setting = React.lazy(() => import('pages/setting'))
@@ -51,6 +52,7 @@ export default () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
+        <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
 
         <Route exact path="/live" component={Live} />

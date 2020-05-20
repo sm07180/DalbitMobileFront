@@ -16,8 +16,6 @@ import _ from 'lodash'
 //
 export default props => {
   //---------------------------------------------------------------------
-  //state
-  const [payState, setPayState] = useState(false)
   //context
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
@@ -32,10 +30,8 @@ export default props => {
       if (props.location.state.state === 'auth') {
         window.location.href = '/pay?webview=new'
       } else if (props.location.state.state === 'pay') {
-        window.location.href = '/pay?webview=new'
-        alert('pay setPayState(true)')
-        return setPayState(true)
-        alert('setPayState(true) 완료')
+        alert('pay_result')
+        window.location.href = '/pay_result?webview=new'
       }
     }
   }
@@ -47,19 +43,7 @@ export default props => {
   return (
     <PayProvider>
       <Layout {...props} status="no_gnb">
-        {payState ? (
-          <ChargeWrap>
-            <h4>결제가 완료되었습니다.</h4>
-            <button
-              onClick={() => {
-                Hybrid('CloseLayerPopup')
-              }}>
-              확인
-            </button>
-          </ChargeWrap>
-        ) : (
-          <Content {...props} />
-        )}
+        <Content {...props} />
       </Layout>
     </PayProvider>
   )
