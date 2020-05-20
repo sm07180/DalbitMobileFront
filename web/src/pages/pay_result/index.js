@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 
 //layout
 import Layout from 'pages/common/layout'
@@ -11,6 +11,10 @@ import _ from 'lodash'
 export default props => {
   //---------------------------------------------------------------------
   //state
+
+  useEffect(() => {
+    alert('결과페이지 진입')
+  }, [])
 
   /**
    *
