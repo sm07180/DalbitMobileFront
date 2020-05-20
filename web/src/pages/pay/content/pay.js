@@ -97,10 +97,11 @@ export default props => {
           </button>
         </>
       ) : (
-        <NoResult>
-          <NoImg />
-          <span>조회된 결과가 없습니다.</span>
-        </NoResult>
+        // <NoResult>
+        //   <NoImg />
+        //   <span>조회된 결과가 없습니다.</span>
+        // </NoResult>
+        <></>
       )}
     </Content>
   )

@@ -164,7 +164,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout>
+    <Layout status={isState === 'roomCharge' && 'no_gnb'}>
       <Content>
         {authState ? (
           <>
@@ -246,7 +246,7 @@ const Content = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin: 70px auto;
+    margin: 30px auto 70px auto;
     h4 {
       width: 250px;
       margin: 0 auto;
