@@ -24,7 +24,7 @@ export default props => {
       // Hybrid('CloseLayerPopup')
       //메인에서 스토어에서 뒤로가기 막아야함
 
-      window.location.href = '/pay'
+      window.location.href = 'https://devm2.dalbitlive.com/pay'
       //--------------------결제완료
     }
   }
