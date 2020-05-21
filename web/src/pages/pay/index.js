@@ -24,7 +24,7 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
-  if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
+  if (_.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
       if (props.location.state.state === 'pay') {
         if (props.location.state.returntype === 'room') {
