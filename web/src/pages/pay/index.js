@@ -38,13 +38,7 @@ export default props => {
           window.location.href = '/'
         } else {
           alert('결제완료')
-          context.action.alert({
-            msg: '결제가 완료되었습니다.',
-            callback: () => {
-              Hybrid('CloseLayerPopup')
-              Hybrid('ClosePayPopup')
-            }
-          })
+          window.location.href = '/pay_result?webview=new'
         }
       }
     } else {
