@@ -62,7 +62,8 @@ export default props => {
       data: {
         Prdtnm: itemInfo.name,
         Prdtprice: itemInfo.price,
-        itemNo: itemInfo.itemNo
+        itemNo: itemInfo.itemNo,
+        pageCode: '2'
       }
     }
     const res = await Api[payType]({...obj})
