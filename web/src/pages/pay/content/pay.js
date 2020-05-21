@@ -229,7 +229,7 @@ const Content = styled.section`
     color: #424242;
     font-size: 14px;
     text-align: center;
-    padding: 13px 0;
+    padding: 16px 0;
     font-weight: bold;
   }
 
@@ -368,7 +368,7 @@ const List = styled.div`
     flex-wrap: wrap;
     .wrap {
       width: 32.4%;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
 
       & > p {
         font-size: 14px;
