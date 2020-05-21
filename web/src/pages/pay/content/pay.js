@@ -93,7 +93,7 @@ export default props => {
       url: url,
       title: '달 충전하기'
     }
-    alert(JSON.stringify(urlObj))
+    // alert(JSON.stringify(urlObj))
     Hybrid('OpenPayPopup', urlObj)
   }
 
