@@ -26,16 +26,11 @@ export default props => {
 
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
-      //Hybrid('CloseLayerPopup')
-      //--------------------결제완료
-
-      if (props.location.state.state === 'auth') {
-        window.location.href = '/pay?webview=new'
-      } else if (props.location.state.state === 'pay') {
-        if (props.location.state.returntype === 'store') {
-          window.location.href = '/'
-        } else {
+      if (props.location.state.state === 'pay') {
+        if (props.location.state.returntype === 'room') {
           window.location.href = '/pay_result?webview=new'
+        } else {
+          window.location.href = '/'
         }
       }
     } else {
