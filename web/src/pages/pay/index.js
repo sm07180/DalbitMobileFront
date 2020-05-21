@@ -24,6 +24,8 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
+  const [state, setState] = useState(_.hasIn(props, 'location.state.result'))
+
   //alert(JSON.stringify(props.location.state))
 
   if (_.hasIn(props, 'location.state.result')) {
@@ -49,7 +51,7 @@ export default props => {
   return (
     <PayProvider>
       <Layout {...props} status="no_gnb">
-        <Content {...props} />
+        {!state && <Content {...props} />}
       </Layout>
     </PayProvider>
   )
