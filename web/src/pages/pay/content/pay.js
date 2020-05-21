@@ -21,6 +21,8 @@ export default props => {
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
+  const [selectedItem, setSelectedItem] = useState('charge')
+  const [myCnt, setMyCnt] = useState('')
 
   //---------------------------------------------------------------------
 
@@ -28,6 +30,19 @@ export default props => {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
+      setMyCnt(Utility.addComma(res.data.dalCnt))
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function getChangeList() {
+    const res = await Api.getChangeItem({})
+    if (res.result === 'success' && _.hasIn(res, 'data')) {
+      setList(res.data.list)
+      setMyCnt('')
     } else {
       context.action.alert({
         msg: res.message
@@ -82,26 +97,92 @@ export default props => {
     Hybrid('OpenPayPopup', urlObj)
   }
 
+  function changeClick() {}
+
+  const tabClick = type => {
+    setSelectedItem(type)
+    setSelected(-1)
+    if (type === 'charge') {
+      getStoreList()
+    } else {
+      getChangeList()
+    }
+  }
+
+  const goBackClick = () => {
+    Hybrid('CloseLayerPopup')
+  }
+
   //useEffect
   useEffect(() => {
     getStoreList()
   }, [])
+
   //---------------------------------------------------------------------
   return (
     <Content>
-      {list ? (
+      <TabItem>
+        <button
+          className={`${selectedItem === 'charge' && 'true'}`}
+          onClick={() => {
+            tabClick('charge')
+          }}>
+          달 충전
+        </button>
+        <button
+          className={`${selectedItem === 'change' && 'true'}`}
+          onClick={() => {
+            tabClick('change')
+          }}>
+          달 교환
+        </button>
+      </TabItem>
+      {selectedItem === 'charge' ? (
         <>
-          <List>{creatList()}</List>
-          <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            구매하기
-          </button>
+          {list ? (
+            <>
+              <p className="my-cnt-text">보유 달 {myCnt}</p>
+              <List>{creatList()}</List>
+              <div className="btn-wrap">
+                <button onClick={goBackClick} className="charge-btn close">
+                  취소하기
+                </button>
+                <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
+                  결제하기
+                </button>
+              </div>
+            </>
+          ) : (
+            // <NoResult>
+            //   <NoImg />
+            //   <span>조회된 결과가 없습니다.</span>
+            // </NoResult>
+            <></>
+          )}
         </>
       ) : (
-        // <NoResult>
-        //   <NoImg />
-        //   <span>조회된 결과가 없습니다.</span>
-        // </NoResult>
-        <></>
+        <>
+          {list ? (
+            <>
+              <p className="my-cnt-text">보유 별 {myCnt}</p>
+              <List>{creatList()}</List>
+              <div className="btn-wrap">
+                <button onClick={goBackClick} className="charge-btn close">
+                  취소하기
+                </button>
+                <button onClick={changeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
+                  교환하기
+                </button>
+              </div>
+            </>
+          ) : (
+            // <NoResult>
+            //   <NoImg />
+            //   <span>조회된 결과가 없습니다.</span>
+            // </NoResult>
+            <></>
+          )}
+        </>
       )}
     </Content>
   )
@@ -109,25 +190,79 @@ export default props => {
 
 //---------------------------------------------------------------------
 
+const TabItem = styled.div`
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: calc(100% - 32px);
+  display: flex;
+  button {
+    position: relative;
+    padding: 10px 0;
+    width: 50%;
+    color: #9e9e9e;
+    font-size: 20px;
+    font-weight: 800;
+
+    &.true {
+      color: ${COLOR_MAIN};
+    }
+  }
+  button + button:before {
+    width: 1px;
+    height: 20px;
+    background: #e5e5e5;
+    position: absolute;
+    left: 0;
+    top: 14px;
+    content: '';
+  }
+`
+
 const Content = styled.section`
   width: 1040px;
   min-height: 300px;
   margin: 0 auto;
   padding: 40px 0 120px 0;
 
-  .charge-btn {
-    display: block;
-    width: 328px;
-    margin: 70px auto 0 auto;
-    border-radius: 5px;
-    background: ${COLOR_MAIN};
-    color: #fff;
-    line-height: 50px;
-    &:disabled {
-      background: #bdbdbd;
+  p.my-cnt-text {
+    color: #424242;
+    font-size: 14px;
+    text-align: center;
+    padding: 16px 0;
+    font-weight: bold;
+  }
+
+  .btn-wrap {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 16px;
+    width: calc(100% - 32px);
+    left: 16px;
+    .charge-btn {
+      display: block;
+      width: 49.2%;
+      margin-top: 0;
+      border-radius: 10px;
+      background: ${COLOR_MAIN};
+      border: 1px solid ${COLOR_MAIN};
       color: #fff;
+      line-height: 46px;
+      &:disabled {
+        background: #bdbdbd;
+        color: #fff;
+        border: 1px solid #bdbdbd;
+      }
+
+      &.close {
+        background: #fff;
+        color: ${COLOR_MAIN};
+      }
     }
   }
+
   .mydal {
     color: #424242;
     font-size: 22px;
@@ -147,8 +282,8 @@ const Content = styled.section`
   }
 
   @media (max-width: 1060px) {
-    width: 95%;
-    padding: 30px 0 0 0;
+    width: 100%;
+    padding: 66px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
