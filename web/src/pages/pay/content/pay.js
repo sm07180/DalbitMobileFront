@@ -14,6 +14,38 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 import {Hybrid} from 'context/hybrid'
 
+import starIcon from '../static/ic_star_s.svg'
+
+const testList = [
+  {
+    itemCode: 'L1252',
+    itemName: 'dal 30',
+    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
+    itemThumbnail: 'https://image.dalbitlive.com/store/store_1.png',
+    dalCnt: 30,
+    byeolCnt: 50,
+    desc: 'descr'
+  },
+  {
+    itemCode: 'Z1834',
+    itemName: 'dal 60',
+    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
+    itemThumbnail: 'b',
+    dalCnt: 60,
+    byeolCnt: 100,
+    desc: 'descr'
+  },
+  {
+    itemCode: 'Z1834',
+    itemName: 'dal 60',
+    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
+    itemThumbnail: 'b',
+    dalCnt: 60,
+    byeolCnt: 100,
+    desc: 'descr'
+  }
+]
+
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -42,7 +74,8 @@ export default props => {
     const res = await Api.getChangeItem({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
-      setMyCnt('')
+      //setList(testList)
+      setMyCnt(res.data.byeolCnt)
     } else {
       context.action.alert({
         msg: res.message
@@ -83,6 +116,36 @@ export default props => {
     }
   }
 
+  const createChangeList = () => {
+    if (list) {
+      return list.map((item, index) => {
+        return (
+          <div
+            className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
+            key={index}
+            onClick={() => {
+              if (selected.num == index) {
+                setSelected(-1)
+              } else {
+                setSelected({
+                  num: index,
+                  dal: item.dalCnt,
+                  byeol: item.byeolCnt,
+                  itemCode: item.itemCode
+                })
+              }
+            }}>
+            <div className="item-wrap">
+              <img src={item.itemThumbnail}></img>
+              <p>달 {item.dalCnt}</p>
+            </div>
+            <p>별 {item.byeolCnt}</p>
+          </div>
+        )
+      })
+    }
+  }
+
   function chargeClick() {
     console.log('selected.name', selected.name)
     let url = `https://${location.host}/charge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${
@@ -97,7 +160,32 @@ export default props => {
     Hybrid('OpenPayPopup', urlObj)
   }
 
-  function changeClick() {}
+  function changeClick() {
+    async function postChange() {
+      const res = await Api.postChangeItem({
+        data: {
+          itemCode: selected.itemCode
+        }
+      })
+      if (res.result === 'success' && _.hasIn(res, 'data')) {
+        setMyCnt(res.data.byeolCnt)
+        context.action.alert({
+          msg: res.message
+        })
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+
+    context.action.confirm({
+      msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
+      callback: () => {
+        postChange()
+      }
+    })
+  }
 
   const tabClick = type => {
     setSelectedItem(type)
@@ -142,7 +230,7 @@ export default props => {
           {list ? (
             <>
               <p className="my-cnt-text">보유 달 {myCnt}</p>
-              <List>{creatList()}</List>
+              <List className={`${selectedItem}`}>{creatList()}</List>
               <div className="btn-wrap">
                 <button onClick={goBackClick} className="charge-btn close">
                   취소하기
@@ -165,7 +253,7 @@ export default props => {
           {list ? (
             <>
               <p className="my-cnt-text">보유 별 {myCnt}</p>
-              <List>{creatList()}</List>
+              <List className={`${selectedItem}`}>{createChangeList()}</List>
               <div className="btn-wrap">
                 <button onClick={goBackClick} className="charge-btn close">
                   취소하기
