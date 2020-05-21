@@ -19,12 +19,7 @@ export default props => {
   //context
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
-      // alert('### 결제완료_화면디자인필요 ###')
-      // alert(props.location.state.message)
-      // alert(JSON.stringify(props.location.state, null, 1))
       //Hybrid('CloseLayerPopup')
-      //메인에서 스토어에서 뒤로가기 막아야함
-      //window.location.href = '/pay?webview=new'
       //--------------------결제완료
 
       if (props.location.state.state === 'auth') {

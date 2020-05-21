@@ -12,6 +12,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
 import Utility from 'components/lib/utility'
+import {Hybrid} from 'context/hybrid'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -20,8 +21,6 @@ export default props => {
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
-  // const search = qs.parse(window.location.href)
-  // console.log(search)
 
   //---------------------------------------------------------------------
 
@@ -70,16 +69,12 @@ export default props => {
   }
 
   function chargeClick() {
-    if (context.token.isLogin) {
-      context.action.updatePopup('CHARGE', {
-        name: selected.name,
-        price: selected.price,
-        itemNo: selected.itemNo,
-        isState: 'roomcharge'
-      })
-    } else {
-      props.history.push('/login')
-    }
+    console.log('selected.name', selected.name)
+    let url = `https://${location.host}/charge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${
+      selected.itemNo
+    }&webview=new`
+    alert(url)
+    Hybrid('OpenPayPopup', url)
   }
 
   //useEffect
@@ -148,7 +143,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 95%;
-    padding: 30px 0 100px 0;
+    padding: 30px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -182,7 +177,6 @@ const List = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  padding-top: 60px;
 
   .wrap {
     width: 15%;
@@ -232,7 +226,6 @@ const List = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-wrap: wrap;
-    padding-top: 30px;
     .wrap {
       width: 32.4%;
       margin-bottom: 16px;

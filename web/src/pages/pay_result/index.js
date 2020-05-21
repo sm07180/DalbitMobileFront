@@ -27,6 +27,7 @@ export default props => {
         <h4>결제가 완료되었습니다.</h4>
         <button
           onClick={() => {
+            Hybrid('ClosePayPopup')
             Hybrid('CloseLayerPopup')
           }}>
           확인
