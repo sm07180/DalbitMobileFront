@@ -174,7 +174,8 @@ export default props => {
       data: {
         Prdtnm: context.popup_code[1].name,
         Prdtprice: context.popup_code[1].price,
-        itemNo: context.popup_code[1].itemNo
+        itemNo: context.popup_code[1].itemNo,
+        pageCode: '1'
       }
     }
     const res = await Api[payType]({...obj})
