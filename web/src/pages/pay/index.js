@@ -35,15 +35,7 @@ export default props => {
         if (props.location.state.returntype === 'store') {
           window.location.href = '/'
         } else {
-          //window.location.href = '/pay_result?webview=new'
-          alert('test')
-          context.action.alert({
-            msg: '결제가 완료되었습니다.',
-            callback: () => {
-              Hybrid('CloseLayerPopup')
-              Hybrid('ClosePayPopup')
-            }
-          })
+          window.location.href = '/pay_result?webview=new'
         }
       }
     } else {
