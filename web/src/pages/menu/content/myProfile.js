@@ -199,7 +199,7 @@ const myProfile = props => {
           </div>
         )}
         <span>
-          {profile.grade} / Lv.{profile.level}
+          {profile.level !== 0 && `${profile.grade} /`} Lv.{profile.level}
         </span>
       </ProfileImg>
 
@@ -215,12 +215,13 @@ const myProfile = props => {
                   }}></LevelStatus>
               </LevelStatusBarWrap>
             </LevelWrap>
+
             <div className="expWrap">
               <span className="expBegin">0</span>
               <span className="expPer">
                 EXP {profile.exp} ({`${expCalc}%`})
               </span>
-              <span className="expBegin">{profile.expNext}</span>
+              <span className="expBegin">{profile.expNext - profile.expBegin}</span>
             </div>
           </>
         )}
