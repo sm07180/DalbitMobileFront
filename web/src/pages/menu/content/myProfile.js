@@ -219,9 +219,9 @@ const myProfile = props => {
             <div className="expWrap">
               <span className="expBegin">0</span>
               <span className="expPer">
-                EXP {Math.floor(((profile.expNext - profile.expBegin) * profile.expRate) / 100)} ({`${expCalc}%`})
+                EXP {profile.exp} ({`${expCalc}%`})
               </span>
-              <span className="expBegin">{profile.expNext - profile.expBegin}</span>
+              <span className="expBegin">{profile.expNext}</span>
             </div>
           </>
         )}
