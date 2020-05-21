@@ -179,6 +179,7 @@ export default props => {
       }
     }
     const res = await Api[payType]({...obj})
+    console.log(obj)
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
       const {current} = formTag
