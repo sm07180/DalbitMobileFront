@@ -266,7 +266,7 @@ export default props => {
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
-  console.log(categoryList)
+
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef}>
