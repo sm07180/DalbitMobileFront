@@ -5,12 +5,22 @@ import Layout from 'pages/common/layout'
 //components
 import {Hybrid} from 'context/hybrid'
 import styled from 'styled-components'
-
+import qs from 'query-string'
 import _ from 'lodash'
 //
 export default props => {
   //---------------------------------------------------------------------
   //state
+  const [itemInfo, setItemInfo] = useState(qs.parse(location.search))
+
+  const chargeConfirm = () => {
+    if (itemInfo.hasOwnProperty('webview')) {
+      Hybrid('ClosePayPopup')
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.location.href = '/store'
+    }
+  }
 
   useEffect(() => {
     // alert('결과페이지 진입')
@@ -25,13 +35,7 @@ export default props => {
     <Layout {...props} status="no_gnb">
       <ChargeWrap>
         <h4>결제가 완료되었습니다.</h4>
-        <button
-          onClick={() => {
-            Hybrid('ClosePayPopup')
-            Hybrid('CloseLayerPopup')
-          }}>
-          확인
-        </button>
+        <button onClick={chargeConfirm}>확인</button>
       </ChargeWrap>
     </Layout>
   )

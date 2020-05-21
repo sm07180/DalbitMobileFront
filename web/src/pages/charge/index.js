@@ -105,11 +105,11 @@ export default props => {
   //-------------------------------------------------------- components start
   return (
     <Container ref={area}>
-      <button className="close-btn" onClick={chargeClose}>
+      {/* <button className="close-btn" onClick={chargeClose}>
         뒤로가기
-      </button>
+      </button> */}
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
-      <div className="title">달 충전하기</div>
+      {/* <div className="title">달 충전하기</div> */}
       <InnerWrap>
         <InfoWrap>
           <Info>
@@ -314,12 +314,9 @@ const Info = styled.div`
 `
 const InfoWrap = styled.div`
   display: flex;
-  margin: 33px 0;
+  margin: 15px 0;
   width: 100%;
   justify-content: center;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 64px;
-  }
 `
 const PaymentWrap = styled.div`
   display: flex;
