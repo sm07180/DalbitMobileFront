@@ -31,8 +31,8 @@ export default props => {
         Context.action.alert({
           msg: '결제가 완료되었습니다.',
           callback: () => {
-            Hybrid('ClosePayPopup')
             Hybrid('CloseLayerPopup')
+            Hybrid('ClosePayPopup')
           }
         })
       }
