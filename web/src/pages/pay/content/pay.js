@@ -75,7 +75,8 @@ export default props => {
     }&webview=new`
 
     let urlObj = {
-      url: url
+      url: url,
+      title: '달 충전하기'
     }
     alert(JSON.stringify(urlObj))
     Hybrid('OpenPayPopup', urlObj)
