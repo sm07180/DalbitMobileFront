@@ -13,6 +13,7 @@ import styled from 'styled-components'
 
 import Content from './content'
 import _ from 'lodash'
+import {Context} from 'context'
 //
 export default props => {
   //---------------------------------------------------------------------
@@ -26,7 +27,14 @@ export default props => {
         window.location.href = '/pay?webview=new'
         //window.location.href = '/selfauth_result?webview=new'
       } else if (props.location.state.state === 'pay') {
-        window.location.href = '/pay_result?webview=new'
+        //window.location.href = '/pay_result?webview=new'
+        Context.action.alert({
+          msg: '결제가 완료되었습니다.',
+          callback: () => {
+            Hybrid('ClosePayPopup')
+            Hybrid('CloseLayerPopup')
+          }
+        })
       }
     }
   }
