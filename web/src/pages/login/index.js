@@ -293,7 +293,8 @@ export default props => {
                 <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>
-                {((customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) ||
+                {((__NODE_ENV === 'dev') ||
+                  (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 3) ||
                   (customHeader['os'] === OS_TYPE['IOS'] &&
                     (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
                   <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
