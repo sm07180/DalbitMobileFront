@@ -31,12 +31,12 @@ export default props => {
 
       if (props.location.state.state === 'auth') {
         window.location.href = '/pay?webview=new'
-        //window.location.href = '/selfauth_result?webview=new'
       } else if (props.location.state.state === 'pay') {
-        //window.location.href = '/pay_result?webview=new'
-        if (webview === undefined) {
+        if (props.location.state.returntype === 'store') {
           window.location.href = '/'
         } else {
+          //window.location.href = '/pay_result?webview=new'
+          alert('test')
           context.action.alert({
             msg: '결제가 완료되었습니다.',
             callback: () => {
@@ -45,6 +45,10 @@ export default props => {
             }
           })
         }
+      }
+    } else {
+      if (props.location.state.state === 'pay') {
+        Hybrid('ClosePayPopup')
       }
     }
   }
