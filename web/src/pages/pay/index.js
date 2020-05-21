@@ -34,7 +34,7 @@ export default props => {
         //window.location.href = '/selfauth_result?webview=new'
       } else if (props.location.state.state === 'pay') {
         //window.location.href = '/pay_result?webview=new'
-        if (webview === undefined) {
+        if (props.location.state.returntype === 'store') {
           window.location.href = '/'
         } else {
           context.action.alert({
