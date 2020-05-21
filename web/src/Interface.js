@@ -137,11 +137,13 @@ export default () => {
           }
           const google_result = await Api.google_login({data: inputData})
 
+            //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
               data: google_result.data
             })
 
+              //alert(JSON.stringify(loginInfo))
             if (loginInfo.result === 'success') {
               const {memNo} = loginInfo.data
 
@@ -177,7 +179,8 @@ export default () => {
                   return (window.location.href = mypageURL)
                 }
 
-                return props.history.push('/')
+                //return props.history.push('/')
+                return (window.location.href = "/")
               }
             } else if (loginInfo.code + '' == '1') {
               if (webview && webview === 'new') {

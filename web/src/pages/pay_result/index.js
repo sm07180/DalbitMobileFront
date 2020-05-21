@@ -7,23 +7,21 @@ import {Hybrid} from 'context/hybrid'
 import styled from 'styled-components'
 import qs from 'query-string'
 import _ from 'lodash'
+import {Context} from 'context'
 //
 export default props => {
   //---------------------------------------------------------------------
   //state
-  const [itemInfo, setItemInfo] = useState(qs.parse(location.search))
-
-  const chargeConfirm = () => {
-    if (itemInfo.hasOwnProperty('webview')) {
-      Hybrid('ClosePayPopup')
-      Hybrid('CloseLayerPopup')
-    } else {
-      window.location.href = '/store'
-    }
-  }
+  const context = useContext(Context)
 
   useEffect(() => {
-    // alert('결과페이지 진입')
+    context.action.alert({
+      msg: '결제가 완료되었습니다.',
+      callback: () => {
+        Hybrid('CloseLayerPopup')
+        Hybrid('ClosePayPopup')
+      }
+    })
   }, [])
 
   /**
@@ -31,14 +29,7 @@ export default props => {
    * @returns
    */
   //---------------------------------------------------------------------
-  return (
-    <Layout {...props} status="no_gnb">
-      <ChargeWrap>
-        <h4>결제가 완료되었습니다.</h4>
-        <button onClick={chargeConfirm}>확인</button>
-      </ChargeWrap>
-    </Layout>
-  )
+  return <Layout {...props} status="no_gnb"></Layout>
 }
 //---------------------------------------------------------------------
 

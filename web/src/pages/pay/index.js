@@ -26,25 +26,11 @@ export default props => {
 
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
-      //Hybrid('CloseLayerPopup')
-      //--------------------결제완료
-
-      if (props.location.state.state === 'auth') {
-        window.location.href = '/pay?webview=new'
-        //window.location.href = '/selfauth_result?webview=new'
-      } else if (props.location.state.state === 'pay') {
-        //window.location.href = '/pay_result?webview=new'
-        if (props.location.state.returntype === 'store') {
-          window.location.href = '/'
+      if (props.location.state.state === 'pay') {
+        if (props.location.state.returntype === 'room') {
+          window.location.href = '/pay_result?webview=new'
         } else {
-          alert('결제완료')
-          context.action.alert({
-            msg: '결제가 완료되었습니다.',
-            callback: () => {
-              Hybrid('CloseLayerPopup')
-              Hybrid('ClosePayPopup')
-            }
-          })
+          window.location.href = '/'
         }
       }
     } else {

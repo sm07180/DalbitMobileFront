@@ -93,7 +93,7 @@ export default props => {
       url: url,
       title: '달 충전하기'
     }
-    alert(JSON.stringify(urlObj))
+    // alert(JSON.stringify(urlObj))
     Hybrid('OpenPayPopup', urlObj)
   }
 
@@ -192,9 +192,9 @@ export default props => {
 
 const TabItem = styled.div`
   position: fixed;
-  top: 16px;
-  left: 16px;
-  width: calc(100% - 32px);
+  top: 12px;
+  left: 12px;
+  width: calc(100% - 24px);
   display: flex;
   button {
     position: relative;
@@ -238,9 +238,9 @@ const Content = styled.section`
     margin-top: 20px;
     justify-content: space-between;
     position: fixed;
-    bottom: 16px;
-    width: calc(100% - 32px);
-    left: 16px;
+    bottom: 12px;
+    width: calc(100% - 24px);
+    left: 12px;
     .charge-btn {
       display: block;
       width: 49.2%;
@@ -283,7 +283,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 66px 0 0 0;
+    padding: 54px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -368,7 +368,7 @@ const List = styled.div`
     flex-wrap: wrap;
     .wrap {
       width: 32.4%;
-      margin-bottom: 16px;
+      margin-bottom: 15px;
 
       & > p {
         font-size: 14px;
@@ -379,7 +379,7 @@ const List = styled.div`
     .item-wrap {
       padding: 5px 0 10px 0;
       img {
-        width: calc(100% - 25px);
+        width: calc(100% - 28px);
         margin-bottom: 4px;
       }
       p {
