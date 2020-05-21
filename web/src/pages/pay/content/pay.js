@@ -73,8 +73,12 @@ export default props => {
     let url = `https://${location.host}/charge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${
       selected.itemNo
     }&webview=new`
-    alert(url)
-    Hybrid('OpenPayPopup', url)
+
+    let urlObj = {
+      url: url
+    }
+    alert(JSON.stringify(urlObj))
+    Hybrid('OpenPayPopup', urlObj)
   }
 
   //useEffect
