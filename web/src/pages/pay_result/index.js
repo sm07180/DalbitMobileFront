@@ -7,10 +7,12 @@ import {Hybrid} from 'context/hybrid'
 import styled from 'styled-components'
 import qs from 'query-string'
 import _ from 'lodash'
+import {Context} from 'context'
 //
 export default props => {
   //---------------------------------------------------------------------
   //state
+  const context = useContext(Context)
   const [itemInfo, setItemInfo] = useState(qs.parse(location.search))
 
   const chargeConfirm = () => {
