@@ -24,6 +24,8 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
+  alert(JSON.stringify(props.location.state))
+
   if (_.hasIn(props, 'location.state.result')) {
     alert('1')
     if (props.location.state.result === 'success') {
