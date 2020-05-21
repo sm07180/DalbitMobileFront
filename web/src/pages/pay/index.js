@@ -37,6 +37,7 @@ export default props => {
         if (props.location.state.returntype === 'store') {
           window.location.href = '/'
         } else {
+          alert('결제완료')
           context.action.alert({
             msg: '결제가 완료되었습니다.',
             callback: () => {
