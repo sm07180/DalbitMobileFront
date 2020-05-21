@@ -13,19 +13,8 @@ export default props => {
   //---------------------------------------------------------------------
   //state
   const context = useContext(Context)
-  const [itemInfo, setItemInfo] = useState(qs.parse(location.search))
-
-  const chargeConfirm = () => {
-    if (itemInfo.hasOwnProperty('webview')) {
-      Hybrid('ClosePayPopup')
-      Hybrid('CloseLayerPopup')
-    } else {
-      window.location.href = '/store'
-    }
-  }
 
   useEffect(() => {
-    alert('결과페이지 진입')
     context.action.alert({
       msg: '결제가 완료되었습니다.',
       callback: () => {
