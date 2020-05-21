@@ -16,36 +16,6 @@ import {Hybrid} from 'context/hybrid'
 
 import starIcon from '../static/ic_star_s.svg'
 
-const testList = [
-  {
-    itemCode: 'L1252',
-    itemName: 'dal 30',
-    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
-    itemThumbnail: 'https://image.dalbitlive.com/store/store_1.png',
-    dalCnt: 30,
-    byeolCnt: 50,
-    desc: 'descr'
-  },
-  {
-    itemCode: 'Z1834',
-    itemName: 'dal 60',
-    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
-    itemThumbnail: 'b',
-    dalCnt: 60,
-    byeolCnt: 100,
-    desc: 'descr'
-  },
-  {
-    itemCode: 'Z1834',
-    itemName: 'dal 60',
-    itemImg: 'https://image.dalbitlive.com/store/store_1.png',
-    itemThumbnail: 'b',
-    dalCnt: 60,
-    byeolCnt: 100,
-    desc: 'descr'
-  }
-]
-
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)

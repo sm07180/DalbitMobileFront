@@ -24,25 +24,19 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
-  alert(JSON.stringify(props.location.state))
+  //alert(JSON.stringify(props.location.state))
 
   if (_.hasIn(props, 'location.state.result')) {
-    alert('1')
     if (props.location.state.result === 'success') {
       if (props.location.state.state === 'pay') {
-        alert('2')
         if (props.location.state.returntype === 'room') {
-          alert('3')
           window.location.href = '/pay_result?webview=new'
         } else {
-          alert('4')
           window.location.href = '/'
         }
       }
     } else {
-      alert('5')
       if (props.location.state.state === 'pay') {
-        alert('6')
         Hybrid('ClosePayPopup')
       }
     }
