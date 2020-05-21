@@ -18,6 +18,8 @@ import {Context} from 'context'
 export default props => {
   //---------------------------------------------------------------------
   //context
+  const context = useContext(Context)
+
   if (__NODE_ENV === 'dev' && _.hasIn(props, 'location.state.result')) {
     if (props.location.state.result === 'success') {
       //Hybrid('CloseLayerPopup')
@@ -28,7 +30,7 @@ export default props => {
         //window.location.href = '/selfauth_result?webview=new'
       } else if (props.location.state.state === 'pay') {
         //window.location.href = '/pay_result?webview=new'
-        Context.action.alert({
+        context.action.alert({
           msg: '결제가 완료되었습니다.',
           callback: () => {
             Hybrid('CloseLayerPopup')
