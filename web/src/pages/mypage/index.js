@@ -68,6 +68,9 @@ export default props => {
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
         context.action.updateProfile(profileInfo.data)
+        if (profileInfo.code === '-2') {
+          setCodes('-2')
+        }
       }
     }
     if (memNo) {
@@ -75,17 +78,7 @@ export default props => {
     }
   }, [context.mypageFanCnt])
   const [codes, setCodes] = useState('')
-  useEffect(() => {
-    const settingProfileInfo = async memNo => {
-      const profileInfo = await Api.profile({params: {memNo: memNo}})
-      if (profileInfo.code === '-2') {
-        setCodes('-2')
-      }
-    }
-    if (memNo) {
-      settingProfileInfo(memNo)
-    }
-  }, [])
+
   useEffect(() => {
     if (codes === '-2') {
       context.action.alert({
