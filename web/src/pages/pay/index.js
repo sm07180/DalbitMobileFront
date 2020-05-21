@@ -47,7 +47,9 @@ export default props => {
         }
       }
     } else {
+      alert(props.location.state.result)
       if (props.location.state.state === 'pay') {
+        alert(props.location.state.state)
         Hybrid('CloseLayerPopup')
       }
     }
