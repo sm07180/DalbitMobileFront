@@ -279,7 +279,6 @@ export default props => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') && (
                 <div className="tab">
                   <Link
                     onClick={event => {
@@ -290,7 +289,6 @@ export default props => {
                     스토어
                   </Link>
                 </div>
-              )}
             </div>
             <div className="right-side">
               <div
