@@ -41,7 +41,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default (props) => {
+export default props => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -78,7 +78,7 @@ export default (props) => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -98,7 +98,7 @@ export default (props) => {
       }
     })()
 
-    Api.splash().then((res) => {
+    Api.splash().then(res => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -111,7 +111,7 @@ export default (props) => {
     })
   }, [])
 
-  const fetchLiveList = async (reset) => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -201,7 +201,7 @@ export default (props) => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = (e) => {
+  const popStateEvent = e => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -266,7 +266,7 @@ export default (props) => {
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
-
+  console.log(categoryList)
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef}>
@@ -279,16 +279,18 @@ export default (props) => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') &&  <div className="tab">
-                <Link
-                  onClick={event => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
-                  }}
-                  to={'/store'}>
-                  스토어
-                </Link>
-              </div> }
+              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') && (
+                <div className="tab">
+                  <Link
+                    onClick={event => {
+                      event.preventDefault()
+                      StoreLink(globalCtx)
+                    }}
+                    to={'/store'}>
+                    스토어
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="right-side">
               <div
@@ -330,7 +332,7 @@ export default (props) => {
             </div>
           </div>
           {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
-          { customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
+          {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>}
           <div
             className="section"
             ref={StarSectionRef}
