@@ -139,7 +139,8 @@ const Exit = props => {
             checked={state.click7}
         />
         <Checkbox
-            title="탈퇴 후 7일이 지나 동일 로그인ID로 재가입한 경우 이벤트성으로 제공되는 “달”, ”별”은\n지급되지 않습니다."
+            title="탈퇴 후 7일이 지나 동일 로그인ID로 재가입한 경우 이벤트성으로 제공되는 “달”, ”별”은
+            지급되지 않습니다."
             fnChange={v => setState({click8: v})}
             checked={state.click8}
         />
