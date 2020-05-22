@@ -41,7 +41,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default props => {
+export default (props) => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -78,7 +78,7 @@ export default props => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
-      Object.keys(window.sessionStorage).forEach(key => {
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -98,7 +98,7 @@ export default props => {
       }
     })()
 
-    Api.splash().then(res => {
+    Api.splash().then((res) => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -111,7 +111,7 @@ export default props => {
     })
   }, [])
 
-  const fetchLiveList = async reset => {
+  const fetchLiveList = async (reset) => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -201,7 +201,7 @@ export default props => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -269,7 +269,7 @@ export default props => {
 
   return (
     <Layout {...props}>
-      <MainWrap ref={MainRef}>
+      <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
         <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
@@ -279,16 +279,16 @@ export default props => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-                <div className="tab">
-                  <Link
-                    onClick={event => {
-                      event.preventDefault()
-                      StoreLink(globalCtx)
-                    }}
-                    to={'/store'}>
-                    스토어
-                  </Link>
-                </div>
+              <div className="tab">
+                <Link
+                  onClick={(event) => {
+                    event.preventDefault()
+                    StoreLink(globalCtx)
+                  }}
+                  to={'/store'}>
+                  스토어
+                </Link>
+              </div>
             </div>
             <div className="right-side">
               <div
@@ -406,7 +406,7 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/*popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} /> */}
+        {/* {popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
       </MainWrap>
     </Layout>
   )
@@ -657,5 +657,5 @@ const SubMain = styled.div`
 `
 
 const MainWrap = styled.div`
-  margin-top: 48px;
+  margin-top: ${(props) => (props.sticker ? '0' : '48px')};
 `

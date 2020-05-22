@@ -14,6 +14,7 @@ import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
 import Ip from 'pages/common/ip'
+import Sticker from 'pages/common/sticker'
 //
 const Layout = (props) => {
   const {children, webview} = props
@@ -25,10 +26,9 @@ const Layout = (props) => {
 
   return (
     <React.Fragment>
+      {/* Sticker */}
+      {context.sticker && <Sticker />}
       {/* GNB */}
-      {/* <Top>
-        <h1>test</h1>
-      </Top> */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
@@ -46,12 +46,7 @@ const Layout = (props) => {
 }
 export default Layout
 //---------------------------------------------------------------------
-const Top = styled.div`
-  margin-top: 49px;
-  margin-bottom: 50px;
 
-  position: relative;
-`
 const Article = styled.article`
   &.webview {
     .header-wrap .close-btn {

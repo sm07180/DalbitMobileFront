@@ -32,7 +32,7 @@ function native() {
 function native1() {
   document.dispatchEvent(
     new CustomEvent('native-push-foreground', {
-      detail: `{"push_type":"2","mem_no":"11583120797169","content":"스티커팝업"}`
+      detail: `{"push_type":"2","mem_no":"11583120797169","content":"스티커팝업111"}`
     })
   )
   return true
