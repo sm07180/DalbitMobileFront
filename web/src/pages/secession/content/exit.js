@@ -127,19 +127,29 @@ const Exit = props => {
         checked={state.click4}
       />
       <Checkbox title="탈퇴 후 7일간 서비스 재가입은 불가합니다." fnChange={v => setState({click5: v})} checked={state.click5} /> */}
-      <Checkbox
-        title="약관에 의해 제재중인 계정의 경우 즉시 탈퇴가 불가합니다.
+        <Checkbox
+            title="약관에 의해 제재중인 계정의 경우 즉시 탈퇴가 불가합니다.
          별도로 문의해주시기 바랍니다."
-        fnChange={v => setState({click6: v})}
-        checked={state.click6}
-      />
+            fnChange={v => setState({click6: v})}
+            checked={state.click6}
+        />
+        <Checkbox
+            title="탈퇴 회원은 부정행위 방지를 위해 7일간 재가입이 불가합니다."
+            fnChange={v => setState({click7: v})}
+            checked={state.click7}
+        />
+        <Checkbox
+            title="탈퇴 후 7일이 지나 동일 로그인ID로 재가입한 경우 이벤트성으로 제공되는 “달”, ”별”은\n지급되지 않습니다."
+            fnChange={v => setState({click8: v})}
+            checked={state.click8}
+        />
       <div className="allagree">
         위의 내용을 모두 확인하였습니다.
         <button onClick={() => clearFilter()} className={all === true ? 'on' : ''}></button>
       </div>
       <button
         className={
-          all === true && state.click1 === true && state.click2 === true && state.click6 === true ? 'submiton' : 'submit'
+          all === true && state.click1 === true && state.click2 === true && state.click6 === true && state.click7 === true && state.click8 === true ? 'submiton' : 'submit'
         }
         onClick={Validate}
         disabled={all ? false : true}>
