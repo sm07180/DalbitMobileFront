@@ -40,7 +40,7 @@ export default props => {
   async function fetchBannerData() {
     const res = await Api.getBanner({
       params: {
-        position: '1'
+        position: '9'
       }
     })
     if (res.result === 'success') {
