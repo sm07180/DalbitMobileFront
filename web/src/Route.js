@@ -17,7 +17,9 @@ const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
+const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
+const Charge = React.lazy(() => import('pages/charge'))
 const Customer = React.lazy(() => import('pages/customer'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
@@ -27,6 +29,7 @@ const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
+const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
 
 const Secession = React.lazy(() => import('pages/secession'))
@@ -51,13 +54,16 @@ export default () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/pay" component={Pay} />
+        <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
+        <Route exact path="/charge" component={Charge} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
+        <Route exact path="/selfauth_result" component={SelfAuthResult} />
 
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />

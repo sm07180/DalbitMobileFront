@@ -1406,6 +1406,26 @@ export default class API {
     const {data} = obj
     return await ajax({url: `/social/google/callback`, method: 'POST', data})
   }
+
+  /**
+   * @brief 별 달 교환아이템 가져오기
+   * @method "GET"
+   * @create 이은비 2020.05.21
+   */
+  static getChangeItem = async obj => {
+    const {params} = obj
+    return await ajax({url: `/mypage/change/item`, method: 'GET', params: params})
+  }
+
+  /**
+   * @brief 별 달 교환하기
+   * @method "POST"
+   * @create 이은비 2020.05.21
+   */
+  static postChangeItem = async obj => {
+    const {data} = obj
+    return await ajax({url: `/mypage/change/item`, method: 'POST', data: data})
+  }
 }
 API.customHeader = null
 API.authToken = null

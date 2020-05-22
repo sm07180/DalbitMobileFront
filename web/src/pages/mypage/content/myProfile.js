@@ -194,8 +194,10 @@ const myProfile = props => {
       </Header>
 
       <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-        {urlrStr !== myProfileNo && <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>}
-
+        {urlrStr !== context.token.memNo && (
+          <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
+        )}
+        {/* <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div> */}
         {profile.roomNo !== '' && (
           <button
             className="liveIcon"
@@ -222,7 +224,10 @@ const myProfile = props => {
       <ContentWrap>
         <NameWrap>
           <strong>{profile.nickNm}</strong>
-          <span>{`@${profile.memId}`}</span>
+          <div>
+            <span>{`@${profile.memId}`}</span>
+            {profile.isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+          </div>
         </NameWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
@@ -238,7 +243,7 @@ const myProfile = props => {
         <ButtonWrap>
           <InfoConfigBtn>
             {createFanList()}
-            {urlrStr !== myProfileNo && (
+            {urlrStr !== context.token.memNo && (
               <div className="notBjWrap">
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <></>
@@ -333,11 +338,23 @@ const ProfileImg = styled.div`
   background-position: center;
   text-align: center;
   order: 1;
+  .holder {
+    display: block;
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 162px;
+    height: 162px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 
   figure {
     width: 120px;
     height: 120px;
-    margin: 6px auto 0 auto;
+    margin: 10px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
 
@@ -350,6 +367,7 @@ const ProfileImg = styled.div`
     display: inline-block;
     position: relative;
     padding: 0 13px;
+    margin-top: 20px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
@@ -388,7 +406,7 @@ const ContentWrap = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
-    margin: 0 auto;
+    margin: 20px auto;
     order: 3;
 
     & > div {
@@ -455,6 +473,21 @@ const NameWrap = styled.div`
   margin-top: 10px;
   & > * {
     display: inline-block;
+  }
+  .specialIcon {
+    display: inline-block;
+    width: 62px;
+    height: 16px;
+    margin-left: 4px;
+    border-radius: 10px;
+    background-color: #ec455f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
   }
   strong {
     color: #000;

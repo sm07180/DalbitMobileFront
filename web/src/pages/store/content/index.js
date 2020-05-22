@@ -78,7 +78,8 @@ export default props => {
       context.action.updatePopup('CHARGE', {
         name: selected.name,
         price: selected.price,
-        itemNo: selected.itemNo
+        itemNo: selected.itemNo,
+        isState: 'charge'
       })
     } else {
       window.location.href = '/login'

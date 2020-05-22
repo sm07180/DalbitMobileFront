@@ -199,26 +199,39 @@ const myProfile = props => {
           </div>
         )}
         <span>
-          {profile.grade} / Lv.{profile.level}
+          {profile.level !== 0 && `${profile.grade} /`} Lv.{profile.level}
         </span>
       </ProfileImg>
 
       <ContentWrap>
         {urlrStr == 'profile' && (
-          <LevelWrap>
-            <LevelText>LEVEL {profile.level}</LevelText>
-            <LevelStatusBarWrap>
-              <LevelStatus
-                style={{
-                  width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
-                }}>{`${expCalc}%`}</LevelStatus>
-            </LevelStatusBarWrap>
-          </LevelWrap>
+          <>
+            <LevelWrap>
+              <LevelText>LEVEL {profile.level}</LevelText>
+              <LevelStatusBarWrap>
+                <LevelStatus
+                  style={{
+                    width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
+                  }}></LevelStatus>
+              </LevelStatusBarWrap>
+            </LevelWrap>
+
+            <div className="expWrap">
+              <span className="expBegin">0</span>
+              <span className="expPer">
+                EXP {profile.exp} ({`${expCalc}%`})
+              </span>
+              <span className="expBegin">{profile.expNext}</span>
+            </div>
+          </>
         )}
 
         <NameWrap>
           <strong>{profile.nickNm}</strong>
-          <span>{`@${profile.memId}`}</span>
+          <div>
+            <span>{`@${profile.memId}`}</span>
+            {profile.isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+          </div>
         </NameWrap>
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
@@ -314,7 +327,7 @@ const ProfileImg = styled.div`
     position: relative;
     width: 100px;
     height: 100px;
-    margin: 6px auto 0 auto;
+    margin: 10px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
 
@@ -339,6 +352,7 @@ const ProfileImg = styled.div`
     display: inline-block;
     position: relative;
     padding: 0 13px;
+    margin-top: 20px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
@@ -376,6 +390,39 @@ const ContentWrap = styled.div`
       justify-content: center;
     }
   }
+  .expWrap {
+    width: 280px;
+    display: flex;
+    justify-content: space-between;
+    margin: 8px auto 10px auto;
+  }
+  .expPer {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: center;
+    color: #632beb;
+  }
+  .expBegin {
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #424242;
+  }
+  .expBegin:nth-child(1) {
+    margin-left: 8px;
+  }
+  .expBegin:nth-child(2) {
+    margin-right: 8px;
+  }
 `
 //------------------------------------------------------
 //정보 레벨업관련
@@ -403,7 +450,7 @@ const LevelText = styled.span`
 `
 const LevelStatusBarWrap = styled.div`
   position: relative;
-  width: 156px;
+  width: 280px;
   margin-left: 8px;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
@@ -442,6 +489,21 @@ const NameWrap = styled.div`
     font-size: 24px;
     line-height: 32px;
     font-weight: 800;
+  }
+  .specialIcon {
+    display: inline-block;
+    width: 62px;
+    height: 16px;
+    margin-left: 4px;
+    border-radius: 10px;
+    background-color: #ec455f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
   }
   span {
     padding-left: 5px;

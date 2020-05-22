@@ -176,6 +176,7 @@ export default props => {
   }, [])
   // console.log(starInfo)
   //------------------------------------------------------------
+
   return (
     <>
       <HoleWrap>
@@ -200,9 +201,9 @@ export default props => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -210,12 +211,14 @@ export default props => {
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
-                          {isFan === false && (
+                          {isFan === false && memNo !== ctx.token.memNo && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
                             </button>
                           )}
-                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                          {isFan === true && memNo !== ctx.token.memNo && (
+                            <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                          )}
                         </List>
                       )
                     })}
@@ -225,9 +228,9 @@ export default props => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -235,12 +238,12 @@ export default props => {
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
-                          {isFan === false && (
+                          {isFan === false && memNo !== myProfileNo && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
                             </button>
                           )}
-                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                          {isFan === true && memNo !== myProfileNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
                         </List>
                       )
                     })}
@@ -250,9 +253,9 @@ export default props => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = MyMemNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -260,12 +263,14 @@ export default props => {
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
-                          {isFan === false && (
+                          {isFan === false && memNo !== ctx.token.memNo && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
                             </button>
                           )}
-                          {isFan === true && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                          {isFan === true && memNo !== ctx.token.memNo && (
+                            <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                          )}
                         </List>
                       )
                     })}

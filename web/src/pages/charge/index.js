@@ -1,14 +1,19 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import styled from 'styled-components'
-import {BotButton} from './bot-button'
+import {BotButton} from 'pages/common/popup/tab/bot-button'
 import {Scrollbars} from 'react-custom-scrollbars'
-import SuccessPopup from './charge-success-popup'
+import SuccessPopup from 'pages/common/popup/tab/charge-success-popup'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Context} from 'context'
 import _ from 'lodash'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import qs from 'query-string'
+// static
+import closeBtn from 'components/ui/ic_back.svg'
+import {Hybrid} from 'context/hybrid'
+
 const chargeData = [
   {
     id: 0,
@@ -24,144 +29,28 @@ const chargeData = [
     id: 2,
     type: '무통장 입금(계좌이체)',
     fetch: 'pay_virtual'
-  },
-  {
-    id: 3,
-    type: '실시간 계좌이체',
-    fetch: 'pay_bank'
   }
+  // {
+  //   id: 3,
+  //   type: '실시간 계좌이체',
+  //   fetch: 'pay_bank'
+  // }
 ]
-
-const receiptData = [
-  {
-    id: 0,
-    type: '선택안함'
-  },
-  {
-    id: 1,
-    type: '소득공제용'
-  },
-  {
-    id: 2,
-    type: '지출증빙용'
-  }
-]
-
-function payRequest(obj) {
-  //아래와 같이 ext_inc_comm.js에 선언되어 있는 함수를 호출
-  MCASH_PAYMENT(obj)
-}
 
 let payType = ''
 export default props => {
   const context = useContext(Context)
   //-------------------------------------------------------- declare start
   const [charge, setCharge] = useState(-1)
-  const scrollbars = useRef(null)
   const formTag = useRef()
   const area = useRef()
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [useage, setUseage] = useState(0)
-  const [select, setSelect] = useState(false)
-  const [pick, setPick] = useState('주민등록번호')
-  const [confirm, setConfirm] = useState(false)
-  const [confirmData, setConfirmData] = useState(false)
 
-  let isStoreCharge = false
-  if (props.hasOwnProperty('isState') && props.isState === 'store') isStoreCharge = true
+  const [itemInfo, setItemInfo] = useState(qs.parse(location.search))
 
   //-------------------------------------------------------- func start
-  // input 분기
-  const handleChange = e => {
-    if (e.target.name === 'name') {
-      setName(e.target.value)
-    } else if (e.target.name === 'phone') {
-      setPhone(e.target.value)
-    } else if (e.target.name === 'pay') {
-    } else if (e.target.name === 'company') {
-    }
-  }
-
-  // 무통장입금 - 소득공제용 - select
-  const choice = index => {
-    if (index === 0) {
-      setPick('주민등록번호')
-      setSelect(false)
-    } else {
-      setPick('휴대폰번호')
-      setSelect(false)
-    }
-  }
 
   const doCharge = () => {
-    async function fetchSelfAuth() {
-      const selfAuth = await Api.self_auth_check({})
-      if (selfAuth.result == 'success') {
-        payFetch()
-      } else {
-        context.action.updatePopupVisible(false)
-        props.history.push('/user/selfAuth', {
-          type: isStoreCharge ? 'charge' : 'roomCharge'
-        })
-      }
-    }
-    fetchSelfAuth()
-  }
-
-  // 무통장입금 - 현금영수증 Component
-  const receipt = props => {
-    return (
-      <div className="receipt">
-        <span>현금영수증</span>
-        <div className="useage">
-          {receiptData.map((data, index) => {
-            return (
-              <React.Fragment key={index}>
-                <Useage onClick={() => setUseage(index)} active={useage === index ? 'active' : ''}>
-                  {data.type}
-                </Useage>
-              </React.Fragment>
-            )
-          })}
-        </div>
-        {useage !== 0 && (
-          <div className="receiptInfo">
-            {useage !== 0 && (
-              <>
-                <div className="select">
-                  {useage === 1 && (
-                    <>
-                      <Select onClick={() => setSelect(!select)} active>
-                        <span>{pick}</span>
-                        <div></div>
-                      </Select>
-                      <input type="number" name="pay" onChange={handleChange} />
-                    </>
-                  )}
-                  {useage === 2 && (
-                    <>
-                      <Select>
-                        <span>사업자번호</span>
-                      </Select>
-                      <input type="number" name="company" onChange={handleChange} />
-                    </>
-                  )}
-                </div>
-                {select && (
-                  <Event>
-                    <ul>
-                      <button onClick={() => choice(0)}>주민등록번호</button>
-                      <button onClick={() => choice(1)}>휴대폰번호</button>
-                    </ul>
-                  </Event>
-                )}
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    )
+    payFetch()
   }
 
   //--------------------------------------------------------
@@ -171,8 +60,10 @@ export default props => {
     payType = chargeData[charge].fetch
     const obj = {
       data: {
-        Prdtnm: context.popup_code[1].name,
-        Prdtprice: context.popup_code[1].price
+        Prdtnm: itemInfo.name,
+        Prdtprice: itemInfo.price,
+        itemNo: itemInfo.itemNo,
+        pageCode: '2'
       }
     }
     const res = await Api[payType]({...obj})
@@ -203,143 +94,94 @@ export default props => {
     }
   }
 
-  const scrollOnUpdate = () => {
-    let thisHeight = ''
-    if (document.getElementsByClassName('round')[0]) {
-      thisHeight = document.getElementsByClassName('round')[0].offsetHeight + 18
-      area.current.children[1].children[0].style.maxHeight = `calc(${thisHeight}px)`
-    }
-  }
-
-  const updateDispatch = event => {
-    //개발쪽만 적용
-    if (event.detail.result == 'success' && event.detail.code == 'P001') {
-      setConfirmData({
-        ...event.detail,
-        itemName: context.popup_code[1].name,
-        price: context.popup_code[1].price,
-        type: payType
-      })
-      setConfirm(true)
-    } else {
-      context.action.alert({
-        msg: event.detail.message
-      })
-    }
+  const chargeClose = () => {
+    //상단 백버튼, 취소하기 버튼
+    Hybrid('ClosePayPopup')
   }
   //--------------------------------------------------------
   //useEffect
   useEffect(() => {
-    document.addEventListener('store-pay', updateDispatch)
-    return () => {
-      document.removeEventListener('store-pay', updateDispatch)
-    }
-  }, [])
+    console.log(itemInfo)
+  }, [itemInfo])
   //-------------------------------------------------------- components start
   return (
     <Container ref={area}>
+      {/* <button className="close-btn" onClick={chargeClose}>
+        뒤로가기
+      </button> */}
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
-      <Scrollbars ref={scrollbars} autoHeight autoHeightMax={'100%'} onUpdate={scrollOnUpdate} autoHide>
-        {confirm ? (
-          <SuccessPopup detail={confirmData} />
-        ) : (
-          <>
-            <div className="title">달 충전하기</div>
-            <InnerWrap>
-              <InfoWrap>
-                <Info>
-                  <div className="subTitle">구매 내역</div>
-                  <div>
-                    <div>결제상품</div>
-                    <div className="goods">{_.hasIn(context.popup_code[1], 'name') ? context.popup_code[1].name : '달 100'}</div>
-                  </div>
-                  <div>
-                    <div>결제금액</div>
-                    <div className="price">
-                      {_.hasIn(context.popup_code[1], 'price') ? Utility.addComma(context.popup_code[1].price) : '1,000'}
-                      <span>원</span>
-                    </div>
-                  </div>
-                </Info>
-              </InfoWrap>
-              <PaymentWrap>
-                <Payment>
-                  <div className="subTitle">결제수단</div>
-                  <ItemArea>
-                    {chargeData.map((data, idx) => {
-                      return (
-                        <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
-                          {data.type}
-                        </ItemBox>
-                      )
-                    })}
-                  </ItemArea>
-                </Payment>
-              </PaymentWrap>
-              {/* {charge === 2 && (
-              <DepositInfo>
-                <div className="depositTitle">
-                  <div className="subTitle">무통장 입금</div>
-                  <div className="info">
-                    <div>입금자</div>
-                    <input name="name" onChange={handleChange} value={name} />
-                  </div>
-                  <div className="info">
-                    <div>전화번호</div>
-                    <input
-                      placeholder="입금 정보 문자메시지 전송(선택사항)"
-                      onChange={handleChange}
-                      name="phone"
-                      value={phone}
-                      type="number"
-                    />
-                  </div>
-                </div>
-                {receipt()}
-              </DepositInfo>
-            )} */}
-              <FixedWrap>
-                <NoticeArea>
-                  <div className="noticeTitle">
-                    <div className="circle">!</div>
-                    <div>달 충전 안내</div>
-                  </div>
-                  <div className="notice">
-                    <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-                    <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-                    <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-                    <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
-                  </div>
-                </NoticeArea>
-                <ButtonArea>
-                  <div>
-                    <BotButton
-                      width={150}
-                      height={48}
-                      background={'#fff'}
-                      color={'#632beb'}
-                      borderColor={'#632beb'}
-                      title={'취소하기'}
-                      clickEvent={() => {
-                        context.action.updatePopupVisible(false)
-                      }}
-                    />
-                    <BotButton
-                      width={150}
-                      height={48}
-                      background={charge != -1 ? '#632beb' : '#bdbdbd'}
-                      disabled={charge != -1 ? false : true}
-                      color={'#fff'}
-                      title={'충전하기'}
-                      clickEvent={doCharge}
-                    />
-                  </div>
-                </ButtonArea>
-              </FixedWrap>
-            </InnerWrap>
-          </>
-        )}
-      </Scrollbars>
+      {/* <div className="title">달 충전하기</div> */}
+      <InnerWrap>
+        <InfoWrap>
+          <Info>
+            <div className="subTitle">구매 내역</div>
+            <div>
+              <div>결제상품</div>
+              <div className="goods">{itemInfo.name}</div>
+            </div>
+            <div>
+              <div>결제금액</div>
+              <div className="price">
+                {Utility.addComma(itemInfo.price)}
+                <span>원</span>
+              </div>
+            </div>
+          </Info>
+        </InfoWrap>
+        <PaymentWrap>
+          <Payment>
+            <div className="subTitle two">결제수단</div>
+            <ItemArea>
+              {chargeData.map((data, idx) => {
+                return (
+                  <ItemBox key={idx} onClick={() => setCharge(data.id)} active={idx === charge ? 'active' : ''}>
+                    {data.type}
+                  </ItemBox>
+                )
+              })}
+            </ItemArea>
+          </Payment>
+        </PaymentWrap>
+
+        <FixedWrap>
+          <NoticeArea>
+            <div className="noticeTitle">
+              <div className="circle">!</div>
+              <div>달 충전 안내</div>
+            </div>
+            <div className="notice">
+              <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+              <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+              <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+              <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+            </div>
+          </NoticeArea>
+          <ButtonArea>
+            <div>
+              <BotButton
+                width={150}
+                height={48}
+                background={'#fff'}
+                color={'#632beb'}
+                borderColor={'#632beb'}
+                title={'취소하기'}
+                clickEvent={() => {
+                  chargeClose()
+                }}
+              />
+              <BotButton
+                width={150}
+                height={48}
+                background={charge != -1 ? '#632beb' : '#bdbdbd'}
+                disabled={charge != -1 ? false : true}
+                color={'#fff'}
+                title={'충전하기'}
+                clickEvent={doCharge}
+              />
+            </div>
+          </ButtonArea>
+        </FixedWrap>
+      </InnerWrap>
     </Container>
   )
 }
@@ -374,12 +216,16 @@ const Container = styled.div`
     color: #632beb;
     font-size: 16px;
     font-weight: 600;
-    line-height: 48px;
+    line-height: 44px;
     letter-spacing: -0.4px;
     text-align: center;
     align-items: center;
     justify-content: space-between;
     transform: skew(-0.03deg);
+
+    &.two {
+      line-height: 44px;
+    }
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -389,8 +235,33 @@ const Container = styled.div`
       border-bottom: 1px solid #eeeeee;
       background: #fff;
       font-size: 18px;
-      line-height: 56px;
+      line-height: 49px;
       z-index: 1;
+    }
+  }
+
+  .close-btn {
+    display: inline-block;
+    top: 12px;
+    left: 4%;
+    width: 30px;
+    height: 30px;
+    z-index: 10;
+    position: absolute;
+    text-indent: -9999px;
+    cursor: pointer;
+    :before {
+      position: absolute;
+      left: 11px;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-left: 2px solid #757575;
+      border-top: 2px solid #757575;
+      -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      content: '';
     }
   }
 `
@@ -407,7 +278,7 @@ const Info = styled.div`
     width: 100%;
     border-bottom: 1px solid #e0e0e0;
     color: #632beb;
-    line-height: 48px;
+    line-height: 44px;
     align-items: center;
     text-align: justify;
     color: #616161;
@@ -444,12 +315,9 @@ const Info = styled.div`
 `
 const InfoWrap = styled.div`
   display: flex;
-  margin: 33px 0;
+  margin: 15px 0;
   width: 100%;
   justify-content: center;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    margin-top: 76px;
-  }
 `
 const PaymentWrap = styled.div`
   display: flex;
@@ -468,7 +336,6 @@ const Payment = styled.div`
 
   .subTitle {
     line-height: 22px;
-    border-bottom: 0;
   }
 `
 const ItemBox = styled.button`
@@ -494,6 +361,9 @@ const ItemBox = styled.button`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 49%;
+  }
+  & + & + & {
+    width: 100%;
   }
 `
 const ItemArea = styled.div`
@@ -752,13 +622,10 @@ const Select = styled.button`
 `
 
 const FixedWrap = styled.div`
-  @media (max-width: ${WIDTH_MOBILE}) {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
+  padding-bottom: 20px;
 `
 const InnerWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
+    /* padding-bottom: 300px; */
   }
 `
