@@ -109,7 +109,7 @@ export default props => {
               <img src={item.itemThumbnail}></img>
               <p>달 {item.dalCnt}</p>
             </div>
-            <p>별 {item.byeolCnt}</p>
+            <p className="item-name">{Utility.addComma(item.byeolCnt)}</p>
           </div>
         )
       })
@@ -289,6 +289,19 @@ const Content = styled.section`
     text-align: center;
     padding: 16px 0;
     font-weight: bold;
+  }
+
+  .item-name {
+    &:before {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-top: 5px;
+      padding-right: 1px;
+      vertical-align: top;
+      background: url(${starIcon}) no-repeat;
+      content: '';
+    }
   }
 
   .btn-wrap {
