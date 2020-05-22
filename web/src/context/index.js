@@ -49,6 +49,8 @@ const GlobalProvider = (props) => {
   const [bannerCheck, setBannerCheck] = useState(false)
   //
   const [news, setNews] = useState(false)
+  const [sticker, setSticker] = useState(false)
+  const [stickerMsg, setStickerMsg] = useState({})
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -59,6 +61,18 @@ const GlobalProvider = (props) => {
      */
     updateNews: (bool) => {
       setNews(bool)
+    },
+    /**
+     * @brief 스티커팝업(종모양)
+     */
+    updateSticker: (bool) => {
+      setSticker(bool)
+    },
+    /**
+     * @brief 스티커팝업정보
+     */
+    updateStickerMsg: (obj) => {
+      setStickerMsg(obj)
     },
     /**
      * @brief customHeader
@@ -231,6 +245,8 @@ const GlobalProvider = (props) => {
   const value = {
     state,
     news,
+    sticker,
+    stickerMsg,
     roomInfo,
     nativePlayer,
     profile,
