@@ -8,9 +8,19 @@ import check from '../static/ico-checkbox-off.svg'
 
 import SelectBoxWrap from '../component/select';
 
+import Api from 'context/api';
+
 export default () => {
     const context = useContext(Context);
     const [status, setStatus] = useState(0);
+
+    const [idPhotoPath, setIdPhotoPath] = useState("");
+    const [idPhotoUploading, setIdPhotoUploading] = useState(false);
+    const [idPhotoName, setIdPhotoName] = useState("");
+
+    const [registration, setRegistration] = useState("");
+
+    
 
     const profileImageUpload = (e) => {
         const target = e.currentTarget
@@ -23,7 +33,7 @@ export default () => {
           const list = ['jpg', 'jpeg', 'png']
           return list.includes(ext)
         }
-    
+        console.log(fileName);
         if (!extValidator(fileExtension)) {
           return context.action.alert({
             msg: 'jpg, png 이미지만 사용 가능합니다.',
@@ -158,8 +168,8 @@ export default () => {
             const img = new Image()
             img.src = cacheURL
     
-            setPhotoUploading(true)
-            setTempPhoto(originalCacheURL)
+            setIdPhotoUploading(true)
+            console.log(originalCacheURL)
     
             img.onload = async () => {
               const limitSize = 1280
@@ -176,12 +186,13 @@ export default () => {
               const res = await Api.image_upload({
                 data: {
                   dataURL: data,
-                  uploadType: 'profile'
+                  uploadType: 'exchange'
                 }
               })
               if (res.result === 'success') {
-                setPhotoPath(res.data.path)
-                setPhotoUploading(false)
+                setIdPhotoPath(res.data.path)
+                setIdPhotoUploading(false)
+                console.log(res);
               } else {
                 context.action.alert({
                   msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',

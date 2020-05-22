@@ -1,6 +1,6 @@
 /**
- * @file /store/index.js
- * @brief 스토어
+ * @file /exchange/index.js
+ * @brief 달 교환 페이지
  */
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
@@ -14,6 +14,8 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
 import NoResult from 'components/ui/noResult'
+
+import starIcon from '../static/ic_star_s.svg'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -29,11 +31,11 @@ export default props => {
   //---------------------------------------------------------------------
 
   async function getStoreList() {
-    const res = await Api.store_list({})
+    const res = await Api.getChangeItem({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
       setListState(1)
-      setMydal(res.data.dalCnt)
+      setMydal(res.data.byeolCnt)
     } else {
       setListState(0)
       context.action.alert({
@@ -50,25 +52,24 @@ export default props => {
         return (
           <div
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
-            key={item.itemNo}
-            iosprice={item.iosPrice}
+            key={index}
             onClick={() => {
               if (selected.num == index) {
                 setSelected(-1)
               } else {
                 setSelected({
                   num: index,
-                  name: item.itemNm,
-                  price: item.salePrice,
-                  itemNo: item.itemNo
+                  dal: item.dalCnt,
+                  byeol: item.byeolCnt,
+                  itemCode: item.itemCode
                 })
               }
             }}>
             <div className="item-wrap">
-              <img src={item.img}></img>
-              <p>{item.itemNm}</p>
+              <img src={item.itemThumbnail}></img>
+              <p>달 {item.dalCnt}</p>
             </div>
-            <p>{Utility.addComma(item.salePrice)}원</p>
+            <p className="item-name">{item.byeolCnt}</p>
           </div>
         )
       })
@@ -76,16 +77,30 @@ export default props => {
   }
 
   function chargeClick() {
-    if (context.token.isLogin) {
-      context.action.updatePopup('CHARGE', {
-        name: selected.name,
-        price: selected.price,
-        itemNo: selected.itemNo,
-        isState: 'charge'
+    async function postChange() {
+      const res = await Api.postChangeItem({
+        data: {
+          itemCode: selected.itemCode
+        }
       })
-    } else {
-      window.location.href = '/login'
+      if (res.result === 'success' && _.hasIn(res, 'data')) {
+        setMyCnt(res.data.byeolCnt)
+        context.action.alert({
+          msg: res.message
+        })
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
     }
+
+    context.action.confirm({
+      msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
+      callback: () => {
+        postChange()
+      }
+    })
   }
 
   const creatResult = () => {
@@ -98,7 +113,7 @@ export default props => {
         <>
           <List>{creatList()}</List>
           <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            구매하기
+            교환하기
           </button>
         </>
       )
@@ -112,7 +127,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <p className="mydal">보유 달 {mydal.toLocaleString()}</p>
+      <p className="mydal">보유 별 {mydal.toLocaleString()}</p>
       {creatResult()}
     </Content>
   )
@@ -139,20 +154,36 @@ const Content = styled.section`
       color: #fff;
     }
   }
+
   .mydal {
+    margin-bottom: 12px;
     color: #424242;
-    font-size: 22px;
+    font-size: 14px;
     font-weight: 600;
-    line-height: 36px;
-    text-align: center;
+    line-height: 22px;
+    text-align: right;
+    transform: skew(-0.03deg);
     &:before {
       display: inline-block;
-      width: 36px;
-      height: 36px;
-      margin-top: -2px;
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
       padding-right: 5px;
       vertical-align: top;
-      background: url(${IMG_SERVER}/images/api/ic_moon_s@2x.png) no-repeat;
+      background: url(${starIcon}) no-repeat;
+      content: '';
+    }
+  }
+
+  .item-name {
+    &:before {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-top: 5px;
+      padding-right: 1px;
+      vertical-align: top;
+      background: url(${starIcon}) no-repeat;
       content: '';
     }
   }
@@ -210,7 +241,7 @@ const List = styled.div`
     }
     &.on > p {
       color: #fff;
-      background: ${COLOR_POINT_P};
+      background: ${COLOR_POINT_Y};
     }
   }
   .item-wrap {
@@ -234,9 +265,9 @@ const List = styled.div`
 
   .on .item-wrap {
     background: #fff;
-    border: 1px solid ${COLOR_POINT_P};
+    border: 1px solid ${COLOR_POINT_Y};
     p {
-      color: ${COLOR_POINT_P};
+      color: ${COLOR_POINT_Y};
       font-weight: 600;
     }
   }

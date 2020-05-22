@@ -1,13 +1,12 @@
 /**
- * @file /store/index.js
- * @brief 스토어
+ * @file /exchange/index.js
+ * @brief 달 교환 페이지
  */
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //layout
 import Layout from 'pages/common/layout'
-import Banner from './content/banner'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_P} from 'context/color'
@@ -27,14 +26,9 @@ export default props => {
     <Layout {...props} status="no_gnb">
       <Content>
         <Header>
-          <div className="category-text">스토어</div>
+          <div className="category-text">달 교환</div>
         </Header>
-
-        {/* 배너슬라이더 */}
-        {/* <Slider>
-          <Banner />
-        </Slider> */}
-        {/* 결제아이템 */}
+        {/* 교환아이템 */}
         <Contents {...props} />
       </Content>
     </Layout>
@@ -58,25 +52,7 @@ const Content = styled.section`
     color: ${COLOR_MAIN};
     text-align: center;
   }
-  .mydal {
-    margin-bottom: 12px;
-    color: #424242;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 22px;
-    text-align: right;
-    transform: skew(-0.03deg);
-    &:before {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: 2px;
-      padding-right: 5px;
-      vertical-align: top;
-      background: url(${IMG_SERVER}/images/api/ic_moon_s@2x.png) no-repeat center center/ cover;
-      content: '';
-    }
-  }
+
   @media (max-width: 1060px) {
     width: 91.11%;
     padding: 0 0 80px 0;
