@@ -49,6 +49,7 @@ const Wrap = styled.div`
       background: url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center/ cover;
     }
   }
+
   & .titlewrap {
     letter-spacing: -0.35px;
     @media (max-width: ${WIDTH_MOBILE}) {
