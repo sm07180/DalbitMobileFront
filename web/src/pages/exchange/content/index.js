@@ -26,7 +26,7 @@ export default props => {
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
-  const [mydal, setMydal] = useState('0')
+  const [mydal, setMydal] = useState(0)
 
   //---------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ export default props => {
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
       setListState(1)
-      setMydal(res.data.byeolCnt)
+      if (_.hasIn(res.data, 'byeolCnt')) setMydal(res.data.byeolCnt)
     } else {
       setListState(0)
       context.action.alert({
