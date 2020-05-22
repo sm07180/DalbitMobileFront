@@ -24,6 +24,7 @@ export default props => {
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
+  const [mydal, setMydal] = useState('0')
 
   //---------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ export default props => {
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
       setListState(1)
+      setMydal(res.data.dalCnt)
     } else {
       setListState(0)
       context.action.alert({
@@ -108,7 +110,12 @@ export default props => {
     getStoreList()
   }, [])
   //---------------------------------------------------------------------
-  return <Content>{creatResult()}</Content>
+  return (
+    <Content>
+      <p className="mydal">보유 달 {mydal.toLocaleString()}</p>
+      {creatResult()}
+    </Content>
+  )
 }
 
 //---------------------------------------------------------------------
@@ -152,7 +159,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 20px 0 0 0;
+    padding: 10px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {

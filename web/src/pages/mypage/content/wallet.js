@@ -115,18 +115,18 @@ export default props => {
 
         <div>
           {coinType === 'dal' ? (
-            // <CoinChargeBtn
-            //   onClick={() => {
-            //     history.push('/store')
-            //   }}>
-            //   충전하기
-            // </CoinChargeBtn>
-
             <>
-              {context.customHeader['os'] === OS_TYPE['IOS'] && (
+              {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                 <CoinChargeBtn
                   onClick={() => {
                     webkit.messageHandlers.openInApp.postMessage('')
+                  }}>
+                  충전하기
+                </CoinChargeBtn>
+              ) : (
+                <CoinChargeBtn
+                  onClick={() => {
+                    history.push('/store')
                   }}>
                   충전하기
                 </CoinChargeBtn>
@@ -134,6 +134,7 @@ export default props => {
             </>
           ) : (
             <>
+              {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn> */}
               {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
               <CoinChargeBtn>환전하기</CoinChargeBtn> */}
             </>

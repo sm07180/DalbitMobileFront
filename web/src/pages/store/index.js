@@ -29,7 +29,7 @@ export default props => {
         <Header>
           <div className="category-text">스토어</div>
         </Header>
-        {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt.toLocaleString()}</p>}
+
         {/* 배너슬라이더 */}
         {/* <Slider>
           <Banner />
@@ -59,8 +59,7 @@ const Content = styled.section`
     text-align: center;
   }
   .mydal {
-    margin-top: 15px;
-    margin-bottom: -4px;
+    margin-bottom: 12px;
     color: #424242;
     font-size: 14px;
     font-weight: 600;
