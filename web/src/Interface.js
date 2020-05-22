@@ -302,6 +302,7 @@ export default () => {
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
+        alert('board_idx :' + pushMsg.board_idx)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
@@ -363,7 +364,7 @@ export default () => {
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-        window.location.href = `/`
+          window.location.href = `/customer/notice/${board_idx}`
         break
       default:
         //------------------기본값
