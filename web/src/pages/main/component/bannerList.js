@@ -16,9 +16,10 @@ export default props => {
   const goEvent = (linkUrl, linkType) => {
     //alert(linkUrl)
     if(linkType === "popup"){
-        window.open(linkUrl)
+        window.open(linkUrl,'','height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
     }else{
-        globalCtx.action.updatenoticeIndexNum(linkUrl)
+        //globalCtx.action.updatenoticeIndexNum(linkUrl)
+        window.location.href = linkType
         history.push(linkUrl)
     }
   }
