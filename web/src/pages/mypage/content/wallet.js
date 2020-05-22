@@ -134,7 +134,12 @@ export default props => {
             </>
           ) : (
             <>
-              {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn> */}
+              <CoinChargeBtn
+                onClick={() => {
+                  history.push('/exchange')
+                }}>
+                달 교환
+              </CoinChargeBtn>
               {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
               <CoinChargeBtn>환전하기</CoinChargeBtn> */}
             </>

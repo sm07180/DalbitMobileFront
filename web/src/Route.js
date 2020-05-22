@@ -20,6 +20,7 @@ const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 const Charge = React.lazy(() => import('pages/charge'))
+const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
@@ -57,6 +58,7 @@ export default () => {
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
         <Route exact path="/charge" component={Charge} />
+        <Route exact path="/exchange" component={Exchange} />
 
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
