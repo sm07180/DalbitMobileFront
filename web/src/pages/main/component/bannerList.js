@@ -13,23 +13,27 @@ export default props => {
 
   const [list, setList] = useState(false)
 
-  const goEvent = linkUrl => {
+  const goEvent = (linkUrl, linkType) => {
     //alert(linkUrl)
-    globalCtx.action.updatenoticeIndexNum(linkUrl)
-    history.push(linkUrl)
+    if(linkType === "popup"){
+        window.open(linkUrl)
+    }else{
+        globalCtx.action.updatenoticeIndexNum(linkUrl)
+        history.push(linkUrl)
+    }
   }
 
   const createSliderList = () => {
     if (!list) return null
     return list.map((banner, idx) => {
-      const {bannerUrl, linkUrl, title} = banner
+      const {bannerUrl, linkUrl, title, linkType} = banner
 
       return (
         <div
           className="banner"
           key={`banner-${idx}`}
           onClick={() => {
-            goEvent(linkUrl)
+            goEvent(linkUrl, linkType)
           }}>
           <img src={bannerUrl} alt={title} />
         </div>
