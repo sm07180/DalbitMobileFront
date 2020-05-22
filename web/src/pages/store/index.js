@@ -31,9 +31,9 @@ export default props => {
         </Header>
         {context.token.isLogin && profile && <p className="mydal">보유 달 {profile.dalCnt.toLocaleString()}</p>}
         {/* 배너슬라이더 */}
-        <Slider>
+        {/* <Slider>
           <Banner />
-        </Slider>
+        </Slider> */}
         {/* 결제아이템 */}
         <Contents {...props} />
       </Content>
