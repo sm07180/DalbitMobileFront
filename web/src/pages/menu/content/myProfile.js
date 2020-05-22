@@ -44,6 +44,9 @@ const myProfile = props => {
   let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
 
+  let expCalc2 = ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100
+  if (expCalc2 == 'Infinity') expCalc = 0
+
   const myProfileNo = context.profile.memNo
   //state
   const [reportShow, SetShowReport] = useState(false)
@@ -219,9 +222,9 @@ const myProfile = props => {
             <div className="expWrap">
               <span className="expBegin">0</span>
               <span className="expPer">
-                EXP {profile.exp} ({`${expCalc}%`})
+                EXP {Math.floor(((profile.expNext - profile.expBegin) * expCalc2) / 100)} ({`${expCalc}%`})
               </span>
-              <span className="expBegin">{profile.expNext}</span>
+              <span className="expBegin">{profile.expNext - profile.expBegin}</span>
             </div>
           </>
         )}
