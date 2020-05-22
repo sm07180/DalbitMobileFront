@@ -314,44 +314,34 @@ export default () => {
         window.location.href = '/'
         break
       case '31': //-----------------마이페이지>팬 보드
-        mem_no = getMemNo('/fanboard')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        }
         break
       case '32': //-----------------마이페이지>내 지갑
-        // mem_no = getMemNo('/wallet')
-        // if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
-        mem_no = pushMsg.mem_no
-        if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
-        mem_no = getMemNo('/')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        //  window.location.href = `/mypage/${mem_no}/`
         break
       case '34': //-----------------마이페이지>알림>해당 알림 글
-        mem_no = getMemNo('/alert')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        }
         break
       case '35': //-----------------마이페이지
-        //mem_no = getMemNo('/')
-        //if (isLogin) window.location.href = `/mypage/${mem_no}/`
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '4': //------------------등록 된 캐스트(미정)
@@ -364,7 +354,7 @@ export default () => {
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-          window.location.href = `/customer/notice/${board_idx}`
+          window.location.href = `/customer/notice/${pushMsg.board_idx}`
         break
       default:
         //------------------기본값
