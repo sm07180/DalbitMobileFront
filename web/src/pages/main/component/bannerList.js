@@ -19,8 +19,8 @@ export default props => {
         window.open(linkUrl,'','height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
     }else{
         //globalCtx.action.updatenoticeIndexNum(linkUrl)
-        window.location.href = linkType
-        //history.push(linkUrl)
+        window.location.href = linkUrl
+        history.push(linkUrl)
     }
   }
 

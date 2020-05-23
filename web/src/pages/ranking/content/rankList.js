@@ -11,8 +11,11 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import likeIcon from '../static/ico_like_g.svg'
-import peopleIcon from '../static/ic_people.svg'
+import likeIcon from '../static/ico_like_g_s.svg'
+import peopleIcon from '../static/ico_peaple_g_s.svg'
+import starIcon from '../static/ico_hit_g_s.svg'
+import timeIcon from '../static/ico_time_g_s.svg'
+import moonIcon from '../static/ico_moon_g_s.svg'
 
 //component
 import Figure from './Figure'
@@ -28,7 +31,7 @@ export default props => {
   //map
   const creatList = () => {
     return props.list.map((item, index) => {
-      const {rank, level, nickNm, profImg, memNo, likes, listeners} = item
+      const {rank, level, nickNm, profImg, memNo, likes, listeners, gift, broadcast, listen} = item
       let rankName
       let link = ''
       if (webview) {
@@ -54,12 +57,32 @@ export default props => {
             {rankType == 'dj' && (
               <>
                 <span>
+                  <img src={starIcon} />
+                  {gift !== undefined && gift.toLocaleString()}
+                </span>
+                <span>
                   <img src={peopleIcon} />
-                  {listeners}
+                  {listeners !== undefined && listeners.toLocaleString()}
                 </span>
                 <span>
                   <img src={likeIcon} />
-                  {likes}
+                  {likes !== undefined && likes.toLocaleString()}
+                </span>
+                <span>
+                  <img src={timeIcon} />
+                  {broadcast !== undefined && broadcast.toLocaleString()}
+                </span>
+              </>
+            )}
+            {rankType == 'fan' && (
+              <>
+                <span>
+                  <img src={moonIcon} />
+                  {gift !== undefined && gift.toLocaleString()}
+                </span>
+                <span>
+                  <img src={timeIcon} />
+                  {listen !== undefined && listen.toLocaleString()}
                 </span>
               </>
             )}
