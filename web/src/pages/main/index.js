@@ -331,7 +331,7 @@ export default props => {
           </div>
 
           {/* <button className="event-section" onClick={() => goEvent()}></button> */}
-          <BannerList />
+          <BannerList bannerPosition={"9"} />
 
           <div
             className="section"
