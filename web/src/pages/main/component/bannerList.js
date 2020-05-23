@@ -20,7 +20,7 @@ export default props => {
     }else{
         //globalCtx.action.updatenoticeIndexNum(linkUrl)
         window.location.href = linkUrl
-        history.push(linkUrl)
+        //history.push(linkUrl)
     }
   }
 
