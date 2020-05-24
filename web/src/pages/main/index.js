@@ -409,7 +409,7 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/* {popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />}
       </MainWrap>
     </Layout>
   )
