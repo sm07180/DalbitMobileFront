@@ -330,8 +330,8 @@ export default props => {
             </div>
           </div>
 
-          {/* <button className="event-section" onClick={() => goEvent()}></button> */}
-          <BannerList bannerPosition={"9"} />
+          <button className="event-section" onClick={() => goEvent()}></button>
+            {/* <BannerList bannerPosition={"9"} /> */}
 
           <div
             className="section"
