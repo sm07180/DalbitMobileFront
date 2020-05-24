@@ -330,8 +330,8 @@ export default props => {
             </div>
           </div>
 
-          <button className="event-section" onClick={() => goEvent()}></button>
-            {/* <BannerList bannerPosition={"9"} /> */}
+          {/* <button className="event-section" onClick={() => goEvent()}></button> */}
+          <BannerList bannerPosition={"9"} />
 
           <div
             className="section"
@@ -409,7 +409,7 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />}
+        {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
       </MainWrap>
     </Layout>
   )
