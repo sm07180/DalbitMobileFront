@@ -95,7 +95,7 @@ export default props => {
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
-  if (urlrStr === token.memNo) {
+  if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
