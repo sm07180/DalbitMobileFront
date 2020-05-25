@@ -77,7 +77,7 @@ export default props => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
       Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
@@ -231,6 +231,14 @@ export default props => {
     // if (sessionStorage.getItem('popup_notice') === null) {
     //   sessionStorage.setItem('popup_notice', 'y')
     // }
+    if (sessionStorage.getItem('pay_info') === 'store') {
+      globalCtx.action.alert({
+        msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
+        callback: () => {
+          sessionStorage.removeItem('pay_info')
+        }
+      })
+    }
 
     return () => {
       window.removeEventListener('popstate', popStateEvent)

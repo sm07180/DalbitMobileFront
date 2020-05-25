@@ -20,12 +20,8 @@ export default props => {
     context.action.alert({
       msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
       callback: () => {
-        if (returntype === 'store') {
-          window.location.href = '/'
-        } else {
-          Hybrid('CloseLayerPopup')
-          Hybrid('ClosePayPopup')
-        }
+        Hybrid('CloseLayerPopup')
+        Hybrid('ClosePayPopup')
       }
     })
   }, [])
