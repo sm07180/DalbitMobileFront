@@ -308,8 +308,8 @@ export default props => {
         </SubMain>
 
         <Content>
-            {/*<div className="section" ref={RankSectionRef}>
-            <div className="title-wrap">
+          <div className="section" ref={RankSectionRef}>
+            {/* <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 <div className="txt">랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
@@ -327,11 +327,11 @@ export default props => {
 
             <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
-            </div>
-          </div>*/}
+            </div> */}
+          </div>
 
           {/* <button className="event-section" onClick={() => goEvent()}></button> */}
-          <BannerList bannerPosition={"9"} />
+          <BannerList bannerPosition={'9'} />
 
           <div
             className="section"
