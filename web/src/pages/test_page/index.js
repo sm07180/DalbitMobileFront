@@ -7,12 +7,14 @@ import Lee from './Lee.js'
 import Test from './test.js'
 
 import Charge from './content/charge'
+import Sample from './content/Sample'
 
 const RouteList = [
   {path: '', component: Lee, exact: true},
   {path: 'test', component: Test, exact: true},
   {path: 'waitPayment', component: Seo, exact: true},
-  {path: 'charge', component: Charge, exact: true}
+  {path: 'charge', component: Charge, exact: true},
+  {path: 'sample', component: Sample, exact: true}
 ]
 
 export default () => {
