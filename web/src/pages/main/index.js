@@ -308,7 +308,7 @@ export default props => {
         </SubMain>
 
         <Content>
-          <div className="section" ref={RankSectionRef}>
+            {/*<div className="section" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 <div className="txt">랭킹</div>
@@ -328,7 +328,7 @@ export default props => {
             <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
-          </div>
+          </div>*/}
 
           {/* <button className="event-section" onClick={() => goEvent()}></button> */}
           <BannerList bannerPosition={"9"} />
