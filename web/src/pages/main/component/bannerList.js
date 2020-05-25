@@ -15,12 +15,12 @@ export default props => {
 
   const goEvent = (linkUrl, linkType) => {
     //alert(linkUrl)
-    if(linkType === "popup"){
-        window.open(linkUrl,'','height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
-    }else{
-        //globalCtx.action.updatenoticeIndexNum(linkUrl)
-        window.location.href = linkUrl
-        //history.push(linkUrl)
+    if (linkType === 'popup') {
+      window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
+    } else {
+      //globalCtx.action.updatenoticeIndexNum(linkUrl)
+      window.location.href = linkUrl
+      //history.push(linkUrl)
     }
   }
 
@@ -30,13 +30,8 @@ export default props => {
       const {bannerUrl, linkUrl, title, linkType} = banner
 
       return (
-        <div
-          className="banner"
-          key={`banner-${idx}`}
-          onClick={() => {
-            goEvent(linkUrl, linkType)
-          }}>
-          <img src={bannerUrl} alt={title} />
+        <div className="banner" key={`banner-${idx}`}>
+          <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
         </div>
       )
     })
@@ -69,6 +64,12 @@ export default props => {
     pagination: {
       el: '.swiper-pagination',
       clickable: true
+    },
+    on: {
+      click: e => {
+        const {linkurl, linktype} = e.target.attributes
+        goEvent(linkurl.value, linktype.value)
+      }
     }
   }
 
