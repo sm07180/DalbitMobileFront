@@ -270,9 +270,9 @@ export default props => {
       })
       setCurrentNick('')
     } else {
-      if (nm.length <= 2) {
+      if (nm.length < 2) {
         setCurrentNick('최소 2자 이상 입력해주세요.')
-      } else if (nm.length > 2 && nm.length < 21) {
+      } else if (nm.length >= 2 && nm.length < 21) {
         const resNick = await Api.nickName_check({
           params: {
             nickNm: nickEntered
