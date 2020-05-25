@@ -505,7 +505,7 @@ export default props => {
           callback: () => {
             fetchPhoneLogin()
           },
-          msg: '회원가입 완료되었습니다. '
+          msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
         })
       } else {
         context.action.alert({
