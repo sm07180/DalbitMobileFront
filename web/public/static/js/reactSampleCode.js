@@ -23,16 +23,24 @@ function debug(obj) {
 }
 function native() {
   document.dispatchEvent(
-    new CustomEvent('native-push-background', {
-      detail: `{"push_type":"32","mem_no":"11583120797169"}`
+    new CustomEvent('native-push-foreground', {
+      detail: `{"push_type":"1","mem_no":"11583120797169","content":"1234545"}`
     })
   )
   return true
 }
 function native1() {
   document.dispatchEvent(
-    new CustomEvent('native-push-background', {
-      detail: `{"push_type":"1","room_no":"1111"}`
+    new CustomEvent('native-push-foreground', {
+      detail: `{"push_type":"2","mem_no":"11583120797169","content":"스티커팝업111"}`
+    })
+  )
+  return true
+}
+function native2() {
+  document.dispatchEvent(
+    new CustomEvent('native-push-foreground', {
+      detail: `{"push_type":"3","mem_no":"11583120797169","content":"알림팝업"}`
     })
   )
   return true

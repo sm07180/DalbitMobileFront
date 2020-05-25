@@ -41,10 +41,13 @@ export default props => {
     authType = 'default'
   }
 
+  const {isState} = props.location.state
+
   //인증 타입에 따른 본인인증 페이지 텍스트
   const authText = {
     default: ['', '최초 한번'],
     charge: ['유료결제를 위해', '최초 결제 시'],
+    roomCharge: ['유료결제를 위해', '최초 결제 시'],
     cast: ['방송 개설을 위해', '최초 방송방 개설 시']
   }
 
@@ -112,7 +115,12 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const res = await Api.self_auth_req({})
+    const thisPageCode = isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
+    const res = await Api.self_auth_req({
+      params: {
+        pageCode: thisPageCode
+      }
+    })
     if (res.result == 'success' && res.code == 0) {
       //alert(JSON.stringify(res, null, 1))
       setFormState({
@@ -156,7 +164,7 @@ export default props => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout>
+    <Layout status={isState === 'roomCharge' && 'no_gnb'}>
       <Content>
         {authState ? (
           <>
@@ -173,7 +181,7 @@ export default props => {
           </>
         ) : (
           <>
-            <h4>{authText[authType][0]} 본인인증 절차가 필요합니다.</h4>
+            <h4>{authText[authType][0]} 본인인증 절차가 필요합니다</h4>
             <p>
               본인인증은 {authText[authType][1]} 필요합니다.
               <br />
@@ -238,7 +246,7 @@ const Content = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin: 70px auto;
+    margin: 30px auto 70px auto;
     h4 {
       width: 250px;
       margin: 0 auto;

@@ -846,6 +846,7 @@ const CommentBox = styled.div`
     font-size: 14px;
     color: #424242;
     transform: skew(-0.03deg);
+    background: #f8f8f8;
     > span {
       color: ${COLOR_MAIN};
     }

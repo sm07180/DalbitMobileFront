@@ -41,7 +41,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default (props) => {
+export default props => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -78,7 +78,7 @@ export default (props) => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -98,7 +98,7 @@ export default (props) => {
       }
     })()
 
-    Api.splash().then((res) => {
+    Api.splash().then(res => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -111,7 +111,7 @@ export default (props) => {
     })
   }, [])
 
-  const fetchLiveList = async (reset) => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -201,7 +201,7 @@ export default (props) => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = (e) => {
+  const popStateEvent = e => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -261,15 +261,15 @@ export default (props) => {
   }
   //go event
   const goEvent = () => {
-    globalCtx.action.updatenoticeIndexNum(`/customer/notice/3`)
-    history.push(`/customer/notice/3`)
+    globalCtx.action.updatenoticeIndexNum(`/customer/notice/17`)
+    history.push(`/customer/notice/17`)
   }
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
   return (
     <Layout {...props}>
-      <MainWrap ref={MainRef}>
+      <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
         <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
@@ -279,7 +279,7 @@ export default (props) => {
               <div className="tab">
                 <a href={'/rank'}>랭킹</a>
               </div>
-              {(__NODE_ENV === 'dev' || __NODE_ENV === 'stage') &&  <div className="tab">
+              <div className="tab">
                 <Link
                   onClick={event => {
                     event.preventDefault()
@@ -288,7 +288,7 @@ export default (props) => {
                   to={'/store'}>
                   스토어
                 </Link>
-              </div> }
+              </div>
             </div>
             <div className="right-side">
               <div
@@ -309,7 +309,7 @@ export default (props) => {
 
         <Content>
           <div className="section" ref={RankSectionRef}>
-            <div className="title-wrap">
+            {/* <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 <div className="txt">랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
@@ -327,11 +327,12 @@ export default (props) => {
 
             <div className="content-wrap rank-slide">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
-            </div>
+            </div> */}
           </div>
-          {/* IOS 심사 일떼 배너 미노출 2020.05.14 IOS 심사끝*/}
-          {/* {customHeader['os'] !== OS_TYPE['IOS'] && <button className="event-section" onClick={() => goEvent()}></button>} */}
-          <button className="event-section" onClick={() => goEvent()}></button>
+
+          {/* <button className="event-section" onClick={() => goEvent()}></button> */}
+          <BannerList bannerPosition={'9'} />
+
           <div
             className="section"
             ref={StarSectionRef}
@@ -408,7 +409,7 @@ export default (props) => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/*popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} /> */}
+        {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
       </MainWrap>
     </Layout>
   )
@@ -421,7 +422,7 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/banner/200513/mobile_main_bottomranking.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center center / cover;
   }
   .section {
     margin-top: 24px;
@@ -659,5 +660,5 @@ const SubMain = styled.div`
 `
 
 const MainWrap = styled.div`
-  margin-top: 48px;
+  margin-top: ${props => (props.sticker ? '0' : '48px')};
 `

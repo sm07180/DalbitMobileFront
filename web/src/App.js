@@ -76,11 +76,18 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
 
       // *** Native App case
+          /*if (__NODE_ENV === 'dev') {
+            alert(JSON.stringify(customHeader));
+            alert(isHybrid());
+        }*/
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
-          Hybrid('GetLoginToken', tokenInfo.data)
-          Utility.setCookie('native-player-info', '', -1)
+            Hybrid('GetLoginToken', tokenInfo.data)
+            /*if (__NODE_ENV === 'dev'){
+              alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
+            }*/
+            Utility.setCookie('native-player-info', '', -1)
 
           // replace custom header isFirst value 'Y' => 'N'
           const customHeaderCookie = Utility.getCookie('custom-header')
@@ -97,6 +104,9 @@ const App = () => {
           if (tokenInfo.data.authToken !== authToken) {
             //#토큰업데이트
             Hybrid('GetUpdateToken', tokenInfo.data)
+            /*if (__NODE_ENV === 'dev'){
+              alert('sned loginData\n' + JSON.stringify(tokenInfo.data));
+            }*/
           }
 
           // ?webview=new 형태로 이루어진 player종료

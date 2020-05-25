@@ -67,6 +67,10 @@ export default props => {
   const [pick, setPick] = useState('주민등록번호')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+
+  let isStoreCharge = false
+  if (props.hasOwnProperty('isState') && props.isState === 'store') isStoreCharge = true
+
   //-------------------------------------------------------- func start
   // input 분기
   const handleChange = e => {
@@ -98,7 +102,7 @@ export default props => {
       } else {
         context.action.updatePopupVisible(false)
         props.history.push('/user/selfAuth', {
-          type: 'charge'
+          type: isStoreCharge ? 'charge' : 'roomCharge'
         })
       }
     }
@@ -208,9 +212,7 @@ export default props => {
   }
 
   const updateDispatch = event => {
-    console.log(event)
-    // alert(JSON.stringify(event.detail))
-    // alert('payType', payType)
+    //개발쪽만 적용
     if (event.detail.result == 'success' && event.detail.code == 'P001') {
       setConfirmData({
         ...event.detail,

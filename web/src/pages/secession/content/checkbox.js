@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Utility from 'components/lib/utility'
+
 const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
   <Wrap>
     <label>
-      <div className="titlewrap">{title}</div>
+      <div className="titlewrap" dangerouslySetInnerHTML={{__html: Utility.nl2br(title)}}></div>
       <input
         onClick={e => {
           if (fnClick !== undefined) fnClick(e.target.checked)
@@ -47,6 +49,7 @@ const Wrap = styled.div`
       background: url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center/ cover;
     }
   }
+
   & .titlewrap {
     letter-spacing: -0.35px;
     @media (max-width: ${WIDTH_MOBILE}) {

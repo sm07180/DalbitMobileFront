@@ -24,12 +24,12 @@ const chargeData = [
     id: 2,
     type: '무통장 입금(계좌이체)',
     fetch: 'pay_virtual'
-  },
-  {
-    id: 3,
-    type: '실시간 계좌이체',
-    fetch: 'pay_bank'
   }
+  // {
+  //   id: 3,
+  //   type: '실시간 계좌이체',
+  //   fetch: 'pay_bank'
+  // }
 ]
 
 const receiptData = [
@@ -67,6 +67,9 @@ export default props => {
   const [pick, setPick] = useState('주민등록번호')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+
+  let isState = context.popup_code[1].isState === 'charge' ? 'charge' : 'roomCharge'
+
   //-------------------------------------------------------- func start
   // input 분기
   const handleChange = e => {
@@ -91,18 +94,20 @@ export default props => {
   }
 
   const doCharge = () => {
-    async function fetchSelfAuth() {
-      const selfAuth = await Api.self_auth_check({})
-      if (selfAuth.result == 'success') {
-        payFetch()
-      } else {
-        context.action.updatePopupVisible(false)
-        props.history.push('/selfAuth', {
-          type: 'charge'
-        })
-      }
-    }
-    fetchSelfAuth()
+    // async function fetchSelfAuth() {
+    //   const selfAuth = await Api.self_auth_check({})
+    //   if (selfAuth.result == 'success') {
+    //     payFetch()
+    //   } else {
+    //     context.action.updatePopupVisible(false)
+    //     props.history.push('/selfAuth', {
+    //       type: 'charge',
+    //       isState: isState
+    //     })
+    //   }
+    // }
+    // fetchSelfAuth()
+    payFetch()
   }
 
   // 무통장입금 - 현금영수증 Component
@@ -169,10 +174,12 @@ export default props => {
       data: {
         Prdtnm: context.popup_code[1].name,
         Prdtprice: context.popup_code[1].price,
-        itemNo: context.popup_code[1].itemNo
+        itemNo: context.popup_code[1].itemNo,
+        pageCode: '1'
       }
     }
     const res = await Api[payType]({...obj})
+    console.log(obj)
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
       const {current} = formTag
@@ -263,7 +270,7 @@ export default props => {
               </InfoWrap>
               <PaymentWrap>
                 <Payment>
-                  <div className="subTitle">결제수단</div>
+                  <div className="subTitle two">결제수단</div>
                   <ItemArea>
                     {chargeData.map((data, idx) => {
                       return (
@@ -379,6 +386,10 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     transform: skew(-0.03deg);
+
+    &.two {
+      line-height: 44px;
+    }
   }
 
   @media (max-width: ${WIDTH_MOBILE}) {
@@ -467,7 +478,6 @@ const Payment = styled.div`
 
   .subTitle {
     line-height: 22px;
-    border-bottom: 0;
   }
 `
 const ItemBox = styled.button`
@@ -493,6 +503,9 @@ const ItemBox = styled.button`
 
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 49%;
+  }
+  & + & + & {
+    width: 100%;
   }
 `
 const ItemArea = styled.div`

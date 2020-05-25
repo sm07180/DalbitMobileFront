@@ -15,7 +15,7 @@ const Context = createContext()
 const {Provider} = Context
 
 //
-const GlobalProvider = props => {
+const GlobalProvider = (props) => {
   //initalize
   const DAY_COOKIE_PERIOD = 100
   //state
@@ -47,16 +47,37 @@ const GlobalProvider = props => {
   const [boardNumber, setBoardNumber] = useState('')
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
   const [bannerCheck, setBannerCheck] = useState(false)
+  //
+  const [news, setNews] = useState(false)
+  const [sticker, setSticker] = useState(false)
+  const [stickerMsg, setStickerMsg] = useState({})
   //---------------------------------------------------------------------
   const action = {
-    updateState: obj => {
-      setState(state => ({...state, ...obj}))
+    updateState: (obj) => {
+      setState((state) => ({...state, ...obj}))
     },
-
+    /**
+     * @brief 뉴스알림(종모양)
+     */
+    updateNews: (bool) => {
+      setNews(bool)
+    },
+    /**
+     * @brief 스티커팝업(종모양)
+     */
+    updateSticker: (bool) => {
+      setSticker(bool)
+    },
+    /**
+     * @brief 스티커팝업정보
+     */
+    updateStickerMsg: (obj) => {
+      setStickerMsg(obj)
+    },
     /**
      * @brief customHeader
      */
-    updateCustomHeader: obj => {
+    updateCustomHeader: (obj) => {
       if (obj) {
         const stringified = JSON.stringify(obj)
         Api.setCustomHeader(stringified)
@@ -76,7 +97,7 @@ const GlobalProvider = props => {
      * @param string memNo                      // 회원번호
      * @param bool isLogin                      // 로그인 여부
      */
-    updateToken: obj => {
+    updateToken: (obj) => {
       if (obj) {
         const {authToken, memNo} = obj
         const firstLetterOfMemNo = String(memNo)[0]
@@ -96,7 +117,7 @@ const GlobalProvider = props => {
     /**
      * @brief 입장한방, 생성한방 정보업데이트
      */
-    updateRoomInfo: obj => {
+    updateRoomInfo: (obj) => {
       setRoomInfo(obj)
     },
     /**
@@ -106,10 +127,10 @@ const GlobalProvider = props => {
      * @param string title
      * @param string bjProfImg
      */
-    updateNativePlayer: obj => {
+    updateNativePlayer: (obj) => {
       setNativePlayer({...obj})
     },
-    updateProfile: profile => {
+    updateProfile: (profile) => {
       setProfile(profile)
     },
     //팝업컨텐츠
@@ -119,17 +140,17 @@ const GlobalProvider = props => {
       setVisible(true)
     },
     //팝업 visible
-    updatePopupVisible: bool => {
+    updatePopupVisible: (bool) => {
       setVisible(bool)
     },
     //GNB 열고 닫기
-    updateGnbVisible: bool => {
+    updateGnbVisible: (bool) => {
       if (!bool) document.body.classList.remove('on')
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
 
-    updateGnbState: str => {
+    updateGnbState: (str) => {
       setGnbState(str)
       //render 후 애니메이션 처리
       setTimeout(() => {
@@ -140,19 +161,19 @@ const GlobalProvider = props => {
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
      */
-    alert: obj => {
+    alert: (obj) => {
       setMessage({type: 'alert', visible: true, ...obj})
     },
     /**
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
      */
-    confirm: obj => {
+    confirm: (obj) => {
       const {msg} = obj
       setMessage({type: 'confirm', visible: true, ...obj})
     },
     //login 상태
-    updateLogin: bool => {
+    updateLogin: (bool) => {
       setlogin(bool)
       setGnbVisible(false)
     },
@@ -160,7 +181,7 @@ const GlobalProvider = props => {
      * 오디오 글로벌 플레이어 상태
      * @param boolean status
      */
-    updateMediaPlayerStatus: status => {
+    updateMediaPlayerStatus: (status) => {
       setMediaPlayerStatus(status)
       //flase 일때 쿠키삭제
       if (!status) {
@@ -171,7 +192,7 @@ const GlobalProvider = props => {
      * 오디오 글로벌 플레이어 상태
      * @param boolean status
      */
-    updatePlayer: bool => {
+    updatePlayer: (bool) => {
       setPlayer(bool)
       //flase 일때 쿠키삭제
       if (!bool) {
@@ -183,46 +204,49 @@ const GlobalProvider = props => {
      * 방생성 후 방정보 가지고있음, 방 종료시 사라짐
      * @param {roomNo} string
      */
-    updateCastState: str => {
+    updateCastState: (str) => {
       setCastState(str)
     },
-    updateSearch: str => {
+    updateSearch: (str) => {
       setSearch(str)
     },
-    updateLogoChange: status => {
+    updateLogoChange: (status) => {
       setLogoChange(status)
     },
-    updateMypageReport: bool => {
+    updateMypageReport: (bool) => {
       setMypageReport(bool)
     },
-    updateMypageFanCnt: str => {
+    updateMypageFanCnt: (str) => {
       setMypageFanCnt(str)
     },
-    updateClose: bool => {
+    updateClose: (bool) => {
       setClose(bool)
     },
-    updateCloseFanCnt: bool => {
+    updateCloseFanCnt: (bool) => {
       setCloseFanCnt(bool)
     },
-    updateCloseStarCnt: bool => {
+    updateCloseStarCnt: (bool) => {
       setCloseStarCnt(bool)
     },
-    updateClosePresent: bool => {
+    updateClosePresent: (bool) => {
       setClosePresent(bool)
     },
-    updateBoardNumber: num => {
+    updateBoardNumber: (num) => {
       setBoardNumber(num)
     },
-    updatenoticeIndexNum: num => {
+    updatenoticeIndexNum: (num) => {
       setNoticeIndexNum(num)
     },
-    updateBannerCheck: bool => {
+    updateBannerCheck: (bool) => {
       setBannerCheck(bool)
     }
   }
   //---------------------------------------------------------------------
   const value = {
     state,
+    news,
+    sticker,
+    stickerMsg,
     roomInfo,
     nativePlayer,
     profile,

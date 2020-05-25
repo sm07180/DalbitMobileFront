@@ -21,7 +21,6 @@ import qs from 'query-string'
 export default () => {
   //context
   const context = useContext(Context)
-
   //history
   let history = useHistory()
   //
@@ -29,17 +28,24 @@ export default () => {
   function update(event) {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
-        let pushMsg1 = event.detail
-        // pushMsg1 = pushMsg1.trim()
-        pushMsg1 = JSON.parse(pushMsg1)
-        const {push_type1} = pushMsg1
-        //---------------------[분기처리시작]
-        switch (push_type1) {
-          default:
-            //------------------기본값
-            window.location.href = `/`
+        let pushMsg = event.detail
+        pushMsg = JSON.parse(pushMsg)
+        switch (pushMsg.push_type) {
+          case '1': //팝업메시지
+            context.action.alert({msg: pushMsg.content})
+            break
+          case '2': //스티커 상단
+            context.action.updateStickerMsg(pushMsg)
+            context.action.updateSticker(true) //true,false
+            break
+          case '3': //알림(종표시)
+            context.action.updateNews(true) //true,false
             break
         }
+
+        // alert(JSON.stringify(pushMsg, null, 1))
+        //---------------------[분기처리시작]
+
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
@@ -132,11 +138,13 @@ export default () => {
           }
           const google_result = await Api.google_login({data: inputData})
 
+          //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
               data: google_result.data
             })
 
+            //alert(JSON.stringify(loginInfo))
             if (loginInfo.result === 'success') {
               const {memNo} = loginInfo.data
 
@@ -172,7 +180,8 @@ export default () => {
                   return (window.location.href = mypageURL)
                 }
 
-                return props.history.push('/')
+                //return props.history.push('/')
+                return (window.location.href = '/')
               }
             } else if (loginInfo.code + '' == '1') {
               if (webview && webview === 'new') {
@@ -293,6 +302,7 @@ export default () => {
       alert('push_type :' + push_type)
       alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
+        alert('board_idx :' + pushMsg.board_idx)
     }
     //---------------------[분기처리시작]
     switch (push_type + '') {
@@ -304,44 +314,34 @@ export default () => {
         window.location.href = '/'
         break
       case '31': //-----------------마이페이지>팬 보드
-        mem_no = getMemNo('/fanboard')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        }
         break
       case '32': //-----------------마이페이지>내 지갑
-        // mem_no = getMemNo('/wallet')
-        // if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
-        mem_no = pushMsg.mem_no
-        if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
-        mem_no = getMemNo('/')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        //  window.location.href = `/mypage/${mem_no}/`
         break
       case '34': //-----------------마이페이지>알림>해당 알림 글
-        mem_no = getMemNo('/alert')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        }
         break
       case '35': //-----------------마이페이지
-        //mem_no = getMemNo('/')
-        //if (isLogin) window.location.href = `/mypage/${mem_no}/`
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '4': //------------------등록 된 캐스트(미정)
@@ -354,7 +354,7 @@ export default () => {
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-        window.location.href = `/`
+          window.location.href = `/customer/notice/${pushMsg.board_idx}`
         break
       default:
         //------------------기본값
@@ -366,6 +366,7 @@ export default () => {
   //useEffect addEventListener
   useEffect(() => {
     /*----native----*/
+    document.addEventListener('native-push-foreground', update) //완료
     document.addEventListener('native-navigator', update) //완료
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
