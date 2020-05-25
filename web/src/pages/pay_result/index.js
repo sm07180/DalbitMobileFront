@@ -8,18 +8,25 @@ import styled from 'styled-components'
 import qs from 'query-string'
 import _ from 'lodash'
 import {Context} from 'context'
+
 //
 export default props => {
   //---------------------------------------------------------------------
   //state
   const context = useContext(Context)
+  const {webview, returntype} = qs.parse(location.search)
 
   useEffect(() => {
     context.action.alert({
       msg: '결제가 완료되었습니다.',
       callback: () => {
-        Hybrid('CloseLayerPopup')
-        Hybrid('ClosePayPopup')
+        console.log('returntype', returntype)
+        if (returntype === 'store') {
+          window.location.href = '/'
+        } else {
+          Hybrid('CloseLayerPopup')
+          Hybrid('ClosePayPopup')
+        }
       }
     })
   }, [])
