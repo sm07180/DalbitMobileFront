@@ -125,7 +125,7 @@ export default props => {
             check: false
           })
         }
-          e.target.blur()
+        e.target.blur()
       } else if (e.target.value.length > 6) {
         setChanges({
           ...changes,
@@ -263,14 +263,16 @@ export default props => {
     }
 
     let nmVal = {nickNm: false}
-    if (changes.nickNm.length == 0) {
+    if (changes.nickNm.length == 0 && nm.length == 0) {
       setValidate({
         ...validate,
         nickNm: false
       })
       setCurrentNick('')
     } else {
-      if (nm.length > 1 && nm.length < 21) {
+      if (nm.length <= 2) {
+        setCurrentNick('최소 2자 이상 입력해주세요.')
+      } else if (nm.length > 2 && nm.length < 21) {
         const resNick = await Api.nickName_check({
           params: {
             nickNm: nickEntered
@@ -295,8 +297,6 @@ export default props => {
           }
         }
         ///////////////////////////////////
-      } else if (nm.length < 2) {
-        setCurrentNick('최소 2자 이상 입력해주세요.')
       } else if (nm.length > 20) {
         setCurrentNick('최대 20자 까지 입력이 가능합니다.')
       }
