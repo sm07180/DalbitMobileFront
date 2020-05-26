@@ -318,6 +318,7 @@ const TableWrap = styled.div`
     }
   }
   & dd {
+    position: relative;
     width: calc(100% - 144px);
     font-size: 16px;
     color: #000;
@@ -326,9 +327,12 @@ const TableWrap = styled.div`
 
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 92%;
-      margin-top: 8px;
+      margin: 2px 0;
       line-height: 1.4;
     }
+  }
+  & dd:first-child {
+    padding-left: 56px;
   }
   & dd:last-child {
     width: 24px;
@@ -347,6 +351,9 @@ const TableWrap = styled.div`
   }
   & span {
     display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 3px;
     margin-right: 4px;
     width: 16px;
     height: 16px;
@@ -362,6 +369,9 @@ const TableWrap = styled.div`
     }
   }
   & em {
+    position: absolute;
+    left: 20px;
+    top: 0;
     margin-right: 3px;
     color: ${COLOR_MAIN};
     font-style: normal;
