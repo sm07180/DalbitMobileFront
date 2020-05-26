@@ -1,0 +1,217 @@
+.header{
+  &__title{
+    display:block;
+    position: relative;
+    font-size:18px;
+    text-align: center;
+    line-height:40px;
+    font-weight: 600;
+    border-bottom:1px solid #e0e0e0;
+  }
+  &__back{
+    position: absolute;
+    left:6px;
+    top:0px;
+  }
+}
+
+.rankTitle{
+  display:flex;
+  align-items: center;
+  justify-content:space-between;
+  height:50px;
+  padding:0px 16px;
+  box-sizing: border-box;
+  background:#eee;
+
+  &__tab{
+    display:flex;
+  }
+  &__button{
+    margin-right:2px;
+    background:#fff;
+    font-size:14px;
+    color:#000;
+    padding:8px 13px;
+    border-radius:12px;
+    font-weight: 600;
+
+    &--active{
+      background:#632beb;
+      color:#fff;
+
+    }
+  }
+
+  &__titme{
+    display:flex;
+    align-items: center;
+    font-size:12px;
+    color:#424242;
+  }
+  
+  &__noticeImg{
+    margin-left:4px;
+  }
+}
+
+.rankDay{
+  background:#f5f5f5;
+  height:36px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  &__button{
+    position: relative;
+    margin:0px 8px;
+    font-weight: 600;
+    &--active{
+      color:#632beb;
+      .acitve--line{
+        position:absolute;
+        left:0px; 
+        bottom:-7px;
+        width:100%;
+        height:1px;
+        background:#632beb;
+        display:block;
+      } 
+    }
+  }
+}
+
+.rangkBest{
+  display:flex;
+  height:116px;
+
+  &__textBox{
+    display:flex;
+    flex-direction: column;
+    margin-top:16px;
+    margin-right:8px;
+    padding:0px 22px;
+    border-right:1px solid #f5f5f5;
+  }
+  
+  &__list{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    &--title{
+      font-size:12px;
+      font-weight: 600;
+      color:#757575;
+      margin-bottom:1px;
+    }
+    &--score{
+      font-size:18px;
+      font-weight: 900;
+    }
+    &--scoreUp{
+      display:flex;
+      align-items: center;
+      margin-bottom:12px;
+      font-size:12px;
+      font-weight: 600;
+      color:#eb2828;
+      .scoreupImg{margin-right:3px}
+    }
+
+    &--point{
+      display: flex;
+      align-items: center;
+      font-size:12px;
+      color:#424242;
+      .pointImg{
+        width:16px;
+        margin-right:2px;
+      }
+    }
+  }
+
+  &__content{
+    display:flex;
+    flex-direction: column;
+    margin-top:8px;
+    margin-right:4px;
+  }
+
+  &__imgTitle{
+    display:flex;
+  }
+
+  &__imgFrame{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position:relative;
+    width:70px;
+    height:70px;
+  }
+
+  &__lingImg{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:70px;
+    height:70px;
+    background-image:url(./ico_frame_49.png);
+    background-size:70px;
+    z-index:5;
+  }
+
+  &__img{
+    width:52px;
+    height:52px;
+    border-radius: 50%;
+  }
+
+  &__level{
+    display:flex;
+    justify-content: center;
+    color:#fff;
+    width:80px;
+    margin-bottom:8px;
+    margin-top:14px;
+    font-size:12px;
+    border-radius: 13px;
+    padding:0px 8px;
+    background: linear-gradient(0.25turn, #7f18ff, #f52d5b, #ffbf03);
+    &--bold{
+      font-weight: 600;
+    }
+  }
+
+  &__title{
+    font-size:16px;
+    font-weight: 600;
+  }
+}
+
+
+
+.rangkPoint{
+  display:flex;
+  font-size:12px;
+  color:#424242;
+  margin-top:6px;
+
+  &__list{
+    display: flex;
+    flex-basis: 40px;
+    margin-right:8px;
+
+    &:first-child{
+      margin-left:8px;
+    }
+    
+    &--img50{
+      max-height:50%;
+      margin-right:2px;
+    }
+  }
+}
+
+
+
