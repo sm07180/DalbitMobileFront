@@ -327,7 +327,7 @@ const TableWrap = styled.div`
 
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 92%;
-      margin: 2px 0;
+      margin: 4px 0 2px 0;
       line-height: 1.4;
     }
   }
