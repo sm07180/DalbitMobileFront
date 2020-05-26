@@ -299,12 +299,13 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       alert('isLogin :' + isLogin)
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
+      alert('push_type :' + JSON.stringify(push_type))
+      /*alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
-        alert('board_idx :' + pushMsg.board_idx)
+      alert('board_idx :' + pushMsg.board_idx)*/
     }
     //---------------------[분기처리시작]
+
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
@@ -320,6 +321,7 @@ export default () => {
         }
         break
       case '32': //-----------------마이페이지>내 지갑
+          mem_no = pushMsg.mem_no
         if(mem_no != undefined){
             if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
@@ -348,7 +350,7 @@ export default () => {
         window.location.href = `/`
         break
       case '5': //------------------스페셜 DJ 선정 페이지(미정)
-        window.location.href = `/`
+        window.location.href = `/event/specialDj`
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
         window.location.href = `/`
