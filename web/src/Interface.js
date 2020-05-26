@@ -294,7 +294,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no
+    let room_no, mem_no, board_idx
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -351,16 +351,18 @@ export default () => {
         break
       case '5': //------------------스페셜 DJ 선정 페이지(미정)
         //window.location.href = `/event/specialDj`
-        if (pushMsg.board_idx !== undefined) {
-            window.location.href = `/customer/notice/${pushMsg.board_idx}`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
         }
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-        if (pushMsg.board_idx !== undefined) {
-          window.location.href = `/customer/notice/${pushMsg.board_idx}`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
         }
         break
       default:
