@@ -32,8 +32,9 @@ export default props => {
     if (props.location.state.result === 'success') {
       if (props.location.state.state === 'pay') {
         if (props.location.state.returntype === 'room') {
-          window.location.href = '/pay_result?webview=new'
+          window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
+          sessionStorage.setItem('pay_info', 'store')
           window.location.href = '/'
         }
       }

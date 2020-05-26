@@ -23,7 +23,8 @@ import LayerPopup from './layer_popup'
 import iconQ from '../static/ic_question.svg'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['일간', '주간', '월간']
+//const dateArray = ['일간', '주간', '월간']
+const dateArray = ['일간']
 let currentPage = 1
 let moreState = false
 

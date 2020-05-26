@@ -2,17 +2,19 @@ import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 
 import Seo from './seo.js'
-import Lee from './Lee.js'
+import Lee from './lee.js'
 
 import Test from './test.js'
 
 import Charge from './content/charge'
+import Sample from './content/sample'
 
 const RouteList = [
   {path: 'test', component: Lee, exact: true},
   {path: '', component: Test, exact: true},
   {path: 'waitPayment', component: Seo, exact: true},
-  {path: 'charge', component: Charge, exact: true}
+  {path: 'charge', component: Charge, exact: true},
+  {path: 'sample', component: Sample, exact: true}
 ]
 
 export default () => {
