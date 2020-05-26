@@ -8,6 +8,12 @@ import BackBtn from './static/ic_back.svg'
 export default () => {
   const [status, setStatus] = useState(1)
 
+  const [name, setName] = useState(false)
+
+  const handleChange = event => {
+    console.log(event.target)
+  }
+
   const Routing = () => {}
 
   const tempFunc = () => {
@@ -78,12 +84,19 @@ export default () => {
 
             <div className="depositInfo__label">입금자명</div>
             <div className="depositInfo__value">
-              <input type="text" value="달나라" className="depositInfo__input"></input>
+              <input type="text" name="name" onChange={handleChange} value="" className="depositInfo__input"></input>
             </div>
 
             <div className="depositInfo__label">휴대폰번호</div>
             <div className="depositInfo__value">
-              <input type="text" value="01012341234" className="depositInfo__input"></input>
+              <input
+                type="text"
+                name="phone"
+                onChange={() => {
+                  setPhone('')
+                }}
+                value=""
+                className="depositInfo__input"></input>
             </div>
           </div>
         </div>
@@ -107,8 +120,8 @@ export default () => {
         </div>
 
         <div className="notice">
-          <p class="notice__title">
-            <span class="notice__title--icon">!</span> 달 충전 안내
+          <p className="notice__title">
+            <span className="notice__title--icon">!</span> 달 충전 안내
           </p>
 
           <ul>
