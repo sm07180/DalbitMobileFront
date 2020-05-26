@@ -350,13 +350,18 @@ export default () => {
         window.location.href = `/`
         break
       case '5': //------------------스페셜 DJ 선정 페이지(미정)
-        window.location.href = `/event/specialDj`
+        //window.location.href = `/event/specialDj`
+        if (pushMsg.board_idx !== undefined) {
+            window.location.href = `/customer/notice/${pushMsg.board_idx}`
+        }
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
+        if (pushMsg.board_idx !== undefined) {
           window.location.href = `/customer/notice/${pushMsg.board_idx}`
+        }
         break
       default:
         //------------------기본값
