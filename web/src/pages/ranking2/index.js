@@ -1,5 +1,5 @@
-import React from 'react';
-import './static/rangking2.css';
+import React from 'react'
+// import './static/rangking2.css';
 
 // import frame40 from './static/ico_frame_40.png';
 // import sample1 from './static/sample1.jpg';
@@ -8,19 +8,14 @@ import './static/rangking2.css';
 // import sample4 from './static/sample4.jpg';
 // import sample5 from './static/sample5.jpg';
 
-
 const index = () => {
   return (
-  <>
-  <div>
-    <h2 className="chargeTitle">
+    <>
+      <div>
+        <h2 className="chargeTitle"></h2>
+      </div>
+    </>
+  )
+}
 
-    </h2>
-  </div>
-
-
-  </>
-  );
-};
-
-export default index;
+export default index
