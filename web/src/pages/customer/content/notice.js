@@ -20,14 +20,9 @@ import SelectBoxs from 'components/ui/selectBox.js'
 //components
 let timer
 let currentPage = 1
+let moreState = false
 ////////////////////////////////////////////////////////////////////////////////////
 function Notice(props) {
-  const selectBoxData = [
-    {value: 0, text: '전체'},
-    {value: 1, text: '공지사항'},
-    {value: 2, text: '이벤트'}
-  ]
-
   //context
   let {memNo, num} = useParams()
   const context = useContext(Context)
@@ -52,16 +47,22 @@ function Notice(props) {
       params: {
         noticeType: noticeNum,
         page: currentPage,
-        records: 10
+        records: 15
       }
     })
     if (res.result === 'success') {
       //setNoticeList(res.data.list)
-      if (next) {
-        setNextListPage(res.data.list)
+      if (res.code === '0') {
+        //if (!next) setListPage(0)
+        moreState = false
       } else {
-        setListPage(res.data.list)
-        fetchData('next')
+        if (next) {
+          setNextListPage(res.data.list)
+          moreState = true
+        } else {
+          setListPage(res.data.list)
+          fetchData('next')
+        }
       }
     } else if (res.result === 'fail') {
     }
@@ -110,9 +111,10 @@ function Notice(props) {
   }
   detailDate()
   //--------------------------------------------------------
-  // useEffect(() => {
-  //   fetchData()
-  // }, [noticeNum])
+  useEffect(() => {
+    currentPage = 1
+    fetchData()
+  }, [noticeNum])
   //--------------------------------------------------------
   useEffect(() => {
     if (Store().noticePage !== '') {
@@ -146,7 +148,6 @@ function Notice(props) {
 
   ////////////////////////////////
   useEffect(() => {
-    fetchData()
     if (Store().noticePage !== undefined) {
       window.onpopstate = e => {
         window.history.back()
@@ -158,6 +159,14 @@ function Notice(props) {
       history.push(`/customer`)
     }
   }, [Store().noticePage])
+
+  const showMoreList = () => {
+    if (moreState) {
+      setListPage(listPage.concat(nextListPage))
+      fetchData('next')
+    }
+  }
+
   //----------------------------------------------------------
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
@@ -168,14 +177,17 @@ function Notice(props) {
       const html = document.documentElement
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
-
-      if (docHeight === windowBottom) {
-        setListPage(listPage.concat(nextListPage))
-        fetchData('next')
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 200) {
+        showMoreList()
       } else {
       }
-    }, 100)
+    }, 10)
   }
+
   useEffect(() => {
     //reload
     window.addEventListener('scroll', scrollEvtHdr)
