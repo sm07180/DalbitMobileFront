@@ -1426,6 +1426,16 @@ export default class API {
     const {data} = obj
     return await ajax({url: `/mypage/change/item`, method: 'POST', data: data})
   }
+
+  static exchangeCalc = async obj => {
+    const {data} = obj
+    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data});
+  }
+
+  static exchangeApply = async obj => {
+    const { data } = obj;
+    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data});
+  }
 }
 API.customHeader = null
 API.authToken = null

@@ -9,8 +9,8 @@ import Test from './test.js'
 import Charge from './content/charge'
 
 const RouteList = [
-  {path: '', component: Lee, exact: true},
-  {path: 'test', component: Test, exact: true},
+  {path: 'test', component: Lee, exact: true},
+  {path: '', component: Test, exact: true},
   {path: 'waitPayment', component: Seo, exact: true},
   {path: 'charge', component: Charge, exact: true}
 ]
