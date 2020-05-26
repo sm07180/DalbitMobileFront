@@ -41,7 +41,7 @@ let tempScrollEvent = null
 //7->50
 const records = 30
 
-export default (props) => {
+export default props => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -77,8 +77,8 @@ export default (props) => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice']
-      Object.keys(window.sessionStorage).forEach((key) => {
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
+      Object.keys(window.sessionStorage).forEach(key => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -98,7 +98,7 @@ export default (props) => {
       }
     })()
 
-    Api.splash().then((res) => {
+    Api.splash().then(res => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -111,7 +111,7 @@ export default (props) => {
     })
   }, [])
 
-  const fetchLiveList = async (reset) => {
+  const fetchLiveList = async reset => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -201,7 +201,7 @@ export default (props) => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = (e) => {
+  const popStateEvent = e => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -231,6 +231,14 @@ export default (props) => {
     // if (sessionStorage.getItem('popup_notice') === null) {
     //   sessionStorage.setItem('popup_notice', 'y')
     // }
+    if (sessionStorage.getItem('pay_info') === 'store') {
+      globalCtx.action.alert({
+        msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
+        callback: () => {
+          sessionStorage.removeItem('pay_info')
+        }
+      })
+    }
 
     return () => {
       window.removeEventListener('popstate', popStateEvent)
@@ -281,7 +289,7 @@ export default (props) => {
               </div>
               <div className="tab">
                 <Link
-                  onClick={(event) => {
+                  onClick={event => {
                     event.preventDefault()
                     StoreLink(globalCtx)
                   }}
@@ -329,7 +337,10 @@ export default (props) => {
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
-          <button className="event-section" onClick={() => goEvent()}></button>
+
+          {/* <button className="event-section" onClick={() => goEvent()}></button> */}
+          <BannerList bannerPosition={'9'} />
+
           <div
             className="section"
             ref={StarSectionRef}
@@ -406,7 +417,7 @@ export default (props) => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/* {popupNotice && Utility.getCookie('popup_notice1') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
+        {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
       </MainWrap>
     </Layout>
   )
@@ -657,5 +668,5 @@ const SubMain = styled.div`
 `
 
 const MainWrap = styled.div`
-  margin-top: ${(props) => (props.sticker ? '0' : '48px')};
+  margin-top: ${props => (props.sticker ? '0' : '48px')};
 `

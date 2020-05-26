@@ -40,8 +40,8 @@ export default (props) => {
 
   const applyClick = () => {
     if (state.click1) {
-      Utility.setCookie('popup_notice1', 'Y', 1)
-      sessionStorage.setItem('popup_notice', 'n')
+      Utility.setCookie('popup_notice200525', 'Y', 1)
+      sessionStorage.setItem('popup_notice200525', 'n')
     }
     setPopup(false)
   }
@@ -55,13 +55,9 @@ export default (props) => {
           <p className="text">
             안녕하세요! 달빛라이브입니다. <br />
             <br />
-            금일 오후2시부터 약 30분동안 미디어서버 업데이트 작업이 진행됩니다. 해당시간 동안은 방에 참여 또는 생성할 수 없습니다.
+            금일 오전8시부터 약 3시간동안 서버 점검 작업이 진행됩니다.
             <br />
-            <br />
-            베타기간 발견된 문제를 해결해 더 안정적인 서비스를 위한 작업이니만큼 불편하시더라도 잠시만 기다려주시기를 부탁드립니다
-            <br />
-            <br />
-            조만간 정식 오픈 관련해서 일정을 공지하도록 하겠습니다. 오늘도 최선을 다하겠습니다.
+            해당시간 동안은 방에 참여 또는 생성할 수 없습니다.
             <br />
             <br />
             고맙습니다. <br />

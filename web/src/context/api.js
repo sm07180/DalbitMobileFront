@@ -1426,6 +1426,25 @@ export default class API {
     const {data} = obj
     return await ajax({url: `/mypage/change/item`, method: 'POST', data: data})
   }
+
+  static exchangeCalc = async obj => {
+    const {data} = obj
+    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data});
+  }
+
+  static exchangeApply = async obj => {
+    const { data } = obj;
+    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data});
+  }
+  /**
+   * @brief 배너가져오기
+   * @method "GET"
+   * @create 이은비 2020.05.22
+   */
+  static getBanner = async obj => {
+    const {params} = obj
+    return await ajax({url: `/banner`, method: 'GET', params: params})
+  }
 }
 API.customHeader = null
 API.authToken = null

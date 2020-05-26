@@ -12,6 +12,7 @@ import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
+import starIcon from '../static/ico_hit_g_s.svg'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -25,7 +26,7 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt} = list
 
     return (
       <LiveList
@@ -47,10 +48,14 @@ const makeContents = props => {
               <img src={hitIcon} />
               <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
             </div>
-            <div className="value">
-              <img src={likeIcon} />
-              <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
-            </div>
+              <div className="value">
+                  <img src={likeIcon} />
+                  <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
+              </div>
+              <div className="value">
+                  <img src={starIcon} />
+                  <span>{giftCnt !== undefined && giftCnt.toLocaleString()}</span>
+              </div>
           </div>
         </div>
       </LiveList>
@@ -195,7 +200,7 @@ const LiveList = styled.div`
         font-size: 11px;
         letter-spacing: -0.3px;
 
-        &:nth-child(2) {
+        &:nth-child(2), &:nth-child(3) {
           margin-left: 6px;
         }
 

@@ -8,15 +8,17 @@ import styled from 'styled-components'
 import qs from 'query-string'
 import _ from 'lodash'
 import {Context} from 'context'
+
 //
 export default props => {
   //---------------------------------------------------------------------
   //state
   const context = useContext(Context)
+  const {webview, returntype} = qs.parse(location.search)
 
   useEffect(() => {
     context.action.alert({
-      msg: '결제가 완료되었습니다.',
+      msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
       callback: () => {
         Hybrid('CloseLayerPopup')
         Hybrid('ClosePayPopup')

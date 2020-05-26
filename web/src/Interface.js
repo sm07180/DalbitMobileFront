@@ -294,16 +294,18 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no
+    let room_no, mem_no, board_idx
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       alert('isLogin :' + isLogin)
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
+      alert('push_type :' + JSON.stringify(push_type))
+      /*alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
+      alert('board_idx :' + pushMsg.board_idx)*/
     }
     //---------------------[분기처리시작]
+
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
@@ -313,57 +315,55 @@ export default () => {
         window.location.href = '/'
         break
       case '31': //-----------------마이페이지>팬 보드
-        mem_no = getMemNo('/fanboard')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        }
         break
       case '32': //-----------------마이페이지>내 지갑
-        // mem_no = getMemNo('/wallet')
-        // if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
-        mem_no = pushMsg.mem_no
-        if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+          mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
-        mem_no = getMemNo('/')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/`
-        //  window.location.href = `/mypage/${mem_no}/`
         break
       case '34': //-----------------마이페이지>알림>해당 알림 글
-        mem_no = getMemNo('/alert')
-        if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        mem_no = pushMsg.mem_no
+        if(mem_no != undefined){
+            if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+        }
         break
       case '35': //-----------------마이페이지
-        //mem_no = getMemNo('/')
-        //if (isLogin) window.location.href = `/mypage/${mem_no}/`
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          window.location.href = `/mypage/${mem_no}/`
-        } else {
-          window.location.href = `/`
+            if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break
       case '5': //------------------스페셜 DJ 선정 페이지(미정)
-        window.location.href = `/`
+        //window.location.href = `/event/specialDj`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
+        }
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-        window.location.href = `/`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
+        }
         break
       default:
         //------------------기본값
