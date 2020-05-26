@@ -13,6 +13,7 @@ import ScrollToTop from 'components/lib/ScrollToTop'
 import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
+const Ranking2 = React.lazy(() => import('pages/ranking2'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
@@ -56,6 +57,7 @@ export default () => {
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
+        <Route exact path="/rank2" component={Ranking2} />    {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
