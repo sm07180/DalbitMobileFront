@@ -48,7 +48,7 @@ export default () => {
         }
 
         //pushMsg = JSON.parse(pushMsg)
-        switch (pushMsg.push_type) {
+        /*switch (pushMsg.push_type) {
           case '1': //팝업메시지
             context.action.alert({msg: pushMsg.content})
             break
@@ -59,7 +59,7 @@ export default () => {
           case '3': //알림(종표시)
             context.action.updateNews(true) //true,false
             break
-        }
+        }*/
 
         // alert(JSON.stringify(pushMsg, null, 1))
         //---------------------[분기처리시작]
