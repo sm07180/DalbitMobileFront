@@ -20,7 +20,7 @@ import {CustomerStore} from '../store'
 import SelectBoxs from 'components/ui/selectBox.js'
 import MyPersonal from './mypersonal'
 // static
-const Personal = props => {
+const Personal = (props) => {
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
     {value: 1, text: '회원정보'},
@@ -138,7 +138,7 @@ const Personal = props => {
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
     //
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png', 'gif']
       return list.includes(ext)
     }
@@ -178,7 +178,7 @@ const Personal = props => {
     }
   }
   //func 타입체크
-  const typeActive = value => {
+  const typeActive = (value) => {
     setfaqNum(value)
   }
   useEffect(() => {
@@ -201,7 +201,7 @@ const Personal = props => {
 
   const [controllState, setcontrollState] = useState(false)
 
-  const changePersonalTypeClick = type => {
+  const changePersonalTypeClick = (type) => {
     setPersonalType(type)
     setWalletType(0)
     setcontrollState(!controllState)
@@ -287,7 +287,7 @@ const Personal = props => {
                       name="imgUpload"
                       id="imgUpload"
                       accept="image/jpg, image/jpeg, image/png"
-                      onChange={e => {
+                      onChange={(e) => {
                         uploadSingleFile(e)
                       }}
                     />

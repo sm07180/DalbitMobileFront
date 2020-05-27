@@ -62,7 +62,7 @@ function Faq(props) {
    *
    * @func 클릭 조건 실행
    */
-  const clickEvent = qnaIdx => {
+  const clickEvent = (qnaIdx) => {
     Store().action.updatePersonalPage(qnaIdx)
     SetListhide(qnaIdx)
 
@@ -80,7 +80,7 @@ function Faq(props) {
   //--------------------------------------------------------
 
   //date format
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -128,7 +128,7 @@ function Faq(props) {
                 </TableWrap>
 
                 <Detail className={Store().personalPage === qnaIdx && listhide !== '' ? 'on' : ''}>
-                  <p dangerouslySetInnerHTML={{__html: contents.replace(/class/gi, 'className')}}></p>
+                  <pre dangerouslySetInnerHTML={{__html: contents.replace(/class/gi, 'className')}}></pre>
                   {addFile.url !== '' && <img src={addFile.url} className="addImg" />}
                   {answer !== '' && (
                     <div className="answerWrap">
