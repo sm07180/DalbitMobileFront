@@ -33,7 +33,7 @@ export default props => {
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
     {id: 2, type: 'wallet', component: Wallet, txt: '내 지갑'},
     {id: 3, type: 'report', component: Report, txt: '리포트'},
-    // {id: 4, type: 'alert', component: Alert, txt: '알림'},
+    {id: 4, type: 'alert', component: Alert, txt: '알림'},
     {id: 5, type: 'appAlarm', component: AppAlarm, txt: '어플알람'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
