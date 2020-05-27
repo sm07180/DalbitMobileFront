@@ -13,6 +13,8 @@ import ScrollToTop from 'components/lib/ScrollToTop'
 import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking'))
+const Ranking2 = React.lazy(() => import('pages/ranking2'))
+const Ranking3 = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
@@ -40,7 +42,7 @@ const TempLogin = React.lazy(() => import('pages/common/redirect'))
 
 const TempPage = React.lazy(() => import('pages/temp'))
 
-//const TestPage = React.lazy(() => import('pages/test_page'))
+const TestPage = React.lazy(() => import('pages/test_page'))
 
 export default () => {
   return (
@@ -56,43 +58,35 @@ export default () => {
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
+        <Route exact path="/rank2" component={Ranking2} /> {/* new 랭킹 추가  */}
+        <Route exact path="/rank3" component={Ranking3} /> {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
         <Route exact path="/charge" component={Charge} />
         <Route exact path="/exchange" component={Exchange} />
-
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/private" component={MySetting} />
-
         <Route exact path="/customer/" component={Customer} />
         <Route exact path="/customer/:title" component={Customer} />
         <Route exact path="/customer/:title/:num" component={Customer} />
-
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
-
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        {/* 
         <Route exact path="/temp_test" component={TestPage} />
-        <Route exact path="/temp_test/:path" component={TestPage} /> */}
-
+        <Route exact path="/temp_test/:path" component={TestPage} />
         <Route exact path="/temp_page" component={TempPage} />
-
         <Route exact path="/error" component={ErrorPage} />
-
         <Route exact path="/redirect" component={TempLogin} />
-
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>

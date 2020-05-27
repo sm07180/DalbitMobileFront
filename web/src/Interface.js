@@ -29,8 +29,26 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        pushMsg = JSON.parse(pushMsg)
-        switch (pushMsg.push_type) {
+        //-----IOS일때 decode
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+            pushMsg = decodeURIComponent(pushMsg)
+            if (isJsonString(pushMsg)) {
+                pushMsg = JSON.parse(pushMsg)
+            } else {
+                return false
+            }
+        }
+        //-----Android
+        if (customHeader['os'] === OS_TYPE['Android']) {
+            if (typeof pushMsg !== 'object') return
+        }
+        //--PC
+        if (customHeader['os'] === OS_TYPE['Desktop']) {
+            pushMsg = JSON.parse(pushMsg)
+        }
+
+        //pushMsg = JSON.parse(pushMsg)
+        /*switch (pushMsg.push_type) {
           case '1': //팝업메시지
             context.action.alert({msg: pushMsg.content})
             break
@@ -41,7 +59,7 @@ export default () => {
           case '3': //알림(종표시)
             context.action.updateNews(true) //true,false
             break
-        }
+        }*/
 
         // alert(JSON.stringify(pushMsg, null, 1))
         //---------------------[분기처리시작]
@@ -294,17 +312,18 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no
+    let room_no, mem_no, board_idx
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       alert('isLogin :' + isLogin)
-      alert('push_type :' + push_type)
-      alert('room_no :' + pushMsg.room_no)
+      alert('push_type :' + JSON.stringify(push_type))
+      /*alert('room_no :' + pushMsg.room_no)
       alert('mem_no :' + pushMsg.mem_no)
-        alert('board_idx :' + pushMsg.board_idx)
+      alert('board_idx :' + pushMsg.board_idx)*/
     }
     //---------------------[분기처리시작]
+
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
@@ -320,6 +339,7 @@ export default () => {
         }
         break
       case '32': //-----------------마이페이지>내 지갑
+          mem_no = pushMsg.mem_no
         if(mem_no != undefined){
             if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
@@ -348,13 +368,20 @@ export default () => {
         window.location.href = `/`
         break
       case '5': //------------------스페셜 DJ 선정 페이지(미정)
-        window.location.href = `/`
+        //window.location.href = `/event/specialDj`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
+        }
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
         window.location.href = `/`
         break
       case '7': //------------------공지사항 페이지 [board_idx](미정)
-          window.location.href = `/customer/notice/${pushMsg.board_idx}`
+        board_idx = pushMsg.board_idx
+        if (board_idx !== undefined) {
+          window.location.href = `/customer/notice/${board_idx}`
+        }
         break
       default:
         //------------------기본값
@@ -381,6 +408,7 @@ export default () => {
     document.addEventListener('react-gnb-close', update)
     return () => {
       /*----native----*/
+      document.addEventListener('native-push-foreground', update) //완료
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)

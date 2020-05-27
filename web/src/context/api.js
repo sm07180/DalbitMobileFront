@@ -1427,6 +1427,15 @@ export default class API {
     return await ajax({url: `/mypage/change/item`, method: 'POST', data: data})
   }
 
+  static exchangeCalc = async obj => {
+    const {data} = obj
+    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data});
+  }
+
+  static exchangeApply = async obj => {
+    const { data } = obj;
+    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data});
+  }
   /**
    * @brief 배너가져오기
    * @method "GET"

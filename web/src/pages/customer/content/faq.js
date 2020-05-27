@@ -12,20 +12,13 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //styled component
 import styled from 'styled-components'
-//ui
-import SelectBoxs from 'components/ui/selectBox.js'
-import {reset} from 'ansi-colors'
 //----------------------------------------------------------
 
-function Faq(props) {
-  const selectBoxData = [
-    {value: 0, text: '전체'},
-    {value: 1, text: '일반'},
-    {value: 2, text: '방송'},
-    {value: 3, text: '결제'},
-    {value: 4, text: '기타'}
-  ]
+let timer
+let currentPage = 1
+let moreState = false
 
+function Faq(props) {
   //context
   const context = useContext(Context)
   //faq state
@@ -33,37 +26,37 @@ function Faq(props) {
   const [faqDetail, setFaqDetail] = useState([])
   const [faqNum, setfaqNum] = useState(0)
   const [listhide, SetListhide] = useState('')
-  //page state
-  const [page, setPage] = useState(1)
-  const {perPage} = props
+
+  const [listPage, setListPage] = useState([])
+  const [nextListPage, setNextListPage] = useState([])
+
   const details = Store().faqPage
-  //page func
-  const pageStart = page != 1 ? perPage * page - Store().page : 0
-  const pageEnd = perPage * page
-  const paginatedDated = faqList.slice(pageStart, pageEnd)
-  //const amountPages = Math.round(faqList.length / perPage)
-  const amountPages = Math.floor((faqList.length - 1) / perPage)
-  //pages
-  let a = 0,
-    b = amountPages
-  function* range(a, b) {
-    for (var i = a; i <= b; ++i) yield i
-  }
-  const numberPages = Array.from(range(a, b))
+
   //api----faq리스트
-  async function fetchData() {
+  async function fetchData(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await Api.faq_list({
       params: {
         faqType: faqNum,
-        page: 1,
-        records: 100
+        page: currentPage,
+        records: 15
       }
     })
     if (res.result === 'success') {
-      //console.log(res.data.list)
-      setFaqList(res.data.list)
+      //setNoticeList(res.data.list)
+      if (res.code === '0') {
+        //if (!next) setListPage(0)
+        moreState = false
+      } else {
+        if (next) {
+          setNextListPage(res.data.list)
+          moreState = true
+        } else {
+          setListPage(res.data.list)
+          fetchData('next')
+        }
+      }
     } else if (res.result === 'fail') {
-      console.log(res)
     }
   }
   //api----디테일스
@@ -81,15 +74,6 @@ function Faq(props) {
     }
   }
   //function---------------------------------------
-  /**
-   *
-   * @func 상위 faq타입
-   */
-  const typeActive = e => {
-    const number = parseInt(e.target.value)
-    setPage(1)
-    setfaqNum(number)
-  }
   /**
    *
    * @func 토글 패치
@@ -112,28 +96,9 @@ function Faq(props) {
       SetListhide('')
     }
   }
-
-  //set type select
-  const setType = value => {
-    if (value === 0) {
-      setfaqNum(0)
-    } else if (value === 1) {
-      Store().action.updatefaqPage('')
-      setfaqNum(1)
-    } else if (value === 2) {
-      Store().action.updatefaqPage('')
-      setfaqNum(2)
-    } else if (value === 3) {
-      Store().action.updatefaqPage('')
-      setfaqNum(3)
-    } else if (value === 4) {
-      Store().action.updatefaqPage('')
-      setfaqNum(4)
-    }
-    setPage(1)
-  }
   //--------------------------------------------------------
   useEffect(() => {
+    currentPage = 1
     fetchData()
   }, [faqNum])
   //--------------------------------------------------------
@@ -144,52 +109,48 @@ function Faq(props) {
   }, [Store().faqPage])
   //--------------------------------------------------------
 
-  //Store().faqPage === faqIdx && listhide !== ''
+  const showMoreList = () => {
+    if (moreState) {
+      setListPage(listPage.concat(nextListPage))
+      fetchData('next')
+    }
+  }
+
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextListPage])
+
   return (
     <>
-      {/* 컨텐츠 : 게시판 스타일 */}
-      {/* <ContentInfo onClick={() => SetListhide('')}>
-        <h2>
-          {faqNum === 0 ? '전체' : ''}
-          {faqNum === 1 ? '일반' : ''}
-          {faqNum === 2 ? '방송' : ''}
-          {faqNum === 3 ? '결제' : ''}
-          {faqNum === 4 ? '기타' : ''}
-        </h2>
-        <h3>{faqList.length}</h3>
-        <div className="category">
-          <button value="0" className={faqNum === 0 ? 'on' : ''} onClick={typeActive}>
-            전체
-          </button>
-          <button value="1" className={faqNum === 1 ? 'on' : ''} onClick={typeActive}>
-            일반
-          </button>
-          <button value="2" className={faqNum === 2 ? 'on' : ''} onClick={typeActive}>
-            방송
-          </button>
-          <button value="3" className={faqNum === 3 ? 'on' : ''} onClick={typeActive}>
-            결제
-          </button>
-          <button value="4" className={faqNum === 4 ? 'on' : ''} onClick={typeActive}>
-            기타
-          </button>
-        </div>
-        <div className="m-catecory">
-          <SelectBoxs
-            boxList={selectBoxData}
-            onChangeEvent={setType}
-            inlineStyling={{right: 0, top: 0, zIndex: 8}}
-            type={'remove-init-data'}
-          />
-        </div>
-      </ContentInfo> */}
-
       <PageWrap>
         <dl>
-          {paginatedDated.map((item, index) => {
+          {listPage.map((item, index) => {
             const {faqType, writeDt, question, faqIdx} = item
 
-            if (paginatedDated === null) return
+            if (listPage === null) return
             return (
               <div key={index}>
                 {faqType === faqNum && (
@@ -253,18 +214,6 @@ function Faq(props) {
           })}
         </dl>
       </PageWrap>
-      {/* 페이지네이션 */}
-      <PageNumber>
-        <button onClick={() => (page > 1 ? setPage(page - 1) : null)} className="prev" />
-        {numberPages.map((item, index) => {
-          return (
-            <button onClick={() => setPage(item + 1)} className={page === item + 1 ? 'on' : ''} key={index}>
-              {item + 1}
-            </button>
-          )
-        })}
-        <button onClick={() => (page + 1 <= numberPages.length ? setPage(page + 1) : null)} className="next" />
-      </PageNumber>
 
       {/* 컨텐츠 : 클릭 디테일 */}
     </>
@@ -369,6 +318,7 @@ const TableWrap = styled.div`
     }
   }
   & dd {
+    position: relative;
     width: calc(100% - 144px);
     font-size: 16px;
     color: #000;
@@ -377,9 +327,12 @@ const TableWrap = styled.div`
 
     @media (max-width: ${WIDTH_MOBILE}) {
       width: 92%;
-      margin-top: 8px;
+      margin: 4px 0 2px 0;
       line-height: 1.4;
     }
+  }
+  & dd:first-child {
+    padding-left: 56px;
   }
   & dd:last-child {
     width: 24px;
@@ -398,6 +351,9 @@ const TableWrap = styled.div`
   }
   & span {
     display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 3px;
     margin-right: 4px;
     width: 16px;
     height: 16px;
@@ -413,6 +369,9 @@ const TableWrap = styled.div`
     }
   }
   & em {
+    position: absolute;
+    left: 20px;
+    top: 0;
     margin-right: 3px;
     color: ${COLOR_MAIN};
     font-style: normal;

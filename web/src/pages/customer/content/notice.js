@@ -18,15 +18,11 @@ import NewIcon from './static/ic_new.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 //components
-
+let timer
+let currentPage = 1
+let moreState = false
 ////////////////////////////////////////////////////////////////////////////////////
 function Notice(props) {
-  const selectBoxData = [
-    {value: 0, text: '전체'},
-    {value: 1, text: '공지사항'},
-    {value: 2, text: '이벤트'}
-  ]
-
   //context
   let {memNo, num} = useParams()
   const context = useContext(Context)
@@ -36,39 +32,38 @@ function Notice(props) {
   const [noticeList, setNoticeList] = useState([])
   const [noticeDetail, setNoticeDetail] = useState([])
   const [noticeNum, setNoticeNum] = useState(0)
+  const [listPage, setListPage] = useState([])
+  const [nextListPage, setNextListPage] = useState([])
 
-  //page state
-  const [page, setPage] = useState(1)
-  const {perPage} = props
   const details = Store().noticePage.noticeIdx
-  //page func
-  const pageStart = page != 1 ? perPage * page - Store().page : 0
-  const pageEnd = perPage * page
-  const paginatedDated = noticeList.slice(pageStart, pageEnd)
-
-  const amountPages = Math.floor((noticeList.length - 1) / perPage)
-  //pages
-  let a = 0,
-    b = amountPages
-  function* range(a, b) {
-    for (var i = a; i <= b; ++i) yield i
-  }
-  const numberPages = Array.from(range(a, b))
 
   //----------------------------------------------------------
 
   //
   //api----공지사항리스트
-  async function fetchData() {
+  async function fetchData(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await Api.notice_list({
       params: {
         noticeType: noticeNum,
-        page: 1,
-        records: 100
+        page: currentPage,
+        records: 15
       }
     })
     if (res.result === 'success') {
-      setNoticeList(res.data.list)
+      //setNoticeList(res.data.list)
+      if (res.code === '0') {
+        //if (!next) setListPage(0)
+        moreState = false
+      } else {
+        if (next) {
+          setNextListPage(res.data.list)
+          moreState = true
+        } else {
+          setListPage(res.data.list)
+          fetchData('next')
+        }
+      }
     } else if (res.result === 'fail') {
     }
   }
@@ -89,10 +84,6 @@ function Notice(props) {
     Store().action.updatenoticePage('')
     //window.location.href = '/customer'
   }
-  const typeActive = e => {
-    const number = parseInt(e.target.value)
-    setNoticeNum(number)
-  }
 
   const NoticeUrl = () => {
     const index = Store().noticePage.noticeIdx
@@ -103,17 +94,7 @@ function Notice(props) {
       fetchDataDetail()
     }
   }
-  //set type select
-  const setType = value => {
-    setPage(1)
-    if (value === 0) {
-      setNoticeNum(0)
-    } else if (value === 1) {
-      setNoticeNum(1)
-    } else if (value === 2) {
-      setNoticeNum(2)
-    }
-  }
+
   //date format
   const timeFormat = strFormatFromServer => {
     let date = strFormatFromServer.slice(0, 8)
@@ -131,6 +112,7 @@ function Notice(props) {
   detailDate()
   //--------------------------------------------------------
   useEffect(() => {
+    currentPage = 1
     fetchData()
   }, [noticeNum])
   //--------------------------------------------------------
@@ -178,6 +160,42 @@ function Notice(props) {
     }
   }, [Store().noticePage])
 
+  const showMoreList = () => {
+    if (moreState) {
+      setListPage(listPage.concat(nextListPage))
+      fetchData('next')
+    }
+  }
+
+  //----------------------------------------------------------
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextListPage])
+
   //--------------------------------------------------------
   return (
     <>
@@ -208,11 +226,11 @@ function Notice(props) {
 
         <PageWrap>
           <dl>
-            {paginatedDated.map((item, index) => {
+            {listPage.map((item, index) => {
               const {noticeType, writeDt, title, noticeIdx, writeTs} = item
               //console.log((IntTime - writeTs) / 3600)
 
-              if (paginatedDated === null) return
+              if (listPage === null) return
               return (
                 <div key={index}>
                   {noticeType === noticeNum && (
@@ -265,7 +283,7 @@ function Notice(props) {
           </dl>
         </PageWrap>
         {/* 페이지네이션 */}
-        <PageNumber>
+        {/* <PageNumber>
           <button onClick={() => (page > 1 ? setPage(page - 1) : null)} className="prev" />
           {numberPages.map((item, index) => {
             return (
@@ -275,7 +293,7 @@ function Notice(props) {
             )
           })}
           <button onClick={() => (page + 1 <= numberPages.length ? setPage(page + 1) : null)} className="next" />
-        </PageNumber>
+        </PageNumber> */}
       </List>
       {/* 컨텐츠 : 클릭 디테일 */}
       <Detail className={Store().noticePage === '' ? 'on' : ''}>

@@ -55,6 +55,9 @@ const List = props => {
           msg: res.message
         })
       } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
         if (coment.length === 0) {
           context.action.alert({
             cancelCallback: () => {},
@@ -85,6 +88,9 @@ const List = props => {
       if (res.result === 'success') {
         window.location.reload()
       } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
       }
     }
     context.action.confirm({
@@ -182,7 +188,7 @@ const List = props => {
               <pre>{contents}</pre>
             </div>
           </ListContent>
-          <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
+          <Buttons className={urlrStr === props.thisMemNo ? 'on' : ''}>
             <button onClick={WriteToggle}>
               <em></em>
               수정
