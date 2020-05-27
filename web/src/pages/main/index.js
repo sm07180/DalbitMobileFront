@@ -302,10 +302,14 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  if (!broadcastBtnActive) {
-                    RoomMake(globalCtx)
-                    setBroadcastBtnActive(true)
-                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    window.location.href = "https://inforexseoul.page.link/Ws4t"
+                  }else{
+                    if (!broadcastBtnActive) {
+                      RoomMake(globalCtx)
+                      setBroadcastBtnActive(true)
+                      setTimeout(() => setBroadcastBtnActive(false), 3000)
+                    }
                   }
                 }}>
                 방송하기

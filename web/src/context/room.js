@@ -54,7 +54,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
+  const customHeader = JSON.parse(Api.customHeader)
 
+  if (customHeader['os'] === OS_TYPE['Desktop']) {
+    window.location.href = "https://inforexseoul.page.link/Ws4t"
+    return false
+  }
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
 
