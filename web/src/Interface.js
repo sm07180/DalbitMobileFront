@@ -317,10 +317,7 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       alert('isLogin :' + isLogin)
-      alert('push_type :' + JSON.stringify(push_type))
-      /*alert('room_no :' + pushMsg.room_no)
-      alert('mem_no :' + pushMsg.mem_no)
-      alert('board_idx :' + pushMsg.board_idx)*/
+      alert('push_type :' + JSON.stringify(pushMsg))
     }
     //---------------------[분기처리시작]
 
