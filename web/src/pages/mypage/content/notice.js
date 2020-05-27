@@ -141,6 +141,7 @@ const Notice = props => {
     const settingProfileInfo = async memNo => {
       const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
       if (profileInfo.result === 'success') {
+        console.log('profileInfo.data.memNo', profileInfo.data.memNo)
         setThisMemNo(profileInfo.data.memNo)
       }
     }
@@ -190,6 +191,7 @@ const Notice = props => {
                 <a key={idx} className={`idx${noticeIdx}`}>
                   <List
                     {...props}
+                    thisMemNo={thisMemNo}
                     isTop={isTop}
                     title={title}
                     contents={contents}
