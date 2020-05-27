@@ -29,7 +29,25 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        pushMsg = JSON.parse(pushMsg)
+        //-----IOS일때 decode
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+            pushMsg = decodeURIComponent(pushMsg)
+            if (isJsonString(pushMsg)) {
+                pushMsg = JSON.parse(pushMsg)
+            } else {
+                return false
+            }
+        }
+        //-----Android
+        if (customHeader['os'] === OS_TYPE['Android']) {
+            if (typeof pushMsg !== 'object') return
+        }
+        //--PC
+        if (customHeader['os'] === OS_TYPE['Desktop']) {
+            pushMsg = JSON.parse(pushMsg)
+        }
+
+        //pushMsg = JSON.parse(pushMsg)
         switch (pushMsg.push_type) {
           case '1': //팝업메시지
             context.action.alert({msg: pushMsg.content})
@@ -390,6 +408,7 @@ export default () => {
     document.addEventListener('react-gnb-close', update)
     return () => {
       /*----native----*/
+      document.addEventListener('native-push-foreground', update) //완료
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
