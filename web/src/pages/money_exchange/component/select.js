@@ -16,6 +16,7 @@ export default props => {
   const selectBoxList = (value, idx) => {
     onChangeEvent(value)
     setSelectedIdx(idx)
+
     setTimeout(() => {
       setOpened(false)
     }, 200)
@@ -26,7 +27,7 @@ export default props => {
   }
 
   const selectedClassName = opened ? 'open' : ''
-  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
+  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init';
 
   useEffect(() => {
     return () => {}
@@ -55,7 +56,7 @@ export default props => {
               className="box-list"
               key={index}
               onMouseDown={() => selectBoxList(instance.value, index)}
-              onTouchStart={() => selectBoxList(instance.value, index)}>
+              >
               {instance.text}
             </div>
           )
