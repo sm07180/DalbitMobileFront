@@ -8,9 +8,6 @@ import sample1 from './static/sample1.jpg';
 // import sample4 from './static/sample4.jpg';
 // import sample5 from './static/sample5.jpg';
 
-
-
-
 import closeBtn from './static/ic_back.svg';
 import rankNotice from './static/notice_img.png';
 import scoreup from './static/scoreup.png';
