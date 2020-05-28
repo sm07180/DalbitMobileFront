@@ -48,12 +48,13 @@ export default props => {
             prdtNm: prdtNm,
             payType: payType,
             phoneNo: phoneNo,
+
             orderId: orderId,
             cardName: cardName,
             cardNum: cardNum,
             apprno: apprno
           }
-          alert(JSON.stringify(payInfo))
+          //alert(JSON.stringify(payInfo))
           sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
           window.location.href = '/'
         }
