@@ -241,6 +241,7 @@ export default props => {
     }
 
     return () => {
+      sessionStorage.removeItem('pay_info')
       window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
       window.removeEventListener('scroll', tempScrollEvent)
