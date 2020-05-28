@@ -37,7 +37,7 @@ export default props => {
           const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno} = props.location.state
           let payType
           if (!phoneNo && cardNum) {
-            payType = '카드결제'
+            payType = '카드 결제'
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
@@ -48,15 +48,13 @@ export default props => {
             prdtNm: prdtNm,
             payType: payType,
             phoneNo: phoneNo,
-
             orderId: orderId,
             cardName: cardName,
             cardNum: cardNum,
             apprno: apprno
           }
           //alert(JSON.stringify(payInfo))
-          //sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
-          sessionStorage.setItem('pay_info', 'store')
+          sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
           window.location.href = '/'
         }
       }

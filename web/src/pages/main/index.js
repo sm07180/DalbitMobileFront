@@ -21,6 +21,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupNotice from './component/layer_popup_notice.js'
+import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 
@@ -74,6 +75,8 @@ export default props => {
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
   const customHeader = JSON.parse(Api.customHeader)
+
+  const [payState, setPayState] = useState(false)
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -231,13 +234,10 @@ export default props => {
     // if (sessionStorage.getItem('popup_notice') === null) {
     //   sessionStorage.setItem('popup_notice', 'y')
     // }
-    if (sessionStorage.getItem('pay_info') === 'store') {
-      globalCtx.action.alert({
-        msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
-        callback: () => {
-          sessionStorage.removeItem('pay_info')
-        }
-      })
+
+    if (sessionStorage.getItem('pay_info') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
+      setPayState(payInfo)
     }
 
     return () => {
@@ -275,6 +275,11 @@ export default props => {
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
+
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
@@ -303,8 +308,8 @@ export default props => {
                 className="btn"
                 onClick={() => {
                   if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    window.location.href = "https://inforexseoul.page.link/Ws4t"
-                  }else{
+                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                  } else {
                     if (!broadcastBtnActive) {
                       RoomMake(globalCtx)
                       setBroadcastBtnActive(true)
@@ -422,6 +427,8 @@ export default props => {
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
         {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
+
+        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
   )
