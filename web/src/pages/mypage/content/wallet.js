@@ -135,13 +135,19 @@ export default props => {
           ) : (
             <>
               <CoinChargeBtn
+                className="exchange"
                 onClick={() => {
                   history.push('/exchange')
                 }}>
-                달 교환
+                교환
               </CoinChargeBtn>
-              {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
-              <CoinChargeBtn>환전하기</CoinChargeBtn> */}
+              <CoinChargeBtn
+                className="exchange"
+                onClick={() => {
+                  history.push('/money_exchange')
+                }}>
+                환전
+              </CoinChargeBtn>
             </>
           )}
         </div>
@@ -175,6 +181,14 @@ const CoinChargeBtn = styled.button`
     background-color: #fff;
     color: #632beb;
     margin-right: 12px;
+  }
+  &.exchange {
+    display: inline-block;
+    flex-direction: inherit;
+    width: 76px;
+    margin-top: 0 !important;
+    margin-left: 4px;
+    background: #e1e1e1;
   }
 `
 const CoinCurrentStatus = styled.div`
