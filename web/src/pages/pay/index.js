@@ -34,7 +34,27 @@ export default props => {
         if (props.location.state.returntype === 'room') {
           window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
-          sessionStorage.setItem('pay_info', 'store')
+          const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno} = props.location.state
+          let payType
+          if (phoneNo === undefined && cardNum) {
+            payType = '카드결제'
+          } else if (cardNum === undefined && phoneNo) {
+            payType = '휴대폰 결제'
+          } else {
+            payType = '결제'
+          }
+          const payInfo = {
+            prdtPrice: prdtPrice,
+            prdtNm: prdtNm,
+            payType: payType,
+            phoneNo: phoneNo,
+            orderId: orderId,
+            cardName: cardName,
+            cardNum: cardNum,
+            apprno: apprno
+          }
+          alert(JSON.stringify(payInfo))
+          sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
           window.location.href = '/'
         }
       }
