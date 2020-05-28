@@ -47,6 +47,16 @@ export default () => {
             pushMsg = JSON.parse(pushMsg)
         }
 
+        const {isLogin} = context.token
+        const {push_type} = pushMsg
+        let room_no, mem_no, board_idx
+
+        //개발쪽만 적용
+        if (__NODE_ENV === 'dev') {
+          alert('fore isLogin :' + isLogin)
+          alert('fore push_type :' + JSON.stringify(pushMsg))
+        }
+
         //pushMsg = JSON.parse(pushMsg)
         /*switch (pushMsg.push_type) {
           case '1': //팝업메시지
@@ -316,8 +326,8 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      alert('isLogin :' + isLogin)
-      alert('push_type :' + JSON.stringify(pushMsg))
+      alert('back isLogin :' + isLogin)
+      alert('back push_type :' + JSON.stringify(pushMsg))
     }
     //---------------------[분기처리시작]
 

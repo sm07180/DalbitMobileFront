@@ -141,13 +141,13 @@ export default props => {
                 }}>
                 교환
               </CoinChargeBtn>
-              <CoinChargeBtn
+            {/*<CoinChargeBtn
                 className="exchange"
                 onClick={() => {
                   history.push('/money_exchange')
                 }}>
                 환전
-              </CoinChargeBtn>
+              </CoinChargeBtn>*/}
             </>
           )}
         </div>
