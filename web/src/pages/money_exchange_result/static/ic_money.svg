@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:#fff;stroke:#632beb;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px}.prefix__cls-3{fill:none}
+        </style>
+    </defs>
+    <g id="prefix__ic_money" transform="translate(-88 -89)">
+        <g id="prefix__사각형_1931" data-name="사각형 1931" style="stroke:#707070;opacity:0;fill:#fff">
+            <path d="M0 0H32V32H0z" style="stroke:none" transform="translate(88 89)"/>
+            <path d="M0.5 0.5H31.5V31.5H0.5z" style="fill:none" transform="translate(88 89)"/>
+        </g>
+        <g id="prefix__그룹_13052" data-name="그룹 13052" transform="translate(-153.866 -512.749)">
+            <path id="prefix__사각형_1699" d="M0 0H15.782V5.342H0z" class="prefix__cls-2" data-name="사각형 1699" transform="translate(247.807 622.776)"/>
+            <path id="prefix__사각형_1700" d="M0 0H15.782V5.342H0z" class="prefix__cls-2" data-name="사각형 1700" transform="translate(244.866 617.433)"/>
+            <path id="prefix__사각형_1701" d="M0 0H15.782V5.342H0z" class="prefix__cls-2" data-name="사각형 1701" transform="translate(247.807 612.091)"/>
+            <path id="prefix__사각형_1702" d="M0 0H15.782V5.342H0z" class="prefix__cls-2" data-name="사각형 1702" transform="translate(244.866 606.749)"/>
+            <circle id="prefix__타원_190" cx="8.188" cy="8.188" r="8.188" class="prefix__cls-2" data-name="타원 190" transform="translate(255.401 611.742)"/>
+            <g id="prefix__그룹_13051" data-name="그룹 13051">
+                <path id="prefix__패스_6440" d="M260.647 623.957h3.883a2 2 0 0 0 2-2 2 2 0 0 0-2-2h-1.882a2 2 0 0 1-2-2 2 2 0 0 1 2-2h3.882" class="prefix__cls-3" data-name="패스 6440"/>
+                <path id="prefix__선_131" d="M0 0L0 10.935" class="prefix__cls-3" data-name="선 131" transform="translate(263.589 614.463)"/>
+            </g>
+        </g>
+    </g>
+</svg>

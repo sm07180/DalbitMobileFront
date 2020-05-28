@@ -12,11 +12,14 @@ import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng.svg'
+import {OS_TYPE} from 'context/config.js'
+import Api from 'context/api'
 
 export default (props) => {
   //context
   const context = useContext(Context)
   const {webview} = props
+  const customHeader = JSON.parse(Api.customHeader)
 
   if (webview && webview === 'new') {
     return null
@@ -75,10 +78,14 @@ export default (props) => {
             <div
               className="mic-btn"
               onClick={() => {
-                if (!broadcastBtnActive) {
-                  RoomMake(globalCtx)
-                  setBroadcastBtnActive(true)
-                  setTimeout(() => setBroadcastBtnActive(false), 3000)
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  window.location.href = "https://inforexseoul.page.link/Ws4t"
+                }else{
+                  if (!broadcastBtnActive) {
+                    RoomMake(globalCtx)
+                    setBroadcastBtnActive(true)
+                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  }
                 }
               }}>
               <img src={Mic} />

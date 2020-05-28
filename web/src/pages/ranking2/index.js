@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import React from 'react';
 import './static/rangking2.scss';
+=======
+import React from 'react'
+// import './static/rangking2.css';
+>>>>>>> 2c227430a9c0670530f801203be480acd4339110
 
 
 import sample1 from './static/sample1.jpg';
@@ -8,6 +13,7 @@ import sample1 from './static/sample1.jpg';
 // import sample4 from './static/sample4.jpg';
 // import sample5 from './static/sample5.jpg';
 
+<<<<<<< HEAD
 
 
 import closeBtn from './static/ic_back.svg';
@@ -97,5 +103,16 @@ const index = () => {
   </>
   );
 };
+=======
+const index = () => {
+  return (
+    <>
+      <div>
+        <h2 className="chargeTitle"></h2>
+      </div>
+    </>
+  )
+}
+>>>>>>> 2c227430a9c0670530f801203be480acd4339110
 
-export default index;
+export default index
