@@ -26,7 +26,9 @@ export default props => {
   }
 
   const selectedClassName = opened ? 'open' : ''
-  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
+  const selectListClassName = opened !== null ? (opened ? 'open' : 'open') : 'init'
+
+  // const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
     return () => {}
@@ -68,6 +70,8 @@ export default props => {
 const SelectListWrap = styled.div`
   border: 1px solid #632beb;
   border-top: 1px solid #fff;
+  height:200px;
+  overflow-y:auto;  
   margin-top: -1px;
   /* animation-duration: 0.1s;
   animation-iteration-count: 1;
@@ -121,7 +125,6 @@ const Selected = styled.div`
   position: relative;
 
   min-width: 80px;
-
   box-sizing: border-box;
   border: 1px solid #632beb;
   font-size: 14px;
