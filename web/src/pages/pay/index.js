@@ -36,9 +36,9 @@ export default props => {
         } else {
           const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno} = props.location.state
           let payType
-          if (phoneNo === undefined && cardNum) {
+          if (!phoneNo && cardNum) {
             payType = '카드결제'
-          } else if (cardNum === undefined && phoneNo) {
+          } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
             payType = '결제'
@@ -53,7 +53,7 @@ export default props => {
             cardNum: cardNum,
             apprno: apprno
           }
-          //alert(JSON.stringify(payInfo))
+          alert(JSON.stringify(payInfo))
           sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
           window.location.href = '/'
         }
