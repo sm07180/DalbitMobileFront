@@ -336,6 +336,9 @@ input[type="file"] {
     }
 
     &--button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: #bdbdbd;
       color: #fff;
       flex: 1;

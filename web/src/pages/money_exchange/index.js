@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import { Context } from 'context';
 
@@ -10,6 +10,7 @@ import checkOn from './static/ico-checkbox-on.svg'
 import SelectBoxWrap from './component/select';
 
 import Api from 'context/api';
+import Message from 'pages/common/message';
 
 import './index.scss';
 
@@ -23,7 +24,10 @@ const initialCalc = {
 
 export default (props) => {
   const context = useContext(Context);
-  const isSpecial = false;
+
+  const { profile } = context;
+  const [isSpecial, setIsSpecial] = useState(false);
+  const [byeolCnt, setByeolCnt] = useState(0)
   const [status, setStatus] = useState(0);
   const [check, setCheck] = useState(false); //개인정보 수집 동의
   const [exchangeStar, setExchangeStar] = useState(0); //환전 신청 별
@@ -71,13 +75,14 @@ export default (props) => {
       data: {...paramData}
     });
     const { result, data } = res;
+
+    console.log(res);
     if(result === "success") {
       props.history.push({
-        pathname: "/temp_test/chargeSuccess",
+        pathname: "/money_exchange_result",
         state: { ...data }
       })
-      
-      res.data
+
     } else {
       context.action.alert({
         msg: '알 수 없는 문제로 환전신청에 실패하였습니다. 입력값을 확인해 주세요',
@@ -89,7 +94,7 @@ export default (props) => {
   }
   
   const checkExchange = () => {
-    if(exchangeStar === 0) {
+    if(exchangeStar === 0 || !exchangeStar) {
       context.action.alert({
         msg: "환전 신청별은 필수 입력값입니다.",
         callback: () => {
@@ -101,6 +106,15 @@ export default (props) => {
     if(exchangeStar < 600) {
       context.action.alert({
         msg: "환전 신청별은 600개 이상이어야 합니다.",
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return;
+    }
+    if(exchangeStar > byeolCnt) {
+      context.action.alert({
+        msg: "환전 신청별은 보유 별보다 작거나 같아야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -186,10 +200,20 @@ export default (props) => {
   }
 
   const fnExchangeCalc = async () => {
-    console.log(exchangeStar);
     if(exchangeStar === 0) {
       return;
     } else if(!Number.isInteger(parseInt(exchangeStar))){
+      return;
+    } else if(exchangeStar > byeolCnt) {
+      console.log("z")
+      context.action.alert({
+        msg: '환전 신청별은 보유 별보다 같거나 작아야 합니다.',
+        callback: () => {
+          context.action.alert({
+            visible: false
+          })
+        }
+      })
       return;
     } else {
       const res = await Api.exchangeCalc({
@@ -385,6 +409,7 @@ export default (props) => {
                 uploadType: 'exchange'
               }
             })
+            console.log(res);
             if (res.result === 'success') {
               if(targetName === "idcard") {
                 setIdPhotoPath(res.data.path)
@@ -424,6 +449,13 @@ export default (props) => {
     }).open();
   }
 
+  useEffect(() => {
+    if(profile) {
+      setByeolCnt(profile.byeolCnt);
+      setIsSpecial(profile.isSpecial);
+    }
+  }, [])
+
   return (
       <React.Fragment>
           {
@@ -455,7 +487,7 @@ export default (props) => {
                           <div className="point">
                               <div className="point__list point__list--left">
                               <div className="point__label">보유 별</div>
-                              <div className="point__value">600</div>
+                              <div className="point__value">{byeolCnt}</div>
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
@@ -505,7 +537,7 @@ export default (props) => {
                           <div className="PayView__list">
                               <div className="PayView__title">예금주</div>
                               <div className="PayView__input">
-                              <input type="text" value="달나라" className="PayView__input--text" onChange={(e) => setName(e.target.value)} />
+                              <input type="text" className="PayView__input--text" onChange={(e) => setName(e.target.value)} />
                               </div>
                           </div>
 
@@ -616,7 +648,7 @@ export default (props) => {
               
           }
           
-          
+          <Message />
       </React.Fragment>
   )
 }
