@@ -44,6 +44,8 @@ const TempPage = React.lazy(() => import('pages/temp'))
 
 const TestPage = React.lazy(() => import('pages/test_page'))
 
+const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
+
 export default () => {
   return (
     <React.Suspense
@@ -85,6 +87,7 @@ export default () => {
         <Route exact path="/temp_test" component={TestPage} />
         <Route exact path="/temp_test/:path" component={TestPage} />
         <Route exact path="/temp_page" component={TempPage} />
+        <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
