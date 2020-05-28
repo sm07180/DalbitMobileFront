@@ -55,7 +55,7 @@ export default props => {
           <div className="exchangeList">
             결제금액
             <div className="exchangeList__text">
-              <div className="exchangeList__text exchangeList__text--purple">{prdtPrice}</div>원
+              <div className="exchangeList__text exchangeList__text--purple">{prdtPrice.toLocaleString()}</div>원
             </div>
           </div>
           <div className="exchangeList">
