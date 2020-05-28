@@ -75,7 +75,7 @@ export default (props) => {
       data: {...paramData}
     });
     const { result, data } = res;
-
+    
     console.log(res);
     if(result === "success") {
       props.history.push({
@@ -441,13 +441,50 @@ export default (props) => {
   }
 
   const serachAddr = () => {
+    const element_layer = document.getElementById("layer");
+    
     new window.daum.Postcode({
       oncomplete: (data) => {
         setAddress1(data.address);
         setZonecode(data.zonecode);
-      }
-    }).open();
+
+        element_layer.style.display = "none";
+      },
+      width : '100%',
+      height : '100%',
+      maxSuggestItems : 5
+    }).embed(element_layer);
+
+    element_layer.style.display = "block";
+
+    initLayerPosition();
   }
+
+  const closeDaumPostCode = () => {
+    const element_layer = document.getElementById("layer");
+    element_layer.style.display = "none";
+  }
+
+  const backHandle = () => {
+    props.history.goBack()
+  }
+
+  const initLayerPosition = () =>{
+    var width = 300; //우편번호서비스가 들어갈 element의 width
+    var height = 500; //우편번호서비스가 들어갈 element의 height
+    var borderWidth = 2; //샘플에서 사용하는 border의 두께
+    const element_layer = document.getElementById("layer");
+    const closeBtn = document.getElementById("layer__close");
+    // 위에서 선언한 값들을 실제 element에 넣는다.
+    // element_layer.style.width = width + 'px';
+    element_layer.style.height = height + 'px';
+    element_layer.style.border = borderWidth + 'px solid';
+    // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+    element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+    element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    closeBtn.style.right = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth - 20) + 'px';
+    closeBtn.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+}
 
   useEffect(() => {
     if(profile) {
@@ -462,7 +499,7 @@ export default (props) => {
               status === 0 ? (
                   <>
                       <div className="header">
-                          <img src={BackBtn} className="header__button--back" />
+                          <img src={BackBtn} className="header__button--back" onClick={backHandle} />
                           <h1 className="header__title">환전하기</h1>
                       </div>
 
@@ -647,7 +684,9 @@ export default (props) => {
               )
               
           }
-          
+          <div id="layer">
+            <button id="layer__close" onClick={closeDaumPostCode}>X</button>
+          </div>
           <Message />
       </React.Fragment>
   )
