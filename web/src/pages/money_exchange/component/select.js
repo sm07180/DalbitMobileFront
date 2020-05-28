@@ -67,11 +67,16 @@ export default props => {
 }
 
 const SelectListWrap = styled.div`
-  border: 1px solid #632beb;
+  border: 1px solid #bdbdbd;
   border-top: 1px solid #fff;
-  height:200px;
+  padding-top:10px;
+  background:#fff;
+  height:194px;
   overflow-y:auto;  
-  margin-top: -1px;
+  margin-top: -4px;
+  border-bottom-left-radius:4px;
+  border-bottom-right-radius:4px;
+
   /* animation-duration: 0.1s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -81,7 +86,7 @@ const SelectListWrap = styled.div`
     position: absolute;
     width: 100%;
     z-index: 10;
-    top: 36px;
+    top: 45px;
     opacity: 1;
     transform: translateY(0);
   }
@@ -92,7 +97,7 @@ const SelectListWrap = styled.div`
     transform: translateY(-10px);
     transform: scale(0);
     position: absolute;
-    top: 36px;
+    top: 45px;
     z-index: 10;
   }
 
@@ -101,9 +106,8 @@ const SelectListWrap = styled.div`
   }
 
   .box-list {
-    height: 36px;
-    line-height: 36px;
-    padding: 0px 10px;
+    padding:12px;
+  box-sizing:border-box;
 
     color: #424242;
     font-size: 14px;
@@ -125,14 +129,14 @@ const Selected = styled.div`
 
   min-width: 80px;
   box-sizing: border-box;
-  border: 1px solid #632beb;
+  border: 1px solid #bdbdbd;
   font-size: 14px;
-  color: #632beb;
+  color: #424242;
   outline: none;
+  border-radius:4px;
   letter-spacing: -0.5px;
-  line-height: 36px;
-  height: 36px;
-  padding-left: 10px;
+  padding:12px;
+  box-sizing:border-box;
   &.open {
     &::before {
       transform: rotate(135deg);
@@ -147,8 +151,8 @@ const Selected = styled.div`
     content: '';
     width: 10px;
     height: 2px;
-    top: 16px;
-    right: 9px;
+    top: 20px;
+    right: 16px;
     background-color: #632beb;
     transform: rotate(45deg);
     transition-property: transform;
@@ -161,8 +165,8 @@ const Selected = styled.div`
     content: '';
     width: 10px;
     height: 2px;
-    top: 16px;
-    right: 3px;
+    top: 20px;
+    right: 10px;
     background-color: #632beb;
     transform: rotate(-45deg);
     transition-property: transform;

@@ -243,6 +243,7 @@ input[type="file"] {
     color: #8556f6;
     border-radius: 4px;
     display: block;
+    font-weight:600;
   }
 }
 
@@ -399,6 +400,7 @@ input[type="file"] {
   }
 
   &__checkBox {
+    width:24px;
     display: inline-block;
     margin-right: 8px;
   }
@@ -418,6 +420,8 @@ input[type="file"] {
   height: 40px;
   color: #fff;
   background: #632beb;
+  margin-bottom:50px;
+  font-weight:600;
 }
 
 .exchange {
