@@ -26,9 +26,7 @@ export default props => {
   }
 
   const selectedClassName = opened ? 'open' : ''
-  const selectListClassName = opened !== null ? (opened ? 'open' : 'open') : 'init'
-
-  // const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
+  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
     return () => {}
