@@ -55,7 +55,8 @@ export default props => {
             apprno: apprno
           }
           //alert(JSON.stringify(payInfo))
-          sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
+          //sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
+          sessionStorage.setItem('pay_info', 'store')
           window.location.href = '/'
         }
       }
