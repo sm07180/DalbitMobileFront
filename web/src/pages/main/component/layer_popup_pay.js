@@ -56,7 +56,7 @@ export default props => {
           <div className="exchangeList">
             결제금액
             <div className="exchangeList__text">
-              <div className="exchangeList__text exchangeList__text--purple">{Utility.addComma(prdtPrice)}</div>원
+              <div className="exchangeList__text exchangeList__text--purple">{Utility.addComma(prdtPrice)}</div>원 (부가세 포함)
             </div>
           </div>
           <div className="exchangeList">
@@ -66,23 +66,24 @@ export default props => {
             결제수단 <div className="exchangeList__text">{payType}</div>
           </div>
           {payType === '휴대폰 결제' ? (
-            <div className="exchangeList">
-              휴대폰번호 <div className="exchangeList__text">{phoneNo}</div>
-            </div>
+            <>
+              <div className="exchangeList">
+                휴대폰번호 <div className="exchangeList__text">{Utility.phoneAddHypen(phoneNo)}</div>
+              </div>
+              <div className="exchangeList">
+                주문번호 <div className="exchangeList__text">{orderId}</div>
+              </div>
+            </>
           ) : (
             <>
               <div className="exchangeList">
-                카드명 <div className="exchangeList__text">{cardName}</div>
+                결제카드 <div className="exchangeList__text">{cardName}</div>
               </div>
               <div className="exchangeList">
-                카드번호 <div className="exchangeList__text">{cardNum}</div>
+                승인번호 <div className="exchangeList__text">{apprno}</div>
               </div>
             </>
           )}
-
-          <div className="exchangeList">
-            주문번호 <div className="exchangeList__text">{orderId}</div>
-          </div>
 
           <div className="exchangeList__notice">
             결제 내역은 마이페이지 > 내지갑에서 확인하실 수 있습니다.
