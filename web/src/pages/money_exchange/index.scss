@@ -191,6 +191,17 @@ input[type="file"] {
     display: flex;
     justify-content: space-between;
   }
+  &__special {
+    margin-top: 16px;
+    &--title {
+      font-size: 16px;
+    }
+    &--point {
+      font-size: 14px;
+      color: #ec455f;
+      margin-top: 8px;
+    }
+  }
 }
 
 .point {
