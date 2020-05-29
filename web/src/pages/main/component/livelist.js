@@ -26,7 +26,7 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial} = list
 
     return (
       <LiveList
@@ -40,6 +40,7 @@ const makeContents = props => {
             <img className="type-icon" src={audioIcon} />
             <div className="type-text">{broadcastLive[roomType]}</div>
             {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+              {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
           </div>
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
@@ -99,6 +100,23 @@ const LiveList = styled.div`
     &:hover:before {
       display: block;
     }
+  }
+
+  .specialIcon {
+    display: inline-block;
+    width: 62px;
+    height: 16px;
+    margin-left: 4px;
+    border-radius: 10px;
+    background-color: #ec455f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align:center;
   }
 
   .broadcast-img {
