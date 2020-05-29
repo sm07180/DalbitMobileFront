@@ -103,9 +103,9 @@ export default (props) => {
       })
       return;
     }
-    if(exchangeStar < 600) {
+    if(exchangeStar < 570) {
       context.action.alert({
-        msg: "환전 신청별은 600개 이상이어야 합니다.",
+        msg: "환전 신청별은 570개 이상이어야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -456,8 +456,10 @@ export default (props) => {
     }).embed(element_layer);
 
     element_layer.style.display = "block";
-
+    
     initLayerPosition();
+    
+    
   }
 
   const closeDaumPostCode = () => {
@@ -481,17 +483,20 @@ export default (props) => {
     element_layer.style.border = borderWidth + 'px solid';
     // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
     element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
-    element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    element_layer.style.top = (((window.screen.height || document.documentElement.clientHeight) - height)/2 - borderWidth - 50) + 'px';
     closeBtn.style.right = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth - 20) + 'px';
-    closeBtn.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    closeBtn.style.top = (((window.screen.height || document.documentElement.clientHeight) - height)/2 - borderWidth - 50) + 'px';
 }
 
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
       setIsSpecial(profile.isSpecial);
+      if(profile.byeolCnt >= 570) {
+        setExchangeStar(profile.byeolCnt);
+      }
     }
-  }, [])
+  }, [profile])
 
   return (
       <React.Fragment>
@@ -516,10 +521,10 @@ export default (props) => {
                             isSpecial &&
                             <div className="myStar__special">
                               <p className="myStar__special--title">DJ님은 스페셜 DJ 입니다.</p>
-                              <p className="myStar__special--point">스페셜 DJ의 경우 환전 실수령액이 10% 추가 됩니다.</p>
+                              <p className="myStar__special--point">스페셜 DJ의 경우 환전 실수령액이 5% 추가 됩니다.</p>
                             </div>
                           }
-                          <p className="myStar__notice">* 별은 600개 이상이어야 환전 신청이 가능하며, 별 1개당 KRW 60으로 환전됩니다.</p>
+                          <p className="myStar__notice">* 별은 570개 이상이어야 환전 신청이 가능하며, 별 1개당 KRW 60으로 환전됩니다.</p>
 
                           <div className="point">
                               <div className="point__list point__list--left">
@@ -528,7 +533,7 @@ export default (props) => {
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
-                              <input type="number" className="point__value  point__value--input" onChange={(e) => setExchangeStar(e.target.value)} />
+                              <input type="number" value={exchangeStar} className="point__value  point__value--input" onChange={(e) => setExchangeStar(e.target.value)} />
                               </div>
                           </div>
 
@@ -664,21 +669,74 @@ export default (props) => {
                           <h1 className="header__title">환전 유의 사항</h1>
                       </div>
                       <div className="content">
-                          <div className="exchange">
+                        <div className="exchange">
                           <div className="exchange__list">
-                              <i className="exchange__list--icon">∙</i> 회원가입자와 신청자가 일치하지 않을 경우 환전신청 승인이 거절됩니다.
+                            <div className="exchange__list--title">◈ 환전은?</div>
+                            <div className="exchange__list--gray">
+                              방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.
+                              <br />방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다. 
+                              <br />또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다.
+                              <br />(원천징수세액 3.3%, 이체수수료 500원 제외) 
+                              <br />★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.
+                            </div>
                           </div>
                           <div className="exchange__list">
-                              <i className="exchange__list--icon">∙</i> 이전에 등록하신 정보가 있는 경우, 재입력 불편함이 없도록 이전 정보가
-                              보여집니다.
+                            <div className="exchange__list--title">◈ 환전방법</div>
+                            <div className="exchange__list--gray">
+                              1.	(세금신고를 위해) 환전 신청자는 본인확인을 위한 정확한 정보를 입력합니다.
+                              <br/>2.	본인확인은 본인임을 증명할 신분증을 첨부합니다. 
+                              <br/>(주민등록증, 운전면허증, 주민등록등본, 여권 등 사본)
+                              <br/>3.	환전처리 후 입금할 본인통장 사본을 첨부합니다.
+                              <br/>4.	[환전 신청하기]버튼을 클릭하면 신청완료!!
+                              <br/>5.	스페셜 DJ의 경우 일반회원과의 차별화된 환전정책을 제공합니다.
+                            </div>
                           </div>
                           <div className="exchange__list">
-                              <i className="exchange__list--icon">∙</i> 환전신청 내역은 관리자가 확인 후 운영원칙을 위반한 경우는 환전이 거부됩니다.
+                            <div className="exchange__list--title">◈ 환전신청 후 입금일정</div>
+                            <div className="exchange__list--gray">
+                              -	환전 신청 마감 : 매 주 일요일, 수요일 (주2회)
+                              <br />-	서류확인 및 입금 : 일요일까지 신청 건은 월요일, 수요일까지 신청 건은 목요일 순차적으로 처리됩니다.
+                              <br />-	단, 신청자가 많을 경우나 공휴일인 경우 다음날 환전처리가 될 수 있습니다.
+                              <br />※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
+                              <br />(SMS결과는 휴대폰 연락처가 있는 회원에게만 발송하여 드립니다.)
+                            </div>
                           </div>
                           <div className="exchange__list">
-                              <i className="exchange__list--icon">∙</i> 입력하신 입금정보가 불일치할 경우 환전되지 않습니다.
+                            <div className="exchange__list--title">◈ 유의사항</div>
+                            <div className="exchange__list--gray">
+                              1. 입금정보는 개인소득신고용으로 사용되는 필수 입력 정보입니다.
+                              <br />2. 회원가입자와 신청자가 일치하지 않을 경우 환전 승인이 거부됩니다.
+                              <br />3. 입력하신 입금정보가 증빙서류와 일치하지 않은 경우 환전 승인이 거부됩니다.
+                              <br />4. 환전 신청 시 입력한 정보는 재입력의 불편함이 없도록 입금정보가 암호화되어 저장됩니다.
+                              <br /><span className="exchange__list--red">5. 부정적인 행위로 수집된 “달”, “별”에 대한 정황이 포착될 경우 환전 승인이 거부됩니다.</span>
+                              <br /><span className="exchange__list--red">6. 운영정책을 위반하여 정지 상태 회원은 환전 승인이 거부됩니다.</span>
+                              <br />7. 미성년자 환전 신청 시 부모동의 또는 가족관계 증명서를 추가 요청할 수 있습니다.
+                            </div>
                           </div>
+                          <div className="exchange__list">
+                            <div className="exchange__list--title">◈ 환전 불가 서류</div>
+                            <div className="exchange__list--gray">
+                              - (X) 정보 확인이 불분명한 서류 
+                              <br />- (X) 학생증 
+                              <br />- (X) 건강보험증 
+                              <br />- (X) 기타 민간 자격증 
+                              <br />- (X) 수기 작성한 서류 
+                              <br />- (X) 기타 기준에 부합하지 않은 모든 서류
+                            </div>
                           </div>
+                          <div className="exchange__list">
+                            <div>※ 해당 환전 정책은 서비스 진행 중이더라도 변경될 수 있고, 정책 변경 시 회원에 대한 고지 후 변경정책에 따른 서비스를 진행할 수 있습니다.</div>
+                          </div>
+                          <div className="exchange__list">
+                            <div>※ 아이템 선물을 원하는 회원께서는 “별”을 "달"로 교환하여 이용이 가능합니다.</div>
+                          </div>
+                          <div className="exchange__list">
+                            <div>
+                              - 별을 달로 교환하는 방법 : “마이페이지>내지갑>별”에서 [달교환] 버튼을 클릭하시면
+                              즉시 처리되어 아이템선물이 가능합니다. (수수료 없음)
+                            </div>
+                          </div>
+                        </div>
                       </div>
                   </React.Fragment>
               )

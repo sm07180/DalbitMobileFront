@@ -188,7 +188,7 @@ const CoinChargeBtn = styled.button`
     width: 76px;
     margin-top: 0 !important;
     margin-left: 4px;
-    background: #e1e1e1;
+    background: #632beb;
   }
 `
 const CoinCurrentStatus = styled.div`

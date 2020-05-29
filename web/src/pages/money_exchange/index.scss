@@ -439,16 +439,27 @@ input[type="file"] {
   margin-top: 22px;
   display: flex;
   flex-direction: column;
+  font-family: NanumSquareB;
   &__list {
     padding-bottom: 12px;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 20px;
     position: relative;
     display: flex;
+    flex-direction: column;
     flex: 1;
-    &--icon {
-      align-content: flex-start;
-      width: 10px;
+    &--title {
+      margin-bottom: 7px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    &--red {
+      color: red;
+    }
+
+    &--gray {
+      color: dimgray;
     }
   }
 }
