@@ -25,7 +25,7 @@ export default (props) => {
       </div>
       <div className="exchangeList">
       환전 실수령액  <div className="exchangeList__text">
-      <div className="exchangeList__text exchangeList__text--purple">{realCash}</div>
+      <div className="exchangeList__text exchangeList__text--purple">{Number(realCash).toLocaleString()}</div>
         원</div>
       </div>
       <div className="exchangeList">
