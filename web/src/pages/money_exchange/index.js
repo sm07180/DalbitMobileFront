@@ -31,10 +31,11 @@ export default (props) => {
   const [status, setStatus] = useState(0);
   const [check, setCheck] = useState(false); //개인정보 수집 동의
   const [exchangeStar, setExchangeStar] = useState(0); //환전 신청 별
+  const [exchangeStarStr, setExchangeStarStr] = useState("0") //환전 신청 별 with comma
   const [exchangeCalc, setExchangeCalc] = useState(initialCalc);
 
   const [name, setName] = useState("") // 예금주
-  const [selectBank, setSelectBank] = useState(""); // 은행
+  const [selectBank, setSelectBank] = useState("0"); // 은행
   const [account, setAccount] = useState(0) // 계좌번호
   const [fSocialNo, setFSocialNo] = useState("") // 주민번호 앞자리
   const [bSocialNo, setBSocialNo] = useState("") // 주민번호 뒷자리
@@ -75,8 +76,6 @@ export default (props) => {
       data: {...paramData}
     });
     const { result, data } = res;
-    
-    console.log(res);
     if(result === "success") {
       props.history.push({
         pathname: "/money_exchange_result",
@@ -85,7 +84,7 @@ export default (props) => {
 
     } else {
       context.action.alert({
-        msg: '알 수 없는 문제로 환전신청에 실패하였습니다. 입력값을 확인해 주세요',
+        msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -112,7 +111,7 @@ export default (props) => {
       })
       return;
     }
-    if(exchangeStar > byeolCnt) {
+    if( exchangeStar > byeolCnt) {
       context.action.alert({
         msg: "환전 신청별은 보유 별보다 작거나 같아야 합니다.",
         callback: () => {
@@ -130,7 +129,7 @@ export default (props) => {
       })
       return;
     }
-    if(selectBank === "") {
+    if(selectBank === "0") {
       context.action.alert({
         msg: "은행을 선택해주세요",
         callback: () => {
@@ -199,13 +198,12 @@ export default (props) => {
 
   }
 
-  const fnExchangeCalc = async () => {
+  const fnExchangeCalc = async () => {    
     if(exchangeStar === 0) {
       return;
     } else if(!Number.isInteger(parseInt(exchangeStar))){
       return;
     } else if(exchangeStar > byeolCnt) {
-      console.log("z")
       context.action.alert({
         msg: '환전 신청별은 보유 별보다 같거나 작아야 합니다.',
         callback: () => {
@@ -388,8 +386,6 @@ export default (props) => {
           } else if(targetName === "bankbook") {
             setBankBookUploading(true)
           }
-          
-          console.log(originalCacheURL)
   
           img.onload = async () => {
             const limitSize = 1280
@@ -409,7 +405,6 @@ export default (props) => {
                 uploadType: 'exchange'
               }
             })
-            console.log(res);
             if (res.result === 'success') {
               if(targetName === "idcard") {
                 setIdPhotoPath(res.data.path)
@@ -420,8 +415,6 @@ export default (props) => {
                 setBankBookUploading(false)
                 setBankBookName(fileName)
               }
-              
-              console.log(res);
             } else {
               context.action.alert({
                 msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
@@ -488,6 +481,12 @@ export default (props) => {
     closeBtn.style.top = (((window.screen.height || document.documentElement.clientHeight) - height)/2 - borderWidth - 50) + 'px';
 }
 
+const handleChange = (value) => {  
+  setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
+  setExchangeStar(Number(value.split(",").join("")));
+  
+}
+
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
@@ -529,11 +528,11 @@ export default (props) => {
                           <div className="point">
                               <div className="point__list point__list--left">
                               <div className="point__label">보유 별</div>
-                              <div className="point__value">{byeolCnt}</div>
+                              <div className="point__value">{Number(byeolCnt).toLocaleString()}</div>
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
-                              <input type="number" value={exchangeStar} className="point__value  point__value--input" onChange={(e) => setExchangeStar(e.target.value)} />
+                              <input type="text" value={exchangeStar.toLocaleString()} className="point__value  point__value--input" onChange={(e) => handleChange(e.target.value)} />
                               </div>
                           </div>
 
@@ -544,30 +543,30 @@ export default (props) => {
                           <div className="pay">
                               <div className="pay__list pay__list--margin">
                                 <div className="pay__label pay__label--title">환전 예상 금액</div>
-                                <div className="pay__value">{exchangeCalc.basicCash}</div>
+                                <div className="pay__value">{Number(exchangeCalc.basicCash).toLocaleString()}</div>
                               </div>
                               {
                                 exchangeCalc.benefitCash &&
                                 exchangeCalc.benefitCash > 0 ?
                                 (<div className="pay__list">
                                   <div className="pay__list--small">스페셜DJ 혜택(+5%)</div>
-                                  <div className="pay__list--small">{exchangeCalc.benefitCash}</div>
+                                  <div className="pay__list--small">+{Number(exchangeCalc.benefitCash).toLocaleString()}</div>
                                 </div>)
                                 : (<> </>)
                               }
                               <div className="pay__list">
                                 <div className="pay__list--small">원천징수세액</div>
-                                <div className="pay__list--small">{exchangeCalc.taxCash}</div>
+                                <div className="pay__list--small">-{Number(exchangeCalc.taxCash).toLocaleString()}</div>
                               </div>
                               <div className="pay__list">
                                 <div className="pay__list--small">이체수수료</div>
-                                <div className="pay__list--small">{exchangeCalc.feeCash}</div>
+                                <div className="pay__list--small">-{Number(exchangeCalc.feeCash).toLocaleString()}</div>
                               </div>
                               <div className="pay__list pay__list--line">
                                 <div className="pay__label pay__label--title">환전 실수령액</div>
                                 <div className="pay__value">
                                   <div className="pay__value--text">KRW</div>
-                                  <div className="pay__value--purple">{exchangeCalc.realCash}</div>
+                                  <div className="pay__value--purple">{Number(exchangeCalc.realCash).toLocaleString()}</div>
                                 </div>
                               </div>
                           </div>
@@ -666,7 +665,7 @@ export default (props) => {
                   <React.Fragment>
                       <div className="header">
                           <img src={BackBtn} className="header__button--back" onClick={() => setStatus(0)} />
-                          <h1 className="header__title">환전 유의 사항</h1>
+                          <h1 className="header__title">환전 안내</h1>
                       </div>
                       <div className="content">
                         <div className="exchange">
@@ -751,6 +750,7 @@ export default (props) => {
 }
 
 const bankList = [
+  {"text":"은행명", "value":"0"},
   {"text":"경남은행","value":"39"},
   {"text":"광주은행","value":"34"},
   {"text":"국민은행","value":"4"},
