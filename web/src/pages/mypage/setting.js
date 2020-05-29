@@ -393,7 +393,7 @@ export default props => {
                     {profile.gender === 'm' ? (
                       <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
                     ) : (
-                      <GenderTab className={profile.gender === 'f' ? '' : 'off'}>여자</GenderTab>
+                      <GenderTab className={profile.gender === 'f' ? 'woman' : 'off woman'}>여자</GenderTab>
                     )}
                   </>
                 )}
@@ -496,6 +496,10 @@ const GenderTab = styled.div`
       vertical-align: top;
       margin-top: 2px;
     }
+  }
+
+  &.woman::before {
+    background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
   }
 
   &.off {
