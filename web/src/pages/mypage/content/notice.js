@@ -13,7 +13,7 @@ import Header from '../component/header.js'
 import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 import Checkbox from './checkbox'
-// image,color
+// image,color //
 import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
