@@ -52,10 +52,10 @@ const makeContents = props => {
                   <img src={likeIcon} />
                   <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
               </div>
-              <div className="value">
+              {/*<div className="value">
                   <img src={starIcon} />
                   <span>{giftCnt !== undefined && giftCnt.toLocaleString()}</span>
-              </div>
+              </div>*/}
           </div>
         </div>
       </LiveList>
