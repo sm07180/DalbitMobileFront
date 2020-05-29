@@ -599,16 +599,16 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="text" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
+                              <input type="text" maxLength="6" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
                               <span className="PayView__input--line">-</span>
-                              <input type="text" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
+                              <input type="text" maxLength="7" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="text" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="text" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
                               </div>
                           </div>
                           <div className="PayView__list">

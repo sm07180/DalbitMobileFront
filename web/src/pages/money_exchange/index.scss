@@ -21,6 +21,12 @@ input[type="file"] {
       top: 6px;
       left: 10px;
     }
+    &--close {
+      width: 36px;
+      position: absolute;
+      top: 6px;
+      right: 10px;
+    }
   }
 }
 
