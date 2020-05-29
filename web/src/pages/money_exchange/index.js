@@ -513,7 +513,7 @@ export default (props) => {
                           <div className="charge__title">
                               <div className="mystar__title">환전 정보</div>
                               <div className="charge__title--point" onClick={() => setStatus(1)}>
-                                유의사항
+                                환전 안내
                                 <img src={IconNotice} className="charge__title--object" />
                               </div>
                           </div>
@@ -550,7 +550,7 @@ export default (props) => {
                                 exchangeCalc.benefitCash &&
                                 exchangeCalc.benefitCash > 0 ?
                                 (<div className="pay__list">
-                                  <div className="pay__list--small">스페셜DJ 혜택(+10%)</div>
+                                  <div className="pay__list--small">스페셜DJ 혜택(+5%)</div>
                                   <div className="pay__list--small">{exchangeCalc.benefitCash}</div>
                                 </div>)
                                 : (<> </>)
