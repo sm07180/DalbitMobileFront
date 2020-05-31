@@ -127,7 +127,6 @@ const Notice = props => {
           setTotalPageNumber(totalPage)
         }
         setListDetailed(list)
-        //console.log(response)
       } else {
         context.action.alert({
           callback: () => {},
