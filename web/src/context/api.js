@@ -1445,6 +1445,15 @@ export default class API {
     const {params} = obj
     return await ajax({url: `/banner`, method: 'GET', params: params})
   }
+
+  /**
+   * @brief 내부 방갯수, 청취자수 조회
+   * @method "POST"
+   * @create 이재은 2020.06.01
+   */
+  static getBroadCnt = async () => {
+      return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
+  }
 }
 API.customHeader = null
 API.authToken = null

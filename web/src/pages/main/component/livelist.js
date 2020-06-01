@@ -118,6 +118,8 @@ const LiveList = styled.div`
     line-height: 1.33;
     letter-spacing: normal;
     text-align:center;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   .broadcast-img {
@@ -177,7 +179,8 @@ const LiveList = styled.div`
         color: #fff;
         font-size: 11px;
         /* padding: 1px 6px 0px 6px; */
-        padding: 0 6px;
+        padding-left: 6px;
+        padding-right: 6px;
         height: 16px;
         line-height: 16px;
       }
