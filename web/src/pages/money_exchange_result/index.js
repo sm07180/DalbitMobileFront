@@ -2,7 +2,7 @@ import React from 'react';
 //import BackBtn from './static/ic_back.svg'
 import CloseBtn from './static/ic_close.svg';
 import './index.scss'
-import SignalingHandler from 'components/lib/copysh';
+
 export default (props) => {
   console.log(props);
   const {history, location} = props;

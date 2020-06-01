@@ -225,7 +225,7 @@ export default (props) => {
         setExchangeCalc({...data});
       } else {
         context.action.alert({
-          msg: message,
+          msg: "별 개수는 반드시 570개 이상이어야 합니다.",
           callback: () => {
             context.action.alert({visible: false})
           }
@@ -592,33 +592,33 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">계좌번호</div>
                               <div className="PayView__input">
-                              <input type="text" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="text" maxLength="6" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
                               <span className="PayView__input--line">-</span>
-                              <input type="text" maxLength="7" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
+                              <input type="password" maxLength="7" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="text" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
                               </div>
                           </div>
                           <div className="PayView__list">
                               <div className="PayView__title">주소</div>
                               <div className="PayView__input">
-                              <div className="PayView__address--list">
+                              <div className="PayView__address--list" onClick={serachAddr}>
                                   <input type="text" className="PayView__input--text adressBg" disabled={true} value={zonecode}/>
                                   <button className="PayView__input--button" onClick={serachAddr}>주소검색</button>
                               </div>
-                              <div className="PayView__address--list">
+                              <div className="PayView__address--list" onClick={serachAddr}>
                                   <input type="text" value={address1} className="PayView__input--text adressBg" disabled={true} />
                               </div>
                               <div className="PayView__address--list">
@@ -630,7 +630,13 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">신분증사본</div>
                               <div className="PayView__input--file">
-                              <input type="text" value={idPhotoName} disabled={true} className="PayView__input--text" />
+                              <label htmlFor="id-upload-text" className="PayView__input--label">
+                                {
+                                  idPhotoName !== "" ? 
+                                  idPhotoName : "신분증사본을 첨부해주세요"
+                                }
+                              </label>
+                              <input type="file" name="idcard" id="id-upload-text" className="PayView__input--text" placeholder="신분증사본을 첨부해주세요" onChange={profileImageUpload} />
                               <label htmlFor="id-upload" className="PayView__input--button">찾아보기</label>
                               <input id="id-upload" name="idcard" type="file" onChange={profileImageUpload}/>
                               </div>
@@ -639,9 +645,16 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">통장사본</div>
                               <div className="PayView__input--file">
-                              <input type="text" value={bankBookName} disabled={true} className="PayView__input--text" />
-                              <label htmlFor="bankbook-upload" className="PayView__input--button">찾아보기</label>
-                              <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload}/>
+                                <label htmlFor="bankbook-upload-text" className="PayView__input--label">
+                                  {
+                                    bankBookName !== "" ? 
+                                    bankBookName : "통장사본을 첨부해주세요"
+                                  }
+                                </label>
+                                
+                                <input type="file" name="bankbook" id="bankbook-upload-text" className="PayView__input--text" placeholder="통장사본을 첨부해주세요" onChange={profileImageUpload} />
+                                <label htmlFor="bankbook-upload" className="PayView__input--button">찾아보기</label>
+                                <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload}/>
                               
                               </div>
                           </div>
