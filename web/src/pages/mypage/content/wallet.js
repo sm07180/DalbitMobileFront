@@ -134,14 +134,14 @@ export default props => {
             </>
           ) : (
             <>
-              <CoinChargeBtn
+            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
                 className="exchange"
                 onClick={() => {
                   history.push('/exchange')
                 }}>
                 교환
-              </CoinChargeBtn>
-            { (__NODE_ENV === 'dev' || __NODE_ENV === 'stage') && context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
+              </CoinChargeBtn> }
+            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
                 className="exchange"
                 onClick={() => {
                   history.push('/money_exchange')
