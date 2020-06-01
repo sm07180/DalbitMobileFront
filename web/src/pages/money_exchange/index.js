@@ -193,6 +193,15 @@ export default (props) => {
       })
       return;
     }
+
+    if(!check) {
+      context.action.alert({
+        msg: "개인정보 수집 및 이용에 동의하셔야 환전 신청이 가능합니다.",
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
     
     applyExchange();
 
@@ -487,6 +496,13 @@ const handleChange = (value) => {
   
 }
 
+const handleSocial = (value) => {
+  setFSocialNo(value);
+  if(value.length === 6) {
+    document.getElementById("bsocialNo").focus();
+  }
+}
+
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
@@ -599,9 +615,9 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
                               <span className="PayView__input--line">-</span>
-                              <input type="password" maxLength="7" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
+                              <input type="password" maxLength="7" id="bsocialNo" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
                               </div>
                           </div>
 
