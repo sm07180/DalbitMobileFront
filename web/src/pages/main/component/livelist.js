@@ -54,10 +54,10 @@ const makeContents = props => {
                   <img src={likeIcon} />
                   <span>{Util.printNumber(likeCnt)}</span>
               </div>
-              {/*<div className="value">
+              <div className="value">
                   <img src={starIcon} />
                   <span>{Util.printNumber(giftCnt)}</span>
-              </div>*/}
+              </div>
           </div>
         </div>
       </LiveList>
