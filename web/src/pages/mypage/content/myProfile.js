@@ -520,6 +520,7 @@ const CountingWrap = styled.div`
   display: flex;
   align-items: center;
   margin-top: 12px;
+
   span {
     display: inline-block;
     font-size: 18px;
@@ -605,6 +606,7 @@ const InfoConfigBtn = styled.div`
     & button {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100px;
       height: 36px;
       color: #424242;
