@@ -17,7 +17,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
-
+// utility
+import Utility, {printNumber} from 'components/lib/utility'
 //svg
 import LiveIcon from '../component/ic_live.svg'
 
@@ -235,10 +236,10 @@ const myProfile = props => {
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
           <span onClick={() => fanContext()}>
-            팬 <em>{profile.fanCnt}</em>
+            팬 <em>{Utility.printNumber(profile.fanCnt)}</em>
           </span>
           <span onClick={() => starContext()}>
-            스타 <em>{profile.starCnt}</em>
+            스타 <em>{Utility.printNumber(profile.starCnt)}</em>
           </span>
           {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
             <div onClick={() => context.action.updateMypageReport(true)}></div>
