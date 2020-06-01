@@ -442,7 +442,9 @@ export default (props) => {
     setSelectBank(value);
   }
 
-  const serachAddr = () => {
+  const serachAddr = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const element_layer = document.getElementById("layer");
     
     new window.daum.Postcode({
@@ -630,11 +632,11 @@ const handleSocial = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">주소</div>
                               <div className="PayView__input">
-                              <div className="PayView__address--list" onClick={serachAddr}>
+                              <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
                                   <input type="text" className="PayView__input--text adressBg" disabled={true} value={zonecode}/>
-                                  <button className="PayView__input--button" onClick={serachAddr}>주소검색</button>
+                                  <button className="PayView__input--button" onClick={(e) => serachAddr(e)}>주소검색</button>
                               </div>
-                              <div className="PayView__address--list" onClick={serachAddr}>
+                              <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
                                   <input type="text" value={address1} className="PayView__input--text adressBg" disabled={true} />
                               </div>
                               <div className="PayView__address--list">
