@@ -201,6 +201,7 @@ export default (props) => {
           context.action.alert({visible: false})
         }
       })
+      return;
     }
     
     applyExchange();
