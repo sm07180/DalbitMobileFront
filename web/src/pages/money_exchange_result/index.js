@@ -4,10 +4,10 @@ import CloseBtn from './static/ic_close.svg';
 import './index.scss'
 
 export default (props) => {
-  console.log(props);
+
   const {history, location} = props;
 
-  const { beyol, realCash, bankCode, accountNo, accountName } = location.state
+  const { byeol, realCash, bankCode, accountNo, accountName } = location.state
 
   const handleClick = () => {
     history.push("/");
@@ -22,7 +22,7 @@ export default (props) => {
     <div className="content">
     <h2 className="charge__title">환전신청 완료</h2>
       <div className="exchangeList">
-      환전 신청 별  <div className="exchangeList__text">{beyol}</div>
+      환전 신청 별  <div className="exchangeList__text">{Number(byeol).toLocaleString()}</div>
       </div>
       <div className="exchangeList">
       환전 실수령액  <div className="exchangeList__text">
