@@ -16,6 +16,7 @@ import peopleIcon from '../static/ico_peaple_g_s.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
 import timeIcon from '../static/ico_time_g_s.svg'
 import moonIcon from '../static/ico_moon_g_s.svg'
+import Util from 'components/lib/utility.js'
 
 //component
 import Figure from './Figure'
@@ -58,19 +59,19 @@ export default props => {
               <>
                 <span>
                   <img src={starIcon} />
-                  {gift !== undefined && gift.toLocaleString()}
+                  {Util.printNumber(gift)}
                 </span>
                 <span>
                   <img src={peopleIcon} />
-                  {listeners !== undefined && listeners.toLocaleString()}
+                  {Util.printNumber(listeners)}
                 </span>
                 <span>
                   <img src={likeIcon} />
-                  {likes !== undefined && likes.toLocaleString()}
+                  {Util.printNumber(likes)}
                 </span>
                 <span>
                   <img src={timeIcon} />
-                  {broadcast !== undefined && broadcast.toLocaleString()}
+                  {Util.printNumber(broadcast)}
                 </span>
               </>
             )}
@@ -78,11 +79,11 @@ export default props => {
               <>
                 <span>
                   <img src={moonIcon} />
-                  {gift !== undefined && gift.toLocaleString()}
+                  {Util.printNumber(gift)}
                 </span>
                 <span>
                   <img src={timeIcon} />
-                  {listen !== undefined && listen.toLocaleString()}
+                  {Util.printNumber(listen)}
                 </span>
               </>
             )}

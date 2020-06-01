@@ -13,6 +13,7 @@ import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
+import Util from 'components/lib/utility.js'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -47,15 +48,15 @@ const makeContents = props => {
           <div className="detail">
             <div className="value">
               <img src={hitIcon} />
-              <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
+              <span>{Util.printNumber(entryCnt)}</span>
             </div>
               <div className="value">
                   <img src={likeIcon} />
-                  <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
+                  <span>{Util.printNumber(likeCnt)}</span>
               </div>
               {/*<div className="value">
                   <img src={starIcon} />
-                  <span>{giftCnt !== undefined && giftCnt.toLocaleString()}</span>
+                  <span>{Util.printNumber(giftCnt)}</span>
               </div>*/}
           </div>
         </div>

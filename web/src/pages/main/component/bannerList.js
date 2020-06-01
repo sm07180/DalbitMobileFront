@@ -6,17 +6,32 @@ import Swiper from 'react-id-swiper'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
+import {OS_TYPE} from "../../../context/config";
+import {Hybrid} from 'context/hybrid'
 
 export default props => {
   const globalCtx = useContext(Context)
   const history = useHistory()
+  const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
 
   const goEvent = (linkUrl, linkType) => {
     //alert(linkUrl)
     if (linkType === 'popup') {
-      window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
+      if(customHeader['os'] === OS_TYPE['Android']) {
+        try{
+          //Hybrid('openUrl', {"url": linkUrl})
+          window.android.openUrl(JSON.stringify({"url": linkUrl}))
+        }catch(e){
+          window.location.href = linkUrl
+        }
+      }else if(customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)){
+        Hybrid('openUrl', linkUrl)
+      }else{
+        //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
+        window.location.href = linkUrl
+      }
     } else {
       //globalCtx.action.updatenoticeIndexNum(linkUrl)
       window.location.href = linkUrl
