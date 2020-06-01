@@ -36,7 +36,7 @@ export default (props) => {
       입금 예정 은행 <div className="exchangeList__text">{
         bankList.find(v => {
           return v.value === bankCode
-        }).text || "은행코드 오류"
+        }).text || "은행명"
       }</div>
       </div>
       <div className="exchangeList">
