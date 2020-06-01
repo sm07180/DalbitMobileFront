@@ -2,7 +2,7 @@
  * @file /mypage/content/my-profile.js
  * @brief 마이페이지 상단에 보이는 내 프로필 component.
  */
-import React, {useEffect, useStet, useContext, useState} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 //route
 import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
@@ -23,33 +23,28 @@ import LiveIcon from '../component/ic_live.svg'
 
 const myProfile = props => {
   const {webview} = props
-
-  const [popup, setPopup] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
-
   //context
   const context = useContext(Context)
-
   const {mypageReport, close, closeFanCnt, closeStarCnt} = context
-
+  // state
+  const [popup, setPopup] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+  const [Zoom, setZoom] = useState(false)
+  const [reportShow, SetShowReport] = useState(false)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  //zoom
-  const [Zoom, setZoom] = useState(false)
+  const myProfileNo = context.profile.memNo
+  //image zoom -- 내 사진 클릭시 확대
   const figureZoom = () => {
     setZoom(true)
   }
-
+  // expCalculate function
   let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
-
-  let expCalc2 = ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100
-  if (expCalc2 == 'Infinity') expCalc = 0
-
-  const myProfileNo = context.profile.memNo
-  //state
-  const [reportShow, SetShowReport] = useState(false)
+  let expPercent = ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100
+  if (expPercent == 'Infinity') expCalc = 0
+  // loading
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
   }
@@ -222,7 +217,7 @@ const myProfile = props => {
             <div className="expWrap">
               <span className="expBegin">0</span>
               <span className="expPer">
-                EXP {Math.floor(((profile.expNext - profile.expBegin) * expCalc2) / 100)} ({`${expCalc}%`})
+                EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)} ({`${expCalc}%`})
               </span>
               <span className="expBegin">{profile.expNext - profile.expBegin}</span>
             </div>
