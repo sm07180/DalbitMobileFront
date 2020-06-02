@@ -12,6 +12,7 @@ import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
+import boostIcon from '../static/ico_like_g.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
 import Util from 'components/lib/utility.js'
 
@@ -27,7 +28,7 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
 
     return (
       <LiveList
@@ -50,14 +51,22 @@ const makeContents = props => {
               <img src={hitIcon} />
               <span>{Util.printNumber(entryCnt)}</span>
             </div>
+              {boostCnt > 0 ?
+              <div className="value">
+                  <img src={boostIcon} />
+                  <span class="txt_boost">{Util.printNumber(likeCnt)}</span>
+              </div>
+              :
               <div className="value">
                   <img src={likeIcon} />
                   <span>{Util.printNumber(likeCnt)}</span>
-              </div>
+              </div>              }
+              {rank < 11 &&
               <div className="value">
                   <img src={starIcon} />
                   <span>{Util.printNumber(giftCnt)}</span>
               </div>
+              }
           </div>
         </div>
       </LiveList>
@@ -101,6 +110,10 @@ const LiveList = styled.div`
     &:hover:before {
       display: block;
     }
+  }
+
+  .txt_boost{
+    color : #ec455f;
   }
 
   .specialIcon {
