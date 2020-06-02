@@ -185,8 +185,7 @@ export default props => {
       /*
        * @가속처리
        */
-      if (windowBottom >= docHeight - 100) {
-        console.log(windowBottom, docHeight)
+      if (windowBottom >= docHeight - 400) {
         showMoreList()
       } else {
       }
