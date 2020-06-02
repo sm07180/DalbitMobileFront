@@ -278,7 +278,6 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    pushMsg = decodeURIComponent(pushMsg)
     if (__NODE_ENV === 'dev') {
         alert('back pushMsg :' + pushMsg)
         alert(typeof pushMsg);
@@ -287,14 +286,15 @@ export default () => {
     const isJsonString = (str) => {
       try {
         var parsed = JSON.parse(str)
-        return typeof parsed == 'Object'
+        return typeof parsed === 'object'
       } catch (e) {
         alert(e)
         return false
       }
     }
 
-    if (typeof pushMsg != 'Object'){
+    if (typeof pushMsg === 'string'){
+      pushMsg = decodeURIComponent(pushMsg)
       if (isJsonString(pushMsg)) {
           pushMsg = JSON.parse(pushMsg)
       } else {
