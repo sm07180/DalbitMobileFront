@@ -21,6 +21,7 @@ const App = () => {
   App.context = () => context
 
   const [ready, setReady] = useState(false)
+  const myInfo = globalCtx.myInfo
 
   const isJsonString = (str) => {
     try {
@@ -129,7 +130,14 @@ const App = () => {
         msg: tokenInfo.message
       })
     }
+
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+        globalCtx.action.updateMyInfo(myInfoRes.data)
+    }
   }
+
+
 
   //useEffect token
   useEffect(() => {
