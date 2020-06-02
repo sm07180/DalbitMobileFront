@@ -23,7 +23,7 @@ export default props => {
       <>
         <div className="userRanking">
           {list.map((item, index) => {
-            const {gender, gift, grade, nickNm, rank, profImg, level, upDown, listen, listeners, likes, broadcast} = item
+            const {gender, gift, grade, nickNm, rank, profImg, level, upDown, listen, listeners, likes, broadcast, fan, dj} = item
             let genderName
             let upDownName
 
@@ -52,10 +52,23 @@ export default props => {
                       <span className="textIndent">{upDown}</span>
                     </span>
                   </p>
-                  <p className="myRanking__left--point">
-                    <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                    45
-                  </p>
+                  {rankType == 'dj' && (
+                    <>
+                      <p className="myRanking__left--point">
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                        {Util.printNumber(dj)}
+                      </p>
+                    </>
+                  )}
+
+                  {rankType == 'fan' && (
+                    <>
+                      <p className="myRanking__left--point">
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                        {Util.printNumber(fan)}
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 <div className="myRanking__right">

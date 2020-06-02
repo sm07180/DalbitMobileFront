@@ -101,9 +101,9 @@ export default props => {
     }
   }, [])
 
-  useEffect(() => {
-    fetchRank()
-  }, [])
+  // useEffect(() => {
+  //   fetchRank()
+  // }, [])
 
   const createRankButton = () => {
     return rankArray.map((item, index) => {
