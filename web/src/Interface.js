@@ -416,7 +416,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      document.removeEventListener('native-push-background', pushBack)
+      document.addEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       /*----react----*/
