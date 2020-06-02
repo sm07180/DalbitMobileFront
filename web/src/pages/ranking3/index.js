@@ -154,8 +154,7 @@ export default props => {
       /*
        * @가속처리
        */
-      if (windowBottom >= docHeight - 400) {
-        console.log(windowBottom, docHeight)
+      if (moreState && windowBottom >= docHeight - 400) {
         showMoreList()
       } else {
       }
@@ -187,7 +186,7 @@ export default props => {
 
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
-      if (res.data.list === false) {
+      if (res.code === '0') {
         if (!next) setList(0)
         // setMoreState(false)
         moreState = false
