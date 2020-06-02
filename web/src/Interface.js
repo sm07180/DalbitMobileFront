@@ -277,7 +277,11 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    const customHeader = JSON.parse(Api.customHeader)
+    pushMsg = decodeURIComponent(pushMsg)
+    if (__NODE_ENV === 'dev') {
+        alert('back pushMsg :' + pushMsg)
+    }
+
     const isJsonString = (str) => {
       try {
         var parsed = JSON.parse(str)
@@ -286,28 +290,13 @@ export default () => {
         return false
       }
     }
-    //-----IOS일때 decode
-    pushMsg = decodeURIComponent(pushMsg)
-    if (customHeader['os'] === OS_TYPE['IOS']) {
+
+    if (typeof pushMsg !== 'object'){
       if (isJsonString(pushMsg)) {
-        pushMsg = JSON.parse(pushMsg)
+          pushMsg = JSON.parse(pushMsg)
       } else {
-        return false
+          return false
       }
-    }
-    //-----Android
-    if (customHeader['os'] === OS_TYPE['Android']) {
-      if (typeof pushMsg !== 'object'){
-        if (isJsonString(pushMsg)) {
-            pushMsg = JSON.parse(pushMsg)
-        } else {
-            return false
-        }
-      }
-    }
-    //--PC
-    if (customHeader['os'] === OS_TYPE['Desktop']) {
-      pushMsg = JSON.parse(pushMsg)
     }
 
     /**
