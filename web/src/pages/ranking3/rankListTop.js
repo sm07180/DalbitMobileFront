@@ -28,7 +28,22 @@ export default props => {
         <div className="userRanking">
           <div className="TopBox">
             {list.map((item, index) => {
-              const {gender, gift, grade, nickNm, rank, profImg, level, upDown, listen, listeners, likes, broadcast} = item
+              const {
+                gender,
+                gift,
+                grade,
+                nickNm,
+                rank,
+                profImg,
+                level,
+                upDown,
+                listen,
+                listeners,
+                likes,
+                broadcast,
+                fan,
+                dj
+              } = item
               let rankName
               let genderName
               let upDownName
@@ -70,12 +85,12 @@ export default props => {
                 <div className="TopBox__item" key={index}>
                   <div className="thumbBox">
                     <img src={frame49} srcSet={`${frame49} 1x, ${frame492x} 2x`} className="thumbBox__frame" />
-                    <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                    <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
 
                   <div>
                     <p className={levelName}>
-                      Lv<strong>{level}</strong>. {grade}
+                      Lv{level} {grade}
                     </p>
                     <div className="nickNameBox">
                       {nickNm}
@@ -86,12 +101,13 @@ export default props => {
                   </div>
 
                   <div className="countBox">
-                    <span className="countBox__item countBox__item--point">
-                      <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                      45
-                    </span>
                     {rankType == 'dj' && (
                       <>
+                        <span className="countBox__item countBox__item--point">
+                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                          {Util.printNumber(dj)}
+                        </span>
+
                         <span className="countBox__item">
                           <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
                           {Util.printNumber(gift)}
@@ -115,6 +131,10 @@ export default props => {
 
                     {rankType == 'fan' && (
                       <>
+                        <span className="countBox__item countBox__item--point">
+                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                          {Util.printNumber(fan)}
+                        </span>
                         <span className="countBox__item">
                           <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
                           {Util.printNumber(gift)}
@@ -131,7 +151,7 @@ export default props => {
                     <p className={rankName}>{rank}</p>
                     <p className="rankingChange">
                       <span className={upDownName}>
-                        <span>{upDown}</span>
+                        <span className="textIndent">{upDown}</span>
                       </span>
                     </p>
                   </div>
