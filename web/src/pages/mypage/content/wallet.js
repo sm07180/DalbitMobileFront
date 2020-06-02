@@ -134,14 +134,20 @@ export default props => {
             </>
           ) : (
             <>
-              <CoinChargeBtn
+            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
+                className="exchange"
                 onClick={() => {
                   history.push('/exchange')
                 }}>
-                달 교환
-              </CoinChargeBtn>
-              {/* <CoinChargeBtn className="white-btn">달 교환</CoinChargeBtn>
-              <CoinChargeBtn>환전하기</CoinChargeBtn> */}
+                교환
+              </CoinChargeBtn> }
+            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
+                className="exchange"
+                onClick={() => {
+                  history.push('/money_exchange')
+                }}>
+                환전
+              </CoinChargeBtn>}
             </>
           )}
         </div>
@@ -175,6 +181,14 @@ const CoinChargeBtn = styled.button`
     background-color: #fff;
     color: #632beb;
     margin-right: 12px;
+  }
+  &.exchange {
+    display: inline-block;
+    flex-direction: inherit;
+    width: 76px;
+    margin-top: 0 !important;
+    margin-left: 4px;
+    background: #632beb;
   }
 `
 const CoinCurrentStatus = styled.div`

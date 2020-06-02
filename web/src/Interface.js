@@ -27,6 +27,10 @@ export default () => {
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
+      case 'native-push-background' :
+          alert('1')
+          pushBack(event)
+          break;
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
         //-----IOS일때 decode
@@ -45,6 +49,16 @@ export default () => {
         //--PC
         if (customHeader['os'] === OS_TYPE['Desktop']) {
             pushMsg = JSON.parse(pushMsg)
+        }
+
+        const {isLogin} = context.token
+        const {push_type} = pushMsg
+        let room_no, mem_no, board_idx
+
+        //개발쪽만 적용
+        if (__NODE_ENV === 'dev') {
+          alert('fore isLogin :' + isLogin)
+          alert('fore push_type :' + JSON.stringify(pushMsg))
         }
 
         //pushMsg = JSON.parse(pushMsg)
@@ -266,8 +280,13 @@ export default () => {
   }
   //푸쉬서버에서 받는형태
   function pushBack(event) {
+    alert("1")
     let pushMsg = event.detail
-    const customHeader = JSON.parse(Api.customHeader)
+    pushMsg = decodeURIComponent(pushMsg)
+    if (__NODE_ENV === 'dev') {
+        alert('back pushMsg :' + pushMsg)
+    }
+
     const isJsonString = (str) => {
       try {
         var parsed = JSON.parse(str)
@@ -276,22 +295,13 @@ export default () => {
         return false
       }
     }
-    //-----IOS일때 decode
-    if (customHeader['os'] === OS_TYPE['IOS']) {
-      pushMsg = decodeURIComponent(pushMsg)
+
+    if (typeof pushMsg !== 'object'){
       if (isJsonString(pushMsg)) {
-        pushMsg = JSON.parse(pushMsg)
+          pushMsg = JSON.parse(pushMsg)
       } else {
-        return false
+          return false
       }
-    }
-    //-----Android
-    if (customHeader['os'] === OS_TYPE['Android']) {
-      if (typeof pushMsg !== 'object') return
-    }
-    //--PC
-    if (customHeader['os'] === OS_TYPE['Desktop']) {
-      pushMsg = JSON.parse(pushMsg)
     }
 
     /**
@@ -316,8 +326,8 @@ export default () => {
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
-      alert('isLogin :' + isLogin)
-      alert('push_type :' + JSON.stringify(pushMsg))
+      alert('back isLogin :' + isLogin)
+      alert('back push_type :' + JSON.stringify(pushMsg))
     }
     //---------------------[분기처리시작]
 
@@ -395,7 +405,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
-    document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
+    document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
 
@@ -410,7 +420,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      document.removeEventListener('native-push-background', pushBack)
+      document.addEventListener('native-push-background', update)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       /*----react----*/

@@ -21,6 +21,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupNotice from './component/layer_popup_notice.js'
+import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 
@@ -74,6 +75,10 @@ export default props => {
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
   const customHeader = JSON.parse(Api.customHeader)
+
+  const [payState, setPayState] = useState(false)
+
+  const [broadCnt, setBroadCnt] = useState(false)
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -160,6 +165,11 @@ export default props => {
     }
   }
 
+  const fetchBroadCnt = async () => {
+    const broadCntRes = await Api.getBroadCnt()
+    setBroadCnt(broadCntRes.data)
+  }
+
   const windowScrollEvent = () => {
     const GnbHeight = 48
     const sectionMarginTop = 24
@@ -224,6 +234,7 @@ export default props => {
   }, [popup])
 
   useEffect(() => {
+    fetchBroadCnt()
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
@@ -231,16 +242,14 @@ export default props => {
     // if (sessionStorage.getItem('popup_notice') === null) {
     //   sessionStorage.setItem('popup_notice', 'y')
     // }
-    if (sessionStorage.getItem('pay_info') === 'store') {
-      globalCtx.action.alert({
-        msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
-        callback: () => {
-          sessionStorage.removeItem('pay_info')
-        }
-      })
+
+    if (sessionStorage.getItem('pay_info') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
+      setPayState(payInfo)
     }
 
     return () => {
+      sessionStorage.removeItem('pay_info')
       window.removeEventListener('popstate', popStateEvent)
       window.removeEventListener('scroll', windowScrollEvent)
       window.removeEventListener('scroll', tempScrollEvent)
@@ -275,6 +284,11 @@ export default props => {
 
   const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
+
   return (
     <Layout {...props}>
       <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
@@ -302,10 +316,14 @@ export default props => {
               <div
                 className="btn"
                 onClick={() => {
-                  if (!broadcastBtnActive) {
-                    RoomMake(globalCtx)
-                    setBroadcastBtnActive(true)
-                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                  } else {
+                    if (!broadcastBtnActive) {
+                      RoomMake(globalCtx)
+                      setBroadcastBtnActive(true)
+                      setTimeout(() => setBroadcastBtnActive(false), 3000)
+                    }
                   }
                 }}>
                 방송하기
@@ -349,13 +367,15 @@ export default props => {
               <StarList list={initData.myStar} />
             </div>
           </div>
-
           <div className="section" ref={LiveSectionRef}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
                 <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
+
+              {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
+              {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
 
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
@@ -418,6 +438,8 @@ export default props => {
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
         {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
+
+        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
   )
@@ -434,6 +456,9 @@ const Content = styled.div`
   }
   .section {
     margin-top: 24px;
+
+    .listener_cnt{color:red;font-weight:700;}
+    .room_cnt{color:blue;font-weight:700;}
 
     .live-list-category {
       position: relative;

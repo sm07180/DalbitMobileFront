@@ -27,6 +27,7 @@ const GlobalProvider = (props) => {
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
   const [token, setToken] = useState(null)
+  const [myInfo, setMyInfo] = useState(null)
 
   const [popup_code, setPopup] = useState('')
   const [popup_visible, setVisible] = useState(false)
@@ -239,6 +240,9 @@ const GlobalProvider = (props) => {
     },
     updateBannerCheck: (bool) => {
       setBannerCheck(bool)
+    },
+    updateMyInfo: (obj) => {
+        setMyInfo(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -250,6 +254,7 @@ const GlobalProvider = (props) => {
     roomInfo,
     nativePlayer,
     profile,
+    myInfo,
     message,
     token,
     customHeader,

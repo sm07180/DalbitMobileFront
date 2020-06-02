@@ -9,7 +9,7 @@ import Alarm from './content/alarm.js'
 
 import {Context} from 'context'
 
-// component
+// component //
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
 

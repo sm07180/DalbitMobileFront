@@ -24,7 +24,7 @@ import iconQ from '../static/ic_question.svg'
 
 const rankArray = ['dj', 'fan']
 //const dateArray = ['일간', '주간', '월간']
-const dateArray = ['일간']
+const dateArray = ['일간', '주간']
 let currentPage = 1
 let moreState = false
 
@@ -185,7 +185,7 @@ export default props => {
       /*
        * @가속처리
        */
-      if (windowBottom >= docHeight - 400) {
+      if (moreState && windowBottom >= docHeight - 400) {
         showMoreList()
       } else {
       }

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__reflash" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-3{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_314" d="M0 0H24V24H0z" data-name="사각형 314" style="fill:transparent;opacity:.51"/>
+    <circle id="prefix__타원_33" cx="11" cy="11" r="11" data-name="타원 33" transform="translate(1 1)" style="fill:#757575"/>
+    <g id="prefix__그룹_13515" data-name="그룹 13515" transform="translate(5.383 3.897)">
+        <g id="prefix__그룹_13514" data-name="그룹 13514" transform="rotate(90 4.37 10.721)">
+            <path id="prefix__선_58" d="M2.862 0L0 2.698" class="prefix__cls-3" data-name="선 58"/>
+            <path id="prefix__선_59" d="M0 0L2.862 2.698" class="prefix__cls-3" data-name="선 59" transform="translate(0 2.701)"/>
+        </g>
+        <path id="prefix__패스_6838" d="M11.312 5.618a5.583 5.583 0 0 1-5.634 5.573 5.654 5.654 0 0 1-5.664-5.6A5.583 5.583 0 0 1 5.649.015a5.692 5.692 0 0 1 4 1.647" class="prefix__cls-3" data-name="패스 6838" transform="rotate(-13 17.642 2.01)"/>
+    </g>
+</svg>

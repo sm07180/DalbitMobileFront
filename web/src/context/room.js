@@ -54,7 +54,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
+  const customHeader = JSON.parse(Api.customHeader)
 
+  if (customHeader['os'] === OS_TYPE['Desktop']) {
+    window.location.href = "https://inforexseoul.page.link/Ws4t"
+    return false
+  }
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
 
@@ -210,8 +215,22 @@ export const RoomMake = async (context) => {
     if (res.code === '0') return true
     //진행중인 방송이 있습니다
     if (res.code === '1') {
-      context.action.alert({
-        msg: res.message
+      const {roomNo} = res.data
+      context.action.confirm({
+        msg: res.message,
+        cancelCallback: () => {
+          ;(async function () {
+            const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+            //success,fail노출
+            context.action.alert({
+                msg: exit.message
+            })
+          })()
+        },
+        buttonText: {
+            left: '방송종료',
+            right: '확인'
+        }
       })
       return false
     }

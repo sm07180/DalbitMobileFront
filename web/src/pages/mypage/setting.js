@@ -13,7 +13,7 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 
-export default (props) => {
+export default props => {
   const context = useContext(Context)
   const {profile, token} = context
   const [nickname, setNickname] = useState('')
@@ -26,14 +26,14 @@ export default (props) => {
   const nicknameReference = useRef()
   const {isOAuth} = token
 
-  const profileImageUpload = (e) => {
+  const profileImageUpload = e => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = (ext) => {
+    const extValidator = ext => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -210,7 +210,7 @@ export default (props) => {
     }
   }
 
-  const changeNickname = (e) => {
+  const changeNickname = e => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
@@ -218,7 +218,7 @@ export default (props) => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = (e) => {
+  const changeMsg = e => {
     const {currentTarget} = e
     setProfileMsg(currentTarget.value)
   }
@@ -246,12 +246,14 @@ export default (props) => {
     }
     //##submit
     const data = {
-      gender: profile.gender,
+      gender: gender,
       nickNm: nickname || profile.nickNm,
       birth: profile.birth,
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
+
+    console.log('data', data)
 
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
@@ -273,8 +275,9 @@ export default (props) => {
   }
 
   const [firstSetting, setFirstSetting] = useState(false)
+
   useEffect(() => {
-    if (profile) {
+    if (profile !== null) {
       setNickname(profile.nickNm)
       setProfileMsg(profile.profMsg)
       setPhotoPath(profile.profImg.path)
@@ -283,10 +286,14 @@ export default (props) => {
         setFirstSetting(true)
       }
     }
-  }, [])
+  }, [profile])
 
-  if (!profile) {
-    Api.mypage().then((result) => {
+  useEffect(() => {
+    console.log('gender', gender)
+  }, [gender])
+
+  if (profile === null) {
+    Api.mypage().then(result => {
       context.action.updateProfile(result.data)
     })
     return null
@@ -355,24 +362,44 @@ export default (props) => {
               <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
               <label className="input-label">성별</label>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
-                <GenderTab
-                  className={profile.gender === 'm' ? '' : 'off'}
-                  onClick={() => {
-                    firstSetting && setGender('m')
-                  }}>
-                  남자
-                </GenderTab>
+                {firstSetting ? (
+                  <>
+                    <GenderTab
+                      className={gender === 'm' ? '' : 'off'}
+                      onClick={() => {
+                        if (gender === 'm') {
+                          setGender('n')
+                        } else {
+                          setGender('m')
+                        }
+                      }}>
+                      남자
+                    </GenderTab>
 
-                <GenderTab
-                  className={profile.gender === 'f' ? '' : 'off'}
-                  onClick={() => {
-                    firstSetting && setGender('f')
-                  }}>
-                  여자
-                </GenderTab>
+                    <GenderTab
+                      className={gender === 'f' ? '' : 'off'}
+                      onClick={() => {
+                        if (gender === 'f') {
+                          setGender('n')
+                        } else {
+                          setGender('f')
+                        }
+                      }}>
+                      여자
+                    </GenderTab>
+                  </>
+                ) : (
+                  <>
+                    {profile.gender === 'm' ? (
+                      <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
+                    ) : (
+                      <GenderTab className={profile.gender === 'f' ? 'woman' : 'off woman'}>여자</GenderTab>
+                    )}
+                  </>
+                )}
               </GenderWrap>
 
-              <GenderAlertMsg>* 생년월일 수정은 고객센터로 문의해주세요.</GenderAlertMsg>
+              <GenderAlertMsg>* 생년월일, 성별 수정은 고객센터로 문의해주세요.</GenderAlertMsg>
 
               <div className="msg-wrap">
                 <label className="input-label">프로필 메세지</label>
@@ -471,6 +498,10 @@ const GenderTab = styled.div`
     }
   }
 
+  &.woman::before {
+    background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
+  }
+
   &.off {
     color: #9e9e9e;
     background-color: #fff;
@@ -491,6 +522,7 @@ const GenderWrap = styled.div`
   }
 
   &.after > div {
+    width: 100%;
     background-color: #eee;
     cursor: not-allowed;
     &.off {
