@@ -286,7 +286,9 @@ export default () => {
         var parsed = JSON.parse(str)
         return typeof parsed === 'object'
       } catch (e) {
-        alert(e)
+        if (__NODE_ENV === 'dev') {
+          alert(e)
+        }
         return false
       }
     }
@@ -323,7 +325,7 @@ export default () => {
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
       alert('back isLogin :' + isLogin)
-      alert('back push_type :' + JSON.stringify(pushMsg))
+      alert('back pushMsg :' + JSON.stringify(pushMsg))
     }
     //---------------------[분기처리시작]
 
@@ -388,7 +390,7 @@ export default () => {
         break
       default:
         //------------------기본값
-        window.location.href = `/`
+        //window.location.href = `/`
         break
     }
   }
