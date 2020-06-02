@@ -26,7 +26,6 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
-      alert('1')
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
@@ -280,7 +279,6 @@ export default () => {
     let pushMsg = event.detail
     if (__NODE_ENV === 'dev') {
         alert('back pushMsg :' + pushMsg)
-        alert(typeof pushMsg);
     }
 
     const isJsonString = (str) => {
