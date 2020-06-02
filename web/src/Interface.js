@@ -281,13 +281,15 @@ export default () => {
     pushMsg = decodeURIComponent(pushMsg)
     if (__NODE_ENV === 'dev') {
         alert('back pushMsg :' + pushMsg)
+        alert(typeof pushMsg);
     }
 
     const isJsonString = (str) => {
       try {
         var parsed = JSON.parse(str)
-        return typeof parsed === 'Object'
+        return typeof parsed == 'Object'
       } catch (e) {
+        alert(e)
         return false
       }
     }
