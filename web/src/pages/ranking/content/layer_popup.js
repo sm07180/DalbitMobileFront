@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import CloseBtn from '../static/ic_close.svg'
 import {COLOR_MAIN} from 'context/color'
 
-export default (props) => {
+export default props => {
   const {setPopup} = props
 
   const typePop = props.dateType
@@ -27,14 +27,14 @@ export default (props) => {
     setPopup(false)
   }
 
-  const wrapClick = (e) => {
+  const wrapClick = e => {
     const target = e.target
     if (target.id === 'rank-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = (e) => {
+  const wrapTouch = e => {
     e.preventDefault()
   }
 
