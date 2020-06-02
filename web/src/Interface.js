@@ -27,6 +27,10 @@ export default () => {
   //---------------------------------------------------------------------
   function update(event) {
     switch (event.type) {
+      case 'native-push-background' :
+          alert('1')
+          pushBack(event)
+          break;
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
         //-----IOS일때 decode
@@ -401,7 +405,7 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
-    document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
+    document.addEventListener('native-push-background', update) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
 
@@ -416,7 +420,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
-      document.addEventListener('native-push-background', pushBack)
+      document.addEventListener('native-push-background', update)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       /*----react----*/
