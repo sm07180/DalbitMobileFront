@@ -287,8 +287,8 @@ export default () => {
       }
     }
     //-----IOS일때 decode
+    pushMsg = decodeURIComponent(pushMsg)
     if (customHeader['os'] === OS_TYPE['IOS']) {
-      pushMsg = decodeURIComponent(pushMsg)
       if (isJsonString(pushMsg)) {
         pushMsg = JSON.parse(pushMsg)
       } else {
@@ -297,7 +297,13 @@ export default () => {
     }
     //-----Android
     if (customHeader['os'] === OS_TYPE['Android']) {
-      if (typeof pushMsg !== 'object') return
+      if (typeof pushMsg !== 'object'){
+        if (isJsonString(pushMsg)) {
+            pushMsg = JSON.parse(pushMsg)
+        } else {
+            return false
+        }
+      }
     }
     //--PC
     if (customHeader['os'] === OS_TYPE['Desktop']) {
