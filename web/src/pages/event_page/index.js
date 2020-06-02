@@ -7,6 +7,7 @@ import API from 'context/api'
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
+import refreshIcon from './static/refresh.svg'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
@@ -15,6 +16,7 @@ export default props => {
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
 
   const [commentTxt, setCommentTxt] = useState('')
+  const [commentList, setCommentList] = useState([])
 
   useEffect(() => {
     // reset event type category
@@ -139,7 +141,25 @@ export default props => {
                   등록
                 </button>
               </div>
-              <div className="comment-wrap"></div>
+              <div className="comment-list-wrap">
+                <div className="title-wrap">
+                  <div className="title">{`댓글 ${commentList.length}개`}</div>
+                  <img src={refreshIcon} onClick={() => console.log('refresh')} />
+                </div>
+                <div className="comments">
+                  {commentList.map((value, idx) => {
+                    return (
+                      <div className="each" key={`comment-${idx}`}>
+                        <div className="profile-img"></div>
+                        <div className="content">
+                          <div className="name-date-wrap"></div>
+                          <div className="text"></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           )}
         </div>
