@@ -2,14 +2,16 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 //context
 import {Context} from 'context'
 
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import moon from './static/ico-moon-g-s.png'
-import moon2x from './static/ico-moon-g-s@2x.png'
-import time from './static/ico-time-g-s.png'
-import time2x from './static/ico-time-g-s@2x.png'
+import point from './static/point.svg'
+import moon from './static/cashmoon_g_s.svg'
+import time from './static/time_g_s.svg'
+import star from './static/cashstar_g_s.svg'
+import people from './static/people_g_s.svg'
+import like from './static/like_g_s.svg'
 import korea from './static/ico-korea.png'
 import korea2x from './static/ico-korea@2x.png'
+import live from './static/live.svg'
+
 import Util from 'components/lib/utility.js'
 
 export default props => {
@@ -23,7 +25,22 @@ export default props => {
       <>
         <div className="userRanking">
           {list.map((item, index) => {
-            const {gender, gift, grade, nickNm, rank, profImg, level, upDown, listen, listeners, likes, broadcast, fan, dj} = item
+            const {
+              gender,
+              gift,
+              nickNm,
+              rank,
+              profImg,
+              upDown,
+              listen,
+              listeners,
+              likes,
+              broadcast,
+              fan,
+              dj,
+              isSpecial,
+              roomNo
+            } = item
             let genderName
             let upDownName
 
@@ -37,7 +54,7 @@ export default props => {
               upDownName = `rankingChange__stop`
             }
 
-            if (gender == 'm' || gender == 'f') {
+            if (gender === 'm' || gender === 'f') {
               genderName = `genderBox gender-${gender}`
             } else {
               genderName = `genderBox`
@@ -55,7 +72,7 @@ export default props => {
                   {rankType == 'dj' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                        <img src={point} />
                         {Util.printNumber(dj)}
                       </p>
                     </>
@@ -64,7 +81,7 @@ export default props => {
                   {rankType == 'fan' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                        <img src={point} />
                         {Util.printNumber(fan)}
                       </p>
                     </>
@@ -82,7 +99,7 @@ export default props => {
                         {nickNm}
                         <br />
                         <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} /> <span className={genderName}>{gender}</span>
-                        <span className="specialDj">스페셜DJ</span>
+                        {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                       </p>
                     </div>
                   </div>
@@ -91,21 +108,21 @@ export default props => {
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item">
-                          <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
+                          <img src={star} />
                           {Util.printNumber(gift)}
                         </span>
                         <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                          <img src={people} />
                           {Util.printNumber(listeners)}
                         </span>
 
                         <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                          <img src={like} />
                           {Util.printNumber(likes)}
                         </span>
 
                         <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                          <img src={time} />
                           {Util.printNumber(broadcast)}
                         </span>
                       </>
@@ -114,17 +131,25 @@ export default props => {
                     {rankType == 'fan' && (
                       <>
                         <span className="countBox__item">
-                          <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
+                          <img src={moon} />
                           {Util.printNumber(gift)}
                         </span>
                         <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                          <img src={time} />
                           {Util.printNumber(listen)}
                         </span>
                       </>
                     )}
                   </div>
                 </div>
+
+                {roomNo !== '' && (
+                  <div className="liveBox">
+                    <img src={live} />
+                    <br />
+                    LIVE
+                  </div>
+                )}
               </div>
             )
           })}

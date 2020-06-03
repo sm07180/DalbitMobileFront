@@ -153,6 +153,7 @@ img {
 
   &__new {
     color: #ff9c00;
+    text-transform: uppercase;
   }
 
   &__stop {
@@ -220,6 +221,11 @@ img {
 
   .myRanking__left--point {
     padding-top: 5px;
+  }
+
+  .liveBox {
+    top: 12px;
+    right: 12px;
   }
 }
 
@@ -404,6 +410,10 @@ img {
               display: inline-block;
             }
           }
+
+          .countBoxInner {
+            display: inline-block;
+          }
         }
       }
     }
@@ -421,4 +431,5 @@ img {
   line-height: 16px;
   color: #fff;
   font-weight: 300;
+  font-style: normal;
 }
