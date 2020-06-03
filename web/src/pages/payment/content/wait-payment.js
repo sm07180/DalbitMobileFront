@@ -1,5 +1,5 @@
 import React from 'react'
-import '../seo.scss'
+import './wait-payment.scss'
 import BackBtn from '../static/ic_back.svg'
 import IconMoney from '../static/ic_money.svg'
 

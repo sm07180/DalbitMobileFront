@@ -43,7 +43,9 @@ const TempLogin = React.lazy(() => import('pages/common/redirect'))
 
 const TempPage = React.lazy(() => import('pages/temp'))
 
-const TestPage = React.lazy(() => import('pages/test_page'))
+// const TestPage = React.lazy(() => import('pages/test_page'))
+
+const Payment = React.lazy(() => import('pages/payment'))
 
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
@@ -85,9 +87,11 @@ export default () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        <Route exact path="/temp_test" component={TestPage} />
-        <Route exact path="/temp_test/:path" component={TestPage} />
+        {/* <Route exact path="/temp_test" component={TestPage} />
+        <Route exact path="/temp_test/:path" component={TestPage} /> */}
         <Route exact path="/temp_page" component={TempPage} />
+        <Route exact path="/payment" component={Payment} />
+        <Route exact path="/payment/:path" component={Payment} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
