@@ -1357,6 +1357,11 @@ export default class API {
     return await ajax({...obj, url: url || `/rest/pay/virtual`, method: method || 'POST', data: data})
   }
 
+  static pay_coocon = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/coocon`, method: method || 'POST', data: data})
+  }
+
   /**
    * @brief 실시간 계좌이체 결제요청
    * @method "POST"
