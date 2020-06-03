@@ -15,6 +15,8 @@ export default function CommentEvent() {
 
   return (
     <div className="comment-event-wrap">
+      <img src="https://image.dalbitlive.com/event/200603/comment_img.png" className="main" />
+
       <div className="input-wrap">
         <textarea
           placeholder="댓글을 입력해주세요.&#13;&#10;(최대 300자)"
@@ -34,7 +36,9 @@ export default function CommentEvent() {
       </div>
       <div className="comment-list-wrap">
         <div className="title-wrap">
-          <div className="title">{`댓글 ${commentList.length}개`}</div>
+          <div className="title">
+            댓글 <span>{`${commentList.length}`}</span>개
+          </div>
           <img src={refreshIcon} onClick={() => console.log('refresh')} />
         </div>
         <div className="comments">
