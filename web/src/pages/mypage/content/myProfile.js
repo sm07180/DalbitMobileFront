@@ -198,7 +198,7 @@ const myProfile = props => {
         {urlrStr !== context.token.memNo && (
           <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
         )}
-        <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
+        <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
         {profile.roomNo !== '' && (
           <button
             className="liveIcon"
