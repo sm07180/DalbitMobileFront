@@ -2,11 +2,11 @@ import React, { useState, useContext, useRef, useEffect } from 'react'
 import {Context} from 'context';
 //import { Link } from 'react-router-dom'
 
-import './test.scss'
-import BackBtn from './static/ic_back.svg'
+import './payment.scss'
+import BackBtn from '../static/ic_back.svg'
 
-import SelectBoxWrap from './component/select';
-import SuccessPopup from './content/charge-success-popup';
+import SelectBoxWrap from '../component/select';
+import SuccessPopup from './charge-success-popup';
 
 import _ from 'lodash'
 import Api from 'context/api'

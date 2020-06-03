@@ -36,11 +36,7 @@ export default props => {
   return (
     <div id="event-page">
       <div className="event-main">
-        플랫폼
-        <br />
-        새로운
-        <br />
-        시-작
+        <img src="https://image.dalbitlive.com/event/200603/main_top.png" />
       </div>
 
       <div className="event-type-wrap">
@@ -69,28 +65,45 @@ export default props => {
                     선물 랭킹
                   </div>
                 </div>
-                <div className="content-wrap"></div>
+                <div className="content-wrap">
+                  <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img.png" />
+
+                  <div className="notice-wrap">
+                    <p>
+                      <span>※</span> 순위는 실시간으로 집계됩니다.
+                    </p>
+                    <p>
+                      <span>※</span> 당첨자 발표일 및 유의사항 <button type="button">자세히보기</button>
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="stage-wrap">
                 <div className="stage-tab-wrap">
                   <div className={`tab ${rankingStep === 1 ? 'active' : ''}`} onClick={() => setRankingStep(1)}>
                     1차
+                    <br />
+                    <span>6/1~ 6/7</span>
                   </div>
                   <div className={`tab ${rankingStep === 2 ? 'active' : ''}`} onClick={() => setRankingStep(2)}>
                     2차
+                    <br />
+                    <span>6/1~ 6/7</span>
                   </div>
                   <div className={`tab ${rankingStep === 3 ? 'active' : ''}`} onClick={() => setRankingStep(3)}>
                     3차
+                    <br />
+                    <span>6/1~ 6/7</span>
                   </div>
                 </div>
 
                 <div className="my-info">
                   <span>내 순위</span>
-                  <span>23</span>
+                  <span className="ranking">23</span>
                   <span>위</span>
-                  <span>|</span>
-                  <span>달성 경험치</span>
+                  <span className="bar">|</span>
+                  <span className="exp-title">달성 경험치</span>
                   <span>32,432</span>
                 </div>
 
