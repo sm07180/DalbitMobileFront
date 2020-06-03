@@ -29,22 +29,29 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        //-----IOS일때 decode
-        if (customHeader['os'] === OS_TYPE['IOS']) {
+        if (__NODE_ENV === 'dev') {
+            alert('fore pushMsg :' + pushMsg)
+        }
+
+        const isJsonString = (str) => {
+            try {
+                var parsed = JSON.parse(str)
+                return typeof parsed === 'object'
+            } catch (e) {
+                if (__NODE_ENV === 'dev') {
+                    alert(e)
+                }
+                return false
+            }
+        }
+
+        if (typeof pushMsg === 'string'){
             pushMsg = decodeURIComponent(pushMsg)
             if (isJsonString(pushMsg)) {
                 pushMsg = JSON.parse(pushMsg)
             } else {
                 return false
             }
-        }
-        //-----Android
-        if (customHeader['os'] === OS_TYPE['Android']) {
-            if (typeof pushMsg !== 'object') return
-        }
-        //--PC
-        if (customHeader['os'] === OS_TYPE['Desktop']) {
-            pushMsg = JSON.parse(pushMsg)
         }
 
         const {isLogin} = context.token
@@ -57,17 +64,61 @@ export default () => {
           alert('fore push_type :' + JSON.stringify(pushMsg))
         }
 
+        if (__NODE_ENV === 'dev') {
+            switch (push_type + '') {
+                case '1': //-----------------방송방 [room_no]
+                    context.action.updateStickerMsg(pushMsg)
+                    context.action.updateSticker(true) //true,false
+                    break
+                case '2': //------------------메인
+                    window.location.href = '/'
+                    break
+                case '31': //-----------------마이페이지>팬 보드
+                    context.action.updateNews(true) //true,false
+                    break
+                case '32': //-----------------마이페이지>내 지갑
+                    context.action.updateNews(true) //true,false
+                    break
+                case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
+                    break
+                case '34': //-----------------마이페이지>알림>해당 알림 글
+                    context.action.alert({msg: pushMsg.contents})
+                    break
+                case '35': //-----------------마이페이지
+                    context.action.alert({msg: pushMsg.contents})
+                    break
+                case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
+                    context.action.updateStickerMsg(pushMsg)
+                    context.action.updateSticker(true) //true,false
+                    break
+                case '4': //------------------등록 된 캐스트(미정)
+                    //window.location.href = `/`
+                    break
+                case '5': //------------------스페셜 DJ 선정 페이지(미정)
+                    context.action.updateNews(true) //true,false
+                    break
+                case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
+                    break
+                case '7': //------------------공지사항 페이지 [board_idx](미정)
+                    context.action.alert({msg: pushMsg.contents})
+                    break
+                default:
+                    //------------------기본값
+                    //window.location.href = `/`
+                    break
+            }
+        }
         //pushMsg = JSON.parse(pushMsg)
         /*switch (pushMsg.push_type) {
           case '1': //팝업메시지
-            context.action.alert({msg: pushMsg.content})
+            //context.action.alert({msg: pushMsg.content})
             break
           case '2': //스티커 상단
-            context.action.updateStickerMsg(pushMsg)
-            context.action.updateSticker(true) //true,false
+            //context.action.updateStickerMsg(pushMsg)
+            //context.action.updateSticker(true) //true,false
             break
           case '3': //알림(종표시)
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
         }*/
 

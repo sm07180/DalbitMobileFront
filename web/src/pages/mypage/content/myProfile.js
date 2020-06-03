@@ -333,7 +333,6 @@ const ButtonWrap = styled.div`
 const ProfileImg = styled.div`
   display: block;
   position: relative;
-  height: 156px;
   flex-basis: 156px;
   background-size: cover;
   background-position: center;
@@ -342,19 +341,19 @@ const ProfileImg = styled.div`
   .holder {
     display: block;
     position: absolute;
-    top: -16px;
+    top: -8px;
     left: 50%;
     transform: translateX(-50%);
-    width: 168px;
-    height: 168px;
+    width: 140px;
+    height: 140px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
   }
 
   figure {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     margin: 10px auto 0 auto;
     border-radius: 50%;
     background: url(${props => props.url}) no-repeat center center/ cover;
@@ -368,7 +367,7 @@ const ProfileImg = styled.div`
     display: inline-block;
     position: relative;
     padding: 0 13px;
-    margin-top: 20px;
+    margin-top: 24px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
@@ -407,7 +406,7 @@ const ContentWrap = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
-    margin: 20px auto;
+    margin: 0px auto;
     order: 3;
 
     & > div {
@@ -501,7 +500,7 @@ const NameWrap = styled.div`
     color: #424242;
     font-size: 14px;
     line-height: 20px;
-    vertical-align: middle;
+    vertical-align: top;
     transform: skew(-0.03deg);
   }
 
