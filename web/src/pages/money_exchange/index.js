@@ -95,7 +95,7 @@ export default (props) => {
   const checkExchange = () => {
     if(exchangeStar < 570 || !exchangeStar) {
       context.action.alert({
-        msg: "환전 신청별은 최소 570개 이상이어야 합니다.",
+        msg: "환전 신청별은\n최소 570개 이상이어야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -104,7 +104,7 @@ export default (props) => {
     }
     if( exchangeStar > byeolCnt) {
       context.action.alert({
-        msg: "환전 신청별은 보유 별보다 작거나 같아야 합니다.",
+        msg: "환전 신청별은\n보유 별보다 작거나 같아야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -113,7 +113,7 @@ export default (props) => {
     }
     if(name === "") {
       context.action.alert({
-        msg: "예금주 성명을 정확하게 입력해주세요.",
+        msg: "예금주 성명을\n정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -122,7 +122,7 @@ export default (props) => {
     }
     if(selectBank === "0") {
       context.action.alert({
-        msg: "입금받으실 은행을 선택해주세요.",
+        msg: "입금 받으실 은행을\n선택해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -131,7 +131,7 @@ export default (props) => {
     }
     if(account === 0) {
       context.action.alert({
-        msg: "입금받으실 은행의 계죄번호를 입력해주세요.",
+        msg: "입금 받으실 은행의\n계죄번호를 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -140,7 +140,7 @@ export default (props) => {
     }
     if(fSocialNo === "" && bSocialNo === "") {
       context.action.alert({
-        msg: "주민등록번호를 정확하게 입력해주세요.",
+        msg: "주민등록번호를\n정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -149,7 +149,7 @@ export default (props) => {
     }
     if(phone === "") {
       context.action.alert({
-        msg: "연락받으실 전화번호를 입력해주세요.",
+        msg: "연락 받으실 전화번호를\n입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -158,7 +158,7 @@ export default (props) => {
     }
     if(address1 === "") {
       context.action.alert({
-        msg: "주소를 정확하게 주세요.",
+        msg: "주소를 정확하게\n입력주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -168,7 +168,7 @@ export default (props) => {
 
     if(idPhotoName === "") {
       context.action.alert({
-        msg: "신분증 사본을 등록해주세요.",
+        msg: "신분증 사본을\n등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -177,7 +177,7 @@ export default (props) => {
     }
     if(bankBookName === "") {
       context.action.alert({
-        msg: "통장 사본을 등록해주세요.",
+        msg: "통장 사본을\n등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -187,7 +187,7 @@ export default (props) => {
 
     if(!check) {
       context.action.alert({
-        msg: "개인정보 수집 및 이용에 동의하셔야 환전 신청이 가능합니다.",
+        msg: "개인정보 수집 및 이용에\n동의하셔야 환전 신청이 가능합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -226,7 +226,7 @@ export default (props) => {
         setExchangeCalc({...data});
       } else {
         context.action.alert({
-          msg: "별 개수는 반드시 570개 이상이어야 합니다.",
+          msg: "환전 신청별은 \n 최소 570개 이상이어야 합니다.",
           callback: () => {
             context.action.alert({visible: false})
           }
