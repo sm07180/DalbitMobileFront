@@ -28,7 +28,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <p>{context.stickerMsg.content}</p>
+      <p>{context.stickerMsg.title}</p>
       <a
         href="#"
         onClick={() => {
