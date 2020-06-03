@@ -4,16 +4,15 @@ import {Context} from 'context'
 
 import frame49 from './static/ico_frame_49.png'
 import frame492x from './static/ico_frame_49@2x.png'
-import live from './static/ico-circle-live.png'
-import live2x from './static/ico-circle-live@2x.png'
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import moon from './static/ico-moon-g-s.png'
-import moon2x from './static/ico-moon-g-s@2x.png'
-import time from './static/ico-time-g-s.png'
-import time2x from './static/ico-time-g-s@2x.png'
+import live from './static/live.svg'
+import point from './static/point.svg'
+import moon from './static/cashmoon_g_s.svg'
+import time from './static/time_g_s.svg'
 import korea from './static/ico-korea.png'
 import korea2x from './static/ico-korea@2x.png'
+import star from './static/cashstar_g_s.svg'
+import people from './static/people_g_s.svg'
+import like from './static/like_g_s.svg'
 import Util from 'components/lib/utility.js'
 
 export default props => {
@@ -28,6 +27,8 @@ export default props => {
         <div className="userRanking">
           <div className="TopBox">
             {list.map((item, index) => {
+              console.log(list)
+
               const {
                 gender,
                 gift,
@@ -42,12 +43,15 @@ export default props => {
                 likes,
                 broadcast,
                 fan,
-                dj
+                dj,
+                roomNo
               } = item
+
               let rankName
               let genderName
               let upDownName
               let levelName
+
               if (rank == 1 || rank == 2 || rank == 3) {
                 rankName = `medal medalBox--top${rank}`
               }
@@ -104,43 +108,47 @@ export default props => {
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                          <img src={point} />
                           {Util.printNumber(dj)}
                         </span>
 
-                        <span className="countBox__item">
-                          <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
-                          {Util.printNumber(gift)}
-                        </span>
-                        <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
-                          {Util.printNumber(listeners)}
-                        </span>
+                        <div className="countBoxInner">
+                          <span className="countBox__item">
+                            <img src={star} />
+                            {Util.printNumber(gift)}
+                          </span>
+                          <span className="countBox__item">
+                            <img src={people} />
+                            {Util.printNumber(listeners)}
+                          </span>
+                        </div>
 
-                        <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
-                          {Util.printNumber(likes)}
-                        </span>
+                        <div className="countBoxInner">
+                          <span className="countBox__item">
+                            <img src={like} />
+                            {Util.printNumber(likes)}
+                          </span>
 
-                        <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
-                          {Util.printNumber(broadcast)}
-                        </span>
+                          <span className="countBox__item">
+                            <img src={time} />
+                            {Util.printNumber(broadcast)}
+                          </span>
+                        </div>
                       </>
                     )}
 
                     {rankType == 'fan' && (
                       <>
                         <span className="countBox__item countBox__item--point">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                          <img src={point} />
                           {Util.printNumber(fan)}
                         </span>
                         <span className="countBox__item">
-                          <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
+                          <img src={moon} />
                           {Util.printNumber(gift)}
                         </span>
                         <span className="countBox__item">
-                          <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                          <img src={time} />
                           {Util.printNumber(listen)}
                         </span>
                       </>
@@ -155,11 +163,14 @@ export default props => {
                       </span>
                     </p>
                   </div>
-                  <div className="liveBox">
-                    <img src={live} srcSet={`${live} 1x, ${live2x} 2x`} />
-                    <br />
-                    LIVE
-                  </div>
+
+                  {roomNo !== '' && (
+                    <div className="liveBox">
+                      <img src={live} />
+                      <br />
+                      LIVE
+                    </div>
+                  )}
                 </div>
               )
             })}

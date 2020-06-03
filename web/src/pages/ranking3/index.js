@@ -12,14 +12,10 @@ const dateArray = ['오늘', '일간', '주간', '월간']
 let currentPage = 1
 let moreState = false
 
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import moon from './static/ico-moon-g-s.png'
-import moon2x from './static/ico-moon-g-s@2x.png'
-import time from './static/ico-time-g-s.png'
-import time2x from './static/ico-time-g-s@2x.png'
-import hint from './static/ico-hint.png'
-import hint2x from './static/ico-hint@2x.png'
+import point from './static/point.svg'
+import moon from './static/cashmoon_g_s.svg'
+import time from './static/time_g_s.svg'
+import hint from './static/hint.svg'
 
 import RankList from './rankList'
 import RankListTop from './rankListTop'
@@ -258,7 +254,7 @@ export default props => {
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            16:00 <img src={hint} srcSet={`${hint} 1x, ${hint2x} 2x`} onClick={() => setPopup(popup ? false : true)} />
+            16:00 <img src={hint} onClick={() => setPopup(popup ? false : true)} />
           </div>
         </div>
 
@@ -273,7 +269,7 @@ export default props => {
                 <span className="rankingChange__up">230</span>
               </p>
               <p className="myRanking__left--point">
-                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> 45
+                <img src={point} /> 45
               </p>
             </div>
 
@@ -294,11 +290,11 @@ export default props => {
 
               <div className="countBox">
                 <span className="countBox__item">
-                  <img src={moon} srcSet={`${moon} 1x, ${moon2x} 2x`} />
+                  <img src={moon} />
                   {Util.printNumber(myProfile.dalCnt)}
                 </span>
                 <span className="countBox__item">
-                  <img src={time} srcSet={`${time} 1x, ${time2x} 2x`} />
+                  <img src={time} />
                   {Util.printNumber(myProfile.listenTotTime)}
                 </span>
               </div>

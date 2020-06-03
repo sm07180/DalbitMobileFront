@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16.8" height="16.8" viewBox="0 0 16.8 16.8">
+    <g id="prefix__point" transform="translate(.4 .4)">
+        <g id="prefix__ico-hit-g-s">
+            <path id="prefix__사각형_21" d="M0 0H16V16H0z" data-name="사각형 21" style="fill:none;stroke:#707070;stroke-width:.8px;opacity:0"/>
+            <g id="prefix__그룹_15286" data-name="그룹 15286" transform="translate(-423.35 -336.972)">
+                <circle id="prefix__타원_514" cx="6.562" cy="6.562" r="6.562" data-name="타원 514" transform="translate(424.625 338.113)" style="fill:#febd56;stroke:#febd56;stroke-linecap:round;stroke-linejoin:round"/>
+                <text id="prefix__P" transform="translate(427.08 349.678)" style="fill:#fff;font-size:13px;font-family:NanumSquareRoundEB,NanumSquareRound">
+                    <tspan x="0" y="0">P</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
