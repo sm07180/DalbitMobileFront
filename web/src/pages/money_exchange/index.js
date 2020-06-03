@@ -93,18 +93,9 @@ export default (props) => {
   }
   
   const checkExchange = () => {
-    if(exchangeStar === 0 || !exchangeStar) {
+    if(exchangeStar < 570 || !exchangeStar) {
       context.action.alert({
-        msg: "환전 신청별은 필수 입력값입니다.",
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return;
-    }
-    if(exchangeStar < 570) {
-      context.action.alert({
-        msg: "환전 신청별은 570개 이상이어야 합니다.",
+        msg: "환전 신청별은 최소 570개 이상이어야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -122,7 +113,7 @@ export default (props) => {
     }
     if(name === "") {
       context.action.alert({
-        msg: "예금주를 입력해 주세요.",
+        msg: "예금주 성명을 정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -131,7 +122,7 @@ export default (props) => {
     }
     if(selectBank === "0") {
       context.action.alert({
-        msg: "은행을 선택해주세요",
+        msg: "입금받으실 은행을 선택해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -140,7 +131,7 @@ export default (props) => {
     }
     if(account === 0) {
       context.action.alert({
-        msg: "계좌번호를 입력해주세요",
+        msg: "입금받으실 은행의 계죄번호를 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -149,7 +140,7 @@ export default (props) => {
     }
     if(fSocialNo === "" && bSocialNo === "") {
       context.action.alert({
-        msg: "주민번호를 입력해주세요.",
+        msg: "주민등록번호를 정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -158,7 +149,7 @@ export default (props) => {
     }
     if(phone === "") {
       context.action.alert({
-        msg: "전화번호를 입력해주세요.",
+        msg: "연락받으실 전화번호를 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -167,7 +158,7 @@ export default (props) => {
     }
     if(address1 === "") {
       context.action.alert({
-        msg: "주소를 입력해 주세요.",
+        msg: "주소를 정확하게 주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -177,7 +168,7 @@ export default (props) => {
 
     if(idPhotoName === "") {
       context.action.alert({
-        msg: "신분증 사본을 첨부해주세요.",
+        msg: "신분증 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -186,7 +177,7 @@ export default (props) => {
     }
     if(bankBookName === "") {
       context.action.alert({
-        msg: "통장 사본을 첨부해주세요.",
+        msg: "통장 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
