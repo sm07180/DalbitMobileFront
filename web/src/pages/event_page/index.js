@@ -117,42 +117,35 @@ export default props => {
                     <span>{myRankInfo.myPoint}</span>
                   </div>
 
-                  <div className="content-wrap">
-                    <div className="category-wrap">
-                      <span className="rank-txt">순위</span>
-                      <span className="dj-txt">DJ</span>
-                      <span className="top-fan">최고팬</span>
-                    </div>
-                    {rankList.map((value, idx) => {
-                      const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
+                  {rankList.map((value, idx) => {
+                    const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
 
-                      return (
-                        <div className="user-wrap" key={`user-${idx}`}>
-                          <div className="rank-wrap">
-                            {idx < 3 ? (
-                              <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
-                            ) : (
-                              <span className="num">{idx}</span>
-                            )}
-                          </div>
-                          <div className="dj-info">
-                            <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
-                            <div>
-                              <span className="nick-name">{nickName}</span>
-                              <span className="level">Lv{level}</span>
-                              <div className="exp-box">
-                                달성경험치 <span>{gainPoint}</span>
-                              </div>
+                    return (
+                      <div className="user-wrap" key={`user-${idx}`}>
+                        <div className="rank-wrap">
+                          {idx < 3 ? (
+                            <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
+                          ) : (
+                            <span className="num">{idx}</span>
+                          )}
+                        </div>
+                        <div className="dj-info">
+                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
+                          <div className="nick-name-wrap">
+                            <span className="nick-name">{nickName}</span>
+                            <span className="level">Lv{level}</span>
+                            <div className="exp-box">
+                              달성경험치 <span>{gainPoint}</span>
                             </div>
                           </div>
-                          <div className="top-fan">
-                            <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
-                            <div className="fan-nick">{fanNick}</div>
-                          </div>
                         </div>
-                      )
-                    })}
-                  </div>
+                        <div className="top-fan">
+                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
+                          <div className="fan-nick">{fanNick}</div>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </>
             )}
