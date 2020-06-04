@@ -10,8 +10,10 @@ export default function CommentEvent() {
   const [commentList, setCommentList] = useState([])
 
   async function fetchCommentData() {
-    const {result, data} = await API.getEventComment({params: {eventIdx: ''}})
+    const {result, data} = await API.getEventComment({eventIdx: ''})
     if (result === 'success') {
+      const {list} = data
+      setCommentList(list)
     }
   }
 
@@ -34,6 +36,7 @@ export default function CommentEvent() {
           onChange={e => {
             const target = e.currentTarget
             const value = target.value
+            if (value.length >= 300) return
             setCommentTxt(value)
           }}></textarea>
 
@@ -41,11 +44,11 @@ export default function CommentEvent() {
           onClick={() => {
             // submit text on server (api sync)
             async function AddComment(memNo, eventIdx, depth, content) {
-              const {result, data} = await API.postEventComment({})
+              const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
-                setCommentTxt('')
               }
             }
+            setCommentTxt('')
             // AddComment()
           }}>
           등록
@@ -56,7 +59,13 @@ export default function CommentEvent() {
           <div className="title">
             댓글 <span>{`${commentList.length}`}</span>개
           </div>
-          <img src={refreshIcon} onClick={() => console.log('refresh')} />
+          <img
+            src={refreshIcon}
+            onClick={() => {
+              setCommentList([])
+              // fetchCommentData()
+            }}
+          />
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {

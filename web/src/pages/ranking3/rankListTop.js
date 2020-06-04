@@ -27,8 +27,6 @@ export default props => {
         <div className="userRanking">
           <div className="TopBox">
             {list.map((item, index) => {
-              console.log(list)
-
               const {
                 gender,
                 gift,
@@ -44,7 +42,8 @@ export default props => {
                 broadcast,
                 fan,
                 dj,
-                roomNo
+                roomNo,
+                memNo
               } = item
 
               let rankName
@@ -87,7 +86,11 @@ export default props => {
 
               return (
                 <div className="TopBox__item" key={index}>
-                  <div className="thumbBox">
+                  <div
+                    className="thumbBox"
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
                     <img src={frame49} srcSet={`${frame49} 1x, ${frame492x} 2x`} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>

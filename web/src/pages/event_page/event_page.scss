@@ -202,7 +202,6 @@
           display: flex;
           flex-direction: row;
           border-bottom: 1px solid #f2f2f2;
-          height: 60px;
           box-sizing: border-box;
 
           .rank-wrap {
@@ -212,6 +211,75 @@
 
             .medal-icon {
               width: 32px;
+            }
+
+            .num {
+              display: inline-block;
+              padding-top: 20px;
+              font-weight: 800;
+            }
+          }
+
+          .dj-info {
+            display: flex;
+            width: calc(100% - 160px);
+            padding: 10px;
+            box-sizing: border-box;
+
+            & > .thumb {
+              overflow: hidden;
+              min-width: 43px;
+              height: 43px;
+              margin-right: 6px;
+              background-size: 100%;
+              border-radius: 50%;
+            }
+
+            .nick-name {
+              margin-bottom: 5px;
+              font-size: 14px;
+              letter-spacing: -0.35px;
+              text-align: left;
+              color: #000;
+              font-weight: 500;
+            }
+
+            .exp-box {
+              font-size: 12px;
+              letter-spacing: -0.3px;
+              color: #919191;
+              font-weight: 500;
+
+              span {
+                color: #632beb;
+              }
+            }
+          }
+
+          .top-fan {
+            display: flex;
+            align-items: center;
+            width: 120px;
+
+            & > .thumb {
+              overflow: hidden;
+              width: 43px;
+              height: 43px;
+              margin-right: 6px;
+              background-size: 100%;
+              border-radius: 50%;
+            }
+
+            .fan-nick {
+              font-size: 14px;
+              letter-spacing: -0.35px;
+              width: 60px;
+              text-overflow: ellipsis;
+              -o-text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+              display: inline-block;
             }
           }
         }
@@ -264,6 +332,10 @@
             .title {
               font-size: 14px;
               color: #000;
+
+              span {
+                color: #632beb;
+              }
             }
             .refresh-icon {
               width: 24px;
