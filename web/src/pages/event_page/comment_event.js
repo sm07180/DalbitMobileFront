@@ -17,6 +17,14 @@ export default function CommentEvent() {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
   async function fetchCommentData() {
     const {result, data} = await API.getEventComment({eventIdx: eventIndex})
     if (result === 'success') {
@@ -50,15 +58,18 @@ export default function CommentEvent() {
 
         <button
           onClick={() => {
-            // submit text on server (api sync)
             async function AddComment(memNo, eventIdx, depth, content) {
               const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
                 fetchCommentData()
               }
             }
-            setCommentTxt('')
-            AddComment(token.memNo, eventIndex, 1, commentTxt)
+            if (token.isLogin) {
+              setCommentTxt('')
+              AddComment(token.memNo, eventIndex, 1, commentTxt)
+            } else {
+              alert('로그인 유저만 등록 가능합니다.')
+            }
           }}>
           등록
         </button>
@@ -78,18 +89,29 @@ export default function CommentEvent() {
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {
-            const {profImg, memId, writeDt, content} = value
+            const {replyIdx, profImg, memId, memNo, writeDt, content} = value
             return (
               <div className="each" key={`comment-${idx}`}>
                 <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
                 <div className="content">
                   <div className="name-date-wrap">
-                    {memId} <span className="date">{writeDt}</span>
+                    {memId} <span className="date">{timeFormat(writeDt)}</span>
                   </div>
                   <div className="text">{content}</div>
                 </div>
 
-                <button className="btn-delete">
+                <button
+                  className="btn-delete"
+                  onClick={() => {
+                    async function DeleteComment(replyIdx, eventIdx) {
+                      const {result, data} = await API.deleteEventComment({replyIdx, eventIdx})
+                      if (result === 'success') {
+                        fetchCommentData()
+                      }
+                    }
+
+                    DeleteComment(replyIdx, eventIndex)
+                  }}>
                   <img src={deleteIcon}></img>
                 </button>
               </div>

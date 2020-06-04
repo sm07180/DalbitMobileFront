@@ -13,7 +13,7 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h3>경품 상세 소개</h3>
+      <h2>경품 상세 소개</h2>
 
       <h3>{'<경품 상세 소개>'}</h3>
       <p>
@@ -54,6 +54,48 @@ export default props => {
 //---------------------------------------------------------------------
 //styled
 const Content = styled.div`
+  p {
+    font-size: 12px !important;
+  }
+
+  h2 {
+    font-size: 16px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+  }
+
+  h3 {
+    font-size: 14px !important;
+    color: #3a3a3a;
+  }
+
+  ul {
+    li {
+      position: relative;
+      padding-left: 10px;
+      font-size: 12px;
+      line-height: 20px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 2px;
+        width: 2px;
+        height: 2px;
+        background: #000;
+      }
+
+      .red {
+        color: #ec455f;
+      }
+
+      .blue {
+        color: #02a0db;
+      }
+    }
+  }
+
   ol {
     li {
       position: relative;

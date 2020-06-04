@@ -1468,6 +1468,10 @@ export default class API {
     return await ajax({url: '/event/ranking/live', method: 'GET', params})
   }
 
+  static getEventTerm = async () => {
+    return await ajax({url: '/event/ranking/term', method: 'GET'})
+  }
+
   static getEventComment = async params => {
     return await ajax({url: '/event/reply', method: 'GET', params})
   }
