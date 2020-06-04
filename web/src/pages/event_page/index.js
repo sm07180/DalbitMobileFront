@@ -21,6 +21,8 @@ export default props => {
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
+
+  const [termList, setTermList] = useState([])
   const [rankList, setRankList] = useState([])
   const [myRankInfo, setMyRankInfo] = useState({})
 
@@ -29,6 +31,17 @@ export default props => {
     like: 2,
     gift: 3
   }
+
+  useEffect(() => {
+    async function fetchEventTermData() {
+      const {result, data} = await API.getEventTerm()
+      if (result === 'success') {
+        setTermList(data)
+      }
+    }
+
+    fetchEventTermData()
+  }, [])
 
   useEffect(() => {
     // reset event type category
@@ -92,21 +105,19 @@ export default props => {
 
                 <div className="stage-wrap">
                   <div className="stage-tab-wrap">
-                    <div className={`tab ${rankingStep === 1 ? 'active' : ''}`} onClick={() => setRankingStep(1)}>
-                      1차
-                      <br />
-                      <span>6/1~ 6/7</span>
-                    </div>
-                    <div className={`tab ${rankingStep === 2 ? 'active' : ''}`} onClick={() => setRankingStep(2)}>
-                      2차
-                      <br />
-                      <span>6/1~ 6/7</span>
-                    </div>
-                    <div className={`tab ${rankingStep === 3 ? 'active' : ''}`} onClick={() => setRankingStep(3)}>
-                      3차
-                      <br />
-                      <span>6/1~ 6/7</span>
-                    </div>
+                    {termList.map((data, idx) => {
+                      const {round, term} = data
+                      return (
+                        <div
+                          key={`term-${idx}`}
+                          className={`tab ${rankingStep === round ? 'active' : ''}`}
+                          onClick={() => setRankingStep(round)}>
+                          {`${round}차`}
+                          <br />
+                          <span>{term}</span>
+                        </div>
+                      )
+                    })}
                   </div>
 
                   <div className="my-info">
