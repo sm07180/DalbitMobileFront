@@ -34,7 +34,7 @@ export default props => {
 
   useEffect(() => {
     async function fetchInitData() {
-      const {result, data} = await API.getEventRanking({params: {slctType: RankType[rankingType]}})
+      const {result, data} = await API.getEventRanking({slctType: RankType[rankingType]})
       if (result === 'success') {
         setRankList(data.list)
       }
