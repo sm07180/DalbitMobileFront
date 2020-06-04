@@ -39,7 +39,8 @@ export default props => {
               fan,
               dj,
               isSpecial,
-              roomNo
+              roomNo,
+              memNo
             } = item
             let genderName
             let upDownName
@@ -90,7 +91,11 @@ export default props => {
 
                 <div className="myRanking__right">
                   <div className="myRanking__rightWrap">
-                    <div className="thumbBox">
+                    <div
+                      className="thumbBox"
+                      onClick={() => {
+                        window.location.href = `/mypage/${memNo}`
+                      }}>
                       <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
                     </div>
 

@@ -1464,11 +1464,23 @@ export default class API {
     return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
   }
 
-  static getEventRanking = async obj => {
-    const {params} = obj
+  static getEventRanking = async params => {
     return await ajax({url: '/event/ranking/live', method: 'GET', params})
   }
+
+  static getEventComment = async params => {
+    return await ajax({url: '/event/reply', method: 'GET', params})
+  }
+
+  static postEventComment = async data => {
+    return await ajax({url: '/event/reply', method: 'POST', data})
+  }
+
+  static deleteEventComment = async data => {
+    return await ajax({url: '/event/reply', method: 'DELETE', data})
+  }
 }
+
 API.customHeader = null
 API.authToken = null
 

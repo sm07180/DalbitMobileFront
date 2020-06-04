@@ -6,6 +6,8 @@ import API from 'context/api'
 // component
 import CommentEvent from './comment_event'
 
+import {PHOTO_SERVER} from 'context/config.js'
+
 // static
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
@@ -17,6 +19,7 @@ export default props => {
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
   const [rankList, setRankList] = useState([])
+  const [myRankInfo, setMyRankInfo] = useState({})
 
   const RankType = {
     exp: 1,
@@ -34,9 +37,13 @@ export default props => {
 
   useEffect(() => {
     async function fetchInitData() {
-      const {result, data} = await API.getEventRanking({params: {slctType: RankType[rankingType]}})
+      const {result, data} = await API.getEventRanking({slctType: RankType[rankingType]})
       if (result === 'success') {
         setRankList(data.list)
+        setMyRankInfo({
+          myRank: data.myRank,
+          myPoint: data.myPoint
+        })
       }
     }
 
@@ -110,11 +117,11 @@ export default props => {
 
                 <div className="my-info">
                   <span>내 순위</span>
-                  <span className="ranking">23</span>
+                  <span className="ranking">{myRankInfo.myRank}</span>
                   <span>위</span>
                   <span className="bar">|</span>
                   <span className="exp-title">달성 경험치</span>
-                  <span>32,432</span>
+                  <span>{myRankInfo.myPoint}</span>
                 </div>
 
                 <div className="content-wrap">
@@ -124,14 +131,31 @@ export default props => {
                     <span className="top-fan">최고팬</span>
                   </div>
                   {rankList.map((value, idx) => {
+                    const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
+
                     return (
                       <div className="user-wrap" key={`user-${idx}`}>
                         <div className="rank-wrap">
                           {idx < 3 ? (
                             <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
                           ) : (
-                            100
+                            <span className="num">{idx}</span>
                           )}
+                        </div>
+                        <div className="dj-info">
+                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
+                          <div>
+                            <span className="nick-name">
+                              {nickName} Lv{level}
+                            </span>
+                            <div className="exp-box">
+                              달성경험치 <span>{gainPoint}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="top-fan">
+                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
+                          <div className="fan-nick">{fanNick}</div>
                         </div>
                       </div>
                     )
