@@ -438,9 +438,9 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/* {today < 12 && popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && (
+        {__NODE_ENV === 'dev' && today < 12 && popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && (
           <LayerPopupNotice setPopup={setPopupNotice} />
-        )} */}
+        )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>

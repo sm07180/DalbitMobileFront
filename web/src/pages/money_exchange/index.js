@@ -576,7 +576,7 @@ const handleAccount = (e) => {
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
-                              <input type="tel" value={exchangeStarStr} className="point__value  point__value--input" onChange={(e) => handleChange(e)} />
+                              <input type="number" pattern="\d*" value={exchangeStarStr} className="point__value  point__value--input" onChange={(e) => handleChange(e)} />
                               </div>
                           </div>
 
