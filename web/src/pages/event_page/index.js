@@ -36,7 +36,9 @@ export default props => {
     async function fetchEventTermData() {
       const {result, data} = await API.getEventTerm()
       if (result === 'success') {
-        setTermList(data)
+        const {nowRound, terms} = data
+        setTermList(terms)
+        setRankingStep(nowRound)
       }
     }
 
@@ -53,7 +55,7 @@ export default props => {
 
   useEffect(() => {
     async function fetchInitData() {
-      const {result, data} = await API.getEventRanking({slctType: RankType[rankingType]})
+      const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
       if (result === 'success') {
         setRankList(data.list)
         setMyRankInfo({
@@ -62,7 +64,7 @@ export default props => {
         })
       }
     }
-
+    console.log('fetch')
     fetchInitData()
   }, [rankingType])
 
@@ -106,12 +108,18 @@ export default props => {
                 <div className="stage-wrap">
                   <div className="stage-tab-wrap">
                     {termList.map((data, idx) => {
-                      const {round, term} = data
+                      const {round, term, state} = data
                       return (
                         <div
                           key={`term-${idx}`}
                           className={`tab ${rankingStep === round ? 'active' : ''}`}
-                          onClick={() => setRankingStep(round)}>
+                          onClick={() => {
+                            if (state !== 'ready') {
+                              setRankingStep(round)
+                            } else {
+                              alert(`${term}에 공개될 예정입니다.`)
+                            }
+                          }}>
                           {`${round}차`}
                           <br />
                           <span>{term}</span>
