@@ -484,16 +484,33 @@ export default (props) => {
     closeBtn.style.top = (((window.screen.height || document.documentElement.clientHeight) - height)/2 - borderWidth - 50) + 'px';
 }
 
-const handleChange = (value) => {  
-  setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
-  setExchangeStar(Number(value.split(",").join("")));
+const handleChange = (e) => {  
+  const value = e.target.value;
+  const num = value.split(",").join("");
+
+    if(!isNaN(num)) {
+      if(byeolCnt < num) {
+        setExchangeStarStr(Number(byeolCnt).toLocaleString());
+        setExchangeStar(Number(byeolCnt));
+      } else {
+        setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
+        setExchangeStar(Number(value.split(",").join("")));
+      }
+    }
   
 }
 
 const handleSocial = (value) => {
-  setFSocialNo(value);
-  if(value.length === 6) {
-    document.getElementById("bsocialNo").focus();
+  if(value > 999999) {
+    
+  } else if(isNaN(value)){
+
+  } else {
+
+    setFSocialNo(value);
+    if(value.length === 6) {
+      document.getElementById("bsocialNo").focus();
+    }
   }
 }
 
@@ -511,6 +528,7 @@ const handlePassword = (e) => {
       setIsSpecial(profile.isSpecial);
       if(profile.byeolCnt >= 570) {
         setExchangeStar(profile.byeolCnt);
+        setExchangeStarStr(Number(profile.byeolCnt).toLocaleString())
       }
     }
   }, [profile])
@@ -550,7 +568,7 @@ const handlePassword = (e) => {
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
-                              <input type="text" value={exchangeStar.toLocaleString()} className="point__value  point__value--input" onChange={(e) => handleChange(e.target.value)} />
+                              <input type="tel" value={exchangeStarStr} className="point__value  point__value--input" onChange={(e) => handleChange(e)} />
                               </div>
                           </div>
 
@@ -617,7 +635,7 @@ const handlePassword = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" value={fSocialNo} className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
                               <span className="PayView__input--line">-</span>
                               <input type="password" maxLength="7" pattern="[0-9]*" value={bSocialNo} id="bsocialNo" className="PayView__input--text" onChange={(e) => handlePassword(e)} />
                               </div>
