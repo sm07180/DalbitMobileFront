@@ -129,7 +129,7 @@ export default (props) => {
       })
       return;
     }
-    if(account === 0) {
+    if(account === 0 || account.toString().length < 10) {
       context.action.alert({
         msg: "입금 받으실 은행의\n계죄번호를 입력해주세요.",
         callback: () => {
@@ -138,7 +138,7 @@ export default (props) => {
       })
       return;
     }
-    if(fSocialNo === "" || bSocialNo === "") {
+    if( (fSocialNo === "" || fSocialNo.length < 6) || (bSocialNo === "" || bSocialNo.length < 7 ) ) {
       context.action.alert({
         msg: "주민등록번호를\n정확하게 입력해주세요.",
         callback: () => {
@@ -522,6 +522,14 @@ const handlePassword = (e) => {
   }
 }
 
+const handleAccount = (e) => {
+  if(e.target.value > 99999999999999999999) {
+
+  } else {
+    setAccount(e.target.value);
+  }
+}
+
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
@@ -628,7 +636,7 @@ const handlePassword = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">계좌번호</div>
                               <div className="PayView__input">
-                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" value={account} className="PayView__input--text" onChange={(e) => handleAccount(e)} />
                               </div>
                           </div>
 
@@ -644,7 +652,7 @@ const handlePassword = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="tel" pattern="[0-9]*" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
                               </div>
                           </div>
                           <div className="PayView__list">
