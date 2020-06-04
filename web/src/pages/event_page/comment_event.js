@@ -9,7 +9,15 @@ export default function CommentEvent() {
   const [commentTxt, setCommentTxt] = useState('')
   const [commentList, setCommentList] = useState([])
 
+  async function fetchCommentData() {
+    const {result, data} = await API.getEventComment({params: {eventIdx: ''}})
+    if (result === 'success') {
+    }
+  }
+
   useEffect(() => {
+    // fetchCommentData()
+
     return () => {
       console.log('remove comment event component')
     }
@@ -33,7 +41,10 @@ export default function CommentEvent() {
           onClick={() => {
             // submit text on server (api sync)
             async function AddComment(memNo, eventIdx, depth, content) {
-              // const {result, data} = await API.postComment({})
+              const {result, data} = await API.postEventComment({})
+              if (result === 'success') {
+                setCommentTxt('')
+              }
             }
             // AddComment()
           }}>
