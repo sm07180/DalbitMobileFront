@@ -1,7 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 
 import './event_page.scss'
 import API from 'context/api'
+
+//context
+import {Context} from 'context'
 
 // component
 import RankingTypeContent from './ranking_type_content'
@@ -27,6 +30,8 @@ export default props => {
     like: 2,
     gift: 3
   }
+
+  const globalCtx = useContext(Context)
 
   useEffect(() => {
     // reset event type category
