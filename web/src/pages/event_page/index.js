@@ -19,7 +19,7 @@ export default props => {
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
   const [rankList, setRankList] = useState([])
-  const [myRankInfo, setMyRankInfo] = useState([])
+  const [myRankInfo, setMyRankInfo] = useState({})
 
   const RankType = {
     exp: 1,

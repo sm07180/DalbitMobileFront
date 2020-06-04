@@ -36,6 +36,7 @@ export default function CommentEvent() {
           onChange={e => {
             const target = e.currentTarget
             const value = target.value
+            if (value.length >= 300) return
             setCommentTxt(value)
           }}></textarea>
 
@@ -43,7 +44,7 @@ export default function CommentEvent() {
           onClick={() => {
             // submit text on server (api sync)
             async function AddComment(memNo, eventIdx, depth, content) {
-              const {result, data} = await API.postEventComment({})
+              const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
               }
             }
@@ -62,7 +63,7 @@ export default function CommentEvent() {
             src={refreshIcon}
             onClick={() => {
               setCommentList([])
-              fetchCommentData()
+              // fetchCommentData()
             }}
           />
         </div>
