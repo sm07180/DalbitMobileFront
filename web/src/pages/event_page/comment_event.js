@@ -17,6 +17,14 @@ export default function CommentEvent() {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
+  const timeFormat = strFormatFromServer => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
   async function fetchCommentData() {
     const {result, data} = await API.getEventComment({eventIdx: eventIndex})
     if (result === 'success') {
@@ -87,7 +95,7 @@ export default function CommentEvent() {
                 <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
                 <div className="content">
                   <div className="name-date-wrap">
-                    {memId} <span className="date">{writeDt}</span>
+                    {memId} <span className="date">{timeFormat(writeDt)}</span>
                   </div>
                   <div className="text">{content}</div>
                 </div>
