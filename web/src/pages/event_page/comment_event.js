@@ -1,4 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+
+//context
+import {Context} from 'context'
 
 // static
 import refreshIcon from './static/refresh.svg'
@@ -6,11 +9,15 @@ import refreshIcon from './static/refresh.svg'
 import API from 'context/api'
 
 export default function CommentEvent() {
+  const [eventIndex, setEventIndex] = useState(1)
   const [commentTxt, setCommentTxt] = useState('')
   const [commentList, setCommentList] = useState([])
 
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
+
   async function fetchCommentData() {
-    const {result, data} = await API.getEventComment({eventIdx: ''})
+    const {result, data} = await API.getEventComment({eventIdx: eventIndex})
     if (result === 'success') {
       const {list} = data
       setCommentList(list)
@@ -18,7 +25,7 @@ export default function CommentEvent() {
   }
 
   useEffect(() => {
-    // fetchCommentData()
+    fetchCommentData()
 
     return () => {
       console.log('remove comment event component')
@@ -46,10 +53,11 @@ export default function CommentEvent() {
             async function AddComment(memNo, eventIdx, depth, content) {
               const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
+                fetchCommentData()
               }
             }
             setCommentTxt('')
-            // AddComment()
+            AddComment(token.memNo, eventIndex, 1, commentTxt)
           }}>
           등록
         </button>
@@ -63,7 +71,7 @@ export default function CommentEvent() {
             src={refreshIcon}
             onClick={() => {
               setCommentList([])
-              // fetchCommentData()
+              fetchCommentData()
             }}
           />
         </div>
