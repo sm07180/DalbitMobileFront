@@ -223,7 +223,7 @@
           .dj-info {
             display: flex;
             width: calc(100% - 160px);
-            padding: 10px;
+            padding: 10px 6px;
             box-sizing: border-box;
 
             & > .thumb {
@@ -364,12 +364,17 @@
             .each {
               display: flex;
               flex-direction: row;
+              position: relative;
+              padding: 10px 32px 10px 10px;
+              border-bottom: 1px solid #f2f2f2;
 
               .profile-img {
-                width: 40px;
-                height: 40px;
-                background-position: center;
-                background-size: cover;
+                overflow: hidden;
+                min-width: 43px;
+                height: 43px;
+                margin-right: 6px;
+                background-size: 100%;
+                border-radius: 50%;
               }
 
               .content {
@@ -379,14 +384,25 @@
                   .name {
                     color: #000;
                   }
+
                   .date {
                     color: #919191;
                     font-size: 12px;
                   }
                 }
                 .text {
+                  font-size: 14px;
+                  line-height: 20px;
                   color: #757575;
                 }
+              }
+
+              .btn-delete {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 24px;
+                height: 24px;
               }
             }
           }
