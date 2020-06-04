@@ -1468,7 +1468,18 @@ export default class API {
     const {params} = obj
     return await ajax({url: '/event/ranking/live', method: 'GET', params})
   }
+
+  static postComment = async obj => {
+    const {data} = obj
+    return await ajax({url: '/event/reply', method: 'POST', data})
+  }
+
+  static deleteComment = async obj => {
+    const {data} = obj
+    return await ajax({url: '/event/reply', method: 'DELETE', data})
+  }
 }
+
 API.customHeader = null
 API.authToken = null
 
