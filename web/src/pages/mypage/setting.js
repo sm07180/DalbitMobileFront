@@ -220,7 +220,11 @@ export default props => {
 
   const changeMsg = e => {
     const {currentTarget} = e
-    setProfileMsg(currentTarget.value)
+    if (currentTarget.value.length > 100) {
+      return
+    } else {
+      setProfileMsg(currentTarget.value)
+    }
   }
 
   const saveUpload = async () => {
@@ -287,10 +291,6 @@ export default props => {
       }
     }
   }, [profile])
-
-  useEffect(() => {
-    console.log('gender', gender)
-  }, [gender])
 
   if (profile === null) {
     Api.mypage().then(result => {
@@ -403,7 +403,7 @@ export default props => {
 
               <div className="msg-wrap">
                 <label className="input-label">프로필 메세지</label>
-                <MsgText defaultValue={profile.profMsg} onChange={changeMsg} />
+                <MsgText defaultValue={profile.profMsg} onChange={changeMsg} maxLength={100} />
               </div>
               <SaveBtn onClick={saveUpload}>저장</SaveBtn>
             </SettingWrap>

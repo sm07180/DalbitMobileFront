@@ -16,6 +16,13 @@ export default props => {
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
+  const [rankList, setRankList] = useState([])
+
+  const RankType = {
+    exp: 1,
+    like: 2,
+    gift: 3
+  }
 
   useEffect(() => {
     // reset event type category
@@ -27,11 +34,14 @@ export default props => {
 
   useEffect(() => {
     async function fetchInitData() {
-      // await API
+      const {result, data} = await API.getEventRanking({params: {slctType: RankType[rankingType]}})
+      if (result === 'success') {
+        setRankList(data.list)
+      }
     }
 
     fetchInitData()
-  }, [])
+  }, [rankingType])
 
   return (
     <div id="event-page">
@@ -113,7 +123,7 @@ export default props => {
                     <span className="dj-txt">DJ</span>
                     <span className="top-fan">최고팬</span>
                   </div>
-                  {[1, 2, 3, 4].map((value, idx) => {
+                  {rankList.map((value, idx) => {
                     return (
                       <div className="user-wrap" key={`user-${idx}`}>
                         <div className="rank-wrap">
