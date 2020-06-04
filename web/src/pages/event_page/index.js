@@ -46,22 +46,34 @@ export default props => {
     fetchEventTermData()
   }, [])
 
-  useEffect(() => {}, [eventType])
-
   useEffect(() => {
     async function fetchInitData() {
-      const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
-      if (result === 'success') {
-        setRankList(data.list)
-        setMyRankInfo({
-          myRank: data.myRank,
-          myPoint: data.myPoint
-        })
+      const {state} = rankingTerm
+      if (state === 'ing') {
+        const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
+      } else if (state === 'finished') {
+        const {result, data} = await API.getEventRankingResult({slctType: RankType[rankingType], round: rankingTerm.round})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
       }
     }
 
-    fetchInitData()
-  }, [rankingType])
+    if (rankingTerm) {
+      fetchInitData()
+    }
+  }, [rankingType, rankingTerm])
 
   return (
     <Layout {...props} status="no_gnb">
