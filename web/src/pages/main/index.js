@@ -41,6 +41,7 @@ let concatenating = false
 let tempScrollEvent = null
 //7->50
 const records = 30
+const today = new Date().getDate()
 
 export default props => {
   // reference
@@ -437,7 +438,9 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
+        {today < 12 && popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && (
+          <LayerPopupNotice setPopup={setPopupNotice} />
+        )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
