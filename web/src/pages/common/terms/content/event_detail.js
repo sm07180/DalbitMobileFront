@@ -1,0 +1,135 @@
+/**
+ * @file terms/content/event_detail.js
+ * @brief 이벤트 기간 및 상세소개
+ */
+import React, {useEffect, useContext, useState} from 'react'
+import styled from 'styled-components'
+//context
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+
+////---------------------------------------------------------------------
+export default props => {
+  //---------------------------------------------------------------------
+  return (
+    <Content>
+      <h3 style={{textAlign: 'center'}}>이벤트 기간 및 상세소개</h3>
+
+      <h3 style={{fontWeight: 'bold'}}>{'<이벤트 기간 및 당첨자 발표>'}</h3>
+      <p>
+        <ul>
+          <li>1차 기간 : 6/8~6/17 , 당첨자 발표 : 6/19</li>
+          <li>1차 기간 : 6/8~6/17 , 당첨자 발표 : 6/19</li>
+          <li>1차 기간 : 6/8~6/17 , 당첨자 발표 : 6/19</li>
+        </ul>
+      </p>
+
+      <h3 style={{fontWeight: 'bold'}}>{'<이벤트 유의사항>'}</h3>
+      <p>
+        <ul>
+          <li>
+            부정한 방법으로 입상할 경우 이벤트 당첨을 취소합니다. 매 회차별 당첨은 가능하나, 같은 회차에서
+            분야별(경험치,좋아요,선물) 중복 당첨은 제외됩니다. 중복 당첨시 고가격 기준으로 인정되고, 후순위가 대체 선정됩니다. ※
+            동일한 가격일 경우 경험치,좋아요,선물 순으로 인정됩니다)
+          </li>
+          <li>동일 순위(페이지상 순위표기와 별개)의 경우는 총 방송시간이 많은 분이 선정됩니다.</li>
+          <li>
+            당첨자는 help@dalbitlive.com으로 신분증사본을 첨부해주시고, 내용에 이름, 휴대폰 번호, 주민등록번호, 등본상 거주주소,
+            선물 받을 주소를 반드시 작성해주세요.
+          </li>
+          <li>달/별 당첨자는 신분증접수가 필요 없습니다.</li>
+          <li>경품 대신 달로 받고 싶은 경우는 메일이나 1:1문의에 남겨주세요.</li>
+        </ul>
+      </p>
+    </Content>
+  )
+}
+
+//---------------------------------------------------------------------
+//styled
+const Content = styled.div`
+  ol {
+    li {
+      position: relative;
+      padding-left: 17px;
+      line-height: 22px;
+
+      span {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+  ol.depth1 {
+    margin-top: 20px;
+  }
+  ol.depth2 {
+    & > li {
+      margin-top: 16px;
+      padding-left: 20px;
+      color: #616161;
+    }
+  }
+  ol.depth3 {
+    margin-top: 6px;
+    li {
+      color: #616161;
+    }
+  }
+  ol.depth4 {
+    margin-bottom: 5px;
+    li {
+      padding-left: 9px;
+      color: #616161;
+    }
+  }
+
+  table.content {
+    margin: 30px 0 8px 0;
+    padding: 0;
+    border-top: 1px solid ${COLOR_MAIN};
+    caption {
+      display: none;
+    }
+    * {
+      color: #424242;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th,
+    td {
+      padding: 15px 5px;
+      border-bottom: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    thead {
+      th {
+        background: #f5f5f5;
+      }
+      th:last-child {
+        border-right: 0;
+      }
+    }
+
+    tbody {
+      td:last-child {
+        border-right: 0;
+      }
+    }
+
+    th.right-border,
+    td.right-border {
+      border-right: 1px solid #e0e0e0;
+    }
+  }
+
+  span.table-txt {
+    display: block;
+    font-size: 14px;
+    color: #9e9e9e;
+    text-align: right;
+  }
+`

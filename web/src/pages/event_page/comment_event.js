@@ -5,6 +5,7 @@ import {Context} from 'context'
 
 // static
 import refreshIcon from './static/refresh.svg'
+import deleteIcon from './static/close.svg'
 
 import API from 'context/api'
 
@@ -77,13 +78,20 @@ export default function CommentEvent() {
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {
+            const {profImg, memId, writeDt, content} = value
             return (
               <div className="each" key={`comment-${idx}`}>
-                <div className="profile-img"></div>
+                <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
                 <div className="content">
-                  <div className="name-date-wrap"></div>
-                  <div className="text"></div>
+                  <div className="name-date-wrap">
+                    {memId} <span className="date">{writeDt}</span>
+                  </div>
+                  <div className="text">{content}</div>
                 </div>
+
+                <button className="btn-delete">
+                  <img src={deleteIcon}></img>
+                </button>
               </div>
             )
           })}
