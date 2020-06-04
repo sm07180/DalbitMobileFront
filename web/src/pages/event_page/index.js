@@ -20,7 +20,7 @@ export default props => {
   // const [eventType, setEventType] = useState('comment')
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
-  const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
+  const [rankingTerm, setRankingTerm] = useState(null) // 1차, 2차, 3차
 
   const [termList, setTermList] = useState([])
   const [rankList, setRankList] = useState([])
@@ -37,21 +37,16 @@ export default props => {
       const {result, data} = await API.getEventTerm()
       if (result === 'success') {
         const {nowRound, terms} = data
+        const selectedTerm = terms.find(t => t.round === nowRound)
         setTermList(terms)
-        setRankingStep(nowRound)
+        setRankingTerm(selectedTerm)
       }
     }
 
     fetchEventTermData()
   }, [])
 
-  useEffect(() => {
-    // reset event type category
-    if (eventType === 'event') {
-      setRankingType('exp')
-      setRankingStep(1)
-    }
-  }, [eventType])
+  useEffect(() => {}, [eventType])
 
   useEffect(() => {
     async function fetchInitData() {
@@ -64,7 +59,7 @@ export default props => {
         })
       }
     }
-    console.log('fetch')
+
     fetchInitData()
   }, [rankingType])
 
@@ -107,25 +102,27 @@ export default props => {
 
                 <div className="stage-wrap">
                   <div className="stage-tab-wrap">
-                    {termList.map((data, idx) => {
-                      const {round, term, state} = data
-                      return (
-                        <div
-                          key={`term-${idx}`}
-                          className={`tab ${rankingStep === round ? 'active' : ''}`}
-                          onClick={() => {
-                            if (state !== 'ready') {
-                              setRankingStep(round)
-                            } else {
-                              alert(`${term}에 공개될 예정입니다.`)
-                            }
-                          }}>
-                          {`${round}차`}
-                          <br />
-                          <span>{term}</span>
-                        </div>
-                      )
-                    })}
+                    {rankingTerm &&
+                      termList.map((data, idx) => {
+                        const {round, term, state} = data
+
+                        return (
+                          <div
+                            key={`term-${idx}`}
+                            className={`tab ${rankingTerm.round === round ? 'active' : ''}`}
+                            onClick={() => {
+                              if (state !== 'ready') {
+                                setRankingTerm(data)
+                              } else {
+                                alert(`${term}에 공개될 예정입니다.`)
+                              }
+                            }}>
+                            {`${round}차`}
+                            <br />
+                            <span>{term}</span>
+                          </div>
+                        )
+                      })}
                   </div>
 
                   <div className="my-info">
