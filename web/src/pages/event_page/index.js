@@ -16,8 +16,8 @@ import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
 
 export default props => {
-  // const [eventType, setEventType] = useState('event') // event, comment
-  const [eventType, setEventType] = useState('comment')
+  const [eventType, setEventType] = useState('event') // event, comment
+  // const [eventType, setEventType] = useState('comment')
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
   const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
