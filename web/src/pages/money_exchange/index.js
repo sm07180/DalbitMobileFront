@@ -138,7 +138,7 @@ export default (props) => {
       })
       return;
     }
-    if(fSocialNo === "" && bSocialNo === "") {
+    if(fSocialNo === "" || bSocialNo === "") {
       context.action.alert({
         msg: "주민등록번호를\n정확하게 입력해주세요.",
         callback: () => {
@@ -168,7 +168,7 @@ export default (props) => {
 
     if(idPhotoName === "") {
       context.action.alert({
-        msg: "신분증 사본을\n등록해주세요.",
+        msg: "신분증 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -177,7 +177,7 @@ export default (props) => {
     }
     if(bankBookName === "") {
       context.action.alert({
-        msg: "통장 사본을\n등록해주세요.",
+        msg: "통장 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
