@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react'
 // static
 import refreshIcon from './static/refresh.svg'
 
+import API from 'context/api'
+
 export default function CommentEvent() {
   const [commentTxt, setCommentTxt] = useState('')
   const [commentList, setCommentList] = useState([])
