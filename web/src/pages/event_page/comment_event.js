@@ -32,6 +32,10 @@ export default function CommentEvent() {
         <button
           onClick={() => {
             // submit text on server (api sync)
+            async function AddComment(memNo, eventIdx, depth, content) {
+              // const {result, data} = await API.postComment({})
+            }
+            // AddComment()
           }}>
           등록
         </button>
