@@ -1,7 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
+
+//context
+import {Context} from 'context'
 
 export default function RankingType(props) {
-  console.log(props)
+  const globalCtx = useContext(Context)
+  // globalCtx.action.updatePopup('TERMS', 'event-detail')
+  // globalCtx.action.updatePopup('TERMS', 'event-gift-detail')
+
   if (props.rankingType === 'exp') {
     return (
       <div className="content-wrap">
