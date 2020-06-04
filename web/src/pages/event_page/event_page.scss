@@ -235,17 +235,29 @@
               border-radius: 50%;
             }
 
-            .nick-name {
+            .nick-name-wrap {
+              width: 100%;
               margin-bottom: 5px;
               font-size: 14px;
               letter-spacing: -0.35px;
-              text-align: left;
-              color: #000;
-              font-weight: 500;
-              display: block;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
+              line-height: 14px;
+
+              .nick-name {
+                display: inline-block;
+                max-width: 60%;
+                font-weight: 500;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+
+              .level {
+                display: inline-block;
+                margin-left: 5px;
+                margin-bottom: 5px;
+                font-size: 14px;
+                letter-spacing: -0.35px;
+              }
             }
 
             .exp-box {
