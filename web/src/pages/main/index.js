@@ -437,8 +437,7 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
-
+        {popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
@@ -457,8 +456,14 @@ const Content = styled.div`
   .section {
     margin-top: 24px;
 
-    .listener_cnt{color:red;font-weight:700;}
-    .room_cnt{color:blue;font-weight:700;}
+    .listener_cnt {
+      color: red;
+      font-weight: 700;
+    }
+    .room_cnt {
+      color: blue;
+      font-weight: 700;
+    }
 
     .live-list-category {
       position: relative;
