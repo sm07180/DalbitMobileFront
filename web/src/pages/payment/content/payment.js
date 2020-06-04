@@ -41,7 +41,6 @@ export default props => {
 
   const { paymentName, paymentPrice, itemNo } = props.location.state ? props.location.state : props.history.goBack();
   console.log(props.location.state);
-  const paymentPriceAddVat = (paymentPrice / 10) + paymentPrice;
   
   const handleEvent = (value) => {
     setReceipt(value);
@@ -263,7 +262,7 @@ export default props => {
                   <div className="depositInfo__box">
                     <div className="depositInfo__label">입금정보</div>
                     <div className="depositInfo__value">
-                      <span className="depositInfo__value--point">{Utility.addComma(paymentPriceAddVat)} 원</span> (부가세 포함)
+                      <span className="depositInfo__value--point">{Utility.addComma(paymentPrice)} 원</span> (부가세 포함)
                     </div>
 
                     <div className="depositInfo__label">입금은행</div>
