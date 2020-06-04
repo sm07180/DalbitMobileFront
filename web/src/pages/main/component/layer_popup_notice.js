@@ -220,8 +220,8 @@ const PopupWrap = styled.div`
 
   .img-wrap {
     position: relative;
-    width: 280px;
-    height: 400px;
+    width: 284px;
+    height: 404px;
     button {
       position: absolute;
       font-size: 0;
