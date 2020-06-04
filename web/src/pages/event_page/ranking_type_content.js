@@ -18,7 +18,14 @@ export default function RankingType(props) {
             <span>※</span> 순위는 실시간으로 집계됩니다.
           </p>
           <p>
-            <span>※</span> 당첨자 발표일 및 유의사항 <button type="button">자세히보기</button>
+            <span>※</span> 당첨자 발표일 및 유의사항{' '}
+            <button
+              type="button"
+              onClick={() => {
+                globalCtx.action.updatePopup('TERMS', 'event-detail')
+              }}>
+              자세히보기
+            </button>
           </p>
         </div>
       </div>
