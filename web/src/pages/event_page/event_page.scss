@@ -242,6 +242,10 @@
               text-align: left;
               color: #000;
               font-weight: 500;
+              display: block;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
             }
 
             .exp-box {
@@ -275,7 +279,6 @@
               letter-spacing: -0.35px;
               width: 60px;
               text-overflow: ellipsis;
-              -o-text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;
               word-wrap: normal;

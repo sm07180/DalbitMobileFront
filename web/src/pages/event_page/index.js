@@ -4,6 +4,7 @@ import './event_page.scss'
 import API from 'context/api'
 
 // component
+import RankingTypeContent from './ranking_type_content'
 import CommentEvent from './comment_event'
 
 import {PHOTO_SERVER} from 'context/config.js'
@@ -82,18 +83,8 @@ export default props => {
                     선물 랭킹
                   </div>
                 </div>
-                <div className="content-wrap">
-                  <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img.png" />
 
-                  <div className="notice-wrap">
-                    <p>
-                      <span>※</span> 순위는 실시간으로 집계됩니다.
-                    </p>
-                    <p>
-                      <span>※</span> 당첨자 발표일 및 유의사항 <button type="button">자세히보기</button>
-                    </p>
-                  </div>
-                </div>
+                <RankingTypeContent rankingType={rankingType} />
               </div>
 
               <div className="stage-wrap">
@@ -145,9 +136,8 @@ export default props => {
                         <div className="dj-info">
                           <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
                           <div>
-                            <span className="nick-name">
-                              {nickName} Lv{level}
-                            </span>
+                            <span className="nick-name">{nickName}</span>
+                            <span className="level">Lv{level}</span>
                             <div className="exp-box">
                               달성경험치 <span>{gainPoint}</span>
                             </div>
