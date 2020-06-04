@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Checkbox from './Checkbox'
 import Utility from 'components/lib/utility'
+import {IMG_SERVER} from 'context/config'
 
 // static
 import CloseBtn from '../static/ic_close.svg'
@@ -87,7 +88,7 @@ export default props => {
         </div>
       </div> */}
       <div className="img-wrap">
-        <img src={popupImg} />
+        <img src={`${IMG_SERVER}/images/api/popup_20200604.png`} />
         <button
           className="close"
           onClick={() => {
