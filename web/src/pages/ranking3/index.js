@@ -36,9 +36,10 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
+  const [myInfo, setMyInfo] = useState()
 
   const [dateType, setDateType] = useState(1)
-  const [myRank, setMyRank] = useState('-')
+  const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
 
@@ -199,7 +200,16 @@ export default props => {
           setList(res.data.list)
           fetchRank(type, dateType, 'next')
         }
-        setMyRank(res.data.myRank == 0 ? '-' : res.data.myRank)
+
+        setMyInfo({
+          myGiftPoint: res.data.myGiftPoint,
+          myListenerPoint: res.data.myListenerPoint,
+          myPoint: res.data.myPoint,
+          myRank: res.data.myRank,
+          myUpDown: res.data.myUpDown
+        })
+
+        console.log(res.data)
       }
     } else {
       context.action.alert({
@@ -250,6 +260,24 @@ export default props => {
     return levelName
   }
 
+  const createMyUpDownClass = () => {
+    const {myUpDown} = myInfo
+
+    let myUpDownName
+
+    if (myUpDown[0] === '+') {
+      myUpDownName = `rankingChange__up`
+    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+      myUpDownName = `rankingChange__down`
+    } else if (myUpDown === 'new') {
+      myUpDownName = `rankingChange__new`
+    } else {
+      myUpDownName = `rankingChange__stop`
+    }
+
+    return myUpDownName
+  }
+
   return (
     <>
       <div>
@@ -272,12 +300,12 @@ export default props => {
             }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myRank}</p>
+              <p className="myRanking__left--now">{myInfo.myRank}</p>
               <p className="rankingChange">
-                <span className="rankingChange__up">230</span>
+                <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span>
               </p>
               <p className="myRanking__left--point">
-                <img src={point} /> 45
+                <img src={point} /> {myInfo.myPoint}
               </p>
             </div>
 
@@ -301,21 +329,21 @@ export default props => {
                   <>
                     <span className="countBox__item">
                       <img src={star} />
-                      {Util.printNumber(myProfile.byeolCnt)}
+                      {Util.printNumber(myInfo.myGiftPoint)}
                     </span>
                     <span className="countBox__item">
                       <img src={people} />
-                      {Util.printNumber(myProfile.fanCnt)}
+                      {Util.printNumber(myInfo.myListenerPoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={like} />
-                      {Util.printNumber(myProfile.likeTotCnt)}
+                      {Util.printNumber(myInfo.myLikePoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={time} />
-                      {Util.printNumber(myProfile.listenTotTime)}
+                      {Util.printNumber(myProfile.BroadPoint)}
                     </span>
                   </>
                 )}
