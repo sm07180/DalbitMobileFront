@@ -37,7 +37,7 @@ export default function CommentEvent() {
     fetchCommentData()
 
     return () => {
-      console.log('remove comment event component')
+      // console.log('remove comment event component')
     }
   }, [])
 
@@ -89,7 +89,8 @@ export default function CommentEvent() {
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {
-            const {replyIdx, profImg, memId, memNo, writeDt, content} = value
+            const {replyIdx, profImg, memId, writerNo, writeDt, content} = value
+
             return (
               <div className="each" key={`comment-${idx}`}>
                 <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
@@ -100,20 +101,22 @@ export default function CommentEvent() {
                   <div className="text">{content}</div>
                 </div>
 
-                <button
-                  className="btn-delete"
-                  onClick={() => {
-                    async function DeleteComment(replyIdx, eventIdx) {
-                      const {result, data} = await API.deleteEventComment({replyIdx, eventIdx})
-                      if (result === 'success') {
-                        fetchCommentData()
+                {token.memNo === writerNo && (
+                  <button
+                    className="btn-delete"
+                    onClick={() => {
+                      async function DeleteComment(replyIdx, eventIdx) {
+                        const {result, data} = await API.deleteEventComment({replyIdx, eventIdx})
+                        if (result === 'success') {
+                          fetchCommentData()
+                        }
                       }
-                    }
 
-                    DeleteComment(replyIdx, eventIndex)
-                  }}>
-                  <img src={deleteIcon}></img>
-                </button>
+                      DeleteComment(replyIdx, eventIndex)
+                    }}>
+                    <img src={deleteIcon}></img>
+                  </button>
+                )}
               </div>
             )
           })}
