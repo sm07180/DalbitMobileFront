@@ -55,9 +55,9 @@ export default props => {
           <button className={`tab ${tabType === 'week' ? 'active' : ''}`} onClick={() => setTabType('week')}>
             주간
           </button>
-          <button className={`tab ${tabType === 'month' ? 'active' : ''}`} onClick={() => setTabType('month')}>
+          {/* <button className={`tab ${tabType === 'month' ? 'active' : ''}`} onClick={() => setTabType('month')}>
             월간
-          </button>
+          </button> */}
         </div>
 
         {tabType === 'today' && (
@@ -141,7 +141,7 @@ export default props => {
           </>
         )}
 
-        {tabType === 'month' && (
+        {/* {tabType === 'month' && (
           <>
             <h5>DJ</h5>
             <p>
@@ -166,7 +166,7 @@ export default props => {
               ※부스터로 상승한 좋아요는 집계에서 제외됩니다.
             </p>
           </>
-        )}
+        )} */}
       </div>
     </PopupWrap>
   )
