@@ -1463,6 +1463,11 @@ export default class API {
   static getBroadCnt = async () => {
     return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
   }
+
+  static getEventRanking = async obj => {
+    const {params} = obj
+    return await ajax({url: '/event/ranking/live', method: 'GET', params})
+  }
 }
 API.customHeader = null
 API.authToken = null
