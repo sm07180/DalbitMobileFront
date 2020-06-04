@@ -72,25 +72,39 @@
           }
 
           .notice-wrap {
-            padding-bottom: 33px;
-            font-size: 14px;
+            padding: 0 12px 33px 12px;
+            font-size: 13px;
             line-height: 26px;
-            letter-spacing: -0.35px;
-            text-align: center;
+            letter-spacing: -1px;
             color: #464646;
 
-            span {
-              color: #ff0000;
+            p {
+              position: relative;
+              padding-left: 16px;
+              padding-bottom: 5px;
+              line-height: 20px;
+
+              &::before {
+                content: '※';
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #ff0000;
+              }
+
+              span {
+                font-size: 12px;
+              }
             }
 
             button {
               margin-left: 3px;
-              padding: 0 17px;
+              padding: 0 5px;
               height: 25px;
               border-radius: 10px;
               background-color: #767676;
               color: #fff;
-              font-size: 14px;
+              font-size: 13px;
               letter-spacing: -0.35px;
             }
           }
