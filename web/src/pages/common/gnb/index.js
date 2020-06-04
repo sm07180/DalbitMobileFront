@@ -41,6 +41,9 @@ export default (props) => {
     if (!token.isLogin) {
       return (window.location.href = '/login')
     }
+    if(category === 'alarm'){
+        context.action.updateNews(false)
+    }
     return (window.location.href = `/menu/${category}`)
   }
 
