@@ -206,7 +206,7 @@ export default (props) => {
       return;
     } else if(exchangeStar > byeolCnt) {
       context.action.alert({
-        msg: '환전 신청별은 보유 별보다 같거나 작아야 합니다.',
+        msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.',
         callback: () => {
           context.action.alert({
             visible: false
@@ -226,7 +226,7 @@ export default (props) => {
         setExchangeCalc({...data});
       } else {
         context.action.alert({
-          msg: "환전 신청별은 \n 최소 570개 이상이어야 합니다.",
+          msg: "환전 신청별은\n최소 570개 이상이어야 합니다.",
           callback: () => {
             context.action.alert({visible: false})
           }
@@ -497,6 +497,14 @@ const handleSocial = (value) => {
   }
 }
 
+const handlePassword = (e) => {
+  if(!e.target.value) {
+    setBSocialNo(e.target.value);
+  } else if(!isNaN(e.target.value)) {
+    setBSocialNo(e.target.value);
+  }
+}
+
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
@@ -611,7 +619,7 @@ const handleSocial = (value) => {
                               <div className="PayView__input--nomber">
                               <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
                               <span className="PayView__input--line">-</span>
-                              <input type="password" maxLength="7" id="bsocialNo" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
+                              <input type="password" maxLength="7" pattern="[0-9]*" value={bSocialNo} id="bsocialNo" className="PayView__input--text" onChange={(e) => handlePassword(e)} />
                               </div>
                           </div>
 
