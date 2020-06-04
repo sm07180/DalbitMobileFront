@@ -290,8 +290,8 @@ export default props => {
   }
 
   return (
-    <Layout {...props}>
-      <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
+    <Layout {...props} sticker={globalCtx.sticker}>
+      <MainWrap ref={MainRef}>
         <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
