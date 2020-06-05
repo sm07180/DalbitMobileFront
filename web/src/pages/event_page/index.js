@@ -157,6 +157,14 @@ export default props => {
                     <span>{myRankInfo.myPoint}</span>
                   </div>
 
+                  <div className="content-wrap">
+                    <div className="category-wrap">
+                      <span className="rank-txt">순위</span>
+                      <span className="dj-txt">DJ</span>
+                      <span className="top-fan">최고팬</span>
+                    </div>
+                  </div>
+
                   {rankList.map((value, idx) => {
                     const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
 

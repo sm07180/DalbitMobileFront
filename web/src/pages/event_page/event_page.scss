@@ -20,7 +20,9 @@
         width: 50%;
         text-align: center;
         font-size: 24px;
-        padding: 7px 0;
+        padding: 14px 0;
+        letter-spacing: -0.5px;
+        font-weight: 700;
 
         &:first-child {
           border-top-left-radius: 14px;
@@ -118,6 +120,7 @@
           align-items: center;
 
           .tab {
+            position: relative;
             color: #000;
             background-color: #e8e8e8;
             width: 33.3334%;
@@ -127,6 +130,18 @@
             padding: 10px 0;
             font-size: 16px;
             font-weight: 700;
+            border: 1px solid #d9d9d9;
+            box-sizing: border-box;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -1px;
+              left: -1px;
+              width: calc(100% + 2px);
+              height: 2px;
+              background: #632beb;
+            }
 
             span {
               font-size: 14px;
@@ -138,6 +153,7 @@
             &.active {
               color: #fff;
               background-color: #632beb;
+              border-color: #632beb;
 
               span {
                 color: #fff;
