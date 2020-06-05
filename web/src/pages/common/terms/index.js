@@ -16,6 +16,8 @@ import Privacy from './content/privacy'
 import YouthProtect from './content/youth-protect'
 import Operating from './content/operating'
 import Maketing from './content/maketing'
+import EventDetail from './content/event_detail'
+import EventGiftDetail from './content/event_gift_detail'
 
 ////---------------------------------------------------------------------
 export default props => {
@@ -36,6 +38,12 @@ export default props => {
         return <Operating {...props} />
       case 'maketing': //---------------------------------------마케팅 수신 동의약관
         return <Maketing {...props} />
+      case 'event-detail': {
+        return <EventDetail {...props} />
+      }
+      case 'event-gift-detail': {
+        return <EventGiftDetail {...props} />
+      }
       default:
         return <div>약관 컨텐츠가 정의되지않음</div>
     }

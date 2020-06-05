@@ -41,6 +41,7 @@ let concatenating = false
 let tempScrollEvent = null
 //7->50
 const records = 30
+const today = new Date().getDate()
 
 export default props => {
   // reference
@@ -290,8 +291,8 @@ export default props => {
   }
 
   return (
-    <Layout {...props}>
-      <MainWrap ref={MainRef} sticker={globalCtx.sticker}>
+    <Layout {...props} sticker={globalCtx.sticker}>
+      <MainWrap ref={MainRef}>
         <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
@@ -437,8 +438,9 @@ export default props => {
         )}
 
         {/*이전  {popupNotice && sessionStorage.getItem('popup_notice') === 'y' && <LayerPopupNotice setPopup={setPopupNotice} />} */}
-        {/*popupNotice && Utility.getCookie('popup_notice200525') !== 'Y' && <LayerPopupNotice setPopup={setPopupNotice} />*/}
-
+        {__NODE_ENV === 'dev' && today < 12 && popupNotice && Utility.getCookie('popup_notice200604') !== 'y' && (
+          <LayerPopupNotice setPopup={setPopupNotice} />
+        )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
@@ -457,8 +459,14 @@ const Content = styled.div`
   .section {
     margin-top: 24px;
 
-    .listener_cnt{color:red;font-weight:700;}
-    .room_cnt{color:blue;font-weight:700;}
+    .listener_cnt {
+      color: red;
+      font-weight: 700;
+    }
+    .room_cnt {
+      color: blue;
+      font-weight: 700;
+    }
 
     .live-list-category {
       position: relative;

@@ -1434,12 +1434,12 @@ export default class API {
 
   static exchangeCalc = async obj => {
     const {data} = obj
-    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data});
+    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data})
   }
 
   static exchangeApply = async obj => {
-    const { data } = obj;
-    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data});
+    const {data} = obj
+    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data})
   }
   /**
    * @brief 배너가져오기
@@ -1451,15 +1451,44 @@ export default class API {
     return await ajax({url: `/banner`, method: 'GET', params: params})
   }
 
+  static getAdmin = async () => {
+    return await ajax({url: `/admin/auth/check`, method: 'POST'})
+  }
+
   /**
    * @brief 내부 방갯수, 청취자수 조회
    * @method "POST"
    * @create 이재은 2020.06.01
    */
   static getBroadCnt = async () => {
-      return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
+    return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
+  }
+
+  static getEventRankingLive = async params => {
+    return await ajax({url: '/event/ranking/live', method: 'GET', params})
+  }
+
+  static getEventRankingResult = async params => {
+    return await ajax({url: '/event/ranking/result', method: 'GET', params})
+  }
+
+  static getEventTerm = async () => {
+    return await ajax({url: '/event/ranking/term', method: 'GET'})
+  }
+
+  static getEventComment = async params => {
+    return await ajax({url: '/event/reply', method: 'GET', params})
+  }
+
+  static postEventComment = async data => {
+    return await ajax({url: '/event/reply', method: 'POST', data})
+  }
+
+  static deleteEventComment = async data => {
+    return await ajax({url: '/event/reply', method: 'DELETE', data})
   }
 }
+
 API.customHeader = null
 API.authToken = null
 

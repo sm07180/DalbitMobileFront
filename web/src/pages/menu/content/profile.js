@@ -35,7 +35,7 @@ import Utility from 'components/lib/utility'
 import FaqIcon2 from '../static/ic_faq_b.svg'
 import QuireIcon from '../static/ic_inquiry_b.svg'
 import BroadNoticeIcon from '../static/ic_notice.svg'
-
+import AdminIcon from '../static/ic_home_admin.svg'
 export default props => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -62,7 +62,7 @@ export default props => {
   //func
 
   const [fetching, setFetching] = useState(false)
-
+  const [showAdmin, setShowAdmin] = useState(false)
   const clickLogoutBtn = async () => {
     if (fetching) {
       return
@@ -98,7 +98,19 @@ export default props => {
 
   /////////////////////////////////////////////
   const {webview} = qs.parse(location.search)
-
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      if (adminFunc.data.isAdmin === true) {
+        setShowAdmin(true)
+      }
+    } else if (adminFunc.result === 'fail') {
+      setShowAdmin(false)
+    }
+  }
+  useEffect(() => {
+    fetchAdmin()
+  }, [])
   let navigationList = [
     // {id: 0, type: 'notice', component: Notice, txt: '공지사항'},
     // {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
@@ -125,6 +137,11 @@ export default props => {
         {token && token.isLogin && (
           <a href="/setting">
             <img src={Setting} />
+          </a>
+        )}
+        {__NODE_ENV === 'dev' && token && token.isLogin && showAdmin && (
+          <a href="/admin/image">
+            <img src={AdminIcon} />
           </a>
         )}
       </Header>

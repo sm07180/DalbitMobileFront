@@ -1,91 +1,108 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
-import {Context} from 'context';
+import React, {useState, useContext, useRef, useEffect} from 'react'
+import {Context} from 'context'
 //import { Link } from 'react-router-dom'
 
 import './payment.scss'
 import BackBtn from '../static/ic_back.svg'
 
-import SelectBoxWrap from '../component/select';
-import SuccessPopup from './charge-success-popup';
+import SelectBoxWrap from '../component/select'
+import SuccessPopup from './charge-success-popup'
 
 import _ from 'lodash'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import Message from 'pages/common/message';
+import Message from 'pages/common/message'
+import qs from 'query-string'
 
 const list = [
-    {value: 1, text: "주민번호"},
-    {value: 2, text: "핸드폰번호"}
+  {value: 1, text: '주민번호'},
+  {value: 2, text: '핸드폰번호'}
 ]
 const chargeData = [
-  { id: 0, type: '신용카드 결제', fetch: 'pay_card' },
-  { id: 1, type: '휴대폰 결제', fetch:'pay_phone' },
-  { id: 2, type: '무통장 입금(계좌이체)', fetch:'pay_virtual' }
+  {id: 0, type: '신용카드 결제', fetch: 'pay_card'},
+  {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
+  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'}
 ]
 let payType = ''
 // let paymentPriceAddVat = 0
 export default props => {
-
-  const context = useContext(Context);
+  const context = useContext(Context)
 
   const formTag = useRef()
 
-  const [payMathod, setPayMathod] = useState(0);
-  const [status, setStatus] = useState('n');
+  const [payMathod, setPayMathod] = useState(-1)
+  const [status, setStatus] = useState('n')
   const [receipt, setReceipt] = useState(1)
-  const [phone, setPhone] = useState(null);
-  const [name, setName] = useState(null);
-  const [receiptInput, setReceiptInput] = useState("");
+  const [phone, setPhone] = useState('')
+  const [name, setName] = useState('')
+  const [receiptInput, setReceiptInput] = useState('')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
 
-  const { paymentName, paymentPrice, itemNo } = props.location.state ? props.location.state : props.history.goBack();
-  console.log(props.location.state);
-  
-  const handleEvent = (value) => {
-    setReceipt(value);
+  // const {paymentName, paymentPrice, itemNo} = props.location.state ? props.location.state : props.history.goBack()
+  // console.log(props.location.state)
+
+  const {webview} = qs.parse(location.search)
+
+  let paymentName = ''
+  let paymentPrice = ''
+  let itemNo = ''
+  let pageCode = ''
+
+  if (props.location.state) {
+    paymentName = props.location.state.paymentName
+    paymentPrice = props.location.state.paymentPrice
+    itemNo = props.location.state.itemNo
+    pageCode = '1'
+  } else if (webview === 'new') {
+    paymentName = qs.parse(location.search.name)
+    paymentPrice = qs.parse(location.search.price)
+    itemNo = qs.parse(location.search.itemNo)
+    pageCode = '2'
+  }
+  // const paymentPriceAddVat = paymentPrice / 10 + paymentPrice
+  const paymentPriceAddVat = paymentPrice
+
+  const handleEvent = value => {
+    setReceipt(value)
   }
 
-  const handleChange = (event) => {
-    const target = event.target;
+  const handleChange = event => {
+    const target = event.target
 
-    switch(target.name) {
-      case "name":
-        setName(target.value);
-        break;
-      case "phone":
-        setPhone(target.value);
-        break;
-      case "receipt":
-        setReceiptInput(target.value);
-        break;
+    switch (target.name) {
+      case 'name':
+        setName(target.value)
+        break
+      case 'phone':
+        setPhone(target.value)
+        break
+      case 'receipt':
+        setReceiptInput(target.value)
+        break
       default:
-        break;
+        break
     }
   }
 
   const chargeClick = async () => {
-    
-    if(!name) {
+    if (!name) {
       context.action.alert({
-        msg: "이름은 필수입력 값입니다."
+        msg: '이름은 필수입력 값입니다.'
       })
-      return;
     }
-    if(!phone) {
+    if (!phone) {
       context.action.alert({
-        msg: "핸드폰 번호는 핊수입력 값입니다."
+        msg: '핸드폰 번호는 필수입력 값입니다.'
       })
-      return;
     }
-    if( (status == 'i' || status == 'b') && receiptInput == "") {
-      context.action.alert( {
-        msg: "현금영수증 발급을 위하여 값을 입력해주세요."
+    if ((status == 'i' || status == 'b') && receiptInput == '') {
+      context.action.alert({
+        msg: '현금영수증 발급을 위하여 값을 입력해주세요.'
       })
-      return;
     }
 
-    if(name && phone && receipt && context.token.isLogin) {
+    if (name && phone && receipt) {
       const res = await Api.pay_coocon({
         data: {
           Prdtnm: paymentName,
@@ -98,51 +115,39 @@ export default props => {
           receiptSocial: status === 'i' && receipt === 1 ? receiptInput : '',
           receiptBiz: status === 'b' ? receiptInput : ''
         }
-      });
+      })
 
-      console.log(res);
-      if(res.result === 'success') {
+      if (res.result === 'success') {
         props.history.push({
-          pathname: '/temp_test/waitPayment',
+          pathname: '/charge/waitPayment',
           state: {
             ...res.data
           }
         })
       }
-      
-      
-      // props.history.push({
-      //   pathname: '/temp_test/waitPayment',
-      //   state: {
-      //     paymentPriceAddVat: paymentPriceAddVat,
-      //     name: name,
-      //     phone: phone,
-      //     receipt: receipt,
-      //     receiptInput: receiptInput
-      //   }
-      // })
     }
   }
 
   async function payFetch(event) {
-    const { classList } = event.target;
-    classList.add("chargeButton--active");
+    const {classList} = event.target
+    classList.add('chargeButton--active')
     payType = chargeData[payMathod].fetch
     const obj = {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
-        itemNo: itemNo
+        itemNo: itemNo,
+        pageCode: pageCode
       }
     }
     const res = await Api[payType]({...obj})
-    
-    if(res.result == 'success' && _.hasIn(res, 'data')) {
-      const { current } = formTag
+
+    if (res.result == 'success' && _.hasIn(res, 'data')) {
+      const {current} = formTag
       let ft = current
 
       const makeHiddenInput = (key, value) => {
-        const input = document.createElement("input")
+        const input = document.createElement('input')
         input.setAttribute('type', 'hidden')
         input.setAttribute('name', key)
         input.setAttribute('id', key)
@@ -156,27 +161,10 @@ export default props => {
 
       MCASH_PAYMENT(ft)
       ft.innerHTML = ''
-      classList.remove("chargeButton--active");
+      classList.remove('chargeButton--active')
     } else {
       context.action.alert({
         msg: res.message
-      })
-    }
-  }
-
-  const updateDispatch = event => {
-    if (event.detail.result == 'success' && event.detail.code == 'P001') {
-      setConfirmData({
-        ...event.detail,
-        itemName: context.popup_code[1].name,
-        price: context.popup_code[1].price,
-        type: payType
-      })
-
-      setConfirm(true)
-    } else {
-      context.action.alert({
-        msg: event.detail.message
       })
     }
   }
@@ -187,26 +175,23 @@ export default props => {
     } else if (status === 'i') {
       return (
         <div className="receipt__sub">
-          <label className="receipt__label"><SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize:"14px", minWidth:"105px"}} /></label>{' '}
-          <input className="receipt__input" type="tel" name="receipt" onChange={handleChange} />
+          <label className="receipt__label">
+            <SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize: '14px', minWidth: '105px'}} />
+          </label>{' '}
+          <input className="receipt__input" type="tel" name="receipt" value={receiptInput} onChange={handleChange} />
         </div>
       )
     } else {
       return (
         <div className="receipt__sub">
           <label className="receipt__label">사업자 번호</label>
-          <input className="receipt__input" name="receipt" onChange={handleChange} />
+          <input className="receipt__input" name="receipt" value={receiptInput} onChange={handleChange} />
         </div>
       )
     }
   }
 
-  useEffect(() => {
-    document.addEventListener('store-pay', updateDispatch)
-    return () => {
-      document.removeEventListener('store-pay', updateDispatch)
-    }
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <>
@@ -238,23 +223,21 @@ export default props => {
               <h2 className="charge__title">결제 수단</h2>
 
               <div className="payMathod__box">
-                {
-                  chargeData.map( (item, index) => {
-                    return (
-                      <button 
-                        key={index}
-                        className={`payMathod__button ${payMathod === item.id ? "payMathod__button--forced" : ""}  ${index === 2 ? "payMathod__button--contain" : ""} `}
-                        onClick={() => setPayMathod(item.id)}
-                      >
-                        {item.type}
-                      </button>
-                    )
-                  })
-                }
+                {chargeData.map((item, index) => {
+                  return (
+                    <button
+                      key={index}
+                      className={`payMathod__button ${payMathod === item.id ? 'payMathod__button--forced' : ''}  ${
+                        index === 2 ? 'payMathod__button--contain' : ''
+                      } `}
+                      onClick={() => setPayMathod(item.id)}>
+                      {item.type}
+                    </button>
+                  )
+                })}
               </div>
             </div>
-            {
-              payMathod === 2 &&
+            {payMathod === 2 && (
               <React.Fragment>
                 <div className="depositInfo">
                   <h2 className="charge__title">무통장 입금 정보</h2>
@@ -262,7 +245,7 @@ export default props => {
                   <div className="depositInfo__box">
                     <div className="depositInfo__label">입금정보</div>
                     <div className="depositInfo__value">
-                      <span className="depositInfo__value--point">{Utility.addComma(paymentPrice)} 원</span> (부가세 포함)
+                      <span className="depositInfo__value--point">{Utility.addComma(paymentPriceAddVat)} 원</span> (부가세 포함)
                     </div>
 
                     <div className="depositInfo__label">입금은행</div>
@@ -270,12 +253,17 @@ export default props => {
 
                     <div className="depositInfo__label">입금자명</div>
                     <div className="depositInfo__value">
-                      <input type="text" name="name" onChange={handleChange} className="depositInfo__input"></input>
+                      <input type="text" name="name" value={name} onChange={handleChange} className="depositInfo__input"></input>
                     </div>
 
                     <div className="depositInfo__label">휴대폰번호</div>
                     <div className="depositInfo__value">
-                      <input type="text" name="phone" onChange={handleChange} className="depositInfo__input"></input>
+                      <input
+                        type="text"
+                        name="phone"
+                        value={phone}
+                        onChange={handleChange}
+                        className="depositInfo__input"></input>
                     </div>
                   </div>
                 </div>
@@ -284,13 +272,19 @@ export default props => {
                   <h2 className="charge__title">현금영수증</h2>
 
                   <div className={`receipt__box ${status === 'n' && 'receipt__button--forced'}`}>
-                    <button className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`} onClick={() => setStatus('n')}>
+                    <button
+                      className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`}
+                      onClick={() => setStatus('n')}>
                       선택안함
                     </button>
-                    <button className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`} onClick={() => setStatus('i')}>
+                    <button
+                      className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`}
+                      onClick={() => setStatus('i')}>
                       소득공제용
                     </button>
-                    <button className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`} onClick={() => setStatus('b')}>
+                    <button
+                      className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`}
+                      onClick={() => setStatus('b')}>
                       지출증빙용
                     </button>
                   </div>
@@ -298,8 +292,7 @@ export default props => {
                   {tempFunc()}
                 </div>
               </React.Fragment>
-            }
-            
+            )}
 
             <div className="notice">
               <p className="notice__title">
@@ -320,16 +313,15 @@ export default props => {
               <span className="inquriy__title">결제 문의</span>
               <span className="inquiry__number">1522-0251</span>
             </div>
-            {
-              payMathod === 2 ? (
-                <button className="chargeButton" onClick={chargeClick}>입금계좌 받기</button>
-              ) : (
-                <button className="chargeButton" onClick={payFetch}>
-                  충전하기
-                </button>
-              )
-            }
-            
+            {payMathod === 2 ? (
+              <button className="chargeButton" onClick={chargeClick}>
+                입금계좌 받기
+              </button>
+            ) : (
+              <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
+                충전하기
+              </button>
+            )}
           </div>
           <Message />
         </>

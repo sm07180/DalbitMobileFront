@@ -85,12 +85,12 @@ export default props => {
       // })
       // Test ing...
       props.history.push({
-        pathname: '/payment',
+        pathname: '/charge',
         state: {
           paymentName: selected.name,
           paymentPrice: selected.price,
           itemNo: selected.itemNo,
-          //isState: 'charge'
+          isState: 'charge'
         }
       })
     } else {

@@ -82,10 +82,10 @@ export default () => {
                 case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
                     break
                 case '34': //-----------------마이페이지>알림>해당 알림 글
-                    context.action.alert({msg: pushMsg.content})
+                    context.action.alert({msg: pushMsg.contents})
                     break
                 case '35': //-----------------마이페이지
-                    context.action.alert({msg: pushMsg.content})
+                    context.action.alert({msg: pushMsg.contents})
                     break
                 case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
                     context.action.updateStickerMsg(pushMsg)
@@ -100,7 +100,7 @@ export default () => {
                 case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
                     break
                 case '7': //------------------공지사항 페이지 [board_idx](미정)
-                    context.action.alert({msg: pushMsg.content})
+                    context.action.alert({msg: pushMsg.contents})
                     break
                 default:
                     //------------------기본값

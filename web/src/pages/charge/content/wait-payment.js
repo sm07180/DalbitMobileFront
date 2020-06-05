@@ -5,10 +5,15 @@ import IconMoney from '../static/ic_money.svg'
 
 import Utility from 'components/lib/utility'
 export default props => {
-  const { rcptNm, phoneNo, Prdtprice, accountNo } = props.location.state ? props.location.state : props.history.goBack();
+  const {rcptNm, phoneNo, Prdtprice, accountNo} = props.location.state ? props.location.state : props.history.goBack()
+
+  const addVat = value => {
+    value = parseInt(value)
+    return (value += value * 0.1)
+  }
 
   const handleClick = () => {
-    props.history.push('/');
+    props.history.push('/')
   }
   return (
     <>
@@ -40,7 +45,7 @@ export default props => {
         <div className="deposit">
           <div className="deposit__list">
             <div className="deposit__label">입금하실 금액</div>
-            <div className="deposit__value">{Utility.addComma(Prdtprice)}원(부가세 포함)</div>
+            <div className="deposit__value">{Utility.addComma(addVat(Prdtprice))}원(부가세 포함)</div>
           </div>
           <div className="deposit__list">
             <div className="list__label">예금주</div>
@@ -64,7 +69,9 @@ export default props => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton" onClick={handleClick}>확인</button>
+        <button className="chargeButton chargeButton--active" onClick={handleClick}>
+          확인
+        </button>
       </div>
     </>
   )
