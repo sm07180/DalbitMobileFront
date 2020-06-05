@@ -77,22 +77,25 @@ export default props => {
 
   function chargeClick() {
     if (context.token.isLogin) {
-      // context.action.updatePopup('CHARGE', {
-      //   name: selected.name,
-      //   price: selected.price,
-      //   itemNo: selected.itemNo,
-      //   isState: 'charge'
-      // })
-      // Test ing...
-      props.history.push({
-        pathname: '/charge',
-        state: {
-          paymentName: selected.name,
-          paymentPrice: selected.price,
+      if (__NODE_ENV === 'real') {
+        context.action.updatePopup('CHARGE', {
+          name: selected.name,
+          price: selected.price,
           itemNo: selected.itemNo,
           isState: 'charge'
-        }
-      })
+        })
+      } else {
+        // Test ing...
+        props.history.push({
+          pathname: '/charge',
+          state: {
+            paymentName: selected.name,
+            paymentPrice: selected.price,
+            itemNo: selected.itemNo,
+            isState: 'charge'
+          }
+        })
+      }
     } else {
       window.location.href = '/login'
     }
