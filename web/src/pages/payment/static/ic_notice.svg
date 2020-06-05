@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_notice" width="12" height="12" viewBox="0 0 12 12">
-    <g id="prefix__타원_76" data-name="타원 76" style="fill:#616161;stroke:#616161">
-        <circle cx="6" cy="6" r="6" style="stroke:none"/>
-        <circle cx="6" cy="6" r="5.5" style="fill:none"/>
-    </g>
-    <text id="prefix___" data-name="!" transform="translate(6 8)" style="fill:#fff;font-size:7px;font-family:NanumSquareEB,NanumSquare;letter-spacing:-.025em">
-        <tspan x="-1.12" y="0">!</tspan>
-    </text>
-</svg>

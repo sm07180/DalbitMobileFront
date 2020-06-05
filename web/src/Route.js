@@ -14,7 +14,7 @@ import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
 let Ranking = React.lazy(() => import('pages/ranking'))
 if (__NODE_ENV != 'real') {
-    Ranking = React.lazy(() => import('pages/ranking3'))
+  Ranking = React.lazy(() => import('pages/ranking3'))
 }
 //const Ranking = React.lazy(() => import('pages/ranking'))
 const Ranking2 = React.lazy(() => import('pages/ranking2'))
@@ -26,8 +26,8 @@ const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 let Charge = React.lazy(() => import('pages/charge'))
-if(__NODE_ENV === 'real'){
-    Charge = React.lazy(() => import('pages/charge/index_bak'))
+if (__NODE_ENV === 'real') {
+  Charge = React.lazy(() => import('pages/charge/index_bak'))
 }
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
@@ -49,10 +49,6 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 
 const TempPage = React.lazy(() => import('pages/temp'))
-
-// const TestPage = React.lazy(() => import('pages/test_page'))
-
-const Payment = React.lazy(() => import('pages/payment'))
 
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
@@ -95,11 +91,7 @@ export default () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        {/* <Route exact path="/temp_test" component={TestPage} />
-        <Route exact path="/temp_test/:path" component={TestPage} /> */}
         <Route exact path="/temp_page" component={TempPage} />
-        <Route exact path="/payment" component={Payment} />
-        <Route exact path="/payment/:path" component={Payment} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />

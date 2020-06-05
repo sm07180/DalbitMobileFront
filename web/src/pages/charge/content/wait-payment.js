@@ -24,7 +24,7 @@ export default props => {
     }
   }
   return (
-    <div className={`${webview === 'new' && 'webview'}`}>
+    <div className={`${pageCode === '2' && 'webview'}`}>
       <div className="header">
         <img src={BackBtn} className="header__button--back" onClick={handleClick} />
         <h1 className="header__title">달 충전 결제 대기중</h1>

@@ -99,7 +99,7 @@ export default props => {
         <button
           className="link"
           onClick={() => {
-            window.location.href = '/customer/notice/107'
+            window.location.href = '/customer/notice/29'
           }}>
           자세히보기
         </button>
