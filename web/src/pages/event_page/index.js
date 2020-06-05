@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {Link} from 'react-router-dom'
 
 import './event_page.scss'
 import API from 'context/api'
@@ -85,7 +86,9 @@ export default props => {
     <Layout {...props} status="no_gnb">
       <div id="event-page">
         <div className="event-main">
-          <img src="https://image.dalbitlive.com/event/200603/main_top.png" />
+          <Link to="/">
+            <img src="https://image.dalbitlive.com/event/200603/main_top.png" />
+          </Link>
         </div>
 
         <div className="event-type-wrap">

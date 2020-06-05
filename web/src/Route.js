@@ -12,7 +12,11 @@ import ScrollToTop from 'components/lib/ScrollToTop'
 
 import Main from 'pages/main'
 const Menu = React.lazy(() => import('pages/menu'))
-const Ranking = React.lazy(() => import('pages/ranking'))
+let Ranking = React.lazy(() => import('pages/ranking'))
+if (__NODE_ENV != 'real') {
+    Ranking = React.lazy(() => import('pages/ranking3'))
+}
+//const Ranking = React.lazy(() => import('pages/ranking'))
 const Ranking2 = React.lazy(() => import('pages/ranking2'))
 const Ranking3 = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))

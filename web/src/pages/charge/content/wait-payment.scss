@@ -1,4 +1,4 @@
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 .header {
@@ -453,4 +453,10 @@ input[type="file"] {
   border-radius: 4px;
   background: #bdbdbd;
   color: #fff;
+}
+
+.webview {
+  .header {
+    display: none;
+  }
 }
