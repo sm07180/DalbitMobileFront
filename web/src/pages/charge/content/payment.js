@@ -122,7 +122,8 @@ export default props => {
         props.history.push({
           pathname: '/charge/waitPayment',
           state: {
-            ...res.data
+            ...res.data,
+            pageCode: pageCode
           }
         })
       }

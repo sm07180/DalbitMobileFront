@@ -4,8 +4,9 @@ import BackBtn from '../static/ic_back.svg'
 import IconMoney from '../static/ic_money.svg'
 
 import Utility from 'components/lib/utility'
+import {Hybrid} from 'context/hybrid'
 export default props => {
-  const {rcptNm, phoneNo, Prdtprice, accountNo} = props.location.state ? props.location.state : props.history.goBack()
+  const {rcptNm, phoneNo, Prdtprice, accountNo, pageCode} = props.location.state ? props.location.state : ''
 
   const addVat = value => {
     value = parseInt(value)
@@ -13,7 +14,12 @@ export default props => {
   }
 
   const handleClick = () => {
-    props.history.push('/')
+    if (pageCode === '2') {
+      Hybrid('CloseLayerPopup')
+      Hybrid('ClosePayPopup')
+    } else {
+      props.history.push('/')
+    }
   }
   return (
     <>
