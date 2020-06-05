@@ -131,7 +131,7 @@ export default (props) => {
     }
     if(account === 0 || account.toString().length < 10) {
       context.action.alert({
-        msg: "입금 받으실 은행의\n계죄번호를 입력해주세요.",
+        msg: "입금 받으실 은행의\n계죄번호를 확인해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -140,14 +140,14 @@ export default (props) => {
     }
     if( (fSocialNo === "" || fSocialNo.length < 6) || (bSocialNo === "" || bSocialNo.length < 7 ) ) {
       context.action.alert({
-        msg: "주민등록번호를\n정확하게 입력해주세요.",
+        msg: "주민등록번호를 확인해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
       })
       return
     }
-    if(phone === "" || phone.toString().length < 9) {
+    if(phone === "") {
       context.action.alert({
         msg: "연락 받으실 전화번호를\n입력해주세요.",
         callback: () => {
@@ -156,9 +156,18 @@ export default (props) => {
       })
       return
     }
+    if(phone.toString().length < 9) {
+      context.action.alert({
+        msg: "전화번호를 확인해주세요.",
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return;
+    }
     if(address1 === "") {
       context.action.alert({
-        msg: "주소를 정확하게\n입력주세요.",
+        msg: "주소를 정확하게\n입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
