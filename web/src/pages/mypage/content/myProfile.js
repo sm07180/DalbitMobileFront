@@ -21,7 +21,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
-
+//util
+import Utility, {printNumber} from 'components/lib/utility'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 const myProfile = props => {
@@ -197,7 +198,7 @@ const myProfile = props => {
         {urlrStr !== context.token.memNo && (
           <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
         )}
-        {/* <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div> */}
+        <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
         {profile.roomNo !== '' && (
           <button
             className="liveIcon"
@@ -234,10 +235,10 @@ const myProfile = props => {
 
         <CountingWrap>
           <span onClick={() => fanContext()}>
-            팬 <em>{profile.fanCnt}</em>
+            팬 <em>{Utility.printNumber(profile.fanCnt)}</em>
           </span>
           <span onClick={() => starContext()}>
-            스타 <em>{profile.starCnt}</em>
+            스타 <em>{Utility.printNumber(profile.starCnt)}</em>
           </span>
         </CountingWrap>
         <ButtonWrap>
@@ -344,8 +345,8 @@ const ProfileImg = styled.div`
     top: -16px;
     left: 50%;
     transform: translateX(-50%);
-    width: 162px;
-    height: 162px;
+    width: 168px;
+    height: 168px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -519,6 +520,7 @@ const CountingWrap = styled.div`
   display: flex;
   align-items: center;
   margin-top: 12px;
+
   span {
     display: inline-block;
     font-size: 18px;
@@ -604,6 +606,7 @@ const InfoConfigBtn = styled.div`
     & button {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100px;
       height: 36px;
       color: #424242;

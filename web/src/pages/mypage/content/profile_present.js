@@ -22,7 +22,7 @@ export default props => {
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  let myDalCnt = context.profile.dalCnt
+  let myDalCnt = context.myInfo.dalCnt
   myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start
   const handleChangeInput = event => {
@@ -81,6 +81,10 @@ export default props => {
             const profileInfo = await Api.profile({params: {memNo: context.profile.memNo}})
             if (profileInfo.result === 'success') {
               context.action.updateProfile(profileInfo.data)
+            }
+            const myInfoRes = await Api.mypage()
+            if (myInfoRes.result === 'success') {
+                context.action.updateMyInfo(myInfoRes.data)
             }
           }
           updateMyPofile()
@@ -145,14 +149,23 @@ export default props => {
                   <span>
                     {myDalCnt}
 
-                    {context.customHeader['os'] === OS_TYPE['IOS'] && (
+                    {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                       <button
                         onClick={() => {
                           webkit.messageHandlers.openInApp.postMessage('')
                         }}>
                         충전
                       </button>
-                    )}
+                    )
+                    : (
+                      <button
+                          onClick={() => {
+                              window.location.href = "/store"
+                          }}>
+                          충전
+                      </button>
+                    )
+                    }
                   </span>
                 </MyPoint>
                 <Select>

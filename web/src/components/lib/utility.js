@@ -181,4 +181,16 @@ export default class Utility {
       return `${betweenTimeDay}일전`
     }
   }
+
+  static printNumber(number) {
+      if(number === undefined){
+          return 0
+      }else if(number > 9999 && number < 100000){
+          return (Math.floor((number / 1000.0) * 10) / 10) + "K"
+      }else if(number >= 100000){
+          return Math.floor(number / 1000) + "K"
+      }else{
+          return number.toLocaleString()
+      }
+  }
 }

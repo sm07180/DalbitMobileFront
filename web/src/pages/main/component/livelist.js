@@ -12,7 +12,9 @@ import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
+import boostIcon from '../static/ico_like_g.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
+import Util from 'components/lib/utility.js'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -26,7 +28,7 @@ const makeContents = props => {
   const {list} = props
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial} = list
+    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
 
     return (
       <LiveList
@@ -47,16 +49,24 @@ const makeContents = props => {
           <div className="detail">
             <div className="value">
               <img src={hitIcon} />
-              <span>{entryCnt !== undefined && entryCnt.toLocaleString()}</span>
+              <span>{Util.printNumber(entryCnt)}</span>
             </div>
+              {boostCnt > 0 ?
+              <div className="value">
+                  <img src={boostIcon} />
+                  <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
+              </div>
+              :
               <div className="value">
                   <img src={likeIcon} />
-                  <span>{likeCnt !== undefined && likeCnt.toLocaleString()}</span>
-              </div>
-              {/*<div className="value">
+                  <span>{Util.printNumber(likeCnt)}</span>
+              </div>              }
+              {rank < 11 &&
+              <div className="value">
                   <img src={starIcon} />
-                  <span>{giftCnt !== undefined && giftCnt.toLocaleString()}</span>
-              </div>*/}
+                  <span>{Util.printNumber(giftCnt)}</span>
+              </div>
+              }
           </div>
         </div>
       </LiveList>
@@ -102,6 +112,10 @@ const LiveList = styled.div`
     }
   }
 
+  .txt_boost{
+    color : #ec455f;
+  }
+
   .specialIcon {
     display: inline-block;
     width: 62px;
@@ -117,6 +131,8 @@ const LiveList = styled.div`
     line-height: 1.33;
     letter-spacing: normal;
     text-align:center;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   .broadcast-img {
@@ -176,7 +192,8 @@ const LiveList = styled.div`
         color: #fff;
         font-size: 11px;
         /* padding: 1px 6px 0px 6px; */
-        padding: 0 6px;
+        padding-left: 6px;
+        padding-right: 6px;
         height: 16px;
         line-height: 16px;
       }

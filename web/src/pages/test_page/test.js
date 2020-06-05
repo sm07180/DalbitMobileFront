@@ -31,7 +31,7 @@ export default props => {
   const formTag = useRef()
 
   const [payMathod, setPayMathod] = useState(0);
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState('n');
   const [receipt, setReceipt] = useState(1)
   const [phone, setPhone] = useState(null);
   const [name, setName] = useState(null);
@@ -40,7 +40,7 @@ export default props => {
   const [confirmData, setConfirmData] = useState(false)
 
   const { paymentName, paymentPrice, itemNo } = props.location.state ? props.location.state : props.history.goBack();
-
+  console.log(props.location.state);
   const paymentPriceAddVat = (paymentPrice / 10) + paymentPrice;
   
   const handleEvent = (value) => {
@@ -65,7 +65,7 @@ export default props => {
     }
   }
 
-  const chargeClick = () => {
+  const chargeClick = async () => {
     
     if(!name) {
       context.action.alert({
@@ -79,7 +79,7 @@ export default props => {
       })
       return;
     }
-    if( (status == 2 || status == 3) && receiptInput == "") {
+    if( (status == 'i' || status == 'b') && receiptInput == "") {
       context.action.alert( {
         msg: "현금영수증 발급을 위하여 값을 입력해주세요."
       })
@@ -87,16 +87,41 @@ export default props => {
     }
 
     if(name && phone && receipt && context.token.isLogin) {
-      props.history.push({
-        pathname: '/temp_test/waitPayment',
-        state: {
-          paymentPriceAddVat: paymentPriceAddVat,
-          name: name,
-          phone: phone,
-          receipt: receipt,
-          receiptInput: receiptInput
+      const res = await Api.pay_coocon({
+        data: {
+          Prdtnm: paymentName,
+          Prdtprice: paymentPrice,
+          rcptNm: name,
+          phoneNo: phone,
+          itemNo: itemNo,
+          receiptCode: status,
+          receiptPhone: status === 'i' && receipt === 2 ? receiptInput : '',
+          receiptSocial: status === 'i' && receipt === 1 ? receiptInput : '',
+          receiptBiz: status === 'b' ? receiptInput : ''
         }
-      })
+      });
+
+      console.log(res);
+      if(res.result === 'success') {
+        props.history.push({
+          pathname: '/temp_test/waitPayment',
+          state: {
+            ...res.data
+          }
+        })
+      }
+      
+      
+      // props.history.push({
+      //   pathname: '/temp_test/waitPayment',
+      //   state: {
+      //     paymentPriceAddVat: paymentPriceAddVat,
+      //     name: name,
+      //     phone: phone,
+      //     receipt: receipt,
+      //     receiptInput: receiptInput
+      //   }
+      // })
     }
   }
 
@@ -158,13 +183,13 @@ export default props => {
   }
 
   const tempFunc = () => {
-    if (status === 1) {
+    if (status === 'n') {
       return <div></div>
-    } else if (status === 2) {
+    } else if (status === 'i') {
       return (
         <div className="receipt__sub">
           <label className="receipt__label"><SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize:"14px", minWidth:"105px"}} /></label>{' '}
-          <input className="receipt__input" name="receipt" onChange={handleChange} />
+          <input className="receipt__input" type="tel" name="receipt" onChange={handleChange} />
         </div>
       )
     } else {
@@ -230,7 +255,7 @@ export default props => {
               </div>
             </div>
             {
-              payMathod === 3 &&
+              payMathod === 2 &&
               <React.Fragment>
                 <div className="depositInfo">
                   <h2 className="charge__title">무통장 입금 정보</h2>
@@ -259,14 +284,14 @@ export default props => {
                 <div className="receipt">
                   <h2 className="charge__title">현금영수증</h2>
 
-                  <div className={`receipt__box ${status === 1 && 'receipt__button--forced'}`}>
-                    <button className={`receipt__button ${status === 1 && 'receipt__button--forced'}`} onClick={() => setStatus(1)}>
+                  <div className={`receipt__box ${status === 'n' && 'receipt__button--forced'}`}>
+                    <button className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`} onClick={() => setStatus('n')}>
                       선택안함
                     </button>
-                    <button className={`receipt__button ${status === 2 && 'receipt__button--forced'}`} onClick={() => setStatus(2)}>
+                    <button className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`} onClick={() => setStatus('i')}>
                       소득공제용
                     </button>
-                    <button className={`receipt__button ${status === 3 && 'receipt__button--forced'}`} onClick={() => setStatus(3)}>
+                    <button className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`} onClick={() => setStatus('b')}>
                       지출증빙용
                     </button>
                   </div>
@@ -297,7 +322,7 @@ export default props => {
               <span className="inquiry__number">1522-0251</span>
             </div>
             {
-              payMathod === 3 ? (
+              payMathod === 2 ? (
                 <button className="chargeButton" onClick={chargeClick}>입금계좌 받기</button>
               ) : (
                 <button className="chargeButton" onClick={payFetch}>

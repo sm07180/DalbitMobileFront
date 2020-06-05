@@ -1357,6 +1357,11 @@ export default class API {
     return await ajax({...obj, url: url || `/rest/pay/virtual`, method: method || 'POST', data: data})
   }
 
+  static pay_coocon = async obj => {
+    const {url, method, data} = obj || {}
+    return await ajax({...obj, url: url || `/rest/pay/coocon`, method: method || 'POST', data: data})
+  }
+
   /**
    * @brief 실시간 계좌이체 결제요청
    * @method "POST"
@@ -1444,6 +1449,15 @@ export default class API {
   static getBanner = async obj => {
     const {params} = obj
     return await ajax({url: `/banner`, method: 'GET', params: params})
+  }
+
+  /**
+   * @brief 내부 방갯수, 청취자수 조회
+   * @method "POST"
+   * @create 이재은 2020.06.01
+   */
+  static getBroadCnt = async () => {
+      return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
   }
 }
 API.customHeader = null

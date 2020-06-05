@@ -369,12 +369,22 @@ input[type="file"] {
     &--file {
       display: flex;
       flex: 1;
+      overflow-x: hidden; 
     }
 
     &--line {
       width: 30px;
 
       text-align: center;
+    }
+    &--label {
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #bdbdbd;
+      background-color: #f8f8f8;
+      border-radius: 4px;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 

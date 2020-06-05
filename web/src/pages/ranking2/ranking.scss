@@ -118,21 +118,10 @@ img {
   font-weight: bold;
 
   &__up {
-    display:flex;
-    align-content: center;
-    justify-content: center;
-    color: #eb2828;
-    height:12px;
-
-    &::before {
-      content: '';
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      margin-right: 1px;
-      background: url('./static/ico-ranking-up@2x.png') no-repeat;
-      background-size: 100%;
-    }
+  display:flex;
+  align-content: center;
+  justify-content: center;
+  height:12px;
   }
 
   &__down {
@@ -151,6 +140,7 @@ img {
 
   &__new {
     color: #ff9c00;
+    line-height:18px;
   }
 
   &__stop {
@@ -176,6 +166,7 @@ img {
   &__frame {
     position: absolute;
     left: 0;
+    width:70px;
 
     &--small{
       width:58px;

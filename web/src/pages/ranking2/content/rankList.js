@@ -5,30 +5,40 @@ import point from '../static/point.svg'
 import moon from '../static/cashmoon_g_s.svg'
 import time from '../static/time_g_s.svg'
 import start from '../static/cashstar_g_s.svg'
-import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
+import like from '../static/like_g_s.svg'
 import korea from '../static/ico-korea.png'
 import female from '../static/ico-female.png'
 import male from '../static/ico-male.png'
+import down from '../static/down_blue.svg'
+import maintain from '../static/maintain.svg'
+import up from '../static/up_red.svg'
 
 const rankList = props => {
-  // console.log(props.list)
+
   const RankList = props.rankLists
   const rankType = props.rankType
   
   return (
     <div>
        {RankList && RankList.map((item, index) => {
-          const {rank,grade,isSpecial, upDown,profImg,nickNm,gender,gift,broadcast,listeners,likes,listen} = item
+          const {rank,memNo, isSpecial,dj, fan, upDown,profImg,nickNm,gender,gift,broadcast,listeners,likes,listen} = item
           return (
-          <div className="myRanking rankingList" key={index}>
+          <div className="myRanking rankingList" key={index} onClick={() => {window.location.href = `/mypage/${memNo}`}}>
             <div className="myRanking__left">
           <p className="myRanking__left--ranking">{rank}</p>
               <p className="rankingChange">
-          <span className="rankingChange__up">{upDown}</span>
+              {
+                upDown === 'new' ? (<span className="rankingChange__new">NEW</span>)
+                : upDown < 0 ? (<span className="rankingChange__up">{Math.abs(upDown)}</span>) 
+                : upDown > 0 ? (<span className="rankingChange__down">{Math.abs(upDown)}</span>)
+                : (<span className="rankingChange__stop"></span>)
+              }
               </p>
               <p className="myRanking__left--point">
                 <img src={point} /> 
+                {rankType == 'dj' && (<>{dj}</>)}
+                {rankType == 'fan' && (<>{fan}</>)}
               </p>
             </div>
             <div className="myRanking__right">
@@ -84,7 +94,7 @@ const rankList = props => {
 
               </div>
 
-              {isSpecial == 'true' && (
+              {isSpecial == '1' && (
               <div className="liveBox">
                 <img src={live} />
                 <br />

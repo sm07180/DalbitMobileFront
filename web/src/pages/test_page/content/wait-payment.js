@@ -5,12 +5,20 @@ import IconMoney from '../static/ic_money.svg'
 
 import Utility from 'components/lib/utility'
 export default props => {
-  const { name, phone, paymentPriceAddVat, receipt, receiptInput } = props.location.state ? props.location.state : props.history.goBack();
+  const { rcptNm, phoneNo, Prdtprice, accountNo } = props.location.state ? props.location.state : props.history.goBack();
 
+  const addVat = value => {
+    value = parseInt(value);
+    return value += (value * 0.1)
+  }
+
+  const handleClick = () => {
+    props.history.push('/');
+  }
   return (
     <>
       <div className="header">
-        <img src={BackBtn} className="header__button--back" onClick={() => {props.history.goBack()}} />
+        <img src={BackBtn} className="header__button--back" onClick={handleClick} />
         <h1 className="header__title">달 충전 결제 대기중</h1>
       </div>
       <div className="content">
@@ -30,14 +38,14 @@ export default props => {
         </div>
 
         <div className="phone">
-          <div className="phone__title">{phone}</div>
+          <div className="phone__title">{phoneNo}</div>
           <div className="phone__text">해당 번호로 가상계좌 정보가 발송되었습니다.</div>
         </div>
 
         <div className="deposit">
           <div className="deposit__list">
             <div className="deposit__label">입금하실 금액</div>
-            <div className="deposit__value">{Utility.addComma(paymentPriceAddVat)}원(부가세 포함)</div>
+            <div className="deposit__value">{Utility.addComma(addVat(Prdtprice))}원(부가세 포함)</div>
           </div>
           <div className="deposit__list">
             <div className="list__label">예금주</div>
@@ -48,12 +56,12 @@ export default props => {
             <div className="deposit__value">KB 국민은행</div>
           </div>
           <div className="deposit__list">
-            <div className="list__label">입금은행</div>
-            <div className="deposit__value">197790-71-606640</div>
+            <div className="list__label">계좌번호</div>
+            <div className="deposit__value">{accountNo}</div>
           </div>
           <div className="deposit__list">
             <div className="list__label">입금자명</div>
-            <div className="deposit__value">{name}</div>
+            <div className="deposit__value">{rcptNm}</div>
           </div>
         </div>
         <div className="inquiry">
@@ -61,7 +69,7 @@ export default props => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton">확인</button>
+        <button className="chargeButton" onClick={handleClick}>확인</button>
       </div>
     </>
   )

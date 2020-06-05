@@ -1,43 +1,45 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react'
 
 import './ranking.scss'
 import hint from './static/ico-hint.png'
 import Profile from './content/profile'
 import RankList from './content/rankList'
-import Ranktop  from './content/ranktop'
+import Ranktop from './content/ranktop'
 import LayerPopup from './content/layer_popup'
 
-import {Context} from 'context';
-import Api from 'context/api';
+import {Context} from 'context'
+import Api from 'context/api'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['오늘', '일간', '주간', ]
+const dateArray = ['오늘', '일간', '주간']
 let currentPage = 1
 let moreState = false
 
-const index = (props) => {
-let timer
+const index = props => {
+  let timer
 
-const [rankType, setRankType] = useState('dj')
-const [dateType, setDateType] = useState(1)
-const [myProfile, setMyProfile] = useState([])
-const [list, setList] = useState(-1)
-const [myRank, setMyRank] = useState('-')
-const [nextList, setNextList] = useState(false)
-const [rankLists,setRankLists] = useState(-1)
-const [popup, setPopup] = useState(false)
+  const [rankType, setRankType] = useState('dj')
+  const [dateType, setDateType] = useState(1)
+  const [myProfile, setMyProfile] = useState([])
+  const [list, setList] = useState(-1)
+  const [myRank, setMyRank] = useState('-')
+  const [nextList, setNextList] = useState(false)
+  const [rankLists, setRankLists] = useState(-1)
+  const [popup, setPopup] = useState(false)
+  const [MyDjRank, setMyDjRank] = useState([])
+  const [MyFanRank, setMyFanRank] = useState([])
 
-const popStateEvent = e => {
-  if (e.state === null) {
-    setPopup(false)
-  } else if (e.state === 'layer') {
-    setPopup(true)
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
   }
-}
 
-//
-const context = useContext(Context)
-const typeState = props.location.state
+  //
+  const context = useContext(Context)
+  const typeState = props.location.state
   async function fetch(type, dateType, next) {
     let res = ''
     currentPage = next ? ++currentPage : currentPage
@@ -48,8 +50,10 @@ const typeState = props.location.state
           page: currentPage,
           records: 10
         }
-
       })
+      if (res.result === 'success') {
+        setMyDjRank(res.data)
+      }
     } else if (type == 'fan') {
       res = await Api.get_fan_ranking({
         params: {
@@ -58,10 +62,14 @@ const typeState = props.location.state
           records: 10
         }
       })
+      if (res.result === 'success') {
+        setMyFanRank(res.data)
+      }
     }
 
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
+
       if (res.code === '0') {
         if (!next) setList(0)
         // setMoreState(false)
@@ -83,7 +91,6 @@ const typeState = props.location.state
       })
     }
   }
-
   const showMoreList = () => {
     if (moreState) {
       setRankLists(rankLists.concat(nextList))
@@ -113,7 +120,6 @@ const typeState = props.location.state
     }, 10)
   }
 
-
   useEffect(() => {
     //reload
     window.addEventListener('scroll', scrollEvtHdr)
@@ -122,12 +128,11 @@ const typeState = props.location.state
     }
   }, [nextList])
 
-
   const createRankButton = () => {
     return rankArray.map((item, index) => {
-     
       return (
-        <button href="#"
+        <button
+          href="#"
           key={index}
           className={`rankTab__btn ${rankType == item ? 'rankTab__btn--active' : ''}`}
           onClick={() => {
@@ -140,7 +145,7 @@ const typeState = props.location.state
       )
     })
   }
-  
+
   const createDateButton = () => {
     return dateArray.map((item, index) => {
       ++index
@@ -186,7 +191,6 @@ const typeState = props.location.state
     }
   }, [])
 
-
   const creatResult = () => {
     if (rankLists === -1) {
       return null
@@ -195,49 +199,32 @@ const typeState = props.location.state
     } else {
       return (
         <>
-        <Ranktop rankLists={rankLists.slice(0, 3)} rankType={rankType}/>
-      <RankList rankLists={rankLists.slice(3)} rankType={rankType}/>
+          <Ranktop rankLists={rankLists.slice(0, 3)} rankType={rankType} />
+          <RankList rankLists={rankLists.slice(3)} rankType={rankType} />
         </>
-      )  
+      )
     }
   }
-  
+
   return (
     <>
       <div>
         <div className="rankTopBox respansiveBox">
-          <div className="rankTab">
-            {createRankButton()}
-          </div>
+          <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            16:00 
-          
-            <img src={hint}  onClick={() => setPopup(popup ? false : true)}/>
+            <img src={hint} onClick={() => setPopup(popup ? false : true)} />
           </div>
         </div>
 
-        <div className="todayList">
-            {createDateButton()}
-        </div>
+        <div className="todayList">{createDateButton()}</div>
 
-      {myProfile && (
-        <Profile
-        myProfile={myProfile}
-         link={`/menu/profile`}
-         />
-      )}
+        {myProfile && <Profile myProfile={myProfile} rankType={rankType} MyDjRank={MyDjRank} MyFanRank={MyFanRank} />}
 
-        <div className="userRanking">
-
-        {creatResult()}
-      
-        {/* {creatResult()} */}
-        </div>
+        <div className="userRanking">{creatResult()}</div>
       </div>
 
       {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
-
     </>
   )
 }

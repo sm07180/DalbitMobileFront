@@ -25,35 +25,24 @@ const rankList = props => {
     return (
     <div className="TopBox">
        {RankList && RankList.map((item, index) => {
-       
-        //  RankList[i].map(item,index => {
-        //   const i = index
-        //   0=<i<3
-        //    return (
-        //      <div>
 
-        //    )
-        //  })
-
-          const {rank,grade,dj,fan,isSpecial,upDown,profImg,nickNm,gender,gift,broadcast,listeners,likes,listen,level} = item
+          const {rank,grade,dj,fan,holder, memNo, isSpecial,upDown,profImg,nickNm,gender,gift,broadcast,listeners,likes,listen,level} = item
           return (
-            
-          
 
-            <div className="TopBox__item" key={index}>
+            <div className="TopBox__item" key={index} onClick={() => {window.location.href = `/mypage/${memNo}`}}>
               <div className="thumbBox">
               {rank == '1' && (<>
-                <img src={frame49}className="thumbBox__frame" />
+                <img src={holder}className="thumbBox__frame" />
                 <img src={profImg.thumb292x292} className="thumbBox__pic" />
               </>)}
 
               {rank == '2' && (<>
-                <img src={frame49}className="thumbBox__frame thumbBox__frame--small" />
+                <img src={holder}className="thumbBox__frame thumbBox__frame--small" />
                 <img src={profImg.thumb292x292} className="thumbBox__pic thumbBox__pic--small" />
               </>)}
 
               {rank == '3' && (<>
-                <img src={frame49}className="thumbBox__frame thumbBox__frame--small" />
+                <img src={holder}className="thumbBox__frame thumbBox__frame--small" />
                 <img src={profImg.thumb292x292} className="thumbBox__pic thumbBox__pic--small" />
               </>)}
 
@@ -141,7 +130,12 @@ const rankList = props => {
 
                 <br />
                 <p className="rankingChange">
-                  <span className="rankingChange__new">{upDown}</span>
+                {
+                upDown === 'new' ? (<span className="rankingChange__new">NEW</span>)
+                : upDown < 0 ? (<span className="rankingChange__up">{Math.abs(upDown)}</span>) 
+                : upDown > 0 ? (<span className="rankingChange__down">{Math.abs(upDown)}</span>)
+                : (<span className="rankingChange__stop"></span>)
+              }
                 </p>
               </div>
 

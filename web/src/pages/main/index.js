@@ -78,6 +78,8 @@ export default props => {
 
   const [payState, setPayState] = useState(false)
 
+  const [broadCnt, setBroadCnt] = useState(false)
+
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
@@ -163,6 +165,11 @@ export default props => {
     }
   }
 
+  const fetchBroadCnt = async () => {
+    const broadCntRes = await Api.getBroadCnt()
+    setBroadCnt(broadCntRes.data)
+  }
+
   const windowScrollEvent = () => {
     const GnbHeight = 48
     const sectionMarginTop = 24
@@ -227,6 +234,7 @@ export default props => {
   }, [popup])
 
   useEffect(() => {
+    fetchBroadCnt()
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
@@ -359,13 +367,15 @@ export default props => {
               <StarList list={initData.myStar} />
             </div>
           </div>
-
           <div className="section" ref={LiveSectionRef}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
                 <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
+
+              {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
+              {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
 
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
@@ -446,6 +456,9 @@ const Content = styled.div`
   }
   .section {
     margin-top: 24px;
+
+    .listener_cnt{color:red;font-weight:700;}
+    .room_cnt{color:blue;font-weight:700;}
 
     .live-list-category {
       position: relative;

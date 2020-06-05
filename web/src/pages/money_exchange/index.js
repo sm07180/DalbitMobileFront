@@ -93,18 +93,9 @@ export default (props) => {
   }
   
   const checkExchange = () => {
-    if(exchangeStar === 0 || !exchangeStar) {
+    if(exchangeStar < 570 || !exchangeStar) {
       context.action.alert({
-        msg: "환전 신청별은 필수 입력값입니다.",
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return;
-    }
-    if(exchangeStar < 570) {
-      context.action.alert({
-        msg: "환전 신청별은 570개 이상이어야 합니다.",
+        msg: "환전 신청별은 최소 570개 이상이어야 합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -122,7 +113,7 @@ export default (props) => {
     }
     if(name === "") {
       context.action.alert({
-        msg: "예금주를 입력해 주세요.",
+        msg: "예금주 성명을 정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -131,7 +122,7 @@ export default (props) => {
     }
     if(selectBank === "0") {
       context.action.alert({
-        msg: "은행을 선택해주세요",
+        msg: "입금받으실 은행을 선택해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -140,7 +131,7 @@ export default (props) => {
     }
     if(account === 0) {
       context.action.alert({
-        msg: "계좌번호를 입력해주세요",
+        msg: "입금받으실 은행의 계죄번호를 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -149,7 +140,7 @@ export default (props) => {
     }
     if(fSocialNo === "" && bSocialNo === "") {
       context.action.alert({
-        msg: "주민번호를 입력해주세요.",
+        msg: "주민등록번호를 정확하게 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -158,7 +149,7 @@ export default (props) => {
     }
     if(phone === "") {
       context.action.alert({
-        msg: "전화번호를 입력해주세요.",
+        msg: "연락받으실 전화번호를 입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -167,7 +158,7 @@ export default (props) => {
     }
     if(address1 === "") {
       context.action.alert({
-        msg: "주소를 입력해 주세요.",
+        msg: "주소를 정확하게 주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -177,7 +168,7 @@ export default (props) => {
 
     if(idPhotoName === "") {
       context.action.alert({
-        msg: "신분증 사본을 첨부해주세요.",
+        msg: "신분증 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -186,7 +177,17 @@ export default (props) => {
     }
     if(bankBookName === "") {
       context.action.alert({
-        msg: "통장 사본을 첨부해주세요.",
+        msg: "통장 사본을 등록해주세요.",
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return;
+    }
+
+    if(!check) {
+      context.action.alert({
+        msg: "개인정보 수집 및 이용에 동의하셔야 환전 신청이 가능합니다.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -225,7 +226,7 @@ export default (props) => {
         setExchangeCalc({...data});
       } else {
         context.action.alert({
-          msg: message,
+          msg: "별 개수는 반드시 570개 이상이어야 합니다.",
           callback: () => {
             context.action.alert({visible: false})
           }
@@ -433,7 +434,9 @@ export default (props) => {
     setSelectBank(value);
   }
 
-  const serachAddr = () => {
+  const serachAddr = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const element_layer = document.getElementById("layer");
     
     new window.daum.Postcode({
@@ -485,6 +488,13 @@ const handleChange = (value) => {
   setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
   setExchangeStar(Number(value.split(",").join("")));
   
+}
+
+const handleSocial = (value) => {
+  setFSocialNo(value);
+  if(value.length === 6) {
+    document.getElementById("bsocialNo").focus();
+  }
 }
 
   useEffect(() => {
@@ -592,33 +602,33 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">계좌번호</div>
                               <div className="PayView__input">
-                              <input type="text" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="text" maxLength="6" className="PayView__input--text" onChange={(e) => setFSocialNo(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
                               <span className="PayView__input--line">-</span>
-                              <input type="text" maxLength="7" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
+                              <input type="password" maxLength="7" id="bsocialNo" className="PayView__input--text" onChange={(e) => setBSocialNo(e.target.value)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="text" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
                               </div>
                           </div>
                           <div className="PayView__list">
                               <div className="PayView__title">주소</div>
                               <div className="PayView__input">
-                              <div className="PayView__address--list">
+                              <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
                                   <input type="text" className="PayView__input--text adressBg" disabled={true} value={zonecode}/>
-                                  <button className="PayView__input--button" onClick={serachAddr}>주소검색</button>
+                                  <button className="PayView__input--button" onClick={(e) => serachAddr(e)}>주소검색</button>
                               </div>
-                              <div className="PayView__address--list">
+                              <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
                                   <input type="text" value={address1} className="PayView__input--text adressBg" disabled={true} />
                               </div>
                               <div className="PayView__address--list">
@@ -630,7 +640,13 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">신분증사본</div>
                               <div className="PayView__input--file">
-                              <input type="text" value={idPhotoName} disabled={true} className="PayView__input--text" />
+                              <label htmlFor="id-upload-text" className="PayView__input--label">
+                                {
+                                  idPhotoName !== "" ? 
+                                  idPhotoName : "신분증사본을 첨부해주세요"
+                                }
+                              </label>
+                              <input type="file" name="idcard" id="id-upload-text" className="PayView__input--text" placeholder="신분증사본을 첨부해주세요" onChange={profileImageUpload} />
                               <label htmlFor="id-upload" className="PayView__input--button">찾아보기</label>
                               <input id="id-upload" name="idcard" type="file" onChange={profileImageUpload}/>
                               </div>
@@ -639,9 +655,16 @@ const handleChange = (value) => {
                           <div className="PayView__list">
                               <div className="PayView__title">통장사본</div>
                               <div className="PayView__input--file">
-                              <input type="text" value={bankBookName} disabled={true} className="PayView__input--text" />
-                              <label htmlFor="bankbook-upload" className="PayView__input--button">찾아보기</label>
-                              <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload}/>
+                                <label htmlFor="bankbook-upload-text" className="PayView__input--label">
+                                  {
+                                    bankBookName !== "" ? 
+                                    bankBookName : "통장사본을 첨부해주세요"
+                                  }
+                                </label>
+                                
+                                <input type="file" name="bankbook" id="bankbook-upload-text" className="PayView__input--text" placeholder="통장사본을 첨부해주세요" onChange={profileImageUpload} />
+                                <label htmlFor="bankbook-upload" className="PayView__input--button">찾아보기</label>
+                                <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload}/>
                               
                               </div>
                           </div>

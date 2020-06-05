@@ -113,7 +113,8 @@ export default props => {
   useEffect(() => {
     const tempBlobList = []
     if (Array.isArray(list) && list.length) {
-      setSelectedBIdx(Math.floor(list.length / 2))
+      //setSelectedBIdx(Math.floor(list.length / 2))
+      setSelectedBIdx(0)
 
       let count = 0
       list.forEach((line, idx) => {

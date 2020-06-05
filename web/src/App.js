@@ -21,6 +21,7 @@ const App = () => {
   App.context = () => context
 
   const [ready, setReady] = useState(false)
+  const myInfo = globalCtx.myInfo
 
   const isJsonString = (str) => {
     try {
@@ -84,6 +85,10 @@ const App = () => {
         //
         if (customHeader['isFirst'] === 'Y') {
             Hybrid('GetLoginToken', tokenInfo.data)
+            if (__NODE_ENV === 'dev') {
+                alert('after GetLoginToken isFirst : Y')
+            }
+
             /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/
@@ -129,7 +134,14 @@ const App = () => {
         msg: tokenInfo.message
       })
     }
+
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+        globalCtx.action.updateMyInfo(myInfoRes.data)
+    }
   }
+
+
 
   //useEffect token
   useEffect(() => {
