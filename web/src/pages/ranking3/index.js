@@ -21,12 +21,14 @@ import hint from './static/hint.svg'
 import star from './static/cashstar_g_s.svg'
 import people from './static/people_g_s.svg'
 import like from './static/like_g_s.svg'
+import closeBtn from './static/ic_back.svg'
 
 import RankList from './rankList'
 import RankListTop from './rankListTop'
 import NoResult from 'components/ui/noResult'
 import LayerPopup from './layer_popup'
 import Util from 'components/lib/utility.js'
+import Header from 'components/ui/header'
 
 export default props => {
   let timer
@@ -42,6 +44,10 @@ export default props => {
   const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
+
+  const goBack = () => {
+    window.history.back()
+  }
 
   const popStateEvent = e => {
     if (e.state === null) {
@@ -213,8 +219,6 @@ export default props => {
           myRank: res.data.myRank,
           myUpDown: res.data.myUpDown
         })
-
-        console.log(res.data)
       }
     } else {
       context.action.alert({
@@ -294,8 +298,14 @@ export default props => {
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
+
   return (
     <>
+      <div className="header">
+        <h1 className="header__title">랭킹</h1>
+        <img className="header__btnBack" src={closeBtn} onClick={goBack} />
+      </div>
+
       <div>
         <div className="rankTopBox respansiveBox">
           <div className="rankTab">{createRankButton()}</div>
