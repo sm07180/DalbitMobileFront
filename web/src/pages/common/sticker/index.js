@@ -130,9 +130,14 @@ const Content = styled.div`
   /*margin-top: 49px;*/
   padding: 15px 16px;
   p {
+    width:100%;
+    margin-right:46px;
     font-size: 16px;
     text-align: center;
     color:#ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
   }
   a {
     position: absolute;

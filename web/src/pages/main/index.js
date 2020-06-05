@@ -240,6 +240,8 @@ export default props => {
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
 
+    //globalCtx.action.updateStickerMsg({push_type:1,title:"DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP",contents:"DJ LEVELUP"})
+    //globalCtx.action.updateSticker(true)
     // if (sessionStorage.getItem('popup_notice') === null) {
     //   sessionStorage.setItem('popup_notice', 'y')
     // }
