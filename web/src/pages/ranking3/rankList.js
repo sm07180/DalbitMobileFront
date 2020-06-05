@@ -45,30 +45,21 @@ export default props => {
             let genderName
             let upDownName
 
-            if (upDown[0] === '+') {
-              upDownName = `rankingChange__up`
-            } else if (upDown[0] === '-' && upDown.length > 1) {
-              upDownName = `rankingChange__down`
-            } else if (upDown === 'new') {
-              upDownName = `rankingChange__new`
-            } else {
-              upDownName = `rankingChange__stop`
-            }
-
-            if (gender === 'm' || gender === 'f') {
-              genderName = `genderBox gender-${gender}`
-            } else {
-              genderName = `genderBox`
-            }
 
             return (
-              <div className="myRanking rankingList" key={index}>
+              <div className="myRanking rankingList" key={index} onClick={() => {
+                window.location.href = `/mypage/${memNo}`
+              }}>
                 <div className="myRanking__left">
                   <p className="myRanking__left--ranking">{rank}</p>
                   <p className="rankingChange">
-                    <span className={upDownName}>
-                      <span className="textIndent">{upDown}</span>
-                    </span>
+                  {
+                    upDown === 'new' ? (<span className="rankingChange__new">NEW</span>)
+                    : upDown < 0 ? (<span className="rankingChange__up">{Math.abs(upDown)}</span>) 
+                    : upDown > 0 ? (<span className="rankingChange__down">{Math.abs(upDown)}</span>)
+                    : (<span className="rankingChange__stop"></span>)
+                  }
+
                   </p>
                   {rankType == 'dj' && (
                     <>
@@ -92,10 +83,7 @@ export default props => {
                 <div className="myRanking__right">
                   <div className="myRanking__rightWrap">
                     <div
-                      className="thumbBox"
-                      onClick={() => {
-                        window.location.href = `/mypage/${memNo}`
-                      }}>
+                      className="thumbBox">
                       <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
                     </div>
 

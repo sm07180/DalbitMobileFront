@@ -86,12 +86,11 @@ export default props => {
               }
 
               return (
-                <div className="TopBox__item" key={index}>
+                <div className="TopBox__item" key={index} onClick={() => {
+                  window.location.href = `/mypage/${memNo}`
+                }}>
                   <div
-                    className="thumbBox"
-                    onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
-                    }}>
+                    className="thumbBox">
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
@@ -162,9 +161,12 @@ export default props => {
                   <div className="medalBox">
                     <p className={rankName}>{rank}</p>
                     <p className="rankingChange">
-                      <span className={upDownName}>
-                        <span className="textIndent">{upDown}</span>
-                      </span>
+                      {
+                      upDown === 'new' ? (<span className="rankingChange__new">NEW</span>)
+                      : upDown < 0 ? (<span className="rankingChange__up">{Math.abs(upDown)}</span>) 
+                      : upDown > 0 ? (<span className="rankingChange__down">{Math.abs(upDown)}</span>)
+                      : (<span className="rankingChange__stop"></span>)
+                      }
                     </p>
                   </div>
 
