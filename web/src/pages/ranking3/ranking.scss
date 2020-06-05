@@ -143,6 +143,7 @@ img {
 }
 
 .rankingChange {
+  height: 16px;
   font-size: 12px;
   line-height: 13px;
   font-weight: bold;
@@ -214,7 +215,7 @@ img {
 
   &__pic {
     width: 71%;
-    padding-top: 11px;
+    margin-top: 11px;
     border-radius: 50%;
   }
 }
@@ -230,7 +231,7 @@ img {
     margin-right: 6px;
 
     &__pic {
-      padding-top: 0;
+      margin-top: 0;
       width: 100%;
     }
   }
@@ -384,7 +385,7 @@ img {
       margin: 0 auto;
 
       &__pic {
-        padding-top: 9px;
+        margin-top: 9px;
       }
     }
 

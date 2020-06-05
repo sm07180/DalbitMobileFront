@@ -8,7 +8,7 @@ import Api from 'context/api'
 import './ranking.scss'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['일간', '주간']
+const dateArray = ['오늘', '일간', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1
@@ -28,7 +28,6 @@ import RankListTop from './rankListTop'
 import NoResult from 'components/ui/noResult'
 import LayerPopup from './layer_popup'
 import Util from 'components/lib/utility.js'
-import Header from 'components/ui/header'
 
 export default props => {
   let timer
@@ -311,7 +310,7 @@ export default props => {
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            {/* 16:00 */}
+            16:00
             <img src={hint} onClick={() => setPopup(popup ? false : true)} />
           </div>
         </div>
