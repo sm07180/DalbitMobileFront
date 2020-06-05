@@ -5,8 +5,8 @@ import {Context} from 'context'
 
 export default function RankingType(props) {
   const globalCtx = useContext(Context)
-  // globalCtx.action.updatePopup('TERMS', 'event-detail')
-  // globalCtx.action.updatePopup('TERMS', 'event-gift-detail')
+
+  const {rankingTerm} = props
 
   if (props.rankingType === 'exp') {
     return (
