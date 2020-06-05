@@ -5,13 +5,13 @@ import {Context} from 'context'
 
 export default function RankingType(props) {
   const globalCtx = useContext(Context)
-  // globalCtx.action.updatePopup('TERMS', 'event-detail')
-  // globalCtx.action.updatePopup('TERMS', 'event-gift-detail')
+
+  const {rankingTerm} = props
 
   if (props.rankingType === 'exp') {
     return (
       <div className="content-wrap">
-        <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img.png" />
+        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img.png" />}
 
         <div className="notice-wrap">
           <p>순위는 실시간으로 집계됩니다.</p>

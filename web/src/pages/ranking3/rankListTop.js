@@ -43,7 +43,8 @@ export default props => {
                 fan,
                 dj,
                 roomNo,
-                memNo
+                memNo,
+                holder
               } = item
 
               let rankName
@@ -91,7 +92,7 @@ export default props => {
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}`
                     }}>
-                    <img src={frame49} srcSet={`${frame49} 1x, ${frame492x} 2x`} className="thumbBox__frame" />
+                    <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
 

@@ -1,333 +1,230 @@
-import React from 'react'
-import './static/rangking2.scss'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 
-import sample1 from './static/sample1.jpg'
-// import sample2 from './static/sample2.jpg';
-// import sample3 from './static/sample3.jpg';
-// import sample4 from './static/sample4.jpg';
-// import sample5 from './static/sample5.jpg';
+import './ranking.scss'
+import hint from './static/ico-hint.png'
+import Profile from './content/profile'
+import RankList from './content/rankList'
+import Ranktop from './content/ranktop'
+import LayerPopup from './content/layer_popup'
 
-import closeBtn from './static/ic_back.svg'
-import rankNotice from './static/notice_img.png'
-import scoreup from './static/scoreup.png'
-import scoredown from './static/scoredown.png'
-import pointimg from './static/pointimg.png'
+import {Context} from 'context'
+import Api from 'context/api'
 
-import icoLike from './static/ico_like.png'
-import icoPeople from './static/ico_people.png'
-import icoStar from './static/ico_star.png'
-import icoTtar from './static/ico_time.png'
+const rankArray = ['dj', 'fan']
+const dateArray = ['오늘', '일간', '주간']
+let currentPage = 1
+let moreState = false
 
-import icoKorea from './static/ico-korea.png'
-import icoFemale from './static/ico-female.png'
+const index = props => {
+  let timer
 
-const index = () => {
+  const [rankType, setRankType] = useState('dj')
+  const [dateType, setDateType] = useState(1)
+  const [myProfile, setMyProfile] = useState([])
+  const [list, setList] = useState(-1)
+  const [myRank, setMyRank] = useState('-')
+  const [nextList, setNextList] = useState(false)
+  const [rankLists, setRankLists] = useState(-1)
+  const [popup, setPopup] = useState(false)
+  const [MyDjRank, setMyDjRank] = useState([])
+  const [MyFanRank, setMyFanRank] = useState([])
+
+  const popStateEvent = e => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+
+  //
+  const context = useContext(Context)
+  const typeState = props.location.state
+  async function fetch(type, dateType, next) {
+    let res = ''
+    currentPage = next ? ++currentPage : currentPage
+    if (type == 'dj') {
+      res = await Api.get_dj_ranking({
+        params: {
+          rankType: dateType,
+          page: currentPage,
+          records: 10
+        }
+      })
+      if (res.result === 'success') {
+        setMyDjRank(res.data)
+      }
+    } else if (type == 'fan') {
+      res = await Api.get_fan_ranking({
+        params: {
+          rankType: dateType,
+          page: currentPage,
+          records: 10
+        }
+      })
+      if (res.result === 'success') {
+        setMyFanRank(res.data)
+      }
+    }
+
+    if (res.result === 'success' && _.hasIn(res, 'data.list')) {
+      //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
+
+      if (res.code === '0') {
+        if (!next) setList(0)
+        // setMoreState(false)
+        moreState = false
+      } else {
+        if (next) {
+          // setMoreState(true)
+          moreState = true
+          setNextList(res.data.list)
+        } else {
+          setRankLists(res.data.list)
+          fetch(type, dateType, 'next')
+        }
+        setMyRank(res.data.myRank == 0 ? '-' : res.data.myRank)
+      }
+    } else {
+      context.action.alert({
+        msg: res.massage
+      })
+    }
+  }
+  const showMoreList = () => {
+    if (moreState) {
+      setRankLists(rankLists.concat(nextList))
+      fetch(rankType, dateType, 'next')
+    }
+  }
+
+  //---------------------------------------------------------------------
+  //checkScroll
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (moreState && windowBottom >= docHeight - 400) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+
+  const createRankButton = () => {
+    return rankArray.map((item, index) => {
+      return (
+        <button
+          href="#"
+          key={index}
+          className={`rankTab__btn ${rankType == item ? 'rankTab__btn--active' : ''}`}
+          onClick={() => {
+            currentPage = 1
+            setRankType(item)
+            fetch(item, dateType)
+          }}>
+          {item == 'dj' ? 'DJ' : '팬'}
+        </button>
+      )
+    })
+  }
+
+  const createDateButton = () => {
+    return dateArray.map((item, index) => {
+      ++index
+      return (
+        <button
+          key={index}
+          className={`todayList__btn ${dateType == index ? 'todayList__btn--active' : ''}`}
+          onClick={() => {
+            currentPage = 1
+            setDateType(index)
+            fetch(rankType, index)
+          }}>
+          {item}
+        </button>
+      )
+    })
+  }
+
+  const creatMyRank = () => {
+    if (context.token.isLogin) {
+      const settingProfileInfo = async memNo => {
+        const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+        if (profileInfo.result === 'success') {
+          setMyProfile(profileInfo.data)
+        }
+      }
+      settingProfileInfo()
+    } else {
+      return null
+    }
+  }
+
+  useEffect(() => {
+    if (typeState) {
+      setRankType(typeState)
+      fetch(typeState, dateType)
+    } else {
+      fetch(rankType, dateType)
+    }
+    creatMyRank()
+    return () => {
+      currentPage = 1
+    }
+  }, [])
+
+  const creatResult = () => {
+    if (rankLists === -1) {
+      return null
+    } else if (rankLists === 0) {
+      return <NoResult />
+    } else {
+      return (
+        <>
+          <Ranktop rankLists={rankLists.slice(0, 3)} rankType={rankType} />
+          <RankList rankLists={rankLists.slice(3)} rankType={rankType} />
+        </>
+      )
+    }
+  }
+
   return (
     <>
-      <div className="header">
-        <h2 className="header__title">
-          <img src={closeBtn} className="header__back" />탑 랭킹
-        </h2>
+      <div>
+        <div className="rankTopBox respansiveBox">
+          <div className="rankTab">{createRankButton()}</div>
+
+          <div className="rankTopBox__update">
+            <img src={hint} onClick={() => setPopup(popup ? false : true)} />
+          </div>
+        </div>
+
+        <div className="todayList">{createDateButton()}</div>
+
+        {myProfile && <Profile myProfile={myProfile} rankType={rankType} MyDjRank={MyDjRank} MyFanRank={MyFanRank} />}
+
+        <div className="userRanking">{creatResult()}</div>
       </div>
 
-      <div className="center">
-        <div className="rankTitle">
-          <div className="rankTitle__tab">
-            <a href="#" className="rankTitle__button rankTitle__button--active">
-              DJ
-            </a>
-            <a href="#" className="rankTitle__button">
-              팬
-            </a>
-          </div>
-          <div className="rankTitle__titme">
-            16:00 <img src={rankNotice} className="rankTitle__noticeImg" />
-          </div>
-        </div>
-
-        <div className="rankDay">
-          <a href="#" className="rankDay__button rankDay__button--active">
-            오늘
-            <hr className="acitve--line" />
-          </a>
-          <a href="#" className="rankDay__button">
-            일간
-          </a>
-          <a href="#" className="rankDay__button">
-            주간
-            <hr />
-          </a>
-          <a href="#" className="rankDay__button">
-            월간
-            <hr />
-          </a>
-        </div>
-
-        <div className="rangkMy">
-          <div className="rangkMy__textBox">
-            <div className="rangkMy__list rangkMy__list--title"> 내 랭킹</div>
-            <div className="rangkMy__list rangkMy__list--score">1290</div>
-            <div className="rangkMy__list rangkMy__list--scoreUp">
-              <img src={scoreup} className="scoreupImg" /> 230
-            </div>
-            <div className="rangkMy__list rangkMy__list--point">
-              <img src={pointimg} className="pointImg" /> 45
-            </div>
-          </div>
-
-          <div className="rangkMy__content">
-            <div className="rangkMy__imgTitle">
-              <div className="rangkMy__imgFrame">
-                <div className="rangkMy__lingImg"></div>
-                <img src={sample1} className="rangkMy__img" />
-              </div>
-              <div className="rangkMy__itme">
-                <div className="rangkMy__level">
-                  Lv<b className="rangkMy__level--bold">49. </b> 은메달
-                </div>
-                <div className="rangkMy__title">상큼 레몬향기</div>
-              </div>
-            </div>
-            <ul className="rangkPoint">
-              <li className="rangkPoint__list">
-                <img src={icoStar} className="rangkPoint__list--img50" /> 45
-              </li>
-              <li className="rangkPoint__list">
-                <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-              </li>
-              <li className="rangkPoint__list">
-                <img src={icoLike} className="rangkPoint__list--img50" /> 2,181
-              </li>
-              <li className="rangkPoint__list">
-                <img src={icoTtar} className="rangkPoint__list--img50" /> 2,181
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="bestBox">
-          <div className="best__margin">
-            <div className="best__one">
-              <div className="best__medal">
-                <div className="best__score">NEW</div>
-              </div>
-              <div className="best__live">Live</div>
-
-              <div className="best__content">
-                <div className="best__imgBox">
-                  <div className="best__lingImg"></div>
-                  <img src={sample1} className="best__img" />
-                </div>
-                <div className="best__subTitle">
-                  Lv<b>49.</b> 황금트로피
-                </div>
-                <div className="best__title">
-                  세상 아름다운 DJ 쩡
-                  <div className="best__titleImg">
-                    <img src={icoKorea} className="best__title--img" />
-                    <img src={icoFemale} className="best__title--img" />
-                  </div>
-                </div>
-              </div>
-
-              <ul className="rangkPoint rangkPoint--center">
-                <li className="rangkPoint__list rangkPoint__list--bold">
-                  <img src={pointimg} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoStar} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoLike} className="rangkPoint__list--img50" /> 2,181
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoTtar} className="rangkPoint__list--img50" /> 2,181
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="best__two">
-            <div className="best__margin">
-              <div className="best__one best__one--rightMargin">
-                <div className="best__medal best__medal--silver">
-                  <div className="best__score best__score--down">
-                    <img src={scoredown} className="scoreImg" /> 45
-                  </div>
-                </div>
-                <div className="best__live">Live</div>
-
-                <div className="best__content">
-                  <div className="best__imgBox best__imgBox--two">
-                    <div className="best__lingImgSmall best__lingImgSmall--lv10"></div>
-                    <img src={sample1} className="best__img" />
-                  </div>
-                  <div className="best__subTitle best__subTitle--yellow">
-                    Lv<b>8.</b> 황금트로피1
-                  </div>
-                  <div className="best__title best__title--block">
-                    세상 아름다운 DJ 쩡
-                    <div className="best__titleImg best__titleImg--margin">
-                      <img src={icoKorea} className="best__title--img" />
-                      <img src={icoFemale} className="best__title--img" />
-                    </div>
-                  </div>
-                </div>
-
-                <ul className="rangkPoint rangkPoint--row">
-                  <li className="rangkPoint__list rangkPoint__list--two rangkPoint__list--bold ">
-                    <img src={pointimg} className="rangkPoint__list--img50" /> 45
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoStar} className="rangkPoint__list--img50" /> 4,345
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoLike} className="rangkPoint__list--img50" /> 81222
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoTtar} className="rangkPoint__list--img50" /> 1811
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="best__margin">
-              <div className="best__one">
-                <div className="best__medal best__medal--bronze">
-                  <div className="best__score best__score--basic">-</div>
-                </div>
-                <div className="best__live">Live</div>
-
-                <div className="best__content">
-                  <div className="best__imgBox best__imgBox--two">
-                    <div className="best__lingImgSmall best__lingImgSmall--lv16"></div>
-                    <img src={sample1} className="best__imgSmall" />
-                  </div>
-                  <div className="best__subTitle best__subTitle--green">
-                    Lv<b>49.</b> 황금트로피
-                  </div>
-                  <div className="best__title best__title--block">
-                    세상 아름다운 DJ 쩡
-                    <div className="best__titleImg best__titleImg--margin">
-                      <img src={icoKorea} className="best__title--img" />
-                      <img src={icoFemale} className="best__title--img" />
-                    </div>
-                  </div>
-                </div>
-
-                <ul className="rangkPoint rangkPoint--row">
-                  <li className="rangkPoint__list rangkPoint__list--two rangkPoint__list--bold ">
-                    <img src={pointimg} className="rangkPoint__list--img50" /> 45
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoStar} className="rangkPoint__list--img50" /> 4,345
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoLike} className="rangkPoint__list--img50" /> 81222
-                  </li>
-                  <li className="rangkPoint__list rangkPoint__list--two">
-                    <img src={icoTtar} className="rangkPoint__list--img50" /> 1811
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rankBox">
-          <div className="rankBox__list">
-            <div className="rankBox__text">
-              <div className="rankBox__number">4</div>
-              <div className="rankBox__score rankBox__score--basic"></div>
-              <div className="rankBox__point">
-                <img src={pointimg} className="pointImg" />
-                2536
-              </div>
-            </div>
-
-            <div className="rankBox__content">
-              <div className="rankBox__itemTop">
-                <div className="rankBox__itemImg">
-                  <img src={sample1} className="itemImg" />
-                </div>
-                <div className="rankBox__itemText">
-                  <div className="rankBox__itemTitle">타이틀</div>
-                  <div className="rankBox__itemPoint">
-                    <img src={icoKorea} className="itemPoint" />
-                    <img src={icoFemale} className="itemPoint" />
-                    <div className="djIcon">스페셜DJ</div>
-                  </div>
-                </div>
-              </div>
-              <ul className="rangkPoint">
-                <li className="rangkPoint__list">
-                  <img src={icoStar} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoLike} className="rangkPoint__list--img50" /> 2,181
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoTtar} className="rangkPoint__list--img50" /> 2,181
-                </li>
-              </ul>
-            </div>
-            <div className="rankBox__Live">LIVE</div>
-          </div>
-
-          <div className="rankBox__list">
-            <div className="rankBox__text">
-              <div className="rankBox__number">4</div>
-              <div className="rankBox__score rankBox__score--basic"></div>
-              <div className="rankBox__point">
-                <img src={pointimg} className="pointImg" />
-                2536
-              </div>
-            </div>
-
-            <div className="rankBox__content">
-              <div className="rankBox__itemTop">
-                <div className="rankBox__itemImg">
-                  <img src={sample1} className="itemImg" />
-                </div>
-                <div className="rankBox__itemText">
-                  <div className="rankBox__itemTitle">타이틀</div>
-                  <div className="rankBox__itemPoint">
-                    <img src={icoKorea} className="itemPoint" />
-                    <img src={icoFemale} className="itemPoint" />
-                    <div className="djIcon">스페셜DJ</div>
-                  </div>
-                </div>
-              </div>
-              <ul className="rangkPoint">
-                <li className="rangkPoint__list">
-                  <img src={icoStar} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoPeople} className="rangkPoint__list--img50" /> 45
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoLike} className="rangkPoint__list--img50" /> 2,181
-                </li>
-                <li className="rangkPoint__list">
-                  <img src={icoTtar} className="rangkPoint__list--img50" /> 2,181
-                </li>
-              </ul>
-            </div>
-            <div className="rankBox__Live">LIVE</div>
-          </div>
-        </div>
-      </div>
+      {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
     </>
   )
 }

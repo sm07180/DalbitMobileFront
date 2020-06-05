@@ -3,6 +3,9 @@ import React, {useEffect, useState, useContext} from 'react'
 import './event_page.scss'
 import API from 'context/api'
 
+//context
+import {Context} from 'context'
+
 // component
 import Layout from 'pages/common/layout'
 import RankingTypeContent from './ranking_type_content'
@@ -20,11 +23,14 @@ export default props => {
   // const [eventType, setEventType] = useState('comment')
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
-  const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
+  const [rankingTerm, setRankingTerm] = useState(null) // 1차, 2차, 3차
 
   const [termList, setTermList] = useState([])
   const [rankList, setRankList] = useState([])
   const [myRankInfo, setMyRankInfo] = useState({})
+
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
 
   const RankType = {
     exp: 1,
@@ -36,7 +42,10 @@ export default props => {
     async function fetchEventTermData() {
       const {result, data} = await API.getEventTerm()
       if (result === 'success') {
-        setTermList(data)
+        const {nowRound, terms} = data
+        const selectedTerm = terms.find(t => t.round === nowRound)
+        setTermList(terms)
+        setRankingTerm(selectedTerm)
       }
     }
 
@@ -44,27 +53,33 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    // reset event type category
-    if (eventType === 'event') {
-      setRankingType('exp')
-      setRankingStep(1)
-    }
-  }, [eventType])
-
-  useEffect(() => {
     async function fetchInitData() {
-      const {result, data} = await API.getEventRanking({slctType: RankType[rankingType]})
-      if (result === 'success') {
-        setRankList(data.list)
-        setMyRankInfo({
-          myRank: data.myRank,
-          myPoint: data.myPoint
-        })
+      const {state} = rankingTerm
+      if (state === 'ing') {
+        const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
+      } else if (state === 'finished') {
+        const {result, data} = await API.getEventRankingResult({slctType: RankType[rankingType], round: rankingTerm.round})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
       }
     }
 
-    fetchInitData()
-  }, [rankingType])
+    if (rankingTerm) {
+      fetchInitData()
+    }
+  }, [rankingType, rankingTerm])
 
   return (
     <Layout {...props} status="no_gnb">
@@ -100,24 +115,34 @@ export default props => {
                     </div>
                   </div>
 
-                  <RankingTypeContent rankingType={rankingType} />
+                  {rankingTerm && <RankingTypeContent rankingType={rankingType} rankingTerm={rankingTerm} />}
                 </div>
 
                 <div className="stage-wrap">
                   <div className="stage-tab-wrap">
-                    {termList.map((data, idx) => {
-                      const {round, term} = data
-                      return (
-                        <div
-                          key={`term-${idx}`}
-                          className={`tab ${rankingStep === round ? 'active' : ''}`}
-                          onClick={() => setRankingStep(round)}>
-                          {`${round}차`}
-                          <br />
-                          <span>{term}</span>
-                        </div>
-                      )
-                    })}
+                    {rankingTerm &&
+                      termList.map((data, idx) => {
+                        const {round, term, state} = data
+
+                        return (
+                          <div
+                            key={`term-${idx}`}
+                            className={`tab ${rankingTerm.round === round ? 'active' : ''}`}
+                            onClick={() => {
+                              if (state !== 'ready') {
+                                setRankingTerm(data)
+                              } else {
+                                globalCtx.action.alert({
+                                  msg: `${term}에 공계될 예정입니다.`
+                                })
+                              }
+                            }}>
+                            {`${round}차`}
+                            <br />
+                            <span>{term}</span>
+                          </div>
+                        )
+                      })}
                   </div>
 
                   <div className="my-info">

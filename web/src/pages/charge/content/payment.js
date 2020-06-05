@@ -46,18 +46,19 @@ export default props => {
 
   let paymentName = ''
   let paymentPrice = ''
-  let itemNo = ''
+  let payItemNo = ''
   let pageCode = ''
 
   if (props.location.state) {
     paymentName = props.location.state.paymentName
     paymentPrice = props.location.state.paymentPrice
-    itemNo = props.location.state.itemNo
+    payItemNo = props.location.state.itemNo
     pageCode = '1'
   } else if (webview === 'new') {
-    paymentName = qs.parse(location.search.name)
-    paymentPrice = qs.parse(location.search.price)
-    itemNo = qs.parse(location.search.itemNo)
+    const {name, price, itemNo} = qs.parse(location.search)
+    paymentName = name
+    paymentPrice = price
+    payItemNo = itemNo
     pageCode = '2'
   }
   // const paymentPriceAddVat = paymentPrice / 10 + paymentPrice
@@ -109,7 +110,7 @@ export default props => {
           Prdtprice: paymentPrice,
           rcptNm: name,
           phoneNo: phone,
-          itemNo: itemNo,
+          itemNo: payItemNo,
           receiptCode: status,
           receiptPhone: status === 'i' && receipt === 2 ? receiptInput : '',
           receiptSocial: status === 'i' && receipt === 1 ? receiptInput : '',
@@ -136,7 +137,7 @@ export default props => {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
-        itemNo: itemNo,
+        itemNo: payItemNo,
         pageCode: pageCode
       }
     }
@@ -194,7 +195,7 @@ export default props => {
   useEffect(() => {}, [])
 
   return (
-    <>
+    <div className={`${webview === 'new' && 'webview'}`}>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
       {confirm ? (
         <SuccessPopup detail={confirmData} />
@@ -326,6 +327,6 @@ export default props => {
           <Message />
         </>
       )}
-    </>
+    </div>
   )
 }

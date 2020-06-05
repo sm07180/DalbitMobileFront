@@ -1464,8 +1464,12 @@ export default class API {
     return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
   }
 
-  static getEventRanking = async params => {
+  static getEventRankingLive = async params => {
     return await ajax({url: '/event/ranking/live', method: 'GET', params})
+  }
+
+  static getEventRankingResult = async params => {
+    return await ajax({url: '/event/ranking/result', method: 'GET', params})
   }
 
   static getEventTerm = async () => {
