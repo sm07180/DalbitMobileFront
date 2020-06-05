@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import {RoomJoin} from "../../../context/room";
 //components
+import closeIco from './static/ic_close_w.svg'
 
 //contents
 
@@ -107,7 +108,7 @@ export default (props) => {
         onClick={() => {
           context.action.updateSticker(false)
         }}>
-        닫기
+        <img src={closeIco}/>
       </a>
     </Content>
   )
@@ -124,17 +125,19 @@ const Content = styled.div`
   position: fixed;
   z-index:500;
   width:100%;
+  height: 48px;
+  background-color: #ff6b89;
   /*margin-top: 49px;*/
-  padding: 10px;
-  background: #e1e1e1;
+  padding: 15px 16px;
   p {
     font-size: 16px;
     text-align: center;
+    color:#ffffff;
   }
   a {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 16px;
   }
 @keyframes slidein {
   from {
