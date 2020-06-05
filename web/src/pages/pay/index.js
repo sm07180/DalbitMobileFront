@@ -24,7 +24,7 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
-  const {result, message, state, returntype} = props.location.state
+  const {result, message, state, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result'))
 
