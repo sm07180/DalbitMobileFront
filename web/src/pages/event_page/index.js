@@ -115,7 +115,7 @@ export default props => {
                     </div>
                   </div>
 
-                  <RankingTypeContent rankingType={rankingType} rankingTerm={rankingTerm} />
+                  {rankingTerm && <RankingTypeContent rankingType={rankingType} rankingTerm={rankingTerm} />}
                 </div>
 
                 <div className="stage-wrap">
