@@ -41,7 +41,7 @@ export default props => {
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
-            payType = '결제'
+            return (window.location.href = '/')
           }
           const payInfo = {
             prdtPrice: prdtPrice,
