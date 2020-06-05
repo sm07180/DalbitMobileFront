@@ -67,7 +67,7 @@ const rankList = props => {
                   <span className="countBox__item">
                   <img src={people} />
                   {listeners !== undefined && listeners.toLocaleString()}
-                  </span>
+                  </span>s
                   <span className="countBox__item">
                   <img src={like} />
                   {likes !== undefined && likes.toLocaleString()}
