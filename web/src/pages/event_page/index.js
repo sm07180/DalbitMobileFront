@@ -82,6 +82,16 @@ export default props => {
     }
   }, [rankingType, rankingTerm])
 
+  const chageEventText = () => {
+    if (rankingType === 'exp') {
+      return <>달성 경험치</>
+    } else if (rankingType === 'like') {
+      return <>좋아요 수</>
+    } else if (rankingType === 'gift') {
+      return <>선물 개수</>
+    }
+  }
+
   return (
     <Layout {...props} status="no_gnb">
       <div id="event-page">
@@ -153,7 +163,7 @@ export default props => {
                     <span className="ranking">{myRankInfo.myRank}</span>
                     <span>위</span>
                     <span className="bar">|</span>
-                    <span className="exp-title">달성 경험치</span>
+                    <span className="exp-title">{chageEventText()}</span>
                     <span>{myRankInfo.myPoint}</span>
                   </div>
 
@@ -183,7 +193,7 @@ export default props => {
                             <span className="nick-name">{nickName}</span>
                             <span className="level">Lv{level}</span>
                             <div className="exp-box">
-                              달성경험치 <span>{gainPoint}</span>
+                              {chageEventText()} <span>{gainPoint}</span>
                             </div>
                           </div>
                         </div>
