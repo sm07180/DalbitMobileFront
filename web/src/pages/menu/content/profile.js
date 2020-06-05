@@ -139,7 +139,7 @@ export default props => {
             <img src={Setting} />
           </a>
         )}
-        {__NODE_ENV === 'dev' && token && token.isLogin && showAdmin && (
+        {token && token.isLogin && showAdmin && (
           <a href="/admin/image">
             <img src={AdminIcon} />
           </a>
