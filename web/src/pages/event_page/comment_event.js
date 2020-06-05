@@ -66,10 +66,18 @@ export default function CommentEvent() {
               }
             }
             if (token.isLogin) {
-              setCommentTxt('')
-              AddComment(token.memNo, eventIndex, 1, commentTxt)
+              if (commentTxt === '') {
+                globalCtx.action.alert({
+                  msg: '내용을 입력해주세요.'
+                })
+              } else {
+                setCommentTxt('')
+                AddComment(token.memNo, eventIndex, 1, commentTxt)
+              }
             } else {
-              alert('로그인 유저만 등록 가능합니다.')
+              globalCtx.action.alert({
+                msg: '로그인 유저만 등록 가능합니다.'
+              })
             }
           }}>
           등록
