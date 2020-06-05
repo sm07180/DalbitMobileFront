@@ -76,10 +76,10 @@ export default props => {
         setName(target.value)
         break
       case 'phone':
-        setPhone(target.value)
+        setPhone(target.value.replace('-', ''))
         break
       case 'receipt':
-        setReceiptInput(target.value)
+        setReceiptInput(target.value.replace('-', ''))
         break
       default:
         break
@@ -126,13 +126,15 @@ export default props => {
             pageCode: pageCode
           }
         })
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
       }
     }
   }
 
   async function payFetch(event) {
-    const {classList} = event.target
-    classList.add('chargeButton--active')
     payType = chargeData[payMathod].fetch
     const obj = {
       data: {
@@ -179,7 +181,7 @@ export default props => {
         <div className="receipt__sub">
           <label className="receipt__label">
             <SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize: '14px', minWidth: '105px'}} />
-          </label>{' '}
+          </label>
           <input className="receipt__input" type="tel" name="receipt" value={receiptInput} onChange={handleChange} />
         </div>
       )
@@ -261,10 +263,11 @@ export default props => {
                     <div className="depositInfo__label">휴대폰번호</div>
                     <div className="depositInfo__value">
                       <input
-                        type="text"
+                        type="tel"
                         name="phone"
                         value={phone}
                         onChange={handleChange}
+                        maxLength={11}
                         className="depositInfo__input"></input>
                     </div>
                   </div>
@@ -316,7 +319,7 @@ export default props => {
               <span className="inquiry__number">1522-0251</span>
             </div>
             {payMathod === 2 ? (
-              <button className="chargeButton" onClick={chargeClick}>
+              <button className="chargeButton chargeButton--active" onClick={chargeClick}>
                 입금계좌 받기
               </button>
             ) : (
