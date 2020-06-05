@@ -8,7 +8,7 @@ import Api from 'context/api'
 import './ranking.scss'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['오늘', '일간', '주간']
+const dateArray = ['일간', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1
@@ -79,10 +79,10 @@ export default props => {
 
   useEffect(() => {
     //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
+    // window.addEventListener('scroll', scrollEvtHdr)
+    // return () => {
+    //   window.removeEventListener('scroll', scrollEvtHdr)
+    // }
   }, [nextList])
 
   useEffect(() => {
@@ -163,6 +163,11 @@ export default props => {
     }, 10)
   }
 
+  const showMoreList = () => {
+    setList(list.concat(nextList))
+    fetchRank(rankType, dateType, 'next')
+  }
+
   async function fetchRank(type, dateType, next) {
     let res = ''
     currentPage = next ? ++currentPage : currentPage
@@ -172,7 +177,7 @@ export default props => {
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 10
+          records: 100
         }
       })
     } else if (type === 'fan') {
@@ -180,7 +185,7 @@ export default props => {
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 10
+          records: 100
         }
       })
     }
@@ -215,13 +220,6 @@ export default props => {
       context.action.alert({
         msg: res.massage
       })
-    }
-  }
-
-  const showMoreList = () => {
-    if (moreState) {
-      setList(list.concat(nextList))
-      fetchRank(rankType, dateType, 'next')
     }
   }
 
@@ -278,6 +276,24 @@ export default props => {
     return myUpDownName
   }
 
+  const createMyProfile = () => {
+    const {myUpDown} = myInfo
+    let myUpDownName,
+      myUpDownValue = ''
+    if (myUpDown[0] === '+') {
+      myUpDownName = `rankingChange__up`
+      myUpDownValue = myUpDown.split('+')[1]
+    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+      myUpDownName = `rankingChange__down`
+      myUpDownValue = myUpDown.split('-')[1]
+    } else if (myUpDown === 'new') {
+      myUpDownName = `rankingChange__new`
+      myUpDownValue = 'new'
+    } else {
+      myUpDownName = `rankingChange__stop`
+    }
+    return <span className={myUpDownName}>{myUpDownValue}</span>
+  }
   return (
     <>
       <div>
@@ -302,7 +318,8 @@ export default props => {
               <p className="myRanking__left--title">내 랭킹</p>
               <p className="myRanking__left--now">{myInfo.myRank}</p>
               <p className="rankingChange">
-                <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span>
+                {createMyProfile()}
+                {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
                 <img src={point} /> {myInfo.myPoint}
