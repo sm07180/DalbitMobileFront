@@ -255,6 +255,7 @@
             width: calc(100% - 160px);
             padding: 10px 6px;
             box-sizing: border-box;
+            align-items: center;
 
             & > .thumb {
               overflow: hidden;
@@ -267,10 +268,8 @@
 
             .nick-name-wrap {
               width: 100%;
-              margin-bottom: 5px;
               font-size: 14px;
               letter-spacing: -0.35px;
-              line-height: 14px;
 
               .nick-name {
                 display: inline-block;
@@ -279,14 +278,15 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                vertical-align: middle;
               }
 
               .level {
                 display: inline-block;
                 margin-left: 5px;
-                margin-bottom: 5px;
                 font-size: 14px;
                 letter-spacing: -0.35px;
+                vertical-align: middle;
               }
             }
 
@@ -393,6 +393,7 @@
 
             .each {
               display: flex;
+              align-items: center;
               flex-direction: row;
               position: relative;
               padding: 10px 32px 10px 10px;
