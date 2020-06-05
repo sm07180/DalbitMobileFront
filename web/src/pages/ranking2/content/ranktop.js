@@ -50,17 +50,17 @@ const rankList = props => {
               <div>
               {rank == '1' && (<>
                 <p className="levelBox levelBox__lv1">
-              Lv<strong>{level}.</strong> {grade}
+              Lv<b>{level}.aaaaa</b> {grade}
                 </p>
               </>)}
               {rank == '2' && (<>
                 <p className="levelBox levelBox__lv2">
-              Lv<strong>{level}.</strong> {grade}
+              Lv<b>{level}.aaa</b> {grade}
                 </p>
               </>)}
               {rank == '3' && (<>
                 <p className="levelBox levelBox__lv3">
-              Lv<strong>{level}.</strong> {grade}
+              Lv<b className="levelBox__bold">{level}.dddd</b> {grade}
                 </p>
               </>)}
                 <p className="nickNameBox">

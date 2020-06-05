@@ -14,7 +14,8 @@ const dateArray = ['오늘', '일간', '주간']
 let currentPage = 1
 let moreState = false
 
-import point from './static/point.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
 import moon from './static/cashmoon_g_s.svg'
 import time from './static/time_g_s.svg'
 import hint from './static/hint.svg'
@@ -216,7 +217,8 @@ export default props => {
           myListenerPoint: res.data.myListenerPoint,
           myPoint: res.data.myPoint,
           myRank: res.data.myRank,
-          myUpDown: res.data.myUpDown
+          myUpDown: res.data.myUpDown,
+          time:res.data.time
         })
       }
     } else {
@@ -298,6 +300,7 @@ export default props => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
+
   return (
     <>
       <div className="header">
@@ -310,8 +313,8 @@ export default props => {
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            16:00
-            <img src={hint} onClick={() => setPopup(popup ? false : true)} />
+            {myInfo && myInfo.time}
+            <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
           </div>
         </div>
 
@@ -331,7 +334,7 @@ export default props => {
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} /> {myInfo.myPoint}
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
               </p>
             </div>
 

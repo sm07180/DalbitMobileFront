@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 
-import point from '../static/ico-point.png'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
 import moon from '../static/cashmoon_g_s.svg'
 import time from '../static/time_g_s.svg'
 import start from '../static/cashstar_g_s.svg'
@@ -51,7 +52,7 @@ const profile = (props) => {
             </>)}
           </p>
           <p className="myRanking__left--point">
-          <img src={point} />
+          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}  />
           
           {rankType == 'dj' && (<>  {myDjRank.myPoint !== undefined && myDjRank.myPoint.toLocaleString()}</>)}
           {rankType == 'fan' && (<>  {myFanRank.myPoint !== undefined && myFanRank.myPoint.toLocaleString()}</>)}
@@ -69,7 +70,7 @@ const profile = (props) => {
 
             <div>
               <p className="levelBox levelBox__lv5">
-          Lv<strong>{level}.</strong> {grade}
+          Lv<strong className="levelBox__bold">{level}.</strong> {grade}
               </p>
           <p className="nickNameBox">{nickNm}</p>
             </div>
@@ -113,7 +114,6 @@ const profile = (props) => {
         </div>
       </div>
       )
-   
   }
 
   return (<>

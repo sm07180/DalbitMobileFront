@@ -2,7 +2,8 @@ import React, {useState, useEffect, useContext, useRef} from 'react'
 //context
 import {Context} from 'context'
 
-import point from './static/point.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
 import moon from './static/cashmoon_g_s.svg'
 import time from './static/time_g_s.svg'
 import star from './static/cashstar_g_s.svg'
@@ -74,7 +75,7 @@ export default props => {
                   {rankType == 'dj' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} />
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}   className="myRanking__img"/>
                         {Util.printNumber(dj)}
                       </p>
                     </>
@@ -83,7 +84,7 @@ export default props => {
                   {rankType == 'fan' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} />
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}  className="myRanking__img"/>
                         {Util.printNumber(fan)}
                       </p>
                     </>
@@ -99,9 +100,10 @@ export default props => {
                     <div>
                       <p className="nickNameBox">
                         {nickNm}
-                        <br />
-                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} /> <span className={genderName}>{gender}</span>
+                        <div className="nickNameImg">
+                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> <span className={genderName}>{gender}</span>
                         {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                        </div>
                       </p>
                     </div>
                   </div>
