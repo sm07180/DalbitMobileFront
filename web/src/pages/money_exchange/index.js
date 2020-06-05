@@ -36,7 +36,7 @@ export default (props) => {
 
   const [name, setName] = useState("") // 예금주
   const [selectBank, setSelectBank] = useState("0"); // 은행
-  const [account, setAccount] = useState(0) // 계좌번호
+  const [account, setAccount] = useState("") // 계좌번호
   const [fSocialNo, setFSocialNo] = useState("") // 주민번호 앞자리
   const [bSocialNo, setBSocialNo] = useState("") // 주민번호 뒷자리
   const [phone, setPhone] = useState("") // 전화번호
@@ -147,7 +147,7 @@ export default (props) => {
       })
       return
     }
-    if(phone === "") {
+    if(phone === "" || phone.toString().length < 9) {
       context.action.alert({
         msg: "연락 받으실 전화번호를\n입력해주세요.",
         callback: () => {
@@ -522,8 +522,16 @@ const handlePassword = (e) => {
   }
 }
 
+const handlePhone = (e) => {
+  if(e.target.value.toString().length > 15){
+
+  } else {
+    setPhone(e.target.value);
+  }
+}
+
 const handleAccount = (e) => {
-  if(e.target.value > 99999999999999999999) {
+  if(e.target.value.toString().length > 20) {
 
   } else {
     setAccount(e.target.value);
@@ -652,7 +660,7 @@ const handleAccount = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" value={phone} className="PayView__input--text" onChange={(e) => handlePhone(e)} />
                               </div>
                           </div>
                           <div className="PayView__list">

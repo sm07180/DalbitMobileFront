@@ -62,13 +62,22 @@ export default function CommentEvent() {
               const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
                 fetchCommentData()
+                window.scrollTo(0, document.body.scrollHeight)
               }
             }
             if (token.isLogin) {
-              setCommentTxt('')
-              AddComment(token.memNo, eventIndex, 1, commentTxt)
+              if (commentTxt === '') {
+                globalCtx.action.alert({
+                  msg: '내용을 입력해주세요.'
+                })
+              } else {
+                setCommentTxt('')
+                AddComment(token.memNo, eventIndex, 1, commentTxt)
+              }
             } else {
-              alert('로그인 유저만 등록 가능합니다.')
+              globalCtx.action.alert({
+                msg: '로그인 유저만 등록 가능합니다.'
+              })
             }
           }}>
           등록
@@ -111,8 +120,12 @@ export default function CommentEvent() {
                           fetchCommentData()
                         }
                       }
-
-                      DeleteComment(replyIdx, eventIndex)
+                      globalCtx.action.confirm({
+                        msg: '댓글을 삭제하시겠습니까?',
+                        callback: () => {
+                          DeleteComment(replyIdx, eventIndex)
+                        }
+                      })
                     }}>
                     <img src={deleteIcon}></img>
                   </button>

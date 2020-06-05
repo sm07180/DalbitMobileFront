@@ -5,13 +5,15 @@ import {Context} from 'context'
 
 export default function RankingType(props) {
   const globalCtx = useContext(Context)
-  // globalCtx.action.updatePopup('TERMS', 'event-detail')
-  // globalCtx.action.updatePopup('TERMS', 'event-gift-detail')
+
+  const {rankingTerm} = props
 
   if (props.rankingType === 'exp') {
     return (
       <div className="content-wrap">
-        <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img.png" />
+        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img1.png" />}
+        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200603/ranking_exp_img3.png" />}
 
         <div className="notice-wrap">
           <p>순위는 실시간으로 집계됩니다.</p>
@@ -44,7 +46,9 @@ export default function RankingType(props) {
   } else if (props.rankingType === 'like') {
     return (
       <div className="content-wrap">
-        <img src="https://image.dalbitlive.com/event/200603/ranking_like_img.png" />
+        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200603/ranking_like_img1.png" />}
+        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200603/ranking_like_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200603/ranking_like_img3.png" />}
 
         <div className="notice-wrap">
           <p>부스터도 좋아요 수에 합산됩니다</p>
@@ -56,7 +60,9 @@ export default function RankingType(props) {
   } else if (props.rankingType === 'gift') {
     return (
       <div className="content-wrap">
-        <img src="https://image.dalbitlive.com/event/200603/ranking_gift_img.png" />
+        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200603/ranking_gift_img1.png" />}
+        {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200603/ranking_gift_img2.png" />}
+        {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200603/ranking_gift_img3.png" />}
 
         <div className="notice-wrap">
           <p>

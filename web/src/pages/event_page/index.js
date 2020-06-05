@@ -3,6 +3,9 @@ import React, {useEffect, useState, useContext} from 'react'
 import './event_page.scss'
 import API from 'context/api'
 
+//context
+import {Context} from 'context'
+
 // component
 import Layout from 'pages/common/layout'
 import RankingTypeContent from './ranking_type_content'
@@ -25,6 +28,9 @@ export default props => {
   const [termList, setTermList] = useState([])
   const [rankList, setRankList] = useState([])
   const [myRankInfo, setMyRankInfo] = useState({})
+
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
 
   const RankType = {
     exp: 1,
@@ -109,7 +115,7 @@ export default props => {
                     </div>
                   </div>
 
-                  <RankingTypeContent rankingType={rankingType} />
+                  {rankingTerm && <RankingTypeContent rankingType={rankingType} rankingTerm={rankingTerm} />}
                 </div>
 
                 <div className="stage-wrap">
@@ -126,7 +132,9 @@ export default props => {
                               if (state !== 'ready') {
                                 setRankingTerm(data)
                               } else {
-                                alert(`${term}에 공개될 예정입니다.`)
+                                globalCtx.action.alert({
+                                  msg: `${term}에 공계될 예정입니다.`
+                                })
                               }
                             }}>
                             {`${round}차`}
