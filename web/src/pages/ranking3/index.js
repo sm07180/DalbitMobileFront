@@ -328,13 +328,14 @@ export default props => {
             }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myInfo.myRank}</p>
+              <p className="myRanking__left--now">
+               {myInfo && myInfo.myRank}</p>
               <p className="rankingChange">
-                {createMyProfile()}
+                {myInfo && createMyProfile()}
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo &&  myInfo.myPoint}
               </p>
             </div>
 
@@ -358,21 +359,21 @@ export default props => {
                   <>
                     <span className="countBox__item">
                       <img src={star} />
-                      {Util.printNumber(myInfo.myGiftPoint)}
+                      {Util.printNumber(myInfo &&  myInfo.myGiftPoint)}
                     </span>
                     <span className="countBox__item">
                       <img src={people} />
-                      {Util.printNumber(myInfo.myListenerPoint)}
+                      {Util.printNumber(myInfo &&  myInfo.myListenerPoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={like} />
-                      {Util.printNumber(myInfo.myLikePoint)}
+                      {Util.printNumber(myInfo && myInfo.myLikePoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={time} />
-                      {Util.printNumber(myProfile.BroadPoint)}
+                      {Util.printNumber(myInfo &&  myProfile.BroadPoint)}
                     </span>
                   </>
                 )}
@@ -394,7 +395,8 @@ export default props => {
           </div>
         )}
 
-        {creatResult()}
+        {myInfo && creatResult()}
+        {/* 콘솔 오류 확인 */}
 
         {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
       </div>
