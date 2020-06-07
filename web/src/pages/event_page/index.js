@@ -171,7 +171,7 @@ export default props => {
                     <div className="category-wrap">
                       <span className="rank-txt">순위</span>
                       <span className="dj-txt">DJ</span>
-                      <span className="top-fan">최고팬</span>
+                      {rankingType === 'exp' && <span className="top-fan">최고팬</span>}
                     </div>
                   </div>
 
@@ -197,10 +197,12 @@ export default props => {
                             </div>
                           </div>
                         </div>
+                        {rankingType === 'exp' &&
                         <div className="top-fan">
                           <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
                           <div className="fan-nick">{fanNick}</div>
                         </div>
+                        }
                       </div>
                     )
                   })}
