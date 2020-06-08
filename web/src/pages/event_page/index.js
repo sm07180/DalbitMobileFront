@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 
 import './event_page.scss'
 import API from 'context/api'
@@ -18,6 +18,7 @@ import {PHOTO_SERVER} from 'context/config.js'
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
+import NoResult from 'pages/main/component/NoResult.js'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
@@ -27,9 +28,10 @@ export default props => {
   const [rankingTerm, setRankingTerm] = useState(null) // 1차, 2차, 3차
 
   const [termList, setTermList] = useState([])
-  const [rankList, setRankList] = useState([])
+  const [rankList, setRankList] = useState(null)
   const [myRankInfo, setMyRankInfo] = useState({})
 
+  const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
@@ -142,13 +144,9 @@ export default props => {
                             key={`term-${idx}`}
                             className={`tab ${rankingTerm.round === round ? 'active' : ''}`}
                             onClick={() => {
-                              if (state !== 'ready') {
-                                setRankingTerm(data)
-                              } else {
-                                globalCtx.action.alert({
-                                  msg: `${term}에 공계될 예정입니다.`
-                                })
-                              }
+                              // if (state !== 'ready') {
+                              setRankingTerm(data)
+                              // }
                             }}>
                             {`${round}차`}
                             <br />
@@ -175,37 +173,46 @@ export default props => {
                     </div>
                   </div>
 
-                  {rankList.map((value, idx) => {
-                    const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
-
-                    return (
-                      <div className="user-wrap" key={`user-${idx}`}>
-                        <div className="rank-wrap">
-                          {idx < 3 ? (
-                            <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
-                          ) : (
-                            <span className="num">{idx}</span>
-                          )}
-                        </div>
-                        <div className="dj-info">
-                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
-                          <div className="nick-name-wrap">
-                            <span className="nick-name">{nickName}</span>
-                            <span className="level">Lv{level}</span>
-                            <div className="exp-box">
-                              {chageEventText()} <span>{gainPoint}</span>
+                  {Array.isArray(rankList) && rankList.length > 0 ? (
+                    rankList.map((value, idx) => {
+                      const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
+                      // console.log(value)
+                      return (
+                        <div className="user-wrap" key={`user-${idx}`}>
+                          <div className="rank-wrap">
+                            {idx < 3 ? (
+                              <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
+                            ) : (
+                              <span className="num">{idx}</span>
+                            )}
+                          </div>
+                          <div className="dj-info">
+                            <div
+                              className="thumb"
+                              style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
+                              onClick={() => {
+                                history.push('/')
+                              }}></div>
+                            <div className="nick-name-wrap">
+                              <span className="nick-name">{nickName}</span>
+                              <span className="level">Lv{level}</span>
+                              <div className="exp-box">
+                                {chageEventText()} <span>{gainPoint}</span>
+                              </div>
                             </div>
                           </div>
+                          {rankingType === 'exp' && (
+                            <div className="top-fan">
+                              <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
+                              <div className="fan-nick">{fanNick}</div>
+                            </div>
+                          )}
                         </div>
-                        {rankingType === 'exp' &&
-                        <div className="top-fan">
-                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
-                          <div className="fan-nick">{fanNick}</div>
-                        </div>
-                        }
-                      </div>
-                    )
-                  })}
+                      )
+                    })
+                  ) : (
+                    <NoResult />
+                  )}
                 </div>
               </>
             )}
