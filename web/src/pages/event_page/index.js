@@ -110,7 +110,7 @@ export default props => {
       <div id="event-page">
         <div className="event-main">
           <Link to="/">
-            <img src="https://image.dalbitlive.com/event/200603/main_top.png" />
+            <img src="https://image.dalbitlive.com/event/200608/main_top.png" />
           </Link>
         </div>
 
