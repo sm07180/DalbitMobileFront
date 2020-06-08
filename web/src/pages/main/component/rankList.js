@@ -108,9 +108,12 @@ const RankList = styled.div`
     .nickname {
       overflow: hidden;
       text-overflow: ellipsis;
+      height:16px;
       white-space: nowrap;
       color: #424242;
+      width:100px;
       font-size: 14px;
+      line-height: 1.14;
       letter-spacing: -0.35px;
       text-align: center;
       margin-top: 10px;
@@ -123,11 +126,14 @@ const RankList = styled.div`
       align-items: center;
       justify-content: center;
       margin-top: 6px;
+      line-height: 2.17;
+      height:13px;
 
       .text {
         color: #424242;
         font-size: 12px;
         letter-spacing: -0.3px;
+        line-height: 2.17;
         margin-left: 2px;
       }
 
