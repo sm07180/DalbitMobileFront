@@ -55,9 +55,9 @@ export default props => {
           <button className={`tab ${tabType === 'week' ? 'active' : ''}`} onClick={() => setTabType('week')}>
             주간
           </button>
-          <button className={`tab ${tabType === 'month' ? 'active' : ''}`} onClick={() => setTabType('month')}>
+          {/* <button className={`tab ${tabType === 'month' ? 'active' : ''}`} onClick={() => setTabType('month')}>
             월간
-          </button>
+          </button> */}
         </div>
 
         {tabType === 'today' && (
@@ -66,8 +66,7 @@ export default props => {
             <p>
               <strong>
                 오늘 받은 별(30%) + 오늘 받은 좋아요(20%)
-                <br />
-                오늘 누적 청취자(20%) + 오늘 방송시간(30%)
+                <br />+ 오늘 누적 청취자(20%) + 오늘 방송시간(30%)
               </strong>
               <br />
             </p>
@@ -93,8 +92,7 @@ export default props => {
             <p>
               <strong>
                 전일 받은 별(30%) + 전일 받은 좋아요(20%)
-                <br />
-                전일 누적 청취자(20%) + 전일 방송시간(30%)
+                <br />+ 전일 누적 청취자(20%) + 전일 방송시간(30%)
               </strong>
               <br />
             </p>
@@ -119,15 +117,14 @@ export default props => {
             <h5>DJ</h5>
             <p>
               <strong>
-                지난 주 받은 별(30%) + 지난 주 받은 좋아요(20%)
-                <br />
-                지난 주 누적 청취자(20%) + 지난 주 방송시간(30%)
+                전주 받은 별(30%) + 전주 받은 좋아요(20%)
+                <br />+ 전주 누적 청취자(20%) + 전주 방송시간(30%)
               </strong>
               <br />
             </p>
             <h5>FAN</h5>
             <p>
-              <strong>지난 주 보낸 달(60%) + 지난 주 청취시간(40%)</strong>
+              <strong>전 주 보낸 달(60%) + 전 주 청취시간(40%)</strong>
               <br />
             </p>
 
@@ -141,7 +138,7 @@ export default props => {
           </>
         )}
 
-        {tabType === 'month' && (
+        {/* {tabType === 'month' && (
           <>
             <h5>DJ</h5>
             <p>
@@ -166,7 +163,7 @@ export default props => {
               ※부스터로 상승한 좋아요는 집계에서 제외됩니다.
             </p>
           </>
-        )}
+        )} */}
       </div>
     </PopupWrap>
   )

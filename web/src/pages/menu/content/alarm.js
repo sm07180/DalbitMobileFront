@@ -95,7 +95,7 @@ export default props => {
             const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
             const textArea = (
               <p>
-                {contents} <span>{Utility.settingAlarmTime(regTs)}</span>
+                  <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
               </p>
             )
             switch (notiType) {
@@ -197,6 +197,20 @@ export default props => {
                   </li>
                 )
                 break
+              case 7: // 마이 페이지
+                  return (
+                    <li
+                      key={index}
+                       onClick={() => {
+                         window.location.href = `/menu/profile`
+                      }}>
+                      <figure>
+                        <img src={alarmIco} />
+                      </figure>
+                      {textArea}
+                    </li>
+                  )
+                  break
 
               default:
                 return (

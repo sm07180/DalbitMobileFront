@@ -1,27 +1,30 @@
-import React, {useState, useEffect, useContext} from 'react'
-
+import Util from 'components/lib/utility.js'
+import NoResult from 'components/ui/noResult'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
-
+import React, {useContext, useEffect, useState} from 'react'
+import LayerPopup from './layer_popup'
 //state
 import './ranking.scss'
-
-const rankArray = ['dj', 'fan']
-const dateArray = ['오늘', '일간', '주간', '월간']
-let currentPage = 1
-let moreState = false
-
-import point from './static/point.svg'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import hint from './static/hint.svg'
-
 import RankList from './rankList'
 import RankListTop from './rankListTop'
-import NoResult from 'components/ui/noResult'
-import LayerPopup from './layer_popup'
-import Util from 'components/lib/utility.js'
+import moon from './static/cashmoon_g_s.svg'
+import star from './static/cashstar_g_s.svg'
+import hint from './static/hint.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
+import closeBtn from './static/ic_back.svg'
+import like from './static/like_g_s.svg'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
+
+const rankArray = ['dj', 'fan']
+const dateArray = ['오늘', '일간', '주간']
+// const dateArray = ['오늘', '일간', '주간', '월간']
+
+let currentPage = 1
+let moreState = false
 
 export default props => {
   let timer
@@ -31,11 +34,24 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
+  const [myInfo, setMyInfo] = useState({
+    myBroadPoint: 0,
+    myFanPoint: 0,
+    myGiftPoint: 0,
+    myListenerPoint: 0,
+    myPoint: 0,
+    myRank: 0,
+    myUpDown: ''
+  })
 
   const [dateType, setDateType] = useState(1)
-  const [myRank, setMyRank] = useState('-')
+  const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
+
+  const goBack = () => {
+    window.history.back()
+  }
 
   const popStateEvent = e => {
     if (e.state === null) {
@@ -73,10 +89,10 @@ export default props => {
 
   useEffect(() => {
     //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
+    // window.addEventListener('scroll', scrollEvtHdr)
+    // return () => {
+    //   window.removeEventListener('scroll', scrollEvtHdr)
+    // }
   }, [nextList])
 
   useEffect(() => {
@@ -129,6 +145,15 @@ export default props => {
             currentPage = 1
             setDateType(index)
             fetchRank(rankType, index)
+            setMyInfo({
+              myBroadPoint: 0,
+              myFanPoint: 0,
+              myGiftPoint: 0,
+              myListenerPoint: 0,
+              myPoint: 0,
+              myRank: 0,
+              myUpDown: ''
+            })
           }}>
           {item}
         </button>
@@ -157,6 +182,11 @@ export default props => {
     }, 10)
   }
 
+  const showMoreList = () => {
+    setList(list.concat(nextList))
+    fetchRank(rankType, dateType, 'next')
+  }
+
   async function fetchRank(type, dateType, next) {
     let res = ''
     currentPage = next ? ++currentPage : currentPage
@@ -166,16 +196,15 @@ export default props => {
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 10
+          records: 100
         }
       })
-      console.log(res.data)
     } else if (type === 'fan') {
       res = await Api.get_fan_ranking({
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 10
+          records: 100
         }
       })
     }
@@ -195,20 +224,20 @@ export default props => {
           setList(res.data.list)
           fetchRank(type, dateType, 'next')
         }
-        setMyRank(res.data.myRank == 0 ? '-' : res.data.myRank)
+
+        setMyInfo({
+          myGiftPoint: res.data.myGiftPoint,
+          myListenerPoint: res.data.myListenerPoint,
+          myPoint: res.data.myPoint,
+          myRank: res.data.myRank,
+          myUpDown: res.data.myUpDown,
+          time: res.data.time
+        })
       }
     } else {
       context.action.alert({
         msg: res.massage
       })
-    }
-  }
-
-  const showMoreList = () => {
-    if (moreState) {
-      console.log('show')
-      setList(list.concat(nextList))
-      fetchRank(rankType, dateType, 'next')
     }
   }
 
@@ -247,29 +276,77 @@ export default props => {
     return levelName
   }
 
+  const createMyUpDownClass = () => {
+    const {myUpDown} = myInfo
+
+    let myUpDownName
+
+    if (myUpDown[0] === '+') {
+      myUpDownName = `rankingChange__up`
+    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+      myUpDownName = `rankingChange__down`
+    } else if (myUpDown === 'new') {
+      myUpDownName = `rankingChange__new`
+    } else {
+      myUpDownName = `rankingChange__stop`
+    }
+
+    return myUpDownName
+  }
+
+  const createMyProfile = () => {
+    const {myUpDown} = myInfo
+    let myUpDownName,
+      myUpDownValue = ''
+    if (myUpDown[0] === '+') {
+      myUpDownName = `rankingChange__up`
+      myUpDownValue = myUpDown.split('+')[1]
+    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+      myUpDownName = `rankingChange__down`
+      myUpDownValue = myUpDown.split('-')[1]
+    } else if (myUpDown === 'new') {
+      myUpDownName = `rankingChange__new`
+      myUpDownValue = 'new'
+    } else {
+      myUpDownName = `rankingChange__stop`
+    }
+    return <span className={myUpDownName}>{myUpDownValue}</span>
+  }
+
   return (
     <>
+      <div className="header">
+        <h1 className="header__title">랭킹</h1>
+        <img className="header__btnBack" src={closeBtn} onClick={goBack} />
+      </div>
+
       <div>
         <div className="rankTopBox respansiveBox">
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            16:00 <img src={hint} onClick={() => setPopup(popup ? false : true)} />
+            {myInfo && myInfo.time}
+            <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
           </div>
         </div>
 
         <div className="todayList">{createDateButton()}</div>
 
-        {myProfile && (
-          <div className="myRanking">
+        {myProfile && myInfo && (
+          <div
+            className="myRanking"
+            onClick={() => {
+              window.location.href = `/menu/profile`
+            }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myRank}</p>
+              <p className="myRanking__left--now">{myInfo.myRank}</p>
               <p className="rankingChange">
-                <span className="rankingChange__up">230</span>
+                {createMyProfile()}
+                {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} /> 45
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
               </p>
             </div>
 
@@ -289,14 +366,41 @@ export default props => {
               </div>
 
               <div className="countBox">
-                <span className="countBox__item">
-                  <img src={moon} />
-                  {Util.printNumber(myProfile.dalCnt)}
-                </span>
-                <span className="countBox__item">
-                  <img src={time} />
-                  {Util.printNumber(myProfile.listenTotTime)}
-                </span>
+                {rankType == 'dj' && (
+                  <>
+                    <span className="countBox__item">
+                      <img src={star} />
+                      {Util.printNumber(myInfo.myGiftPoint)}
+                    </span>
+                    <span className="countBox__item">
+                      <img src={people} />
+                      {Util.printNumber(myInfo.myListenerPoint)}
+                    </span>
+
+                    <span className="countBox__item">
+                      <img src={like} />
+                      {Util.printNumber(myInfo.myLikePoint)}
+                    </span>
+
+                    <span className="countBox__item">
+                      <img src={time} />
+                      {Util.printNumber(myProfile.BroadPoint)}
+                    </span>
+                  </>
+                )}
+
+                {rankType == 'fan' && (
+                  <>
+                    <span className="countBox__item">
+                      <img src={moon} />
+                      {Util.printNumber(myProfile.dalCnt)}
+                    </span>
+                    <span className="countBox__item">
+                      <img src={time} />
+                      {Util.printNumber(myProfile.listenTotTime)}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>

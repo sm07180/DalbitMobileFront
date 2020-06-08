@@ -294,8 +294,8 @@ export default props => {
                   <img className="icon" src={kakaoLogo} />
                 </button>
                 {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                  (customHeader['os'] === OS_TYPE['IOS'] &&
-                    (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
+                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                  (customHeader['os'] === OS_TYPE['Desktop'])) && (
                   <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                   </button>

@@ -24,14 +24,14 @@ export default props => {
 
   const {webview} = qs.parse(location.search)
 
-  const [state, setState] = useState(_.hasIn(props, 'location.state.result'))
+  const {result, message, state, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
-  //alert(JSON.stringify(props.location.state))
+  const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result'))
 
   if (_.hasIn(props, 'location.state.result')) {
-    if (props.location.state.result === 'success') {
-      if (props.location.state.state === 'pay') {
-        if (props.location.state.returntype === 'room') {
+    if (result === 'success') {
+      if (state === 'pay') {
+        if (returntype === 'room') {
           window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
           const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno} = props.location.state
@@ -41,7 +41,7 @@ export default props => {
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
-            payType = '결제'
+            return (window.location.href = '/')
           }
           const payInfo = {
             prdtPrice: prdtPrice,
@@ -59,7 +59,7 @@ export default props => {
         }
       }
     } else {
-      if (props.location.state.state === 'pay') {
+      if (state === 'pay') {
         Hybrid('ClosePayPopup')
       }
     }
@@ -72,7 +72,7 @@ export default props => {
   return (
     <PayProvider>
       <Layout {...props} status="no_gnb">
-        {!state && <Content {...props} />}
+        {!pageState && <Content {...props} />}
       </Layout>
     </PayProvider>
   )

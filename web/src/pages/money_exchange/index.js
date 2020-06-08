@@ -36,7 +36,7 @@ export default (props) => {
 
   const [name, setName] = useState("") // 예금주
   const [selectBank, setSelectBank] = useState("0"); // 은행
-  const [account, setAccount] = useState(0) // 계좌번호
+  const [account, setAccount] = useState("") // 계좌번호
   const [fSocialNo, setFSocialNo] = useState("") // 주민번호 앞자리
   const [bSocialNo, setBSocialNo] = useState("") // 주민번호 뒷자리
   const [phone, setPhone] = useState("") // 전화번호
@@ -129,18 +129,18 @@ export default (props) => {
       })
       return;
     }
-    if(account === 0) {
+    if(account === 0 || account.toString().length < 10) {
       context.action.alert({
-        msg: "입금 받으실 은행의\n계죄번호를 입력해주세요.",
+        msg: "입금 받으실 은행의\n계죄번호를 확인해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
       })
       return;
     }
-    if(fSocialNo === "" && bSocialNo === "") {
+    if( (fSocialNo === "" || fSocialNo.length < 6) || (bSocialNo === "" || bSocialNo.length < 7 ) ) {
       context.action.alert({
-        msg: "주민등록번호를\n정확하게 입력해주세요.",
+        msg: "주민등록번호를 확인해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -156,9 +156,18 @@ export default (props) => {
       })
       return
     }
+    if(phone.toString().length < 9) {
+      context.action.alert({
+        msg: "전화번호를 확인해주세요.",
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return;
+    }
     if(address1 === "") {
       context.action.alert({
-        msg: "주소를 정확하게\n입력주세요.",
+        msg: "주소를 정확하게\n입력해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -168,7 +177,7 @@ export default (props) => {
 
     if(idPhotoName === "") {
       context.action.alert({
-        msg: "신분증 사본을\n등록해주세요.",
+        msg: "신분증 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -177,7 +186,7 @@ export default (props) => {
     }
     if(bankBookName === "") {
       context.action.alert({
-        msg: "통장 사본을\n등록해주세요.",
+        msg: "통장 사본을 등록해주세요.",
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -484,16 +493,33 @@ export default (props) => {
     closeBtn.style.top = (((window.screen.height || document.documentElement.clientHeight) - height)/2 - borderWidth - 50) + 'px';
 }
 
-const handleChange = (value) => {  
-  setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
-  setExchangeStar(Number(value.split(",").join("")));
+const handleChange = (e) => {  
+  const value = e.target.value;
+  const num = value.split(",").join("");
+
+    if(!isNaN(num)) {
+      if(byeolCnt < num) {
+        setExchangeStarStr(Number(byeolCnt).toLocaleString());
+        setExchangeStar(Number(byeolCnt));
+      } else {
+        setExchangeStarStr(Number(value.split(",").join("")).toLocaleString());
+        setExchangeStar(Number(value.split(",").join("")));
+      }
+    }
   
 }
 
 const handleSocial = (value) => {
-  setFSocialNo(value);
-  if(value.length === 6) {
-    document.getElementById("bsocialNo").focus();
+  if(value > 999999) {
+    
+  } else if(isNaN(value)){
+
+  } else {
+
+    setFSocialNo(value);
+    if(value.length === 6) {
+      document.getElementById("bsocialNo").focus();
+    }
   }
 }
 
@@ -505,12 +531,29 @@ const handlePassword = (e) => {
   }
 }
 
+const handlePhone = (e) => {
+  if(e.target.value.toString().length > 15){
+
+  } else {
+    setPhone(e.target.value);
+  }
+}
+
+const handleAccount = (e) => {
+  if(e.target.value.toString().length > 20) {
+
+  } else {
+    setAccount(e.target.value);
+  }
+}
+
   useEffect(() => {
     if(profile) {
       setByeolCnt(profile.byeolCnt);
       setIsSpecial(profile.isSpecial);
       if(profile.byeolCnt >= 570) {
         setExchangeStar(profile.byeolCnt);
+        setExchangeStarStr(Number(profile.byeolCnt).toLocaleString())
       }
     }
   }, [profile])
@@ -550,7 +593,7 @@ const handlePassword = (e) => {
                               </div>
                               <div className="point__list">
                               <div className="point__label">환전 신청 별</div>
-                              <input type="text" value={exchangeStar.toLocaleString()} className="point__value  point__value--input" onChange={(e) => handleChange(e.target.value)} />
+                              <input type="tel" pattern="\d*" value={exchangeStarStr} className="point__value  point__value--input" onChange={(e) => handleChange(e)} />
                               </div>
                           </div>
 
@@ -610,14 +653,14 @@ const handlePassword = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">계좌번호</div>
                               <div className="PayView__input">
-                              <input type="number" pattern="[0-9]*" className="PayView__input--text" onChange={(e) => setAccount(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" value={account} className="PayView__input--text" onChange={(e) => handleAccount(e)} />
                               </div>
                           </div>
 
                           <div className="PayView__list">
                               <div className="PayView__title">주민등록번호</div>
                               <div className="PayView__input--nomber">
-                              <input type="tel" pattern="[0-9]*" maxLength="6" className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
+                              <input type="tel" pattern="[0-9]*" value={fSocialNo} className="PayView__input--text" onChange={(e) => handleSocial(e.target.value)} />
                               <span className="PayView__input--line">-</span>
                               <input type="password" maxLength="7" pattern="[0-9]*" value={bSocialNo} id="bsocialNo" className="PayView__input--text" onChange={(e) => handlePassword(e)} />
                               </div>
@@ -626,7 +669,7 @@ const handlePassword = (e) => {
                           <div className="PayView__list">
                               <div className="PayView__title">전화번호</div>
                               <div className="PayView__input">
-                              <input type="tel" pattern="[0-9]*" maxLength="11" className="PayView__input--text" onChange={(e) => setPhone(e.target.value)} />
+                              <input type="number" pattern="[0-9]*" value={phone} className="PayView__input--text" onChange={(e) => handlePhone(e)} />
                               </div>
                           </div>
                           <div className="PayView__list">

@@ -361,6 +361,7 @@ input[type="file"] {
       color: #fff;
       flex: 1;
       min-width: 80px;
+      max-width: 80px;
       margin-left: 4px;
       border-radius: 4px;
       font-size: 14px;
@@ -378,6 +379,7 @@ input[type="file"] {
       text-align: center;
     }
     &--label {
+      min-width: 138px;
       padding: 12px;
       font-size: 14px;
       border: 1px solid #bdbdbd;

@@ -182,15 +182,32 @@ export default class Utility {
     }
   }
 
+    /**
+     * 숫자 K형으로 문자 변환
+     * @param number
+     * @returns {*}
+     */
   static printNumber(number) {
-      if(number === undefined){
-          return 0
-      }else if(number > 9999 && number < 100000){
-          return (Math.floor((number / 1000.0) * 10) / 10) + "K"
-      }else if(number >= 100000){
-          return Math.floor(number / 1000) + "K"
-      }else{
-          return number.toLocaleString()
-      }
+    if (number === undefined) {
+      return 0
+    } else if (number > 9999 && number < 100000) {
+      return Math.floor((number / 1000.0) * 10) / 10 + 'K'
+    } else if (number >= 100000) {
+      return Math.floor(number / 1000) + 'K'
+    } else {
+      return number.toLocaleString()
+    }
+  }
+
+    /**
+     * 랜덤 숫자 인트형으로 가져 오기
+     * @param min
+     * @param max
+     * @returns {*}
+     */
+  static getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max) + 1;
+      return Math.floor(Math.random() * (max - min)) + min;
   }
 }
