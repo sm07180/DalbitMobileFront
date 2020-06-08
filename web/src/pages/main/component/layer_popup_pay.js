@@ -10,7 +10,6 @@ let prevGender = null
 
 export default props => {
   const {setPopup, info} = props
-  console.log('info', info)
   const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno} = info
 
   // reference
@@ -44,7 +43,7 @@ export default props => {
   }
 
   return (
-    <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
+    <PopupWrap id="main-layer-popup" ref={layerWrapRef}>
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">결제 완료</div>

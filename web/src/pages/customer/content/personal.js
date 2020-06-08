@@ -246,9 +246,9 @@ const Personal = (props) => {
               <dd>
                 <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
               </dd>
-              <dd>
+                {/*<dd>
                 <p className="infoupload">※ 1:1 문의 답변은 입력한 E-mail로 발송</p>
-              </dd>
+              </dd>*/}
             </dl>
             <dl>
               <dt>제목</dt>

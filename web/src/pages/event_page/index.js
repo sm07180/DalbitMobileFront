@@ -1,169 +1,242 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 
 import './event_page.scss'
 import API from 'context/api'
+
+//context
+import {Context} from 'context'
+
+// component
+import Layout from 'pages/common/layout'
+import RankingTypeContent from './ranking_type_content'
+import CommentEvent from './comment_event'
+
+import {PHOTO_SERVER} from 'context/config.js'
+
+import Utility from 'components/lib/utility'
 
 // static
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
-import refreshIcon from './static/refresh.svg'
+import NoResult from 'pages/main/component/NoResult.js'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
+  // const [eventType, setEventType] = useState('comment')
 
   const [rankingType, setRankingType] = useState('exp') // exp: 경험치, like: 좋아요, gift: 선물
-  const [rankingStep, setRankingStep] = useState(1) // 1차, 2차, 3차
+  const [rankingTerm, setRankingTerm] = useState(null) // 1차, 2차, 3차
 
-  const [commentTxt, setCommentTxt] = useState('')
-  const [commentList, setCommentList] = useState([])
+  const [termList, setTermList] = useState([])
+  const [rankList, setRankList] = useState(null)
+  const [myRankInfo, setMyRankInfo] = useState({})
+
+  const history = useHistory()
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
+
+  const RankType = {
+    exp: 1,
+    like: 2,
+    gift: 3
+  }
 
   useEffect(() => {
-    // reset event type category
-    if (eventType === 'event') {
-      setRankingType('exp')
-      setRankingStep(1)
-    } else if (eventType === 'comment') {
-      setCommentTxt('')
+    async function fetchEventTermData() {
+      const {result, data} = await API.getEventTerm()
+      if (result === 'success') {
+        const {nowRound, terms} = data
+        const selectedTerm = terms.find(t => t.round === nowRound)
+        setTermList(terms)
+        setRankingTerm(selectedTerm)
+      }
     }
-  }, [eventType])
+
+    fetchEventTermData()
+    let rankTypeNum = Utility.getRandomInt(0, 2)
+    setRankingType(Object.keys(RankType)[rankTypeNum])
+  }, [])
 
   useEffect(() => {
     async function fetchInitData() {
-      // await API
+      const {state} = rankingTerm
+
+      if (state === 'ing') {
+        const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
+      } else if (state === 'finished') {
+        const {result, data} = await API.getEventRankingResult({slctType: RankType[rankingType], round: rankingTerm.round})
+        if (result === 'success') {
+          setRankList(data.list)
+          setMyRankInfo({
+            myRank: data.myRank,
+            myPoint: data.myPoint
+          })
+        }
+      } else if (state === 'ready') {
+          setRankList([])
+          setMyRankInfo({
+              myRank: 0,
+              myPoint: 0
+          })
+      }
     }
 
-    fetchInitData()
-  }, [])
+    if (rankingTerm) {
+      fetchInitData()
+    }
+  }, [rankingType, rankingTerm])
+
+  const chageEventText = () => {
+    if (rankingType === 'exp') {
+      return <>달성 경험치</>
+    } else if (rankingType === 'like') {
+      return <>좋아요 수</>
+    } else if (rankingType === 'gift') {
+      return <>선물 개수</>
+    }
+  }
 
   return (
-    <div id="event-page">
-      <div className="event-main">
-        플랫폼
-        <br />
-        새로운
-        <br />
-        시-작
-      </div>
-
-      <div className="event-type-wrap">
-        <div className="event-tab-wrap">
-          <div className={`tab ${eventType === 'event' ? 'active' : ''}`} onClick={() => setEventType('event')}>
-            랭킹 이벤트
-          </div>
-          <div className={`tab ${eventType === 'comment' ? 'active' : ''}`} onClick={() => setEventType('comment')}>
-            댓글 이벤트
-          </div>
+    <Layout {...props} status="no_gnb">
+      <div id="event-page">
+        <div className="event-main">
+          <Link to="/">
+            <img src="https://image.dalbitlive.com/event/200608/main_top.png" />
+          </Link>
         </div>
 
-        <div className="event-content-wrap">
-          {/* Ranking Event Section */}
-          {eventType === 'event' && (
-            <>
-              <div className="ranking-type-wrap">
-                <div className="ranking-tab-wrap">
-                  <div className={`tab ${rankingType === 'exp' ? 'active' : ''}`} onClick={() => setRankingType('exp')}>
-                    경험치 랭킹
-                  </div>
-                  <div className={`tab ${rankingType === 'like' ? 'active' : ''}`} onClick={() => setRankingType('like')}>
-                    좋아요 랭킹
-                  </div>
-                  <div className={`tab ${rankingType === 'gift' ? 'active' : ''}`} onClick={() => setRankingType('gift')}>
-                    선물 랭킹
-                  </div>
-                </div>
-                <div className="content-wrap"></div>
-              </div>
+        <div className="event-type-wrap">
+          <div className="event-tab-wrap">
+            <div className={`tab ${eventType === 'event' ? 'active' : ''}`} onClick={() => setEventType('event')}>
+              랭킹 이벤트
+            </div>
+            <div className={`tab ${eventType === 'comment' ? 'active' : ''}`} onClick={() => setEventType('comment')}>
+              댓글 이벤트
+            </div>
+          </div>
 
-              <div className="stage-wrap">
-                <div className="stage-tab-wrap">
-                  <div className={`tab ${rankingStep === 1 ? 'active' : ''}`} onClick={() => setRankingStep(1)}>
-                    1차
+          <div className="event-content-wrap">
+            {/* Ranking Event Section */}
+            {eventType === 'event' && (
+              <>
+                <div className="ranking-type-wrap">
+                  <div className="ranking-tab-wrap">
+                    <div className={`tab ${rankingType === 'exp' ? 'active' : ''}`} onClick={() => setRankingType('exp')}>
+                      경험치 랭킹
+                    </div>
+                    <div className={`tab ${rankingType === 'like' ? 'active' : ''}`} onClick={() => setRankingType('like')}>
+                      좋아요 랭킹
+                    </div>
+                    <div className={`tab ${rankingType === 'gift' ? 'active' : ''}`} onClick={() => setRankingType('gift')}>
+                      선물 랭킹
+                    </div>
                   </div>
-                  <div className={`tab ${rankingStep === 2 ? 'active' : ''}`} onClick={() => setRankingStep(2)}>
-                    2차
-                  </div>
-                  <div className={`tab ${rankingStep === 3 ? 'active' : ''}`} onClick={() => setRankingStep(3)}>
-                    3차
-                  </div>
+
+                  {rankingTerm && <RankingTypeContent rankingType={rankingType} rankingTerm={rankingTerm} />}
                 </div>
 
-                <div className="my-info">
-                  <span>내 순위</span>
-                  <span>23</span>
-                  <span>위</span>
-                  <span>|</span>
-                  <span>달성 경험치</span>
-                  <span>32,432</span>
-                </div>
+                <div className="stage-wrap">
+                  <div className="stage-tab-wrap">
+                    {rankingTerm &&
+                      termList.map((data, idx) => {
+                        const {round, term, state} = data
 
-                <div className="content-wrap">
-                  <div className="category-wrap">
-                    <span className="rank-txt">순위</span>
-                    <span className="dj-txt">DJ</span>
-                    <span className="top-fan">최고팬</span>
+                        return (
+                          <div
+                            key={`term-${idx}`}
+                            className={`tab ${rankingTerm.round === round ? 'active' : ''}`}
+                            onClick={() => {
+                              // if (state !== 'ready') {
+                              setRankingTerm(data)
+                              // }
+                            }}>
+                            {`${round}차`}
+                            <br />
+                            <span>{term}</span>
+                          </div>
+                        )
+                      })}
                   </div>
-                  {[1, 2, 3, 4].map((value, idx) => {
-                    return (
-                      <div className="user-wrap" key={`user-${idx}`}>
-                        <div className="rank-wrap">
-                          {idx < 3 ? (
-                            <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
-                          ) : (
-                            100
+
+                  <div className="my-info">
+                    <span>내 순위</span>
+                    <span className="ranking">{myRankInfo.myRank}</span>
+                    <span>위</span>
+                    <span className="bar">|</span>
+                    <span className="exp-title">{chageEventText()}</span>
+                    <span>{myRankInfo.myPoint}</span>
+                  </div>
+
+                  <div className="content-wrap">
+                    <div className="category-wrap">
+                      <span className="rank-txt">순위</span>
+                      <span className="dj-txt">DJ</span>
+                      {rankingType === 'exp' && <span className="top-fan">최고팬</span>}
+                    </div>
+                  </div>
+
+                  {Array.isArray(rankList) && rankList.length > 0 ? (
+                    rankList.map((value, idx) => {
+                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no} = value
+                      return (
+                        <div className="user-wrap" key={`user-${idx}`}>
+                          <div className="rank-wrap">
+                            {idx < 3 ? (
+                              <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
+                            ) : (
+                              <span className="num">{idx}</span>
+                            )}
+                          </div>
+                          <div className="dj-info">
+                            <div
+                              className="thumb"
+                              style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
+                              onClick={() => {
+                                history.push(`/mypage/${mem_no}`)
+                              }}></div>
+                            <div className="nick-name-wrap">
+                              <span className="nick-name">{nickName}</span>
+                              <span className="level">Lv{level}</span>
+                              <div className="exp-box">
+                                {chageEventText()} <span>{gainPoint}</span>
+                              </div>
+                            </div>
+                          </div>
+                          {rankingType === 'exp' && fanRank1 && (
+                            <div className="top-fan">
+                              <div
+                                  className="thumb"
+                                  style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
+                                  onClick={() => {
+                                      history.push(`/mypage/${fanRank1}`)
+                                  }}></div>
+                              <div className="fan-nick">{fanNick}</div>
+                            </div>
                           )}
                         </div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })
+                  ) : (
+                    <NoResult />
+                  )}
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
 
-          {/* Comment Event Section */}
-          {eventType === 'comment' && (
-            <div className="comment-event-wrap">
-              <div className="input-wrap">
-                <textarea
-                  placeholder="댓글을 입력해주세요.&#13;&#10;(최대 300자)"
-                  value={commentTxt}
-                  onChange={e => {
-                    const target = e.currentTarget
-                    const value = target.value
-                    setCommentTxt(value)
-                  }}></textarea>
-
-                <button
-                  onClick={() => {
-                    // submit text on server (api sync)
-                  }}>
-                  등록
-                </button>
-              </div>
-              <div className="comment-list-wrap">
-                <div className="title-wrap">
-                  <div className="title">{`댓글 ${commentList.length}개`}</div>
-                  <img src={refreshIcon} onClick={() => console.log('refresh')} />
-                </div>
-                <div className="comments">
-                  {commentList.map((value, idx) => {
-                    return (
-                      <div className="each" key={`comment-${idx}`}>
-                        <div className="profile-img"></div>
-                        <div className="content">
-                          <div className="name-date-wrap"></div>
-                          <div className="text"></div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
+            {/* Comment Event Section */}
+            {eventType === 'comment' && <CommentEvent />}
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }

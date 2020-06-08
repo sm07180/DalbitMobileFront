@@ -85,6 +85,10 @@ const App = () => {
         //
         if (customHeader['isFirst'] === 'Y') {
             Hybrid('GetLoginToken', tokenInfo.data)
+            if (__NODE_ENV === 'dev') {
+                alert('after GetLoginToken isFirst : Y')
+            }
+
             /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/

@@ -6,6 +6,30 @@ img {
   vertical-align: middle;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #d2d2d2;
+  padding: 14px 0;
+  box-sizing: border-box;
+  padding: 12px 16px;
+
+  &__title {
+    font-size: 18px;
+    letter-spacing: -0.45px;
+    font-weight: 800;
+  }
+
+  &__btnBack {
+    display: block;
+    width: 36px;
+    position: absolute;
+    top: 6px;
+    left: 2%;
+  }
+}
+
 .rankTopBox {
   display: flex;
   justify-content: space-between;
@@ -16,7 +40,13 @@ img {
   &__update {
     font-size: 12px;
     color: #424242;
+    display: flex;
+    align-items: center;
   }
+  &__img {
+    margin-left:4px;
+  }
+
 }
 
 .rankTab {
@@ -27,30 +57,33 @@ img {
     border-radius: 12px;
     border: solid 1px #e0e0e0;
     background-color: #fff;
-
     &--active {
       border-color: #632beb;
       background-color: #632beb;
       color: #fff;
     }
   }
+  :last-child{
+    height:32px;
+    padding:0px 1px;
+  }
 }
 
 .todayList {
   height: 36px;
-  background-color: #f5f5f5;
+  border-bottom:1px solid #eee;
   text-align: center;
 
   &__btn {
     margin: 0 8px;
     height: 36px;
-    font-size: 14px;
+    font-size: 16px;
     color: #000;
     border-bottom: 1px solid #f5f5f5;
-
     &--active {
       border-color: #632beb;
       color: #632beb;
+      font-weight: 900;
     }
   }
 }
@@ -83,10 +116,9 @@ img {
     &--point {
       padding-top: 12px;
       font-size: 12px;
-      line-height: 26px;
       letter-spacing: -0.3px;
       color: #424242;
-    }
+          }
 
     &--ranking {
       width: 40px;
@@ -109,13 +141,22 @@ img {
     display: flex;
     align-items: center;
   }
+
+  .thumbBox {
+    width: 70px;
+    height: 70px;
+  }
 }
 
 .rankingChange {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
   font-size: 12px;
-  line-height: 13px;
   font-weight: bold;
-
+  margin-bottom:4px;
+  
   &__up {
     color: #eb2828;
 
@@ -127,6 +168,8 @@ img {
       margin-right: 1px;
       background: url('./static/ico-ranking-up@2x.png') no-repeat;
       background-size: 100%;
+      background-position:0px 1px;
+
     }
   }
 
@@ -141,11 +184,13 @@ img {
       margin-right: 1px;
       background: url('./static/ico-ranking-down@2x.png') no-repeat;
       background-size: 100%;
+      background-position:0px 1px;
     }
   }
 
   &__new {
     color: #ff9c00;
+    text-transform: uppercase;
   }
 
   &__stop {
@@ -170,25 +215,30 @@ img {
 
 .thumbBox {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 58px;
+  height: 58px;
   text-align: center;
 
   &__frame {
     position: absolute;
     left: 0;
+    width: 100%;
   }
 
   &__pic {
-    padding-top: 11px;
+    width: 71%;
+    margin-top: 11px;
     border-radius: 50%;
   }
 }
 
 .rankingList {
+  display:flex;
+  align-items: flex-start;
   position: relative;
   padding: 12px 0;
   border-bottom: 1px solid #eee;
+
 
   .thumbBox {
     width: 40px;
@@ -196,7 +246,7 @@ img {
     margin-right: 6px;
 
     &__pic {
-      padding-top: 0;
+      margin-top: 0;
       width: 100%;
     }
   }
@@ -204,13 +254,22 @@ img {
     margin-top: 0;
     font-size: 14px;
   }
-
+  
   .countBox {
     padding-left: 0;
   }
 
   .myRanking__left--point {
-    padding-top: 5px;
+    padding-top: 0px;
+      }
+
+  .myRanking__img{
+  margin-right:2px;
+  }
+
+  .liveBox {
+    top: 12px;
+    right: 12px;
   }
 }
 
@@ -218,9 +277,9 @@ img {
   display: inline-block;
   padding: 0 10px;
   border-radius: 13px;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 16px;
-  letter-spacing: -0.3px;
+  letter-spacing: -1px;
   text-align: center;
   color: #ffffff;
 
@@ -229,11 +288,11 @@ img {
   }
 
   &__lv1 {
-    background-color: #f5b32f;
+    background-color: #faa118;
   }
 
   &__lv2 {
-    background-color: #85ce32;
+    background-color: #5dc62a;
   }
 
   &__lv3 {
@@ -265,10 +324,19 @@ img {
 }
 
 .nickNameBox {
+  align-items: center;
+  flex-direction: column;
   margin-top: 9px;
   font-size: 16px;
   color: #000;
-  font-weight: 700;
+  font-weight: bold;
+
+  .nickNameImg{
+    display:flex;
+    align-content: center;
+    margin-top:4px;
+    margin-right:auto;
+  }
 
   .genderBox {
     display: inline-block;
@@ -276,16 +344,23 @@ img {
     background-size: 100%;
     vertical-align: middle;
 
+    &.korea-m{
+    margin-left:2px;
+    border:1px solid;
+    }
+
     &.gender-m {
       width: 24px;
       height: 16px;
       background-image: url(./static/ico-male@2x.png);
+      margin-left:2px;
     }
 
     &.gender-f {
       width: 24px;
       height: 16px;
       background-image: url(./static/ico-female@2x.png);
+      margin-left:2px;
     }
   }
 }
@@ -324,7 +399,7 @@ img {
   top: 8px;
   right: 8px;
   font-size: 10px;
-  line-height: 10px;
+  line-height: 12px;
   letter-spacing: -0.25px;
   text-align: center;
   color: #ec455f;
@@ -340,13 +415,32 @@ img {
     background: #eee;
 
     .thumbBox {
+      width: 58px;
+      height: 58px;
       margin: 0 auto;
+
+      &__pic {
+        margin-top: 9px;
+      }
     }
 
     .countBox {
       margin-top: 7px;
       padding-top: 3px;
       border-top: 1px solid #f5f5f5;
+
+      &__item {
+        &--point{
+          margin-top:3px;
+        }
+      }
+    }
+
+    .iconBox {
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      margin-top:4px;
     }
 
     &__item {
@@ -360,6 +454,8 @@ img {
 
       .nickNameBox {
         font-size: 14px;
+        flex-direction: row;
+        justify-content: center;
       }
 
       &:first-child {
@@ -367,8 +463,14 @@ img {
         padding-top: 50px;
         margin-bottom: 2%;
         border: solid 2px #632beb;
-
+        .nickName{
+          display:flex;
+          justify-content: center;
+        }
+        
         .thumbBox {
+          width: 70px;
+          height: 70px;
           position: absolute;
           top: -22px;
           left: calc(50% - 35px);
@@ -376,10 +478,12 @@ img {
 
         .nickNameBox {
           font-size: 16px;
+          display:flex;
 
           .iconBox {
-            display: inline-block;
-            padding: 0 5px;
+            display:flex;
+            align-items: center;
+            margin-left:6px;
           }
         }
 
@@ -389,7 +493,12 @@ img {
           &__item {
             &--point {
               display: inline-block;
+
             }
+          }
+
+          .countBoxInner {
+            display: inline-block;
           }
         }
       }
@@ -408,4 +517,5 @@ img {
   line-height: 16px;
   color: #fff;
   font-weight: 300;
+  font-style: normal;
 }

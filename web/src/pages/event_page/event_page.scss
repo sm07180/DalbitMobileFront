@@ -1,6 +1,10 @@
 #event-page {
   .event-main {
     background-color: #632beb;
+
+    img {
+      width: 100%;
+    }
   }
 
   .event-type-wrap {
@@ -16,7 +20,9 @@
         width: 50%;
         text-align: center;
         font-size: 24px;
-        padding: 7px 0;
+        padding: 14px 0;
+        letter-spacing: -0.5px;
+        font-weight: 700;
 
         &:first-child {
           border-top-left-radius: 14px;
@@ -38,6 +44,7 @@
           display: flex;
           flex-direction: row;
           align-items: center;
+          padding: 25px 16px;
 
           .tab {
             color: #000;
@@ -55,6 +62,54 @@
               border: none;
             }
           }
+
+          .tab + .tab {
+            margin-left: 5px;
+          }
+        }
+
+        .content-wrap {
+          img {
+            width: 100%;
+          }
+
+          .notice-wrap {
+            padding: 0 12px 33px 12px;
+            font-size: 13px;
+            line-height: 26px;
+            letter-spacing: -1px;
+            color: #464646;
+
+            p {
+              position: relative;
+              padding-left: 16px;
+              padding-bottom: 5px;
+              line-height: 20px;
+
+              &::before {
+                content: '※';
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #ff0000;
+              }
+
+              span {
+                font-size: 12px;
+              }
+            }
+
+            button {
+              margin-left: 3px;
+              padding: 0 5px;
+              height: 25px;
+              border-radius: 10px;
+              background-color: #767676;
+              color: #fff;
+              font-size: 13px;
+              letter-spacing: -0.35px;
+            }
+          }
         }
       }
 
@@ -65,6 +120,7 @@
           align-items: center;
 
           .tab {
+            position: relative;
             color: #000;
             background-color: #e8e8e8;
             width: 33.3334%;
@@ -73,10 +129,35 @@
             text-align: center;
             padding: 10px 0;
             font-size: 16px;
+            font-weight: 700;
+            border: 1px solid #d9d9d9;
+            box-sizing: border-box;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -1px;
+              left: -1px;
+              width: calc(100% + 2px);
+              height: 2px;
+              background: #632beb;
+            }
+
+            span {
+              font-size: 14px;
+              line-height: 22px;
+              color: #777777;
+              font-weight: 300;
+            }
 
             &.active {
               color: #fff;
               background-color: #632beb;
+              border-color: #632beb;
+
+              span {
+                color: #fff;
+              }
             }
           }
         }
@@ -90,6 +171,31 @@
           color: #fff;
           background-color: #575757;
           padding: 16px 0;
+
+          .ranking {
+            display: inline-block;
+            margin: 0 2px 0 8px;
+            padding: 0 12px;
+            height: 28px;
+            border-radius: 14px;
+            background: #fff;
+            font-size: 22px;
+            letter-spacing: -0.55px;
+            text-align: center;
+            color: #000000;
+            font-weight: 700;
+            line-height: 28px;
+          }
+
+          .bar {
+            padding: 0 12px;
+            color: #8d8d8d;
+          }
+
+          .exp-title {
+            margin-right: 8px;
+            color: #fdad2b;
+          }
         }
 
         .content-wrap {
@@ -126,7 +232,6 @@
           display: flex;
           flex-direction: row;
           border-bottom: 1px solid #f2f2f2;
-          height: 60px;
           box-sizing: border-box;
 
           .rank-wrap {
@@ -137,11 +242,99 @@
             .medal-icon {
               width: 32px;
             }
+
+            .num {
+              display: inline-block;
+              padding-top: 20px;
+              font-weight: 800;
+            }
+          }
+
+          .dj-info {
+            display: flex;
+            width: calc(100% - 160px);
+            padding: 10px 6px;
+            box-sizing: border-box;
+            align-items: center;
+
+            & > .thumb {
+              overflow: hidden;
+              min-width: 43px;
+              height: 43px;
+              margin-right: 6px;
+              background-size: 100%;
+              border-radius: 50%;
+            }
+
+            .nick-name-wrap {
+              width: 100%;
+              font-size: 14px;
+              letter-spacing: -0.35px;
+
+              .nick-name {
+                display: inline-block;
+                max-width: 60%;
+                font-weight: 500;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                vertical-align: middle;
+              }
+
+              .level {
+                display: inline-block;
+                margin-left: 5px;
+                font-size: 14px;
+                letter-spacing: -0.35px;
+                vertical-align: middle;
+              }
+            }
+
+            .exp-box {
+              font-size: 12px;
+              letter-spacing: -0.3px;
+              color: #919191;
+              font-weight: 500;
+
+              span {
+                color: #632beb;
+              }
+            }
+          }
+
+          .top-fan {
+            display: flex;
+            align-items: center;
+            width: 120px;
+
+            & > .thumb {
+              overflow: hidden;
+              width: 43px;
+              height: 43px;
+              margin-right: 6px;
+              background-size: 100%;
+              border-radius: 50%;
+            }
+
+            .fan-nick {
+              font-size: 14px;
+              letter-spacing: -0.35px;
+              width: 60px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+              display: inline-block;
+            }
           }
         }
       }
 
       .comment-event-wrap {
+        img.main {
+          width: 100%;
+        }
+
         .input-wrap {
           display: flex;
           flex-direction: row;
@@ -179,10 +372,15 @@
             display: flex;
             flex-direction: row;
             align-items: center;
+            padding: 18px 0 7px 18px;
 
             .title {
               font-size: 14px;
               color: #000;
+
+              span {
+                color: #632beb;
+              }
             }
             .refresh-icon {
               width: 24px;
@@ -190,17 +388,24 @@
           }
 
           .comments {
-            border-top: 1px solid #757575;
+            margin-bottom: 50px;
+            border-top: 1px solid #f2f2f2;
 
             .each {
               display: flex;
+              align-items: center;
               flex-direction: row;
+              position: relative;
+              padding: 10px 32px 10px 10px;
+              border-bottom: 1px solid #f2f2f2;
 
               .profile-img {
-                width: 40px;
-                height: 40px;
-                background-position: center;
-                background-size: cover;
+                overflow: hidden;
+                min-width: 43px;
+                height: 43px;
+                margin-right: 6px;
+                background-size: 100%;
+                border-radius: 50%;
               }
 
               .content {
@@ -210,14 +415,25 @@
                   .name {
                     color: #000;
                   }
+
                   .date {
                     color: #919191;
                     font-size: 12px;
                   }
                 }
                 .text {
+                  font-size: 14px;
+                  line-height: 20px;
                   color: #757575;
                 }
+              }
+
+              .btn-delete {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 24px;
+                height: 24px;
               }
             }
           }

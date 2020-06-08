@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-Regular.otf') format('opentype');
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/OpenSans-Regular.ttf') format('truetype');
+  unicode-range: U+0020-007E;
+  font-style: normal;
+}
+
+div.type1 {
+  font-family: 'NotoSansKR', sans-serif;
+  background: lightcyan;
+  font-size: 30px;
+}

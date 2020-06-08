@@ -36,6 +36,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --env=dev --mode=development",
+    "realstart": "webpack-dev-server --env=real --mode=development",
     "dev": "webpack --env=dev && node jspGenerator.js",
     "stage": "webpack --env=stage && node jspGenerator.js",
     "real": "webpack --env=real && node jspGenerator.js"

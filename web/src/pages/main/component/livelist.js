@@ -54,7 +54,7 @@ const makeContents = props => {
               {boostCnt > 0 ?
               <div className="value">
                   <img src={boostIcon} />
-                  <span class="txt_boost">{Util.printNumber(likeCnt)}</span>
+                  <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
               </div>
               :
               <div className="value">
