@@ -111,9 +111,9 @@ const RankList = styled.div`
     }
     .main-img {
       position: relative;
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
+      width: 72px;
+      height: 72px;
+      border-radius: 36px;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -122,17 +122,12 @@ const RankList = styled.div`
       width: 72px;
       overflow: hidden;
       text-overflow: ellipsis;
-      height:16px;
+      height: 16px;
       white-space: nowrap;
-<<<<<<< HEAD
-      color: #fff;
+
       font-size: 12px;
-=======
-      color: #424242;
-      width:100px;
-      font-size: 14px;
+      color: #e0e0e0;
       line-height: 1.14;
->>>>>>> mobile
       letter-spacing: -0.35px;
       text-align: center;
       margin-top: 8px;
@@ -146,7 +141,7 @@ const RankList = styled.div`
       justify-content: center;
       margin-top: 6px;
       line-height: 2.17;
-      height:13px;
+      height: 13px;
 
       .text {
         color: #424242;

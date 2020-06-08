@@ -477,7 +477,7 @@ const Content = styled.div`
     }
 
     &.rank {
-      height: 164px;
+      height: 180px;
       background-color: #424242;
       padding: 22px 0;
       color: #fff;
@@ -666,7 +666,7 @@ const Content = styled.div`
       }
 
       &.my-star-list {
-        height: 84px;
+        height: 108px;
         background-color: #eee;
       }
 

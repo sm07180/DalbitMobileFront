@@ -87,7 +87,7 @@ const makeContents = props => {
           const firstList = first
           const lastList = list[idx * 2 + 1]
           // const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
-          console.log(firstList)
+          // console.log(firstList)
 
           return (
             <HalfWrap style={{height: `${windowHalfWidth}px`}} key={`half-${idx}`}>

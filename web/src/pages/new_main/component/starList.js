@@ -63,6 +63,7 @@ const StarList = styled.div`
     align-items: center;
     flex-direction: row;
     margin-right: 18px;
+    margin-bottom: 18px;
 
     .txt {
       width: 34px;
@@ -77,6 +78,7 @@ const StarList = styled.div`
   }
 
   .swiper-container {
+    width: 100%;
     margin: 0;
     padding-right: 16px;
   }
@@ -100,11 +102,12 @@ const StarList = styled.div`
       background-size: cover;
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      border-radius: 12px;
       color: #424242;
       font-size: 16px;
       font-weight: 800;
       letter-spacing: -0.32px;
+      background-color: #bbb;
     }
 
     .text {
