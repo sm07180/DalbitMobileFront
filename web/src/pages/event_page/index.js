@@ -175,8 +175,7 @@ export default props => {
 
                   {Array.isArray(rankList) && rankList.length > 0 ? (
                     rankList.map((value, idx) => {
-                      const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
-                      // console.log(value)
+                      const {profileImage, nickName, level, gainPoint, fanImage, fanNick, mem_no} = value
                       return (
                         <div className="user-wrap" key={`user-${idx}`}>
                           <div className="rank-wrap">
@@ -191,7 +190,7 @@ export default props => {
                               className="thumb"
                               style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
                               onClick={() => {
-                                history.push('/')
+                                history.push(`/mypage/${mem_no}`)
                               }}></div>
                             <div className="nick-name-wrap">
                               <span className="nick-name">{nickName}</span>
