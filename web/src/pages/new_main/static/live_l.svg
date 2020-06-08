@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__live_l" width="42" height="42" viewBox="0 0 42 42">
+    <defs>
+        <style>
+            .prefix__cls-4{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <circle id="prefix__타원_504" cx="21" cy="21" r="21" data-name="타원 504" style="fill:#ec455f;opacity:.8"/>
+    <text id="prefix__LIVE" transform="translate(21 33)" style="font-size:10px;font-family:NanumSquareEB,NanumSquare;letter-spacing:-.025em;fill:#fff">
+        <tspan x="-10.44" y="0">LIVE</tspan>
+    </text>
+    <g id="prefix__그룹_15113" data-name="그룹 15113" transform="rotate(-90 -315.71 764.89)">
+        <circle id="prefix__타원_115" cx="1.514" cy="1.514" r="1.514" data-name="타원 115" transform="translate(428.515 1100.086)" style="fill:#fff"/>
+        <path id="prefix__패스_4144" d="M434.757 1098.757a4.541 4.541 0 0 1 0 6.424" class="prefix__cls-4" data-name="패스 4144" transform="translate(-.893 -.369)"/>
+        <path id="prefix__패스_4145" d="M437.586 1095.929a10.226 10.226 0 0 1 0 12.717" class="prefix__cls-4" data-name="패스 4145" transform="translate(-1.217 -.687)"/>
+        <path id="prefix__패스_4146" d="M440.414 1093.1a13.187 13.187 0 0 1 0 17" class="prefix__cls-4" data-name="패스 4146" transform="translate(-1.469)"/>
+    </g>
+</svg>
