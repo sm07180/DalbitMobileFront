@@ -1,11 +1,23 @@
-import React, {useState, useEffect, useContext} from 'react'
-
+import Util from 'components/lib/utility.js'
+import NoResult from 'components/ui/noResult'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
-
+import React, {useContext, useEffect, useState} from 'react'
+import LayerPopup from './layer_popup'
 //state
 import './ranking.scss'
+import RankList from './rankList'
+import RankListTop from './rankListTop'
+import moon from './static/cashmoon_g_s.svg'
+import star from './static/cashstar_g_s.svg'
+import hint from './static/hint.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
+import closeBtn from './static/ic_back.svg'
+import like from './static/like_g_s.svg'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['오늘', '일간', '주간']
@@ -13,22 +25,6 @@ const dateArray = ['오늘', '일간', '주간']
 
 let currentPage = 1
 let moreState = false
-
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import hint from './static/hint.svg'
-import star from './static/cashstar_g_s.svg'
-import people from './static/people_g_s.svg'
-import like from './static/like_g_s.svg'
-import closeBtn from './static/ic_back.svg'
-
-import RankList from './rankList'
-import RankListTop from './rankListTop'
-import NoResult from 'components/ui/noResult'
-import LayerPopup from './layer_popup'
-import Util from 'components/lib/utility.js'
 
 export default props => {
   let timer
@@ -140,7 +136,6 @@ export default props => {
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
-      console.log(item, index)
       index++
       return (
         <button
