@@ -21,6 +21,7 @@ import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
 import NoResult from 'pages/main/component/NoResult.js'
+import btnClose from './static/ico_close.svg'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
@@ -82,11 +83,11 @@ export default props => {
           })
         }
       } else if (state === 'ready') {
-          setRankList([])
-          setMyRankInfo({
-              myRank: 0,
-              myPoint: 0
-          })
+        setRankList([])
+        setMyRankInfo({
+          myRank: 0,
+          myPoint: 0
+        })
       }
     }
 
@@ -109,8 +110,11 @@ export default props => {
     <Layout {...props} status="no_gnb">
       <div id="event-page">
         <div className="event-main">
+          <img src="https://image.dalbitlive.com/event/200608/main_top_v2.png" />
           <Link to="/">
-            <img src="https://image.dalbitlive.com/event/200608/main_top.png" />
+            <button>
+              <img src={btnClose} />
+            </button>
           </Link>
         </div>
 
@@ -214,11 +218,11 @@ export default props => {
                           {rankingType === 'exp' && fanRank1 && (
                             <div className="top-fan">
                               <div
-                                  className="thumb"
-                                  style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
-                                  onClick={() => {
-                                      history.push(`/mypage/${fanRank1}`)
-                                  }}></div>
+                                className="thumb"
+                                style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
+                                onClick={() => {
+                                  history.push(`/mypage/${fanRank1}`)
+                                }}></div>
                               <div className="fan-nick">{fanNick}</div>
                             </div>
                           )}

@@ -115,6 +115,7 @@ export default props => {
 
   const createRankButton = () => {
     return rankArray.map((item, index) => {
+      console.log(index)
       return (
         <button
           key={index}
