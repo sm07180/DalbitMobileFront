@@ -14,6 +14,8 @@ import CommentEvent from './comment_event'
 
 import {PHOTO_SERVER} from 'context/config.js'
 
+import Utility from 'components/lib/utility'
+
 // static
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
@@ -53,6 +55,8 @@ export default props => {
     }
 
     fetchEventTermData()
+    let rankTypeNum = Utility.getRandomInt(0, 2)
+    setRankingType(Object.keys(RankType)[rankTypeNum])
   }, [])
 
   useEffect(() => {

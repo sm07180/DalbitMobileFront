@@ -182,6 +182,11 @@ export default class Utility {
     }
   }
 
+    /**
+     * 숫자 K형으로 문자 변환
+     * @param number
+     * @returns {*}
+     */
   static printNumber(number) {
     if (number === undefined) {
       return 0
@@ -192,5 +197,17 @@ export default class Utility {
     } else {
       return number.toLocaleString()
     }
+  }
+
+    /**
+     * 랜덤 숫자 인트형으로 가져 오기
+     * @param min
+     * @param max
+     * @returns {*}
+     */
+  static getRandomInt = (min, max) => {
+      min = Math.ceil(min);
+      max = Math.floor(max) + 1;
+      return Math.floor(Math.random() * (max - min)) + min;
   }
 }
