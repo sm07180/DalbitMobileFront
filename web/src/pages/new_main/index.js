@@ -87,8 +87,8 @@ export default props => {
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
 
-  // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('simple')
+  const [liveListType, setLiveListType] = useState('detail')
+  // const [liveListType, setLiveListType] = useState('simple')
 
   useEffect(() => {
     if (window.sessionStorage) {
