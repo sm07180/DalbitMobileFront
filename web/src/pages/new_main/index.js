@@ -87,8 +87,8 @@ export default props => {
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
 
-  const [liveListType, setLiveListType] = useState('detail')
-  // const [liveListType, setLiveListType] = useState('simple')
+  // const [liveListType, setLiveListType] = useState('detail')
+  const [liveListType, setLiveListType] = useState('simple')
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -256,12 +256,6 @@ export default props => {
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
-
-    //globalCtx.action.updateStickerMsg({push_type:1,title:"DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP",contents:"DJ LEVELUP"})
-    //globalCtx.action.updateSticker(true)
-    // if (sessionStorage.getItem('popup_notice') === null) {
-    //   sessionStorage.setItem('popup_notice', 'y')
-    // }
 
     if (sessionStorage.getItem('pay_info') !== null) {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))

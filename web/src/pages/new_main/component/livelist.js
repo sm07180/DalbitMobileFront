@@ -19,6 +19,10 @@ import Util from 'components/lib/utility.js'
 
 // static
 import EntryImg from '../static/person_w_s.svg'
+import specialIcon from '../static/ico_speciladj_s.svg'
+import fanIcon from '../static/ico_fan.svg'
+import twentyIcon from '../static/ico_20.svg'
+import allIcon from '../static/ico_all.svg'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -86,8 +90,6 @@ const makeContents = props => {
           const windowHalfWidth = (window.innerWidth - 32) / 2
           const firstList = first
           const lastList = list[idx * 2 + 1]
-          // const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
-          // console.log(firstList)
 
           return (
             <HalfWrap style={{height: `${windowHalfWidth}px`}} key={`half-${idx}`}>
@@ -97,6 +99,16 @@ const makeContents = props => {
                 onClick={() => {
                   RoomJoin(firstList.roomNo + '')
                 }}>
+                <div className="top-status">
+                  {firstList.entryType === 2 ? (
+                    <img src={twentyIcon} className="twenty-icon" />
+                  ) : firstList.entryType === 1 ? (
+                    <img src={fanIcon} className="fan-icon" />
+                  ) : (
+                    <img src={allIcon} className="all-icon" />
+                  )}
+                  {firstList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                </div>
                 <div className="entry-count">
                   <img className="entry-img" src={EntryImg} />
                   <span className="count-txt">{Util.printNumber(firstList.entryCnt)}</span>
@@ -115,6 +127,16 @@ const makeContents = props => {
                   onClick={() => {
                     RoomJoin(lastList.roomNo + '')
                   }}>
+                  <div className="top-status">
+                    {lastList.entryType === 2 ? (
+                      <img src={twentyIcon} className="twenty-icon" />
+                    ) : lastList.entryType === 1 ? (
+                      <img src={fanIcon} className="fan-icon" />
+                    ) : (
+                      <img src={allIcon} className="all-icon" />
+                    )}
+                    {lastList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                  </div>
                   <div className="entry-count">
                     <img className="entry-img" src={EntryImg} />
                     <span className="count-txt">{Util.printNumber(lastList.entryCnt)}</span>
@@ -165,6 +187,36 @@ const HalfWrap = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    .top-status {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      img {
+        margin-right: 3px;
+      }
+
+      .twenty-icon {
+        width: 24px;
+        height: 16px;
+      }
+      .special-icon {
+        width: 16px;
+        height: 16px;
+      }
+      .all-icon {
+        width: 24px;
+        height: 16px;
+      }
+      .fan-icon {
+        width: 24px;
+        height: 16px;
+      }
+    }
 
     .entry-count {
       position: absolute;
