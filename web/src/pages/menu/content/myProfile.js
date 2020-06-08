@@ -200,15 +200,15 @@ const myProfile = props => {
             <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
           </div>
         )}
-        <button className="btn-info" onClick={() => setPopup(popup ? false : true)}>
-          경험치
-        </button>
+        {__NODE_ENV == 'dev' && <button className="btn-info" onClick={() => setPopup(popup ? false : true)}>
+            경험치
+        </button>}
         <span>
           {profile.level !== 0 && `${profile.grade} /`} Lv.{profile.level}
         </span>
-        <a href={`/level`} className="btn-info">
-          레벨
-        </a>
+        {__NODE_ENV == 'dev' && <a href={`/level`} className="btn-info">
+            레벨
+        </a>}
       </ProfileImg>
 
       <ContentWrap>
