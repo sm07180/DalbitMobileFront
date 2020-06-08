@@ -56,6 +56,7 @@ export default props => {
   useEffect(() => {
     async function fetchInitData() {
       const {state} = rankingTerm
+
       if (state === 'ing') {
         const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
         if (result === 'success') {
