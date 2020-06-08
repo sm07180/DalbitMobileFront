@@ -9,6 +9,7 @@ import refreshIcon from './static/refresh.svg'
 import deleteIcon from './static/close.svg'
 
 import API from 'context/api'
+import {Hybrid} from "../../context/hybrid";
 
 export default function CommentEvent() {
   const [eventIndex, setEventIndex] = useState(1)
@@ -49,7 +50,7 @@ export default function CommentEvent() {
 
       <div className="input-wrap">
         <textarea
-          placeholder="댓글을 입력해주세요.&#13;&#10;(최대 300자)"
+          placeholder="댓글을 입력해주세요. (최대 300자)"
           value={commentTxt}
           onChange={e => {
             const target = e.currentTarget
@@ -78,7 +79,10 @@ export default function CommentEvent() {
               }
             } else {
               globalCtx.action.alert({
-                msg: '로그인 유저만 등록 가능합니다.'
+                msg: '로그인 후 이용해 주세요.',
+                callback: () => {
+                    history.push(`/login`)
+                }
               })
             }
           }}>
