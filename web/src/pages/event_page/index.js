@@ -76,6 +76,12 @@ export default props => {
             myPoint: data.myPoint
           })
         }
+      } else if (state === 'ready') {
+          setRankList([])
+          setMyRankInfo({
+              myRank: 0,
+              myPoint: 0
+          })
       }
     }
 
@@ -175,7 +181,7 @@ export default props => {
 
                   {Array.isArray(rankList) && rankList.length > 0 ? (
                     rankList.map((value, idx) => {
-                      const {profileImage, nickName, level, gainPoint, fanImage, fanNick, mem_no} = value
+                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no} = value
                       return (
                         <div className="user-wrap" key={`user-${idx}`}>
                           <div className="rank-wrap">
@@ -200,9 +206,14 @@ export default props => {
                               </div>
                             </div>
                           </div>
-                          {rankingType === 'exp' && (
+                          {rankingType === 'exp' && fanRank1 && (
                             <div className="top-fan">
-                              <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
+                              <div
+                                  className="thumb"
+                                  style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
+                                  onClick={() => {
+                                      history.push(`/mypage/${fanRank1}`)
+                                  }}></div>
                               <div className="fan-nick">{fanNick}</div>
                             </div>
                           )}

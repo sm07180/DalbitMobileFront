@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 
 // static
 import refreshIcon from './static/refresh.svg'
@@ -16,6 +17,7 @@ export default function CommentEvent() {
 
   const globalCtx = useContext(Context)
   const {token} = globalCtx
+  const history = useHistory()
 
   const timeFormat = strFormatFromServer => {
     let date = strFormatFromServer.slice(0, 8)
@@ -98,14 +100,19 @@ export default function CommentEvent() {
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {
-            const {replyIdx, profImg, memId, writerNo, writeDt, content} = value
+            const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
 
             return (
               <div className="each" key={`comment-${idx}`}>
-                <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
+                <div
+                    className="profile-img"
+                    style={{backgroundImage: `url(${profImg.thumb120x120})`}}
+                    onClick={() => {
+                        history.push(`/mypage/${writerNo}`)
+                    }}></div>
                 <div className="content">
                   <div className="name-date-wrap">
-                    {memId} <span className="date">{timeFormat(writeDt)}</span>
+                    {nickNm} <span className="date">{timeFormat(writeDt)}</span>
                   </div>
                   <div className="text">{content}</div>
                 </div>
