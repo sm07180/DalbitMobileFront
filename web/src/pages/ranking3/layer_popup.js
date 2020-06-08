@@ -124,7 +124,7 @@ export default props => {
             </p>
             <h5>FAN</h5>
             <p>
-              <strong>지난 주 보낸 달(60%) + 지난 주 청취시간(40%)</strong>
+              <strong>전 주 보낸 달(60%) + 전 주 청취시간(40%)</strong>
               <br />
             </p>
 
