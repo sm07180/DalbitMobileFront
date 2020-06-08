@@ -46,7 +46,12 @@ export default function CommentEvent() {
 
   return (
     <div className="comment-event-wrap">
-      <img src="https://image.dalbitlive.com/event/200603/comment_img.png" className="main" />
+      <div className="content-wrap">
+        <img src="https://image.dalbitlive.com/event/200603/comment_img.png" className="main" />
+        <div className="notice-wrap">
+            <p>달과 별은 이벤트 종료 후 일괄 지급됩니다.</p>
+        </div>
+      </div>
 
       <div className="input-wrap">
         <textarea
