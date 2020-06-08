@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 
 import './event_page.scss'
 import API from 'context/api'
@@ -13,10 +14,14 @@ import CommentEvent from './comment_event'
 
 import {PHOTO_SERVER} from 'context/config.js'
 
+import Utility from 'components/lib/utility'
+
 // static
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 import BronzeMedal from './static/medal_bronze@2x.png'
+import NoResult from 'pages/main/component/NoResult.js'
+import btnClose from './static/ico_close.svg'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
@@ -26,9 +31,10 @@ export default props => {
   const [rankingTerm, setRankingTerm] = useState(null) // 1차, 2차, 3차
 
   const [termList, setTermList] = useState([])
-  const [rankList, setRankList] = useState([])
+  const [rankList, setRankList] = useState(null)
   const [myRankInfo, setMyRankInfo] = useState({})
 
+  const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
@@ -50,11 +56,14 @@ export default props => {
     }
 
     fetchEventTermData()
+    let rankTypeNum = Utility.getRandomInt(0, 2)
+    setRankingType(Object.keys(RankType)[rankTypeNum])
   }, [])
 
   useEffect(() => {
     async function fetchInitData() {
       const {state} = rankingTerm
+
       if (state === 'ing') {
         const {result, data} = await API.getEventRankingLive({slctType: RankType[rankingType]})
         if (result === 'success') {
@@ -73,6 +82,12 @@ export default props => {
             myPoint: data.myPoint
           })
         }
+      } else if (state === 'ready') {
+        setRankList([])
+        setMyRankInfo({
+          myRank: 0,
+          myPoint: 0
+        })
       }
     }
 
@@ -81,11 +96,26 @@ export default props => {
     }
   }, [rankingType, rankingTerm])
 
+  const chageEventText = () => {
+    if (rankingType === 'exp') {
+      return <>달성 경험치</>
+    } else if (rankingType === 'like') {
+      return <>좋아요 수</>
+    } else if (rankingType === 'gift') {
+      return <>선물 개수</>
+    }
+  }
+
   return (
     <Layout {...props} status="no_gnb">
       <div id="event-page">
         <div className="event-main">
-          <img src="https://image.dalbitlive.com/event/200603/main_top.png" />
+          <img src="https://image.dalbitlive.com/event/200608/main_top_v2.png" />
+          <Link to="/">
+            <button>
+              <img src={btnClose} />
+            </button>
+          </Link>
         </div>
 
         <div className="event-type-wrap">
@@ -129,13 +159,9 @@ export default props => {
                             key={`term-${idx}`}
                             className={`tab ${rankingTerm.round === round ? 'active' : ''}`}
                             onClick={() => {
-                              if (state !== 'ready') {
-                                setRankingTerm(data)
-                              } else {
-                                globalCtx.action.alert({
-                                  msg: `${term}에 공계될 예정입니다.`
-                                })
-                              }
+                              // if (state !== 'ready') {
+                              setRankingTerm(data)
+                              // }
                             }}>
                             {`${round}차`}
                             <br />
@@ -150,39 +176,62 @@ export default props => {
                     <span className="ranking">{myRankInfo.myRank}</span>
                     <span>위</span>
                     <span className="bar">|</span>
-                    <span className="exp-title">달성 경험치</span>
+                    <span className="exp-title">{chageEventText()}</span>
                     <span>{myRankInfo.myPoint}</span>
                   </div>
 
-                  {rankList.map((value, idx) => {
-                    const {profileImage, nickName, level, gainPoint, fanImage, fanNick, memSex} = value
+                  <div className="content-wrap">
+                    <div className="category-wrap">
+                      <span className="rank-txt">순위</span>
+                      <span className="dj-txt">DJ</span>
+                      {rankingType === 'exp' && <span className="top-fan">최고팬</span>}
+                    </div>
+                  </div>
 
-                    return (
-                      <div className="user-wrap" key={`user-${idx}`}>
-                        <div className="rank-wrap">
-                          {idx < 3 ? (
-                            <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
-                          ) : (
-                            <span className="num">{idx}</span>
-                          )}
-                        </div>
-                        <div className="dj-info">
-                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}></div>
-                          <div className="nick-name-wrap">
-                            <span className="nick-name">{nickName}</span>
-                            <span className="level">Lv{level}</span>
-                            <div className="exp-box">
-                              달성경험치 <span>{gainPoint}</span>
+                  {Array.isArray(rankList) && rankList.length > 0 ? (
+                    rankList.map((value, idx) => {
+                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no} = value
+                      return (
+                        <div className="user-wrap" key={`user-${idx}`}>
+                          <div className="rank-wrap">
+                            {idx < 3 ? (
+                              <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
+                            ) : (
+                              <span className="num">{idx}</span>
+                            )}
+                          </div>
+                          <div className="dj-info">
+                            <div
+                              className="thumb"
+                              style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
+                              onClick={() => {
+                                history.push(`/mypage/${mem_no}`)
+                              }}></div>
+                            <div className="nick-name-wrap">
+                              <span className="nick-name">{nickName}</span>
+                              <span className="level">Lv{level}</span>
+                              <div className="exp-box">
+                                {chageEventText()} <span>{gainPoint}</span>
+                              </div>
                             </div>
                           </div>
+                          {rankingType === 'exp' && fanRank1 && (
+                            <div className="top-fan">
+                              <div
+                                className="thumb"
+                                style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
+                                onClick={() => {
+                                  history.push(`/mypage/${fanRank1}`)
+                                }}></div>
+                              <div className="fan-nick">{fanNick}</div>
+                            </div>
+                          )}
                         </div>
-                        <div className="top-fan">
-                          <div className="thumb" style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}></div>
-                          <div className="fan-nick">{fanNick}</div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })
+                  ) : (
+                    <NoResult />
+                  )}
                 </div>
               </>
             )}

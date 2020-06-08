@@ -1,32 +1,30 @@
-import React, {useState, useEffect, useContext} from 'react'
-
+import Util from 'components/lib/utility.js'
+import NoResult from 'components/ui/noResult'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
-
+import React, {useContext, useEffect, useState} from 'react'
+import LayerPopup from './layer_popup'
 //state
 import './ranking.scss'
+import RankList from './rankList'
+import RankListTop from './rankListTop'
+import moon from './static/cashmoon_g_s.svg'
+import star from './static/cashstar_g_s.svg'
+import hint from './static/hint.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
+import closeBtn from './static/ic_back.svg'
+import like from './static/like_g_s.svg'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
 
 const rankArray = ['dj', 'fan']
-const dateArray = ['일간', '주간']
+const dateArray = ['오늘', '일간', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1
 let moreState = false
-
-import point from './static/point.svg'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import hint from './static/hint.svg'
-import star from './static/cashstar_g_s.svg'
-import people from './static/people_g_s.svg'
-import like from './static/like_g_s.svg'
-
-import RankList from './rankList'
-import RankListTop from './rankListTop'
-import NoResult from 'components/ui/noResult'
-import LayerPopup from './layer_popup'
-import Util from 'components/lib/utility.js'
 
 export default props => {
   let timer
@@ -36,12 +34,24 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
-  const [myInfo, setMyInfo] = useState()
+  const [myInfo, setMyInfo] = useState({
+    myBroadPoint: 0,
+    myFanPoint: 0,
+    myGiftPoint: 0,
+    myListenerPoint: 0,
+    myPoint: 0,
+    myRank: 0,
+    myUpDown: ''
+  })
 
   const [dateType, setDateType] = useState(1)
   const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
+
+  const goBack = () => {
+    window.history.back()
+  }
 
   const popStateEvent = e => {
     if (e.state === null) {
@@ -135,6 +145,15 @@ export default props => {
             currentPage = 1
             setDateType(index)
             fetchRank(rankType, index)
+            setMyInfo({
+              myBroadPoint: 0,
+              myFanPoint: 0,
+              myGiftPoint: 0,
+              myListenerPoint: 0,
+              myPoint: 0,
+              myRank: 0,
+              myUpDown: ''
+            })
           }}>
           {item}
         </button>
@@ -211,10 +230,9 @@ export default props => {
           myListenerPoint: res.data.myListenerPoint,
           myPoint: res.data.myPoint,
           myRank: res.data.myRank,
-          myUpDown: res.data.myUpDown
+          myUpDown: res.data.myUpDown,
+          time: res.data.time
         })
-
-        console.log(res.data)
       }
     } else {
       context.action.alert({
@@ -294,21 +312,27 @@ export default props => {
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
+
   return (
     <>
+      <div className="header">
+        <h1 className="header__title">랭킹</h1>
+        <img className="header__btnBack" src={closeBtn} onClick={goBack} />
+      </div>
+
       <div>
         <div className="rankTopBox respansiveBox">
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            {/* 16:00 */}
-            <img src={hint} onClick={() => setPopup(popup ? false : true)} />
+            {myInfo && myInfo.time}
+            <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
           </div>
         </div>
 
         <div className="todayList">{createDateButton()}</div>
 
-        {myProfile && (
+        {myProfile && myInfo && (
           <div
             className="myRanking"
             onClick={() => {
@@ -322,7 +346,7 @@ export default props => {
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} /> {myInfo.myPoint}
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
               </p>
             </div>
 

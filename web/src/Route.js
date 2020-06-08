@@ -11,9 +11,13 @@ import Navigator from './pages/navigator'
 import ScrollToTop from 'components/lib/ScrollToTop'
 
 import Main from 'pages/main'
+const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
-const Ranking = React.lazy(() => import('pages/ranking'))
-const Ranking2 = React.lazy(() => import('pages/ranking2'))
+let Ranking = React.lazy(() => import('pages/ranking'))
+if (__NODE_ENV != 'real') {
+  Ranking = React.lazy(() => import('pages/ranking3'))
+}
+//const Ranking = React.lazy(() => import('pages/ranking'))
 const Ranking3 = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
@@ -22,8 +26,8 @@ const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 let Charge = React.lazy(() => import('pages/charge'))
-if(__NODE_ENV === 'real'){
-    Charge = React.lazy(() => import('pages/charge/index_bak'))
+if (__NODE_ENV === 'real') {
+  Charge = React.lazy(() => import('pages/charge/index_bak'))
 }
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
@@ -46,10 +50,6 @@ const TempLogin = React.lazy(() => import('pages/common/redirect'))
 
 const TempPage = React.lazy(() => import('pages/temp'))
 
-// const TestPage = React.lazy(() => import('pages/test_page'))
-
-const Payment = React.lazy(() => import('pages/payment'))
-
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 export default () => {
@@ -63,10 +63,10 @@ export default () => {
       <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/new_main" component={NewMain} />
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank2" component={Ranking2} /> {/* new 랭킹 추가  */}
         <Route exact path="/rank3" component={Ranking3} /> {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
@@ -91,11 +91,7 @@ export default () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        {/* <Route exact path="/temp_test" component={TestPage} />
-        <Route exact path="/temp_test/:path" component={TestPage} /> */}
         <Route exact path="/temp_page" component={TempPage} />
-        <Route exact path="/payment" component={Payment} />
-        <Route exact path="/payment/:path" component={Payment} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />

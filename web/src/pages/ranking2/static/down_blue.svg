@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__down_blue" width="12" height="12" viewBox="0 0 12 12">
-    <g id="prefix__사각형_3157" data-name="사각형 3157" style="fill:#fff;stroke:#707070;opacity:0">
-        <path d="M0 0H12V12H0z" style="stroke:none"/>
-        <path d="M0.5 0.5H11.5V11.5H0.5z" style="fill:none"/>
-    </g>
-    <path id="prefix__다각형_5" d="M3.8 1.481a1 1 0 0 1 1.728 0L8.456 6.5A1 1 0 0 1 7.592 8H1.741a1 1 0 0 1-.864-1.5z" data-name="다각형 5" transform="rotate(180 5.333 5.333)" style="fill:#375cf1"/>
-</svg>

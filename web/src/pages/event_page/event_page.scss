@@ -1,9 +1,18 @@
 #event-page {
   .event-main {
     background-color: #632beb;
+    position: relative;
 
     img {
       width: 100%;
+    }
+
+    button {
+      position: absolute;
+      right: 21px;
+      top: 21px;
+      width: 22px;
+      height: 22px;
     }
   }
 
@@ -20,7 +29,9 @@
         width: 50%;
         text-align: center;
         font-size: 24px;
-        padding: 7px 0;
+        padding: 14px 0;
+        letter-spacing: -0.5px;
+        font-weight: 700;
 
         &:first-child {
           border-top-left-radius: 14px;
@@ -37,7 +48,7 @@
     }
 
     .event-content-wrap {
-      .ranking-type-wrap {
+      .ranking-type-wrap, .comment-event-wrap {
         .ranking-tab-wrap {
           display: flex;
           flex-direction: row;
@@ -118,6 +129,7 @@
           align-items: center;
 
           .tab {
+            position: relative;
             color: #000;
             background-color: #e8e8e8;
             width: 33.3334%;
@@ -127,6 +139,18 @@
             padding: 10px 0;
             font-size: 16px;
             font-weight: 700;
+            border: 1px solid #d9d9d9;
+            box-sizing: border-box;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -1px;
+              left: -1px;
+              width: calc(100% + 2px);
+              height: 2px;
+              background: #632beb;
+            }
 
             span {
               font-size: 14px;
@@ -138,6 +162,7 @@
             &.active {
               color: #fff;
               background-color: #632beb;
+              border-color: #632beb;
 
               span {
                 color: #fff;
@@ -239,6 +264,7 @@
             width: calc(100% - 160px);
             padding: 10px 6px;
             box-sizing: border-box;
+            align-items: center;
 
             & > .thumb {
               overflow: hidden;
@@ -251,10 +277,8 @@
 
             .nick-name-wrap {
               width: 100%;
-              margin-bottom: 5px;
               font-size: 14px;
               letter-spacing: -0.35px;
-              line-height: 14px;
 
               .nick-name {
                 display: inline-block;
@@ -263,14 +287,15 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                vertical-align: middle;
               }
 
               .level {
                 display: inline-block;
                 margin-left: 5px;
-                margin-bottom: 5px;
                 font-size: 14px;
                 letter-spacing: -0.35px;
+                vertical-align: middle;
               }
             }
 
@@ -377,6 +402,7 @@
 
             .each {
               display: flex;
+              align-items: center;
               flex-direction: row;
               position: relative;
               padding: 10px 32px 10px 10px;

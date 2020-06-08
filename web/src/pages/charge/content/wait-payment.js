@@ -2,10 +2,12 @@ import React from 'react'
 import './wait-payment.scss'
 import BackBtn from '../static/ic_back.svg'
 import IconMoney from '../static/ic_money.svg'
-
+import qs from 'query-string'
 import Utility from 'components/lib/utility'
 import {Hybrid} from 'context/hybrid'
 export default props => {
+  const {webview} = qs.parse(location.search)
+
   const {rcptNm, phoneNo, Prdtprice, accountNo, pageCode} = props.location.state ? props.location.state : ''
 
   const addVat = value => {
@@ -22,7 +24,7 @@ export default props => {
     }
   }
   return (
-    <>
+    <div className={`${pageCode === '2' && 'webview'}`}>
       <div className="header">
         <img src={BackBtn} className="header__button--back" onClick={handleClick} />
         <h1 className="header__title">달 충전 결제 대기중</h1>
@@ -79,6 +81,6 @@ export default props => {
           확인
         </button>
       </div>
-    </>
+    </div>
   )
 }

@@ -2,12 +2,14 @@ import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 
 // static
 import refreshIcon from './static/refresh.svg'
 import deleteIcon from './static/close.svg'
 
 import API from 'context/api'
+import {Hybrid} from "../../context/hybrid";
 
 export default function CommentEvent() {
   const [eventIndex, setEventIndex] = useState(1)
@@ -16,6 +18,7 @@ export default function CommentEvent() {
 
   const globalCtx = useContext(Context)
   const {token} = globalCtx
+  const history = useHistory()
 
   const timeFormat = strFormatFromServer => {
     let date = strFormatFromServer.slice(0, 8)
@@ -43,11 +46,16 @@ export default function CommentEvent() {
 
   return (
     <div className="comment-event-wrap">
-      <img src="https://image.dalbitlive.com/event/200603/comment_img.png" className="main" />
+      <div className="content-wrap">
+        <img src="https://image.dalbitlive.com/event/200603/comment_img.png" className="main" />
+        <div className="notice-wrap">
+            <p>달과 별은 이벤트 종료 후 일괄 지급됩니다.</p>
+        </div>
+      </div>
 
       <div className="input-wrap">
         <textarea
-          placeholder="댓글을 입력해주세요.&#13;&#10;(최대 300자)"
+          placeholder="댓글을 입력해주세요. (최대 300자)"
           value={commentTxt}
           onChange={e => {
             const target = e.currentTarget
@@ -76,7 +84,10 @@ export default function CommentEvent() {
               }
             } else {
               globalCtx.action.alert({
-                msg: '로그인 유저만 등록 가능합니다.'
+                msg: '로그인 후 이용해 주세요.',
+                callback: () => {
+                    history.push(`/login?redirect=/event_page`)
+                }
               })
             }
           }}>
@@ -98,14 +109,19 @@ export default function CommentEvent() {
         </div>
         <div className="comments">
           {commentList.map((value, idx) => {
-            const {replyIdx, profImg, memId, writerNo, writeDt, content} = value
+            const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
 
             return (
               <div className="each" key={`comment-${idx}`}>
-                <div className="profile-img" style={{backgroundImage: `url(${profImg.thumb120x120})`}}></div>
+                <div
+                    className="profile-img"
+                    style={{backgroundImage: `url(${profImg.thumb120x120})`}}
+                    onClick={() => {
+                        history.push(`/mypage/${writerNo}`)
+                    }}></div>
                 <div className="content">
                   <div className="name-date-wrap">
-                    {memId} <span className="date">{timeFormat(writeDt)}</span>
+                    {nickNm} <span className="date">{timeFormat(writeDt)}</span>
                   </div>
                   <div className="text">{content}</div>
                 </div>

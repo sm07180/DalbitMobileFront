@@ -5,7 +5,8 @@ import {Context} from 'context'
 import frame49 from './static/ico_frame_49.png'
 import frame492x from './static/ico_frame_49@2x.png'
 import live from './static/live.svg'
-import point from './static/point.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
 import moon from './static/cashmoon_g_s.svg'
 import time from './static/time_g_s.svg'
 import korea from './static/ico-korea.png'
@@ -100,9 +101,11 @@ export default props => {
                       Lv{level} {grade}
                     </p>
                     <div className="nickNameBox">
+                      <span className="nickName">
                       {nickNm}
+                      </span>
                       <div className="iconBox">
-                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} /> <span className={genderName}>{gender}</span>
+                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> <span className={genderName}>{gender}</span>
                       </div>
                     </div>
                   </div>
@@ -111,7 +114,7 @@ export default props => {
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
-                          <img src={point} />
+                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}  />
                           {Util.printNumber(dj)}
                         </span>
 
