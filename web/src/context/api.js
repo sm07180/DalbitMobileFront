@@ -602,6 +602,15 @@ export default class API {
     return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
   }
   /**
+   * @brief 마이페이지 레벨정보 불러오기
+   * @method "GET"
+   * @create 임보람 2020.06.05
+   */
+  static mypage_level_info = async obj => {
+    const {url, method, params} = obj || {}
+    return await ajax({...obj, url: url || `/mypage/level`, method: method || 'GET', params: params})
+  }
+  /**
    * @brief 팬 랭킹 마이페이지
    * @method "GET"
    * @create 황상한 2020.04.07

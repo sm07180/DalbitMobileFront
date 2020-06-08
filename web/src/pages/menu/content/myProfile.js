@@ -11,6 +11,7 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
+import LayerPopupExp from './layer_popup_exp.js'
 
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -21,6 +22,7 @@ import {Context} from 'context'
 import Utility, {printNumber} from 'components/lib/utility'
 //svg
 import LiveIcon from '../component/ic_live.svg'
+import InfoIcon from '../static/profile/ic_info.svg'
 
 const myProfile = props => {
   const {webview} = props
@@ -145,6 +147,7 @@ const myProfile = props => {
   }
 
   const popStateEvent = e => {
+    console.log(e.state)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -197,9 +200,15 @@ const myProfile = props => {
             <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
           </div>
         )}
+        <button className="btn-info" onClick={() => setPopup(popup ? false : true)}>
+          경험치
+        </button>
         <span>
           {profile.level !== 0 && `${profile.grade} /`} Lv.{profile.level}
         </span>
+        <a href={`/level`} className="btn-info">
+          레벨
+        </a>
       </ProfileImg>
 
       <ContentWrap>
@@ -252,6 +261,8 @@ const myProfile = props => {
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
+
+      {popup && <LayerPopupExp setPopup={setPopup} />}
     </MyProfile>
   )
 }
@@ -346,12 +357,13 @@ const ProfileImg = styled.div`
       background-repeat: no-repeat;
     }
   }
-
+  .btn-info,
   span {
     display: inline-block;
     position: relative;
     padding: 0 13px;
     margin-top: 20px;
+    margin-left: 4px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
@@ -359,6 +371,23 @@ const ProfileImg = styled.div`
     line-height: 30px;
     z-index: 2;
     transform: skew(-0.03deg);
+  }
+
+  .btn-info {
+    background: #eee;
+    color: #757575;
+    line-height: 22px;
+    padding-right: 30px;
+    &:after {
+      display: inline-block;
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -1px;
+      width: 24px;
+      height: 24px;
+      background: url('${InfoIcon}') no-repeat top right;
+    }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {

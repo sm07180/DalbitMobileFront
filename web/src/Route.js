@@ -24,6 +24,7 @@ const Store = React.lazy(() => import('pages/store'))
 const Charge = React.lazy(() => import('pages/charge'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
+const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
@@ -78,6 +79,7 @@ export default () => {
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
+        <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />
         <Route exact path="/customer/:title" component={Customer} />
