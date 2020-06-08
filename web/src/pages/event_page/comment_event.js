@@ -81,7 +81,7 @@ export default function CommentEvent() {
               globalCtx.action.alert({
                 msg: '로그인 후 이용해 주세요.',
                 callback: () => {
-                    history.push(`/login`)
+                    history.push(`/login?redirect=/event_page`)
                 }
               })
             }
