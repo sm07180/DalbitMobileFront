@@ -30,20 +30,27 @@ export default props => {
 
   const formTag = useRef()
 
-  const [payMathod, setPayMathod] = useState(0);
+  const [payMathod, setPayMathod] = useState(-1);
   const [status, setStatus] = useState('n');
   const [receipt, setReceipt] = useState(1)
-  const [phone, setPhone] = useState(null);
+  const [phone, setPhone] = useState('');
   const [name, setName] = useState(null);
   const [receiptInput, setReceiptInput] = useState("");
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+  const [validation, setValidation] = useState(false)
 
   const { paymentName, paymentPrice, itemNo } = props.location.state ? props.location.state : props.history.goBack();
-  console.log(props.location.state);
   
   const handleEvent = (value) => {
     setReceipt(value);
+    setReceiptInput("");
+  }
+
+  const handleStatus = (e) => {
+    setReceiptInput("");
+    setReceipt(1);
+    setStatus(e);
   }
 
   const handleChange = (event) => {
@@ -54,10 +61,36 @@ export default props => {
         setName(target.value);
         break;
       case "phone":
-        setPhone(target.value);
+        if(target.value.toString().length > 15) {
+
+        } else if(isNaN(target.value)){
+          
+        } else { 
+          setPhone(target.value);
+        }
         break;
       case "receipt":
-        setReceiptInput(target.value);
+        if(isNaN(target.value)) {
+
+        } else {
+          if(status === 'b') {
+            if(target.value.toString().length > 10) {
+              
+            } else {
+              setReceiptInput(target.value);
+            }
+          } else {
+            if(receipt === 1) {
+              if(target.value.toString().length <= 13) {
+                setReceiptInput(target.value);
+              }
+            } else {
+              if(target.value.toString().length <= 11) {
+                setReceiptInput(target.value);
+              }
+            }
+          }
+        }
         break;
       default:
         break;
@@ -66,26 +99,26 @@ export default props => {
 
   const chargeClick = async () => {
     
-    if(!name) {
-      context.action.alert({
-        msg: "이름은 필수입력 값입니다."
-      })
-      return;
-    }
-    if(!phone) {
-      context.action.alert({
-        msg: "핸드폰 번호는 핊수입력 값입니다."
-      })
-      return;
-    }
-    if( (status == 'i' || status == 'b') && receiptInput == "") {
-      context.action.alert( {
-        msg: "현금영수증 발급을 위하여 값을 입력해주세요."
-      })
-      return;
-    }
+    // if(!name) {
+    //   context.action.alert({
+    //     msg: "이름은 필수입력 값입니다."
+    //   })
+    //   return;
+    // }
+    // if(!phone) {
+    //   context.action.alert({
+    //     msg: "핸드폰 번호는 핊수입력 값입니다."
+    //   })
+    //   return;
+    // }
+    // if( (status == 'i' || status == 'b') && receiptInput == "") {
+    //   context.action.alert( {
+    //     msg: "현금영수증 발급을 위하여 값을 입력해주세요."
+    //   })
+    //   return;
+    // }
 
-    if(name && phone && receipt && context.token.isLogin) {
+    if(validation) {
       const res = await Api.pay_coocon({
         data: {
           Prdtnm: paymentName,
@@ -100,7 +133,6 @@ export default props => {
         }
       });
 
-      console.log(res);
       if(res.result === 'success') {
         props.history.push({
           pathname: '/temp_test/waitPayment',
@@ -126,7 +158,7 @@ export default props => {
 
   async function payFetch(event) {
     const { classList } = event.target;
-    classList.add("chargeButton--active");
+    // classList.add("chargeButton--active");
     payType = chargeData[payMathod].fetch
     const obj = {
       data: {
@@ -188,18 +220,61 @@ export default props => {
       return (
         <div className="receipt__sub">
           <label className="receipt__label"><SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize:"14px", minWidth:"105px"}} /></label>{' '}
-          <input className="receipt__input" type="tel" name="receipt" onChange={handleChange} />
+          <input className="receipt__input" type="tel" value={receiptInput} name="receipt" onChange={e => handleChange(e)} />
         </div>
       )
     } else {
       return (
         <div className="receipt__sub">
           <label className="receipt__label">사업자 번호</label>
-          <input className="receipt__input" name="receipt" onChange={handleChange} />
+          <input className="receipt__input" type="tel" value={receiptInput} name="receipt" onChange={e => handleChange(e)} />
         </div>
       )
     }
   }
+
+  const validationCheck = () => {
+    if(name === null || name === "") {
+      setValidation(false);
+      return;
+    }
+
+    if(phone === null || phone === "" || phone.toString().length < 9){
+      setValidation(false);
+      return;
+    }
+
+    if(status !== 'n') {
+      if(receiptInput === "") {
+        setValidation(false);
+        return;
+      }
+    }
+
+    if(status === 'i') {
+      if(receipt === 1 && (receiptInput.length < 13 || receiptInput === "") ) {
+        setValidation(false);
+        return;
+      }
+      if(receipt === 2 && (receiptInput.length < 8 || receiptInput === "")) {
+        setValidation(false);
+        return;
+      }
+    }
+
+    if(status === 'b') {
+      if(receiptInput.length < 10) {
+        setValidation(false);
+        return;
+      }
+    }
+
+    setValidation(true);
+  }
+
+  useEffect(() => {
+    validationCheck();
+  },[name, phone, status, receiptInput])
 
   useEffect(() => {
     document.addEventListener('store-pay', updateDispatch)
@@ -275,7 +350,7 @@ export default props => {
 
                     <div className="depositInfo__label">휴대폰번호</div>
                     <div className="depositInfo__value">
-                      <input type="text" name="phone" onChange={handleChange} className="depositInfo__input"></input>
+                      <input type="tel" name="phone" value={phone} onChange={e => handleChange(e)} className="depositInfo__input" />
                     </div>
                   </div>
                 </div>
@@ -284,13 +359,13 @@ export default props => {
                   <h2 className="charge__title">현금영수증</h2>
 
                   <div className={`receipt__box ${status === 'n' && 'receipt__button--forced'}`}>
-                    <button className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`} onClick={() => setStatus('n')}>
+                    <button className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`} onClick={() => handleStatus('n')}>
                       선택안함
                     </button>
-                    <button className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`} onClick={() => setStatus('i')}>
+                    <button className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`} onClick={() => handleStatus('i')}>
                       소득공제용
                     </button>
-                    <button className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`} onClick={() => setStatus('b')}>
+                    <button className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`} onClick={() => handleStatus('b')}>
                       지출증빙용
                     </button>
                   </div>
@@ -322,9 +397,9 @@ export default props => {
             </div>
             {
               payMathod === 2 ? (
-                <button className="chargeButton" onClick={chargeClick}>입금계좌 받기</button>
+                <button className={`chargeButton ${validation === true ? 'chargeButton--active' : ''}` } onClick={chargeClick}>입금계좌 받기</button>
               ) : (
-                <button className="chargeButton" onClick={payFetch}>
+                <button className={`chargeButton ${payMathod !== -1 ? 'chargeButton--active' : ''}` } onClick={payFetch}>
                   충전하기
                 </button>
               )
