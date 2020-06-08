@@ -38,7 +38,15 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
-  const [myInfo, setMyInfo] = useState()
+  const [myInfo, setMyInfo] = useState({
+    myBroadPoint: 0,
+    myFanPoint: 0,
+    myGiftPoint: 0,
+    myListenerPoint: 0,
+    myPoint: 0,
+    myRank: 0,
+    myUpDown: ''
+  })
 
   const [dateType, setDateType] = useState(1)
   const [myRank, setMyRank] = useState(false)
@@ -115,7 +123,6 @@ export default props => {
 
   const createRankButton = () => {
     return rankArray.map((item, index) => {
-      console.log(index)
       return (
         <button
           key={index}
@@ -133,6 +140,7 @@ export default props => {
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
+      console.log(item, index)
       index++
       return (
         <button
@@ -142,6 +150,15 @@ export default props => {
             currentPage = 1
             setDateType(index)
             fetchRank(rankType, index)
+            setMyInfo({
+              myBroadPoint: 0,
+              myFanPoint: 0,
+              myGiftPoint: 0,
+              myListenerPoint: 0,
+              myPoint: 0,
+              myRank: 0,
+              myUpDown: ''
+            })
           }}>
           {item}
         </button>
@@ -320,7 +337,7 @@ export default props => {
 
         <div className="todayList">{createDateButton()}</div>
 
-        {myProfile && (
+        {myProfile && myInfo && (
           <div
             className="myRanking"
             onClick={() => {
@@ -328,13 +345,13 @@ export default props => {
             }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myInfo && myInfo.myRank}</p>
+              <p className="myRanking__left--now">{myInfo.myRank}</p>
               <p className="rankingChange">
-                {myInfo && createMyProfile()}
+                {createMyProfile()}
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo && myInfo.myPoint}
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
               </p>
             </div>
 
@@ -358,21 +375,21 @@ export default props => {
                   <>
                     <span className="countBox__item">
                       <img src={star} />
-                      {Util.printNumber(myInfo && myInfo.myGiftPoint)}
+                      {Util.printNumber(myInfo.myGiftPoint)}
                     </span>
                     <span className="countBox__item">
                       <img src={people} />
-                      {Util.printNumber(myInfo && myInfo.myListenerPoint)}
+                      {Util.printNumber(myInfo.myListenerPoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={like} />
-                      {Util.printNumber(myInfo && myInfo.myLikePoint)}
+                      {Util.printNumber(myInfo.myLikePoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={time} />
-                      {Util.printNumber(myInfo && myProfile.BroadPoint)}
+                      {Util.printNumber(myProfile.BroadPoint)}
                     </span>
                   </>
                 )}
