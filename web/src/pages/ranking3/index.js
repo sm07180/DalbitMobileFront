@@ -218,7 +218,7 @@ export default props => {
           myPoint: res.data.myPoint,
           myRank: res.data.myRank,
           myUpDown: res.data.myUpDown,
-          time:res.data.time
+          time: res.data.time
         })
       }
     } else {
@@ -299,7 +299,6 @@ export default props => {
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
-
 
   return (
     <>
