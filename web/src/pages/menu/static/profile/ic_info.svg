@@ -1,7 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_info" width="24" height="24" viewBox="0 0 24 24">
-    <path id="prefix__사각형_314" d="M0 0H24V24H0z" data-name="사각형 314" style="fill:transparent;opacity:.51"/>
-    <circle id="prefix__타원_33" cx="8" cy="8" r="8" data-name="타원 33" transform="translate(4 4)" style="fill:#fff"/>
-    <text id="prefix___" data-name="?" transform="translate(8.5 16)" style="fill:#9e9e9e;font-size:12.5px;font-family:NanumSquareB,NanumSquare;letter-spacing:-.025em">
-        <tspan x="0" y="0">?</tspan>
-    </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+    <g id="prefix__ic_info" transform="translate(-2 -2)">
+        <path id="prefix__사각형_314" fill="rgba(255,255,255,0)" d="M0 0H20V20H0z" data-name="사각형 314" opacity="0.51" transform="translate(2 2)"/>
+        <circle id="prefix__타원_33" cx="7" cy="7" r="7" fill="#757575" data-name="타원 33" transform="translate(5 5)"/>
+        <text id="prefix___" fill="#fff" data-name="?" font-family="NanumSquareB, NanumSquare" font-size="12.5px" letter-spacing="-0.025em" transform="translate(8.5 16)">
+            <tspan x="0" y="0">?</tspan>
+        </text>
+    </g>
 </svg>

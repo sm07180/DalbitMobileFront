@@ -201,37 +201,42 @@ const myProfile = props => {
             <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
           </div>
         )}
-        {__NODE_ENV == 'dev' && <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
-            경험치
-        </button>}
         <span>
           {profile.level !== 0 && `${profile.grade} /`} Lv.{profile.level}
         </span>
-        {__NODE_ENV == 'dev' && <a href={`/level`} className="btn-info">
-            레벨
-        </a>}
       </ProfileImg>
 
       <ContentWrap>
         {urlrStr == 'profile' && (
           <>
             <LevelWrap>
-              <LevelText>LEVEL {profile.level}</LevelText>
-              <LevelStatusBarWrap>
-                <LevelStatus
-                  style={{
-                    width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
-                  }}></LevelStatus>
-              </LevelStatusBarWrap>
+              {__NODE_ENV == 'dev' && (
+                <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                  경험치
+                </button>
+              )}
+              <div className="expBox">
+                <LevelText>LEVEL {profile.level}</LevelText>
+                <LevelStatusBarWrap>
+                  <LevelStatus
+                    style={{
+                      width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
+                    }}></LevelStatus>
+                </LevelStatusBarWrap>
+                <div className="expWrap">
+                  <span className="expBegin">0</span>
+                  <span className="expPer">
+                    EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)} ({`${expCalc}%`})
+                  </span>
+                  <span className="expBegin">{profile.expNext - profile.expBegin}</span>
+                </div>
+              </div>
+              {__NODE_ENV == 'dev' && (
+                <a href={`/level`} className="btn-level">
+                  레벨
+                </a>
+              )}
             </LevelWrap>
-
-            <div className="expWrap">
-              <span className="expBegin">0</span>
-              <span className="expPer">
-                EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)} ({`${expCalc}%`})
-              </span>
-              <span className="expBegin">{profile.expNext - profile.expBegin}</span>
-            </div>
           </>
         )}
 
@@ -273,7 +278,6 @@ export default myProfile
 const MyProfile = styled.div`
   display: flex;
   flex-direction: row;
-
   width: 100%;
   min-height: 300px;
   margin: 0 auto;
@@ -285,10 +289,7 @@ const MyProfile = styled.div`
     width:100%;
     height: 100vh;
     z-index:22;
-    background-color:rgba(0,0,0,0.5)
-
-   
-    
+    background-color:rgba(0,0,0,0.5)    
   }
   .zoomImg {
     position: absolute;
@@ -301,6 +302,7 @@ const MyProfile = styled.div`
   }
   & > div {
     flex: 0 0 auto;
+    padding: 0 10px;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -311,13 +313,14 @@ const MyProfile = styled.div`
 `
 //flex item3
 const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: center;
   flex-basis: 204px;
   padding-top: 35px;
   text-align: right;
   order: 3;
   @media (max-width: ${WIDTH_TABLET_S}) {
     display: flex;
-    justify-content: space-between;
     flex-basis: auto;
     padding-top: 0;
     order: 1;
@@ -327,8 +330,8 @@ const ButtonWrap = styled.div`
 const ProfileImg = styled.div`
   display: block;
   position: relative;
-  height: 156px;
-  flex-basis: 156px;
+  height: 161px;
+  flex-basis: 161px;
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -358,37 +361,19 @@ const ProfileImg = styled.div`
       background-repeat: no-repeat;
     }
   }
-  .btn-info,
   span {
     display: inline-block;
     position: relative;
-    padding: 0 13px;
+    padding: 0 12px;
     margin-top: 20px;
-    margin-left: 4px;
     border-radius: 30px;
     background: ${COLOR_POINT_Y};
     color: #fff;
     font-size: 12px;
+    font-weight: 600;
     line-height: 30px;
     z-index: 2;
     transform: skew(-0.03deg);
-  }
-
-  .btn-info {
-    background: #eee;
-    color: #757575;
-    line-height: 22px;
-    padding-right: 30px;
-    &:after {
-      display: inline-block;
-      content: '';
-      position: absolute;
-      right: 0;
-      top: -1px;
-      width: 24px;
-      height: 24px;
-      background: url('${InfoIcon}') no-repeat top right;
-    }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -406,64 +391,88 @@ const ProfileImg = styled.div`
 
 const ContentWrap = styled.div`
   width: calc(100% - 360px);
-  padding: 0 24px;
+  padding: 0 0px;
   order: 2;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
     margin: 0 auto;
     order: 3;
-
-    & > div {
-      display: flex;
-      justify-content: center;
-    }
+  }
+  .expBox {
+    margin: 0 8px;
   }
   .expWrap {
-    width: 280px;
+    width: 179px;
     display: flex;
     justify-content: space-between;
-    margin: 8px auto 10px auto;
+    margin: 4px auto 0;
   }
   .expPer {
     display: block;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.08;
     letter-spacing: normal;
     text-align: center;
     color: #632beb;
   }
   .expBegin {
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
+    font-size: 10px;
+    font-weight: 600;
     line-height: 1.08;
     letter-spacing: normal;
     text-align: left;
-    color: #424242;
+    color: #000;
   }
-  .expBegin:nth-child(1) {
+  /* .expBegin:nth-child(1) {
     margin-left: 8px;
   }
   .expBegin:nth-child(2) {
     margin-right: 8px;
+  } */
+  .btn-info,
+  .btn-level {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    font-size: 12px;
+    color: #757575;
+    font-weight: 600;
+    letter-spacing: -1px;
+    white-space: nowrap;
+  }
+  .btn-info {
+    &::before {
+      display: inline-block;
+      content: '';
+      width: 20px;
+      height: 20px;
+      vertical-align: -6px;
+      background: url('${InfoIcon}') no-repeat 0 0; 
+    }
+  }
+  .btn-level {
+    &::after {
+      display: inline-block;
+      content: '';
+      width: 20px;
+      height: 20px;
+      vertical-align: -5px;
+      margin-left: 1px;
+      background: url('${InfoIcon}') no-repeat 0 0; 
+    }
   }
 `
 //------------------------------------------------------
 //정보 레벨업관련
 const LevelWrap = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: row;
-  height: 16px;
-  margin-top: 3px;
-
+  align-items: flex-start;
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 10px;
-    align-items: center;
   }
 `
 const LevelText = styled.span`
@@ -479,8 +488,7 @@ const LevelText = styled.span`
 `
 const LevelStatusBarWrap = styled.div`
   position: relative;
-  width: 280px;
-  margin-left: 8px;
+  width: 179px;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -544,7 +552,6 @@ const NameWrap = styled.div`
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: block !important;
     text-align: center;
     & > * {
       display: block;
@@ -557,6 +564,7 @@ const NameWrap = styled.div`
 //팬, 스타 수
 const CountingWrap = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 12px;
   span {
