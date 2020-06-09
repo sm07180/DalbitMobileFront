@@ -48,7 +48,7 @@ export default props => {
         exdate.setSeconds(0)
 
         const encodedValue = encodeURIComponent(value)
-        const c_value = encodedValue + '; expires=' + exdate
+        const c_value = encodedValue + '; expires=' + exdate.toUTCString()
         document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
     }
 
