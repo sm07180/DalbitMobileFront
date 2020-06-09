@@ -38,6 +38,7 @@ export default props => {
   const [receiptInput, setReceiptInput] = useState('')
   const [confirm, setConfirm] = useState(false)
   const [confirmData, setConfirmData] = useState(false)
+  const [validation, setValidation] = useState(false)
 
   // const {paymentName, paymentPrice, itemNo} = props.location.state ? props.location.state : props.history.goBack()
   // console.log(props.location.state)
@@ -87,6 +88,7 @@ export default props => {
   }
 
   const chargeClick = async () => {
+    const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (!name) {
       context.action.alert({
         msg: '이름은 필수입력 값입니다.'
@@ -95,6 +97,11 @@ export default props => {
     if (!phone) {
       context.action.alert({
         msg: '핸드폰 번호는 필수입력 값입니다.'
+      })
+    }
+    if (!rgEx.test(phone)) {
+      return context.action.alert({
+        msg: '올바른 핸드폰 번호가 아닙니다.'
       })
     }
     if ((status == 'i' || status == 'b') && receiptInput == '') {
@@ -194,6 +201,49 @@ export default props => {
       )
     }
   }
+
+  const validationCheck = () => {
+    if (name === null || name === '') {
+      setValidation(false)
+      return
+    }
+
+    if (phone === null || phone === '' || phone.toString().length < 9) {
+      setValidation(false)
+      return
+    }
+
+    if (status !== 'n') {
+      if (receiptInput === '') {
+        setValidation(false)
+        return
+      }
+    }
+
+    if (status === 'i') {
+      if (receipt === 1 && (receiptInput.length < 13 || receiptInput === '')) {
+        setValidation(false)
+        return
+      }
+      if (receipt === 2 && (receiptInput.length < 8 || receiptInput === '')) {
+        setValidation(false)
+        return
+      }
+    }
+
+    if (status === 'b') {
+      if (receiptInput.length < 10) {
+        setValidation(false)
+        return
+      }
+    }
+
+    setValidation(true)
+  }
+
+  useEffect(() => {
+    validationCheck()
+  }, [name, phone, status, receiptInput])
 
   useEffect(() => {}, [])
 
@@ -319,7 +369,7 @@ export default props => {
               <span className="inquiry__number">1522-0251</span>
             </div>
             {payMathod === 2 ? (
-              <button className="chargeButton chargeButton--active" onClick={chargeClick}>
+              <button className={`chargeButton ${validation === true ? 'chargeButton--active' : ''}`} onClick={chargeClick}>
                 입금계좌 받기
               </button>
             ) : (
