@@ -1,11 +1,11 @@
 import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
-
 // static
 import CloseBtn from '../static/ic_close.svg'
 import PlusIcon from '../static/ic_plus.svg'
 // context
 import {COLOR_MAIN, COLOR_WHITE} from 'context/color'
+import {WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
   const {setPopup} = props
@@ -235,4 +235,16 @@ const PopupWrap = styled.div`
       }
     }
   }
+    @media (max-width: ${WIDTH_MOBILE_S}) {
+      .content-wrap {
+        height: 85%;
+      }
+      .contents-box {
+        height: 88%;
+        overflow-y: auto;
+        ul {
+          height: 100%;
+        }
+      }
+    }
 `
