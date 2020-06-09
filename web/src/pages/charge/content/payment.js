@@ -90,12 +90,12 @@ export default props => {
   const chargeClick = async () => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (!name) {
-      context.action.alert({
+      return context.action.alert({
         msg: '이름은 필수입력 값입니다.'
       })
     }
     if (!phone) {
-      context.action.alert({
+      return context.action.alert({
         msg: '핸드폰 번호는 필수입력 값입니다.'
       })
     }
@@ -105,7 +105,7 @@ export default props => {
       })
     }
     if ((status == 'i' || status == 'b') && receiptInput == '') {
-      context.action.alert({
+      return context.action.alert({
         msg: '현금영수증 발급을 위하여 값을 입력해주세요.'
       })
     }
