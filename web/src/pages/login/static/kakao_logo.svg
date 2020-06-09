@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__그룹_25" width="36" height="36" data-name="그룹 25" viewBox="0 0 36 36">
+    <defs>
+        <clipPath id="prefix__clip-path">
+            <path id="prefix__사각형_17" d="M0 0H26.061V23.942H0z" class="prefix__cls-1" data-name="사각형 17"/>
+        </clipPath>
+        <clipPath id="prefix__clip-path-2">
+            <path id="prefix__사각형_9" d="M0 0H26.061V23.943H0z" class="prefix__cls-1" data-name="사각형 9"/>
+        </clipPath>
+        <clipPath id="prefix__clip-path-3">
+            <path id="prefix__패스_15" d="M65.631-283.006c-.8 0-.794 1.4 0 1.4h1.359s.008 3.777 0 4.647c0 .634 1.413.667 1.411.033l.006-4.547a7.006 7.006 0 0 1 1.352-.1c.844 0 .845-1.43 0-1.43z" class="prefix__cls-1" data-name="패스 15" transform="translate(-65.035 283.006)"/>
+        </clipPath>
+        <clipPath id="prefix__clip-path-5">
+            <path id="prefix__패스_17" d="M77.34-281.013l.756 2.367h-1.575zm-.846-1.11c-.335.736-1.542 4.211-1.943 5.134-.289.666.961 1.209 1.25.543l.271-.95h2.486s-.085.039.245.91c.267.705 1.557.216 1.29-.489-.382-1.007-1.7-4.633-1.942-5.147a1.026 1.026 0 0 0-.894-.408.786.786 0 0 0-.762.408" class="prefix__cls-1" data-name="패스 17" transform="translate(-74.508 282.531)"/>
+        </clipPath>
+        <clipPath id="prefix__clip-path-7">
+            <path id="prefix__패스_19" d="M87.57-281.916c0 1.181.007 4.987.007 4.987s-.108.757.54.757 2.088-.006 2.726-.006.634-1.359 0-1.359-1.8-.006-1.8-.006.006-3.522 0-4.377a.661.661 0 0 0-.734-.62.662.662 0 0 0-.736.624" class="prefix__cls-1" data-name="패스 19" transform="translate(-87.57 282.54)"/>
+        </clipPath>
+        <clipPath id="prefix__clip-path-9">
+            <path id="prefix__패스_21" d="M96.389-282.1c.014.517-.017 5.2-.017 5.548 0 .547 1.395.546 1.394 0v-1.842l.41-.329 1.791 2.443c.361.478 1.5-.385 1.138-.862l-1.9-2.5s1.29-1.4 1.8-1.9c.3-.3-.622-1.22-.919-.925s-2.309 2.309-2.309 2.309.018-1.271 0-1.973c-.007-.267-.334-.4-.669-.4-.358 0-.725.148-.717.434" class="prefix__cls-1" data-name="패스 21" transform="translate(-96.372 282.534)"/>
+        </clipPath>
+        <style>
+            .prefix__cls-1{fill:none}.prefix__cls-4{clip-path:url(#prefix__clip-path-2)}.prefix__cls-6{fill:#f2e12c}
+        </style>
+    </defs>
+    <g id="prefix__Vector_Smart_Object" data-name="Vector Smart Object" transform="translate(4.883 6.5)">
+        <g id="prefix__그룹_24" data-name="그룹 24">
+            <g id="prefix__그룹_23" clip-path="url(#prefix__clip-path)" data-name="그룹 23">
+                <g id="prefix__그룹_8" data-name="그룹 8">
+                    <g id="prefix__그룹_7" class="prefix__cls-4" data-name="그룹 7">
+                        <path id="prefix__패스_13" fill="#381e1f" d="M71.031-298C63.833-298 58-293.388 58-287.7c0 3.7 2.472 6.949 6.182 8.765-.273 1.017-.987 3.685-1.131 4.257-.176.709.26.7.546.508.224-.149 3.571-2.425 5.015-3.406a16.428 16.428 0 0 0 2.419.177c7.2 0 13.031-4.612 13.031-10.3S78.228-298 71.031-298" data-name="패스 13" transform="translate(-58 298)"/>
+                        <path id="prefix__패스_14" d="M65.631-283.006c-.8 0-.794 1.4 0 1.4h1.359s.008 3.778 0 4.647c0 .634 1.413.667 1.411.034l.006-4.547a7.012 7.012 0 0 1 1.352-.1c.844 0 .846-1.43 0-1.43z" class="prefix__cls-6" data-name="패스 14" transform="translate(-61.741 290.026)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_10" data-name="그룹 10" transform="translate(3.293 7.02)">
+                    <g id="prefix__그룹_9" clip-path="url(#prefix__clip-path-3)" data-name="그룹 9">
+                        <path id="prefix__사각형_10" d="M0 0H5.771V6.709H0z" class="prefix__cls-6" data-name="사각형 10" transform="translate(-.201)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_12" data-name="그룹 12">
+                    <g id="prefix__그룹_11" class="prefix__cls-4" data-name="그룹 11">
+                        <path id="prefix__패스_16" d="M77.34-281.013l.756 2.367h-1.575zm-.846-1.11c-.335.736-1.542 4.211-1.942 5.134-.289.666.96 1.209 1.25.543l.271-.951h2.486s-.085.039.244.91c.267.7 1.557.216 1.29-.489-.381-1.007-1.7-4.633-1.942-5.147a1.029 1.029 0 0 0-.895-.408.785.785 0 0 0-.762.408" class="prefix__cls-6" data-name="패스 16" transform="translate(-66.78 289.773)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_14" data-name="그룹 14" transform="translate(7.729 7.242)">
+                    <g id="prefix__그룹_13" clip-path="url(#prefix__clip-path-5)" data-name="그룹 13">
+                        <path id="prefix__사각형_12" d="M0 0H6.097V6.751H0z" class="prefix__cls-6" data-name="사각형 12" transform="translate(-.246)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_16" data-name="그룹 16">
+                    <g id="prefix__그룹_15" class="prefix__cls-4" data-name="그룹 15">
+                        <path id="prefix__패스_18" d="M87.571-281.916c0 1.181.007 4.987.007 4.987s-.109.757.54.757 2.088-.006 2.726-.006.635-1.359 0-1.359-1.8-.006-1.8-.006.006-3.521 0-4.377a.661.661 0 0 0-.734-.62.661.661 0 0 0-.735.624" class="prefix__cls-6" data-name="패스 18" transform="translate(-73.726 289.778)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_18" data-name="그룹 18" transform="translate(13.844 7.238)">
+                    <g id="prefix__그룹_17" clip-path="url(#prefix__clip-path-7)" data-name="그룹 17">
+                        <path id="prefix__사각형_14" d="M0 0H4.012V6.368H0z" class="prefix__cls-6" data-name="사각형 14" transform="translate(-.102)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_20" data-name="그룹 20">
+                    <g id="prefix__그룹_19" class="prefix__cls-4" data-name="그룹 19">
+                        <path id="prefix__패스_20" d="M96.389-282.1c.014.517-.017 5.2-.017 5.548 0 .547 1.395.545 1.394 0v-1.842l.41-.329 1.791 2.443c.361.478 1.5-.385 1.138-.862l-1.9-2.5s1.29-1.4 1.8-1.9c.3-.3-.622-1.22-.919-.925s-2.308 2.308-2.308 2.308.018-1.27 0-1.973c-.007-.266-.334-.4-.669-.4-.358 0-.725.148-.717.434" class="prefix__cls-6" data-name="패스 20" transform="translate(-78.407 289.775)"/>
+                    </g>
+                </g>
+                <g id="prefix__그룹_22" data-name="그룹 22" transform="translate(17.965 7.241)">
+                    <g id="prefix__그룹_21" clip-path="url(#prefix__clip-path-9)" data-name="그룹 21">
+                        <path id="prefix__사각형_16" d="M0 0H5.094V6.965H0z" class="prefix__cls-6" data-name="사각형 16" transform="translate(0 -.236)"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
