@@ -89,7 +89,6 @@ export default React.forwardRef((props, ref) => {
 })
 
 const Banner = styled.div`
-  height: 63px;
   overflow: hidden;
 
   .swiper-container {

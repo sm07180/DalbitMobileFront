@@ -31,6 +31,7 @@ const myProfile = props => {
   const {mypageReport, close, closeFanCnt, closeStarCnt} = context
   // state
   const [popup, setPopup] = useState(false)
+  const [popupExp, setPopupExp] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
@@ -200,7 +201,7 @@ const myProfile = props => {
             <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
           </div>
         )}
-        {__NODE_ENV == 'dev' && <button className="btn-info" onClick={() => setPopup(popup ? false : true)}>
+        {__NODE_ENV == 'dev' && <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
             경험치
         </button>}
         <span>
@@ -262,7 +263,7 @@ const myProfile = props => {
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
 
-      {popup && <LayerPopupExp setPopup={setPopup} />}
+      {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
     </MyProfile>
   )
 }

@@ -8,7 +8,7 @@ import {COLOR_MAIN, COLOR_WHITE} from 'context/color'
 import {WIDTH_MOBILE_S} from 'context/config'
 
 export default props => {
-  const {setPopup} = props
+  const {setPopupExp} = props
 
   // reference
   const layerWrapRef = useRef()
@@ -23,7 +23,7 @@ export default props => {
   }, [])
 
   const closePopup = () => {
-    setPopup(false)
+      setPopupExp(false)
   }
 
   const wrapClick = e => {
