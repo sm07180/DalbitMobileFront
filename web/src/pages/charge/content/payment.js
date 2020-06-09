@@ -89,25 +89,50 @@ export default props => {
 
   const chargeClick = async () => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    if (!name) {
-      return context.action.alert({
-        msg: '이름은 필수입력 값입니다.'
-      })
-    }
-    if (!phone) {
-      return context.action.alert({
-        msg: '핸드폰 번호는 필수입력 값입니다.'
-      })
-    }
-    if (!rgEx.test(phone)) {
-      return context.action.alert({
-        msg: '올바른 핸드폰 번호가 아닙니다.'
-      })
-    }
-    if ((status == 'i' || status == 'b') && receiptInput == '') {
-      return context.action.alert({
-        msg: '현금영수증 발급을 위하여 값을 입력해주세요.'
-      })
+
+    if (status !== 'n') {
+      if (status == 'i') {
+        if (receipt === 1) {
+          if (receiptInput == '')
+            return context.action.alert({
+              msg: '현금영수증 발급을 위하여 \n 주민번호를 입력해주세요.'
+            })
+        } else {
+          if (receiptInput == '')
+            return context.action.alert({
+              msg: '현금영수증 발급을 위하여 \n 휴대폰번호를 입력해주세요.'
+            })
+          if (!rgEx.test(receiptInput))
+            return context.action.alert({
+              msg: '현금영수증 발급을 위한 \n 휴대폰번호가 올바르지 않습니다.'
+            })
+        }
+      }
+
+      if (status == 'b') {
+        if (receiptInput == '')
+          return context.action.alert({
+            msg: '현금영수증 발급을 위하여 \n 사업자번호를 입력해주세요.'
+          })
+      }
+    } else {
+      if (!name) {
+        context.action.alert({
+          msg: '이름은 필수입력 값입니다.'
+        })
+        return
+      }
+      if (!phone) {
+        context.action.alert({
+          msg: '핸드폰 번호는 필수입력 값입니다.'
+        })
+        return
+      }
+      if (!rgEx.test(phone)) {
+        return context.action.alert({
+          msg: '올바른 핸드폰 번호가 아닙니다.'
+        })
+      }
     }
 
     if (name && phone && receipt) {
