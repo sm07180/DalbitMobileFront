@@ -260,10 +260,10 @@ const HalfWrap = styled.div`
       }
     }
 
-    &:first-child {
+    &:nth-child(1) {
       margin-right: 4px;
     }
-    &:last-child {
+    &:nth-child(2) {
       margin-left: 4px;
     }
   }
