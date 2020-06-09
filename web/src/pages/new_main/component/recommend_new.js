@@ -243,7 +243,7 @@ export default props => {
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[prevBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[prevBIdx]['profImg']['thumb120x120']} />
+                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[prevBIdx]['profImg']['url'] : list[prevBIdx]['profImg']['thumb120x120']} />
                   <div className="text-wrap">
                     <div className="selected-title">{list[prevBIdx]['title']}</div>
                     {list[prevBIdx]['nickNm'] !== 'banner' && (
@@ -266,7 +266,7 @@ export default props => {
                 }}
                 onClick={() => clickSlideDisplay(list[selectedBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[selectedBIdx]['profImg']['thumb120x120']} />
+                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[selectedBIdx]['profImg']['url'] : list[selectedBIdx]['profImg']['thumb120x120']} />
                   <div className="text-wrap">
                     <div className="selected-title">{list[selectedBIdx]['title']}</div>
                     {list[selectedBIdx]['nickNm'] !== 'banner' && (
@@ -285,7 +285,7 @@ export default props => {
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[nextBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[nextBIdx]['profImg']['thumb120x120']} />
+                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[nextBIdx]['profImg']['url'] : list[nextBIdx]['profImg']['thumb120x120']} />
                   <div className="text-wrap">
                     <div className="selected-title">{list[nextBIdx]['title']}</div>
                     {list[nextBIdx]['nickNm'] !== 'banner' && (

@@ -204,9 +204,17 @@ export default props => {
                             <div className="nick-name-wrap">
                               <span className="nick-name">{nickName}</span>
                               <span className="level">Lv{level}</span>
+<<<<<<< HEAD
                               {/* <div className="exp-box">
                                 {chageEventText()} <span>{gainPoint}</span>
                               </div> */}
+=======
+                              { rankingType == 'like' &&
+                                <div className="exp-box">
+                                  {chageEventText()} <span>{gainPoint}</span>
+                                </div>
+                              }
+>>>>>>> 370810715503b910e0c8f39ae5740a24e835ee33
                             </div>
                           </div>
                           {rankingType === 'exp' && fanRank1 && (

@@ -61,12 +61,13 @@ export default () => {
       }>
       <ScrollToTop />
       <Switch>
-        <Route exact path="/" component={Main} />
-        <Route exact path="/new_main" component={NewMain} />
+        {__NODE_ENV == 'dev' ? <Route exact path="/" component={NewMain} /> : <Route exact path="/" component={Main} />}
+        {/*<Route exact path="/" component={Main} />
+        <Route exact path="/new_main" component={NewMain} />*/}
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
-        <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank3" component={Ranking3} /> {/* new 랭킹 추가  */}
+        {__NODE_ENV == 'dev' ? <Route exact path="/rank" component={Ranking3} /> : <Route exact path="/rank" component={Ranking} />}
+         {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />

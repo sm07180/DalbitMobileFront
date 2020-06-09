@@ -135,6 +135,7 @@ const LevelListItem = styled.li`
           border-radius: 13px;
           border-width: 1px;
           border-style: solid;
+          font-size: 11px;
           font-weight: 600;
           letter-spacing: -1px;
           background: ${COLOR_WHITE};
