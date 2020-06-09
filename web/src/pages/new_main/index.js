@@ -444,9 +444,10 @@ export default props => {
           />
         )}
 
-        {__NODE_ENV !== 'real' && popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
-          <LayerPopupNotice setPopup={setPopupNotice} />
-        )}
+        {__NODE_ENV !== 'real' &&
+          customHeader['os'] !== OS_TYPE['IOS'] &&
+          popupNotice &&
+          Utility.getCookie('popup_notice200609') !== 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
