@@ -23,7 +23,7 @@ export default props => {
   }, [])
 
   const closePopup = () => {
-      setPopupExp(false)
+    setPopupExp(false)
   }
 
   const wrapClick = e => {
@@ -169,7 +169,7 @@ const PopupWrap = styled.div`
       }
     }
     .contents-box {
-      padding: 13px 17px 40px;
+      padding: 13px 17px 35px;
       li {
         padding-top: 16px;
         &:first-child {
@@ -237,7 +237,7 @@ const PopupWrap = styled.div`
   }
     @media (max-width: ${WIDTH_MOBILE_S}) {
       .content-wrap {
-        height: 85%;
+        height: 88%;
       }
       .contents-box {
         height: 88%;
