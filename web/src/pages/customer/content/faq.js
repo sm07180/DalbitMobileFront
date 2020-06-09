@@ -143,6 +143,13 @@ function Faq(props) {
     }
   }, [nextListPage])
 
+  //
+  const clickFocus = index => {
+    setTimeout(() => {
+      const height = document.querySelector(`.idx${index}`).offsetTop - 60
+      window.scrollTo(0, height)
+    }, 10)
+  }
   return (
     <>
       <PageWrap>
@@ -152,7 +159,7 @@ function Faq(props) {
 
             if (listPage === null) return
             return (
-              <div key={index}>
+              <div key={index} className={`idx${index}`} onClick={() => clickFocus(index)}>
                 {faqType === faqNum && (
                   <>
                     <TableWrap
