@@ -105,7 +105,7 @@ export default props => {
                       {nickNm}
                       </span>
                       <div className="iconBox">
-                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> <span className={genderName}>{gender}</span>
+                          {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> */}<span className={genderName}>{gender}</span>
                       </div>
                     </div>
                   </div>
