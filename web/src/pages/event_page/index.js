@@ -1,27 +1,21 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Link, useHistory} from 'react-router-dom'
-
-import './event_page.scss'
-import API from 'context/api'
-
+import Utility from 'components/lib/utility'
 //context
 import {Context} from 'context'
-
+import API from 'context/api'
+import {PHOTO_SERVER} from 'context/config.js'
 // component
 import Layout from 'pages/common/layout'
-import RankingTypeContent from './ranking_type_content'
+import NoResult from 'pages/main/component/NoResult.js'
+import React, {useContext, useEffect, useState} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import CommentEvent from './comment_event'
-
-import {PHOTO_SERVER} from 'context/config.js'
-
-import Utility from 'components/lib/utility'
-
+import './event_page.scss'
+import RankingTypeContent from './ranking_type_content'
+import btnClose from './static/ico_close.svg'
+import BronzeMedal from './static/medal_bronze@2x.png'
 // static
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
-import BronzeMedal from './static/medal_bronze@2x.png'
-import NoResult from 'pages/main/component/NoResult.js'
-import btnClose from './static/ico_close.svg'
 
 export default props => {
   const [eventType, setEventType] = useState('event') // event, comment
@@ -210,9 +204,9 @@ export default props => {
                             <div className="nick-name-wrap">
                               <span className="nick-name">{nickName}</span>
                               <span className="level">Lv{level}</span>
-                              <div className="exp-box">
+                              {/* <div className="exp-box">
                                 {chageEventText()} <span>{gainPoint}</span>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           {rankingType === 'exp' && fanRank1 && (

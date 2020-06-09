@@ -2,22 +2,17 @@
  * @file /ranking/content/rankList.js
  * @brief 랭킹 리스트 컴포넌트
  */
-import React, {useState, useEffect, useContext, useRef} from 'react'
-import styled from 'styled-components'
-import qs from 'query-string'
-
+import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
-import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
+import qs from 'query-string'
+import React, {useContext} from 'react'
+import styled from 'styled-components'
 import likeIcon from '../static/ico_like_g_s.svg'
 import peopleIcon from '../static/ico_peaple_g_s.svg'
-import starIcon from '../static/ico_hit_g_s.svg'
 import timeIcon from '../static/ico_time_g_s.svg'
-import moonIcon from '../static/ico_moon_g_s.svg'
-import Util from 'components/lib/utility.js'
-
 //component
 import Figure from './Figure'
 
@@ -57,10 +52,10 @@ export default props => {
             <p>{nickNm}</p>
             {rankType == 'dj' && (
               <>
-                <span>
+                {/* <span>
                   <img src={starIcon} />
                   {Util.printNumber(gift)}
-                </span>
+                </span> */}
                 <span>
                   <img src={peopleIcon} />
                   {Util.printNumber(listeners)}
@@ -77,10 +72,10 @@ export default props => {
             )}
             {rankType == 'fan' && (
               <>
-                <span>
+                {/* <span>
                   <img src={moonIcon} />
                   {Util.printNumber(gift)}
-                </span>
+                </span> */}
                 <span>
                   <img src={timeIcon} />
                   {Util.printNumber(listen)}

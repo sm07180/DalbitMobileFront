@@ -44,7 +44,7 @@ export default props => {
     myUpDown: ''
   })
 
-  const [dateType, setDateType] = useState(1)
+  const [dateType, setDateType] = useState(0)
   const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
@@ -136,7 +136,7 @@ export default props => {
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
-      index++
+      //index++
       return (
         <button
           key={index}
@@ -313,6 +313,7 @@ export default props => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
+  console.log(dateType)
   return (
     <>
       <div className="header">
@@ -325,14 +326,14 @@ export default props => {
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            {myInfo && myInfo.time}
+            {myInfo.time}
             <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
           </div>
         </div>
 
         <div className="todayList">{createDateButton()}</div>
 
-        {myProfile && myInfo && (
+        {myProfile && (
           <div
             className="myRanking"
             onClick={() => {

@@ -4,9 +4,8 @@
  * @todo
  */
 
-import React, {useState, useEffect, useContext} from 'react'
-import styled from 'styled-components'
 import Layout from 'pages/common/layout'
+import React from 'react'
 import Content from './content'
 //Context
 import {CustomerProvider} from './store'

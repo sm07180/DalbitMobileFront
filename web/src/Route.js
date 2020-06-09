@@ -3,21 +3,19 @@
  * @brief Router 목록들
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
+import ScrollToTop from 'components/lib/ScrollToTop'
+import Main from 'pages/main'
 import React from 'react'
-import {Route, Redirect, Switch} from 'react-router-dom'
-
+import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-import ScrollToTop from 'components/lib/ScrollToTop'
-
-import Main from 'pages/main'
 const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
-let Ranking = React.lazy(() => import('pages/ranking'))
-if (__NODE_ENV != 'real') {
-  Ranking = React.lazy(() => import('pages/ranking3'))
-}
-//const Ranking = React.lazy(() => import('pages/ranking'))
+// let Ranking = React.lazy(() => import('pages/ranking'))
+// if (__NODE_ENV != 'real') {
+//   Ranking = React.lazy(() => import('pages/ranking3'))
+// }
+const Ranking = React.lazy(() => import('pages/ranking'))
 const Ranking3 = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
