@@ -378,7 +378,7 @@ export default props => {
               </div>
 
               {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
-              {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
+              {broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>}
 
               <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
