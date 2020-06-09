@@ -57,10 +57,10 @@ export default props => {
             <p>{nickNm}</p>
             {rankType == 'dj' && (
               <>
-                <span>
+                {/*<span>
                   <img src={starIcon} />
                   {Util.printNumber(gift)}
-                </span>
+                </span>*/}
                 <span>
                   <img src={peopleIcon} />
                   {Util.printNumber(listeners)}
@@ -77,10 +77,10 @@ export default props => {
             )}
             {rankType == 'fan' && (
               <>
-                <span>
+                {/*<span>
                   <img src={moonIcon} />
                   {Util.printNumber(gift)}
-                </span>
+                </span>*/}
                 <span>
                   <img src={timeIcon} />
                   {Util.printNumber(listen)}
