@@ -53,11 +53,7 @@ export default props => {
   }
 
   const applyClick = () => {
-    // if (state.click1) {
-    //   //Utility.setCookie('popup_notice200525', 'Y', 1)
-    //   //sessionStorage.setItem('popup_notice200525', 'n')
-    // }
-    setPopupCookie('popup_notice200604', 'y')
+    setPopupCookie('popup_notice200609', 'y')
     setPopup(false)
   }
 
@@ -65,41 +61,13 @@ export default props => {
 
   return (
     <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick}>
-      {/* <div className="content-wrap">
-        <div className="each-line">
-          <p className="text">
-            안녕하세요! 달빛라이브입니다. <br />
-            <br />
-            금일 오전8시부터 약 3시간동안 서버 점검 작업이 진행됩니다.
-            <br />
-            해당시간 동안은 방에 참여 또는 생성할 수 없습니다.
-            <br />
-            <br />
-            고맙습니다. <br />
-            <br />- 달빛라이브 운영자 올림
-          </p>
-
-          <Checkbox title="오늘하루 열지 않음" fnChange={v => setState({click1: v})} checked={state.click1} />
-        </div>
-        <div className="btn-wrap">
-          <button className="apply-btn" onClick={applyClick}>
-            확인
-          </button>
-        </div>
-      </div> */}
       <div className="img-wrap">
-        <img src={`${IMG_SERVER}/images/api/popup_20200604.png`} />
-        <button
-          className="close"
-          onClick={() => {
-            closePopup()
-          }}>
-          닫기
-        </button>
+        <img src={`${IMG_SERVER}/images/api/popup_20200609.png`} />
+
         <button
           className="link"
           onClick={() => {
-            window.location.href = '/customer/notice/29'
+            window.location.href = '/event_page'
           }}>
           자세히보기
         </button>
@@ -109,6 +77,13 @@ export default props => {
             applyClick()
           }}>
           오늘하루보지않기
+        </button>
+        <button
+          className="close"
+          onClick={() => {
+            closePopup()
+          }}>
+          닫기
         </button>
       </div>
     </PopupWrap>
@@ -231,22 +206,22 @@ const PopupWrap = styled.div`
       /* border: 1px solid #000; */
     }
     .close {
-      right: 17px;
-      top: 12px;
+      right: 20px;
+      top: 25px;
       width: 32px;
       height: 32px;
     }
     .link {
-      width: 242px;
-      height: 75px;
-      bottom: 67px;
-      left: 19px;
+      width: 271px;
+      height: 283px;
+      bottom: 70px;
+      left: 4px;
     }
     .apply {
-      width: 242px;
+      width: 150px;
       height: 31px;
-      bottom: 35px;
-      left: 19px;
+      bottom: 21px;
+      left: 61px;
     }
   }
 `
