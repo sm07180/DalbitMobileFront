@@ -15,7 +15,7 @@ import Mic from './static/ic_broadcastng.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
-export default (props) => {
+export default props => {
   //context
   const context = useContext(Context)
   const {webview} = props
@@ -34,15 +34,15 @@ export default (props) => {
   const reLoad = () => {
     window.location.href = '/'
   }
-  const moveToMenu = (category) => {
+  const moveToMenu = category => {
     return (window.location.href = `/menu/${category}`)
   }
-  const moveToLogin = (category) => {
+  const moveToLogin = category => {
     if (!token.isLogin) {
       return (window.location.href = '/login')
     }
-    if(category === 'alarm'){
-        context.action.updateNews(false)
+    if (category === 'alarm') {
+      context.action.updateNews(false)
     }
     return (window.location.href = `/menu/${category}`)
   }
@@ -82,8 +82,8 @@ export default (props) => {
               className="mic-btn"
               onClick={() => {
                 if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  window.location.href = "https://inforexseoul.page.link/Ws4t"
-                }else{
+                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                } else {
                   if (!broadcastBtnActive) {
                     RoomMake(globalCtx)
                     setBroadcastBtnActive(true)

@@ -1,17 +1,90 @@
 @font-face {
   font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-Thin.otf') format('opentype');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-Light.otf') format('opentype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
   src: url('../asset/NotoSansKR-Regular.otf') format('opentype');
+  font-weight: 400;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-Medium.otf') format('opentype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-Bold.otf') format('opentype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/NotoSansKR-black.otf') format('opentype');
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/OpenSans-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
 @font-face {
   font-family: 'NotoSansKR';
   src: url('../asset/OpenSans-Regular.ttf') format('truetype');
-  unicode-range: U+0020-007E;
+  font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'NotoSansKR';
+  src: url('../asset/OpenSans-ExtraBold.ttf') format('truetype');
+  font-weight: 900;
 }
 
 div.type1 {
   font-family: 'NotoSansKR', sans-serif;
   background: lightcyan;
   font-size: 30px;
+  word-break: break-all;
+}
+
+span.light {
+  font-weight: 300;
+}
+
+span.normal {
+  font-weight: 500;
+}
+
+span.bold {
+  font-weight: 700;
+}
+
+span.black {
+  font-weight: 900;
 }
