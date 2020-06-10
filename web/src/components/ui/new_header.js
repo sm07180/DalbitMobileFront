@@ -34,7 +34,7 @@ const Header = styled.header`
   }
   .close-btn {
     display: block;
-    position: fixed;
+    position: absolute;
     left: 6px;
     width: 36px;
   }
