@@ -191,7 +191,7 @@ export default props => {
                             {idx < 3 ? (
                               <img className="medal-icon" src={idx === 0 ? GoldMedal : idx === 1 ? SivelMedal : BronzeMedal} />
                             ) : (
-                              <span className="num">{idx}</span>
+                              <span className="num">{idx + 1}</span>
                             )}
                           </div>
                           <div className="dj-info">
