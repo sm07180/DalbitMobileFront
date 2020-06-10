@@ -439,7 +439,7 @@ export default props => {
           />
         )}
 
-        {customHeader['os'] !== OS_TYPE['IOS'] && popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
+        {popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
             <LayerPopupNotice setPopup={setPopupNotice} />
         )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
