@@ -4,11 +4,13 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import Main from 'pages/main'
+
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
+// import Main from 'pages/main'
+const Main = React.lazy(() => import('pages/main'))
 const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
 const Ranking = React.lazy(() => import('pages/ranking3'))

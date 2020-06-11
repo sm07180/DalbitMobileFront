@@ -77,22 +77,22 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
 
       // *** Native App case
-          /*if (__NODE_ENV === 'dev') {
+      /*if (__NODE_ENV === 'dev') {
             alert(JSON.stringify(customHeader));
             alert(isHybrid());
         }*/
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
-            Hybrid('GetLoginToken', tokenInfo.data)
-            if (__NODE_ENV === 'dev') {
-                alert('after GetLoginToken isFirst : Y')
-            }
+          Hybrid('GetLoginToken', tokenInfo.data)
+          if (__NODE_ENV === 'dev') {
+            alert('after GetLoginToken isFirst : Y')
+          }
 
-            /*if (__NODE_ENV === 'dev'){
+          /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/
-            Utility.setCookie('native-player-info', '', -1)
+          Utility.setCookie('native-player-info', '', -1)
 
           // replace custom header isFirst value 'Y' => 'N'
           const customHeaderCookie = Utility.getCookie('custom-header')
@@ -137,11 +137,9 @@ const App = () => {
 
     const myInfoRes = await Api.mypage()
     if (myInfoRes.result === 'success') {
-        globalCtx.action.updateMyInfo(myInfoRes.data)
+      globalCtx.action.updateMyInfo(myInfoRes.data)
     }
   }
-
-
 
   //useEffect token
   useEffect(() => {
@@ -158,10 +156,10 @@ const App = () => {
   }, [])
 
   return (
-    <React.Fragment>
+    <>
       {ready && <Interface />}
       {ready && <Route />}
-    </React.Fragment>
+    </>
   )
 }
 export default App
