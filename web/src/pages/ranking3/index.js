@@ -9,7 +9,6 @@ import LayerPopup from './layer_popup'
 import './ranking.scss'
 import RankList from './rankList'
 import RankListTop from './rankListTop'
-import moon from './static/cashmoon_g_s.svg'
 import hint from './static/hint.svg'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -160,6 +159,7 @@ export default props => {
     })
   }
 
+  console.log(list)
   //checkScroll
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
