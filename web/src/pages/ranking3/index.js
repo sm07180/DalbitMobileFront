@@ -229,6 +229,8 @@ export default props => {
           myPoint: res.data.myPoint,
           myRank: res.data.myRank,
           myUpDown: res.data.myUpDown,
+          myBroadPoint: res.data.myBroadPoint,
+          myLikePoint: res.data.myLikePoint,
           time: res.data.time
         })
       }
@@ -381,7 +383,7 @@ export default props => {
 
                         <span className="countBox__item">
                           <img src={time} />
-                          {Util.printNumber(myProfile.BroadPoint)}
+                          {Util.printNumber(myInfo.myBroadPoint)}
                         </span>
                       </>
                     )}
