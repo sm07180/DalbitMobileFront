@@ -149,7 +149,7 @@ export default props => {
 
       if (res.result === 'success') {
         props.history.push({
-          pathname: '/charge/waitPayment',
+          pathname: location.pathname === '/charge_test' ? '/charge_test/waitPayment' : '/charge/waitPayment',
           state: {
             ...res.data,
             pageCode: pageCode
