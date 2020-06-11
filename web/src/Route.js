@@ -11,12 +11,7 @@ import Navigator from './pages/navigator'
 
 const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
-// let Ranking = React.lazy(() => import('pages/ranking'))
-// if (__NODE_ENV != 'real') {
-//   Ranking = React.lazy(() => import('pages/ranking3'))
-// }
-const Ranking = React.lazy(() => import('pages/ranking'))
-const Ranking3 = React.lazy(() => import('pages/ranking3'))
+const Ranking = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
@@ -62,16 +57,11 @@ export default () => {
       }>
       <ScrollToTop />
       <Switch>
-        {__NODE_ENV == 'dev' ? <Route exact path="/" component={NewMain} /> : <Route exact path="/" component={Main} />}
-        {/*<Route exact path="/" component={Main} />
-        <Route exact path="/new_main" component={NewMain} />*/}
+        <Route exact path="/" component={Main} />
+        <Route exact path="/new_main" component={NewMain} />
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
-        {__NODE_ENV == 'dev' ? (
-          <Route exact path="/rank" component={Ranking3} />
-        ) : (
-          <Route exact path="/rank" component={Ranking} />
-        )}
+        <Route exact path="/rank" component={Ranking} />
         {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
