@@ -83,7 +83,7 @@ export default props => {
                 <img src={item.img}></img>
               </div>
               <p>{item.itemNm}</p>
-              <p className="dal">&#92;{Utility.addComma(item.salePrice)}</p>
+              <p className="dal">￦{Utility.addComma(item.salePrice)}</p>
             </div>
           </div>
         )
