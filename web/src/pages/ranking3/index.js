@@ -33,7 +33,6 @@ export default props => {
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
   const [myInfo, setMyInfo] = useState({
-    myLikePoint: 0,
     myBroadPoint: 0,
     myFanPoint: 0,
     myGiftPoint: 0,
@@ -145,7 +144,6 @@ export default props => {
             setDateType(index)
             fetchRank(rankType, index)
             setMyInfo({
-              myLikePoint: 0,
               myBroadPoint: 0,
               myFanPoint: 0,
               myGiftPoint: 0,
@@ -161,7 +159,6 @@ export default props => {
     })
   }
 
-  console.log(myInfo)
   //checkScroll
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
@@ -231,9 +228,7 @@ export default props => {
           myListenerPoint: res.data.myListenerPoint,
           myPoint: res.data.myPoint,
           myRank: res.data.myRank,
-          myLikePoint: res.data.myLikePoint,
           myUpDown: res.data.myUpDown,
-          myBroadPoint: res.data.myBroadPoint,
           time: res.data.time
         })
       }
@@ -386,7 +381,7 @@ export default props => {
 
                         <span className="countBox__item">
                           <img src={time} />
-                          {Util.printNumber(myInfo.myBroadPoint)}
+                          {Util.printNumber(myProfile.BroadPoint)}
                         </span>
                       </>
                     )}
