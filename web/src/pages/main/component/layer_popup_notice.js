@@ -58,36 +58,7 @@ export default props => {
     }
 
     const [state, setState] = useState({})
-
     return (
-        <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
-            <div className="content-wrap">
-                <div className="each-line">
-                    <p className="text">
-                        - 서버 점검 안내 -<br/>
-                        <br/>
-                        안녕하세요. 달빛라이브입니다.<br/>
-                        금일 서버 점검이 예정되어 있어 안내말씀 드립니다.<br/>
-                        &lt; 점검시간 &gt;<br/>
-                        - 15시 00분~15시 20분까지<br/>
-                        &lt; 점검 내용 &gt;<br/>
-                        - 미디어 서버 이전 및 업데이트 (안정성 향상)<br/>
-                        - 무통장 입금 방식 업데이트(결제 진행 실시간급 처리)<br/>
-                        &lt; 주의 & 중요사항 - 꼭!! 읽어보세요 &gt;<br/>
-                        - 점검 완료 후, 반드시 앱을 완전 종료했다가 재실행하세요!<br/>
-                        ※ 자세한 내용은 공지사항을 참조해주세요!<br/>
-                    </p>
-                </div>
-                <div className="btn-wrap">
-                    <button className="apply-btn" onClick={closePopup}>
-                        확인
-                    </button>
-                </div>
-            </div>
-        </PopupWrap>
-
-    )
-    /*return (
         <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick}>
             <div className="img-wrap">
                 <img src={`${IMG_SERVER}/images/api/popup_20200609.png`} />
@@ -115,7 +86,7 @@ export default props => {
                 </button>
             </div>
         </PopupWrap>
-    )*/
+    )
 }
 
 const PopupWrap = styled.div`
