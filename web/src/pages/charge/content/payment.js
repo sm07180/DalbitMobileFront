@@ -40,15 +40,12 @@ export default props => {
   const [confirmData, setConfirmData] = useState(false)
   const [validation, setValidation] = useState(false)
 
-  // const {paymentName, paymentPrice, itemNo} = props.location.state ? props.location.state : props.history.goBack()
-  // console.log(props.location.state)
-
   const {webview} = qs.parse(location.search)
 
-  let paymentName = ''
-  let paymentPrice = ''
-  let payItemNo = ''
-  let pageCode = ''
+  let paymentName = '달 10'
+  let paymentPrice = '3000'
+  let payItemNo = 'CA0000001'
+  let pageCode = '1'
 
   if (props.location.state) {
     paymentName = props.location.state.paymentName
@@ -197,7 +194,6 @@ export default props => {
 
       MCASH_PAYMENT(ft)
       ft.innerHTML = ''
-      classList.remove('chargeButton--active')
     } else {
       context.action.alert({
         msg: res.message

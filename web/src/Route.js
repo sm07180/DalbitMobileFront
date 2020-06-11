@@ -27,6 +27,7 @@ let Charge = React.lazy(() => import('pages/charge'))
 if (__NODE_ENV === 'real') {
   Charge = React.lazy(() => import('pages/charge/index_bak'))
 }
+const ChargeTest = React.lazy(() => import('pages/charge/index_test'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const LevelInfo = React.lazy(() => import('pages/level'))
@@ -66,11 +67,17 @@ export default () => {
         <Route exact path="/new_main" component={NewMain} />*/}
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
-        {__NODE_ENV == 'dev' ? <Route exact path="/rank" component={Ranking3} /> : <Route exact path="/rank" component={Ranking} />}
-         {/* new 랭킹 추가  */}
+        {__NODE_ENV == 'dev' ? (
+          <Route exact path="/rank" component={Ranking3} />
+        ) : (
+          <Route exact path="/rank" component={Ranking} />
+        )}
+        {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
+        <Route exact path="/charge_test" component={ChargeTest} />
+        <Route exact path="/charge_test/:path" component={ChargeTest} />
         <Route exact path="/charge" component={Charge} />
         <Route exact path="/charge/:path" component={Charge} />
         <Route exact path="/exchange" component={Exchange} />
