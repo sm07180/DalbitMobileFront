@@ -2,7 +2,6 @@ import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
 import React, {useContext} from 'react'
-import moon from './static/cashmoon_g_s.svg'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
 import like from './static/like_g_s.svg'
@@ -59,9 +58,9 @@ export default props => {
                   <p className="rankingChange">
                     {upDown === 'new' ? (
                       <span className="rankingChange__new">NEW</span>
-                    ) : upDown < 0 ? (
-                      <span className="rankingChange__up">{Math.abs(upDown)}</span>
                     ) : upDown > 0 ? (
+                      <span className="rankingChange__up">{Math.abs(upDown)}</span>
+                    ) : upDown < 0 ? (
                       <span className="rankingChange__down">{Math.abs(upDown)}</span>
                     ) : (
                       <span className="rankingChange__stop"></span>

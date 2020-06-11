@@ -32,7 +32,7 @@ function usePrevious(value) {
   return ref.current
 }
 
-const makeContents = props => {
+const makeContents = (props) => {
   const {list, liveListType} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
 
@@ -101,13 +101,13 @@ const makeContents = props => {
                 }}>
                 <div className="top-status">
                   {firstList.entryType === 2 ? (
-                    <img src={twentyIcon} className="twenty-icon" />
+                    <span className="twenty-icon">20</span>
                   ) : firstList.entryType === 1 ? (
-                    <img src={fanIcon} className="fan-icon" />
+                    <span className="fan-icon">FAN</span>
                   ) : (
-                    <img src={allIcon} className="all-icon" />
+                    <span className="all-icon">ALL</span>
                   )}
-                  {firstList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                  {firstList.isSpecial && <span className="special-icon">S</span>}
                 </div>
                 <div className="entry-count">
                   <img className="entry-img" src={EntryImg} />
@@ -129,11 +129,11 @@ const makeContents = props => {
                   }}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (
-                      <img src={twentyIcon} className="twenty-icon" />
+                      <span className="twenty-icon">20</span>
                     ) : lastList.entryType === 1 ? (
-                      <img src={fanIcon} className="fan-icon" />
+                      <span className="fan-icon">FAN</span>
                     ) : (
-                      <img src={allIcon} className="all-icon" />
+                      <span className="all-icon">ALL</span>
                     )}
                     {lastList.isSpecial && <img src={specialIcon} className="special-icon" />}
                   </div>
@@ -157,7 +157,7 @@ const makeContents = props => {
   }
 }
 
-export default props => {
+export default (props) => {
   return (
     <React.Fragment>
       <Room />
@@ -196,25 +196,52 @@ const HalfWrap = styled.div`
       flex-direction: row;
       align-items: center;
 
-      img {
+      span {
         margin-right: 3px;
       }
 
       .twenty-icon {
         width: 24px;
         height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(223, 57, 57, 0.5);
+        text-align: center;
+        color: #fff;
       }
       .special-icon {
         width: 16px;
         height: 16px;
+        border-radius: 50%;
+        line-height: 16px;
+        font-size: 7px;
+        text-align: center;
+        color: #fff;
+        background-color: #ec455f;
       }
       .all-icon {
         width: 24px;
         height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(102, 177, 46, 0.5);
+        text-align: center;
+        color: #fff;
       }
       .fan-icon {
         width: 24px;
         height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(78, 115, 217, 0.5);
+        text-align: center;
+        color: #fff;
       }
     }
 
