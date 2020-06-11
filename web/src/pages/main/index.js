@@ -439,9 +439,10 @@ export default props => {
           />
         )}
 
-        {popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
+        {/*popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
             <LayerPopupNotice setPopup={setPopupNotice} />
-        )}
+        )*/}
+          {popupNotice && <LayerPopupNotice setPopup={setPopupNotice} />}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
