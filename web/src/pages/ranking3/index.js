@@ -248,7 +248,7 @@ export default props => {
     } else {
       return (
         <>
-          <RankListTop list={list.slice(0, 3)} rankType={rankType} />
+          <RankListTop list={list.slice(0, 3)} rankType={rankType} myMemNo={myProfile.memNo} />
           <RankList list={list.slice(3)} rankType={rankType} />
         </>
       )

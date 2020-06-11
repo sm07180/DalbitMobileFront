@@ -13,7 +13,9 @@ export default props => {
   //context
   const context = useContext(Context)
   const rankType = props.rankType
-  const {list} = props
+  const {list, myMemNo} = props
+
+  console.log(props.myMemNo)
 
   const creatList = () => {
     return (
@@ -81,7 +83,7 @@ export default props => {
 
               return (
                 <div
-                  className="TopBox__item"
+                  className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`}
                   key={index}
                   onClick={() => {
                     window.location.href = `/mypage/${memNo}`
