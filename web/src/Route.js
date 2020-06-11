@@ -21,9 +21,6 @@ const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 let Charge = React.lazy(() => import('pages/charge'))
-if (__NODE_ENV === 'real') {
-  Charge = React.lazy(() => import('pages/charge/index_bak'))
-}
 const ChargeTest = React.lazy(() => import('pages/charge/index_test'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
