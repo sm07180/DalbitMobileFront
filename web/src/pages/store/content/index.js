@@ -88,14 +88,14 @@ export default props => {
 
   function chargeClick() {
     if (context.token.isLogin) {
-      if (__NODE_ENV === 'real') {
+      /*if (__NODE_ENV === 'real') {
         context.action.updatePopup('CHARGE', {
           name: selected.name,
           price: selected.price,
           itemNo: selected.itemNo,
           isState: 'charge'
         })
-      } else {
+      } else {*/
         // Test ing...
         props.history.push({
           pathname: '/charge',
@@ -106,7 +106,7 @@ export default props => {
             isState: 'charge'
           }
         })
-      }
+      /*}*/
     } else {
       window.location.href = '/login'
     }
