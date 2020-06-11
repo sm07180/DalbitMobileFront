@@ -10,7 +10,6 @@ import './ranking.scss'
 import RankList from './rankList'
 import RankListTop from './rankListTop'
 import moon from './static/cashmoon_g_s.svg'
-import star from './static/cashstar_g_s.svg'
 import hint from './static/hint.svg'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -313,7 +312,6 @@ export default props => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
-  console.log(dateType)
   return (
     <>
       <div className="header">
@@ -354,8 +352,8 @@ export default props => {
             <div className="myRanking__right">
               <div className="myRanking__rightWrap">
                 <div className="thumbBox">
-                  <img src={myProfile.holder} width="70px" className="thumbBox__frame" />
-                  <img src={myProfile.profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                  <img src={myProfile.holder} className="thumbBox__frame" />
+                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic thumbBox__pic" />
                 </div>
 
                 <div>
@@ -363,45 +361,43 @@ export default props => {
                     Lv<strong>{myProfile.level}</strong>. {myProfile.grade}
                   </p>
                   <p className="nickNameBox">{myProfile.nickNm}</p>
+                  <div className="countBox countBox--profile">
+                    {rankType == 'dj' && (
+                      <>
+                        {/* <span className="countBox__item">
+                          <img src={star} />
+                          {Util.printNumber(myInfo.myGiftPoint)}
+                        </span> */}
+                        <span className="countBox__item">
+                          <img src={people} />
+                          {Util.printNumber(myInfo.myListenerPoint)}
+                        </span>
+
+                        <span className="countBox__item">
+                          <img src={like} />
+                          {Util.printNumber(myInfo.myLikePoint)}
+                        </span>
+
+                        <span className="countBox__item">
+                          <img src={time} />
+                          {Util.printNumber(myProfile.BroadPoint)}
+                        </span>
+                      </>
+                    )}
+                    {rankType == 'fan' && (
+                      <>
+                        <span className="countBox__item">
+                          <img src={moon} />
+                          {Util.printNumber(myProfile.dalCnt)}
+                        </span>
+                        <span className="countBox__item">
+                          <img src={time} />
+                          {Util.printNumber(myProfile.listenTotTime)}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-
-              <div className="countBox">
-                {rankType == 'dj' && (
-                  <>
-                    <span className="countBox__item">
-                      <img src={star} />
-                      {Util.printNumber(myInfo.myGiftPoint)}
-                    </span>
-                    <span className="countBox__item">
-                      <img src={people} />
-                      {Util.printNumber(myInfo.myListenerPoint)}
-                    </span>
-
-                    <span className="countBox__item">
-                      <img src={like} />
-                      {Util.printNumber(myInfo.myLikePoint)}
-                    </span>
-
-                    <span className="countBox__item">
-                      <img src={time} />
-                      {Util.printNumber(myProfile.BroadPoint)}
-                    </span>
-                  </>
-                )}
-
-                {rankType == 'fan' && (
-                  <>
-                    <span className="countBox__item">
-                      <img src={moon} />
-                      {Util.printNumber(myProfile.dalCnt)}
-                    </span>
-                    <span className="countBox__item">
-                      <img src={time} />
-                      {Util.printNumber(myProfile.listenTotTime)}
-                    </span>
-                  </>
-                )}
               </div>
             </div>
           </div>

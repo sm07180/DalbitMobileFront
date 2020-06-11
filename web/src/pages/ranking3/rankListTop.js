@@ -1,20 +1,14 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
-
-import frame49 from './static/ico_frame_49.png'
-import frame492x from './static/ico_frame_49@2x.png'
-import live from './static/live.svg'
+import React, {useContext} from 'react'
+import moon from './static/cashmoon_g_s.svg'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import korea from './static/ico-korea.png'
-import korea2x from './static/ico-korea@2x.png'
-import star from './static/cashstar_g_s.svg'
-import people from './static/people_g_s.svg'
 import like from './static/like_g_s.svg'
-import Util from 'components/lib/utility.js'
+import live from './static/live.svg'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
 
 export default props => {
   //context
@@ -87,11 +81,13 @@ export default props => {
               }
 
               return (
-                <div className="TopBox__item" key={index} onClick={() => {
-                  window.location.href = `/mypage/${memNo}`
-                }}>
-                  <div
-                    className="thumbBox">
+                <div
+                  className="TopBox__item"
+                  key={index}
+                  onClick={() => {
+                    window.location.href = `/mypage/${memNo}`
+                  }}>
+                  <div className="thumbBox">
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
@@ -101,11 +97,10 @@ export default props => {
                       Lv{level} {grade}
                     </p>
                     <div className="nickNameBox">
-                      <span className="nickName">
-                      {nickNm}
-                      </span>
+                      <span className="nickName">{nickNm}</span>
                       <div className="iconBox">
-                          {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> */}<span className={genderName}>{gender}</span>
+                        {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> */}
+                        <span className={genderName}>{gender}</span>
                       </div>
                     </div>
                   </div>
@@ -114,22 +109,19 @@ export default props => {
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}  />
+                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                           {Util.printNumber(dj)}
                         </span>
 
                         <div className="countBoxInner">
-                          <span className="countBox__item">
+                          {/* <span className="countBox__item">
                             <img src={star} />
                             {Util.printNumber(gift)}
-                          </span>
+                          </span> */}
                           <span className="countBox__item">
                             <img src={people} />
                             {Util.printNumber(listeners)}
                           </span>
-                        </div>
-
-                        <div className="countBoxInner">
                           <span className="countBox__item">
                             <img src={like} />
                             {Util.printNumber(likes)}
@@ -164,12 +156,15 @@ export default props => {
                   <div className="medalBox">
                     <p className={rankName}>{rank}</p>
                     <p className="rankingChange">
-                      {
-                      upDown === 'new' ? (<span className="rankingChange__new">NEW</span>)
-                      : upDown < 0 ? (<span className="rankingChange__up">{Math.abs(upDown)}</span>) 
-                      : upDown > 0 ? (<span className="rankingChange__down">{Math.abs(upDown)}</span>)
-                      : (<span className="rankingChange__stop"></span>)
-                      }
+                      {upDown === 'new' ? (
+                        <span className="rankingChange__new">NEW</span>
+                      ) : upDown < 0 ? (
+                        <span className="rankingChange__up">{Math.abs(upDown)}</span>
+                      ) : upDown > 0 ? (
+                        <span className="rankingChange__down">{Math.abs(upDown)}</span>
+                      ) : (
+                        <span className="rankingChange__stop"></span>
+                      )}
                     </p>
                   </div>
 
