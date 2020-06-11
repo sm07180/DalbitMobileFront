@@ -1,19 +1,14 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
-
+import React, {useContext} from 'react'
+import moon from './static/cashmoon_g_s.svg'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import star from './static/cashstar_g_s.svg'
-import people from './static/people_g_s.svg'
 import like from './static/like_g_s.svg'
-import korea from './static/ico-korea.png'
-import korea2x from './static/ico-korea@2x.png'
 import live from './static/live.svg'
-
-import Util from 'components/lib/utility.js'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
 
 export default props => {
   //context
@@ -75,7 +70,7 @@ export default props => {
                   {rankType == 'dj' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}   className="myRanking__img"/>
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
                         {Util.printNumber(dj)}
                       </p>
                     </>
@@ -84,7 +79,7 @@ export default props => {
                   {rankType == 'fan' && (
                     <>
                       <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`}  className="myRanking__img"/>
+                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
                         {Util.printNumber(fan)}
                       </p>
                     </>
@@ -101,49 +96,50 @@ export default props => {
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                        {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}<span className={genderName}>{gender}</span>
-                        {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                          {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
+                          <span className={genderName}>{gender}</span>
+                          {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                         </div>
                       </div>
+
+                      <div className="countBox">
+                        {rankType == 'dj' && (
+                          <>
+                            {/* <span className="countBox__item">
+                              <img src={star} />
+                              {Util.printNumber(gift)}
+                            </span> */}
+                            <span className="countBox__item">
+                              <img src={people} />
+                              {Util.printNumber(listeners)}
+                            </span>
+
+                            <span className="countBox__item">
+                              <img src={like} />
+                              {Util.printNumber(likes)}
+                            </span>
+
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {Util.printNumber(broadcast)}
+                            </span>
+                          </>
+                        )}
+
+                        {rankType == 'fan' && (
+                          <>
+                            {/* <span className="countBox__item">
+                              <img src={moon} />
+                              {Util.printNumber(gift)}
+                            </span> */}
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {Util.printNumber(listen)}
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="countBox">
-                    {rankType == 'dj' && (
-                      <>
-                        <span className="countBox__item">
-                          <img src={star} />
-                          {Util.printNumber(gift)}
-                        </span>
-                        <span className="countBox__item">
-                          <img src={people} />
-                          {Util.printNumber(listeners)}
-                        </span>
-
-                        <span className="countBox__item">
-                          <img src={like} />
-                          {Util.printNumber(likes)}
-                        </span>
-
-                        <span className="countBox__item">
-                          <img src={time} />
-                          {Util.printNumber(broadcast)}
-                        </span>
-                      </>
-                    )}
-
-                    {rankType == 'fan' && (
-                      <>
-                        <span className="countBox__item">
-                          <img src={moon} />
-                          {Util.printNumber(gift)}
-                        </span>
-                        <span className="countBox__item">
-                          <img src={time} />
-                          {Util.printNumber(listen)}
-                        </span>
-                      </>
-                    )}
                   </div>
                 </div>
 

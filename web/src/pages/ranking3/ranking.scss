@@ -32,9 +32,11 @@ img {
 
 .rankTopBox {
   display: flex;
+
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px 8px 16px;
+  padding: 8px 16px;
+
   background: #eee;
 
   &__update {
@@ -44,9 +46,8 @@ img {
     align-items: center;
   }
   &__img {
-    margin-left:4px;
+    margin-left: 4px;
   }
-
 }
 
 .rankTab {
@@ -63,15 +64,15 @@ img {
       color: #fff;
     }
   }
-  :last-child{
-    height:32px;
-    padding:0px 1px;
+  :last-child {
+    height: 32px;
+    padding: 0px 1px;
   }
 }
 
 .todayList {
   height: 36px;
-  border-bottom:1px solid #eee;
+  border-bottom: 1px solid #eee;
   text-align: center;
 
   &__btn {
@@ -94,10 +95,8 @@ img {
   padding: 12px 0 19px 0;
 
   &__left {
-    width: 25%;
+    width: 20%;
     text-align: center;
-
-    border-right: 1px solid #f5f5f5;
 
     &--title {
       font-size: 12px;
@@ -118,7 +117,7 @@ img {
       font-size: 12px;
       letter-spacing: -0.3px;
       color: #424242;
-          }
+    }
 
     &--ranking {
       width: 40px;
@@ -134,29 +133,24 @@ img {
   }
 
   &__right {
-    padding-left: 10px;
+    padding-left: 0px;
   }
 
   &__rightWrap {
     display: flex;
     align-items: center;
   }
-
-  .thumbBox {
-    width: 70px;
-    height: 70px;
-  }
 }
 
 .rankingChange {
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   height: 16px;
   font-size: 12px;
   font-weight: bold;
-  margin-bottom:4px;
-  
+  margin-bottom: 4px;
+
   &__up {
     color: #eb2828;
 
@@ -168,8 +162,7 @@ img {
       margin-right: 1px;
       background: url('./static/ico-ranking-up@2x.png') no-repeat;
       background-size: 100%;
-      background-position:0px 1px;
-
+      background-position: 0px 1px;
     }
   }
 
@@ -184,7 +177,7 @@ img {
       margin-right: 1px;
       background: url('./static/ico-ranking-down@2x.png') no-repeat;
       background-size: 100%;
-      background-position:0px 1px;
+      background-position: 0px 1px;
     }
   }
 
@@ -215,8 +208,8 @@ img {
 
 .thumbBox {
   position: relative;
-  width: 58px;
-  height: 58px;
+  width: 86px;
+  height: 86px;
   text-align: center;
 
   &__frame {
@@ -226,23 +219,27 @@ img {
   }
 
   &__pic {
-    width: 71%;
     margin-top: 11px;
+    width: 71%;
     border-radius: 50%;
+  }
+
+  &__profile {
+    width: 86px;
+    height: 86px;
   }
 }
 
 .rankingList {
-  display:flex;
+  display: flex;
   align-items: flex-start;
   position: relative;
   padding: 12px 0;
   border-bottom: 1px solid #eee;
 
-
   .thumbBox {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     margin-right: 6px;
 
     &__pic {
@@ -254,17 +251,17 @@ img {
     margin-top: 0;
     font-size: 14px;
   }
-  
+
   .countBox {
     padding-left: 0;
   }
 
   .myRanking__left--point {
     padding-top: 0px;
-      }
+  }
 
-  .myRanking__img{
-  margin-right:2px;
+  .myRanking__img {
+    margin-right: 2px;
   }
 
   .liveBox {
@@ -316,26 +313,26 @@ img {
     font-size: 12px;
     letter-spacing: -0.3px;
     color: #424242;
+  }
 
-    &--point {
-      display: block;
-    }
+  &--profile {
+    padding-left: 0px;
   }
 }
 
 .nickNameBox {
   align-items: center;
   flex-direction: column;
-  margin-top: 9px;
+  margin-top: 7px;
   font-size: 16px;
   color: #000;
   font-weight: bold;
 
-  .nickNameImg{
-    display:flex;
+  .nickNameImg {
+    display: flex;
     align-content: center;
-    margin-top:4px;
-    margin-right:auto;
+    margin-top: 4px;
+    margin-right: auto;
   }
 
   .genderBox {
@@ -344,23 +341,23 @@ img {
     background-size: 100%;
     vertical-align: middle;
 
-    &.korea-m{
-    margin-left:2px;
-    border:1px solid;
+    &.korea-m {
+      margin-left: 2px;
+      border: 1px solid;
     }
 
     &.gender-m {
       width: 24px;
       height: 16px;
       background-image: url(./static/ico-male@2x.png);
-      margin-left:2px;
+      margin-left: 2px;
     }
 
     &.gender-f {
       width: 24px;
       height: 16px;
       background-image: url(./static/ico-female@2x.png);
-      margin-left:2px;
+      margin-left: 2px;
     }
   }
 }
@@ -411,43 +408,36 @@ img {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 36px 16px 16px 16px;
+    padding: 60px 0 16px 0;
     background: #eee;
 
     .thumbBox {
-      width: 58px;
-      height: 58px;
+      width: 86px;
+      height: 86px;
       margin: 0 auto;
-
-      &__pic {
-        margin-top: 9px;
-      }
     }
 
     .countBox {
       margin-top: 7px;
-      padding-top: 3px;
-      border-top: 1px solid #f5f5f5;
 
       &__item {
-        &--point{
-          margin-top:3px;
+        &--point {
+          margin-top: 3px;
         }
       }
     }
 
     .iconBox {
-      display:flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      margin-top:4px;
+      margin-top: 4px;
     }
 
     &__item {
       position: relative;
       padding: 9px;
-      border-radius: 16px;
-      border: solid 1px #632beb;
+      border-top: solid 1px #632beb;
       background-color: #fff;
       text-align: center;
       width: 49%;
@@ -461,29 +451,36 @@ img {
       &:first-child {
         width: 100%;
         padding-top: 50px;
-        margin-bottom: 2%;
-        border: solid 2px #632beb;
-        .nickName{
-          display:flex;
+        margin-bottom: 8px;
+        border-top: solid 2px #632beb;
+        .nickName {
+          display: flex;
           justify-content: center;
         }
-        
+
         .thumbBox {
-          width: 70px;
-          height: 70px;
+          width: 104px;
+          height: 104px;
           position: absolute;
-          top: -22px;
-          left: calc(50% - 35px);
+          top: -50px;
+          left: 0;
+          right: 0;
+
+          &__pic {
+            margin-top: 15px;
+          }
         }
 
         .nickNameBox {
           font-size: 16px;
-          display:flex;
+          display: flex;
+          align-items: center;
 
           .iconBox {
-            display:flex;
+            display: flex;
             align-items: center;
-            margin-left:6px;
+            margin-left: 6px;
+            margin-top: 0px;
           }
         }
 
@@ -493,7 +490,6 @@ img {
           &__item {
             &--point {
               display: inline-block;
-
             }
           }
 
