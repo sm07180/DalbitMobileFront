@@ -128,10 +128,10 @@ export default props => {
 
                         {rankType == 'fan' && (
                           <>
-                            <span className="countBox__item">
+                            {/* <span className="countBox__item">
                               <img src={moon} />
                               {Util.printNumber(gift)}
-                            </span>
+                            </span> */}
                             <span className="countBox__item">
                               <img src={time} />
                               {Util.printNumber(listen)}
