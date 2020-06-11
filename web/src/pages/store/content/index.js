@@ -24,9 +24,20 @@ export default props => {
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
+  const [showAdmin, setShowAdmin] = useState(false)
   const [mydal, setMydal] = useState('0')
 
   //---------------------------------------------------------------------
+  const fetchAdmin = async () => {
+      const adminFunc = await Api.getAdmin()
+      if (adminFunc.result === 'success') {
+          if (adminFunc.data.isAdmin === true) {
+              setShowAdmin(true)
+          }
+      } else if (adminFunc.result === 'fail') {
+          setShowAdmin(false)
+      }
+  }
 
   async function getStoreList() {
     const res = await Api.store_list({})
@@ -77,7 +88,7 @@ export default props => {
 
   function chargeClick() {
     if (context.token.isLogin) {
-      if (__NODE_ENV === 'real') {
+      if (__NODE_ENV === 'real' && showAdmin == false) {
         context.action.updatePopup('CHARGE', {
           name: selected.name,
           price: selected.price,
@@ -120,6 +131,7 @@ export default props => {
 
   //useEffect
   useEffect(() => {
+    fetchAdmin()
     getStoreList()
   }, [])
   //---------------------------------------------------------------------
