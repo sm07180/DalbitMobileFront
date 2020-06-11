@@ -50,7 +50,7 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
-  const exdate = new Date()
+  /*const exdate = new Date()
   exdate.setHours(15)
   exdate.setMinutes(0)
   exdate.setSeconds(0)
@@ -60,7 +60,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
             msg: '시스템 점검중입니다.\n잠시만 기다려주세요.'
         })
         return
-    }
+    }*/
   const today = new Date()
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
@@ -211,7 +211,7 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
-    const exdate = new Date()
+    /*const exdate = new Date()
     exdate.setHours(15)
     exdate.setMinutes(0)
     exdate.setSeconds(0)
@@ -221,7 +221,7 @@ export const RoomMake = async (context) => {
             msg: '시스템 점검중입니다.\n잠시만 기다려주세요.'
         })
         return
-    }
+    }*/
   const today = new Date()
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())

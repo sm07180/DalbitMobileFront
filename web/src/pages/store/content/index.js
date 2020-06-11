@@ -88,7 +88,7 @@ export default props => {
 
   function chargeClick() {
     if (context.token.isLogin) {
-      if (__NODE_ENV === 'real' && showAdmin == false) {
+      if (__NODE_ENV === 'real') {
         context.action.updatePopup('CHARGE', {
           name: selected.name,
           price: selected.price,
