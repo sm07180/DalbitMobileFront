@@ -69,8 +69,20 @@ export default props => {
         setProfileInfo(profileInfo.data)
         context.action.updateProfile(profileInfo.data)
         if (profileInfo.code === '-2') {
-          setCodes('-2')
+            context.action.alert({
+                callback: () => {
+                    window.history.back()
+                },
+                msg: '탈퇴한 회원입니다.'
+            });
         }
+      }else{
+        context.action.alert({
+          callback: () => {
+              window.history.back()
+          },
+          msg: '탈퇴한 회원입니다.'
+        });
       }
     }
     if (memNo) {

@@ -13,10 +13,10 @@ import {OS_TYPE} from 'context/config.js'
 // static
 import {IMG_SERVER} from 'context/config'
 import closeBtn from 'pages/menu/static/ic_close.svg'
-import naverLogo from './static/naver_logo.png'
-import kakaoLogo from './static/kakao_logo.png'
-import googleLogo from './static/google_logo.png'
-import facebookLogo from './static/fb_logo.png'
+import naverLogo from './static/naver_logo.svg'
+import kakaoLogo from './static/kakao_logo.svg'
+import googleLogo from './static/google_logo.svg'
+import facebookLogo from './static/facebook_logo.svg'
 import appleLogo from './static/apple_logo.svg'
 
 import qs from 'query-string'
@@ -281,52 +281,28 @@ export default props => {
 
             <SocialLoginWrap>
               <div className="line-wrap">
-                <button className="new-design-social-btn" onClick={() => fetchSocialData('apple')}>
+                <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
                   <img className="icon" src={appleLogo} />
                 </button>
-                <button className="new-design-social-btn" onClick={() => fetchSocialData('facebook')}>
+                <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
                   <img className="icon" src={facebookLogo} />
                 </button>
-                <button className="new-design-social-btn" onClick={() => fetchSocialData('naver')}>
+                <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
                   <img className="icon" src={naverLogo} />
                 </button>
-                <button className="new-design-social-btn" onClick={() => fetchSocialData('kakao')}>
+                <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
                   <img className="icon" src={kakaoLogo} />
                 </button>
                 {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52))) && (
-                  <button className="new-design-social-btn" onClick={() => fetchSocialData('google')}>
+                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                  (customHeader['os'] === OS_TYPE['Desktop'])) && (
+                  <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                   </button>
                 )}
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
-
-            {/* <SocialLoginWrap>
-              <div className="line-wrap">
-                <button className="social-btn" onClick={() => fetchSocialData('facebook')}>
-                  <img className="icon facebook" src={facebookLogo} />
-                  <span className="text">페이스북 로그인</span>
-                </button>
-
-                <button className="social-btn" onClick={() => fetchSocialData('google')}>
-                  <img className="icon google" src={googleLogo} />
-                  <span className="text">구글 로그인</span>
-                </button>
-              </div>
-              <div className="line-wrap">
-                <button className="social-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon naver" src={naverLogo} />
-                  <span className="text">네이버 로그인</span>
-                </button>
-
-                <button className="social-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon kakao" src={kakaoLogo} />
-                  <span className="text">카카오톡 로그인</span>
-                </button>
-              </div>
-            </SocialLoginWrap> */}
           </Login>
         )}
       </Switch>
@@ -344,42 +320,47 @@ const SocialLoginWrap = styled.div`
     justify-content: space-around; */
     /* align-items: center; */
     text-align: center;
-
-    .new-design-social-btn {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: #eee;
-      margin: 0 8px;
-
-      .icon {
-        width: 36px;
-      }
+    
+    .social-apple-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #000000;
+      background-color: #000000;
+      margin-right:12px;
+    }
+    
+    .social-facebook-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #4064ad;
+      background-color: #ffffff;
+      margin-right:12px;
+    }
+    
+    .social-naver-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      background-color: #2db400;
+      margin-right:12px;
     }
 
-    .social-btn {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: calc(50% - 6px);
+    .social-kakao-btn {
+      width: 48px;
       height: 48px;
-      background-color: #f5f5f5;
-      box-sizing: border-box;
-      padding: 0 6px;
+      border-radius: 25px;
+      background-color: #f9e000;
+      margin-right:12px;
+    }
 
-      .icon {
-        width: 36px;
-      }
-      .text {
-        display: inline-block;
-        width: calc(100% - 36px);
-        color: #757575;
-        font-size: 12px;
-        letter-spacing: -0.3px;
-        text-align: center;
-      }
+    .social-google-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #4285f4;
+      background-color: #ffffff;
     }
   }
 

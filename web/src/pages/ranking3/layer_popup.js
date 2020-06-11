@@ -1,8 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react'
-import styled from 'styled-components'
-
-import CloseBtn from './static/ic_close.svg'
 import {COLOR_MAIN} from 'context/color'
+import React, {useEffect, useRef, useState} from 'react'
+import styled from 'styled-components'
+import CloseBtn from './static/ic_close.svg'
 
 export default props => {
   const {setPopup} = props
@@ -124,14 +123,14 @@ export default props => {
             </p>
             <h5>FAN</h5>
             <p>
-              <strong>전 주 보낸 달(60%) + 전 주 청취시간(40%)</strong>
+              <strong>전주 보낸 달(60%) + 전주 청취시간(40%)</strong>
               <br />
             </p>
 
             <p className="desc">
               주간 랭킹은 종료된 방송방 기준
               <br />
-              매주 월요일부터 일요일까지의 데이터로 집계되며 매주 월요일 05:00에 지난주 랭킹이 갱신됩니다.
+              매주 월요일부터 일요일까지의 데이터로 집계되며 매주 월요일 05:00에 주간 랭킹이 갱신됩니다.
               <br />
               ※부스터로 상승한 좋아요는 집계에서 제외됩니다.
             </p>

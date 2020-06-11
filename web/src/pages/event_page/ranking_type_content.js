@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react'
-
 //context
 import {Context} from 'context'
+import React, {useContext} from 'react'
 
 export default function RankingType(props) {
   const globalCtx = useContext(Context)
@@ -19,7 +18,7 @@ export default function RankingType(props) {
           <p>순위는 실시간으로 집계됩니다.</p>
 
           <p>
-            매회차 중복 당첨 가능, 같은 회차 분야별 <span>(경험치,좋아요, 선물)</span> 중복 당첨은 제외함{' '}
+            매회차 당첨 가능, 같은 회차 분야별 <span>(경험치,좋아요, 선물)</span> 중복 당첨은 제외함{' '}
             <span>(가격기준 고순위만 인정, 후순위 유저가 대체 선정)</span>
           </p>
 
@@ -60,7 +59,7 @@ export default function RankingType(props) {
   } else if (props.rankingType === 'gift') {
     return (
       <div className="content-wrap">
-        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200608/ranking_gift_01_img1.png" />}
+        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200609/ranking_gift_01_img3_0609.png" />}
         {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200608/ranking_gift_01_img2.png" />}
         {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200608/ranking_gift_01_img3.png" />}
 
@@ -70,6 +69,15 @@ export default function RankingType(props) {
           </p>
           <p>집계는 실시간으로 진행됩니다.</p>
           <p>이벤트 전체적인 유의사항은 ‘경험치 랭킹’에서 확인하세요.</p>
+          <p>
+            배지(회장님, 부회장님, 사장님)는 매 회차 당첨 가능.
+            <br />
+            단, 최고 높은 등급의 배지 1개만 지급됩니다.
+            <br />
+            배지 유효기간은 1개월 입니다.
+          </p>
+
+          <p>배지는 이벤트 종료 후 일괄 지급됩니다.</p>
         </div>
       </div>
     )

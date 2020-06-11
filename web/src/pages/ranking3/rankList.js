@@ -101,7 +101,7 @@ export default props => {
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                        <img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> <span className={genderName}>{gender}</span>
+                        {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}<span className={genderName}>{gender}</span>
                         {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                         </div>
                       </div>

@@ -1,11 +1,23 @@
-import React, {useState, useEffect, useContext} from 'react'
-
+import Util from 'components/lib/utility.js'
+import NoResult from 'components/ui/noResult'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
-
+import React, {useContext, useEffect, useState} from 'react'
+import LayerPopup from './layer_popup'
 //state
 import './ranking.scss'
+import RankList from './rankList'
+import RankListTop from './rankListTop'
+import moon from './static/cashmoon_g_s.svg'
+import star from './static/cashstar_g_s.svg'
+import hint from './static/hint.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
+import closeBtn from './static/ic_back.svg'
+import like from './static/like_g_s.svg'
+import people from './static/people_g_s.svg'
+import time from './static/time_g_s.svg'
 
 const rankArray = ['dj', 'fan']
 const dateArray = ['오늘', '일간', '주간']
@@ -13,22 +25,6 @@ const dateArray = ['오늘', '일간', '주간']
 
 let currentPage = 1
 let moreState = false
-
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import moon from './static/cashmoon_g_s.svg'
-import time from './static/time_g_s.svg'
-import hint from './static/hint.svg'
-import star from './static/cashstar_g_s.svg'
-import people from './static/people_g_s.svg'
-import like from './static/like_g_s.svg'
-import closeBtn from './static/ic_back.svg'
-
-import RankList from './rankList'
-import RankListTop from './rankListTop'
-import NoResult from 'components/ui/noResult'
-import LayerPopup from './layer_popup'
-import Util from 'components/lib/utility.js'
 
 export default props => {
   let timer
@@ -38,9 +34,17 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [popup, setPopup] = useState(false)
   const [list, setList] = useState(-1)
-  const [myInfo, setMyInfo] = useState()
+  const [myInfo, setMyInfo] = useState({
+    myBroadPoint: 0,
+    myFanPoint: 0,
+    myGiftPoint: 0,
+    myListenerPoint: 0,
+    myPoint: 0,
+    myRank: 0,
+    myUpDown: ''
+  })
 
-  const [dateType, setDateType] = useState(1)
+  const [dateType, setDateType] = useState(0)
   const [myRank, setMyRank] = useState(false)
   const context = useContext(Context)
   const typeState = props.location.state
@@ -132,7 +136,7 @@ export default props => {
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
-      index++
+      //index++
       return (
         <button
           key={index}
@@ -141,6 +145,15 @@ export default props => {
             currentPage = 1
             setDateType(index)
             fetchRank(rankType, index)
+            setMyInfo({
+              myBroadPoint: 0,
+              myFanPoint: 0,
+              myGiftPoint: 0,
+              myListenerPoint: 0,
+              myPoint: 0,
+              myRank: 0,
+              myUpDown: ''
+            })
           }}>
           {item}
         </button>
@@ -300,6 +313,7 @@ export default props => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
+  console.log(dateType)
   return (
     <>
       <div className="header">
@@ -312,7 +326,7 @@ export default props => {
           <div className="rankTab">{createRankButton()}</div>
 
           <div className="rankTopBox__update">
-            {myInfo && myInfo.time}
+            {myInfo.time}
             <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
           </div>
         </div>
@@ -327,13 +341,13 @@ export default props => {
             }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myInfo && myInfo.myRank}</p>
+              <p className="myRanking__left--now">{myInfo.myRank}</p>
               <p className="rankingChange">
-                {myInfo && createMyProfile()}
+                {createMyProfile()}
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
               </p>
               <p className="myRanking__left--point">
-                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo && myInfo.myPoint}
+                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} /> {myInfo.myPoint}
               </p>
             </div>
 
@@ -357,21 +371,21 @@ export default props => {
                   <>
                     <span className="countBox__item">
                       <img src={star} />
-                      {Util.printNumber(myInfo && myInfo.myGiftPoint)}
+                      {Util.printNumber(myInfo.myGiftPoint)}
                     </span>
                     <span className="countBox__item">
                       <img src={people} />
-                      {Util.printNumber(myInfo && myInfo.myListenerPoint)}
+                      {Util.printNumber(myInfo.myListenerPoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={like} />
-                      {Util.printNumber(myInfo && myInfo.myLikePoint)}
+                      {Util.printNumber(myInfo.myLikePoint)}
                     </span>
 
                     <span className="countBox__item">
                       <img src={time} />
-                      {Util.printNumber(myInfo && myProfile.BroadPoint)}
+                      {Util.printNumber(myProfile.BroadPoint)}
                     </span>
                   </>
                 )}

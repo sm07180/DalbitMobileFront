@@ -3,20 +3,19 @@
  * @brief Router 목록들
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
+import ScrollToTop from 'components/lib/ScrollToTop'
+import Main from 'pages/main'
 import React from 'react'
-import {Route, Redirect, Switch} from 'react-router-dom'
-
+import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-import ScrollToTop from 'components/lib/ScrollToTop'
-
-import Main from 'pages/main'
+const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
-let Ranking = React.lazy(() => import('pages/ranking'))
-if (__NODE_ENV != 'real') {
-  Ranking = React.lazy(() => import('pages/ranking3'))
-}
-//const Ranking = React.lazy(() => import('pages/ranking'))
+// let Ranking = React.lazy(() => import('pages/ranking'))
+// if (__NODE_ENV != 'real') {
+//   Ranking = React.lazy(() => import('pages/ranking3'))
+// }
+const Ranking = React.lazy(() => import('pages/ranking'))
 const Ranking3 = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
@@ -30,6 +29,7 @@ if (__NODE_ENV === 'real') {
 }
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
+const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
@@ -61,11 +61,13 @@ export default () => {
       }>
       <ScrollToTop />
       <Switch>
-        <Route exact path="/" component={Main} />
+        {__NODE_ENV == 'dev' ? <Route exact path="/" component={NewMain} /> : <Route exact path="/" component={Main} />}
+        {/*<Route exact path="/" component={Main} />
+        <Route exact path="/new_main" component={NewMain} />*/}
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
-        <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank3" component={Ranking3} /> {/* new 랭킹 추가  */}
+        {__NODE_ENV == 'dev' ? <Route exact path="/rank" component={Ranking3} /> : <Route exact path="/rank" component={Ranking} />}
+         {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
@@ -80,6 +82,7 @@ export default () => {
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
+        <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />
         <Route exact path="/customer/:title" component={Customer} />
