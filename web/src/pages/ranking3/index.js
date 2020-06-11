@@ -338,7 +338,9 @@ export default props => {
             }}>
             <div className="myRanking__left">
               <p className="myRanking__left--title">내 랭킹</p>
-              <p className="myRanking__left--now">{myInfo.myRank === 0 ? <i class="rankingChange__stop"></i> : myInfo.myRank}</p>
+              <p className="myRanking__left--now">
+                {myInfo.myRank === 0 ? <span className="rankingChange__stop"></span> : myInfo.myRank}
+              </p>
               <p className="rankingChange">
                 {createMyProfile()}
                 {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
