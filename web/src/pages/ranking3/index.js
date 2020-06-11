@@ -386,10 +386,10 @@ export default props => {
                     )}
                     {rankType == 'fan' && (
                       <>
-                        <span className="countBox__item">
+                        {/* <span className="countBox__item">
                           <img src={moon} />
                           {Util.printNumber(myProfile.dalCnt)}
-                        </span>
+                        </span> */}
                         <span className="countBox__item">
                           <img src={time} />
                           {Util.printNumber(myProfile.listenTotTime)}
