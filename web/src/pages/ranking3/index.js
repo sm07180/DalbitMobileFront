@@ -36,13 +36,15 @@ export default props => {
   const [popup, setPopup] = useState(false);
   const [list, setList] = useState(-1);
   const [myInfo, setMyInfo] = useState({
-    myBroadPoint: 0,
-    myFanPoint: 0,
     myGiftPoint: 0,
     myListenerPoint: 0,
-    myPoint: 0,
     myRank: 0,
-    myUpDown: ''
+    myUpDown: '',
+    myBroadPoint: 0,
+    myLikePoint: 0,
+    myPoint: 0,
+    myListenPoint: 0,
+    time: ''
   });
 
   const [dateType, setDateType] = useState(0);
@@ -154,13 +156,15 @@ export default props => {
             setDateType(index);
             fetchRank(rankType, index);
             setMyInfo({
-              myBroadPoint: 0,
-              myFanPoint: 0,
               myGiftPoint: 0,
               myListenerPoint: 0,
-              myPoint: 0,
               myRank: 0,
-              myUpDown: ''
+              myUpDown: '',
+              myBroadPoint: 0,
+              myLikePoint: 0,
+              myPoint: 0,
+              myListenPoint: 0,
+              time: ''
             });
           }}
         >
@@ -254,6 +258,7 @@ export default props => {
           myBroadPoint: res.data.myBroadPoint,
           myLikePoint: res.data.myLikePoint,
           myPoint: res.data.myPoint,
+          myListenPoint: res.myListenPoint,
           time: res.data.time
         });
       }
