@@ -258,7 +258,7 @@ export default props => {
           myBroadPoint: res.data.myBroadPoint,
           myLikePoint: res.data.myLikePoint,
           myPoint: res.data.myPoint,
-          myListenPoint: res.myListenPoint,
+          myListenPoint: res.data.myListenPoint,
           time: res.data.time
         });
       }
