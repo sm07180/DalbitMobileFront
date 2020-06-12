@@ -624,8 +624,7 @@ const Content = styled.div`
 `
 
 const SubMain = styled.div`
-  height: 310px;
-  background: #fff;
+  background-color: #fff;
 
   .gnb {
     display: flex;

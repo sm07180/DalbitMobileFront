@@ -18,7 +18,10 @@ let touchEndX = null
 let touchStartStatus = false
 let direction = null
 
-export default props => {
+let intervalId = null
+const intervalSec = 2000
+
+export default (props) => {
   const context = useContext(Context)
   const {list} = props
   const history = useHistory()
@@ -28,7 +31,7 @@ export default props => {
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
-  const touchStartEvent = e => {
+  const touchStartEvent = (e) => {
     if (touchStartStatus) {
       return
     }
@@ -36,10 +39,15 @@ export default props => {
     if (Array.isArray(list) && list.length > 1) {
       touchStartStatus = true
       touchStartX = e.touches[0].clientX
+
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+      intervalId = null
     }
   }
 
-  const touchMoveEvent = e => {
+  const touchMoveEvent = (e) => {
     const slideWrapNode = slideWrapRef.current
     touchEndX = e.touches[0].clientX
 
@@ -51,7 +59,7 @@ export default props => {
     slideWrapNode.style.transitionDuration = '0ms'
   }
 
-  const touchEndEvent = e => {
+  const touchEndEvent = (e) => {
     if (!touchEndX || !touchStartStatus) {
       return
     }
@@ -93,15 +101,52 @@ export default props => {
 
         slideWrapNode.style.transitionDuration = '0ms'
         slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
+      }
+
+      if (intervalId === null) {
+        initInterval()
         touchStartStatus = false
       }
     })
   }
 
+  const initInterval = () => {
+    const slidingTime = 150 // unit is ms
+
+    intervalId = setInterval(() => {
+      const slideWrapNode = slideWrapRef.current
+      const baseWidth = slideWrapNode.clientWidth / 3
+
+      if (!touchStartStatus) {
+        const promiseSync = new Promise((resolve, reject) => {
+          touchStartStatus = true
+          slideWrapNode.style.transitionDuration = `${slidingTime}ms`
+          slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
+          setTimeout(() => resolve(), slidingTime)
+        })
+
+        promiseSync.then(() => {
+          setSelectedBIdx((selectedBIdx) => {
+            const nextIdx = selectedBIdx + 1
+            if (nextIdx < list.length) {
+              return nextIdx
+            } else {
+              return 0
+            }
+          })
+
+          slideWrapNode.style.transitionDuration = '0ms'
+          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
+          touchStartStatus = false
+        })
+      }
+    }, intervalSec)
+  }
+
   useEffect(() => {
     if (window.localStorage.getItem('bannerList')) {
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
-      list.forEach(url => {
+      list.forEach((url) => {
         if (url) {
           URL.revokeObjectURL(url)
         }
@@ -120,8 +165,8 @@ export default props => {
       list.forEach((line, idx) => {
         const {bannerUrl} = line
         fetch(bannerUrl)
-          .then(res => res.blob())
-          .then(blob => {
+          .then((res) => res.blob())
+          .then((blob) => {
             count++
             const cacheUrl = URL.createObjectURL(blob)
             tempBlobList[idx] = cacheUrl
@@ -139,39 +184,11 @@ export default props => {
           })
       })
 
-      const slidingTime = 150 // unit is ms
-
-      const intervalId = setInterval(() => {
-        const slideWrapNode = slideWrapRef.current
-        const baseWidth = slideWrapNode.clientWidth / 3
-
-        if (!touchStartStatus) {
-          const promiseSync = new Promise((resolve, reject) => {
-            touchStartStatus = true
-            slideWrapNode.style.transitionDuration = `${slidingTime}ms`
-            slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
-            setTimeout(() => resolve(), slidingTime)
-          })
-
-          promiseSync.then(() => {
-            setSelectedBIdx(selectedBIdx => {
-              const nextIdx = selectedBIdx + 1
-              if (nextIdx < list.length) {
-                return nextIdx
-              } else {
-                return 0
-              }
-            })
-
-            slideWrapNode.style.transitionDuration = '0ms'
-            slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
-            touchStartStatus = false
-          })
-        }
-      }, 5000)
+      initInterval()
 
       return () => {
         clearInterval(intervalId)
+        intervalId = null
       }
     }
   }, [list])
@@ -194,7 +211,7 @@ export default props => {
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
-  const clickSlideDisplay = data => {
+  const clickSlideDisplay = (data) => {
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
@@ -363,7 +380,7 @@ const RecommendWrap = styled.div`
       font-style: normal;
       line-height: 1.33;
       letter-spacing: normal;
-      text-align:center;
+      text-align: center;
     }
 
     .counting {
