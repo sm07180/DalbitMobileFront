@@ -209,6 +209,9 @@ export default props => {
     let res = '';
     currentPage = next ? ++currentPage : currentPage;
 
+    if(currentPage > 1){
+      return
+    }
     if (type === 'dj') {
       res = await Api.get_dj_ranking({
         params: {
@@ -236,7 +239,7 @@ export default props => {
       } else {
         if (next) {
           // setMoreState(true)
-          moreState = true;
+          moreState = false;
           setNextList(res.data.list);
         } else {
           setList(res.data.list);
@@ -465,11 +468,11 @@ export default props => {
                           <div className="countBox__block">
                             <span className="countBox__item">
                               <img src={moonWhite} />
-                              {Util.printNumber(myProfile.dalCnt)}
+                              {Util.printNumber(myInfo.myGiftPoint)}
                             </span>
                             <span className="countBox__item">
                               <img src={timeWhite} />
-                              {Util.printNumber(myProfile.listenTotTime)}
+                              {Util.printNumber(myInfo.myListenPoint)}
                             </span>
                           </div>
                         </>
