@@ -1,57 +1,76 @@
-import {COLOR_MAIN} from 'context/color'
-import React, {useEffect, useRef, useState} from 'react'
-import styled from 'styled-components'
-import CloseBtn from './static/ic_close.svg'
+import { COLOR_MAIN } from 'context/color';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import CloseBtn from './static/ic_close.svg';
 
 export default props => {
-  const {setPopup} = props
+  const { setPopup } = props;
 
   // reference
-  const [tabType, setTabType] = useState('today') // event, comment
-  const layerWrapRef = useRef()
+  const [tabType, setTabType] = useState('today'); // event, comment
+  const layerWrapRef = useRef();
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
 
-    const layerWrapNode = layerWrapRef.current
-    layerWrapNode.style.touchAction = 'none'
+    const layerWrapNode = layerWrapRef.current;
+    layerWrapNode.style.touchAction = 'none';
 
     return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const closePopup = () => {
-    setPopup(false)
-  }
+    setPopup(false);
+  };
 
   const wrapClick = e => {
-    const target = e.target
+    const target = e.target;
     if (target.id === 'rank-layer-popup') {
-      closePopup()
+      closePopup();
     }
-  }
+  };
 
   const wrapTouch = e => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   return (
-    <PopupWrap id="rank-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
+    <PopupWrap
+      id="rank-layer-popup"
+      ref={layerWrapRef}
+      onClick={wrapClick}
+      onTouchStart={wrapTouch}
+      onTouchMove={wrapTouch}
+    >
       <div className="content-wrap">
         <div className="title-wrap">
           <h4>랭킹 산정 방식</h4>
-          <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
+          <img
+            src={CloseBtn}
+            className="close-btn"
+            onClick={() => closePopup()}
+          />
         </div>
 
         <div className="tab-wrap">
-          <button className={`tab ${tabType === 'today' ? 'active' : ''}`} onClick={() => setTabType('today')}>
+          <button
+            className={`tab ${tabType === 'today' ? 'active' : ''}`}
+            onClick={() => setTabType('today')}
+          >
             오늘
           </button>
-          <button className={`tab ${tabType === 'daily' ? 'active' : ''}`} onClick={() => setTabType('daily')}>
+          <button
+            className={`tab ${tabType === 'daily' ? 'active' : ''}`}
+            onClick={() => setTabType('daily')}
+          >
             전일
           </button>
-          <button className={`tab ${tabType === 'week' ? 'active' : ''}`} onClick={() => setTabType('week')}>
+          <button
+            className={`tab ${tabType === 'week' ? 'active' : ''}`}
+            onClick={() => setTabType('week')}
+          >
             주간
           </button>
           {/* <button className={`tab ${tabType === 'month' ? 'active' : ''}`} onClick={() => setTabType('month')}>
@@ -78,7 +97,7 @@ export default props => {
             <p className="desc">
               오늘의 랭킹은 종료된 방송방 기준
               <br />
-              매일 00:00부터 23:59:59까지의 데이터로 집계되며
+              매일 00:00부터 23:59:59까지 데이터로 집계되며
               <br />
               매일 정시마다 오늘의 랭킹이 갱신됩니다.
             </p>
@@ -104,7 +123,7 @@ export default props => {
             <p className="desc">
               전일 랭킹은 종료된 방송방 기준
               <br />
-              매일 00:00부터 23:59:59까지의 데이터로 집계되며
+              매일 00:00부터 23:59:59까지 데이터로 집계되며
               <br />
               매일 00:00에 전일 랭킹이 갱신됩니다.
             </p>
@@ -130,7 +149,7 @@ export default props => {
             <p className="desc">
               주간 랭킹은 종료된 방송방 기준
               <br />
-              매주 월요일부터 일요일까지의 데이터로 집계되며
+              매주 월요일부터 일요일까지 데이터로 집계되며
               <br />
               매주 월요일 05:00에 주간 랭킹이 갱신됩니다.
             </p>
@@ -165,8 +184,8 @@ export default props => {
         )} */}
       </div>
     </PopupWrap>
-  )
-}
+  );
+};
 
 const PopupWrap = styled.div`
   position: fixed;
@@ -275,4 +294,4 @@ const PopupWrap = styled.div`
       }
     }
   }
-`
+`;
