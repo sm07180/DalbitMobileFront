@@ -52,12 +52,13 @@ img {
 
 .rankTab {
   &__btn {
-    width: 42px;
+    width: 60px;
     height: 32px;
     margin-right: 2px;
     border-radius: 12px;
     border: solid 1px #e0e0e0;
     background-color: #fff;
+    font-size: 16px;
     &--active {
       border-color: #632beb;
       background-color: #632beb;
@@ -76,7 +77,7 @@ img {
   text-align: center;
 
   &__btn {
-    margin: 0 8px;
+    margin: 0 10px;
     height: 36px;
     font-size: 16px;
     color: #000;
@@ -92,11 +93,40 @@ img {
 .myRanking {
   display: flex;
   align-items: center;
-  padding: 12px 0 19px 0;
+  padding: 6px 0 6px 0;
+
+  .profileItme {
+    margin-left: auto;
+    flex: 1;
+  }
+
+  &__profile {
+    background: #632beb;
+
+    .colorWhite {
+      color: #fff;
+    }
+    .nickNameBox {
+      color: #fff;
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 8px;
+    }
+
+    .countBox {
+      &__item {
+        color: #fff;
+      }
+    }
+  }
 
   &__left {
-    width: 20%;
+    flex-basis: 80px;
     text-align: center;
+
+    &--profile {
+      flex: 1;
+    }
 
     &--title {
       font-size: 12px;
@@ -105,11 +135,13 @@ img {
     }
 
     &--now {
-      padding: 6px 0 2px;
-      font-size: 18px;
-      line-height: 21px;
+      font-size: 24px;
+      height: 26px;
+      line-height: 26px;
       color: #000;
       font-weight: 700;
+      margin-top: 4px;
+      margin-bottom: 1px;
     }
 
     &--point {
@@ -120,20 +152,21 @@ img {
     }
 
     &--ranking {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 40px;
       height: 20px;
       margin: 0 auto 4px auto;
       border-radius: 12px;
       background-color: #616161;
       font-size: 12px;
-      line-height: 20px;
-      text-align: center;
       color: #fff;
     }
   }
 
   &__right {
-    padding-left: 0px;
+    flex: 1;
   }
 
   &__rightWrap {
@@ -164,6 +197,22 @@ img {
       background-size: 100%;
       background-position: 0px 1px;
     }
+
+    &--profile {
+      color: #ff8282;
+      font-size: 12px;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+
+        margin-right: 1px;
+        background: url('./static/ico-ranking-profile-up@2x.png') no-repeat;
+        background-size: 100%;
+        background-position: 0px 1px;
+      }
+    }
   }
 
   &__down {
@@ -178,6 +227,22 @@ img {
       background: url('./static/ico-ranking-down@2x.png') no-repeat;
       background-size: 100%;
       background-position: 0px 1px;
+    }
+
+    &--profile {
+      color: #56d6fe;
+      font-size: 12px;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+
+        margin-right: 1px;
+        background: url('./static/ico-ranking-profile-down@2x.png') no-repeat;
+        background-size: 100%;
+        background-position: 0px 1px;
+      }
     }
   }
 
@@ -208,25 +273,33 @@ img {
 
 .thumbBox {
   position: relative;
-  width: 86px;
-  height: 86px;
+  width: 100px;
+  height: 100px;
   text-align: center;
 
   &__frame {
     position: absolute;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
   }
 
   &__pic {
-    margin-top: 11px;
+    margin-top: 15px;
     width: 71%;
     border-radius: 50%;
   }
 
   &__profile {
-    width: 86px;
-    height: 86px;
+    flex-basis: 100;
+
+    .thumbBox__frame {
+      width: 100px;
+    }
+    .thumbBox__pic {
+      justify-content: center;
+      width: 70px;
+    }
   }
 }
 
@@ -316,7 +389,15 @@ img {
   }
 
   &--profile {
+    display: flex;
+    flex-direction: column;
     padding-left: 0px;
+  }
+
+  &__block {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2px;
   }
 }
 
@@ -372,21 +453,25 @@ img {
   font-weight: 700;
 
   .medal {
-    width: 40px;
-    height: 50px;
     background-size: 100%;
     text-indent: -10000px;
   }
 
   &--top1 {
+    width: 40px;
+    height: 50px;
     background: url(./static/ico-medal-gold@2x.png);
   }
 
   &--top2 {
+    width: 32px;
+    height: 40px;
     background: url(./static/ico-medal-silver@2x.png);
   }
 
   &--top3 {
+    width: 32px;
+    height: 40px;
     background: url(./static/ico-medal-bronze@2x.png);
   }
 }
@@ -396,11 +481,15 @@ img {
   top: 8px;
   right: 8px;
   font-size: 10px;
-  line-height: 12px;
+  line-height: 14px;
   letter-spacing: -0.25px;
   text-align: center;
   color: #ec455f;
   font-weight: 700;
+
+  &__img {
+    width: 28px;
+  }
 }
 
 .userRanking {
@@ -408,12 +497,12 @@ img {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 60px 0 16px 0;
+    padding: 12px 0 16px 0;
     background: #eee;
 
     .thumbBox {
-      width: 86px;
-      height: 86px;
+      width: 100px;
+      height: 100px;
       margin: 0 auto;
     }
 
@@ -443,31 +532,31 @@ img {
       width: 49%;
 
       .nickNameBox {
-        font-size: 14px;
         flex-direction: row;
         justify-content: center;
       }
 
       &:first-child {
         width: 100%;
-        padding-top: 50px;
+        padding-top: 116px;
         margin-bottom: 8px;
-        border-top: solid 2px #632beb;
+        border-top: solid 1px #632beb;
         .nickName {
           display: flex;
           justify-content: center;
+          font-size: 18px;
         }
 
         .thumbBox {
-          width: 104px;
-          height: 104px;
+          width: 128px;
+          height: 128px;
           position: absolute;
-          top: -50px;
+          top: 2px;
           left: 0;
           right: 0;
 
           &__pic {
-            margin-top: 15px;
+            margin-top: 17px;
           }
         }
 
@@ -486,6 +575,7 @@ img {
 
         .countBox {
           border-top: 0;
+          margin-top: 2px;
 
           &__item {
             &--point {
@@ -503,14 +593,15 @@ img {
 }
 
 .specialDj {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 16px;
   padding: 0 8px;
   margin-left: 4px;
   border-radius: 10px;
   background-color: #ec455f;
   font-size: 12px;
-  line-height: 16px;
   color: #fff;
   font-weight: 300;
   font-style: normal;

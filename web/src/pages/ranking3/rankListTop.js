@@ -1,6 +1,7 @@
 import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
+import {RoomJoin} from 'context/room'
 import React, {useContext} from 'react'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -8,7 +9,6 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
-import {RoomJoin} from 'context/room'
 
 export default props => {
   //context
@@ -95,9 +95,9 @@ export default props => {
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}`
                     }}>
-                    <p className={levelName}>
+                    {/* <p className={levelName}>
                       Lv{level} {grade}
-                    </p>
+                    </p> */}
                     <div className="nickNameBox">
                       <span className="nickName">{nickNm}</span>
                       <div className="iconBox">
@@ -181,6 +181,7 @@ export default props => {
                         onClick={() => {
                           RoomJoin(roomNo + '')
                         }}
+                        className="liveBox__img"
                       />
                       <br />
                       LIVE

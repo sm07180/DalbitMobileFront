@@ -1,22 +1,20 @@
 /**
  *
  */
-import React, {useMemo, useContext} from 'react'
-import styled from 'styled-components'
 //context
 import {Context} from 'context'
-
-//layout
-import {Global} from 'App'
 import Gnb from 'pages/common/gnb'
+import Ip from 'pages/common/ip'
+import Message from 'pages/common/message'
 import NewPlayer from 'pages/common/newPlayer'
 import Popup from 'pages/common/popup'
-import Message from 'pages/common/message'
-import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
-import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
+import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
+import React, {useContext, useMemo} from 'react'
+import styled from 'styled-components'
+
 //
-const Layout = (props) => {
+const Layout = props => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
