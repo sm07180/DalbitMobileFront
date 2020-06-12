@@ -1,6 +1,7 @@
 import Util from 'components/lib/utility.js'
 import NoResult from 'components/ui/noResult'
 //context
+import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
 import React, {useContext, useEffect, useState} from 'react'
@@ -17,8 +18,10 @@ import closeBtn from './static/ic_back.svg'
 import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
+
+import Layout from 'pages/common/layout'
 const rankArray = ['dj', 'fan']
-const dateArray = ['오늘', '전일', '주간']
+const dateArray = ['오늘', '일간', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1
@@ -110,10 +113,6 @@ export default props => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-
-  // useEffect(() => {
-  //   fetchRank()
-  // }, [])
 
   const createRankButton = () => {
     return rankArray.map((item, index) => {
@@ -313,120 +312,152 @@ export default props => {
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
+  const scrollEvent = () => {
+    const headerHeight = 48
 
+    if (window.scrollY >= headerHeight) {
+      context.action.updateLogoChange(true)
+    } else if (window.scrollY < headerHeight) {
+      context.action.updateLogoChange(false)
+    }
+  }
+
+  useEffect(() => {
+    window.removeEventListener('scroll', scrollEvent)
+    window.addEventListener('scroll', scrollEvent)
+    return () => {
+      window.removeEventListener('scroll', scrollEvent)
+    }
+  }, [context.logoChange])
   return (
     <>
-      <div className="header">
-        <h1 className="header__title">랭킹</h1>
-        <img className="header__btnBack" src={closeBtn} onClick={goBack} />
-      </div>
-
-      <div>
-        <div className="rankTopBox respansiveBox">
-          <div className="rankTab">{createRankButton()}</div>
-
-          <div className="rankTopBox__update">
-            {myInfo.time}
-            <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
-          </div>
+      <Layout {...props} status="no_gnb">
+        <div className="header">
+          <h1 className="header__title">랭킹</h1>
+          <img className="header__btnBack" src={closeBtn} onClick={goBack} />
         </div>
 
-        <div className="todayList">{createDateButton()}</div>
+        <div>
+          <div className="rankTopBox respansiveBox">
+            <div className="rankTab">{createRankButton()}</div>
 
-        {myProfile && (
-          <div
-            className="myRanking myRanking__profile"
-            onClick={() => {
-              window.location.href = `/menu/profile`
-            }}>
-            <div className="myRanking__left myRanking__left--profile">
-              <p
-                className="myRanking__left--title colorWhite 
+            <div className="rankTopBox__update">
+              {myInfo.time}
+              <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
+            </div>
+          </div>
+
+          <div className="todayList">{createDateButton()}</div>
+
+          {myProfile && (
+            <div
+              className="myRanking myRanking__profile"
+              onClick={() => {
+                window.location.href = `/menu/profile`
+              }}>
+              <div className="myRanking__left myRanking__left--profile">
+                <p
+                  className="myRanking__left--title colorWhite 
               ">
-                내 랭킹
-              </p>
-              <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-              <p className="rankingChange">
-                {createMyProfile()}
-                {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
-              </p>
-            </div>
+                  내 랭킹
+                </p>
+                <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
+                <p className="rankingChange">
+                  {createMyProfile()}
+                  {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
+                </p>
+              </div>
 
-            <div className="thumbBox thumbBox__profile">
-              <img src={myProfile.holder} className="thumbBox__frame" />
-              <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
-            </div>
+              <div className="thumbBox thumbBox__profile">
+                <img src={myProfile.holder} className="thumbBox__frame" />
+                <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+              </div>
 
-            <div className="myRanking__right">
-              <div className="myRanking__rightWrap">
-                <div className="profileItme">
-                  {/* <p className={createMyLevelClass()}>
+              <div className="myRanking__right">
+                <div className="myRanking__rightWrap">
+                  <div className="profileItme">
+                    {/* <p className={createMyLevelClass()}>
                     Lv<strong>{myProfile.level}</strong>. {myProfile.grade}
                   </p> */}
-                  <p className="nickNameBox">{myProfile.nickNm}</p>
-                  <div className="countBox countBox--profile">
-                    {rankType == 'dj' && (
-                      <>
-                        {/* <span className="countBox__item">
+                    <p className="nickNameBox">{myProfile.nickNm}</p>
+                    <div className="countBox countBox--profile">
+                      {rankType == 'dj' && (
+                        <>
+                          {/* <span className="countBox__item">
                           <img src={star} />
                           {Util.printNumber(myInfo.myGiftPoint)}
                         </span> */}
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                            {Util.printNumber(myInfo.myPoint)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={peopleWhite} />
-                            {Util.printNumber(myInfo.myListenerPoint)}
-                          </span>
-                        </div>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                              {Util.printNumber(myInfo.myPoint)}
+                            </span>
+                            <span className="countBox__item">
+                              <img src={peopleWhite} />
+                              {Util.printNumber(myInfo.myListenerPoint)}
+                            </span>
+                          </div>
 
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={likeWhite} className="icon__white" />
-                            {Util.printNumber(myInfo.myLikePoint)}
-                          </span>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={likeWhite} className="icon__white" />
+                              {Util.printNumber(myInfo.myLikePoint)}
+                            </span>
 
-                          <span className="countBox__item">
-                            <img src={timeWhite} className="icon__white" />
-                            {Util.printNumber(myInfo.myBroadPoint)}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                    {rankType == 'fan' && (
-                      <>
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                            {Util.printNumber(myInfo.myPoint)}
-                          </span>
-                        </div>
+                            <span className="countBox__item">
+                              <img src={timeWhite} className="icon__white" />
+                              {Util.printNumber(myInfo.myBroadPoint)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                      {rankType == 'fan' && (
+                        <>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                              {Util.printNumber(myInfo.myPoint)}
+                            </span>
+                          </div>
 
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={moonWhite} />
-                            {Util.printNumber(myProfile.dalCnt)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={timeWhite} />
-                            {Util.printNumber(myProfile.listenTotTime)}
-                          </span>
-                        </div>
-                      </>
-                    )}
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={moonWhite} />
+                              {Util.printNumber(myProfile.dalCnt)}
+                            </span>
+                            <span className="countBox__item">
+                              <img src={timeWhite} />
+                              {Util.printNumber(myProfile.listenTotTime)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {creatResult()}
+          {creatResult()}
 
-        {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
-      </div>
+          {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
+        </div>
+      </Layout>
     </>
   )
 }
+const TopScrollBtn = styled.button`
+  display: ${props => (props.topState ? 'block' : 'none')};
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  background-color: red;
+  z-index: 12;
+`
