@@ -16,8 +16,6 @@ export default props => {
   const rankType = props.rankType
   const {list, myMemNo} = props
 
-  console.log(props.myMemNo)
-
   const creatList = () => {
     return (
       <>
@@ -83,20 +81,19 @@ export default props => {
               }
 
               return (
-                <div
-                  className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`}
-                  key={index}>
-                  <div className="thumbBox"
-                   onClick={() => {
-                       window.location.href = `/mypage/${memNo}`
-                   }}>
+                <div className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`} key={index}>
+                  <div
+                    className="thumbBox"
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
 
                   <div
                     onClick={() => {
-                        window.location.href = `/mypage/${memNo}`
+                      window.location.href = `/mypage/${memNo}`
                     }}>
                     <p className={levelName}>
                       Lv{level} {grade}
@@ -110,10 +107,11 @@ export default props => {
                     </div>
                   </div>
 
-                  <div className="countBox"
-                   onClick={() => {
-                       window.location.href = `/mypage/${memNo}`
-                   }}>
+                  <div
+                    className="countBox"
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
@@ -178,10 +176,12 @@ export default props => {
 
                   {roomNo !== '' && (
                     <div className="liveBox">
-                      <img src={live}
-                       onClick={() => {
-                           RoomJoin(roomNo + '')
-                       }}/>
+                      <img
+                        src={live}
+                        onClick={() => {
+                          RoomJoin(roomNo + '')
+                        }}
+                      />
                       <br />
                       LIVE
                     </div>
