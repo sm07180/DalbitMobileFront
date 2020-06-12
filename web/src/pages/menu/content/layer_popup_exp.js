@@ -37,6 +37,16 @@ export default props => {
     e.preventDefault()
   }
 
+  const data = [
+    {tit: '방송하기', exp: '5', msg: '방송을 하면 10분당 5 exp를 획득 일일 최대 120 exp 획득'},
+    {tit: '방송청취', exp: '1', msg: '방송청취 시 10분당 1 exp를 획득 일일 최대 24 exp획득'},
+    {tit: '선물하기', exp: '1', msg: '1일 팬보드, 답글 작성 10개까지 경험치 획득 인정\n경험치 획득 제한없음'},
+    {tit: '받은별', exp: '1', msg: '청취자에게 받은 별 / 경험치 획득 제한없음'},
+    {tit: '부스터 사용', exp: '1', msg: '부스터 사용 시 사용자 / DJ 모두 10 exp 획득\n경험치 획득 제한없음'},
+    {tit: '좋아요', exp: '1', msg: '1일 좋아요 10회까지 1회당 1 exp 획득'},
+    {tit: '팬보드 글 작성\n댓글 작성', exp: '1', msg: '1일 팬보드, 답글 작성 10개까지 경험치 획득 인정'}
+  ]
+
   return (
     <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
@@ -46,90 +56,47 @@ export default props => {
         </div>
         <div className="contents-box">
           <ul>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>방송청취</em>
-                </span>
-                <span className="num">
-                  <em>Exp 5</em>
-                </span>
-              </div>
-              <em className="msg">방송을 하면 10분당 5 exp를 획득 일일 최대 120 exp 획득</em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>방송하기</em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">방송청취 시 10분당 1 exp를 획득 일일 최대 24 exp획득</em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>선물하기</em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">달을 소비하여 선물 / 경험치 획득 제한없음</em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>받은별</em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">청취자에게 받은 별 / 경험치 획득 제한없음</em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>부스터 사용</em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">
-                부스터 사용 시 사용자 / DJ 모두 10 exp 획득 <br />
-                경험치 획득 제한없음
-              </em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>좋아요</em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">1일 좋아요 10회 까지만 1 exp 획득</em>
-            </li>
-            <li>
-              <div className="ico-box">
-                <span className="txt">
-                  <em>
-                    팬보드 글 작성
-                    <br />
-                    댓글 작성
+            {data.map((data, index) => {
+              return (
+                <li>
+                  <div className="ico-box">
+                    <span className="txt">
+                      <em>
+                        {data.tit.split('\n').map(line => {
+                          if (data.tit.match('\n')) {
+                            return (
+                              <>
+                                {line}
+                                <br />
+                              </>
+                            )
+                          } else {
+                            return <>{data.tit}</>
+                          }
+                        })}
+                      </em>
+                    </span>
+                    <span className="num">
+                      <em>Exp {data.exp}</em>
+                    </span>
+                  </div>
+                  <em className="msg">
+                    {data.msg.split('\n').map(line => {
+                      if (data.msg.match('\n')) {
+                        return (
+                          <>
+                            {line}
+                            <br />
+                          </>
+                        )
+                      } else {
+                        return <>{data.msg}</>
+                      }
+                    })}
                   </em>
-                </span>
-                <span className="num">
-                  <em>Exp 1</em>
-                </span>
-              </div>
-              <em className="msg">1일 팬보드 글 작성 좋아요 10개 까지만 경험치 획득 인정</em>
-            </li>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </div>
