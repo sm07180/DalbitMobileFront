@@ -8,6 +8,7 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import {RoomJoin} from 'context/room'
 
 export default props => {
   //context
@@ -49,11 +50,11 @@ export default props => {
             return (
               <div
                 className="myRanking rankingList"
-                key={index}
-                onClick={() => {
-                  window.location.href = `/mypage/${memNo}`
-                }}>
-                <div className="myRanking__left">
+                key={index}>
+                <div className="myRanking__left"
+                  onClick={() => {
+                    window.location.href = `/mypage/${memNo}`
+                  }}>
                   <p className="myRanking__left--ranking">{rank}</p>
                   <p className="rankingChange">
                     {upDown === 'new' ? (
@@ -63,7 +64,7 @@ export default props => {
                     ) : upDown < 0 ? (
                       <span className="rankingChange__down">{Math.abs(upDown)}</span>
                     ) : (
-                      <span className="rankingChange__stop"></span>
+                      <></>
                     )}
                   </p>
                   {rankType == 'dj' && (
@@ -85,7 +86,10 @@ export default props => {
                   )}
                 </div>
 
-                <div className="myRanking__right">
+                <div className="myRanking__right"
+                onClick={() => {
+                  window.location.href = `/mypage/${memNo}`
+                }}>
                   <div className="myRanking__rightWrap">
                     <div className="thumbBox">
                       <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
@@ -144,7 +148,11 @@ export default props => {
 
                 {roomNo !== '' && (
                   <div className="liveBox">
-                    <img src={live} />
+                    <img src={live}
+                     onClick={() => {
+                         RoomJoin(roomNo + '')
+                     }}
+                    />
                     <br />
                     LIVE
                   </div>

@@ -8,6 +8,7 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import {RoomJoin} from 'context/room'
 
 export default props => {
   //context
@@ -84,16 +85,19 @@ export default props => {
               return (
                 <div
                   className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`}
-                  key={index}
-                  onClick={() => {
-                    window.location.href = `/mypage/${memNo}`
-                  }}>
-                  <div className="thumbBox">
+                  key={index}>
+                  <div className="thumbBox"
+                   onClick={() => {
+                       window.location.href = `/mypage/${memNo}`
+                   }}>
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
 
-                  <div>
+                  <div
+                    onClick={() => {
+                        window.location.href = `/mypage/${memNo}`
+                    }}>
                     <p className={levelName}>
                       Lv{level} {grade}
                     </p>
@@ -106,7 +110,10 @@ export default props => {
                     </div>
                   </div>
 
-                  <div className="countBox">
+                  <div className="countBox"
+                   onClick={() => {
+                       window.location.href = `/mypage/${memNo}`
+                   }}>
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
@@ -164,14 +171,17 @@ export default props => {
                       ) : upDown < 0 ? (
                         <span className="rankingChange__down">{Math.abs(upDown)}</span>
                       ) : (
-                        <span className="rankingChange__stop"></span>
+                        <></>
                       )}
                     </p>
                   </div>
 
                   {roomNo !== '' && (
                     <div className="liveBox">
-                      <img src={live} />
+                      <img src={live}
+                       onClick={() => {
+                           RoomJoin(roomNo + '')
+                       }}/>
                       <br />
                       LIVE
                     </div>
