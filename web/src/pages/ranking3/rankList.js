@@ -1,6 +1,7 @@
 import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
+import {RoomJoin} from 'context/room'
 import React, {useContext} from 'react'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -8,7 +9,6 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
-import {RoomJoin} from 'context/room'
 
 export default props => {
   //context
@@ -48,10 +48,9 @@ export default props => {
             }
 
             return (
-              <div
-                className="myRanking rankingList"
-                key={index}>
-                <div className="myRanking__left"
+              <div className="myRanking rankingList" key={index}>
+                <div
+                  className="myRanking__left"
                   onClick={() => {
                     window.location.href = `/mypage/${memNo}`
                   }}>
@@ -86,10 +85,11 @@ export default props => {
                   )}
                 </div>
 
-                <div className="myRanking__right"
-                onClick={() => {
-                  window.location.href = `/mypage/${memNo}`
-                }}>
+                <div
+                  className="myRanking__right"
+                  onClick={() => {
+                    window.location.href = `/mypage/${memNo}`
+                  }}>
                   <div className="myRanking__rightWrap">
                     <div className="thumbBox">
                       <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
@@ -148,10 +148,12 @@ export default props => {
 
                 {roomNo !== '' && (
                   <div className="liveBox">
-                    <img src={live}
-                     onClick={() => {
-                         RoomJoin(roomNo + '')
-                     }}
+                    <img
+                      src={live}
+                      onClick={() => {
+                        RoomJoin(roomNo + '')
+                      }}
+                      className="liveBox__img"
                     />
                     <br />
                     LIVE
