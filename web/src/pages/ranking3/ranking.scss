@@ -121,7 +121,7 @@ img {
   }
 
   &__left {
-    flex-basis: 130px;
+    flex-basis: 80px;
     text-align: center;
 
     &--profile {
@@ -152,14 +152,15 @@ img {
     }
 
     &--ranking {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 40px;
       height: 20px;
       margin: 0 auto 4px auto;
       border-radius: 12px;
       background-color: #616161;
       font-size: 12px;
-      line-height: 20px;
-      text-align: center;
       color: #fff;
     }
   }
@@ -592,14 +593,15 @@ img {
 }
 
 .specialDj {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 16px;
   padding: 0 8px;
   margin-left: 4px;
   border-radius: 10px;
   background-color: #ec455f;
   font-size: 12px;
-  line-height: 16px;
   color: #fff;
   font-weight: 300;
   font-style: normal;
