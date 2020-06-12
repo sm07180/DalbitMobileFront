@@ -58,20 +58,20 @@ export default props => {
           <ul>
             {data.map((data, index) => {
               return (
-                <li>
+                <li key={index}>
                   <div className="ico-box">
                     <span className="txt">
                       <em>
-                        {data.tit.split('\n').map(line => {
+                        {data.tit.split('\n').map((line, index) => {
                           if (data.tit.match('\n')) {
                             return (
-                              <>
+                              <React.Fragment key={index}>
                                 {line}
                                 <br />
-                              </>
+                              </React.Fragment>
                             )
                           } else {
-                            return <>{data.tit}</>
+                            return <React.Fragment key={index}>{data.tit}</React.Fragment>
                           }
                         })}
                       </em>
@@ -81,16 +81,16 @@ export default props => {
                     </span>
                   </div>
                   <em className="msg">
-                    {data.msg.split('\n').map(line => {
+                    {data.msg.split('\n').map((line, index) => {
                       if (data.msg.match('\n')) {
                         return (
-                          <>
+                          <React.Fragment key={index}>
                             {line}
                             <br />
-                          </>
+                          </React.Fragment>
                         )
                       } else {
-                        return <>{data.msg}</>
+                        return <React.Fragment key={index}>{data.msg}</React.Fragment>
                       }
                     })}
                   </em>
