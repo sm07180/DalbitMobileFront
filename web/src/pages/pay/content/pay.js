@@ -14,25 +14,29 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 import {Hybrid} from 'context/hybrid'
 
+import dalIcon from '../static/ic_moon_s.svg'
 import starIcon from '../static/ic_star_s.svg'
+import notiIcon from '../static/ic_notice.svg'
 
 export default props => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
   //useState
-  const [list, setList] = useState(false)
+  const [chargeList, setChargeList] = useState(false)
+  const [exchangeList, setExchangeList] = useState(false)
   const [selected, setSelected] = useState(-1)
   const [selectedItem, setSelectedItem] = useState('charge')
-  const [myCnt, setMyCnt] = useState('')
+  const [myDal, setMyDal] = useState('')
+  const [myByeol, setMyByeol] = useState('')
 
   //---------------------------------------------------------------------
 
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
-      setMyCnt(Utility.addComma(res.data.dalCnt))
+      setChargeList(res.data.list.slice(0, 9))
+      setMyDal(Utility.addComma(res.data.dalCnt))
     } else {
       context.action.alert({
         msg: res.message
@@ -43,9 +47,8 @@ export default props => {
   async function getChangeList() {
     const res = await Api.getChangeItem({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
-      //setList(testList)
-      setMyCnt(res.data.byeolCnt)
+      setExchangeList(res.data.list)
+      setMyByeol(Utility.addComma(res.data.byeolCnt))
     } else {
       context.action.alert({
         msg: res.message
@@ -56,8 +59,8 @@ export default props => {
   //---------------------------------------------------------------------
   //map
   const creatList = () => {
-    if (list) {
-      return list.map((item, index) => {
+    if (chargeList) {
+      return chargeList.map((item, index) => {
         return (
           <div
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
@@ -76,10 +79,12 @@ export default props => {
               }
             }}>
             <div className="item-wrap">
-              <img src={item.img}></img>
+              <div className="img-wrap">
+                <img src={item.img}></img>
+              </div>
               <p>{item.itemNm}</p>
+              <p className="dal">￦{Utility.addComma(item.salePrice)}</p>
             </div>
-            <p>{Utility.addComma(item.salePrice)}원</p>
           </div>
         )
       })
@@ -87,8 +92,8 @@ export default props => {
   }
 
   const createChangeList = () => {
-    if (list) {
-      return list.map((item, index) => {
+    if (exchangeList) {
+      return exchangeList.map((item, index) => {
         return (
           <div
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
@@ -106,10 +111,12 @@ export default props => {
               }
             }}>
             <div className="item-wrap">
-              <img src={item.itemThumbnail}></img>
+              <div className="img-wrap">
+                <img src={item.itemThumbnail}></img>
+              </div>
               <p>달 {item.dalCnt}</p>
+              <p className="item-name dal">{Utility.addComma(item.byeolCnt)}</p>
             </div>
-            <p className="item-name">{Utility.addComma(item.byeolCnt)}</p>
           </div>
         )
       })
@@ -160,11 +167,6 @@ export default props => {
   const tabClick = type => {
     setSelectedItem(type)
     setSelected(-1)
-    if (type === 'charge') {
-      getStoreList()
-    } else {
-      getChangeList()
-    }
   }
 
   const goBackClick = () => {
@@ -174,6 +176,7 @@ export default props => {
   //useEffect
   useEffect(() => {
     getStoreList()
+    getChangeList()
   }, [])
 
   //---------------------------------------------------------------------
@@ -195,11 +198,14 @@ export default props => {
           달 교환
         </button>
       </TabItem>
+      <div className="cnt-wrap">
+        <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
+        <p className={`my-cnt-text byeol ${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
+      </div>
       {selectedItem === 'charge' ? (
         <>
-          {list ? (
+          {chargeList ? (
             <>
-              <p className="my-cnt-text">보유 달 {myCnt}</p>
               <List className={`${selectedItem}`}>{creatList()}</List>
               <div className="btn-wrap">
                 <button onClick={goBackClick} className="charge-btn close">
@@ -220,10 +226,15 @@ export default props => {
         </>
       ) : (
         <>
-          {list ? (
+          {exchangeList ? (
             <>
-              <p className="my-cnt-text">보유 별 {myCnt}</p>
               <List className={`${selectedItem}`}>{createChangeList()}</List>
+              <InfoList>
+                <h5>달 교환 안내</h5>
+                <p>보유중인 별을 달로 교환할 수 있습니다.</p>
+                <p>달로 교환 된 별은 취소가 어렵습니다. 신중하게 선택해 주세요.</p>
+                <p>교환 된 달은 선물하기가 가능합니다.</p>
+              </InfoList>
               <div className="btn-wrap">
                 <button onClick={goBackClick} className="charge-btn close">
                   취소하기
@@ -248,15 +259,44 @@ export default props => {
 
 //---------------------------------------------------------------------
 
+const InfoList = styled.div`
+  padding-top: 4px;
+  h5 {
+    margin-bottom: 2px;
+    padding-left: 16px;
+    background: url(${notiIcon}) no-repeat left center;
+    color: #000;
+    font-size: 12px;
+  }
+  p {
+    position: relative;
+    padding-left: 16px;
+    font-size: 12px;
+    color: #000;
+    line-height: 20px;
+
+    ::before {
+      position: absolute;
+      left: 6px;
+      top: 9px;
+      width: 2px;
+      height: 2px;
+      background: #000;
+      content: '';
+    }
+  }
+`
+
 const TabItem = styled.div`
   position: fixed;
   top: 12px;
   left: 12px;
   width: calc(100% - 24px);
   display: flex;
+
   button {
     position: relative;
-    padding: 10px 0;
+    padding: 0 0;
     width: 50%;
     color: #9e9e9e;
     font-size: 20px;
@@ -272,7 +312,7 @@ const TabItem = styled.div`
     background: #e5e5e5;
     position: absolute;
     left: 0;
-    top: 14px;
+    top: 5px;
     content: '';
   }
 `
@@ -291,15 +331,48 @@ const Content = styled.section`
     font-weight: bold;
   }
 
+  .cnt-wrap {
+    display: flex;
+    padding-bottom: 9px;
+
+    p {
+      display: inline-block;
+      width: 50%;
+      padding: 0;
+      line-height: 20px;
+      color: #9e9e9e;
+      &:before {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+        padding-right: 1px;
+        vertical-align: top;
+        content: '';
+      }
+      &.on {
+        color: ${COLOR_MAIN};
+      }
+      &.dal:before {
+        background: url(${dalIcon}) no-repeat;
+      }
+      &.byeol:before {
+        background: url(${starIcon}) no-repeat;
+        background-size: 20px;
+      }
+    }
+  }
+
   .item-name {
     &:before {
       display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: 5px;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
       padding-right: 1px;
       vertical-align: top;
       background: url(${starIcon}) no-repeat;
+      background-size: 14px;
       content: '';
     }
   }
@@ -354,7 +427,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 54px 0 0 0;
+    padding: 44px 0 0 0;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -406,40 +479,59 @@ const List = styled.div`
       color: #fff;
       background: ${COLOR_POINT_P};
     }
+    &.on .img-wrap {
+      background: #fff;
+    }
+    &.on .item-wrap {
+      background: ${COLOR_POINT_P};
+    }
+    &.on p {
+      color: #fff;
+    }
+  }
+
+  &.change {
+    .wrap.on .item-wrap {
+      background: ${COLOR_POINT_Y};
+    }
   }
   .item-wrap {
     padding: 14px;
     border-radius: 10px;
-    border: 1px solid #f5f5f5;
     background: #f5f5f5;
+    .img-wrap {
+      background: #f5f5f5;
+      border-radius: 10px;
+      margin: 0 3px;
+    }
     img {
       width: 100%;
       margin-bottom: 10px;
     }
     p {
+      padding-top: 3px;
       color: #757575;
       font-size: 14px;
       transform: skew(-0.03deg);
     }
     p + p {
-      padding-top: 8px;
+      padding-top: 0;
+      padding-bottom: 3px;
     }
   }
 
   .on .item-wrap {
     background: #fff;
-    border: 1px solid ${COLOR_POINT_P};
     p {
-      color: ${COLOR_POINT_P};
-      font-weight: 600;
+      color: #fff !important;
     }
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-wrap: wrap;
     .wrap {
-      width: 32.4%;
-      margin-bottom: 15px;
+      width: 31.8%;
+      margin-bottom: 6px;
 
       & > p {
         font-size: 14px;
@@ -448,13 +540,19 @@ const List = styled.div`
       }
     }
     .item-wrap {
-      padding: 5px 0 10px 0;
+      padding: 3px 0 0 0;
       img {
         width: calc(100% - 28px);
-        margin-bottom: 4px;
+        margin-bottom: 0;
+        margin: 3px 0;
       }
       p {
         font-size: 12px;
+        line-height: 15px;
+      }
+      p.dal {
+        color: ${COLOR_MAIN};
+        font-weight: 600;
       }
     }
   }

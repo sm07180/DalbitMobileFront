@@ -49,7 +49,7 @@ let tempScrollEvent = null
 const records = 30
 const today = new Date().getDate()
 
-export default props => {
+export default (props) => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -87,13 +87,13 @@ export default props => {
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
 
-  const [liveListType, setLiveListType] = useState('detail')
-  // const [liveListType, setLiveListType] = useState('simple')
+  // const [liveListType, setLiveListType] = useState('detail')
+  const [liveListType, setLiveListType] = useState('simple')
 
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
-      Object.keys(window.sessionStorage).forEach(key => {
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -113,7 +113,7 @@ export default props => {
       }
     })()
 
-    Api.splash().then(res => {
+    Api.splash().then((res) => {
       const {result} = res
       if (result === 'success') {
         const {data} = res
@@ -126,7 +126,7 @@ export default props => {
     })
   }, [])
 
-  const fetchLiveList = async reset => {
+  const fetchLiveList = async (reset) => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
@@ -229,7 +229,7 @@ export default props => {
     fetchLiveList(true)
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -317,7 +317,7 @@ export default props => {
               </div>
               <div className="tab">
                 <Link
-                  onClick={event => {
+                  onClick={(event) => {
                     event.preventDefault()
                     StoreLink(globalCtx)
                   }}
@@ -745,5 +745,5 @@ const SubMain = styled.div`
 `
 
 const MainWrap = styled.div`
-  margin-top: ${props => (props.sticker ? '0' : '48px')};
+  margin-top: ${(props) => (props.sticker ? '0' : '48px')};
 `

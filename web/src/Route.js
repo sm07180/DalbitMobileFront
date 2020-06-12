@@ -4,29 +4,24 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import Main from 'pages/main'
+
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
+// import Main from 'pages/main'
+const Main = React.lazy(() => import('pages/main'))
 const NewMain = React.lazy(() => import('pages/new_main'))
 const Menu = React.lazy(() => import('pages/menu'))
-// let Ranking = React.lazy(() => import('pages/ranking'))
-// if (__NODE_ENV != 'real') {
-//   Ranking = React.lazy(() => import('pages/ranking3'))
-// }
-const Ranking = React.lazy(() => import('pages/ranking'))
-const Ranking3 = React.lazy(() => import('pages/ranking3'))
+const Ranking = React.lazy(() => import('pages/ranking3'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
-let Charge = React.lazy(() => import('pages/charge'))
-if (__NODE_ENV === 'real') {
-  Charge = React.lazy(() => import('pages/charge/index_bak'))
-}
+const Charge = React.lazy(() => import('pages/charge'))
+const ChargeTest = React.lazy(() => import('pages/charge/index_test'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const LevelInfo = React.lazy(() => import('pages/level'))
@@ -61,16 +56,17 @@ export default () => {
       }>
       <ScrollToTop />
       <Switch>
-        {__NODE_ENV == 'dev' ? <Route exact path="/" component={NewMain} /> : <Route exact path="/" component={Main} />}
-        {/*<Route exact path="/" component={Main} />
-        <Route exact path="/new_main" component={NewMain} />*/}
+        <Route exact path="/" component={Main} />
+        <Route exact path="/new_main" component={NewMain} />
         <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
-        {__NODE_ENV == 'dev' ? <Route exact path="/rank" component={Ranking3} /> : <Route exact path="/rank" component={Ranking} />}
-         {/* new 랭킹 추가  */}
+        <Route exact path="/rank" component={Ranking} />
+        {/* new 랭킹 추가  */}
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
+        <Route exact path="/charge_test" component={ChargeTest} />
+        <Route exact path="/charge_test/:path" component={ChargeTest} />
         <Route exact path="/charge" component={Charge} />
         <Route exact path="/charge/:path" component={Charge} />
         <Route exact path="/exchange" component={Exchange} />

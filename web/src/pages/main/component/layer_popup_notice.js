@@ -58,7 +58,6 @@ export default props => {
     }
 
     const [state, setState] = useState({})
-
     return (
         <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick}>
             <div className="img-wrap">

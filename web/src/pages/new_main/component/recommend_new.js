@@ -12,7 +12,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
-import LiveIcon from '../static/live_l.svg'
+import LiveIcon from '../static/live_l@3x.png'
 
 let touchStartX = null
 let touchEndX = null
@@ -22,7 +22,7 @@ let direction = null
 let intervalId = null
 const intervalSec = 5000
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {list} = props
   const history = useHistory()
@@ -32,7 +32,7 @@ export default props => {
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
-  const touchStartEvent = e => {
+  const touchStartEvent = (e) => {
     if (touchStartStatus) {
       return
     }
@@ -47,7 +47,7 @@ export default props => {
     }
   }
 
-  const touchMoveEvent = e => {
+  const touchMoveEvent = (e) => {
     const slideWrapNode = slideWrapRef.current
     touchEndX = e.touches[0].clientX
 
@@ -59,7 +59,7 @@ export default props => {
     slideWrapNode.style.transitionDuration = '0ms'
   }
 
-  const touchEndEvent = e => {
+  const touchEndEvent = (e) => {
     if (!touchEndX || !touchStartStatus) {
       return
     }
@@ -123,7 +123,7 @@ export default props => {
         })
 
         promiseSync.then(() => {
-          setSelectedBIdx(selectedBIdx => {
+          setSelectedBIdx((selectedBIdx) => {
             const nextIdx = selectedBIdx + 1
             if (nextIdx < list.length) {
               return nextIdx
@@ -143,7 +143,7 @@ export default props => {
   useEffect(() => {
     if (window.localStorage.getItem('bannerList')) {
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
-      list.forEach(url => {
+      list.forEach((url) => {
         if (url) {
           URL.revokeObjectURL(url)
         }
@@ -162,8 +162,8 @@ export default props => {
       list.forEach((line, idx) => {
         const {bannerUrl} = line
         fetch(bannerUrl)
-          .then(res => res.blob())
-          .then(blob => {
+          .then((res) => res.blob())
+          .then((blob) => {
             count++
             const cacheUrl = URL.createObjectURL(blob)
             tempBlobList[idx] = cacheUrl
@@ -207,7 +207,7 @@ export default props => {
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
-  const clickSlideDisplay = data => {
+  const clickSlideDisplay = (data) => {
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
@@ -243,7 +243,14 @@ export default props => {
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[prevBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[prevBIdx]['profImg']['url'] : list[prevBIdx]['profImg']['thumb120x120']} />
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[prevBIdx]['profImg']['url']
+                        : list[prevBIdx]['profImg']['thumb120x120']
+                    }
+                  />
                   <div className="text-wrap">
                     <div className="selected-title">{list[prevBIdx]['title']}</div>
                     {list[prevBIdx]['nickNm'] !== 'banner' && (
@@ -266,7 +273,14 @@ export default props => {
                 }}
                 onClick={() => clickSlideDisplay(list[selectedBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[selectedBIdx]['profImg']['url'] : list[selectedBIdx]['profImg']['thumb120x120']} />
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[selectedBIdx]['profImg']['url']
+                        : list[selectedBIdx]['profImg']['thumb120x120']
+                    }
+                  />
                   <div className="text-wrap">
                     <div className="selected-title">{list[selectedBIdx]['title']}</div>
                     {list[selectedBIdx]['nickNm'] !== 'banner' && (
@@ -285,7 +299,14 @@ export default props => {
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[nextBIdx])}>
                 <div className="image-text-bundle">
-                  <img className="image-wrap" src={list[nextBIdx]['nickNm'] === 'banner' ? list[nextBIdx]['profImg']['url'] : list[nextBIdx]['profImg']['thumb120x120']} />
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[nextBIdx]['profImg']['url']
+                        : list[nextBIdx]['profImg']['thumb120x120']
+                    }
+                  />
                   <div className="text-wrap">
                     <div className="selected-title">{list[nextBIdx]['title']}</div>
                     {list[nextBIdx]['nickNm'] !== 'banner' && (
@@ -391,6 +412,8 @@ const RecommendWrap = styled.div`
       position: absolute;
       top: 8px;
       right: 8px;
+      width: 42px;
+      height: 42px;
     }
 
     .counting {

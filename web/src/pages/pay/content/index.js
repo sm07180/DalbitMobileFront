@@ -12,7 +12,7 @@ import {PayStore} from '../store'
 //components
 import Pay from './pay.js'
 //
-const Index = (props) => {
+const Index = props => {
   //---------------------------------------------------------------------
 
   const context = useContext(Context)
@@ -54,8 +54,8 @@ export default Index
 //---------------------------------------------------------------------
 const Content = styled.div`
   display: block;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
   box-sizing: border-box;
 `
 //---------------------------------------------------------------------

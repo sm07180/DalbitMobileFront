@@ -210,11 +210,9 @@ const myProfile = props => {
         {urlrStr == 'profile' && (
           <>
             <LevelWrap>
-              {__NODE_ENV == 'dev' && (
-                <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
-                  경험치
-                </button>
-              )}
+              <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                경험치
+              </button>
               <div className="expBox">
                 <LevelText>LEVEL {profile.level}</LevelText>
                 <LevelStatusBarWrap>
@@ -231,11 +229,9 @@ const myProfile = props => {
                   <span className="expBegin">{profile.expNext - profile.expBegin}</span>
                 </div>
               </div>
-              {__NODE_ENV == 'dev' && (
-                <a href={`/level`} className="btn-level">
-                  레벨
-                </a>
-              )}
+              <a href={`/level`} className="btn-level">
+                레벨
+              </a>
             </LevelWrap>
           </>
         )}
