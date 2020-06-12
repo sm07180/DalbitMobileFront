@@ -91,6 +91,9 @@ export default () => {
                     context.action.updateStickerMsg(pushMsg)
                     context.action.updateSticker(true) //true,false
                     break
+                case '37': //------------------1:1 문의 답변
+                    context.action.updateNews(true) //true,false
+                    break
                 case '4': //------------------등록 된 캐스트(미정)
                     //window.location.href = `/`
                     break
@@ -364,6 +367,7 @@ export default () => {
         34 : 마이페이지>알림>해당 알림 글
         35 : 마이페이지
         36 : 레벨 업 DJ 마이페이지 [mem_no]
+        37 : 1:1 문의 답변
         4 : 등록 된 캐스트
         5 : 스페셜 DJ 선정 페이지
         6 : 이벤트 페이지>해당 이벤트 [board_idx]
@@ -420,6 +424,12 @@ export default () => {
             if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
+      case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
+          mem_no = pushMsg.mem_no
+          if (mem_no !== undefined) {
+              if (isLogin) window.location.href = `/customer/personal/qnaList`
+          }
+          break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break
