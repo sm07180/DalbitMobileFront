@@ -1,6 +1,7 @@
 import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
+import {RoomJoin} from 'context/room'
 import React, {useContext} from 'react'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -14,8 +15,6 @@ export default props => {
   const context = useContext(Context)
   const rankType = props.rankType
   const {list, myMemNo} = props
-
-  console.log(props.myMemNo)
 
   const creatList = () => {
     return (
@@ -82,21 +81,23 @@ export default props => {
               }
 
               return (
-                <div
-                  className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`}
-                  key={index}
-                  onClick={() => {
-                    window.location.href = `/mypage/${memNo}`
-                  }}>
-                  <div className="thumbBox">
+                <div className={'TopBox__item ' + `${myMemNo === memNo ? 'active' : ''}`} key={index}>
+                  <div
+                    className="thumbBox"
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
 
-                  <div>
-                    <p className={levelName}>
+                  <div
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
+                    {/* <p className={levelName}>
                       Lv{level} {grade}
-                    </p>
+                    </p> */}
                     <div className="nickNameBox">
                       <span className="nickName">{nickNm}</span>
                       <div className="iconBox">
@@ -106,7 +107,11 @@ export default props => {
                     </div>
                   </div>
 
-                  <div className="countBox">
+                  <div
+                    className="countBox"
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
                     {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
@@ -164,14 +169,20 @@ export default props => {
                       ) : upDown < 0 ? (
                         <span className="rankingChange__down">{Math.abs(upDown)}</span>
                       ) : (
-                        <span className="rankingChange__stop"></span>
+                        <></>
                       )}
                     </p>
                   </div>
 
                   {roomNo !== '' && (
                     <div className="liveBox">
-                      <img src={live} />
+                      <img
+                        src={live}
+                        onClick={() => {
+                          RoomJoin(roomNo + '')
+                        }}
+                        className="liveBox__img"
+                      />
                       <br />
                       LIVE
                     </div>

@@ -1,6 +1,7 @@
 import Util from 'components/lib/utility.js'
 //context
 import {Context} from 'context'
+import {RoomJoin} from 'context/room'
 import React, {useContext} from 'react'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -47,13 +48,12 @@ export default props => {
             }
 
             return (
-              <div
-                className="myRanking rankingList"
-                key={index}
-                onClick={() => {
-                  window.location.href = `/mypage/${memNo}`
-                }}>
-                <div className="myRanking__left">
+              <div className="myRanking rankingList" key={index}>
+                <div
+                  className="myRanking__left"
+                  onClick={() => {
+                    window.location.href = `/mypage/${memNo}`
+                  }}>
                   <p className="myRanking__left--ranking">{rank}</p>
                   <p className="rankingChange">
                     {upDown === 'new' ? (
@@ -63,7 +63,7 @@ export default props => {
                     ) : upDown < 0 ? (
                       <span className="rankingChange__down">{Math.abs(upDown)}</span>
                     ) : (
-                      <span className="rankingChange__stop"></span>
+                      <></>
                     )}
                   </p>
                   {rankType == 'dj' && (
@@ -85,7 +85,11 @@ export default props => {
                   )}
                 </div>
 
-                <div className="myRanking__right">
+                <div
+                  className="myRanking__right"
+                  onClick={() => {
+                    window.location.href = `/mypage/${memNo}`
+                  }}>
                   <div className="myRanking__rightWrap">
                     <div className="thumbBox">
                       <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
@@ -144,7 +148,13 @@ export default props => {
 
                 {roomNo !== '' && (
                   <div className="liveBox">
-                    <img src={live} />
+                    <img
+                      src={live}
+                      onClick={() => {
+                        RoomJoin(roomNo + '')
+                      }}
+                      className="liveBox__img"
+                    />
                     <br />
                     LIVE
                   </div>
