@@ -18,7 +18,7 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 const rankArray = ['dj', 'fan']
-const dateArray = ['오늘', '일간', '주간']
+const dateArray = ['오늘', '전일', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1
