@@ -1366,7 +1366,7 @@ export default class API {
     return await ajax({...obj, url: url || `/rest/pay/virtual`, method: method || 'POST', data: data})
   }
 
-  static pay_payletter = async obj => {
+  static pay_letter = async obj => {
     const {url, method, data} = obj || {}
     return await ajax({...obj, url: url || `/rest/pay/payletter`, method: method || 'POST', data: data})
   }
