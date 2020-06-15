@@ -35,13 +35,15 @@ export default props => {
   const [popup, setPopup] = useState(false);
   const [list, setList] = useState(-1);
   const [myInfo, setMyInfo] = useState({
-    myBroadPoint: 0,
-    myFanPoint: 0,
     myGiftPoint: 0,
     myListenerPoint: 0,
-    myPoint: 0,
     myRank: 0,
-    myUpDown: ''
+    myUpDown: '',
+    myBroadPoint: 0,
+    myLikePoint: 0,
+    myPoint: 0,
+    myListenPoint: 0,
+    time: ''
   });
 
   const [dateType, setDateType] = useState(0);
@@ -153,13 +155,15 @@ export default props => {
             setDateType(index);
             fetchRank(rankType, index);
             setMyInfo({
-              myBroadPoint: 0,
-              myFanPoint: 0,
               myGiftPoint: 0,
               myListenerPoint: 0,
-              myPoint: 0,
               myRank: 0,
-              myUpDown: ''
+              myUpDown: '',
+              myBroadPoint: 0,
+              myLikePoint: 0,
+              myPoint: 0,
+              myListenPoint: 0,
+              time: ''
             });
           }}
         >
@@ -208,6 +212,9 @@ export default props => {
     let res = '';
     currentPage = next ? ++currentPage : currentPage;
 
+    if (currentPage > 1) {
+      return;
+    }
     if (type === 'dj') {
       res = await Api.get_dj_ranking({
         params: {
@@ -235,7 +242,7 @@ export default props => {
       } else {
         if (next) {
           // setMoreState(true)
-          moreState = true;
+          moreState = false;
           setNextList(res.data.list);
         } else {
           setList(res.data.list);
@@ -250,6 +257,7 @@ export default props => {
           myBroadPoint: res.data.myBroadPoint,
           myLikePoint: res.data.myLikePoint,
           myPoint: res.data.myPoint,
+          myListenPoint: res.data.myListenPoint,
           time: res.data.time
         });
       }
@@ -459,11 +467,17 @@ export default props => {
                               />
                               {Util.printNumber(myInfo.myPoint)}
                             </span>
+
                             <span className="countBox__item">
                               <img src={timeWhite} />
-                              {Util.printNumber(myProfile.listenTotTime)}
+                              {Util.printNumber(myInfo.myListenPoint)}
                             </span>
                           </div>
+
+                          {/* <span className="countBox__item">
+                              <img src={moonWhite} />
+                              {Util.printNumber(myInfo.myGiftPoint)}
+                            </span> */}
 
                           {/* <span className="countBox__item">
                               <img src={moonWhite} />
