@@ -47,8 +47,6 @@ import { RoomMake } from 'context/room'
 let concatenating = false
 let tempScrollEvent = null
 
-let touchStartX = null
-let touchEndX = null
 let touchStartY = null
 let touchEndY = null
 
@@ -64,6 +62,7 @@ export default (props) => {
   const StarSectionRef = useRef()
   const LiveSectionRef = useRef()
 
+  // sub recommend context
   const recommendWrapRef = useRef()
   const refreshIconRef = useRef()
 
@@ -97,9 +96,12 @@ export default (props) => {
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
 
-  const [mainWrapFixed, setMainWrapFixed] = useState(false)
+  const [recommendSlideStatus, setRecommendSlideStatus] = useState(false)
+  const [reloadInitData, setReloadInitData] = useState(false)
 
   async function setMainInitData() {
+    setReloadInitData(true)
+
     const initData = await Api.main_init_data()
     if (initData.result === 'success') {
       const { djRank, fanRank, recommend, myStar } = initData.data
@@ -115,6 +117,7 @@ export default (props) => {
           setTimeout(() => resolve(), ms)
         })
       await delay(500)
+      setReloadInitData(false)
       return true
     }
 
@@ -338,26 +341,30 @@ export default (props) => {
   const transitionTime = 150
 
   const touchStart = (e) => {
+    if (reloadInitData) {
+      return
+    }
+
     const MainNode = MainRef.current
     const recommendWrapNode = recommendWrapRef.current
     const refreshIconNode = refreshIconRef.current
 
-    touchStartX = e.touches[0].clientX
     touchStartY = e.touches[0].clientY
   }
+
   const touchMove = (e) => {
+    if (reloadInitData) {
+      return
+    }
+
     const MainNode = MainRef.current
     const recommendWrapNode = recommendWrapRef.current
     const refreshIconNode = refreshIconRef.current
 
-    touchEndX = e.touches[0].clientX
     touchEndY = e.touches[0].clientY
-
-    const widthDiff = touchEndX - touchStartX
     const heightDiff = touchEndY - touchStartY
-    const direction = heightDiff > 0 ? 'up' : 'down'
 
-    if (heightDiff > 8 && Math.abs(widthDiff) < 20) {
+    if (recommendSlideStatus === false && heightDiff > 5) {
       recommendWrapNode.style.height = `${
         recommendWrapBaseHeight + heightDiff
       }px`
@@ -367,7 +374,12 @@ export default (props) => {
       }
     }
   }
+
   const touchEnd = async (e) => {
+    if (reloadInitData) {
+      return
+    }
+
     const MainNode = MainRef.current
     const recommendWrapNode = recommendWrapRef.current
     const refreshIconNode = refreshIconRef.current
@@ -451,7 +463,7 @@ export default (props) => {
 
           <Recommend
             list={initData.recommend}
-            setMainInitData={setMainInitData}
+            setRecommendSlideStatus={setRecommendSlideStatus}
             ref={{
               ref1: recommendWrapRef,
               ref2: refreshIconRef,

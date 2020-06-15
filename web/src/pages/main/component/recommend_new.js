@@ -33,7 +33,7 @@ const recommendWrapBaseHeight = 310
 
 export default React.forwardRef((props, ref) => {
   const context = useContext(Context)
-  const { list } = props
+  const { list, setRecommendSlideStatus } = props
   const history = useHistory()
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const [blobList, setBlobList] = useState([])
@@ -80,11 +80,11 @@ export default React.forwardRef((props, ref) => {
     if (scrollDirection === null) {
       if (heightDiff <= 10 && Math.abs(diff) > 20) {
         scrollDirection = 'side'
+        setRecommendSlideStatus(true)
       }
     }
 
-    if (scrollDirection === 'down') {
-    } else if (scrollDirection === 'side') {
+    if (scrollDirection === 'side') {
       slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
       slideWrapNode.style.transitionDuration = '0ms'
     }
@@ -102,10 +102,6 @@ export default React.forwardRef((props, ref) => {
     const diff = touchEndX - touchStartX
     direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
-
-    if (scrollDirection === 'down') {
-      const transitionTime = 150
-    }
 
     if (scrollDirection === 'side') {
       const slidingTime = 150 // unit is ms
@@ -148,6 +144,7 @@ export default React.forwardRef((props, ref) => {
         }
         touchStartStatus = false
         scrollDirection = null
+        setRecommendSlideStatus(false)
       })
     }
 
@@ -157,6 +154,7 @@ export default React.forwardRef((props, ref) => {
       }
       touchStartStatus = false
       scrollDirection = null
+      setRecommendSlideStatus(false)
     }
   }
 
