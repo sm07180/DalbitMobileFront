@@ -33,7 +33,7 @@ const recommendWrapBaseHeight = 310;
 
 export default (props) => {
   const context = useContext(Context);
-  const { list, setMainInitData } = props;
+  const { list, setMainInitData, setMainWrapFixed } = props;
   const history = useHistory();
   const [selectedBIdx, setSelectedBIdx] = useState(null);
   const [blobList, setBlobList] = useState([]);
@@ -48,6 +48,8 @@ export default (props) => {
     if (touchStartStatus === true) {
       return;
     }
+
+    setMainWrapFixed(true);
 
     if (Array.isArray(list) && list.length > 1) {
       touchStartStatus = true;
@@ -91,6 +93,8 @@ export default (props) => {
       recommendWrapNode.style.height = `${
         recommendWrapBaseHeight + heightDiff
       }px`;
+
+      // recommendWrapNode.style.transform = `scale(${heightDiff * 0.001 + 1})`;
       refreshIconNode.style.transform = `rotate(${-heightDiff}deg)`;
       refreshIconNode.style.opacity = 1;
     } else if (scrollDirection === 'side') {
@@ -125,9 +129,9 @@ export default (props) => {
           if (Math.abs(degree) === 360) {
             degree = 0;
           }
-          degree -= 30;
+          degree -= 15;
           refreshIconNode.style.transform = `rotate(${degree}deg)`;
-        }, 50);
+        }, 25);
 
         const result = await setMainInitData();
         clearInterval(tempIntevalId);
@@ -142,6 +146,7 @@ export default (props) => {
       promiseSync.then(() => {
         recommendWrapNode.style.transitionDuration = `0ms`;
         recommendWrapNode.style.height = `${recommendWrapBaseHeight}px`;
+        recommendWrapNode.style.transform = `scale(1)`;
         refreshIconNode.style.opacity = 0;
         refreshIconNode.style.transform = `rotate(0)`;
         touchStartStatus = false;
@@ -181,7 +186,6 @@ export default (props) => {
             );
             setSelectedBIdx(targetBIdx);
           }
-
           slideWrapNode.style.transitionDuration = '0ms';
           slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)';
         }
@@ -324,7 +328,7 @@ export default (props) => {
 
   return (
     <>
-      <RecommendWrap ref={recommendWrapRef}>
+      <RecommendWrap className="recommend-wrap" ref={recommendWrapRef}>
         <Room />
         <div className="selected-wrap">
           {Array.isArray(list) && list.length > 0 && (
@@ -448,18 +452,32 @@ export default (props) => {
             </div>
           )}
         </div>
-
-        <div className="icon-wrap">
-          <img
-            className="arrow-refresh-icon"
-            src={RefreshIcon}
-            ref={refreshIconRef}
-          />
-        </div>
       </RecommendWrap>
+      <IconWrap>
+        <img
+          className="arrow-refresh-icon"
+          src={RefreshIcon}
+          ref={refreshIconRef}
+        />
+      </IconWrap>
     </>
   );
 };
+
+const IconWrap = styled.div`
+  display: block;
+  position: absolute;
+  top: 67px;
+  left: 50%;
+
+  .arrow-refresh-icon {
+    display: block;
+    position: relative;
+    left: -50%;
+    opacity: 0;
+    transition: opacity 200ms ease-in;
+  }
+`;
 
 const RecommendWrap = styled.div`
   position: relative;
@@ -467,29 +485,13 @@ const RecommendWrap = styled.div`
   min-height: 310px;
   /* max-height: 400px; */
   margin-top: -42px;
-  transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-
-  .icon-wrap {
-    display: block;
-    position: absolute;
-    top: 67px;
-    left: 50%;
-
-    .arrow-refresh-icon {
-      display: block;
-      position: relative;
-      left: -50%;
-      opacity: 0;
-      transition: opacity 200ms ease-in;
-    }
-  }
+  transition: all 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
 
   .selected-wrap {
     position: relative;
     height: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
     overflow: hidden;
 
     .slide-wrap {

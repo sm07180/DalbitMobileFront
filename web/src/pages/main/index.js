@@ -88,6 +88,8 @@ export default (props) => {
   const [payState, setPayState] = useState(false);
   const [broadCnt, setBroadCnt] = useState(false);
 
+  const [mainWrapFixed, setMainWrapFixed] = useState(false);
+
   async function setMainInitData() {
     const initData = await Api.main_init_data();
     if (initData.result === 'success') {
@@ -325,8 +327,8 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <MainWrap ref={MainRef}>
-        <SubMain ref={SubMainRef}>
+      <MainWrap ref={MainRef} className={mainWrapFixed ? 'fixed' : ''}>
+        <SubMain className="sub-main" ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
               <div className="tab">
@@ -370,10 +372,15 @@ export default (props) => {
           <Recommend
             list={initData.recommend}
             setMainInitData={setMainInitData}
+            setMainWrapFixed={setMainWrapFixed}
           />
         </SubMain>
 
-        <Content>
+        <Content
+          onTouchStart={(e) => {
+            setMainWrapFixed(false);
+          }}
+        >
           <div className="section" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
@@ -695,6 +702,7 @@ const Content = styled.div`
 const SubMain = styled.div`
   min-height: 310px;
   background-color: #fff;
+  overflow: hidden;
 
   .gnb {
     display: flex;
@@ -768,4 +776,11 @@ const SubMain = styled.div`
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
+  width: 100%;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 `;
