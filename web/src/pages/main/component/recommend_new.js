@@ -1,334 +1,293 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import styled from 'styled-components';
-import Lottie from 'react-lottie';
-import { Context } from 'context';
+import React, { useEffect, useState, useRef, useContext } from 'react'
+import styled from 'styled-components'
+import Lottie from 'react-lottie'
+import { Context } from 'context'
 
 //context
-import { useHistory } from 'react-router-dom';
-import Room, { RoomJoin } from 'context/room';
+import { useHistory } from 'react-router-dom'
+import Room, { RoomJoin } from 'context/room'
 
 // component
-import { IMG_SERVER } from 'context/config';
-import { Hybrid, isHybrid } from 'context/hybrid';
+import { IMG_SERVER } from 'context/config'
+import { Hybrid, isHybrid } from 'context/hybrid'
 
 // static
-import animationData from '../static/ic_live.json';
-import EventIcon from '../static/ic_event.png';
-import RefreshIcon from '../static/ic_arrow_refresh.svg';
+import animationData from '../static/ic_live.json'
+import EventIcon from '../static/ic_event.png'
+import RefreshIcon from '../static/ic_arrow_refresh.svg'
 
-let touchStartX = null;
-let touchEndX = null;
+let touchStartX = null
+let touchEndX = null
 
-let touchStartY = null;
-let touchEndY = null;
+let touchStartY = null
+let touchEndY = null
 
-let touchStartStatus = false;
-let direction = null;
+let touchStartStatus = false
+let direction = null
 
-let scrollDirection = null;
+let scrollDirection = null
 
-let intervalId = null;
-const intervalSec = 5000;
-const recommendWrapBaseHeight = 310;
+let intervalId = null
+const intervalSec = 5000
+const recommendWrapBaseHeight = 310
 
-export default (props) => {
-  const context = useContext(Context);
-  const { list, setMainInitData, setMainWrapFixed } = props;
-  const history = useHistory();
-  const [selectedBIdx, setSelectedBIdx] = useState(null);
-  const [blobList, setBlobList] = useState([]);
+export default React.forwardRef((props, ref) => {
+  const context = useContext(Context)
+  const { list } = props
+  const history = useHistory()
+  const [selectedBIdx, setSelectedBIdx] = useState(null)
+  const [blobList, setBlobList] = useState([])
 
-  const recommendWrapRef = useRef();
-  const slideWrapRef = useRef();
-  const refreshIconRef = useRef();
+  const slideWrapRef = useRef()
 
-  const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g;
+  const { ref1, ref2 } = ref
+
+  const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
   const touchStartEvent = (e) => {
     if (touchStartStatus === true) {
-      return;
+      return
     }
-
-    setMainWrapFixed(true);
 
     if (Array.isArray(list) && list.length > 1) {
-      touchStartStatus = true;
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
+      touchStartStatus = true
+      touchStartX = e.touches[0].clientX
+      touchStartY = e.touches[0].clientY
 
       if (intervalId) {
-        clearInterval(intervalId);
+        clearInterval(intervalId)
       }
-      intervalId = null;
+      intervalId = null
     }
-  };
+  }
 
   const touchMoveEvent = (e) => {
     if (touchStartStatus === false) {
-      return;
+      return
     }
 
-    const recommendWrapNode = recommendWrapRef.current;
-    const slideWrapNode = slideWrapRef.current;
-    const refreshIconNode = refreshIconRef.current;
+    const slideWrapNode = slideWrapRef.current
 
-    touchEndX = e.touches[0].clientX;
-    touchEndY = e.touches[0].clientY;
+    touchEndX = e.touches[0].clientX
+    touchEndY = e.touches[0].clientY
 
-    const baseWidth = slideWrapNode.clientWidth / 3;
-    const diff = touchEndX - touchStartX;
-    const calcX = `${-baseWidth + diff}px`;
+    const baseWidth = slideWrapNode.clientWidth / 3
+    const diff = touchEndX - touchStartX
+    const calcX = `${-baseWidth + diff}px`
 
-    const heightDiff = touchEndY - touchStartY;
+    const heightDiff = touchEndY - touchStartY
 
     if (scrollDirection === null) {
-      if (heightDiff > 10) {
-        scrollDirection = 'down';
-      } else if (Math.abs(diff) > 20) {
-        scrollDirection = 'side';
+      if (heightDiff <= 10 && Math.abs(diff) > 20) {
+        scrollDirection = 'side'
       }
     }
 
     if (scrollDirection === 'down') {
-      recommendWrapNode.style.height = `${
-        recommendWrapBaseHeight + heightDiff
-      }px`;
-
-      // recommendWrapNode.style.transform = `scale(${heightDiff * 0.001 + 1})`;
-      refreshIconNode.style.transform = `rotate(${-heightDiff}deg)`;
-      refreshIconNode.style.opacity = 1;
     } else if (scrollDirection === 'side') {
-      slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`;
-      slideWrapNode.style.transitionDuration = '0ms';
+      slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
+      slideWrapNode.style.transitionDuration = '0ms'
     }
-  };
+  }
 
   const touchEndEvent = async (e) => {
     if (touchStartStatus === false) {
-      return;
+      return
     }
 
-    const recommendWrapNode = recommendWrapRef.current;
-    const slideWrapNode = slideWrapRef.current;
-    const refreshIconNode = refreshIconRef.current;
+    const slideWrapNode = slideWrapRef.current
+    const baseWidth = slideWrapNode.clientWidth / 3
 
-    const baseWidth = slideWrapNode.clientWidth / 3;
-
-    const halfBaseWidth = baseWidth / 16;
-    const diff = touchEndX - touchStartX;
-    direction = diff > 0 ? 'right' : 'left';
-    const absDiff = Math.abs(diff);
+    const halfBaseWidth = baseWidth / 16
+    const diff = touchEndX - touchStartX
+    direction = diff > 0 ? 'right' : 'left'
+    const absDiff = Math.abs(diff)
 
     if (scrollDirection === 'down') {
-      const transitionTime = 150;
-
-      // Reset init data
-      if (recommendWrapNode.clientHeight > recommendWrapBaseHeight + 80) {
-        let degree = 0;
-        const tempIntevalId = setInterval(() => {
-          if (Math.abs(degree) === 360) {
-            degree = 0;
-          }
-          degree -= 15;
-          refreshIconNode.style.transform = `rotate(${degree}deg)`;
-        }, 25);
-
-        const result = await setMainInitData();
-        clearInterval(tempIntevalId);
-      }
-
-      const promiseSync = new Promise((resolve, reject) => {
-        recommendWrapNode.style.transitionDuration = `${transitionTime}ms`;
-        recommendWrapNode.style.height = `${recommendWrapBaseHeight}px`;
-
-        setTimeout(() => resolve(), transitionTime);
-      });
-      promiseSync.then(() => {
-        recommendWrapNode.style.transitionDuration = `0ms`;
-        recommendWrapNode.style.height = `${recommendWrapBaseHeight}px`;
-        recommendWrapNode.style.transform = `scale(1)`;
-        refreshIconNode.style.opacity = 0;
-        refreshIconNode.style.transform = `rotate(0)`;
-        touchStartStatus = false;
-        scrollDirection = null;
-      });
+      const transitionTime = 150
     }
 
     if (scrollDirection === 'side') {
-      const slidingTime = 150; // unit is ms
+      const slidingTime = 150 // unit is ms
       const promiseSync = new Promise((resolve, reject) => {
-        slideWrapNode.style.transitionDuration = `${slidingTime}ms`;
+        slideWrapNode.style.transitionDuration = `${slidingTime}ms`
 
         if (absDiff >= halfBaseWidth) {
           if (direction === 'left') {
             slideWrapNode.style.transform = `translate3d(${
               -baseWidth * 2
-            }px, 0, 0)`;
+            }px, 0, 0)`
           } else if (direction === 'right') {
-            slideWrapNode.style.transform = `translate3d(0, 0, 0)`;
+            slideWrapNode.style.transform = `translate3d(0, 0, 0)`
           }
         } else {
-          slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`;
+          slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
         }
-        setTimeout(() => resolve(), slidingTime);
-      });
+        setTimeout(() => resolve(), slidingTime)
+      })
 
       promiseSync.then(() => {
         if (absDiff >= halfBaseWidth) {
           if (direction === 'right') {
             const targetBIdx = Number(
               slideWrapNode.firstChild.getAttribute('b-idx')
-            );
-            setSelectedBIdx(targetBIdx);
+            )
+            setSelectedBIdx(targetBIdx)
           } else if (direction === 'left') {
             const targetBIdx = Number(
               slideWrapNode.lastChild.getAttribute('b-idx')
-            );
-            setSelectedBIdx(targetBIdx);
+            )
+            setSelectedBIdx(targetBIdx)
           }
-          slideWrapNode.style.transitionDuration = '0ms';
-          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)';
+          slideWrapNode.style.transitionDuration = '0ms'
+          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
         }
 
         if (intervalId === null) {
-          initInterval();
+          initInterval()
         }
-        touchStartStatus = false;
-        scrollDirection = null;
-      });
+        touchStartStatus = false
+        scrollDirection = null
+      })
     }
 
-    scrollDirection = 'ing';
-  };
+    if (scrollDirection === null) {
+      if (intervalId === null) {
+        initInterval()
+      }
+      touchStartStatus = false
+      scrollDirection = null
+    }
+  }
 
   const initInterval = () => {
-    const slidingTime = 150; // unit is ms
+    const slidingTime = 150 // unit is ms
 
     intervalId = setInterval(() => {
-      const slideWrapNode = slideWrapRef.current;
-      const baseWidth = slideWrapNode.clientWidth / 3;
+      const slideWrapNode = slideWrapRef.current
+      const baseWidth = slideWrapNode.clientWidth / 3
 
       if (!touchStartStatus) {
         const promiseSync = new Promise((resolve, reject) => {
-          touchStartStatus = true;
-          slideWrapNode.style.transitionDuration = `${slidingTime}ms`;
+          touchStartStatus = true
+          slideWrapNode.style.transitionDuration = `${slidingTime}ms`
           slideWrapNode.style.transform = `translate3d(${
             -baseWidth * 2
-          }px, 0, 0)`;
-          setTimeout(() => resolve(), slidingTime);
-        });
+          }px, 0, 0)`
+          setTimeout(() => resolve(), slidingTime)
+        })
 
         promiseSync.then(() => {
           setSelectedBIdx((selectedBIdx) => {
-            const nextIdx = selectedBIdx + 1;
+            const nextIdx = selectedBIdx + 1
             if (nextIdx < list.length) {
-              return nextIdx;
+              return nextIdx
             } else {
-              return 0;
+              return 0
             }
-          });
+          })
 
-          slideWrapNode.style.transitionDuration = '0ms';
-          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)';
-          touchStartStatus = false;
-        });
+          slideWrapNode.style.transitionDuration = '0ms'
+          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
+          touchStartStatus = false
+        })
       }
-    }, intervalSec);
-  };
+    }, intervalSec)
+  }
 
   function clearBannerImgDiskCache() {
     if (window.localStorage.getItem('bannerList')) {
-      const list = JSON.parse(window.localStorage.getItem('bannerList'));
+      const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach((url) => {
         if (url) {
-          URL.revokeObjectURL(url);
+          URL.revokeObjectURL(url)
         }
-      });
-      localStorage.removeItem('bannerList');
+      })
+      localStorage.removeItem('bannerList')
     }
   }
 
   useEffect(() => {
-    const tempBlobList = [];
+    const tempBlobList = []
     if (Array.isArray(list) && list.length) {
-      setSelectedBIdx(0);
+      setSelectedBIdx(0)
 
-      clearBannerImgDiskCache();
+      clearBannerImgDiskCache()
 
-      let count = 0;
+      let count = 0
       list.forEach((line, idx) => {
-        const { bannerUrl } = line;
+        const { bannerUrl } = line
         fetch(bannerUrl)
           .then((res) => res.blob())
           .then((blob) => {
-            count++;
-            const cacheUrl = URL.createObjectURL(blob);
-            tempBlobList[idx] = cacheUrl;
+            count++
+            const cacheUrl = URL.createObjectURL(blob)
+            tempBlobList[idx] = cacheUrl
             if (count === list.length) {
-              setBlobList(tempBlobList);
-              localStorage.setItem('bannerList', JSON.stringify(tempBlobList));
+              setBlobList(tempBlobList)
+              localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
           })
           .catch(() => {
-            count++;
+            count++
             if (count === list.length) {
-              setBlobList(tempBlobList);
-              localStorage.setItem('bannerList', JSON.stringify(tempBlobList));
+              setBlobList(tempBlobList)
+              localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
-          });
-      });
+          })
+      })
 
-      initInterval();
+      initInterval()
 
       return () => {
-        clearInterval(intervalId);
-        intervalId = null;
-      };
+        clearInterval(intervalId)
+        intervalId = null
+      }
     }
-  }, [list]);
+  }, [list])
 
   useEffect(() => {
-    const swiperNode = document.getElementsByClassName('dalbit-swiper')[0];
+    const swiperNode = document.getElementsByClassName('dalbit-swiper')[0]
     if (swiperNode && direction !== null) {
-      touchStartX = null;
-      touchEndX = null;
-      touchStartY = null;
-      touchEndY = null;
+      touchStartX = null
+      touchEndX = null
+      touchStartY = null
+      touchEndY = null
 
-      touchStartStatus = false;
-      direction = null;
+      touchStartStatus = false
+      direction = null
     }
-  }, [selectedBIdx]);
+  }, [selectedBIdx])
 
   if (selectedBIdx === null) {
-    return null;
+    return null
   }
 
-  const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1;
-  const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0;
+  const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
+  const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
-  const { customHeader, token } = context || Room.context;
+  const { customHeader, token } = context || Room.context
   const clickSlideDisplay = (data) => {
-    const { roomType, roomNo } = data;
+    const { roomType, roomNo } = data
 
     if (roomType === 'link') {
-      const { roomNo } = data;
-      context.action.updatenoticeIndexNum(roomNo);
+      const { roomNo } = data
+      context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '' && !roomNo.startsWith('http')) {
-        history.push(`${roomNo}`);
+        history.push(`${roomNo}`)
       } else if (roomNo !== '' && roomNo.startsWith('http')) {
-        window.location.href = `${roomNo}`;
+        window.location.href = `${roomNo}`
       }
     } else {
       if (isHybrid() && roomNo) {
-        RoomJoin(roomNo);
+        RoomJoin(roomNo)
       }
     }
-  };
+  }
 
   return (
-    <>
-      <RecommendWrap className="recommend-wrap" ref={recommendWrapRef}>
+    <div style={{ position: 'relative' }}>
+      <RecommendWrap className="recommend-wrap" ref={ref1}>
         <Room />
         <div className="selected-wrap">
           {Array.isArray(list) && list.length > 0 && (
@@ -363,7 +322,7 @@ export default (props) => {
                           .map((str, idx) => {
                             // 🎉😝pqpq😝🎉
                             // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
-                            return <span key={`splited-${idx}`}>{str}</span>;
+                            return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
                     )}
@@ -390,7 +349,7 @@ export default (props) => {
                         {list[selectedBIdx]['nickNm']
                           .split(emojiSplitRegex)
                           .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>;
+                            return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
                     )}
@@ -417,7 +376,7 @@ export default (props) => {
                         {list[nextBIdx]['nickNm']
                           .split(emojiSplitRegex)
                           .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>;
+                            return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
                     )}
@@ -454,15 +413,11 @@ export default (props) => {
         </div>
       </RecommendWrap>
       <IconWrap>
-        <img
-          className="arrow-refresh-icon"
-          src={RefreshIcon}
-          ref={refreshIconRef}
-        />
+        <img className="arrow-refresh-icon" src={RefreshIcon} ref={ref2} />
       </IconWrap>
-    </>
-  );
-};
+    </div>
+  )
+})
 
 const IconWrap = styled.div`
   display: block;
@@ -477,7 +432,7 @@ const IconWrap = styled.div`
     opacity: 0;
     transition: opacity 200ms ease-in;
   }
-`;
+`
 
 const RecommendWrap = styled.div`
   position: relative;
@@ -595,4 +550,4 @@ const RecommendWrap = styled.div`
       vertical-align: middle;
     }
   }
-`;
+`
