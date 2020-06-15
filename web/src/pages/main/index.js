@@ -2,143 +2,170 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {Link} from 'react-router-dom'
-import styled from 'styled-components'
+import React, { useContext, useEffect, useState, useRef, useMemo } from 'react';
+import {
+  IMG_SERVER,
+  WIDTH_PC,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_TABLET_S,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S,
+} from 'context/config';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 //context
-import Api from 'context/api'
-import {Context} from 'context'
-import {StoreLink} from 'context/link'
+import Api from 'context/api';
+import { Context } from 'context';
+import { StoreLink } from 'context/link';
 
 // components
-import Layout from 'pages/common/layout'
-import Recommend from './component/recommend_new.js'
-import LiveList from './component/livelist.js'
-import RankList from './component/rankList.js'
-import BannerList from './component/bannerList.js'
-import StarList from './component/starList.js'
-import LayerPopup from './component/layer_popup.js'
-import LayerPopupNotice from './component/layer_popup_notice.js'
-import LayerPopupPay from './component/layer_popup_pay.js'
-import NoResult from './component/NoResult.js'
-import {OS_TYPE} from 'context/config.js'
+import Layout from 'pages/common/layout';
+import Recommend from './component/recommend_new.js';
+import LiveList from './component/livelist.js';
+import RankList from './component/rankList.js';
+import BannerList from './component/bannerList.js';
+import StarList from './component/starList.js';
+import LayerPopup from './component/layer_popup.js';
+import LayerPopupNotice from './component/layer_popup_notice.js';
+import LayerPopupPay from './component/layer_popup_pay.js';
+import NoResult from './component/NoResult.js';
+import { OS_TYPE } from 'context/config.js';
 
-import Swiper from 'react-id-swiper'
-import {useHistory} from 'react-router-dom'
-import Utility from 'components/lib/utility'
+import Swiper from 'react-id-swiper';
+import { useHistory } from 'react-router-dom';
+import Utility from 'components/lib/utility';
 // static
-import Mic from './static/ic_broadcastng.svg'
-import sequenceIcon from './static/ic_live_sequence.svg'
-import refreshIcon from './static/ic_live_refresh.svg'
-import RankArrow from './static/ic_rank_arrow.svg'
+import Mic from './static/ic_broadcastng.svg';
+import sequenceIcon from './static/ic_live_sequence.svg';
+import refreshIcon from './static/ic_live_refresh.svg';
+import RankArrow from './static/ic_rank_arrow.svg';
 
-import {RoomMake} from 'context/room'
+import { RoomMake } from 'context/room';
 
-let concatenating = false
-let tempScrollEvent = null
+let concatenating = false;
+let tempScrollEvent = null;
 //7->50
-const records = 30
+const records = 30;
 
 export default (props) => {
   // reference
-  const MainRef = useRef()
-  const SubMainRef = useRef()
-  const RankSectionRef = useRef()
-  const BannerSectionRef = useRef()
-  const StarSectionRef = useRef()
-  const LiveSectionRef = useRef()
+  const MainRef = useRef();
+  const SubMainRef = useRef();
+  const RankSectionRef = useRef();
+  const BannerSectionRef = useRef();
+  const StarSectionRef = useRef();
+  const LiveSectionRef = useRef();
 
   //context
-  const globalCtx = useContext(Context)
-  const history = useHistory()
+  const globalCtx = useContext(Context);
+  const history = useHistory();
 
   // state
-  const [initData, setInitData] = useState({})
-  const [liveList, setLiveList] = useState(null)
-  const [rankType, setRankType] = useState('dj') // type: dj, fan
+  const [initData, setInitData] = useState({});
+  const [liveList, setLiveList] = useState(null);
+  const [rankType, setRankType] = useState('dj'); // type: dj, fan
 
-  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
-  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
-  const [popup, setPopup] = useState(false)
-  const [popupNotice, setPopupNotice] = useState(true)
-  const [scrollY, setScrollY] = useState(0)
+  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false);
+  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('');
+  const [popup, setPopup] = useState(false);
+  const [popupNotice, setPopupNotice] = useState(true);
+  const [scrollY, setScrollY] = useState(0);
 
-  const [liveAlign, setLiveAlign] = useState(1)
-  const [liveGender, setLiveGender] = useState('')
+  const [liveAlign, setLiveAlign] = useState(1);
+  const [liveGender, setLiveGender] = useState('');
 
-  const [livePage, setLivePage] = useState(1)
-  const [totalLivePage, setTotalLivePage] = useState(null)
+  const [livePage, setLivePage] = useState(1);
+  const [totalLivePage, setTotalLivePage] = useState(null);
 
-  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
-  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
-  const customHeader = JSON.parse(Api.customHeader)
+  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false);
+  const [categoryList, setCategoryList] = useState([
+    { sorNo: 0, cd: '', cdNm: '전체' },
+  ]);
+  const customHeader = JSON.parse(Api.customHeader);
 
-  const [payState, setPayState] = useState(false)
+  const [payState, setPayState] = useState(false);
+  const [broadCnt, setBroadCnt] = useState(false);
 
-  const [broadCnt, setBroadCnt] = useState(false)
+  async function setMainInitData() {
+    const initData = await Api.main_init_data();
+    if (initData.result === 'success') {
+      const { djRank, fanRank, recommend, myStar } = initData.data;
+      setInitData({
+        recommend,
+        djRank,
+        fanRank,
+        myStar,
+      });
+
+      const delay = (ms) =>
+        new Promise((resolve, _) => {
+          setTimeout(() => resolve(), ms);
+        });
+      await delay(500);
+      return true;
+    }
+
+    return false;
+  }
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
+      const exceptionList = [
+        'room_active',
+        'room_no',
+        'room_info',
+        'push_type',
+        'popup_notice',
+        'pay_info',
+      ];
       Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
-          sessionStorage.removeItem(key)
+          sessionStorage.removeItem(key);
         }
-      })
+      });
     }
 
-    ;(async () => {
-      const initData = await Api.main_init_data()
-      if (initData.result === 'success') {
-        const {djRank, fanRank, recommend, myStar} = initData.data
-        setInitData({
-          recommend,
-          djRank,
-          fanRank,
-          myStar
-        })
-      }
-    })()
+    setMainInitData();
 
     Api.splash().then((res) => {
-      const {result} = res
+      const { result } = res;
       if (result === 'success') {
-        const {data} = res
-        const {roomType} = data
+        const { data } = res;
+        const { roomType } = data;
         if (roomType) {
-          const concatenated = categoryList.concat(roomType)
-          setCategoryList(concatenated)
+          const concatenated = categoryList.concat(roomType);
+          setCategoryList(concatenated);
         }
       }
-    })
-  }, [])
+    });
+  }, []);
 
   const fetchLiveList = async (reset) => {
-    setLiveList(null)
+    setLiveList(null);
     const broadcastList = await Api.broad_list({
       params: {
         page: reset ? 1 : livePage,
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
-        gender: liveGender
-      }
-    })
+        gender: liveGender,
+      },
+    });
     if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
+      const { list, paging } = broadcastList.data;
       if (paging) {
-        const {totalPage, next} = paging
-        setLivePage(next)
-        setTotalLivePage(totalPage)
+        const { totalPage, next } = paging;
+        setLivePage(next);
+        setTotalLivePage(totalPage);
       }
-      setLiveList(list)
+      setLiveList(list);
     }
-  }
+  };
 
   const concatLiveList = async () => {
-    concatenating = true
+    concatenating = true;
 
     const broadcastList = await Api.broad_list({
       params: {
@@ -146,54 +173,66 @@ export default (props) => {
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
-        gender: liveGender
-      }
-    })
+        gender: liveGender,
+      },
+    });
 
     if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
+      const { list, paging } = broadcastList.data;
       if (paging) {
-        const {totalPage, next} = paging
-        setLivePage(next)
-        setTotalLivePage(totalPage)
+        const { totalPage, next } = paging;
+        setLivePage(next);
+        setTotalLivePage(totalPage);
       }
 
-      const currentList = [...liveList]
-      const concatenated = currentList.concat(list)
-      setLiveList(concatenated)
+      const currentList = [...liveList];
+      const concatenated = currentList.concat(list);
+      setLiveList(concatenated);
     }
-  }
+  };
 
   const fetchBroadCnt = async () => {
-    const broadCntRes = await Api.getBroadCnt()
-    setBroadCnt(broadCntRes.data)
-  }
+    const broadCntRes = await Api.getBroadCnt();
+    setBroadCnt(broadCntRes.data);
+  };
 
   const windowScrollEvent = () => {
-    const GnbHeight = 48
-    const sectionMarginTop = 24
-    const LiveTabDefaultHeight = 48
+    const GnbHeight = 48;
+    const sectionMarginTop = 24;
+    const LiveTabDefaultHeight = 48 + sectionMarginTop;
 
-    const MainNode = MainRef.current
-    const SubMainNode = SubMainRef.current
-    const RankSectionNode = RankSectionRef.current
-    const StarSectionNode = StarSectionRef.current
-    const LiveSectionNode = LiveSectionRef.current
+    const MainNode = MainRef.current;
+    const SubMainNode = SubMainRef.current;
+    const RankSectionNode = RankSectionRef.current;
+    const StarSectionNode = StarSectionRef.current;
+    const BannerSectionNode = BannerSectionRef.current;
+    const LiveSectionNode = LiveSectionRef.current;
 
-    const MainHeight = MainNode.clientHeight
-    const SubMainHeight = SubMainNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop
-    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight + sectionMarginTop : 0
-    const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
+    const MainHeight = MainNode.clientHeight;
+    const SubMainHeight = SubMainNode.clientHeight;
+    const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop;
+    const StarSectionHeight =
+      StarSectionNode.style.display !== 'none'
+        ? StarSectionNode.clientHeight + sectionMarginTop
+        : 0;
 
-    const TopSectionHeight = SubMainHeight + RankSectionHeight + StarSectionHeight + LiveTabDefaultHeight
-    if (window.scrollY >= TopSectionHeight + 85) {
-      setLiveCategoryFixed(true)
+    const BannerSectionHeight = BannerSectionNode.clientHeight;
+    const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop;
+
+    const TopSectionHeight =
+      SubMainHeight +
+      RankSectionHeight +
+      StarSectionHeight +
+      BannerSectionHeight +
+      LiveTabDefaultHeight;
+
+    if (window.scrollY >= TopSectionHeight) {
+      setLiveCategoryFixed(true);
     } else {
-      setLiveCategoryFixed(false)
+      setLiveCategoryFixed(false);
     }
 
-    const GAP = 300
+    const GAP = 300;
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
@@ -201,94 +240,88 @@ export default (props) => {
       liveList.length &&
       livePage <= totalLivePage
     ) {
-      concatLiveList()
+      concatLiveList();
     }
-  }
+  };
 
   const resetFetchList = () => {
-    setLivePage(1)
-    fetchLiveList(true)
-  }
+    setLivePage(1);
+    fetchLiveList(true);
+  };
 
   const popStateEvent = (e) => {
     if (e.state === null) {
-      setPopup(false)
+      setPopup(false);
     } else if (e.state === 'layer') {
-      setPopup(true)
+      setPopup(true);
     }
-  }
+  };
 
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
-        window.history.pushState('layer', '', '/#layer')
-        setScrollY(window.scrollY)
+        window.history.pushState('layer', '', '/#layer');
+        setScrollY(window.scrollY);
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
-        window.history.back()
-        setTimeout(() => window.scrollTo(0, scrollY))
+        window.history.back();
+        setTimeout(() => window.scrollTo(0, scrollY));
       }
     }
-  }, [popup])
+  }, [popup]);
 
   useEffect(() => {
-    fetchBroadCnt()
-    window.addEventListener('popstate', popStateEvent)
-    window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
-
-    //globalCtx.action.updateStickerMsg({push_type:1,title:"DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP DJ LEVELUP",contents:"DJ LEVELUP"})
-    //globalCtx.action.updateSticker(true)
-    // if (sessionStorage.getItem('popup_notice') === null) {
-    //   sessionStorage.setItem('popup_notice', 'y')
-    // }
+    fetchBroadCnt();
+    window.addEventListener('popstate', popStateEvent);
+    window.addEventListener('scroll', windowScrollEvent);
+    tempScrollEvent = windowScrollEvent;
 
     if (sessionStorage.getItem('pay_info') !== null) {
-      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
-      setPayState(payInfo)
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'));
+      setPayState(payInfo);
     }
 
     return () => {
-      sessionStorage.removeItem('pay_info')
-      window.removeEventListener('popstate', popStateEvent)
-      window.removeEventListener('scroll', windowScrollEvent)
-      window.removeEventListener('scroll', tempScrollEvent)
-      tempScrollEvent = null
-      concatenating = false
-    }
-  }, [])
+      sessionStorage.removeItem('pay_info');
+      window.removeEventListener('popstate', popStateEvent);
+      window.removeEventListener('scroll', windowScrollEvent);
+      window.removeEventListener('scroll', tempScrollEvent);
+      tempScrollEvent = null;
+      concatenating = false;
+    };
+  }, []);
 
   useEffect(() => {
-    resetFetchList()
-  }, [selectedLiveRoomType])
+    resetFetchList();
+  }, [selectedLiveRoomType]);
 
   useEffect(() => {
-    window.removeEventListener('scroll', tempScrollEvent)
-    window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
-    concatenating = false
-  }, [liveList])
+    window.removeEventListener('scroll', tempScrollEvent);
+    window.addEventListener('scroll', windowScrollEvent);
+    tempScrollEvent = windowScrollEvent;
+    concatenating = false;
+  }, [liveList]);
 
   const swiperParams = {
-    slidesPerView: 'auto'
-  }
+    slidesPerView: 'auto',
+  };
 
   const goRank = () => {
-    history.push(`/rank`, rankType)
-  }
+    history.push(`/rank`, rankType);
+  };
   //go event
   const goEvent = () => {
-    globalCtx.action.updatenoticeIndexNum(`/customer/notice/17`)
-    history.push(`/customer/notice/17`)
-  }
+    globalCtx.action.updatenoticeIndexNum(`/customer/notice/17`);
+    history.push(`/customer/notice/17`);
+  };
 
-  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+  const alignSet = { 1: '추천', 2: '좋아요', 3: '청취자' };
 
   const setPayPopup = () => {
-    setPayState(false)
-    sessionStorage.removeItem('pay_info')
-  }
+    setPayState(false);
+    sessionStorage.removeItem('pay_info');
+  };
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -305,10 +338,11 @@ export default (props) => {
               <div className="tab">
                 <Link
                   onClick={(event) => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
+                    event.preventDefault();
+                    StoreLink(globalCtx);
                   }}
-                  to={'/store'}>
+                  to={'/store'}
+                >
                   스토어
                 </Link>
               </div>
@@ -318,20 +352,25 @@ export default (props) => {
                 className="btn"
                 onClick={() => {
                   if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                    window.location.href =
+                      'https://inforexseoul.page.link/Ws4t';
                   } else {
                     if (!broadcastBtnActive) {
-                      RoomMake(globalCtx)
-                      setBroadcastBtnActive(true)
-                      setTimeout(() => setBroadcastBtnActive(false), 3000)
+                      RoomMake(globalCtx);
+                      setBroadcastBtnActive(true);
+                      setTimeout(() => setBroadcastBtnActive(false), 3000);
                     }
                   }
-                }}>
+                }}
+              >
                 방송하기
               </div>
             </div>
           </div>
-          <Recommend list={initData.recommend} />
+          <Recommend
+            list={initData.recommend}
+            setMainInitData={setMainInitData}
+          />
         </SubMain>
 
         <Content>
@@ -342,28 +381,42 @@ export default (props) => {
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
-                <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
+                <span
+                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
+                  onClick={() => setRankType('dj')}
+                >
                   DJ
                 </span>
                 <span className="bar"></span>
-                <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
+                <span
+                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
+                  onClick={() => setRankType('fan')}
+                >
                   팬
                 </span>
               </div>
             </div>
 
             <div className="content-wrap rank-slide">
-              <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
+              <RankList
+                rankType={rankType}
+                djRank={initData.djRank}
+                fanRank={initData.fanRank}
+              />
             </div>
           </div>
 
-          {/* <button className="event-section" onClick={() => goEvent()}></button> */}
-          <BannerList bannerPosition={'9'} />
+          <BannerList ref={BannerSectionRef} bannerPosition={'9'} />
 
           <div
             className="section"
             ref={StarSectionRef}
-            style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
+            style={
+              Array.isArray(initData.myStar) && initData.myStar.length === 0
+                ? { display: 'none' }
+                : {}
+            }
+          >
             <div className="content-wrap my-star-list">
               <StarList list={initData.myStar} />
             </div>
@@ -372,23 +425,33 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <button className="icon refresh" onClick={() => resetFetchList()} />
+                <button
+                  className="icon refresh"
+                  onClick={() => resetFetchList()}
+                />
               </div>
 
               {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
               {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
 
-              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
+              <div
+                className="sequence-wrap"
+                onClick={() => setPopup(popup ? false : true)}
+              >
                 <span className="text">
                   {(() => {
-                    return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
+                    return liveAlign ? `${alignSet[liveAlign]}순` : '전체';
                   })()}
                 </span>
                 <img className="sequence-icon" src={sequenceIcon} />
               </div>
             </div>
 
-            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
+            <div
+              className={`live-list-category ${
+                liveCategoryFixed ? 'fixed' : ''
+              }`}
+            >
               <div className="inner-wrapper">
                 {Array.isArray(categoryList) && categoryList.length > 1 && (
                   <Swiper {...swiperParams}>
@@ -397,19 +460,22 @@ export default (props) => {
                       .map((key, idx) => {
                         return (
                           <div
-                            className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                            className={`list ${
+                              key.cd === selectedLiveRoomType ? 'active' : ''
+                            }`}
                             key={`list-${idx}`}
-                            onClick={() => setSelectedLiveRoomType(key.cd)}>
+                            onClick={() => setSelectedLiveRoomType(key.cd)}
+                          >
                             {key.cdNm}
                           </div>
-                        )
+                        );
                       })}
                   </Swiper>
                 )}
               </div>
             </div>
 
-            {liveCategoryFixed && <div style={{height: '58px'}} />}
+            {liveCategoryFixed && <div style={{ height: '58px' }} />}
 
             <div className="content-wrap live-list">
               {Array.isArray(liveList) ? (
@@ -419,7 +485,7 @@ export default (props) => {
                   <NoResult />
                 )
               ) : (
-                <div style={{height: '315px'}}></div>
+                <div style={{ height: '315px' }}></div>
               )}
             </div>
           </div>
@@ -437,12 +503,14 @@ export default (props) => {
           />
         )}
 
-        {popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && <LayerPopupNotice setPopup={setPopupNotice} />}
+        {popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
+          <LayerPopupNotice setPopup={setPopupNotice} />
+        )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
-  )
-}
+  );
+};
 
 const Content = styled.div`
   .event-section {
@@ -451,7 +519,8 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center
+      center / cover;
   }
   .section {
     margin-top: 24px;
@@ -621,9 +690,10 @@ const Content = styled.div`
       }
     }
   }
-`
+`;
 
 const SubMain = styled.div`
+  min-height: 310px;
   background-color: #fff;
 
   .gnb {
@@ -694,8 +764,8 @@ const SubMain = styled.div`
       }
     }
   }
-`
+`;
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
-`
+`;
