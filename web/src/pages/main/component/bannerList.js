@@ -1,95 +1,107 @@
-import React, {useEffect, useContext, useState} from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useContext, useState } from 'react';
+import styled from 'styled-components';
 
 // components
-import Swiper from 'react-id-swiper'
-import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
-import Api from 'context/api'
-import {OS_TYPE} from "../../../context/config";
-import {Hybrid} from 'context/hybrid'
+import Swiper from 'react-id-swiper';
+import { Context } from 'context';
+import { useHistory } from 'react-router-dom';
+import Api from 'context/api';
+import { OS_TYPE } from '../../../context/config';
+import { Hybrid } from 'context/hybrid';
 
-export default props => {
-  const globalCtx = useContext(Context)
-  const history = useHistory()
-  const customHeader = JSON.parse(Api.customHeader)
+export default React.forwardRef((props, ref) => {
+  const globalCtx = useContext(Context);
+  const history = useHistory();
+  const customHeader = JSON.parse(Api.customHeader);
 
-  const [list, setList] = useState(false)
+  const [list, setList] = useState(false);
 
   const goEvent = (linkUrl, linkType) => {
     //alert(linkUrl)
     if (linkType === 'popup') {
-      if(customHeader['os'] === OS_TYPE['Android']) {
-        try{
+      if (customHeader['os'] === OS_TYPE['Android']) {
+        try {
           //Hybrid('openUrl', {"url": linkUrl})
-          window.android.openUrl(JSON.stringify({"url": linkUrl}))
-        }catch(e){
-          window.location.href = linkUrl
+          window.android.openUrl(JSON.stringify({ url: linkUrl }));
+        } catch (e) {
+          window.location.href = linkUrl;
         }
-      }else if(customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)){
-        Hybrid('openUrl', linkUrl)
-      }else{
+      } else if (
+        customHeader['os'] === OS_TYPE['IOS'] &&
+        (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)
+      ) {
+        Hybrid('openUrl', linkUrl);
+      } else {
         //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
-        window.location.href = linkUrl
+        window.location.href = linkUrl;
       }
     } else {
       //globalCtx.action.updatenoticeIndexNum(linkUrl)
-      window.location.href = linkUrl
+      window.location.href = linkUrl;
       //history.push(linkUrl)
     }
-  }
+  };
 
   const createSliderList = () => {
-    if (!list) return null
+    if (!list) return null;
     return list.map((banner, idx) => {
-      const {bannerUrl, linkUrl, title, linkType} = banner
+      const { bannerUrl, linkUrl, title, linkType } = banner;
 
       return (
         <div className="banner" key={`banner-${idx}`}>
-          <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
+          <img
+            src={bannerUrl}
+            alt={title}
+            linkurl={linkUrl}
+            linktype={linkType}
+          />
         </div>
-      )
-    })
-  }
+      );
+    });
+  };
 
   async function fetchBannerData() {
     const res = await Api.getBanner({
       params: {
-        position: props.bannerPosition
-      }
-    })
+        position: props.bannerPosition,
+      },
+    });
     if (res.result === 'success') {
-      if (res.hasOwnProperty('data')) setList(res.data)
+      if (res.hasOwnProperty('data')) setList(res.data);
     } else {
-      console.log(res.result, res.message)
+      console.log(res.result, res.message);
     }
   }
 
   useEffect(() => {
-    fetchBannerData()
-  }, [])
+    fetchBannerData();
+  }, []);
 
   const params = {
     slidesPerColumnFill: 'row',
     resistanceRatio: 0,
     loop: true,
     autoplay: {
-      delay: 5000
+      delay: 5000,
     },
     pagination: {
       el: '.swiper-pagination',
-      clickable: true
+      clickable: true,
     },
     on: {
-      click: e => {
-        const {linkurl, linktype} = e.target.attributes
-        goEvent(linkurl.value, linktype.value)
-      }
-    }
-  }
+      click: (e) => {
+        const { linkurl, linktype } = e.target.attributes;
+        goEvent(linkurl.value, linktype.value);
+      },
+    },
+  };
 
-  return <Banner>{list && <Swiper {...params}>{createSliderList()}</Swiper>}</Banner>
-}
+  return (
+    <Banner ref={ref}>
+      {list && <Swiper {...params}>{createSliderList()}</Swiper>}
+    </Banner>
+  );
+});
 
 const Banner = styled.div`
   padding: 0 16px;
@@ -116,4 +128,4 @@ const Banner = styled.div`
     left: inherit;
     right: 5px;
   }
-`
+`;

@@ -5,35 +5,36 @@
  */
 //---------------------------------------------------------------------
 
-export const VERSION = ''
+export const VERSION = '';
 /**
  * @brief 서버분기
  */
-export const API_SERVER = __API_SERVER_URL //API서버
-//export const API_SERVER = 'https://devm-coreano81.dalbitlive.com:4431'
-export const IMG_SERVER = __STATIC_PHOTO_SERVER_URL //이미지 CDN
-export const PHOTO_SERVER = __USER_PHOTO_SERVER_URL //이미지서버 (사용자가 올리는서버)
-export const PAY_SERVER = __PAY_SERVER_URL
+export const API_SERVER = __API_SERVER_URL; //API서버
+// export const API_SERVER = 'https://devm-coreano81.dalbitlive.com:4431';
+// export const API_SERVER = 'https://api.dalbitlive.com';
+export const IMG_SERVER = __STATIC_PHOTO_SERVER_URL; //이미지 CDN
+export const PHOTO_SERVER = __USER_PHOTO_SERVER_URL; //이미지서버 (사용자가 올리는서버)
+export const PAY_SERVER = __PAY_SERVER_URL;
 
 /**
  * @brief 레이아웃
  */
-export const HEADER_HEIGHT = '350px'
+export const HEADER_HEIGHT = '350px';
 
 /**
  * @brief PC,Tablet,Moble 사이즈 분기
  * @code import {WIDTH_TABLET} from 'context/config'
  */
-export const WIDTH_PC = '1920px'
-export const WIDTH_PC_S = '1280px' //디자인 시안 사이즈
-export const WIDTH_TABLET = '1024px'
-export const WIDTH_TABLET_S = '840px' //디자인 시안 사이즈
-export const WIDTH_MOBILE = '600px'
-export const WIDTH_MOBILE_S = '360px' //디자인 시안 사이즈
+export const WIDTH_PC = '1920px';
+export const WIDTH_PC_S = '1280px'; //디자인 시안 사이즈
+export const WIDTH_TABLET = '1024px';
+export const WIDTH_TABLET_S = '840px'; //디자인 시안 사이즈
+export const WIDTH_MOBILE = '600px';
+export const WIDTH_MOBILE_S = '360px'; //디자인 시안 사이즈
 //---------------------------------------------------------------------
 
 export const OS_TYPE = {
   Android: 1,
   IOS: 2,
-  Desktop: 3
-}
+  Desktop: 3,
+};
