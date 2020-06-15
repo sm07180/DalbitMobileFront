@@ -123,7 +123,7 @@ export default (props) => {
       const transitionTime = 150;
 
       // Reset init data
-      if (recommendWrapNode.clientHeight > recommendWrapBaseHeight + 200) {
+      if (recommendWrapNode.clientHeight > recommendWrapBaseHeight + 80) {
         let degree = 0;
         const tempIntevalId = setInterval(() => {
           if (Math.abs(degree) === 360) {
@@ -278,7 +278,7 @@ export default (props) => {
           });
       });
 
-      // initInterval()
+      initInterval();
 
       return () => {
         clearInterval(intervalId);
@@ -483,7 +483,7 @@ const RecommendWrap = styled.div`
   position: relative;
   height: 310px;
   min-height: 310px;
-  /* max-height: 400px; */
+  max-height: 400px;
   margin-top: -42px;
   transition: all 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
 
