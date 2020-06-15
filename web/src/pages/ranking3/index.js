@@ -11,7 +11,6 @@ import LayerPopup from './layer_popup';
 import './ranking.scss';
 import RankList from './rankList';
 import RankListTop from './rankListTop';
-import moonWhite from './static/cashmoon_w_s.svg';
 import hint from './static/hint.svg';
 import point from './static/ico-point.png';
 import point2x from './static/ico-point@2x.png';
@@ -460,18 +459,16 @@ export default props => {
                               />
                               {Util.printNumber(myInfo.myPoint)}
                             </span>
-                          </div>
-
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={moonWhite} />
-                              {Util.printNumber(myProfile.dalCnt)}
-                            </span>
                             <span className="countBox__item">
                               <img src={timeWhite} />
                               {Util.printNumber(myProfile.listenTotTime)}
                             </span>
                           </div>
+
+                          {/* <span className="countBox__item">
+                              <img src={moonWhite} />
+                              {Util.printNumber(myProfile.dalCnt)}
+                            </span> */}
                         </>
                       )}
                     </div>
