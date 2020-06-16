@@ -89,20 +89,21 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
 
   if (sessionRoomNo === roomNo) {
+    Hybrid('EnterRoom', '')
     /*const join = await Api.broad_join({data: {roomNo: roomNo}})
     if (join.result === 'fail') {
       Room.context.action.alert({
         title: join.messageKey,
         msg: join.message
-      })*/
-      Hybrid('EnterRoom', '')
+      })
+
     } else if (join.result === 'success' && join.data !== null) {
       Hybrid('RoomJoin', join.data)
       Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_no', roomNo)
     }
     //
-    if (callbackFunc !== undefined) callbackFunc()
+    if (callbackFunc !== undefined) callbackFunc()*/
     return false
   } else {
     //-------------------------------------------------------------
