@@ -12,10 +12,17 @@ import Navigator from './pages/navigator'
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const NewMain = React.lazy(() => import('pages/new_main'))
-const Menu = React.lazy(() => import('pages/menu2'))
 const Ranking = React.lazy(() => import('pages/ranking3'))
-const MyPage = React.lazy(() => import('pages/mypage2'))
-const MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
+
+let MyPage = React.lazy(() => import('pages/mypage'))
+let Menu = React.lazy(() => import('pages/menu'))
+let MySetting = React.lazy(() => import('pages/mypage/setting.js'))
+
+if (__NODE_ENV !== 'real') {
+  MyPage = React.lazy(() => import('pages/mypage2'))
+  Menu = React.lazy(() => import('pages/menu2'))
+  MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
+}
 
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
