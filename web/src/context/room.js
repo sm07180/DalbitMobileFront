@@ -89,21 +89,26 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
 
   if (sessionRoomNo === roomNo) {
-    Hybrid('EnterRoom', '')
-    /*const join = await Api.broad_join({data: {roomNo: roomNo}})
-    if (join.result === 'fail') {
-      Room.context.action.alert({
-        title: join.messageKey,
-        msg: join.message
-      })
+      async function commonJoin() {
+        const res = await Api.broad_join({data: {roomNo}})
+        const {code, result, data} = res
 
-    } else if (join.result === 'success' && join.data !== null) {
-      Hybrid('RoomJoin', join.data)
-      Room.context.action.alert({visible: false})
-      sessionStorage.setItem('room_no', roomNo)
+        if (code === '-3') {
+            context.action.alert({
+                msg: '종료된 방송입니다.',
+                callback: () => {
+                    sessionStorage.removeItem('room_no')
+                    context.action.updatePlayer(false)
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 100)
+                }
+            })
+        } else {
+            Hybrid('EnterRoom', '')
+        }
     }
-    //
-    if (callbackFunc !== undefined) callbackFunc()*/
+    commonJoin()
     return false
   } else {
     //-------------------------------------------------------------
