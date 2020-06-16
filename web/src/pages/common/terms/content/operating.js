@@ -248,7 +248,10 @@ export default props => {
                   <span>④</span>당사 플랫폼 내에서 타 플랫폼의 영입을 위한 고의적인 방해
                 </li>
                 <li>
-                  <span>⑤</span>위 항목 외 자체 기준 위반으로 판단되는 경우
+                   <span>⑤</span>욕설, 협박, 분위기조성을 통해 단체 (크루, 팸, 군단 등) 가입을 강요/압박하여 심리적 부담/고통을 주는 경우
+                </li>
+                <li>
+                   <span>⑥</span>위 항목 외 자체 기준 위반으로 판단되는 경우
                 </li>
               </ol>
             </li>
@@ -370,9 +373,11 @@ export default props => {
 
       <p>
         <strong>
-          *A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.
+          * A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.
           <br />
-          *정지와 경고의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.
+          * 정지와 경고의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.
+          <br />
+          * 회사의 판단에 따라 예외적으로 조정될 수 있습니다.
         </strong>
       </p>
 
@@ -438,14 +443,17 @@ export default props => {
         </caption>
         <colgroup>
           <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
         </colgroup>
         <thead>
           <tr>
             <th scope="col">항목</th>
-            <th scope="col" colSpan="3">
+            <th scope="col" colSpan="6">
               제재 조치
             </th>
           </tr>
@@ -453,53 +461,55 @@ export default props => {
         <tbody>
           <tr>
             <td>음란물</td>
-            <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colspan="3">정지</td>
+            <td colSpan="3">A급</td>
           </tr>
           <tr>
             <td>위법행위</td>
-            <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colSpan="3">정지</td>
+            <td colSpan="3">A급</td>
           </tr>
           <tr>
             <td>청소년 유해</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>저작권 침해</td>
-            <td>경고</td>
-            <td>경고 및 정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>미풍양속 위배</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>명예훼손</td>
-            <td>정지</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">정지</td>
             <td colSpan="2">A급</td>
           </tr>
           <tr>
-            <td>광고</td>
-            <td>경고</td>
+            <td>저작권 침해</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">A급</td>
+          </tr>
+          <tr>
+            <td>미풍양속 위배</td>
+            <td colSpan="2">경고/정지</td>
             <td colSpan="2">정지</td>
+            <td colSpan="2">A급</td>
+          </tr>
+          <tr>
+            <td>명예훼손</td>
+            <td colSpan="3">정지</td>
+            <td colSpan="3">A급</td>
+          </tr>
+          <tr>
+            <td>광고</td>
+            <td colSpan="3">경고/정지</td>
+            <td colSpan="3">정지</td>
           </tr>
           <tr>
             <td>자체 기준 위반</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">정지</td>
+            <td colSpan="2">A급</td>
           </tr>
         </tbody>
       </table>
       <br />
       <p>
         부칙
+        <br />
+        4. 본 운영정책 Ver 1.3은 2020년 06월16일부터 적용됩니다.
         <br />
         3. 본 운영정책 Ver 1.2은 2020년 06월12일부터 적용됩니다.
         <br />
