@@ -1,5 +1,5 @@
-import React, {useState, useContext, useRef, useEffect} from 'react'
-import {Context} from 'context'
+import React, { useState, useContext, useRef, useEffect } from 'react'
+import { Context } from 'context'
 //import { Link } from 'react-router-dom'
 
 import './payment.scss'
@@ -13,17 +13,17 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import Message from 'pages/common/message'
 import qs from 'query-string'
-import {stringify} from 'querystring'
+import { stringify } from 'querystring'
 
 const list = [
-  {value: 1, text: '주민번호'},
-  {value: 2, text: '핸드폰번호'}
+  { value: 1, text: '주민번호' },
+  { value: 2, text: '핸드폰번호' }
 ]
 const chargeData = [
-  {id: 0, type: '신용카드 결제', fetch: 'pay_card'},
-  {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
-  {id: 3, type: '페이레터', fetch: 'pay_letter'}
+  { id: 0, type: '신용카드 결제', fetch: 'pay_card' },
+  { id: 1, type: '휴대폰 결제', fetch: 'pay_phone' },
+  { id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual' },
+  { id: 3, type: '페이레터', fetch: 'pay_letter' }
 ]
 let payType = ''
 // let paymentPriceAddVat = 0
@@ -42,12 +42,12 @@ export default props => {
   const [confirmData, setConfirmData] = useState(false)
   const [validation, setValidation] = useState(false)
 
-  const {webview} = qs.parse(location.search)
+  const { webview } = qs.parse(location.search)
 
   let paymentName = '달 10'
   let paymentPrice = 1100
   let payItemNo = 'A1817'
-  let pageCode = '1'
+  let pageCode = '2'
 
   if (props.location.state) {
     paymentName = props.location.state.paymentName
@@ -55,7 +55,7 @@ export default props => {
     payItemNo = props.location.state.itemNo
     pageCode = '1'
   } else if (webview === 'new') {
-    const {name, price, itemNo} = qs.parse(location.search)
+    const { name, price, itemNo } = qs.parse(location.search)
     paymentName = name
     paymentPrice = price
     payItemNo = itemNo
@@ -151,7 +151,10 @@ export default props => {
 
       if (res.result === 'success') {
         props.history.push({
-          pathname: location.pathname === '/charge_test' ? '/charge_test/waitPayment' : '/charge/waitPayment',
+          pathname:
+            location.pathname === '/charge_test'
+              ? '/charge_test/waitPayment'
+              : '/charge/waitPayment',
           state: {
             ...res.data,
             pageCode: pageCode
@@ -176,12 +179,13 @@ export default props => {
         pgCode: 'cashbee'
       }
     }
-    const res = await Api[payType]({...obj})
+    const res = await Api[payType]({ ...obj })
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
-      if (res.data.hasOwnProperty('mobileUrl')) return (window.location.href = res.data.mobileUrl)
+      if (res.data.hasOwnProperty('mobileUrl'))
+        return (window.location.href = res.data.mobileUrl)
 
-      const {current} = formTag
+      const { current } = formTag
       let ft = current
 
       const makeHiddenInput = (key, value) => {
@@ -213,16 +217,31 @@ export default props => {
       return (
         <div className="receipt__sub">
           <label className="receipt__label">
-            <SelectBoxWrap boxList={list} onChangeEvent={handleEvent} inlineStyling={{fontSize: '14px', minWidth: '105px'}} />
+            <SelectBoxWrap
+              boxList={list}
+              onChangeEvent={handleEvent}
+              inlineStyling={{ fontSize: '14px', minWidth: '105px' }}
+            />
           </label>
-          <input className="receipt__input" type="tel" name="receipt" value={receiptInput} onChange={handleChange} />
+          <input
+            className="receipt__input"
+            type="tel"
+            name="receipt"
+            value={receiptInput}
+            onChange={handleChange}
+          />
         </div>
       )
     } else {
       return (
         <div className="receipt__sub">
           <label className="receipt__label">사업자 번호</label>
-          <input className="receipt__input" name="receipt" value={receiptInput} onChange={handleChange} />
+          <input
+            className="receipt__input"
+            name="receipt"
+            value={receiptInput}
+            onChange={handleChange}
+          />
         </div>
       )
     }
@@ -275,13 +294,22 @@ export default props => {
 
   return (
     <div className={`${webview === 'new' && 'webview'}`}>
-      <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
+      <form
+        ref={formTag}
+        name="payForm"
+        acceptCharset="euc-kr"
+        id="payForm"
+      ></form>
       {confirm ? (
         <SuccessPopup detail={confirmData} />
       ) : (
         <>
           <div className="header">
-            <img className="header__button--back" src={BackBtn} onClick={() => props.history.goBack()} />
+            <img
+              className="header__button--back"
+              src={BackBtn}
+              onClick={() => props.history.goBack()}
+            />
             <h1 className="header__title">달 충전하기 TEST</h1>
           </div>
 
@@ -294,7 +322,10 @@ export default props => {
                 <div className="buyList__value">{paymentName}</div>
                 <div className="buyList__label">결제금액</div>
                 <div className="buyList__value">
-                  <span className="buyList__value--point">{Utility.addComma(paymentPrice)}</span> 원
+                  <span className="buyList__value--point">
+                    {Utility.addComma(paymentPrice)}
+                  </span>{' '}
+                  원
                 </div>
               </div>
             </div>
@@ -307,8 +338,11 @@ export default props => {
                   return (
                     <button
                       key={index}
-                      className={`payMathod__button ${payMathod === item.id ? 'payMathod__button--forced' : ''}`}
-                      onClick={() => setPayMathod(item.id)}>
+                      className={`payMathod__button ${
+                        payMathod === item.id ? 'payMathod__button--forced' : ''
+                      }`}
+                      onClick={() => setPayMathod(item.id)}
+                    >
                       {item.type}
                     </button>
                   )
@@ -323,7 +357,10 @@ export default props => {
                   <div className="depositInfo__box">
                     <div className="depositInfo__label">입금정보</div>
                     <div className="depositInfo__value">
-                      <span className="depositInfo__value--point">{Utility.addComma(paymentPriceAddVat)} 원</span> (부가세 포함)
+                      <span className="depositInfo__value--point">
+                        {Utility.addComma(paymentPriceAddVat)} 원
+                      </span>{' '}
+                      (부가세 포함)
                     </div>
 
                     <div className="depositInfo__label">입금은행</div>
@@ -331,7 +368,13 @@ export default props => {
 
                     <div className="depositInfo__label">입금자명</div>
                     <div className="depositInfo__value">
-                      <input type="text" name="name" value={name} onChange={handleChange} className="depositInfo__input"></input>
+                      <input
+                        type="text"
+                        name="name"
+                        value={name}
+                        onChange={handleChange}
+                        className="depositInfo__input"
+                      ></input>
                     </div>
 
                     <div className="depositInfo__label">휴대폰번호</div>
@@ -342,7 +385,8 @@ export default props => {
                         value={phone}
                         onChange={handleChange}
                         maxLength={11}
-                        className="depositInfo__input"></input>
+                        className="depositInfo__input"
+                      ></input>
                     </div>
                   </div>
                 </div>
@@ -350,20 +394,29 @@ export default props => {
                 <div className="receipt">
                   <h2 className="charge__title">현금영수증</h2>
 
-                  <div className={`receipt__box ${status === 'n' && 'receipt__button--forced'}`}>
+                  <div
+                    className={`receipt__box ${status === 'n' &&
+                      'receipt__button--forced'}`}
+                  >
                     <button
-                      className={`receipt__button ${status === 'n' && 'receipt__button--forced'}`}
-                      onClick={() => setStatus('n')}>
+                      className={`receipt__button ${status === 'n' &&
+                        'receipt__button--forced'}`}
+                      onClick={() => setStatus('n')}
+                    >
                       선택안함
                     </button>
                     <button
-                      className={`receipt__button ${status === 'i' && 'receipt__button--forced'}`}
-                      onClick={() => setStatus('i')}>
+                      className={`receipt__button ${status === 'i' &&
+                        'receipt__button--forced'}`}
+                      onClick={() => setStatus('i')}
+                    >
                       소득공제용
                     </button>
                     <button
-                      className={`receipt__button ${status === 'b' && 'receipt__button--forced'}`}
-                      onClick={() => setStatus('b')}>
+                      className={`receipt__button ${status === 'b' &&
+                        'receipt__button--forced'}`}
+                      onClick={() => setStatus('b')}
+                    >
                       지출증빙용
                     </button>
                   </div>
@@ -379,12 +432,20 @@ export default props => {
               </p>
 
               <ul>
-                <li className="notice__text">∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.</li>
-                <li className="notice__text">∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</li>
                 <li className="notice__text">
-                  ∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.
+                  ∙ 충전한 달의 유효기간은 구매일로부터 5년입니다.
                 </li>
-                <li className="notice__text">∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</li>
+                <li className="notice__text">
+                  ∙ 달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.
+                </li>
+                <li className="notice__text">
+                  ∙ 미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인
+                  또는 법정대리인은 계약을 취소할 수 있습니다.
+                </li>
+                <li className="notice__text">
+                  ∙ 사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수
+                  있습니다.
+                </li>
               </ul>
             </div>
 
@@ -393,11 +454,20 @@ export default props => {
               <span className="inquiry__number">1522-0251</span>
             </div>
             {payMathod === 2 ? (
-              <button className={`chargeButton ${validation === true ? 'chargeButton--active' : ''}`} onClick={chargeClick}>
+              <button
+                className={`chargeButton ${
+                  validation === true ? 'chargeButton--active' : ''
+                }`}
+                onClick={chargeClick}
+              >
                 입금계좌 받기
               </button>
             ) : (
-              <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
+              <button
+                className={`chargeButton ${payMathod != -1 &&
+                  'chargeButton--active'}`}
+                onClick={payFetch}
+              >
                 충전하기
               </button>
             )}
