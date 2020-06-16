@@ -101,6 +101,12 @@ export default (props) => {
 
   async function setMainInitData() {
     setReloadInitData(true)
+    const delay = (ms) =>
+      new Promise((resolve, _) => {
+        setTimeout(() => resolve(), ms)
+      })
+
+    await delay(500)
 
     const initData = await Api.main_init_data()
     if (initData.result === 'success') {
@@ -112,11 +118,6 @@ export default (props) => {
         myStar,
       })
 
-      const delay = (ms) =>
-        new Promise((resolve, _) => {
-          setTimeout(() => resolve(), ms)
-        })
-      await delay(500)
       setReloadInitData(false)
       return true
     }
