@@ -367,7 +367,7 @@ export default (props) => {
     if (
       window.scrollY === 0 &&
       recommendSlideStatus === false &&
-      heightDiff > 5
+      heightDiff <= 100
     ) {
       recommendWrapNode.style.height = `${
         recommendWrapBaseHeight + heightDiff
