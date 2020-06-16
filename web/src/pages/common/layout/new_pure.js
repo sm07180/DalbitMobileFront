@@ -18,7 +18,7 @@ import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import closeBtn from 'pages/menu/static/ic_close.svg'
 
-const Layout = (props) => {
+const Layout = props => {
   const {logo_status} = props
 
   //context
@@ -95,9 +95,11 @@ const Logo = styled.div`
 const Container = styled.div`
   /* 메인페이지 */
   main {
+    background-color: #eeeeee;
     display: block;
     margin: 0 auto;
     width: 400px;
+
     z-index: 1;
     /* 컨텐츠내용 */
     article {
@@ -108,6 +110,7 @@ const Container = styled.div`
     main {
       width: 100%;
       padding: 0 16px;
+      height: 100vh;
     }
   }
   .close-btn {

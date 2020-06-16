@@ -10,8 +10,7 @@ export const VERSION = ''
  * @brief 서버분기
  */
 export const API_SERVER = __API_SERVER_URL //API서버
-// export const API_SERVER = 'https://devm-coreano81.dalbitlive.com:4431';
-// export const API_SERVER = 'https://api.dalbitlive.com';
+//export const API_SERVER = 'https://devm-coreano81.dalbitlive.com:4431'
 export const IMG_SERVER = __STATIC_PHOTO_SERVER_URL //이미지 CDN
 export const PHOTO_SERVER = __USER_PHOTO_SERVER_URL //이미지서버 (사용자가 올리는서버)
 export const PAY_SERVER = __PAY_SERVER_URL
@@ -36,5 +35,5 @@ export const WIDTH_MOBILE_S = '360px' //디자인 시안 사이즈
 export const OS_TYPE = {
   Android: 1,
   IOS: 2,
-  Desktop: 3,
+  Desktop: 3
 }

@@ -1,0 +1,16 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__guide_yellow" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#fff;stroke:#000;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <rect id="prefix__사각형_810" width="32" height="32" data-name="사각형 810" rx="12" style="fill:#f9dc8b"/>
+    <g id="prefix__그룹_15251" data-name="그룹 15251" transform="translate(-414.901 -599.539)">
+        <path id="prefix__사각형_3132" d="M2.577 0h12.45v5.154H2.577A2.577 2.577 0 0 1 0 2.577 2.577 2.577 0 0 1 2.577 0z" class="prefix__cls-2" data-name="사각형 3132" transform="translate(423.497 610.321)"/>
+        <path id="prefix__패스_7128" d="M449.8 615.475h-1.377v-5.154h1.377" class="prefix__cls-2" data-name="패스 7128" transform="translate(-9.902)"/>
+        <path id="prefix__사각형_3133" d="M2.577 0h12.45v5.154H2.577A2.577 2.577 0 0 1 0 2.577 2.577 2.577 0 0 1 2.577 0z" class="prefix__cls-2" data-name="사각형 3133" transform="translate(421.901 615.475)"/>
+        <path id="prefix__패스_7129" d="M447.257 623.7h-1.377v-5.154h1.377" class="prefix__cls-2" data-name="패스 7129" transform="translate(-8.952 -3.07)"/>
+        <path id="prefix__패스_7130" d="M440.944 627.459l-1.2-.663-1.2.663v-4.8h2.4z" class="prefix__cls-2" data-name="패스 7130" transform="translate(-6.213 -4.606)"/>
+    </g>
+</svg>

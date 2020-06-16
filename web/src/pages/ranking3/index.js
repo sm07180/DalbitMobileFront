@@ -1,11 +1,10 @@
 import Util from 'components/lib/utility.js';
 import NoResult from 'components/ui/noResult';
-import { Context } from 'context';
-import Api from 'context/api';
-import Layout from 'pages/common/layout';
-import React, { useContext, useEffect, useState } from 'react';
 //context
 import styled from 'styled-components';
+import { Context } from 'context';
+import Api from 'context/api';
+import React, { useContext, useEffect, useState } from 'react';
 import LayerPopup from './layer_popup';
 //state
 import './ranking.scss';
@@ -19,8 +18,9 @@ import likeWhite from './static/like_w_s.svg';
 import peopleWhite from './static/people_w_s.svg';
 import timeWhite from './static/time_w_s.svg';
 
+import Layout from 'pages/common/layout';
 const rankArray = ['dj', 'fan'];
-const dateArray = ['오늘', '전일', '주간'];
+const dateArray = ['오늘', '일간', '주간'];
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
 let currentPage = 1;
@@ -38,12 +38,7 @@ export default props => {
     myGiftPoint: 0,
     myListenerPoint: 0,
     myRank: 0,
-    myUpDown: '',
-    myBroadPoint: 0,
-    myLikePoint: 0,
-    myPoint: 0,
-    myListenPoint: 0,
-    time: ''
+    myUpDown: ''
   });
 
   const [dateType, setDateType] = useState(0);
@@ -158,12 +153,7 @@ export default props => {
               myGiftPoint: 0,
               myListenerPoint: 0,
               myRank: 0,
-              myUpDown: '',
-              myBroadPoint: 0,
-              myLikePoint: 0,
-              myPoint: 0,
-              myListenPoint: 0,
-              time: ''
+              myUpDown: ''
             });
           }}
         >
@@ -242,7 +232,7 @@ export default props => {
       } else {
         if (next) {
           // setMoreState(true)
-          moreState = false;
+          moreState = true;
           setNextList(res.data.list);
         } else {
           setList(res.data.list);
@@ -346,7 +336,6 @@ export default props => {
   };
   const scrollEvent = () => {
     const headerHeight = 48;
-
     if (window.scrollY >= headerHeight) {
       context.action.updateLogoChange(true);
     } else if (window.scrollY < headerHeight) {

@@ -1,0 +1,17 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__event_yellow" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#fff;stroke:#000;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <rect id="prefix__사각형_810" width="32" height="32" data-name="사각형 810" rx="12" style="fill:#f9dc8b"/>
+    <g id="prefix__그룹_15291" data-name="그룹 15291" transform="translate(-238.694 -61.662)">
+        <path id="prefix__패스_7150" d="M261.33 87.474h-13.34l6.67-13.968z" class="prefix__cls-2" data-name="패스 7150" transform="translate(0 -2.051)"/>
+        <ellipse id="prefix__타원_514" cx="1.763" cy="1.647" class="prefix__cls-2" data-name="타원 514" rx="1.763" ry="1.647" transform="translate(252.897 68.162)"/>
+        <path id="prefix__선_165" d="M0 1.799L4.386 0" class="prefix__cls-2" data-name="선 165" transform="translate(252.038 75.148)"/>
+        <path id="prefix__선_166" d="M0 3.094L7.543 0" class="prefix__cls-2" data-name="선 166" transform="translate(250.07 77.951)"/>
+        <path id="prefix__선_167" d="M0 4.442L10.829 0" class="prefix__cls-2" data-name="선 167" transform="translate(248.216 80.655)"/>
+        <path id="prefix__선_168" d="M0 1.859L4.531 0" class="prefix__cls-2" data-name="선 168" transform="translate(255.845 83.564)"/>
+    </g>
+</svg>

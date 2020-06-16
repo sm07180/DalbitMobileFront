@@ -46,6 +46,7 @@ export default Layout
 //---------------------------------------------------------------------
 
 const Article = styled.article`
+  height: 100%;
   &.webview {
     .header-wrap .close-btn {
       display: none;

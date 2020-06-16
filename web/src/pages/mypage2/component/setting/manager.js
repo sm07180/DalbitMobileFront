@@ -1,0 +1,696 @@
+/**
+ * @file /mypage/component/blacklist.js
+ * @brief 마이페이지 방송설정 - 매니저 설정
+ **/
+import React, { useState, useEffect, useContext, useRef } from 'react'
+import styled from 'styled-components'
+import useChange from 'components/hooks/useChange'
+import qs from 'query-string'
+
+//context
+import { Context } from 'context'
+import Api from 'context/api'
+import _ from 'lodash'
+import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {
+  IMG_SERVER,
+  WIDTH_TABLET_S,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S
+} from 'context/config'
+import Utility from 'components/lib/utility'
+
+//component
+import Paging from 'components/ui/paging.js'
+import NoResult from 'components/ui/noResult'
+//ui
+import SelectBoxs from 'components/ui/selectBox.js'
+
+export default props => {
+  //-----------------------------------------------------------------------------
+  const { webview } = qs.parse(location.search)
+
+  //contenxt
+  const context = useContext(Context)
+
+  //hooks
+  const { changes, setChanges, onChange } = useChange({ onChange: -1 })
+
+  //state
+  const [managerState, setManagerState] = useState(-1)
+  const [userState, setUserState] = useState(-1)
+  const [userList, setUserList] = useState(false)
+  const [managerList, setManagerList] = useState(false)
+  const [totalPageNumber, setTotalPageNumber] = useState(null)
+  const [page, setPage] = useState(1)
+  const [tabState, setTabState] = useState(0)
+  let userTypeSetting = 0
+
+  const selectBoxData = [
+    { value: 0, text: '전체' },
+    { value: 0, text: '전체' },
+    { value: 1, text: '닉네임' },
+    { value: 2, text: 'ID' }
+  ]
+
+  //-----------------------------------------------------------------------------
+  //async
+  async function getManagerList() {
+    const res = await Api.mypage_manager_list({})
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        setManagerState(0)
+        setManagerList(false)
+      } else {
+        setManagerState(1)
+        setManagerList(res.data.list)
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function addManager(memNum) {
+    const res = await Api.mypage_manager_add({
+      data: {
+        memNo: memNum
+      }
+    })
+    if (res.result == 'success') {
+      getManagerList()
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function deleteManager(memNum) {
+    const res = await Api.mypage_manager_delete({
+      data: {
+        memNo: memNum
+      }
+    })
+    if (res.result == 'success') {
+      getManagerList()
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  async function getSearchList(type, typeDetail) {
+    if (!_.hasIn(changes, 'search') || changes.search.length == 0)
+      return context.action.alert({
+        msg: `검색어를 입력해주세요.`
+      })
+    userTypeSetting =
+      type == 'search'
+        ? Number(_.hasIn(changes, 'searchType') ? changes.searchType : 0)
+        : userTypeSetting
+    const params = {
+      userType: userTypeSetting,
+      search: changes.search,
+      page: type == 'page' ? typeDetail : 1,
+      records: 100
+    }
+    const res = await Api.mypage_user_search({ params })
+    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+      if (res.data.list == false) {
+        setUserState(0)
+        setUserList(false)
+      } else {
+        const { list, paging } = res.data
+        if (paging) {
+          const { totalPage } = paging
+          setTotalPageNumber(totalPage)
+          setUserState(1)
+          setUserList(list)
+        }
+        if (type == 'search') {
+          setPage(1)
+        }
+      }
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+  //-----------------------------------------------------------------------------
+  //function
+
+  //
+  const createUserList = () => {
+    if (userList == false) return null
+    return (
+      <>
+        <ul className="list-item search">
+          <p className="result_count">
+            검색 결과
+            <span>{userList.length}</span>
+          </p>
+          {userList.map((item, index) => {
+            const { memNo, nickNm, memId, profImg } = item
+            const link = webview
+              ? `/mypage/${memNo}?webview=${webview}`
+              : `/mypage/${memNo}`
+            return (
+              <li key={index}>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}
+                  ></figure>
+                  <div>
+                    <span>{nickNm}</span>
+                    <span>@{memId}</span>
+                  </div>
+                </a>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `${nickNm} 님을 매니저로 등록 하시겠습니까?`,
+                      callback: () => {
+                        addManager(memNo)
+                      }
+                    })
+                  }}
+                >
+                  등록
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  }
+
+  const createManagerList = () => {
+    if (managerList == false) return null
+    return (
+      <>
+        <ul className="list-item search">
+          {managerList.map((item, index) => {
+            const { memNo, nickNm, memId, profImg, regDt } = item
+            const date = Utility.dateFormatter(regDt)
+            const link = webview
+              ? `/mypage/${memNo}?webview=${webview}`
+              : `/mypage/${memNo}`
+            return (
+              <li key={index}>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}
+                  ></figure>
+                  <div>
+                    <span>{nickNm}</span>
+                    <span>@{memId}</span>
+                  </div>
+                </a>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `고정 매니저 권한을 해제하시겠습니까?`,
+                      callback: () => {
+                        deleteManager(memNo)
+                      }
+                    })
+                  }}
+                  className="grayBtn"
+                >
+                  해제
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  }
+  ////////////////////////////////////////////////////////////////////////
+  const createSearchManagerList = () => {
+    if (manegerSearchList == false) return null
+    return (
+      <>
+        <ul className="list-item search">
+          {manegerSearchList.map((item, index) => {
+            const { memNo, nickNm, memId, profImg, regDt } = item
+            const date = Utility.dateFormatter(regDt)
+            const link = webview
+              ? `/mypage/${memNo}?webview=${webview}`
+              : `/mypage/${memNo}`
+            return (
+              <li key={index}>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}
+                  ></figure>
+                  <div>
+                    <span>{nickNm}</span>
+                    <span>@{memId}</span>
+                  </div>
+                </a>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `고정 매니저 권한을 해제하시겠습니까?`,
+                      callback: () => {
+                        deleteManager(memNo)
+                      }
+                    })
+                  }}
+                  className="grayBtn"
+                >
+                  해제
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  }
+
+  const createUserResult = () => {
+    if (userState === -1) {
+      return null
+    } else if (userState === 0) {
+      return <NoResult className="no-top" />
+    } else {
+      return createUserList()
+    }
+  }
+
+  //-----------------------------------------------------------------------------
+  //useEffect
+  useEffect(() => {
+    getManagerList()
+  }, [])
+
+  const typeActive = value => {
+    setChanges({ ...changes, searchType: value })
+  }
+  //매니저 필터
+  const [manegerValue, setManegerValue] = useState('')
+  const [manegerSearchList, setManegerSearchList] = useState(managerList)
+
+  const SearchManeger = (manegerValue, selectBoxData) => {
+    if (changes.searchType === 0) {
+      setManegerSearchList(
+        managerList.filter(
+          managerList =>
+            managerList.nickNm.includes(manegerValue) ||
+            managerList.memId.includes(manegerValue)
+        )
+      )
+    } else if (changes.searchType === 1) {
+      setManegerSearchList(
+        managerList.filter(managerList =>
+          managerList.nickNm.includes(manegerValue)
+        )
+      )
+    } else if (changes.searchType === 2) {
+      setManegerSearchList(
+        managerList.filter(managerList =>
+          managerList.memId.includes(manegerValue)
+        )
+      )
+    }
+  }
+  const tabChangeFunction = () => {
+    getManagerList()
+    setManegerValue('')
+    if (tabState === 0) {
+      setTabState(1)
+    } else {
+      setTabState(0)
+    }
+  }
+  //-----------------------------------------------------------------------------
+  return (
+    <Content>
+      <div className="tab">
+        <button
+          onClick={tabChangeFunction}
+          className={tabState === 0 ? 'on' : ''}
+        >
+          등록
+        </button>
+        <button
+          onClick={tabChangeFunction}
+          className={tabState === 1 ? 'on' : ''}
+        >
+          관리
+        </button>
+      </div>
+      {tabState === 0 && (
+        <>
+          <SearchArea>
+            <div className="select-box">
+              <SelectBoxs
+                type={'remove-init-data'}
+                boxList={selectBoxData}
+                onChangeEvent={typeActive}
+                inlineStyling={{
+                  left: 0,
+                  top: 0,
+                  zIndex: 8,
+                  // position: 'static',
+                  position: 'relative',
+                  width: '100%'
+                }}
+              />
+            </div>
+            <input
+              type="search"
+              name="search"
+              placeholder="검색어를 입력해 보세요"
+              onChange={onChange}
+              onKeyUp={e => {
+                if (e.keyCode === 13) getSearchList('search')
+              }}
+            />
+            <button
+              onClick={() => {
+                getSearchList('search')
+              }}
+            >
+              찾기
+            </button>
+          </SearchArea>
+          <div className="resulte-area">{createUserResult()}</div>
+        </>
+      )}
+      {tabState === 1 && (
+        <>
+          <SearchArea>
+            <div className="select-box">
+              <SelectBoxs
+                type={'remove-init-data'}
+                boxList={selectBoxData}
+                onChangeEvent={typeActive}
+                inlineStyling={{
+                  left: 0,
+                  top: 0,
+                  zIndex: 8,
+                  // position: 'static',
+                  position: 'relative',
+                  width: '100%'
+                }}
+              />
+            </div>
+            <input
+              type="search"
+              name="search"
+              placeholder="검색어를 입력해 보세요"
+              onChange={e => setManegerValue(e.target.value)}
+              onKeyUp={e => {
+                if (e.keyCode === 13) SearchManeger(manegerValue)
+              }}
+            />
+            <button
+              onClick={() => {
+                SearchManeger(manegerValue, selectBoxData)
+              }}
+            >
+              찾기
+            </button>
+          </SearchArea>
+          <div className="resulte-area">
+            {manegerValue === '' && createManagerList()}
+            {manegerValue !== '' && createSearchManagerList()}
+          </div>
+        </>
+      )}
+    </Content>
+  )
+}
+
+const SearchArea = styled.div`
+  position: relative;
+  border-radius: 12px;
+
+  * {
+    height: 44px;
+    line-height: 44px;
+  }
+
+  select {
+    width: 100px;
+    border-right: 1px solid #bdbdbd;
+    color: #707070;
+    text-indent: 12px;
+    background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89%
+      center;
+  }
+  input {
+    width: calc(100% - 102px);
+    margin-left: 100px;
+    padding: 0px 46px 0 12px;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-left: none;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-weight: 800;
+    font-size: 16px;
+    :focus {
+      border: 1px solid #000;
+    }
+    ::placeholder {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #9e9e9e;
+    }
+  }
+  button {
+    position: absolute;
+    right: 6px;
+    top: 5px;
+    width: 36px;
+    height: 36px;
+    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat
+      center;
+    text-indent: -9999px;
+  }
+
+  .select-box {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-right: none;
+    height: 44px;
+    width: 100px;
+    text-indent: 12px;
+
+    .options {
+      z-index: 9999;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .options + div {
+      position: absolute;
+      height: auto;
+      width: calc(100% + 2px);
+      margin-left: -1px;
+      padding-top: 14px;
+      background: #fff;
+      top: 30px;
+      z-index: -1;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      border-top: none;
+
+      .box-list {
+        padding: 0;
+        font-size: 14px;
+      }
+    }
+    > div {
+      border-right: 1px solid #e0e0e0;
+      width: 100%;
+      > div {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        letter-spacing: -0.35px;
+        color: #000000;
+        font-weight: 600;
+        font-size: 14px;
+        :before {
+          background-color: #757575;
+        }
+        :after {
+          background-color: #757575;
+        }
+        :before,
+        :after {
+          top: 24px;
+        }
+      }
+    }
+  }
+`
+
+const Content = styled.div`
+  .tab {
+    display: flex;
+    margin-bottom: 8px;
+    button {
+      width: 80px;
+      height: 32px;
+      border-radius: 12px;
+      border: solid 1px #632beb;
+      margin-right: 2px;
+      border: solid 1px #e0e0e0;
+      background-color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: center;
+      color: #000000;
+    }
+    .on {
+      border: solid 1px #632beb;
+      background-color: #632beb;
+      color: #fff;
+    }
+  }
+  .list-item {
+    .grayBtn {
+      display: block;
+      width: 46px;
+      height: 32px;
+      border-radius: 8px;
+      border: solid 1px #757575;
+      font-size: 14px;
+      text-align: center;
+      color: #000000;
+      background-color: #fff !important;
+    }
+    .result_count {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      text-align: left;
+      color: #000000;
+      > span {
+        color: #632beb;
+        margin-left: 8px;
+      }
+    }
+    li {
+      display: flex;
+      position: relative;
+      padding: 4px 10px;
+      height: 48px;
+      margin-bottom: 4px;
+      border-radius: 12px;
+      background-color: #fff;
+      figure {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      a {
+        display: flex;
+        max-width: 100%;
+      }
+
+      div {
+        max-width: calc(100% - 36px);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 0 10px;
+        * {
+          display: block;
+          font-size: 14px;
+          transform: skew(-0.03deg);
+        }
+        span:first-child {
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: normal;
+          text-align: left;
+          color: #000000;
+        }
+
+        span:last-child {
+          font-size: 12px;
+          text-align: left;
+          color: #000000;
+        }
+        p {
+          overflow: hidden;
+          padding-top: 1px;
+          color: #424242;
+          line-height: 22px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        em {
+          color: #bdbdbd;
+          font-style: normal;
+          font-size: 12px;
+        }
+      }
+
+      button {
+        position: absolute;
+        right: 10px;
+        width: 48px;
+        height: 32px;
+        margin-top: 9px;
+        border-radius: 10px;
+        background: #bdbdbd;
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+  }
+  .list-item.search {
+    margin-top: 0;
+    margin-bottom: 30px;
+
+    div {
+      /* padding-top: 3px; */
+    }
+    button {
+      margin-top: 3px;
+      background: ${COLOR_MAIN};
+    }
+  }
+  .resulte-area {
+    min-height: 100px;
+    padding: 12px 0;
+  }
+  .paging-wrap {
+    margin-top: -20px;
+  }
+`
