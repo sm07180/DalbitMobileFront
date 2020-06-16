@@ -13,7 +13,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 //api
 import Api from 'context/api'
 //components
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import Content from './fanBoard_content'
 //svg
 import BJicon from '../component/bj.svg'

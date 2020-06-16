@@ -19,7 +19,7 @@ import {
 } from 'context/color'
 import Api from 'context/api'
 // component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import ReplyList from './fanBoard_reply'
 //svg
 import BJicon from '../component/bj.svg'

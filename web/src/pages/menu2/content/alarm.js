@@ -14,7 +14,7 @@ import Utility from 'components/lib/utility'
 //room
 import Room, {RoomJoin} from 'context/room'
 // component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import NoResult from 'components/ui/noResult'
 //static
 import NeedLoginImg from '../static/profile/need_login.png'

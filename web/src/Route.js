@@ -6,16 +6,16 @@
 import ScrollToTop from 'components/lib/ScrollToTop'
 
 import React from 'react'
-import {Redirect, Route, Switch} from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const NewMain = React.lazy(() => import('pages/new_main'))
-const Menu = React.lazy(() => import('pages/menu'))
+const Menu = React.lazy(() => import('pages/menu2'))
 const Ranking = React.lazy(() => import('pages/ranking3'))
-const MyPage = React.lazy(() => import('pages/mypage'))
-const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
+const MyPage = React.lazy(() => import('pages/mypage2'))
+const MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
@@ -45,7 +45,9 @@ const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
-const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
+const MoneyExchangeResult = React.lazy(() =>
+  import('pages/money_exchange_result')
+)
 export default () => {
   return (
     <React.Suspense
@@ -53,7 +55,8 @@ export default () => {
         <div className="loading">
           <span></span>
         </div>
-      }>
+      }
+    >
       <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
@@ -90,7 +93,11 @@ export default () => {
         <Route exact path="/agree/:title" component={Agree} />
         <Route exact path="/temp_page" component={TempPage} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
-        <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
+        <Route
+          exact
+          path="/money_exchange_result"
+          component={MoneyExchangeResult}
+        />
         <Route exact path="/event_page" component={EventPage} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/redirect" component={TempLogin} />

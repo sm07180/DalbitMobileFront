@@ -11,7 +11,7 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
-import LayerPopupExp from './layer_popup_exp.js.js'
+import LayerPopupExp from './layer_popup_exp.js'
 
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'

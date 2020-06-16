@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import qs from 'query-string'
 // context
 import {Context} from 'context'
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import BJicon from '../component/bj.svg'

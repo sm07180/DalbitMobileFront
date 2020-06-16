@@ -9,7 +9,7 @@ import Room, { RoomJoin } from 'context/room'
 //styled
 import styled from 'styled-components'
 //component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'

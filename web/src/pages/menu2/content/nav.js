@@ -6,7 +6,7 @@ import {RoomMake} from 'context/room'
 import {Context} from 'context'
 import {StoreLink} from 'context/link'
 // component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 
 // static
 import Home from '../static/ic_home.svg'

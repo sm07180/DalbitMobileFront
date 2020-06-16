@@ -10,14 +10,14 @@ import {OS_TYPE} from 'context/config.js'
 
 // component
 import Paging from 'components/ui/paging.js'
-import List from '../component/wallet/list.js.js'
+import List from '../component/wallet/list.js'
 
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 export default props => {
   let history = useHistory()
 

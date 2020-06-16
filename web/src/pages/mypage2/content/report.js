@@ -24,7 +24,7 @@ import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
 import moment from 'moment'
 import NoResult from 'components/ui/noResult'
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 

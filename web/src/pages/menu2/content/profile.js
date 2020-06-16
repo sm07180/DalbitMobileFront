@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 // component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 //my profile transfer
 import MyProfile from './myProfile'
 import qs from 'query-string'

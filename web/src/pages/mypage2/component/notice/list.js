@@ -18,7 +18,7 @@ import Checkbox from '../../content/checkbox'
 import DeleteIcon from '../images/ic_delete.svg'
 import ModifyIcon from '../images/ic_edit.svg'
 import BackIcon from '../../component/ic_back.svg'
-import Header from '../header.js.js'
+import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
 import BookMark from '../../component/book_mark_red.svg'
 const List = props => {

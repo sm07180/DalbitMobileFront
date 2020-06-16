@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import API from 'context/api'
 import Room, {RoomJoin} from 'context/room'
 // component
-import Header from '../component/header.js.js'
+import Header from '../component/header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
 import {Context} from 'context/index.js'

@@ -7,9 +7,9 @@ import Api from 'context/api'
 import { Context } from 'context'
 
 // component
-import List from '../component/notice/list.js.js'
-import WritePage from '../component/notice/writePage.js.js'
-import Header from '../component/header.js.js'
+import List from '../component/notice/list.js'
+import WritePage from '../component/notice/writePage.js'
+import Header from '../component/header.js'
 import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 import Checkbox from './checkbox'
