@@ -61,14 +61,18 @@ export default props => {
     if (fetching) {
       return
     }
-
+    let sessionRoomNo = sessionStorage.getItem('room_no')
+    if(sessionRoomNo === undefined){
+        sessionRoomNo = "";
+    }
     const fetchPhoneLogin = async (phone, pw) => {
       setFetching(true)
       const loginInfo = await Api.member_login({
         data: {
           memType: 'p',
           memId: phone,
-          memPwd: pw
+          memPwd: pw,
+          room_no: sessionRoomNo
         }
       })
 

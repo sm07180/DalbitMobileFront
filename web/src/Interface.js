@@ -219,7 +219,11 @@ export default () => {
             inputData = JSON.parse(decodeURIComponent(event.detail))
           }
           const google_result = await Api.google_login({data: inputData})
-
+          let sessionRoomNo = sessionStorage.getItem('room_no')
+          if(sessionRoomNo === undefined){
+              sessionRoomNo = "";
+          }
+          google_result.data["room_no"] = sessionRoomNo
           //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
