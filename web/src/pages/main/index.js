@@ -364,7 +364,11 @@ export default (props) => {
     touchEndY = e.touches[0].clientY
     const heightDiff = touchEndY - touchStartY
 
-    if (recommendSlideStatus === false && heightDiff > 5) {
+    if (
+      window.scrollY === 0 &&
+      recommendSlideStatus === false &&
+      heightDiff > 5
+    ) {
       recommendWrapNode.style.height = `${
         recommendWrapBaseHeight + heightDiff
       }px`
