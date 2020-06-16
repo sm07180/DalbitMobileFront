@@ -133,6 +133,7 @@ const Content = styled.div`
     width:100%;
     margin-right:46px;
     font-size: 16px;
+    line-height: 1.13;
     text-align: center;
     color:#ffffff;
     text-overflow: ellipsis;
