@@ -78,7 +78,7 @@ export default (props) => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [popupNotice, setPopupNotice] = useState(true)
+  const [popupNotice, setPopupNotice] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
