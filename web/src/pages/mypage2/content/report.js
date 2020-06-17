@@ -291,6 +291,7 @@ export default props => {
     }
   }
   const Toggletab = () => {
+    fetchData()
     if (selectType === 0) {
       setSelectType(1)
     } else {
@@ -305,6 +306,9 @@ export default props => {
       fetchDataListen()
     }
   }
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>
