@@ -18,11 +18,11 @@ let MyPage = React.lazy(() => import('pages/mypage'))
 let Menu = React.lazy(() => import('pages/menu'))
 let MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
-/*if (__NODE_ENV !== 'real') {
-  MyPage = React.lazy(() => import('pages/mypage2'))
-  Menu = React.lazy(() => import('pages/menu2'))
-  MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
-}*/
+// if (__NODE_ENV !== 'real') {
+//   MyPage = React.lazy(() => import('pages/mypage2'))
+//   Menu = React.lazy(() => import('pages/menu2'))
+//   MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
+// }
 
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))

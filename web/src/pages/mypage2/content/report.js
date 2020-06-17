@@ -3,15 +3,15 @@
  * @brief 마이페이지 리포트
  */
 
-import React, {useEffect, useStet, useContext, useState} from 'react'
+import React, { useEffect, useStet, useContext, useState } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
 //layout
-import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
+import { IMG_SERVER, WIDTH_MOBILE } from 'context/config'
 
 // context
-import {Context} from 'context'
+import { Context } from 'context'
 import Api from 'context/api'
 // static
 import mic from 'images/mini/mic.svg'
@@ -26,7 +26,12 @@ import moment from 'moment'
 import NoResult from 'components/ui/noResult'
 import Header from '../component/header.js'
 
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {
+  COLOR_MAIN,
+  COLOR_POINT_Y,
+  COLOR_POINT_P,
+  PHOTO_SERVER
+} from 'context/color'
 
 let pickerHolder = true
 const broadInfo = {
@@ -44,8 +49,8 @@ const listenInfo = {
 }
 
 const selectBoxData = [
-  {value: 0, text: '방송'},
-  {value: 1, text: '청취'}
+  { value: 0, text: '방송' },
+  { value: 1, text: '청취' }
 ]
 
 let currentPage = 1
@@ -150,9 +155,15 @@ export default props => {
   }
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
-  const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
-  const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
-  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
+  const dateDayAgo = moment(
+    new Date().setDate(new Date().getDate() - 1)
+  ).format('YYYYMMDD')
+  const dateWeekAgo = moment(
+    new Date().setDate(new Date().getDate() - 7)
+  ).format('YYYYMMDD')
+  const dateMonthAgo = moment(
+    new Date().setMonth(new Date().getMonth() - 1)
+  ).format('YYYYMMDD')
 
   let dateDefault = ''
   // changes 초기값 셋팅
@@ -228,7 +239,7 @@ export default props => {
     setlistentotal([])
     setResultState(1)
     setPickerCssOn(false)
-    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
+    setChanges({ pickdataPrev: dateToday, pickdataNext: dateToday })
   }
   //date format
   const dateFormat = strFormatFromServer => {
@@ -281,12 +292,30 @@ export default props => {
         <div className="category-text">리포트</div>
       </Header>
       <Report>
-        <TitleWrap className="noneborder">
+        <div className="tabWrap">
+          <button
+            onClick={() => setSelectType(0)}
+            className={selectType === 0 ? 'on' : ''}
+          >
+            방송
+          </button>
+          <button
+            onClick={() => setSelectType(1)}
+            className={selectType === 1 ? 'on' : ''}
+          >
+            시청
+          </button>
+        </div>
+        {/* <TitleWrap className="noneborder">
           <TitleText>리포트</TitleText>
           <SelectWrap>
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
+            <SelectBoxs
+              boxList={selectBoxData}
+              onChangeEvent={setType}
+              inlineStyling={{ right: 0, top: '-20px', zIndex: 8 }}
+            />
           </SelectWrap>
-        </TitleWrap>
+        </TitleWrap> */}
         <div className="radioWrap">
           <button
             onClick={() => {
@@ -294,7 +323,8 @@ export default props => {
               setPickerCssOn(false)
               pickerOnChange(dateToday, 'btn')
             }}
-            className={active === 0 ? 'on' : ''}>
+            className={active === 0 ? 'on' : ''}
+          >
             오늘
           </button>
           <button
@@ -303,7 +333,8 @@ export default props => {
               setPickerCssOn(false)
               pickerOnChange(dateDayAgo, 'dayAgo')
             }}
-            className={active === 1 ? 'on' : ''}>
+            className={active === 1 ? 'on' : ''}
+          >
             어제
           </button>
           <button
@@ -312,7 +343,8 @@ export default props => {
               setPickerCssOn(false)
               pickerOnChange(dateWeekAgo, 'btn')
             }}
-            className={active === 2 ? 'on' : ''}>
+            className={active === 2 ? 'on' : ''}
+          >
             최근 7일
           </button>
           <button
@@ -321,7 +353,8 @@ export default props => {
               setPickerCssOn(false)
               pickerOnChange(dateMonthAgo, 'btn')
             }}
-            className={active === 3 ? 'on' : ''}>
+            className={active === 3 ? 'on' : ''}
+          >
             월간
           </button>
           <div className={[`datebox ${pickerCssOn ? 'on' : ''}`]}>
@@ -353,7 +386,8 @@ export default props => {
                 className="search"
                 onClick={() => {
                   fetchData()
-                }}>
+                }}
+              >
                 검색
               </button>
             )}
@@ -363,7 +397,8 @@ export default props => {
                 className="search"
                 onClick={() => {
                   fetchDataListen()
-                }}>
+                }}
+              >
                 검색
               </button>
             )}
@@ -377,7 +412,9 @@ export default props => {
             <TitleWrap>
               {selectType === 0 && <TitleText>방송요약</TitleText>}
               {selectType === 1 && <TitleText>청취요약</TitleText>}
-              <TitleSubMsg>데이터는 최대 6개월까지 검색 가능합니다.</TitleSubMsg>
+              <TitleSubMsg>
+                데이터는 최대 6개월까지 검색 가능합니다.
+              </TitleSubMsg>
             </TitleWrap>
             <BroadcastShort>
               {selectType === 0 &&
@@ -406,18 +443,29 @@ export default props => {
                 })}
               {selectType === 1 &&
                 Object.keys(listenInfo).map((section, index) => {
-                  const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
+                  const {
+                    listeningTime,
+                    giftDalTotCnt,
+                    byeolTotCnt,
+                    guestTime
+                  } = listentotal
                   return (
                     <ShortSection key={index}>
                       <div>
                         <div>{listenInfo[section][1]}</div>
                         <div className="count">
-                          {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
+                          {listenInfo[section][1] === '청취' &&
+                            listentotal.length !== 0 &&
+                            decodeSec(String(listeningTime))}
                           {listenInfo[section][1] === '달 선물' &&
                             listentotal.length !== 0 &&
                             numberFormat(String(giftDalTotCnt))}
-                          {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
-                          {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
+                          {listenInfo[section][1] === '받은 별' &&
+                            listentotal.length !== 0 &&
+                            numberFormat(String(byeolTotCnt))}
+                          {listenInfo[section][1] === '게스트 참여 시간' &&
+                            listentotal.length !== 0 &&
+                            guestTime}
                         </div>
                       </div>
                     </ShortSection>
@@ -435,7 +483,8 @@ export default props => {
                     return (
                       <MobileDetailTab key={idx}>
                         <div>
-                          <span>방송일자</span> <span>{dateFormat(value.broadDt)}</span>
+                          <span>방송일자</span>{' '}
+                          <span>{dateFormat(value.broadDt)}</span>
                         </div>
                         <div>
                           <span>방송시작 </span>
@@ -450,10 +499,12 @@ export default props => {
                           <span>{numberFormat(value.byeolCnt)}</span>
                         </div>
                         <div>
-                          <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
+                          <span>좋아요</span>{' '}
+                          <span>{numberFormat(value.likes)}</span>
                         </div>
                         <div>
-                          <span>최다 청취자</span> <span>{numberFormat(value.listenerCnt)}</span>
+                          <span>최다 청취자</span>{' '}
+                          <span>{numberFormat(value.listenerCnt)}</span>
                         </div>
                         <div>
                           <span>방송 최고 순위</span>
@@ -468,7 +519,8 @@ export default props => {
                     return (
                       <MobileDetailTab key={idx}>
                         <div>
-                          <span>청취시작</span> <span>{timeFormat(value.startDt)}</span>
+                          <span>청취시작</span>{' '}
+                          <span>{timeFormat(value.startDt)}</span>
                         </div>
                         <div>
                           <span>청취종료</span>
@@ -476,7 +528,9 @@ export default props => {
                         </div>
                         <div>
                           <span>방송방(DJ)</span>
-                          <span style={{color: '#632beb'}}>{value.bjNickNm}</span>
+                          <span style={{ color: '#632beb' }}>
+                            {value.bjNickNm}
+                          </span>
                         </div>
                         <div>
                           <span>선물내역(달)</span>
@@ -487,7 +541,10 @@ export default props => {
                           <span>{numberFormat(value.byeolCnt)}</span>
                         </div>
                         <div>
-                          <span>게스트</span> <span>{value.isGuest === false ? '-' : value.isGuest}</span>
+                          <span>게스트</span>{' '}
+                          <span>
+                            {value.isGuest === false ? '-' : value.isGuest}
+                          </span>
                         </div>
                       </MobileDetailTab>
                     )
@@ -639,8 +696,8 @@ const TitleWrap = styled.div`
   justify-items: center;
   align-items: center;
   border-bottom: 1px solid #632beb;
-  padding-bottom: 12px;
-  margin-top: 18px;
+
+  margin-top: 12px;
 
   &.noneborder {
     border-bottom: none;
@@ -649,6 +706,29 @@ const TitleWrap = styled.div`
 `
 
 const Report = styled.div`
+  padding: 12px 16px;
+  .tabWrap {
+    display: flex;
+    flex-direction: row;
+    button {
+      width: 80px;
+      height: 32px;
+      border-radius: 12px;
+      border: solid 1px #e0e0e0;
+      background-color: #ffffff;
+      margin-left: 2px;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #000000;
+      &.on {
+        border: solid 1px #632beb;
+        background-color: #632beb;
+        color: #ffffff;
+      }
+    }
+  }
   & .radioWrap {
     display: flex;
     margin-top: 16px;
@@ -767,7 +847,8 @@ const Submit = styled.button`
     display: block;
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_arrow_down.png) no-repeat center center/cover;
+    background: url(${IMG_SERVER}/images/api/ic_arrow_down.png) no-repeat center
+      center/cover;
   }
 
   &.disable {
@@ -784,7 +865,8 @@ const TopWrap = styled.div`
   button:nth-child(1) {
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
+      center / cover;
   }
   .title {
     width: calc(100% - 24px);

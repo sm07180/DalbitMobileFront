@@ -160,7 +160,7 @@ const Notice = props => {
       setListPage(nextListPage)
       fetchData('next')
     } else {
-      setListPage(nextListPage)
+      // setListPage(nextListPage)
     }
   }
   const scrollEvtHdr = event => {
