@@ -21,7 +21,7 @@ export default props => {
   //date 셋팅
   let date = new Date()
   date.setFullYear(date.getFullYear() - 16)
-  date.setMonth(1)
+  date.setMonth(0)
   date.setDate(1)
   //console.log('datedatedatedate', date)
   //useState
