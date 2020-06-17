@@ -19,12 +19,15 @@ import moon from 'images/mini/moon.svg'
 import heart from 'images/mini/heart.svg'
 import clock from 'images/mini/clock.svg'
 import heartIcon from '../static/ico_like_g.svg'
+import date from '../static/ic_circle_plus.svg'
+
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
 import moment from 'moment'
 import NoResult from 'components/ui/noResult'
 import Header from '../component/header.js'
+import DatePopup from './report_popup'
 
 import {
   COLOR_MAIN,
@@ -34,6 +37,8 @@ import {
 } from 'context/color'
 
 let pickerHolder = true
+
+const dateType = ['오늘', '어제', '최근7일', '월간']
 const broadInfo = {
   mic: [mic, '방송'],
   moon: [moon, '받은별'],
@@ -75,6 +80,7 @@ export default props => {
   const [pickerCssOn, setPickerCssOn] = useState(false)
   const [resultState, setResultState] = useState(1)
   const [nextList, setNextList] = useState(false)
+  const [popupState, setPopupState] = useState(false)
   //api
   async function fetchData(next) {
     if (!next) currentPage = 1
@@ -291,6 +297,15 @@ export default props => {
       setSelectType(0)
     }
   }
+
+  const fetchDataHandle = () => {
+    if (selectType === 0) {
+      fetchData()
+    } else {
+      fetchDataListen()
+    }
+  }
+
   return (
     <>
       {/* 공통타이틀 */}
@@ -305,104 +320,25 @@ export default props => {
           <button onClick={Toggletab} className={selectType === 1 ? 'on' : ''}>
             시청
           </button>
-        </div>
-        {/* <TitleWrap className="noneborder">
-          <TitleText>리포트</TitleText>
-          <SelectWrap>
-            <SelectBoxs
-              boxList={selectBoxData}
-              onChangeEvent={setType}
-              inlineStyling={{ right: 0, top: '-20px', zIndex: 8 }}
-            />
-          </SelectWrap>
-        </TitleWrap> */}
-        <div className="radioWrap">
-          <button
-            onClick={() => {
-              setActive(0)
-              setPickerCssOn(false)
-              pickerOnChange(dateToday, 'btn')
-            }}
-            className={active === 0 ? 'on' : ''}
-          >
-            오늘
-          </button>
-          <button
-            onClick={() => {
-              setActive(1)
-              setPickerCssOn(false)
-              pickerOnChange(dateDayAgo, 'dayAgo')
-            }}
-            className={active === 1 ? 'on' : ''}
-          >
-            어제
-          </button>
-          <button
-            onClick={() => {
-              setActive(2)
-              setPickerCssOn(false)
-              pickerOnChange(dateWeekAgo, 'btn')
-            }}
-            className={active === 2 ? 'on' : ''}
-          >
-            최근 7일
-          </button>
-          <button
-            onClick={() => {
-              setActive(3)
-              setPickerCssOn(false)
-              pickerOnChange(dateMonthAgo, 'btn')
-            }}
-            className={active === 3 ? 'on' : ''}
-          >
-            월간
-          </button>
-          <div className={[`datebox ${pickerCssOn ? 'on' : ''}`]}>
-            <section>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdataPrev}
-                change={pickerOnChange}
-                placeholder="날짜"
-                pickerState={pickerState}
-                afterSelected={afterSelected}
-              />
-              <span className="line">
-                <span></span>
-              </span>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdataNext}
-                change={pickerOnChangenext}
-                placeholder="날짜"
-                pickerState={pickerState}
-                afterSelected={afterSelected}
-              />
-            </section>
-            {selectType === 0 && (
-              <button
-                className="search"
-                onClick={() => {
-                  fetchData()
-                }}
-              >
-                검색
-              </button>
-            )}
 
-            {selectType === 1 && (
-              <button
-                className="search"
-                onClick={() => {
-                  fetchDataListen()
-                }}
-              >
-                검색
-              </button>
-            )}
-          </div>
+          <img
+            src={date}
+            onClick={() => {
+              setPopupState(true)
+            }}
+          />
+        </div>
+        <div
+          className="data-box"
+          onClick={() => {
+            setPopupState(true)
+          }}
+        >
+          <span>{dateType[active]}</span>
+          <p>
+            {moment(changes.pickdataPrev).format('YYYY-MM-DD')} ~{' '}
+            {moment(changes.pickdataNext).format('YYYY-MM-DD')}
+          </p>
         </div>
 
         {resultState == 0 ? (
@@ -563,6 +499,22 @@ export default props => {
           </Submit>
         )}
       </Report>
+      {popupState && (
+        <DatePopup
+          active={active}
+          setActive={setActive}
+          setPickerCssOn={setPickerCssOn}
+          pickerOnChange={pickerOnChange}
+          pickerOnChangenext={pickerOnChangenext}
+          pickdataPrev={changes.pickdataPrev}
+          pickdataNext={changes.pickdataNext}
+          pickerState={pickerState}
+          afterSelected={afterSelected}
+          selectType={selectType}
+          fetchData={fetchDataHandle}
+          setPopupState={setPopupState}
+        />
+      )}
     </>
   )
 }
@@ -958,9 +910,43 @@ const TitleWrap = styled.div`
 
 const Report = styled.div`
   padding: 12px 16px;
+  .data-box {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 16px 0;
+    padding: 8px;
+    background: #fff;
+    border-radius: 12px;
+    * {
+      height: 16px;
+      line-height: 16px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    span {
+      color: #000;
+      vertical-align: top;
+      ::after {
+        display: inline-block;
+        width: 1px;
+        height: 16px;
+        margin: 0 10px;
+        background: #e0e0e0;
+        vertical-align: top;
+        content: '';
+      }
+    }
+    p {
+      color: #424242;
+    }
+  }
   .tabWrap {
     display: flex;
     flex-direction: row;
+    img {
+      margin-left: auto;
+    }
+
     button {
       width: 80px;
       height: 32px;

@@ -25,7 +25,17 @@ function usePrevious(value) {
 }
 
 const makeContents = props => {
-  const {list} = props
+  const {list, category} = props
+
+  const fnChangeCategoryName = (cd) => {
+      let cdNm = ""
+      category.map((key, idx) => {
+        if(cd === key.cd){
+            cdNm = key.cdNm
+        }
+      });
+      return cdNm
+  }
 
   return list.map((list, idx) => {
     const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
@@ -40,7 +50,7 @@ const makeContents = props => {
         <div className="broadcast-content">
           <div className="icon-wrap">
             <img className="type-icon" src={audioIcon} />
-            <div className="type-text">{broadcastLive[roomType]}</div>
+            <div className="type-text">{fnChangeCategoryName(roomType)}</div>
             {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
           </div>
