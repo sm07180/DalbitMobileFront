@@ -428,7 +428,7 @@ export default () => {
             if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
-      case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
+      case '37': //-----------------레벨 업 DJ 마이페이지 [mem_no]
           mem_no = pushMsg.mem_no
           if (mem_no !== undefined) {
               if (isLogin) window.location.href = `/customer/personal/qnaList`
