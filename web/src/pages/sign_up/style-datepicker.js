@@ -20,7 +20,9 @@ export default props => {
   //---------------------------------------------------------------------
   //date 셋팅
   let date = new Date()
-  date.setFullYear(date.getFullYear() - 17)
+  date.setFullYear(date.getFullYear() - 16)
+  date.setMonth(1)
+  date.setDate(1)
   //console.log('datedatedatedate', date)
   //useState
   //최신날짜로 했던거 바꾸기
@@ -37,7 +39,7 @@ export default props => {
   }, [props.value])
 
   let maxDate = new Date()
-  maxDate.setFullYear(maxDate.getFullYear() - 17)
+  maxDate.setFullYear(maxDate.getFullYear() - 16)
   maxDate.setMonth(12)
   maxDate.setDate(0)
 
