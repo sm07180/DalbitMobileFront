@@ -225,7 +225,7 @@ const Notice = props => {
       return null
     }
   }
-  console.log(listPage)
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
@@ -241,7 +241,7 @@ const Notice = props => {
       }, 10)
     }
   }
-
+  console.log(listPage)
   return (
     <>
       <Header>
@@ -252,71 +252,81 @@ const Notice = props => {
         <NoResult />
       ) : (
         <>
-          <ListWrap className="noticeIsTop">
-            {Array.isArray(listPage) &&
-              listPage.map((list, idx) => {
-                const { isTop, title, contents, writeDt, noticeIdx } = list
-                return (
-                  <div key={idx}>
-                    {isTop === true && (
-                      <a className={`idx${noticeIdx}`}>
-                        <List
-                          {...props}
-                          thisMemNo={thisMemNo}
-                          isTop={isTop}
-                          title={title}
-                          contents={contents}
-                          writeDt={writeDt}
-                          noticeIdx={noticeIdx}
-                          numbers={numbers}
-                          toggle={toggler}
-                        />
-                      </a>
-                    )}
-                  </div>
-                )
-              })}
-          </ListWrap>
-          <ListWrap>
-            {Array.isArray(listPage) ? (
-              listPage.length > 0 ? (
-                listPage.map((list, idx) => {
-                  const { isTop, title, contents, writeDt, noticeIdx } = list
-                  return (
-                    <div key={idx}>
-                      {isTop === false && (
-                        <a className={`idx${noticeIdx}`}>
-                          <List
-                            {...props}
-                            thisMemNo={thisMemNo}
-                            isTop={isTop}
-                            title={title}
-                            contents={contents}
-                            writeDt={writeDt}
-                            noticeIdx={noticeIdx}
-                            numbers={numbers}
-                            toggle={toggler}
-                          />
-                        </a>
-                      )}
-                    </div>
+          {listPage.length !== -1 && (
+            <>
+              <ListWrap className="noticeIsTop">
+                {Array.isArray(listPage) &&
+                  listPage.map((list, idx) => {
+                    const { isTop, title, contents, writeDt, noticeIdx } = list
+                    return (
+                      <div key={idx}>
+                        {isTop === true && (
+                          <a className={`idx${noticeIdx}`}>
+                            <List
+                              {...props}
+                              thisMemNo={thisMemNo}
+                              isTop={isTop}
+                              title={title}
+                              contents={contents}
+                              writeDt={writeDt}
+                              noticeIdx={noticeIdx}
+                              numbers={numbers}
+                              toggle={toggler}
+                            />
+                          </a>
+                        )}
+                      </div>
+                    )
+                  })}
+              </ListWrap>
+              <ListWrap>
+                {Array.isArray(listPage) ? (
+                  listPage.length > 0 ? (
+                    listPage.map((list, idx) => {
+                      const {
+                        isTop,
+                        title,
+                        contents,
+                        writeDt,
+                        noticeIdx
+                      } = list
+                      return (
+                        <div key={idx}>
+                          {isTop === false && (
+                            <a className={`idx${noticeIdx}`}>
+                              <List
+                                {...props}
+                                thisMemNo={thisMemNo}
+                                isTop={isTop}
+                                title={title}
+                                contents={contents}
+                                writeDt={writeDt}
+                                noticeIdx={noticeIdx}
+                                numbers={numbers}
+                                toggle={toggler}
+                              />
+                            </a>
+                          )}
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <>
+                      <NoResult />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                    </>
                   )
-                })
-              ) : (
-                <>
-                  <NoResult />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                </>
-              )
-            ) : (
-              <div className="search" />
-            )}
-          </ListWrap>
+                ) : (
+                  <div className="search" />
+                )}
+              </ListWrap>{' '}
+            </>
+          )}
         </>
       )}
 

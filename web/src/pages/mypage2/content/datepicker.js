@@ -5,16 +5,27 @@
  *        value : YYYYMMDD, 빈 값일시 현재 날짜로 셋팅
  */
 
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {
+  IMG_SERVER,
+  WIDTH_PC,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_TABLET_S,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S
+} from 'context/config'
 
 import moment from 'moment'
 import DateFnsUtils from '@date-io/moment'
-import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
-import {StylesProvider} from '@material-ui/core/styles'
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { StylesProvider } from '@material-ui/core/styles'
+
+//static
+import calIco from '../static/calender_b.svg'
 
 export default props => {
   //---------------------------------------------------------------------
@@ -40,7 +51,8 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
-      <DatepickerWrap /*className={props.pickerState ? 'holder-on' : 'holder-off'}*/>
+      <DatepickerWrap /*className={props.pickerState ? 'holder-on' : 'holder-off'}*/
+      >
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             disableFuture
@@ -55,9 +67,7 @@ export default props => {
               props.change(moment(e).format('YYYYMMDD'))
               props.afterSelected()
             }}
-            // placeholder={props.placeholder}
           />
-          {/* <span className="holder">{props.placeholder}</span> */}
         </MuiPickersUtilsProvider>
       </DatepickerWrap>
     </StylesProvider>
@@ -66,6 +76,12 @@ export default props => {
 
 const DatepickerWrap = styled.div`
   position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  height: 44px;
+  & + & {
+    margin-top: 4px;
+  }
   .MuiFormControl-root {
     width: 100%;
     margin: 0;
@@ -86,7 +102,9 @@ const DatepickerWrap = styled.div`
   }
   .MuiInputBase-input {
     height: inherit;
-    font-size: 12px;
+    font-size: 16px;
+    color: #000;
+    font-weight: 400;
   }
   .MuiInputBase-root {
     color: inherit;
@@ -95,16 +113,20 @@ const DatepickerWrap = styled.div`
     line-height: inherit;
   }
   .MuiInputBase-input.MuiInput-input {
-    background: url(${IMG_SERVER}/images/api/ico_calendar@3x.png) no-repeat 90% 48%;
-    background-size: 24px;
+    background: url(${calIco}) no-repeat right 6px center;
+    background-size: 32px;
     /* color: rgba(0, 0, 0, 0); */
-    color: #616161;
+    color: #000;
+    padding: 0;
+    line-height: 44px;
+    height: 44px;
+    text-indent: 16px;
   }
   &.holder-on .MuiInputBase-input.MuiInput-input {
     color: rgba(0, 0, 0, 0);
   }
   &.holder-off .MuiInputBase-input.MuiInput-input {
-    color: #616161;
+    color: #000;
   }
   span.holder {
     display: inline-block;
