@@ -59,6 +59,7 @@ const selectBoxData = [
 ]
 
 let currentPage = 1
+let timer
 
 export default props => {
   const context = useContext(Context)
@@ -78,7 +79,7 @@ export default props => {
   const [broadtotal, setbroadtotal] = useState([])
   const [listentotal, setlistentotal] = useState([])
   const [pickerCssOn, setPickerCssOn] = useState(false)
-  const [resultState, setResultState] = useState(1)
+  const [resultState, setResultState] = useState(-1)
   const [nextList, setNextList] = useState(false)
   const [popupState, setPopupState] = useState(false)
   //api
@@ -92,7 +93,7 @@ export default props => {
         startDt: changes.pickdataPrev,
         endDt: changes.pickdataNext,
         page: currentPage,
-        records: 3
+        records: 4
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {
@@ -281,25 +282,14 @@ export default props => {
     //document.getElementById("demo").innerHTML = hour+":"+min+":" + sec
   }
 
-  const showMoreList = () => {
-    if (selectType === 0) {
-      setBroadData(broadData.concat(nextList))
-      fetchData('next')
-    } else {
-      setListenData(listenData.concat(nextList))
-      fetchDataListen('next')
-    }
-  }
   const Toggletab = () => {
-    fetchData()
+    setResultState(-1)
     setActive(0)
     setBroadData([])
     setListenData([])
-    setResultState(1)
-    setlistentotal(false)
+
     setbroadtotal([])
     setlistentotal([])
-    setResultState(1)
     setPickerCssOn(false)
     setChanges({ pickdataPrev: dateToday, pickdataNext: dateToday })
     if (selectType === 0) {
@@ -318,8 +308,46 @@ export default props => {
   }
   useEffect(() => {
     fetchData()
-  }, [])
-
+  }, [selectType])
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+  const showMoreList = () => {
+    if (selectType === 0) {
+      setBroadData(broadData.concat(nextList))
+      fetchData('next')
+    } else {
+      setListenData(listenData.concat(nextList))
+      fetchDataListen('next')
+    }
+  }
+  const scrollEvtHdr = event => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function() {
+      //스크롤
+      const windowHeight =
+        'innerHeight' in window
+          ? window.innerHeight
+          : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      )
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
   return (
     <>
       {/* 공통타이틀 */}
@@ -357,160 +385,156 @@ export default props => {
 
         {resultState == 0 ? (
           <NoResult />
+        ) : resultState == -1 ? (
+          <></>
         ) : (
           <>
-            <TitleWrap>
-              {selectType === 0 && <TitleText>방송요약</TitleText>}
-              {selectType === 1 && <TitleText>청취요약</TitleText>}
-              {/* <TitleSubMsg>
+            <>
+              <TitleWrap>
+                {selectType === 0 && <TitleText>방송요약</TitleText>}
+                {selectType === 1 && <TitleText>청취요약</TitleText>}
+                {/* <TitleSubMsg>
                 데이터는 최대 6개월까지 검색 가능합니다.
               </TitleSubMsg> */}
-            </TitleWrap>
-            <BroadcastShort>
-              {selectType === 0 &&
-                Object.keys(broadInfo).map((section, index) => {
-                  return (
-                    <ShortSection key={index}>
-                      <div>
-                        <div>{broadInfo[section][1]}</div>
-                        <div className="count">
-                          {broadInfo[section][1] === '방송' &&
-                            broadtotal.length !== 0 &&
-                            decodeSec(String(broadtotal.broadcastTime))}
-                          {broadInfo[section][1] === '받은별' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.byeolTotCnt))}
-                          {broadInfo[section][1] === '좋아요' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.goodTotCnt))}
-                          {broadInfo[section][1] === '청취자' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.listenerTotCnt))}
-                        </div>
-                      </div>
-                    </ShortSection>
-                  )
-                })}
-              {selectType === 1 &&
-                Object.keys(listenInfo).map((section, index) => {
-                  const {
-                    listeningTime,
-                    giftDalTotCnt,
-                    byeolTotCnt,
-                    guestTime
-                  } = listentotal
-                  return (
-                    <ShortSection key={index} className="see">
-                      <div>
-                        <div>{listenInfo[section][1]}</div>
-                        <div className="count">
-                          {listenInfo[section][1] === '청취' &&
-                            listentotal.length !== 0 &&
-                            decodeSec(String(listeningTime))}
-                          {listenInfo[section][1] === '달 선물' &&
-                            listentotal.length !== 0 &&
-                            numberFormat(String(giftDalTotCnt))}
-                          {listenInfo[section][1] === '받은 별' &&
-                            listentotal.length !== 0 &&
-                            numberFormat(String(byeolTotCnt))}
-                          {listenInfo[section][1] === '게스트 참여 시간' &&
-                            listentotal.length !== 0 &&
-                            guestTime}
-                        </div>
-                      </div>
-                    </ShortSection>
-                  )
-                })}
-            </BroadcastShort>
-
-            <TitleWrap>
-              <TitleText>상세내역</TitleText>
-            </TitleWrap>
-            <DetailTable>
-              <div>
+              </TitleWrap>
+              <BroadcastShort>
                 {selectType === 0 &&
-                  broadData.map((value, idx) => {
+                  Object.keys(broadInfo).map((section, index) => {
                     return (
-                      <MobileDetailTab key={idx}>
+                      <ShortSection key={index}>
                         <div>
-                          <span className="listenName">
-                            {dateFormat(value.broadDt)}
-                          </span>
-                        </div>
-                        <div className="startDate">
-                          <span>{timeFormat(value.startDt)}</span>~&nbsp;
-                          <span>{timeFormat(value.endDt)}</span>
-                        </div>
-
-                        <div className="giftDate">
-                          <div>
-                            <span>받은별 </span>
-                            <span>{numberFormat(value.byeolCnt)}</span>
-                          </div>
-                          <div>
-                            <span>좋아요</span>{' '}
-                            <span>{numberFormat(value.likes)}</span>
+                          <div>{broadInfo[section][1]}</div>
+                          <div className="count">
+                            {broadInfo[section][1] === '방송' &&
+                              broadtotal.length !== 0 &&
+                              decodeSec(String(broadtotal.broadcastTime))}
+                            {broadInfo[section][1] === '받은별' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.byeolTotCnt))}
+                            {broadInfo[section][1] === '좋아요' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.goodTotCnt))}
+                            {broadInfo[section][1] === '청취자' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.listenerTotCnt))}
                           </div>
                         </div>
-
-                        <div className="giftDate noborder">
-                          <div>
-                            <span>최다 청취자 </span>
-                            <span>{numberFormat(value.listenerCnt)}</span>
-                          </div>
-                          <div>
-                            <span>방송 최고 순위</span>{' '}
-                            <span>{value.rank}</span>
-                          </div>
-                        </div>
-                      </MobileDetailTab>
+                      </ShortSection>
                     )
                   })}
-
                 {selectType === 1 &&
-                  listenData.map((value, idx) => {
+                  Object.keys(listenInfo).map((section, index) => {
+                    const {
+                      listeningTime,
+                      giftDalTotCnt,
+                      byeolTotCnt,
+                      guestTime
+                    } = listentotal
                     return (
-                      <MobileDetailTabListen key={idx}>
+                      <ShortSection key={index} className="see">
                         <div>
-                          <span className="listenName">{value.bjNickNm}</span>
-                        </div>
-                        <div className="startDate">
-                          <span className="black">
-                            {dateFormat(value.startDt)}
-                          </span>
-                          <span>{timeFormat(value.startDt)}</span>&nbsp;~
-                          <span>{timeFormat(value.endDt)}</span>
-                          {/* {value.listenTime / 3600} */}
-                        </div>
-                        <div className="giftDate">
-                          <div>
-                            <span>선물준달</span>
-                            <span>{numberFormat(value.giftDalCnt)}</span>
-                          </div>
-                          <div>
-                            <span>받은별</span>
-                            <span>{numberFormat(value.byeolCnt)}</span>
+                          <div>{listenInfo[section][1]}</div>
+                          <div className="count">
+                            {listenInfo[section][1] === '청취' &&
+                              listentotal.length !== 0 &&
+                              decodeSec(String(listeningTime))}
+                            {listenInfo[section][1] === '달 선물' &&
+                              listentotal.length !== 0 &&
+                              numberFormat(String(giftDalTotCnt))}
+                            {listenInfo[section][1] === '받은 별' &&
+                              listentotal.length !== 0 &&
+                              numberFormat(String(byeolTotCnt))}
+                            {listenInfo[section][1] === '게스트 참여 시간' &&
+                              listentotal.length !== 0 &&
+                              guestTime}
                           </div>
                         </div>
-                        <div className="guestDate">
-                          <span>게스트로 참여 여부</span>
-                          <span>
-                            {value.isGuest === false ? '-' : value.isGuest}
-                          </span>
-                        </div>
-                      </MobileDetailTabListen>
+                      </ShortSection>
                     )
                   })}
-              </div>
-            </DetailTable>
-          </>
-        )}
+              </BroadcastShort>
+              <TitleWrap>
+                <TitleText>상세내역</TitleText>
+              </TitleWrap>
+              <DetailTable>
+                <div>
+                  {selectType === 0 &&
+                    broadData.map((value, idx) => {
+                      return (
+                        <MobileDetailTab key={idx}>
+                          <div>
+                            <span className="listenName">
+                              {dateFormat(value.broadDt)}
+                            </span>
+                          </div>
+                          <div className="startDate">
+                            <span>{timeFormat(value.startDt)}</span>~&nbsp;
+                            <span>{timeFormat(value.endDt)}</span>
+                          </div>
 
-        {moreState && (
-          <Submit onClick={() => showMoreList()}>
-            <span>더보기</span>
-            <em></em>
-          </Submit>
+                          <div className="giftDate">
+                            <div>
+                              <span>받은별 </span>
+                              <span>{numberFormat(value.byeolCnt)}</span>
+                            </div>
+                            <div>
+                              <span>좋아요</span>{' '}
+                              <span>{numberFormat(value.likes)}</span>
+                            </div>
+                          </div>
+
+                          <div className="giftDate noborder">
+                            <div>
+                              <span>최다 청취자 </span>
+                              <span>{numberFormat(value.listenerCnt)}</span>
+                            </div>
+                            <div>
+                              <span>방송 최고 순위</span>{' '}
+                              <span>{value.rank}</span>
+                            </div>
+                          </div>
+                        </MobileDetailTab>
+                      )
+                    })}
+
+                  {selectType === 1 &&
+                    listenData.map((value, idx) => {
+                      return (
+                        <MobileDetailTabListen key={idx}>
+                          <div>
+                            <span className="listenName">{value.bjNickNm}</span>
+                          </div>
+                          <div className="startDate">
+                            <span className="black">
+                              {dateFormat(value.startDt)}
+                            </span>
+                            <span>{timeFormat(value.startDt)}</span>&nbsp;~
+                            <span>{timeFormat(value.endDt)}</span>
+                            {/* {value.listenTime / 3600} */}
+                          </div>
+                          <div className="giftDate">
+                            <div>
+                              <span>선물준달</span>
+                              <span>{numberFormat(value.giftDalCnt)}</span>
+                            </div>
+                            <div>
+                              <span>받은별</span>
+                              <span>{numberFormat(value.byeolCnt)}</span>
+                            </div>
+                          </div>
+                          <div className="guestDate">
+                            <span>게스트로 참여 여부</span>
+                            <span>
+                              {value.isGuest === false ? '-' : value.isGuest}
+                            </span>
+                          </div>
+                        </MobileDetailTabListen>
+                      )
+                    })}
+                </div>
+              </DetailTable>
+            </>
+          </>
         )}
       </Report>
       {popupState && (
