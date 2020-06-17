@@ -291,6 +291,16 @@ export default props => {
     }
   }
   const Toggletab = () => {
+    setActive(0)
+    setBroadData([])
+    setListenData([])
+    setResultState(1)
+    setlistentotal(false)
+    setbroadtotal([])
+    setlistentotal([])
+    setResultState(1)
+    setPickerCssOn(false)
+    setChanges({ pickdataPrev: dateToday, pickdataNext: dateToday })
     if (selectType === 0) {
       setSelectType(1)
     } else {
