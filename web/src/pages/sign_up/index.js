@@ -70,7 +70,7 @@ export default props => {
   //생년월일 유효성에서 계산할 현재 년도 date
   const d = new Date()
   const date = moment(d).format('YYYYMMDD')
-  const dateYear = date.slice(0, 4) - 17
+  const dateYear = date.slice(0, 4) - 16
   let dateDefault = ''
 
   // changes 초기값 셋팅
