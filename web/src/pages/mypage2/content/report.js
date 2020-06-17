@@ -18,7 +18,7 @@ import mic from 'images/mini/mic.svg'
 import moon from 'images/mini/moon.svg'
 import heart from 'images/mini/heart.svg'
 import clock from 'images/mini/clock.svg'
-
+import heartIcon from '../static/ico_like_g.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
@@ -284,7 +284,13 @@ export default props => {
       fetchDataListen('next')
     }
   }
-
+  const Toggletab = () => {
+    if (selectType === 0) {
+      setSelectType(1)
+    } else {
+      setSelectType(0)
+    }
+  }
   return (
     <>
       {/* 공통타이틀 */}
@@ -293,16 +299,10 @@ export default props => {
       </Header>
       <Report>
         <div className="tabWrap">
-          <button
-            onClick={() => setSelectType(0)}
-            className={selectType === 0 ? 'on' : ''}
-          >
+          <button onClick={Toggletab} className={selectType === 0 ? 'on' : ''}>
             방송
           </button>
-          <button
-            onClick={() => setSelectType(1)}
-            className={selectType === 1 ? 'on' : ''}
-          >
+          <button onClick={Toggletab} className={selectType === 1 ? 'on' : ''}>
             시청
           </button>
         </div>
@@ -412,9 +412,9 @@ export default props => {
             <TitleWrap>
               {selectType === 0 && <TitleText>방송요약</TitleText>}
               {selectType === 1 && <TitleText>청취요약</TitleText>}
-              <TitleSubMsg>
+              {/* <TitleSubMsg>
                 데이터는 최대 6개월까지 검색 가능합니다.
-              </TitleSubMsg>
+              </TitleSubMsg> */}
             </TitleWrap>
             <BroadcastShort>
               {selectType === 0 &&
@@ -450,7 +450,7 @@ export default props => {
                     guestTime
                   } = listentotal
                   return (
-                    <ShortSection key={index}>
+                    <ShortSection key={index} className="see">
                       <div>
                         <div>{listenInfo[section][1]}</div>
                         <div className="count">
@@ -483,32 +483,35 @@ export default props => {
                     return (
                       <MobileDetailTab key={idx}>
                         <div>
-                          <span>방송일자</span>{' '}
-                          <span>{dateFormat(value.broadDt)}</span>
+                          <span className="listenName">
+                            {dateFormat(value.broadDt)}
+                          </span>
                         </div>
-                        <div>
-                          <span>방송시작 </span>
-                          <span>{timeFormat(value.startDt)}</span>
-                        </div>
-                        <div>
-                          <span> 방송종료 </span>
+                        <div className="startDate">
+                          <span>{timeFormat(value.startDt)}</span>~&nbsp;
                           <span>{timeFormat(value.endDt)}</span>
                         </div>
-                        <div>
-                          <span>받은별 </span>
-                          <span>{numberFormat(value.byeolCnt)}</span>
+
+                        <div className="giftDate">
+                          <div>
+                            <span>받은별 </span>
+                            <span>{numberFormat(value.byeolCnt)}</span>
+                          </div>
+                          <div>
+                            <span>좋아요</span>{' '}
+                            <span>{numberFormat(value.likes)}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span>좋아요</span>{' '}
-                          <span>{numberFormat(value.likes)}</span>
-                        </div>
-                        <div>
-                          <span>최다 청취자</span>{' '}
-                          <span>{numberFormat(value.listenerCnt)}</span>
-                        </div>
-                        <div>
-                          <span>방송 최고 순위</span>
-                          <span>{value.rank}</span>
+
+                        <div className="giftDate noborder">
+                          <div>
+                            <span>최다 청취자 </span>
+                            <span>{numberFormat(value.listenerCnt)}</span>
+                          </div>
+                          <div>
+                            <span>방송 최고 순위</span>{' '}
+                            <span>{value.rank}</span>
+                          </div>
                         </div>
                       </MobileDetailTab>
                     )
@@ -517,36 +520,35 @@ export default props => {
                 {selectType === 1 &&
                   listenData.map((value, idx) => {
                     return (
-                      <MobileDetailTab key={idx}>
+                      <MobileDetailTabListen key={idx}>
                         <div>
-                          <span>청취시작</span>{' '}
-                          <span>{timeFormat(value.startDt)}</span>
+                          <span className="listenName">{value.bjNickNm}</span>
                         </div>
-                        <div>
-                          <span>청취종료</span>
-                          <span>{timeFormat(value.endDt)}</span>
-                        </div>
-                        <div>
-                          <span>방송방(DJ)</span>
-                          <span style={{ color: '#632beb' }}>
-                            {value.bjNickNm}
+                        <div className="startDate">
+                          <span className="black">
+                            {dateFormat(value.startDt)}
                           </span>
+                          <span>{timeFormat(value.startDt)}</span>&nbsp;~
+                          <span>{timeFormat(value.endDt)}</span>
+                          {/* {value.listenTime / 3600} */}
                         </div>
-                        <div>
-                          <span>선물내역(달)</span>
-                          <span>{numberFormat(value.giftDalCnt)}</span>
+                        <div className="giftDate">
+                          <div>
+                            <span>선물준달</span>
+                            <span>{numberFormat(value.giftDalCnt)}</span>
+                          </div>
+                          <div>
+                            <span>받은별</span>
+                            <span>{numberFormat(value.byeolCnt)}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span>받은내역(별)</span>
-                          <span>{numberFormat(value.byeolCnt)}</span>
-                        </div>
-                        <div>
-                          <span>게스트</span>{' '}
+                        <div className="guestDate">
+                          <span>게스트로 참여 여부</span>
                           <span>
                             {value.isGuest === false ? '-' : value.isGuest}
                           </span>
                         </div>
-                      </MobileDetailTab>
+                      </MobileDetailTabListen>
                     )
                   })}
               </div>
@@ -566,24 +568,202 @@ export default props => {
 }
 
 const MobileDetailTab = styled.div`
-  padding: 0px 10px;
-  border-bottom: 1px solid #bdbdbd;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-bottom: 8px;
+
   div {
     display: flex;
     justify-content: space-between;
     color: #424242;
     font-size: 14px;
-    margin: 16px 0;
+    /* margin: 16px 0; */
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
-    & span {
-      :nth-child(1) {
-        width: 90px;
-        margin-right: 30px;
+    .listenName {
+      font-size: 16px;
+      font-weight: 800;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+  }
+  .startDate {
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #757575;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eeeeee;
+    .black {
+      color: #000000;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+  .giftDate {
+    border-bottom: 1px solid #eeeeee;
+    &.noborder {
+      border: none;
+    }
+    div {
+      position: relative;
+      padding: 11px 16px 11px 16px;
+      width: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      :before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        content: '';
+        background: url(${heartIcon}) no-repeat center center/cover;
       }
-      :nth-child(2) {
-        width: calc(100% - 120px);
+    }
+  }
+  .guestDate {
+    position: relative;
+    margin-top: 12px;
+    padding: 0 16px 0 16px;
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+    :before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      content: '';
+      background: url(${heartIcon}) no-repeat center center/cover;
+    }
+  }
+  &.disable {
+    display: none;
+  }
+  &.able {
+    display: block;
+  }
+`
+
+const MobileDetailTabListen = styled.div`
+  padding: 13px 14px;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-bottom: 8px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    color: #424242;
+    font-size: 14px;
+    /* margin: 16px 0; */
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+    .listenName {
+      font-size: 16px;
+      font-weight: 800;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+  }
+  .startDate {
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #757575;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eeeeee;
+    .black {
+      color: #000000;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+  .giftDate {
+    border-bottom: 1px solid #eeeeee;
+    div {
+      position: relative;
+      padding: 11px 16px 11px 16px;
+      width: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      :before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        content: '';
+        background: url(${heartIcon}) no-repeat center center/cover;
       }
+    }
+  }
+  .guestDate {
+    position: relative;
+    margin-top: 12px;
+    padding: 0 16px 0 16px;
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+    :before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      content: '';
+      background: url(${heartIcon}) no-repeat center center/cover;
     }
   }
   &.disable {
@@ -624,43 +804,112 @@ const SectionIcon = styled.div`
 const ShortSection = styled.div`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  width: 50%;
-  border-bottom: 1px solid #bdbdbd;
-  padding: 12px 0;
-  &:nth-child(1):before,
-  &:nth-child(3):before {
-    content: '';
-    display: block;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    width: 1px;
-    height: calc(100% - 24px);
-    transform: translateY(-50%);
-    background-color: #e0e0e0;
+  width: calc(50% - 2px);
+  padding: 4px 16px 12px 16px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  > div {
+    :after {
+      position: absolute;
+      content: '';
+      width: 13px;
+      height: 14px;
+      z-index: 5;
+      top: 0;
+      right: 4px;
+      background: url(${heartIcon}) no-repeat center center/cover;
+    }
   }
+  :nth-child(1),
+  :nth-child(2) {
+    margin-bottom: 4px;
+  }
+  :nth-child(2) {
+    > div {
+      color: #f26d4a;
+      :after {
+        background: url(${heartIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  :nth-child(3) {
+    > div {
+      color: #ec455f;
+      :after {
+        background: url(${heartIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  :nth-child(4) {
+    > div {
+      color: #febd56;
+      :after {
+        background: url(${heartIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  &.see {
+    :nth-child(1) {
+      position: relative;
+      > div {
+        :after {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+        color: #f26d4a;
+      }
+    }
+    :nth-child(2) {
+      > div {
+        color: #f26d4a;
+        :after {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+    :nth-child(3) {
+      > div {
+        color: #ec455f;
+        :after {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+    :nth-child(4) {
+      > div {
+        color: #febd56;
+        :after {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+  }
+
   > div {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     width: 100%;
-    font-size: 14px;
-    color: #616161;
+    font-size: 12px;
+    font-weight: 800;
+    color: #632beb;
     transform: skew(-0.03deg);
     letter-spacing: -0.3px;
   }
   & .count {
-    height: 16px;
-    margin-right: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #424242;
-    letter-spacing: -0.35px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 4px;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
   }
 `
 const BroadcastShort = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: row;
 `
@@ -685,19 +934,21 @@ const TitleSubMsg = styled.div`
 `
 
 const TitleText = styled.div`
-  color: #632beb;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 8px;
 `
 const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #632beb;
 
-  margin-top: 12px;
+  margin-top: 16px;
 
   &.noneborder {
     border-bottom: none;
