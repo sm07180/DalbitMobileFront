@@ -247,7 +247,7 @@ export const RoomMake = async (context) => {
       const {roomNo} = res.data
       context.action.confirm({
         msg: res.message,
-        cancelCallback: () => {
+        callback: () => {
           ;(async function () {
             const exit = await Api.broad_exit({data: {roomNo: roomNo}})
             //success,fail노출
@@ -257,8 +257,8 @@ export const RoomMake = async (context) => {
           })()
         },
         buttonText: {
-            left: '방송종료',
-            right: '확인'
+            left: '확인',
+            right: '방송종료'
         }
       })
       return false
