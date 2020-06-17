@@ -225,7 +225,7 @@ const Notice = props => {
       return null
     }
   }
-  console.log(listPage)
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
@@ -241,18 +241,18 @@ const Notice = props => {
       }, 10)
     }
   }
-
+  console.log(listPage)
   return (
     <>
       <Header>
         <div className="category-text">방송공지</div>
         {createWriteBtn()}
       </Header>
-      {listPage === -1 && listPage.length === 0 ? (
+      {listPage === -1 ? (
         <NoResult />
       ) : (
         <>
-          {listPage.length !== 0 && (
+          {listPage.length !== -1 && (
             <>
               <ListWrap className="noticeIsTop">
                 {Array.isArray(listPage) &&
