@@ -1,116 +1,121 @@
-import Util from 'components/lib/utility.js';
-import NoResult from 'components/ui/noResult';
+import Util from 'components/lib/utility.js'
+import NoResult from 'components/ui/noResult'
+import { Context } from 'context'
+import Api from 'context/api'
+import Layout from 'pages/common/layout'
+import React, { useContext, useEffect, useState } from 'react'
 //context
-import styled from 'styled-components';
-import { Context } from 'context';
-import Api from 'context/api';
-import React, { useContext, useEffect, useState } from 'react';
-import LayerPopup from './layer_popup';
+import styled from 'styled-components'
+import LayerPopup from './layer_popup'
 //state
-import './ranking.scss';
-import RankList from './rankList';
-import RankListTop from './rankListTop';
-import hint from './static/hint.svg';
-import point from './static/ico-point.png';
-import point2x from './static/ico-point@2x.png';
-import closeBtn from './static/ic_back.svg';
-import likeWhite from './static/like_w_s.svg';
-import peopleWhite from './static/people_w_s.svg';
-import timeWhite from './static/time_w_s.svg';
+import './ranking.scss'
+import RankList from './rankList'
+import RankListTop from './rankListTop'
+import hint from './static/hint.svg'
+import point from './static/ico-point.png'
+import point2x from './static/ico-point@2x.png'
+import closeBtn from './static/ic_back.svg'
+import likeWhite from './static/like_w_s.svg'
+import peopleWhite from './static/people_w_s.svg'
+import timeWhite from './static/time_w_s.svg'
 
-import Layout from 'pages/common/layout';
-const rankArray = ['dj', 'fan'];
-const dateArray = ['오늘', '일간', '주간'];
+const rankArray = ['dj', 'fan']
+const dateArray = ['오늘', '전일', '주간']
 // const dateArray = ['오늘', '일간', '주간', '월간']
 
-let currentPage = 1;
-let moreState = false;
+let currentPage = 1
+let moreState = false
 
 export default props => {
-  let timer;
+  let timer
 
-  const [myProfile, setMyProfile] = useState(false);
-  const [rankType, setRankType] = useState('dj');
-  const [nextList, setNextList] = useState(false);
-  const [popup, setPopup] = useState(false);
-  const [list, setList] = useState(-1);
+  const [myProfile, setMyProfile] = useState(false)
+  const [rankType, setRankType] = useState('dj')
+  const [nextList, setNextList] = useState(false)
+  const [popup, setPopup] = useState(false)
+  const [list, setList] = useState(-1)
   const [myInfo, setMyInfo] = useState({
     myGiftPoint: 0,
     myListenerPoint: 0,
     myRank: 0,
-    myUpDown: ''
-  });
+    myUpDown: '',
+    myBroadPoint: 0,
+    myLikePoint: 0,
+    myPoint: 0,
+    myListenPoint: 0,
+    time: ''
+  })
 
-  const [dateType, setDateType] = useState(0);
-  const [myRank, setMyRank] = useState(false);
-  const context = useContext(Context);
-  const typeState = props.location.state;
+  const [dateType, setDateType] = useState(0)
+  const [myRank, setMyRank] = useState(false)
+  const context = useContext(Context)
+  const typeState = props.location.state
 
   const goBack = () => {
-    window.history.back();
-  };
+    window.history.back()
+  }
 
   const popStateEvent = e => {
     if (e.state === null) {
-      setPopup(false);
+      setPopup(false)
     } else if (e.state === 'layer') {
-      setPopup(true);
+      setPopup(true)
     }
-  };
+  }
 
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
-        window.history.pushState('layer', '', '/rank/#layer');
+        window.history.pushState('layer', '', '/rank/#layer')
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
-        window.history.back();
+        window.history.back()
       }
     }
-  }, [popup]);
+  }, [popup])
 
   const creatMyRank = () => {
     if (context.token.isLogin) {
       const settingProfileInfo = async memNo => {
         const profileInfo = await Api.profile({
           params: { memNo: context.token.memNo }
-        });
+        })
         if (profileInfo.result === 'success') {
-          setMyProfile(profileInfo.data);
+          setMyProfile(profileInfo.data)
         }
-      };
-      settingProfileInfo();
+      }
+      settingProfileInfo()
     } else {
-      return null;
+      return null
     }
-  };
+  }
 
   useEffect(() => {
     //reload
-    // window.addEventListener('scroll', scrollEvtHdr)
-    // return () => {
-    //   window.removeEventListener('scroll', scrollEvtHdr)
-    // }
-  }, [nextList]);
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
 
   useEffect(() => {
     if (typeState) {
-      setRankType(typeState);
-      fetchRank(typeState, dateType);
+      setRankType(typeState)
+      fetchRank(typeState, dateType)
     } else {
-      fetchRank(rankType, dateType);
+      fetchRank(rankType, dateType)
     }
 
-    creatMyRank();
+    creatMyRank()
 
-    window.addEventListener('popstate', popStateEvent);
+    window.addEventListener('popstate', popStateEvent)
 
     return () => {
-      currentPage = 1;
-      window.removeEventListener('popstate', popStateEvent);
-    };
-  }, []);
+      currentPage = 1
+      window.removeEventListener('popstate', popStateEvent)
+    }
+  }, [])
 
   const createRankButton = () => {
     return rankArray.map((item, index) => {
@@ -123,16 +128,16 @@ export default props => {
               : 'rankTab__btn'
           }
           onClick={() => {
-            currentPage = 1;
-            setRankType(item);
-            fetchRank(item, dateType);
+            currentPage = 1
+            setRankType(item)
+            fetchRank(item, dateType)
           }}
         >
           {item === 'dj' ? 'DJ' : '팬'}
         </button>
-      );
-    });
-  };
+      )
+    })
+  }
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
@@ -146,97 +151,102 @@ export default props => {
               : 'todayList__btn'
           }
           onClick={() => {
-            currentPage = 1;
-            setDateType(index);
-            fetchRank(rankType, index);
+            currentPage = 1
+            setDateType(index)
+            fetchRank(rankType, index)
             setMyInfo({
               myGiftPoint: 0,
               myListenerPoint: 0,
               myRank: 0,
-              myUpDown: ''
-            });
+              myUpDown: '',
+              myBroadPoint: 0,
+              myLikePoint: 0,
+              myPoint: 0,
+              myListenPoint: 0,
+              time: ''
+            })
           }}
         >
           {item}
         </button>
-      );
-    });
-  };
+      )
+    })
+  }
 
   //checkScroll
   const scrollEvtHdr = event => {
-    if (timer) window.clearTimeout(timer);
+    if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function() {
       //스크롤
       const windowHeight =
         'innerHeight' in window
           ? window.innerHeight
-          : document.documentElement.offsetHeight;
-      const body = document.body;
-      const html = document.documentElement;
+          : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
       const docHeight = Math.max(
         body.scrollHeight,
         body.offsetHeight,
         html.clientHeight,
         html.scrollHeight,
         html.offsetHeight
-      );
-      const windowBottom = windowHeight + window.pageYOffset;
+      )
+      const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       /*
        * @가속처리
        */
       if (moreState && windowBottom >= docHeight - 400) {
-        showMoreList();
+        showMoreList()
       } else {
       }
-    }, 10);
-  };
+    }, 10)
+  }
 
   const showMoreList = () => {
-    setList(list.concat(nextList));
-    fetchRank(rankType, dateType, 'next');
-  };
+    setList(list.concat(nextList))
+    fetchRank(rankType, dateType, 'next')
+  }
 
   async function fetchRank(type, dateType, next) {
-    let res = '';
-    currentPage = next ? ++currentPage : currentPage;
+    let res = ''
+    currentPage = next ? ++currentPage : currentPage
 
-    if (currentPage > 1) {
-      return;
+    if (currentPage > 10) {
+      return
     }
     if (type === 'dj') {
       res = await Api.get_dj_ranking({
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 500
+          records: 50
         }
-      });
+      })
     } else if (type === 'fan') {
       res = await Api.get_fan_ranking({
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 500
+          records: 50
         }
-      });
+      })
     }
 
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
       if (res.code === '0') {
-        if (!next) setList(0);
+        if (!next) setList(0)
         // setMoreState(false)
-        moreState = false;
+        moreState = false
       } else {
         if (next) {
           // setMoreState(true)
-          moreState = true;
-          setNextList(res.data.list);
+          moreState = true
+          setNextList(res.data.list)
         } else {
-          setList(res.data.list);
-          fetchRank(type, dateType, 'next');
+          setList(res.data.list)
+          fetchRank(type, dateType, 'next')
         }
 
         setMyInfo({
@@ -249,20 +259,20 @@ export default props => {
           myPoint: res.data.myPoint,
           myListenPoint: res.data.myListenPoint,
           time: res.data.time
-        });
+        })
       }
     } else {
       context.action.alert({
         msg: res.massage
-      });
+      })
     }
   }
 
   const creatResult = () => {
     if (list === -1) {
-      return null;
+      return null
     } else if (list === 0) {
-      return <NoResult />;
+      return <NoResult />
     } else {
       return (
         <>
@@ -273,83 +283,84 @@ export default props => {
           />
           <RankList list={list.slice(3)} rankType={rankType} />
         </>
-      );
+      )
     }
-  };
+  }
 
   const createMyLevelClass = () => {
-    const { level } = myProfile;
-    let levelName;
+    const { level } = myProfile
+    let levelName
     if (level === 0) {
-      levelName = `levelBox levelBox__lv0`;
+      levelName = `levelBox levelBox__lv0`
     } else if (level >= 1 && level <= 10) {
-      levelName = `levelBox levelBox__lv1`;
+      levelName = `levelBox levelBox__lv1`
     } else if (level >= 11 && level <= 20) {
-      levelName = `levelBox levelBox__lv2`;
+      levelName = `levelBox levelBox__lv2`
     } else if (level >= 21 && level <= 30) {
-      levelName = `levelBox levelBox__lv3`;
+      levelName = `levelBox levelBox__lv3`
     } else if (level >= 31 && level <= 40) {
-      levelName = `levelBox levelBox__lv4`;
+      levelName = `levelBox levelBox__lv4`
     } else if (level >= 41 && level <= 50) {
-      levelName = `levelBox levelBox__lv5`;
+      levelName = `levelBox levelBox__lv5`
     }
 
-    return levelName;
-  };
+    return levelName
+  }
 
   const createMyUpDownClass = () => {
-    const { myUpDown } = myInfo;
+    const { myUpDown } = myInfo
 
-    let myUpDownName;
+    let myUpDownName
 
     if (myUpDown[0] === '+') {
-      myUpDownName = `rankingChange__up`;
+      myUpDownName = `rankingChange__up`
     } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
-      myUpDownName = `rankingChange__down`;
+      myUpDownName = `rankingChange__down`
     } else if (myUpDown === 'new') {
-      myUpDownName = `rankingChange__new`;
+      myUpDownName = `rankingChange__new`
     } else {
-      myUpDownName = `rankingChange__stop`;
+      myUpDownName = `rankingChange__stop`
     }
 
-    return myUpDownName;
-  };
+    return myUpDownName
+  }
 
   const createMyProfile = () => {
-    const { myUpDown } = myInfo;
+    const { myUpDown } = myInfo
 
     let myUpDownName,
-      myUpDownValue = '';
+      myUpDownValue = ''
     if (myUpDown[0] === '+') {
-      myUpDownName = `rankingChange__up rankingChange__up--profile`;
-      myUpDownValue = myUpDown.split('+')[1];
+      myUpDownName = `rankingChange__up rankingChange__up--profile`
+      myUpDownValue = myUpDown.split('+')[1]
     } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
-      myUpDownName = `rankingChange__down rankingChange__down--profile`;
-      myUpDownValue = myUpDown.split('-')[1];
+      myUpDownName = `rankingChange__down rankingChange__down--profile`
+      myUpDownValue = myUpDown.split('-')[1]
     } else if (myUpDown === 'new') {
-      myUpDownName = `rankingChange__new`;
-      myUpDownValue = 'new';
+      myUpDownName = `rankingChange__new`
+      myUpDownValue = 'new'
     } else {
-      myUpDownName = `rankingChange__stop`;
+      myUpDownName = `rankingChange__stop`
     }
-    return <span className={myUpDownName}>{myUpDownValue}</span>;
-  };
+    return <span className={myUpDownName}>{myUpDownValue}</span>
+  }
   const scrollEvent = () => {
-    const headerHeight = 48;
+    const headerHeight = 48
+
     if (window.scrollY >= headerHeight) {
-      context.action.updateLogoChange(true);
+      context.action.updateLogoChange(true)
     } else if (window.scrollY < headerHeight) {
-      context.action.updateLogoChange(false);
+      context.action.updateLogoChange(false)
     }
-  };
+  }
 
   useEffect(() => {
-    window.removeEventListener('scroll', scrollEvent);
-    window.addEventListener('scroll', scrollEvent);
+    window.removeEventListener('scroll', scrollEvent)
+    window.addEventListener('scroll', scrollEvent)
     return () => {
-      window.removeEventListener('scroll', scrollEvent);
-    };
-  }, [context.logoChange]);
+      window.removeEventListener('scroll', scrollEvent)
+    }
+  }, [context.logoChange])
   return (
     <>
       <Layout {...props} status="no_gnb">
@@ -378,7 +389,7 @@ export default props => {
             <div
               className="myRanking myRanking__profile"
               onClick={() => {
-                window.location.href = `/menu/profile`;
+                window.location.href = `/menu/profile`
               }}
             >
               <div className="myRanking__left myRanking__left--profile">
@@ -487,8 +498,8 @@ export default props => {
         </div>
       </Layout>
     </>
-  );
-};
+  )
+}
 const TopScrollBtn = styled.button`
   display: ${props => (props.topState ? 'block' : 'none')};
   position: fixed;
@@ -502,4 +513,4 @@ const TopScrollBtn = styled.button`
 
   background-color: red;
   z-index: 12;
-`;
+`
