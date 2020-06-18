@@ -15,7 +15,9 @@ import Mic from './static/ic_broadcastng.svg'
 import { OS_TYPE } from 'context/config.js'
 import Api from 'context/api'
 
-export default props => {
+let alarmCheckIntervalId = null
+
+export default (props) => {
   //context
   const context = useContext(Context)
   const { webview } = props
@@ -30,14 +32,15 @@ export default props => {
 
   // static
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
+  const [newAlarm, setNewAlarm] = useState(false)
 
   const reLoad = () => {
     window.location.href = '/'
   }
-  const moveToMenu = category => {
+  const moveToMenu = (category) => {
     return (window.location.href = `/menu/${category}`)
   }
-  const moveToLogin = category => {
+  const moveToLogin = (category) => {
     if (!token.isLogin) {
       return (window.location.href = '/login')
     }
@@ -65,6 +68,27 @@ export default props => {
     }
   }, [logoChange])
 
+  useEffect(() => {
+    async function alarmCheck() {
+      const { result, data } = await Api.mypage_alarm_check()
+      if (result === 'success') {
+        const { newCnt } = data
+        if (newCnt > 0) {
+          setNewAlarm(true)
+        }
+      }
+    }
+
+    alarmCheck()
+    alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+
+    return () => {
+      if (alarmCheckIntervalId) {
+        clearInterval(alarmCheckIntervalId)
+      }
+    }
+  }, [])
+
   return (
     <>
       <HiddenBg />
@@ -80,6 +104,8 @@ export default props => {
             src={Alarm}
             onClick={() => moveToLogin('alarm')}
           />
+
+          {newAlarm === true && <div className="alarm-new"></div>}
 
           {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
@@ -154,6 +180,17 @@ const GnbWrap = styled.div`
       display: block;
       width: 36px;
     }
+
+    .alarm-new {
+      position: absolute;
+      border-radius: 50%;
+      top: 4px;
+      left: 4px;
+      width: 5px;
+      height: 5px;
+      background-color: red;
+    }
+
     .news {
       position: absolute;
       top: 5px;
