@@ -98,8 +98,23 @@ export default props => {
                   <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
               </p>
             )
+              /**
+                 1 : 방송방 [room_no]
+                 2 : 메인
+                 4 : 등록 된 캐스트
+                 5 : 스페셜 DJ 선정 페이지
+                 6 : 이벤트 페이지>해당 이벤트 [board_idx]
+                 7 : 공지사항 페이지 [board_idx]
+                 31 : 마이페이지>팬 보드
+                 32 : 마이페이지>내 지갑
+                 33 : 마이페이지>캐스트>캐스트 정보 변경 페이지
+                 34 : 마이페이지>알림>해당 알림 글
+                 35 : 마이페이지
+                 36 : 레벨 업 DJ 마이페이지 [mem_no]
+                 37 : 1:1 문의 답변
+               * */
             switch (notiType) {
-              case 1: //마이스타 방송알림
+              case 1: //방송방 알림
                 return (
                   <li
                     key={index}
@@ -115,16 +130,81 @@ export default props => {
                   </li>
                 )
                 break
+              case 5: // 스페셜 dj선정
+                return (
+                    <li
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/`
+                        }}>
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                        {textArea}
+                    </li>
+                )
+                break
+              case 6: // 이벤트 페이지
+                return (
+                    <li
+                        key={index}
+                        // onClick={() => {
+                        //   window.location.href = `/customer/notice`
+                        // }}
+                    >
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                        {textArea}
+                    </li>
+                )
+                break
+              case 7: // 마이 페이지
+                return (
+                    <li
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/menu/profile`
+                        }}>
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                        {textArea}
+                    </li>
+                )
+                break
+              case 31: //팬보드 알림
+                return (
+                    <li
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/mypage/${memNo}/fanboard`
+                      }}>
+                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                        {textArea}
+                    </li>
+                )
+                break
               case 32: //달 알림//완료
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      window.location.href = `/mypage/${memNo}/wallet`
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
+                )
+                break
+              case 33: //캐스트 알림// (미정)
+                return (
+                    <li key={index}>
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                        {textArea}
+                    </li>
                 )
                 break
               case 35: // 팬 등록
@@ -142,76 +222,32 @@ export default props => {
                   </li>
                 )
                 break
-              case 31: //팬보드 알림
-                return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      window.location.href = `/mypage/${memNo}/fanboard`
-                    }}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                    {textArea}
-                  </li>
-                )
-                break
-              case 5: // 스페셜 dj선정
-                return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      window.location.href = `/`
-                    }}>
-                    <figure>
-                      <img src={alarmIco} />
-                    </figure>
-                    {textArea}
-                  </li>
-                )
-                break
-
-              case 6: // 이벤트 페이지
-                return (
-                  <li
-                    key={index}
-                    // onClick={() => {
-                    //   window.location.href = `/customer/notice`
-                    // }}
-                  >
-                    <figure>
-                      <img src={alarmIco} />
-                    </figure>
-                    {textArea}
-                  </li>
-                )
-                break
-
               case 36: //DJ 레벨업(팬)
                 return (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
-                    }}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                    {textArea}
-                  </li>
+                    <li
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/mypage/${memNo}`
+                        }}>
+                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                        {textArea}
+                    </li>
                 )
                 break
-              case 7: // 마이 페이지
-                  return (
+              case 37: // 1:1 문의 답변
+                return (
                     <li
-                      key={index}
-                       onClick={() => {
-                         window.location.href = `/menu/profile`
-                      }}>
-                      <figure>
-                        <img src={alarmIco} />
-                      </figure>
-                      {textArea}
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/customer/personal/qnaList`
+                        }}>
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                        {textArea}
                     </li>
-                  )
-                  break
-
+                )
+                break
               default:
                 return (
                   <li key={index}>
