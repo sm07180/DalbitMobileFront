@@ -20,10 +20,14 @@ const list = [
   { value: 2, text: '핸드폰번호' }
 ]
 const chargeData = [
-  { id: 0, type: '신용카드 결제', fetch: 'pay_card' },
+  { id: 0, type: '카드 결제', fetch: 'pay_card' },
   { id: 1, type: '휴대폰 결제', fetch: 'pay_phone' },
   { id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual' },
-  { id: 3, type: '페이레터', fetch: 'pay_letter' }
+  { id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay' },
+  { id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco' },
+  { id: 5, type: '토스', fetch: 'pay_letter', code: 'toss' },
+  { id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney' },
+  { id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee' }
 ]
 let payType = ''
 // let paymentPriceAddVat = 0
@@ -170,14 +174,16 @@ export default props => {
 
   async function payFetch(event) {
     payType = chargeData[payMathod].fetch
-    const obj = {
+    let obj = {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
-        itemNo: payItemNo,
-        pageCode: pageCode,
-        pgCode: 'cashbee'
+        itemNo: itemNo,
+        pageCode: '1'
       }
+    }
+    if (payType === 'pay_letter') {
+      obj.data = { ...obj.data, pgCode: chargeData[payMathod].code }
     }
     const res = await Api[payType]({ ...obj })
 
