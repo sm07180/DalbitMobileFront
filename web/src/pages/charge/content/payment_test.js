@@ -178,8 +178,8 @@ export default props => {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
-        itemNo: itemNo,
-        pageCode: '1'
+        itemNo: payItemNo,
+        pageCode: pageCode
       }
     }
     if (payType === 'pay_letter') {
