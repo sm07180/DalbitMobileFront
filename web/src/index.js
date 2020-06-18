@@ -14,10 +14,6 @@ import 'styles/swiper.scss'
 //context
 import {GlobalProvider} from 'context'
 
-const test = 'value'
-
-const abc = (abcd) => {}
-
 ReactDOM.render(
   <BrowserRouter>
     <GlobalProvider>
