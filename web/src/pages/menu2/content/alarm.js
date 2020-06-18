@@ -1,18 +1,18 @@
 /**
  * @title 알림사항
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 //context
 import Api from 'context/api'
-import {COLOR_MAIN} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S} from 'context/config'
-import {Context} from 'context'
+import { COLOR_MAIN } from 'context/color'
+import { IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S } from 'context/config'
+import { Context } from 'context'
 import Utility from 'components/lib/utility'
 //room
-import Room, {RoomJoin} from 'context/room'
+import Room, { RoomJoin } from 'context/room'
 // component
 import Header from '../component/header.js'
 import NoResult from 'components/ui/noResult'
@@ -33,8 +33,8 @@ export default props => {
 
   //context
   const globalCtx = useContext(Context)
-  const {profile} = globalCtx
-  const {isLogin} = globalCtx.token
+  const { profile } = globalCtx
+  const { isLogin } = globalCtx.token
   const myMemNo = isLogin ? globalCtx.profile.memNo : null
 
   //useState
@@ -92,13 +92,22 @@ export default props => {
       <>
         <ul className="alert-list">
           {alertList.map((item, index) => {
-            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
+            const {
+              notiType,
+              contents,
+              memNo,
+              roomNo,
+              regDt,
+              regTs,
+              profImg
+            } = item
             const textArea = (
               <p>
-                  <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>{' '}
+                <span>{Utility.settingAlarmTime(regTs)}</span>
               </p>
             )
-              /**
+            /**
                  1 : 방송방 [room_no]
                  2 : 메인
                  4 : 등록 된 캐스트
@@ -124,65 +133,77 @@ export default props => {
                       RoomJoin(roomNo + '', () => {
                         clicked = false
                       })
-                    }}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    }}
+                  >
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}
+                    ></figure>
                     {textArea}
                   </li>
                 )
                 break
               case 5: // 스페셜 dj선정
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/`
+                    }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 6: // 이벤트 페이지
                 return (
-                    <li
-                        key={index}
-                        // onClick={() => {
-                        //   window.location.href = `/customer/notice`
-                        // }}
-                    >
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    // onClick={() => {
+                    //   window.location.href = `/customer/notice`
+                    // }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 7: // 마이 페이지
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/menu/profile`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/menu/profile`
+                    }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 31: //팬보드 알림
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/mypage/${memNo}/fanboard`
-                      }}>
-                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}/fanboard`
+                    }}
+                  >
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}
+                    ></figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 32: //달 알림//완료
@@ -191,20 +212,25 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}/wallet`
-                    }}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    }}
+                  >
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}
+                    ></figure>
                     {textArea}
                   </li>
                 )
                 break
               case 33: //캐스트 알림// (미정)
                 return (
-                    <li key={index}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li key={index}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 35: // 팬 등록
@@ -213,39 +239,50 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}`
-                    }}>
+                    }}
+                  >
                     {/* <figure>
                       <img src={alarmIco} />
                     </figure> */}
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}
+                    ></figure>
                     {textArea}
                   </li>
                 )
                 break
               case 36: //DJ 레벨업(팬)
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/mypage/${memNo}`
-                        }}>
-                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}
+                  >
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}
+                    ></figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 37: // 1:1 문의 답변
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/customer/personal/qnaList`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/customer/personal/qnaList`
+                    }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               default:
@@ -281,10 +318,19 @@ export default props => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function() {
       //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const windowHeight =
+        'innerHeight' in window
+          ? window.innerHeight
+          : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const docHeight = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      )
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       if (windowBottom >= docHeight - 30) {
@@ -314,7 +360,7 @@ export default props => {
   //---------------------------------------------------------------------
 
   return (
-    <div>
+    <Wrap>
       <Header>
         <div className="category-text">알림사항</div>
       </Header>
@@ -338,7 +384,7 @@ export default props => {
           </div>
         )}
       </Content>
-    </div>
+    </Wrap>
   )
 }
 //---------------------------------------------------------------------
@@ -462,4 +508,8 @@ const Content = styled.div`
       content: '';
     } */
   }
+`
+const Wrap = styled.div`
+  padding: 0 16px;
+  background-color: #fff;
 `

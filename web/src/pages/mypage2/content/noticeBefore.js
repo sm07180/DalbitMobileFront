@@ -78,7 +78,11 @@ const Notice = props => {
         context.action.confirm({
           callback: () => {
             setWriteShow(false)
-            window.location.reload()
+            setTimeout(() => {
+              setComment('')
+              setCommentContent('')
+              context.action.updateNoticeState(true)
+            }, 10)
           },
           msg: '공시사항을 등록 하시겠습니까?'
         })
@@ -102,6 +106,8 @@ const Notice = props => {
     }
   }
   const WriteToggle = () => {
+    setComment('')
+    setCommentContent('')
     if (writeShow === false) {
       setWriteShow(true)
     } else {
@@ -152,8 +158,12 @@ const Notice = props => {
   }
   useEffect(() => {
     currentPage = 1
+
     fetchData()
-  }, [])
+    setTimeout(() => {
+      context.action.updateNoticeState(false)
+    }, 50)
+  }, [context.noticeState])
 
   const showMoreList = () => {
     if (moreState) {
@@ -241,7 +251,7 @@ const Notice = props => {
       }, 10)
     }
   }
-  console.log(listPage)
+
   return (
     <>
       <Header>
@@ -340,6 +350,7 @@ const Notice = props => {
               placeholder="글의 제목을 입력하세요."
               maxLength="20"
               onChange={textChange}
+              value={coment}
             />
           </div>
 
@@ -348,6 +359,7 @@ const Notice = props => {
               placeholder="작성하고자 하는 글의 내용을 입력해주세요."
               maxLength="189"
               onChange={textChangeContent}
+              value={comentContent}
             />
           </div>
           <div className="checkbox-wrap">
@@ -526,7 +538,7 @@ const Write = styled.div`
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #eee;
     button:nth-child(1) {
       width: 24px;
       height: 24px;

@@ -2,22 +2,22 @@
  * @file /mypage/content/my-profile.js
  * @brief 2.5v 마이페이지 상단에 보이는 내 프로필 component.
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 //route
-import {Link} from 'react-router-dom'
-import {OS_TYPE} from 'context/config.js'
+import { Link } from 'react-router-dom'
+import { OS_TYPE } from 'context/config.js'
 //styled
 import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 // context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
+import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import { WIDTH_TABLET_S, IMG_SERVER } from 'context/config'
 import Api from 'context/api'
-import {Context} from 'context'
+import { Context } from 'context'
 // utility
-import Utility, {printNumber} from 'components/lib/utility'
+import Utility, { printNumber } from 'components/lib/utility'
 //svg
 import LiveIcon from '../component/ic_live.svg'
 import FemaleIcon from '../static/ico_female.svg'
@@ -31,10 +31,10 @@ import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
 // render----------------------------------------------------------------
 const myProfile = props => {
-  const {webview} = props
+  const { webview } = props
   //context
   const context = useContext(Context)
-  const {mypageReport, close, closeFanCnt, closeStarCnt} = context
+  const { mypageReport, close, closeFanCnt, closeStarCnt } = context
   // state
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
@@ -42,7 +42,7 @@ const myProfile = props => {
   const [reportShow, SetShowReport] = useState(false)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
-  const {profile} = props
+  const { profile } = props
   const myProfileNo = context.profile.memNo
   //function-----------------------------------------------------
 
@@ -51,13 +51,18 @@ const myProfile = props => {
     setZoom(true)
   }
   // expCalculate function
-  let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
+  let expCalc = Math.floor(
+    ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) *
+      100
+  )
   if (expCalc == 'Infinity') expCalc = 0
-  let expPercent = ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100
+  let expPercent =
+    ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) *
+    100
   if (expPercent == 'Infinity') expCalc = 0
   // loading
   if (profile === null) {
-    return <div style={{minHeight: '391px'}}></div>
+    return <div style={{ minHeight: '391px' }}></div>
   }
   //api
   async function fetchDataFanRegist(myProfileNo) {
@@ -127,22 +132,33 @@ const myProfile = props => {
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
       } else {
-        const {memNo, profImg, rank} = profile.fanRank[index]
+        const { memNo, profImg, rank } = profile.fanRank[index]
         let link = ''
         if (memNo == myProfileNo) {
           link = `/menu/profile`
         } else {
-          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+          link = webview
+            ? `/mypage/${memNo}?webview=${webview}`
+            : `/mypage/${memNo}`
         }
         result = result.concat(
           <a href={link} key={index}>
-            <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
+            <FanRank
+              style={{ backgroundImage: `url(${profImg.thumb88x88})` }}
+              className={`rank${rank}`}
+            ></FanRank>
           </a>
         )
       }
     }
     result = result.concat(
-      <button className="moreFan" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn">
+      <button
+        className="moreFan"
+        onClick={() =>
+          profile.fanRank.length > 0 && context.action.updateClose(true)
+        }
+        key="btn"
+      >
         <span></span>
       </button>
     )
@@ -151,7 +167,12 @@ const myProfile = props => {
         <FanListWrap>
           <span>
             <span>팬랭킹</span>
-            <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em>
+            <em
+              onClick={() =>
+                profile.fanRank.length > 0 && context.action.updateClose(true)
+              }
+              key="btn"
+            ></em>
           </span>
           {result}
         </FanListWrap>
@@ -208,14 +229,26 @@ const myProfile = props => {
       <ProfileWrap>
         <MyProfile webview={webview}>
           <button className="closeBtn" onClick={goBack}></button>
-          <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
+          <ProfileImg
+            url={profile.profImg ? profile.profImg['thumb120x120'] : ''}
+          >
             <figure onClick={() => figureZoom()}>
-              <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
-              <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
+              <img
+                src={profile.profImg ? profile.profImg['thumb120x120'] : ''}
+                alt={profile.nickNm}
+              />
+              <div
+                className="holder"
+                style={{ backgroundImage: `url(${profile.holder})` }}
+              ></div>
             </figure>
             {Zoom === true && (
               <div className="zoom" onClick={() => setZoom(false)}>
-                <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
+                <img
+                  src={profile.profImg ? profile.profImg['url'] : ''}
+                  alt={profile.nickNm}
+                  className="zoomImg"
+                />
               </div>
             )}
             <div className="InfoWrap">
@@ -228,19 +261,31 @@ const myProfile = props => {
                     <LevelStatusBarWrap>
                       <LevelStatus
                         style={{
-                          width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
-                        }}></LevelStatus>
+                          width: `${
+                            expCalc < 20
+                              ? `calc(${expCalc}% + 20px)`
+                              : `calc(${expCalc}%)`
+                          }`
+                        }}
+                      ></LevelStatus>
                     </LevelStatusBarWrap>
                     <div className="levelInfo">
                       <div className="subInfo line">
                         <span className="expTitle">0</span>
                         <span className="expTitle red mr7">
-                          EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}
+                          EXP{' '}
+                          {Math.floor(
+                            ((profile.expNext - profile.expBegin) *
+                              expPercent) /
+                              100
+                          )}
                         </span>
                       </div>
                       <div className="subInfo">
                         <span className="expTitle ml6">{profile.expRate}%</span>
-                        <span className="expTitle">{profile.expNext - profile.expBegin}</span>
+                        <span className="expTitle">
+                          {profile.expNext - profile.expBegin}
+                        </span>
                       </div>
                     </div>
                   </LevelWrap>
@@ -257,7 +302,9 @@ const myProfile = props => {
                 {<em className="nationIcon"></em>}
                 {profile.gender === 'f' && <em className="femaleIcon"></em>}
                 {profile.gender === 'm' && <em className="maleIcon"></em>}
-                {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
+                {profile.isSpecial === true && (
+                  <em className="specialIcon">스페셜 DJ</em>
+                )}
               </div>
             </NameWrap>
             <ButtonWrap>{createFanList()}</ButtonWrap>
@@ -267,32 +314,48 @@ const myProfile = props => {
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
+                <em className="cntTitle">
+                  {Utility.printNumber(profile.fanCnt)}
+                </em>
               </div>
               <div onClick={() => starContext()}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.starCnt)}</em>
+                <em className="cntTitle">
+                  {Utility.printNumber(profile.starCnt)}
+                </em>
               </div>
               <div>
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.likeTotCnt)}</em>
+                <em className="cntTitle">
+                  {Utility.printNumber(profile.likeTotCnt)}
+                </em>
               </div>
               {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-                <div onClick={() => context.action.updateMypageReport(true)}></div>
+                <div
+                  onClick={() => context.action.updateMypageReport(true)}
+                ></div>
               )}
             </div>
             {/* <CountingWrap></CountingWrap> */}
           </ContentWrap>
-          {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-          {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
-          {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
-          {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
+          {context.mypageReport === true && (
+            <ProfileReport {...props} reportShow={reportShow} />
+          )}
+          {context.close === true && (
+            <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />
+          )}
+          {context.closeFanCnt === true && (
+            <ProfileFanList {...props} reportShow={reportShow} name="팬" />
+          )}
+          {context.closeStarCnt === true && (
+            <ProfileFanList {...props} reportShow={reportShow} name="스타" />
+          )}
           {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
         </MyProfile>
       </ProfileWrap>
@@ -432,7 +495,8 @@ z-index:3;
     flex-direction: column;
     padding: 0px 0 16px 0;
     
-    /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
+    /* padding-top: ${props =>
+      props.webview && props.webview === 'new' ? '48px' : ''}; */
   }
 `
 //flex item3
@@ -849,7 +913,8 @@ const InfoConfigBtn = styled.div`
     user-select: none;
     border: 1px solid #757575;
     border-radius: 18px;
-    background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92% center;
+    background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92%
+      center;
     background-size: 32px 32px;
     font-size: 14px;
     font-weight: 600;
@@ -884,7 +949,8 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
+        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center
+          center / cover;
       }
       & em {
         display: block;

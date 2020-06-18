@@ -36,6 +36,7 @@ export default props => {
   const context = useContext(Context)
   //profileGlobal info
   const { profile } = ctx
+  const { webview } = qs.parse(location.search)
   //urlNumber
   var urlrStr = location.pathname.split('/')[2]
   //state
@@ -138,10 +139,16 @@ export default props => {
       fetchDataReplyList()
       setThisBigIdx(0)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      if (textChange.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '수정 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
 
@@ -160,10 +167,16 @@ export default props => {
       fetchDataReplyList()
       setThisBigIdx(0)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        cancelCallback: () => {},
-        msg: res.message
-      })
+      if (modifyMsg.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '수정 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   cancelCallback: () => {},
+      //   msg: res.message
+      // })
     }
   }
   const ModifyToggle = () => {
@@ -239,6 +252,19 @@ export default props => {
               boardIdx,
               writerNo
             } = item
+            const Link = () => {
+              if (webview) {
+                link =
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
+                    : (window.location.href = `/menu/profile`)
+              } else {
+                link =
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}`)
+                    : (window.location.href = `/menu/profile`)
+              }
+            }
             return (
               <div key={index} className="reply_Wrap">
                 <div className="reply_list_header">
@@ -268,10 +294,10 @@ export default props => {
                   )}
 
                   <div className="replyInfo">
-                    <ProfImg bg={profImg.thumb62x62}></ProfImg>
+                    <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
                     <div>
-                      <span>{nickNm}</span>
-                      <span>{timeFormat(writeDt)}</span>
+                      <span onClick={Link}>{nickNm}</span>
+                      <span onClick={Link}>{timeFormat(writeDt)}</span>
                     </div>
                   </div>
                 </div>
@@ -287,7 +313,7 @@ export default props => {
         <Writer>
           <header>
             <button onClick={WriteToggle}></button>
-            <span>대댓글 쓰기</span>
+            <span>답글 쓰기</span>
           </header>
           <div className="content_area">
             <Textarea
@@ -394,7 +420,7 @@ const Writer = styled.div`
       margin-left: auto;
       margin-right: 7px;
       margin-top: 4px;
-      margin-bottom: 23px;
+      margin-bottom: 32px;
       font-size: 12px;
       line-height: 1.08;
       letter-spacing: normal;
@@ -494,9 +520,10 @@ const Reply = styled.div`
   .reply_list {
     /* height: 100%; */
     .reply_Wrap {
-      min-height: 112px;
-      margin-bottom: 4px;
+      min-height: 132px;
+      /* margin-bottom: 4px; */
       background-color: #fff;
+      border-bottom: 1px solid #eee;
       .reply_content {
         padding: 12px 41px 8px 16px;
         min-height: 69px;
@@ -513,7 +540,7 @@ const Reply = styled.div`
           align-items: center;
           height: 48px;
           padding: 0px 16px;
-          border: 1px solid #eeeeee;
+          /* border: 1px solid #eeeeee; */
           > div {
             display: flex;
             flex-direction: column;
@@ -552,16 +579,22 @@ const Reply = styled.div`
       border-bottom: 1px solid #eeeeee;
       span:first-child {
         margin-left: 10px;
+        display: block;
+        height: 20px;
+        line-height: 20px;
+        max-width: 200px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
         font-size: 16px;
         font-weight: 800;
-        letter-spacing: normal;
         text-align: left;
         color: #000000;
       }
       span:last-child {
         margin-left: 10px;
+        margin-top: 4px;
         font-size: 12px;
-        letter-spacing: normal;
         text-align: left;
         color: #9e9e9e;
       }

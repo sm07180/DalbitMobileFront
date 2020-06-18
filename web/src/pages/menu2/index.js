@@ -1,5 +1,5 @@
-import React, {useContext} from 'react'
-import {Switch, Route, useParams} from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Switch, Route, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
@@ -8,32 +8,32 @@ import Profile2 from './content/profile2.js'
 import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
+import { Context } from 'context'
+import { IMG_SERVER } from 'context/config'
 // component //
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import LoginStay from '../login/loginState'
 export default props => {
   const categoryList = [
-    {type: 'nav', component: Nav},
-    {type: 'profile', component: Profile},
-    {type: 'alarm', component: Alarm},
-    {type: 'search', component: Search}
+    { type: 'nav', component: Nav },
+    { type: 'profile', component: Profile },
+    { type: 'alarm', component: Alarm },
+    { type: 'search', component: Search }
   ]
   const categoryList2 = [
-    {type: 'nav', component: Nav},
-    {type: 'profile', component: Profile2},
-    {type: 'alarm', component: Alarm},
-    {type: 'search', component: Search}
+    { type: 'nav', component: Nav },
+    { type: 'profile', component: Profile2 },
+    { type: 'alarm', component: Alarm },
+    { type: 'search', component: Search }
   ]
 
   const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const { token, profile } = globalCtx
 
   if (!profile && window.location.pathname !== '/menu/search') {
-    const {memNo} = token
-    Api.profile({params: {memNo: memNo}}).then(profileInfo => {
+    const { memNo } = token
+    Api.profile({ params: { memNo: memNo } }).then(profileInfo => {
       if (profileInfo.result === 'success') {
         globalCtx.action.updateProfile(profileInfo.data)
       }
@@ -60,8 +60,15 @@ export default props => {
         <MenuWrapRe>
           <Switch>
             {categoryList2.map(value => {
-              const {type, component} = value
-              return <Route exact path={`/menu/${type}`} component={component} key={type} />
+              const { type, component } = value
+              return (
+                <Route
+                  exact
+                  path={`/menu/${type}`}
+                  component={component}
+                  key={type}
+                />
+              )
             })}
           </Switch>
         </MenuWrapRe>

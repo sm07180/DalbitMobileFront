@@ -1,10 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
-import {Context} from 'context'
+import {
+  Switch,
+  Route,
+  useParams,
+  Redirect,
+  useLocation
+} from 'react-router-dom'
+import { Context } from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import { Hybrid, isHybrid } from 'context/hybrid'
 // component
 import Header from '../component/header2.js'
 import Controller from 'components/ui/remoteController'
@@ -45,28 +51,28 @@ import Arrow from '../static/arrow.svg'
 export default props => {
   // nav Array
   const subNavList = [
-    {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-    {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+    { type: 'notice', txt: '방송공지', icon: BroadNoticeIcon },
+    { type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon },
+    { type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon }
   ]
   const walletList = [
-    {type: 'wallet', txt: '달 충전', icon: DalIcon},
-    {type: 'wallet', txt: '환전', icon: ExchangeIcon},
-    {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
-    {type: 'report', txt: '리포트', icon: ReportIcon}
+    { type: 'wallet', txt: '달 충전', icon: DalIcon },
+    { type: 'wallet', txt: '환전', icon: ExchangeIcon },
+    { type: 'wallet', txt: '내 지갑', icon: WalletIcon },
+    { type: 'report', txt: '리포트', icon: ReportIcon }
   ]
   const customerList = [
-    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    { type: 'noice', txt: '공지사항', icon: NoticeIcon },
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
-    {type: 'faq', txt: 'FAQ', icon: FaqIcon},
-    {type: 'personal', txt: '1:1문의', icon: InquireIcon}
+    { type: 'faq', txt: 'FAQ', icon: FaqIcon },
+    { type: 'personal', txt: '1:1문의', icon: InquireIcon }
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
     // {type: 'personal', txt: '앱정보', icon: AppIcon}
   ]
-  const {webview} = qs.parse(location.search)
+  const { webview } = qs.parse(location.search)
   const context = useContext(Context)
   const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const { token, profile } = globalCtx
   // state
   const [fetching, setFetching] = useState(false)
   // timeFormat function
@@ -139,16 +145,33 @@ export default props => {
                     <span className="text">총 청취 시간</span>
                     <img src={HeadphoneIcon} />
                   </div>
-                  <div className="time">{timeFormat(profile.listenTotTime)}</div>
+                  <div className="time">
+                    {timeFormat(profile.listenTotTime)}
+                  </div>
                 </div>
               </div>
               <div className="real-info">
                 {[
-                  {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
-                  {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
-                  {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
+                  {
+                    type: 'heart',
+                    icon: HeartIcon,
+                    txt: '좋아요',
+                    value: profile.likeTotCnt.toLocaleString()
+                  },
+                  {
+                    type: 'byeol',
+                    icon: ByeolIcon,
+                    txt: '보유별',
+                    value: profile.byeolCnt.toLocaleString()
+                  },
+                  {
+                    type: 'dal',
+                    icon: DalIcon,
+                    txt: '보유달',
+                    value: profile.dalCnt.toLocaleString()
+                  }
                 ].map(real => {
-                  const {type, icon, txt, value} = real
+                  const { type, icon, txt, value } = real
                   return (
                     <div key={type} className="each">
                       <span className="type">{txt}</span>
@@ -176,9 +199,16 @@ export default props => {
               </div>
             </a>
             {subNavList.map((value, idx) => {
-              const {type, txt, icon} = value
+              const { type, txt, icon } = value
               return (
-                <a href={type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <a
+                  href={
+                    type == 'customer'
+                      ? `/customer`
+                      : `/mypage/${profile.memNo}/${type}`
+                  }
+                  key={`list-${idx}`}
+                >
                   <div className="list">
                     <img className="icon" src={icon} />
                     <span className="text">{txt}</span>
@@ -189,9 +219,12 @@ export default props => {
             })}
             <div className="addCustomer">
               {walletList.map((value, idx) => {
-                const {type, txt, icon} = value
+                const { type, txt, icon } = value
                 return (
-                  <a href={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                  <a
+                    href={`/mypage/${profile.memNo}/${type}`}
+                    key={`list-${idx}`}
+                  >
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
@@ -203,7 +236,7 @@ export default props => {
             </div>
             <div className="addCustomer">
               {customerList.map((value, idx) => {
-                const {type, txt, icon} = value
+                const { type, txt, icon } = value
                 return (
                   <a href={`/customer/${type}`} key={`list-${idx}`}>
                     <div className="list">
@@ -227,11 +260,12 @@ export default props => {
 const LogoutBtn = styled.button`
   display: block;
   background-color: #fff;
-  padding: 16px 0;
   width: 100%;
   color: #9e9e9e;
   font-size: 14px;
   margin-top: 24px;
+  height: 48px;
+  line-height: 48px;
 `
 const MenuMypage = styled.div`
   min-height: 100vh;
@@ -402,7 +436,7 @@ const MenuMypage = styled.div`
           color: #000000;
           font-size: 14px;
           letter-spacing: -0.35px;
-          font-weight: 600;
+          font-weight: 800;
         }
         .icon {
           display: block;

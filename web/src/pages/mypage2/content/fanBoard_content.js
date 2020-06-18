@@ -31,6 +31,7 @@ export default props => {
   let location = useLocation()
   const context = useContext(Context)
   var urlrStr = location.pathname.split('/')[2]
+  const { webview } = qs.parse(location.search)
   //전체 댓글리스트(props)
   const TotalList = props.list
   const TotalCount = props.totalCount
@@ -111,10 +112,16 @@ export default props => {
       setModifyMsg('')
       context.action.updateFanBoardBigIdxMsg(modifyMsg)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        cancelCallback: () => {},
-        msg: res.message
-      })
+      if (modifyMsg.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '수정 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   cancelCallback: () => {},
+      //   msg: res.message
+      // })
     }
   }
   //삭제하기 fetch
@@ -154,12 +161,19 @@ export default props => {
       context.action.updateFanBoardBigIdxMsg(textChange)
       setReplyWriteState(false)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      if (textChange.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '답글 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
+  console.log(context.token.memNo)
   //--------------------------------------------------------------------------
   return (
     <>
@@ -189,6 +203,19 @@ export default props => {
                 replyCnt,
                 boardIdx
               } = item
+              const Link = () => {
+                if (webview) {
+                  link =
+                    context.token.memNo !== writerNo
+                      ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
+                      : (window.location.href = `/menu/profile`)
+                } else {
+                  link =
+                    context.token.memNo !== writerNo
+                      ? (window.location.href = `/mypage/${writerNo}`)
+                      : (window.location.href = `/menu/profile`)
+                }
+              }
               return (
                 <BigReply key={index}>
                   <div className="reply_header">
@@ -218,10 +245,11 @@ export default props => {
                         </div>
                       </>
                     )}
-                    <BigProfileImg bg={profImg.thumb62x62} />
+
+                    <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
                     <div className="big_header_info">
-                      <p>{nickNm}</p>
-                      <p>{timeFormat(writeDt)}</p>
+                      <p onClick={Link}>{nickNm}</p>
+                      <p onClick={Link}>{timeFormat(writeDt)}</p>
                     </div>
                   </div>
                   <div className="content_area">
@@ -294,12 +322,12 @@ export default props => {
 const BigReply = styled.div`
   width: 100%;
   background-color: #fff;
-  min-height: 200px;
+  min-height: 196px;
   margin-bottom: 12px;
   .reply_header {
     position: relative;
     display: flex;
-    padding: 13px 16px;
+    padding: 10px 16px;
     height: 60px;
     .big_moreBtn {
       position: absolute;
@@ -332,13 +360,20 @@ const BigReply = styled.div`
     flex-direction: column;
     margin-left: 10px;
     p:first-child {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      max-width: 200px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
       font-size: 16px;
       font-weight: 800;
       text-align: left;
       color: #000000;
     }
     p:last-child {
-      margin-top: 2px;
+      margin-top: 4px;
       font-size: 12px;
       text-align: left;
       color: #9e9e9e;
@@ -507,7 +542,7 @@ const Writer = styled.div`
       margin-left: auto;
       margin-right: 7px;
       margin-top: 4px;
-      margin-bottom: 23px;
+      margin-bottom: 32px;
       font-size: 12px;
       line-height: 1.08;
       letter-spacing: normal;
