@@ -2,18 +2,18 @@
  * @file /mpay/index.js
  * @brief 안드로이드 전용 결제
  */
-import React, {useContext, useState} from 'react'
+import React, { useContext, useState } from 'react'
 //context
-import {PayProvider} from './store'
+import { PayProvider } from './store'
 //layout
 import Layout from 'pages/common/layout'
 //components
-import {Hybrid} from 'context/hybrid'
+import { Hybrid } from 'context/hybrid'
 import styled from 'styled-components'
 
 import Content from './content'
 import _ from 'lodash'
-import {Context} from 'context'
+import { Context } from 'context'
 
 import qs from 'query-string'
 //
@@ -22,11 +22,18 @@ export default props => {
   //context
   const context = useContext(Context)
 
-  const {webview} = qs.parse(location.search)
+  const { webview } = qs.parse(location.search)
 
-  const {result, message, state, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  const { result, message, state, returntype } = _.hasIn(
+    props,
+    'location.state.result'
+  )
+    ? props.location.state
+    : ''
 
-  const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result'))
+  const [pageState, setPageState] = useState(
+    _.hasIn(props, 'location.state.result')
+  )
 
   if (_.hasIn(props, 'location.state.result')) {
     if (result === 'success') {
@@ -34,14 +41,42 @@ export default props => {
         if (returntype === 'room') {
           window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
-          const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno} = props.location.state
+          const {
+            prdtPrice,
+            prdtNm,
+            phoneNo,
+            orderId,
+            cardName,
+            cardNum,
+            apprno,
+            pgcode
+          } = props.location.state
           let payType
           if (!phoneNo && cardNum) {
             payType = '카드 결제'
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
-            return (window.location.href = '/')
+            switch (pgcode) {
+              case 'tmoney':
+                payType = '티머니'
+                break
+              case 'cashbee':
+                payType = '캐시비'
+                break
+              case 'kakaopay':
+                payType = '카카오페이'
+                break
+              case 'payco':
+                payType = '페이코'
+                break
+              case 'toss':
+                payType = '토스'
+                break
+              default:
+                payType = 'PayLetter'
+                break
+            }
           }
           const payInfo = {
             prdtPrice: prdtPrice,
