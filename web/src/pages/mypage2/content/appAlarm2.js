@@ -2,17 +2,24 @@
  * @file /mypage/context/appAlarm.js
  * @brief 마이페이지 어플알람 2.5v
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
+import { Context } from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {
+  IMG_SERVER,
+  WIDTH_TABLET_S,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S
+} from 'context/config'
 import Header from '../component/header.js'
 //room
-import Room, {RoomJoin} from 'context/room'
+import Room, { RoomJoin } from 'context/room'
 
 //component
 import NoResult from 'components/ui/noResult'
@@ -107,7 +114,15 @@ export default props => {
 
   useEffect(() => {
     // console.log('1')
-    if (btn2 === 1 && btn3 === 1 && btn4 === 1 && btn5 === 1 && btn6 === 1 && btn7 === 1 && btn8 === 1) {
+    if (
+      btn2 === 1 &&
+      btn3 === 1 &&
+      btn4 === 1 &&
+      btn5 === 1 &&
+      btn6 === 1 &&
+      btn7 === 1 &&
+      btn8 === 1
+    ) {
       setBtn1(1)
     } else {
       setBtn1(0)
@@ -143,7 +158,10 @@ export default props => {
       <Content>
         <div className="holeAlarm">
           <h2 className="on">전체 알림 수신</h2>
-          <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
+          <button
+            className={btn1 === 1 ? 'on' : ''}
+            onClick={() => Allcontroll()}
+          ></button>
         </div>
         <div>
           <h2>DJ 알림</h2>
@@ -152,7 +170,8 @@ export default props => {
             className={btn2 === 1 ? 'on' : ''}
             value="btn2"
             name="setBtn2"
-            onClick={() => ToggleBtn(btn2, setBtn2)}></button>
+            onClick={() => ToggleBtn(btn2, setBtn2)}
+          ></button>
         </div>
 
         <div>
@@ -162,7 +181,8 @@ export default props => {
             className={btn4 === 1 ? 'on' : ''}
             value="btn4"
             name="setBtn4"
-            onClick={() => ToggleBtn(btn4, setBtn4)}></button>
+            onClick={() => ToggleBtn(btn4, setBtn4)}
+          ></button>
         </div>
         <div>
           <h2>팬 알림</h2>
@@ -171,7 +191,8 @@ export default props => {
             className={btn5 === 1 ? 'on' : ''}
             value="btn5"
             name="setBtn5"
-            onClick={() => ToggleBtn(btn5, setBtn5)}></button>
+            onClick={() => ToggleBtn(btn5, setBtn5)}
+          ></button>
         </div>
         <div>
           <h2>댓글 알림</h2>
@@ -180,7 +201,8 @@ export default props => {
             className={btn6 === 1 ? 'on' : ''}
             value="btn6"
             name="setBtn6"
-            onClick={() => ToggleBtn(btn6, setBtn6)}></button>
+            onClick={() => ToggleBtn(btn6, setBtn6)}
+          ></button>
         </div>
         <div>
           <h2>좋아요 알림</h2>
@@ -189,7 +211,8 @@ export default props => {
             className={btn3 === 1 ? 'on' : ''}
             value="btn3"
             name="setBtn3"
-            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
+            onClick={() => ToggleBtn(btn3, setBtn3)}
+          ></button>
         </div>
         {/* <div>
           <h2>공지 알림</h2>
@@ -207,7 +230,8 @@ export default props => {
             className={btn8 === 1 ? 'on' : ''}
             value="btn8"
             name="setBtn8"
-            onClick={() => ToggleBtn(btn8, setBtn8)}></button>
+            onClick={() => ToggleBtn(btn8, setBtn8)}
+          ></button>
         </div>
       </Content>
     )
@@ -257,7 +281,7 @@ const Content = styled.div`
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
       &.on {
-        font-weight: 600;
+        font-weight: 800;
         color: #000;
         font-size: 18px;
       }
@@ -281,7 +305,7 @@ const Content = styled.div`
       color: #616161;
       font-size: 12px;
       line-height: 1.33;
-
+      letter-spacing: -0.45px;
       text-align: left;
       transform: skew(-0.03deg);
     }

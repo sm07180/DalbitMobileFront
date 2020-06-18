@@ -652,6 +652,10 @@ export default class API {
     })
   }
 
+  static mypage_alarm_check = async () => {
+    return await ajax({ url: '/mypage/newalarm', method: 'get' })
+  }
+
   //블랙리스트
 
   /**
@@ -2036,14 +2040,6 @@ export default class API {
 
   static deleteEventComment = async (data) => {
     return await ajax({ url: '/event/reply', method: 'DELETE', data })
-  }
-
-  static postEventAttend = async () => {
-    return await ajax({ url: '/event/attendance/check/status', method: 'post' })
-  }
-
-  static postEventAttendIn = async () => {
-    return await ajax({ url: '/event/attendance/check/in', method: 'post' })
   }
 }
 

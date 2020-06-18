@@ -5,7 +5,7 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useState, useContext, createContext} from 'react'
+import React, { useState, useContext, createContext } from 'react'
 //context
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -13,7 +13,7 @@ import use from 'pages/setting/content/use'
 
 //Context
 const Context = createContext()
-const {Provider} = Context
+const { Provider } = Context
 
 //
 const GlobalProvider = props => {
@@ -21,9 +21,13 @@ const GlobalProvider = props => {
   const DAY_COOKIE_PERIOD = 100
   //state
   //---------------------------------------------------------------------
-  const [state, setState] = useState({title: '현재 이용현황', isSub: false, isOnCast: false})
+  const [state, setState] = useState({
+    title: '현재 이용현황',
+    isSub: false,
+    isOnCast: false
+  })
   const [nativePlayer, setNativePlayer] = useState(null)
-  const [message, setMessage] = useState({visible: false})
+  const [message, setMessage] = useState({ visible: false })
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
@@ -56,10 +60,11 @@ const GlobalProvider = props => {
   const [fanBoardBigIdx, setFanBoardBigIdx] = useState(0)
   const [toggleState, setToggleState] = useState(false)
   const [replyIdx, setReplyIdx] = useState(false)
+  const [noticeState, setNoticeState] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: obj => {
-      setState(state => ({...state, ...obj}))
+      setState(state => ({ ...state, ...obj }))
     },
     /**
      * @brief 뉴스알림(종모양)
@@ -88,7 +93,7 @@ const GlobalProvider = props => {
         Api.setCustomHeader(stringified)
         Utility.setCookie('custom-header', '', -1)
         Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
-        setCustomHeader({...obj})
+        setCustomHeader({ ...obj })
       } else {
         Api.setCustomHeader(null)
         Utility.setCookie('custom-header', '', -1)
@@ -104,13 +109,13 @@ const GlobalProvider = props => {
      */
     updateToken: obj => {
       if (obj) {
-        const {authToken, memNo} = obj
+        const { authToken, memNo } = obj
         const firstLetterOfMemNo = String(memNo)[0]
         const isOAuth = firstLetterOfMemNo !== '1' || firstLetterOfMemNo !== '8'
         Api.setAuthToken(authToken)
         Utility.setCookie('authToken', '', -1)
         Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-        setToken({...obj, isOAuth})
+        setToken({ ...obj, isOAuth })
       } else {
         Api.setAuthToken(null)
         Utility.setCookie('authToken', '', -1)
@@ -133,7 +138,7 @@ const GlobalProvider = props => {
      * @param string bjProfImg
      */
     updateNativePlayer: obj => {
-      setNativePlayer({...obj})
+      setNativePlayer({ ...obj })
     },
     updateProfile: profile => {
       setProfile(profile)
@@ -167,15 +172,15 @@ const GlobalProvider = props => {
      * @param {msg} 메시지영역
      */
     alert: obj => {
-      setMessage({type: 'alert', visible: true, ...obj})
+      setMessage({ type: 'alert', visible: true, ...obj })
     },
     /**
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
      */
     confirm: obj => {
-      const {msg} = obj
-      setMessage({type: 'confirm', visible: true, ...obj})
+      const { msg } = obj
+      setMessage({ type: 'confirm', visible: true, ...obj })
     },
     //login 상태
     updateLogin: bool => {
@@ -259,6 +264,9 @@ const GlobalProvider = props => {
     },
     updateReplyIdx: bool => {
       setReplyIdx(bool)
+    },
+    updateNoticeState: bool => {
+      setNoticeState(bool)
     }
   }
   //---------------------------------------------------------------------
@@ -296,8 +304,9 @@ const GlobalProvider = props => {
     bannerCheck,
     fanBoardBigIdx,
     toggleState,
-    replyIdx
+    replyIdx,
+    noticeState
   }
   return <Provider value={value}>{props.children}</Provider>
 }
-export {Context, GlobalProvider}
+export { Context, GlobalProvider }

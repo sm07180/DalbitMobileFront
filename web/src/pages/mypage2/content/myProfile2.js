@@ -272,7 +272,7 @@ const myProfile = props => {
             )}
 
             <span>
-              Lv{profile.level}. {profile.level !== 0 && `${profile.grade}`}
+              Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </span>
           </ProfileImg>
 
@@ -399,7 +399,7 @@ const ButtonWrap = styled.div`
   text-align: right;
   order: 3;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
+    margin-top: 14px;
     display: flex;
     justify-content: space-between;
     flex-basis: auto;
@@ -419,7 +419,7 @@ const GiftButtonWrap = styled.div`
 `
 
 const ProfileWrap = styled.div`
-  padding-top: 82px;
+  padding-top: 87px;
   position: relative;
   background-color: #424242;
   min-height: 400px;
@@ -467,7 +467,7 @@ const MyProfile = styled.div`
     background-color:#fff;
   width: calc(100% - 16px);
   border-radius:20px;
-  min-height: 300px;
+  min-height: 304px;
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
 position: relative;
@@ -476,17 +476,17 @@ z-index:3;
     position: absolute;
     width: 32px;
     height: 32px;
-    top: -36px;
-    right: 0px;
+    top: -40px;
+    right: 10px;
     z-index: 3;
     background: url(${CloseBtnIcon});
   }
   & .reportIcon {
     position: absolute;
-    top: -36px;
+    top: -40px;
     width: 32px;
     height: 32px;
-    left: 0px;
+    left: 10px;
     z-index: 3;
     background: url(${ReportIcon});
     cursor: pointer;
@@ -517,7 +517,7 @@ z-index:3;
   }
 
   .categoryCntWrap {
-      margin: 2px 0 0px 0;
+      margin: 4px 0 0px 0;
       display: flex;
       div {
         display: flex;
@@ -586,7 +586,7 @@ z-index:3;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 0px 0 16px 0;
+    padding: 0;
     
     /* padding-top: ${props =>
       props.webview && props.webview === 'new' ? '48px' : ''}; */
@@ -598,7 +598,7 @@ z-index:3;
 const ProfileImg = styled.div`
   display: block;
   position: relative;
-  height: 151px;
+  height: auto;
   flex-basis: 151px;
   background-size: cover;
   background-position: center;
@@ -773,7 +773,8 @@ const NameWrap = styled.div`
   strong {
     color: #000;
     font-size: 20px;
-    line-height: 20px;
+    line-height: 24px;
+    height: 24px;
     font-weight: 800;
     /* margin-top: 4px; */
   }

@@ -57,7 +57,7 @@ const List = props => {
         context.action.alert({
           callback: () => {
             setWriteShow(false)
-            window.location.reload()
+            context.action.updateNoticeState(true)
           },
           msg: res.message
         })
@@ -93,7 +93,7 @@ const List = props => {
         }
       })
       if (res.result === 'success') {
-        window.location.reload()
+        context.action.updateNoticeState(true)
       } else if (res.result === 'fail') {
         context.action.alert({
           msg: res.message
@@ -201,7 +201,7 @@ const List = props => {
           <ListContent>
             <div className="detail_header">
               <button onClick={() => setOpened(false)}></button>
-              공지사항
+              방송공지
             </div>
             <div className="detail_header_info">
               <div className="detail_date">
@@ -275,6 +275,7 @@ export default List
 const ArrowDownBtn = styled.button`
   width: 36px;
   height: 36px;
+  margin-right: 20px;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${ArrowRight});
@@ -283,6 +284,7 @@ const ArrowDownBtn = styled.button`
 const ArrowDownBtnTop = styled.button`
   width: 36px;
   height: 36px;
+  margin-right: 20px;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${BookMark});
@@ -311,9 +313,9 @@ const TitleWrap = styled.div`
   align-items: center;
   color: #424242;
   font-size: 16px;
-  padding: 0 8px;
+  padding: 0 16px;
   transform: skew(-0.03deg);
-  margin-left: 4px;
+
   font-weight: 600;
   > em {
     display: block;
@@ -354,7 +356,7 @@ const ListContent = styled.div`
   height: 100%;
   z-index: 5;
   /* padding: 20px 16px; */
-  background-color: #f8f8f8;
+  background-color: #eee;
   color: #424242;
   font-size: 14px;
   letter-spacing: -0.35px;
@@ -367,6 +369,7 @@ const ListContent = styled.div`
     text-align: center;
     position: relative;
     background-color: #fff;
+    border-bottom: 1px solid #eee;
     button {
       position: absolute;
       left: 6px;
@@ -383,12 +386,12 @@ const ListContent = styled.div`
     color: #000000;
     font-size: 18px;
     font-weight: 800;
-    line-height: 1.17;
+    /* line-height: 1.17; */
     text-align: left;
     color: #000000;
   }
   div:nth-child(2) {
-    margin-top: 4px;
+    /* margin-top: 4px; */
     font-size: 12px;
     color: #757575;
     line-height: 1.08;
@@ -401,7 +404,11 @@ const ListContent = styled.div`
     margin-top: 12px !important;
     border-bottom: 1px solid #eeeeee;
     .detail_date {
-      padding: 10px 16px 9px 16px;
+      > div {
+        height: 20px;
+        line-height: 20px;
+      }
+      padding: 10px 16px 10px 16px;
     }
   }
 `
@@ -412,7 +419,7 @@ const ListStyled = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 44px;
-  border-bottom: 1px solid #d8d8d8;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
   user-select: none;
   background-color: #fff;
@@ -480,7 +487,7 @@ const Write = styled.div`
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #eee;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
