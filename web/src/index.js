@@ -13,7 +13,6 @@ import 'styles/layout.scss'
 import 'styles/swiper.scss'
 //context
 import {GlobalProvider} from 'context'
-//
 
 ReactDOM.render(
   <BrowserRouter>
