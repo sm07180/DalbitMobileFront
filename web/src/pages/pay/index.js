@@ -41,31 +41,30 @@ export default props => {
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
           } else {
-            alert(pgcode)
             switch (pgcode) {
               case 'tmoney':
                 payType = '티머니'
-                alert('1')
+
                 break
               case 'cashbee':
                 payType = '캐시비'
-                alert('2')
+
                 break
               case 'kakaopay':
                 payType = '카카오페이'
-                alert('3')
+
                 break
               case 'payco':
                 payType = '페이코'
-                alert('4')
+
                 break
               case 'toss':
                 payType = '토스'
-                alert('5')
+
                 break
               default:
                 payType = 'PayLetter'
-                alert('6')
+
                 break
             }
           }
