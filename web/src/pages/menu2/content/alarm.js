@@ -102,10 +102,10 @@ export default props => {
               profImg
             } = item
             const textArea = (
-              <p>
-                <div dangerouslySetInnerHTML={{ __html: contents }}></div>{' '}
+              <div>
+                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
                 <span>{Utility.settingAlarmTime(regTs)}</span>
-              </p>
+              </div>
             )
             /**
                  1 : 방송방 [room_no]
@@ -445,7 +445,7 @@ const Content = styled.div`
           vertical-align: middle;
         }
       }
-      p {
+      >div {
         width: calc(100% - 46px);
         color: #424242;
         font-size: 14px;
