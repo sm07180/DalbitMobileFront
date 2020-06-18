@@ -197,6 +197,9 @@ export default props => {
     if (managerList == false) return null
     return (
       <>
+        <p className="titleCount">
+          등록 된 매니저 <em>{managerList.length}</em>
+        </p>
         <ul className="list-item search">
           {managerList.map((item, index) => {
             const { memNo, nickNm, memId, profImg, regDt } = item
@@ -242,6 +245,9 @@ export default props => {
     if (manegerSearchList == false) return null
     return (
       <>
+        <p className="titleCount">
+          검색 결과 <em>{manegerSearchList.length}</em>
+        </p>
         <ul className="list-item search">
           {manegerSearchList.map((item, index) => {
             const { memNo, nickNm, memId, profImg, regDt } = item
@@ -338,6 +344,7 @@ export default props => {
       setTabState(0)
     }
   }
+  const [searchResultName, setSearchResultName] = useState('등록 된 매니저')
   //-----------------------------------------------------------------------------
   return (
     <Content>
@@ -480,8 +487,8 @@ const SearchArea = styled.div`
   }
   button {
     position: absolute;
-    right: 6px;
-    top: 5px;
+    right: 10px;
+    top: 6px;
     width: 36px;
     height: 36px;
     background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat
@@ -556,6 +563,19 @@ const SearchArea = styled.div`
 `
 
 const Content = styled.div`
+  .titleCount {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: left;
+    color: #000000;
+    > em {
+      font-weight: 600;
+      font-style: normal;
+      margin-left: 4px;
+      color: #632beb;
+    }
+  }
   .tab {
     display: flex;
     margin-bottom: 8px;

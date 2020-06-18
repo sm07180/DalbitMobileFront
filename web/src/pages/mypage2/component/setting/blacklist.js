@@ -197,6 +197,9 @@ export default props => {
     if (blackList == false) return null
     return (
       <>
+        <p className="titleCount">
+          등록 된 블랙리스트 <em>{blackList.length}</em>
+        </p>
         <ul className="list-item search">
           {blackList.map((item, index) => {
             const { memNo, nickNm, memId, profImg, regDt } = item
@@ -242,6 +245,9 @@ export default props => {
     if (manegerSearchList == false) return null
     return (
       <>
+        <p className="titleCount">
+          검색 결과 <em>{manegerSearchList.length}</em>
+        </p>
         <ul className="list-item search">
           {manegerSearchList.map((item, index) => {
             const { memNo, nickNm, memId, profImg, regDt } = item
@@ -476,7 +482,7 @@ const SearchArea = styled.div`
   }
   button {
     position: absolute;
-    right: 6px;
+    right: 10px;
     top: 5px;
     width: 36px;
     height: 36px;
@@ -552,6 +558,19 @@ const SearchArea = styled.div`
 `
 
 const Content = styled.div`
+  .titleCount {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: left;
+    color: #000000;
+    > em {
+      font-weight: 600;
+      font-style: normal;
+      margin-left: 4px;
+      color: #632beb;
+    }
+  }
   .tab {
     display: flex;
     margin-bottom: 8px;
