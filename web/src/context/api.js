@@ -22,7 +22,7 @@ useEffect(() => {
 import axios from 'axios'
 import qs from 'qs'
 //context
-import {API_SERVER, PHOTO_SERVER, PAY_SERVER} from 'context/config'
+import { API_SERVER, PHOTO_SERVER, PAY_SERVER } from 'context/config'
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -44,8 +44,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_create = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/broad/create`, method: 'POST', data: data})
+    const { data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/create`,
+      method: 'POST',
+      data: data
+    })
   }
 
   /**
@@ -56,8 +61,8 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_join = async obj => {
-    const {data} = obj || {}
-    return await ajax({url: `/broad/join`, method: 'POST', data: data})
+    const { data } = obj || {}
+    return await ajax({ url: `/broad/join`, method: 'POST', data: data })
   }
   /**
    * @brief 방송방 나가기
@@ -67,8 +72,8 @@ export default class API {
    * @create 손완휘 2020.02.06
    */
   static broad_exit = async obj => {
-    const {data} = obj || {}
-    return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
+    const { data } = obj || {}
+    return await ajax({ url: `/broad/exit`, method: 'DELETE', data: data })
   }
   /**
    * @brief 방송방 정보수정
@@ -89,12 +94,17 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_edit = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/broad/edit`, method: 'POST', data: data})
+    const { data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/edit`,
+      method: 'POST',
+      data: data
+    })
   }
 
   static main_init_data = async () => {
-    return await ajax({url: '/main', method: 'GET'})
+    return await ajax({ url: '/main', method: 'GET' })
   }
 
   /**
@@ -110,10 +120,10 @@ export default class API {
    */
   static broad_list = async obj => {
     if (obj) {
-      const {params} = obj
-      return await ajax({params, url: `/broad/list`, method: 'GET'})
+      const { params } = obj
+      return await ajax({ params, url: `/broad/list`, method: 'GET' })
     }
-    return await ajax({url: `/broad/list`, method: 'GET'})
+    return await ajax({ url: `/broad/list`, method: 'GET' })
   }
 
   /**
@@ -126,8 +136,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_listeners = async obj => {
-    const {params} = obj || {}
-    return await ajax({...obj, url: `/broad/listeners`, method: 'GET', params: params || {}})
+    const { params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/listeners`,
+      method: 'GET',
+      params: params || {}
+    })
   }
   /**
    * @brief 방송방 좋아요 추가
@@ -137,8 +152,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_likes = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/broad/likes`, method: 'POST', data: data})
+    const { data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/likes`,
+      method: 'POST',
+      data: data
+    })
   }
 
   /**
@@ -151,8 +171,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_guest = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/broad/guest`, method: 'POST', data: data})
+    const { data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/guest`,
+      method: 'POST',
+      data: data
+    })
   }
 
   /**
@@ -164,8 +189,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_guest = async obj => {
-    const {data} = obj || {}
-    return await ajax({...obj, url: `/broad/guest`, method: 'DELETE', data: data})
+    const { data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/broad/guest`,
+      method: 'DELETE',
+      data: data
+    })
   }
 
   /**
@@ -176,8 +206,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_notice = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/notice`, method: method || 'GET', params: params})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/notice`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -189,8 +224,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_notice = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/notice`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/notice`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 공지사항 삭제
@@ -201,8 +241,13 @@ export default class API {
    * @modify 황상한 2020.03.12
    */
   static broad_notice = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/notice`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/notice`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 방송방 사연등록
@@ -214,8 +259,13 @@ export default class API {
    * @modify 최우정 2020.02.27 / stoty => story 변경
    */
   static broad_story = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/story`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/story`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 사연 목록 조회
@@ -227,8 +277,13 @@ export default class API {
    * @modify 최우정 2020.02.27 / data => params 변경, stoty => story 변경
    */
   static broad_story = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/story`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/story`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 방송방 사연 목록 삭제
@@ -240,8 +295,13 @@ export default class API {
    * @modify 최우정 2020.02.27 / stoty => story 변경
    */
   static broad_story = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/story`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/story`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 방송방 공유링크 확인 (익명 로그인일때 프로시저 memLogin:0 추가)
@@ -251,8 +311,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_link = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/link`, method: method || 'GET', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/link`,
+      method: method || 'GET',
+      data: data
+    })
   }
 
   /**
@@ -264,8 +329,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static broad_kickout = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/kickout`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/kickout`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -277,8 +347,13 @@ export default class API {
    * @update 이은비 2020.02.20            //data -> params로 변경
    */
   static broad_info = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/info`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/info`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 방송방 매니저지정
@@ -289,8 +364,13 @@ export default class API {
    * @create 김호겸 2020.03.05
    */
   static broad_manager = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/manager`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/manager`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 매니저지정취소
@@ -301,8 +381,13 @@ export default class API {
    * @create 김호겸 2020.03.05
    */
   static broad_manager = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/manager`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/manager`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 방송방 상태변경
@@ -314,8 +399,13 @@ export default class API {
    * @create 김호겸 2020.03.06
    */
   static broad_state = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/state`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/state`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 팬 등록(BJ팬 등록 경우 채팅방 알림)
@@ -326,8 +416,13 @@ export default class API {
    * @create 김호겸 2020.03.09
    */
   static broad_fan_insert = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/fan`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/fan`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -339,8 +434,13 @@ export default class API {
    * @create 김호겸 2020.03.12
    */
   static broad_fan_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/fan`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/fan`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 진행중인 방송방 확인
@@ -350,8 +450,13 @@ export default class API {
    * @create 손완휘 2020.03.16
    */
   static broad_check = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/check`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/check`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 방송방 공유랑크 조회
@@ -361,8 +466,13 @@ export default class API {
    * @create 김호겸 2020.04.03
    */
   static broad_share = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/share`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/share`,
+      method: method || 'GET',
+      params: params
+    })
   }
   //--------------------------------------------------------------------- 회원 관련
 
@@ -373,8 +483,13 @@ export default class API {
    * @create 이은비 2020.04.02
    */
   static mypage_banword_write = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/banword`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -383,8 +498,12 @@ export default class API {
    * @create 이은비 2020.04.02
    */
   static mypage_banword_list = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'GET'})
+    const { url, method } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/banword`,
+      method: method || 'GET'
+    })
   }
 
   /**
@@ -394,8 +513,13 @@ export default class API {
    * @create 이은비 2020.04.02
    */
   static mypage_banword = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/banword`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/banword`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -408,8 +532,13 @@ export default class API {
    * @create 이은비 2020.04.06
    */
   static mypage_user_search = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/search`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/search`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -418,8 +547,12 @@ export default class API {
    * @create 이은비 2020.04.06
    */
   static mypage_manager_list = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/manager`, method: method || 'GET'})
+    const { url, method } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/manager`,
+      method: method || 'GET'
+    })
   }
 
   /**
@@ -430,8 +563,13 @@ export default class API {
    * @create 이은비 2020.04.06
    */
   static mypage_manager_add = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/manager/add`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/manager/add`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -442,8 +580,13 @@ export default class API {
    * @create 이은비 2020.04.06
    */
   static mypage_manager_edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/manager/edit`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/manager/edit`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -453,8 +596,13 @@ export default class API {
    * @create 이은비 2020.04.06
    */
   static mypage_manager_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/manager`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/manager`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
 
   //블랙리스트
@@ -464,8 +612,12 @@ export default class API {
    * @create 이은비 2020.04.07
    */
   static mypage_black_list = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/black`, method: method || 'GET'})
+    const { url, method } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/black`,
+      method: method || 'GET'
+    })
   }
 
   /**
@@ -475,8 +627,13 @@ export default class API {
    * @create 이은비 2020.04.07
    */
   static mypage_black_add = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/black/add`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/black/add`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -486,8 +643,13 @@ export default class API {
    * @create 이은비 2020.04.07
    */
   static mypage_black_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/black`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/black`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
 
   //블랙리스트
@@ -499,8 +661,13 @@ export default class API {
    * @create 황상한 2020.03.30
    */
   static report_broad = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/report/broad`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/report/broad`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 마이페이지 리포트 청취내역 조회
@@ -510,8 +677,13 @@ export default class API {
    * @create 황상한 2020.03.30
    */
   static report_listen = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/report/listen`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/report/listen`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 마이페이지 팬보드 목록 조회
@@ -521,8 +693,13 @@ export default class API {
    * @create 황상한 2020.03.31
    */
   static mypage_fanboard_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 마이페이지 팬보드 댓글 등록
@@ -532,8 +709,13 @@ export default class API {
    * @create 황상한 2020.03.31
    */
   static mypage_fanboard_upload = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 마이페이지 팬보드 댓글 삭제
@@ -543,8 +725,13 @@ export default class API {
    * @create 황상한 2020.03.31
    */
   static mypage_fanboard_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 회원 팬보드 대댓글 조회하기
@@ -554,8 +741,13 @@ export default class API {
    * @create 황상한 2020.04.01
    */
   static member_fanboard_reply = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board/reply`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board/reply`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 마이페이지 공지사항 등록
@@ -565,8 +757,13 @@ export default class API {
    * @create 황상한 2020.04.06
    */
   static mypage_notice_upload = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notice/add`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notice/add`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 마이페이지 공지사항 수정
@@ -576,8 +773,13 @@ export default class API {
    * @create 황상한 2020.04.06
    */
   static mypage_notice_edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notice/edit`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notice/edit`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 마이페이지 공지사항 삭제
@@ -587,8 +789,13 @@ export default class API {
    * @create 황상한 2020.04.06
    */
   static mypage_notice_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notice`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notice`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 회원 달 선물하기 -> 마이페이지
@@ -598,8 +805,13 @@ export default class API {
    * @create 황상한 2020.04.07
    */
   static mypage_gift_dal = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/gift`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 마이페이지 레벨정보 불러오기
@@ -607,8 +819,13 @@ export default class API {
    * @create 임보람 2020.06.05
    */
   static mypage_level_info = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/level`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/level`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 팬 랭킹 마이페이지
@@ -616,8 +833,13 @@ export default class API {
    * @create 황상한 2020.04.07
    */
   static mypage_fan_ranking = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile/fan`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/fan`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 방송방 팬 헤제(BJ팬 등록 경우 채팅방 알림)
@@ -626,8 +848,13 @@ export default class API {
    * @create 황상한 2020.04.08
    */
   static mypage_fan_cancel = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/fan`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/fan`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
   /**
    * @brief 스타 리스트
@@ -636,8 +863,13 @@ export default class API {
    * @create 황상한 2020.04.09
    */
   static mypage_star_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile/star`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/star`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 팬 전체 리스트
@@ -646,8 +878,13 @@ export default class API {
    * @create 황상한 2020.04.09
    */
   static mypage_fan_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/profile/fan/list`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/fan/list`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 토큰조회
@@ -661,7 +898,7 @@ export default class API {
    */
 
   static getToken = async () => {
-    return await ajax({url: `/token`, method: 'GET'})
+    return await ajax({ url: `/token`, method: 'GET' })
   }
 
   /**
@@ -679,8 +916,8 @@ export default class API {
    */
 
   static member_login = async obj => {
-    const {data} = obj
-    return await ajax({url: `/member/login`, method: 'POST', data})
+    const { data } = obj
+    return await ajax({ url: `/member/login`, method: 'POST', data })
   }
 
   /**
@@ -692,7 +929,7 @@ export default class API {
    */
 
   static member_logout = async () => {
-    return await ajax({url: `/member/logout`, method: 'POST'})
+    return await ajax({ url: `/member/logout`, method: 'POST' })
   }
 
   /**
@@ -718,8 +955,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static member_join = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/signup`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/member/signup`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -730,8 +972,13 @@ export default class API {
    * @update 이은비 2020.02.17 // data -> params로 변경
    */
   static nickName_check = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/member/nick`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/member/nick`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -742,8 +989,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static password_modify = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/pwd`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/member/pwd`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -767,8 +1019,13 @@ export default class API {
    */
 
   static profile_edit = async obj => {
-    const {url, method, memember, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/profile`, method: method || 'POST', data: data})
+    const { url, method, memember, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/profile`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -779,8 +1036,13 @@ export default class API {
    * @update 김호겸 2020.03.17
    */
   static fan_change = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/fan`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/fan`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -790,8 +1052,13 @@ export default class API {
    * @update 손완휘 2020.02.19
    */
   static mypage = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -801,8 +1068,8 @@ export default class API {
    * @create 이은비 2020.01.15
    */
   static profile = async obj => {
-    const {params} = obj
-    return await ajax({url: `/profile`, method: 'GET', params: params})
+    const { params } = obj
+    return await ajax({ url: `/profile`, method: 'GET', params: params })
   }
 
   /**
@@ -811,8 +1078,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static member_broadcast_basic_request = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/broad`, method: method || 'GET', params: params})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/broad`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -829,8 +1101,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static member_broadcast_basic_Edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/broad`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/broad`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -844,8 +1121,13 @@ export default class API {
    * @수정 황상한 2020.03.11
    */
   static member_declar = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/declar`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/declar`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -857,7 +1139,7 @@ export default class API {
    * @created 박송원 2020.03.27
    */
   static mypage_notice_inquire = async params => {
-    return await ajax({url: `/mypage/notice`, method: 'GET', params})
+    return await ajax({ url: `/mypage/notice`, method: 'GET', params })
   }
 
   /**
@@ -869,8 +1151,8 @@ export default class API {
    * @created 박송원 2020.03.24
    */
   static mypage_wallet_inquire = async params => {
-    const {coinType} = params
-    return await ajax({url: `/mypage/${coinType}`, method: 'GET', params})
+    const { coinType } = params
+    return await ajax({ url: `/mypage/${coinType}`, method: 'GET', params })
   }
 
   /**
@@ -880,8 +1162,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static member_block = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/block`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/block`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -891,8 +1178,13 @@ export default class API {
    * @create 김호겸 2020.01.15
    */
   static member_block_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/block`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/block`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
 
   /**
@@ -901,8 +1193,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_notify_request = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'GET', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notify`,
+      method: method || 'GET',
+      data: data
+    })
   }
 
   /**
@@ -918,8 +1215,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_notify_edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notify`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -928,8 +1230,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_broadcast_shortcut = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'GET', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/shortcut`,
+      method: method || 'GET',
+      data: data
+    })
   }
 
   /**
@@ -947,8 +1254,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_broadcast_shortcut = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/shortcut`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/shortcut`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -959,8 +1271,13 @@ export default class API {
    * @create 김호겸 2020.04.02
    */
   static member_gift_dal = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/gift`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/gift`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -973,8 +1290,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_fanboard_add = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 회원 팬보드 팬보드 댓글 수정
@@ -982,8 +1304,13 @@ export default class API {
    * @create 황상한 2020.04.08
    */
   static mypage_board_edit = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board/edit`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board/edit`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 회원 팬보드 목록조회
@@ -994,8 +1321,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_fanboard_list = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'GET', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'GET',
+      data: data
+    })
   }
 
   /**
@@ -1006,8 +1338,13 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static member_fanboard_delete = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/profile/board`, method: method || 'DELETE', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/profile/board`,
+      method: method || 'DELETE',
+      data: data
+    })
   }
 
   /**
@@ -1016,8 +1353,13 @@ export default class API {
    * @create 손완휘 2020.03.27
    */
   static my_dj = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/my/dj`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/my/dj`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief recommand
@@ -1025,8 +1367,13 @@ export default class API {
    * @create 손완휘 2020.03.27
    */
   static recommand = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/recommand`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/recommand`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   //-------------------------------------------------------------------- 포토 관련
@@ -1041,10 +1388,15 @@ export default class API {
    * @create 김호겸 2020.01.31
    */
   static image_upload = async obj => {
-    const {url, method, data} = obj || {}
-    const {uploadType} = data
+    const { url, method, data } = obj || {}
+    const { uploadType } = data
     if (!uploadType) return alert('Require uploadType')
-    return await ajax({...obj, url: url || `/upload`, method: method || 'POST', data: data})
+    return await ajax({
+      ...obj,
+      url: url || `/upload`,
+      method: method || 'POST',
+      data: data
+    })
   }
   //-------------------------------------------------------------------- 토큰
   /**
@@ -1074,16 +1426,26 @@ export default class API {
    * @update 김호겸 2020.04.03
    */
   static send_gift = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/broad/gift`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/gift`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 개인 정보 조회
    * @create 최우정 2020.03.02
    */
   static member_info_view = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/profile`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/profile`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 방송방 회원정보 조회
@@ -1091,8 +1453,13 @@ export default class API {
    * @update 김호겸 2020.03.12   // 함수명 변경 info_view -> broad_member_profile
    */
   static broad_member_profile = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/broad/member/profile`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/member/profile`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1100,8 +1467,13 @@ export default class API {
    * @create 최우정 2020.02.25
    */
   static broadcast_room_received_gift_history = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || '/broad/history', method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/broad/history',
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1109,7 +1481,7 @@ export default class API {
    * @create 최우정 2020.02.26
    */
   static splash = async () => {
-    return await ajax({url: '/splash', method: 'GET'})
+    return await ajax({ url: '/splash', method: 'GET' })
   }
 
   /**
@@ -1117,8 +1489,13 @@ export default class API {
    * @create 최우정 2020.02.26
    */
   static broadcast_room_live_ranking_select = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || '/broad/boost', method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/broad/boost',
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1126,16 +1503,26 @@ export default class API {
    * @create 최우정 2020.02.26
    */
   static broadcast_room_use_item = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/broad/boost', method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/broad/boost',
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 방송방 토큰 재생성
    * @create 김호겸 2020.02.28
    */
   static broadcast_reToken = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || '/broad/reToken', method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/broad/reToken',
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1144,12 +1531,22 @@ export default class API {
    */
 
   static live_search = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || '/search/live', method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/search/live',
+      method: method || 'GET',
+      params: params
+    })
   }
   static member_search = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || '/search/member', method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/search/member',
+      method: method || 'GET',
+      params: params
+    })
   }
 
   //-------------------------------------------------------------------- 메인 관련
@@ -1163,8 +1560,13 @@ export default class API {
    * @create 이은비 2020.03.11
    */
   static get_dj_ranking = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/rank/dj`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/dj`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1176,8 +1578,13 @@ export default class API {
    * @create 이은비 2020.03.11
    */
   static get_fan_ranking = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/rank/fan`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/fan`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   //------------------------------------------------------------- 인증관련
@@ -1189,8 +1596,13 @@ export default class API {
    * @create 이은비 2020.03.12
    */
   static sms_request = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/sms`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/sms`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1201,8 +1613,13 @@ export default class API {
    * @create 이은비 2020.03.12
    */
   static sms_check = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/sms/auth`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/sms/auth`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1211,8 +1628,12 @@ export default class API {
    * @create 이은비 2020.03.23
    */
   static self_auth_check = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/self/auth/check`, method: method || 'GET'})
+    const { url, method } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/self/auth/check`,
+      method: method || 'GET'
+    })
   }
 
   /**
@@ -1221,8 +1642,13 @@ export default class API {
    * @create 이은비 2020.03.23
    */
   static self_auth_req = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/self/auth/req`, method: method || 'POST', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/self/auth/req`,
+      method: method || 'POST',
+      params: params
+    })
   }
 
   /**
@@ -1233,8 +1659,13 @@ export default class API {
    * @create 이은비 2020.03.23
    */
   static self_auth_res = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/self/auth/res`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/self/auth/res`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   //-------------------------------------------------------------
@@ -1247,8 +1678,13 @@ export default class API {
    * @create 이은비 2020.03.16
    */
   static my_notification = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notification`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notification`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   //-------------------------------------------------------------고객센터
@@ -1258,8 +1694,13 @@ export default class API {
    * @create 황상한 2020.03.24
    */
   static notice_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/center/notice`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/notice`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
@@ -1267,8 +1708,13 @@ export default class API {
    * @create 황상한 2020.03.24
    */
   static notice_list_detail = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/center/notice/detail`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/notice/detail`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1277,8 +1723,13 @@ export default class API {
    * @create 황상한 2020.03.24
    */
   static faq_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/center/faq`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/faq`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 고객센터 FAQ 상세 내용 조회
@@ -1286,8 +1737,13 @@ export default class API {
    * @create 황상한 2020.03.24
    */
   static faq_list_detail = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/center/faq/detail`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/faq/detail`,
+      method: method || 'GET',
+      params: params
+    })
   }
   /**
    * @brief 고객센터 1:1문의하기 작성
@@ -1295,8 +1751,13 @@ export default class API {
    * @create 손완휘 2020.03.25
    */
   static center_qna_add = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/center/qna/add`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/qna/add`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 고객센터 1:1문의하기 조회
@@ -1304,8 +1765,13 @@ export default class API {
    * @create 황상한 2020.04.13
    */
   static center_qna_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/center/qna/list`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/center/qna/list`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1315,8 +1781,13 @@ export default class API {
    */
   //------------------------------------------------------회원 탈퇴
   static info_secsseion = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/member/withdrawal`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/member/withdrawal`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   //-------------------------------------------------------------스토어, 결제
@@ -1326,8 +1797,12 @@ export default class API {
    * @create 이은비 2020.03.24
    */
   static store_list = async obj => {
-    const {url, method} = obj || {}
-    return await ajax({...obj, url: url || `/store/charge`, method: method || 'GET'})
+    const { url, method } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/store/charge`,
+      method: method || 'GET'
+    })
   }
 
   /**
@@ -1338,8 +1813,13 @@ export default class API {
    * @create 이은비 2020.03.25
    */
   static pay_card = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/card`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/card`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1350,8 +1830,13 @@ export default class API {
    * @create 이은비 2020.03.25
    */
   static pay_phone = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/phone`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/phone`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1362,18 +1847,33 @@ export default class API {
    * @create 이은비 2020.03.25
    */
   static pay_virtual = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/virtual`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/virtual`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   static pay_letter = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/payletter`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/payletter`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   static pay_coocon = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/coocon`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/coocon`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1384,8 +1884,13 @@ export default class API {
    * @create 이은비 2020.03.25
    */
   static pay_bank = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/rest/pay/bank`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/bank`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief 어플 알림 조회
@@ -1393,8 +1898,13 @@ export default class API {
    * @create 황상한 2020.04.14
    */
   static appNotify_list = async obj => {
-    const {url, method, params} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'GET', params: params})
+    const { url, method, params } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notify`,
+      method: method || 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1403,8 +1913,13 @@ export default class API {
    * @create 황상한 2020.04.14
    */
   static appNotify_modify = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/mypage/notify`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/notify`,
+      method: method || 'POST',
+      data: data
+    })
   }
   /**
    * @brief Error
@@ -1412,8 +1927,13 @@ export default class API {
    * @create 손완휘 2020.04.16
    */
   static error_log = async obj => {
-    const {url, method, data} = obj || {}
-    return await ajax({...obj, url: url || `/error/log`, method: method || 'POST', data: data})
+    const { url, method, data } = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/error/log`,
+      method: method || 'POST',
+      data: data
+    })
   }
 
   /**
@@ -1422,8 +1942,8 @@ export default class API {
    * @create 이재은 2020.05.07
    */
   static google_login = async obj => {
-    const {data} = obj
-    return await ajax({url: `/social/google/callback`, method: 'POST', data})
+    const { data } = obj
+    return await ajax({ url: `/social/google/callback`, method: 'POST', data })
   }
 
   /**
@@ -1432,8 +1952,12 @@ export default class API {
    * @create 이은비 2020.05.21
    */
   static getChangeItem = async obj => {
-    const {params} = obj
-    return await ajax({url: `/mypage/change/item`, method: 'GET', params: params})
+    const { params } = obj
+    return await ajax({
+      url: `/mypage/change/item`,
+      method: 'GET',
+      params: params
+    })
   }
 
   /**
@@ -1442,18 +1966,30 @@ export default class API {
    * @create 이은비 2020.05.21
    */
   static postChangeItem = async obj => {
-    const {data} = obj
-    return await ajax({url: `/mypage/change/item`, method: 'POST', data: data})
+    const { data } = obj
+    return await ajax({
+      url: `/mypage/change/item`,
+      method: 'POST',
+      data: data
+    })
   }
 
   static exchangeCalc = async obj => {
-    const {data} = obj
-    return await ajax({url: '/member/exchange/calc', method: 'POST', data: data})
+    const { data } = obj
+    return await ajax({
+      url: '/member/exchange/calc',
+      method: 'POST',
+      data: data
+    })
   }
 
   static exchangeApply = async obj => {
-    const {data} = obj
-    return await ajax({url: '/member/exchange/apply', method: 'POST', data: data})
+    const { data } = obj
+    return await ajax({
+      url: '/member/exchange/apply',
+      method: 'POST',
+      data: data
+    })
   }
   /**
    * @brief 배너가져오기
@@ -1461,12 +1997,12 @@ export default class API {
    * @create 이은비 2020.05.22
    */
   static getBanner = async obj => {
-    const {params} = obj
-    return await ajax({url: `/banner`, method: 'GET', params: params})
+    const { params } = obj
+    return await ajax({ url: `/banner`, method: 'GET', params: params })
   }
 
   static getAdmin = async () => {
-    return await ajax({url: `/admin/auth/check`, method: 'POST'})
+    return await ajax({ url: `/admin/auth/check`, method: 'POST' })
   }
 
   /**
@@ -1475,31 +2011,39 @@ export default class API {
    * @create 이재은 2020.06.01
    */
   static getBroadCnt = async () => {
-    return await ajax({url: `/inforex/broadCheck`, method: 'POST'})
+    return await ajax({ url: `/inforex/broadCheck`, method: 'POST' })
   }
 
   static getEventRankingLive = async params => {
-    return await ajax({url: '/event/ranking/live', method: 'GET', params})
+    return await ajax({ url: '/event/ranking/live', method: 'GET', params })
   }
 
   static getEventRankingResult = async params => {
-    return await ajax({url: '/event/ranking/result', method: 'GET', params})
+    return await ajax({ url: '/event/ranking/result', method: 'GET', params })
   }
 
   static getEventTerm = async () => {
-    return await ajax({url: '/event/ranking/term', method: 'GET'})
+    return await ajax({ url: '/event/ranking/term', method: 'GET' })
   }
 
   static getEventComment = async params => {
-    return await ajax({url: '/event/reply', method: 'GET', params})
+    return await ajax({ url: '/event/reply', method: 'GET', params })
   }
 
   static postEventComment = async data => {
-    return await ajax({url: '/event/reply', method: 'POST', data})
+    return await ajax({ url: '/event/reply', method: 'POST', data })
   }
 
   static deleteEventComment = async data => {
-    return await ajax({url: '/event/reply', method: 'DELETE', data})
+    return await ajax({ url: '/event/reply', method: 'DELETE', data })
+  }
+
+  static postEventAttend = async () => {
+    return await ajax({ url: '/event/attendance/check/status', method: 'post' })
+  }
+
+  static postEventAttendIn = async () => {
+    return await ajax({ url: '/event/attendance/check/in', method: 'post' })
   }
 }
 
@@ -1508,10 +2052,18 @@ API.authToken = null
 
 //ajax
 export const ajax = async obj => {
-  const {url, method, data, params} = obj
+  const { url, method, data, params } = obj
   try {
-    const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : API_SERVER
-    const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded; charset=utf-8'
+    const pathType =
+      url === '/upload'
+        ? PHOTO_SERVER
+        : url.includes('/rest/pay/')
+        ? PAY_SERVER
+        : API_SERVER
+    const contentType =
+      url === '/upload'
+        ? ''
+        : 'application/x-www-form-urlencoded; charset=utf-8'
     let formData = new FormData()
     if (url === '/upload' && data) {
       formData.append('file', '')
