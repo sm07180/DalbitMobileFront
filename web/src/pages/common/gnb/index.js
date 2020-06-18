@@ -184,10 +184,10 @@ const GnbWrap = styled.div`
     .alarm-new {
       position: absolute;
       border-radius: 50%;
-      top: 4px;
-      left: 4px;
-      width: 5px;
-      height: 5px;
+      top: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
       background-color: red;
     }
 
