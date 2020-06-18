@@ -2,7 +2,7 @@
  * @file /user/content/selfAuth.js
  * @brief 본인인증 페이지
  */
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -11,13 +11,13 @@ import Layout from 'pages/common/layout'
 
 //context
 import _ from 'lodash'
-import {Context} from 'context'
-import {COLOR_MAIN} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
+import { Context } from 'context'
+import { COLOR_MAIN } from 'context/color'
+import { IMG_SERVER, WIDTH_TABLET_S } from 'context/config'
 
 export default props => {
   //---------------------------------------------------------------------
-  const {state} = props.location
+  const { state } = props.location
   if (state !== undefined) {
     // alert(JSON.stringify(state, null, 1))
   }
@@ -41,7 +41,8 @@ export default props => {
     authType = 'default'
   }
 
-  const {isState} = props.location.state
+  // const {isState} = props.location.state
+  const isState = ''
 
   //인증 타입에 따른 본인인증 페이지 텍스트
   const authText = {
@@ -115,7 +116,8 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const thisPageCode = isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
+    const thisPageCode =
+      isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
     const res = await Api.self_auth_req({
       params: {
         pageCode: thisPageCode
@@ -175,7 +177,8 @@ export default props => {
             <button
               onClick={() => {
                 props.history.push(url)
-              }}>
+              }}
+            >
               완료
             </button>
           </>
@@ -193,9 +196,27 @@ export default props => {
         )}
 
         <form name="authForm" method="post" id="authForm" target="KMCISWindow">
-          <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
-          <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
-          <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
+          <input
+            type="hidden"
+            name="tr_cert"
+            id="tr_cert"
+            value={formState.tr_cert}
+            readOnly
+          />
+          <input
+            type="hidden"
+            name="tr_url"
+            id="tr_url"
+            value={formState.tr_url}
+            readOnly
+          />
+          <input
+            type="hidden"
+            name="tr_add"
+            id="tr_add"
+            value={formState.tr_add}
+            readOnly
+          />
         </form>
       </Content>
     </Layout>
@@ -220,7 +241,8 @@ const Content = styled.div`
   p {
     padding-top: 60px;
     padding-bottom: 340px;
-    background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat center bottom 50px;
+    background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat center
+      bottom 50px;
     color: #424242;
     font-size: 16px;
     line-height: 24px;
