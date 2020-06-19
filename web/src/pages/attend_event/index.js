@@ -50,9 +50,7 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
       } else {
-        globalCtx.action.alert({
-          msg: message
-        })
+        //실패
       }
     }
     fetchEventAttendDate()
@@ -77,6 +75,9 @@ export default (props) => {
         })
       } else {
         globalCtx.action.alert({
+          callback: () => {
+            window.location.href = '/login'
+          },
           msg: message
         })
       }
