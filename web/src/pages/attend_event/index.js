@@ -49,6 +49,10 @@ export default (props) => {
         setSummaryList(summary)
         setStatusList(status)
         setDateList(dateList)
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
       }
     }
     fetchEventAttendDate()
@@ -67,6 +71,10 @@ export default (props) => {
         setSummaryList(summary)
         setStatusList(status)
         setDateList(dateList)
+
+        globalCtx.action.alert({
+          msg: message
+        })
       } else {
         globalCtx.action.alert({
           msg: message
@@ -93,11 +101,11 @@ export default (props) => {
     const {bonus} = statusList
     let bonusName
 
-    if (bonus === 0) {
+    if (bonus === '0') {
       bonusName = `bonus-box`
-    } else if (bonus === 1) {
+    } else if (bonus === '1') {
       bonusName = `bonus-box more`
-    } else if (bonus === 2) {
+    } else if (bonus === '2') {
       bonusName = `bonus-box complete`
     } else {
       bonusName = `bonus-box`

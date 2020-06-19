@@ -6,21 +6,21 @@ export default (props) => {
   const context = useContext(Context)
   const {dateList} = props
 
-  const createCheckIn = () => {
-    const {check_ok} = dateList
+  // const createCheckIn = () => {
+  //   const {check_ok} = dateList
 
-    let checkOkName
+  //   let checkOkName
 
-    if (check_ok === '0') {
-      checkOkName = `stamp-box-item fail`
-    } else if (check_ok === '1') {
-      checkOkName = `stamp-box-item success`
-    } else if (result === null) {
-      checkOkName = `stamp-box-item`
-    }
+  //   if (check_ok === '0') {
+  //     checkOkName = `stamp-box-item fail`
+  //   } else if (check_ok === '1') {
+  //     checkOkName = `stamp-box-item success`
+  //   } else if (result === null) {
+  //     checkOkName = `stamp-box-item`
+  //   }
 
-    return checkOkName
-  }
+  //   return checkOkName
+  // }
 
   const creatList = () => {
     const data = dateList
