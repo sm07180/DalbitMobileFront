@@ -63,7 +63,7 @@ export default (props) => {
             options={{
               loop: true,
               autoPlay: true,
-              path: `${IMG_SERVER}/event/attend/200617/fansupport2.json`
+              path: `${IMG_SERVER}/event/attend/200617/fansupport1.json`
             }}
           />
         </div>
@@ -172,7 +172,7 @@ const PopupWrap = styled.div`
     .btn-close {
       position: absolute;
       right: 20%;
-      top: 10%;
+      top: 27%;
       width: 24px;
       height: 24px;
 
