@@ -50,6 +50,17 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (roomNo, callbackFunc) => {
+  /*const exdate = new Date()
+  exdate.setHours(15)
+  exdate.setMinutes(0)
+  exdate.setSeconds(0)
+  const now = new Date()
+    if(exdate.getTime() < now.getTime()){
+        Room.context.action.alert({
+            msg: '시스템 점검중입니다.\n잠시만 기다려주세요.'
+        })
+        return
+    }*/
   const today = new Date()
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
@@ -78,19 +89,26 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    */
 
   if (sessionRoomNo === roomNo) {
-    const join = await Api.broad_join({data: {roomNo: roomNo}})
-    if (join.result === 'fail') {
-      Room.context.action.alert({
-        title: join.messageKey,
-        msg: join.message
-      })
-    } else if (join.result === 'success' && join.data !== null) {
-      Hybrid('RoomJoin', join.data)
-      Room.context.action.alert({visible: false})
-      sessionStorage.setItem('room_no', roomNo)
+      async function commonJoin() {
+        const res = await Api.broad_join({data: {roomNo}})
+        const {code, result, data} = res
+
+        if (code === '-3') {
+            context.action.alert({
+                msg: '종료된 방송입니다.',
+                callback: () => {
+                    sessionStorage.removeItem('room_no')
+                    context.action.updatePlayer(false)
+                    setTimeout(() => {
+                        window.location.href = '/'
+                    }, 100)
+                }
+            })
+        } else {
+            Hybrid('EnterRoom', '')
+        }
     }
-    //
-    if (callbackFunc !== undefined) callbackFunc()
+    commonJoin()
     return false
   } else {
     //-------------------------------------------------------------
@@ -200,6 +218,17 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
+    /*const exdate = new Date()
+    exdate.setHours(15)
+    exdate.setMinutes(0)
+    exdate.setSeconds(0)
+    const now = new Date()
+    if(exdate.getTime() < now.getTime()){
+        Room.context.action.alert({
+            msg: '시스템 점검중입니다.\n잠시만 기다려주세요.'
+        })
+        return
+    }*/
   const today = new Date()
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
@@ -218,7 +247,7 @@ export const RoomMake = async (context) => {
       const {roomNo} = res.data
       context.action.confirm({
         msg: res.message,
-        cancelCallback: () => {
+        callback: () => {
           ;(async function () {
             const exit = await Api.broad_exit({data: {roomNo: roomNo}})
             //success,fail노출
@@ -228,8 +257,8 @@ export const RoomMake = async (context) => {
           })()
         },
         buttonText: {
-            left: '방송종료',
-            right: '확인'
+            left: '확인',
+            right: '방송종료'
         }
       })
       return false

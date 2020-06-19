@@ -53,14 +53,37 @@ export default props => {
     }
 
     const applyClick = () => {
-        setPopupCookie('popup_notice200609', 'y')
+        if (state.click1){
+            setPopupCookie('popup_notice200616', 'y')
+        }
         setPopup(false)
     }
 
     const [state, setState] = useState({})
-
     return (
-        <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick}>
+        <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
+            <div className="content-wrap">
+                <div className="each-line">
+                    <p className="text">
+                        ■ 단체 가입 강요시 이용 제한 안내<br />
+                        안녕하세요. 달빛라이브입니다.<br />
+                        최근 몇몇 단체의 경우 공개적(방송방제목, 방송내용, 채팅등)으로 좋지 않는 어투나 욕설, 집단 분위기 조성등으로  단체 가입을 강요하거나 심리적 압박을 가하는 경우가 발생하고 있습니다.<br />
+                        이는 달빛라이브 운영정책에 크게 위배되는 내용으로 제재대상임을 알려드립니다.<br />
+                        위의 자세한 내용은 공지사항을 참조해주십시오.<br />
+                        감사합니다.<br />
+                        - 달빛라이브 운영자 올림
+                    </p>
+
+                    <Checkbox title="오늘하루 열지 않음" fnChange={v => setState({click1: v})} checked={state.click1} />
+                </div>
+                <div className="btn-wrap">
+                    <button className="apply-btn" onClick={applyClick}>
+                        확인
+                    </button>
+                </div>
+            </div>
+        </PopupWrap>
+        /*<PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick}>
             <div className="img-wrap">
                 <img src={`${IMG_SERVER}/images/api/popup_20200609.png`} />
 
@@ -86,7 +109,7 @@ export default props => {
                     닫기
                 </button>
             </div>
-        </PopupWrap>
+        </PopupWrap>*/
     )
 }
 

@@ -17,7 +17,7 @@ import NoResult from 'components/ui/noResult'
 
 import starIcon from '../static/ic_star_s.svg'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
@@ -84,7 +84,7 @@ export default props => {
         }
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
-        setMyCnt(res.data.byeolCnt)
+        setMydal(res.data.byeolCnt)
         context.action.alert({
           msg: res.message
         })

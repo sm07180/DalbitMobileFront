@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_fanboard_m" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-3{stroke:#424242;stroke-linecap:round;stroke-linejoin:round;fill:none}
+        </style>
+    </defs>
+    <g id="prefix__사각형_810" data-name="사각형 810" style="stroke:#707070;opacity:0;fill:#fff">
+        <path d="M0 0H24V24H0z" style="stroke:none"/>
+        <path d="M0.5 0.5H23.5V23.5H0.5z" style="fill:none"/>
+    </g>
+    <g id="prefix__그룹_10462" data-name="그룹 10462" transform="translate(2 5)">
+        <path id="prefix__패스_4270" d="M77.9 433.7l1.013 2.052 2.264.329-1.638 1.6.387 2.255-2.026-1.072-2.025 1.065.387-2.255-1.638-1.6 2.264-.329z" data-name="패스 4270" transform="translate(-68.015 -430.299)" style="stroke:#424242;stroke-linecap:round;stroke-linejoin:round;fill:#fff"/>
+        <path id="prefix__패스_4271" d="M70.87 428.372a8.074 8.074 0 0 0 0 13.685" class="prefix__cls-3" data-name="패스 4271" transform="translate(-65.285 -428.372)"/>
+        <path id="prefix__패스_4272" d="M67.861 437.171l-1.8 1.8-1.8-1.8" class="prefix__cls-3" data-name="패스 4272" transform="translate(-64.266 -431.556)"/>
+        <path id="prefix__패스_4273" d="M70.876 431.194l-2.5.447-.447-2.5" class="prefix__cls-3" data-name="패스 4273" transform="translate(-65.59 -428.649)"/>
+        <path id="prefix__패스_4274" d="M68.272 441.957l-.688 2.447-2.447-.688" class="prefix__cls-3" data-name="패스 4274" transform="translate(-64.581 -433.288)"/>
+        <path id="prefix__패스_4275" d="M86.5 428.372a8.074 8.074 0 0 1 0 13.685" class="prefix__cls-3" data-name="패스 4275" transform="translate(-72.313 -428.372)"/>
+        <path id="prefix__패스_4276" d="M89.622 437.171l1.8 1.8 1.8-1.8" class="prefix__cls-3" data-name="패스 4276" transform="translate(-73.441 -431.556)"/>
+        <path id="prefix__패스_4277" d="M86.973 431.194l2.5.447.447-2.5" class="prefix__cls-3" data-name="패스 4277" transform="translate(-72.483 -428.649)"/>
+        <path id="prefix__패스_4278" d="M89.471 441.957l.688 2.447 2.447-.688" class="prefix__cls-3" data-name="패스 4278" transform="translate(-73.387 -433.288)"/>
+    </g>
+</svg>

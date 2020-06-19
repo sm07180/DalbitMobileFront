@@ -22,6 +22,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff;
   border-bottom: 1px solid #d2d2d2;
   padding: 14px 0;
   box-sizing: border-box;

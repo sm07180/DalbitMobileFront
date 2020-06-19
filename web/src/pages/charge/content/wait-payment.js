@@ -53,7 +53,7 @@ export default props => {
         <div className="deposit">
           <div className="deposit__list">
             <div className="deposit__label">입금하실 금액</div>
-            <div className="deposit__value">{Utility.addComma(addVat(Prdtprice))}원(부가세 포함)</div>
+            <div className="deposit__value">{Utility.addComma(Prdtprice)}원(부가세 포함)</div>
           </div>
           <div className="deposit__list">
             <div className="list__label">예금주</div>

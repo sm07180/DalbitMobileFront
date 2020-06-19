@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
 
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+import {RoomJoin} from 'context/room'
 
 export default props => {
   const {list} = props
@@ -30,9 +31,9 @@ export default props => {
         </div>
 
         {list.map((star, idx) => {
-          const {memNo, title} = star
+          const {memNo, title, roomNo} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}`)}>
+            <div className="list" key={`star-list${idx}`} onClick={() => RoomJoin(roomNo + '')}>
               <div
                 className="image"
                 style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}

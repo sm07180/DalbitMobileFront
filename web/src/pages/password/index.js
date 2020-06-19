@@ -2,18 +2,25 @@
  * @file /user/content/password.js
  * @brief 비밀번호 변경
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
-import PureLayout from 'pages/common/layout/new_pure.js'
-import Header from 'components/ui/header'
+import PureLayout from 'pages/common/layout/new_layout'
 
 //context
 import Utility from 'components/lib/utility'
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import { Context } from 'context'
+import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {
+  IMG_SERVER,
+  WIDTH_PC,
+  WIDTH_PC_S,
+  WIDTH_TABLET,
+  WIDTH_TABLET_S,
+  WIDTH_MOBILE,
+  WIDTH_MOBILE_S
+} from 'context/config'
 
 let inervalId = null
 export default props => {
@@ -48,7 +55,10 @@ export default props => {
   let setTime = 300
 
   const createAuthTimer = () => {
-    let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+    let timer = `${Utility.leadingZeros(
+      Math.floor(setTime / 60),
+      2
+    )}:${Utility.leadingZeros(setTime % 60, 2)}`
     document.getElementsByClassName('timer')[0].innerHTML = timer
     setTime--
     if (setTime < 0) {
@@ -118,7 +128,11 @@ export default props => {
     } else {
       if (pw.length > 7 && pw.length < 21) {
         //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
-        if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+        if (
+          (num < 0 && eng < 0) ||
+          (eng < 0 && spe < 0) ||
+          (spe < 0 && num < 0)
+        ) {
           setValidate({
             ...validate,
             loginPwd: false
@@ -218,7 +232,12 @@ export default props => {
 
   //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
   useEffect(() => {
-    if (validate.loginID && validate.loginPwd && validate.loginPwdCheck && validate.auth) {
+    if (
+      validate.loginID &&
+      validate.loginPwd &&
+      validate.loginPwdCheck &&
+      validate.auth
+    ) {
       setValidatePass(true)
     } else {
       setValidatePass(false)
@@ -267,7 +286,7 @@ export default props => {
         loginID: true,
         auth: false
       })
-      setChanges({...changes, CMID: resAuth.data.CMID})
+      setChanges({ ...changes, CMID: resAuth.data.CMID })
 
       setCurrentAuth1('인증번호 요청이 완료되었습니다.')
       document.getElementsByName('loginID')[0].disabled = true
@@ -293,7 +312,7 @@ export default props => {
       }
     })
     if (resCheck.result === 'success') {
-      setValidate({...validate, auth: true})
+      setValidate({ ...validate, auth: true })
       setCurrentAuth2(resCheck.message)
       clearInterval(inervalId)
       document.getElementsByClassName('timer')[0].innerHTML = ''
@@ -307,112 +326,152 @@ export default props => {
     }
   }
 
+  const inputFocus = e => {
+    // console.log(e.currentTarget)
+  }
+
   //---------------------------------------------------------------------
   return (
-    <PureLayout logo_status={'no'}>
+    <PureLayout status={'no_gnb'} header="비밀번호 변경">
       <Content>
-        <Header>
-          <div className="category-text">비밀번호 변경</div>
-        </Header>
         <FormWrap>
-          <PhoneAuth>
-            <label className="input-label" htmlFor="loginID" style={{maginTop: '0px'}}>
-              휴대폰 번호
-            </label>
-            <input
-              type="tel"
-              name="loginID"
-              id="loginID"
-              value={changes.loginID}
-              onChange={onLoginHandleChange}
-              placeholder="휴대폰 번호를 입력해주세요"
-              className="auth"
-              maxLength="11"
-            />
-            <button
-              className="auth-btn1"
-              disabled={currentAuthBtn.request}
-              onClick={() => {
-                fetchAuth()
-              }}>
-              인증요청
-            </button>
-          </PhoneAuth>
-          {currentAuth1 && (
-            <HelpText state={validate.loginID} className={validate.loginID ? 'pass' : 'help'}>
-              {currentAuth1}
-            </HelpText>
-          )}
-          <PhoneAuth>
-            <label className="input-label" htmlFor="auth">
-              인증번호
-            </label>
-            <input
-              type="number"
-              name="auth"
-              id="auth"
-              placeholder="인증번호를 입력해주세요"
-              className="auth"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
-              inputMode="decimal"
-              pattern="\d*"
-              value={changes.auth}
-              onChange={onLoginHandleChange}
-            />
-            <span className="timer"></span>
-            <button
-              className="auth-btn2"
-              disabled={currentAuthBtn.check}
-              onClick={() => {
-                fetchAuthCheck()
-              }}>
-              인증확인
-            </button>
-          </PhoneAuth>
-          {currentAuth2 && (
-            <HelpText state={validate.auth} className={validate.auth ? 'pass' : 'help'}>
-              {currentAuth2}
-            </HelpText>
-          )}
+          <div className={`input-wrap ${currentAuth1 && 'text-on'}`}>
+            <PhoneAuth>
+              <div className="box">
+                <label
+                  className="input-label"
+                  htmlFor="loginID"
+                  style={{ maginTop: '0px' }}
+                >
+                  휴대폰 번호
+                </label>
+                <input
+                  type="tel"
+                  name="loginID"
+                  id="loginID"
+                  value={changes.loginID}
+                  onChange={onLoginHandleChange}
+                  placeholder="휴대폰 번호를 입력해주세요"
+                  className="auth"
+                  maxLength="11"
+                  onFocus={inputFocus}
+                />
+                <button
+                  className="auth-btn1"
+                  disabled={currentAuthBtn.request}
+                  onClick={() => {
+                    fetchAuth()
+                  }}
+                >
+                  인증요청
+                </button>
+              </div>
+            </PhoneAuth>
+            {currentAuth1 && (
+              <HelpText
+                state={validate.loginID}
+                className={validate.loginID ? 'pass' : 'help'}
+              >
+                {currentAuth1}
+              </HelpText>
+            )}
+          </div>
+
+          <div className={`input-wrap ${currentAuth2 && 'text-on'}`}>
+            <PhoneAuth>
+              <div className="box">
+                <label className="input-label" htmlFor="auth">
+                  인증번호
+                </label>
+                <input
+                  type="number"
+                  name="auth"
+                  id="auth"
+                  placeholder="인증번호를 입력해주세요"
+                  className="auth"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck="false"
+                  inputMode="decimal"
+                  pattern="\d*"
+                  value={changes.auth}
+                  onChange={onLoginHandleChange}
+                />
+                <span className="timer"></span>
+                <button
+                  className="auth-btn2"
+                  disabled={currentAuthBtn.check}
+                  onClick={() => {
+                    fetchAuthCheck()
+                  }}
+                >
+                  인증확인
+                </button>
+              </div>
+            </PhoneAuth>
+            {currentAuth2 && (
+              <HelpText
+                state={validate.auth}
+                className={validate.auth ? 'pass' : 'help'}
+              >
+                {currentAuth2}
+              </HelpText>
+            )}
+          </div>
+
           <InputWrap>
-            <label className="input-label" htmlFor="loginPwd">
-              신규 비밀번호
-            </label>
-            <input
-              type="password"
-              name="loginPwd"
-              id="loginPwd"
-              value={changes.loginPwd}
-              onChange={onLoginHandleChange}
-              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
-              maxLength="20"
-            />
-            {/* <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span> */}
-            {currentPwd && (
-              <HelpText state={validate.loginPwd} className={validate.loginPwd ? 'pass' : 'help'}>
-                {currentPwd}
-              </HelpText>
-            )}
-            <label className="input-label" htmlFor="loginPwdCheck" style={{marginTop: '16px'}}>
-              비밀번호 재확인
-            </label>
-            <input
-              type="password"
-              name="loginPwdCheck"
-              id="loginPwdCheck"
-              defaultValue={changes.loginPwdCheck}
-              onChange={onLoginHandleChange}
-              placeholder="비밀번호를 다시 확인해주세요"
-              maxLength="20"
-            />
-            {currentPwdCheck && (
-              <HelpText state={validate.loginPwdCheck} className={validate.loginPwdCheck ? 'pass' : 'help'}>
-                {currentPwdCheck}
-              </HelpText>
-            )}
+            <div className={`input-wrap ${currentPwd && 'text-on'}`}>
+              <div className="box">
+                <label className="input-label" htmlFor="loginPwd">
+                  비밀번호
+                </label>
+                <input
+                  type="password"
+                  name="loginPwd"
+                  id="loginPwd"
+                  value={changes.loginPwd}
+                  onChange={onLoginHandleChange}
+                  placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+                  maxLength="20"
+                />
+              </div>
+              {/* <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span> */}
+              {currentPwd && (
+                <HelpText
+                  state={validate.loginPwd}
+                  className={validate.loginPwd ? 'pass' : 'help'}
+                >
+                  {currentPwd}
+                </HelpText>
+              )}
+            </div>
+
+            <div className={`input-wrap ${currentPwdCheck && 'text-on'}`}>
+              <div className="box">
+                <label className="input-label" htmlFor="loginPwdCheck">
+                  비밀번호 확인
+                </label>
+                <input
+                  type="password"
+                  name="loginPwdCheck"
+                  id="loginPwdCheck"
+                  defaultValue={changes.loginPwdCheck}
+                  onChange={onLoginHandleChange}
+                  placeholder="비밀번호를 다시 확인해주세요"
+                  maxLength="20"
+                />
+              </div>
+
+              {currentPwdCheck && (
+                <HelpText
+                  state={validate.loginPwdCheck}
+                  className={validate.loginPwdCheck ? 'pass' : 'help'}
+                >
+                  {currentPwdCheck}
+                </HelpText>
+              )}
+            </div>
           </InputWrap>
           <Button onClick={() => fetchData()} disabled={!validatePass}>
             확인
@@ -452,7 +511,8 @@ const Content = styled.div`
       width: 16px;
       height: 16px;
       font-weight: bold;
-      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
+      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat
+        center;
       content: '';
       vertical-align: bottom;
     }
@@ -476,16 +536,20 @@ const Title = styled.h2`
 const PhoneAuth = styled.div`
   overflow: hidden;
   button {
-    float: left;
-    width: 26%;
+    position: absolute;
+    right: 4px;
+    top: 24px;
+    width: 70px;
+    height: 32px;
     background: ${COLOR_MAIN};
+    font-size: 14px;
     color: #fff;
-    font-weight: 600;
-    line-height: 40px;
-    border-radius: 0 4px 4px 0 !important;
+    font-weight: 400;
+    line-height: 32px;
+    border-radius: 9px !important;
   }
   button:disabled {
-    background: #a8a8a8;
+    background: #bdbdbd;
   }
   & + & {
     margin-top: 10px;
@@ -493,10 +557,11 @@ const PhoneAuth = styled.div`
   .timer {
     display: block;
     position: absolute;
-    right: 31%;
-    color: ${COLOR_MAIN};
+    top: 23px;
+    right: 86px;
+    color: #ec455f;
     font-size: 14px;
-    line-height: 38px;
+    line-height: 32px;
     z-index: 3;
     transform: skew(-0.03deg);
   }
@@ -505,7 +570,42 @@ const PhoneAuth = styled.div`
   }
 `
 const FormWrap = styled.div`
-  margin: 14px 0;
+  padding: 12px 16px;
+
+  .input-wrap {
+    position: relative;
+    &.text-on {
+      margin-bottom: 34px;
+    }
+    .box {
+      position: relative;
+      padding: 10px 4px 4px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      background: #fff;
+      z-index: 1;
+
+      label {
+        margin: 0;
+        font-size: 12px;
+        line-height: 14px;
+        font-weight: 400;
+      }
+
+      input {
+        width: 100%;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+      }
+      input::placeholder {
+        color: #9e9e9e;
+      }
+    }
+  }
+  .input-wrap + .input-wrap {
+    margin-top: 4px;
+  }
 `
 
 const Button = styled.button`
@@ -516,7 +616,7 @@ const Button = styled.button`
   line-height: 44px;
   font-size: 18px;
   font-weight: bold;
-  border-radius: 4px;
+  border-radius: 12px;
 
   &:disabled {
     background: #a8a8a8;
@@ -524,7 +624,8 @@ const Button = styled.button`
 `
 const InputWrap = styled.div`
   position: relative;
-  margin: 30px 0 24px 0;
+  margin: 12px 0 0 0;
+  padding-bottom: 32px;
   input {
     position: relative;
     margin-top: -1px;
@@ -546,15 +647,22 @@ const InputWrap = styled.div`
 //helptext
 const HelpText = styled.div`
   display: block;
-  margin-bottom: 10px;
-  padding: 8px 10px;
-  background: #f8f8f8;
+  position: absolute;
+  left: 0;
+  top: 38px;
+  width: 100%;
+  padding: 30px 5px 7px 5px;
+  background: #9e9e9e;
   text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+  color: #fff;
   transform: skew(-0.03deg);
+  border-radius: 12px;
   &.help {
-    color: #ec455f;
+    color: #fff;
   }
   &.pass {
-    color: ${COLOR_MAIN};
+    color: #fff;
   }
 `

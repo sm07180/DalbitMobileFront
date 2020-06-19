@@ -248,7 +248,10 @@ export default props => {
                   <span>④</span>당사 플랫폼 내에서 타 플랫폼의 영입을 위한 고의적인 방해
                 </li>
                 <li>
-                  <span>⑤</span>위 항목 외 자체 기준 위반으로 판단되는 경우
+                   <span>⑤</span>욕설, 협박, 분위기조성을 통해 단체 (크루, 팸, 군단 등) 가입을 강요/압박하여 심리적 부담/고통을 주는 경우
+                </li>
+                <li>
+                   <span>⑥</span>위 항목 외 자체 기준 위반으로 판단되는 경우
                 </li>
               </ol>
             </li>
@@ -291,37 +294,42 @@ export default props => {
               <span>나)</span>규제 항목(심각) : A급-위반할 경우 영구정지
               <ol className="depth3">
                 <li>
-                  <span>①</span>부계정을 이용한 방송순위, 각 랭킹 및 달, 별을 조작하여 수집하는 등의 위반사항
+                  <span>①</span>대량의 부계정을 이용한 방송순위, 각 랭킹 및 달, 별을 조작/수집하는 등의 위반사항 <br />
+                  (※대량의 기준은 이용 로그나 정도의 심각성에 따라 운영진이 판단)
                 </li>
                 <li>
-                  <span>②</span>반정부/반국가적 발언 또는 정부/국가를 모욕/비방하는 내용
+                  <span>②</span>반정부적/반사회적/반서비스적/비이성적 제목 및 발언 또는
+                  국가/정부/특정집단/당사/당서비스/회원전체/특정개인을 모욕/비방/왜곡선동/성적비하/심한욕설 등을 지속하는 경우
                 </li>
                 <li>
-                  <span>③</span>생명과 건강을 위협하는 경우, 성행위, 음란 활동 혹은 권리 침해, 정치와 관련된 생방송, 녹화방송 또는
+                  <span>③</span>운영진의 경고/계도 조치에 따르지 않고 지속적으로 서비스 운영을 방해하는 행위
+                </li>
+                <li>
+                  <span>④</span>생명과 건강을 위협하는 경우, 성행위, 음란 활동 혹은 권리 침해, 정치와 관련된 생방송, 녹화방송 또는
                   매음 광고 등
                 </li>
                 <li>
-                  <span>④</span>각종 경로를 통해서 신체 민감한 부위를 보여주는 경우 (예: 민감한 부위를 만지는 행위, 여성의 가슴,
+                  <span>⑤</span>각종 경로를 통해서 신체 민감한 부위를 보여주는 경우 (예: 민감한 부위를 만지는 행위, 여성의 가슴,
                   남녀 둔부, 허벅지 안쪽, 성기를 보여주는 행위, 시스루 복장 등)
                 </li>
                 <li>
-                  <span>⑤</span>도박(예: 도박 라이브 혹은 도박을 선동하는 행위), 마약(예: 마약 전시, 투약 및 주사 방법, 제약
+                  <span>⑥</span>도박(예: 도박 라이브 혹은 도박을 선동하는 행위), 마약(예: 마약 전시, 투약 및 주사 방법, 제약
                   과정에 대한 설명 등)
                 </li>
                 <li>
-                  <span>⑥</span>타인의 프라이버시/신변안전/공공이익 침해 또는 동물 학대
+                  <span>⑦</span>타인의 프라이버시/신변안전/공공이익 침해 또는 동물 학대
                 </li>
                 <li>
-                  <span>⑦</span>다른 음란(예: 신음소리)/정치/도박/마약과 관련된 불법 행위
+                  <span>⑧</span>다른 음란(예: 신음소리)/정치/도박/마약과 관련된 불법 행위
                 </li>
                 <li>
-                  <span>⑧</span>경쟁품 홍보, 부당 스카우트, 불법 루비 판매, 사기 등
+                  <span>⑨</span>경쟁품 홍보, 부당 스카우트, 불법 루비 판매, 사기 등
                 </li>
                 <li>
-                  <span>⑨</span>테러리즘, 극단주의, 전쟁 주장, 종교 선동 등 언론과 내용
+                  <span>⑩</span>테러리즘, 극단주의, 전쟁 주장, 종교 선동 등 언론과 내용
                 </li>
                 <li>
-                  <span>⑩</span>각종 경로를 통해서 성인용품, 성 보건품, 알바 사기 등 홍보하는 내용
+                  <span>⑪</span>각종 경로를 통해서 성인용품, 성 보건품, 알바 사기 등 홍보하는 내용
                 </li>
               </ol>
               *플랫폼의 이익을 침해하는 모든 행위를 엄격히 금지합니다.
@@ -365,9 +373,11 @@ export default props => {
 
       <p>
         <strong>
-          *A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.
+          * A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.
           <br />
-          *정지와 경고의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.
+          * 정지와 경고의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.
+          <br />
+          * 회사의 판단에 따라 예외적으로 조정될 수 있습니다.
         </strong>
       </p>
 
@@ -433,14 +443,17 @@ export default props => {
         </caption>
         <colgroup>
           <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
-          <col style={{width: '25%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
+          <col style={{width: '12.5%'}} />
         </colgroup>
         <thead>
           <tr>
             <th scope="col">항목</th>
-            <th scope="col" colSpan="3">
+            <th scope="col" colSpan="6">
               제재 조치
             </th>
           </tr>
@@ -448,53 +461,57 @@ export default props => {
         <tbody>
           <tr>
             <td>음란물</td>
-            <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colspan="3">정지</td>
+            <td colSpan="3">A급</td>
           </tr>
           <tr>
             <td>위법행위</td>
-            <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colSpan="3">정지</td>
+            <td colSpan="3">A급</td>
           </tr>
           <tr>
             <td>청소년 유해</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>저작권 침해</td>
-            <td>경고</td>
-            <td>경고 및 정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>미풍양속 위배</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
-          </tr>
-          <tr>
-            <td>명예훼손</td>
-            <td>정지</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">정지</td>
             <td colSpan="2">A급</td>
           </tr>
           <tr>
-            <td>광고</td>
-            <td>경고</td>
+            <td>저작권 침해</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">A급</td>
+          </tr>
+          <tr>
+            <td>미풍양속 위배</td>
+            <td colSpan="2">경고/정지</td>
             <td colSpan="2">정지</td>
+            <td colSpan="2">A급</td>
+          </tr>
+          <tr>
+            <td>명예훼손</td>
+            <td colSpan="3">정지</td>
+            <td colSpan="3">A급</td>
+          </tr>
+          <tr>
+            <td>광고</td>
+            <td colSpan="3">경고/정지</td>
+            <td colSpan="3">정지</td>
           </tr>
           <tr>
             <td>자체 기준 위반</td>
-            <td>경고</td>
-            <td>정지</td>
-            <td>A급</td>
+            <td colSpan="2">경고/정지</td>
+            <td colSpan="2">정지</td>
+            <td colSpan="2">A급</td>
           </tr>
         </tbody>
       </table>
       <br />
       <p>
         부칙
+        <br />
+        4. 본 운영정책 Ver 1.3은 2020년 06월16일부터 적용됩니다.
+        <br />
+        3. 본 운영정책 Ver 1.2은 2020년 06월12일부터 적용됩니다.
         <br />
         2. 본 운영정책 Ver 1.1은 2020년 06월04일부터 적용됩니다.
         <br />

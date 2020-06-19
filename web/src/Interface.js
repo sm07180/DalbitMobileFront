@@ -91,6 +91,9 @@ export default () => {
                     context.action.updateStickerMsg(pushMsg)
                     context.action.updateSticker(true) //true,false
                     break
+                case '37': //------------------1:1 문의 답변
+                    context.action.updateNews(true) //true,false
+                    break
                 case '4': //------------------등록 된 캐스트(미정)
                     //window.location.href = `/`
                     break
@@ -216,7 +219,11 @@ export default () => {
             inputData = JSON.parse(decodeURIComponent(event.detail))
           }
           const google_result = await Api.google_login({data: inputData})
-
+          let sessionRoomNo = sessionStorage.getItem('room_no')
+          if(sessionRoomNo === undefined){
+              sessionRoomNo = "";
+          }
+          google_result.data["room_no"] = sessionRoomNo
           //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
@@ -358,16 +365,18 @@ export default () => {
      * @push_type
         1 : 방송방 [room_no]
         2 : 메인
+        4 : 등록 된 캐스트
+        5 : 스페셜 DJ 선정 페이지
+        6 : 이벤트 페이지>해당 이벤트 [board_idx]
+        7 : 공지사항 페이지 [board_idx]
         31 : 마이페이지>팬 보드
         32 : 마이페이지>내 지갑
         33 : 마이페이지>캐스트>캐스트 정보 변경 페이지
         34 : 마이페이지>알림>해당 알림 글
         35 : 마이페이지
         36 : 레벨 업 DJ 마이페이지 [mem_no]
-        4 : 등록 된 캐스트
-        5 : 스페셜 DJ 선정 페이지
-        6 : 이벤트 페이지>해당 이벤트 [board_idx]
-        7 : 공지사항 페이지 [board_idx]
+        37 : 1:1 문의 답변
+
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
@@ -420,6 +429,12 @@ export default () => {
             if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
+      case '37': //-----------------1:1 문의 답변
+          mem_no = pushMsg.mem_no
+          if (mem_no !== undefined) {
+              if (isLogin) window.location.href = `/customer/personal/qnaList`
+          }
+          break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break

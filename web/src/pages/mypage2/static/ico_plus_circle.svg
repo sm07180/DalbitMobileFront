@@ -1,0 +1,11 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_circle_plus" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#424242}
+        </style>
+    </defs>
+    <path id="prefix__사각형_314" d="M0 0H24V24H0z" data-name="사각형 314" style="fill:transparent;opacity:.51"/>
+    <rect id="prefix__사각형_886" width="9.81" height="1.962" class="prefix__cls-2" data-name="사각형 886" rx=".981" transform="rotate(45 -1.127 13.284)"/>
+    <rect id="prefix__사각형_887" width="9.81" height="1.962" class="prefix__cls-2" data-name="사각형 887" rx=".981" transform="rotate(-45 24.707 -.487)"/>
+</svg>

@@ -42,6 +42,38 @@ export default props => {
     setPopup()
   }
 
+  const createTypeResult = () => {
+    if (payType === '휴대폰 결제') {
+      return (
+        <>
+          <div className="exchangeList">
+            휴대폰번호 <div className="exchangeList__text">{Utility.phoneAddHypen(phoneNo)}</div>
+          </div>
+          <div className="exchangeList">
+            주문번호 <div className="exchangeList__text">{orderId}</div>
+          </div>
+        </>
+      )
+    } else if (payType === '카드 결제') {
+      return (
+        <>
+          <div className="exchangeList">
+            결제카드 <div className="exchangeList__text">{cardName}</div>
+          </div>
+          <div className="exchangeList">
+            승인번호 <div className="exchangeList__text">{apprno}</div>
+          </div>
+        </>
+      )
+    } else {
+      return (
+        <div className="exchangeList">
+          주문번호 <div className="exchangeList__text">{orderId}</div>
+        </div>
+      )
+    }
+  }
+
   return (
     <PopupWrap id="main-layer-popup" ref={layerWrapRef}>
       <div className="content-wrap">
@@ -64,28 +96,11 @@ export default props => {
           <div className="exchangeList">
             결제수단 <div className="exchangeList__text">{payType}</div>
           </div>
-          {payType === '휴대폰 결제' ? (
-            <>
-              <div className="exchangeList">
-                휴대폰번호 <div className="exchangeList__text">{Utility.phoneAddHypen(phoneNo)}</div>
-              </div>
-              <div className="exchangeList">
-                주문번호 <div className="exchangeList__text">{orderId}</div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="exchangeList">
-                결제카드 <div className="exchangeList__text">{cardName}</div>
-              </div>
-              <div className="exchangeList">
-                승인번호 <div className="exchangeList__text">{apprno}</div>
-              </div>
-            </>
-          )}
+
+          {createTypeResult()}
 
           <div className="exchangeList__notice">
-            결제 내역은 마이페이지 > 내지갑에서 확인하실 수 있습니다.
+            결제 내역은 마이페이지 &gt; 내지갑에서 확인하실 수 있습니다.
             <br />
             확인 버튼을 누르시면 메인화면으로 이동합니다.
             <br />
