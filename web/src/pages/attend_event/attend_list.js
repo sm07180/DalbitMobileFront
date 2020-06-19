@@ -27,8 +27,6 @@ export default (props) => {
 
     const baseCount = 7
     let result = [...data].concat(Array(baseCount - data.length).fill(null))
-
-    console.log(result)
     const date_pair = {
       0: '월요일',
       1: '화요일',

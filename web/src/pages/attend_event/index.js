@@ -7,6 +7,7 @@ import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
 import {Link, useHistory} from 'react-router-dom'
+import LayerPopup from './layer_popup'
 
 // static
 import btnClose from './static/ico_close.svg'
@@ -26,6 +27,19 @@ export default (props) => {
   })
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState([])
+  const [popup, setPopup] = useState(false)
+
+  useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/rank/#layer')
+      }
+    } else if (!popup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+      }
+    }
+  }, [popup])
 
   useEffect(() => {
     async function fetchEventAttendDate() {
@@ -38,14 +52,6 @@ export default (props) => {
       }
     }
     fetchEventAttendDate()
-
-    async function fetchEventAttendGift() {
-      const {result, data} = await API.postEventAttendGift()
-      if (result === 'success') {
-        const {} = data
-      }
-    }
-    fetchEventAttendGift()
   }, [])
 
   const attendDateIn = () => {
@@ -61,8 +67,6 @@ export default (props) => {
         setSummaryList(summary)
         setStatusList(status)
         setDateList(dateList)
-
-        console.log(summary)
       } else {
         globalCtx.action.alert({
           msg: message
@@ -77,7 +81,7 @@ export default (props) => {
 
     let checkGiftName
 
-    if (check_gift === '0') {
+    if (check_gift === 0) {
       checkGiftName = `btn-check complete`
     } else {
       checkGiftName = `btn-check`
@@ -91,15 +95,32 @@ export default (props) => {
 
     console.log(bonus)
 
-    if (bonus === '0') {
+    if (bonus === 0) {
       bonusName = `bonus-box`
-    } else if (bonus === '1') {
+    } else if (bonus === 1) {
       bonusName = `bonus-box more`
+    } else if (bonus === 2) {
+      bonusName = `bonus-box complete`
     } else {
       bonusName = `bonus-box`
     }
 
     return bonusName
+  }
+
+  const clickGiftButton = () => {
+    async function fetchEventAttendGift() {
+      const {result, data} = await API.postEventAttendGift()
+      if (result === 'success') {
+        const {status, summary} = data
+        setSummaryList(summary)
+        setStatusList(status)
+        setPopup(popup ? false : true)
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendGift()
   }
 
   return (
@@ -160,7 +181,7 @@ export default (props) => {
               <div className={createBonusBox()}>
                 <p className="title">BONUS RANDOM GIFT</p>
 
-                <button className="btn-more"></button>
+                <button className="btn-more" onClick={clickGiftButton}></button>
               </div>
             </div>
           </div>
@@ -171,12 +192,14 @@ export default (props) => {
 
           <ul>
             <li>
-              본 이벤트는 하루 동안 청취시간 또는 방송시간(종료된 방송방 기준)의 누적된 합이 30분 이상인 대상에 한하여 1일 1회
-              참여가 가능합니다.
+              본 이벤트는 00시 기준 하루 동안 청취 또는 방송 시간의 합이 30분 이상일 때에만 참여할 수 있습니다. 예시)
+              23:40~00:10의 경우 전일 이벤트는 참여가 불가능 하며, 익일 이벤트에 10분의 데이터가 누적됩니다.
             </li>
+            <li>· 본 이벤트는 한 대의 기기당 1일 1회 한 개의 계정만 참여할 수 있습니다.</li>
             <li>매일 선물 테이블을 요일별 달성 시 해당 선물이 지급됩니다.</li>
             <li>매일 선물 테이블은 일주일 주기로 초기화됩니다.</li>
             <li>달 선물은 [마이페이지 &gt; 내지갑]으로 자동 지급됩니다.</li>
+            <li>보너스 랜덤 선물은 경험치(50, 70, 100, 200, 300, 500 중 지급)와 달(0~10개 중 지급)로 구성되어 있습니다.</li>
             <li>
               보너스 랜덤 선물은 일주일을 모두 출석 체크한 대상에게 지급되며 생성된 ‘더 줘!’ 버튼을 선택시 선물 받기가 완료됩니다.{' '}
             </li>
@@ -185,6 +208,8 @@ export default (props) => {
           </ul>
         </div>
       </div>
+
+      {popup && <LayerPopup setPopup={setPopup} statusList={statusList}></LayerPopup>}
     </Layout>
   )
 }
