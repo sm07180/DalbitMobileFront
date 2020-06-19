@@ -89,7 +89,7 @@ export default (props) => {
 
     let checkGiftName
 
-    if (check_gift === 0) {
+    if (check_gift === '0') {
       checkGiftName = `btn-check complete`
     } else {
       checkGiftName = `btn-check`
