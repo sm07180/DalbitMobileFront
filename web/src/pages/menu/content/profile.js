@@ -36,6 +36,7 @@ import FaqIcon2 from '../static/ic_faq_b.svg'
 import QuireIcon from '../static/ic_inquiry_b.svg'
 import BroadNoticeIcon from '../static/ic_notice.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
+// import AppInfoIcon from '../static/ic_app_info.svg'
 export default props => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -48,9 +49,10 @@ export default props => {
     // {type: 'customer', txt: '고객센터', icon: CSIcon}
   ]
   const customerList = [
-    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon2},
-    {type: '1on1', txt: '1:1문의', icon: QuireIcon}
+    {type: 'personal', txt: '1:1문의', icon: QuireIcon},
+    // {type: 'appInfo', txt: '앱 정보', icon: AppInfoIcon}
   ]
 
   const timeFormat = sec_time => {

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13.714" height="13.75" viewBox="0 0 13.714 13.75">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__Layer_2" data-name="Layer 2" transform="translate(-1.2 -1.375)">
+        <g id="prefix__checkmark-circle">
+            <path id="prefix__패스_7044" d="M9.174 9.647a.69.69 0 0 0-.976.976l2.063 2.062a.667.667 0 0 0 .983-.034l4.812-5.5a.687.687 0 0 0-1.031-.908l-4.276 4.95z" class="prefix__cls-1" data-name="패스 7044" transform="translate(-2.709 -1.885)"/>
+            <path id="prefix__패스_7045" d="M15.079 8.188a.687.687 0 0 0-.688.687 5.5 5.5 0 1 1-5.5-5.5 6.043 6.043 0 0 1 1.306.151.687.687 0 1 0 .323-1.334A7.246 7.246 0 0 0 8.891 2a6.875 6.875 0 1 0 6.875 6.875.687.687 0 0 0-.688-.687z" class="prefix__cls-1" data-name="패스 7045" transform="translate(-.852 -.625)"/>
+        </g>
+    </g>
+</svg>

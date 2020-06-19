@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Layer_2" width="18" height="18" data-name="Layer 2" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#757575}
+        </style>
+    </defs>
+    <g id="prefix__trash-2">
+        <path id="prefix__사각형_2398" d="M0 0H18V18H0z" data-name="사각형 2398" style="opacity:0;fill:#757575"/>
+        <path id="prefix__패스_7040" d="M16.25 5H12.5V3.747A1.815 1.815 0 0 0 10.625 2h-2.25A1.815 1.815 0 0 0 6.5 3.747V5H2.75a.75.75 0 1 0 0 1.5h.75v8.25A2.25 2.25 0 0 0 5.75 17h7.5a2.25 2.25 0 0 0 2.25-2.25V6.5h.75a.75.75 0 0 0 0-1.5zM8 3.747c0-.12.158-.247.375-.247h2.25c.217 0 .375.128.375.247V5H8zm6 11a.75.75 0 0 1-.75.75h-7.5A.75.75 0 0 1 5 14.75V6.5h9z" class="prefix__cls-2" data-name="패스 7040" transform="translate(-.5 -.5)"/>
+        <path id="prefix__패스_7041" d="M8.75 15.5a.75.75 0 0 0 .75-.75v-3a.75.75 0 0 0-1.5 0v3a.75.75 0 0 0 .75.75z" class="prefix__cls-2" data-name="패스 7041" transform="translate(-2 -2.75)"/>
+        <path id="prefix__패스_7042" d="M14.75 15.5a.75.75 0 0 0 .75-.75v-3a.75.75 0 0 0-1.5 0v3a.75.75 0 0 0 .75.75z" class="prefix__cls-2" data-name="패스 7042" transform="translate(-3.5 -2.75)"/>
+    </g>
+</svg>
