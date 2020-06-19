@@ -57,11 +57,6 @@ export default (props) => {
   }, [])
 
   const attendDateIn = () => {
-    // if (token.isLogin) {
-    //   console.log('로그인')
-    // } else {
-    //   console.log('로그아웃')
-    // }
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
       if (result === 'success') {
@@ -74,12 +69,19 @@ export default (props) => {
           msg: message
         })
       } else {
-        globalCtx.action.alert({
-          // callback: () => {
-          //   window.location.href = '/login'
-          // },
-          msg: message
-        })
+        if (!token.isLogin) {
+          globalCtx.action.alert({
+            callback: () => {
+              window.location.href = '/login'
+            },
+
+            msg: message
+          })
+        } else {
+          globalCtx.action.alert({
+            msg: message
+          })
+        }
       }
     }
     fetchEventAttendDateIn()
