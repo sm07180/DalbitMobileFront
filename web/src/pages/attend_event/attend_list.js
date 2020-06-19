@@ -46,9 +46,8 @@ export default (props) => {
             let class_name = ''
 
             if (item !== null) {
-              const {check_ok, is_today} = item
-              class_name = `stamp-box-item ${check_ok ? 'success' : 'fail'}`
-              class_name = `stamp-box-item ${is_today ? '' : 'success'}`
+              const {check_ok} = item
+              class_name = `stamp-box-item ${check_ok === 1 ? 'success' : check_ok === 0 ? 'fail' : ''}`
             } else if (item === null) {
               class_name = 'stamp-box-item'
             }
