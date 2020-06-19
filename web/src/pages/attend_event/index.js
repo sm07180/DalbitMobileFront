@@ -93,8 +93,6 @@ export default (props) => {
     const {bonus} = statusList
     let bonusName
 
-    console.log(bonus)
-
     if (bonus === 0) {
       bonusName = `bonus-box`
     } else if (bonus === 1) {

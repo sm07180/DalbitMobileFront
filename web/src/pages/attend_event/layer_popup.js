@@ -7,7 +7,6 @@ import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
   const {setPopup, statusList} = props
-  console.log(statusList)
 
   // reference
   const layerWrapRef = useRef()
@@ -29,9 +28,27 @@ export default (props) => {
 
   const wrapClick = (e) => {
     const target = e.target
-    if (target.id === 'rank-layer-popup') {
+    if (target.id === 'attend-layer-popup') {
       closePopup()
     }
+  }
+
+  const setPopupCookie = (c_name, value) => {
+    const exdate = new Date()
+    exdate.setDate(exdate.getDate() + 1)
+    exdate.setHours(0)
+    exdate.setMinutes(0)
+    exdate.setSeconds(0)
+
+    const encodedValue = encodeURIComponent(value)
+    const c_value = encodedValue + '; expires=' + exdate.toUTCString()
+    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
+  }
+
+  const applyClick = () => {
+    setPopupCookie('attend-layer-popup', 'y')
+
+    setPopup(false)
   }
 
   const wrapTouch = (e) => {
@@ -39,9 +56,9 @@ export default (props) => {
   }
 
   return (
-    <PopupWrap id="rank-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
+    <PopupWrap id="attend-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
-        <div>
+        <div className="lottie-box">
           <Lottie
             options={{
               loop: true,
@@ -60,11 +77,19 @@ export default (props) => {
           </div>
         </div>
 
-        <p className="today-text">
-          오늘 하루 보지 않기 <img src="https://image.dalbitlive.com/images/api/ico_layer_checkbox.svg" />
+        <p
+          className="today-text"
+          onClick={() => {
+            applyClick()
+          }}>
+          오늘 하루 보지 않기 <img src={`${IMG_SERVER}/images/api/ico_layer_checkbox.svg`} />
         </p>
 
-        <button className="btn-close">
+        <button
+          className="btn-close"
+          onClick={() => {
+            closePopup()
+          }}>
           <img src="https://image.dalbitlive.com/images/api/ico_layer_close.svg" />
         </button>
       </div>
@@ -125,6 +150,12 @@ const PopupWrap = styled.div`
       .saving-info-item + .saving-info-item {
         margin-top: 10px;
       }
+    }
+
+    .lottie-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
     }
 
     .today-text {
