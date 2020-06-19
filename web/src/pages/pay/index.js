@@ -89,7 +89,7 @@ export default props => {
         if (returntype === 'room') {
           Hybrid('ClosePayPopup')
         } else {
-          window.location.href = '/store'
+          window.location.href = '/'
         }
       }
     }
