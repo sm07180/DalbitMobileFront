@@ -100,7 +100,7 @@ export default props => {
           {createTypeResult()}
 
           <div className="exchangeList__notice">
-            결제 내역은 마이페이지 > 내지갑에서 확인하실 수 있습니다.
+            결제 내역은 마이페이지 &gt; 내지갑에서 확인하실 수 있습니다.
             <br />
             확인 버튼을 누르시면 메인화면으로 이동합니다.
             <br />
