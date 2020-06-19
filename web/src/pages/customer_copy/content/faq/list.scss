@@ -1,0 +1,114 @@
+$WIDTH_MOBILE: 600px;
+$COLOR_MAIN: #632beb;
+.faqWrap {
+  .searchWrap {
+    padding: 0 16px;
+  
+    & > input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #632beb;
+      border-radius: 28px;
+      font-size: 14px;
+    }
+  
+    & > input::placeholder {
+      color: #757575;
+    }
+  
+    .searchBtn {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      right: 24px;
+      margin-top: 6px;
+      cursor: pointer;
+      background: url('/src/images/search_purple.png') no-repeat;
+    }
+  }
+
+  .searchResult {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .listWrap {
+    &__category {
+      display: inline-block;
+      margin: 16.5px 16px 9.5px 16px;
+      font-size: 16px;
+      line-height: 18px;
+    }
+  }
+
+  .tableWrap {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    @media (max-width: $WIDTH_MOBILE) {
+      position: relative;
+      flex-wrap: wrap;
+    }
+    & dt {
+      width: 120px;
+      color: $COLOR_MAIN;
+      font-size: 12px;
+      transform: skew(-0.03deg);
+      @media (max-width: $WIDTH_MOBILE) {
+        width: 100%;
+      }
+    }
+    & dd {
+      display: flex;
+      position: relative;
+      width: calc(100% - 144px);
+      //font-size: 16px;
+      color: #000;
+      font-weight: 600;
+      transform: skew(-0.03deg);
+  
+      @media (max-width: $WIDTH_MOBILE) {
+        width: 92%;
+        margin: 4px 0 2px 0;
+        line-height: 1.4;
+      }
+      
+      & span {
+        display: contents;
+        color: #632beb;
+      }
+    }
+    & dd:last-child {
+      width: 24px;
+      height: 24px;
+      // background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
+      &.on {
+        // background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
+      }
+  
+      @media (max-width: $WIDTH_MOBILE) {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    
+    & em {
+      position: absolute;
+      left: 20px;
+      top: 0;
+      margin-right: 3px;
+      color: $COLOR_MAIN;
+      font-style: normal;
+    }
+    &.on {
+      border-bottom: none;
+    }
+  }
+}
