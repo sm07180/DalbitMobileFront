@@ -75,9 +75,9 @@ export default (props) => {
         })
       } else {
         globalCtx.action.alert({
-          callback: () => {
-            window.location.href = '/login'
-          },
+          // callback: () => {
+          //   window.location.href = '/login'
+          // },
           msg: message
         })
       }
