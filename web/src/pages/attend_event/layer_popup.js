@@ -1,6 +1,9 @@
 import {COLOR_MAIN} from 'context/color'
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
+import Lottie from 'react-lottie'
+// component
+import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
   const {setPopup, statusList} = props
@@ -38,7 +41,15 @@ export default (props) => {
   return (
     <PopupWrap id="rank-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
       <div className="content-wrap">
-        <div>애니메이션</div>
+        <div>
+          <Lottie
+            options={{
+              loop: true,
+              autoPlay: true,
+              path: `${IMG_SERVER}/event/attend/200617/fansupport2.json`
+            }}
+          />
+        </div>
 
         <div className="saving-info-box">
           <div className="saving-info-item">
