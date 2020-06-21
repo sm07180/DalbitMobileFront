@@ -18,7 +18,7 @@ import dalIcon from '../static/ic_moon_s.svg'
 import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
@@ -145,7 +145,8 @@ export default props => {
         }
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
-        setMyCnt(res.data.byeolCnt)
+        setMyByeol(Utility.addComma(res.data.byeolCnt))
+        setMyDal(Utility.addComma(res.data.dalCnt))
         context.action.alert({
           msg: res.message
         })
@@ -164,7 +165,7 @@ export default props => {
     })
   }
 
-  const tabClick = type => {
+  const tabClick = (type) => {
     setSelectedItem(type)
     setSelected(-1)
   }
