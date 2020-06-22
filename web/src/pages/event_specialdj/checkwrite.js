@@ -122,7 +122,7 @@ export default () => {
 
   return (
     <div>
-      <div className="morepopup"></div>
+      {/* <div className="morepopup"></div> */}
 
       <div className="checkWrite">
         <div>타이틀</div>
