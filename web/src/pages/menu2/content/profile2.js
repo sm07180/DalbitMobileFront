@@ -1,16 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-import {
-  Switch,
-  Route,
-  useParams,
-  Redirect,
-  useLocation
-} from 'react-router-dom'
-import { Context } from 'context'
+import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
+import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
-import { Hybrid, isHybrid } from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 // component
 import Header from '../component/header2.js'
 import Controller from 'components/ui/remoteController'
@@ -48,35 +42,35 @@ import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
 
 //render-------------------------------------------------------------------
-export default props => {
+export default (props) => {
   // nav Array
   const subNavList = [
-    { type: 'notice', txt: '방송공지', icon: BroadNoticeIcon },
-    { type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon },
-    { type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon }
+    {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+    {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+    {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
   ]
   const walletList = [
-    { type: 'wallet', txt: '달 충전', icon: DalIcon },
-    { type: 'wallet', txt: '환전', icon: ExchangeIcon },
-    { type: 'wallet', txt: '내 지갑', icon: WalletIcon },
-    { type: 'report', txt: '리포트', icon: ReportIcon }
+    {type: 'store', txt: '달 충전', icon: DalIcon},
+    {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
+    {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
+    {type: 'report', txt: '리포트', icon: ReportIcon}
   ]
   const customerList = [
-    { type: 'noice', txt: '공지사항', icon: NoticeIcon },
+    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
-    { type: 'faq', txt: 'FAQ', icon: FaqIcon },
-    { type: 'personal', txt: '1:1문의', icon: InquireIcon }
+    {type: 'faq', txt: 'FAQ', icon: FaqIcon},
+    {type: 'personal', txt: '1:1문의', icon: InquireIcon}
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
     // {type: 'personal', txt: '앱정보', icon: AppIcon}
   ]
-  const { webview } = qs.parse(location.search)
+  const {webview} = qs.parse(location.search)
   const context = useContext(Context)
   const globalCtx = useContext(Context)
-  const { token, profile } = globalCtx
+  const {token, profile} = globalCtx
   // state
   const [fetching, setFetching] = useState(false)
   // timeFormat function
-  const timeFormat = sec_time => {
+  const timeFormat = (sec_time) => {
     const hour = Math.floor(sec_time / 3600)
     const min = Math.floor((sec_time - hour * 3600) / 60)
     return `${hour}시간 ${min}분`
@@ -145,9 +139,7 @@ export default props => {
                     <span className="text">총 청취 시간</span>
                     <img src={HeadphoneIcon} />
                   </div>
-                  <div className="time">
-                    {timeFormat(profile.listenTotTime)}
-                  </div>
+                  <div className="time">{timeFormat(profile.listenTotTime)}</div>
                 </div>
               </div>
               <div className="real-info">
@@ -170,8 +162,8 @@ export default props => {
                     txt: '보유달',
                     value: profile.dalCnt.toLocaleString()
                   }
-                ].map(real => {
-                  const { type, icon, txt, value } = real
+                ].map((real) => {
+                  const {type, icon, txt, value} = real
                   return (
                     <div key={type} className="each">
                       <span className="type">{txt}</span>
@@ -199,16 +191,9 @@ export default props => {
               </div>
             </a>
             {subNavList.map((value, idx) => {
-              const { type, txt, icon } = value
+              const {type, txt, icon} = value
               return (
-                <a
-                  href={
-                    type == 'customer'
-                      ? `/customer`
-                      : `/mypage/${profile.memNo}/${type}`
-                  }
-                  key={`list-${idx}`}
-                >
+                <a href={type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
                   <div className="list">
                     <img className="icon" src={icon} />
                     <span className="text">{txt}</span>
@@ -219,12 +204,11 @@ export default props => {
             })}
             <div className="addCustomer">
               {walletList.map((value, idx) => {
-                const { type, txt, icon } = value
+                const {type, txt, icon} = value
                 return (
                   <a
-                    href={`/mypage/${profile.memNo}/${type}`}
-                    key={`list-${idx}`}
-                  >
+                    href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
+                    key={`list-${idx}`}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
@@ -236,7 +220,7 @@ export default props => {
             </div>
             <div className="addCustomer">
               {customerList.map((value, idx) => {
-                const { type, txt, icon } = value
+                const {type, txt, icon} = value
                 return (
                   <a href={`/customer/${type}`} key={`list-${idx}`}>
                     <div className="list">
