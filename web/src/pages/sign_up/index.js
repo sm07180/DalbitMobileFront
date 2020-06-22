@@ -868,6 +868,7 @@ export default props => {
             </HelpText>
           )}
         </InputWrap>
+        <BirthAlertMsg>* 미성년자 이용 시 서비스 이용에 제한을 받을 수 있습니다.</BirthAlertMsg>
         {/* 성별 */}
         <InputWrap>
           <label className="input-label">
@@ -1143,6 +1144,18 @@ const ProfileUpload = styled.div`
     transform: skew(-0.03deg);
   }
 `
+const BirthAlertMsg = styled.div`
+  height: 16px;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.67;
+  letter-spacing: -0.3px;
+  text-align: left;
+  color: #e84d6f;
+`
+
 //성별 선택 라디오 박스 영역
 const GenderRadio = styled.div`
   display: flex;
