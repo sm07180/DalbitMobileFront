@@ -142,6 +142,11 @@ export default (props) => {
             </button>
           </Link>
 
+          <div className="img-leaves"></div>
+          <div className="img-bottle-moon"></div>
+          <div className="img-big-rabbit"></div>
+          <div className="img-title"></div>
+
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
         </div>
 
