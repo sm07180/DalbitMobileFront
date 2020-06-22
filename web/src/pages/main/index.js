@@ -2,23 +2,15 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, { useContext, useEffect, useState, useRef, useMemo } from 'react'
-import {
-  IMG_SERVER,
-  WIDTH_PC,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_TABLET_S,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S,
-} from 'context/config'
-import { Link } from 'react-router-dom'
+import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
 import Api from 'context/api'
-import { Context } from 'context'
-import { StoreLink } from 'context/link'
+import {Context} from 'context'
+import {StoreLink} from 'context/link'
 
 // components
 import Layout from 'pages/common/layout'
@@ -31,10 +23,10 @@ import LayerPopup from './component/layer_popup.js'
 import LayerPopupNotice from './component/layer_popup_notice.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
-import { OS_TYPE } from 'context/config.js'
+import {OS_TYPE} from 'context/config.js'
 
 import Swiper from 'react-id-swiper'
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 // static
 import Mic from './static/ic_broadcastng.svg'
@@ -42,7 +34,9 @@ import sequenceIcon from './static/ic_live_sequence.svg'
 import refreshIcon from './static/ic_live_refresh.svg'
 import RankArrow from './static/ic_rank_arrow.svg'
 
-import { RoomMake } from 'context/room'
+import {RoomMake} from 'context/room'
+// style
+import 'styles/layerpopup.scss'
 
 let concatenating = false
 let tempScrollEvent = null
@@ -79,6 +73,7 @@ export default (props) => {
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
   const [popupNotice, setPopupNotice] = useState(false)
+  const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
@@ -88,9 +83,7 @@ export default (props) => {
   const [totalLivePage, setTotalLivePage] = useState(null)
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
-  const [categoryList, setCategoryList] = useState([
-    { sorNo: 0, cd: '', cdNm: '전체' },
-  ])
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
   const customHeader = JSON.parse(Api.customHeader)
 
   const [payState, setPayState] = useState(false)
@@ -110,12 +103,12 @@ export default (props) => {
 
     const initData = await Api.main_init_data()
     if (initData.result === 'success') {
-      const { djRank, fanRank, recommend, myStar } = initData.data
+      const {djRank, fanRank, recommend, myStar} = initData.data
       setInitData({
         recommend,
         djRank,
         fanRank,
-        myStar,
+        myStar
       })
 
       setReloadInitData(false)
@@ -127,14 +120,7 @@ export default (props) => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = [
-        'room_active',
-        'room_no',
-        'room_info',
-        'push_type',
-        'popup_notice',
-        'pay_info',
-      ]
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
       Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
@@ -145,10 +131,10 @@ export default (props) => {
     setMainInitData()
 
     Api.splash().then((res) => {
-      const { result } = res
+      const {result} = res
       if (result === 'success') {
-        const { data } = res
-        const { roomType } = data
+        const {data} = res
+        const {roomType} = data
         if (roomType) {
           const concatenated = categoryList.concat(roomType)
           setCategoryList(concatenated)
@@ -165,13 +151,13 @@ export default (props) => {
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
-        gender: liveGender,
-      },
+        gender: liveGender
+      }
     })
     if (broadcastList.result === 'success') {
-      const { list, paging } = broadcastList.data
+      const {list, paging} = broadcastList.data
       if (paging) {
-        const { totalPage, next } = paging
+        const {totalPage, next} = paging
         setLivePage(next)
         setTotalLivePage(totalPage)
       }
@@ -188,14 +174,14 @@ export default (props) => {
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
-        gender: liveGender,
-      },
+        gender: liveGender
+      }
     })
 
     if (broadcastList.result === 'success') {
-      const { list, paging } = broadcastList.data
+      const {list, paging} = broadcastList.data
       if (paging) {
-        const { totalPage, next } = paging
+        const {totalPage, next} = paging
         setLivePage(next)
         setTotalLivePage(totalPage)
       }
@@ -226,20 +212,12 @@ export default (props) => {
     const MainHeight = MainNode.clientHeight
     const SubMainHeight = SubMainNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop
-    const StarSectionHeight =
-      StarSectionNode.style.display !== 'none'
-        ? StarSectionNode.clientHeight + sectionMarginTop
-        : 0
+    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight + sectionMarginTop : 0
 
     const BannerSectionHeight = BannerSectionNode.clientHeight
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight =
-      SubMainHeight +
-      RankSectionHeight +
-      StarSectionHeight +
-      BannerSectionHeight +
-      LiveTabDefaultHeight
+    const TopSectionHeight = SubMainHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
@@ -319,7 +297,7 @@ export default (props) => {
   }, [liveList])
 
   const swiperParams = {
-    slidesPerView: 'auto',
+    slidesPerView: 'auto'
   }
 
   const goRank = () => {
@@ -331,12 +309,34 @@ export default (props) => {
     history.push(`/customer/notice/17`)
   }
 
-  const alignSet = { 1: '추천', 2: '좋아요', 3: '청취자' }
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
 
   const setPayPopup = () => {
     setPayState(false)
     sessionStorage.removeItem('pay_info')
   }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    console.log(res.data)
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupNotice(true)
+        console.log(res.data)
+        setPopupData(res.data)
+      }
+    } else {
+      console.log(res.result, res.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchMainPopupData('6')
+  }, [])
 
   const recommendWrapBaseHeight = 310
   const transitionTime = 150
@@ -365,14 +365,8 @@ export default (props) => {
     touchEndY = e.touches[0].clientY
     const heightDiff = touchEndY - touchStartY
 
-    if (
-      window.scrollY === 0 &&
-      recommendSlideStatus === false &&
-      heightDiff <= 100
-    ) {
-      recommendWrapNode.style.height = `${
-        recommendWrapBaseHeight + heightDiff
-      }px`
+    if (window.scrollY === 0 && recommendSlideStatus === false && heightDiff <= 100) {
+      recommendWrapNode.style.height = `${recommendWrapBaseHeight + heightDiff}px`
       refreshIconNode.style.transform = `rotate(${-heightDiff}deg)`
       if (heightDiff > 10) {
         refreshIconNode.style.opacity = 1
@@ -419,12 +413,7 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <MainWrap
-        ref={MainRef}
-        onTouchStart={touchStart}
-        onTouchMove={touchMove}
-        onTouchEnd={touchEnd}
-      >
+      <MainWrap ref={MainRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
         <SubMain className="sub-main" ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
@@ -440,8 +429,7 @@ export default (props) => {
                     event.preventDefault()
                     StoreLink(globalCtx)
                   }}
-                  to={'/store'}
-                >
+                  to={'/store'}>
                   스토어
                 </Link>
               </div>
@@ -459,8 +447,7 @@ export default (props) => {
                       setTimeout(() => setBroadcastBtnActive(false), 3000)
                     }
                   }
-                }}
-              >
+                }}>
                 방송하기
               </div>
             </div>
@@ -471,11 +458,10 @@ export default (props) => {
             setRecommendSlideStatus={setRecommendSlideStatus}
             ref={{
               ref1: recommendWrapRef,
-              ref2: refreshIconRef,
+              ref2: refreshIconRef
             }}
           />
         </SubMain>
-
         <Content>
           <div className="section" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -484,28 +470,18 @@ export default (props) => {
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
-                <span
-                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
-                  onClick={() => setRankType('dj')}
-                >
+                <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </span>
                 <span className="bar"></span>
-                <span
-                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
-                  onClick={() => setRankType('fan')}
-                >
+                <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
                   팬
                 </span>
               </div>
             </div>
 
             <div className="content-wrap rank-slide">
-              <RankList
-                rankType={rankType}
-                djRank={initData.djRank}
-                fanRank={initData.fanRank}
-              />
+              <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>
 
@@ -514,12 +490,7 @@ export default (props) => {
           <div
             className="section"
             ref={StarSectionRef}
-            style={
-              Array.isArray(initData.myStar) && initData.myStar.length === 0
-                ? { display: 'none' }
-                : {}
-            }
-          >
+            style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
             <div className="content-wrap my-star-list">
               <StarList list={initData.myStar} />
             </div>
@@ -528,19 +499,13 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <button
-                  className="icon refresh"
-                  onClick={() => resetFetchList()}
-                />
+                <button className="icon refresh" onClick={() => resetFetchList()} />
               </div>
 
               {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
               {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
 
-              <div
-                className="sequence-wrap"
-                onClick={() => setPopup(popup ? false : true)}
-              >
+              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
                 <span className="text">
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
@@ -550,11 +515,7 @@ export default (props) => {
               </div>
             </div>
 
-            <div
-              className={`live-list-category ${
-                liveCategoryFixed ? 'fixed' : ''
-              }`}
-            >
+            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="inner-wrapper">
                 {Array.isArray(categoryList) && categoryList.length > 1 && (
                   <Swiper {...swiperParams}>
@@ -563,12 +524,9 @@ export default (props) => {
                       .map((key, idx) => {
                         return (
                           <div
-                            className={`list ${
-                              key.cd === selectedLiveRoomType ? 'active' : ''
-                            }`}
+                            className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
                             key={`list-${idx}`}
-                            onClick={() => setSelectedLiveRoomType(key.cd)}
-                          >
+                            onClick={() => setSelectedLiveRoomType(key.cd)}>
                             {key.cdNm}
                           </div>
                         )
@@ -578,7 +536,7 @@ export default (props) => {
               </div>
             </div>
 
-            {liveCategoryFixed && <div style={{ height: '58px' }} />}
+            {liveCategoryFixed && <div style={{height: '58px'}} />}
 
             <div className="content-wrap live-list">
               {Array.isArray(liveList) ? (
@@ -588,12 +546,11 @@ export default (props) => {
                   <NoResult />
                 )
               ) : (
-                <div style={{ height: '315px' }}></div>
+                <div style={{height: '315px'}}></div>
               )}
             </div>
           </div>
         </Content>
-
         {popup && (
           <LayerPopup
             alignSet={alignSet}
@@ -606,9 +563,16 @@ export default (props) => {
           />
         )}
 
-        {popupNotice && Utility.getCookie('popup_notice200616') !== 'y' && (
-          <LayerPopupNotice setPopup={setPopupNotice} />
-        )}
+        {popupNotice &&
+          popupData.length > 0 &&
+          popupData.map((data, index) => {
+            return (
+              Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
+                <LayerPopupNotice key={index} data={data} setPopup={setPopupNotice} />
+              )
+            )
+          })}
+
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
     </Layout>
@@ -622,8 +586,7 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center
-      center / cover;
+    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center center / cover;
   }
   .section {
     margin-top: 24px;
