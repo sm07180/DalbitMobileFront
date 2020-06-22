@@ -529,7 +529,7 @@ const FanBadgeWrap = styled.div`
     height: 28px;
     border-radius: 20px;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 800;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.93;
