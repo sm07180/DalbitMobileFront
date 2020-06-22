@@ -17,7 +17,7 @@ import {Context} from 'context'
 
 import qs from 'query-string'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -34,37 +34,48 @@ export default props => {
         if (returntype === 'room') {
           window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
-          const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno, pgcode} = props.location.state
+          const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno, pgcode, giftType} = props.location.state
           let payType
           if (!phoneNo && cardNum) {
             payType = '카드 결제'
           } else if (!cardNum && phoneNo) {
             payType = '휴대폰 결제'
+          } else if (giftType !== undefined) {
+            switch (giftType) {
+              case 'GM':
+                payType = '문화상품권'
+                break
+              case 'GG':
+                payType = '게임문화상품권'
+                break
+              case 'GC':
+                payType = '도서문화상품권'
+                break
+              case 'HM':
+                payType = '해피머니상품권'
+              default:
+                payType = '상품권'
+                break
+            }
           } else {
             switch (pgcode) {
               case 'tmoney':
                 payType = '티머니'
-
                 break
               case 'cashbee':
                 payType = '캐시비'
-
                 break
               case 'kakaopay':
                 payType = '카카오페이'
-
                 break
               case 'payco':
                 payType = '페이코'
-
                 break
               case 'toss':
                 payType = '토스'
-
                 break
               default:
                 payType = 'PayLetter'
-
                 break
             }
           }
