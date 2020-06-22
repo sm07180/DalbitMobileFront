@@ -87,7 +87,7 @@ function Faq(props) {
    * @func 클릭 조건 실행
    */
   //const [reset, setReset] = useState(true)
-  const clickEvent = faqIdx => {
+  const clickEvent = (faqIdx) => {
     Store().action.updatefaqPage(faqIdx)
     SetListhide(faqIdx)
 
@@ -116,9 +116,9 @@ function Faq(props) {
     }
   }
 
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
       const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
@@ -144,7 +144,7 @@ function Faq(props) {
   }, [nextListPage])
 
   //
-  const clickFocus = index => {
+  const clickFocus = (index) => {
     setTimeout(() => {
       const height = document.querySelector(`.idx${index}`).offsetTop - 60
       window.scrollTo(0, height)
@@ -173,6 +173,7 @@ function Faq(props) {
                           {faqType === 2 ? '방송' : ''}
                           {faqType === 3 ? '결제' : ''}
                           {faqType === 4 ? '기타' : ''}
+                          {faqType === 5 ? '계정' : ''}
                         </em>
                         {question}
                       </dd>
@@ -201,6 +202,7 @@ function Faq(props) {
                           {faqType === 2 ? '방송' : ''}
                           {faqType === 3 ? '결제' : ''}
                           {faqType === 4 ? '기타' : ''}
+                          {faqType === 5 ? '계정' : ''}
                         </em>
                         {question}
                       </dd>
