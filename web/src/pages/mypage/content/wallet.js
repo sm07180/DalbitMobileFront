@@ -1,24 +1,21 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
-import styled from 'styled-components'
-import {useHistory} from 'react-router-dom'
-
-import Api from 'context/api'
-
-// context
-import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
-
 // component
 import Paging from 'components/ui/paging.js'
-import List from '../component/wallet/list.js'
-
+// context
+import {Context} from 'context'
+import Api from 'context/api'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
+import {OS_TYPE} from 'context/config.js'
+import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import styled from 'styled-components'
+import Header from '../component/header.js'
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
-import Header from '../component/header.js'
-export default props => {
+import List from '../component/wallet/list.js'
+
+export default (props) => {
   let history = useHistory()
 
   const context = useContext(Context)
@@ -33,17 +30,17 @@ export default props => {
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
 
-  const changeCoinTypeClick = type => {
+  const changeCoinTypeClick = (type) => {
     setCoinType(type)
     setWalletType(0)
     setcontrollState(!controllState)
   }
 
-  const returnCoinText = t => {
+  const returnCoinText = (t) => {
     return t === 'dal' ? '달' : '별'
   }
 
-  const returnCoinImg = t => {
+  const returnCoinImg = (t) => {
     return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
 
@@ -134,20 +131,24 @@ export default props => {
             </>
           ) : (
             <>
-            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
-                className="exchange"
-                onClick={() => {
-                  history.push('/exchange')
-                }}>
-                교환
-              </CoinChargeBtn> }
-            { context.customHeader['os'] !== OS_TYPE['IOS'] && <CoinChargeBtn
-                className="exchange"
-                onClick={() => {
-                  history.push('/money_exchange')
-                }}>
-                환전
-              </CoinChargeBtn>}
+              {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+                <CoinChargeBtn
+                  className="exchange"
+                  onClick={() => {
+                    history.push('/exchange')
+                  }}>
+                  교환
+                </CoinChargeBtn>
+              )}
+              {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+                <CoinChargeBtn
+                  className="exchange"
+                  onClick={() => {
+                    history.push('/money_exchange')
+                  }}>
+                  환전
+                </CoinChargeBtn>
+              )}
             </>
           )}
         </div>

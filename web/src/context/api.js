@@ -20,9 +20,9 @@ useEffect(() => {
  */
 
 import axios from 'axios'
-import qs from 'qs'
 //context
-import {API_SERVER, PHOTO_SERVER, PAY_SERVER} from 'context/config'
+import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
+import qs from 'qs'
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -1224,6 +1224,47 @@ export default class API {
       ...obj,
       url: url || `/mypage/notify`,
       method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 스페셜dj 이벤트
+   * @method "POST"
+   * @param int airtime                 //*누적방송시간
+   * @param int like              //*받은 좋아요
+   * @param int broadcast               //*1시간 이상방송
+   * @param int already            //*이미 참여여부
+   * @create 서우찬 2020.06.19
+   */
+  static event_specialdj = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/mypage/specialDj/status`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 스페셜dj 신청서 작성
+   * @method "POST"
+   * @param String airtime                 //* 이름
+   * @param String like              //*휴대폰번호
+   * @param String broadcast               //*주 방송시간
+   * @param String broadcast               //*주 방송시간2
+   * @param String already            //*방송소개
+   * @param String already            //*내가 스페셜 dj가 된다면*
+   * @create 서우찬 2020.06.19
+   */
+
+  static event_specialdj_upload = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/mypage/specialDj/request`,
+      method: 'POST',
       data: data
     })
   }

@@ -1,13 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import NoResult from 'components/ui/noResult'
+import SelectBox from 'components/ui/selectBox.js'
+import {COLOR_MAIN, COLOR_POINT_P, COLOR_POINT_Y} from 'context/color'
+import {WIDTH_MOBILE} from 'context/config'
+import React from 'react'
 import styled from 'styled-components'
 
-import SelectBox from 'components/ui/selectBox.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
-import NoResult from 'components/ui/noResult'
-
-export default props => {
+export default (props) => {
   const {searching, coinType, walletData, returnCoinText, setWalletType, controllState} = props
 
   const selectWalletTypeData = [
@@ -17,7 +15,7 @@ export default props => {
     {value: 3, text: '교환'}
   ]
 
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -50,7 +48,7 @@ export default props => {
 
         {searching ? (
           <SearchList>
-            {[...Array(10).keys()].map(idx => (
+            {[...Array(10).keys()].map((idx) => (
               <div className="search-list" key={idx} />
             ))}
           </SearchList>

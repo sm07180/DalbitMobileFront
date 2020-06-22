@@ -4,7 +4,6 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-
 import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
@@ -27,10 +26,7 @@ let MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
-let Charge = React.lazy(() => import('pages/charge'))
-if (__NODE_ENV !== 'real') {
-  Charge = React.lazy(() => import('pages/charge/index_test'))
-}
+const Charge = React.lazy(() => import('pages/charge'))
 const ChargeTest = React.lazy(() => import('pages/charge/index_test'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 let Customer = React.lazy(() => import('pages/customer_copy'))
@@ -50,6 +46,8 @@ const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
+
+const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
@@ -76,6 +74,9 @@ export default () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         {/* new 랭킹 추가  */}
+
+        <Route exact path="/event_specialdj" component={Specialdj} />
+        <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay_result" component={PayResult} />
         <Route exact path="/store" component={Store} />
