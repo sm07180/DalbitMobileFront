@@ -78,7 +78,12 @@ export default (props) => {
       }
     })()
   }, [coinType, walletType, page])
-  console.log(context.walletIdx)
+
+  useEffect(() => {
+    if (context.walletIdx === 1) {
+      changeCoinTypeClick('byeol')
+    }
+  }, [context.walletIdx])
   return (
     <div>
       {/* 공통타이틀 */}
@@ -113,7 +118,7 @@ export default (props) => {
         </CoinCurrentStatus>
 
         <div>
-          {coinType === 'dal' && context.walletIdx === 0 ? (
+          {context.walletIdx === 0 ? (
             <>
               {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                 <CoinChargeBtn

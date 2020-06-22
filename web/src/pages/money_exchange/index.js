@@ -469,6 +469,7 @@ export default (props) => {
 
   const backHandle = () => {
     props.history.goBack()
+    context.action.updateWalletIdx(1)
   }
 
   const initLayerPosition = () => {
@@ -907,8 +908,8 @@ export default (props) => {
               </div>
               <div className="exchange__list">
                 <div>
-                  - 별을 달로 교환하는 방법 : “마이페이지>내지갑>별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어 아이템선물이
-                  가능합니다. (수수료 없음)
+                  - 별을 달로 교환하는 방법 : “마이페이지&gt;내지갑&gt;별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어
+                  아이템선물이 가능합니다. (수수료 없음)
                 </div>
               </div>
             </div>
