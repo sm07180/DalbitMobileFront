@@ -244,6 +244,10 @@ const myProfile = props => {
           </div>
         </NameWrap>
 
+        {profile.fanBadge.text && <FanBadgeWrap><span className='fan-badge' style={{
+          background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
+        }}><img src={profile.fanBadge.icon} />{profile.fanBadge.text}</span></FanBadgeWrap>}
+
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
           <span onClick={() => fanContext()}>
@@ -511,6 +515,33 @@ const LevelStatus = styled.div`
     line-height: 13px;
   }
 `
+
+//팬뱃지
+const FanBadgeWrap = styled.div`
+  margin-top: 10px;
+  text-align: center;
+
+  .fan-badge {
+    display: inline-block;
+    height: 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.93;
+    letter-spacing: -0.35px;
+    padding: 0 7px 0 3px;
+    text-align: left;
+    color: #ffffff;
+  }
+  
+  img {
+    width: 28px;
+    height: 28px;
+  }
+`
+
 //닉네임
 const NameWrap = styled.div`
   margin-top: 10px;
