@@ -3,11 +3,11 @@
  * @brief 마이페이지 리포트 날자선택 팝업
  */
 
-import React, { useEffect, useRef } from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
-import { COLOR_MAIN } from 'context/color'
+import {COLOR_MAIN} from 'context/color'
 
 //static
 import closeIco from '../static/ico_close.svg'
@@ -15,17 +15,11 @@ import closeIco from '../static/ico_close.svg'
 //component
 import DatePicker from './datepicker'
 
-export default props => {
+export default (props) => {
   const dateToday = moment(new Date()).format('YYYYMMDD')
-  const dateDayAgo = moment(
-    new Date().setDate(new Date().getDate() - 1)
-  ).format('YYYYMMDD')
-  const dateWeekAgo = moment(
-    new Date().setDate(new Date().getDate() - 7)
-  ).format('YYYYMMDD')
-  const dateMonthAgo = moment(
-    new Date().setMonth(new Date().getMonth() - 1)
-  ).format('YYYYMMDD')
+  const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
+  const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
 
   const {
     active,
@@ -50,13 +44,13 @@ export default props => {
     setPopupState(false)
   }
 
-  const closePopupDim = e => {
+  const closePopupDim = (e) => {
     const target = e.target
     if (target.id === 'layer-popup') {
       closePopup()
     }
   }
-
+  console.log(active)
   return (
     <Container id="layer-popup" onClick={closePopupDim}>
       <Popup>
@@ -74,8 +68,7 @@ export default props => {
                 setPickerCssOn(false)
                 pickerOnChange(dateToday, 'btn')
               }}
-              className={active === 0 ? 'on' : ''}
-            >
+              className={active === 0 ? 'on' : ''}>
               오늘
             </button>
             <button
@@ -84,8 +77,7 @@ export default props => {
                 setPickerCssOn(false)
                 pickerOnChange(dateDayAgo, 'dayAgo')
               }}
-              className={active === 1 ? 'on' : ''}
-            >
+              className={active === 1 ? 'on' : ''}>
               어제
             </button>
             <button
@@ -94,8 +86,7 @@ export default props => {
                 setPickerCssOn(false)
                 pickerOnChange(dateWeekAgo, 'btn')
               }}
-              className={active === 2 ? 'on' : ''}
-            >
+              className={active === 2 ? 'on' : ''}>
               최근7일
             </button>
             <button
@@ -104,8 +95,7 @@ export default props => {
                 setPickerCssOn(false)
                 pickerOnChange(dateMonthAgo, 'btn')
               }}
-              className={active === 3 ? 'on' : ''}
-            >
+              className={active === 3 ? 'on' : ''}>
               월간
             </button>
           </div>
@@ -117,6 +107,7 @@ export default props => {
             placeholder="날짜"
             pickerState={pickerState}
             afterSelected={afterSelected}
+            active={active === 4 ? 'onActive' : ''}
           />
           <DatePicker
             text="날짜"
@@ -126,6 +117,7 @@ export default props => {
             placeholder="날짜"
             pickerState={pickerState}
             afterSelected={afterSelected}
+            active={active === 4 ? 'onActive' : ''}
           />
           <button className="confirm" onClick={clickConfirm}>
             기간 적용
