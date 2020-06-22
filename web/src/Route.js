@@ -34,7 +34,7 @@ if (__NODE_ENV !== 'real') {
 const ChargeTest = React.lazy(() => import('pages/charge/index_test'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 let Customer = React.lazy(() => import('pages/customer_copy'))
-if(__NODE_ENV === 'real') {
+if (__NODE_ENV === 'real') {
   Customer = React.lazy(() => import('pages/customer'))
 }
 const LevelInfo = React.lazy(() => import('pages/level'))

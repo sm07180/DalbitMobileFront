@@ -5,31 +5,22 @@
  *        value : YYYYMMDD, 빈 값일시 현재 날짜로 셋팅
  */
 
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import {
-  IMG_SERVER,
-  WIDTH_PC,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_TABLET_S,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 import moment from 'moment'
 import DateFnsUtils from '@date-io/moment'
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { StylesProvider } from '@material-ui/core/styles'
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
+import {StylesProvider} from '@material-ui/core/styles'
 
 //static
 import calIco from '../static/calender_b.svg'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
-
   //date 셋팅
   let date = new Date()
 
@@ -37,7 +28,7 @@ export default props => {
   //최신날짜로 했던거 바꾸기
   const [selectedDate, setSelectedDate] = useState()
 
-  const handleDateChange = date => {
+  const handleDateChange = (date) => {
     props.change(moment(props.value).format('YYYYMMDD'))
     setSelectedDate(props.value)
   }
@@ -51,8 +42,8 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
-      <DatepickerWrap /*className={props.pickerState ? 'holder-on' : 'holder-off'}*/
-      >
+      <DatepickerWrap
+        /*className={props.pickerState ? 'holder-on' : 'holder-off'}*/ className={props.active === 'onActive' ? 'on' : ''}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
             disableFuture
@@ -63,7 +54,7 @@ export default props => {
             label={props.text}
             value={selectedDate}
             onChange={handleDateChange}
-            onAccept={e => {
+            onAccept={(e) => {
               props.change(moment(e).format('YYYYMMDD'))
               props.afterSelected()
             }}
@@ -75,6 +66,9 @@ export default props => {
 }
 
 const DatepickerWrap = styled.div`
+  &.on {
+    border: 1px solid ${COLOR_MAIN};
+  }
   position: relative;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
