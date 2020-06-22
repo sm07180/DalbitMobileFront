@@ -10,9 +10,8 @@ import {Hybrid} from 'context/hybrid'
 import 'styles/layerpopup.scss'
 
 export default (props) => {
-  const {setPopup} = props
+  const {selectedIdx} = props
   const popupData = props.data
-  console.log(popupData)
 
   // reference
   const layerWrapRef = useRef()
@@ -25,21 +24,6 @@ export default (props) => {
       document.body.style.overflow = ''
     }
   }, [])
-
-  const closePopup = () => {
-    setPopup(false)
-  }
-
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'main-layer-popup') {
-      closePopup()
-    }
-  }
-
-  const wrapTouch = (e) => {
-    e.preventDefault()
-  }
 
   const setPopupCookie = (c_name, value) => {
     const exdate = new Date()
@@ -57,7 +41,25 @@ export default (props) => {
     if (state.click1 || type == 'imgType') {
       setPopupCookie('popup_notice_' + `${bannerIdx}`, 'y') //배너번호
     }
-    setPopup(false)
+    selectedIdx(popupData.idx)
+  }
+
+  const closePopup = () => {
+    selectedIdx(popupData.idx)
+  }
+
+  const wrapClick = (e) => {
+    const target = e.target
+    if (target.id === 'main-layer-popup') {
+      closePopup()
+    }
+    if (state.click1) {
+      setPopupCookie('popup_notice_' + `${popupData.idx}`, 'y') //배너번호
+    }
+  }
+
+  const wrapTouch = (e) => {
+    e.preventDefault()
   }
 
   const goEvent = (bannerIdx, linkType, linkUrl) => {
@@ -75,7 +77,7 @@ export default (props) => {
       } else if (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)) {
         Hybrid('openUrl', linkUrl)
       } else {
-        setPopup(false)
+        selectedIdx(popupData.idx)
         window.open(linkUrl, '_blank')
       }
     } else {
@@ -88,85 +90,87 @@ export default (props) => {
     <>
       <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
         <div className="popup">
-          {popupData.popup_type == '1' && (
-            <div className="popup__wrap popup__text">
-              {popupData.title && popupData.is_title_view == '1' && <div className="popup__title">{popupData.title}</div>}
-              <div className="popup__inner">
-                <p className="contents">
-                  {popupData.contents &&
-                    popupData.contents.split('\n').map((line, index) => {
-                      if (popupData.contents.match('\n')) {
-                        return (
-                          <React.Fragment key={index}>
-                            {line}
-                            <br />
-                          </React.Fragment>
-                        )
-                      } else {
-                        return <React.Fragment key={index}>{popupData.contents}</React.Fragment>
-                      }
-                    })}
-                </p>
-                {popupData.is_cookie == '1' && (
-                  <Checkbox
-                    className="checkbox"
-                    title="오늘하루 열지 않음"
-                    fnChange={(v) => setState({click1: v})}
-                    checked={state.click1}
-                  />
-                )}
-                {
-                  <button
-                    className="btn-ok"
-                    onClick={() => {
-                      {
-                        popupData.is_button_view == '0' && applyClick(popupData.idx)
-                      }
-                      {
-                        popupData.is_button_view == '1' && goEvent(popupData.idx, popupData.linkType, popupData.linkUrl)
-                      }
-                    }}>
-                    {popupData.buttonNm}
-                  </button>
-                }
-              </div>
-              <button
-                className="btn-close"
-                onClick={() => {
-                  applyClick(popupData.idx)
-                }}>
-                닫기
-              </button>
-            </div>
-          )}
-          {popupData.popup_type == '0' && (
-            <div className="popup__wrap popup__img">
-              <div className="popup__inner">
-                <div className="contents">
-                  <a href={popupData.linkUrl}>
-                    <img src={popupData.bannerUrl} alt="" />
-                  </a>
-                </div>
-                {popupData.is_cookie == '1' && (
-                  <div className="chk-label">
-                    <label htmlFor="chkimg">
-                      <input
-                        type="checkbox"
-                        id="chkimg"
-                        onClick={() => {
-                          applyClick(popupData.idx, 'imgType')
-                        }}
-                      />
-                      오늘 하루 보지 않기
-                    </label>
+          <div className="popup__wrap">
+            {popupData.popup_type == '0' && (
+              <div className="popup__box popup__img">
+                <div className="popup__inner">
+                  <div className="contents">
+                    <a href={popupData.linkUrl}>
+                      <img src={popupData.bannerUrl} alt="" />
+                    </a>
                   </div>
-                )}
+                  {popupData.is_cookie == '1' && (
+                    <div className="chk-label">
+                      <label htmlFor="chkimg">
+                        <input
+                          type="checkbox"
+                          id="chkimg"
+                          onClick={() => {
+                            applyClick(popupData.idx, 'imgType')
+                          }}
+                        />
+                        오늘 하루 보지 않기
+                      </label>
+                    </div>
+                  )}
+                </div>
+                <button className="btn-close" onClick={closePopup}>
+                  닫기
+                </button>
               </div>
-              <button className="btn-close" onClick={closePopup}>
-                닫기
-              </button>
-            </div>
-          )}
+            )}
+            {popupData.popup_type == '1' && (
+              <div className="popup__box popup__text">
+                {popupData.title && popupData.is_title_view == '1' && <div className="popup__title">{popupData.title}</div>}
+                <div className="popup__inner">
+                  <p className="contents">
+                    {popupData.contents &&
+                      popupData.contents.split('\n').map((line, index) => {
+                        if (popupData.contents.match('\n')) {
+                          return (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          )
+                        } else {
+                          return <React.Fragment key={index}>{popupData.contents}</React.Fragment>
+                        }
+                      })}
+                  </p>
+                  {popupData.is_cookie == '1' && (
+                    <Checkbox
+                      className="checkbox"
+                      title="오늘하루 열지 않음"
+                      fnChange={(v) => setState({click1: v})}
+                      checked={state.click1}
+                    />
+                  )}
+                  {
+                    <button
+                      className="btn-ok"
+                      onClick={() => {
+                        {
+                          popupData.is_button_view == '0' && applyClick(popupData.idx)
+                        }
+                        {
+                          popupData.is_button_view == '1' && goEvent(popupData.idx, popupData.linkType, popupData.linkUrl)
+                        }
+                      }}>
+                      {popupData.buttonNm}
+                    </button>
+                  }
+                </div>
+                <button
+                  className="btn-close"
+                  onClick={() => {
+                    applyClick(popupData.idx)
+                  }}>
+                  닫기
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </PopupWrap>
     </>
@@ -179,7 +183,7 @@ const PopupWrap = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.45);
   z-index: 60;
   display: flex;
   justify-content: center;
