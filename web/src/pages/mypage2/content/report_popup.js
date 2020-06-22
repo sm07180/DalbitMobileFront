@@ -3,7 +3,7 @@
  * @brief 마이페이지 리포트 날자선택 팝업
  */
 
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState, useContext} from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
@@ -14,8 +14,10 @@ import closeIco from '../static/ico_close.svg'
 
 //component
 import DatePicker from './datepicker'
+import {Context} from 'context'
 
 export default (props) => {
+  const ctx = useContext(Context)
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
   const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
@@ -34,10 +36,15 @@ export default (props) => {
     fetchData,
     setPopupState
   } = props
-
+  const [changeDate, setChangeDate] = useState('')
   const clickConfirm = () => {
     fetchData()
     closePopup()
+    ctx.action.updateReportDate({
+      type: active,
+      prev: pickdataPrev,
+      next: pickdataNext
+    })
   }
 
   const closePopup = () => {
@@ -50,7 +57,7 @@ export default (props) => {
       closePopup()
     }
   }
-  console.log(active)
+
   return (
     <Container id="layer-popup" onClick={closePopupDim}>
       <Popup>

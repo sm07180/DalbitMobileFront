@@ -5,7 +5,7 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, { useState, useContext, createContext } from 'react'
+import React, {useState, useContext, createContext} from 'react'
 //context
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -13,10 +13,10 @@ import use from 'pages/setting/content/use'
 
 //Context
 const Context = createContext()
-const { Provider } = Context
+const {Provider} = Context
 
 //
-const GlobalProvider = props => {
+const GlobalProvider = (props) => {
   //initalize
   const DAY_COOKIE_PERIOD = 100
   //state
@@ -27,7 +27,7 @@ const GlobalProvider = props => {
     isOnCast: false
   })
   const [nativePlayer, setNativePlayer] = useState(null)
-  const [message, setMessage] = useState({ visible: false })
+  const [message, setMessage] = useState({visible: false})
   const [roomInfo, setRoomInfo] = useState(null) //방송방정보
   const [profile, setProfile] = useState(null)
   const [customHeader, setCustomHeader] = useState(null)
@@ -61,39 +61,44 @@ const GlobalProvider = props => {
   const [toggleState, setToggleState] = useState(false)
   const [replyIdx, setReplyIdx] = useState(false)
   const [noticeState, setNoticeState] = useState(false)
+  const [reportDate, setReportDate] = useState({
+    type: 0,
+    prev: '',
+    next: ''
+  })
   //---------------------------------------------------------------------
   const action = {
-    updateState: obj => {
-      setState(state => ({ ...state, ...obj }))
+    updateState: (obj) => {
+      setState((state) => ({...state, ...obj}))
     },
     /**
      * @brief 뉴스알림(종모양)
      */
-    updateNews: bool => {
+    updateNews: (bool) => {
       setNews(bool)
     },
     /**
      * @brief 스티커팝업(종모양)
      */
-    updateSticker: bool => {
+    updateSticker: (bool) => {
       setSticker(bool)
     },
     /**
      * @brief 스티커팝업정보
      */
-    updateStickerMsg: obj => {
+    updateStickerMsg: (obj) => {
       setStickerMsg(obj)
     },
     /**
      * @brief customHeader
      */
-    updateCustomHeader: obj => {
+    updateCustomHeader: (obj) => {
       if (obj) {
         const stringified = JSON.stringify(obj)
         Api.setCustomHeader(stringified)
         Utility.setCookie('custom-header', '', -1)
         Utility.setCookie('custom-header', stringified, DAY_COOKIE_PERIOD)
-        setCustomHeader({ ...obj })
+        setCustomHeader({...obj})
       } else {
         Api.setCustomHeader(null)
         Utility.setCookie('custom-header', '', -1)
@@ -107,15 +112,15 @@ const GlobalProvider = props => {
      * @param string memNo                      // 회원번호
      * @param bool isLogin                      // 로그인 여부
      */
-    updateToken: obj => {
+    updateToken: (obj) => {
       if (obj) {
-        const { authToken, memNo } = obj
+        const {authToken, memNo} = obj
         const firstLetterOfMemNo = String(memNo)[0]
         const isOAuth = firstLetterOfMemNo !== '1' || firstLetterOfMemNo !== '8'
         Api.setAuthToken(authToken)
         Utility.setCookie('authToken', '', -1)
         Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
-        setToken({ ...obj, isOAuth })
+        setToken({...obj, isOAuth})
       } else {
         Api.setAuthToken(null)
         Utility.setCookie('authToken', '', -1)
@@ -127,7 +132,7 @@ const GlobalProvider = props => {
     /**
      * @brief 입장한방, 생성한방 정보업데이트
      */
-    updateRoomInfo: obj => {
+    updateRoomInfo: (obj) => {
       setRoomInfo(obj)
     },
     /**
@@ -137,10 +142,10 @@ const GlobalProvider = props => {
      * @param string title
      * @param string bjProfImg
      */
-    updateNativePlayer: obj => {
-      setNativePlayer({ ...obj })
+    updateNativePlayer: (obj) => {
+      setNativePlayer({...obj})
     },
-    updateProfile: profile => {
+    updateProfile: (profile) => {
       setProfile(profile)
     },
     //팝업컨텐츠
@@ -150,17 +155,17 @@ const GlobalProvider = props => {
       setVisible(true)
     },
     //팝업 visible
-    updatePopupVisible: bool => {
+    updatePopupVisible: (bool) => {
       setVisible(bool)
     },
     //GNB 열고 닫기
-    updateGnbVisible: bool => {
+    updateGnbVisible: (bool) => {
       if (!bool) document.body.classList.remove('on')
       setGnbVisible(bool)
     },
     //GNB 열릴때 메뉴 타입 상태
 
-    updateGnbState: str => {
+    updateGnbState: (str) => {
       setGnbState(str)
       //render 후 애니메이션 처리
       setTimeout(() => {
@@ -171,19 +176,19 @@ const GlobalProvider = props => {
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
      */
-    alert: obj => {
-      setMessage({ type: 'alert', visible: true, ...obj })
+    alert: (obj) => {
+      setMessage({type: 'alert', visible: true, ...obj})
     },
     /**
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
      */
-    confirm: obj => {
-      const { msg } = obj
-      setMessage({ type: 'confirm', visible: true, ...obj })
+    confirm: (obj) => {
+      const {msg} = obj
+      setMessage({type: 'confirm', visible: true, ...obj})
     },
     //login 상태
-    updateLogin: bool => {
+    updateLogin: (bool) => {
       setlogin(bool)
       setGnbVisible(false)
     },
@@ -191,7 +196,7 @@ const GlobalProvider = props => {
      * 오디오 글로벌 플레이어 상태
      * @param boolean status
      */
-    updateMediaPlayerStatus: status => {
+    updateMediaPlayerStatus: (status) => {
       setMediaPlayerStatus(status)
       //flase 일때 쿠키삭제
       if (!status) {
@@ -202,7 +207,7 @@ const GlobalProvider = props => {
      * 오디오 글로벌 플레이어 상태
      * @param boolean status
      */
-    updatePlayer: bool => {
+    updatePlayer: (bool) => {
       setPlayer(bool)
       //flase 일때 쿠키삭제
       if (!bool) {
@@ -214,59 +219,62 @@ const GlobalProvider = props => {
      * 방생성 후 방정보 가지고있음, 방 종료시 사라짐
      * @param {roomNo} string
      */
-    updateCastState: str => {
+    updateCastState: (str) => {
       setCastState(str)
     },
-    updateSearch: str => {
+    updateSearch: (str) => {
       setSearch(str)
     },
-    updateLogoChange: status => {
+    updateLogoChange: (status) => {
       setLogoChange(status)
     },
-    updateMypageReport: bool => {
+    updateMypageReport: (bool) => {
       setMypageReport(bool)
     },
-    updateMypageFanCnt: str => {
+    updateMypageFanCnt: (str) => {
       setMypageFanCnt(str)
     },
-    updateClose: bool => {
+    updateClose: (bool) => {
       setClose(bool)
     },
-    updateCloseFanCnt: bool => {
+    updateCloseFanCnt: (bool) => {
       setCloseFanCnt(bool)
     },
-    updateCloseStarCnt: bool => {
+    updateCloseStarCnt: (bool) => {
       setCloseStarCnt(bool)
     },
-    updateClosePresent: bool => {
+    updateClosePresent: (bool) => {
       setClosePresent(bool)
     },
-    updateBoardNumber: num => {
+    updateBoardNumber: (num) => {
       setBoardNumber(num)
     },
-    updatenoticeIndexNum: num => {
+    updatenoticeIndexNum: (num) => {
       setNoticeIndexNum(num)
     },
-    updateBannerCheck: bool => {
+    updateBannerCheck: (bool) => {
       setBannerCheck(bool)
     },
-    updateMyInfo: obj => {
+    updateMyInfo: (obj) => {
       setMyInfo(obj)
     },
-    updateFanBoardBigIdxMsg: num => {
+    updateFanBoardBigIdxMsg: (num) => {
       setFanBoardBigIdx(num)
     },
-    updateToggleAction: bool => {
+    updateToggleAction: (bool) => {
       setToggleState(bool)
     },
-    updateToggleAction: bool => {
+    updateToggleAction: (bool) => {
       setToggleState(bool)
     },
-    updateReplyIdx: bool => {
+    updateReplyIdx: (bool) => {
       setReplyIdx(bool)
     },
-    updateNoticeState: bool => {
+    updateNoticeState: (bool) => {
       setNoticeState(bool)
+    },
+    updateReportDate: (string) => {
+      setReportDate(string)
     }
   }
   //---------------------------------------------------------------------
@@ -305,8 +313,9 @@ const GlobalProvider = props => {
     fanBoardBigIdx,
     toggleState,
     replyIdx,
-    noticeState
+    noticeState,
+    reportDate
   }
   return <Provider value={value}>{props.children}</Provider>
 }
-export { Context, GlobalProvider }
+export {Context, GlobalProvider}

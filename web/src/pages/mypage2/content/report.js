@@ -3,15 +3,15 @@
  * @brief 마이페이지 리포트
  */
 
-import React, { useEffect, useStet, useContext, useState } from 'react'
+import React, {useEffect, useStet, useContext, useState} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
 //layout
-import { IMG_SERVER, WIDTH_MOBILE } from 'context/config'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
 // context
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
 // static
 import mic from 'images/mini/mic.svg'
@@ -29,12 +29,7 @@ import NoResult from 'components/ui/noResult'
 import Header from '../component/header.js'
 import DatePopup from './report_popup'
 
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 
 let pickerHolder = true
 
@@ -54,20 +49,21 @@ const listenInfo = {
 }
 
 const selectBoxData = [
-  { value: 0, text: '방송' },
-  { value: 1, text: '청취' }
+  {value: 0, text: '방송'},
+  {value: 1, text: '청취'}
 ]
 
 let currentPage = 1
 let timer
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const ctx = useContext(Context)
   //state
   const [validate, setValidate] = useState({
     pickdata: false
   })
+
   const [active, setActive] = useState(0)
   const [selectType, setSelectType] = useState(0)
   const [moreState, setMoreState] = useState(false)
@@ -162,15 +158,9 @@ export default props => {
   }
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
-  const dateDayAgo = moment(
-    new Date().setDate(new Date().getDate() - 1)
-  ).format('YYYYMMDD')
-  const dateWeekAgo = moment(
-    new Date().setDate(new Date().getDate() - 7)
-  ).format('YYYYMMDD')
-  const dateMonthAgo = moment(
-    new Date().setMonth(new Date().getMonth() - 1)
-  ).format('YYYYMMDD')
+  const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
+  const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
 
   let dateDefault = ''
   // changes 초기값 셋팅
@@ -208,7 +198,7 @@ export default props => {
     }
   }
 
-  const pickerOnChangenext = value => {
+  const pickerOnChangenext = (value) => {
     if (!changes.pickdata) {
       dateDefault = value
     } else {
@@ -234,7 +224,7 @@ export default props => {
   }, [])
   //----------------------------
   // 셀렉트 타입
-  const setType = value => {
+  const setType = (value) => {
     setSelectType(value)
     //setMoreState(false)
     setActive(0)
@@ -246,10 +236,10 @@ export default props => {
     setlistentotal([])
     setResultState(1)
     setPickerCssOn(false)
-    setChanges({ pickdataPrev: dateToday, pickdataNext: dateToday })
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
   }
   //date format
-  const dateFormat = strFormatFromServer => {
+  const dateFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
     let time = strFormatFromServer.slice(8)
@@ -257,14 +247,14 @@ export default props => {
     return `${date} `
   }
 
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
     let time = strFormatFromServer.slice(8)
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
     return `${time} `
   }
-  const timeFormatSumurry = strFormatFromServer => {
+  const timeFormatSumurry = (strFormatFromServer) => {
     let time = strFormatFromServer.slice(0, 5)
     time = [time.slice(0, 1), time.slice(1, 3), time.slice(3)].join(':')
     return `${time} `
@@ -291,7 +281,7 @@ export default props => {
     setbroadtotal([])
     setlistentotal([])
     setPickerCssOn(false)
-    setChanges({ pickdataPrev: dateToday, pickdataNext: dateToday })
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
     if (selectType === 0) {
       setSelectType(1)
     } else {
@@ -324,23 +314,14 @@ export default props => {
       fetchDataListen('next')
     }
   }
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
-      const windowHeight =
-        'innerHeight' in window
-          ? window.innerHeight
-          : document.documentElement.offsetHeight
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      )
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       if (moreState && windowBottom >= docHeight - 200) {
         showMoreList()
@@ -348,6 +329,13 @@ export default props => {
       }
     }, 10)
   }
+  useEffect(() => {
+    ctx.action.updateReportDate({
+      type: 0,
+      prev: changes.pickdataPrev,
+      next: changes.pickdataNext
+    })
+  }, [])
   return (
     <>
       {/* 공통타이틀 */}
@@ -374,12 +362,10 @@ export default props => {
           className="data-box"
           onClick={() => {
             setPopupState(true)
-          }}
-        >
-          <span>{dateType[active]}</span>
+          }}>
+          <span className={ctx.reportDate.type === 4 ? 'none' : ''}>{dateType[ctx.reportDate.type]}</span>
           <p>
-            {moment(changes.pickdataPrev).format('YYYY-MM-DD')} ~{' '}
-            {moment(changes.pickdataNext).format('YYYY-MM-DD')}
+            {moment(ctx.reportDate.prev).format('YYYY-MM-DD')} ~ {moment(ctx.reportDate.next).format('YYYY-MM-DD')}
           </p>
         </div>
 
@@ -424,29 +410,20 @@ export default props => {
                   })}
                 {selectType === 1 &&
                   Object.keys(listenInfo).map((section, index) => {
-                    const {
-                      listeningTime,
-                      giftDalTotCnt,
-                      byeolTotCnt,
-                      guestTime
-                    } = listentotal
+                    const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
                     return (
                       <ShortSection key={index} className="see">
                         <div>
                           <div>{listenInfo[section][1]}</div>
                           <div className="count">
-                            {listenInfo[section][1] === '청취' &&
-                              listentotal.length !== 0 &&
-                              decodeSec(String(listeningTime))}
+                            {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
                             {listenInfo[section][1] === '달 선물' &&
                               listentotal.length !== 0 &&
                               numberFormat(String(giftDalTotCnt))}
                             {listenInfo[section][1] === '받은 별' &&
                               listentotal.length !== 0 &&
                               numberFormat(String(byeolTotCnt))}
-                            {listenInfo[section][1] === '게스트 참여 시간' &&
-                              listentotal.length !== 0 &&
-                              guestTime}
+                            {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
                           </div>
                         </div>
                       </ShortSection>
@@ -463,9 +440,7 @@ export default props => {
                       return (
                         <MobileDetailTab key={idx}>
                           <div>
-                            <span className="listenName">
-                              {dateFormat(value.broadDt)}
-                            </span>
+                            <span className="listenName">{dateFormat(value.broadDt)}</span>
                           </div>
                           <div className="startDate">
                             <span>{timeFormat(value.startDt)}</span>~&nbsp;
@@ -478,8 +453,7 @@ export default props => {
                               <span>{numberFormat(value.byeolCnt)}</span>
                             </div>
                             <div>
-                              <span>좋아요</span>{' '}
-                              <span>{numberFormat(value.likes)}</span>
+                              <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
                             </div>
                           </div>
 
@@ -489,8 +463,7 @@ export default props => {
                               <span>{numberFormat(value.listenerCnt)}</span>
                             </div>
                             <div>
-                              <span>방송 최고 순위</span>{' '}
-                              <span>{value.rank}</span>
+                              <span>방송 최고 순위</span> <span>{value.rank}</span>
                             </div>
                           </div>
                         </MobileDetailTab>
@@ -505,9 +478,7 @@ export default props => {
                             <span className="listenName">{value.bjNickNm}</span>
                           </div>
                           <div className="startDate">
-                            <span className="black">
-                              {dateFormat(value.startDt)}
-                            </span>
+                            <span className="black">{dateFormat(value.startDt)}</span>
                             <span>{timeFormat(value.startDt)}</span>&nbsp;~
                             <span>{timeFormat(value.endDt)}</span>
                             {/* {value.listenTime / 3600} */}
@@ -524,9 +495,7 @@ export default props => {
                           </div>
                           <div className="guestDate">
                             <span>게스트로 참여 여부</span>
-                            <span>
-                              {value.isGuest === false ? '-' : value.isGuest}
-                            </span>
+                            <span>{value.isGuest === false ? '-' : value.isGuest}</span>
                           </div>
                         </MobileDetailTabListen>
                       )
@@ -973,6 +942,9 @@ const Report = styled.div`
         vertical-align: top;
         content: '';
       }
+      &.none {
+        display: none;
+      }
     }
     p {
       color: #424242;
@@ -1122,8 +1094,7 @@ const Submit = styled.button`
     display: block;
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_arrow_down.png) no-repeat center
-      center/cover;
+    background: url(${IMG_SERVER}/images/api/ic_arrow_down.png) no-repeat center center/cover;
   }
 
   &.disable {
@@ -1140,8 +1111,7 @@ const TopWrap = styled.div`
   button:nth-child(1) {
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
-      center / cover;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
   }
   .title {
     width: calc(100% - 24px);
