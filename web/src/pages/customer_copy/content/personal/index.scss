@@ -1,4 +1,4 @@
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -172,18 +172,18 @@ input[type="file"] {
         border: 1px solid #e0e0e0;
         border-radius: 12px;
         font-size: 14px;
-        &.options {  
+        &.options {
           display: flex;
           align-items: center;
           height: 44px;
           padding-left: 16px;
           &::before {
             top: 20px;
-            background-color: #9e9e9e
+            background-color: #9e9e9e;
           }
           &::after {
             top: 20px;
-            background-color: #9e9e9e
+            background-color: #9e9e9e;
           }
         }
         &:first-child.open {
@@ -202,7 +202,11 @@ input[type="file"] {
   }
   &__content {
     padding-top: 50px;
+    &--notPad {
+      padding-top: 0px !important;
+    }
   }
+
   &__input {
     display: block;
     width: 100%;
