@@ -14,7 +14,7 @@ export default () => {
   const [checkPopup, setcheckPopup] = useState(false)
 
   const [moreList, setMorelist] = useState(false)
-
+  console.log(name)
   async function specialdjUpload() {
     const res = await Api.event_specialdj_upload({
       data: {
@@ -129,7 +129,7 @@ export default () => {
         <div className="list">
           <div className="list__title ">이름 (실명)</div>
           <div className="list__inpuText">
-            <input type="text" onChange={(e) => setName(e.target.vlaue)} placeholder="이름을 입력하세요." />
+            <input type="text" onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요." />
           </div>
         </div>
         <div className="list list--bottom">
@@ -175,7 +175,7 @@ export default () => {
           <div className="list__title list__title--marginTop">방송 소개</div>
           <textarea
             className="list__textarea"
-            onChange={(e) => setTitle(e.target.vlaue)}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="DJ님의 방송에 대해 자세히 설명해 주세요.&#10;(최대 1,000자)"></textarea>
           <div className="list__textNumber">0/1,000</div>
         </div>
@@ -185,11 +185,11 @@ export default () => {
           </div>
           <textarea
             className="list__textarea"
-            onChange={(e) => setContents(e.target.vlaue)}
+            onChange={(e) => setContents(e.target.value)}
             placeholder="DJ님의 방송에 대해 자세히 설명해 주세요. &#10;(최대 1,000자)"
             maxLength="1000"></textarea>
           <div className="list__textNumber">0/1,000</div>
-          <button className={`button ${deligate ? 'button--on' : ''}`} onClick={() => setcheckPopup(morepopup ? false : true)}>
+          <button className={`button ${deligate ? 'button--on' : ''}`} onClick={() => specialdjUpload()}>
             작성 완료
           </button>
         </div>
