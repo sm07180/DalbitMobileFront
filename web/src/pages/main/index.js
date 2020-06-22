@@ -73,9 +73,9 @@ export default (props) => {
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
   const [popupNotice, setPopupNotice] = useState(false)
+  // const [checkNoticeIdx, setCheckNoticeIdx] = useState('')
   const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
-
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
 
@@ -411,6 +411,14 @@ export default (props) => {
     })
   }
 
+  const filterIdx = (idx) => {
+    setPopupData(
+      popupData.filter((v) => {
+        return v.idx !== idx
+      })
+    )
+  }
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <MainWrap ref={MainRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
@@ -563,13 +571,14 @@ export default (props) => {
           />
         )}
 
-        {popupNotice &&
-          popupData.length > 0 &&
+        {popupData.length > 0 &&
           popupData.map((data, index) => {
             return (
-              Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
-                <LayerPopupNotice key={index} data={data} setPopup={setPopupNotice} />
-              )
+              <div key={index}>
+                {Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
+                  <LayerPopupNotice data={data} setPopup={setPopupNotice} setCheckNoticeIdx={filterIdx} />
+                )}
+              </div>
             )
           })}
 
