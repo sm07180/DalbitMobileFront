@@ -1819,6 +1819,16 @@ export default class API {
     })
   }
 
+  static center_qna_delete = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || 'center/qna/del',
+      method: method || 'POST',
+      params: params
+    })
+  }
+
   /**
    * @brief 고객센터 1:1문의하기 작성
    * @method "POST"
