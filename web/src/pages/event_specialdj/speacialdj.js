@@ -50,6 +50,11 @@ export default () => {
       </Header> */}
 
       <div className="speacialdj">
+        {/* <div className="title-wrap">
+          <div className="text">상세조건</div>
+          <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
+        </div> */}
+
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img03.png`} className="img100" />
@@ -162,7 +167,17 @@ export default () => {
             </div>
           </>
         ) : (
-          <></>
+          <>
+            <div className="buttonBox">
+              <button
+                className="button button--on"
+                onClick={() => {
+                  history.push('/login')
+                }}>
+                로그인
+              </button>
+            </div>
+          </>
         )}
       </div>
     </>

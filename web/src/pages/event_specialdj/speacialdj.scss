@@ -82,6 +82,50 @@
     display: flex;
     width: 100%;
   }
+  .button {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 16px;
+    color: #fff;
+    background: #bdbdbd;
+    border-radius: 10px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+
+    &--on {
+      background: #632beb;
+    }
+  }
+  .buttonBox {
+    box-sizing: border-box;
+    padding: 16px;
+  }
+
+  .title-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+    height: 40px;
+
+    .text {
+      width: 100%;
+      font-weight: 600;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
 }
 
 .header-wrap {

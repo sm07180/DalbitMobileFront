@@ -15,12 +15,14 @@ export default (props) => {
   const [broadcast2, setBroadcast2] = useState('')
   const [title, setTitle] = useState('')
   const [contents, setContents] = useState('')
+
   const context = useContext(Context)
   const globalCtx = useContext(Context)
 
   const [select1, setSelect1] = useState('')
   const [selectSub1, setSelectsub1] = useState('')
 
+  const [addSelect, setAddSelect] = useState(false)
   const [select2, setSelect2] = useState('')
   const [selectSub2, setSelectsub2] = useState('')
 
@@ -35,8 +37,72 @@ export default (props) => {
         break
     }
   }
-  const Broadcast1 = select1 + ' ~ ' + selectSub1
+
   const Broadcast2 = select2 + ' ~ ' + selectSub2
+
+  // function Broadcast1() {
+  //   if (select1 > selectSub1) {
+  //     context.action.alert({
+  //       msg: '이전시간이 이후시간보다 낮을수없습니다.',
+  //       callback: () => {
+  //         context.action.alert({visible: false})
+  //       }
+  //     })
+  //     return
+  //   } else {
+  //     const Broadcast1 = select1 + ' ~ ' + selectSub1
+  //   }
+  // }
+
+  function handleSel(val) {
+    const sub1 = selectSub1 !== '' ? selectSub1 : false
+    const sel1 = select1 !== '' ? select1 : false
+
+    if (sub1 && (sel1 || val)) {
+      if (parseInt(val.split(':')[0]) > parseInt(sub1.split(':')[0])) {
+        context.action.alert({
+          msg: 'fdjsngsdiu',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+      } else {
+        setSelect1(val)
+      }
+    } else {
+    }
+
+    if (selectSub1 && parseInt(val.split(':')[0]) < parseInt(selectSub1.split(':')[0])) {
+    } else if (parseInt(val.split(':')[0]) > parseInt(selectSub1.split(':')[0])) {
+      setSelect1(val)
+    }
+  }
+
+  function handleSub(val) {
+    if (select1 === '1') {
+      context.action.alert({
+        msg: '시작 시간을 설정해 주세요.',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return
+    }
+    const intSel1 = parseInt(select1.split(':')[0])
+    const intSel2 = parseInt(val.split(':')[0])
+    setSelectsub1(val)
+    if (intSel1 < intSel2) {
+    } else {
+      if (intSel1 && intSel2) {
+        context.action.alert({
+          msg: 'texttexttext',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+      }
+    }
+  }
 
   async function specialdjUpload() {
     const res = await Api.event_specialdj_upload({
@@ -104,14 +170,83 @@ export default (props) => {
       })
       return
     }
-    if (Broadcast1 === '') {
+    if (select1 === '') {
       context.action.alert({
-        msg: '방송시간을 선택해주세요.',
+        msg: '방송시작시간을 선택해주세요.',
         callback: () => {
           context.action.alert({visible: false})
         }
       })
       return
+    }
+    if (selectSub1 === '') {
+      context.action.alert({
+        msg: '방송종료시간을 선택해주세요.',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return
+    }
+
+    if (parseInt(select1.split(':')[0]) > parseInt(selectSub1.split(':')[0])) {
+      context.action.alert({
+        msg: '방송 시작시간은\n방송 종료시간보다 클 수 없습니다.',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return
+    }
+
+    if (parseInt(select1.split(':')[0]) === parseInt(selectSub1.split(':')[0])) {
+      context.action.alert({
+        msg: '방송 시작시간은\n방송 종료시간 같을 수 없습니다.',
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+      return
+    }
+    if (addSelect) {
+      if (select2 === '') {
+        context.action.alert({
+          msg: '방송시작시간을 선택해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (selectSub2 === '') {
+        context.action.alert({
+          msg: '방송종료시간을 선택해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+
+      if (parseInt(select2.split(':')[0]) > parseInt(selectSub2.split(':')[0])) {
+        context.action.alert({
+          msg: '방송 시작시간은\n방송 종료시간보다 클 수 없습니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+
+      if (parseInt(select2.split(':')[0]) === parseInt(selectSub2.split(':')[0])) {
+        context.action.alert({
+          msg: '방송 시작시간은\n방송 종료시간 같을 수 없습니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
     }
     if (title === '') {
       context.action.alert({
@@ -146,8 +281,9 @@ export default (props) => {
 
   const handlePhone = (e) => {
     if (e.target.value.toString().length > 15) {
+    } else if (isNaN(e.target.value)) {
     } else {
-      setPhone(e.target.value)
+      setPhone(e.target.value.trim())
     }
   }
 
@@ -160,6 +296,7 @@ export default (props) => {
   }, [name, phone, title, contents, broadcast1])
 
   function moreButton() {
+    setAddSelect(true)
     return (
       <div className="selectBottom">
         <div className="list__selectBox list__selectBox--bottom">
@@ -207,12 +344,7 @@ export default (props) => {
         <div className="list list--bottom">
           <div className="list__title">휴대폰번호</div>
           <div className="list__inpuText">
-            <input
-              type="number"
-              onChange={(e) => setPhone(e.target.value.replace('-', ''))}
-              onChange={(e) => handlePhone(e)}
-              placeholder="'-'를 뺀 숫자만 입력하세요."
-            />
+            <input type="tel" value={phone} onChange={(e) => handlePhone(e)} placeholder="'-'를 뺀 숫자만 입력하세요." />
           </div>
         </div>
 
@@ -255,9 +387,7 @@ export default (props) => {
           <div className="list__textNumber">{title.length}/1,000</div>
         </div>
         <div className="list__box">
-          <div className="list__title">
-            내가 스페셜 DJ가 된다면?! <span className="list__titleGray">(선택사항)</span>
-          </div>
+          <div className="list__title">내가 스페셜 DJ가 된다면?!</div>
           <textarea
             className="list__textarea"
             onChange={handleChange2}
