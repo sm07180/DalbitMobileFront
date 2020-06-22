@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 
-import { Context } from 'context'
-import { RoomMake } from 'context/room'
+import {Context} from 'context'
+import {RoomMake} from 'context/room'
 
 // static image
 //import Logo from './static/logo@2x.png'
@@ -12,7 +12,7 @@ import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng.svg'
-import { OS_TYPE } from 'context/config.js'
+import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
 let alarmCheckIntervalId = null
@@ -20,7 +20,7 @@ let alarmCheckIntervalId = null
 export default (props) => {
   //context
   const context = useContext(Context)
-  const { webview } = props
+  const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
 
   if (webview && webview === 'new') {
@@ -28,7 +28,7 @@ export default (props) => {
   }
 
   const globalCtx = useContext(Context)
-  const { logoChange, token } = globalCtx
+  const {logoChange, token} = globalCtx
 
   // static
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
@@ -70,9 +70,9 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      const { result, data } = await Api.mypage_alarm_check()
+      const {result, data} = await Api.mypage_alarm_check()
       if (result === 'success') {
-        const { newCnt } = data
+        const {newCnt} = data
         if (newCnt > 0) {
           setNewAlarm(true)
         }
@@ -94,16 +94,8 @@ export default (props) => {
       <HiddenBg />
       <GnbWrap>
         <div className="icon-wrap">
-          <img
-            className="icon"
-            src={Search}
-            onClick={() => moveToMenu('search')}
-          />
-          <img
-            className="icon"
-            src={Alarm}
-            onClick={() => moveToLogin('alarm')}
-          />
+          <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+          <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
 
           {newAlarm === true && <div className="alarm-new"></div>}
 
@@ -124,8 +116,7 @@ export default (props) => {
                     setTimeout(() => setBroadcastBtnActive(false), 3000)
                   }
                 }
-              }}
-            >
+              }}>
               <img src={Mic} />
             </div>
           </MicWrap>
@@ -133,12 +124,7 @@ export default (props) => {
           <img className="logo" src={Logo} onClick={reLoad} />
         )}
         <div className="icon-wrap">
-          <img
-            className="icon"
-            src={My}
-            onClick={() => moveToLogin('profile')}
-            style={{ marginLeft: '36px' }}
-          />
+          <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
           {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
         </div>
       </GnbWrap>
@@ -188,7 +174,7 @@ const GnbWrap = styled.div`
       right: 1px;
       width: 10px;
       height: 10px;
-      background-color: red;
+      background-color: #ec455f;
     }
 
     .news {

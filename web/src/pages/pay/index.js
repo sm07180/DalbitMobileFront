@@ -84,8 +84,13 @@ export default props => {
         }
       }
     } else {
+      //취소로직
       if (state === 'pay') {
-        Hybrid('ClosePayPopup')
+        if (returntype === 'room') {
+          Hybrid('ClosePayPopup')
+        } else {
+          window.location.href = '/'
+        }
       }
     }
   }

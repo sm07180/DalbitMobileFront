@@ -1901,6 +1901,46 @@ export default class API {
     })
   }
 
+  static pay_gm = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/gm`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static pay_gg = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/gg`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static pay_gc = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/gc`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static pay_hm = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/hm`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
   static pay_letter = async (obj) => {
     const {url, method, data} = obj || {}
     return await ajax({
@@ -2089,6 +2129,10 @@ export default class API {
 
   static postEventAttendIn = async () => {
     return await ajax({url: '/event/attendance/check/in', method: 'post'})
+  }
+
+  static postEventAttendGift = async () => {
+    return await ajax({url: '/event/attendance/random/gift', method: 'post'})
   }
 }
 
