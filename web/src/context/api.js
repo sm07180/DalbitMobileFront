@@ -1823,7 +1823,7 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({
       ...obj,
-      url: url || 'center/qna/del',
+      url: url || '/center/qna/del',
       method: method || 'POST',
       params: params
     })
