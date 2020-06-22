@@ -72,8 +72,6 @@ export default (props) => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [popupNotice, setPopupNotice] = useState(false)
-  // const [checkNoticeIdx, setCheckNoticeIdx] = useState('')
   const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
   const [liveAlign, setLiveAlign] = useState(1)
@@ -322,11 +320,8 @@ export default (props) => {
         position: arg
       }
     })
-    console.log(res.data)
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
-        setPopupNotice(true)
-        console.log(res.data)
         setPopupData(res.data)
       }
     } else {
@@ -574,11 +569,11 @@ export default (props) => {
         {popupData.length > 0 &&
           popupData.map((data, index) => {
             return (
-              <div key={index}>
+              <React.Fragment key={index}>
                 {Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
-                  <LayerPopupNotice data={data} setPopup={setPopupNotice} setCheckNoticeIdx={filterIdx} />
+                  <LayerPopupNotice data={data} selectedIdx={filterIdx} />
                 )}
-              </div>
+              </React.Fragment>
             )
           })}
 
