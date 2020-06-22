@@ -4,16 +4,16 @@ import BackBtn from '../static/ic_back.svg'
 import IconMoney from '../static/ic_money.svg'
 
 import Utility from 'components/lib/utility'
-export default props => {
-  const { rcptNm, phoneNo, Prdtprice, accountNo } = props.location.state ? props.location.state : props.history.goBack();
+export default (props) => {
+  const {rcptNm, phoneNo, Prdtprice, accountNo} = props.location.state ? props.location.state : props.history.goBack()
 
-  const addVat = value => {
-    value = parseInt(value);
-    return value += (value * 0.1)
+  const addVat = (value) => {
+    value = parseInt(value)
+    return (value += value * 0.1)
   }
 
   const handleClick = () => {
-    props.history.push('/');
+    props.history.push('/')
   }
   return (
     <>
@@ -69,7 +69,9 @@ export default props => {
           <span className="inquiry__number">1522-0251</span>
         </div>
 
-        <button className="chargeButton" onClick={handleClick}>확인</button>
+        <button className="chargeButton" onClick={handleClick}>
+          확인
+        </button>
       </div>
     </>
   )
