@@ -490,7 +490,7 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.4;
+    line-height: 1.33;
     letter-spacing: normal;
   }
   strong {
@@ -503,8 +503,8 @@ const NameWrap = styled.div`
     padding-left: 5px;
     color: #424242;
     font-size: 14px;
-    line-height: 20px;
-    vertical-align: top;
+    line-height: 1.33;
+    vertical-align: middle;
     transform: skew(-0.03deg);
   }
 
@@ -532,7 +532,7 @@ const FanBadgeWrap = styled.div`
     font-weight: 800;
     font-stretch: normal;
     font-style: normal;
-    line-height: 2.12;
+    line-height: 2.1;
     letter-spacing: -0.35px;
     padding: 0 7px 0 3px;
     text-align: left;
