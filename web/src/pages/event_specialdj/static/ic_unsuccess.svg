@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-3,.prefix__cls-5{fill:none}.prefix__cls-3{stroke:#ec455f;stroke-width:2px;stroke-linecap:round;stroke-miterlimit:10}.prefix__cls-4{stroke:none}
+        </style>
+    </defs>
+    <g id="prefix__ic_unsuccess" transform="translate(-304 -1754)">
+        <g id="prefix__prefix__ic_close_w" transform="translate(99.364 1694.364)">
+            <g id="prefix__타원_1" fill="none" stroke="#ec455f" stroke-width="2px" data-name="타원 1" transform="translate(206.636 61.636)">
+                <circle cx="14" cy="14" r="14" class="prefix__cls-4"/>
+                <circle cx="14" cy="14" r="13" class="prefix__cls-5"/>
+            </g>
+            <g id="prefix__prefix__ic_close" transform="translate(214.755 69.641)">
+                <g id="prefix__그룹_139" data-name="그룹 139">
+                    <path id="prefix__선_52" d="M0 0l11.767 11.624" class="prefix__cls-3" data-name="선 52"/>
+                    <path id="prefix__선_53" d="M0 11.624L11.767 0" class="prefix__cls-3" data-name="선 53"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

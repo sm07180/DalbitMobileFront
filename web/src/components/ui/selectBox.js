@@ -1,83 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, {useEffect, useState} from 'react'
+import styled from 'styled-components'
 
-export default props => {
-  const {
-    boxList,
-    onChangeEvent,
-    inlineStyling,
-    className,
-    type,
-    controllState
-  } = props;
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const [opened, setOpened] = useState(null);
+export default (props) => {
+  const {boxList, onChangeEvent, inlineStyling, className, type, controllState} = props
+  const [selectedIdx, setSelectedIdx] = useState(0)
+  const [opened, setOpened] = useState(null)
 
   if (boxList === undefined) {
-    throw new Error(
-      "Need a box list in select box -> exam: ([{value: '', text: ''}....])"
-    );
+    throw new Error("Need a box list in select box -> exam: ([{value: '', text: ''}....])")
   } else if (onChangeEvent === undefined) {
-    throw new Error('Need a on change event function');
+    throw new Error('Need a on change event function')
   }
 
   const selectBoxList = (value, idx) => {
-    onChangeEvent(value);
-    setSelectedIdx(idx);
+    onChangeEvent(value)
+    setSelectedIdx(idx)
     setTimeout(() => {
-      setOpened(false);
-    }, 200);
-  };
+      setOpened(false)
+    }, 200)
+  }
 
   const selectBlurEvent = () => {
-    setOpened(false);
-  };
+    setOpened(false)
+  }
 
-  const selectedClassName = opened ? 'open' : '';
-  const selectListClassName =
-    opened !== null ? (opened ? 'open' : 'close') : 'init';
-
-  useEffect(() => {
-    return () => {};
-  }, []);
+  const selectedClassName = opened ? 'open' : ''
+  const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
-    selectBoxList(boxList[0].value, 0);
-  }, [controllState]);
+    return () => {}
+  }, [])
+
+  useEffect(() => {
+    selectBoxList(boxList[0].value, 0)
+  }, [controllState])
 
   return (
-    <SelectBoxWrap
-      style={inlineStyling ? inlineStyling : {}}
-      className={className ? `wrapper ${className}` : 'wrapper'}
-    >
+    <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? `wrapper ${className}` : 'wrapper'}>
       <Selected
         className={`options ${selectedClassName}`}
         tabIndex={0}
         onClick={() => setOpened(opened ? false : true)}
-        onBlur={selectBlurEvent}
-      >
+        onBlur={selectBlurEvent}>
         {boxList[selectedIdx].text}
       </Selected>
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
           if (type === 'remove-init-data' && index === 0) {
-            return;
+            return
           }
           return (
             <div
               className="box-list"
               key={index}
               onMouseDown={() => selectBoxList(instance.value, index)}
-              onTouchStart={() => selectBoxList(instance.value, index)}
-            >
+              onTouchStart={() => selectBoxList(instance.value, index)}>
               {instance.text}
             </div>
-          );
+          )
         })}
       </SelectListWrap>
     </SelectBoxWrap>
-  );
-};
+  )
+}
 
 // const selectListFadeIn = keyframes`
 //   0% {
@@ -142,7 +127,7 @@ const SelectListWrap = styled.div`
       background-color: #f8f8f8;
     }
   }
-`;
+`
 
 const Selected = styled.div`
   position: relative;
@@ -193,11 +178,11 @@ const Selected = styled.div`
     /* transition-duration: 0.1s;
     transition-timing-function: ease-in; */
   }
-`;
+`
 
 const SelectBoxWrap = styled.div`
   position: absolute;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-`;
+`
