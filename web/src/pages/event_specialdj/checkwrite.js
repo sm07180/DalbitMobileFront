@@ -343,12 +343,28 @@ export default (props) => {
           </div>
           <div className="slectLine">~</div>
           <div className="slectBox">
-            <SelectBox boxList={selectlist} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
+            <SelectBox boxList={nextSelect2} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
           </div>
         </div>
       </div>
     )
   }
+
+  const nextSelect1 = (() => {
+    if (select1 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select1)
+      return selectlist.slice(idx + 1, selectlist.length)
+    }
+  })()
+
+  const nextSelect2 = (() => {
+    if (select2 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select2)
+      return selectlist.slice(idx + 1, selectlist.length)
+    }
+  })()
 
   return (
     <div>
@@ -389,9 +405,10 @@ export default (props) => {
             <div className="slectLine">~</div>
             <div className="slectBox">
               <SelectBox
-                boxList={selectlist}
+                boxList={nextSelect1}
                 className="specialdjSelect"
                 onChangeEvent={(e) => {
+                  console.log(select1)
                   setSelectsub1(e)
                 }}
               />
