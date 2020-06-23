@@ -100,7 +100,7 @@ export default (props) => {
   }
 
   {
-    toggleCheck.liveCast === 0 || toggleCheck.likeCast === 0 || toggleCheck.timeCast === 0 ? window.history.back() : ''
+    toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
   }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
