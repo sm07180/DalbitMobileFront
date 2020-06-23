@@ -536,7 +536,7 @@ export default (props) => {
       setFSocialNo(value)
       let currentDt
       if (value.length === 6) {
-        if (value.toString()[0] === '0') {
+        if (value[0] === '0' || value[0] === '1') {
           currentDt = '20' + value
         } else {
           currentDt = '19' + value
@@ -575,6 +575,7 @@ export default (props) => {
 
   const handleAccount = (e) => {
     if (e.target.value.toString().length > 20) {
+    } else if (isNaN(e.target.value)) {
     } else {
       setAccount(e.target.value)
     }
@@ -690,7 +691,7 @@ export default (props) => {
                 <div className="PayView__title">계좌번호</div>
                 <div className="PayView__input">
                   <input
-                    type="number"
+                    type="tel"
                     pattern="[0-9]*"
                     value={account}
                     className="PayView__input--text"

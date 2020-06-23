@@ -106,56 +106,6 @@ export default (props) => {
   const Broadcast1 = select1 + ' ~ ' + selectSub1
   const Broadcast2 = select2 + ' ~ ' + selectSub2
 
-  function handleSel(val) {
-    const sub1 = selectSub1 !== '' ? selectSub1 : false
-    const sel1 = select1 !== '' ? select1 : false
-
-    if (sub1 && (sel1 || val)) {
-      if (parseInt(val.split(':')[0]) > parseInt(sub1.split(':')[0])) {
-        context.action.alert({
-          msg: 'fdjsngsdiu',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-      } else {
-        setSelect1(val)
-      }
-    } else {
-    }
-
-    if (selectSub1 && parseInt(val.split(':')[0]) < parseInt(selectSub1.split(':')[0])) {
-    } else if (parseInt(val.split(':')[0]) > parseInt(selectSub1.split(':')[0])) {
-      setSelect1(val)
-    }
-  }
-
-  function handleSub(val) {
-    if (select1 === '1') {
-      context.action.alert({
-        msg: '시작 시간을 설정해 주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    const intSel1 = parseInt(select1.split(':')[0])
-    const intSel2 = parseInt(val.split(':')[0])
-    setSelectsub1(val)
-    if (intSel1 < intSel2) {
-    } else {
-      if (intSel1 && intSel2) {
-        context.action.alert({
-          msg: 'texttexttext',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-      }
-    }
-  }
-
   const handleChange = (event) => {
     const element = event.target
     const {value} = event.target
@@ -339,16 +289,41 @@ export default (props) => {
       <div className="selectBottom">
         <div className="list__selectBox list__selectBox--bottom">
           <div className="slectBox">
-            <SelectBox className="specialdjSelect" boxList={selectlist} onChangeEvent={(e) => setSelect2(e)} />
+            <SelectBox
+              className="specialdjSelect"
+              boxList={selectlist.slice(0, selectlist.length - 1)}
+              onChangeEvent={(e) => setSelect2(e)}
+            />
           </div>
           <div className="slectLine">~</div>
           <div className="slectBox">
-            <SelectBox boxList={selectlist} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
+            <SelectBox
+              boxList={nextSelect2}
+              className="specialdjSelect"
+              onChangeEvent={(e) => setSelectsub2(e)}
+              block={select2 === ''}
+            />
           </div>
         </div>
       </div>
     )
   }
+
+  const nextSelect1 = (() => {
+    if (select1 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select1)
+      return selectlist.slice(idx + 1)
+    }
+  })()
+
+  const nextSelect2 = (() => {
+    if (select2 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select2)
+      return selectlist.slice(idx + 1)
+    }
+  })()
 
   return (
     <div>
@@ -380,20 +355,22 @@ export default (props) => {
             <div className="slectBox">
               <SelectBox
                 className="specialdjSelect"
-                boxList={selectlist}
-                onChangeEvent={(e) => {
-                  setSelect1(e)
+                boxList={selectlist.slice(0, selectlist.length - 1)}
+                onChangeEvent={(id) => {
+                  setSelect1(id)
                 }}
               />
             </div>
             <div className="slectLine">~</div>
             <div className="slectBox">
               <SelectBox
-                boxList={selectlist}
+                boxList={nextSelect1}
                 className="specialdjSelect"
-                onChangeEvent={(e) => {
-                  setSelectsub1(e)
+                onChangeEvent={(id) => {
+                  setSelectsub1(id)
                 }}
+                block={select1 === ''}
+                testName="select222"
               />
             </div>
             <button className="list__plusButton" onClick={() => setMorelist(!moreList)}>

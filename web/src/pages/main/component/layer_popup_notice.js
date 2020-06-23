@@ -93,6 +93,9 @@ export default (props) => {
           <div className="popup__wrap">
             {popupData.popup_type == '0' && (
               <div className="popup__box popup__img">
+                <button className="btn-close" onClick={closePopup}>
+                  닫기
+                </button>
                 <div className="popup__inner">
                   <div className="contents">
                     <a href={popupData.linkUrl}>
@@ -101,10 +104,10 @@ export default (props) => {
                   </div>
                   {popupData.is_cookie == '1' && (
                     <div className="chk-label">
-                      <label htmlFor="chkimg">
+                      <label htmlFor={`chkimg${popupData.idx}`}>
                         <input
                           type="checkbox"
-                          id="chkimg"
+                          id={`chkimg${popupData.idx}`}
                           onClick={() => {
                             applyClick(popupData.idx, 'imgType')
                           }}
@@ -114,39 +117,43 @@ export default (props) => {
                     </div>
                   )}
                 </div>
-                <button className="btn-close" onClick={closePopup}>
-                  닫기
-                </button>
               </div>
             )}
             {popupData.popup_type == '1' && (
               <div className="popup__box popup__text">
-                {popupData.title && popupData.is_title_view == '1' && <div className="popup__title">{popupData.title}</div>}
+                <button
+                  className="btn-close"
+                  onClick={() => {
+                    applyClick(popupData.idx)
+                  }}>
+                  닫기
+                </button>
                 <div className="popup__inner">
-                  <p className="contents">
-                    {popupData.contents &&
-                      popupData.contents.split('\n').map((line, index) => {
-                        if (popupData.contents.match('\n')) {
-                          return (
-                            <React.Fragment key={index}>
-                              {line}
-                              <br />
-                            </React.Fragment>
-                          )
-                        } else {
-                          return <React.Fragment key={index}>{popupData.contents}</React.Fragment>
-                        }
-                      })}
-                  </p>
-                  {popupData.is_cookie == '1' && (
-                    <Checkbox
-                      className="checkbox"
-                      title="오늘하루 열지 않음"
-                      fnChange={(v) => setState({click1: v})}
-                      checked={state.click1}
-                    />
-                  )}
-                  {
+                  {popupData.title && popupData.is_title_view == '1' && <div className="popup__title">{popupData.title}</div>}
+                  <div className="inner">
+                    <p className="contents">
+                      {popupData.contents &&
+                        popupData.contents.split('\n').map((line, index) => {
+                          if (popupData.contents.match('\n')) {
+                            return (
+                              <React.Fragment key={index}>
+                                {line}
+                                <br />
+                              </React.Fragment>
+                            )
+                          } else {
+                            return <React.Fragment key={index}>{popupData.contents}</React.Fragment>
+                          }
+                        })}
+                    </p>
+                    {popupData.is_cookie == '1' && (
+                      <Checkbox
+                        className="checkbox"
+                        title="오늘하루 열지 않음"
+                        fnChange={(v) => setState({click1: v})}
+                        checked={state.click1}
+                      />
+                    )}
                     <button
                       className="btn-ok"
                       onClick={() => {
@@ -159,15 +166,8 @@ export default (props) => {
                       }}>
                       {popupData.buttonNm}
                     </button>
-                  }
+                  </div>
                 </div>
-                <button
-                  className="btn-close"
-                  onClick={() => {
-                    applyClick(popupData.idx)
-                  }}>
-                  닫기
-                </button>
               </div>
             )}
           </div>
