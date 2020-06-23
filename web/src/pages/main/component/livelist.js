@@ -138,10 +138,11 @@ const LiveList = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.33;
+    line-height: 1;
     letter-spacing: normal;
     text-align:center;
     padding-left: 6px;
+    padding-top: 2px;
     padding-right: 6px;
   }
 
