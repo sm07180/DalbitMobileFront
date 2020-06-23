@@ -4,10 +4,11 @@ import {IMG_SERVER} from 'context/config'
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './speacialdj.scss'
+import CloseBtn from './static/ic_close.svg'
 import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
 
-export default () => {
+export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
 
@@ -27,29 +28,22 @@ export default () => {
     }
   }
 
-  // function timeCheck(str) {
-  //   let color = 'red'
-  //   let message = ''
-  //   let src = speacialOff
-
-  //   return (
-  //     <div className={`checkList__talbeRight checkList__talbeRight--${color}`}>
-  //       <p>{message}</p>
-  //       <img src={src} />
-  //     </div>
-  //   )
-  // }
+  const goBack = () => {
+    history.goBack()
+  }
 
   useEffect(() => {
     specialdjCheck()
   }, [])
+
   return (
     <>
-      {/* <Header>
-        <div className="category-text">스페셜 DJ</div>
-      </Header> */}
-
       <div className="speacialdj">
+        <div className="djTitle">
+          <div className="djTitleSub">스페셜 DJ</div>
+          <img src={CloseBtn} className="djRefresh" onClick={goBack} />
+        </div>
+
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img03.png`} className="img100" />
@@ -162,7 +156,22 @@ export default () => {
             </div>
           </>
         ) : (
-          <>로그인안했을때</>
+          <>
+            <div className="buttonBox">
+              <button
+                className="button button--on"
+                onClick={() => {
+                  history.push({
+                    pathname: '/login',
+                    state: {
+                      state: 'event_specialdj'
+                    }
+                  })
+                }}>
+                로그인
+              </button>
+            </div>
+          </>
         )}
       </div>
     </>

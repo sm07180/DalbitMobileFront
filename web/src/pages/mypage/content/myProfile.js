@@ -233,7 +233,7 @@ const myProfile = props => {
 
         {profile.fanBadge.text && <FanBadgeWrap><span className='fan-badge' style={{
             background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
-        }}><img src={profile.fanBadge.icon} />{profile.fanBadge.text}</span></FanBadgeWrap>}
+        }}><img src={profile.fanBadge.icon} /><span>{profile.fanBadge.text}</span></span></FanBadgeWrap>}
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
 
@@ -490,7 +490,8 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.33;
+    line-height: 1;
+    padding-top: 2px;
     letter-spacing: normal;
   }
   strong {
@@ -532,16 +533,21 @@ const FanBadgeWrap = styled.div`
     font-weight: 800;
     font-stretch: normal;
     font-style: normal;
-    line-height: 2.1;
+    line-height: 1;
     letter-spacing: -0.35px;
     padding: 0 7px 0 3px;
     text-align: left;
     color: #ffffff;
   }
   
-  img {
+  .fan-badge img {
     width: 28px;
     height: 28px;
+  }
+  .fan-badge span {
+    height: 14px;
+    display: inline-block;
+    padding-top: 7px;
   }
 `
 

@@ -72,7 +72,13 @@ export default (props) => {
         if (!token.isLogin) {
           globalCtx.action.alert({
             callback: () => {
-              window.location.href = '/login'
+              // window.location.href = '/login'
+              history.push({
+                pathname: '/login',
+                state: {
+                  state: 'attend_event'
+                }
+              })
             },
 
             msg: message
@@ -206,9 +212,9 @@ export default (props) => {
 
           <ul>
             <li>
-              본 이벤트는 00시 기준 하루 동안 청취 또는 방송 시간의 합이 30분 이상일 때에만 참여할 수 있습니다.
+              본 이벤트는 00시 기준 종료된 방송 또는 청취 진행시간의 합이 30분 이상일 때 참여할 수 있습니다.
               <br />
-              예시) 23:40~00:10의 경우 전일 이벤트는 참여가 불가능 하며, 익일 이벤트에 10분의 데이터가 누적됩니다.
+              예시) 23:40-00:10의 경우 전일 출석 이벤트는 참여할 수 없으며, 오늘 출석 이벤트는 참여할 수 있습니다.
             </li>
             <li>본 이벤트는 한 대의 기기당 1일 1회 한 개의 계정만 참여할 수 있습니다.</li>
             <li>출석체크 선물 내역은 일주일 단위로 초기화 됩니다</li>
