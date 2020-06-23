@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 export default (props) => {
-  const {boxList, onChangeEvent, inlineStyling, className, type, controllState} = props
+  const {boxList, onChangeEvent, inlineStyling, className, type, controllState, block} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [opened, setOpened] = useState(null)
 
@@ -28,10 +28,6 @@ export default (props) => {
   const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
-    return () => {}
-  }, [])
-
-  useEffect(() => {
     selectBoxList(boxList[0].value, 0)
   }, [controllState])
 
@@ -44,7 +40,7 @@ export default (props) => {
         tabIndex={0}
         onTouchEnd={() => setOpened(opened ? false : true)}
         onBlur={selectBlurEvent}>
-        {boxList[selectedIdx].text}
+        {boxList[selectedIdx] !== undefined ? boxList[selectedIdx].text : boxList[0].text}
       </Selected>
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
@@ -57,6 +53,10 @@ export default (props) => {
               key={index}
               onTouchMove={() => setTouchMove(true)}
               onTouchEnd={() => {
+                if (block === true) {
+                  return
+                }
+
                 if (touchMove === false) {
                   selectBoxList(instance.value, index)
                 }
