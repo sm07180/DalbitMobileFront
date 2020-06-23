@@ -546,7 +546,7 @@ const FanBadgeWrap = styled.div`
   .fan-badge span {
     display: inline-block;
     vertical-align: middle;
-    line-height:28px;
+    line-height: 2.1;
   }
 `
 
