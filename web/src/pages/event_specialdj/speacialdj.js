@@ -45,7 +45,7 @@ export default (props) => {
 
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
-        <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img03.png`} className="img100" />
+        <img src={`${IMG_SERVER}/resource/mobile/event/200623/envet_img03.png`} className="img100" />
 
         {token.isLogin === true ? (
           <>
