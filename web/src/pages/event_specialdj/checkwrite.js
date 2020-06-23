@@ -19,6 +19,9 @@ export default (props) => {
   const [title, setTitle] = useState('')
   const [contents, setContents] = useState('')
   const [already, setalready] = useState('')
+  const [liveCast, setliveCast] = useState(0)
+  const [likeCast, setlikeCast] = useState(0)
+  const [timeCast, settimeCast] = useState(0)
 
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -95,6 +98,10 @@ export default (props) => {
 
   if (already === 1) {
     window.history.back()
+  }
+
+  {
+    liveCast === 0 || likeCast === 0 || timeCast === 0 ? window.history.back() : ''
   }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
