@@ -481,7 +481,6 @@ const NameWrap = styled.div`
   .specialIcon {
     display: inline-block;
     width: 62px;
-    height: 16px;
     margin-left: 4px;
     border-radius: 10px;
     background-color: #ec455f;
@@ -490,9 +489,10 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1;
-    padding-top: 2px;
     letter-spacing: normal;
+    height: 18px;
+    line-height: 1.6;
+    vertical-align: middle;
   }
   strong {
     color: #000;
@@ -504,7 +504,6 @@ const NameWrap = styled.div`
     padding-left: 5px;
     color: #424242;
     font-size: 14px;
-    line-height: 1.33;
     vertical-align: middle;
     transform: skew(-0.03deg);
   }
