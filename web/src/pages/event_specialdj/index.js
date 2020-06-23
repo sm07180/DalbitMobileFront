@@ -1,4 +1,3 @@
-import qs from 'query-string'
 import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import SpecialdjWrite from './checkwrite.js'
@@ -9,24 +8,12 @@ const Event_page = [
 ]
 
 export default () => {
-  const {webview, redirect} = qs.parse(location.search)
-
   return (
     <div>
       <Switch>
-        {/* 레이어팝업 */}
         {Event_page.map((item, index) => {
           const {path, component, exact} = item
-          return (
-            <Route
-              key={index}
-              path={`/event_specialdj/${path}`}
-              component={component}
-              exact={exact}
-              webview={webview}
-              status="no_gnb"
-            />
-          )
+          return <Route key={index} path={`/event_specialdj/${path}`} component={component} exact={exact} />
         })}
       </Switch>
     </div>
