@@ -79,6 +79,11 @@ export default (props) => {
     })()
   }, [coinType, walletType, page])
 
+  useEffect(() => {
+    if (context.walletIdx === 1) {
+      changeCoinTypeClick('byeol')
+    }
+  }, [context.walletIdx])
   return (
     <div>
       {/* 공통타이틀 */}
@@ -91,6 +96,7 @@ export default (props) => {
           className={coinType === 'dal' ? 'active' : ''}
           onClick={() => {
             changeCoinTypeClick('dal')
+            context.action.updateWalletIdx(0)
           }}>
           달
         </CoinTypeBtn>
@@ -98,6 +104,7 @@ export default (props) => {
           className={coinType === 'byeol' ? 'active' : ''}
           onClick={() => {
             changeCoinTypeClick('byeol')
+            context.action.updateWalletIdx(1)
           }}>
           별
         </CoinTypeBtn>
@@ -111,7 +118,7 @@ export default (props) => {
         </CoinCurrentStatus>
 
         <div>
-          {coinType === 'dal' ? (
+          {context.walletIdx === 0 ? (
             <>
               {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                 <CoinChargeBtn

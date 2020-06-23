@@ -2,10 +2,54 @@
   position: relative;
   height: 260px;
   background-color: #3dbbfa;
-  background-image: url(https://image.dalbitlive.com/event/attend/200617/main_title@2x.png);
-  background-size: 360px 257px;
-  background-position-x: center;
-  background-repeat: no-repeat;
+  // background-image: url(https://image.dalbitlive.com/event/attend/200622/main_title@2x.png);
+  // background-size: 360px 257px;
+  // background-position-x: center;
+  // background-repeat: no-repeat;
+
+  .img-leaves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 159px;
+    height: 167px;
+    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_leaves@2x.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
+  .img-bottle-moon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 71px;
+    height: 142px;
+    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_bottle_moon@2x.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
+  .img-big-rabbit {
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    width: 198px;
+    height: 132px;
+    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_big_rabbit@2x.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
+  .img-title {
+    position: absolute;
+    top: 30px;
+    left: calc(50% - 145px);
+    width: 290px;
+    height: 98px;
+    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_title@2x.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
 
   button.btn-back {
     position: absolute;
@@ -21,7 +65,7 @@
     position: absolute;
     bottom: 25px;
     left: calc(50% - 110px);
-    background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_daily_check_on@2x.png);
+    background-image: url(https://image.dalbitlive.com/event/attend/200622/btn_daily_check_on@2x.png);
     background-size: 100%;
 
     &.complete {

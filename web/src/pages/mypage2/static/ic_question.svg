@@ -1,0 +1,10 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12" viewBox="0 0 20 12">
+    <g id="prefix__ic_info" transform="translate(-2 -6)">
+        <rect id="prefix__사각형_3323" width="20" height="12" fill="#e0e0e0" data-name="사각형 3323" rx="6" transform="translate(2 6)"/>
+        <path id="prefix__사각형_314" fill="rgba(255,255,255,0)" d="M0 0H12V12H0z" data-name="사각형 314" opacity="0.51" transform="translate(6 6)"/>
+        <text id="prefix___" fill="#fff" data-name="?" font-family="NanumSquareB, NanumSquare" font-size="10px" letter-spacing="-0.025em" transform="translate(9.5 15)">
+            <tspan x="0" y="0">?</tspan>
+        </text>
+    </g>
+</svg>

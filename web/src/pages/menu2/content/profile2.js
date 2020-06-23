@@ -389,10 +389,11 @@ const MenuMypage = styled.div`
     }
   }
   .addCustomer {
-    margin-top: 16px;
+    margin-top: 12px;
   }
   .sub-nav {
-    padding-bottom: 20px;
+    margin-top: 12px;
+    padding-bottom: 23px;
     transform: skew(-0.03deg);
     a {
       display: block;

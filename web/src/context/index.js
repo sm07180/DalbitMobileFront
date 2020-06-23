@@ -66,6 +66,7 @@ const GlobalProvider = (props) => {
     prev: '',
     next: ''
   })
+  const [walletIdx, setWalletIdx] = useState(0)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -275,6 +276,9 @@ const GlobalProvider = (props) => {
     },
     updateReportDate: (string) => {
       setReportDate(string)
+    },
+    updateWalletIdx: (num) => {
+      setWalletIdx(num)
     }
   }
   //---------------------------------------------------------------------
@@ -314,7 +318,8 @@ const GlobalProvider = (props) => {
     toggleState,
     replyIdx,
     noticeState,
-    reportDate
+    reportDate,
+    walletIdx
   }
   return <Provider value={value}>{props.children}</Provider>
 }

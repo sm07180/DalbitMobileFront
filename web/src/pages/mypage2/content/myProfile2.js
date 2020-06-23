@@ -2,10 +2,10 @@
  * @file /mypage/content/my-profile.js
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
-import React, { useEffect, useContext, useState } from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 //route
-import { OS_TYPE } from 'context/config.js'
-import Room, { RoomJoin } from 'context/room'
+import {OS_TYPE} from 'context/config.js'
+import Room, {RoomJoin} from 'context/room'
 //styled
 import styled from 'styled-components'
 //component
@@ -13,15 +13,16 @@ import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
+import LayerPopupExp from './layer_popup_exp.js'
 import LiveIcon from '../component/ic_live.svg'
 // context
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import { WIDTH_TABLET_S, IMG_SERVER } from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
-import { Context } from 'context'
+import {Context} from 'context'
 //util
-import Utility, { printNumber } from 'components/lib/utility'
-import { saveUrlAndRedirect } from 'components/lib/link_control.js'
+import Utility, {printNumber} from 'components/lib/utility'
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import FemaleIcons from '../static/ico_female.svg'
 import MaleIcons from '../static/ico_male.svg'
 import KoreaIcons from '../static/ico_korea.svg'
@@ -32,23 +33,18 @@ import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import ReportIcon from '../component/ic_report.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
+import QuestionIcon from '../static/ic_question.svg'
 //render -----------------------------------------------------------------
-const myProfile = props => {
-  const { webview } = props
+const myProfile = (props) => {
+  const {webview} = props
 
   //context
   const context = useContext(Context)
-  const {
-    mypageReport,
-    close,
-    closeFanCnt,
-    closeStarCnt,
-    closePresent
-  } = context
+  const {mypageReport, close, closeFanCnt, closeStarCnt, closePresent} = context
 
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
-  const { profile } = props
+  const {profile} = props
 
   const myProfileNo = context.profile.memNo
   //zoom
@@ -60,7 +56,8 @@ const myProfile = props => {
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [reportShow, SetShowReport] = useState(false)
-
+  //pop
+  const [popupExp, setPopupExp] = useState(false)
   async function fetchDataFanRegist(myProfileNo) {
     const res = await Api.fan_change({
       data: {
@@ -82,7 +79,7 @@ const myProfile = props => {
     }
   }
   //function:팬해제
-  const Cancel = myProfileNo => {
+  const Cancel = (myProfileNo) => {
     async function fetchDataFanCancel(myProfileNo) {
       const res = await Api.mypage_fan_cancel({
         data: {
@@ -106,7 +103,7 @@ const myProfile = props => {
     fetchDataFanCancel(myProfileNo)
   }
   //function:팬등록
-  const fanRegist = myProfileNo => {
+  const fanRegist = (myProfileNo) => {
     fetchDataFanRegist(myProfileNo)
   }
   //func
@@ -127,33 +124,22 @@ const myProfile = props => {
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
       } else {
-        const { memNo, profImg, rank } = profile.fanRank[index]
+        const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
         if (memNo == myProfileNo) {
           link = `/menu/profile`
         } else {
-          link = webview
-            ? `/mypage/${memNo}?webview=${webview}`
-            : `/mypage/${memNo}`
+          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
           <div key={`fan-${index}`} onClick={() => saveUrlAndRedirect(link)}>
-            <FanRank
-              style={{ backgroundImage: `url(${profImg.thumb88x88})` }}
-              className={`rank${rank}`}
-            ></FanRank>
+            <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </div>
         )
       }
     }
     result = result.concat(
-      <button
-        className="moreFan"
-        onClick={() =>
-          profile.fanRank.length > 0 && context.action.updateClose(true)
-        }
-        key="btn"
-      >
+      <button className="moreFan" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn">
         <span></span>
       </button>
     )
@@ -171,7 +157,7 @@ const myProfile = props => {
     )
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -214,7 +200,7 @@ const myProfile = props => {
   }, [mypageReport, close, closeFanCnt, closeStarCnt, closePresent])
 
   if (profile === null) {
-    return <div style={{ minHeight: '400px' }}></div>
+    return <div></div>
   }
   //func back
   const goBack = () => {
@@ -231,49 +217,40 @@ const myProfile = props => {
           {urlrStr !== context.token.memNo && (
             <>
               <button className="closeBtn" onClick={goBack}></button>
-              <div
-                onClick={() => context.action.updateMypageReport(true)}
-                className="reportIcon"
-              ></div>
+              <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
             </>
           )}
-          <ProfileImg
-            url={profile.profImg ? profile.profImg['thumb190x190'] : ''}
-          >
-            <div
-              className="holder"
-              style={{ backgroundImage: `url(${profile.holder})` }}
-              onClick={() => figureZoom()}
-            ></div>
+          <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+            <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
             {profile.roomNo !== '' && (
               <button
                 className="liveIcon"
                 onClick={() => {
                   RoomJoin(profile.roomNo)
-                }}
-              >
+                }}>
                 <img src={LiveIcon}></img>
               </button>
             )}
             <figure onClick={() => figureZoom()}>
-              <img
-                src={profile.profImg ? profile.profImg['thumb190x190'] : ''}
-                alt={profile.nickNm}
-              />
+              <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
             </figure>
             {Zoom === true && (
               <div className="zoom" onClick={() => setZoom(false)}>
-                <img
-                  src={profile.profImg ? profile.profImg['url'] : ''}
-                  alt={profile.nickNm}
-                  className="zoomImg"
-                />
+                <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
               </div>
             )}
 
             <span>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </span>
+            <div className="expBtnWrap">
+              <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                경험치
+              </button>
+              <a href={`/level`} className="btn-level">
+                레벨
+              </a>
+            </div>
           </ProfileImg>
 
           <ContentWrap>
@@ -284,12 +261,10 @@ const myProfile = props => {
                 {<em className="nationIcon"></em>}
                 {profile.gender === 'f' && <em className="femaleIcon"></em>}
                 {profile.gender === 'm' && <em className="maleIcon"></em>}
-                {profile.isSpecial === true && (
-                  <em className="specialIcon">스페셜 DJ</em>
-                )}
+                {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
             </NameWrap>
-
+            <div className="dailyTop">일간 Top1</div>
             {/* <ProfileMsg>{profile.profMsg}</ProfileMsg> */}
             <ButtonWrap>{createFanList()}</ButtonWrap>
             <div className="categoryCntWrap">
@@ -298,32 +273,24 @@ const myProfile = props => {
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.fanCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
               </div>
               <div onClick={() => starContext()}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.starCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.starCnt)}</em>
               </div>
               <div>
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.likeTotCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.likeTotCnt)}</em>
               </div>
               {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-                <div
-                  onClick={() => context.action.updateMypageReport(true)}
-                ></div>
+                <div onClick={() => context.action.updateMypageReport(true)}></div>
               )}
             </div>
             {/* <CountingWrap>
@@ -345,17 +312,13 @@ const myProfile = props => {
                         onClick={() => {
                           context.action.updateClosePresent(true)
                         }}
-                        className="giftbutton"
-                      >
+                        className="giftbutton">
                         {/* <span></span> */}
                         <em>선물하기</em>
                       </button>
                     )}
                     {profile.isFan === 0 && (
-                      <button
-                        className="fanRegist"
-                        onClick={() => Cancel(myProfileNo)}
-                      >
+                      <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
                         팬
                       </button>
                     )}
@@ -369,21 +332,12 @@ const myProfile = props => {
               </InfoConfigBtn>
             </GiftButtonWrap>
           </ContentWrap>
-          {context.mypageReport === true && (
-            <ProfileReport {...props} reportShow={reportShow} />
-          )}
-          {context.close === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />
-          )}
-          {context.closeFanCnt === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="팬" />
-          )}
-          {context.closeStarCnt === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="스타" />
-          )}
-          {context.closePresent === true && (
-            <ProfilePresent {...props} reportShow={reportShow} name="선물" />
-          )}
+          {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
+          {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
+          {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
+          {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
+          {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
+          {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
         </MyProfile>
       </ProfileWrap>
     </>
@@ -421,8 +375,8 @@ const GiftButtonWrap = styled.div`
 const ProfileWrap = styled.div`
   padding-top: 87px;
   position: relative;
-  background-color: #424242;
-  min-height: 400px;
+  /* background-color: #424242; */
+  /* min-height: 400px; */
 
   .plus {
     display: block;
@@ -451,6 +405,57 @@ const ProfileWrap = styled.div`
       background-color: #fff;
     }
   }
+  .expBtnWrap {
+    display: flex;
+    justify-content: center;
+    margin: 4px auto 0 auto;
+    > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 20px;
+      border-radius: 14px;
+      border: solid 1px #eeeeee;
+      background-color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+
+      color: #757575;
+      :after {
+        content: '';
+
+        width: 20px;
+        height: 12px;
+
+        background: url(${QuestionIcon}) no-repeat center center / cover;
+        margin-left: 7px;
+      }
+    }
+    > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 2px;
+      width: 72px;
+      height: 20px;
+      border-radius: 14px;
+      border: solid 1px #eeeeee;
+      background-color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+
+      color: #757575;
+      :after {
+        content: '';
+
+        height: 12px;
+        width: 20px;
+        background: url(${QuestionIcon}) no-repeat center center / cover;
+        margin-left: 7px;
+      }
+    }
+  }
 `
 const PurpleWrap = styled.div`
   position: absolute;
@@ -465,9 +470,10 @@ const MyProfile = styled.div`
    display: flex;
   flex-direction: row;
     background-color:#fff;
-  width: calc(100% - 16px);
-  border-radius:20px;
-  min-height: 304px;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px;
+  /* width: calc(100% - 16px); */
+  /* min-height: 304px; */
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
 position: relative;
@@ -588,8 +594,7 @@ z-index:3;
     flex-direction: column;
     padding: 0;
     
-    /* padding-top: ${props =>
-      props.webview && props.webview === 'new' ? '48px' : ''}; */
+    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 
 `
@@ -625,7 +630,7 @@ const ProfileImg = styled.div`
     height: 100px;
     margin: 10px auto 0 auto;
     border-radius: 50%;
-    background: url(${props => props.url}) no-repeat center center/ cover;
+    background: url(${(props) => props.url}) no-repeat center center/ cover;
     img {
       display: none;
     }
@@ -634,15 +639,15 @@ const ProfileImg = styled.div`
   span {
     display: inline-block;
     position: relative;
-    min-width: 118px;
-    height: 20px;
+    max-width: 70%;
+    height: 28px;
     margin-top: 20px;
     border-radius: 13px;
     background: #f54640;
     color: #fff;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
-    line-height: 20px;
+    line-height: 28px;
     text-align: center;
     letter-spacing: -0.3px;
     z-index: 2;
@@ -677,6 +682,20 @@ const ContentWrap = styled.div`
       display: flex;
       justify-content: center;
     }
+  }
+
+  .dailyTop {
+    width: 108px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 14px;
+    margin: 9px auto 0 auto;
+    background-image: linear-gradient(91deg, #13a84f 0%, #37b3b9 100%);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    text-align: center;
+    color: #ffffff;
   }
 `
 //------------------------------------------------------
@@ -898,6 +917,7 @@ const InfoConfigBtn = styled.div`
     display: flex;
     text-align: center;
     margin-top: 10px;
+    margin-bottom: 14px;
     & button {
       display: flex;
       justify-content: center;
@@ -923,8 +943,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center
-          center / cover;
+        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
       }
       & em {
         display: block;

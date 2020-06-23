@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 export default (props) => {
-  const {boxList, onChangeEvent, inlineStyling, className, type, controllState} = props
+  const {boxList, onChangeEvent, inlineStyling, className, type, controllState, block} = props
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [opened, setOpened] = useState(null)
 
@@ -28,21 +28,19 @@ export default (props) => {
   const selectListClassName = opened !== null ? (opened ? 'open' : 'close') : 'init'
 
   useEffect(() => {
-    return () => {}
-  }, [])
-
-  useEffect(() => {
     selectBoxList(boxList[0].value, 0)
   }, [controllState])
+
+  const [touchMove, setTouchMove] = useState(false)
 
   return (
     <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? `wrapper ${className}` : 'wrapper'}>
       <Selected
         className={`options ${selectedClassName}`}
         tabIndex={0}
-        onClick={() => setOpened(opened ? false : true)}
+        onTouchEnd={() => setOpened(opened ? false : true)}
         onBlur={selectBlurEvent}>
-        {boxList[selectedIdx].text}
+        {boxList[selectedIdx] !== undefined ? boxList[selectedIdx].text : boxList[0].text}
       </Selected>
       <SelectListWrap className={selectListClassName}>
         {boxList.map((instance, index) => {
@@ -53,8 +51,17 @@ export default (props) => {
             <div
               className="box-list"
               key={index}
-              onMouseDown={() => selectBoxList(instance.value, index)}
-              onTouchStart={() => selectBoxList(instance.value, index)}>
+              onTouchMove={() => setTouchMove(true)}
+              onTouchEnd={() => {
+                if (block === true) {
+                  return
+                }
+
+                if (touchMove === false) {
+                  selectBoxList(instance.value, index)
+                }
+                setTouchMove(false)
+              }}>
               {instance.text}
             </div>
           )

@@ -72,7 +72,13 @@ export default (props) => {
         if (!token.isLogin) {
           globalCtx.action.alert({
             callback: () => {
-              window.location.href = '/login'
+              // window.location.href = '/login'
+              history.push({
+                pathname: '/login',
+                state: {
+                  state: 'attend_event'
+                }
+              })
             },
 
             msg: message
@@ -142,6 +148,11 @@ export default (props) => {
             </button>
           </Link>
 
+          <div className="img-leaves"></div>
+          <div className="img-bottle-moon"></div>
+          <div className="img-big-rabbit"></div>
+          <div className="img-title"></div>
+
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
         </div>
 
@@ -201,19 +212,19 @@ export default (props) => {
 
           <ul>
             <li>
-              본 이벤트는 00시 기준 하루 동안 청취 또는 방송 시간의 합이 30분 이상일 때에만 참여할 수 있습니다. 예시)
-              23:40~00:10의 경우 전일 이벤트는 참여가 불가능 하며, 익일 이벤트에 10분의 데이터가 누적됩니다.
+              본 이벤트는 00시 기준 종료된 방송 또는 청취 진행시간의 합이 30분 이상일 때 참여할 수 있습니다.
+              <br />
+              예시) 23:40-00:10의 경우 전일 출석 이벤트는 참여할 수 없으며, 오늘 출석 이벤트는 참여할 수 있습니다.
             </li>
             <li>본 이벤트는 한 대의 기기당 1일 1회 한 개의 계정만 참여할 수 있습니다.</li>
-            <li>매일 선물 테이블을 요일별 달성 시 해당 선물이 지급됩니다.</li>
-            <li>매일 선물 테이블은 일주일 주기로 초기화됩니다.</li>
+            <li>출석체크 선물 내역은 일주일 단위로 초기화 됩니다</li>
             <li>달 선물은 [마이페이지 &gt; 내지갑]으로 자동 지급됩니다.</li>
             <li>보너스 랜덤 선물은 경험치(50, 70, 100, 200, 300, 500 중 지급)와 달(0~10개 중 지급)로 구성되어 있습니다.</li>
             <li>
               보너스 랜덤 선물은 일주일을 모두 출석 체크한 대상에게 지급되며 생성된 ‘더 줘!’ 버튼을 선택시 선물 받기가 완료됩니다.{' '}
             </li>
             <li>‘더 줘!’ 버튼은 일요일과 월요일에만 선택이 가능합니다.</li>
-            <li>본 이벤트는 당사 정책에 따라 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
+            <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
           </ul>
         </div>
       </div>

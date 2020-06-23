@@ -244,6 +244,10 @@ const myProfile = props => {
           </div>
         </NameWrap>
 
+        {profile.fanBadge.text && <FanBadgeWrap><span className='fan-badge' style={{
+          background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
+        }}><img src={profile.fanBadge.icon} /><span>{profile.fanBadge.text}</span></span></FanBadgeWrap>}
+
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
           <span onClick={() => fanContext()}>
@@ -511,6 +515,38 @@ const LevelStatus = styled.div`
     line-height: 13px;
   }
 `
+
+//팬뱃지
+const FanBadgeWrap = styled.div`
+  margin-top: 10px;
+  text-align: center;
+
+  .fan-badge {
+    display: inline-block;
+    height: 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: -0.35px;
+    padding: 0 10px 0 3px;
+    text-align: left;
+    color: #ffffff;
+  }
+  
+  .fan-badge img {
+    width: 28px;
+    height: 28px;
+  }
+  .fan-badge span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.2;
+  }
+`
+
 //닉네임
 const NameWrap = styled.div`
   margin-top: 10px;
@@ -526,7 +562,6 @@ const NameWrap = styled.div`
   .specialIcon {
     display: inline-block;
     width: 62px;
-    height: 16px;
     margin-left: 4px;
     border-radius: 10px;
     background-color: #ec455f;
@@ -535,14 +570,21 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.33;
     letter-spacing: normal;
+    height: 18px;
+    line-height: 1.6;
+    vertical-align: middle;
+  }
+  strong {
+    color: #000;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 800;
   }
   span {
     padding-left: 5px;
     color: #424242;
     font-size: 14px;
-    line-height: 20px;
     vertical-align: middle;
     transform: skew(-0.03deg);
   }

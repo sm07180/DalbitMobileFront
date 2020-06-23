@@ -1,29 +1,23 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import styled from 'styled-components'
-import {Link, Switch, Redirect} from 'react-router-dom'
-
-// component
-import Layout from 'pages/common/layout'
-
 // context
 import {Context} from 'context'
-import {Hybrid, isHybrid} from 'context/hybrid'
-import {OS_TYPE} from 'context/config.js'
-
-// static
-import {IMG_SERVER} from 'context/config'
-import closeBtn from 'pages/menu/static/ic_close.svg'
-import naverLogo from './static/naver_logo.svg'
-import kakaoLogo from './static/kakao_logo.svg'
-import googleLogo from './static/google_logo.svg'
-import facebookLogo from './static/facebook_logo.svg'
-import appleLogo from './static/apple_logo.svg'
-
-import qs from 'query-string'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
+import {OS_TYPE} from 'context/config.js'
+import {Hybrid, isHybrid} from 'context/hybrid'
+// component
+import Layout from 'pages/common/layout'
+import closeBtn from 'pages/menu/static/ic_close.svg'
+import qs from 'query-string'
+import React, {useContext, useEffect, useRef, useState} from 'react'
+import {Redirect, Switch} from 'react-router-dom'
+import styled from 'styled-components'
+import appleLogo from './static/apple_logo.svg'
+import facebookLogo from './static/facebook_logo.svg'
+import googleLogo from './static/google_logo.svg'
+import kakaoLogo from './static/kakao_logo.svg'
+import naverLogo from './static/naver_logo.svg'
 
-export default props => {
+export default (props) => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -38,12 +32,12 @@ export default props => {
   const [appleAlert, setAppleAlert] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
-  const changePhoneNum = e => {
+  const changePhoneNum = (e) => {
     const target = e.currentTarget
     setPhoneNum(target.value.toLowerCase())
   }
 
-  const changePassword = e => {
+  const changePassword = (e) => {
     const target = e.currentTarget
     setPassword(target.value.toLowerCase())
   }
@@ -62,8 +56,8 @@ export default props => {
       return
     }
     let sessionRoomNo = sessionStorage.getItem('room_no')
-    if(sessionRoomNo === undefined){
-        sessionRoomNo = "";
+    if (sessionRoomNo === undefined) {
+      sessionRoomNo = ''
     }
     const fetchPhoneLogin = async (phone, pw) => {
       setFetching(true)
@@ -76,71 +70,74 @@ export default props => {
         }
       })
 
-        if (loginInfo.result === 'success') {
-            const {memNo} = loginInfo.data
-
-            //--##
-            /**
-             * @마이페이지 redirect
-             */
-            let mypageURL = ''
-            const _parse = qs.parse(location.search)
-            if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-                mypageURL = `/mypage/${memNo}`
-                if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
-            }
-
-            globalCtx.action.updateToken(loginInfo.data)
-            const profileInfo = await Api.profile({params: {memNo}})
-
-            if (profileInfo.result === 'success') {
-                if (isHybrid()) {
-                    if (webview && webview === 'new') {
-                        Hybrid('GetLoginTokenNewWin', loginInfo.data)
-                    } else {
-                        Hybrid('GetLoginToken', loginInfo.data)
-                    }
-                }
-
-                if (redirect) {
-                    const decodedUrl = decodeURIComponent(redirect)
-                    return (window.location.href = decodedUrl)
-                }
-                globalCtx.action.updateProfile(profileInfo.data)
-
-                //--##마이페이지 Redirect
-                if (mypageURL !== '') {
-                    return (window.location.href = mypageURL)
-                }
-
-                return props.history.push('/')
-            }
-        } else if (loginInfo.result === 'fail') {
-            if (loginInfo.code === '-1') {
-                globalCtx.action.alert({
-                    msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
-                })
-            } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-                let msg = loginInfo.data.opMsg;
-                if(msg === undefined || msg === null || msg === ''){
-                    msg = loginInfo.message
-                }
-                globalCtx.action.alert({
-                    title: '달빛라이브 사용 제한',
-                    msg: `${msg}`,
-                    callback: () => {
-                        if (webview && webview === 'new') {
-                            Hybrid('CloseLayerPopUp')
-                        }
-                    }
-                })
-            } else {
-                globalCtx.action.alert({
-                    title: '로그인 실패',
-                    msg: `${loginInfo.message}`
-                })
-            }
+      if (loginInfo.result === 'success') {
+        const {memNo} = loginInfo.data
+        console.log('1')
+        //--##
+        /**
+         * @마이페이지 redirect
+         */
+        let mypageURL = ''
+        const _parse = qs.parse(location.search)
+        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          mypageURL = `/mypage/${memNo}`
+          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
+
+        globalCtx.action.updateToken(loginInfo.data)
+        const profileInfo = await Api.profile({params: {memNo}})
+
+        if (profileInfo.result === 'success') {
+          if (isHybrid()) {
+            if (webview && webview === 'new') {
+              Hybrid('GetLoginTokenNewWin', loginInfo.data)
+            } else {
+              Hybrid('GetLoginToken', loginInfo.data)
+            }
+          }
+
+          if (redirect) {
+            const decodedUrl = decodeURIComponent(redirect)
+            return (window.location.href = decodedUrl)
+          }
+          globalCtx.action.updateProfile(profileInfo.data)
+
+          //--##마이페이지 Redirect
+          if (mypageURL !== '') {
+            return (window.location.href = mypageURL)
+          }
+
+          if (props.location.state) {
+            return (window.location.href = `/${props.location.state.state}`)
+          }
+          return props.history.push('/')
+        }
+      } else if (loginInfo.result === 'fail') {
+        if (loginInfo.code === '-1') {
+          globalCtx.action.alert({
+            msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
+          })
+        } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
+          let msg = loginInfo.data.opMsg
+          if (msg === undefined || msg === null || msg === '') {
+            msg = loginInfo.message
+          }
+          globalCtx.action.alert({
+            title: '달빛라이브 사용 제한',
+            msg: `${msg}`,
+            callback: () => {
+              if (webview && webview === 'new') {
+                Hybrid('CloseLayerPopUp')
+              }
+            }
+          })
+        } else {
+          globalCtx.action.alert({
+            title: '로그인 실패',
+            msg: `${loginInfo.message}`
+          })
+        }
+      }
 
       setFetching(false)
     }
@@ -174,7 +171,7 @@ export default props => {
     }
   }
 
-  const fetchSocialData = async vendor => {
+  const fetchSocialData = async (vendor) => {
     if (vendor === 'apple') {
       setTimeout(() => {
         setAppleAlert(true)
@@ -207,7 +204,7 @@ export default props => {
   useEffect(() => {
     if (window.sessionStorage) {
       const exceptionList = ['room_no', 'room_info', 'push_type']
-      Object.keys(window.sessionStorage).forEach(key => {
+      Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
@@ -243,7 +240,7 @@ export default props => {
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   const {keyCode} = e
                   // Number 96 - 105 , 48 - 57
                   // Delete 8, 46
@@ -299,7 +296,7 @@ export default props => {
                 </button>
                 {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
                   (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                  (customHeader['os'] === OS_TYPE['Desktop'])) && (
+                  customHeader['os'] === OS_TYPE['Desktop']) && (
                   <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
                     <img className="icon" src={googleLogo} />
                   </button>
@@ -324,31 +321,31 @@ const SocialLoginWrap = styled.div`
     justify-content: space-around; */
     /* align-items: center; */
     text-align: center;
-    
+
     .social-apple-btn {
       width: 48px;
       height: 48px;
       border-radius: 25px;
       border: solid 1px #000000;
       background-color: #000000;
-      margin-right:12px;
+      margin-right: 12px;
     }
-    
+
     .social-facebook-btn {
       width: 48px;
       height: 48px;
       border-radius: 25px;
       border: solid 1px #4064ad;
       background-color: #ffffff;
-      margin-right:12px;
+      margin-right: 12px;
     }
-    
+
     .social-naver-btn {
       width: 48px;
       height: 48px;
       border-radius: 25px;
       background-color: #2db400;
-      margin-right:12px;
+      margin-right: 12px;
     }
 
     .social-kakao-btn {
@@ -356,7 +353,7 @@ const SocialLoginWrap = styled.div`
       height: 48px;
       border-radius: 25px;
       background-color: #f9e000;
-      margin-right:12px;
+      margin-right: 12px;
     }
 
     .social-google-btn {
