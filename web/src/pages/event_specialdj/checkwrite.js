@@ -18,6 +18,7 @@ export default (props) => {
   const [broadcast2, setBroadcast2] = useState('')
   const [title, setTitle] = useState('')
   const [contents, setContents] = useState('')
+  const [already, setalready] = useState('')
 
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -58,9 +59,7 @@ export default (props) => {
           msg: '작성 완료되었습니다.',
           callback: () => {
             // history.goBack()
-
             history.push('/')
-
             // history.push({
             //   pathname: "",
             //   state: {
@@ -72,14 +71,30 @@ export default (props) => {
         })
       })
     } else {
-      //   setTimeout(() => {
-      //     context.action.alert({
-      //       msg: res.message,
-      //       callback: () => {
-      //       }
-      //     });
-      // }
+      setTimeout(() => {
+        context.action.alert({
+          msg: res.message,
+          callback: () => {}
+        })
+      })
     }
+  }
+
+  async function specialdjCheck() {
+    const res = await Api.event_specialdj({})
+    const {result, data} = res
+    if (result === 'success') {
+      setalready(data.already)
+    } else {
+    }
+  }
+
+  useEffect(() => {
+    specialdjCheck()
+  }, [])
+
+  if (already === 1) {
+    window.history.back()
   }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
@@ -303,6 +318,10 @@ export default (props) => {
 
   const goBack = () => {
     window.history.back()
+  }
+
+  const goHome = () => {
+    history.push('/')
   }
 
   useEffect(() => {

@@ -12,9 +12,9 @@ export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
 
-  const [liveCast, setliveCast] = useState(1)
-  const [likeCast, setlikeCast] = useState(1)
-  const [timeCast, settimeCast] = useState(1)
+  const [liveCast, setliveCast] = useState(0)
+  const [likeCast, setlikeCast] = useState(0)
+  const [timeCast, settimeCast] = useState(0)
   const [already, setalready] = useState('')
   const globalCtx = useContext(Context)
   const {token} = globalCtx
@@ -28,6 +28,10 @@ export default (props) => {
     }
   }
 
+  const goBack = () => {
+    history.goBack()
+  }
+
   useEffect(() => {
     specialdjCheck()
   }, [])
@@ -37,7 +41,7 @@ export default (props) => {
       <div className="speacialdj">
         <div className="djTitle">
           <div className="djTitleSub">스페셜 DJ</div>
-          <img src={CloseBtn} className="djRefresh" onClick={() => closePopup()} />
+          <img src={CloseBtn} className="djRefresh" onClick={goBack} />
         </div>
 
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
@@ -157,7 +161,12 @@ export default (props) => {
               <button
                 className="button button--on"
                 onClick={() => {
-                  history.push('/login')
+                  history.push({
+                    pathname: '/login',
+                    state: {
+                      state: 'event_specialdj'
+                    }
+                  })
                 }}>
                 로그인
               </button>

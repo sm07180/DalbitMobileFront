@@ -72,7 +72,7 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
-
+        console.log('1')
         //--##
         /**
          * @마이페이지 redirect
@@ -107,6 +107,9 @@ export default (props) => {
             return (window.location.href = mypageURL)
           }
 
+          if (props.location.state) {
+            return (window.location.href = `/${props.location.state.state}`)
+          }
           return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
