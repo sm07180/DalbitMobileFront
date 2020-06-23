@@ -19,9 +19,7 @@ export default (props) => {
   const [title, setTitle] = useState('')
   const [contents, setContents] = useState('')
   const [already, setalready] = useState('')
-  const [liveCast, setliveCast] = useState(0)
-  const [likeCast, setlikeCast] = useState(0)
-  const [timeCast, settimeCast] = useState(0)
+  const [toggleCheck, setToggleCheck] = useState({})
 
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -87,6 +85,7 @@ export default (props) => {
     const res = await Api.event_specialdj({})
     const {result, data} = res
     if (result === 'success') {
+      setToggleCheck(res.data)
       setalready(data.already)
     } else {
     }
@@ -96,12 +95,12 @@ export default (props) => {
     specialdjCheck()
   }, [])
 
-  if (already === 1) {
+  if (toggleCheck.already === 1) {
     window.history.back()
   }
 
   {
-    liveCast === 0 || likeCast === 0 || timeCast === 0 ? window.history.back() : ''
+    toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
   }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
@@ -344,12 +343,28 @@ export default (props) => {
           </div>
           <div className="slectLine">~</div>
           <div className="slectBox">
-            <SelectBox boxList={selectlist} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
+            <SelectBox boxList={nextSelect2} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
           </div>
         </div>
       </div>
     )
   }
+
+  const nextSelect1 = (() => {
+    if (select1 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select1)
+      return selectlist.slice(idx + 1, selectlist.length)
+    }
+  })()
+
+  const nextSelect2 = (() => {
+    if (select2 === '') return selectlist
+    else {
+      const idx = selectlist.findIndex((item) => item.value === select2)
+      return selectlist.slice(idx + 1, selectlist.length)
+    }
+  })()
 
   return (
     <div>
@@ -390,9 +405,10 @@ export default (props) => {
             <div className="slectLine">~</div>
             <div className="slectBox">
               <SelectBox
-                boxList={selectlist}
+                boxList={nextSelect1}
                 className="specialdjSelect"
                 onChangeEvent={(e) => {
+                  console.log(select1)
                   setSelectsub1(e)
                 }}
               />

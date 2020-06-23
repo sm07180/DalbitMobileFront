@@ -531,7 +531,7 @@ const FanBadgeWrap = styled.div`
     font-style: normal;
     line-height: 1;
     letter-spacing: -0.35px;
-    padding: 0 7px 0 3px;
+    padding: 0 10px 0 3px;
     text-align: left;
     color: #ffffff;
   }
@@ -541,9 +541,9 @@ const FanBadgeWrap = styled.div`
     height: 28px;
   }
   .fan-badge span {
-    height: 14px;
     display: inline-block;
-    padding-top: 7px;
+    vertical-align: middle;
+    line-height: 2.2;
   }
 `
 
@@ -562,7 +562,6 @@ const NameWrap = styled.div`
   .specialIcon {
     display: inline-block;
     width: 62px;
-    height: 16px;
     margin-left: 4px;
     border-radius: 10px;
     background-color: #ec455f;
@@ -571,15 +570,21 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 0.8;
-    padding-top: 3px;
     letter-spacing: normal;
+    height: 18px;
+    line-height: 1.6;
+    vertical-align: middle;
+  }
+  strong {
+    color: #000;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 800;
   }
   span {
     padding-left: 5px;
     color: #424242;
     font-size: 14px;
-    line-height: 1.33;
     vertical-align: middle;
     transform: skew(-0.03deg);
   }

@@ -35,12 +35,14 @@ export default (props) => {
     selectBoxList(boxList[0].value, 0)
   }, [controllState])
 
+  const [touchMove, setTouchMove] = useState(false)
+
   return (
     <SelectBoxWrap style={inlineStyling ? inlineStyling : {}} className={className ? `wrapper ${className}` : 'wrapper'}>
       <Selected
         className={`options ${selectedClassName}`}
         tabIndex={0}
-        onClick={() => setOpened(opened ? false : true)}
+        onTouchEnd={() => setOpened(opened ? false : true)}
         onBlur={selectBlurEvent}>
         {boxList[selectedIdx].text}
       </Selected>
@@ -53,8 +55,13 @@ export default (props) => {
             <div
               className="box-list"
               key={index}
-              onMouseDown={() => selectBoxList(instance.value, index)}
-              onTouchStart={() => selectBoxList(instance.value, index)}>
+              onTouchMove={() => setTouchMove(true)}
+              onTouchEnd={() => {
+                if (touchMove === false) {
+                  selectBoxList(instance.value, index)
+                }
+                setTouchMove(false)
+              }}>
               {instance.text}
             </div>
           )
