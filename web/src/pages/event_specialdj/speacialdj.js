@@ -11,10 +11,8 @@ import speacialOff from './static/ic_unsuccess.svg'
 export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
+  const [toggleCheck, setToggleCheck] = useState({})
 
-  const [liveCast, setliveCast] = useState(0)
-  const [likeCast, setlikeCast] = useState(0)
-  const [timeCast, settimeCast] = useState(0)
   const [already, setalready] = useState('')
   const globalCtx = useContext(Context)
   const {token} = globalCtx
@@ -23,6 +21,7 @@ export default (props) => {
     const res = await Api.event_specialdj({})
     const {result, data} = res
     if (result === 'success') {
+      setToggleCheck(res.data)
       setalready(data.already)
     } else {
     }
@@ -60,13 +59,14 @@ export default (props) => {
                       <br />
                       (최소 50시간 방송)
                     </div>
-                    {liveCast === 0 ? (
+                    {toggleCheck.airtime !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
                           <br />
                           충족하지 않습니다
                         </p>
+
                         <img src={speacialOff} />
                       </div>
                     ) : (
@@ -86,7 +86,7 @@ export default (props) => {
                       <br />
                       (최소 500개 이상)
                     </div>
-                    {likeCast === 0 ? (
+                    {toggleCheck.like !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
@@ -112,7 +112,7 @@ export default (props) => {
                       <br />
                       (최소 20회 이상)
                     </div>
-                    {timeCast === 0 ? (
+                    {toggleCheck.broadcast !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
@@ -133,9 +133,9 @@ export default (props) => {
                     )}
                   </div>
                 </div>
-                {already === 0 ? (
+                {toggleCheck.already === 0 ? (
                   <>
-                    {liveCast === 1 && likeCast === 1 && timeCast === 1 ? (
+                    {toggleCheck.liveCast === 1 && toggleCheck.likeCast === 1 && toggleCheck.timeCast === 1 ? (
                       <button
                         className="button button--on"
                         onClick={() => {
