@@ -36,7 +36,7 @@ import FaqIcon2 from '../static/ic_faq_b.svg'
 import QuireIcon from '../static/ic_inquiry_b.svg'
 import BroadNoticeIcon from '../static/ic_notice.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
-export default props => {
+export default (props) => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
@@ -53,7 +53,7 @@ export default props => {
     {type: '1on1', txt: '1:1문의', icon: QuireIcon}
   ]
 
-  const timeFormat = sec_time => {
+  const timeFormat = (sec_time) => {
     const hour = Math.floor(sec_time / 3600)
     const min = Math.floor((sec_time - hour * 3600) / 60)
     return `${hour}시간 ${min}분`
@@ -173,7 +173,7 @@ export default props => {
                   {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
                   {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
                   {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
-                ].map(real => {
+                ].map((real) => {
                   const {type, icon, txt, value} = real
                   return (
                     <div key={type} className="each">

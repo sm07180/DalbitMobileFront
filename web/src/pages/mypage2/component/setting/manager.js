@@ -2,24 +2,17 @@
  * @file /mypage/component/blacklist.js
  * @brief 마이페이지 방송설정 - 매니저 설정
  **/
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 import useChange from 'components/hooks/useChange'
 import qs from 'query-string'
 
 //context
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
 import _ from 'lodash'
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import {
-  IMG_SERVER,
-  WIDTH_TABLET_S,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Utility from 'components/lib/utility'
 
 //component
@@ -28,15 +21,15 @@ import NoResult from 'components/ui/noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 
-export default props => {
+export default (props) => {
   //-----------------------------------------------------------------------------
-  const { webview } = qs.parse(location.search)
+  const {webview} = qs.parse(location.search)
 
   //contenxt
   const context = useContext(Context)
 
   //hooks
-  const { changes, setChanges, onChange } = useChange({ onChange: -1 })
+  const {changes, setChanges, onChange} = useChange({onChange: -1})
 
   //state
   const [managerState, setManagerState] = useState(-1)
@@ -49,10 +42,10 @@ export default props => {
   let userTypeSetting = 0
 
   const selectBoxData = [
-    { value: 0, text: '전체' },
-    { value: 0, text: '전체' },
-    { value: 1, text: '닉네임' },
-    { value: 2, text: 'ID' }
+    {value: 0, text: '전체'},
+    {value: 0, text: '전체'},
+    {value: 1, text: '닉네임'},
+    {value: 2, text: 'ID'}
   ]
 
   //-----------------------------------------------------------------------------
@@ -109,25 +102,23 @@ export default props => {
       return context.action.alert({
         msg: `검색어를 입력해주세요.`
       })
-    userTypeSetting =
-      type == 'search'
-        ? Number(_.hasIn(changes, 'searchType') ? changes.searchType : 0)
-        : userTypeSetting
+    userTypeSetting = type == 'search' ? Number(_.hasIn(changes, 'searchType') ? changes.searchType : 0) : userTypeSetting
     const params = {
       userType: userTypeSetting,
       search: changes.search,
+      searchType: 'maneger',
       page: type == 'page' ? typeDetail : 1,
       records: 100
     }
-    const res = await Api.mypage_user_search({ params })
+    const res = await Api.mypage_user_search({params})
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
       if (res.data.list == false) {
         setUserState(0)
         setUserList(false)
       } else {
-        const { list, paging } = res.data
+        const {list, paging} = res.data
         if (paging) {
-          const { totalPage } = paging
+          const {totalPage} = paging
           setTotalPageNumber(totalPage)
           setUserState(1)
           setUserList(list)
@@ -156,18 +147,15 @@ export default props => {
             <span>{userList.length}</span>
           </p>
           {userList.map((item, index) => {
-            const { memNo, nickNm, memId, profImg } = item
-            const link = webview
-              ? `/mypage/${memNo}?webview=${webview}`
-              : `/mypage/${memNo}`
+            const {memNo, nickNm, memId, profImg} = item
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
                 <a href={link}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}
-                  ></figure>
+                    }}></figure>
                   <div>
                     <span>{nickNm}</span>
                     <span>@{memId}</span>
@@ -181,8 +169,7 @@ export default props => {
                         addManager(memNo)
                       }
                     })
-                  }}
-                >
+                  }}>
                   등록
                 </button>
               </li>
@@ -202,19 +189,16 @@ export default props => {
         </p>
         <ul className="list-item search">
           {managerList.map((item, index) => {
-            const { memNo, nickNm, memId, profImg, regDt } = item
+            const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
-            const link = webview
-              ? `/mypage/${memNo}?webview=${webview}`
-              : `/mypage/${memNo}`
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
                 <a href={link}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}
-                  ></figure>
+                    }}></figure>
                   <div>
                     <span>{nickNm}</span>
                     <span>@{memId}</span>
@@ -229,8 +213,7 @@ export default props => {
                       }
                     })
                   }}
-                  className="grayBtn"
-                >
+                  className="grayBtn">
                   해제
                 </button>
               </li>
@@ -250,19 +233,16 @@ export default props => {
         </p>
         <ul className="list-item search">
           {manegerSearchList.map((item, index) => {
-            const { memNo, nickNm, memId, profImg, regDt } = item
+            const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
-            const link = webview
-              ? `/mypage/${memNo}?webview=${webview}`
-              : `/mypage/${memNo}`
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
                 <a href={link}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}
-                  ></figure>
+                    }}></figure>
                   <div>
                     <span>{nickNm}</span>
                     <span>@{memId}</span>
@@ -277,8 +257,7 @@ export default props => {
                       }
                     })
                   }}
-                  className="grayBtn"
-                >
+                  className="grayBtn">
                   해제
                 </button>
               </li>
@@ -305,8 +284,8 @@ export default props => {
     getManagerList()
   }, [])
 
-  const typeActive = value => {
-    setChanges({ ...changes, searchType: value })
+  const typeActive = (value) => {
+    setChanges({...changes, searchType: value})
   }
   //매니저 필터
   const [manegerValue, setManegerValue] = useState('')
@@ -315,24 +294,12 @@ export default props => {
   const SearchManeger = (manegerValue, selectBoxData) => {
     if (changes.searchType === 0) {
       setManegerSearchList(
-        managerList.filter(
-          managerList =>
-            managerList.nickNm.includes(manegerValue) ||
-            managerList.memId.includes(manegerValue)
-        )
+        managerList.filter((managerList) => managerList.nickNm.includes(manegerValue) || managerList.memId.includes(manegerValue))
       )
     } else if (changes.searchType === 1) {
-      setManegerSearchList(
-        managerList.filter(managerList =>
-          managerList.nickNm.includes(manegerValue)
-        )
-      )
+      setManegerSearchList(managerList.filter((managerList) => managerList.nickNm.includes(manegerValue)))
     } else if (changes.searchType === 2) {
-      setManegerSearchList(
-        managerList.filter(managerList =>
-          managerList.memId.includes(manegerValue)
-        )
-      )
+      setManegerSearchList(managerList.filter((managerList) => managerList.memId.includes(manegerValue)))
     }
   }
   const tabChangeFunction = () => {
@@ -349,16 +316,10 @@ export default props => {
   return (
     <Content>
       <div className="tab">
-        <button
-          onClick={tabChangeFunction}
-          className={tabState === 0 ? 'on' : ''}
-        >
+        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
           등록
         </button>
-        <button
-          onClick={tabChangeFunction}
-          className={tabState === 1 ? 'on' : ''}
-        >
+        <button onClick={tabChangeFunction} className={tabState === 1 ? 'on' : ''}>
           관리
         </button>
       </div>
@@ -385,15 +346,14 @@ export default props => {
               name="search"
               placeholder="검색어를 입력해 보세요"
               onChange={onChange}
-              onKeyUp={e => {
+              onKeyUp={(e) => {
                 if (e.keyCode === 13) getSearchList('search')
               }}
             />
             <button
               onClick={() => {
                 getSearchList('search')
-              }}
-            >
+              }}>
               찾기
             </button>
           </SearchArea>
@@ -422,16 +382,15 @@ export default props => {
               type="search"
               name="search"
               placeholder="검색어를 입력해 보세요"
-              onChange={e => setManegerValue(e.target.value)}
-              onKeyUp={e => {
+              onChange={(e) => setManegerValue(e.target.value)}
+              onKeyUp={(e) => {
                 if (e.keyCode === 13) SearchManeger(manegerValue)
               }}
             />
             <button
               onClick={() => {
                 SearchManeger(manegerValue, selectBoxData)
-              }}
-            >
+              }}>
               찾기
             </button>
           </SearchArea>
@@ -459,8 +418,7 @@ const SearchArea = styled.div`
     border-right: 1px solid #bdbdbd;
     color: #707070;
     text-indent: 12px;
-    background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89%
-      center;
+    background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
   }
   input {
     width: calc(100% - 102px);
@@ -491,8 +449,7 @@ const SearchArea = styled.div`
     top: 6px;
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat
-      center;
+    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat center;
     text-indent: -9999px;
   }
 

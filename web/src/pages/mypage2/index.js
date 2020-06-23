@@ -1,13 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
-import {
-  Switch,
-  Route,
-  useParams,
-  Redirect,
-  useLocation,
-  useHistory
-} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 // component
 import Layout from 'pages/common/layout'
 import Layout2 from 'pages/common/layout2.5'
@@ -23,35 +16,35 @@ import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm2 from './content/appAlarm2'
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
-import { saveUrlAndRedirect } from 'components/lib/link_control.js'
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import Arrow from './static/arrow.svg'
 // static
 import closeBtn from './static/ic_back.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
-import { isHybrid, Hybrid } from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import qs from 'query-string'
 
-export default props => {
-  const { webview } = qs.parse(location.search)
+export default (props) => {
+  const {webview} = qs.parse(location.search)
 
   //navi
   let navigationList = [
-    { id: 0, type: 'notice', component: Notice, txt: '방송공지' },
-    { id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드' },
-    { id: 2, type: 'wallet', component: Wallet, txt: '내 지갑' },
-    { id: 3, type: 'report', component: Report, txt: '리포트' },
-    { id: 4, type: 'alert', component: Alert, txt: '알림' },
-    { id: 5, type: 'appAlarm2', component: AppAlarm2, txt: '어플알람' },
-    { id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정' }
+    {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
+    {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
+    {id: 2, type: 'wallet', component: Wallet, txt: '내 지갑'},
+    {id: 3, type: 'report', component: Report, txt: '리포트'},
+    {id: 4, type: 'alert', component: Alert, txt: '알림'},
+    {id: 5, type: 'appAlarm2', component: AppAlarm2, txt: '어플알람'},
+    {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
   ]
   //context
   const context = useContext(Context)
   const globalCtx = useContext(Context)
-  const { token, profile } = context
-  let { memNo, category } = useParams()
+  const {token, profile} = context
+  let {memNo, category} = useParams()
   var urlrStr = props.location.pathname.split('/')[2]
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -73,8 +66,8 @@ export default props => {
   }
 
   useEffect(() => {
-    const settingProfileInfo = async memNo => {
-      const profileInfo = await Api.profile({ params: { memNo: memNo } })
+    const settingProfileInfo = async (memNo) => {
+      const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
         context.action.updateProfile(profileInfo.data)
@@ -114,12 +107,12 @@ export default props => {
 
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
-    { type: 'notice', txt: '방송공지', icon: NoticeIcon },
-    { type: 'fanboard', txt: '팬보드', icon: FanboardIcon }
+    {type: 'notice', txt: '방송공지', icon: NoticeIcon},
+    {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
   const subNavList2 = [
-    { type: 'notice', txt: '방송공지', icon: MenuNoticeIcon },
-    { type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon }
+    {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
+    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
   ]
   if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
@@ -162,23 +155,15 @@ export default props => {
         </Mypage> */}
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <Mypage2 webview={webview}>
-          {webview && webview === 'new' && (
-            <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
-          )}
+          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           {!category && (
             <>
               <MyProfile2 profile={profileInfo} {...props} webview={webview} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
-                  const { type, txt, icon, component } = value
+                  const {type, txt, icon, component} = value
                   return (
-                    <div
-                      className="link-list"
-                      key={`list-${idx}`}
-                      onClick={() =>
-                        saveUrlAndRedirect(`/mypage/${memNo}/${type}`)
-                      }
-                    >
+                    <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>
@@ -192,16 +177,9 @@ export default props => {
           )}
 
           <SubContent>
-            {navigationList.map(value => {
-              const { type, component } = value
-              return (
-                <Route
-                  exact
-                  path={`/mypage/${memNo}/${type}`}
-                  component={component}
-                  key={type}
-                />
-              )
+            {navigationList.map((value) => {
+              const {type, component} = value
+              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
           </SubContent>
         </Mypage2>
@@ -216,7 +194,7 @@ const SubContent = styled.div`
 
 const Mypage = styled.div`
   margin: 0 auto 15px auto;
-  margin-top: ${props => (props.webview ? 0 : '0px')};
+  margin-top: ${(props) => (props.webview ? 0 : '0px')};
   width: 1210px;
 
   .close-btn {
@@ -232,7 +210,7 @@ const Mypage = styled.div`
 `
 const Mypage2 = styled.div`
   /* margin: 0 auto 15px auto; */
-  margin-top: ${props => (props.webview ? 0 : '0px')};
+  margin-top: ${(props) => (props.webview ? 0 : '0px')};
   width: 1210px;
   position: relative;
   /* padding-top: 79px; */
@@ -281,6 +259,7 @@ const Sub2 = styled.div`
   /* padding-bottom: 179px; */
   transform: skew(-0.03deg);
   background-color: #eeeeee;
+  margin-top: 12px;
   .link-list {
     display: block;
     .list {
