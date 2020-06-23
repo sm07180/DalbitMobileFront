@@ -531,7 +531,7 @@ const FanBadgeWrap = styled.div`
     font-style: normal;
     line-height: 1;
     letter-spacing: -0.35px;
-    padding: 0 7px 0 3px;
+    padding: 0 10px 0 3px;
     text-align: left;
     color: #ffffff;
   }
@@ -543,7 +543,7 @@ const FanBadgeWrap = styled.div`
   .fan-badge span {
     display: inline-block;
     vertical-align: middle;
-    line-height: 2.1;
+    line-height: 2.2;
   }
 `
 
