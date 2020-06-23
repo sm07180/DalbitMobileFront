@@ -4,10 +4,13 @@ import Api from 'context/api'
 import Message from 'pages/common/message'
 import Popup from 'pages/common/popup'
 import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
 
 export default (props) => {
+  const history = useHistory()
+
   const [deligate, setDeligate] = useState(false)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
@@ -22,7 +25,6 @@ export default (props) => {
   const [select1, setSelect1] = useState('')
   const [selectSub1, setSelectsub1] = useState('')
 
-  const [addSelect, setAddSelect] = useState(false)
   const [select2, setSelect2] = useState('')
   const [selectSub2, setSelectsub2] = useState('')
 
@@ -38,21 +40,50 @@ export default (props) => {
     }
   }
 
-  const Broadcast2 = select2 + ' ~ ' + selectSub2
+  async function specialdjUpload() {
+    const res = await Api.event_specialdj_upload({
+      data: {
+        name: name,
+        phone: phone,
+        broadcast_time1: Broadcast1,
+        broadcast_time2: Broadcast2, //없어도됨
+        title: title, // 방송소개
+        contents: contents // 내가 스페셜 DJ가 된다면?
+      }
+    })
+    const {result, data} = res
+    if (result === 'success') {
+      setTimeout(() => {
+        context.action.alert({
+          msg: '작성 완료되었습니다.',
+          callback: () => {
+            // history.goBack()
 
-  // function Broadcast1() {
-  //   if (select1 > selectSub1) {
-  //     context.action.alert({
-  //       msg: '이전시간이 이후시간보다 낮을수없습니다.',
-  //       callback: () => {
-  //         context.action.alert({visible: false})
-  //       }
-  //     })
-  //     return
-  //   } else {
-  //     const Broadcast1 = select1 + ' ~ ' + selectSub1
-  //   }
-  // }
+            history.push('/')
+
+            // history.push({
+            //   pathname: "",
+            //   state: {
+            //     a: "",
+            //     b: ""
+            //   }
+            // })
+          }
+        })
+      })
+    } else {
+      //   setTimeout(() => {
+      //     context.action.alert({
+      //       msg: res.message,
+      //       callback: () => {
+      //       }
+      //     });
+      // }
+    }
+  }
+
+  const Broadcast1 = select1 + ' ~ ' + selectSub1
+  const Broadcast2 = select2 + ' ~ ' + selectSub2
 
   function handleSel(val) {
     const sub1 = selectSub1 !== '' ? selectSub1 : false
@@ -101,23 +132,6 @@ export default (props) => {
           }
         })
       }
-    }
-  }
-
-  async function specialdjUpload() {
-    const res = await Api.event_specialdj_upload({
-      data: {
-        name: name,
-        phone: phone,
-        broadcast_time1: Broadcast1,
-        broadcast_time2: Broadcast2, //없어도됨
-        title: changes.title, // 방송소개
-        contents: changes.contents // 내가 스페셜 DJ가 된다면?
-      }
-    })
-    const {result, data} = res
-    if (result === 'success') {
-    } else {
     }
   }
 
@@ -208,7 +222,7 @@ export default (props) => {
       })
       return
     }
-    if (addSelect) {
+    if (moreList) {
       if (select2 === '') {
         context.action.alert({
           msg: '방송시작시간을 선택해주세요.',
@@ -296,28 +310,15 @@ export default (props) => {
   }, [name, phone, title, contents, broadcast1])
 
   function moreButton() {
-    setAddSelect(true)
     return (
       <div className="selectBottom">
         <div className="list__selectBox list__selectBox--bottom">
           <div className="slectBox">
-            <SelectBox
-              className="specialdjSelect"
-              boxList={selectlist}
-              onChangeEvent={(e) => {
-                setSelect2(e)
-              }}
-            />
+            <SelectBox className="specialdjSelect" boxList={selectlist} onChangeEvent={(e) => setSelect2(e)} />
           </div>
           <div className="slectLine">~</div>
           <div className="slectBox">
-            <SelectBox
-              boxList={selectlist}
-              className="specialdjSelect"
-              onChangeEvent={(e) => {
-                setSelectsub2(e)
-              }}
-            />
+            <SelectBox boxList={selectlist} className="specialdjSelect" onChangeEvent={(e) => setSelectsub2(e)} />
           </div>
         </div>
       </div>
@@ -370,12 +371,12 @@ export default (props) => {
                 }}
               />
             </div>
-            <button className="list__plusButton" onClick={() => setMorelist(moreList ? false : true)}>
-              추가
+            <button className="list__plusButton" onClick={() => setMorelist(!moreList)}>
+              {moreList === true ? '삭제' : '추가'}
             </button>
           </div>
         </div>
-        {moreList ? moreButton() : ''}
+        {moreList ? moreButton() : <></>}
 
         <div className="list__box">
           <div className="list__title list__title--marginTop">방송 소개</div>
@@ -408,6 +409,7 @@ export default (props) => {
 
 const selectlist = [
   {value: '', text: '선택'},
+  {value: '00:00', text: '00:00'},
   {value: '01:00', text: '01:00'},
   {value: '02:00', text: '02:00'},
   {value: '03:00', text: '03:00'},

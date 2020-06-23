@@ -128,6 +128,25 @@
   }
 }
 
+.djTitle {
+  flex: 1;
+  display: flex;
+  height: 48px;
+  align-items: center;
+}
+.djTitleSub {
+  font-size: 18px;
+  color: #000;
+  margin-right: auto;
+  margin-left: 16px;
+  font-weight: bold;
+}
+.djRefresh {
+  width: 40px;
+  margin-left: auto;
+  margin-right: 6px;
+}
+
 .header-wrap {
   padding: 0px;
   margin: 0px;

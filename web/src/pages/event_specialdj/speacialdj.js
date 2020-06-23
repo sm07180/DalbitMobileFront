@@ -4,16 +4,17 @@ import {IMG_SERVER} from 'context/config'
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './speacialdj.scss'
+import CloseBtn from './static/ic_close.svg'
 import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
 
-export default () => {
+export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
 
-  const [liveCast, setliveCast] = useState(0)
-  const [likeCast, setlikeCast] = useState(0)
-  const [timeCast, settimeCast] = useState(0)
+  const [liveCast, setliveCast] = useState(1)
+  const [likeCast, setlikeCast] = useState(1)
+  const [timeCast, settimeCast] = useState(1)
   const [already, setalready] = useState('')
   const globalCtx = useContext(Context)
   const {token} = globalCtx
@@ -27,33 +28,17 @@ export default () => {
     }
   }
 
-  // function timeCheck(str) {
-  //   let color = 'red'
-  //   let message = ''
-  //   let src = speacialOff
-
-  //   return (
-  //     <div className={`checkList__talbeRight checkList__talbeRight--${color}`}>
-  //       <p>{message}</p>
-  //       <img src={src} />
-  //     </div>
-  //   )
-  // }
-
   useEffect(() => {
     specialdjCheck()
   }, [])
+
   return (
     <>
-      {/* <Header>
-        <div className="category-text">스페셜 DJ</div>
-      </Header> */}
-
       <div className="speacialdj">
-        {/* <div className="title-wrap">
-          <div className="text">상세조건</div>
-          <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
-        </div> */}
+        <div className="djTitle">
+          <div className="djTitleSub">스페셜 DJ</div>
+          <img src={CloseBtn} className="djRefresh" onClick={() => closePopup()} />
+        </div>
 
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
