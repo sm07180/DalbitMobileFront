@@ -135,7 +135,7 @@ export default (props) => {
                 </div>
                 {toggleCheck.already === 0 ? (
                   <>
-                    {toggleCheck.liveCast === 1 && toggleCheck.likeCast === 1 && toggleCheck.timeCast === 1 ? (
+                    {toggleCheck.airtime === 1 && toggleCheck.broadcast === 1 && toggleCheck.like === 1 ? (
                       <button
                         className="button button--on"
                         onClick={() => {
