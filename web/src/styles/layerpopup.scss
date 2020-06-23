@@ -1,9 +1,8 @@
 .popup {
   position: relative;
   .btn-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: relative;
+    right: -8px;
     width: 46px;
     height: 46px;
     font-size: 0;
@@ -14,21 +13,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 360px;
-    width: 360px;
-    max-height: 500px;
-  }
-  &__box {
-    position: absolute;
-  }
-  &__text {
-    width: calc(100% - 32px);
+    width: 100%;
     max-width: 360px;
     margin: 0 auto;
-    border-radius: 12px;
-    background-color: #fff;
+    max-height: 500px;
+  }
+  &__text {
+    width: calc(100% - 40px);
+    text-align: right;
     .popup__inner {
-      padding: 20px 20px;
+      text-align: left;
+      border-radius: 12px;
+      background-color: #fff;
+      .inner {
+        padding: 20px 20px;
+      }
       .contents {
         overflow: auto;
         max-height: 300px;
@@ -48,10 +47,6 @@
         text-align: center;
       }
     }
-    .btn-close {
-      top: -50px;
-      right: -8px;
-    }
   }
   &__title {
     width: 100%;
@@ -64,6 +59,7 @@
   }
   &__img {
     max-width: 280px;
+    text-align: right;
     .contents {
       img {
         width: 280px;

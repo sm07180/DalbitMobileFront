@@ -1,7 +1,7 @@
+// 메인 팝업 관리자 wrapper - test
+// 임보람
 import React, {useEffect, useRef, useState} from 'react'
-import styled from 'styled-components'
 import Checkbox from './Checkbox'
-import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {OS_TYPE} from '../../../context/config'
 import {Hybrid} from 'context/hybrid'
@@ -10,20 +10,10 @@ import {Hybrid} from 'context/hybrid'
 import 'styles/layerpopup.scss'
 
 export default (props) => {
-  const {selectedIdx} = props
+  const {selectedIdx, setPopup} = props
   const popupData = props.data
-  // console.log(popupData)
-
   // reference
   const customHeader = JSON.parse(Api.customHeader)
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
 
   const closePopup = () => {
     selectedIdx(popupData.idx)
@@ -52,6 +42,7 @@ export default (props) => {
     if (state.click1) {
       setPopupCookie('popup_notice_' + `${bannerIdx}`, 'y') //배너번호
     }
+    setPopup(false)
 
     if (linkType === 'popup') {
       if (customHeader['os'] === OS_TYPE['Android']) {

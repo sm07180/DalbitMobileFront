@@ -1,12 +1,10 @@
+// 메인 팝업 관리자 wrapper - test
+// 임보람
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
-import Checkbox from './Checkbox'
-import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
-import {OS_TYPE} from '../../../context/config'
-import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
-
+// component
 import LayerPopupNotice from './layer_popup_notice2.js'
 // style
 import 'styles/layerpopup.scss'
@@ -18,17 +16,17 @@ export default (props) => {
   console.log(propsData)
   const [popupData, setPopupData] = useState([])
   const [popupNotice, setPopupNotice] = useState(false)
+  const [popupLength, setPopupLength] = useState('')
 
   // reference
   const layerWrapRef = useRef()
   const customHeader = JSON.parse(Api.customHeader)
 
   useEffect(() => {
-    console.log(propsData.length)
     setPopupData(propsData)
-
+    setPopupNotice(true)
+    setPopupLength(propsData.length)
     document.body.style.overflow = 'hidden'
-
     return () => {
       document.body.style.overflow = ''
     }
@@ -49,31 +47,29 @@ export default (props) => {
     e.preventDefault()
   }
 
-  const setPopupCookie = (c_name, value) => {
-    const exdate = new Date()
-    exdate.setDate(exdate.getDate() + 1)
-    exdate.setHours(0)
-    exdate.setMinutes(0)
-    exdate.setSeconds(0)
-
-    const encodedValue = encodeURIComponent(value)
-    const c_value = encodedValue + '; expires=' + exdate.toUTCString()
-    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
-  }
-
   const filterIdx = (idx) => {
-    console.log(idx)
+    console.log('filter')
 
     setPopupData(
       popupData.filter((v) => {
         return v.idx !== idx
       })
     )
+    setPopupLength(
+      popupData.filter((v) => {
+        return v.idx !== idx
+      }).length
+    )
+    if (popupData.length == '1') {
+      closePopup()
+    }
+    setTimeout(() => {
+      console.log(popupData)
+    }, 0.1)
   }
-  const [state, setState] = useState({})
   return (
     <>
-      {propsData.length > 0 && (
+      {popupData.length > 0 && popupNotice && (
         <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
           <div className="popup">
             <div className="popup__wrap">
@@ -81,7 +77,9 @@ export default (props) => {
                 popupData.map((data, index) => {
                   return (
                     Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
-                      <LayerPopupNotice key={index} data={data} setPopup={setPopupNotice} selectedIdx={filterIdx} />
+                      <PopBox className={index + 1 === popupLength ? 'on' : ''} key={index}>
+                        <LayerPopupNotice data={data} setPopup={setPopupNotice} selectedIdx={filterIdx} />
+                      </PopBox>
                     )
                   )
                 })}
@@ -104,4 +102,12 @@ const PopupWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+const PopBox = styled.div`
+  display: none;
+  max-width: 360px;
+  margin: 0 auto;
+  &.on {
+    display: block;
+  }
 `
