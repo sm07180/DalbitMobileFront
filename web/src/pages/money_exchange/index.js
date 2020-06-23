@@ -535,7 +535,7 @@ export default (props) => {
       setFSocialNo(value)
       let currentDt
       if (value.length === 6) {
-        if (value.toString()[0] === '0') {
+        if (value[0] === '0' || value[0] === '1') {
           currentDt = '20' + value
         } else {
           currentDt = '19' + value
@@ -574,6 +574,7 @@ export default (props) => {
 
   const handleAccount = (e) => {
     if (e.target.value.toString().length > 20) {
+    } else if (isNaN(e.target.value)) {
     } else {
       setAccount(e.target.value)
     }
@@ -689,7 +690,7 @@ export default (props) => {
                 <div className="PayView__title">계좌번호</div>
                 <div className="PayView__input">
                   <input
-                    type="number"
+                    type="tel"
                     pattern="[0-9]*"
                     value={account}
                     className="PayView__input--text"
@@ -907,7 +908,7 @@ export default (props) => {
               </div>
               <div className="exchange__list">
                 <div>
-                  - 별을 달로 교환하는 방법 : “마이페이지>내지갑>별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어 아이템선물이
+                  - 별을 달로 교환하는 방법 : “마이페이지{'>내지갑>'}별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어 아이템선물이
                   가능합니다. (수수료 없음)
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
@@ -15,8 +15,22 @@ export default function Detail(props) {
   const context = useContext(Context)
 
   const {qna} = props.location.state
-  const {contents, answer, state, writeDt, title, qnaType} = qna
-
+  const {
+    contents,
+    answer,
+    state,
+    writeDt,
+    title,
+    qnaType,
+    email,
+    qnaIdx,
+    addFile1,
+    addFile2,
+    addFile3,
+    addFileName1,
+    addFileName2,
+    addFileName3
+  } = qna
   const selectBoxData = [
     {value: 1, text: '회원정보'},
     {value: 2, text: '방송'},
@@ -28,12 +42,46 @@ export default function Detail(props) {
     {value: 99, text: '기타'}
   ]
 
-  const [modify, setModify] = useState(0)
-  const [faqNum, setFaqNum] = useState(qnaType)
-  const [email, setEmail] = useState(qna.email)
-  const [content, setContent] = useState(qna.contents)
+  const [modify, setModify] = useState(false)
+  const [content, setContent] = useState('')
   const [delicate, setDelicate] = useState(false)
   const [questionFile, setQuestionFile] = useState([false, false, false])
+  const [zoom, setZoom] = useState(false)
+  const fetchData = async () => {
+    const res = await Api.center_qna_add({
+      data: {
+        qnaIdx: qnaIdx,
+        qnaType: qnaType,
+        title: 'RE : ' + title,
+        contents: content,
+        email: email,
+        questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
+        questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
+        questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
+        questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
+        questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
+        questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : ''
+      }
+    })
+
+    if (res.result === 'fail') {
+    } else if (res.result === 'success') {
+      context.action.confirm({
+        msg: '1:1 문의를 등록하시겠습니까?',
+        callback: () => {
+          //alert
+          setTimeout(() => {
+            context.action.alert({
+              msg: '1:1 문의 등록을 완료하였습니다.',
+              callback: () => {
+                window.location.href = '/'
+              }
+            })
+          }, 0)
+        }
+      })
+    }
+  }
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
@@ -48,6 +96,10 @@ export default function Detail(props) {
 
     let reader = new FileReader()
     const file = target.files[0]
+
+    if (!file) {
+      return
+    }
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
@@ -75,6 +127,7 @@ export default function Detail(props) {
           }
         })
         if (res.result === 'success') {
+          console.log(res)
           setQuestionFile(
             questionFile.map((v, i) => {
               if (i === idx) {
@@ -157,15 +210,36 @@ export default function Detail(props) {
 
   const checkDelicate = () => {
     if (delicate) {
+      fetchData()
     }
   }
 
-  const deleteQna = () => {
+  const deleteQna = async () => {
+    const res = await Api.center_qna_delete({
+      params: {
+        qnaIdx: qnaIdx
+      }
+    })
+
+    if (res.result === 'success') {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({visible: false})
+          history.push('/customer/qnaList')
+        }
+      })
+    }
+  }
+
+  const deleteConfirmQna = () => {
     // api 정의필요
     context.action.confirm({
       msg: '작성한 게시글을 삭제하시겠습니까?\n삭제된 게시글은 복원되지 않습니다.',
       callback: () => {
-        context.action.confirm({visible: false})
+        setTimeout(() => {
+          deleteQna()
+        }, 0)
       },
       cancelCallback: () => {
         context.action.confirm({visible: false})
@@ -177,9 +251,17 @@ export default function Detail(props) {
     })
   }
 
+  useEffect(() => {
+    if (content !== '') {
+      setDelicate(true)
+    } else {
+      setDelicate(false)
+    }
+  }, [content])
+
   return (
     <>
-      {modify === 0 ? (
+      {modify === false ? (
         <>
           <div className="personalDetailWrap">
             <div className="personalDetailWrap__header">
@@ -205,6 +287,17 @@ export default function Detail(props) {
                 <div className="personalDetailWrap__qna--title">{title}</div>
                 <div className="personalDetailWrap__qna--content">{contents}</div>
               </div>
+              <div className="personalDetailWrap__addFile">
+                {addFile1.url !== '' && <img src={addFile1.thumb88x88} onClick={() => setZoom(addFile1.url)} />}
+                {addFile2.url !== '' && <img src={addFile2.thumb88x88} onClick={() => setZoom(addFile2.url)} />}
+                {addFile3.url !== '' && <img src={addFile3.thumb88x88} onClick={() => setZoom(addFile3.url)} />}
+              </div>
+              {zoom && (
+                <div className="personalDetailWrap__zoom" onClick={() => setZoom(false)}>
+                  <img src={zoom} />
+                </div>
+              )}
+
               {state === 1 && (
                 <div className="personalDetailWrap__answer">
                   <div className="personalDetailWrap__answer--header">
@@ -218,11 +311,8 @@ export default function Detail(props) {
           </div>
           {state === 0 ? (
             <div className="personalDetailWrap__buttons">
-              <button className="personalDetailWrap__button" onClick={deleteQna}>
+              <button className="personalDetailWrap__button" onClick={deleteConfirmQna}>
                 삭제
-              </button>
-              <button className="personalDetailWrap__button" onClick={() => setModify(1)}>
-                수정
               </button>
               <button className="personalDetailWrap__button" onClick={() => history.goBack()}>
                 목록
@@ -230,10 +320,10 @@ export default function Detail(props) {
             </div>
           ) : (
             <div className="personalDetailWrap__buttons">
-              <button className="personalDetailWrap__button" onClick={() => setModify(2)}>
+              <button className="personalDetailWrap__button" onClick={() => setModify(true)}>
                 재문의
               </button>
-              <button className="personalDetailWrap__button" onClick={deleteQna}>
+              <button className="personalDetailWrap__button" onClick={deleteConfirmQna}>
                 삭제
               </button>
               <button className="personalDetailWrap__button" onClick={() => history.goBack()}>
@@ -242,84 +332,6 @@ export default function Detail(props) {
             </div>
           )}
         </>
-      ) : modify === 1 ? (
-        <div className="personalAddWrap">
-          <div className="personalAddWrap__select">
-            <SelectBoxs
-              type={'remove-init-data'}
-              boxList={selectBoxData}
-              onChangeEvent={typeActive}
-              inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
-            />
-          </div>
-          <div className="personalAddWrap__content">
-            <input
-              type="text"
-              className="personalAddWrap__input"
-              value={email}
-              placeholder="이메일 주소를 입력하세요."
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <div className="personalAddWrap__caption">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</div>
-            <input
-              type="text"
-              className="personalAddWrap__input"
-              value={title}
-              placeholder="글의 제목을 입력하세요."
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <textarea
-              className="personalAddWrap__input personalAddWrap__input--textarea"
-              value={contents}
-              cols="30"
-              rows="10"
-              placeholder="작성하고자 하는 글의 내용을 입력해주세요."
-              onChange={(e) => setContent(e.target.value)}
-            />
-            {questionFile.map((v, index, self) => {
-              return (
-                <React.Fragment key={index}>
-                  {index === 0 ? (
-                    <label htmlFor={`personalAddWrap__file${index}`} className="personalAddWrap__input personalAddWrap__file">
-                      {v === false ? (
-                        <>
-                          <span className="personalAddWrap__file--text">+ 첨부파일</span>
-                          <span className="personalAddWrap__file--add" />
-                        </>
-                      ) : (
-                        <>
-                          <span className="personalAddWrap__file--text">{v.fileName}</span>
-                          <span className="personalAddWrap__file--delete" onClick={(e) => deleteFile(e, index)} />
-                        </>
-                      )}
-                    </label>
-                  ) : self[index - 1] !== false ? (
-                    <label htmlFor={`personalAddWrap__file${index}`} className="personalAddWrap__input personalAddWrap__file">
-                      {v === false ? (
-                        <>
-                          <span className="personalAddWrap__file--text">+ 첨부파일</span>
-                          <span className="personalAddWrap__file--add" />
-                        </>
-                      ) : (
-                        <>
-                          <span className="personalAddWrap__file--text">{v.fileName}</span>
-                          <span className="personalAddWrap__file--delete" onClick={(e) => deleteFile(e, index)} />
-                        </>
-                      )}
-                    </label>
-                  ) : (
-                    <></>
-                  )}
-                  <input type="file" id={`personalAddWrap__file${index}`} onChange={(e) => uploadSingleFile(e, index)} />
-                </React.Fragment>
-              )
-            })}
-            <div className="personalAddWrap__caption">※ jpg, png, pdf 파일을 합계최대 10MB까지 첨부 가능합니다.</div>
-            <button onClick={checkDelicate} className={`personalAddWrap__submit ${delicate ? 'on' : ''}`}>
-              문의하기
-            </button>
-          </div>
-        </div>
       ) : (
         <div className="personalAddWrap">
           <div className="personalAddWrap__content personalAddWrap__content--notPad">
@@ -328,11 +340,12 @@ export default function Detail(props) {
               className="personalAddWrap__input"
               value={'RE : ' + title}
               placeholder="글의 제목을 입력하세요."
-              onChange={(e) => setTitle(e.target.value)}
               disabled={true}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <textarea
               className="personalAddWrap__input personalAddWrap__input--textarea"
+              value={content}
               cols="30"
               rows="10"
               placeholder="작성하고자 하는 글의 내용을 입력해주세요."
