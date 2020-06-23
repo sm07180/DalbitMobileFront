@@ -545,8 +545,9 @@ const FanBadgeWrap = styled.div`
     height: 28px;
   }
   .fan-badge span {
+    height: 14px;
     display: inline-block;
-    padding-top: 6px;
+    padding-top: 7px;
   }
 `
 

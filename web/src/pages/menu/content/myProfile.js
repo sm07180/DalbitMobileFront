@@ -541,8 +541,9 @@ const FanBadgeWrap = styled.div`
     height: 28px;
   }
   .fan-badge span {
+    height: 14px;
     display: inline-block;
-    padding-top: 6px;
+    padding-top: 7px;
   }
 `
 
@@ -570,8 +571,8 @@ const NameWrap = styled.div`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1;
-    padding-top: 2px;
+    line-height: 0.8;
+    padding-top: 3px;
     letter-spacing: normal;
   }
   span {
