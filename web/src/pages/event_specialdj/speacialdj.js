@@ -12,9 +12,9 @@ export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
 
-  const [liveCast, setliveCast] = useState(0)
-  const [likeCast, setlikeCast] = useState(0)
-  const [timeCast, settimeCast] = useState(0)
+  const [liveCast, setliveCast] = useState(1)
+  const [likeCast, setlikeCast] = useState(1)
+  const [timeCast, settimeCast] = useState(1)
   const [already, setalready] = useState('')
   const globalCtx = useContext(Context)
   const {token} = globalCtx

@@ -107,12 +107,6 @@ export default (props) => {
             return (window.location.href = mypageURL)
           }
 
-          // 서우찬 스페셜 디제이 이동
-          const djURL = `event_specialdj`
-          if (djURL !== '') {
-            return (window.location.href = djURL)
-          }
-
           return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
