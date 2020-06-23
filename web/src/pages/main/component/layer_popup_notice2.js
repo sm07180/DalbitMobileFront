@@ -78,10 +78,10 @@ export default (props) => {
             </div>
             {popupData.is_cookie == '1' && (
               <div className="chk-label">
-                <label htmlFor="chkimg">
+                <label htmlFor={`chkimg${popupData.idx}`}>
                   <input
                     type="checkbox"
-                    id="chkimg"
+                    id={`chkimg${popupData.idx}`}
                     onClick={() => {
                       applyClick(popupData.idx, 'imgType')
                     }}
@@ -128,19 +128,19 @@ export default (props) => {
                   checked={state.click1}
                 />
               )}
+              <button
+                className="btn-ok"
+                onClick={() => {
+                  {
+                    popupData.is_button_view == '0' && applyClick(popupData.idx)
+                  }
+                  {
+                    popupData.is_button_view == '1' && goEvent(popupData.idx, popupData.linkType, popupData.linkUrl)
+                  }
+                }}>
+                {popupData.buttonNm}
+              </button>
             </div>
-            <button
-              className="btn-ok"
-              onClick={() => {
-                {
-                  popupData.is_button_view == '0' && applyClick(popupData.idx)
-                }
-                {
-                  popupData.is_button_view == '1' && goEvent(popupData.idx, popupData.linkType, popupData.linkUrl)
-                }
-              }}>
-              {popupData.buttonNm}
-            </button>
           </div>
         </div>
       )}
