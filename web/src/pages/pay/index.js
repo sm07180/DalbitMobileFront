@@ -27,6 +27,7 @@ export default (props) => {
   const {result, message, state, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result'))
+  alert(result)
 
   if (_.hasIn(props, 'location.state.result')) {
     if (result === 'success') {
@@ -97,10 +98,13 @@ export default (props) => {
       }
     } else {
       //취소로직
+      alert('1')
       if (state === 'pay') {
         if (returntype === 'room') {
+          alert('2')
           Hybrid('ClosePayPopup')
         } else {
+          alert('3')
           window.location.href = '/'
         }
       }
