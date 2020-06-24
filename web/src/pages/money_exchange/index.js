@@ -25,7 +25,13 @@ const initialCalc = {
 export default (props) => {
   const context = useContext(Context)
 
-  const {profile} = context
+  const {profile, token} = context
+
+  if (!token.isLogin) {
+    window.location.href = '/'
+    return
+  }
+
   const [isSpecial, setIsSpecial] = useState(false)
   const [byeolCnt, setByeolCnt] = useState(0)
   const [status, setStatus] = useState(0)
