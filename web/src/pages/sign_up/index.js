@@ -503,6 +503,22 @@ export default props => {
         //alert(res.message)
         context.action.alert({
           callback: () => {
+            const adbrixData = {
+              eventName : 'signUp'
+              , attr : {}
+            }
+            adbrixData.attr = {
+              eventName : 'signUp'
+              , sex : '1'
+              , age : '25'
+              , connectTime : '20200624131122'
+              , connectCnt : 4
+              , broadcastCreateYn : 'N'
+              , broadcastJoinYn : 'N'
+              , payYn : 'N'
+            }
+
+            Hybrid('adbrixEvent', JSON.stringify(adbrixData));
             fetchPhoneLogin()
           },
           msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'

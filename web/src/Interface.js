@@ -460,6 +460,11 @@ export default () => {
         break
     }
   }
+
+  function nativeGetTid(tid){
+    console.log(tid);
+    alert(tid);
+  }
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
@@ -487,6 +492,7 @@ export default () => {
       document.addEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
+      document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
