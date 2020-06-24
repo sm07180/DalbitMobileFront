@@ -15,11 +15,22 @@ const list = [
   {value: 1, text: '주민번호'},
   {value: 2, text: '핸드폰번호'}
 ]
-const chargeData = [
+let chargeData = [
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
   {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'}
 ]
+
+if (__NODE_ENV !== 'real') {
+  chargeData = [
+    {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
+    {id: 0, type: '카드 결제', fetch: 'pay_card'},
+    {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
+    {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+    {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
+  ]
+}
+
 let payType = ''
 // let paymentPriceAddVat = 0
 export default (props) => {
@@ -161,7 +172,12 @@ export default (props) => {
   }
 
   async function payFetch(event) {
+    if (payMathod === -1) return null
+
     payType = chargeData[payMathod].fetch
+
+    if (payType === 'pay_virtual') return null
+
     const obj = {
       data: {
         Prdtnm: paymentName,
@@ -263,7 +279,9 @@ export default (props) => {
     validationCheck()
   }, [name, phone, status, receiptInput])
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    payFetch()
+  }, [payMathod])
 
   return (
     <div className={`${webview === 'new' && 'webview'}`}>
@@ -273,44 +291,57 @@ export default (props) => {
       ) : (
         <>
           <div className="header">
-            <img className="header__button--back" src={BackBtn} onClick={() => props.history.goBack()} />
-            <h1 className="header__title">달 충전하기</h1>
+            <img
+              className="header__button--back"
+              src={BackBtn}
+              onClick={() => {
+                if (payMathod !== 0) {
+                  props.history.goBack()
+                } else {
+                  setPayMathod(-1)
+                }
+              }}
+            />
+            <h1 className="header__title">{payMathod !== 0 ? '달 충전하기' : '무통장 입금'}</h1>
           </div>
 
           <div className="content">
-            <div className="buyList">
-              <h2 className="charge__title">구매 내역</h2>
+            {payMathod !== 0 ? (
+              <>
+                <div className="buyList">
+                  <h2 className="charge__title">구매 내역</h2>
 
-              <div className="buyList__box">
-                <div className="buyList__label">결제상품</div>
-                <div className="buyList__value">{paymentName}</div>
-                <div className="buyList__label">결제금액</div>
-                <div className="buyList__value">
-                  <span className="buyList__value--point">{Utility.addComma(paymentPrice)}</span> 원
+                  <div className="buyList__box">
+                    <div className="buyList__label">결제상품</div>
+                    <div className="buyList__value">{paymentName}</div>
+                    <div className="buyList__label">결제금액</div>
+                    <div className="buyList__value">
+                      <span className="buyList__value--point">{Utility.addComma(paymentPrice)}</span> 원
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="payMathod">
-              <h2 className="charge__title">결제 수단</h2>
+                <div className="payMathod">
+                  <h2 className="charge__title">결제 수단</h2>
 
-              <div className="payMathod__box">
-                {chargeData.map((item, index) => {
-                  return (
-                    <button
-                      key={index}
-                      className={`payMathod__button ${payMathod === item.id ? 'payMathod__button--forced' : ''}  ${
-                        index === 2 ? 'payMathod__button--contain' : ''
-                      } `}
-                      onClick={() => setPayMathod(item.id)}>
-                      {item.type}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-            {payMathod === 2 && (
-              <React.Fragment>
+                  <div className="payMathod__box">
+                    {chargeData.map((item, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className={`payMathod__button ${payMathod === index ? 'payMathod__button--forced' : ''}  ${
+                            index === 0 ? 'payMathod__button--contain' : ''
+                          } `}
+                          onClick={() => setPayMathod(index)}>
+                          {item.type}
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
                 <div className="depositInfo">
                   <h2 className="charge__title">무통장 입금 정보</h2>
 
@@ -364,7 +395,7 @@ export default (props) => {
 
                   {tempFunc()}
                 </div>
-              </React.Fragment>
+              </>
             )}
 
             <div className="notice">
@@ -386,14 +417,15 @@ export default (props) => {
               <span className="inquriy__title">결제 문의</span>
               <span className="inquiry__number">1522-0251</span>
             </div>
-            {payMathod === 2 ? (
+            {payMathod === 0 ? (
               <button className={`chargeButton ${validation === true ? 'chargeButton--active' : ''}`} onClick={chargeClick}>
                 입금계좌 받기
               </button>
             ) : (
-              <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
-                충전하기
-              </button>
+              <></>
+              // <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
+              //   충전하기
+              // </button>
             )}
           </div>
           <Message />
