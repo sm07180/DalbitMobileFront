@@ -5,25 +5,20 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
-// component
+// components
 import Header from '../component/header2.js'
 import Controller from 'components/ui/remoteController'
 import MyProfile2 from './myProfile2'
-// static
+// static svg
 import InfoIcon from '../static/profile/ic_info_m.svg'
-
 import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
-
 import AlarmIcon from '../static/profile/ic_alarm_m.svg'
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
 import HeartIcon from '../static/profile/ic_headphones_m_p.svg'
 import ByeolIcon from '../static/profile/ic_star_m_p.svg'
-
 import FaqIcon2 from '../static/ic_faq_b.svg'
 import QuireIcon from '../static/ic_inquiry_b.svg'
-
-//
 import ProfileIcon from '../static/menu_profile.svg'
 import AppSettingIcon from '../static/menu_appsetting.svg'
 import BroadNoticeIcon from '../static/menu_broadnotice.svg'
@@ -40,8 +35,7 @@ import InquireIcon from '../static/menu_1on1.svg'
 import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
-
-//render-------------------------------------------------------------------
+//------------------------------------------------------------------------------
 export default (props) => {
   // nav Array
   const subNavList = [
@@ -56,13 +50,14 @@ export default (props) => {
     {type: 'report', txt: '리포트', icon: ReportIcon}
   ]
   const customerList = [
-    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
     {type: 'appInfo', txt: '앱정보', icon: AppIcon}
   ]
+  // webview & ctx
   const {webview} = qs.parse(location.search)
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -354,11 +349,9 @@ const MenuMypage = styled.div`
       }
     }
   }
-
   .log-out {
     padding-top: 30px;
     box-sizing: border-box;
-
     img {
       display: block;
       margin: 0 auto;
@@ -397,7 +390,6 @@ const MenuMypage = styled.div`
     transform: skew(-0.03deg);
     a {
       display: block;
-
       .list {
         position: relative;
         display: flex;

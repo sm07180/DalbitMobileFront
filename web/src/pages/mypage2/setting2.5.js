@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
-
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -16,8 +15,10 @@ import MaleIcon from './static/ico_male.svg'
 import FeMaleIcon from './static/ico_female.svg'
 
 export default (props) => {
+  // ctx
   const context = useContext(Context)
   const {profile, token} = context
+  const {isOAuth} = token
   // state
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState(null)
@@ -25,10 +26,11 @@ export default (props) => {
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
   const [photoUploading, setPhotoUploading] = useState(false)
-
+  const [firstSetting, setFirstSetting] = useState(false)
+  const [mypageBirth, setMypageBirth] = useState('')
+  //ref
   const nicknameReference = useRef()
-  const {isOAuth} = token
-
+  // setting img upload func  + mobile rotater
   const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
@@ -40,7 +42,6 @@ export default (props) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
-
     if (!extValidator(fileExtension)) {
       return context.action.alert({
         msg: 'jpg, png 이미지만 사용 가능합니다.',
@@ -50,10 +51,8 @@ export default (props) => {
         }
       })
     }
-    //파일을 배열 버퍼로 읽는 최신 약속 기반 API입니다
+    //파일을 배열 버퍼로 읽는 최신 약속 기반 API
     reader.readAsArrayBuffer(file)
-    // reader.readAsDataURL(file)
-
     //오리엔테이션 뽑아내는 함수
     function getOrientation(buffer) {
       var view = new DataView(buffer)
@@ -95,13 +94,11 @@ export default (props) => {
           offset += view.getUint16(offset, false)
         }
       }
-
       return {
         buffer: view.buffer,
         orientation: -1
       }
     }
-
     //캔버스로 그려서 dataurl 로 뽑아내는 함수
     function drawAdjustImage(img, orientation) {
       const cnvs = document.createElement('canvas')
@@ -116,10 +113,8 @@ export default (props) => {
       let rad
       let sin
       let cos
-
       cnvs.width = orientation >= 5 ? img.height : img.width
       cnvs.height = orientation >= 5 ? img.width : img.height
-
       switch (orientation) {
         case 2: // flip horizontal
           hr = -1
@@ -157,13 +152,11 @@ export default (props) => {
       sin = Math.sin(rad)
       cos = Math.cos(rad)
       ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
-
       dw = orientation >= 5 ? cnvs.height : cnvs.width
       dh = orientation >= 5 ? cnvs.width : cnvs.height
       ctx.drawImage(img, 0, 0, dw, dh)
       return cnvs.toDataURL('image/jpeg', 1.0)
     }
-
     reader.onload = async () => {
       if (reader.result) {
         const originalBuffer = reader.result
@@ -212,7 +205,7 @@ export default (props) => {
       }
     }
   }
-
+  // change nick name func
   const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
@@ -220,7 +213,7 @@ export default (props) => {
     }
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
-
+  // change Msg func
   const changeMsg = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 100) {
@@ -229,7 +222,7 @@ export default (props) => {
       setProfileMsg(currentTarget.value)
     }
   }
-
+  // upload validate
   const saveUpload = async () => {
     if (!profile.nickNm) {
       return context.action.alert({
@@ -242,7 +235,6 @@ export default (props) => {
         }
       })
     }
-
     if (photoUploading) {
       return context.action.alert({
         msg: '프로필 사진 업로드 중입니다.',
@@ -259,9 +251,7 @@ export default (props) => {
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
-
-    console.log('data', data)
-
+    //fetch
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -280,9 +270,7 @@ export default (props) => {
       })
     }
   }
-
-  const [firstSetting, setFirstSetting] = useState(false)
-
+  //----------------------------------------------------
   useEffect(() => {
     if (profile !== null) {
       setNickname(profile.nickNm)
@@ -294,14 +282,20 @@ export default (props) => {
       }
     }
   }, [profile])
-
+  //null check updateProfile
   if (profile === null) {
     Api.mypage().then((result) => {
       context.action.updateProfile(result.data)
     })
     return null
   }
-
+  if (profile && profile.birth === '') {
+    Api.mypage().then((result) => {
+      context.action.updateProfile(result.data)
+    })
+    return null
+  }
+  //------------------------------------------------------
   return (
     <Switch>
       {!token.isLogin ? (
@@ -433,7 +427,7 @@ export default (props) => {
     </Switch>
   )
 }
-
+// style
 const SaveBtn = styled.button`
   margin-top: 32px;
   width: 100%;
@@ -448,7 +442,6 @@ const SaveBtn = styled.button`
   border-radius: 12px;
   font-weight: bold;
 `
-
 const MsgText = styled.textarea`
   display: block;
   width: 100%;

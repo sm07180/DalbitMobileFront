@@ -37,6 +37,7 @@ import RankArrow from './static/ic_rank_arrow.svg'
 import {RoomMake} from 'context/room'
 // style
 import 'styles/layerpopup.scss'
+import {Hybrid} from "context/hybrid";
 
 let concatenating = false
 let tempScrollEvent = null
@@ -428,11 +429,11 @@ export default (props) => {
               </div>
               <div className="tab">
                 <Link
-                  onClick={(event) => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
-                  }}
-                  to={'/store'}>
+                    onClick={(event) => {
+                      event.preventDefault()
+                      StoreLink(globalCtx)
+                    }}
+                    to={'/store'}>
                   스토어
                 </Link>
               </div>

@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react'
+import React, {useState, useEffect, useReducer, useContext} from 'react'
 import styled from 'styled-components'
 
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
 // image
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
-import { WIDTH_MOBILE, IMG_SERVER } from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import arrowDownImg from '../images/NoticeArrowDown.svg'
 //component
 import Checkbox from '../../content/checkbox'
@@ -21,20 +16,20 @@ import BackIcon from '../../component/ic_back.svg'
 import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
 import BookMark from '../../component/book_mark_red.svg'
-const List = props => {
+const List = (props) => {
   //context
 
   const context = useContext(Context)
   const ctx = useContext(Context)
   var urlrStr = props.location.pathname.split('/')[2]
   //props
-  const { isTop, title, contents, writeDt, noticeIdx, numbers } = props
+  const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
   const initialState = {
     click1: isTop
   }
   //state
   const [opened, setOpened] = useState(false)
-  const reducer = (state, action) => ({ ...state, ...action })
+  const reducer = (state, action) => ({...state, ...action})
   const [state, setState] = useReducer(reducer, initialState)
   const [coment, setComment] = useState(title)
   const [comentContent, setCommentContent] = useState(contents)
@@ -109,7 +104,7 @@ const List = props => {
   }
   //func
   //dateFormat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -124,8 +119,7 @@ const List = props => {
       callback: () => {
         setWriteShow(false)
       },
-      msg:
-        '현재 작성 중인 게시글은 저장되지 않습니다.<br /><b>취소하시겠습니까?</b>'
+      msg: '현재 작성 중인 게시글은 저장되지 않습니다.<br /><b>취소하시겠습니까?</b>'
     })
   }
   const WriteToggle = () => {
@@ -150,7 +144,7 @@ const List = props => {
     setComment(target.value)
   }
   //공지컨텐트 등록 온체인지
-  const textChangeContent = e => {
+  const textChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 189) return
     setCommentContent(target.value)
@@ -179,22 +173,13 @@ const List = props => {
         className={numbers === noticeIdx && opened ? 'on' : ''}
         onClick={() => {
           props.toggle(noticeIdx)
-        }}
-      >
+        }}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
           {/* {isTop && <em></em>} */}
           <span className="text">{title}</span>
         </TitleWrap>
-        {isTop === true && (
-          <ArrowDownBtnTop
-            className={numbers === noticeIdx && opened ? 'on' : ''}
-          />
-        )}
-        {isTop === false && (
-          <ArrowDownBtn
-            className={numbers === noticeIdx && opened ? 'on' : ''}
-          />
-        )}
+        {isTop === true && <ArrowDownBtnTop className={numbers === noticeIdx && opened ? 'on' : ''} />}
+        {isTop === false && <ArrowDownBtn className={numbers === noticeIdx && opened ? 'on' : ''} />}
       </ListStyled>
       {numbers === noticeIdx && opened && (
         <>
@@ -233,12 +218,7 @@ const List = props => {
             </Header>
             <section>
               <div className="titleWrite">
-                <input
-                  placeholder="글의 제목을 입력하세요."
-                  maxLength="20"
-                  onChange={textChange}
-                  value={coment}
-                />
+                <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />
               </div>
 
               <div className="contentWrite">
@@ -250,16 +230,9 @@ const List = props => {
                 />
               </div>
               <div className="checkbox-wrap">
-                <Checkbox
-                  title="상단 고정"
-                  fnChange={v => setState({ click1: v })}
-                  checked={state.click1}
-                />
+                <Checkbox title="상단 고정" fnChange={(v) => setState({click1: v})} checked={state.click1} />
               </div>
-              <WriteSubmit
-                className={writeBtnState === true ? 'on' : ''}
-                onClick={() => NoticeUpload()}
-              >
+              <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
               </WriteSubmit>
             </section>
@@ -275,7 +248,7 @@ export default List
 const ArrowDownBtn = styled.button`
   width: 36px;
   height: 36px;
-  margin-right: 20px;
+  margin-right: 10px;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${ArrowRight});
@@ -284,7 +257,7 @@ const ArrowDownBtn = styled.button`
 const ArrowDownBtnTop = styled.button`
   width: 36px;
   height: 36px;
-  margin-right: 20px;
+  margin-right: 10px;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${BookMark});
@@ -321,8 +294,7 @@ const TitleWrap = styled.div`
     display: block;
     width: 20px;
     height: 20px;
-    background: url(${IMG_SERVER}/images/api/ic_thumbtack.svg) no-repeat center
-      center / cover;
+    background: url(${IMG_SERVER}/images/api/ic_thumbtack.svg) no-repeat center center / cover;
   }
   > i {
     display: none;
@@ -491,8 +463,7 @@ const Write = styled.div`
     button:nth-child(1) {
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
-        center / cover;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
     }
     h2 {
       font-size: 18px;

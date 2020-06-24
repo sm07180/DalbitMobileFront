@@ -460,6 +460,10 @@ export default () => {
         break
     }
   }
+
+  function nativeGetTid(event){
+    context.action.getNativeTid(event.detail)
+  }
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
@@ -472,6 +476,7 @@ export default () => {
     document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
+    document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -487,6 +492,7 @@ export default () => {
       document.addEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
+      document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)

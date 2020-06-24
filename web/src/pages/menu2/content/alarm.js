@@ -1,24 +1,22 @@
 /**
  * @title 알림사항
  */
-import React, { useEffect, useContext, useState } from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-
+import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
-import { COLOR_MAIN } from 'context/color'
-import { IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S } from 'context/config'
-import { Context } from 'context'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE_S} from 'context/config'
+import {Context} from 'context'
 import Utility from 'components/lib/utility'
 //room
-import Room, { RoomJoin } from 'context/room'
+import Room, {RoomJoin} from 'context/room'
 // component
 import Header from '../component/header.js'
 import NoResult from 'components/ui/noResult'
 //static
 import NeedLoginImg from '../static/profile/need_login.png'
-
 //icon
 import userIco from 'pages/mypage/component/images/ic_user_normal.svg'
 import moonIco from 'pages/mypage/component/images/ico_moon_s.svg'
@@ -26,15 +24,15 @@ import alarmIco from 'pages/mypage/component/images/ic_alarm.svg'
 
 let currentPage = 1
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //let
   let timer
 
   //context
   const globalCtx = useContext(Context)
-  const { profile } = globalCtx
-  const { isLogin } = globalCtx.token
+  const {profile} = globalCtx
+  const {isLogin} = globalCtx.token
   const myMemNo = isLogin ? globalCtx.profile.memNo : null
 
   //useState
@@ -92,18 +90,10 @@ export default props => {
       <>
         <ul className="alert-list">
           {alertList.map((item, index) => {
-            const {
-              notiType,
-              contents,
-              memNo,
-              roomNo,
-              regDt,
-              regTs,
-              profImg
-            } = item
+            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
             const textArea = (
               <div>
-                <div dangerouslySetInnerHTML={{ __html: contents }}></div>
+                <div dangerouslySetInnerHTML={{__html: contents}}></div>
                 <span>{Utility.settingAlarmTime(regTs)}</span>
               </div>
             )
@@ -133,13 +123,11 @@ export default props => {
                       RoomJoin(roomNo + '', () => {
                         clicked = false
                       })
-                    }}
-                  >
+                    }}>
                     <figure
                       style={{
                         background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                      }}
-                    ></figure>
+                      }}></figure>
                     {textArea}
                   </li>
                 )
@@ -150,8 +138,7 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/`
-                    }}
-                  >
+                    }}>
                     <figure>
                       <img src={alarmIco} />
                     </figure>
@@ -180,8 +167,7 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/menu/profile`
-                    }}
-                  >
+                    }}>
                     <figure>
                       <img src={alarmIco} />
                     </figure>
@@ -195,13 +181,11 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}/fanboard`
-                    }}
-                  >
+                    }}>
                     <figure
                       style={{
                         background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                      }}
-                    ></figure>
+                      }}></figure>
                     {textArea}
                   </li>
                 )
@@ -212,13 +196,11 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}/wallet`
-                    }}
-                  >
+                    }}>
                     <figure
                       style={{
                         background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                      }}
-                    ></figure>
+                      }}></figure>
                     {textArea}
                   </li>
                 )
@@ -239,16 +221,14 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}`
-                    }}
-                  >
+                    }}>
                     {/* <figure>
                       <img src={alarmIco} />
                     </figure> */}
                     <figure
                       style={{
                         background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                      }}
-                    ></figure>
+                      }}></figure>
                     {textArea}
                   </li>
                 )
@@ -259,13 +239,11 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/mypage/${memNo}`
-                    }}
-                  >
+                    }}>
                     <figure
                       style={{
                         background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                      }}
-                    ></figure>
+                      }}></figure>
                     {textArea}
                   </li>
                 )
@@ -276,8 +254,7 @@ export default props => {
                     key={index}
                     onClick={() => {
                       window.location.href = `/customer/personal/qnaList`
-                    }}
-                  >
+                    }}>
                     <figure>
                       <img src={alarmIco} />
                     </figure>
@@ -314,23 +291,14 @@ export default props => {
 
   //---------------------------------------------------------------------
   //checkScroll
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
-      const windowHeight =
-        'innerHeight' in window
-          ? window.innerHeight
-          : document.documentElement.offsetHeight
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      )
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       if (windowBottom >= docHeight - 30) {

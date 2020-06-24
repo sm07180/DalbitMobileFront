@@ -1,15 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import qs from 'qs'
 // static
 import closeBtn from './ic_back.svg'
 import Write from './ic_write.svg'
-import { getUrlAndRedirect } from 'components/lib/link_control.js'
+import {getUrlAndRedirect} from 'components/lib/link_control.js'
 
-export default props => {
-  const _parse = qs.parse(window.location.href, { ignoreQueryPrefix: true })
-
+export default (props) => {
+  const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
   const goBack = () => {
     if (sessionStorage.getItem('push_type') === 'Y') {
       sessionStorage.removeItem('push_type')
