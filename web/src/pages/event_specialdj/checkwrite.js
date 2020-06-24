@@ -99,9 +99,9 @@ export default (props) => {
     window.history.back()
   }
 
-  {
-    toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
-  }
+  // {
+  //   toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
+  // }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
   const Broadcast2 = select2 + ' ~ ' + selectSub2
@@ -174,65 +174,6 @@ export default (props) => {
       return
     }
 
-    if (parseInt(select1.split(':')[0]) > parseInt(selectSub1.split(':')[0])) {
-      context.action.alert({
-        msg: '방송 시작시간은\n방송 종료시간보다 클 수 없습니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-
-    if (parseInt(select1.split(':')[0]) === parseInt(selectSub1.split(':')[0])) {
-      context.action.alert({
-        msg: '방송 시작시간은\n방송 종료시간 같을 수 없습니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (moreList) {
-      if (select2 === '') {
-        context.action.alert({
-          msg: '방송시작시간을 선택해주세요.',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-        return
-      }
-      if (selectSub2 === '') {
-        context.action.alert({
-          msg: '방송종료시간을 선택해주세요.',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-        return
-      }
-
-      if (parseInt(select2.split(':')[0]) > parseInt(selectSub2.split(':')[0])) {
-        context.action.alert({
-          msg: '방송 시작시간은\n방송 종료시간보다 클 수 없습니다.',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-        return
-      }
-
-      if (parseInt(select2.split(':')[0]) === parseInt(selectSub2.split(':')[0])) {
-        context.action.alert({
-          msg: '방송 시작시간은\n방송 종료시간 같을 수 없습니다.',
-          callback: () => {
-            context.action.alert({visible: false})
-          }
-        })
-        return
-      }
-    }
     if (title === '') {
       context.action.alert({
         msg: '방송 소개에 작성된 내용이 없습니다.<br/>자신의 방송에 대한 소개를 작성해주세요.',
@@ -326,7 +267,7 @@ export default (props) => {
   })()
 
   return (
-    <div>
+    <div className="mdieaSize">
       <Popup {...props} />
       <Message {...props} />
 

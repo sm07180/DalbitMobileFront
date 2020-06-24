@@ -1,8 +1,12 @@
 .speacialdj {
   // overflow-y: scroll;
 
+  max-width: 740px;
+  margin: auto;
+
   .checkList {
     background: #f2f2f2;
+    padding-bottom: 50px;
 
     &__box {
       padding: 0px 16px;

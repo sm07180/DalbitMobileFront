@@ -6,27 +6,24 @@ import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //context
 import API from 'context/api'
+import {Context} from 'context/index.js'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Room, {RoomJoin} from 'context/room'
 // component
 import Header from '../component/header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
-import {Context} from 'context/index.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-//
 let currentPage = 1
 let query = ''
-
-export default props => {
-  //---------------------------------------------------------------------
+export default (props) => {
+  // ctx
   const context = useContext(Context)
-  //useState
+  //State
   const [member, setMember] = useState(null)
   const [nextMember, setNextMember] = useState(null)
   const [live, setLive] = useState(null)
   const [moreState, setMoreState] = useState(false)
   //---------------------------------------------------------------------
-
   //fetch 사용자검색
   async function fetchMember(query, next) {
     if (query === undefined) return
@@ -66,7 +63,6 @@ export default props => {
       })
     }
   }
-
   //fetch (라이브검색)
   async function fetchLive(query) {
     /*if (query === undefined) return
@@ -83,7 +79,6 @@ export default props => {
     }*/
   }
   //update
-
   function update(mode) {
     switch (true) {
       case mode.search !== undefined: //-------------------------------검색어
