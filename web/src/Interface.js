@@ -461,9 +461,11 @@ export default () => {
     }
   }
 
-  function nativeGetTid(tid){
-    console.log(tid);
-    alert(tid);
+  function nativeGetTid(event){
+    alert('App에서 응답받음!');
+    alert(event);
+    alert(event.detail);
+
   }
   //---------------------------------------------------------------------
   //useEffect addEventListener
