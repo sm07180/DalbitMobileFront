@@ -104,10 +104,10 @@ export default (props) => {
                   </div>
                   {popupData.is_cookie == '1' && (
                     <div className="chk-label">
-                      <label htmlFor="chkimg">
+                      <label htmlFor={`chkimg${popupData.idx}`}>
                         <input
                           type="checkbox"
-                          id="chkimg"
+                          id={`chkimg${popupData.idx}`}
                           onClick={() => {
                             applyClick(popupData.idx, 'imgType')
                           }}
