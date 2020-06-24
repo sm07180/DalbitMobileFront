@@ -3,20 +3,15 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 //modules
 import styled from 'styled-components'
 import qs from 'query-string'
-import { useLocation } from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 // context
-import { Context } from 'context'
-import { WIDTH_PC, WIDTH_TABLET, IMG_SERVER } from 'context/config'
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
+import {Context} from 'context'
+import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 //components
 import Header from '../component/header.js'
@@ -25,8 +20,8 @@ import Content from './fanBoard_content'
 import BJicon from '../component/bj.svg'
 import WriteIcon from '../component/ic_write.svg'
 import BackIcon from '../component/ic_back.svg'
-
-export default props => {
+import MoreBtnIcon from '../static/ic_new_more.svg'
+export default (props) => {
   //props.replyIdx 대댓글관련 모든 api통신에서 필요
   const replyIdx = props.replyShowIdx
   const TitleInfo = props.titleReplyInfo
@@ -35,8 +30,8 @@ export default props => {
   const ctx = useContext(Context)
   const context = useContext(Context)
   //profileGlobal info
-  const { profile } = ctx
-  const { webview } = qs.parse(location.search)
+  const {profile} = ctx
+  const {webview} = qs.parse(location.search)
   //urlNumber
   var urlrStr = location.pathname.split('/')[2]
   //state
@@ -50,13 +45,13 @@ export default props => {
   const [modifyMsg, setModifyMsg] = useState('')
   // function
   // 텍스트체인지
-  const handleChangeBig = e => {
+  const handleChangeBig = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setTextChange(target.value)
   }
   //dateformat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -101,7 +96,7 @@ export default props => {
     }
   }
   //공지컨텐트 등록 온체인지
-  const BigChangeContent = e => {
+  const BigChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setModifyMsg(target.value)
@@ -187,7 +182,7 @@ export default props => {
     }
   }
   //삭제하기 fetch
-  const DeleteBigReply = boardIdx => {
+  const DeleteBigReply = (boardIdx) => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -244,14 +239,7 @@ export default props => {
       <div className="reply_list">
         {list &&
           list.map((item, index) => {
-            const {
-              nickNm,
-              writeDt,
-              profImg,
-              contents,
-              boardIdx,
-              writerNo
-            } = item
+            const {nickNm, writeDt, profImg, contents, boardIdx, writerNo} = item
             const Link = () => {
               if (webview) {
                 link =
@@ -268,28 +256,12 @@ export default props => {
             return (
               <div key={index} className="reply_Wrap">
                 <div className="reply_list_header">
-                  <button
-                    className="big_moreBtn"
-                    onClick={() => toggleMore(boardIdx, contents)}
-                  ></button>
+                  <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                   {/* 상세기능영역 */}
-                  {(urlrStr === context.token.memNo ||
-                    writerNo === context.token.memNo) && (
-                    <div
-                      className={
-                        boardIdx === thisBigIdx
-                          ? 'big_moreDetail on'
-                          : 'big_moreDetail'
-                      }
-                    >
-                      {writerNo === context.token.memNo && (
-                        <span onClick={() => ReplyModify(contents, boardIdx)}>
-                          수정하기
-                        </span>
-                      )}
-                      <span onClick={() => DeleteBigReply(boardIdx)}>
-                        삭제하기
-                      </span>
+                  {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                    <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
+                      {writerNo === context.token.memNo && <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>}
+                      <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
                     </div>
                   )}
 
@@ -316,11 +288,7 @@ export default props => {
             <span>답글 쓰기</span>
           </header>
           <div className="content_area">
-            <Textarea
-              placeholder="내용을 입력해주세요"
-              onChange={handleChangeBig}
-              value={textChange}
-            />
+            <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
               <em>{textChange.length}</em> / 100
             </span>
@@ -336,11 +304,7 @@ export default props => {
             <span>답글 수정</span>
           </header>
           <div className="content_area">
-            <Textarea
-              value={modifyMsg}
-              onChange={BigChangeContent}
-              placeholder="내용을 입력해주세요"
-            />
+            <Textarea value={modifyMsg} onChange={BigChangeContent} placeholder="내용을 입력해주세요" />
             <span className="bigCount">
               <em>{modifyMsg.length}</em> / 100
             </span>
@@ -456,8 +420,7 @@ const Reply = styled.div`
     transform: translateY(-50%);
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center
-      center / cover;
+    background: url(${MoreBtnIcon}) no-repeat center center / cover;
   }
   .big_moreDetail {
     display: none;
@@ -637,7 +600,7 @@ const ProfImg = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
 `
 const Dim = styled.div`
   position: fixed;

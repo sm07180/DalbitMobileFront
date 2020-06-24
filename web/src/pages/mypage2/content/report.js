@@ -20,7 +20,10 @@ import heart from 'images/mini/heart.svg'
 import clock from 'images/mini/clock.svg'
 import heartIcon from '../static/ico_like_g.svg'
 import date from '../static/ic_circle_plus.svg'
-
+import PurplePlayIcon from '../static/ic_purple_play.svg'
+import StarGiftIcon from '../static/ic_star_gift.svg'
+import PeopleYellowIcon from '../static/ic_people_yellow.svg'
+import MoonIcon from '../static/ic_moon.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
@@ -452,17 +455,17 @@ export default (props) => {
                               <span>받은별 </span>
                               <span>{numberFormat(value.byeolCnt)}</span>
                             </div>
-                            <div>
+                            <div className="onSelect1">
                               <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
                             </div>
                           </div>
 
                           <div className="giftDate noborder">
-                            <div>
+                            <div className="onSelect2">
                               <span>최다 청취자 </span>
                               <span>{numberFormat(value.listenerCnt)}</span>
                             </div>
-                            <div>
+                            <div className="onSelect3">
                               <span>방송 최고 순위</span> <span>{value.rank}</span>
                             </div>
                           </div>
@@ -484,16 +487,16 @@ export default (props) => {
                             {/* {value.listenTime / 3600} */}
                           </div>
                           <div className="giftDate">
-                            <div>
+                            <div className="onSelect1">
                               <span>선물준달</span>
                               <span>{numberFormat(value.giftDalCnt)}</span>
                             </div>
-                            <div>
+                            <div className="onSelect2">
                               <span>받은별</span>
                               <span>{numberFormat(value.byeolCnt)}</span>
                             </div>
                           </div>
-                          <div className="guestDate">
+                          <div className="guestDate onSelect4">
                             <span>게스트로 참여 여부</span>
                             <span>{value.isGuest === false ? '-' : value.isGuest}</span>
                           </div>
@@ -566,6 +569,7 @@ const MobileDetailTab = styled.div`
     .black {
       color: #000000;
     }
+
     span:nth-child(1) {
       margin-right: 10px;
     }
@@ -575,6 +579,9 @@ const MobileDetailTab = styled.div`
   }
   .giftDate {
     border-bottom: 1px solid #eeeeee;
+    span {
+      margin-left: 2px;
+    }
     &.noborder {
       border: none;
     }
@@ -587,6 +594,9 @@ const MobileDetailTab = styled.div`
       letter-spacing: normal;
       text-align: left;
       color: #000000;
+      span {
+        margin-left: 2px;
+      }
       :before {
         position: absolute;
         left: 0;
@@ -594,8 +604,25 @@ const MobileDetailTab = styled.div`
         transform: translateY(-50%);
         width: 16px;
         height: 16px;
+
         content: '';
-        background: url(${heartIcon}) no-repeat center center/cover;
+        background: url(${StarGiftIcon}) no-repeat center center/cover;
+      }
+      &.onSelect1 {
+        :before {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+      }
+
+      &.onSelect2 {
+        :before {
+          background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+        }
+      }
+      &.onSelect3 {
+        :before {
+          background: url(${PurplePlayIcon}) no-repeat center center/cover;
+        }
       }
     }
   }
@@ -656,6 +683,7 @@ const MobileDetailTabListen = styled.div`
       margin-bottom: 6px;
     }
   }
+
   .startDate {
     justify-content: flex-start;
     font-size: 12px;
@@ -689,6 +717,9 @@ const MobileDetailTabListen = styled.div`
       letter-spacing: normal;
       text-align: left;
       color: #000000;
+      span {
+        margin-left: 2px;
+      }
       :before {
         position: absolute;
         left: 0;
@@ -697,7 +728,12 @@ const MobileDetailTabListen = styled.div`
         width: 16px;
         height: 16px;
         content: '';
-        background: url(${heartIcon}) no-repeat center center/cover;
+        background: url(${MoonIcon}) no-repeat center center/cover;
+      }
+      &.onSelect2 {
+        :before {
+          background: url(${StarGiftIcon}) no-repeat center center/cover;
+        }
       }
     }
   }
@@ -714,6 +750,14 @@ const MobileDetailTabListen = styled.div`
     letter-spacing: normal;
     text-align: left;
     color: #000000;
+    span {
+      margin-left: 2px;
+    }
+    &.onSelect4 {
+      :before {
+        background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+      }
+    }
     :before {
       position: absolute;
       left: 0;
@@ -779,7 +823,7 @@ const ShortSection = styled.div`
       z-index: 5;
       top: 0;
       right: 4px;
-      background: url(${heartIcon}) no-repeat center center/cover;
+      background: url(${PurplePlayIcon}) no-repeat center center/cover;
     }
   }
   :nth-child(1),
@@ -790,7 +834,7 @@ const ShortSection = styled.div`
     > div {
       color: #f26d4a;
       :after {
-        background: url(${heartIcon}) no-repeat center center/cover;
+        background: url(${StarGiftIcon}) no-repeat center center/cover;
       }
     }
   }
@@ -806,7 +850,7 @@ const ShortSection = styled.div`
     > div {
       color: #febd56;
       :after {
-        background: url(${heartIcon}) no-repeat center center/cover;
+        background: url(${PeopleYellowIcon}) no-repeat center center/cover;
       }
     }
   }
@@ -815,7 +859,7 @@ const ShortSection = styled.div`
       position: relative;
       > div {
         :after {
-          background: url(${heartIcon}) no-repeat center center/cover;
+          background: url(${PurplePlayIcon}) no-repeat center center/cover;
         }
         color: #f26d4a;
       }
@@ -824,7 +868,7 @@ const ShortSection = styled.div`
       > div {
         color: #f26d4a;
         :after {
-          background: url(${heartIcon}) no-repeat center center/cover;
+          background: url(${MoonIcon}) no-repeat center center/cover;
         }
       }
     }
@@ -832,7 +876,7 @@ const ShortSection = styled.div`
       > div {
         color: #ec455f;
         :after {
-          background: url(${heartIcon}) no-repeat center center/cover;
+          background: url(${StarGiftIcon}) no-repeat center center/cover;
         }
       }
     }
@@ -840,7 +884,7 @@ const ShortSection = styled.div`
       > div {
         color: #febd56;
         :after {
-          background: url(${heartIcon}) no-repeat center center/cover;
+          background: url(${PeopleYellowIcon}) no-repeat center center/cover;
         }
       }
     }

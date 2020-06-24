@@ -31,6 +31,7 @@ import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
+import CrownIcon from '../static/ic_crown.svg'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   const {webview} = props
@@ -211,7 +212,7 @@ const myProfile = (props) => {
     <>
       <ProfileWrap>
         <MyProfile webview={webview}>
-          {/* <button className="closeBtn" onClick={goBack}></button> */}
+          <button className="closeBtn" onClick={goBack}></button>
           <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
             <figure onClick={() => figureZoom()}>
               <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
@@ -223,7 +224,7 @@ const myProfile = (props) => {
               </div>
             )}
             <div className="title">
-              Lv{profile.level}. {profile.level !== 0 && `${profile.grade}`}
+              Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
             <div className="InfoWrap">
               {urlrStr == 'profile' && (
@@ -365,11 +366,11 @@ z-index:3;
 .closeBtn {
   
     position: absolute;
-    right: 0;
+    right: 12px;
     width: 32px;
     height: 32px;
     top: -40px;
-    right: 0px;
+
     z-index: 16;
     background: url(${CloseBtnIcon});
   }
@@ -734,9 +735,13 @@ const NameWrap = styled.div`
   align-items: center;
   flex-direction: column;
   .topMedal {
-    width: 175px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 175px;
     height: 28px;
     margin-top: 8px;
+    padding: 0 10px;
     border-radius: 14px;
     border: solid 1px #e0e0e0;
     background-color: #f5f5f5;
@@ -745,6 +750,14 @@ const NameWrap = styled.div`
     line-height: 28px;
     text-align: center;
     color: #bdbdbd;
+    :before {
+      display: block;
+      content: '';
+      width: 26px;
+      height: 16px;
+      margin-right: 8px;
+      background: url(${CrownIcon}) no-repeat center center / cover;
+    }
   }
   .expBtnWrap {
     display: flex;
