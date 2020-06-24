@@ -16,9 +16,11 @@ const list = [
   {value: 2, text: '핸드폰번호'}
 ]
 let chargeData = [
+  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'}
+  {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
 ]
 
 if (__NODE_ENV !== 'real') {
@@ -50,9 +52,9 @@ export default (props) => {
 
   const {webview} = qs.parse(location.search)
 
-  let paymentName = '달 50'
-  let paymentPrice = 5500
-  let payItemNo = 'A1865'
+  let paymentName = '달 10'
+  let paymentPrice = 1100
+  let payItemNo = 'A1817'
   let pageCode = '1'
 
   if (props.location.state) {

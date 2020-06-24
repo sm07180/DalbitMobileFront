@@ -73,6 +73,8 @@ export default props => {
   const dateYear = date.slice(0, 4) - 16
   let dateDefault = ''
 
+  Hybrid('getNativeTid')
+
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
     memId: '',
@@ -478,6 +480,7 @@ export default props => {
 
     //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
     const memId = changes.memId.replace(/-/g, '')
+    const nativeTid = context.getNativeTid == null ? '' : context.getNativeTid
     const res = await Api.member_join({
       data: {
         memType: changes.memType,
@@ -494,6 +497,7 @@ export default props => {
         name: changes.name,
         profImg: resultImg,
         profImgRacy: 3,
+        nativeTid : nativeTid,
         email: '',
         os: changes.osName
       }
@@ -503,22 +507,8 @@ export default props => {
         //alert(res.message)
         context.action.alert({
           callback: () => {
-            const adbrixData = {
-              eventName : 'signUp'
-              , attr : {}
-            }
-            adbrixData.attr = {
-              eventName : 'signUp'
-              , sex : '1'
-              , age : '25'
-              , connectTime : '20200624131122'
-              , connectCnt : 4
-              , broadcastCreateYn : 'N'
-              , broadcastJoinYn : 'N'
-              , payYn : 'N'
-            }
-
-            Hybrid('adbrixEvent', JSON.stringify(adbrixData));
+            //애드브릭스 이벤트 전달
+            Hybrid('adbrixEvent', res.data.adbrixData);
             fetchPhoneLogin()
           },
           msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'

@@ -415,25 +415,6 @@ export default (props) => {
     )
   }
 
-  const sendAdbrixData = () => {
-    const adbrixData = {
-      eventName : 'signUp'
-      , attr : {}
-    }
-    adbrixData.attr = {
-      sex : '1'
-      , age : '25'
-      , connectTime : '20200624131122'
-      , connectCnt : 4
-      , broadcastCreateYn : 'N'
-      , broadcastJoinYn : 'N'
-      , payYn : 'N'
-    }
-
-    console.log(adbrixData);
-    Hybrid('adbrixEvent', JSON.stringify(adbrixData));
-  }
-
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <MainWrap ref={MainRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
@@ -448,25 +429,13 @@ export default (props) => {
               </div>
               <div className="tab">
                 <Link
-                  onClick={(event) => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
-                  }}
-                  to={'/store'}>
+                    onClick={(event) => {
+                      event.preventDefault()
+                      StoreLink(globalCtx)
+                    }}
+                    to={'/store'}>
                   스토어
                 </Link>
-              </div>
-
-              <div className="tab">
-                <button type="button" onClick={Hybrid('getNativeTid')}>
-                  <div className="link-text">tid 요청</div>
-                </button>
-              </div>
-
-              <div className="tab">
-                <button type="button" onClick={() => sendAdbrixData()}>
-                  <div className="link-text">데이터전달</div>
-                </button>
               </div>
             </div>
             <div className="right-side">
