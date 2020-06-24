@@ -8,13 +8,21 @@ const webpack = require('webpack')
 const fs = require('fs')
 
 const ENV_URL = {
+  // dev: {
+  //   WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+  //   API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
+  //   STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
+  //   USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
+  //   PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com'),
+  //   SOCIAL_URL: JSON.stringify('https://devwww2.dalbitlive.com/social')
+  // },
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
+    API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
-    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com'),
-    SOCIAL_URL: JSON.stringify('https://devwww2.dalbitlive.com/social')
+    USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
+    PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
+    SOCIAL_URL: JSON.stringify('https://devwww.dalbitlive.com/social')
   },
   stage: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
