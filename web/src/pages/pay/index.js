@@ -12,7 +12,7 @@ import {Hybrid} from 'context/hybrid'
 import styled from 'styled-components'
 
 import Content from './content'
-import _ from 'lodash'
+import _, {uniqueId} from 'lodash'
 import {Context} from 'context'
 
 import qs from 'query-string'
@@ -22,11 +22,19 @@ export default (props) => {
   //context
   const context = useContext(Context)
 
-  const {webview} = qs.parse(location.search)
+  const {webview, canceltype} = qs.parse(location.search)
+
+  const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result') || canceltype !== undefined)
+
+  if (canceltype !== undefined) {
+    if (canceltype === 'room') {
+      return Hybrid('ClosePayPopup')
+    } else {
+      return (window.location.href = '/')
+    }
+  }
 
   const {result, message, state, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-
-  const [pageState, setPageState] = useState(_.hasIn(props, 'location.state.result'))
 
   if (_.hasIn(props, 'location.state.result')) {
     if (result === 'success') {
