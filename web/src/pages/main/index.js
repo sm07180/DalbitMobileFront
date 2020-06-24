@@ -415,7 +415,13 @@ export default (props) => {
     )
   }
 
+  const requestAdbrixTid = () => {
+    alert('요청')
+;    Hybrid('getNativeTid');
+  }
+
   const sendAdbrixData = () => {
+    alert('전달')
     const adbrixData = {
       eventName : 'signUp'
       , attr : {}
@@ -457,16 +463,12 @@ export default (props) => {
                 </Link>
               </div>
 
-              <div className="tab">
-                <button type="button" onClick={Hybrid('getNativeTid')}>
+              <div className="btn" onClick={() => requestAdbrixTid()}>
                   <div className="link-text">tid 요청</div>
-                </button>
               </div>
 
-              <div className="tab">
-                <button type="button" onClick={() => sendAdbrixData()}>
+              <div className="btn" onClick={() => sendAdbrixData()}>
                   <div className="link-text">데이터전달</div>
-                </button>
               </div>
             </div>
             <div className="right-side">
