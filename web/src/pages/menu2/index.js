@@ -15,7 +15,7 @@ import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import LoginStay from '../login/loginState'
 export default (props) => {
-  const categoryList2 = [
+  const categoryList = [
     {type: 'nav', component: Nav},
     {type: 'profile', component: Profile2},
     {type: 'alarm', component: Alarm},
@@ -41,20 +41,20 @@ export default (props) => {
       {/* <LoginStay /> */}
       {/* 2.5v myProfile  */}
       <Layout {...props} status="no_gnb">
-        <MenuWrapRe>
+        <MenuWrap>
           <Switch>
-            {categoryList2.map((value) => {
+            {categoryList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/menu/${type}`} component={component} key={type} />
             })}
           </Switch>
-        </MenuWrapRe>
+        </MenuWrap>
       </Layout>
     </>
   )
 }
 
-const MenuWrapRe = styled.div`
+const MenuWrap = styled.div`
   min-height: 100vh;
   box-sizing: border-box;
   background-color: #eeeeee;

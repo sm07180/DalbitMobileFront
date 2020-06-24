@@ -27,6 +27,7 @@ export default (props) => {
   const [tempPhoto, setTempPhoto] = useState(null)
   const [photoUploading, setPhotoUploading] = useState(false)
   const [firstSetting, setFirstSetting] = useState(false)
+  const [mypageBirth, setMypageBirth] = useState('')
   //ref
   const nicknameReference = useRef()
   // setting img upload func  + mobile rotater
@@ -283,6 +284,12 @@ export default (props) => {
   }, [profile])
   //null check updateProfile
   if (profile === null) {
+    Api.mypage().then((result) => {
+      context.action.updateProfile(result.data)
+    })
+    return null
+  }
+  if (profile && profile.birth === '') {
     Api.mypage().then((result) => {
       context.action.updateProfile(result.data)
     })

@@ -9,20 +9,19 @@ import Room, {RoomJoin} from 'context/room'
 //styled
 import styled from 'styled-components'
 //component
-import Header from '../component/header.js'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LayerPopupExp from './layer_popup_exp.js'
-import LiveIcon from '../component/ic_live.svg'
+import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
-//util
 import Utility, {printNumber} from 'components/lib/utility'
-import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+//util
+import LiveIcon from '../component/ic_live.svg'
 import FemaleIcons from '../static/ico_female.svg'
 import MaleIcons from '../static/ico_male.svg'
 import KoreaIcons from '../static/ico_korea.svg'
@@ -36,28 +35,26 @@ import CloseBtnIcon from '../component/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
-  const {webview} = props
-
+  const {webview, profile} = props
   //context
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, closePresent} = context
-
-  //pathname
+  //pathname & MemNo
   const urlrStr = props.location.pathname.split('/')[2]
-  const {profile} = props
-
   const myProfileNo = context.profile.memNo
-  //zoom
+  //state
   const [Zoom, setZoom] = useState(false)
-  const figureZoom = () => {
-    setZoom(true)
-  }
-
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [reportShow, SetShowReport] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
+  // function
+  //zoom
+  const figureZoom = () => {
+    setZoom(true)
+  }
+  //팬등록
   async function fetchDataFanRegist(myProfileNo) {
     const res = await Api.fan_change({
       data: {
@@ -106,18 +103,19 @@ const myProfile = (props) => {
   const fanRegist = (myProfileNo) => {
     fetchDataFanRegist(myProfileNo)
   }
-  //func
+  //func star count
   const starContext = () => {
     if (profile.starCnt > 0) {
       context.action.updateCloseStarCnt(true)
     }
   }
+  //func fuan count
   const fanContext = () => {
     if (profile.fanCnt > 0) {
       context.action.updateCloseFanCnt(true)
     }
   }
-
+  // 팬랭킹 리스트 func
   const createFanList = () => {
     if (profile.fanRank == false) return null
     let result = []
@@ -156,7 +154,7 @@ const myProfile = (props) => {
       </>
     )
   }
-
+  // rank popup toggle
   const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
@@ -169,7 +167,7 @@ const myProfile = (props) => {
       setPopup(true)
     }
   }
-
+  //--------------------------------------------
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
@@ -183,14 +181,14 @@ const myProfile = (props) => {
       }
     }
   }, [popup])
-
+  //--------------------------------------------
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-
+  //--------------------------------------------
   useEffect(() => {
     if (mypageReport || close || closeFanCnt || closeStarCnt || closePresent) {
       setPopup(true)
@@ -198,7 +196,8 @@ const myProfile = (props) => {
       setPopup(false)
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt, closePresent])
-
+  //--------------------------------------------
+  //깜빡임 fake
   if (profile === null) {
     return <div></div>
   }
@@ -208,7 +207,6 @@ const myProfile = (props) => {
   }
   return (
     <>
-      {/* <PurpleWrap></PurpleWrap> */}
       <ProfileWrap>
         <MyProfile webview={webview}>
           {/* <Header>
@@ -345,9 +343,7 @@ const myProfile = (props) => {
     </>
   )
 }
-
 export default myProfile
-
 //styled======================================
 const ButtonWrap = styled.div`
   flex-basis: 204px;
@@ -373,13 +369,9 @@ const GiftButtonWrap = styled.div`
     padding-top: 0;
   }
 `
-
 const ProfileWrap = styled.div`
   padding-top: 87px;
   position: relative;
-  /* background-color: #424242; */
-  /* min-height: 400px; */
-
   .plus {
     display: block;
     margin-left: 5px;
@@ -422,14 +414,11 @@ const ProfileWrap = styled.div`
       background-color: #ffffff;
       font-size: 12px;
       font-weight: 600;
-
       color: #757575;
       :after {
         content: '';
-
         width: 20px;
         height: 12px;
-
         background: url(${QuestionIcon}) no-repeat center center / cover;
         margin-left: 7px;
       }
@@ -446,11 +435,9 @@ const ProfileWrap = styled.div`
       background-color: #ffffff;
       font-size: 12px;
       font-weight: 600;
-
       color: #757575;
       :after {
         content: '';
-
         height: 12px;
         width: 20px;
         background: url(${QuestionIcon}) no-repeat center center / cover;
@@ -491,8 +478,6 @@ const MyProfile = styled.div`
     background-color:#fff;
     border-top-left-radius:20px;
     border-top-right-radius:20px;
-  /* width: calc(100% - 16px); */
-  /* min-height: 304px; */
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
 position: relative;
@@ -536,11 +521,8 @@ z-index:3;
    height:auto;
   }
   & > div {
-      
     flex: 0 0 auto;
-  
   }
-
   .categoryCntWrap {
       margin: 4px 0 0px 0;
       display: flex;
@@ -568,7 +550,6 @@ z-index:3;
             width:24px;
             height:24px;
             background:url(${GrayHeart})no-repeat center center /cover;
-
             &.type1 {
               background:url(${BlueHoleIcon})no-repeat center center /cover;
             }
@@ -608,17 +589,14 @@ z-index:3;
         } 
       }
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 0;
-    
     /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 
 `
 //flex item3
-
 const ProfileImg = styled.div`
   display: block;
   position: relative;
@@ -642,7 +620,6 @@ const ProfileImg = styled.div`
     background-repeat: no-repeat;
     z-index: 2;
   }
-
   figure {
     position: relative;
     width: 100px;
@@ -654,7 +631,6 @@ const ProfileImg = styled.div`
       display: none;
     }
   }
-
   span {
     display: inline-block;
     position: relative;
@@ -673,28 +649,23 @@ const ProfileImg = styled.div`
     transform: skew(-0.03deg);
     padding: 0 18px;
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     order: 2;
   }
 `
-
 const ContentWrap = styled.div`
   width: calc(100% - 360px);
   padding: 0 24px;
   order: 2;
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
     margin: 16px auto 0 auto;
     order: 3;
-
     & > div {
       display: flex;
       justify-content: center;
     }
   }
-
   .dailyTop {
     width: 108px;
     height: 28px;
@@ -709,65 +680,12 @@ const ContentWrap = styled.div`
     color: #ffffff;
   }
 `
-//------------------------------------------------------
-//정보 레벨업관련
-const LevelWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 16px;
-  margin-top: 3px;
 
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 15px;
-    align-items: center;
-  }
-`
-const LevelText = styled.span`
-  color: ${COLOR_MAIN};
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 800;
-  letter-spacing: -0.35px;
-  transform: skew(-0.03deg);
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
-  }
-`
-const LevelStatusBarWrap = styled.div`
-  position: relative;
-  width: 156px;
-  margin-left: 8px;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 14px;
-  }
-`
-const LevelStatus = styled.div`
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  height: calc(100% + 2px);
-  max-width: calc(100% + 2px);
-  border-radius: 10px;
-  background-color: ${COLOR_MAIN};
-  text-align: right;
-  color: #fff;
-  font-size: 9px;
-  padding: 1px 0;
-  padding-right: 6px;
-  line-height: 15px;
-  box-sizing: border-box;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    line-height: 13px;
-  }
-`
 //닉네임
 const NameWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-
   .subIconWrap {
     display: flex;
     flex-direction: row;
@@ -806,7 +724,6 @@ const NameWrap = styled.div`
     line-height: 24px;
     height: 24px;
     font-weight: 800;
-    /* margin-top: 4px; */
   }
   .specialIcon {
     display: inline-block;
@@ -830,7 +747,6 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     text-align: center;
     & > * {
@@ -1099,5 +1015,3 @@ const FanRank = styled.div`
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
   }
 `
-
-//categoryWrap
