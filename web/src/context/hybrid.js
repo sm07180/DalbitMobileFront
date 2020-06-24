@@ -38,11 +38,13 @@ export const isAndroid = () => {
  *
  */
 export const Hybrid = (func, info) => {
+  if (!isHybrid()) return
+  const customHeader = JSON.parse(Api.customHeader)
+
   alert(func);
   alert(info);
   alert(customHeader['os']);
-  if (!isHybrid()) return
-  const customHeader = JSON.parse(Api.customHeader)
+
   switch (customHeader['os']) {
     // Android
     case OS_TYPE['Android']: {
