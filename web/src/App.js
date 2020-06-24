@@ -126,14 +126,17 @@ const App = () => {
           }
         }
       }
-      const myProfile = await Api.profile({
-        params: {
-          memNo: tokenInfo.data.memNo
+      if (tokenInfo.data && tokenInfo.data.memNo) {
+        const myProfile = await Api.profile({
+          params: {
+            memNo: tokenInfo.data.memNo
+          }
+        })
+        if (myProfile.result === 'success') {
+          globalCtx.action.updateProfile(myProfile.data)
         }
-      })
-      if (myProfile.result === 'success') {
-        globalCtx.action.updateProfile(myProfile.data)
       }
+
       //모든 처리 완료
       setReady(true)
     } else {
