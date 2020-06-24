@@ -45,7 +45,7 @@ const broadInfo = {
 }
 
 const listenInfo = {
-  mic: [mic, '청취'],
+  mic: [mic, '시청'],
   moon: [moon, '달 선물'],
   heart: [heart, '받은 별'],
   clock: [clock, '게스트 참여 시간']
@@ -285,6 +285,11 @@ export default (props) => {
     setlistentotal([])
     setPickerCssOn(false)
     setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
+    ctx.action.updateReportDate({
+      type: 0,
+      prev: dateToday,
+      next: dateToday
+    })
     if (selectType === 0) {
       setSelectType(1)
     } else {
@@ -419,7 +424,7 @@ export default (props) => {
                         <div>
                           <div>{listenInfo[section][1]}</div>
                           <div className="count">
-                            {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
+                            {listenInfo[section][1] === '시청' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
                             {listenInfo[section][1] === '달 선물' &&
                               listentotal.length !== 0 &&
                               numberFormat(String(giftDalTotCnt))}
@@ -861,7 +866,7 @@ const ShortSection = styled.div`
         :after {
           background: url(${PurplePlayIcon}) no-repeat center center/cover;
         }
-        color: #f26d4a;
+        color: #632beb;
       }
     }
     :nth-child(2) {
