@@ -222,15 +222,7 @@ const myProfile = (props) => {
           )}
           <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
             <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
-            {profile.roomNo !== '' && (
-              <button
-                className="liveIcon"
-                onClick={() => {
-                  RoomJoin(profile.roomNo)
-                }}>
-                <img src={LiveIcon}></img>
-              </button>
-            )}
+
             <figure onClick={() => figureZoom()}>
               <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
             </figure>
@@ -254,6 +246,16 @@ const myProfile = (props) => {
           </ProfileImg>
 
           <ContentWrap>
+            {profile.roomNo !== '' && (
+              <button
+                className="liveIcon"
+                onClick={() => {
+                  RoomJoin(profile.roomNo)
+                }}>
+                <img src={LiveIcon}></img>
+                <span>Live</span>
+              </button>
+            )}
             <NameWrap>
               {/* <span>ID : {`@${profile.memId}`}</span> */}
               <strong>{profile.nickNm}</strong>
@@ -454,6 +456,23 @@ const ProfileWrap = styled.div`
         background: url(${QuestionIcon}) no-repeat center center / cover;
         margin-left: 7px;
       }
+    }
+  }
+  .liveIcon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 18px;
+    top: 21px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: -0.25px;
+    text-align: center;
+    color: #ec455f;
+    img {
+      padding: 0 0 3px 3px;
     }
   }
 `
@@ -657,14 +676,6 @@ const ProfileImg = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     order: 2;
-  }
-  & .liveIcon {
-    position: absolute;
-    right: 0;
-    top: 0px;
-    img {
-      padding: 0 0 3px 3px;
-    }
   }
 `
 
@@ -916,7 +927,7 @@ const InfoConfigBtn = styled.div`
   .notBjWrap {
     display: flex;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 14px;
     margin-bottom: 14px;
     & button {
       display: flex;

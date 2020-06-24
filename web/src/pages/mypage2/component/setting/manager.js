@@ -20,6 +20,8 @@ import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
+import SearchIconGray from '../../static/ic_search_g.svg'
+import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
 
 export default (props) => {
   //-----------------------------------------------------------------------------
@@ -449,7 +451,7 @@ const SearchArea = styled.div`
     top: 6px;
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat center;
+    background: url(${SearchIconGray}) no-repeat center / cover;
     text-indent: -9999px;
   }
 
@@ -496,6 +498,17 @@ const SearchArea = styled.div`
     > div {
       border-right: 1px solid #e0e0e0;
       width: 100%;
+      position: relative;
+      :after {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        content: '';
+        width: 24px;
+        height: 24px;
+        background: url(${ArrowIconGray}) no-repeat center center / cover;
+      }
       > div {
         width: 100%;
         border: 0;
@@ -512,6 +525,7 @@ const SearchArea = styled.div`
         }
         :before,
         :after {
+          display: none;
           top: 24px;
         }
       }

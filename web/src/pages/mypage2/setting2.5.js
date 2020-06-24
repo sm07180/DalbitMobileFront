@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'
-import { Switch, Redirect, Link } from 'react-router-dom'
+import React, {useEffect, useState, useContext, useRef} from 'react'
+import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
 
 //layout
@@ -7,22 +7,17 @@ import Layout from 'pages/common/layout'
 import Header from './component/header'
 //context
 import Api from 'context/api'
-import { Context } from 'context'
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
-import { WIDTH_MOBILE, IMG_SERVER } from 'context/config'
+import {Context} from 'context'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 import MaleIcon from './static/ico_male.svg'
 import FeMaleIcon from './static/ico_female.svg'
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
-  const { profile, token } = context
+  const {profile, token} = context
   // state
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState(null)
@@ -32,16 +27,16 @@ export default props => {
   const [photoUploading, setPhotoUploading] = useState(false)
 
   const nicknameReference = useRef()
-  const { isOAuth } = token
+  const {isOAuth} = token
 
-  const profileImageUpload = e => {
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -51,7 +46,7 @@ export default props => {
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
-          context.action.alert({ visible: false })
+          context.action.alert({visible: false})
         }
       })
     }
@@ -172,21 +167,11 @@ export default props => {
     reader.onload = async () => {
       if (reader.result) {
         const originalBuffer = reader.result
-        const { buffer, orientation } = getOrientation(originalBuffer)
+        const {buffer, orientation} = getOrientation(originalBuffer)
         const blob = new Blob([buffer])
         //createObjectURL 주어진 객체를 가리키는 URL을 DOMString으로 반환합니다
-        const originalCacheURL = (
-          window.URL ||
-          window.webkitURL ||
-          window ||
-          {}
-        ).createObjectURL(file)
-        const cacheURL = (
-          window.URL ||
-          window.webkitURL ||
-          window ||
-          {}
-        ).createObjectURL(blob)
+        const originalCacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(file)
+        const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
 
@@ -219,7 +204,7 @@ export default props => {
               msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
               title: '',
               callback: () => {
-                context.action.alert({ visible: false })
+                context.action.alert({visible: false})
               }
             })
           }
@@ -228,16 +213,16 @@ export default props => {
     }
   }
 
-  const changeNickname = e => {
-    const { currentTarget } = e
+  const changeNickname = (e) => {
+    const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
     }
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = e => {
-    const { currentTarget } = e
+  const changeMsg = (e) => {
+    const {currentTarget} = e
     if (currentTarget.value.length > 100) {
       return
     } else {
@@ -250,7 +235,7 @@ export default props => {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
         callback: () => {
-          context.action.alert({ visible: false })
+          context.action.alert({visible: false})
           if (nicknameReference.current) {
             nicknameReference.current.focus()
           }
@@ -262,7 +247,7 @@ export default props => {
       return context.action.alert({
         msg: '프로필 사진 업로드 중입니다.',
         callback: () => {
-          context.action.alert({ visible: false })
+          context.action.alert({visible: false})
         }
       })
     }
@@ -277,14 +262,14 @@ export default props => {
 
     console.log('data', data)
 
-    const res = await Api.profile_edit({ data })
+    const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
-      context.action.updateProfile({ ...res.data, birth: profile.birth })
+      context.action.updateProfile({...res.data, birth: profile.birth})
       return context.action.alert({
         msg: '저장되었습니다.',
         title: '',
         callback: () => {
-          context.action.alert({ visible: false })
+          context.action.alert({visible: false})
           props.history.push('/menu/profile')
         }
       })
@@ -311,7 +296,7 @@ export default props => {
   }, [profile])
 
   if (profile === null) {
-    Api.mypage().then(result => {
+    Api.mypage().then((result) => {
       context.action.updateProfile(result.data)
     })
     return null
@@ -332,22 +317,10 @@ export default props => {
               <div className="individual_Wrap">
                 <ProfileImg>
                   <label htmlFor="profileImg">
-                    <input
-                      id="profileImg"
-                      type="file"
-                      accept="image/jpg, image/jpeg, image/png"
-                      onChange={profileImageUpload}
-                    />
+                    <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
                     <img
-                      src={
-                        tempPhoto
-                          ? tempPhoto
-                          : profile.profImg
-                          ? profile.profImg['thumb150x150']
-                          : ''
-                      }
-                      className="backImg"
-                    ></img>
+                      src={tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}
+                      className="backImg"></img>
                     <img
                       src={camera}
                       style={{
@@ -405,15 +378,8 @@ export default props => {
 
                 <div className="birthBox">
                   <span className="matchTitle">생년월일</span>
-                  <BirthDate>{`${profile.birth.slice(
-                    0,
-                    4
-                  )}-${profile.birth.slice(4, 6)}-${profile.birth.slice(
-                    6
-                  )}`}</BirthDate>
-                  <GenderAlertMsg>
-                    생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.
-                  </GenderAlertMsg>
+                  <BirthDate>{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}</BirthDate>
+                  <GenderAlertMsg>생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
                 </div>
                 <GenderWrap className={firstSetting ? 'before' : 'after'}>
                   {firstSetting ? (
@@ -426,8 +392,7 @@ export default props => {
                           } else {
                             setGender('m')
                           }
-                        }}
-                      >
+                        }}>
                         남자
                       </GenderTab>
 
@@ -439,27 +404,16 @@ export default props => {
                           } else {
                             setGender('f')
                           }
-                        }}
-                      >
+                        }}>
                         여자
                       </GenderTab>
                     </>
                   ) : (
                     <>
                       {profile.gender === 'm' ? (
-                        <GenderTab
-                          className={profile.gender === 'm' ? '' : 'off'}
-                        >
-                          남자
-                        </GenderTab>
+                        <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
                       ) : (
-                        <GenderTab
-                          className={
-                            profile.gender === 'f' ? 'woman' : 'off woman'
-                          }
-                        >
-                          여자
-                        </GenderTab>
+                        <GenderTab className={profile.gender === 'f' ? 'woman' : 'off woman'}>여자</GenderTab>
                       )}
                     </>
                   )}
@@ -467,11 +421,7 @@ export default props => {
 
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메세지</label>
-                  <MsgText
-                    defaultValue={profile.profMsg}
-                    onChange={changeMsg}
-                    maxLength={100}
-                  />
+                  <MsgText defaultValue={profile.profMsg} onChange={changeMsg} maxLength={100} />
                 </div>
 
                 <SaveBtn onClick={saveUpload}>저장</SaveBtn>
@@ -741,7 +691,7 @@ const UserId = styled.div`
     color: #000000;
   }
 `
-const NicknameInput = styled.input.attrs({ type: 'text' })`
+const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
   border: 1px solid #e0e0e0;
   padding: 29px 16px 11px 16px;
@@ -868,8 +818,7 @@ const Content = styled.section`
       width: 16px;
       height: 16px;
       font-weight: bold;
-      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat
-        center;
+      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
       content: '';
       vertical-align: bottom;
     }
@@ -902,8 +851,7 @@ const TopWrap = styled.div`
   button:nth-child(1) {
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
-      center / cover;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
   }
   .title {
     width: calc(100% - 24px);

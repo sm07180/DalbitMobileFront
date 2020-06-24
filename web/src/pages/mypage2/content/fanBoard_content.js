@@ -3,35 +3,31 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 // modules
 import qs from 'query-string'
 import styled from 'styled-components'
-import { useLocation } from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 // context
-import { Context } from 'context'
-import { WIDTH_PC, WIDTH_TABLET, IMG_SERVER } from 'context/config'
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
+import {Context} from 'context'
+import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 // component
 import Header from '../component/header.js'
 import ReplyList from './fanBoard_reply'
 //svg
 import BJicon from '../component/bj.svg'
-import ReplyIcon from '../static/bluehole.svg'
+import ReplyIcon from '../static/ic_reply_purple.svg'
 import BackIcon from '../component/ic_back.svg'
+import MoreBtnIcon from '../static/ic_new_more.svg'
 //--------------------------------------------------------------------------
-export default props => {
+export default (props) => {
   // context && location
   let location = useLocation()
   const context = useContext(Context)
   var urlrStr = location.pathname.split('/')[2]
-  const { webview } = qs.parse(location.search)
+  const {webview} = qs.parse(location.search)
   //전체 댓글리스트(props)
   const TotalList = props.list
   const TotalCount = props.totalCount
@@ -47,7 +43,7 @@ export default props => {
   const [textChange, setTextChange] = useState('')
   //--------------------------function
   //dateformat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -74,16 +70,16 @@ export default props => {
     setReplyShowIdx(boardIdx)
     setTitleReplyInfo(item)
     context.action.updateToggleAction(true)
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
   //댓글 등록 온체인지
-  const BigChangeContent = e => {
+  const BigChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setModifyMsg(target.value)
   }
   //대댓글 작성 및 초기화
-  const ReplyWrite = boardIdx => {
+  const ReplyWrite = (boardIdx) => {
     if (ReplyWriteState === false) {
       context.action.updateReplyIdx(boardIdx)
       setReplyWriteState(true)
@@ -93,7 +89,7 @@ export default props => {
     }
   }
   //댓글 온체인지
-  const handleChangeBig = e => {
+  const handleChangeBig = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setTextChange(target.value)
@@ -125,7 +121,7 @@ export default props => {
     }
   }
   //삭제하기 fetch
-  const DeleteBigReply = boardIdx => {
+  const DeleteBigReply = (boardIdx) => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -180,11 +176,7 @@ export default props => {
       {/* 딤영역 */}
       {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
       <Content>
-        <div
-          className={`list-wrap ${
-            context.toggleState === false ? 'on' : 'off'
-          }`}
-        >
+        <div className={`list-wrap ${context.toggleState === false ? 'on' : 'off'}`}>
           {TotalCount && (
             <div className="big_count">
               <span>게시글</span>
@@ -194,15 +186,7 @@ export default props => {
           {TotalList &&
             TotalList !== false &&
             TotalList.map((item, index) => {
-              const {
-                nickNm,
-                writerNo,
-                contents,
-                writeDt,
-                profImg,
-                replyCnt,
-                boardIdx
-              } = item
+              const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx} = item
               const Link = () => {
                 if (webview) {
                   link =
@@ -219,29 +203,15 @@ export default props => {
               return (
                 <BigReply key={index}>
                   <div className="reply_header">
-                    {(urlrStr === context.token.memNo ||
-                      writerNo === context.token.memNo) && (
+                    {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
                       <>
-                        <button
-                          className="big_moreBtn"
-                          onClick={() => toggleMore(boardIdx, contents)}
-                        ></button>
+                        <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                         {/* 상세기능영역 */}
-                        <div
-                          className={
-                            boardIdx === thisBigIdx
-                              ? 'big_moreDetail on'
-                              : 'big_moreDetail'
-                          }
-                        >
+                        <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
                           {writerNo === context.token.memNo && (
-                            <span onClick={() => BigModify(contents, boardIdx)}>
-                              수정하기
-                            </span>
+                            <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
                           )}
-                          <span onClick={() => DeleteBigReply(boardIdx)}>
-                            삭제하기
-                          </span>
+                          <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
                         </div>
                       </>
                     )}
@@ -256,9 +226,7 @@ export default props => {
                     <pre>{contents}</pre>
                   </div>
                   <div className="big_footer">
-                    <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>
-                      {replyCnt}
-                    </button>
+                    <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
                     <a onClick={() => ReplyWrite(boardIdx)}>답글쓰기</a>
                   </div>
                 </BigReply>
@@ -272,11 +240,7 @@ export default props => {
                 <span>팬보드 수정</span>
               </header>
               <div className="content_area">
-                <Textarea
-                  value={modifyMsg}
-                  onChange={BigChangeContent}
-                  placeholder="내용을 입력해주세요"
-                />
+                <Textarea value={modifyMsg} onChange={BigChangeContent} placeholder="내용을 입력해주세요" />
                 <span className="bigCount">
                   <em>{modifyMsg.length}</em> / 100
                 </span>
@@ -293,11 +257,7 @@ export default props => {
               </header>
 
               <div className="content_area">
-                <Textarea
-                  placeholder="내용을 입력해주세요"
-                  onChange={handleChangeBig}
-                  value={textChange}
-                />
+                <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
                 <span className="bigCount">
                   <em>{textChange.length}</em> / 100
                 </span>
@@ -307,12 +267,7 @@ export default props => {
           )}
         </div>
         {/*대댓글 리스트영역*/}
-        {replyShowIdx && context.toggleState && (
-          <ReplyList
-            replyShowIdx={replyShowIdx}
-            titleReplyInfo={titleReplyInfo}
-          />
-        )}
+        {replyShowIdx && context.toggleState && <ReplyList replyShowIdx={replyShowIdx} titleReplyInfo={titleReplyInfo} />}
       </Content>
     </>
   )
@@ -336,8 +291,7 @@ const BigReply = styled.div`
       transform: translateY(-50%);
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center
-        center / cover;
+      background: url(${MoreBtnIcon}) no-repeat center center / cover;
     }
     .big_moreDetail {
       display: none;
@@ -428,7 +382,7 @@ const BigReply = styled.div`
 const BigProfileImg = styled.div`
   width: 40px;
   height: 40px;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
   border-radius: 50%;
 `
 //최상단

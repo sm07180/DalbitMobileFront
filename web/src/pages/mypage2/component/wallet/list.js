@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import {
-  IMG_SERVER,
-  WIDTH_TABLET_S,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 import NoResult from 'components/ui/noResult'
 // svg
 import ExBg from '../ex.svg'
+import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
+import GiftPinkIcon from '../../static/ic_gift_pink.svg'
+import ExchangeIcon from '../../static/ic_exchange_purple.svg'
 import Live from '../ic_live.svg'
-export default props => {
-  const {
-    searching,
-    coinType,
-    walletData,
-    returnCoinText,
-    setWalletType,
-    controllState
-  } = props
+export default (props) => {
+  const {searching, coinType, walletData, returnCoinText, setWalletType, controllState} = props
 
   const selectWalletTypeData = [
-    { value: 0, text: '전체' },
-    { value: 1, text: '구매' },
-    { value: 2, text: '선물' },
-    { value: 3, text: '교환' }
+    {value: 0, text: '전체'},
+    {value: 1, text: '구매'},
+    {value: 2, text: '선물'},
+    {value: 3, text: '교환'}
   ]
 
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 2), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -66,19 +55,17 @@ export default props => {
 
         {searching ? (
           <SearchList>
-            {[...Array(10).keys()].map(idx => (
+            {[...Array(10).keys()].map((idx) => (
               <div className="search-list" key={idx} />
             ))}
           </SearchList>
         ) : Array.isArray(walletData) ? (
           walletData.map((data, index) => {
-            const { contents, walletType, dalCnt, byeolCnt, updateDt } = data
+            const {contents, walletType, dalCnt, byeolCnt, updateDt} = data
 
             return (
               <div className="list" key={index}>
-                <span className={`how-to-get type-${walletType}`}>
-                  {/* {selectWalletTypeData[walletType]['text']} */}
-                </span>
+                <span className={`how-to-get type-${walletType}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
                 <span className="detail">{contents}</span>
                 <span className="type">
                   {dalCnt !== undefined ? dalCnt : byeolCnt}
@@ -133,13 +120,13 @@ const ListWrap = styled.div`
       border-radius: 8px;
 
       &.type-1 {
-        background: url(${ExBg}) no-repeat center center / cover;
+        background: url(${PurchaseIcon}) no-repeat center center / cover;
       }
       &.type-2 {
-        background: url(${Live}) no-repeat center center / cover;
+        background: url(${GiftPinkIcon}) no-repeat center center / cover;
       }
       &.type-3 {
-        background: url(${ExBg}) no-repeat center center / cover;
+        background: url(${ExchangeIcon}) no-repeat center center / cover;
       }
     }
     .detail {
