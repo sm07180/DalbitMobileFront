@@ -53,6 +53,7 @@ export default (props) => {
                 break
               case 'HM':
                 payType = '해피머니상품권'
+                break
               default:
                 payType = '상품권'
                 break
