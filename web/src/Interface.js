@@ -317,10 +317,6 @@ export default () => {
       case 'react-gnb-close': //------------------------GNB 닫기
         context.action.updateGnbVisible(false)
         break
-      case 'native-get-tid': //------------------------GNB 닫기
-        alert('dddddd');
-        break
-
       default:
         break
     }
@@ -466,11 +462,7 @@ export default () => {
   }
 
   function nativeGetTid(event){
-
-    alert('App에서 응답받음!');
-    alert(event);
-    alert(event.detail);
-
+    context.action.getNativeTid(event.detail)
   }
   //---------------------------------------------------------------------
   //useEffect addEventListener

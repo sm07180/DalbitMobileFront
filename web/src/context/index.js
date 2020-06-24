@@ -67,6 +67,7 @@ const GlobalProvider = (props) => {
     next: ''
   })
   const [walletIdx, setWalletIdx] = useState(0)
+  const [getNativeTid, setNativeTid] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -265,9 +266,6 @@ const GlobalProvider = (props) => {
     updateToggleAction: (bool) => {
       setToggleState(bool)
     },
-    updateToggleAction: (bool) => {
-      setToggleState(bool)
-    },
     updateReplyIdx: (bool) => {
       setReplyIdx(bool)
     },
@@ -279,6 +277,10 @@ const GlobalProvider = (props) => {
     },
     updateWalletIdx: (num) => {
       setWalletIdx(num)
+    },
+
+    getNativeTid: (String) => {
+      setNativeTid(String)
     }
   }
   //---------------------------------------------------------------------
@@ -319,7 +321,8 @@ const GlobalProvider = (props) => {
     replyIdx,
     noticeState,
     reportDate,
-    walletIdx
+    walletIdx,
+    getNativeTid
   }
   return <Provider value={value}>{props.children}</Provider>
 }
