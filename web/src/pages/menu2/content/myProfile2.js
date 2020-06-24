@@ -3,10 +3,8 @@
  * @brief 2.5v 마이페이지 상단에 보이는 내 프로필 component.
  */
 import React, {useEffect, useContext, useState} from 'react'
-//route
 import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
-//styled
 import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
@@ -34,8 +32,8 @@ import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
+  //context & webview
   const {webview} = props
-  //context
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt} = context
   // state
@@ -49,8 +47,6 @@ const myProfile = (props) => {
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
   const myProfileNo = context.profile.memNo
-  //function-----------------------------------------------------
-
   //image zoom function
   const figureZoom = () => {
     setZoom(true)
@@ -84,34 +80,6 @@ const myProfile = (props) => {
         msg: res.message
       })
     }
-  }
-  //function:팬해제
-  const Cancel = (myProfileNo) => {
-    async function fetchDataFanCancel(myProfileNo) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: myProfileNo
-        }
-      })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            context.action.updateMypageFanCnt(myProfileNo + 1)
-          },
-          msg: '팬등록을 해제하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
-      }
-    }
-    fetchDataFanCancel(myProfileNo)
-  }
-  //function:팬등록
-  const fanRegist = (myProfileNo) => {
-    fetchDataFanRegist(myProfileNo)
   }
   //func 스타팝업 실행
   const starContext = () => {
@@ -175,6 +143,10 @@ const myProfile = (props) => {
       setPopup(true)
     }
   }
+  //func back
+  const goBack = () => {
+    window.location.href = '/'
+  }
   //function모바일 레어어 실행
   useEffect(() => {
     if (popup) {
@@ -189,14 +161,14 @@ const myProfile = (props) => {
       }
     }
   }, [popup])
-
+  //--------------------------------------------------------------
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-
+  //--------------------------------------------------------------
   useEffect(() => {
     if (mypageReport || close || closeFanCnt || closeStarCnt) {
       setPopup(true)
@@ -204,10 +176,7 @@ const myProfile = (props) => {
       setPopup(false)
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
-  //func back
-  const goBack = () => {
-    window.location.href = '/'
-  }
+  //--------------------------------------------------------------
   return (
     <>
       <ProfileWrap>
@@ -315,10 +284,8 @@ const myProfile = (props) => {
     </>
   )
 }
-
 export default myProfile
-//2.5v
-
+//2.5v style
 const PurpleWrap = styled.div`
   position: absolute;
   top: 0;
@@ -688,23 +655,11 @@ const LevelWrap = styled.div`
     align-items: center;
   }
 `
-const LevelText = styled.span`
-  color: ${COLOR_MAIN};
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 800;
-  letter-spacing: -0.35px;
-  transform: skew(-0.03deg);
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
-  }
-`
 const LevelStatusBarWrap = styled.div`
   position: relative;
   width: 200px;
   border-radius: 10px;
   background-color: #eee;
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     height: 14px;
   }
@@ -772,14 +727,11 @@ const NameWrap = styled.div`
       background-color: #ffffff;
       font-size: 12px;
       font-weight: 600;
-
       color: #757575;
       :after {
         content: '';
-
         width: 20px;
         height: 12px;
-
         background: url(${QuestionIcon}) no-repeat center center / cover;
         margin-left: 7px;
       }
@@ -796,11 +748,9 @@ const NameWrap = styled.div`
       background-color: #ffffff;
       font-size: 12px;
       font-weight: 600;
-
       color: #757575;
       :after {
         content: '';
-
         height: 12px;
         width: 20px;
         background: url(${QuestionIcon}) no-repeat center center / cover;
@@ -874,7 +824,6 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     text-align: center;
     & > * {
@@ -936,79 +885,11 @@ const CountingWrap = styled.div`
     margin-top: 10px;
   }
 `
-//프로필메세지
-const ProfileMsg = styled.p`
-  margin-top: 8px;
-  color: #616161;
-  font-size: 14px;
-  line-height: 20px;
-  transform: skew(-0.03deg);
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-  }
-`
-//상단버튼
-const InfoConfigBtn = styled.div`
-  & > a {
-    display: inline-block;
-    padding: 0 44px 0 17px;
-    user-select: none;
-    border: 1px solid #757575;
-    border-radius: 18px;
-    background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92% center;
-    background-size: 32px 32px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 36px;
-    letter-spacing: -0.5px;
-    color: #424242;
-    cursor: pointer;
-  }
-
-  a + a {
-    margin-left: 4px;
-  }
-  .notBjWrap {
-    display: flex;
-
-    & button {
-      display: flex;
-      justify-content: center;
-      width: 62px;
-      height: 36px;
-      color: #9e9e9e;
-      font-size: 14px;
-      transform: skew(-0.03deg);
-      margin-right: 4px;
-      border-radius: 18px;
-      border: solid 1px #bdbdbd;
-      &.fanRegist {
-        border: solid 1px ${COLOR_MAIN};
-        color: ${COLOR_MAIN};
-      }
-      & span {
-        display: block;
-        width: 18px;
-        height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
-      }
-      & em {
-        display: block;
-        font-weight: normal;
-        font-style: normal;
-        line-height: 1.41;
-        letter-spacing: -0.35px;
-        height: 18px;
-      }
-    }
-  }
-`
 //팬랭킹
 const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   > span {
     display: flex;
     align-items: center;
@@ -1087,22 +968,18 @@ const FanRank = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   & > a {
     display: block;
     width: 100%;
     height: 100%;
   }
-
   & + & {
     margin-left: 4px;
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 28px;
     height: 28px;
   }
-
   :after {
     display: block;
     position: absolute;
