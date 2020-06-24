@@ -38,7 +38,10 @@ export const isAndroid = () => {
  *
  */
 export const Hybrid = (func, info) => {
-  if (!isHybrid()) return
+  if (!isHybrid()){
+    alert('하이브리드가 아님..');
+    return
+  }
   const customHeader = JSON.parse(Api.customHeader)
 
   alert(func);
