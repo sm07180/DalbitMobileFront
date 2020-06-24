@@ -28,7 +28,7 @@ const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
 let Charge = React.lazy(() => import('pages/charge'))
 if (__NODE_ENV !== 'real') {
-  Charge = React.lazy(() => import('pages/charge'))
+  Charge = React.lazy(() => import('pages/charge/index_test'))
 }
 const ChargTest = React.lazy(() => import('pages/charge/index_test'))
 

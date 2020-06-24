@@ -11,13 +11,19 @@ const RouteList = [
   {path: 'result', component: ResultPayment, exact: true}
 ]
 
+console.log('location.pathname', location.pathname)
+
 export default () => {
   return (
     <div className="test-page">
       <Switch>
         {RouteList.map((item, index) => {
           const {path, component, exact} = item
-          return <Route key={index} path={`/charge_test/${path}`} component={component} exact={exact} />
+          if (location.pathname === '/charge') {
+            return <Route key={index} path={`/charge/${path}`} component={component} exact={exact} />
+          } else if (location.pathname === '/charge_test') {
+            return <Route key={index} path={`/charge_test/${path}`} component={component} exact={exact} />
+          }
         })}
       </Switch>
     </div>
