@@ -43,7 +43,6 @@ export const Hybrid = (func, info) => {
 
   alert(func);
   alert(info);
-  alert(customHeader['os']);
 
   switch (customHeader['os']) {
     // Android

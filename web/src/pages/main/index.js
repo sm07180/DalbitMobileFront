@@ -416,8 +416,8 @@ export default (props) => {
   }
 
   const requestAdbrixTid = () => {
-    alert('요청')
-;    Hybrid('getNativeTid');
+    alert('요청');
+    Hybrid('getNativeTid');
   }
 
   const sendAdbrixData = () => {
@@ -436,8 +436,8 @@ export default (props) => {
       , payYn : 'N'
     }
 
-    console.log(adbrixData);
-    Hybrid('adbrixEvent', JSON.stringify(adbrixData));
+    alert(adbrixData);
+    Hybrid('adbrixEvent', adbrixData);
   }
 
   return (
