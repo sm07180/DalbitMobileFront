@@ -254,7 +254,7 @@ export default (props) => {
     const data = {
       gender: gender,
       nickNm: nickname || profile.nickNm,
-      birth: profile.birth,
+      birth: mypage.birth,
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
@@ -263,7 +263,7 @@ export default (props) => {
 
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
-      context.action.updateProfile({...res.data, birth: profile.birth})
+      context.action.updateProfile({...res.data, birth: mypage.birth})
       return context.action.alert({
         msg: '저장되었습니다.',
         title: '',
