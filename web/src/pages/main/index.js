@@ -429,11 +429,11 @@ export default (props) => {
               </div>
               <div className="tab">
                 <Link
-                  onClick={(event) => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
-                  }}
-                  to={'/store'}>
+                    onClick={(event) => {
+                      event.preventDefault()
+                      StoreLink(globalCtx)
+                    }}
+                    to={'/store'}>
                   스토어
                 </Link>
               </div>
