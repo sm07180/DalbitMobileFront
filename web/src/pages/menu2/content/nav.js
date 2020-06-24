@@ -18,7 +18,7 @@ import StoreIcon from '../static/nav/ic_store_l_p.svg'
 import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
 
-export default props => {
+export default (props) => {
   //context
   const context = useContext(Context)
   let history = useHistory()
@@ -45,7 +45,7 @@ export default props => {
 
       <NavWrap>
         <NavBtnWrapLine>
-          {navList.map(list => {
+          {navList.map((list) => {
             const {value, txt, active, icon} = list
             return (
               <LayoutWrap key={value}>
@@ -111,7 +111,7 @@ const NavBtn = styled.button`
   background-color: #eee;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(${props => props.icon});
+  background-image: url(${(props) => props.icon});
 
   &.active {
     background-color: #632beb;
