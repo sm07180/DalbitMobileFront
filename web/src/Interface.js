@@ -317,6 +317,10 @@ export default () => {
       case 'react-gnb-close': //------------------------GNB 닫기
         context.action.updateGnbVisible(false)
         break
+      case 'native-get-tid': //------------------------GNB 닫기
+        alert('dddddd');
+        break
+
       default:
         break
     }
@@ -480,6 +484,7 @@ export default () => {
     document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
+    document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
 
     /*----react----*/
     document.addEventListener('react-debug', update)
