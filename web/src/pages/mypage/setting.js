@@ -13,7 +13,7 @@ import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {profile, token} = context
   const [nickname, setNickname] = useState('')
@@ -23,17 +23,19 @@ export default props => {
   const [tempPhoto, setTempPhoto] = useState(null)
   const [photoUploading, setPhotoUploading] = useState(false)
 
+  const [mypage, setMypage] = useState(null)
+
   const nicknameReference = useRef()
   const {isOAuth} = token
 
-  const profileImageUpload = e => {
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -210,7 +212,7 @@ export default props => {
     }
   }
 
-  const changeNickname = e => {
+  const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
@@ -218,7 +220,7 @@ export default props => {
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
 
-  const changeMsg = e => {
+  const changeMsg = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 100) {
       return
@@ -292,9 +294,10 @@ export default props => {
     }
   }, [profile])
 
-  if (profile === null) {
-    Api.mypage().then(result => {
-      context.action.updateProfile(result.data)
+  if (mypage === null) {
+    setMypage(undefined)
+    Api.mypage().then((result) => {
+      setMypage(result.data)
     })
     return null
   }
@@ -359,7 +362,9 @@ export default props => {
               )}
 
               <label className="input-label">생년월일</label>
-              <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
+              {mypage && (
+                <BirthDate>{`${mypage.birth.slice(0, 4)}-${mypage.birth.slice(4, 6)}-${mypage.birth.slice(6)}`}</BirthDate>
+              )}
               <label className="input-label">성별</label>
               <GenderWrap className={firstSetting ? 'before' : 'after'}>
                 {firstSetting ? (
