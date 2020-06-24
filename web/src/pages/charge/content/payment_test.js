@@ -50,9 +50,9 @@ export default (props) => {
 
   const {webview} = qs.parse(location.search)
 
-  let paymentName = '달 50'
-  let paymentPrice = 5500
-  let payItemNo = 'A1865'
+  let paymentName = '달 10'
+  let paymentPrice = 1100
+  let payItemNo = 'A1817'
   let pageCode = '1'
 
   if (props.location.state) {
