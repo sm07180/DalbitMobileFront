@@ -56,12 +56,12 @@ export default (props) => {
     {type: 'report', txt: '리포트', icon: ReportIcon}
   ]
   const customerList = [
-    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
-    {type: 'personal', txt: '1:1문의', icon: InquireIcon}
+    {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    // {type: 'personal', txt: '앱정보', icon: AppIcon}
+    {type: 'appInfo', txt: '앱정보', icon: AppIcon}
   ]
   const {webview} = qs.parse(location.search)
   const context = useContext(Context)

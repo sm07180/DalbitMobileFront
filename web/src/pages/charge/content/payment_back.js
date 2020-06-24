@@ -1,36 +1,38 @@
-import Utility from 'components/lib/utility'
+import React, {useState, useContext, useRef, useEffect} from 'react'
 import {Context} from 'context'
-import Api from 'context/api'
+//import { Link } from 'react-router-dom'
+
+import './payment.scss'
+import BackBtn from '../static/ic_back.svg'
+
+import SelectBoxWrap from '../component/select'
+import SuccessPopup from './charge-success-popup'
+
 import _ from 'lodash'
+import Api from 'context/api'
+import Utility from 'components/lib/utility'
 import Message from 'pages/common/message'
 import qs from 'query-string'
-import React, {useContext, useEffect, useRef, useState} from 'react'
-import SelectBoxWrap from '../component/select'
-import BackBtn from '../static/ic_back.svg'
-import SuccessPopup from './charge-success-popup'
-//import { Link } from 'react-router-dom'
-import './payment.scss'
+import {stringify} from 'querystring'
 
 const list = [
   {value: 1, text: '주민번호'},
   {value: 2, text: '핸드폰번호'}
 ]
-let chargeData = [
+const chargeData = [
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'}
+  {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
+  {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'},
+  {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'},
+  {id: 5, type: '토스', fetch: 'pay_letter', code: 'toss'},
+  {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+  {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+  {id: 9, type: '게임문화상품권', fetch: 'pay_gg'},
+  {id: 10, type: '도서상품권', fetch: 'pay_gc'},
+  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
 ]
-
-if (__NODE_ENV !== 'real') {
-  chargeData = [
-    {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
-    {id: 0, type: '카드 결제', fetch: 'pay_card'},
-    {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-    {id: 8, type: '문화상품권', fetch: 'pay_gm'},
-    {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
-  ]
-}
-
 let payType = ''
 // let paymentPriceAddVat = 0
 export default (props) => {
@@ -50,10 +52,10 @@ export default (props) => {
 
   const {webview} = qs.parse(location.search)
 
-  let paymentName = '달 50'
-  let paymentPrice = 5500
-  let payItemNo = 'A1865'
-  let pageCode = '1'
+  let paymentName = '달 10'
+  let paymentPrice = 1100
+  let payItemNo = 'A1817'
+  let pageCode = '2'
 
   if (props.location.state) {
     paymentName = props.location.state.paymentName
@@ -172,13 +174,8 @@ export default (props) => {
   }
 
   async function payFetch(event) {
-    if (payMathod === -1) return null
-
     payType = chargeData[payMathod].fetch
-
-    if (payType === 'pay_virtual') return null
-
-    const obj = {
+    let obj = {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
@@ -186,9 +183,14 @@ export default (props) => {
         pageCode: pageCode
       }
     }
+    if (payType === 'pay_letter') {
+      obj.data = {...obj.data, pgCode: chargeData[payMathod].code}
+    }
     const res = await Api[payType]({...obj})
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
+      if (res.data.hasOwnProperty('mobileUrl')) return (window.location.href = res.data.mobileUrl)
+
       const {current} = formTag
       let ft = current
 
@@ -279,9 +281,7 @@ export default (props) => {
     validationCheck()
   }, [name, phone, status, receiptInput])
 
-  useEffect(() => {
-    payFetch()
-  }, [payMathod])
+  useEffect(() => {}, [])
 
   return (
     <div className={`${webview === 'new' && 'webview'}`}>
@@ -291,57 +291,42 @@ export default (props) => {
       ) : (
         <>
           <div className="header">
-            <img
-              className="header__button--back"
-              src={BackBtn}
-              onClick={() => {
-                if (payMathod !== 0) {
-                  props.history.goBack()
-                } else {
-                  setPayMathod(-1)
-                }
-              }}
-            />
-            <h1 className="header__title">{payMathod !== 0 ? '달 충전하기' : '무통장 입금'}</h1>
+            <img className="header__button--back" src={BackBtn} onClick={() => props.history.goBack()} />
+            <h1 className="header__title">달 충전하기 TEST</h1>
           </div>
 
           <div className="content">
-            {payMathod !== 0 ? (
-              <>
-                <div className="buyList">
-                  <h2 className="charge__title">구매 내역</h2>
+            <div className="buyList">
+              <h2 className="charge__title">구매 내역</h2>
 
-                  <div className="buyList__box">
-                    <div className="buyList__label">결제상품</div>
-                    <div className="buyList__value">{paymentName}</div>
-                    <div className="buyList__label">결제금액</div>
-                    <div className="buyList__value">
-                      <span className="buyList__value--point">{Utility.addComma(paymentPrice)}</span> 원
-                    </div>
-                  </div>
+              <div className="buyList__box">
+                <div className="buyList__label">결제상품</div>
+                <div className="buyList__value">{paymentName}</div>
+                <div className="buyList__label">결제금액</div>
+                <div className="buyList__value">
+                  <span className="buyList__value--point">{Utility.addComma(paymentPrice)}</span> 원
                 </div>
+              </div>
+            </div>
 
-                <div className="payMathod">
-                  <h2 className="charge__title">결제 수단</h2>
+            <div className="payMathod">
+              <h2 className="charge__title">결제 수단</h2>
 
-                  <div className="payMathod__box">
-                    {chargeData.map((item, index) => {
-                      return (
-                        <button
-                          key={index}
-                          className={`payMathod__button ${payMathod === index ? 'payMathod__button--forced' : ''}  ${
-                            index === 0 ? 'payMathod__button--contain' : ''
-                          } `}
-                          onClick={() => setPayMathod(index)}>
-                          {item.type}
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
+              <div className="payMathod__box">
+                {chargeData.map((item, index) => {
+                  return (
+                    <button
+                      key={index}
+                      className={`payMathod__button ${payMathod === item.id ? 'payMathod__button--forced' : ''}`}
+                      onClick={() => setPayMathod(item.id)}>
+                      {item.type}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            {payMathod === 2 && (
+              <React.Fragment>
                 <div className="depositInfo">
                   <h2 className="charge__title">무통장 입금 정보</h2>
 
@@ -395,7 +380,7 @@ export default (props) => {
 
                   {tempFunc()}
                 </div>
-              </>
+              </React.Fragment>
             )}
 
             <div className="notice">
@@ -417,15 +402,14 @@ export default (props) => {
               <span className="inquriy__title">결제 문의</span>
               <span className="inquiry__number">1522-0251</span>
             </div>
-            {payMathod === 0 ? (
+            {payMathod === 2 ? (
               <button className={`chargeButton ${validation === true ? 'chargeButton--active' : ''}`} onClick={chargeClick}>
                 입금계좌 받기
               </button>
             ) : (
-              <></>
-              // <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
-              //   충전하기
-              // </button>
+              <button className={`chargeButton ${payMathod != -1 && 'chargeButton--active'}`} onClick={payFetch}>
+                충전하기
+              </button>
             )}
           </div>
           <Message />
