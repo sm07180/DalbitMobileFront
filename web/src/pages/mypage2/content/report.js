@@ -445,6 +445,7 @@ export default (props) => {
                 <div>
                   {selectType === 0 &&
                     broadData.map((value, idx) => {
+                      const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)
                       return (
                         <MobileDetailTab key={idx}>
                           <div>
@@ -453,6 +454,8 @@ export default (props) => {
                           <div className="startDate">
                             <span>{timeFormat(value.startDt)}</span>~&nbsp;
                             <span>{timeFormat(value.endDt)}</span>
+                            &nbsp;
+                            {TimeDeclare > 0 && <span className="timeDeclare">(&nbsp;{TimeDeclare}분&nbsp;)</span>}
                           </div>
 
                           <div className="giftDate">
@@ -480,6 +483,7 @@ export default (props) => {
 
                   {selectType === 1 &&
                     listenData.map((value, idx) => {
+                      const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)
                       return (
                         <MobileDetailTabListen key={idx}>
                           <div>
@@ -489,6 +493,8 @@ export default (props) => {
                             <span className="black">{dateFormat(value.startDt)}</span>
                             <span>{timeFormat(value.startDt)}</span>&nbsp;~
                             <span>{timeFormat(value.endDt)}</span>
+                            &nbsp;
+                            {TimeDeclare > 0 && <span className="timeDeclare">(&nbsp;{TimeDeclare}분&nbsp;)</span>}
                             {/* {value.listenTime / 3600} */}
                           </div>
                           <div className="giftDate">
@@ -568,7 +574,7 @@ const MobileDetailTab = styled.div`
     line-height: 1.08;
     letter-spacing: normal;
     text-align: left;
-    color: #757575;
+    color: #000;
     padding-bottom: 9px;
     border-bottom: 1px solid #eeeeee;
     .black {
