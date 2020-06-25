@@ -482,7 +482,7 @@ export default props => {
 
     //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
     const memId = changes.memId.replace(/-/g, '')
-    const nativeTid = context.getNativeTid == null ? '' : context.getNativeTid
+    const nativeTid = (context.nativeTid == null || context.nativeTid == 'init') ? '' : context.nativeTid
     const res = await Api.member_join({
       data: {
         memType: changes.memType,
