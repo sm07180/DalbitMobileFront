@@ -415,30 +415,6 @@ export default (props) => {
     )
   }
 
-  const requestAdbrixTid = () => {
-    alert('요청');
-    Hybrid('getNativeTid');
-  }
-
-  const sendAdbrixData = () => {
-    alert('전달')
-    const adbrixData = {
-      eventName : 'signUp'
-      , attr : {}
-    }
-    adbrixData.attr = {
-      sex : '1'
-      , age : '25'
-      , connectTime : '2020-06-24 13:11:22'
-      , connectCnt : 4
-      , broadcastCreateYn : 'N'
-      , broadcastJoinYn : 'N'
-      , payYn : 'N'
-    }
-
-    Hybrid('adbrixEvent', adbrixData);
-  }
-
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <MainWrap ref={MainRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
@@ -460,14 +436,6 @@ export default (props) => {
                     to={'/store'}>
                   스토어
                 </Link>
-              </div>
-
-              <div className="btn" onClick={() => requestAdbrixTid()}>
-                <div className="link-text">tid 요청</div>
-              </div>
-
-              <div className="btn" onClick={() => sendAdbrixData()}>
-                <div className="link-text">데이터전달</div>
               </div>
             </div>
             <div className="right-side">

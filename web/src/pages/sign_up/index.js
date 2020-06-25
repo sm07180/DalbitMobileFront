@@ -413,7 +413,6 @@ export default props => {
   }
 
   const getNativeTid = () => {
-    alert('앱호출');
     Hybrid('getNativeTid')
   }
 
