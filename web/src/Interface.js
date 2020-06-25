@@ -462,6 +462,9 @@ export default () => {
   }
 
   function nativeGetTid(event){
+    alert('app에서 전달받음.')
+    alert(event)
+    alert(JSON.stringify(event))
     context.action.getNativeTid(event.detail)
   }
   //---------------------------------------------------------------------

@@ -14,11 +14,12 @@ import DeleteIcon from '../images/ic_delete.svg'
 import ModifyIcon from '../images/ic_edit.svg'
 import Header from '../../component/header.js'
 
-const List = props => {
+const List = (props) => {
   //context
 
   const context = useContext(Context)
   const ctx = useContext(Context)
+  const IdBj = ctx.profile.memId
   var urlrStr = props.location.pathname.split('/')[2]
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
@@ -102,7 +103,7 @@ const List = props => {
   }
   //func
   //dateFormat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -142,7 +143,7 @@ const List = props => {
     setComment(target.value)
   }
   //공지컨텐트 등록 온체인지
-  const textChangeContent = e => {
+  const textChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 189) return
     setCommentContent(target.value)
@@ -183,7 +184,10 @@ const List = props => {
         <>
           <ListContent>
             <div>{title}</div>
-            <div> {timeFormat(writeDt)}</div>
+            <div>
+              {IdBj && <span className="IdBj">( @{IdBj} )</span>}
+              <span className="dateTime">{timeFormat(writeDt)}</span>
+            </div>
             <div>
               <pre>{contents}</pre>
             </div>
@@ -220,7 +224,7 @@ const List = props => {
                 />
               </div>
               <div className="checkbox-wrap">
-                <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+                <Checkbox title="고정 공지사항" fnChange={(v) => setState({click1: v})} checked={state.click1} />
               </div>
               <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
@@ -303,6 +307,23 @@ const ListContent = styled.div`
   color: #424242;
   font-size: 14px;
   letter-spacing: -0.35px;
+  .IdBj {
+    position: relative;
+    padding-right: 10px;
+    :after {
+      content: '';
+      position: absolute;
+      background-color: #ddd;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 10px;
+    }
+  }
+  .dateTime {
+    margin-left: 10px;
+  }
   div:nth-child(1) {
     color: #000000;
     font-size: 16px;
