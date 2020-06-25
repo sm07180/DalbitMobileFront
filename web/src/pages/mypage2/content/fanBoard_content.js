@@ -207,6 +207,7 @@ export default (props) => {
                       <>
                         <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                         {/* 상세기능영역 */}
+
                         <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
                           {writerNo === context.token.memNo && (
                             <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
@@ -279,6 +280,9 @@ const BigReply = styled.div`
   background-color: #fff;
   min-height: 196px;
   margin-bottom: 12px;
+  .detailwapper {
+    position: relative;
+  }
   .reply_header {
     position: relative;
     display: flex;
@@ -297,12 +301,24 @@ const BigReply = styled.div`
       display: none;
       flex-direction: column;
       position: absolute;
-      right: 16px;
-      top: calc(50% + 26px);
-      transform: translateY(-50%);
+      right: 24px;
+      top: 46px;
+
       width: 80px;
-      height: 40px;
-      background-color: beige;
+      border: 1px solid #e0e0e0;
+      background-color: #fff;
+      padding: 8px 0;
+      span {
+        height: 26px;
+        font-size: 14px;
+        line-height: 2.14;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: #757575;
+        :hover {
+          background-color: #f8f8f8;
+        }
+      }
       &.on {
         display: flex;
         z-index: 56;

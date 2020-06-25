@@ -29,7 +29,7 @@ const selectBoxData = [
   {value: 2, text: '블랙리스트 관리'}
 ]
 
-export default props => {
+export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
@@ -40,7 +40,7 @@ export default props => {
   const [changeContents, setChangeContents] = useState(0)
   //-----------------------------------------------------------------------------
   //function
-  const selectMenu = e => {
+  const selectMenu = (e) => {
     setCurrentMenu(selectBoxData[e])
   }
 
@@ -60,11 +60,12 @@ export default props => {
         break
     }
   }
-
-  const ToggleContents = value => {
+  // tab change content
+  const ToggleContents = (value) => {
     setChangeContents(value)
     setInitialScreen(false)
   }
+  // 백버튼
   const BackFunction = () => {
     if (initialScreen === false) {
       setInitialScreen(true)
@@ -112,14 +113,12 @@ export default props => {
     </>
   )
 }
-
+// styled
 const Content = styled.div`
   padding: 12px 16px 0 16px;
-
   .initial_contents {
     display: flex;
     flex-direction: column;
-
     button {
       position: relative;
       width: 100%;
@@ -145,14 +144,11 @@ const Content = styled.div`
     }
   }
 `
-
 const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  /* border-bottom: 1px solid #632beb; */
-  /* padding-bottom: 25px; */
 `
 const TitleText = styled.div`
   color: #632beb;
@@ -178,27 +174,6 @@ const SelectWrap = styled.div`
   > div .box-list {
     font-size: 14px !important;
     padding: 10px 10px;
-  }
-`
-const TopWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid ${COLOR_MAIN};
-  align-items: center;
-  margin-top: 24px;
-  padding-bottom: 12px;
-  button:nth-child(1) {
-    width: 24px;
-    height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
-  }
-  .title {
-    width: calc(100% - 24px);
-    color: ${COLOR_MAIN};
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: -0.5px;
-    text-align: center;
   }
 `
 
