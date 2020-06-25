@@ -463,10 +463,19 @@ export default () => {
 
   function nativeGetTid(event){
     alert('app에서 전달받음.')
-    alert(event.detail);
-    alert(event.detail.isExist);
-    alert(event.detail.tid);
-    context.action.getNativeTid(event.detail)
+    let nativeTid = event.detail;
+    if(event.detail.isExist == null){ //IOS
+      alert('IOS 입니다.')
+    }else{  //ANDROID
+      alert('안드로이드 입니다.')
+
+      if(event.detail.isExist && event.detail.tid == ''){
+        nativeTid = 'adbrix'
+      }
+    }
+
+    alert('결과 : [' + nativeTid + ']')
+    context.action.getNativeTid(nativeTid)
   }
   //---------------------------------------------------------------------
   //useEffect addEventListener
