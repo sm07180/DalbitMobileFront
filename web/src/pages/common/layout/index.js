@@ -53,7 +53,7 @@ const Article = styled.article`
     }
   }
   /* player가 노출시 padding-bottom추가 */
-  &.player_show {
+  &.player_show > div {
     padding-bottom: 60px;
   }
 `
