@@ -24,7 +24,7 @@ import Utility, {printNumber} from 'components/lib/utility'
 import LiveIcon from '../component/ic_live.svg'
 import InfoIcon from '../static/profile/ic_info.svg'
 
-const myProfile = props => {
+const myProfile = (props) => {
   const {webview} = props
   //context
   const context = useContext(Context)
@@ -74,7 +74,7 @@ const myProfile = props => {
     }
   }
   //function:팬해제
-  const Cancel = myProfileNo => {
+  const Cancel = (myProfileNo) => {
     async function fetchDataFanCancel(myProfileNo) {
       const res = await Api.mypage_fan_cancel({
         data: {
@@ -98,7 +98,7 @@ const myProfile = props => {
     fetchDataFanCancel(myProfileNo)
   }
   //function:팬등록
-  const fanRegist = myProfileNo => {
+  const fanRegist = (myProfileNo) => {
     fetchDataFanRegist(myProfileNo)
   }
   //func
@@ -147,7 +147,7 @@ const myProfile = props => {
     )
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     console.log(e.state)
     if (e.state === null) {
       setPopup(false)
@@ -244,9 +244,18 @@ const myProfile = props => {
           </div>
         </NameWrap>
 
-        {profile.fanBadge.text && <FanBadgeWrap><span className='fan-badge' style={{
-          background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
-        }}><img src={profile.fanBadge.icon} /><span>{profile.fanBadge.text}</span></span></FanBadgeWrap>}
+        {profile.fanBadge.text && (
+          <FanBadgeWrap>
+            <span
+              className="fan-badge"
+              style={{
+                background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
+              }}>
+              <img src={profile.fanBadge.icon} />
+              <span>{profile.fanBadge.text}</span>
+            </span>
+          </FanBadgeWrap>
+        )}
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
@@ -308,7 +317,7 @@ const MyProfile = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 16px 0 16px 0;
-    /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
+    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
 //flex item3
@@ -343,7 +352,7 @@ const ProfileImg = styled.div`
     height: 100px;
     margin: 10px auto 0 auto;
     border-radius: 50%;
-    background: url(${props => props.url}) no-repeat center center/ cover;
+    background: url(${(props) => props.url}) no-repeat center center/ cover;
 
     img {
       display: none;
@@ -535,7 +544,7 @@ const FanBadgeWrap = styled.div`
     text-align: left;
     color: #ffffff;
   }
-  
+
   .fan-badge img {
     width: 28px;
     height: 28px;
@@ -659,6 +668,7 @@ const ProfileMsg = styled.p`
   font-size: 14px;
   line-height: 20px;
   transform: skew(-0.03deg);
+  word-break: break-all;
   @media (max-width: ${WIDTH_TABLET_S}) {
     text-align: center;
   }

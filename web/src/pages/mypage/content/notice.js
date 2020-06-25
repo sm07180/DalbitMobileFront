@@ -19,10 +19,11 @@ import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
-const Notice = props => {
+const Notice = (props) => {
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
+
   //memNo
   const urlrStr = props.location.pathname.split('/')[2]
   //state
@@ -43,13 +44,13 @@ const Notice = props => {
   const [writeBtnState, setWriteBtnState] = useState(false)
   const [thisMemNo, setThisMemNo] = useState(false)
   //공지제목 등록 온체인지
-  const textChange = e => {
+  const textChange = (e) => {
     const target = e.currentTarget
     if (target.value.length > 20) return
     setComment(target.value)
   }
   //공지컨텐트 등록 온체인지
-  const textChangeContent = e => {
+  const textChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 189) return
     setCommentContent(target.value)
@@ -137,7 +138,7 @@ const Notice = props => {
   }, [page])
 
   useEffect(() => {
-    const settingProfileInfo = async memNo => {
+    const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
       if (profileInfo.result === 'success') {
         console.log('profileInfo.data.memNo', profileInfo.data.memNo)
@@ -163,7 +164,7 @@ const Notice = props => {
   //토글
   const [numbers, setNumbers] = useState('')
 
-  const toggler = noticeIdx => {
+  const toggler = (noticeIdx) => {
     if (numbers === noticeIdx) {
       setNumbers('')
     } else {
@@ -241,7 +242,7 @@ const Notice = props => {
             <textarea placeholder="작성하고자 하는 글의 내용을 입력해주세요." maxLength="189" onChange={textChangeContent} />
           </div>
           <div className="checkbox-wrap">
-            <Checkbox title="고정 공지사항" fnChange={v => setState({click1: v})} checked={state.click1} />
+            <Checkbox title="고정 공지사항" fnChange={(v) => setState({click1: v})} checked={state.click1} />
           </div>
 
           <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
