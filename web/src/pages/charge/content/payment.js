@@ -21,12 +21,14 @@ let chargeData = [
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'}
 ]
 
+let clickFlag = false
+
 let payType = ''
 // let paymentPriceAddVat = 0
 export default (props) => {
   const context = useContext(Context)
 
-  if (context.profile.memNo === '41587626772875') {
+  if (context.profile.memNo === '41587626772875' || __NODE_ENV !== 'real') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
@@ -172,6 +174,7 @@ export default (props) => {
   }
 
   async function payFetch(event) {
+    clickFlag = true
     if (payMathod === -1) return null
 
     payType = chargeData[payMathod].fetch
@@ -280,8 +283,16 @@ export default (props) => {
   }, [name, phone, status, receiptInput])
 
   useEffect(() => {
-    payFetch()
+    if (!clickFlag && payMathod !== -1 && payMathod !== 0) {
+      payFetch()
+    }
   }, [payMathod])
+
+  useEffect(() => {
+    return () => {
+      clickFlag = false
+    }
+  }, [])
 
   return (
     <div className={`${webview === 'new' && 'webview'}`}>

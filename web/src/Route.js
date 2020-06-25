@@ -30,7 +30,6 @@ let Charge = React.lazy(() => import('pages/charge'))
 if (__NODE_ENV !== 'real') {
   Charge = React.lazy(() => import('pages/charge/index_test'))
 }
-const ChargTest = React.lazy(() => import('pages/charge/index_test'))
 
 const Exchange = React.lazy(() => import('pages/exchange'))
 let Customer = React.lazy(() => import('pages/customer_copy'))
@@ -86,7 +85,6 @@ export default () => {
         <Route exact path="/store" component={Store} />
         <Route exact path="/charge" component={Charge} />
         <Route exact path="/charge/:path" component={Charge} />
-        <Route exact path="/charge_test" component={ChargTest} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />

@@ -8,7 +8,7 @@ import CloseBtn from '../static/ic_close.svg'
 let prevAlign = null
 let prevGender = null
 
-export default props => {
+export default (props) => {
   const {setPopup, info} = props
   const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno} = info
 
@@ -27,14 +27,14 @@ export default props => {
     setPopup()
   }
 
-  const wrapClick = e => {
+  const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = e => {
+  const wrapTouch = (e) => {
     e.preventDefault()
   }
 
@@ -100,7 +100,8 @@ export default props => {
           {createTypeResult()}
 
           <div className="exchangeList__notice">
-            결제 내역은 마이페이지 &gt; 내지갑에서 확인하실 수 있습니다.
+            결제 내역은 마이페이지 &gt; 내지갑에서
+            <br /> 확인하실 수 있습니다.
             <br />
             확인 버튼을 누르시면 메인화면으로 이동합니다.
             <br />

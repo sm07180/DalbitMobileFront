@@ -1,9 +1,9 @@
 import Util from 'components/lib/utility.js'
 import NoResult from 'components/ui/noResult'
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
 import Layout from 'pages/common/layout'
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 //context
 import styled from 'styled-components'
 import LayerPopup from './layer_popup'
@@ -26,7 +26,7 @@ const dateArray = ['오늘', '전일', '주간']
 let currentPage = 1
 let moreState = false
 
-export default props => {
+export default (props) => {
   let timer
 
   const [myProfile, setMyProfile] = useState(false)
@@ -55,7 +55,7 @@ export default props => {
     window.history.back()
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
     } else if (e.state === 'layer') {
@@ -77,9 +77,9 @@ export default props => {
 
   const creatMyRank = () => {
     if (context.token.isLogin) {
-      const settingProfileInfo = async memNo => {
+      const settingProfileInfo = async (memNo) => {
         const profileInfo = await Api.profile({
-          params: { memNo: context.token.memNo }
+          params: {memNo: context.token.memNo}
         })
         if (profileInfo.result === 'success') {
           setMyProfile(profileInfo.data)
@@ -122,17 +122,12 @@ export default props => {
       return (
         <button
           key={index}
-          className={
-            rankType === item
-              ? 'rankTab__btn rankTab__btn--active'
-              : 'rankTab__btn'
-          }
+          className={rankType === item ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
           onClick={() => {
             currentPage = 1
             setRankType(item)
             fetchRank(item, dateType)
-          }}
-        >
+          }}>
           {item === 'dj' ? 'DJ' : '팬'}
         </button>
       )
@@ -145,11 +140,7 @@ export default props => {
       return (
         <button
           key={index}
-          className={
-            dateType === index
-              ? 'todayList__btn todayList__btn--active'
-              : 'todayList__btn'
-          }
+          className={dateType === index ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
           onClick={() => {
             currentPage = 1
             setDateType(index)
@@ -165,8 +156,7 @@ export default props => {
               myListenPoint: 0,
               time: ''
             })
-          }}
-        >
+          }}>
           {item}
         </button>
       )
@@ -174,23 +164,14 @@ export default props => {
   }
 
   //checkScroll
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
-      const windowHeight =
-        'innerHeight' in window
-          ? window.innerHeight
-          : document.documentElement.offsetHeight
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      )
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       /*
@@ -276,11 +257,7 @@ export default props => {
     } else {
       return (
         <>
-          <RankListTop
-            list={list.slice(0, 3)}
-            rankType={rankType}
-            myMemNo={myProfile.memNo}
-          />
+          <RankListTop list={list.slice(0, 3)} rankType={rankType} myMemNo={myProfile.memNo} />
           <RankList list={list.slice(3)} rankType={rankType} />
         </>
       )
@@ -288,7 +265,7 @@ export default props => {
   }
 
   const createMyLevelClass = () => {
-    const { level } = myProfile
+    const {level} = myProfile
     let levelName
     if (level === 0) {
       levelName = `levelBox levelBox__lv0`
@@ -308,7 +285,7 @@ export default props => {
   }
 
   const createMyUpDownClass = () => {
-    const { myUpDown } = myInfo
+    const {myUpDown} = myInfo
 
     let myUpDownName
 
@@ -326,7 +303,7 @@ export default props => {
   }
 
   const createMyProfile = () => {
-    const { myUpDown } = myInfo
+    const {myUpDown} = myInfo
 
     let myUpDownName,
       myUpDownValue = ''
@@ -375,11 +352,7 @@ export default props => {
 
             <div className="rankTopBox__update">
               {myInfo.time}
-              <img
-                src={hint}
-                onClick={() => setPopup(popup ? false : true)}
-                className="rankTopBox__img"
-              />
+              <img src={hint} onClick={() => setPopup(popup ? false : true)} className="rankTopBox__img" />
             </div>
           </div>
 
@@ -390,18 +363,14 @@ export default props => {
               className="myRanking myRanking__profile"
               onClick={() => {
                 window.location.href = `/menu/profile`
-              }}
-            >
+              }}>
               <div className="myRanking__left myRanking__left--profile">
                 <p
                   className="myRanking__left--title colorWhite 
-              "
-                >
+              ">
                   내 랭킹
                 </p>
-                <p className="myRanking__left--now colorWhite">
-                  {myInfo.myRank === 0 ? '' : myInfo.myRank}
-                </p>
+                <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
                 <p className="rankingChange">
                   {createMyProfile()}
                   {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
@@ -410,10 +379,7 @@ export default props => {
 
               <div className="thumbBox thumbBox__profile">
                 <img src={myProfile.holder} className="thumbBox__frame" />
-                <img
-                  src={myProfile.profImg.thumb120x120}
-                  className="thumbBox__pic"
-                />
+                <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
               </div>
 
               <div className="myRanking__right">
@@ -432,10 +398,7 @@ export default props => {
                         </span> */}
                           <div className="countBox__block">
                             <span className="countBox__item">
-                              <img
-                                src={point}
-                                srcSet={`${point} 1x, ${point2x} 2x`}
-                              />
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                               {Util.printNumber(myInfo.myPoint)}
                             </span>
                             <span className="countBox__item">
@@ -461,10 +424,7 @@ export default props => {
                         <>
                           <div className="countBox__block">
                             <span className="countBox__item">
-                              <img
-                                src={point}
-                                srcSet={`${point} 1x, ${point2x} 2x`}
-                              />
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                               {Util.printNumber(myInfo.myPoint)}
                             </span>
 
@@ -501,7 +461,7 @@ export default props => {
   )
 }
 const TopScrollBtn = styled.button`
-  display: ${props => (props.topState ? 'block' : 'none')};
+  display: ${(props) => (props.topState ? 'block' : 'none')};
   position: fixed;
   bottom: 30px;
   right: 10px;
