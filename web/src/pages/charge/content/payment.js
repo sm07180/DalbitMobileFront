@@ -18,7 +18,9 @@ const list = [
 let chargeData = [
   {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
-  {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'}
+  {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
+  {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
 ]
 
 let clickFlag = false
