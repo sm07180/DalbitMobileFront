@@ -22,6 +22,7 @@ export default (props) => {
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
 
+
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
 
@@ -210,7 +211,17 @@ export default (props) => {
         }
       })
     }
-  }, [])
+
+    if(globalCtx.nativeTid == 'init'){
+      if(isHybrid()){
+        Hybrid('getNativeTid')
+      } else if(!isHybrid()) {
+        globalCtx.action.updateNativeTid('')
+      }
+    }
+
+
+  }, [globalCtx.nativeTid])
 
   return (
     <Layout {...props} status="no_gnb">
@@ -279,31 +290,32 @@ export default (props) => {
                 <div className="link-text">회원가입</div>
               </a>
             </div>
-
+            {globalCtx.nativeTid == '' &&
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                  <img className="icon" src={appleLogo} />
+                  <img className="icon" src={appleLogo}/>
                 </button>
                 <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-                  <img className="icon" src={facebookLogo} />
+                  <img className="icon" src={facebookLogo}/>
                 </button>
                 <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon" src={naverLogo} />
+                  <img className="icon" src={naverLogo}/>
                 </button>
                 <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon" src={kakaoLogo} />
+                  <img className="icon" src={kakaoLogo}/>
                 </button>
                 {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                  customHeader['os'] === OS_TYPE['Desktop']) && (
-                  <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                    <img className="icon" src={googleLogo} />
-                  </button>
+                    (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                    customHeader['os'] === OS_TYPE['Desktop']) && (
+                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+                      <img className="icon" src={googleLogo}/>
+                    </button>
                 )}
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
+            }
           </Login>
         )}
       </Switch>
