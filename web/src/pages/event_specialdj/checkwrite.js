@@ -99,9 +99,9 @@ export default (props) => {
     window.history.back()
   }
 
-  // {
-  //   toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
-  // }
+  {
+    toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
+  }
 
   const Broadcast1 = select1 + ' ~ ' + selectSub1
   const Broadcast2 = select2 + ' ~ ' + selectSub2
