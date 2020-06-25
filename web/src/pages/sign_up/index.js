@@ -413,6 +413,7 @@ export default props => {
   }
 
   const getNativeTid = () => {
+    alert('앱호출');
     Hybrid('getNativeTid')
   }
 
@@ -527,6 +528,9 @@ export default props => {
   let validateSetting = {}
 
   async function fetchAuth() {
+
+    getNativeTid()
+
     const resAuth = await Api.sms_request({
       data: {
         phoneNo: changes.memId,
@@ -715,7 +719,7 @@ export default props => {
   }, [validate])
 
   return (
-    <PureLayout onLoad={getNativeTid}>
+    <PureLayout>
       <SignUpWrap>
         {changes.memType == 'p' && (
           <>
