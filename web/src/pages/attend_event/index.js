@@ -151,6 +151,13 @@ export default (props) => {
           <div className="img-leaves"></div>
           <div className="img-bottle-moon"></div>
           <div className="img-big-rabbit"></div>
+          <div className="img-pick">
+            <p>방송(청취) 시간 30분이 되었다면?</p>
+
+            <div className="img-pick-text"></div>
+
+            <div className="img-pick-hand"></div>
+          </div>
           <div className="img-title"></div>
 
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>

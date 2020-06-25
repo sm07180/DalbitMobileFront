@@ -33,11 +33,47 @@
     position: absolute;
     bottom: 0;
     left: 8px;
-    width: 198px;
+    width: 58px;
     height: 132px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_big_rabbit@2x.png);
+    background-image: url(https://image.dalbitlive.com/event/attend/200625/img_big_rabbit@2x.png);
     background-size: 100%;
     background-repeat: no-repeat;
+  }
+
+  .img-pick {
+    position: absolute;
+    top: 140px;
+    width: 100%;
+    text-align: center;
+
+    p {
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 13px;
+      line-height: 18px;
+      letter-spacing: -0.33px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .img-pick-text {
+      display: inline-block;
+      width: 49px;
+      height: 20px;
+      background-image: url(https://image.dalbitlive.com/event/attend/200625/text_pick@2x.png);
+      background-size: 100%;
+      background-repeat: no-repeat;
+      vertical-align: top;
+    }
+
+    .img-pick-hand {
+      display: inline-block;
+      width: 50px;
+      height: 30px;
+      background-image: url(https://image.dalbitlive.com/event/attend/200625/point2.gif);
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
   }
 
   .img-title {
@@ -63,7 +99,7 @@
     width: 220px;
     height: 41px;
     position: absolute;
-    bottom: 25px;
+    bottom: 23px;
     left: calc(50% - 110px);
     background-image: url(https://image.dalbitlive.com/event/attend/200622/btn_daily_check_on@2x.png);
     background-size: 100%;
