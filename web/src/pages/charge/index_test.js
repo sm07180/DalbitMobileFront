@@ -11,8 +11,6 @@ const RouteList = [
   {path: 'result', component: ResultPayment, exact: true}
 ]
 
-console.log('location.pathname', location.pathname)
-
 export default () => {
   return (
     <div className="test-page">

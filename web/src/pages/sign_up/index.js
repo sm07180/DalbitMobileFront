@@ -73,8 +73,6 @@ export default props => {
   const dateYear = date.slice(0, 4) - 16
   let dateDefault = ''
 
-  Hybrid('getNativeTid')
-
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
     memId: '',
@@ -414,6 +412,10 @@ export default props => {
     }
   }
 
+  const getNativeTid = () => {
+    Hybrid('getNativeTid')
+  }
+
   //---------------------------------------------------------------------
   //fetchData
   const fetchPhoneLogin = async (phone, pw) => {
@@ -713,7 +715,7 @@ export default props => {
   }, [validate])
 
   return (
-    <PureLayout>
+    <PureLayout onLoad={getNativeTid}>
       <SignUpWrap>
         {changes.memType == 'p' && (
           <>
