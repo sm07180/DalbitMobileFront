@@ -290,7 +290,7 @@ export default (props) => {
                 <div className="link-text">회원가입</div>
               </a>
             </div>
-            {globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init' &&
+            {/*{globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init' &&*/}
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
@@ -315,7 +315,7 @@ export default (props) => {
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
-            }
+            {/*}*/}
           </Login>
         )}
       </Switch>
