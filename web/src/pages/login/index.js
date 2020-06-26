@@ -290,7 +290,7 @@ export default (props) => {
                 <div className="link-text">회원가입</div>
               </a>
             </div>
-            {globalCtx.nativeTid == '' &&
+            {globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init' &&
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
