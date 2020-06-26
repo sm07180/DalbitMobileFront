@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react'
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 
 // context
-import { Context } from 'context'
-import { OS_TYPE } from 'context/config.js'
+import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
 
 // component
 import Paging from 'components/ui/paging.js'
@@ -15,20 +15,15 @@ import List from '../component/wallet/list.js'
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
-import { WIDTH_MOBILE, IMG_SERVER } from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import Header from '../component/header.js'
 
 // concat
 let currentPage = 1
 let timer
 let moreState = false
-export default props => {
+export default (props) => {
   let history = useHistory()
   const context = useContext(Context)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
@@ -39,15 +34,17 @@ export default props => {
   const [nextList, setNextList] = useState(false)
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
   const [page, setPage] = useState(1)
-  const changeCoinTypeClick = type => {
+  const changeCoinTypeClick = (type) => {
     setCoinType(type)
-    setWalletType(0)
+
     setcontrollState(!controllState)
+    setWalletType(0)
   }
-  const returnCoinText = t => {
+
+  const returnCoinText = (t) => {
     return t === 'dal' ? '달' : '별'
   }
-  const returnCoinImg = t => {
+  const returnCoinImg = (t) => {
     return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
   async function fetchData(next) {
@@ -60,7 +57,7 @@ export default props => {
     })
     if (response.result === 'success') {
       setSearching(false)
-      const { list, dalTotCnt, byeolTotCnt, paging } = response.data
+      const {list, dalTotCnt, byeolTotCnt, paging} = response.data
       if (coinType === 'dal') {
         setTotalCoin(dalTotCnt)
       } else if (coinType === 'byeol') {
@@ -105,23 +102,14 @@ export default props => {
     }
   }
   //스크롤 이벤트
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
-      const windowHeight =
-        'innerHeight' in window
-          ? window.innerHeight
-          : document.documentElement.offsetHeight
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      )
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       if (moreState && windowBottom >= docHeight - 200) {
         showMoreList()
@@ -129,6 +117,7 @@ export default props => {
       }
     }, 10)
   }
+
   return (
     <div>
       {/* 공통타이틀 */}
@@ -141,25 +130,21 @@ export default props => {
             className={coinType === 'dal' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('dal')
-            }}
-          >
+            }}>
             달
           </CoinTypeBtn>
           <CoinTypeBtn
             className={coinType === 'byeol' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('byeol')
-            }}
-          >
+            }}>
             별
           </CoinTypeBtn>
         </TitleWrap>
 
         <CoinCountingView>
           <CoinCurrentStatus className={coinType === 'dal' ? 'active' : ''}>
-            <span className="text">{`현재 보유 ${returnCoinText(
-              coinType
-            )}:`}</span>
+            <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
             <span className="current-value">
               {totalCoin !== null && Number(totalCoin).toLocaleString()}
               {coinType === 'byeol' ? <em>별</em> : <em>달</em>}
@@ -173,16 +158,14 @@ export default props => {
                   <CoinChargeBtn
                     onClick={() => {
                       webkit.messageHandlers.openInApp.postMessage('')
-                    }}
-                  >
+                    }}>
                     충전하기
                   </CoinChargeBtn>
                 ) : (
                   <CoinChargeBtn
                     onClick={() => {
                       history.push('/store')
-                    }}
-                  >
+                    }}>
                     충전하기
                   </CoinChargeBtn>
                 )}
@@ -194,8 +177,7 @@ export default props => {
                     className="exchange gray"
                     onClick={() => {
                       history.push('/exchange')
-                    }}
-                  >
+                    }}>
                     달교환
                   </CoinChargeBtn>
                 )}
@@ -204,8 +186,7 @@ export default props => {
                     className="exchange"
                     onClick={() => {
                       history.push('/money_exchange')
-                    }}
-                  >
+                    }}>
                     환전하기
                   </CoinChargeBtn>
                 )}
@@ -216,6 +197,7 @@ export default props => {
         <List
           searching={searching}
           coinType={coinType}
+          walletType={walletType}
           walletData={listDetailed}
           returnCoinText={returnCoinText}
           setWalletType={setWalletType}
@@ -357,8 +339,7 @@ const TopWrap = styled.div`
   button:nth-child(1) {
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
-      center / cover;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
   }
   .title {
     width: calc(100% - 24px);

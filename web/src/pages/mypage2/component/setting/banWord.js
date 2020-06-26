@@ -2,108 +2,100 @@
  * @file /mypage/component/banWord.js
  * @brief 마이페이지 방송설정 - 금지어 설정
  **/
-import React, { useState, useEffect, useContext, useRef } from 'react';
-import styled from 'styled-components';
+import React, {useState, useEffect, useContext, useRef} from 'react'
+import styled from 'styled-components'
 
 //context
-import { Context } from 'context';
-import Api from 'context/api';
-import _ from 'lodash';
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color';
-import {
-  IMG_SERVER,
-  WIDTH_TABLET_S,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config';
+import {Context} from 'context'
+import Api from 'context/api'
+import _ from 'lodash'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-import useChange from 'components/hooks/useChange';
+import useChange from 'components/hooks/useChange'
 // svg
-import BlackPlusIcon from '../black_plus.svg';
-import BackIcon from '../black_plus.svg';
-export default props => {
+import BlackPlusIcon from '../black_plus.svg'
+import BackIcon from '../black_plus.svg'
+export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
-  const context = useContext(Context);
+  const context = useContext(Context)
   //state
-  const [word, setWord] = useState(false);
-  const [list, setList] = useState(false);
-  const [buttonState, setButtonState] = useState(false);
+  const [word, setWord] = useState(false)
+  const [list, setList] = useState(false)
+  const [buttonState, setButtonState] = useState(false)
   //hooks
-  const { changes, setChanges, onChange } = useChange({ onChange: -1 });
-
+  const {changes, setChanges, onChange} = useChange({onChange: -1})
   //-----------------------------------------------------------------------------
   //function
 
   async function fetchWrite(type) {
-    let words = [];
+    let words = []
     word.forEach((item, index) => {
       if (_.hasIn(changes, `word${index}`)) {
-        words = words.concat(changes[`word${index}`]);
+        words = words.concat(changes[`word${index}`])
       } else {
-        words = words.concat([item]);
+        words = words.concat([item])
       }
-    });
+    })
 
-    let banWords = '';
-    let wordIndex = 0;
+    let banWords = ''
+    let wordIndex = 0
     words.forEach((item, index) => {
-      if (item == false) return;
+      if (item == false) return
       if (!wordIndex) {
-        banWords = `${item}`;
+        banWords = `${item}`
       } else {
-        banWords = `${banWords}|${item}`;
+        banWords = `${banWords}|${item}`
       }
-      wordIndex++;
-    });
+      wordIndex++
+    })
     if (banWords == '' && type != 'remove')
       return context.action.alert({
         msg: `금지어를 입력해주세요.`
-      });
+      })
     const res = await Api.mypage_banword_write({
       data: {
         banWord: banWords
       }
-    });
+    })
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       if (res.data.banWordCnt) {
-        setWord(res.data.banWord.split('|'));
+        setWord(res.data.banWord.split('|'))
       } else {
-        setWord(false);
+        setWord(false)
       }
-      setChanges(['']);
+      setChanges([''])
       if (!(type == 'remove')) {
         context.action.alert({
           msg: res.message
-        });
+        })
       }
     } else {
       context.action.alert({
         msg: res.message
-      });
+      })
     }
   }
 
   async function fetchList() {
-    const res = await Api.mypage_banword_list({});
+    const res = await Api.mypage_banword_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       if (res.data.banWordCnt) {
-        setWord(res.data.banWord.split('|'));
+        setWord(res.data.banWord.split('|'))
       } else {
-        setWord(false);
-        setChanges(['']);
+        setWord(false)
+        setChanges([''])
       }
     } else {
       context.action.alert({
         msg: res.message
-      });
+      })
     }
   }
-  const focusState = index => {
-    setButtonState(index);
-  };
+  const focusState = (index) => {
+    setButtonState(index)
+  }
   const createList = () => {
     return word.map((item, index) => {
       return (
@@ -114,18 +106,13 @@ export default props => {
             name={`word${index}`}
             onChange={onChange}
             onClick={() => focusState(index)}
-            value={
-              _.hasIn(changes, `word${index}`)
-                ? changes[`word${index}`]
-                : word[index]
-            }
+            value={_.hasIn(changes, `word${index}`) ? changes[`word${index}`] : word[index]}
           />
           {buttonState !== index && (
             <button
               onClick={() => {
-                removeInput(index);
-              }}
-            >
+                removeInput(index)
+              }}>
               삭제
             </button>
           )}
@@ -133,48 +120,47 @@ export default props => {
             <button
               className="save_btn"
               onClick={() => {
-                writeValidate();
-              }}
-            >
+                writeValidate()
+              }}>
               저장
             </button>
           )}
         </div>
-      );
-    });
-  };
+      )
+    })
+  }
 
   const addInput = () => {
-    setWord(word.concat(''));
-    setButtonState(false);
-  };
+    setWord(word.concat(''))
+    setButtonState(false)
+  }
 
-  const removeInput = index => {
+  const removeInput = (index) => {
     context.action.confirm({
       msg: `금지어를 삭제하시겠습니까?`,
       callback: () => {
-        let words = word;
-        let splice = words.splice(index, 1);
-        setWord([...words]);
+        let words = word
+        let splice = words.splice(index, 1)
+        setWord([...words])
         if (_.hasIn(changes, `word${index}`)) {
-          delete changes[`word${index}`];
-          setChanges({ ...changes });
+          delete changes[`word${index}`]
+          setChanges({...changes})
         }
-        fetchWrite('remove');
+        fetchWrite('remove')
       }
-    });
-  };
+    })
+  }
 
   const writeValidate = () => {
-    fetchWrite();
-    setButtonState(false);
-  };
+    fetchWrite()
+    setButtonState(false)
+  }
 
   //-----------------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    fetchList();
-  }, []);
+    fetchList()
+  }, [])
 
   //-----------------------------------------------------------------------------
   return (
@@ -183,24 +169,21 @@ export default props => {
         <button
           className="ban-add-btn"
           onClick={() => {
-            setWord(['']);
-          }}
-        >
+            setWord([''])
+          }}>
           추가
           <span></span>
         </button>
       )}
-
+      
       {word && createList()}
-
       {word && (
         <div className="btn-wrap">
           <button
             className="white"
             onClick={() => {
-              addInput();
-            }}
-          >
+              addInput()
+            }}>
             추가
             <a></a>
           </button>
@@ -209,8 +192,8 @@ export default props => {
       <p className="info">∙ &nbsp;금지어는 한 단어당 최대 12자 이내</p>
       <p className="info">∙ &nbsp;최대 100개까지 설정 가능</p>
     </Content>
-  );
-};
+  )
+}
 
 const Content = styled.div`
   margin-top: 16px;
@@ -355,4 +338,4 @@ const Content = styled.div`
       }
     }
   }
-`;
+`

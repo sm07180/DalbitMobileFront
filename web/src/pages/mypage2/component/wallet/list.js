@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 
 import SelectBox from 'components/ui/selectBox.js'
@@ -11,10 +11,11 @@ import ExBg from '../ex.svg'
 import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
 import GiftPinkIcon from '../../static/ic_gift_pink.svg'
 import ExchangeIcon from '../../static/ic_exchange_purple.svg'
+import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
 import Live from '../ic_live.svg'
 export default (props) => {
-  const {searching, coinType, walletData, returnCoinText, setWalletType, controllState} = props
-
+  const {searching, coinType, walletData, returnCoinText, setWalletType, walletType} = props
+  let selectorRef = useRef()
   const selectWalletTypeData = [
     {value: 0, text: '전체'},
     {value: 1, text: '구매'},
@@ -29,20 +30,36 @@ export default (props) => {
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
     return `${date}`
   }
+  //--------------------------------------------------------------
+  useEffect(() => {
+    selectorRef.current.value = 0
+  }, [coinType])
+  //------------------------------------------------------------
+  const change = (e) => {
+    setWalletType(e)
+  }
 
   return (
     <ListContainer>
-      <SelectBox
+      {/* <SelectBox
         className="mypage-wallet-select-box"
         boxList={selectWalletTypeData}
         onChangeEvent={setWalletType}
         controllState={controllState}
-      />
+      /> */}
+
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(coinType)} 상세내역`}</span>
           <span className="sub">최근 6개월</span>
         </span>
+        <Selector onChange={(e) => change(parseInt(e.target.value))} ref={selectorRef}>
+          <option value={0}>전체</option>
+          <option value={1}>구매</option>
+          <option value={2}>선물</option>
+          <option value={3}>교환</option>
+        </Selector>
+        <div className="arrowBtn"></div>
       </TopArea>
 
       <ListWrap>
@@ -207,6 +224,7 @@ const ListWrap = styled.div`
 const TopArea = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-direction: row;
 
   .title {
@@ -241,4 +259,29 @@ const ListContainer = styled.div`
       top: -8px;
     }
   }
+  .arrowBtn {
+    display: block;
+    position: absolute;
+    top: -1px;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: url(${ArrowDownIcon}) no-repeat center center / cover;
+    z-index: 3;
+  }
+`
+const Selector = styled.select`
+  width: 56px;
+  text-align: right;
+  position: relative;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000000;
+  z-index: 4;
 `

@@ -426,12 +426,23 @@ const Reply = styled.div`
     display: none;
     flex-direction: column;
     position: absolute;
-    right: 16px;
-    top: calc(50% + 26px);
-    transform: translateY(-50%);
+    right: 24px;
+    top: 44px;
     width: 80px;
-    height: 40px;
-    background-color: beige;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+    padding: 4px 0;
+    span {
+      height: 26px;
+      font-size: 14px;
+      line-height: 2.14;
+      letter-spacing: -0.35px;
+      text-align: center;
+      color: #757575;
+      :hover {
+        background-color: #f8f8f8;
+      }
+    }
     &.on {
       display: flex;
       z-index: 56;

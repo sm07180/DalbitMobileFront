@@ -37,7 +37,7 @@ import RankArrow from './static/ic_rank_arrow.svg'
 import {RoomMake} from 'context/room'
 // style
 import 'styles/layerpopup.scss'
-import {Hybrid} from "context/hybrid";
+import {Hybrid} from 'context/hybrid'
 
 let concatenating = false
 let tempScrollEvent = null
@@ -379,7 +379,7 @@ export default (props) => {
     const recommendWrapNode = recommendWrapRef.current
     const refreshIconNode = refreshIconRef.current
 
-    if (recommendWrapNode.clientHeight >= recommendWrapBaseHeight + 85) {
+    if (recommendWrapNode.clientHeight >= recommendWrapBaseHeight + 80) {
       let degree = 0
       const tempIntevalId = setInterval(() => {
         if (Math.abs(degree) === 360) {
@@ -429,11 +429,11 @@ export default (props) => {
               </div>
               <div className="tab">
                 <Link
-                    onClick={(event) => {
-                      event.preventDefault()
-                      StoreLink(globalCtx)
-                    }}
-                    to={'/store'}>
+                  onClick={(event) => {
+                    event.preventDefault()
+                    StoreLink(globalCtx)
+                  }}
+                  to={'/store'}>
                   스토어
                 </Link>
               </div>
