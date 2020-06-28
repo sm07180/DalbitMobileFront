@@ -66,7 +66,10 @@ export default function CommentEvent() {
 
         <button
           onClick={() => {
-            async function AddComment(memNo, eventIdx, depth, content) {
+              globalCtx.action.alert({
+                  msg: '댓글 이벤트가 종료되었습니다.',
+              })
+            /*async function AddComment(memNo, eventIdx, depth, content) {
               const {result, data} = await API.postEventComment({memNo, eventIdx, depth, content})
               if (result === 'success') {
                 fetchCommentData()
@@ -89,7 +92,7 @@ export default function CommentEvent() {
                     history.push(`/login?redirect=/event_page`)
                 }
               })
-            }
+            }*/
           }}>
           등록
         </button>
