@@ -191,7 +191,6 @@ const myProfile = (props) => {
   const params = {
     spaceBetween: 10,
     slidesPerView: 'auto',
-    resistanc: false,
     resistanceRatio: 0
   }
   //뱃지

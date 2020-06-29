@@ -193,8 +193,7 @@ const myProfile = (props) => {
   //스와이퍼
   const params = {
     spaceBetween: 10,
-    slidesPerView: '7px',
-    resistanc: false,
+    slidesPerView: 'auto',
     resistanceRatio: 0
   }
   //뱃지
