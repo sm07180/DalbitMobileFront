@@ -54,7 +54,7 @@ export default (props) => {
                 payType = '문화상품권'
                 break
               case 'GG':
-                payType = '게임문화상품권'
+                payType = '스마트문상(게임문화상품권)'
                 break
               case 'GC':
                 payType = '도서문화상품권'
