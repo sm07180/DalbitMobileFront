@@ -6,7 +6,7 @@ import {RoomMake} from 'context/room'
 
 // static image
 //import Logo from './static/logo@2x.png'
-import Logo from './static/logo_real.png'
+import Logo from './static/logo_real.svg'
 import Search from './static/ic_search.svg'
 import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
@@ -192,7 +192,7 @@ const GnbWrap = styled.div`
 
   .logo {
     display: block;
-    width: 110px;
+    width: 103px;
   }
 
   .mic-btn {
