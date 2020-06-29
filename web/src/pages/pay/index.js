@@ -40,9 +40,21 @@ export default (props) => {
     if (result === 'success') {
       if (state === 'pay') {
         if (returntype === 'room') {
+          //Facebook,Firebase 이벤트 호출
+          try{
+            fbq('track', 'Purchase')
+            firebase.analytics().logEvent("Purchase")
+          } catch(e){}
+
           window.location.href = '/pay_result?webview=new&returntype=room'
         } else {
           const {prdtPrice, prdtNm, phoneNo, orderId, cardName, cardNum, apprno, pgcode, giftType} = props.location.state
+          //Facebook,Firebase 이벤트 호출
+          try{
+            fbq('track', 'Purchase', {"price" : prdtPrice})
+            firebase.analytics().logEvent("Purchase", {"price" : prdtPrice})
+          } catch(e){}
+
           let payType
           if (!phoneNo && cardNum) {
             payType = '카드 결제'
