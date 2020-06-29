@@ -20,7 +20,9 @@ let chargeData = [
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
   {id: 8, type: '문화상품권', fetch: 'pay_gm'},
-  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
+  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
+  {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
+  {id: 10, type: '도서상품권', fetch: 'pay_gc'}
 ]
 
 let clickFlag = false
@@ -37,7 +39,7 @@ export default (props) => {
       {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
       {id: 8, type: '문화상품권', fetch: 'pay_gm'},
       {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
-      {id: 9, type: '게임문화상품권(스마트문상)', fetch: 'pay_gg'},
+      {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
       {id: 10, type: '도서상품권', fetch: 'pay_gc'}
     ]
   }
@@ -350,7 +352,7 @@ export default (props) => {
                           onClick={() => setPayMathod(index)}>
                           {item.id === 9 ? (
                             <>
-                              게임문화상품권 <br /> (스마트문상)
+                              스마트문상 <br /> (게임문화상품권)
                             </>
                           ) : (
                             item.type
