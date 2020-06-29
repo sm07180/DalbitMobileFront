@@ -30,14 +30,14 @@ let payType = ''
 export default (props) => {
   const context = useContext(Context)
 
-  if (context.profile.memNo === '41587626772875' || __NODE_ENV !== 'real') {
+  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
       {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
       {id: 8, type: '문화상품권', fetch: 'pay_gm'},
       {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
-      {id: 9, type: '게임문화상품권', fetch: 'pay_gg'},
+      {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
       {id: 10, type: '도서상품권', fetch: 'pay_gc'}
     ]
   }
@@ -348,7 +348,13 @@ export default (props) => {
                             index === 0 ? 'payMathod__button--contain' : ''
                           } `}
                           onClick={() => setPayMathod(index)}>
-                          {item.type}
+                          {item.id === 9 ? (
+                            <>
+                              스마트문상 <br /> (게임문화상품권)
+                            </>
+                          ) : (
+                            item.type
+                          )}
                         </button>
                       )
                     })}
