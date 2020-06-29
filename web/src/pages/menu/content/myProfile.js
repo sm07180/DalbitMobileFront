@@ -52,6 +52,7 @@ const myProfile = (props) => {
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
   }
+
   //api
   async function fetchDataFanRegist(myProfileNo) {
     const res = await Api.fan_change({
@@ -244,18 +245,24 @@ const myProfile = (props) => {
           </div>
         </NameWrap>
 
-        {profile.fanBadge.text && (
-          <FanBadgeWrap>
-            <span
-              className="fan-badge"
-              style={{
-                background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
-              }}>
-              <img src={profile.fanBadge.icon} />
-              <span>{profile.fanBadge.text}</span>
-            </span>
-          </FanBadgeWrap>
-        )}
+        {
+          profile.fanBadgeList ?
+            <FanBadgeWrap>
+              {profile.fanBadgeList.map((fanBadge, idx) => {
+                  return (
+                    <span
+                      className="fan-badge"
+                      style={{
+                        background: `linear-gradient(to right, ${fanBadge.startColor}, ${fanBadge.endColor}`
+                      }}>
+                      <img src={fanBadge.icon} />
+                      <span>{fanBadge.text}</span>
+                    </span>
+                  )
+              })}
+            </FanBadgeWrap>
+          : <></>
+        }
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
@@ -543,10 +550,14 @@ const FanBadgeWrap = styled.div`
     padding: 0 10px 0 3px;
     text-align: left;
     color: #ffffff;
+    margin-right: 7px;
+  }
+  .fan-badge:last-child{
+    margin-right: 0;
   }
 
   .fan-badge img {
-    width: 28px;
+    width: 33px;
     height: 28px;
   }
   .fan-badge span {
