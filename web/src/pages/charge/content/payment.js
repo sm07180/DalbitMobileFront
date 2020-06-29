@@ -22,7 +22,7 @@ let chargeData = [
   {id: 8, type: '문화상품권', fetch: 'pay_gm'},
   {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
   {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-  {id: 10, type: '도서상품권', fetch: 'pay_gc'}
+  {id: 10, type: '도서문화상품권', fetch: 'pay_gc'}
 ]
 
 let clickFlag = false
@@ -40,7 +40,7 @@ export default (props) => {
       {id: 8, type: '문화상품권', fetch: 'pay_gm'},
       {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
       {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-      {id: 10, type: '도서상품권', fetch: 'pay_gc'}
+      {id: 10, type: '도서문화상품권', fetch: 'pay_gc'}
     ]
   }
 
