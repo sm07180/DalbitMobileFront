@@ -90,8 +90,7 @@ export default (props) => {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
         const {parentsAgreeYn, adultYn} = res.data
-        if (adultYn === 'n') return history.push('/selfauth')
-        if (parentsAgreeYn === 'n') return history.push('/selfauth_result')
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
         history.push('/money_exchange')
       } else if (res.result === 'fail' && res.code === '0') {
         history.push('/selfauth')
