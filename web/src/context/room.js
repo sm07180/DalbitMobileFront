@@ -194,6 +194,11 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
       Hybrid('adbrixEvent', { eventName: 'roomJoin', attr : {}});
+      //Facebook,Firebase 이벤트 호출
+      try{
+          fbq('track', 'RoomJoin')
+          firebase.analytics().logEvent("RoomJoin")
+      } catch(e){}
       return true
     }
   }
