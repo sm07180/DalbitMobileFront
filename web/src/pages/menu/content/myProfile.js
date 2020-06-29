@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 //styled
 import styled from 'styled-components'
+import Swiper from 'react-id-swiper'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -189,7 +190,30 @@ const myProfile = (props) => {
       setPopup(false)
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
-
+  //스와이퍼
+  const params = {
+    spaceBetween: 10,
+    slidesPerView: '7px',
+    resistanc: false,
+    resistanceRatio: 0
+  }
+  //뱃지
+  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
+    const {text, icon, startColor, endColor} = item
+    //-----------------------------------------------------------------------
+    return (
+      <Slide key={index}>
+        <span
+          className="fan-badge"
+          style={{
+            background: `linear-gradient(to right, ${startColor}, ${endColor}`
+          }}>
+          <img src={icon} />
+          <span>{text}</span>
+        </span>
+      </Slide>
+    )
+  })
   return (
     <MyProfile webview={webview}>
       <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
@@ -236,7 +260,6 @@ const myProfile = (props) => {
             </LevelWrap>
           </>
         )}
-
         <NameWrap>
           <strong>{profile.nickNm}</strong>
           <div>
@@ -244,26 +267,13 @@ const myProfile = (props) => {
             {profile.isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
           </div>
         </NameWrap>
-
-        {
-          profile.fanBadgeList ?
-            <FanBadgeWrap>
-              {profile.fanBadgeList.map((fanBadge, idx) => {
-                  return (
-                    <span
-                      className="fan-badge"
-                      style={{
-                        background: `linear-gradient(to right, ${fanBadge.startColor}, ${fanBadge.endColor}`
-                      }}>
-                      <img src={fanBadge.icon} />
-                      <span>{fanBadge.text}</span>
-                    </span>
-                  )
-              })}
-            </FanBadgeWrap>
-          : <></>
-        }
-
+        {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
+          <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
+            <Swiper {...params}>{BadgeSlide}</Swiper>
+          </BadgeWrap>
+        ) : (
+          <></>
+        )}
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
         <CountingWrap>
           <span onClick={() => fanContext()}>
@@ -531,42 +541,6 @@ const LevelStatus = styled.div`
     line-height: 13px;
   }
 `
-
-//팬뱃지
-const FanBadgeWrap = styled.div`
-  margin-top: 10px;
-  text-align: center;
-
-  .fan-badge {
-    display: inline-block;
-    height: 28px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 800;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1;
-    letter-spacing: -0.35px;
-    padding: 0 10px 0 3px;
-    text-align: left;
-    color: #ffffff;
-    margin-right: 7px;
-  }
-  .fan-badge:last-child{
-    margin-right: 0;
-  }
-
-  .fan-badge img {
-    width: 33px;
-    height: 28px;
-  }
-  .fan-badge span {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 2.2;
-  }
-`
-
 //닉네임
 const NameWrap = styled.div`
   margin-top: 10px;
@@ -674,6 +648,7 @@ const CountingWrap = styled.div`
 `
 //프로필메세지
 const ProfileMsg = styled.p`
+  word-break: break-all;
   margin-top: 8px;
   color: #616161;
   font-size: 14px;
@@ -847,5 +822,71 @@ const FanRank = styled.div`
   }
   &.rank3:after {
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
+  }
+`
+//팬 뱃지 스타일링
+const Slide = styled.a`
+  color: #fff;
+`
+const BadgeWrap = styled.div`
+  display: flex;
+  margin: 10px auto 10px auto;
+  margin-left: ${(props) => props.margin} !important;
+  justify-content: center;
+  align-items: center;
+  & .swiper-slide {
+    display: block;
+
+    width: auto;
+    height: auto;
+  }
+  & .swiper-wrapper {
+    height: auto;
+    margin: 0 auto;
+  }
+  & .swiper-pagination {
+    position: static;
+    margin-top: 20px;
+  }
+  & .swiper-pagination-bullet {
+    width: 11px;
+    height: 11px;
+    background: #000000;
+    opacity: 0.5;
+  }
+  & .swiper-pagination-bullet-active {
+    background: ${COLOR_MAIN};
+    opacity: 1;
+  }
+
+  .fan-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: -0.35px;
+    padding: 0 10px 0 3px;
+    text-align: left;
+    color: #ffffff;
+  }
+  .fan-badge:last-child {
+    margin-right: 0;
+  }
+
+  .fan-badge img {
+    width: 33px;
+    height: 28px;
+  }
+  .fan-badge span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.2;
+    color: #ffffff;
   }
 `
