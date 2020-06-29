@@ -4,9 +4,13 @@ import styled from 'styled-components'
 // static
 import closeBtn from './ic_back.svg'
 
-export default props => {
+export default (props) => {
   const goBack = () => {
-    window.history.back()
+    if (props.goBack) {
+      props.goBack()
+    } else {
+      window.history.back()
+    }
   }
 
   return (
