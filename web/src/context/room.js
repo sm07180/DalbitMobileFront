@@ -193,6 +193,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Hybrid('RoomJoin', data)
+      Hybrid('adbrixEvent', { eventName: 'roomJoin', attr : {}});
       return true
     }
   }
