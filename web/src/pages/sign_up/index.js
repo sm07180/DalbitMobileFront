@@ -520,9 +520,12 @@ export default props => {
         } catch(e){}
 
         context.action.alert({
-        callback: () => {
+          callback: () => {
             //애드브릭스 이벤트 전달
             Hybrid('adbrixEvent', res.data.adbrixData);
+            if(__NODE_ENV === 'dev'){
+              alert(JSON.stringify(res.data.adbrixData));
+            }
             fetchPhoneLogin()
           },
           msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
