@@ -70,11 +70,13 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      const {result, data} = await Api.mypage_alarm_check()
-      if (result === 'success') {
-        const {newCnt} = data
-        if (newCnt > 0) {
-          setNewAlarm(true)
+      if(!newAlarm){
+        const {result, data} = await Api.mypage_alarm_check()
+        if (result === 'success') {
+          const {newCnt} = data
+          if (newCnt > 0) {
+            setNewAlarm(true)
+          }
         }
       }
     }
