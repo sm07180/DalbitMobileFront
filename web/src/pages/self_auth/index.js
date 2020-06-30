@@ -1,7 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
-import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -10,7 +9,6 @@ import {COLOR_MAIN} from 'context/color'
 //layout
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
-import {stringify} from 'qs'
 
 //
 export default (props) => {

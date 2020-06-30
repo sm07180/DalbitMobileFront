@@ -1,44 +1,79 @@
 import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
-import qs from 'query-string'
+import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
 
 //context
+import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
-import {stringify} from 'qs'
 
 //
 export default (props) => {
   //---------------------------------------------------------------------
-  //state
-
-  const data = {
-    result: 'success',
-    returntype: 'legal'
-  }
+  //context
+  const context = useContext(Context)
+  const history = useHistory()
 
   /**
-   * returntype
-   * self : 자기 자신 본인인증 완료 후
-   * legal : 법정대리인 본인인증 완료 후
+   * authState
+   * 1 : 성인 - 자기 자신 본인인증 완료 후 // adultYn === 'y'
+   * 2 : 미성년자 - 자기 자신 본인인증 완료 후 (법정대리인 인증 필요 상태) // adultYn === 'n' && parentsAgreeYn == 'n'
+   * 3 : 법정대리인 본인인증 완료 후 // adultYn === 'n' && parentsAgreeYn == 'y'
    */
-  //const {result, returntype} = props.locaiton.state
-  const {result, returntype} = data
+  const [authState, setAuthState] = useState(0)
 
-  alert(JSON.stringify(data))
+  const checkAuth = () => {
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        const {parentsAgreeYn, adultYn} = res.data
+        if (adultYn === 'y') return setAuthState(1)
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
+        if (parentsAgreeYn === 'y' && adultYn === 'n') return setAuthState(3)
+      } else {
+        context.action.alert({
+          msg: res.message,
+          callback: goBack
+        })
+      }
+    }
+    fetchSelfAuth()
+  }
 
-  if (result !== 'success')
-    return context.action.alert({
-      msg: '본인인증 실패'
-    })
+  useEffect(() => {
+    checkAuth()
+  }, [])
 
-  useEffect(() => {}, [])
+  const goBack = () => {
+    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    context.action.updateWalletIdx(1)
+  }
 
   const createResult = () => {
-    if (returntype === 'self') {
+    if (authState === '0') return null
+    if (authState === '1') {
+      return (
+        <div className="auth-wrap">
+          <h5>
+            본인 인증이 완료되었습니다. <br />
+            <span>환전 신청정보</span>를 작성해 주세요.
+            <br />
+          </h5>
+          <div className="btn-wrap">
+            <button
+              onClick={() => {
+                history.push('/money_exchange')
+              }}>
+              확인
+            </button>
+          </div>
+        </div>
+      )
+    } else if (authState === '2') {
       return (
         <div className="auth-wrap">
           <h4>
@@ -54,12 +89,14 @@ export default (props) => {
             저장되지 않습니다.
           </p>
           <div className="btn-wrap">
-            <button className="cancel">취소</button>
+            <button className="cancel" onClick={goBack}>
+              취소
+            </button>
             <button>동의 받기</button>
           </div>
         </div>
       )
-    } else if (returntype === 'legal') {
+    } else if (authState === '3') {
       return (
         <div className="auth-wrap">
           <h4>
@@ -72,7 +109,12 @@ export default (props) => {
             달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
           </p>
           <div className="btn-wrap">
-            <button>확인</button>
+            <button
+              onClick={() => {
+                history.push('/money_exchange')
+              }}>
+              확인
+            </button>
           </div>
         </div>
       )
@@ -82,7 +124,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      <Header title={returntype === 'self' ? '본인인증 완료' : '법정대리인(보호자) 동의 완료'} />
+      <Header title={authState === '3' ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
       <Content>{createResult()}</Content>
     </Layout>
   )
