@@ -28,8 +28,10 @@ export default (props) => {
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
+      console.log('1')
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
+        console.log('2')
         const {parentsAgreeYn, adultYn} = res.data
         if (adultYn === 'y') return setAuthState(1)
         if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
@@ -48,84 +50,79 @@ export default (props) => {
     checkAuth()
   }, [])
 
+  useEffect(() => {
+    console.log('authState', authState)
+  }, [authState])
+
   const goBack = () => {
     props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     context.action.updateWalletIdx(1)
-  }
-
-  const createResult = () => {
-    if (authState === '0') return null
-    if (authState === '1') {
-      return (
-        <div className="auth-wrap">
-          <h5>
-            본인 인증이 완료되었습니다. <br />
-            <span>환전 신청정보</span>를 작성해 주세요.
-            <br />
-          </h5>
-          <div className="btn-wrap">
-            <button
-              onClick={() => {
-                history.push('/money_exchange')
-              }}>
-              확인
-            </button>
-          </div>
-        </div>
-      )
-    } else if (authState === '2') {
-      return (
-        <div className="auth-wrap">
-          <h4>
-            <strong>본인인증이 완료되었습니다.</strong>
-          </h4>
-          <h5>
-            20세 미만의 회원의 환전 신청 시 <br />
-            <span>법정대리인(보호자) 동의가 필요합니다.</span>
-          </h5>
-          <p>
-            ※ 법정대리인(보호자) 동의 시 제공되는 정보는 <br />
-            해당 인증기관에서 직접 수집하여, 인증 이외의 용도로 이용 또는 <br />
-            저장되지 않습니다.
-          </p>
-          <div className="btn-wrap">
-            <button className="cancel" onClick={goBack}>
-              취소
-            </button>
-            <button>동의 받기</button>
-          </div>
-        </div>
-      )
-    } else if (authState === '3') {
-      return (
-        <div className="auth-wrap">
-          <h4>
-            20세 미만 미성년자 이용에 대한
-            <br />
-            <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
-          </h4>
-          <p>
-            ※ 동의 철회를 원하시는 경우, <br />
-            달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
-          </p>
-          <div className="btn-wrap">
-            <button
-              onClick={() => {
-                history.push('/money_exchange')
-              }}>
-              확인
-            </button>
-          </div>
-        </div>
-      )
-    }
   }
 
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
       <Header title={authState === '3' ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
-      <Content>{createResult()}</Content>
+      <Content>
+        {authState === 2 ? (
+          <div className="auth-wrap">
+            <h4>
+              <strong>본인인증이 완료되었습니다.</strong>
+            </h4>
+            <h5>
+              20세 미만의 회원의 환전 신청 시 <br />
+              <span>법정대리인(보호자) 동의가 필요합니다.</span>
+            </h5>
+            <p>
+              ※ 법정대리인(보호자) 동의 시 제공되는 정보는 <br />
+              해당 인증기관에서 직접 수집하여, 인증 이외의 용도로 이용 또는 <br />
+              저장되지 않습니다.
+            </p>
+            <div className="btn-wrap">
+              <button className="cancel" onClick={goBack}>
+                취소
+              </button>
+              <button>동의 받기</button>
+            </div>
+          </div>
+        ) : authState === 3 ? (
+          <div className="auth-wrap">
+            <h4>
+              20세 미만 미성년자 이용에 대한
+              <br />
+              <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
+            </h4>
+            <p>
+              ※ 동의 철회를 원하시는 경우, <br />
+              달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
+            </p>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  history.push('/money_exchange')
+                }}>
+                확인
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다. <br />
+              <span>환전 신청정보</span>를 작성해 주세요.
+              <br />
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  history.push('/money_exchange')
+                }}>
+                확인
+              </button>
+            </div>
+          </div>
+        )}
+      </Content>
     </Layout>
   )
 }
