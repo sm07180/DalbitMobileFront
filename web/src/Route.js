@@ -47,6 +47,7 @@ const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
+const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
 
@@ -91,6 +92,7 @@ export default () => {
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
+        <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />

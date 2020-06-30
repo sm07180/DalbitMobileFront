@@ -14,7 +14,7 @@ export default (props) => {
   }
 
   return (
-    <Header className="header-wrap">
+    <Header className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
       <img className="close-btn" src={closeBtn} onClick={goBack} />
       <h1>{props.title}</h1>
     </Header>
@@ -35,6 +35,11 @@ const Header = styled.header`
     font-weight: 800;
     color: #000;
     line-height: 40px;
+  }
+
+  &.letter h1 {
+    padding-left: 10px;
+    letter-spacing: -1.2px;
   }
   .close-btn {
     display: block;

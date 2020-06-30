@@ -1,0 +1,413 @@
+import React, {useContext, useState, useEffect} from 'react'
+import styled from 'styled-components'
+import Api from 'context/api'
+
+//context
+import {Context} from 'context'
+import {COLOR_MAIN} from 'context/color'
+
+//layout
+import Layout from 'pages/common/layout'
+import Header from 'components/ui/new_header'
+
+//static
+import icNotice from './static/ic_notice.svg'
+import icArrow from './static/ico_selectdown_g_s.svg'
+import icFemale from './static/ico_female.svg'
+import icMale from './static/ico_male.svg'
+import icCheckOff from './static/ico-checkbox-off.svg'
+import icCheckOn from './static/ico-checkbox-on.svg'
+
+//
+export default (props) => {
+  //---------------------------------------------------------------------
+  //context
+  const context = useContext(Context)
+
+  //formData
+  const [formState, setFormState] = useState({
+    tr_cert: '',
+    tr_url: '',
+    tr_add: ''
+  })
+
+  //본인인증 모듈 호출
+  function authRequest(res) {
+    var KMCIS_window
+    var UserAgent = navigator.userAgent
+    /* 모바일 접근 체크*/
+
+    // 모바일일 경우 (변동사항 있을경우 추가 필요)
+    if (
+      UserAgent.match(
+        /iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
+      ) != null ||
+      UserAgent.match(/LG|SAMSUNG|Samsung/) != null
+    ) {
+      document.authForm.target = ''
+    } else {
+      KMCIS_window = window.open(
+        '',
+        'KMCISWindow',
+        'width=425, height=690, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=435, top=250'
+      )
+
+      if (KMCIS_window == null) {
+        context.action.alert({
+          msg:
+            ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
+        })
+      }
+      document.authForm.target = 'KMCISWindow'
+    }
+    document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
+    document.authForm.submit()
+  }
+
+  //인증 요청
+  async function authReq() {
+    const res = await Api.self_auth_req({
+      params: {
+        pageCode: '4',
+        authType: '0'
+      }
+    })
+    if (res.result == 'success' && res.code == 0) {
+      //alert(JSON.stringify(res, null, 1))
+      setFormState({
+        tr_cert: res.data.tr_cert,
+        tr_url: res.data.tr_url,
+        tr_add: res.data.tr_add
+      })
+      authRequest()
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+
+  //인증 요청 버튼
+  function authClick() {
+    authReq()
+  }
+
+  const goBack = () => {
+    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    context.action.updateWalletIdx(1)
+  }
+
+  //---------------------------------------------------------------------
+  return (
+    <Layout {...props} status="no_gnb">
+      <Header title="미성년자 법정대리인(보호자)동의 신청" goBack={goBack} />
+      <Content>
+        <p className="txt">
+          20세 미만의 미성년자가 유료 서비스를 이용하기 위해서는 <br />
+          <strong>법정대리인(보호자)의 동의가</strong> 필요합니다.
+        </p>
+
+        <h5>동의 기간 선택</h5>
+        <div className="input-wrap">
+          <div className="title">동의 기간</div>
+          <div className="input">
+            <select>
+              <option value="1825">5년</option>
+              <option value="1095">3년</option>
+              <option value="365">1년</option>
+              <option value="180">6개월</option>
+              <option value="90">3개월</option>
+            </select>
+          </div>
+          <p className="info" style={{paddingTop: '8px'}}>
+            <img src={icNotice} />
+            선택한 기간 동안 환전 동의가 유효하고 환전 서비스 이용 시 <br />
+            법정대리인(보호자)의 동의를 다시 받을 필요는 없습니다.
+          </p>
+        </div>
+
+        <h5>법정대리인(보호자) 정보</h5>
+
+        <div className="input-wrap">
+          <p className="info" style={{paddingBottom: '8px'}}>
+            <img src={icNotice} />
+            법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.
+          </p>
+          <div className="title">보호자 이름</div>
+          <div className="input">
+            <input type="text" />
+          </div>
+        </div>
+        <div className="input-wrap">
+          <div className="title">성별</div>
+          <div className="input">
+            <div className="btn2-wrap">
+              <button className="male">남자</button>
+              <button className="female ">여자</button>
+            </div>
+          </div>
+        </div>
+        <div className="input-wrap">
+          <div className="title">생년월일</div>
+          <div className="input">
+            <input type="number" pattern="\d*" placeholder="8자 숫자만 입력" />
+          </div>
+        </div>
+        <div className="input-wrap">
+          <div className="title">통신사</div>
+          <div className="input">
+            <div className="btn6-wrap">
+              <button>SKT</button>
+              <button>KTF</button>
+              <button>LGT</button>
+              <button>
+                SKM
+                <br />
+                (알뜰폰)
+              </button>
+              <button>
+                KTM
+                <br />
+                (알뜰폰)
+              </button>
+              <button>
+                LGM
+                <br />
+                (알뜰폰)
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="input-wrap">
+          <div className="title">휴대폰 번호</div>
+          <div className="input">
+            <input type="number" pattern="\d*" placeholder="- 없이 숫자만 입력" />
+          </div>
+        </div>
+        <div className="input-wrap">
+          <div className="title">내외국인</div>
+          <div className="input">
+            <div className="btn2-wrap">
+              <button>내국인</button>
+              <button>외국인</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="checkbox">
+          <img src={icCheckOff} />
+          <label>
+            <span>[필수]</span> 본인은 위 동의서의 내용을 상세히 읽고 이해하여 이에 동의합니다.
+          </label>
+        </div>
+        <div className="checkbox">
+          <img src={icCheckOff} />
+          <label>
+            <span>[필수]</span> 법정대리인(보호자) 개인 정보 수집 및 이용에 동의합니다.
+          </label>
+        </div>
+
+        <p className="txt">
+          법정대리인(보호자) 개인 정보 수집 및 이용에 대한 안내
+          <br />
+          1) 수집하는 개인 정보 항목 : 보호자 이름, 성별, 생년월일
+          <br />
+          2) 이용목적 : 법정대리인 환전 승인에 대한 동의
+        </p>
+
+        <button className="confirm-button">동의합니다</button>
+      </Content>
+    </Layout>
+  )
+}
+//---------------------------------------------------------------------
+
+const Content = styled.div`
+  padding: 24px 16px;
+  .input-wrap + .checkbox {
+    margin-top: 24px;
+  }
+
+  .checkbox + .txt {
+    margin-top: 24px;
+  }
+
+  .checkbox {
+    display: flex;
+    align-items: end;
+    img {
+      padding-top: 2px;
+      padding-right: 7px;
+    }
+    label {
+      font-size: 16px;
+      line-height: 22px;
+      span {
+        color: #e84d6f;
+      }
+    }
+  }
+
+  .checkbox + .checkbox {
+    margin-top: 14px;
+  }
+
+  p.txt {
+    font-size: 12px;
+    line-height: 18px;
+    color: #616161;
+    strong {
+      color: #000;
+      font-weight: 600;
+    }
+  }
+
+  h5 {
+    margin-top: 30px;
+    padding-bottom: 6px;
+    font-size: 16px;
+    line-height: 20px;
+    color: ${COLOR_MAIN};
+    border-bottom: 1px solid ${COLOR_MAIN};
+  }
+
+  p.info {
+    font-size: 12px;
+    color: #616161;
+    line-height: 18px;
+    letter-spacing: -0.4px;
+    img {
+      padding: 3px 3px 0 0;
+      vertical-align: top;
+    }
+  }
+
+  .input-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+
+    .title {
+      width: 90px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #000;
+      line-height: 40px;
+      height: 40px;
+    }
+
+    .input {
+      flex: 1;
+      select,
+      input {
+        width: 100%;
+        font-size: 14px;
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid #bdbdbd;
+        border-radius: 10px;
+        background: #fff;
+        text-indent: 12px;
+      }
+
+      select {
+        background: url(${icArrow}) no-repeat right 5px center;
+      }
+
+      input {
+        &::placeholder {
+          color: #bdbdbd;
+        }
+      }
+    }
+
+    .info {
+      width: 100%;
+    }
+  }
+
+  .btn6-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button {
+      width: 32%;
+      height: 40px;
+      font-size: 14px;
+      line-height: 16px;
+      color: #000;
+      border: 1px solid #bdbdbd;
+      border-radius: 10px;
+
+      &.on {
+        border: 1px solid ${COLOR_MAIN};
+        color: ${COLOR_MAIN};
+      }
+    }
+    button:nth-child(-n + 3) {
+      margin-bottom: 6px;
+    }
+  }
+
+  .btn2-wrap {
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid #bdbdbd;
+    button {
+      position: relative;
+      width: 50%;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      color: #000;
+
+      &.on {
+        z-index: 2;
+        color: ${COLOR_MAIN};
+        ::after {
+          position: absolute;
+          left: -1px;
+          top: -1px;
+          border-bottom-left-radius: 10px;
+          border-top-left-radius: 10px;
+          width: 100%;
+          height: 40px;
+          border: 1px solid ${COLOR_MAIN};
+          content: '';
+        }
+      }
+    }
+
+    button + button {
+      border-left: 1px solid #bdbdbd;
+      &.on::after {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+    }
+
+    button.female {
+      padding-right: 15px;
+      background: url(${icFemale}) no-repeat right 32% center;
+    }
+
+    button.male {
+      padding-right: 15px;
+      background: url(${icMale}) no-repeat right 32% center;
+    }
+  }
+
+  .confirm-button {
+    width: 100%;
+    margin-top: 30px;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: ${COLOR_MAIN};
+  }
+`

@@ -82,7 +82,12 @@ export default (props) => {
               <button className="cancel" onClick={goBack}>
                 취소
               </button>
-              <button>동의 받기</button>
+              <button
+                onClick={() => {
+                  history.push('/legalauth')
+                }}>
+                동의 받기
+              </button>
             </div>
           </div>
         ) : authState === 3 ? (
