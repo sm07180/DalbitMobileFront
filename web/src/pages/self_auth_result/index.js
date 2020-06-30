@@ -28,10 +28,8 @@ export default (props) => {
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
-      console.log('1')
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
-        console.log('2')
         const {parentsAgreeYn, adultYn} = res.data
         if (adultYn === 'y') return setAuthState(1)
         if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
@@ -49,10 +47,6 @@ export default (props) => {
   useEffect(() => {
     checkAuth()
   }, [])
-
-  useEffect(() => {
-    console.log('authState', authState)
-  }, [authState])
 
   const goBack = () => {
     props.history.push(`/mypage/${context.profile.memNo}/wallet`)
@@ -110,7 +104,7 @@ export default (props) => {
               </button>
             </div>
           </div>
-        ) : (
+        ) : authState === 1 ? (
           <div className="auth-wrap">
             <h5>
               본인 인증이 완료되었습니다. <br />
@@ -126,6 +120,8 @@ export default (props) => {
               </button>
             </div>
           </div>
+        ) : (
+          <></>
         )}
       </Content>
     </Layout>
