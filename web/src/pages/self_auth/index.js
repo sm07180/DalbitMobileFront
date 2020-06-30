@@ -62,8 +62,8 @@ export default (props) => {
   async function authReq() {
     const res = await Api.self_auth_req({
       params: {
-        pageCode: 4,
-        authType: 0
+        pageCode: '4',
+        authType: '0'
       }
     })
     if (res.result == 'success' && res.code == 0) {
