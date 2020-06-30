@@ -24,6 +24,17 @@ export default (props) => {
   //context
   const context = useContext(Context)
 
+  //state
+  const [agreeTerm, setAgreeTerm] = useState('1825')
+  const [name, setName] = useState('')
+  const [phoneNo, setPhoneNo] = useState('')
+  const [phoneCorp, setPhoneCorp] = useState('')
+  const [birthDay, setBirthDay] = useState('')
+  const [gender, setGender] = useState('')
+  const [nation, setNation] = useState('0')
+  const [term1, setTerm1] = useState(false)
+  const [term2, setTerm2] = useState(false)
+
   //formData
   const [formState, setFormState] = useState({
     tr_cert: '',
@@ -69,7 +80,14 @@ export default (props) => {
     const res = await Api.self_auth_req({
       params: {
         pageCode: '4',
-        authType: '0'
+        authType: '1',
+        agreeTerm: agreeTerm,
+        name: name,
+        phoneNo: phoneNo,
+        phoneCorp: phoneCorp,
+        birthDay: birthDay,
+        gender: gender,
+        nation: nation
       }
     })
     if (res.result == 'success' && res.code == 0) {
@@ -97,6 +115,10 @@ export default (props) => {
     context.action.updateWalletIdx(1)
   }
 
+  useEffect(() => {
+    console.log(agreeTerm, name, phoneNo, phoneCorp, birthDay, gender, nation, term1, term2)
+  }, [agreeTerm, name, phoneNo, phoneCorp, birthDay, gender, nation, term1, term2])
+
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
@@ -111,7 +133,7 @@ export default (props) => {
         <div className="input-wrap">
           <div className="title">동의 기간</div>
           <div className="input">
-            <select>
+            <select onChange={(e) => setAgreeTerm(e.target.value)}>
               <option value="1825">5년</option>
               <option value="1095">3년</option>
               <option value="365">1년</option>
@@ -135,42 +157,90 @@ export default (props) => {
           </p>
           <div className="title">보호자 이름</div>
           <div className="input">
-            <input type="text" />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
         </div>
         <div className="input-wrap">
           <div className="title">성별</div>
           <div className="input">
             <div className="btn2-wrap">
-              <button className="male">남자</button>
-              <button className="female ">여자</button>
+              <button
+                className={`male ${gender === '0' && 'on'}`}
+                onClick={() => {
+                  setGender('0')
+                }}>
+                남자
+              </button>
+              <button
+                className={`female ${gender === '1' && 'on'}`}
+                onClick={() => {
+                  setGender('1')
+                }}>
+                여자
+              </button>
             </div>
           </div>
         </div>
         <div className="input-wrap">
           <div className="title">생년월일</div>
           <div className="input">
-            <input type="number" pattern="\d*" placeholder="8자 숫자만 입력" />
+            <input
+              type="number"
+              pattern="\d*"
+              placeholder="8자 숫자만 입력"
+              value={birthDay}
+              onChange={(e) => setBirthDay(e.target.value)}
+            />
           </div>
         </div>
         <div className="input-wrap">
           <div className="title">통신사</div>
           <div className="input">
             <div className="btn6-wrap">
-              <button>SKT</button>
-              <button>KTF</button>
-              <button>LGT</button>
-              <button>
+              <button
+                className={`${phoneCorp === 'SKT' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('SKT')
+                }}>
+                SKT
+              </button>
+              <button
+                className={`${phoneCorp === 'KTF' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('KTF')
+                }}>
+                KTF
+              </button>
+              <button
+                className={`${phoneCorp === 'LGT' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('LGT')
+                }}>
+                LGT
+              </button>
+              <button
+                className={`${phoneCorp === 'SKM' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('SKM')
+                }}>
                 SKM
                 <br />
                 (알뜰폰)
               </button>
-              <button>
+              <button
+                className={`${phoneCorp === 'KTM' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('KTM')
+                }}>
                 KTM
                 <br />
                 (알뜰폰)
               </button>
-              <button>
+              <button
+                className={`${phoneCorp === 'LGM' && 'on'}`}
+                onClick={() => {
+                  setPhoneCorp('LGM')
+                }}>
                 LGM
                 <br />
                 (알뜰폰)
@@ -181,27 +251,53 @@ export default (props) => {
         <div className="input-wrap">
           <div className="title">휴대폰 번호</div>
           <div className="input">
-            <input type="number" pattern="\d*" placeholder="- 없이 숫자만 입력" />
+            <input
+              type="number"
+              pattern="\d*"
+              placeholder="- 없이 숫자만 입력"
+              value={phoneNo}
+              onChange={(e) => setPhoneNo(e.target.value)}
+            />
           </div>
         </div>
         <div className="input-wrap">
           <div className="title">내외국인</div>
           <div className="input">
             <div className="btn2-wrap">
-              <button>내국인</button>
-              <button>외국인</button>
+              <button
+                className={`${nation === '0' && 'on'}`}
+                onClick={() => {
+                  setNation('0')
+                }}>
+                내국인
+              </button>
+              <button
+                className={`${nation === '1' && 'on'}`}
+                onClick={() => {
+                  setNation('1')
+                }}>
+                외국인
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="checkbox">
-          <img src={icCheckOff} />
+        <div
+          className="checkbox"
+          onClick={() => {
+            setTerm1(!term1)
+          }}>
+          <img src={term1 ? icCheckOn : icCheckOff} />
           <label>
             <span>[필수]</span> 본인은 위 동의서의 내용을 상세히 읽고 이해하여 이에 동의합니다.
           </label>
         </div>
-        <div className="checkbox">
-          <img src={icCheckOff} />
+        <div
+          className="checkbox"
+          onClick={() => {
+            setTerm2(!term2)
+          }}>
+          <img src={term2 ? icCheckOn : icCheckOff} />
           <label>
             <span>[필수]</span> 법정대리인(보호자) 개인 정보 수집 및 이용에 동의합니다.
           </label>
@@ -215,8 +311,15 @@ export default (props) => {
           2) 이용목적 : 법정대리인 환전 승인에 대한 동의
         </p>
 
-        <button className="confirm-button">동의합니다</button>
+        <button className="confirm-button" onClick={authClick}>
+          동의합니다
+        </button>
       </Content>
+      <form name="authForm" method="post" id="authForm" target="KMCISWindow">
+        <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
+        <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
+        <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
+      </form>
     </Layout>
   )
 }
@@ -238,6 +341,9 @@ const Content = styled.div`
     img {
       padding-top: 2px;
       padding-right: 7px;
+      width: 25px;
+      height: 25px;
+      box-sizing: content-box;
     }
     label {
       font-size: 16px;
