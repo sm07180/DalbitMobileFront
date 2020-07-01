@@ -227,7 +227,9 @@ export default (props) => {
               pattern="\d*"
               placeholder="8자 숫자만 입력"
               value={birthDay}
-              onChange={(e) => setBirthDay(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length < 9) setBirthDay(e.target.value)
+              }}
             />
           </div>
         </div>
@@ -294,7 +296,9 @@ export default (props) => {
               pattern="\d*"
               placeholder="- 없이 숫자만 입력"
               value={phoneNo}
-              onChange={(e) => setPhoneNo(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length < 12) setPhoneNo(e.target.value)
+              }}
             />
           </div>
         </div>
@@ -384,7 +388,7 @@ const Content = styled.div`
       box-sizing: content-box;
     }
     label {
-      font-size: 16px;
+      font-size: 13px;
       line-height: 22px;
       span {
         color: #e84d6f;
