@@ -78,7 +78,7 @@ export default (props) => {
   //인증 요청
   async function authReq() {
     const res = await Api.self_auth_req({
-      params: {
+      data: {
         pageCode: '4',
         authType: '1',
         agreeTerm: agreeTerm,
