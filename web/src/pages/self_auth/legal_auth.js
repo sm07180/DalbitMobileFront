@@ -157,10 +157,6 @@ export default (props) => {
     context.action.updateWalletIdx(1)
   }
 
-  useEffect(() => {
-    console.log(agreeTerm, name, phoneNo, phoneCorp, birthDay, gender, nation, term1, term2)
-  }, [agreeTerm, name, phoneNo, phoneCorp, birthDay, gender, nation, term1, term2])
-
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
