@@ -1687,12 +1687,12 @@ export default class API {
    * @create 이은비 2020.03.23
    */
   static self_auth_req = async (obj) => {
-    const {url, method, params} = obj || {}
+    const {url, method, data} = obj || {}
     return await ajax({
       ...obj,
       url: url || `/self/auth/req`,
       method: method || 'POST',
-      params: params
+      data: data
     })
   }
 
