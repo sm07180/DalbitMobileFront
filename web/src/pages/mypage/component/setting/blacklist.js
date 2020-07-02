@@ -21,7 +21,7 @@ import NoResult from 'components/ui/noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 
-export default props => {
+export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
 
@@ -39,6 +39,9 @@ export default props => {
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
 
+  const [totalPageNumber2, setTotalPageNumber2] = useState(null)
+  const [page2, setPage2] = useState(1)
+
   let userTypeSetting = 0
 
   const selectBoxData = [
@@ -50,15 +53,41 @@ export default props => {
 
   //-----------------------------------------------------------------------------
   //async
-  async function getBlackList() {
-    const res = await Api.mypage_black_list({})
+  async function getBlackList(type, typeDetail) {
+    const res = await Api.mypage_black_list({
+      params: {
+        page: type == 'page' ? typeDetail : 1,
+        records: 5
+      }
+    })
+    // if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+    //   if (res.data.list == false) {
+    //     setBlackState(0)
+    //     setBlackList(false)
+    //   } else {
+    //     setBlackState(1)
+    //     setBlackList(res.data.list)
+    //   }
+    // } else {
+    //   context.action.alert({
+    //     msg: res.message
+    //   })
+    // }
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
       if (res.data.list == false) {
         setBlackState(0)
         setBlackList(false)
       } else {
-        setBlackState(1)
-        setBlackList(res.data.list)
+        const {list, paging} = res.data
+        if (paging) {
+          const {totalPage} = paging
+          setTotalPageNumber2(totalPage)
+          setBlackState(1)
+          setBlackList(list)
+        }
+        if (type == 'search') {
+          setPage2(1)
+        }
       }
     } else {
       context.action.alert({
@@ -214,13 +243,20 @@ export default props => {
             )
           })}
         </ul>
+        <div className="paging-wrap2">
+          <Paging setPage={setPaginationBlackList} totalPage={totalPageNumber2} currentPage={page2} />
+        </div>
       </>
     )
   }
 
-  const setPagination = page => {
+  const setPagination = (page) => {
     setPage(page)
     getSearchList('page', page)
+  }
+  const setPaginationBlackList = (page) => {
+    setPage2(page)
+    getBlackList('page', page)
   }
 
   const createUserResult = () => {
@@ -249,7 +285,7 @@ export default props => {
     getBlackList()
   }, [])
 
-  const typeActive = value => {
+  const typeActive = (value) => {
     setChanges({...changes, searchType: value})
   }
 
@@ -270,7 +306,7 @@ export default props => {
           type="search"
           name="search"
           onChange={onChange}
-          onKeyUp={e => {
+          onKeyUp={(e) => {
             if (e.keyCode === 13) getSearchList('search')
           }}
         />
@@ -437,5 +473,10 @@ const Content = styled.div`
   }
   .paging-wrap {
     margin-top: -20px;
+  }
+  .paging-wrap2 {
+    > div {
+      margin: 30px 0 30px 0 !important;
+    }
   }
 `
