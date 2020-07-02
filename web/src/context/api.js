@@ -2086,6 +2086,22 @@ export default class API {
       data: data
     })
   }
+
+  static exchangeReApply = async (obj) => {
+    const {data} = obj
+    return await ajax({
+      url: '/member/exchange/reapply',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static exchangeSelect = async () => {
+    return await ajax({
+      url: '/member/exchange/select',
+      method: 'POST'
+    })
+  }
   /**
    * @brief 배너가져오기
    * @method "GET"

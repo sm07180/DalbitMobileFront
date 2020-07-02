@@ -1,4 +1,4 @@
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 .header {
@@ -33,6 +33,26 @@ input[type="file"] {
 .content {
   padding: 0 16px;
   letter-spacing: -0.35px;
+
+  .radioLabelWrap {
+    display: flex;
+    margin: 14px 0;
+    &__label {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      & > span:first-child {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        background: url('./static/radio_off.svg') no-repeat center center;
+        &.on {
+          background: url('./static/radio_on.svg') no-repeat center center;
+        }
+      }
+    }
+  }
 }
 
 .charge {
@@ -260,7 +280,7 @@ input[type="file"] {
     color: #8556f6;
     border-radius: 4px;
     display: block;
-    font-weight:600;
+    font-weight: 600;
   }
 }
 
@@ -332,6 +352,26 @@ input[type="file"] {
     padding: 8px 0px;
     align-items: center;
     border-bottom: 1px solid #e0e0e0;
+
+    &__consent {
+      display: block;
+      flex-direction: column;
+
+      &--file {
+        display: flex;
+        margin-bottom: 8px;
+      }
+
+      &--caption {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+
+        & > span:last-child {
+          color: #ec455f;
+        }
+      }
+    }
   }
 
   &__input {
@@ -370,7 +410,7 @@ input[type="file"] {
     &--file {
       display: flex;
       flex: 1;
-      overflow-x: hidden; 
+      overflow-x: hidden;
     }
 
     &--line {
@@ -379,7 +419,7 @@ input[type="file"] {
       text-align: center;
     }
     &--label {
-      min-width: 138px;
+      width: 100%;
       padding: 12px;
       font-size: 14px;
       border: 1px solid #bdbdbd;
@@ -391,13 +431,11 @@ input[type="file"] {
   }
 
   &__title {
-    font-size: 14px;
-  }
-
-  &__title {
+    display: flex;
+    align-items: center;
     font-size: 14px;
     font-weight: 600;
-    width: 86px;
+    width: 90px;
   }
 
   &__address {
@@ -429,7 +467,7 @@ input[type="file"] {
   }
 
   &__checkBox {
-    width:24px;
+    width: 24px;
     display: inline-block;
     margin-right: 8px;
   }
@@ -449,8 +487,8 @@ input[type="file"] {
   height: 40px;
   color: #fff;
   background: #632beb;
-  margin-bottom:50px;
-  font-weight:600;
+  margin-bottom: 50px;
+  font-weight: 600;
 }
 
 .exchange {
@@ -509,7 +547,7 @@ input[type="file"] {
   &__close {
     position: fixed;
     width: 20px;
-    color:white;
+    color: white;
     background-color: black;
     z-index: 2;
     font-size: 16px;
