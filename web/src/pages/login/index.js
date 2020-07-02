@@ -4,6 +4,8 @@ import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
+
 // component
 import Layout from 'pages/common/layout'
 import closeBtn from 'pages/menu/static/ic_close.svg'
