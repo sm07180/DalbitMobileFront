@@ -57,8 +57,11 @@ export default (props) => {
       return
     }
     let sessionRoomNo = sessionStorage.getItem('room_no')
-    if (sessionRoomNo === undefined) {
-      sessionRoomNo = ''
+    if (sessionRoomNo === undefined || sessionRoomNo === null) {
+      sessionRoomNo = Utility.getCookie('listen_room_no')
+      if (sessionRoomNo === undefined || sessionRoomNo === null) {
+        sessionRoomNo = ''
+      }
     }
 
     const fetchPhoneLogin = async (phone, pw) => {
