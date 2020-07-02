@@ -87,7 +87,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
    * @title Room.roomNo , roomNo 비교
    */
-
   if (sessionRoomNo === roomNo) {
       async function commonJoin() {
         const res = await Api.broad_join({data: {roomNo}})
@@ -154,24 +153,26 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     //
     if (res.result === 'fail') {
       if(res.code === '-4' || res.code === '-10'){
-          Room.context.action.confirm({
-            msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
-            callback: () => {
-              const callResetListen = async (mem_no) => {
-                const fetchResetListen = await Api.postResetListen({})
-                if (fetchResetListen.result === 'success') {
-                  setTimeout(() => {
-                    RoomJoin(roomNo + '')
-                  }, 500)
-                }else{
-                  globalCtx.action.alert({
-                    msg: `${loginInfo.message}`
-                  })
+        try{
+            Room.context.action.confirm({
+                msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
+                callback: () => {
+                    const callResetListen = async (mem_no) => {
+                        const fetchResetListen = await Api.postResetListen({})
+                        if (fetchResetListen.result === 'success') {
+                            setTimeout(() => {
+                                RoomJoin(roomNo + '')
+                            }, 700)
+                        }else{
+                            globalCtx.action.alert({
+                                msg: `${loginInfo.message}`
+                            })
+                        }
+                    }
+                    callResetListen('')
                 }
-              }
-              callResetListen('')
-            }
-          })
+            })
+        }catch(er){alert(er)}
       }else{
         Room.context.action.alert({
           msg: res.message,
