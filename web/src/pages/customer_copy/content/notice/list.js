@@ -136,6 +136,7 @@ export default function List() {
                           {noticeType === 2 ? '이벤트 ' : ''}
                           {noticeType === 3 ? '정기정검 ' : ''}
                           {noticeType === 4 ? '업데이트 ' : ''}
+                          {noticeType === 5 ? '언론보도 ' : ''}
                         </span>
                       )}
                       <span className="tableWrap__title">{title}</span>
