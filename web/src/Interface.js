@@ -208,6 +208,7 @@ export default () => {
         //종료시
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
         break
       case 'native-google-login': //-------------------------Google 로그인

@@ -20,6 +20,7 @@ import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
+import Utility from 'components/lib/utility'
 
 //
 const Room = () => {
@@ -97,6 +98,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
                 msg: '종료된 방송입니다.',
                 callback: () => {
                     sessionStorage.removeItem('room_no')
+                    Utility.setCookie('listen_room_no', null)
                     context.action.updatePlayer(false)
                     setTimeout(() => {
                         window.location.href = '/'
@@ -138,6 +140,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
         sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
         Room.context.action.updatePlayer(false)
         Hybrid('ExitRoom', '')
         //--쿠기
@@ -194,6 +197,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
+      Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
       Hybrid('adbrixEvent', { eventName: 'roomJoin', attr : {}});
       //Facebook,Firebase 이벤트 호출
