@@ -56,4 +56,7 @@ const Article = styled.article`
   &.player_show > div {
     padding-bottom: 60px;
   }
+  &.player_show > section {
+    padding-bottom: 60px;
+  }
 `

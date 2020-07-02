@@ -1,33 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {useState, useEffect, useReducer} from 'react'
+import {useHistory} from 'react-router-dom'
 
-import Api from 'context/api';
+import Api from 'context/api'
 
-import NoResult from 'components/ui/noResult';
+import NoResult from 'components/ui/noResult'
+
+import SelectBoxComponent from 'components/ui/selectBoxComponent'
+import SignalingHandler from 'components/lib/copysh'
+
+const selectReducer = (state, action) => {
+  console.log(state)
+  console.log(action)
+  switch (action.type) {
+    case 'open':
+      return {
+        ...state,
+        isOpen: !state.isOpen
+      }
+    case 'select':
+      return {
+        ...state,
+        selectIdx: action.idx
+      }
+  }
+}
+
+const selectReducer2 = (state, action) => {
+  switch (action.type) {
+    case 'open':
+      return {
+        ...state,
+        isOpen: !state.isOpen
+      }
+    case 'select':
+      return {
+        ...state,
+        selectIdx: action.idx
+      }
+    case 'updateList':
+      return {
+        ...state,
+        boxList: state.boxList.slice(action.idx)
+      }
+  }
+}
 
 export default function QnaList() {
-  const history = useHistory();
-  
-  const [qnalist, setQnaList] = useState([]);
-  const [noResultShow, setNoResultShow] = useState(false);
+  const history = useHistory()
+
+  const [qnalist, setQnaList] = useState([])
+  const [noResultShow, setNoResultShow] = useState(false)
   const timestamp = String(new Date().getTime()).substr(0, 10)
-  const IntTime = parseInt(timestamp);
-  
+  const IntTime = parseInt(timestamp)
+
   const fetchData = async () => {
     const res = await Api.center_qna_list({
       params: {
         page: 1,
         records: 1000
       }
-    });
+    })
 
-    const { result, data } = res;
-    console.log(data);
-    if(result === 'success') {
-      if(data.list === false) {
+    const {result, data} = res
+    console.log(data)
+    if (result === 'success') {
+      if (data.list === false || (data.list && data.list.length === 0)) {
         setNoResultShow(true)
       } else {
-        setQnaList(data.list); 
+        setQnaList(data.list)
       }
     }
   }
@@ -41,7 +81,7 @@ export default function QnaList() {
   }
 
   const routeHistory = (item) => {
-    const { qnaIdx } = item;
+    const {qnaIdx} = item
     history.push({
       pathname: `/customer/qnaList/${qnaIdx}`,
       state: {
@@ -50,41 +90,66 @@ export default function QnaList() {
     })
   }
 
+  const initialValue = {
+    isOpen: false,
+    boxList: [
+      {value: 0, text: 'a'},
+      {value: 1, text: 'b'},
+      {value: 2, text: 'c'}
+    ],
+    selectIdx: 0
+  }
+
+  const [state, dispatch] = useReducer(selectReducer, initialValue)
+  const [state2, dispatch2] = useReducer(selectReducer2, initialValue)
+  const onHandling = () => {}
+
   useEffect(() => {
-    fetchData();
+    fetchData()
   }, [])
-  
-  return(
+  return (
     <div className="personalListWrap">
+      <div className="TEST">
+        <SelectBoxComponent
+          state={state}
+          dispatch={dispatch}
+          linked={{use: true, state: state2, dispatch: dispatch2, type: 'updateList'}}
+        />
+        <div>~~~</div>
+        <SelectBoxComponent state={state2} dispatch={dispatch2} />
+      </div>
       {noResultShow === true && <NoResult />}
-        {
-          qnalist.length > 0 &&
-          qnalist.map( item => {
-            const { qnaIdx, qnaType, title, state, writeDt } = item
-            if (qnalist === null) return
-            return (
-              <div key={qnaIdx} className="personalListWrap__eachWrap" onClick={e => {routeHistory(item)}}>
-                <div className="personalListWrap__label">
-                  {/* {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>} */}
-                  {state === 0 && <span className="state">답변대기</span>}
-                  {state === 1 && <span className="stateComplete">답변완료</span>}
-                </div>
-                <div className="personalListWrap__title">
-                  {qnaType === 1 && <span className="type">[회원정보]</span>}
-                  {qnaType === 2 && <span className="type">[방송]</span>}
-                  {qnaType === 3 && <span className="type">[청취]</span>}
-                  {qnaType === 4 && <span className="type">[결제]</span>}
-                  {qnaType === 5 && <span className="type">[건의]</span>}
-                  {qnaType === 6 && <span className="type">[장애/버그]</span>}
-                  {qnaType === 7 && <span className="type">[선물/아이템]</span>}
-                  {qnaType === 99 && <span className="type">[기타]</span>}
-                  <p className="personalListWrap__titleName">{title}</p>
-                </div>
-                <div className="personalListWrap__time">{timeFormat(writeDt)}</div>
+      {qnalist.length > 0 &&
+        qnalist.map((item) => {
+          const {qnaIdx, qnaType, title, state, writeDt} = item
+          if (qnalist === null) return
+          return (
+            <div
+              key={qnaIdx}
+              className="personalListWrap__eachWrap"
+              onClick={(e) => {
+                routeHistory(item)
+              }}>
+              <div className="personalListWrap__label">
+                {/* {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>} */}
+                {state === 0 && <span className="state">답변대기</span>}
+                {state === 1 && <span className="stateComplete">답변완료</span>}
               </div>
-            )
-          })
-        }
+              <div className="personalListWrap__title">
+                {qnaType === 1 && <span className="type">[회원정보]</span>}
+                {qnaType === 2 && <span className="type">[방송]</span>}
+                {qnaType === 3 && <span className="type">[청취]</span>}
+                {qnaType === 4 && <span className="type">[결제]</span>}
+                {qnaType === 5 && <span className="type">[건의]</span>}
+                {qnaType === 6 && <span className="type">[장애/버그]</span>}
+                {qnaType === 7 && <span className="type">[선물/아이템]</span>}
+                {qnaType === 99 && <span className="type">[기타]</span>}
+                <p className="personalListWrap__titleName">{title}</p>
+              </div>
+              <div className="personalListWrap__time">{timeFormat(writeDt)}</div>
+            </div>
+          )
+        })}
     </div>
   )
 }
