@@ -172,7 +172,7 @@ function Faq(props) {
                           {faqType === 1 ? '일반' : ''}
                           {faqType === 2 ? '방송' : ''}
                           {faqType === 3 ? '결제' : ''}
-                          {faqType === 4 ? '기타' : ''}
+                          {faqType === 98 ? '기타' : ''}
                           {faqType === 5 ? '계정' : ''}
                         </em>
                         {question}
@@ -201,7 +201,7 @@ function Faq(props) {
                           {faqType === 1 ? '일반' : ''}
                           {faqType === 2 ? '방송' : ''}
                           {faqType === 3 ? '결제' : ''}
-                          {faqType === 4 ? '기타' : ''}
+                          {faqType === 98 ? '기타' : ''}
                           {faqType === 5 ? '계정' : ''}
                         </em>
                         {question}

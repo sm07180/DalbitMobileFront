@@ -95,6 +95,12 @@ export default props => {
     ...snsInfo
   })
 
+  //Facebook,Firebase 이벤트 호출
+  try{
+      fbq('track', 'Lead')
+      firebase.analytics().logEvent("Lead")
+  } catch(e){}
+
   const onLoginHandleChange = e => {
     //대소문자 구분없음, 소문자만 입력
     if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
@@ -507,10 +513,19 @@ export default props => {
     if (res && res.code) {
       if (res.code == 0) {
         //alert(res.message)
+        //Facebook,Firebase 이벤트 호출
+        try{
+            fbq('track', 'CompleteRegistration')
+            firebase.analytics().logEvent("CompleteRegistration")
+        } catch(e){}
+
         context.action.alert({
           callback: () => {
             //애드브릭스 이벤트 전달
             Hybrid('adbrixEvent', res.data.adbrixData);
+            if(__NODE_ENV === 'dev'){
+              alert(JSON.stringify(res.data.adbrixData));
+            }
             fetchPhoneLogin()
           },
           msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'

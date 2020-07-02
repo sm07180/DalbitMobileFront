@@ -84,6 +84,25 @@ export default (props) => {
       changeCoinTypeClick('byeol')
     }
   }, [context.walletIdx])
+
+  const checkSelfAuth = () => {
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        const {parentsAgreeYn, adultYn} = res.data
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
+        history.push('/money_exchange')
+      } else if (res.result === 'fail' && res.code === '0') {
+        history.push('/selfauth')
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+    fetchSelfAuth()
+  }
+
   return (
     <div>
       {/* 공통타이틀 */}
@@ -151,7 +170,11 @@ export default (props) => {
                 <CoinChargeBtn
                   className="exchange"
                   onClick={() => {
-                    history.push('/money_exchange')
+                    if (__NODE_ENV === 'real') {
+                      history.push('/money_exchange')
+                    } else {
+                      checkSelfAuth()
+                    }
                   }}>
                   환전
                 </CoinChargeBtn>

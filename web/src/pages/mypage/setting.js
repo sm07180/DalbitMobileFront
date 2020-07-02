@@ -324,6 +324,10 @@ export default (props) => {
                   <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} />
                 </label>
               </ProfileImg>
+              <ProfileText>
+                <p>* 프로필 이미지는 512x512 이상의 사이즈를 권장합니다.</p>
+              </ProfileText>
+
               <div className="nickname">
                 <label htmlFor="nickName" className="input-label">
                   닉네임
@@ -418,6 +422,26 @@ export default (props) => {
     </Switch>
   )
 }
+
+const ProfileText = styled.div`
+  position: relative;
+  padding-bottom: 40px;
+  margin-bottom: 20px;
+  p {
+    text-align: center;
+    font-size: 12px;
+    color: #616161;
+  }
+  &:after {
+    position: absolute;
+    left: -18px;
+    bottom: 0;
+    width: 200%;
+    height: 20px;
+    background: #e4e4e4;
+    content: '';
+  }
+`
 
 const SaveBtn = styled.button`
   margin-top: 20px;
@@ -649,6 +673,7 @@ const ProfileImg = styled.div`
 const SettingWrap = styled.div`
   width: 394px;
   margin: 0 auto;
+  overflow: hidden;
 
   .close-btn {
     position: absolute;

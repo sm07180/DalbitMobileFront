@@ -1,31 +1,21 @@
-/**
- * @file /user/content/selfAuth.js
- * @brief 본인인증 페이지
- */
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
-//component
-import Layout from 'pages/common/layout'
-
 //context
-import _ from 'lodash'
-import { Context } from 'context'
-import { COLOR_MAIN } from 'context/color'
-import { IMG_SERVER, WIDTH_TABLET_S } from 'context/config'
+import {Context} from 'context'
+import {COLOR_MAIN} from 'context/color'
 
-export default props => {
+//layout
+import Layout from 'pages/common/layout'
+import Header from 'components/ui/new_header'
+
+//
+export default (props) => {
   //---------------------------------------------------------------------
-  const { state } = props.location
-  if (state !== undefined) {
-    // alert(JSON.stringify(state, null, 1))
-  }
-
-  //State
-  const [authState, setAuthState] = useState(false)
   //context
   const context = useContext(Context)
+
   //formData
   const [formState, setFormState] = useState({
     tr_cert: '',
@@ -33,55 +23,7 @@ export default props => {
     tr_add: ''
   })
 
-  //인증타입 설정
-  let authType = ''
-  if (_.hasIn(props.location.state, 'type')) {
-    authType = props.location.state.type
-  } else {
-    authType = 'default'
-  }
-
-  // const {isState} = props.location.state
-  const isState = ''
-
-  //인증 타입에 따른 본인인증 페이지 텍스트
-  const authText = {
-    default: ['', '최초 한번'],
-    charge: ['유료결제를 위해', '최초 결제 시'],
-    roomCharge: ['유료결제를 위해', '최초 결제 시'],
-    cast: ['방송 개설을 위해', '최초 방송방 개설 시']
-  }
-
-  //인증 완료 후 갈 화면 url
-  let url = ''
-  switch (authType) {
-    case 'charge':
-      url = '/store'
-      break
-    case 'cast':
-      url = '/broadcast-setting'
-      break
-    default:
-      url = '/'
-      break
-  }
-
-  //---------------------------------------------------------------------
-  //fetchData
-
-  //본인인증 여부 체크
-  async function authCheck() {
-    const res = await Api.self_auth_check({})
-    if (res.result == 'success' && res.code == '1') {
-      setAuthState(true)
-    } else {
-      context.action.alert({
-        msg: res.message
-      })
-    }
-  }
-
-  //본인인증모듈 호출
+  //본인인증 모듈 호출
   function authRequest(res) {
     var KMCIS_window
     var UserAgent = navigator.userAgent
@@ -116,11 +58,10 @@ export default props => {
 
   //인증 요청
   async function authReq() {
-    const thisPageCode =
-      isState === 'charge' ? '1' : isState === 'roomCharge' ? '2' : '3'
     const res = await Api.self_auth_req({
       params: {
-        pageCode: thisPageCode
+        pageCode: '4',
+        authType: '0'
       }
     })
     if (res.result == 'success' && res.code == 0) {
@@ -143,151 +84,98 @@ export default props => {
     authReq()
   }
 
-  //서버로부터 결과 받은 후 처리
-  function updateDispatch(event) {
-    if (event.detail.result == 'success' && event.detail.code == '0') {
-      authCheck()
-    } else {
-      //alert(JSON.stringify(event.detail, null, 1))
-      context.action.alert({
-        msg: event.detail.message
-      })
-    }
+  const goBack = () => {
+    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    context.action.updateWalletIdx(1)
   }
 
   //---------------------------------------------------------------------
-  //useEffect
-  useEffect(() => {
-    document.addEventListener('self-auth', updateDispatch)
-    return () => {
-      document.removeEventListener('self-auth', updateDispatch)
-    }
-  }, [])
-
-  //---------------------------------------------------------------------
   return (
-    <Layout status={isState === 'roomCharge' && 'no_gnb'}>
+    <Layout {...props} status="no_gnb">
+      <Header title="본인인증" goBack={goBack} />
       <Content>
-        {authState ? (
-          <>
-            <h4>본인 인증이 완료되었습니다.</h4>
+        <div className="auth-wrap">
+          <h4>
+            환전 승인을 받기 위해서는
             <br />
+            <span>본인인증 절차</span>가 필요합니다.
+          </h4>
+          <p>
+            ※ 환전 신청은 17세 이상의 회원만 가능
             <br />
-            <br />
-            <button
-              onClick={() => {
-                props.history.push(url)
-              }}
-            >
-              완료
-            </button>
-          </>
-        ) : (
-          <>
-            <h4>{authText[authType][0]} 본인인증 절차가 필요합니다</h4>
-            <p>
-              본인인증은 {authText[authType][1]} 필요합니다.
-              <br />
-              인증 이후에는 필요하지 않습니다.
-            </p>
-
-            <button onClick={authClick}>휴대폰 본인인증</button>
-          </>
-        )}
-
+            ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
+            <br />※ 17세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
+          </p>
+          <div className="btn-wrap">
+            <button onClick={authClick}>본인 인증하기</button>
+          </div>
+        </div>
         <form name="authForm" method="post" id="authForm" target="KMCISWindow">
-          <input
-            type="hidden"
-            name="tr_cert"
-            id="tr_cert"
-            value={formState.tr_cert}
-            readOnly
-          />
-          <input
-            type="hidden"
-            name="tr_url"
-            id="tr_url"
-            value={formState.tr_url}
-            readOnly
-          />
-          <input
-            type="hidden"
-            name="tr_add"
-            id="tr_add"
-            value={formState.tr_add}
-            readOnly
-          />
+          <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
+          <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
+          <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />
         </form>
       </Content>
     </Layout>
   )
 }
-
 //---------------------------------------------------------------------
-//styled
+
 const Content = styled.div`
-  margin: 100px auto 100px auto;
-  width: 95%;
-
-  text-align: center;
-
-  h4 {
-    padding-top: 40px;
-    color: ${COLOR_MAIN};
-    font-size: 28px;
-    font-weight: 600;
-    line-height: 34px;
-  }
-  p {
-    padding-top: 60px;
-    padding-bottom: 340px;
-    background: url(${IMG_SERVER}/images/api/img_noresult.png) no-repeat center
-      bottom 50px;
-    color: #424242;
-    font-size: 16px;
-    line-height: 24px;
-    transform: skew(-0.03deg);
-  }
-
-  form {
-    /* display: none; */
-    margin-top: 40px;
-    input {
-      display: block;
-      margin: 10px auto;
-      width: 328px !important;
-    }
-  }
-
-  button {
-    width: 328px;
-    border-radius: 5px;
-    background: ${COLOR_MAIN};
-    color: #fff;
-    line-height: 48px;
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin: 30px auto 70px auto;
+  padding: 30px 16px;
+  .auth-wrap {
     h4 {
-      width: 250px;
-      margin: 0 auto;
-      padding-top: 30px;
-      font-size: 20px;
-      line-height: 28px;
-      word-break: keep-all;
+      text-align: center;
+      color: #000;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      strong {
+        font-weight: 600;
+      }
+      span {
+        font-weight: 600;
+        color: ${COLOR_MAIN};
+      }
+    }
+    h5 {
+      text-align: center;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      span {
+        color: ${COLOR_MAIN};
+      }
+    }
+    h4 + h5 {
+      padding-top: 10px;
     }
     p {
-      padding-bottom: 169px;
-      padding-top: 20px;
-      background-size: 200px;
-      background-position-y: bottom;
-      font-size: 14px;
+      padding-top: 35px;
+      color: #757575;
+      font-size: 12px;
+      line-height: 18px;
     }
-    button {
-      max-width: 328px;
-      width: 100%;
-      margin-top: 15px;
+    .btn-wrap {
+      display: flex;
+      padding-top: 30px;
+      button {
+        flex: 1;
+        height: 44px;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 600;
+        background: ${COLOR_MAIN};
+        border: 1px solid ${COLOR_MAIN};
+        line-height: 44px;
+        &.cancel {
+          color: ${COLOR_MAIN};
+          background: #fff;
+        }
+      }
+      button + button {
+        margin-left: 8px;
+      }
     }
   }
 `

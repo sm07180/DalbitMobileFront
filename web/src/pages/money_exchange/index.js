@@ -61,6 +61,18 @@ export default (props) => {
   const [bankBookPath, setBankBookPath] = useState('')
   const [bankBookUploading, setBankBookUploading] = useState(false)
   const [bankBookName, setBankBookName] = useState('')
+
+  // 부모님 동의서
+  const [consent, setConsent] = useState(false)
+  const [consentPath, setConsentPath] = useState('')
+  const [consentUploading, setConsentUploading] = useState(false)
+  const [consentName, setConsentName] = useState('')
+
+  const [exchangeIdx, setExchangeIdx] = useState(false)
+  const [radioCheck, setRadioCheck] = useState(0)
+
+  const [noUsage, setNoUsage] = useState(false)
+
   /////////////////////////////////////////////////
   const applyExchange = async () => {
     const paramData = {
@@ -74,7 +86,7 @@ export default (props) => {
       address2: address2,
       addFile1: idPhotoPath,
       addFile2: bankBookPath,
-
+      addFile3: consentPath,
       termsAgree: 1
     }
 
@@ -97,119 +109,179 @@ export default (props) => {
     }
   }
 
+  const reApplyExchange = async () => {
+    const paramData = {
+      byeol: exchangeStar,
+      exchangeIdx: exchangeIdx
+    }
+
+    const res = await Api.exchangeReApply({
+      data: {...paramData}
+    })
+
+    const {result, data} = res
+
+    if (result === 'success') {
+      props.history.push({
+        pathname: '/money_exchange_result',
+        state: {...data}
+      })
+    } else {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }
+
   const checkExchange = () => {
-    if (exchangeStar < 570 || !exchangeStar) {
-      context.action.alert({
-        msg: '환전 신청별은\n최소 570개 이상이어야 합니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (exchangeStar > byeolCnt) {
-      context.action.alert({
-        msg: '환전 신청별은\n보유 별보다 작거나 같아야 합니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (name === '') {
-      context.action.alert({
-        msg: '예금주 성명을\n정확하게 입력해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (selectBank === '0') {
-      context.action.alert({
-        msg: '입금 받으실 은행을\n선택해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (account === 0 || account.toString().length < 10) {
-      context.action.alert({
-        msg: '입금 받으실 은행의\n계죄번호를 확인해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (fSocialNo === '' || fSocialNo.length < 6 || bSocialNo === '' || bSocialNo.length < 7) {
-      context.action.alert({
-        msg: '주민등록번호를 확인해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (phone === '') {
-      context.action.alert({
-        msg: '연락 받으실 전화번호를\n입력해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (phone.toString().length < 9) {
-      context.action.alert({
-        msg: '전화번호를 확인해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (address1 === '') {
-      context.action.alert({
-        msg: '주소를 정확하게\n입력해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
+    if (radioCheck === 1) {
+      if (exchangeStar < 570 || !exchangeStar) {
+        context.action.alert({
+          msg: '환전 신청별은\n최소 570개 이상이어야 합니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (exchangeStar > byeolCnt) {
+        context.action.alert({
+          msg: '환전 신청별은\n보유 별보다 작거나 같아야 합니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
 
-    if (idPhotoName === '') {
-      context.action.alert({
-        msg: '신분증 사본을 등록해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
-    if (bankBookName === '') {
-      context.action.alert({
-        msg: '통장 사본을 등록해주세요.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
+      reApplyExchange()
+    } else {
+      if (noUsage) return
+      if (exchangeStar < 570 || !exchangeStar) {
+        context.action.alert({
+          msg: '환전 신청별은\n최소 570개 이상이어야 합니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (exchangeStar > byeolCnt) {
+        context.action.alert({
+          msg: '환전 신청별은\n보유 별보다 작거나 같아야 합니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (name === '') {
+        context.action.alert({
+          msg: '예금주 성명을\n정확하게 입력해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (selectBank === '0') {
+        context.action.alert({
+          msg: '입금 받으실 은행을\n선택해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (account === 0 || account.toString().length < 10) {
+        context.action.alert({
+          msg: '입금 받으실 은행의\n계죄번호를 확인해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (fSocialNo === '' || fSocialNo.length < 6 || bSocialNo === '' || bSocialNo.length < 7) {
+        context.action.alert({
+          msg: '주민등록번호를 확인해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (phone === '') {
+        context.action.alert({
+          msg: '연락 받으실 전화번호를\n입력해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (phone.toString().length < 9) {
+        context.action.alert({
+          msg: '전화번호를 확인해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (address1 === '') {
+        context.action.alert({
+          msg: '주소를 정확하게\n입력해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
 
-    if (!check) {
-      context.action.alert({
-        msg: '개인정보 수집 및 이용에\n동의하셔야 환전 신청이 가능합니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-      return
-    }
+      if (idPhotoName === '') {
+        context.action.alert({
+          msg: '신분증 사본을 등록해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (bankBookName === '') {
+        context.action.alert({
+          msg: '통장 사본을 등록해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+      if (consent && consentName === '') {
+        context.action.alert({
+          msg: '가족관계 증명서 또는\n주민등록 등본 사본을 등록해주세요.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
 
-    applyExchange()
+      if (!check) {
+        context.action.alert({
+          msg: '개인정보 수집 및 이용에\n동의하셔야 환전 신청이 가능합니다.',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+        return
+      }
+
+      applyExchange()
+    }
   }
 
   const fnExchangeCalc = async () => {
@@ -398,6 +470,8 @@ export default (props) => {
           setIdPhotoUploading(true)
         } else if (targetName === 'bankbook') {
           setBankBookUploading(true)
+        } else if (targetName === 'consent') {
+          setConsentUploading(true)
         }
 
         img.onload = async () => {
@@ -427,6 +501,10 @@ export default (props) => {
               setBankBookPath(res.data.path)
               setBankBookUploading(false)
               setBankBookName(fileName)
+            } else if (targetName === 'consent') {
+              setConsentPath(res.data.path)
+              setConsentUploading(false)
+              setConsentName(fileName)
             }
           } else {
             context.action.alert({
@@ -516,7 +594,7 @@ export default (props) => {
 
     var birthdaymd = birth.substr(4, 4)
 
-    var age = monthDay < birthdaymd ? year - birthdayy - 1 : year - birthdayy
+    var age = year - birthdayy
 
     return age
   }
@@ -549,15 +627,18 @@ export default (props) => {
         }
 
         const age = calcAge(currentDt)
-
-        if (age <= 19) {
+        console.log(age)
+        if (age <= 15) {
+          setNoUsage(true)
           context.action.alert({
-            msg: '신분증 사본정보에\n가족관계증명서를 첨부해주세요.',
+            msg: '17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
             title: '',
             callback: () => {
               context.action.alert({visible: false})
             }
           })
+        } else {
+          setNoUsage(false)
         }
         document.getElementById('bsocialNo').focus()
       }
@@ -598,6 +679,24 @@ export default (props) => {
     }
   }, [profile])
 
+  useEffect(() => {
+    async function fetchData() {
+      const authCheck = await Api.self_auth_check()
+      console.log(authCheck)
+      if (authCheck.result === 'success') {
+        if (authCheck.data.adultYn === 'y') {
+        } else {
+          setConsent(true)
+        }
+      }
+      const res = await Api.exchangeSelect()
+      console.log(res)
+      if (res.result === 'success') {
+        setExchangeIdx(res.data.exchangeIdx)
+      }
+    }
+    fetchData()
+  }, [])
   return (
     <React.Fragment>
       {status === 0 ? (
@@ -676,150 +775,196 @@ export default (props) => {
               </div>
             </div>
 
-            <div className="comon__title">입금 정보</div>
-
-            <div className="PayView">
-              <div className="PayView__list">
-                <div className="PayView__title">예금주</div>
-                <div className="PayView__input">
-                  <input type="text" className="PayView__input--text" onChange={(e) => setName(e.target.value)} />
-                </div>
+            <div className="charge__title">입금 정보</div>
+            {exchangeIdx && (
+              <div className="radioLabelWrap">
+                <label className="radioLabelWrap__label" htmlFor="r1" onClick={() => setRadioCheck(0)}>
+                  <span className={`${radioCheck === 0 ? 'on' : ''}`}></span>
+                  <span>새로운정보 입력</span>
+                </label>
+                <input type="radio" id="r1" name="rr" />
+                <label className="radioLabelWrap__label" htmlFor="r2" onClick={() => setRadioCheck(1)}>
+                  <span className={`${radioCheck === 1 ? 'on' : ''}`}></span>
+                  <span>기존정보 신청</span>
+                </label>
+                <input type="radio" id="r2" name="rr" />
               </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">은행</div>
-                <div className="PayView__input">
-                  <SelectBoxWrap boxList={bankList} onChangeEvent={handleEvent} />
-                </div>
-              </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">계좌번호</div>
-                <div className="PayView__input">
-                  <input
-                    type="tel"
-                    pattern="[0-9]*"
-                    value={account}
-                    className="PayView__input--text"
-                    onChange={(e) => handleAccount(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">주민등록번호</div>
-                <div className="PayView__input--nomber">
-                  <input
-                    type="tel"
-                    pattern="[0-9]*"
-                    value={fSocialNo}
-                    className="PayView__input--text"
-                    onChange={(e) => handleSocial(e.target.value)}
-                  />
-                  <span className="PayView__input--line">-</span>
-                  <input
-                    type="password"
-                    maxLength="7"
-                    pattern="[0-9]*"
-                    value={bSocialNo}
-                    id="bsocialNo"
-                    className="PayView__input--text"
-                    onChange={(e) => handlePassword(e)}
-                  />
-                </div>
-              </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">전화번호</div>
-                <div className="PayView__input">
-                  <input
-                    type="number"
-                    pattern="[0-9]*"
-                    value={phone}
-                    className="PayView__input--text"
-                    onChange={(e) => handlePhone(e)}
-                  />
-                </div>
-              </div>
-              <div className="PayView__list">
-                <div className="PayView__title">주소</div>
-                <div className="PayView__input">
-                  <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
-                    <input type="text" className="PayView__input--text adressBg" disabled={true} value={zonecode} />
-                    <button className="PayView__input--button" onClick={(e) => serachAddr(e)}>
-                      주소검색
-                    </button>
+            )}
+            {radioCheck !== 1 && (
+              <>
+                <div className="PayView">
+                  <div className="PayView__list">
+                    <div className="PayView__title">예금주</div>
+                    <div className="PayView__input">
+                      <input type="text" className="PayView__input--text" onChange={(e) => setName(e.target.value)} />
+                    </div>
                   </div>
-                  <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
-                    <input type="text" value={address1} className="PayView__input--text adressBg" disabled={true} />
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">은행</div>
+                    <div className="PayView__input">
+                      <SelectBoxWrap boxList={bankList} onChangeEvent={handleEvent} />
+                    </div>
                   </div>
-                  <div className="PayView__address--list">
-                    <input
-                      type="text"
-                      className="PayView__input--text"
-                      onChange={(e) => {
-                        setAddress2(e.target.value)
-                      }}
-                    />
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">계좌번호</div>
+                    <div className="PayView__input">
+                      <input
+                        type="tel"
+                        pattern="[0-9]*"
+                        value={account}
+                        className="PayView__input--text"
+                        onChange={(e) => handleAccount(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">주민등록번호</div>
+                    <div className="PayView__input--nomber">
+                      <input
+                        type="tel"
+                        pattern="[0-9]*"
+                        value={fSocialNo}
+                        className="PayView__input--text"
+                        onChange={(e) => handleSocial(e.target.value)}
+                      />
+                      <span className="PayView__input--line">-</span>
+                      <input
+                        type="password"
+                        maxLength="7"
+                        pattern="[0-9]*"
+                        value={bSocialNo}
+                        id="bsocialNo"
+                        className="PayView__input--text"
+                        onChange={(e) => handlePassword(e)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">전화번호</div>
+                    <div className="PayView__input">
+                      <input
+                        type="number"
+                        pattern="[0-9]*"
+                        value={phone}
+                        className="PayView__input--text"
+                        onChange={(e) => handlePhone(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">주소</div>
+                    <div className="PayView__input">
+                      <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
+                        <input type="text" className="PayView__input--text adressBg" disabled={true} value={zonecode} />
+                        <button className="PayView__input--button" onClick={(e) => serachAddr(e)}>
+                          주소검색
+                        </button>
+                      </div>
+                      <div className="PayView__address--list" onClick={(e) => serachAddr(e)}>
+                        <input type="text" value={address1} className="PayView__input--text adressBg" disabled={true} />
+                      </div>
+                      <div className="PayView__address--list">
+                        <input
+                          type="text"
+                          className="PayView__input--text"
+                          onChange={(e) => {
+                            setAddress2(e.target.value)
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">신분증사본</div>
+                    <div className="PayView__input--file">
+                      <label htmlFor="id-upload-text" className="PayView__input--label">
+                        {idPhotoName !== '' ? idPhotoName : '신분증사본을 첨부해주세요'}
+                      </label>
+                      <input
+                        type="file"
+                        name="idcard"
+                        id="id-upload-text"
+                        className="PayView__input--text"
+                        placeholder="신분증사본을 첨부해주세요"
+                        onChange={profileImageUpload}
+                      />
+                      <label htmlFor="id-upload" className="PayView__input--button">
+                        찾아보기
+                      </label>
+                      <input id="id-upload" name="idcard" type="file" onChange={profileImageUpload} />
+                    </div>
+                  </div>
+
+                  <div className="PayView__list">
+                    <div className="PayView__title">통장사본</div>
+                    <div className="PayView__input--file">
+                      <label htmlFor="bankbook-upload-text" className="PayView__input--label">
+                        {bankBookName !== '' ? bankBookName : '통장사본을 첨부해주세요'}
+                      </label>
+
+                      <input
+                        type="file"
+                        name="bankbook"
+                        id="bankbook-upload-text"
+                        className="PayView__input--text"
+                        placeholder="통장사본을 첨부해주세요"
+                        onChange={profileImageUpload}
+                      />
+                      <label htmlFor="bankbook-upload" className="PayView__input--button">
+                        찾아보기
+                      </label>
+                      <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload} />
+                    </div>
+                  </div>
+
+                  {consent && (
+                    <div className="PayView__list PayView__list__consent">
+                      <div className="PayView__list__consent--file">
+                        <div className="PayView__title">부모동의 사본</div>
+                        <div className="PayView__input--file">
+                          <label htmlFor="consent-upload-text" className="PayView__input--label">
+                            {consentName !== '' ? consentName : '부모동의사본을 첨부해주세요'}
+                          </label>
+
+                          <input
+                            type="file"
+                            name="consent"
+                            id="consent-upload-text"
+                            className="PayView__input--text"
+                            placeholder="부모동의사본을 첨부해주세요"
+                            onChange={profileImageUpload}
+                          />
+                          <label htmlFor="consent-upload" className="PayView__input--button">
+                            찾아보기
+                          </label>
+                          <input id="consent-upload" name="consent" type="file" onChange={profileImageUpload} />
+                        </div>
+                      </div>
+                      <div className="PayView__list__consent--caption">
+                        <span>가족관계 증명서 또는 주민등록 등본 사보을 등록해주세요.</span>
+                        <span>*부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="privacy">
+                  <div className="privacy__title">
+                    <img src={check ? checkOn : checkOff} onClick={() => setCheck(!check)} className="privacy__checkBox" />
+                    개인정보 수집 및 이용에 동의합니다.
+                  </div>
+                  <div className="privacy__text">
+                    회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된
+                    개인정보는 확인 후 폐기 처리합니다.)
                   </div>
                 </div>
-              </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">신분증사본</div>
-                <div className="PayView__input--file">
-                  <label htmlFor="id-upload-text" className="PayView__input--label">
-                    {idPhotoName !== '' ? idPhotoName : '신분증사본을 첨부해주세요'}
-                  </label>
-                  <input
-                    type="file"
-                    name="idcard"
-                    id="id-upload-text"
-                    className="PayView__input--text"
-                    placeholder="신분증사본을 첨부해주세요"
-                    onChange={profileImageUpload}
-                  />
-                  <label htmlFor="id-upload" className="PayView__input--button">
-                    찾아보기
-                  </label>
-                  <input id="id-upload" name="idcard" type="file" onChange={profileImageUpload} />
-                </div>
-              </div>
-
-              <div className="PayView__list">
-                <div className="PayView__title">통장사본</div>
-                <div className="PayView__input--file">
-                  <label htmlFor="bankbook-upload-text" className="PayView__input--label">
-                    {bankBookName !== '' ? bankBookName : '통장사본을 첨부해주세요'}
-                  </label>
-
-                  <input
-                    type="file"
-                    name="bankbook"
-                    id="bankbook-upload-text"
-                    className="PayView__input--text"
-                    placeholder="통장사본을 첨부해주세요"
-                    onChange={profileImageUpload}
-                  />
-                  <label htmlFor="bankbook-upload" className="PayView__input--button">
-                    찾아보기
-                  </label>
-                  <input id="bankbook-upload" name="bankbook" type="file" onChange={profileImageUpload} />
-                </div>
-              </div>
-            </div>
-
-            <div className="privacy">
-              <div className="privacy__title">
-                <img src={check ? checkOn : checkOff} onClick={() => setCheck(!check)} className="privacy__checkBox" />
-                개인정보 수집 및 이용에 동의합니다.
-              </div>
-              <div className="privacy__text">
-                회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된
-                개인정보는 확인 후 폐기 처리합니다.)
-              </div>
-            </div>
-
+              </>
+            )}
             <button className="privacyButton" onClick={checkExchange}>
               환전 신청하기
             </button>

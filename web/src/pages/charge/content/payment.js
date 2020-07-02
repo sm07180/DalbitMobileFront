@@ -22,7 +22,7 @@ let chargeData = [
   {id: 8, type: '문화상품권', fetch: 'pay_gm'},
   {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
   {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-  {id: 10, type: '도서상품권', fetch: 'pay_gc'}
+  {id: 10, type: '도서문화상품권', fetch: 'pay_gc'}
 ]
 
 let clickFlag = false
@@ -40,7 +40,9 @@ export default (props) => {
       {id: 8, type: '문화상품권', fetch: 'pay_gm'},
       {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
       {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-      {id: 10, type: '도서상품권', fetch: 'pay_gc'}
+      {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
+      {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
     ]
   }
 
@@ -187,7 +189,7 @@ export default (props) => {
 
     if (payType === 'pay_virtual') return null
 
-    const obj = {
+    let obj = {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
@@ -195,9 +197,14 @@ export default (props) => {
         pageCode: pageCode
       }
     }
+    if (payType === 'pay_letter') {
+      obj.data = {...obj.data, pgCode: chargeData[payMathod].code}
+    }
     const res = await Api[payType]({...obj})
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
+      if (res.data.hasOwnProperty('mobileUrl')) return (window.location.href = res.data.mobileUrl)
+
       const {current} = formTag
       let ft = current
 

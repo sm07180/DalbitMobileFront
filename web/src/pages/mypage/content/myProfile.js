@@ -8,7 +8,7 @@ import {OS_TYPE} from 'context/config.js'
 import Room, {RoomJoin} from 'context/room'
 //styled
 import styled from 'styled-components'
-
+import Swiper from 'react-id-swiper'
 //component
 import Header from '../component/header.js'
 import ProfileReport from './profile_report'
@@ -25,7 +25,7 @@ import {Context} from 'context'
 import Utility, {printNumber} from 'components/lib/utility'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
-const myProfile = props => {
+const myProfile = (props) => {
   const {webview} = props
 
   //context
@@ -68,7 +68,7 @@ const myProfile = props => {
     }
   }
   //function:팬해제
-  const Cancel = myProfileNo => {
+  const Cancel = (myProfileNo) => {
     async function fetchDataFanCancel(myProfileNo) {
       const res = await Api.mypage_fan_cancel({
         data: {
@@ -92,7 +92,7 @@ const myProfile = props => {
     fetchDataFanCancel(myProfileNo)
   }
   //function:팬등록
-  const fanRegist = myProfileNo => {
+  const fanRegist = (myProfileNo) => {
     fetchDataFanRegist(myProfileNo)
   }
   //func
@@ -142,7 +142,7 @@ const myProfile = props => {
     )
   }
 
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -187,6 +187,29 @@ const myProfile = props => {
   if (profile === null) {
     return <div style={{minHeight: '400px'}}></div>
   }
+  //스와이퍼
+  const params = {
+    spaceBetween: 10,
+    slidesPerView: 'auto',
+    resistanceRatio: 0
+  }
+  //뱃지
+  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
+    const {text, icon, startColor, endColor} = item
+    //-----------------------------------------------------------------------
+    return (
+      <Slide key={index} margin={profile.fanBadgeList.length === 0 ? '10px' : '10px'}>
+        <span
+          className="fan-badge"
+          style={{
+            background: `linear-gradient(to right, ${startColor}, ${endColor}`
+          }}>
+          <img src={icon} />
+          <span>{text}</span>
+        </span>
+      </Slide>
+    )
+  })
 
   return (
     <MyProfile webview={webview}>
@@ -230,10 +253,13 @@ const myProfile = props => {
             {profile.isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
           </div>
         </NameWrap>
-
-        {profile.fanBadge.text && <FanBadgeWrap><span className='fan-badge' style={{
-            background: `linear-gradient(to bottom, ${profile.fanBadge.startColor}, ${profile.fanBadge.endColor}`
-        }}><img src={profile.fanBadge.icon} /><span>{profile.fanBadge.text}</span></span></FanBadgeWrap>}
+        {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
+          <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
+            <Swiper {...params}>{BadgeSlide}</Swiper>
+          </BadgeWrap>
+        ) : (
+          <></>
+        )}
 
         <ProfileMsg>{profile.profMsg}</ProfileMsg>
 
@@ -318,7 +344,7 @@ const MyProfile = styled.div`
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
     padding: 0px 0 16px 0;
-    /* padding-top: ${props => (props.webview && props.webview === 'new' ? '48px' : '')}; */
+    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
 //flex item3
@@ -360,7 +386,7 @@ const ProfileImg = styled.div`
     height: 100px;
     margin: 10px auto 0 auto;
     border-radius: 50%;
-    background: url(${props => props.url}) no-repeat center center/ cover;
+    background: url(${(props) => props.url}) no-repeat center center/ cover;
 
     img {
       display: none;
@@ -538,7 +564,7 @@ const FanBadgeWrap = styled.div`
     text-align: left;
     color: #ffffff;
   }
-  
+
   .fan-badge img {
     width: 28px;
     height: 28px;
@@ -605,6 +631,7 @@ const CountingWrap = styled.div`
 `
 //프로필메세지
 const ProfileMsg = styled.p`
+  word-break: break-all;
   margin-top: 8px;
   color: #616161;
   font-size: 14px;
@@ -778,5 +805,70 @@ const FanRank = styled.div`
   }
   &.rank3:after {
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
+  }
+`
+//팬 뱃지 스타일링
+const Slide = styled.a`
+  color: #fff;
+`
+const BadgeWrap = styled.div`
+  display: flex;
+  margin: 10px auto;
+  margin-left: ${(props) => props.margin} !important;
+  justify-content: center;
+  align-items: center;
+  & .swiper-slide {
+    display: block;
+    width: auto;
+    height: auto;
+  }
+  & .swiper-wrapper {
+    height: auto;
+  }
+  & .swiper-pagination {
+    position: static;
+    margin-top: 20px;
+  }
+  & .swiper-pagination-bullet {
+    width: 11px;
+    height: 11px;
+    background: #000000;
+    opacity: 0.5;
+  }
+  & .swiper-pagination-bullet-active {
+    background: ${COLOR_MAIN};
+    opacity: 1;
+  }
+
+  .fan-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: -0.35px;
+    padding: 0 10px 0 3px;
+    text-align: left;
+    color: #ffffff;
+    margin-right: 7px;
+  }
+  .fan-badge:last-child {
+    margin-right: 0;
+  }
+
+  .fan-badge img {
+    width: 33px;
+    height: 28px;
+  }
+  .fan-badge span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.2;
+    color: #ffffff;
   }
 `
