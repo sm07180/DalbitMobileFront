@@ -189,7 +189,7 @@ export default (props) => {
 
     if (payType === 'pay_virtual') return null
 
-    const obj = {
+    let obj = {
       data: {
         Prdtnm: paymentName,
         Prdtprice: paymentPrice,
@@ -203,6 +203,8 @@ export default (props) => {
     const res = await Api[payType]({...obj})
 
     if (res.result == 'success' && _.hasIn(res, 'data')) {
+      if (res.data.hasOwnProperty('mobileUrl')) return (window.location.href = res.data.mobileUrl)
+
       const {current} = formTag
       let ft = current
 
