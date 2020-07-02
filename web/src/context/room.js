@@ -153,32 +153,33 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      switch (res.code) {
-        case '-4': //----------------------------이미 참가 되어있습니다
+      if(res.code === '-4' || res.code === '-10'){
           Room.context.action.confirm({
+            msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
             callback: () => {
-              //강제방송종료
-              ;(async () => {
-                //입장되어있으면 퇴장처리 이후,success 일때 다시 재귀RoomJoin
-                const result = await RoomExit(roomNo + '')
-                if (result) RoomJoin(roomNo + '')
-              })()
-            },
-            title: res.messageKey,
-            msg: res.message
-          })
-          break
-        default:
-          //----------------------------
-          Room.context.action.alert({
-            title: res.messageKey,
-            msg: res.message,
-            callback: () => {
-              // window.location.reload()
-              window.location.href = '/'
+              const callResetListen = async (mem_no) => {
+                const fetchResetListen = await Api.postResetListen({})
+                if (fetchResetListen.result === 'success') {
+                  setTimeout(() => {
+                    RoomJoin(roomNo + '')
+                  }, 500)
+                }else{
+                  globalCtx.action.alert({
+                    msg: `${loginInfo.message}`
+                  })
+                }
+              }
+              callResetListen('')
             }
           })
-          break
+      }else{
+        Room.context.action.alert({
+          msg: res.message,
+          callback: () => {
+            // window.location.reload()
+            window.location.href = '/'
+          }
+        })
       }
       return false
     } else if (res.result === 'success' && res.data !== null) {
