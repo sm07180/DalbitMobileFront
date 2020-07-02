@@ -251,7 +251,8 @@ export const RoomMake = async (context) => {
     if (res.code === '0') return true
     //진행중인 방송이 있습니다
     if (res.code === '1') {
-      const {roomNo} = res.data
+      context.action.confirm({msg: res.message})
+      /*const {roomNo} = res.data
       context.action.confirm({
         msg: res.message,
         callback: () => {
@@ -267,7 +268,7 @@ export const RoomMake = async (context) => {
             left: '확인',
             right: '방송종료'
         }
-      })
+      })*/
       return false
     }
     //-----------------------------------
