@@ -148,7 +148,7 @@ export default (props) => {
                           }, 700)
                       }else{
                           globalCtx.action.alert({
-                              msg: `${loginInfo.message}`
+                              msg: `${fetchResetListen.message}`
                           })
                           setFetching(false)
                       }
