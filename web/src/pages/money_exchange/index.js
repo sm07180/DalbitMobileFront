@@ -260,7 +260,7 @@ export default (props) => {
         })
         return
       }
-      if (consent && consentName === '') {
+      /*if (consent && consentName === '') {
         context.action.alert({
           msg: '가족관계 증명서 또는\n주민등록 등본 사본을 등록해주세요.',
           callback: () => {
@@ -268,7 +268,7 @@ export default (props) => {
           }
         })
         return
-      }
+      }*/
 
       if (!check) {
         context.action.alert({
@@ -776,7 +776,7 @@ export default (props) => {
             </div>
 
             <div className="charge__title">입금 정보</div>
-            {originalExchange && (
+            {/*originalExchange && (
               <div className="radioLabelWrap">
                 <label className="radioLabelWrap__label" htmlFor="r1" onClick={() => setRadioCheck(0)}>
                   <span className={`${radioCheck === 0 ? 'on' : ''}`}></span>
@@ -789,7 +789,7 @@ export default (props) => {
                 </label>
                 <input type="radio" id="r2" name="rr" />
               </div>
-            )}
+            )*/}
             {radioCheck === 0 ? (
               <>
                 <div className="PayView">

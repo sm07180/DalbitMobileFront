@@ -100,7 +100,8 @@ export default (props) => {
         })
       }
     }
-    fetchSelfAuth()
+    //fetchSelfAuth()
+    history.push('/money_exchange')
   }
 
   return (
