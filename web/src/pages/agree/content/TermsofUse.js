@@ -5,6 +5,8 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
+
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 import qs from 'query-string'
@@ -15,20 +17,17 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import closeBtn from './close.svg'
 ////---------------------------------------------------------------------
-export default props => {
+export default (props) => {
   //context
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
+  const history = useHistory()
 
-  const mainRemote = () => {
-    window.location.href = '/'
-  }
   const clickCloseBtn = () => {
     if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/'
-      // window.history.back()
+      return history.push('/')
     }
   }
   //---------------------------------------------------------------------

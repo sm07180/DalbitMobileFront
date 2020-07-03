@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 import {Context} from 'context'
@@ -22,6 +23,7 @@ export default (props) => {
   const context = useContext(Context)
   const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
+  const history = useHistory()
 
   if (webview && webview === 'new') {
     return null
@@ -38,16 +40,16 @@ export default (props) => {
     window.location.href = '/'
   }
   const moveToMenu = (category) => {
-    return (window.location.href = `/menu/${category}`)
+    return history.push(`/menu/${category}`)
   }
   const moveToLogin = (category) => {
     if (!token.isLogin) {
-      return (window.location.href = '/login')
+      return history.push('/login')
     }
     if (category === 'alarm') {
       context.action.updateNews(false)
     }
-    return (window.location.href = `/menu/${category}`)
+    return history.push(`/menu/${category}`)
   }
 
   const scrollEvent = () => {
@@ -70,7 +72,7 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      if(!newAlarm){
+      if (!newAlarm) {
         const {result, data} = await Api.mypage_alarm_check()
         if (result === 'success') {
           const {newCnt} = data
