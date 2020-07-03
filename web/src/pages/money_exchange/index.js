@@ -68,7 +68,7 @@ export default (props) => {
   const [consentUploading, setConsentUploading] = useState(false)
   const [consentName, setConsentName] = useState('')
 
-  const [exchangeIdx, setExchangeIdx] = useState(false)
+  const [originalExchange, setOriginalExchange] = useState(false)
   const [radioCheck, setRadioCheck] = useState(0)
 
   const [noUsage, setNoUsage] = useState(false)
@@ -112,7 +112,7 @@ export default (props) => {
   const reApplyExchange = async () => {
     const paramData = {
       byeol: exchangeStar,
-      exchangeIdx: exchangeIdx
+      exchangeIdx: originalExchange.exchangeIdx
     }
 
     const res = await Api.exchangeReApply({
@@ -178,7 +178,7 @@ export default (props) => {
         })
         return
       }
-      if (name === '') {
+      if (name === '' || name.length < 2) {
         context.action.alert({
           msg: '예금주 성명을\n정확하게 입력해주세요.',
           callback: () => {
@@ -692,7 +692,7 @@ export default (props) => {
       const res = await Api.exchangeSelect()
       console.log(res)
       if (res.result === 'success') {
-        setExchangeIdx(res.data.exchangeIdx)
+        setOriginalExchange(res.data)
       }
     }
     fetchData()
@@ -776,7 +776,7 @@ export default (props) => {
             </div>
 
             <div className="charge__title">입금 정보</div>
-            {exchangeIdx && (
+            {originalExchange && (
               <div className="radioLabelWrap">
                 <label className="radioLabelWrap__label" htmlFor="r1" onClick={() => setRadioCheck(0)}>
                   <span className={`${radioCheck === 0 ? 'on' : ''}`}></span>
@@ -790,7 +790,7 @@ export default (props) => {
                 <input type="radio" id="r2" name="rr" />
               </div>
             )}
-            {radioCheck !== 1 && (
+            {radioCheck === 0 ? (
               <>
                 <div className="PayView">
                   <div className="PayView__list">
@@ -961,6 +961,56 @@ export default (props) => {
                   <div className="privacy__text">
                     회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된
                     개인정보는 확인 후 폐기 처리합니다.)
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="PayView">
+                  <div className="PayView__list">
+                    <div className="PayView__title">예금주</div>
+                    <div className="PayView__input">
+                      <div className="PayView__input--disable">{originalExchange.accountName || ''}</div>
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">은행</div>
+                    <div className="PayView__input">
+                      <div className="PayView__input--disable">
+                        {bankList.find((v) => {
+                          return v.value === originalExchange.bankCode
+                        }).text || ''}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">계좌번호</div>
+                    <div className="PayView__input">
+                      <div className="PayView__input--disable">{originalExchange.accountNo}</div>
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">주민등록번호</div>
+                    <div className="PayView__input--nomber">
+                      <span className="PayView__input--disable">{originalExchange.socialNo || ''}</span>
+                      <span className="PayView__input--line">-</span>
+                      <span className="PayView__input--disable">*******</span>
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">전화번호</div>
+                    <div className="PayView__input">
+                      <div className="PayView__input--disable">{originalExchange.phoneNo || ''}</div>
+                    </div>
+                  </div>
+                  <div className="PayView__list">
+                    <div className="PayView__title">주소</div>
+                    <div className="PayView__input--address">
+                      <div className="PayView__input--disable">{originalExchange.address1 || ''}</div>
+                      {originalExchange.address2 && (
+                        <div className="PayView__input--disable PayView__input--address--mt">{originalExchange.address2}</div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>

@@ -376,7 +376,24 @@ input[type='file'] {
 
   &__input {
     flex: 1;
+    &--disable {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border-radius: 4px;
+      box-sizing: border-box;
+      border: 1px solid #bdbdbd;
+      background-color: #ececec;
+    }
+    &--address {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
 
+      &--mt {
+        margin-top: 8px;
+      }
+    }
     &--nomber {
       display: flex;
       justify-content: center;
