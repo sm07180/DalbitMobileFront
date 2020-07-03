@@ -105,6 +105,30 @@ export default (props) => {
     }
   }
 
+  function calcAge(birth) {
+    var date = new Date()
+
+    var year = date.getFullYear()
+
+    var month = date.getMonth() + 1
+
+    var day = date.getDate()
+
+    if (month < 10) month = '0' + month
+
+    if (day < 10) day = '0' + day
+
+    var monthDay = month + day
+
+    var birthdayy = birth.substr(0, 4)
+
+    var birthdaymd = birth.substr(4, 4)
+
+    var age = monthDay < birthdaymd ? year - birthdayy - 1 : year - birthdayy
+
+    return age
+  }
+
   //인증 요청 버튼 벨리데이션
   function authClick() {
     if (name.length === 0) {
@@ -126,6 +150,10 @@ export default (props) => {
     const birthPattern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/
     if (!birthPattern.test(birthDay)) {
       return context.action.alert({msg: '생년월일을 확인해 주세요.'})
+    }
+
+    if (calcAge(birthDay) < 20) {
+      return context.action.alert({msg: '법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.'})
     }
 
     if (phoneCorp.length === 0) {
