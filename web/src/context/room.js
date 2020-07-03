@@ -20,6 +20,7 @@ import {Hybrid} from 'context/hybrid'
 import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
+import Utility from 'components/lib/utility'
 
 //
 const Room = () => {
@@ -87,7 +88,6 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   /**
    * @title Room.roomNo , roomNo 비교
    */
-
   if (sessionRoomNo === roomNo) {
       async function commonJoin() {
         const res = await Api.broad_join({data: {roomNo}})
@@ -98,6 +98,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
                 msg: '종료된 방송입니다.',
                 callback: () => {
                     sessionStorage.removeItem('room_no')
+                    Utility.setCookie('listen_room_no', null)
                     context.action.updatePlayer(false)
                     setTimeout(() => {
                         window.location.href = '/'
@@ -139,6 +140,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
         sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
         Room.context.action.updatePlayer(false)
         Hybrid('ExitRoom', '')
         //--쿠기
@@ -153,32 +155,35 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      switch (res.code) {
-        case '-4': //----------------------------이미 참가 되어있습니다
-          Room.context.action.confirm({
-            callback: () => {
-              //강제방송종료
-              ;(async () => {
-                //입장되어있으면 퇴장처리 이후,success 일때 다시 재귀RoomJoin
-                const result = await RoomExit(roomNo + '')
-                if (result) RoomJoin(roomNo + '')
-              })()
-            },
-            title: res.messageKey,
-            msg: res.message
-          })
-          break
-        default:
-          //----------------------------
-          Room.context.action.alert({
-            title: res.messageKey,
-            msg: res.message,
-            callback: () => {
-              // window.location.reload()
-              window.location.href = '/'
-            }
-          })
-          break
+      if(res.code === '-4' || res.code === '-10'){
+        try{
+            Room.context.action.confirm({
+                msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
+                callback: () => {
+                    const callResetListen = async (mem_no) => {
+                        const fetchResetListen = await Api.postResetListen({})
+                        if (fetchResetListen.result === 'success') {
+                            setTimeout(() => {
+                                RoomJoin(roomNo + '')
+                            }, 700)
+                        }else{
+                            globalCtx.action.alert({
+                                msg: `${loginInfo.message}`
+                            })
+                        }
+                    }
+                    callResetListen('')
+                }
+            })
+        }catch(er){alert(er)}
+      }else{
+        Room.context.action.alert({
+          msg: res.message,
+          callback: () => {
+            // window.location.reload()
+            window.location.href = '/'
+          }
+        })
       }
       return false
     } else if (res.result === 'success' && res.data !== null) {
@@ -192,6 +197,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       Room.context.action.alert({visible: false})
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
+      Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
       Hybrid('adbrixEvent', { eventName: 'roomJoin', attr : {}});
       //Facebook,Firebase 이벤트 호출
@@ -250,7 +256,8 @@ export const RoomMake = async (context) => {
     if (res.code === '0') return true
     //진행중인 방송이 있습니다
     if (res.code === '1') {
-      const {roomNo} = res.data
+      context.action.confirm({msg: res.message})
+      /*const {roomNo} = res.data
       context.action.confirm({
         msg: res.message,
         callback: () => {
@@ -266,7 +273,7 @@ export const RoomMake = async (context) => {
             left: '확인',
             right: '방송종료'
         }
-      })
+      })*/
       return false
     }
     //-----------------------------------

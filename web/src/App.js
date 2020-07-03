@@ -71,7 +71,6 @@ const App = () => {
   async function fetchData() {
     // Renew token
     const tokenInfo = await Api.getToken()
-
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -81,6 +80,7 @@ const App = () => {
             alert(JSON.stringify(customHeader));
             alert(isHybrid());
         }*/
+
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
@@ -124,6 +124,14 @@ const App = () => {
               globalCtx.action.updateNativePlayer(parsed)
             }
           }
+        }
+
+        const appIsFirst = Utility.getCookie('appIsFirst')
+        if(appIsFirst !== 'N'){
+            Utility.setCookie('appIsFirst', 'N')
+            if(tokenInfo.data.isLogin === false){
+              window.location.href = '/login'
+            }
         }
       }
       if (tokenInfo.data && tokenInfo.data.memNo) {

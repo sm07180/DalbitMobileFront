@@ -47,7 +47,7 @@ function Notice(props) {
       params: {
         noticeType: noticeNum,
         page: currentPage,
-        records: 15
+        records: 20
       }
     })
     if (res.result === 'success') {

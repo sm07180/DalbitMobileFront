@@ -10,6 +10,7 @@ import {Hybrid} from 'context/hybrid'
 // etc
 import Content from './content'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 
 export default (props) => {
   //---------------------------------------------------------------------
@@ -23,6 +24,7 @@ export default (props) => {
     switch (true) {
       case mode.playerClose !== undefined: //--------------------------Player 종료
         sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
         Hybrid('ExitRoom', '')
         context.action.updatePlayer(false)
         break
@@ -39,6 +41,7 @@ export default (props) => {
               msg: '종료된 방송입니다.',
               callback: () => {
                 sessionStorage.removeItem('room_no')
+                Utility.setCookie('listen_room_no', null)
                 context.action.updatePlayer(false)
                 setTimeout(() => {
                   window.location.href = '/'

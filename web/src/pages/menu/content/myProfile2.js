@@ -29,6 +29,7 @@ import KoreaIcon from '../static/ico_korea.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
+import MoonIcon from '../static/profile/ic_moon_s.svg'
 // render----------------------------------------------------------------
 const myProfile = props => {
   const { webview } = props
@@ -949,7 +950,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center
+        background: url(${MoonIcon}) no-repeat center
           center / cover;
       }
       & em {

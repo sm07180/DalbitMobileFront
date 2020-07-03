@@ -24,6 +24,7 @@ import Utility, {printNumber} from 'components/lib/utility'
 //svg
 import LiveIcon from '../component/ic_live.svg'
 import InfoIcon from '../static/profile/ic_info.svg'
+import MoonIcon from '../static/profile/ic_moon_s.svg'
 
 const myProfile = (props) => {
   const {webview} = props
@@ -701,7 +702,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
+        background: url(${MoonIcon}) no-repeat center center / cover;
       }
       & em {
         display: block;

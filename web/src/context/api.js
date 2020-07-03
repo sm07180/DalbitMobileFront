@@ -2160,6 +2160,15 @@ export default class API {
   static postEventAttendGift = async () => {
     return await ajax({url: '/event/attendance/random/gift', method: 'post'})
   }
+
+    /**
+     * @brief 1계정 1청취 대응 타기기 방종료
+     * @method "POST"
+     * @create 이재은 2020.07.01
+     */
+  static postResetListen = async (data) => {
+      return await ajax({url: '/member/reset/listen', method: 'POST', data})
+  }
 }
 
 API.customHeader = null
