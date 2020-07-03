@@ -522,9 +522,11 @@ export default props => {
         context.action.alert({
           callback: () => {
             //애드브릭스 이벤트 전달
-            Hybrid('adbrixEvent', res.data.adbrixData);
-            if(__NODE_ENV === 'dev'){
-              alert(JSON.stringify(res.data.adbrixData));
+            if(res.data.adbrixData != '' && res.data.adbrixData != 'init'){
+              Hybrid('adbrixEvent', res.data.adbrixData);
+              if(__NODE_ENV === 'dev'){
+                alert(JSON.stringify(res.data.adbrixData));
+              }
             }
             fetchPhoneLogin()
           },
