@@ -1,17 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 // static
 import closeBtn from './ic_back.svg'
-//import closeBtn from '../../'
 
-export default props => {
+export default (props) => {
+  const history = useHistory()
+
   const goBack = () => {
-    if (document.referrer) {
-      window.location.href = document.referrer
-    } else {
-      window.history.back()
-    }
+    return history.goBack()
   }
 
   return (

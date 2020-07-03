@@ -4,10 +4,10 @@ import {useHistory} from 'react-router-dom'
 // static
 import closeBtn from '../static/ic_close.svg'
 
-export default props => {
+export default (props) => {
   const history = useHistory()
   const goBack = () => {
-    window.location.href = '/'
+    return history.push('/')
   }
 
   return (

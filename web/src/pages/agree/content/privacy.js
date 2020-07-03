@@ -146,20 +146,17 @@ export default (props) => {
               <ol className="num">
                 <li>
                   본인인증 및 법정대리인(부모)동의
-                  <br />- KMC한국모바일인증(주)
+                  <ol className="depth3">
+                    <li>KMC한국모바일인증(주)</li>
+                  </ol>
                 </li>
                 <li>
                   결제 대행 및 처리 <br />
-                  - KG모빌리언스
-                  <br />
-                  : 휴대폰, 신용카드, 문화상품권, 게임문화상품권, 도서문화상품권, 해피머니상품권
-                  <br />
-                  - 쿠콘(주)
-                  <br />
-                  : 가상계좌
-                  <br />
-                  - 페이레터(주)
-                  <br />: 티머니, 캐시비, 페이코, 카카오페이
+                  <ol className="depth3">
+                    <li>KG모빌리언스: 휴대폰, 신용카드, 문화상품권, 게임문화상품권, 도서문화상품권, 해피머니상품권</li>
+                    <li>쿠콘(주): 가상계좌</li>
+                    <li>페이레터(주): 티머니, 캐시비, 페이코, 카카오페이</li>
+                  </ol>
                 </li>
               </ol>
             </li>
@@ -295,30 +292,28 @@ export default (props) => {
           귀하께서는 회사의 서비스를 이용하시며 발생하는 모든 개인정보보호 관련 민원을 개인정보보호책임자 혹은 담당부서로 신고하실
           수 있습니다.
           <br />
-          회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다.
+          회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다. <br /> <br />
+          개인정보 보호 책임자
+          <br />
+          이름 : 양대기
+          <br />
+          소속 : 콘텐츠사업부 부장 <br />
+          연락처: 02-2052-5900
+          <br />
+          E-mail : help@dalbitlive.com
+          <br />
+          <br />
+          기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.
+          <ol className="depth3">
+            <li>개인정보 분쟁조정위원회 (www.kopico.go.kr, 전화 1833-6972)</li>
+            <li>개인정보침해신고센터 (privacy.kisa.or.kr / 국번없이 118)</li>
+            <li>대검찰청 사이버범죄수사단 (www.spo.go.kr / 02-3480-3571)</li>
+            <li>경찰청 사이버안전국 (cyberbureau.police.go.kr / 국번없이 182)</li>
+            <li>청소년정보이용안전망 그린 i-Net (www.greeninet.or.kr / 02-523-3566)</li>
+          </ol>
         </li>
       </ol>
 
-      <p>
-        개인정보 보호 책임자
-        <br />
-        이름 : 양대기
-        <br />
-        소속 : 콘텐츠사업부 부장 <br />
-        연락처: 02-2052-5900
-        <br />
-        E-mail : help@dalbitlive.com
-        <br />
-        <br />
-        기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.
-      </p>
-      <ol className="depth3">
-        <li>개인정보 분쟁조정위원회 (www.kopico.go.kr, 전화 1833-6972)</li>
-        <li>개인정보침해신고센터 (privacy.kisa.or.kr / 국번없이 118)</li>
-        <li>대검찰청 사이버범죄수사단 (www.spo.go.kr / 02-3480-3571)</li>
-        <li>경찰청 사이버안전국 (cyberbureau.police.go.kr / 국번없이 182)</li>
-        <li>청소년정보이용안전망 그린 i-Net (www.greeninet.or.kr / 02-523-3566)</li>
-      </ol>
       <p>
         본 개인정보처리방침은 법령 정책 또는 보안기술의 변경에 따라 내용의 추가, 삭제 및 수정이 있을 시에는 변경이 되는 개인정보
         처리방침을 시행하기 최소 7일전에 홈페이지의 '공지사항'을 통해 고지할 것입니다.
@@ -336,6 +331,7 @@ export default (props) => {
 //---------------------------------------------------------------------
 //styled
 const Content = styled.div`
+  color: #616161 !important;
   ol {
     li {
       position: relative;
@@ -372,6 +368,7 @@ const Content = styled.div`
     }
   }
   ol.depth2 {
+    margin-left: 20px;
     margin-top: 10px;
     list-style-type: hangul;
     & > li {

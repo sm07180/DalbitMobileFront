@@ -1,16 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 // static
 import closeBtn from './ic_back.svg'
 
 export default (props) => {
+  const history = useHistory()
+
   const goBack = () => {
-    if (props.goBack) {
-      props.goBack()
-    } else {
-      window.history.back()
-    }
+    return history.goBack()
   }
 
   return (

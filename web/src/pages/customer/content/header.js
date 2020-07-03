@@ -5,15 +5,15 @@ import {useHistory} from 'react-router-dom'
 import closeBtn from './static/ic_back.svg'
 import {Store} from './index'
 import {Context} from 'context'
-export default props => {
+export default (props) => {
   const history = useHistory()
   const context = useContext(Context)
 
   const goBack = () => {
     if (context.noticeIndexNum.split('/')[3] !== undefined) {
-      window.location.href = '/'
+      return history.push('/')
     } else {
-      window.history.back()
+      return history.goBack()
     }
   }
 

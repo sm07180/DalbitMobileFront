@@ -1,18 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 // static
 import closeBtn from './ic_back.svg'
 
-export default props => {
+export default (props) => {
+  const history = useHistory()
+
   const goBack = () => {
-    window.history.back()
+    return history.goBack()
   }
 
   return (
     <Header className="header-wrap">
       <div className="child-bundle">{props.children}</div>
-      <div></div>
       <img className="close-btn" src={closeBtn} onClick={goBack} />
     </Header>
   )
