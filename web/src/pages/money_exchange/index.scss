@@ -366,7 +366,9 @@ input[type='file'] {
         display: flex;
         flex-direction: column;
         font-size: 12px;
-
+        & > span {
+          text-align: center;
+        }
         & > span:last-child {
           color: #ec455f;
         }
