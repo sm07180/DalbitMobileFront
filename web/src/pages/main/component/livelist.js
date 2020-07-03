@@ -24,21 +24,35 @@ function usePrevious(value) {
   return ref.current
 }
 
-const makeContents = props => {
+const makeContents = (props) => {
   const {list, category} = props
 
   const fnChangeCategoryName = (cd) => {
-      let cdNm = ""
-      category.map((key, idx) => {
-        if(cd === key.cd){
-            cdNm = key.cdNm
-        }
-      });
-      return cdNm
+    let cdNm = ''
+    category.map((key, idx) => {
+      if (cd === key.cd) {
+        cdNm = key.cdNm
+      }
+    })
+    return cdNm
   }
 
   return list.map((list, idx) => {
-    const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
+    const {
+      roomNo,
+      roomType,
+      bjProfImg,
+      bjNickNm,
+      bjGender,
+      title,
+      likeCnt,
+      entryCnt,
+      giftCnt,
+      isSpecial,
+      boostCnt,
+      rank,
+      isNew
+    } = list
 
     return (
       <LiveList
@@ -52,7 +66,8 @@ const makeContents = props => {
             <img className="type-icon" src={audioIcon} />
             <div className="type-text">{fnChangeCategoryName(roomType)}</div>
             {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
-              {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+            {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+            {isNew === true && <span className="new-dj-icon">신입</span>}
           </div>
           <div className="title">{title}</div>
           <div className="nickname">{bjNickNm}</div>
@@ -61,22 +76,23 @@ const makeContents = props => {
               <img src={hitIcon} />
               <span>{Util.printNumber(entryCnt)}</span>
             </div>
-              {boostCnt > 0 ?
+            {boostCnt > 0 ? (
               <div className="value">
-                  <img src={boostIcon} />
-                  <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
+                <img src={boostIcon} />
+                <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
               </div>
-              :
+            ) : (
               <div className="value">
-                  <img src={likeIcon} />
-                  <span>{Util.printNumber(likeCnt)}</span>
-              </div>              }
-              {rank < 11 &&
-              <div className="value">
-                  <img src={starIcon} />
-                  <span>{Util.printNumber(giftCnt)}</span>
+                <img src={likeIcon} />
+                <span>{Util.printNumber(likeCnt)}</span>
               </div>
-              }
+            )}
+            {rank < 11 && (
+              <div className="value">
+                <img src={starIcon} />
+                <span>{Util.printNumber(giftCnt)}</span>
+              </div>
+            )}
           </div>
         </div>
       </LiveList>
@@ -84,7 +100,7 @@ const makeContents = props => {
   })
 }
 
-export default props => {
+export default (props) => {
   return (
     <React.Fragment>
       <Room />
@@ -122,8 +138,8 @@ const LiveList = styled.div`
     }
   }
 
-  .txt_boost{
-    color : #ec455f;
+  .txt_boost {
+    color: #ec455f;
   }
 
   .specialIcon {
@@ -140,10 +156,21 @@ const LiveList = styled.div`
     font-style: normal;
     line-height: 1;
     letter-spacing: normal;
-    text-align:center;
+    text-align: center;
     padding-left: 6px;
     padding-top: 2px;
     padding-right: 6px;
+  }
+
+  .new-dj-icon {
+    color: #fff;
+    font-size: 11px;
+    border-radius: 10px;
+    background-color: #feac2c;
+    height: 16px;
+    padding: 0 6px;
+    line-height: 16px;
+    margin-left: 4px;
   }
 
   .broadcast-img {
@@ -246,7 +273,8 @@ const LiveList = styled.div`
         font-size: 11px;
         letter-spacing: -0.3px;
 
-        &:nth-child(2), &:nth-child(3) {
+        &:nth-child(2),
+        &:nth-child(3) {
           margin-left: 6px;
         }
 
