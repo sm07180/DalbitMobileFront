@@ -39,7 +39,7 @@ function Faq(props) {
       params: {
         faqType: faqNum,
         page: currentPage,
-        records: 15
+        records: 20
       }
     })
     if (res.result === 'success') {

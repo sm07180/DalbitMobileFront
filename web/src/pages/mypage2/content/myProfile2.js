@@ -33,6 +33,7 @@ import StarIcon from '../static/star.svg'
 import ReportIcon from '../component/ic_report.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
+import MoonIcon from '../static/profile/ic_moon_s.svg'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
   const {webview, profile} = props
@@ -870,7 +871,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
+        background: url(${MoonIcon}) no-repeat center center / cover;
       }
       & em {
         display: block;

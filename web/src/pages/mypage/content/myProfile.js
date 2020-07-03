@@ -15,6 +15,7 @@ import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LiveIcon from '../component/ic_live.svg'
+import MoonIcon from '../static/profile/ic_moon_s.svg'
 
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -687,7 +688,7 @@ const InfoConfigBtn = styled.div`
         display: block;
         width: 18px;
         height: 18px;
-        background: url(${IMG_SERVER}/images/api/ic_moon_s.png) no-repeat center center / cover;
+        background: url(${MoonIcon}) no-repeat center center / cover;
       }
       & em {
         display: block;

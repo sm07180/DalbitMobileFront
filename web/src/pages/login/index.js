@@ -4,6 +4,8 @@ import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
+
 // component
 import Layout from 'pages/common/layout'
 import closeBtn from 'pages/menu/static/ic_close.svg'
@@ -57,9 +59,13 @@ export default (props) => {
       return
     }
     let sessionRoomNo = sessionStorage.getItem('room_no')
-    if (sessionRoomNo === undefined) {
-      sessionRoomNo = ''
+    if (sessionRoomNo === undefined || sessionRoomNo === null) {
+      sessionRoomNo = Utility.getCookie('listen_room_no')
+      if (sessionRoomNo === undefined || sessionRoomNo === null) {
+        sessionRoomNo = ''
+      }
     }
+
     const fetchPhoneLogin = async (phone, pw) => {
       setFetching(true)
       const loginInfo = await Api.member_login({
@@ -119,19 +125,42 @@ export default (props) => {
             msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
           })
         } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-          let msg = loginInfo.data.opMsg
-          if (msg === undefined || msg === null || msg === '') {
-            msg = loginInfo.message
-          }
-          globalCtx.action.alert({
-            title: '달빛라이브 사용 제한',
-            msg: `${msg}`,
-            callback: () => {
-              if (webview && webview === 'new') {
-                Hybrid('CloseLayerPopUp')
-              }
+            let msg = loginInfo.data.opMsg
+            if (msg === undefined || msg === null || msg === '') {
+                msg = loginInfo.message
             }
-          })
+            globalCtx.action.alert({
+                title: '달빛라이브 사용 제한',
+                msg: `${msg}`,
+                callback: () => {
+                    if (webview && webview === 'new') {
+                        Hybrid('CloseLayerPopUp')
+                    }
+                }
+            })
+        } else if(loginInfo.code === '-6'){
+            globalCtx.action.confirm({
+                msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
+                callback: () => {
+                  const callResetListen = async (mem_no) => {
+                      const fetchResetListen = await Api.postResetListen({
+                        memNo: mem_no
+                      })
+                      if (fetchResetListen.result === 'success') {
+                          setTimeout(() => {
+                            setFetching(false)
+                            clickLoginBtn()
+                          }, 700)
+                      }else{
+                          globalCtx.action.alert({
+                              msg: `${fetchResetListen.message}`
+                          })
+                          setFetching(false)
+                      }
+                  }
+                  callResetListen(loginInfo.data.memNo)
+                }
+            });
         } else {
           globalCtx.action.alert({
             title: '로그인 실패',

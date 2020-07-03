@@ -208,6 +208,7 @@ export default () => {
         //종료시
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
         break
       case 'native-google-login': //-------------------------Google 로그인
@@ -230,7 +231,6 @@ export default () => {
               data: google_result.data
             })
 
-            //alert(JSON.stringify(loginInfo))
             if (loginInfo.result === 'success') {
               const {memNo} = loginInfo.data
 
@@ -277,19 +277,40 @@ export default () => {
                 window.location.replace('/signup?' + qs.stringify(google_result.data))
               }
             } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-              let msg = loginInfo.data.opMsg
-              if (msg === undefined || msg === null || msg === '') {
-                msg = loginInfo.message
-              }
-              globalCtx.action.alert({
-                title: '달빛라이브 사용 제한',
-                msg: `${msg}`,
-                callback: () => {
-                  if (webview && webview === 'new') {
-                    Hybrid('CloseLayerPopUp')
-                  }
+                let msg = loginInfo.data.opMsg
+                if (msg === undefined || msg === null || msg === '') {
+                    msg = loginInfo.message
                 }
-              })
+                globalCtx.action.alert({
+                    title: '달빛라이브 사용 제한',
+                    msg: `${msg}`,
+                    callback: () => {
+                        if (webview && webview === 'new') {
+                            Hybrid('CloseLayerPopUp')
+                        }
+                    }
+                })
+            } else if (loginInfo.code === '-6') {
+                context.action.confirm({
+                  msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
+                  callback: () => {
+                    const callResetListen = async (mem_no) => {
+                      const fetchResetListen = await Api.postResetListen({
+                        memNo: mem_no
+                      })
+                      if (fetchResetListen.result === 'success') {
+                        setTimeout(() => {
+                          googleLogin()
+                        }, 700)
+                      }else{
+                        globalCtx.action.alert({
+                          msg: `${loginInfo.message}`
+                        })
+                      }
+                    }
+                    callResetListen(loginInfo.data.memNo)
+                  }
+                });
             } else {
               context.action.alert({
                 title: '로그인 실패',
