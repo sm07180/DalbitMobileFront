@@ -126,13 +126,13 @@ const App = () => {
           }
         }
 
-        const appIsFirst = Utility.getCookie('appIsFirst')
+        /*const appIsFirst = Utility.getCookie('appIsFirst')
         if(appIsFirst !== 'N'){
             Utility.setCookie('appIsFirst', 'N')
             if(tokenInfo.data.isLogin === false){
               window.location.href = '/login'
             }
-        }
+        }*/
       }
       if (tokenInfo.data && tokenInfo.data.memNo) {
         const myProfile = await Api.profile({
