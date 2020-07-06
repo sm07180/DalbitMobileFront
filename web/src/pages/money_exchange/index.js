@@ -260,7 +260,7 @@ export default (props) => {
         })
         return
       }
-      /*if (consent && consentName === '') {
+      if (consent && consentName === '') {
         context.action.alert({
           msg: '가족관계 증명서 또는\n주민등록 등본 사본을 등록해주세요.',
           callback: () => {
@@ -268,7 +268,7 @@ export default (props) => {
           }
         })
         return
-      }*/
+      }
 
       if (!check) {
         context.action.alert({

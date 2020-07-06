@@ -1,21 +1,60 @@
-import React, { useState, useEffect, useContext, useReducer } from 'react'
+import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
 import styled from 'styled-components'
 
-import { Context } from 'context'
+import {Context} from 'context'
 import Api from 'context/api'
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
 
+  const memIdRef = useRef(null)
+  const authRef = useRef(null)
+
+  const [btnState, setBtnState] = useState({
+    memId: false,
+    auth: false
+  })
+
   function reducer(state, action) {
-    console.log(action)
+    const {name, value} = action
+
+    //휴대폰번호
+    if (name === 'memId' && value.length === 11) {
+      setBtnState({
+        ...btnState,
+        memId: true
+      })
+    } else {
+      setBtnState({
+        ...btnState,
+        memId: false
+      })
+    }
+
+    //인증번호
+    if (name === 'auth') {
+      if (value.length === 6) {
+        setBtnState({
+          ...btnState,
+          auth: true
+        })
+      } else if (value.length > 6) {
+        return {...state}
+      } else {
+        setBtnState({
+          ...btnState,
+          auth: false
+        })
+      }
+    }
+
     return {
       ...state,
-      [action.name]: action.value
+      [name]: value
     }
   }
 
@@ -49,43 +88,43 @@ export default props => {
 
   const [validate, setValidate] = useReducer(validateReducer, {
     memId: {
-      check: false,
+      check: true,
       text: ''
     },
     auth: {
-      check: false,
+      check: true,
       text: ''
     },
     loginPwd: {
-      check: false,
+      check: true,
       text: ''
     },
     loginPwdCheck: {
-      check: false,
+      check: true,
       text: ''
     },
     nickNm: {
-      check: false,
+      check: true,
       text: ''
     },
     birth: {
-      check: false,
+      check: true,
       text: ''
     },
     term: {
-      check: false,
+      check: true,
       text: ''
     },
     time: {
-      check: false,
+      check: true,
       text: ''
     },
     memIdBtn: {
-      check: false,
+      check: true,
       text: ''
     },
     authBtn: {
-      check: false,
+      check: true,
       text: ''
     }
   })
@@ -110,24 +149,11 @@ export default props => {
     CMID
   } = changes
 
-  const onChange = e => {
-    switch (e.target.name) {
-      case 'memId':
-        validateID(e.target)
-        break
-
-      default:
-        dispatch(e.target)
-        break
-    }
-  }
-
   //------------------------------------------------------------------------------
   //휴대폰 본인인증 관련
-  const validateID = target => {
-    dispatch({ name: 'memId', value: target.value })
+  const validateID = (target) => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    const memIdVal = target.value
+    const memIdVal = target
     if (memIdVal !== undefined) {
       if (memIdVal.length >= 11) {
         if (!rgEx.test(memIdVal)) {
@@ -136,56 +162,46 @@ export default props => {
             check: false,
             text: '올바른 휴대폰 번호가 아닙니다.'
           })
+          return false
         } else {
           setValidate({
             name: 'memId',
             check: true
           })
+          return true
         }
-      } else if (memIdVal.length < 12) {
-        //벨리데이션 통과 후 버튼이 인증요청으로 바뀐다.
-        setValidate({
-          name: 'memId',
-          check: false
-        })
       }
     }
   }
 
-  const validateAuth = target => {
-    dispatch({ name: 'auth', value: target.value })
-    const authVal = target.value
-    if (authVal.length === 6) {
-      if (CMID) {
-        //버튼 활성화 xx
-      }
-    } else if (authVal.length > 6) {
-    }
-  }
+  async function fetchSmsReq() {
+    if (!validateID(memId)) return null
 
-  async function fetchAuth() {
-    const { result, data, message } = await Api.sms_request({
+    const {result, data, message} = await Api.sms_request({
       data: {
         phoneNo: memId,
         authType: 0
       }
     })
     if (result === 'success') {
-      dispatch({ name: 'CMID', value: data.CMID })
+      dispatch({name: 'CMID', value: data.CMID})
       setValidate({
         name: 'memId',
         check: true,
         text: '인증번호 요청이 완료되었습니다.'
       })
+      memIdRef.current.disabled = true
     } else {
-      setValidate({ name: 'memId', check: false, text: message })
+      setValidate({name: 'memId', check: false, text: message})
       context.action.alert({
         msg: message
       })
     }
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    console.log(memIdRef)
+  }, [memIdRef])
 
   return (
     <Layout status="no_gnb" header="회원가입">
@@ -196,33 +212,41 @@ export default props => {
             <label htmlFor="memId">휴대폰 번호</label>
             <input
               type="tel"
+              ref={memIdRef}
               id="memId"
               name="memId"
               placeholder="휴대폰 번호를 입력해주세요"
               maxLength={11}
               autoComplete="off"
               value={memId}
-              onChange={onChange}
+              onChange={(e) => dispatch(e.target)}
             />
-            <button disabled={!validate.memId.check} onClick={fetchAuth}>
+            <button disabled={!btnState.memId} onClick={fetchSmsReq}>
               인증요청
             </button>
           </div>
-          {validate.memId.text && (
-            <p className="help-text">{validate.memId.text}</p>
-          )}
+          {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
         </InputItem>
-        <InputItem button={true} validate={true}>
+        <InputItem button={true} validate={validate.auth.check}>
           <div className="layer">
             <label htmlFor="auth">인증번호</label>
             <input
               type="number"
+              ref={authRef}
               id="auth"
+              name="auth"
               placeholder="인증번호를 입력해주세요"
+              autoComplete="off"
+              value={auth}
+              onChange={(e) => dispatch(e.target)}
+              disabled={true}
             />
-            <button disabled={true}>인증확인</button>
+            <span className="timer">05:00</span>
+            <button disabled={!btnState.auth} onClick={fetchSmsReq}>
+              인증확인
+            </button>
           </div>
-          <p className="help-text"></p>
+          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
         </InputItem>
 
         {/* 프로필 사진 ---------------------------------------------------------- */}
@@ -241,37 +265,73 @@ const InputItem = styled.div`
   }
   .layer {
     position: relative;
-    padding: 4px;
-    border-radius: 12px;
-    border: 1px solid;
-    border-color: ${props => (props.validate ? '#e0e0e0' : '#ec455f')};
-    background: #fff;
+    height: 58px;
+
     letter-spacing: -0.5px;
 
     label {
       display: block;
-      padding-top: 5px;
+      position: relative;
+      padding-top: 9px;
       color: #000;
       font-size: 12px;
       line-height: 12px;
-      text-indent: 12px;
+      text-indent: 16px;
+      z-index: 1;
     }
 
     input {
       display: block;
-      width: 100%;
-      padding-left: 12px;
-      padding-right: ${props => (props.button ? '90px' : '12px')};
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: ${(props) => (props.button ? 'calc(100% - 106px)' : 'calc(100% - 28px)')};
+      padding: ${(props) => (props.button ? '20px 90px 4px 15px' : '20px 12px 4px 15px')};
+      border-radius: 12px;
+      border: 1px solid;
+      border-color: ${(props) => (props.validate ? '#e0e0e0' : '#ec455f')};
+      background: #fff;
       height: 32px;
       font-size: 16px;
       font-weight: 800;
       line-height: 32px;
+      box-sizing: content-box;
+    }
+
+    input:focus {
+      border-color: #000;
     }
 
     input::placeholder {
       font-size: 14px;
       color: #bdbdbd;
       font-weight: 400;
+    }
+
+    input:disabled {
+      background: #fff;
+      color: #9e9e9e;
+    }
+
+    input:focus {
+      &::after {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #000;
+        border-radius: 12px;
+        content: '';
+      }
+    }
+
+    .timer {
+      position: absolute;
+      right: 98px;
+      top: 28px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ec455f;
+      z-index: 1;
     }
 
     button {
@@ -294,7 +354,7 @@ const InputItem = styled.div`
   }
 
   .help-text {
-    display: ${props => (props.validate ? 'none' : 'block')};
+    display: block;
     margin-top: -17px;
     padding: 23px 12px 7px 12px;
     border-radius: 12px;

@@ -18,6 +18,8 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
 
+  const [popup, setPopup] = useState(false)
+
   /**
    * authState
    * 1 : 성인 - 자기 자신 본인인증 완료 후 // adultYn === 'y'
@@ -46,6 +48,18 @@ export default (props) => {
 
   useEffect(() => {
     checkAuth()
+
+    // if (props.history.action === 'POP') {
+    //   props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    // }
+
+    // window.history.pushState('result', '', `${location.href}/#result`)
+
+    // window.onpopstate = () => {
+    //   console.log('onpopstate')
+    //   //history.go(1)
+    //   goBack()
+    // }
   }, [])
 
   const goBack = () => {
