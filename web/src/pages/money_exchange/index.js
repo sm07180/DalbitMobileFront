@@ -682,7 +682,6 @@ export default (props) => {
   useEffect(() => {
     async function fetchData() {
       const authCheck = await Api.self_auth_check()
-      console.log(authCheck)
       if (authCheck.result === 'success') {
         if (authCheck.data.adultYn === 'y') {
         } else {
@@ -690,9 +689,9 @@ export default (props) => {
         }
       }
       const res = await Api.exchangeSelect()
-      console.log(res)
       if (res.result === 'success') {
         setOriginalExchange(res.data)
+        setRadioCheck(1)
       }
     }
     fetchData()
