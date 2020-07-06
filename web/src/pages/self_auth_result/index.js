@@ -49,9 +49,9 @@ export default (props) => {
   useEffect(() => {
     checkAuth()
 
-    if (props.history.action === 'POP') {
-      props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-    }
+    // if (props.history.action === 'POP') {
+    //   props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    // }
 
     // window.history.pushState('result', '', `${location.href}/#result`)
 
