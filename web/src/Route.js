@@ -45,7 +45,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 let SignUp = React.lazy(() => import('pages/new_signup'))
-if(__NODE_ENV !== 'real'){
+if(__NODE_ENV === 'real'){
     SignUp = React.lazy(() => import('pages/sign_up'))
 }
 const Password = React.lazy(() => import('pages/password'))
