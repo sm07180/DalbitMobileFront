@@ -100,8 +100,8 @@ export default (props) => {
         })
       }
     }
-    //fetchSelfAuth()
-    history.push('/money_exchange')
+    fetchSelfAuth()
+    // history.push('/money_exchange')
   }
 
   return (
@@ -171,11 +171,7 @@ export default (props) => {
                 <CoinChargeBtn
                   className="exchange"
                   onClick={() => {
-                    if (__NODE_ENV === 'real') {
-                      history.push('/money_exchange')
-                    } else {
-                      checkSelfAuth()
-                    }
+                    checkSelfAuth()
                   }}>
                   환전
                 </CoinChargeBtn>

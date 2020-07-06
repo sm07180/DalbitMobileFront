@@ -776,7 +776,7 @@ export default (props) => {
             </div>
 
             <div className="charge__title">입금 정보</div>
-            {/*originalExchange && (
+            {originalExchange && (
               <div className="radioLabelWrap">
                 <label className="radioLabelWrap__label" htmlFor="r1" onClick={() => setRadioCheck(0)}>
                   <span className={`${radioCheck === 0 ? 'on' : ''}`}></span>
@@ -789,7 +789,7 @@ export default (props) => {
                 </label>
                 <input type="radio" id="r2" name="rr" />
               </div>
-            )*/}
+            )}
             {radioCheck === 0 ? (
               <>
                 <div className="PayView">
@@ -1026,94 +1026,94 @@ export default (props) => {
             <img src={BackBtn} className="header__button--back" onClick={() => setStatus(0)} />
             <h1 className="header__title">환전 안내</h1>
           </div>
-            <div className="content">
-                <div className="exchange">
-                    <div className="exchange__list">
-                        <div className="exchange__list--title">◈ 환전은?</div>
-                        <div className="exchange__list--gray">
-                            방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.
-                            <br />
-                            방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다.
-                            <br />
-                            또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다.
-                            <br />
-                            (원천징수세액 3.3%, 이체수수료 500원 제외)
-                            <br />★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div className="exchange__list--title">◈ 환전방법</div>
-                        <div className="exchange__list--gray">
-                            1. (세금신고를 위해) 환전 신청자는 본인확인을 위한 정확한 정보를 입력합니다.
-                            <br />
-                            2. 본인확인은 본인임을 증명할 신분증을 첨부합니다.
-                            <br />
-                            (주민등록증, 운전면허증, 주민등록등본, 여권 등 사본)
-                            <br />
-                            3. 환전처리 후 입금할 본인통장 사본을 첨부합니다.
-                            <br />
-                            4. [환전 신청하기]버튼을 클릭하면 신청완료!!
-                            <br />
-                            5. 스페셜 DJ의 경우 일반회원과의 차별화된 환전정책을 제공합니다.
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div className="exchange__list--title">◈ 환전신청 후 입금일정</div>
-                        <div className="exchange__list--gray">
-                            - 환전 신청 마감 : 매 주 일요일, 수요일 (주2회)
-                            <br />- 서류확인 및 입금 : 일요일까지 신청 건은 월요일, 수요일까지 신청 건은 목요일 순차적으로 처리됩니다.
-                            <br />- 단, 신청자가 많을 경우나 공휴일인 경우 다음날 환전처리가 될 수 있습니다.
-                            <br />※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
-                            <br />
-                            (SMS결과는 휴대폰 연락처가 있는 회원에게만 발송하여 드립니다.)
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div className="exchange__list--title">◈ 유의사항</div>
-                        <div className="exchange__list--gray">
-                            1. 입금정보는 개인소득신고용으로 사용되는 필수 입력 정보입니다.
-                            <br />
-                            2. 회원가입자와 신청자가 일치하지 않을 경우 환전 승인이 거부됩니다.
-                            <br />
-                            3. 입력하신 입금정보가 증빙서류와 일치하지 않은 경우 환전 승인이 거부됩니다.
-                            <br />
-                            4. 환전 신청 시 입력한 정보는 재입력의 불편함이 없도록 입금정보가 암호화되어 저장됩니다.
-                            <br />
-                            <span className="exchange__list--red">
+          <div className="content">
+            <div className="exchange">
+              <div className="exchange__list">
+                <div className="exchange__list--title">◈ 환전은?</div>
+                <div className="exchange__list--gray">
+                  방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.
+                  <br />
+                  방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다.
+                  <br />
+                  또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다.
+                  <br />
+                  (원천징수세액 3.3%, 이체수수료 500원 제외)
+                  <br />★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div className="exchange__list--title">◈ 환전방법</div>
+                <div className="exchange__list--gray">
+                  1. (세금신고를 위해) 환전 신청자는 본인확인을 위한 정확한 정보를 입력합니다.
+                  <br />
+                  2. 본인확인은 본인임을 증명할 신분증을 첨부합니다.
+                  <br />
+                  (주민등록증, 운전면허증, 주민등록등본, 여권 등 사본)
+                  <br />
+                  3. 환전처리 후 입금할 본인통장 사본을 첨부합니다.
+                  <br />
+                  4. [환전 신청하기]버튼을 클릭하면 신청완료!!
+                  <br />
+                  5. 스페셜 DJ의 경우 일반회원과의 차별화된 환전정책을 제공합니다.
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div className="exchange__list--title">◈ 환전신청 후 입금일정</div>
+                <div className="exchange__list--gray">
+                  - 환전 신청 마감 : 매 주 일요일, 수요일 (주2회)
+                  <br />- 서류확인 및 입금 : 일요일까지 신청 건은 월요일, 수요일까지 신청 건은 목요일 순차적으로 처리됩니다.
+                  <br />- 단, 신청자가 많을 경우나 공휴일인 경우 다음날 환전처리가 될 수 있습니다.
+                  <br />※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
+                  <br />
+                  (SMS결과는 휴대폰 연락처가 있는 회원에게만 발송하여 드립니다.)
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div className="exchange__list--title">◈ 유의사항</div>
+                <div className="exchange__list--gray">
+                  1. 입금정보는 개인소득신고용으로 사용되는 필수 입력 정보입니다.
+                  <br />
+                  2. 회원가입자와 신청자가 일치하지 않을 경우 환전 승인이 거부됩니다.
+                  <br />
+                  3. 입력하신 입금정보가 증빙서류와 일치하지 않은 경우 환전 승인이 거부됩니다.
+                  <br />
+                  4. 환전 신청 시 입력한 정보는 재입력의 불편함이 없도록 입금정보가 암호화되어 저장됩니다.
+                  <br />
+                  <span className="exchange__list--red">
                     5. 부정적인 행위로 수집된 “달”, “별”에 대한 정황이 포착될 경우 환전 승인이 거부됩니다.
                   </span>
-                            <br />
-                            <span className="exchange__list--red">6. 운영정책을 위반하여 정지 상태 회원은 환전 승인이 거부됩니다.</span>
-                            <br />
-                            7. 미성년자 환전 신청 시 부모동의 또는 가족관계 증명서를 추가 요청할 수 있습니다.
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div className="exchange__list--title">◈ 환전 불가 서류</div>
-                        <div className="exchange__list--gray">
-                            - (X) 정보 확인이 불분명한 서류
-                            <br />- (X) 학생증
-                            <br />- (X) 건강보험증
-                            <br />- (X) 기타 민간 자격증
-                            <br />- (X) 수기 작성한 서류
-                            <br />- (X) 기타 기준에 부합하지 않은 모든 서류
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div>
-                            ※ 해당 환전 정책은 서비스 진행 중이더라도 변경될 수 있고, 정책 변경 시 회원에 대한 고지 후 변경정책에 따른
-                            서비스를 진행할 수 있습니다.
-                        </div>
-                    </div>
-                    <div className="exchange__list">
-                        <div>※ 아이템 선물을 원하는 회원께서는 “별”을 "달"로 교환하여 이용이 가능합니다.</div>
-                    </div>
-                    <div className="exchange__list">
-                        <div>
-                            - 별을 달로 교환하는 방법 : “마이페이지&gt;내지갑&gt;별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어
-                            아이템선물이 가능합니다. (수수료 없음)
-                        </div>
-                    </div>
+                  <br />
+                  <span className="exchange__list--red">6. 운영정책을 위반하여 정지 상태 회원은 환전 승인이 거부됩니다.</span>
+                  <br />
+                  7. 미성년자 환전 신청 시 부모동의 또는 가족관계 증명서를 추가 요청할 수 있습니다.
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div className="exchange__list--title">◈ 환전 불가 서류</div>
+                <div className="exchange__list--gray">
+                  - (X) 정보 확인이 불분명한 서류
+                  <br />- (X) 학생증
+                  <br />- (X) 건강보험증
+                  <br />- (X) 기타 민간 자격증
+                  <br />- (X) 수기 작성한 서류
+                  <br />- (X) 기타 기준에 부합하지 않은 모든 서류
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div>
+                  ※ 해당 환전 정책은 서비스 진행 중이더라도 변경될 수 있고, 정책 변경 시 회원에 대한 고지 후 변경정책에 따른
+                  서비스를 진행할 수 있습니다.
+                </div>
+              </div>
+              <div className="exchange__list">
+                <div>※ 아이템 선물을 원하는 회원께서는 “별”을 "달"로 교환하여 이용이 가능합니다.</div>
+              </div>
+              <div className="exchange__list">
+                <div>
+                  - 별을 달로 교환하는 방법 : “마이페이지&gt;내지갑&gt;별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어
+                  아이템선물이 가능합니다. (수수료 없음)
+                </div>
+              </div>
             </div>
           </div>
         </React.Fragment>
