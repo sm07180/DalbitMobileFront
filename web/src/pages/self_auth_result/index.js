@@ -49,11 +49,12 @@ export default (props) => {
   useEffect(() => {
     checkAuth()
 
-    window.history.pushState('result', '', '/selfauth_result/#result')
+    window.history.pushState('result', '', `${location.href}/#result`)
 
-    window.onpopstate = function (event) {
+    window.onpopstate = () => {
       console.log('onpopstate')
-      return goBack()
+      //history.go(1)
+      goBack()
     }
   }, [])
 
