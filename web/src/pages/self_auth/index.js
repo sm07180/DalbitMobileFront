@@ -15,7 +15,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
-
+  console.log(props)
   //formData
   const [formState, setFormState] = useState({
     tr_cert: '',

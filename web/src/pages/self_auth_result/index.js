@@ -49,13 +49,17 @@ export default (props) => {
   useEffect(() => {
     checkAuth()
 
-    window.history.pushState('result', '', `${location.href}/#result`)
-
-    window.onpopstate = () => {
-      console.log('onpopstate')
-      //history.go(1)
-      goBack()
+    if (props.history.action === 'POP') {
+      props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     }
+
+    // window.history.pushState('result', '', `${location.href}/#result`)
+
+    // window.onpopstate = () => {
+    //   console.log('onpopstate')
+    //   //history.go(1)
+    //   goBack()
+    // }
   }, [])
 
   const goBack = () => {

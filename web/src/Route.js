@@ -44,7 +44,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
-const SignUp = React.lazy(() => import('pages/sign_up'))
+const SignUp = React.lazy(() => import('pages/new_signup'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
