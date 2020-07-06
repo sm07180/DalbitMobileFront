@@ -375,6 +375,19 @@ export default () => {
       }
     }
 
+    async function pushClick(pushIdx) {
+        const res = await Api.push_click({
+            data: {
+                pushIdx: pushIdx
+            }
+        })
+        if (res.result === 'success') {
+            // console.log('성공')
+        } else if (res.result === 'fail') {
+        }
+    }
+
+
     if (typeof pushMsg === 'string'){
       pushMsg = decodeURIComponent(pushMsg)
       if (isJsonString(pushMsg)) {
@@ -412,6 +425,8 @@ export default () => {
       alert('back pushMsg :' + JSON.stringify(pushMsg))
     }
     //---------------------[분기처리시작]
+
+    pushClick(pushMsg.push_idx)
 
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]

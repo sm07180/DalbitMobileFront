@@ -2041,6 +2041,21 @@ export default class API {
     return await ajax({url: `/social/google/callback`, method: 'POST', data})
   }
 
+    /**
+     * @brief PUSH Click
+     * @method "POST"
+     * @create 전유신 2020.07.06
+     */
+    static push_click = async (obj) => {
+        const {url, method, data} = obj || {}
+        return await ajax({
+            ...obj,
+            url: url || `/push/click`,
+            method: method || 'POST',
+            data: data
+        })
+    }
+
   /**
    * @brief 별 달 교환아이템 가져오기
    * @method "GET"
