@@ -221,8 +221,11 @@ export default () => {
           }
           const google_result = await Api.google_login({data: inputData})
           let sessionRoomNo = sessionStorage.getItem('room_no')
-          if(sessionRoomNo === undefined){
-              sessionRoomNo = "";
+          if (sessionRoomNo === undefined || sessionRoomNo === null) {
+            sessionRoomNo = Utility.getCookie('listen_room_no')
+            if (sessionRoomNo === undefined || sessionRoomNo === null) {
+              sessionRoomNo = ''
+            }
           }
           google_result.data["room_no"] = sessionRoomNo
           //alert(JSON.stringify(google_result))
