@@ -138,7 +138,7 @@ export default (props) => {
                     }
                 }
             })
-        /*} else if(loginInfo.code === '-6'){
+        } else if(loginInfo.code === '-6'){
             globalCtx.action.confirm({
                 msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
                 callback: () => {
@@ -160,7 +160,7 @@ export default (props) => {
                   }
                   callResetListen(loginInfo.data.memNo)
                 }
-            });*/
+            });
         } else {
           globalCtx.action.alert({
             title: '로그인 실패',
