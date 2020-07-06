@@ -8,8 +8,11 @@ import closeBtn from './ic_back.svg'
 export default (props) => {
   const history = useHistory()
 
-  const goBack = () => {
-    return history.goBack()
+  let {goBack} = props
+  if (goBack === undefined) {
+    goBack = () => {
+      return history.goBack()
+    }
   }
 
   return (

@@ -18,6 +18,8 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
 
+  const [popup, setPopup] = useState(false)
+
   /**
    * authState
    * 1 : 성인 - 자기 자신 본인인증 완료 후 // adultYn === 'y'
@@ -46,6 +48,13 @@ export default (props) => {
 
   useEffect(() => {
     checkAuth()
+
+    window.history.pushState('result', '', '/selfauth_result/#result')
+
+    window.onpopstate = function (event) {
+      console.log('onpopstate')
+      return goBack()
+    }
   }, [])
 
   const goBack = () => {
