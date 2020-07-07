@@ -44,7 +44,7 @@ export default (props) => {
     {tit: '받은 선물', exp: '1', msg: '별 1개당 1exp 획득 (제한 없음)'},
     {tit: '부스터 사용', exp: '10', msg: '사용자, DJ 각각 10exp 획득 (제한 없음)'},
     {tit: '좋아요', exp: '1', msg: '좋아요 1회당 1exp 획득 (하루 최대 10exp)'},
-    {tit: '팬보드 글 작성\n댓글 작성', exp: '1', msg: '팬보드, 답글 작성 시 1exp 획득 (하루 최대 10exp)'}
+    {tit: '팬보드 작성', exp: '1', msg: '팬보드, 답글 작성 시 1exp 획득 (하루 최대 10exp)'}
   ]
 
   return (
