@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .prefix__cls-3{fill:#fff}.prefix__cls-2{fill:none}.prefix__cls-2,.prefix__cls-3{stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.3px}
+        </style>
+    </defs>
+    <g id="prefix__그룹_14969" data-name="그룹 14969" transform="translate(-280 -77)">
+        <g id="prefix__사각형_810" data-name="사각형 810" style="stroke:#707070;opacity:0;fill:#fff">
+            <path d="M0 0H32V32H0z" style="stroke:none" transform="translate(280 77)"/>
+            <path d="M0.5 0.5H31.5V31.5H0.5z" style="fill:none" transform="translate(280 77)"/>
+        </g>
+        <g id="prefix__그룹_14970" data-name="그룹 14970" transform="translate(131.987 -519.129)">
+            <path id="prefix__패스_6848" d="M157.013 610.3a7.167 7.167 0 1 1 14.333 0" class="prefix__cls-2" data-name="패스 6848"/>
+            <path id="prefix__사각형_2391" d="M0 0h.785a2.13 2.13 0 0 1 2.13 2.13v.389A2.13 2.13 0 0 1 .785 4.65H0V0z" class="prefix__cls-3" data-name="사각형 2391" transform="translate(157.013 610.295)"/>
+            <path id="prefix__사각형_2392" d="M0 0h.785a2.13 2.13 0 0 1 2.13 2.13v.389A2.13 2.13 0 0 1 .785 4.65H0V0z" class="prefix__cls-3" data-name="사각형 2392" transform="rotate(-180 85.673 307.473)"/>
+            <path id="prefix__패스_6849" d="M177.4 622.777v2.582a1.528 1.528 0 0 1-1.528 1.529h-3.668" class="prefix__cls-2" data-name="패스 6849" transform="translate(-6.056 -7.832)"/>
+            <circle id="prefix__타원_146" cx="1.145" cy="1.145" r="1.145" class="prefix__cls-3" data-name="타원 146" transform="translate(165.076 617.909)"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,19 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__exchange_purple" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#fff;stroke-linejoin:round}
+        </style>
+    </defs>
+    <rect id="prefix__사각형_2334" width="24" height="24" fill="#a685f6" data-name="사각형 2334" rx="8"/>
+    <g id="prefix__별" transform="rotate(16 -7.309 47.69)">
+        <path id="prefix__패스_4113" d="M3.769.2l1.11 1.469a.5.5 0 0 0 .422.2l1.839-.082a.5.5 0 0 1 .433.787L6.52 4.081a.5.5 0 0 0-.058.463l.646 1.724a.5.5 0 0 1-.615.655l-1.762-.536a.5.5 0 0 0-.458.088L2.834 7.622a.5.5 0 0 1-.814-.382L1.986 5.4a.5.5 0 0 0-.225-.409L.225 3.975a.5.5 0 0 1 .112-.892l1.74-.6a.5.5 0 0 0 .319-.34L2.887.368A.5.5 0 0 1 3.769.2z" class="prefix__cls-2" data-name="패스 4113" transform="rotate(-6.02 7.608 .4)"/>
+    </g>
+    <g id="prefix__그룹_14872" data-name="그룹 14872" transform="rotate(-18.01 41.31 -4.705)">
+        <g id="prefix__달">
+            <g id="prefix__그룹_9725" data-name="그룹 9725">
+                <path id="prefix__패스_4107" d="M5.649 5.553a2.441 2.441 0 1 1 0-4.882 2.5 2.5 0 0 1 .433.039A3.853 3.853 0 0 0 0 3.812a3.85 3.85 0 0 0 7.613.772 2.466 2.466 0 0 1-1.964.969z" class="prefix__cls-2" data-name="패스 4107"/>
+            </g>
+        </g>
+    </g>
+</svg>

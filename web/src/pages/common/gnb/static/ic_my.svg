@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_my" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#757575;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="prefix__사각형_237" d="M0 0H36V36H0z" data-name="사각형 237" style="fill:none"/>
+    <g id="prefix__그룹_10312" data-name="그룹 10312" transform="translate(-158.618 -618.778)">
+        <ellipse id="prefix__타원_108" cx="4.212" cy="4.291" class="prefix__cls-2" data-name="타원 108" rx="4.212" ry="4.291" transform="translate(172.071 627.778)"/>
+        <path id="prefix__패스_4135" d="M165.618 661.913a8.19 8.19 0 1 1 16.38 0" class="prefix__cls-2" data-name="패스 4135" transform="translate(2.62 -17.153)"/>
+    </g>
+</svg>

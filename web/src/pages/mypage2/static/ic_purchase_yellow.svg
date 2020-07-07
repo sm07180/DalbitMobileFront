@@ -1,0 +1,18 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__purchas_yellow" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-2,.prefix__cls-3{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}.prefix__cls-3{fill:#fff}
+        </style>
+    </defs>
+    <rect id="prefix__사각형_2333" width="24" height="24" fill="#f8b471" data-name="사각형 2333" rx="8"/>
+    <g id="prefix__그룹_14869" data-name="그룹 14869" transform="translate(3.5 6.412)">
+        <path id="prefix__패스_6999" d="M170.908 83.8h-10.025l-1.377-6.9h12.778z" class="prefix__cls-2" data-name="패스 6999" transform="translate(-156.885 -74.255)"/>
+        <path id="prefix__패스_7000" d="M158.641 81.531l-1.905-9.541h-2.092" class="prefix__cls-2" data-name="패스 7000" transform="translate(-154.643 -71.99)"/>
+        <circle id="prefix__타원_282" cx="1.314" cy="1.314" r="1.314" class="prefix__cls-2" data-name="타원 282" transform="translate(4.227 9.541)"/>
+        <circle id="prefix__타원_283" cx="1.314" cy="1.314" r="1.314" class="prefix__cls-2" data-name="타원 283" transform="translate(11.094 9.541)"/>
+        <path id="prefix__선_155" d="M0 0L11.402 0" class="prefix__cls-3" data-name="선 155" transform="translate(3.309 6.094)"/>
+        <path id="prefix__선_156" d="M0.409 0L0 6.894" class="prefix__cls-3" data-name="선 156" transform="translate(10.531 2.647)"/>
+        <path id="prefix__선_157" d="M0.409 6.894L0 0" class="prefix__cls-3" data-name="선 157" transform="translate(7.08 2.647)"/>
+    </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_search" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:none}
+        </style>
+    </defs>
+    <path id="prefix__사각형_238" d="M0 0H36V36H0z" class="prefix__cls-1" data-name="사각형 238"/>
+    <g id="prefix__Layer" transform="translate(8 8)">
+        <g id="prefix__Vrstva_92" data-name="Vrstva 92">
+            <g id="prefix__그룹_10295" data-name="그룹 10295">
+                <g id="prefix__타원_99" data-name="타원 99" style="stroke:#757575;stroke-width:1.5px;fill:none">
+                    <circle cx="8.333" cy="8.333" r="8.333" style="stroke:none"/>
+                    <circle cx="8.333" cy="8.333" r="7.583" class="prefix__cls-1"/>
+                </g>
+                <path id="prefix__선_95" d="M0 0L5.556 5.556" data-name="선 95" transform="translate(13.889 13.889)" style="stroke-linecap:round;stroke:#757575;stroke-width:1.5px;fill:none"/>
+            </g>
+        </g>
+    </g>
+</svg>
