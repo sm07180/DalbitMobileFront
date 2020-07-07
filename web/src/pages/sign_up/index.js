@@ -17,7 +17,7 @@ import _ from 'lodash'
 let intervalId = null
 let pickerHolder = true
 
-export default props => {
+export default (props) => {
   let snsInfo = qs.parse(location.search)
   const {webview, redirect} = qs.parse(location.search)
 
@@ -96,12 +96,12 @@ export default props => {
   })
 
   //Facebook,Firebase 이벤트 호출
-  try{
-      fbq('track', 'Lead')
-      firebase.analytics().logEvent("Lead")
-  } catch(e){}
+  try {
+    fbq('track', 'Lead')
+    firebase.analytics().logEvent('Lead')
+  } catch (e) {}
 
-  const onLoginHandleChange = e => {
+  const onLoginHandleChange = (e) => {
     //대소문자 구분없음, 소문자만 입력
     if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
       e.target.value = e.target.value.toLowerCase()
@@ -158,7 +158,7 @@ export default props => {
   //---------------------------------------------------------------------
   //유효성 검사 함수
 
-  const validatePwd = pwdEntered => {
+  const validatePwd = (pwdEntered) => {
     //비밀번호 유효성 체크 로직 (숫자,영문,특수문자 중 2가지 이상 조합, 공백 체크)
     let pw = pwdEntered
     let blank_pattern = pw.search(/[\s]/g)
@@ -220,7 +220,7 @@ export default props => {
     }
   }
 
-  const validateID = idEntered => {
+  const validateID = (idEntered) => {
     //휴대폰 번호 유효성 검사 오직 숫자만 가능
     let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     const memIdVal = idEntered
@@ -322,7 +322,7 @@ export default props => {
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
@@ -332,7 +332,7 @@ export default props => {
         msg: 'jpg, png 이미지만 사용 가능합니다.'
       })
     }
-    reader.onload = function() {
+    reader.onload = function () {
       if (reader.result) {
         setImgData(reader.result)
       } else {
@@ -341,7 +341,7 @@ export default props => {
   }
 
   // term  value값 n,y로 리턴수정
-  const termHandle = value => {
+  const termHandle = (value) => {
     return value == 'y' ? 'n' : 'y'
   }
 
@@ -372,12 +372,12 @@ export default props => {
   }
 
   // @todo 약관 동의 하나씩 모두 체크, 체크해제 했을때 전체 동의 체크 작동
-  const termCheckHandle = e => {
+  const termCheckHandle = (e) => {
     onLoginHandleChange(e)
   }
 
   //datepicker에서 올려준 값 받아서 birth 바로 변경하기
-  const pickerOnChange = value => {
+  const pickerOnChange = (value) => {
     if (changes.birth == '') {
       dateDefault = value
     } else {
@@ -385,7 +385,7 @@ export default props => {
     }
   }
 
-  const validateBirth = value => {
+  const validateBirth = (value) => {
     let year = value.slice(0, 4)
 
     if (year == '') {
@@ -488,7 +488,7 @@ export default props => {
 
     //업로드 성공, 실패 여부로 이미지 값 다시 셋팅해준 후 member_join은 무조건 날리기
     const memId = changes.memId.replace(/-/g, '')
-    const nativeTid = (context.nativeTid == null || context.nativeTid == 'init') ? '' : context.nativeTid
+    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
     const res = await Api.member_join({
       data: {
         memType: changes.memType,
@@ -505,7 +505,7 @@ export default props => {
         name: changes.name,
         profImg: resultImg,
         profImgRacy: 3,
-        nativeTid : nativeTid,
+        nativeTid: nativeTid,
         email: '',
         os: changes.osName
       }
@@ -514,18 +514,18 @@ export default props => {
       if (res.code == 0) {
         //alert(res.message)
         //Facebook,Firebase 이벤트 호출
-        try{
-            fbq('track', 'CompleteRegistration')
-            firebase.analytics().logEvent("CompleteRegistration")
-        } catch(e){}
+        try {
+          fbq('track', 'CompleteRegistration')
+          firebase.analytics().logEvent('CompleteRegistration')
+        } catch (e) {}
 
         context.action.alert({
           callback: () => {
             //애드브릭스 이벤트 전달
-            if(res.data.adbrixData != '' && res.data.adbrixData != 'init'){
-              Hybrid('adbrixEvent', res.data.adbrixData);
-              if(__NODE_ENV === 'dev'){
-                alert(JSON.stringify(res.data.adbrixData));
+            if (res.data.adbrixData != '' && res.data.adbrixData != 'init') {
+              Hybrid('adbrixEvent', res.data.adbrixData)
+              if (__NODE_ENV === 'dev') {
+                alert(JSON.stringify(res.data.adbrixData))
               }
             }
             fetchPhoneLogin()
@@ -544,7 +544,6 @@ export default props => {
   let validateSetting = {}
 
   async function fetchAuth() {
-
     getNativeTid()
 
     const resAuth = await Api.sms_request({
@@ -813,7 +812,7 @@ export default props => {
             type="file"
             id="profileImg"
             accept="image/jpg, image/jpeg, image/png"
-            onChange={e => {
+            onChange={(e) => {
               uploadSingleFile(e)
             }}
           />
@@ -896,7 +895,7 @@ export default props => {
             </HelpText>
           )}
         </InputWrap>
-        <BirthAlertMsg>* 미성년자 이용 시 서비스 이용에 제한을 받을 수 있습니다.</BirthAlertMsg>
+        <BirthAlertMsg>17세 미만 미성년자회원은 서비스 이용을 제한합니다.</BirthAlertMsg>
         {/* 성별 */}
         <InputWrap>
           <label className="input-label">
@@ -1136,7 +1135,7 @@ const ProfileUpload = styled.div`
     height: 88px;
     border-radius: 50%;
     border: 1px solid ${COLOR_MAIN};
-    background: url(${props => props.imgUrl}) no-repeat center center / cover;
+    background: url(${(props) => props.imgUrl}) no-repeat center center / cover;
   }
   div.on {
     img {
@@ -1173,7 +1172,8 @@ const ProfileUpload = styled.div`
   }
 `
 const BirthAlertMsg = styled.div`
-  height: 16px;
+  padding-top: 5px;
+  margin-bottom: -5px;
   font-size: 12px;
   font-weight: normal;
   font-stretch: normal;
@@ -1182,6 +1182,16 @@ const BirthAlertMsg = styled.div`
   letter-spacing: -0.3px;
   text-align: left;
   color: #e84d6f;
+  &::before {
+    display: inline-block;
+    margin-top: 10px;
+    vertical-align: top;
+    margin-right: 5px;
+    width: 2px;
+    height: 2px;
+    background: #e84d6f;
+    content: '';
+  }
 `
 
 //성별 선택 라디오 박스 영역
