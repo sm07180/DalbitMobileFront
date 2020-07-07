@@ -3,21 +3,36 @@ import styled from 'styled-components'
 
 import {Context} from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import qs from 'query-string'
+import Utility from 'components/lib/utility'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
 
+//static
+import icoProfile from './static/ico-profil.svg'
+import icoCamera from './static/ico-camera.svg'
+
+let intervalId = null
+let setTime = 300
+
 export default (props) => {
   const context = useContext(Context)
+  const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
   const authRef = useRef(null)
 
+  const [timeText, setTimeText] = useState()
   const [btnState, setBtnState] = useState({
     memId: false,
     auth: false
   })
+
+  //SNS 회원가입 셋팅
+  let snsInfo = qs.parse(location.search)
 
   function reducer(state, action) {
     const {name, value} = action
@@ -58,6 +73,13 @@ export default (props) => {
     }
   }
 
+  if (_.hasIn(snsInfo, 'nickNm')) {
+    snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
+  }
+  if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
+    snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
+  }
+
   const [changes, dispatch] = useReducer(reducer, {
     memId: '',
     loginPwd: '',
@@ -65,7 +87,7 @@ export default (props) => {
     nickNm: '',
     birth: '',
     gender: 'n',
-    image: '',
+    profImgUrl: '',
     memType: 'p',
     allTerm: 'n',
     term1: 'n',
@@ -73,7 +95,8 @@ export default (props) => {
     term3: 'n',
     term4: 'n',
     auth: '',
-    CMID: ''
+    CMID: '',
+    ...snsInfo
   })
 
   function validateReducer(state, validate) {
@@ -138,7 +161,7 @@ export default (props) => {
     nickNm,
     birth,
     gender,
-    image,
+    profImgUrl,
     memType,
     allTerm,
     term1,
@@ -150,7 +173,7 @@ export default (props) => {
   } = changes
 
   //------------------------------------------------------------------------------
-  //휴대폰 본인인증 관련
+  //휴대폰 본인인증
   const validateID = (target) => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     const memIdVal = target
@@ -174,9 +197,8 @@ export default (props) => {
     }
   }
 
-  async function fetchSmsReq() {
+  const fetchSmsReq = async () => {
     if (!validateID(memId)) return null
-
     const {result, data, message} = await Api.sms_request({
       data: {
         phoneNo: memId,
@@ -191,6 +213,8 @@ export default (props) => {
         text: '인증번호 요청이 완료되었습니다.'
       })
       memIdRef.current.disabled = true
+      authRef.current.disabled = false
+      startAuthTimer()
     } else {
       setValidate({name: 'memId', check: false, text: message})
       context.action.alert({
@@ -199,8 +223,53 @@ export default (props) => {
     }
   }
 
+  const fetchSmsCheck = async () => {
+    const {result, message} = await Api.sms_check({
+      data: {
+        CMID: CMID,
+        code: Number(auth)
+      }
+    })
+    if (result === 'success') {
+      setValidate({name: 'auth', check: true, text: message})
+      setValidate({name: 'memId', check: true, text: ''})
+      clearInterval(intervalId)
+      setTimeText('')
+      authRef.current.disabled = true
+      setBtnState({memId: false, auth: false})
+    } else {
+      setValidate({
+        name: 'auth',
+        check: false,
+        text: '인증번호(가) 일치하지 않습니다.'
+      })
+    }
+  }
+
+  const startAuthTimer = () => {
+    clearInterval(intervalId)
+    setTime = 300
+    intervalId = setInterval(() => {
+      let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+      setTimeText(timer)
+      setTime--
+      if (setTime < 0) {
+        clearInterval(intervalId)
+        setValidate({
+          name: 'memId',
+          check: false,
+          text: '인증시간이 초과되었습니다.'
+        })
+        authRef.current.disabled = true
+        setBtnState({memId: true, auth: true})
+      }
+    }, 1000)
+  }
+
+  //프로필사진
+
   useEffect(() => {
-    console.log(memIdRef)
+    //console.log(memIdRef)
   }, [memIdRef])
 
   return (
@@ -241,8 +310,8 @@ export default (props) => {
               onChange={(e) => dispatch(e.target)}
               disabled={true}
             />
-            <span className="timer">05:00</span>
-            <button disabled={!btnState.auth} onClick={fetchSmsReq}>
+            <span className="timer">{timeText}</span>
+            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
               인증확인
             </button>
           </div>
@@ -250,6 +319,21 @@ export default (props) => {
         </InputItem>
 
         {/* 프로필 사진 ---------------------------------------------------------- */}
+        <ProfileUpload imgUrl={profImgUrl} className={memType !== 'p' && 'top'}>
+          <label htmlFor="profileImg">
+            <div></div>
+            <span>클릭 이미지 파일 추가</span>
+          </label>
+          <input
+            type="file"
+            id="profileImg"
+            accept="image/jpg, image/jpeg, image/png"
+            onChange={(e) => {
+              uploadSingleFile(e)
+            }}
+          />
+          <p className="img-text">프로필 사진을 등록 해주세요</p>
+        </ProfileUpload>
       </Content>
     </Layout>
   )
@@ -363,5 +447,60 @@ const InputItem = styled.div`
     line-height: 14px;
     background: #9e9e9e;
     text-align: center;
+  }
+`
+
+//프로필 업로드 영역
+const ProfileUpload = styled.div`
+  margin: 20px 0 16px 0;
+  text-align: center;
+  &.top {
+    margin-top: -20px;
+  }
+  input {
+    position: absolute;
+    height: 0;
+    width: 0;
+  }
+  div {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 1px solid ${COLOR_MAIN};
+    background: url(${(props) => (props.imgUrl ? props.imgUrl : icoProfile)}) no-repeat center center / cover;
+    background-size: ${(props) => (props.imgUrl ? 'cover' : '73px 73px')};
+  }
+  div.on {
+    img {
+      display: none;
+    }
+  }
+  label {
+    display: block;
+    position: relative;
+    width: 72px;
+    margin: 0 auto;
+    cursor: pointer;
+
+    span {
+      display: block;
+      position: absolute;
+      bottom: -4px;
+      right: -13px;
+      width: 30px;
+      height: 30px;
+      background: url(${icoCamera}) no-repeat center / cover;
+      text-indent: -9999px;
+    }
+  }
+
+  .img-text {
+    padding-top: 8px;
+    font-size: 14px;
+    color: ${COLOR_MAIN};
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    text-align: center;
+    transform: skew(-0.03deg);
   }
 `
