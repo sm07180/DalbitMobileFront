@@ -47,7 +47,7 @@ function Notice(props) {
       params: {
         noticeType: noticeNum,
         page: currentPage,
-        records: 20
+        records: 40
       }
     })
     if (res.result === 'success') {
@@ -96,7 +96,7 @@ function Notice(props) {
   }
 
   //date format
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -149,7 +149,7 @@ function Notice(props) {
   ////////////////////////////////
   useEffect(() => {
     if (Store().noticePage !== undefined) {
-      window.onpopstate = e => {
+      window.onpopstate = (e) => {
         window.history.back()
       }
     }
@@ -168,9 +168,9 @@ function Notice(props) {
   }
 
   //----------------------------------------------------------
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
       const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
