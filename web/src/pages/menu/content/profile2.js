@@ -5,25 +5,20 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
-// component
+// components
 import Header from '../component/header2.js'
 import Controller from 'components/ui/remoteController'
 import MyProfile2 from './myProfile2'
-// static
+// static svg
 import InfoIcon from '../static/profile/ic_info_m.svg'
-
 import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
-
 import AlarmIcon from '../static/profile/ic_alarm_m.svg'
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
 import HeartIcon from '../static/profile/ic_headphones_m_p.svg'
 import ByeolIcon from '../static/profile/ic_star_m_p.svg'
-
 import FaqIcon2 from '../static/ic_faq_b.svg'
 import QuireIcon from '../static/ic_inquiry_b.svg'
-
-//
 import ProfileIcon from '../static/menu_profile.svg'
 import AppSettingIcon from '../static/menu_appsetting.svg'
 import BroadNoticeIcon from '../static/menu_broadnotice.svg'
@@ -40,9 +35,8 @@ import InquireIcon from '../static/menu_1on1.svg'
 import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
-
-//render-------------------------------------------------------------------
-export default props => {
+//------------------------------------------------------------------------------
+export default (props) => {
   // nav Array
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -50,19 +44,20 @@ export default props => {
     {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
   ]
   const walletList = [
-    {type: 'wallet', txt: '달 충전', icon: DalIcon},
-    {type: 'wallet', txt: '환전', icon: ExchangeIcon},
+    {type: 'store', txt: '달 충전', icon: DalIcon},
+    {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon}
   ]
   const customerList = [
-    {type: 'noice', txt: '공지사항', icon: NoticeIcon},
+    {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
-    {type: 'personal', txt: '1:1문의', icon: InquireIcon}
+    {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    // {type: 'personal', txt: '앱정보', icon: AppIcon}
+    {type: 'appInfo', txt: '앱정보', icon: AppIcon}
   ]
+  // webview & ctx
   const {webview} = qs.parse(location.search)
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -70,7 +65,7 @@ export default props => {
   // state
   const [fetching, setFetching] = useState(false)
   // timeFormat function
-  const timeFormat = sec_time => {
+  const timeFormat = (sec_time) => {
     const hour = Math.floor(sec_time / 3600)
     const min = Math.floor((sec_time - hour * 3600) / 60)
     return `${hour}시간 ${min}분`
@@ -144,10 +139,25 @@ export default props => {
               </div>
               <div className="real-info">
                 {[
-                  {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
-                  {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
-                  {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
-                ].map(real => {
+                  {
+                    type: 'heart',
+                    icon: HeartIcon,
+                    txt: '좋아요',
+                    value: profile.likeTotCnt.toLocaleString()
+                  },
+                  {
+                    type: 'byeol',
+                    icon: ByeolIcon,
+                    txt: '보유별',
+                    value: profile.byeolCnt.toLocaleString()
+                  },
+                  {
+                    type: 'dal',
+                    icon: DalIcon,
+                    txt: '보유달',
+                    value: profile.dalCnt.toLocaleString()
+                  }
+                ].map((real) => {
                   const {type, icon, txt, value} = real
                   return (
                     <div key={type} className="each">
@@ -191,7 +201,9 @@ export default props => {
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                  <a
+                    href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
+                    key={`list-${idx}`}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
@@ -227,11 +239,12 @@ export default props => {
 const LogoutBtn = styled.button`
   display: block;
   background-color: #fff;
-  padding: 16px 0;
   width: 100%;
   color: #9e9e9e;
   font-size: 14px;
   margin-top: 24px;
+  height: 48px;
+  line-height: 48px;
 `
 const MenuMypage = styled.div`
   min-height: 100vh;
@@ -336,11 +349,9 @@ const MenuMypage = styled.div`
       }
     }
   }
-
   .log-out {
     padding-top: 30px;
     box-sizing: border-box;
-
     img {
       display: block;
       margin: 0 auto;
@@ -371,14 +382,14 @@ const MenuMypage = styled.div`
     }
   }
   .addCustomer {
-    margin-top: 16px;
+    margin-top: 12px;
   }
   .sub-nav {
-    padding-bottom: 20px;
+    margin-top: 12px;
+    padding-bottom: 23px;
     transform: skew(-0.03deg);
     a {
       display: block;
-
       .list {
         position: relative;
         display: flex;
@@ -402,7 +413,7 @@ const MenuMypage = styled.div`
           color: #000000;
           font-size: 14px;
           letter-spacing: -0.35px;
-          font-weight: 600;
+          font-weight: 800;
         }
         .icon {
           display: block;

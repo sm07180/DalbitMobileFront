@@ -8,8 +8,9 @@ import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import Swiper from 'react-id-swiper'
 
 // static
-import peopleIcon from '../static/ic_people.svg'
-import heartIcon from '../static/ico_like_g.svg'
+import GoldMedal from '../static/medal_gold_m@2x.png'
+import SilverMedal from '../static/medal_silver_m@2x.png'
+import BronzeMedal from '../static/medal_bronze_m@2x.png'
 
 export default props => {
   const {rankType, djRank, fanRank} = props
@@ -30,22 +31,19 @@ export default props => {
       {rankType === 'dj' ? (
         <Swiper {...swiperParams}>
           {djRank.map((dj, idx) => {
-            const {rank, nickNm, memNo, profImg, likes, listeners} = dj
+            const {rank, nickNm, memNo, profImg} = dj
             return (
               <div
                 className="slide-wrap"
                 key={`dj-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
                 <div className="nickname">{nickNm}</div>
-                <div className="info-wrap">
-                  <img src={peopleIcon} />
-                  <div className="text">{typeof listeners === 'number' && listeners.toLocaleString()}</div>
-                  <img src={heartIcon} className="heart-icon" />
-                  <div className="text">{typeof likes === 'number' && likes.toLocaleString()}</div>
-                </div>
+                {idx > 2 ? (
+                  <div className="counting">{rank}</div>
+                ) : (
+                  <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                )}
               </div>
             )
           })}
@@ -59,10 +57,13 @@ export default props => {
                 className="slide-wrap"
                 key={`fan-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  <div className="counting">{rank}</div>
-                </div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
                 <div className="nickname">{nickNm}</div>
+                {idx > 2 ? (
+                  <div className="counting">{rank}</div>
+                ) : (
+                  <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                )}
               </div>
             )
           })}
@@ -82,41 +83,54 @@ const RankList = styled.div`
     padding-right: 16px;
   }
   .slide-wrap {
-    width: 102px;
+    position: relative;
+    width: 76px;
+    padding-top: 6px;
+    padding-left: 6px;
 
+    .medal-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+    }
+    .counting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #000;
+      border-radius: 50%;
+      background-color: #e0e0e0;
+      width: 24px;
+      height: 24px;
+      font-size: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .main-img {
       position: relative;
-      width: 102px;
-      height: 102px;
-      border-radius: 32px;
+      width: 72px;
+      height: 72px;
+      border-radius: 36px;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
-
-      .counting {
-        color: #fff;
-        border-radius: 50%;
-        background-color: #632beb;
-        width: 18px;
-        height: 18px;
-        font-size: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
     }
     .nickname {
+      width: 72px;
       overflow: hidden;
       text-overflow: ellipsis;
-      height:16px;
+      height: 16px;
       white-space: nowrap;
-      color: #424242;
-      width:100px;
-      font-size: 14px;
+
+      font-size: 12px;
+      color: #e0e0e0;
       line-height: 1.14;
       letter-spacing: -0.35px;
       text-align: center;
-      margin-top: 10px;
+      margin-top: 8px;
       font-weight: 600;
       transform: skew(-0.03deg);
     }
@@ -127,7 +141,7 @@ const RankList = styled.div`
       justify-content: center;
       margin-top: 6px;
       line-height: 2.17;
-      height:13px;
+      height: 13px;
 
       .text {
         color: #424242;

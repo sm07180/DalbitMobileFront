@@ -18,17 +18,25 @@ import mic from 'images/mini/mic.svg'
 import moon from 'images/mini/moon.svg'
 import heart from 'images/mini/heart.svg'
 import clock from 'images/mini/clock.svg'
-
+import heartIcon from '../static/ico_like_g.svg'
+import date from '../static/ic_circle_plus.svg'
+import PurplePlayIcon from '../static/ic_purple_play.svg'
+import StarGiftIcon from '../static/ic_star_gift.svg'
+import PeopleYellowIcon from '../static/ic_people_yellow.svg'
+import MoonIcon from '../static/ic_moon.svg'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import Datepicker from './datepicker'
 import moment from 'moment'
 import NoResult from 'components/ui/noResult'
 import Header from '../component/header.js'
+import DatePopup from './report_popup'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 
 let pickerHolder = true
+
+const dateType = ['오늘', '어제', '최근7일', '월간']
 const broadInfo = {
   mic: [mic, '방송'],
   moon: [moon, '받은별'],
@@ -37,7 +45,7 @@ const broadInfo = {
 }
 
 const listenInfo = {
-  mic: [mic, '청취'],
+  mic: [mic, '시청'],
   moon: [moon, '달 선물'],
   heart: [heart, '받은 별'],
   clock: [clock, '게스트 참여 시간']
@@ -49,14 +57,16 @@ const selectBoxData = [
 ]
 
 let currentPage = 1
+let timer
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const ctx = useContext(Context)
   //state
   const [validate, setValidate] = useState({
     pickdata: false
   })
+
   const [active, setActive] = useState(0)
   const [selectType, setSelectType] = useState(0)
   const [moreState, setMoreState] = useState(false)
@@ -68,8 +78,9 @@ export default props => {
   const [broadtotal, setbroadtotal] = useState([])
   const [listentotal, setlistentotal] = useState([])
   const [pickerCssOn, setPickerCssOn] = useState(false)
-  const [resultState, setResultState] = useState(1)
+  const [resultState, setResultState] = useState(-1)
   const [nextList, setNextList] = useState(false)
+  const [popupState, setPopupState] = useState(false)
   //api
   async function fetchData(next) {
     if (!next) currentPage = 1
@@ -81,7 +92,7 @@ export default props => {
         startDt: changes.pickdataPrev,
         endDt: changes.pickdataNext,
         page: currentPage,
-        records: 3
+        records: 4
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {
@@ -190,7 +201,7 @@ export default props => {
     }
   }
 
-  const pickerOnChangenext = value => {
+  const pickerOnChangenext = (value) => {
     if (!changes.pickdata) {
       dateDefault = value
     } else {
@@ -216,7 +227,7 @@ export default props => {
   }, [])
   //----------------------------
   // 셀렉트 타입
-  const setType = value => {
+  const setType = (value) => {
     setSelectType(value)
     //setMoreState(false)
     setActive(0)
@@ -231,7 +242,7 @@ export default props => {
     setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
   }
   //date format
-  const dateFormat = strFormatFromServer => {
+  const dateFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
     let time = strFormatFromServer.slice(8)
@@ -239,14 +250,14 @@ export default props => {
     return `${date} `
   }
 
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('-')
     let time = strFormatFromServer.slice(8)
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
     return `${time} `
   }
-  const timeFormatSumurry = strFormatFromServer => {
+  const timeFormatSumurry = (strFormatFromServer) => {
     let time = strFormatFromServer.slice(0, 5)
     time = [time.slice(0, 1), time.slice(1, 3), time.slice(3)].join(':')
     return `${time} `
@@ -264,6 +275,44 @@ export default props => {
     //document.getElementById("demo").innerHTML = hour+":"+min+":" + sec
   }
 
+  const Toggletab = () => {
+    setResultState(-1)
+    setActive(0)
+    setBroadData([])
+    setListenData([])
+
+    setbroadtotal([])
+    setlistentotal([])
+    setPickerCssOn(false)
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
+    ctx.action.updateReportDate({
+      type: 0,
+      prev: dateToday,
+      next: dateToday
+    })
+    if (selectType === 0) {
+      setSelectType(1)
+    } else {
+      setSelectType(0)
+    }
+  }
+
+  const fetchDataHandle = () => {
+    if (selectType === 0) {
+      fetchData()
+    } else {
+      fetchDataListen()
+    }
+  }
+  useEffect(() => {
+    fetchData()
+  }, [selectType])
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
   const showMoreList = () => {
     if (selectType === 0) {
       setBroadData(broadData.concat(nextList))
@@ -273,7 +322,28 @@ export default props => {
       fetchDataListen('next')
     }
   }
-
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+  useEffect(() => {
+    ctx.action.updateReportDate({
+      type: 0,
+      prev: changes.pickdataPrev,
+      next: changes.pickdataNext
+    })
+  }, [])
   return (
     <>
       {/* 공통타이틀 */}
@@ -281,252 +351,433 @@ export default props => {
         <div className="category-text">리포트</div>
       </Header>
       <Report>
-        <TitleWrap className="noneborder">
-          <TitleText>리포트</TitleText>
-          <SelectWrap>
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={setType} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
-          </SelectWrap>
-        </TitleWrap>
-        <div className="radioWrap">
-          <button
-            onClick={() => {
-              setActive(0)
-              setPickerCssOn(false)
-              pickerOnChange(dateToday, 'btn')
-            }}
-            className={active === 0 ? 'on' : ''}>
-            오늘
+        <div className="tabWrap">
+          <button onClick={Toggletab} className={selectType === 0 ? 'on' : ''}>
+            방송
           </button>
-          <button
-            onClick={() => {
-              setActive(1)
-              setPickerCssOn(false)
-              pickerOnChange(dateDayAgo, 'dayAgo')
-            }}
-            className={active === 1 ? 'on' : ''}>
-            어제
+          <button onClick={Toggletab} className={selectType === 1 ? 'on' : ''}>
+            시청
           </button>
-          <button
-            onClick={() => {
-              setActive(2)
-              setPickerCssOn(false)
-              pickerOnChange(dateWeekAgo, 'btn')
-            }}
-            className={active === 2 ? 'on' : ''}>
-            최근 7일
-          </button>
-          <button
-            onClick={() => {
-              setActive(3)
-              setPickerCssOn(false)
-              pickerOnChange(dateMonthAgo, 'btn')
-            }}
-            className={active === 3 ? 'on' : ''}>
-            월간
-          </button>
-          <div className={[`datebox ${pickerCssOn ? 'on' : ''}`]}>
-            <section>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdataPrev}
-                change={pickerOnChange}
-                placeholder="날짜"
-                pickerState={pickerState}
-                afterSelected={afterSelected}
-              />
-              <span className="line">
-                <span></span>
-              </span>
-              <Datepicker
-                text="날짜"
-                name="pickdata"
-                value={changes.pickdataNext}
-                change={pickerOnChangenext}
-                placeholder="날짜"
-                pickerState={pickerState}
-                afterSelected={afterSelected}
-              />
-            </section>
-            {selectType === 0 && (
-              <button
-                className="search"
-                onClick={() => {
-                  fetchData()
-                }}>
-                검색
-              </button>
-            )}
 
-            {selectType === 1 && (
-              <button
-                className="search"
-                onClick={() => {
-                  fetchDataListen()
-                }}>
-                검색
-              </button>
-            )}
-          </div>
+          <img
+            src={date}
+            onClick={() => {
+              setPopupState(true)
+            }}
+          />
+        </div>
+        <div
+          className="data-box"
+          onClick={() => {
+            setPopupState(true)
+          }}>
+          <span className={ctx.reportDate.type === 4 ? 'none' : ''}>{dateType[ctx.reportDate.type]}</span>
+          <p>
+            {moment(ctx.reportDate.prev).format('YYYY-MM-DD')} ~ {moment(ctx.reportDate.next).format('YYYY-MM-DD')}
+          </p>
         </div>
 
         {resultState == 0 ? (
           <NoResult />
+        ) : resultState == -1 ? (
+          <></>
         ) : (
           <>
-            <TitleWrap>
-              {selectType === 0 && <TitleText>방송요약</TitleText>}
-              {selectType === 1 && <TitleText>청취요약</TitleText>}
-              <TitleSubMsg>데이터는 최대 6개월까지 검색 가능합니다.</TitleSubMsg>
-            </TitleWrap>
-            <BroadcastShort>
-              {selectType === 0 &&
-                Object.keys(broadInfo).map((section, index) => {
-                  return (
-                    <ShortSection key={index}>
-                      <div>
-                        <div>{broadInfo[section][1]}</div>
-                        <div className="count">
-                          {broadInfo[section][1] === '방송' &&
-                            broadtotal.length !== 0 &&
-                            decodeSec(String(broadtotal.broadcastTime))}
-                          {broadInfo[section][1] === '받은별' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.byeolTotCnt))}
-                          {broadInfo[section][1] === '좋아요' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.goodTotCnt))}
-                          {broadInfo[section][1] === '청취자' &&
-                            broadtotal.length !== 0 &&
-                            numberFormat(String(broadtotal.listenerTotCnt))}
-                        </div>
-                      </div>
-                    </ShortSection>
-                  )
-                })}
-              {selectType === 1 &&
-                Object.keys(listenInfo).map((section, index) => {
-                  const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
-                  return (
-                    <ShortSection key={index}>
-                      <div>
-                        <div>{listenInfo[section][1]}</div>
-                        <div className="count">
-                          {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
-                          {listenInfo[section][1] === '달 선물' &&
-                            listentotal.length !== 0 &&
-                            numberFormat(String(giftDalTotCnt))}
-                          {listenInfo[section][1] === '받은 별' && listentotal.length !== 0 && numberFormat(String(byeolTotCnt))}
-                          {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
-                        </div>
-                      </div>
-                    </ShortSection>
-                  )
-                })}
-            </BroadcastShort>
-
-            <TitleWrap>
-              <TitleText>상세내역</TitleText>
-            </TitleWrap>
-            <DetailTable>
-              <div>
+            <>
+              <TitleWrap>
+                {selectType === 0 && <TitleText>방송요약</TitleText>}
+                {selectType === 1 && <TitleText>청취요약</TitleText>}
+                {/* <TitleSubMsg>
+                데이터는 최대 6개월까지 검색 가능합니다.
+              </TitleSubMsg> */}
+              </TitleWrap>
+              <BroadcastShort>
                 {selectType === 0 &&
-                  broadData.map((value, idx) => {
+                  Object.keys(broadInfo).map((section, index) => {
                     return (
-                      <MobileDetailTab key={idx}>
+                      <ShortSection key={index}>
                         <div>
-                          <span>방송일자</span> <span>{dateFormat(value.broadDt)}</span>
+                          <div>{broadInfo[section][1]}</div>
+                          <div className="count">
+                            {broadInfo[section][1] === '방송' &&
+                              broadtotal.length !== 0 &&
+                              decodeSec(String(broadtotal.broadcastTime))}
+                            {broadInfo[section][1] === '받은별' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.byeolTotCnt))}
+                            {broadInfo[section][1] === '좋아요' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.goodTotCnt))}
+                            {broadInfo[section][1] === '청취자' &&
+                              broadtotal.length !== 0 &&
+                              numberFormat(String(broadtotal.listenerTotCnt))}
+                          </div>
                         </div>
-                        <div>
-                          <span>방송시작 </span>
-                          <span>{timeFormat(value.startDt)}</span>
-                        </div>
-                        <div>
-                          <span> 방송종료 </span>
-                          <span>{timeFormat(value.endDt)}</span>
-                        </div>
-                        <div>
-                          <span>받은별 </span>
-                          <span>{numberFormat(value.byeolCnt)}</span>
-                        </div>
-                        <div>
-                          <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
-                        </div>
-                        <div>
-                          <span>최다 청취자</span> <span>{numberFormat(value.listenerCnt)}</span>
-                        </div>
-                        <div>
-                          <span>방송 최고 순위</span>
-                          <span>{value.rank}</span>
-                        </div>
-                      </MobileDetailTab>
+                      </ShortSection>
                     )
                   })}
-
                 {selectType === 1 &&
-                  listenData.map((value, idx) => {
+                  Object.keys(listenInfo).map((section, index) => {
+                    const {listeningTime, giftDalTotCnt, byeolTotCnt, guestTime} = listentotal
                     return (
-                      <MobileDetailTab key={idx}>
+                      <ShortSection key={index} className="see">
                         <div>
-                          <span>청취시작</span> <span>{timeFormat(value.startDt)}</span>
+                          <div>{listenInfo[section][1]}</div>
+                          <div className="count">
+                            {listenInfo[section][1] === '시청' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
+                            {listenInfo[section][1] === '달 선물' &&
+                              listentotal.length !== 0 &&
+                              numberFormat(String(giftDalTotCnt))}
+                            {listenInfo[section][1] === '받은 별' &&
+                              listentotal.length !== 0 &&
+                              numberFormat(String(byeolTotCnt))}
+                            {listenInfo[section][1] === '게스트 참여 시간' && listentotal.length !== 0 && guestTime}
+                          </div>
                         </div>
-                        <div>
-                          <span>청취종료</span>
-                          <span>{timeFormat(value.endDt)}</span>
-                        </div>
-                        <div>
-                          <span>방송방(DJ)</span>
-                          <span style={{color: '#632beb'}}>{value.bjNickNm}</span>
-                        </div>
-                        <div>
-                          <span>선물내역(달)</span>
-                          <span>{numberFormat(value.giftDalCnt)}</span>
-                        </div>
-                        <div>
-                          <span>받은내역(별)</span>
-                          <span>{numberFormat(value.byeolCnt)}</span>
-                        </div>
-                        <div>
-                          <span>게스트</span> <span>{value.isGuest === false ? '-' : value.isGuest}</span>
-                        </div>
-                      </MobileDetailTab>
+                      </ShortSection>
                     )
                   })}
-              </div>
-            </DetailTable>
+              </BroadcastShort>
+              <TitleWrap>
+                <TitleText>상세내역</TitleText>
+              </TitleWrap>
+              <DetailTable>
+                <div>
+                  {selectType === 0 &&
+                    broadData.map((value, idx) => {
+                      const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)
+                      return (
+                        <MobileDetailTab key={idx}>
+                          <div>
+                            <span className="listenName">{dateFormat(value.broadDt)}</span>
+                          </div>
+                          <div className="startDate">
+                            <span>{timeFormat(value.startDt)}</span>~&nbsp;
+                            <span>{timeFormat(value.endDt)}</span>
+                            &nbsp;
+                            {TimeDeclare > 0 && <span className="timeDeclare">(&nbsp;{TimeDeclare}분&nbsp;)</span>}
+                          </div>
+
+                          <div className="giftDate">
+                            <div>
+                              <span>받은별 </span>
+                              <span>{numberFormat(value.byeolCnt)}</span>
+                            </div>
+                            <div className="onSelect1">
+                              <span>좋아요</span> <span>{numberFormat(value.likes)}</span>
+                            </div>
+                          </div>
+
+                          <div className="giftDate noborder">
+                            <div className="onSelect2">
+                              <span>최다 청취자 </span>
+                              <span>{numberFormat(value.listenerCnt)}</span>
+                            </div>
+                            <div className="onSelect3">
+                              <span>방송 최고 순위</span> <span>{value.rank}</span>
+                            </div>
+                          </div>
+                        </MobileDetailTab>
+                      )
+                    })}
+
+                  {selectType === 1 &&
+                    listenData.map((value, idx) => {
+                      const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)
+                      return (
+                        <MobileDetailTabListen key={idx}>
+                          <div>
+                            <span className="listenName">{value.bjNickNm}</span>
+                          </div>
+                          <div className="startDate">
+                            <span className="black">{dateFormat(value.startDt)}</span>
+                            <span>{timeFormat(value.startDt)}</span>&nbsp;~
+                            <span>{timeFormat(value.endDt)}</span>
+                            &nbsp;
+                            {TimeDeclare > 0 && <span className="timeDeclare">(&nbsp;{TimeDeclare}분&nbsp;)</span>}
+                            {/* {value.listenTime / 3600} */}
+                          </div>
+                          <div className="giftDate">
+                            <div className="onSelect1">
+                              <span>선물준달</span>
+                              <span>{numberFormat(value.giftDalCnt)}</span>
+                            </div>
+                            <div className="onSelect2">
+                              <span>받은별</span>
+                              <span>{numberFormat(value.byeolCnt)}</span>
+                            </div>
+                          </div>
+                          <div className="guestDate onSelect4">
+                            <span>게스트로 참여 여부</span>
+                            <span>{value.isGuest === false ? '-' : value.isGuest}</span>
+                          </div>
+                        </MobileDetailTabListen>
+                      )
+                    })}
+                </div>
+              </DetailTable>
+            </>
           </>
         )}
-
-        {moreState && (
-          <Submit onClick={() => showMoreList()}>
-            <span>더보기</span>
-            <em></em>
-          </Submit>
-        )}
       </Report>
+      {popupState && (
+        <DatePopup
+          active={active}
+          setActive={setActive}
+          setPickerCssOn={setPickerCssOn}
+          pickerOnChange={pickerOnChange}
+          pickerOnChangenext={pickerOnChangenext}
+          pickdataPrev={changes.pickdataPrev}
+          pickdataNext={changes.pickdataNext}
+          pickerState={pickerState}
+          afterSelected={afterSelected}
+          selectType={selectType}
+          fetchData={fetchDataHandle}
+          setPopupState={setPopupState}
+        />
+      )}
     </>
   )
 }
 
 const MobileDetailTab = styled.div`
-  padding: 0px 10px;
-  border-bottom: 1px solid #bdbdbd;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-bottom: 8px;
+
   div {
     display: flex;
     justify-content: space-between;
     color: #424242;
     font-size: 14px;
-    margin: 16px 0;
+    /* margin: 16px 0; */
     letter-spacing: -0.35px;
     transform: skew(-0.03deg);
-    & span {
-      :nth-child(1) {
-        width: 90px;
-        margin-right: 30px;
+    .listenName {
+      font-size: 16px;
+      font-weight: 800;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+  }
+  .startDate {
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eeeeee;
+    .black {
+      color: #000000;
+    }
+
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+  .giftDate {
+    border-bottom: 1px solid #eeeeee;
+    span {
+      margin-left: 2px;
+    }
+    &.noborder {
+      border: none;
+    }
+    div {
+      position: relative;
+      padding: 11px 16px 11px 16px;
+      width: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      span {
+        margin-left: 2px;
       }
-      :nth-child(2) {
-        width: calc(100% - 120px);
+      :before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+
+        content: '';
+        background: url(${StarGiftIcon}) no-repeat center center/cover;
       }
+      &.onSelect1 {
+        :before {
+          background: url(${heartIcon}) no-repeat center center/cover;
+        }
+      }
+
+      &.onSelect2 {
+        :before {
+          background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+        }
+      }
+      &.onSelect3 {
+        :before {
+          background: url(${PurplePlayIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+  }
+  .guestDate {
+    position: relative;
+    margin-top: 12px;
+    padding: 0 16px 0 16px;
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+    :before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      content: '';
+      background: url(${heartIcon}) no-repeat center center/cover;
+    }
+  }
+  &.disable {
+    display: none;
+  }
+  &.able {
+    display: block;
+  }
+`
+
+const MobileDetailTabListen = styled.div`
+  padding: 13px 14px;
+  border-radius: 12px;
+  background-color: #fff;
+  margin-bottom: 8px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    color: #424242;
+    font-size: 14px;
+    /* margin: 16px 0; */
+    letter-spacing: -0.35px;
+    transform: skew(-0.03deg);
+    .listenName {
+      font-size: 16px;
+      font-weight: 800;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      margin-bottom: 6px;
+    }
+  }
+
+  .startDate {
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #757575;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #eeeeee;
+    .black {
+      color: #000000;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+    span:nth-child(1) {
+      margin-right: 10px;
+    }
+  }
+  .giftDate {
+    border-bottom: 1px solid #eeeeee;
+    div {
+      position: relative;
+      padding: 11px 16px 11px 16px;
+      width: 50%;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
+      span {
+        margin-left: 2px;
+      }
+      :before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        content: '';
+        background: url(${MoonIcon}) no-repeat center center/cover;
+      }
+      &.onSelect2 {
+        :before {
+          background: url(${StarGiftIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+  }
+  .guestDate {
+    position: relative;
+    margin-top: 12px;
+    padding: 0 16px 0 16px;
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.08;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+    span {
+      margin-left: 2px;
+    }
+    &.onSelect4 {
+      :before {
+        background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+      }
+    }
+    :before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      content: '';
+      background: url(${heartIcon}) no-repeat center center/cover;
     }
   }
   &.disable {
@@ -567,43 +818,112 @@ const SectionIcon = styled.div`
 const ShortSection = styled.div`
   position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  width: 50%;
-  border-bottom: 1px solid #bdbdbd;
-  padding: 12px 0;
-  &:nth-child(1):before,
-  &:nth-child(3):before {
-    content: '';
-    display: block;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    width: 1px;
-    height: calc(100% - 24px);
-    transform: translateY(-50%);
-    background-color: #e0e0e0;
+  width: calc(50% - 2px);
+  padding: 4px 16px 12px 16px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  > div {
+    :after {
+      position: absolute;
+      content: '';
+      width: 13px;
+      height: 14px;
+      z-index: 5;
+      top: 0;
+      right: 4px;
+      background: url(${PurplePlayIcon}) no-repeat center center/cover;
+    }
   }
+  :nth-child(1),
+  :nth-child(2) {
+    margin-bottom: 4px;
+  }
+  :nth-child(2) {
+    > div {
+      color: #f26d4a;
+      :after {
+        background: url(${StarGiftIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  :nth-child(3) {
+    > div {
+      color: #ec455f;
+      :after {
+        background: url(${heartIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  :nth-child(4) {
+    > div {
+      color: #febd56;
+      :after {
+        background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+      }
+    }
+  }
+  &.see {
+    :nth-child(1) {
+      position: relative;
+      > div {
+        :after {
+          background: url(${PurplePlayIcon}) no-repeat center center/cover;
+        }
+        color: #632beb;
+      }
+    }
+    :nth-child(2) {
+      > div {
+        color: #f26d4a;
+        :after {
+          background: url(${MoonIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+    :nth-child(3) {
+      > div {
+        color: #ec455f;
+        :after {
+          background: url(${StarGiftIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+    :nth-child(4) {
+      > div {
+        color: #febd56;
+        :after {
+          background: url(${PeopleYellowIcon}) no-repeat center center/cover;
+        }
+      }
+    }
+  }
+
   > div {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     width: 100%;
-    font-size: 14px;
-    color: #616161;
+    font-size: 12px;
+    font-weight: 800;
+    color: #632beb;
     transform: skew(-0.03deg);
     letter-spacing: -0.3px;
   }
   & .count {
-    height: 16px;
-    margin-right: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #424242;
-    letter-spacing: -0.35px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 4px;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
   }
 `
 const BroadcastShort = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: row;
 `
@@ -628,19 +948,21 @@ const TitleSubMsg = styled.div`
 `
 
 const TitleText = styled.div`
-  color: #632beb;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000000;
+  margin-bottom: 8px;
 `
 const TitleWrap = styled.div`
   display: flex;
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #632beb;
-  padding-bottom: 12px;
-  margin-top: 18px;
+
+  margin-top: 16px;
 
   &.noneborder {
     border-bottom: none;
@@ -649,6 +971,66 @@ const TitleWrap = styled.div`
 `
 
 const Report = styled.div`
+  padding: 12px 16px;
+  .data-box {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 16px 0;
+    padding: 8px;
+    background: #fff;
+    border-radius: 12px;
+    * {
+      height: 16px;
+      line-height: 16px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    span {
+      color: #000;
+      vertical-align: top;
+      ::after {
+        display: inline-block;
+        width: 1px;
+        height: 16px;
+        margin: 0 10px;
+        background: #e0e0e0;
+        vertical-align: top;
+        content: '';
+      }
+      &.none {
+        display: none;
+      }
+    }
+    p {
+      color: #424242;
+    }
+  }
+  .tabWrap {
+    display: flex;
+    flex-direction: row;
+    img {
+      margin-left: auto;
+    }
+
+    button {
+      width: 80px;
+      height: 32px;
+      border-radius: 12px;
+      border: solid 1px #e0e0e0;
+      background-color: #ffffff;
+      margin-left: 2px;
+      line-height: 32px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #000000;
+      &.on {
+        border: solid 1px #632beb;
+        background-color: #632beb;
+        color: #ffffff;
+      }
+    }
+  }
   & .radioWrap {
     display: flex;
     margin-top: 16px;

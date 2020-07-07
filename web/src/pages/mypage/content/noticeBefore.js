@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react'
+import React, { useState, useEffect, useContext, useReducer } from 'react'
 import styled from 'styled-components'
 
 import Api from 'context/api'
 
 // context
-import {Context} from 'context'
+import { Context } from 'context'
 
 // component
 import List from '../component/notice/list.js'
@@ -17,8 +17,13 @@ import Checkbox from './checkbox'
 import pen from 'images/pen.svg'
 
 import WhitePen from '../component/images/WhitePen.svg'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
+import {
+  COLOR_MAIN,
+  COLOR_POINT_Y,
+  COLOR_POINT_P,
+  PHOTO_SERVER
+} from 'context/color'
+import { IMG_SERVER, WIDTH_MOBILE } from 'context/config'
 
 // concat
 let currentPage = 1
@@ -39,7 +44,7 @@ const Notice = props => {
     click1: false
   }
   //---------------------------------------------------------------------
-  const reducer = (state, action) => ({...state, ...action})
+  const reducer = (state, action) => ({ ...state, ...action })
   const [state, setState] = useReducer(reducer, initialState)
   const [coment, setComment] = useState('')
   const [comentContent, setCommentContent] = useState('')
@@ -73,7 +78,11 @@ const Notice = props => {
         context.action.confirm({
           callback: () => {
             setWriteShow(false)
-            window.location.reload()
+            setTimeout(() => {
+              setComment('')
+              setCommentContent('')
+              context.action.updateNoticeState(true)
+            }, 10)
           },
           msg: '공시사항을 등록 하시겠습니까?'
         })
@@ -97,6 +106,8 @@ const Notice = props => {
     }
   }
   const WriteToggle = () => {
+    setComment('')
+    setCommentContent('')
     if (writeShow === false) {
       setWriteShow(true)
     } else {
@@ -147,25 +158,38 @@ const Notice = props => {
   }
   useEffect(() => {
     currentPage = 1
+
     fetchData()
-  }, [])
+    setTimeout(() => {
+      context.action.updateNoticeState(false)
+    }, 50)
+  }, [context.noticeState])
 
   const showMoreList = () => {
     if (moreState) {
       setListPage(nextListPage)
       fetchData('next')
     } else {
-      setListPage(nextListPage)
+      // setListPage(nextListPage)
     }
   }
   const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function() {
       //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const windowHeight =
+        'innerHeight' in window
+          ? window.innerHeight
+          : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const docHeight = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      )
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       /*
@@ -187,7 +211,9 @@ const Notice = props => {
   ///
   useEffect(() => {
     const settingProfileInfo = async memNo => {
-      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      const profileInfo = await Api.profile({
+        params: { memNo: context.token.memNo }
+      })
       if (profileInfo.result === 'success') {
         setThisMemNo(profileInfo.data.memNo)
       }
@@ -198,7 +224,10 @@ const Notice = props => {
   const createWriteBtn = () => {
     if (urlrStr === thisMemNo) {
       return (
-        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
+        <button
+          onClick={() => WriteToggle()}
+          className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}
+        >
           쓰기
         </button>
       )
@@ -206,7 +235,7 @@ const Notice = props => {
       return null
     }
   }
-  console.log(listPage)
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
@@ -233,71 +262,81 @@ const Notice = props => {
         <NoResult />
       ) : (
         <>
-          <ListWrap className="noticeIsTop">
-            {Array.isArray(listPage) &&
-              listPage.map((list, idx) => {
-                const {isTop, title, contents, writeDt, noticeIdx} = list
-                return (
-                  <div key={idx}>
-                    {isTop === true && (
-                      <a className={`idx${noticeIdx}`}>
-                        <List
-                          {...props}
-                          thisMemNo={thisMemNo}
-                          isTop={isTop}
-                          title={title}
-                          contents={contents}
-                          writeDt={writeDt}
-                          noticeIdx={noticeIdx}
-                          numbers={numbers}
-                          toggle={toggler}
-                        />
-                      </a>
-                    )}
-                  </div>
-                )
-              })}
-          </ListWrap>
-          <ListWrap>
-            {Array.isArray(listPage) ? (
-              listPage.length > 0 ? (
-                listPage.map((list, idx) => {
-                  const {isTop, title, contents, writeDt, noticeIdx} = list
-                  return (
-                    <div key={idx}>
-                      {isTop === false && (
-                        <a className={`idx${noticeIdx}`}>
-                          <List
-                            {...props}
-                            thisMemNo={thisMemNo}
-                            isTop={isTop}
-                            title={title}
-                            contents={contents}
-                            writeDt={writeDt}
-                            noticeIdx={noticeIdx}
-                            numbers={numbers}
-                            toggle={toggler}
-                          />
-                        </a>
-                      )}
-                    </div>
+          {listPage.length !== -1 && (
+            <>
+              <ListWrap className="noticeIsTop">
+                {Array.isArray(listPage) &&
+                  listPage.map((list, idx) => {
+                    const { isTop, title, contents, writeDt, noticeIdx } = list
+                    return (
+                      <div key={idx}>
+                        {isTop === true && (
+                          <a className={`idx${noticeIdx}`}>
+                            <List
+                              {...props}
+                              thisMemNo={thisMemNo}
+                              isTop={isTop}
+                              title={title}
+                              contents={contents}
+                              writeDt={writeDt}
+                              noticeIdx={noticeIdx}
+                              numbers={numbers}
+                              toggle={toggler}
+                            />
+                          </a>
+                        )}
+                      </div>
+                    )
+                  })}
+              </ListWrap>
+              <ListWrap>
+                {Array.isArray(listPage) ? (
+                  listPage.length > 0 ? (
+                    listPage.map((list, idx) => {
+                      const {
+                        isTop,
+                        title,
+                        contents,
+                        writeDt,
+                        noticeIdx
+                      } = list
+                      return (
+                        <div key={idx}>
+                          {isTop === false && (
+                            <a className={`idx${noticeIdx}`}>
+                              <List
+                                {...props}
+                                thisMemNo={thisMemNo}
+                                isTop={isTop}
+                                title={title}
+                                contents={contents}
+                                writeDt={writeDt}
+                                noticeIdx={noticeIdx}
+                                numbers={numbers}
+                                toggle={toggler}
+                              />
+                            </a>
+                          )}
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <>
+                      <NoResult />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                    </>
                   )
-                })
-              ) : (
-                <>
-                  <NoResult />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                </>
-              )
-            ) : (
-              <div className="search" />
-            )}
-          </ListWrap>
+                ) : (
+                  <div className="search" />
+                )}
+              </ListWrap>{' '}
+            </>
+          )}
         </>
       )}
 
@@ -307,17 +346,34 @@ const Notice = props => {
         </Header>
         <section>
           <div className="titleWrite">
-            <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} />
+            <input
+              placeholder="글의 제목을 입력하세요."
+              maxLength="20"
+              onChange={textChange}
+              value={coment}
+            />
           </div>
 
           <div className="contentWrite">
-            <textarea placeholder="작성하고자 하는 글의 내용을 입력해주세요." maxLength="189" onChange={textChangeContent} />
+            <textarea
+              placeholder="작성하고자 하는 글의 내용을 입력해주세요."
+              maxLength="189"
+              onChange={textChangeContent}
+              value={comentContent}
+            />
           </div>
           <div className="checkbox-wrap">
-            <Checkbox title="상단 고정" fnChange={v => setState({click1: v})} checked={state.click1} />
+            <Checkbox
+              title="상단 고정"
+              fnChange={v => setState({ click1: v })}
+              checked={state.click1}
+            />
           </div>
 
-          <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
+          <WriteSubmit
+            className={writeBtnState === true ? 'on' : ''}
+            onClick={() => NoticeUpload()}
+          >
             등록
           </WriteSubmit>
         </section>
@@ -341,7 +397,8 @@ const TopHistory = styled.div`
     button:nth-child(1) {
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
+        center / cover;
     }
     h2 {
       width: calc(100% - 24px);
@@ -450,7 +507,8 @@ const TopWrap = styled.div`
   button:nth-child(1) {
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
+      center / cover;
   }
   .title {
     width: calc(100% - 24px);
@@ -480,11 +538,12 @@ const Write = styled.div`
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #eee;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+      background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center
+        center / cover;
     }
     h2 {
       font-size: 18px;

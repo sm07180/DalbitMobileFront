@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import CheckPurple from '../component/ic_check_purple.svg'
+import CheckGray from '../component/ic_check_gray.svg'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
   <Wrap>
@@ -25,7 +27,7 @@ const Wrap = styled.div`
   margin: 24px 0;
   & label {
     display: flex;
-    color: #616161;
+    color: #000;
     align-items: center;
     cursor: pointer;
 
@@ -36,10 +38,10 @@ const Wrap = styled.div`
     display: block;
     width: 24px;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center/ cover;
+    background: url(${CheckGray}) no-repeat center center/ cover;
     cursor: pointer;
     &.on {
-      background: url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center/ cover;
+      background: url(${CheckPurple}) no-repeat center center/ cover;
     }
   }
   & .titlewrap {

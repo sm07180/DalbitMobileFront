@@ -30,18 +30,19 @@ const Header = styled.div`
   position: relative;
   display: flex;
   width: calc(100% + 32px);
-  margin-left: -16px;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid #d2d2d2;
+  margin-right: 16px;
   padding: 12px 16px;
   box-sizing: border-box;
+  background-color: white;
   z-index: 1;
   .child-bundle {
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    margin-right: 16px;
     .category-text {
       color: #000;
       font-size: 18px;

@@ -13,19 +13,19 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 import useChange from 'components/hooks/useChange'
-
-export default props => {
+// svg
+import BlackPlusIcon from '../black_plus.svg'
+import BackIcon from '../black_plus.svg'
+export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
-
   //state
   const [word, setWord] = useState(false)
   const [list, setList] = useState(false)
-
+  const [buttonState, setButtonState] = useState(false)
   //hooks
   const {changes, setChanges, onChange} = useChange({onChange: -1})
-
   //-----------------------------------------------------------------------------
   //function
 
@@ -93,7 +93,9 @@ export default props => {
       })
     }
   }
-
+  const focusState = (index) => {
+    setButtonState(index)
+  }
   const createList = () => {
     return word.map((item, index) => {
       return (
@@ -103,14 +105,26 @@ export default props => {
             maxLength="12"
             name={`word${index}`}
             onChange={onChange}
+            onClick={() => focusState(index)}
             value={_.hasIn(changes, `word${index}`) ? changes[`word${index}`] : word[index]}
           />
-          <button
-            onClick={() => {
-              removeInput(index)
-            }}>
-            삭제
-          </button>
+          {buttonState !== index && (
+            <button
+              onClick={() => {
+                removeInput(index)
+              }}>
+              삭제
+            </button>
+          )}
+          {buttonState === index && (
+            <button
+              className="save_btn"
+              onClick={() => {
+                writeValidate()
+              }}>
+              저장
+            </button>
+          )}
         </div>
       )
     })
@@ -118,9 +132,10 @@ export default props => {
 
   const addInput = () => {
     setWord(word.concat(''))
+    setButtonState(false)
   }
 
-  const removeInput = index => {
+  const removeInput = (index) => {
     context.action.confirm({
       msg: `금지어를 삭제하시겠습니까?`,
       callback: () => {
@@ -138,6 +153,7 @@ export default props => {
 
   const writeValidate = () => {
     fetchWrite()
+    setButtonState(false)
   }
 
   //-----------------------------------------------------------------------------
@@ -155,15 +171,12 @@ export default props => {
           onClick={() => {
             setWord([''])
           }}>
-          금지어 추가
+          추가
+          <span></span>
         </button>
       )}
-
+      
       {word && createList()}
-
-      <p className="info">금지어는 최대 12자 이내로만 등록 가능합니다.</p>
-      <p className="info">채팅 금지어 (최대 100개)를 직접 설정 하실 수 있습니다.</p>
-
       {word && (
         <div className="btn-wrap">
           <button
@@ -172,16 +185,12 @@ export default props => {
               addInput()
             }}>
             추가
-          </button>
-          <button
-            className="purple"
-            onClick={() => {
-              writeValidate()
-            }}>
-            저장
+            <a></a>
           </button>
         </div>
       )}
+      <p className="info">∙ &nbsp;금지어는 한 단어당 최대 12자 이내</p>
+      <p className="info">∙ &nbsp;최대 100개까지 설정 가능</p>
     </Content>
   )
 }
@@ -191,54 +200,60 @@ const Content = styled.div`
 
   .input-wrap {
     display: flex;
+    padding: 0 8px 0 16px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 12px;
+    border: solid 1px #e0e0e0;
+    background-color: #ffffff;
+    height: 44px;
     input {
-      width: calc(100% - 84px);
-      padding: 0 12px;
-      border: 1px solid #bdbdbd;
+      width: calc(100% - 50px);
+      padding: 0px 0px;
+      height: 32px;
       border-right: 0;
       color: #424242;
-      line-height: 40px;
     }
     button {
-      flex-basis: 84px;
-      background: #bdbdbd;
-      color: #fff;
+      display: block;
+      width: 46px;
+      height: 32px;
+      background: #fff;
+      color: #000;
       font-size: 16px;
+      border-radius: 8px;
+      border: solid 1px #757575;
+    }
+    .save_btn {
+      color: #fff;
+      border: solid 1px #757575;
+      background-color: #757575;
     }
   }
   .input-wrap + .input-wrap {
-    margin-top: 10px;
+    margin-top: 4px;
   }
 
   .ban-add-btn {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    height: 44px;
     padding: 0 15px;
-    border: 1px dashed #e0e0e0;
-    color: ${COLOR_MAIN};
+    border: solid 1px #e0e0e0;
+    border-radius: 12px;
+    background-color: #f5f5f5;
+    color: #000;
     font-size: 16px;
-    font-weight: bold;
-    line-height: 56px;
-    text-align: left;
-    &:after,
-    &:before {
-      display: block;
-      position: absolute;
-      border-radius: 2px;
-      background: ${COLOR_MAIN};
-      content: '';
-    }
-    &:before {
-      top: 19px;
-      right: 24px;
-      width: 2px;
-      height: 18px;
-    }
-    &:after {
-      top: 27px;
-      right: 16px;
-      width: 18px;
-      height: 2px;
+    line-height: 44px;
+    text-align: center;
+    > span {
+      margin-left: 3px;
+      width: 24px;
+      height: 24px;
+      background: url(${BlackPlusIcon});
     }
   }
 
@@ -246,40 +261,42 @@ const Content = styled.div`
     position: relative;
     margin-top: 16px;
     padding-left: 8px;
-    color: #9e9e9e;
-    font-size: 14px;
-    line-height: 20px;
+    color: #757575;
+    font-size: 12px;
+    letter-spacing: -0.3px;
     transform: skew(-0.03deg);
-    &:before {
-      display: block;
-      position: absolute;
-      left: 0px;
-      top: 7px;
-      width: 4px;
-      height: 4px;
-      border-radius: 4px;
-      background: #dbdbdb;
-      content: '';
-    }
   }
   p.info + p.info {
-    margin-top: 0;
+    margin-top: 2px;
   }
 
   .btn-wrap {
-    margin-top: 20px;
+    margin-top: 4px;
     text-align: center;
+    width: 100%;
     button {
       display: inline-block;
       max-width: 160px;
-      width: calc(50% - 4px);
       font-size: 16px;
-      line-height: 48px;
-
+      line-height: 44px;
       &.white {
-        border: 1px solid ${COLOR_MAIN};
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
         background: #fff;
-        color: ${COLOR_MAIN};
+        color: #000;
+        height: 44px;
+        border-radius: 12px;
+        border: solid 1px #e0e0e0;
+        background-color: #f5f5f5;
+        > a {
+          display: block;
+          width: 24px;
+          height: 24px;
+          margin-left: 2px;
+          background: url(${BackIcon});
+        }
       }
       &.purple {
         border: 1px solid ${COLOR_MAIN};
@@ -295,7 +312,7 @@ const Content = styled.div`
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     p.info {
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: -0.5px;
     }
     .btn-wrap {
@@ -306,6 +323,7 @@ const Content = styled.div`
     .input-wrap {
       input {
         font-size: 14px;
+        font-weight: 600;
       }
       button {
         font-size: 14px;
@@ -316,7 +334,7 @@ const Content = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     .btn-wrap {
       button {
-        max-width: calc(50% - 4px);
+        max-width: 100%;
       }
     }
   }

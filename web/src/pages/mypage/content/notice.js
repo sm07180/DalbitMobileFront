@@ -1,11 +1,8 @@
 import React, {useState, useEffect, useContext, useReducer} from 'react'
 import styled from 'styled-components'
-
 import Api from 'context/api'
-
 // context
 import {Context} from 'context'
-
 // component
 import List from '../component/notice/list.js'
 import WritePage from '../component/notice/writePage.js'
@@ -23,7 +20,6 @@ const Notice = (props) => {
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
-
   //memNo
   const urlrStr = props.location.pathname.split('/')[2]
   //state
@@ -93,6 +89,7 @@ const Notice = (props) => {
       fetcNoticeUpload()
     }
   }
+  // func write btn toggle
   const WriteToggle = () => {
     if (writeShow === false) {
       setWriteShow(true)
@@ -100,6 +97,7 @@ const Notice = (props) => {
       setWriteShow(false)
     }
   }
+  // func write btn active : purple
   const WritBtnActive = () => {
     if (coment !== '' && comentContent !== '') {
       setWriteBtnState(true)
@@ -136,18 +134,17 @@ const Notice = (props) => {
       }
     })()
   }, [page])
-
+  // memNo restore
   useEffect(() => {
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
       if (profileInfo.result === 'success') {
-        console.log('profileInfo.data.memNo', profileInfo.data.memNo)
         setThisMemNo(profileInfo.data.memNo)
       }
     }
     settingProfileInfo()
   }, [])
-
+  // create btn 생성 및 url 분기
   const createWriteBtn = () => {
     if (urlrStr === thisMemNo) {
       return (
@@ -159,11 +156,9 @@ const Notice = (props) => {
       return null
     }
   }
-
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
-
   const toggler = (noticeIdx) => {
     if (numbers === noticeIdx) {
       setNumbers('')
@@ -179,28 +174,57 @@ const Notice = (props) => {
   return (
     <>
       <Header>
-        <div className="category-text">방송공지</div>
+        <div className="category-text">공지사항</div>
         {createWriteBtn()}
       </Header>
+      <ListWrap>
+        {Array.isArray(listDetailed) &&
+          listDetailed.map((list, idx) => {
+            const {isTop, title, contents, writeDt, noticeIdx} = list
+            return (
+              <>
+                {isTop === true && (
+                  <a key={idx} className={`idx${noticeIdx}`}>
+                    <List
+                      {...props}
+                      thisMemNo={thisMemNo}
+                      isTop={isTop}
+                      title={title}
+                      contents={contents}
+                      writeDt={writeDt}
+                      noticeIdx={noticeIdx}
+                      numbers={numbers}
+                      toggle={toggler}
+                    />
+                  </a>
+                )}
+              </>
+            )
+          })}
+      </ListWrap>
       <ListWrap>
         {Array.isArray(listDetailed) ? (
           listDetailed.length > 0 ? (
             listDetailed.map((list, idx) => {
               const {isTop, title, contents, writeDt, noticeIdx} = list
               return (
-                <a key={idx} className={`idx${noticeIdx}`}>
-                  <List
-                    {...props}
-                    thisMemNo={thisMemNo}
-                    isTop={isTop}
-                    title={title}
-                    contents={contents}
-                    writeDt={writeDt}
-                    noticeIdx={noticeIdx}
-                    numbers={numbers}
-                    toggle={toggler}
-                  />
-                </a>
+                <>
+                  {isTop === false && (
+                    <a key={idx} className={`idx${noticeIdx}`}>
+                      <List
+                        {...props}
+                        thisMemNo={thisMemNo}
+                        isTop={isTop}
+                        title={title}
+                        contents={contents}
+                        writeDt={writeDt}
+                        noticeIdx={noticeIdx}
+                        numbers={numbers}
+                        toggle={toggler}
+                      />
+                    </a>
+                  )}
+                </>
               )
             })
           ) : (
@@ -347,8 +371,7 @@ const WriteBtn = styled.button`
 `
 
 const ListWrap = styled.div`
-  width: calc(100% + 32px);
-  margin-left: -16px;
+  width: 100%;
   position: relative;
   .search {
     min-height: 200px;

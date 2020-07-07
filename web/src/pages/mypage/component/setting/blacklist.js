@@ -20,7 +20,9 @@ import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
-
+import blacklist from 'pages/mypage/component/setting/blacklist'
+import SearchIconGray from '../../static/ic_search_g.svg'
+import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
@@ -38,9 +40,7 @@ export default (props) => {
   const [blackList, setBlackList] = useState(false)
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-
-  const [totalPageNumber2, setTotalPageNumber2] = useState(null)
-  const [page2, setPage2] = useState(1)
+  const [tabState, setTabState] = useState(0)
 
   let userTypeSetting = 0
 
@@ -53,41 +53,15 @@ export default (props) => {
 
   //-----------------------------------------------------------------------------
   //async
-  async function getBlackList(type, typeDetail) {
-    const res = await Api.mypage_black_list({
-      params: {
-        page: type == 'page' ? typeDetail : 1,
-        records: 5
-      }
-    })
-    // if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-    //   if (res.data.list == false) {
-    //     setBlackState(0)
-    //     setBlackList(false)
-    //   } else {
-    //     setBlackState(1)
-    //     setBlackList(res.data.list)
-    //   }
-    // } else {
-    //   context.action.alert({
-    //     msg: res.message
-    //   })
-    // }
+  async function getblackList() {
+    const res = await Api.mypage_black_list({})
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
       if (res.data.list == false) {
         setBlackState(0)
         setBlackList(false)
       } else {
-        const {list, paging} = res.data
-        if (paging) {
-          const {totalPage} = paging
-          setTotalPageNumber2(totalPage)
-          setBlackState(1)
-          setBlackList(list)
-        }
-        if (type == 'search') {
-          setPage2(1)
-        }
+        setBlackState(1)
+        setBlackList(res.data.list)
       }
     } else {
       context.action.alert({
@@ -110,7 +84,6 @@ export default (props) => {
       })
     }
   }
-
   async function deleteManager(memNum) {
     const res = await Api.mypage_black_delete({
       data: {
@@ -118,7 +91,7 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      getBlackList()
+      getblackList()
     } else {
       context.action.alert({
         msg: res.message
@@ -135,8 +108,9 @@ export default (props) => {
     const params = {
       userType: userTypeSetting,
       search: changes.search,
+      searchType: 'blackList',
       page: type == 'page' ? typeDetail : 1,
-      records: 5
+      records: 100
     }
     const res = await Api.mypage_user_search({params})
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
@@ -164,11 +138,16 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   //function
 
+  //
   const createUserList = () => {
     if (userList == false) return null
     return (
       <>
         <ul className="list-item search">
+          <p className="result_count">
+            검색 결과
+            <span>{userList.length}</span>
+          </p>
           {userList.map((item, index) => {
             const {memNo, nickNm, memId, profImg} = item
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
@@ -180,8 +159,8 @@ export default (props) => {
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
                     }}></figure>
                   <div>
+                    <span>{nickNm}</span>
                     <span>@{memId}</span>
-                    <p>{nickNm}</p>
                   </div>
                 </a>
                 <button
@@ -199,18 +178,18 @@ export default (props) => {
             )
           })}
         </ul>
-        <div className="paging-wrap">
-          <Paging setPage={setPagination} totalPage={totalPageNumber} currentPage={page} />
-        </div>
       </>
     )
   }
 
-  const createBlackList = () => {
+  const createblackList = () => {
     if (blackList == false) return null
     return (
       <>
-        <ul className="list-item">
+        <p className="titleCount">
+          등록 된 블랙리스트 <em>{blackList.length}</em>
+        </p>
+        <ul className="list-item search">
           {blackList.map((item, index) => {
             const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
@@ -223,9 +202,8 @@ export default (props) => {
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
                     }}></figure>
                   <div>
+                    <span>{nickNm}</span>
                     <span>@{memId}</span>
-                    <p>{nickNm}</p>
-                    <em>{date}</em>
                   </div>
                 </a>
                 <button
@@ -236,27 +214,60 @@ export default (props) => {
                         deleteManager(memNo)
                       }
                     })
-                  }}>
+                  }}
+                  className="grayBtn">
                   해제
                 </button>
               </li>
             )
           })}
         </ul>
-        <div className="paging-wrap2">
-          <Paging setPage={setPaginationBlackList} totalPage={totalPageNumber2} currentPage={page2} />
-        </div>
       </>
     )
   }
-
-  const setPagination = (page) => {
-    setPage(page)
-    getSearchList('page', page)
-  }
-  const setPaginationBlackList = (page) => {
-    setPage2(page)
-    getBlackList('page', page)
+  ////////////////////////////////////////////////////////////////////////
+  const createSearchblackList = () => {
+    if (manegerSearchList == false) return null
+    return (
+      <>
+        <p className="titleCount">
+          검색 결과 <em>{manegerSearchList.length}</em>
+        </p>
+        <ul className="list-item search">
+          {manegerSearchList.map((item, index) => {
+            const {memNo, nickNm, memId, profImg, regDt} = item
+            const date = Utility.dateFormatter(regDt)
+            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+            return (
+              <li key={index}>
+                <a href={link}>
+                  <figure
+                    style={{
+                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                    }}></figure>
+                  <div>
+                    <span>{nickNm}</span>
+                    <span>@{memId}</span>
+                  </div>
+                </a>
+                <button
+                  onClick={() => {
+                    context.action.confirm({
+                      msg: `${nickNm} 님을 블랙리스트에서 해제 하시겠습니까?`,
+                      callback: () => {
+                        deleteManager(memNo)
+                      }
+                    })
+                  }}
+                  className="grayBtn">
+                  해제
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
   }
 
   const createUserResult = () => {
@@ -269,66 +280,140 @@ export default (props) => {
     }
   }
 
-  const createBlackResult = () => {
-    if (blackState === -1) {
-      return null
-    } else if (blackState === 0) {
-      return <NoResult className="no-top" />
-    } else {
-      return createBlackList()
-    }
-  }
-
   //-----------------------------------------------------------------------------
   //useEffect
   useEffect(() => {
-    getBlackList()
+    getblackList()
   }, [])
 
   const typeActive = (value) => {
     setChanges({...changes, searchType: value})
   }
+  //매니저 필터
+  const [manegerValue, setManegerValue] = useState('')
+  const [manegerSearchList, setManegerSearchList] = useState(blackList)
 
+  const SearchManeger = (manegerValue, selectBoxData) => {
+    if (changes.searchType === 0) {
+      setManegerSearchList(
+        blackList.filter((blackList) => blackList.nickNm.includes(manegerValue) || blackList.memId.includes(manegerValue))
+      )
+    } else if (changes.searchType === 1) {
+      setManegerSearchList(blackList.filter((blackList) => blackList.nickNm.includes(manegerValue)))
+    } else if (changes.searchType === 2) {
+      setManegerSearchList(blackList.filter((blackList) => blackList.memId.includes(manegerValue)))
+    }
+  }
+  const tabChangeFunction = () => {
+    getblackList()
+    setManegerValue('')
+    if (tabState === 0) {
+      setTabState(1)
+    } else {
+      setTabState(0)
+    }
+  }
   //-----------------------------------------------------------------------------
   return (
     <Content>
-      <div className="resulte-area">{createBlackResult()}</div>
-      <SearchArea>
-        <div className="select-box">
-          <SelectBoxs
-            type={'remove-init-data'}
-            boxList={selectBoxData}
-            onChangeEvent={typeActive}
-            inlineStyling={{left: 0, top: 0, zIndex: 8, position: 'static', width: '100%'}}
-          />
-        </div>
-        <input
-          type="search"
-          name="search"
-          onChange={onChange}
-          onKeyUp={(e) => {
-            if (e.keyCode === 13) getSearchList('search')
-          }}
-        />
-        <button
-          onClick={() => {
-            getSearchList('search')
-          }}>
-          찾기
+      <div className="tab">
+        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
+          등록
         </button>
-      </SearchArea>
-      <div className="resulte-area">{createUserResult()}</div>
+        <button onClick={tabChangeFunction} className={tabState === 1 ? 'on' : ''}>
+          관리
+        </button>
+      </div>
+      {tabState === 0 && (
+        <>
+          <SearchArea>
+            <div className="select-box">
+              <SelectBoxs
+                type={'remove-init-data'}
+                boxList={selectBoxData}
+                onChangeEvent={typeActive}
+                inlineStyling={{
+                  left: 0,
+                  top: 0,
+                  zIndex: 8,
+                  // position: 'static',
+                  position: 'relative',
+                  width: '100%'
+                }}
+              />
+            </div>
+            <input
+              type="search"
+              name="search"
+              placeholder="검색어를 입력해 보세요"
+              onChange={onChange}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) getSearchList('search')
+              }}
+            />
+            <button
+              onClick={() => {
+                getSearchList('search')
+              }}>
+              찾기
+            </button>
+          </SearchArea>
+          <div className="resulte-area">{createUserResult()}</div>
+        </>
+      )}
+      {tabState === 1 && (
+        <>
+          <SearchArea>
+            <div className="select-box">
+              <SelectBoxs
+                type={'remove-init-data'}
+                boxList={selectBoxData}
+                onChangeEvent={typeActive}
+                inlineStyling={{
+                  left: 0,
+                  top: 0,
+                  zIndex: 8,
+                  // position: 'static',
+                  position: 'relative',
+                  width: '100%'
+                }}
+              />
+            </div>
+            <input
+              type="search"
+              name="search"
+              placeholder="검색어를 입력해 보세요"
+              onChange={(e) => setManegerValue(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) SearchManeger(manegerValue)
+              }}
+            />
+            <button
+              onClick={() => {
+                SearchManeger(manegerValue, selectBoxData)
+              }}>
+              찾기
+            </button>
+          </SearchArea>
+          <div className="resulte-area">
+            {manegerValue === '' && createblackList()}
+            {manegerValue !== '' && createSearchblackList()}
+          </div>
+        </>
+      )}
     </Content>
   )
 }
 
 const SearchArea = styled.div`
   position: relative;
-  border: 1px solid #bdbdbd;
+  border-radius: 12px;
+
   * {
-    height: 46px;
-    line-height: 46px;
+    height: 44px;
+    line-height: 44px;
   }
+
   select {
     width: 100px;
     border-right: 1px solid #bdbdbd;
@@ -337,19 +422,35 @@ const SearchArea = styled.div`
     background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
   }
   input {
-    width: calc(100% - 101px);
+    width: calc(100% - 102px);
     margin-left: 100px;
-    padding: 0 46px 0 12px;
-    color: #424242;
-    font-size: 14px;
+    padding: 0px 46px 0 12px;
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-left: none;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-weight: 800;
+    font-size: 16px;
+    :focus {
+      border: 1px solid #000;
+    }
+    ::placeholder {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #9e9e9e;
+    }
   }
   button {
     position: absolute;
-    right: 6px;
+    right: 10px;
     top: 5px;
     width: 36px;
     height: 36px;
-    background: url(${IMG_SERVER}/images/api/ico_search_w_m.png) no-repeat center;
+    background: url(${SearchIconGray}) no-repeat center / cover;
     text-indent: -9999px;
   }
 
@@ -357,30 +458,63 @@ const SearchArea = styled.div`
     display: inline-block;
     position: absolute;
     left: 0;
-    top: 0;
-
-    height: 46px;
+    top: 0px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-right: none;
+    height: 44px;
     width: 100px;
     text-indent: 12px;
-    z-index: 8;
+
+    .options {
+      z-index: 9999;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
     .options + div {
+      position: absolute;
       height: auto;
       width: calc(100% + 2px);
       margin-left: -1px;
-      border: 1px solid #bdbdbd;
+      padding-top: 14px;
+      background: #fff;
+      top: 30px;
+      z-index: -1;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+      border-top: none;
+
       .box-list {
         padding: 0;
         font-size: 14px;
       }
     }
     > div {
-      border-right: 1px solid #bdbdbd;
+      border-right: 1px solid #e0e0e0;
       width: 100%;
+      position: relative;
+      :after {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        content: '';
+        width: 24px;
+        height: 24px;
+        background: url(${ArrowIconGray}) no-repeat center center / cover;
+      }
       > div {
         width: 100%;
         border: 0;
         padding: 0;
-        color: #616161;
+        letter-spacing: -0.35px;
+        color: #000000;
+        font-weight: 600;
         font-size: 14px;
         :before {
           background-color: #757575;
@@ -390,6 +524,7 @@ const SearchArea = styled.div`
         }
         :before,
         :after {
+          display: none;
           top: 24px;
         }
       }
@@ -398,34 +533,108 @@ const SearchArea = styled.div`
 `
 
 const Content = styled.div`
+  .titleCount {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: left;
+    color: #000000;
+    > em {
+      font-weight: 600;
+      font-style: normal;
+      margin-left: 4px;
+      color: #632beb;
+    }
+  }
+  .tab {
+    display: flex;
+    margin-bottom: 8px;
+    button {
+      width: 80px;
+      height: 32px;
+      border-radius: 12px;
+      border: solid 1px #632beb;
+      margin-right: 2px;
+      border: solid 1px #e0e0e0;
+      background-color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: center;
+      color: #000000;
+    }
+    .on {
+      border: solid 1px #632beb;
+      background-color: #632beb;
+      color: #fff;
+    }
+  }
   .list-item {
+    .grayBtn {
+      display: block;
+      width: 46px;
+      height: 32px;
+      border-radius: 8px;
+      border: solid 1px #757575;
+      font-size: 14px;
+      text-align: center;
+      color: #000000;
+      background-color: #fff !important;
+    }
+    .result_count {
+      display: flex;
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      text-align: left;
+      color: #000000;
+      > span {
+        color: #632beb;
+        margin-left: 8px;
+      }
+    }
     li {
       display: flex;
       position: relative;
-      padding: 8px 0;
-
+      padding: 4px 10px;
+      height: 48px;
+      margin-bottom: 4px;
+      border-radius: 12px;
+      background-color: #fff;
       figure {
-        flex-basis: 36px;
-        width: 36px;
-        height: 36px;
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
       }
 
       a {
         display: flex;
-        max-width: 70%;
+        max-width: 100%;
       }
 
       div {
         max-width: calc(100% - 36px);
+        white-space: nowrap;
+        text-overflow: ellipsis;
         padding: 0 10px;
         * {
           display: block;
           font-size: 14px;
           transform: skew(-0.03deg);
         }
-        span {
-          color: ${COLOR_MAIN};
+        span:first-child {
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: normal;
+          text-align: left;
+          color: #000000;
+        }
+
+        span:last-child {
+          font-size: 12px;
+          text-align: left;
+          color: #000000;
         }
         p {
           overflow: hidden;
@@ -444,9 +653,9 @@ const Content = styled.div`
 
       button {
         position: absolute;
-        right: 0;
-        width: 47px;
-        height: 36px;
+        right: 10px;
+        width: 48px;
+        height: 32px;
         margin-top: 9px;
         border-radius: 10px;
         background: #bdbdbd;
@@ -460,7 +669,7 @@ const Content = styled.div`
     margin-bottom: 30px;
 
     div {
-      padding-top: 3px;
+      /* padding-top: 3px; */
     }
     button {
       margin-top: 3px;
@@ -469,14 +678,9 @@ const Content = styled.div`
   }
   .resulte-area {
     min-height: 100px;
-    padding: 20px 0;
+    padding: 12px 0;
   }
   .paging-wrap {
     margin-top: -20px;
-  }
-  .paging-wrap2 {
-    > div {
-      margin: 30px 0 30px 0 !important;
-    }
   }
 `

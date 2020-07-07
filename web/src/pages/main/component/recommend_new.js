@@ -1,97 +1,66 @@
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import React, {useEffect, useState, useRef, useContext} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
-import { Context } from 'context'
-
+import {Context} from 'context'
 //context
-import { useHistory } from 'react-router-dom'
-import Room, { RoomJoin } from 'context/room'
-
+import {useHistory} from 'react-router-dom'
+import Room, {RoomJoin} from 'context/room'
 // component
-import { IMG_SERVER } from 'context/config'
-import { Hybrid, isHybrid } from 'context/hybrid'
+import {IMG_SERVER} from 'context/config'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
-import RefreshIcon from '../static/ic_arrow_refresh.svg'
+import LiveIcon from '../static/live_l@3x.png'
 
 let touchStartX = null
 let touchEndX = null
-
-let touchStartY = null
-let touchEndY = null
-
 let touchStartStatus = false
 let direction = null
 
-let scrollDirection = null
-
 let intervalId = null
 const intervalSec = 5000
-const recommendWrapBaseHeight = 310
 
-export default React.forwardRef((props, ref) => {
+export default (props) => {
   const context = useContext(Context)
-  const { list, setRecommendSlideStatus } = props
+  const {list} = props
   const history = useHistory()
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const [blobList, setBlobList] = useState([])
-
   const slideWrapRef = useRef()
-
-  const { ref1, ref2 } = ref
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
   const touchStartEvent = (e) => {
-    if (touchStartStatus === true) {
+    if (touchStartStatus) {
       return
     }
 
     if (Array.isArray(list) && list.length > 1) {
       touchStartStatus = true
       touchStartX = e.touches[0].clientX
-      touchStartY = e.touches[0].clientY
 
       if (intervalId) {
         clearInterval(intervalId)
       }
-      intervalId = null
     }
   }
 
   const touchMoveEvent = (e) => {
-    if (touchStartStatus === false) {
-      return
-    }
-
     const slideWrapNode = slideWrapRef.current
-
     touchEndX = e.touches[0].clientX
-    touchEndY = e.touches[0].clientY
 
     const baseWidth = slideWrapNode.clientWidth / 3
     const diff = touchEndX - touchStartX
     const calcX = `${-baseWidth + diff}px`
 
-    const heightDiff = touchEndY - touchStartY
-
-    if (scrollDirection === null) {
-      if (heightDiff <= 10 && Math.abs(diff) > 20) {
-        scrollDirection = 'side'
-        setRecommendSlideStatus(true)
-      }
-    }
-
-    if (scrollDirection === 'side') {
-      slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
-      slideWrapNode.style.transitionDuration = '0ms'
-    }
+    slideWrapNode.style.transform = `translate3d(${calcX}, 0, 0)`
+    slideWrapNode.style.transitionDuration = '0ms'
   }
 
-  const touchEndEvent = async (e) => {
-    if (touchStartStatus === false) {
+  const touchEndEvent = (e) => {
+    if (!touchEndX || !touchStartStatus) {
       return
     }
 
@@ -103,59 +72,39 @@ export default React.forwardRef((props, ref) => {
     direction = diff > 0 ? 'right' : 'left'
     const absDiff = Math.abs(diff)
 
-    if (scrollDirection === 'side') {
-      const slidingTime = 150 // unit is ms
-      const promiseSync = new Promise((resolve, reject) => {
-        slideWrapNode.style.transitionDuration = `${slidingTime}ms`
+    const slidingTime = 150 // unit is ms
 
-        if (absDiff >= halfBaseWidth) {
-          if (direction === 'left') {
-            slideWrapNode.style.transform = `translate3d(${
-              -baseWidth * 2
-            }px, 0, 0)`
-          } else if (direction === 'right') {
-            slideWrapNode.style.transform = `translate3d(0, 0, 0)`
-          }
-        } else {
-          slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
+    const promiseSync = new Promise((resolve, reject) => {
+      slideWrapNode.style.transitionDuration = `${slidingTime}ms`
+
+      if (absDiff >= halfBaseWidth) {
+        if (direction === 'left') {
+          slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
+        } else if (direction === 'right') {
+          slideWrapNode.style.transform = `translate3d(0, 0, 0)`
         }
-        setTimeout(() => resolve(), slidingTime)
-      })
+      } else {
+        slideWrapNode.style.transform = `translate3d(${-baseWidth}px, 0, 0)`
+      }
+      setTimeout(() => resolve(), slidingTime)
+    })
 
-      promiseSync.then(() => {
-        if (absDiff >= halfBaseWidth) {
-          if (direction === 'right') {
-            const targetBIdx = Number(
-              slideWrapNode.firstChild.getAttribute('b-idx')
-            )
-            setSelectedBIdx(targetBIdx)
-          } else if (direction === 'left') {
-            const targetBIdx = Number(
-              slideWrapNode.lastChild.getAttribute('b-idx')
-            )
-            setSelectedBIdx(targetBIdx)
-          }
-          slideWrapNode.style.transitionDuration = '0ms'
-          slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
+    promiseSync.then(() => {
+      if (absDiff >= halfBaseWidth) {
+        if (direction === 'right') {
+          const targetBIdx = Number(slideWrapNode.firstChild.getAttribute('b-idx'))
+          setSelectedBIdx(targetBIdx)
+        } else if (direction === 'left') {
+          const targetBIdx = Number(slideWrapNode.lastChild.getAttribute('b-idx'))
+          setSelectedBIdx(targetBIdx)
         }
 
-        if (intervalId === null) {
-          initInterval()
-        }
+        slideWrapNode.style.transitionDuration = '0ms'
+        slideWrapNode.style.transform = 'translate3d(-33.3334%, 0, 0)'
         touchStartStatus = false
-        scrollDirection = null
-        setRecommendSlideStatus(false)
-      })
-    }
-
-    if (scrollDirection === null) {
-      if (intervalId === null) {
         initInterval()
       }
-      touchStartStatus = false
-      scrollDirection = null
-      setRecommendSlideStatus(false)
-    }
+    })
   }
 
   const initInterval = () => {
@@ -169,9 +118,7 @@ export default React.forwardRef((props, ref) => {
         const promiseSync = new Promise((resolve, reject) => {
           touchStartStatus = true
           slideWrapNode.style.transitionDuration = `${slidingTime}ms`
-          slideWrapNode.style.transform = `translate3d(${
-            -baseWidth * 2
-          }px, 0, 0)`
+          slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
           setTimeout(() => resolve(), slidingTime)
         })
 
@@ -193,7 +140,7 @@ export default React.forwardRef((props, ref) => {
     }, intervalSec)
   }
 
-  function clearBannerImgDiskCache() {
+  useEffect(() => {
     if (window.localStorage.getItem('bannerList')) {
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach((url) => {
@@ -203,18 +150,17 @@ export default React.forwardRef((props, ref) => {
       })
       localStorage.removeItem('bannerList')
     }
-  }
+  }, [])
 
   useEffect(() => {
     const tempBlobList = []
     if (Array.isArray(list) && list.length) {
+      //setSelectedBIdx(Math.floor(list.length / 2))
       setSelectedBIdx(0)
-
-      clearBannerImgDiskCache()
 
       let count = 0
       list.forEach((line, idx) => {
-        const { bannerUrl } = line
+        const {bannerUrl} = line
         fetch(bannerUrl)
           .then((res) => res.blob())
           .then((blob) => {
@@ -239,7 +185,6 @@ export default React.forwardRef((props, ref) => {
 
       return () => {
         clearInterval(intervalId)
-        intervalId = null
       }
     }
   }, [list])
@@ -249,9 +194,6 @@ export default React.forwardRef((props, ref) => {
     if (swiperNode && direction !== null) {
       touchStartX = null
       touchEndX = null
-      touchStartY = null
-      touchEndY = null
-
       touchStartStatus = false
       direction = null
     }
@@ -264,12 +206,12 @@ export default React.forwardRef((props, ref) => {
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
-  const { customHeader, token } = context || Room.context
+  const {customHeader, token} = context || Room.context
   const clickSlideDisplay = (data) => {
-    const { roomType, roomNo } = data
+    const {roomType, roomNo} = data
 
     if (roomType === 'link') {
-      const { roomNo } = data
+      const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '' && !roomNo.startsWith('http')) {
         history.push(`${roomNo}`)
@@ -284,167 +226,144 @@ export default React.forwardRef((props, ref) => {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
-      <RecommendWrap className="recommend-wrap" ref={ref1}>
-        <Room />
-        <div className="selected-wrap">
-          {Array.isArray(list) && list.length > 0 && (
-            <>
+    <RecommendWrap>
+      <Room />
+      <div onClick={() => {}} className="selected-wrap">
+        {Array.isArray(list) && list.length > 0 && (
+          <>
+            <div
+              ref={slideWrapRef}
+              className="slide-wrap"
+              onTouchStart={touchStartEvent}
+              onTouchMove={touchMoveEvent}
+              onTouchEnd={touchEndEvent}>
               <div
-                ref={slideWrapRef}
-                className="slide-wrap"
-                onTouchStart={touchStartEvent}
-                onTouchMove={touchMoveEvent}
-                onTouchEnd={touchEndEvent}
-              >
-                <div
-                  className="broad-slide"
-                  b-idx={prevBIdx}
-                  style={{
-                    backgroundImage: `url(${
-                      blobList[prevBIdx]
-                        ? blobList[prevBIdx]
-                        : list[prevBIdx]['bannerUrl']
-                    })`,
-                  }}
-                  onClick={() => clickSlideDisplay(list[prevBIdx])}
-                >
+                className="broad-slide"
+                b-idx={prevBIdx}
+                style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
+                onClick={() => clickSlideDisplay(list[prevBIdx])}>
+                <div className="image-text-bundle">
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[prevBIdx]['profImg']['url']
+                        : list[prevBIdx]['profImg']['thumb120x120']
+                    }
+                  />
                   <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[prevBIdx]['title']}
-                    </div>
+                    <div className="selected-title">{list[prevBIdx]['title']}</div>
                     {list[prevBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
-                        {list[prevBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            // 🎉😝pqpq😝🎉
-                            // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div
-                  className="broad-slide"
-                  b-idx={selectedBIdx}
-                  style={{
-                    backgroundImage: `url(${
-                      blobList[selectedBIdx]
-                        ? blobList[selectedBIdx]
-                        : list[selectedBIdx]['bannerUrl']
-                    })`,
-                  }}
-                  onClick={() => clickSlideDisplay(list[selectedBIdx])}
-                >
-                  <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[selectedBIdx]['title']}
-                    </div>
-                    {list[selectedBIdx]['nickNm'] !== 'banner' && (
-                      <div className="selected-nickname">
-                        {list[selectedBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div
-                  className="broad-slide"
-                  b-idx={nextBIdx}
-                  style={{
-                    backgroundImage: `url(${
-                      blobList[nextBIdx]
-                        ? blobList[nextBIdx]
-                        : list[nextBIdx]['bannerUrl']
-                    })`,
-                  }}
-                  onClick={() => clickSlideDisplay(list[nextBIdx])}
-                >
-                  <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[nextBIdx]['title']}
-                    </div>
-                    {list[nextBIdx]['nickNm'] !== 'banner' && (
-                      <div className="selected-nickname">
-                        {list[nextBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
+                        {list[prevBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          // 🎉😝pqpq😝🎉
+                          // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-            </>
-          )}
-          {list[selectedBIdx]['nickNm'] !== 'banner' ? (
-            <span className="live-icon">
-              <Lottie
-                options={{
-                  width: 51,
-                  height: 16,
-                  loop: true,
-                  autoPlay: true,
-                  animationData: animationData,
+              <div
+                className="broad-slide"
+                b-idx={selectedBIdx}
+                style={{
+                  backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                 }}
-              />
-            </span>
-          ) : (
-            // <img className="live-icon" src={LiveIcon} />
-            <img className="live-icon" src={EventIcon} />
-          )}
-          {list[selectedBIdx]['isSpecial'] === true && (
-            <em className="specialIcon">스페셜DJ</em>
-          )}
-          {Array.isArray(list) && list.length > 0 && (
-            <div className="counting">
-              <span className="bold">{selectedBIdx + 1}</span>
-              <span>{list ? `/ ${list.length}` : ''}</span>
+                onClick={() => clickSlideDisplay(list[selectedBIdx])}>
+                <div className="image-text-bundle">
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[selectedBIdx]['profImg']['url']
+                        : list[selectedBIdx]['profImg']['thumb120x120']
+                    }
+                  />
+                  <div className="text-wrap">
+                    <div className="selected-title">{list[selectedBIdx]['title']}</div>
+                    {list[selectedBIdx]['nickNm'] !== 'banner' && (
+                      <div className="selected-nickname">
+                        {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div
+                className="broad-slide"
+                b-idx={nextBIdx}
+                style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
+                onClick={() => clickSlideDisplay(list[nextBIdx])}>
+                <div className="image-text-bundle">
+                  <img
+                    className="image-wrap"
+                    src={
+                      list[nextBIdx]['nickNm'] === 'banner'
+                        ? list[nextBIdx]['profImg']['url']
+                        : list[nextBIdx]['profImg']['thumb120x120']
+                    }
+                  />
+                  <div className="text-wrap">
+                    <div className="selected-title">{list[nextBIdx]['title']}</div>
+                    {list[nextBIdx]['nickNm'] !== 'banner' && (
+                      <div className="selected-nickname">
+                        {list[nextBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-      </RecommendWrap>
-      <IconWrap>
-        <img className="arrow-refresh-icon" src={RefreshIcon} ref={ref2} />
-      </IconWrap>
-    </div>
+          </>
+        )}
+
+        {/* {list[selectedBIdx]['nickNm'] !== 'banner' ? (
+          <span className="live-icon">
+            <Lottie
+              options={{
+                width: 51,
+                height: 16,
+                loop: true,
+                autoPlay: true,
+                animationData: animationData
+              }}
+            />
+          </span>
+        ) : (
+          <img className="live-icon" src={EventIcon} />
+        )} */}
+
+        {list[selectedBIdx]['isSpecial'] && <em className="specialIcon">스페셜DJ</em>}
+
+        {list[selectedBIdx]['nickNm'] !== 'banner' && <img className="live-right-icon" src={LiveIcon} />}
+
+        {Array.isArray(list) && list.length > 0 && (
+          <div className="counting">
+            <span className="bold">{selectedBIdx + 1}</span>
+            <span>{list ? `/ ${list.length}` : ''}</span>
+          </div>
+        )}
+      </div>
+    </RecommendWrap>
   )
-})
-
-const IconWrap = styled.div`
-  display: block;
-  position: absolute;
-  top: 67px;
-  left: 50%;
-
-  .arrow-refresh-icon {
-    display: block;
-    position: relative;
-    left: -50%;
-    opacity: 0;
-    transition: opacity 200ms ease-in;
-  }
-`
+}
 
 const RecommendWrap = styled.div`
   position: relative;
-  height: 310px;
-  min-height: 310px;
-  max-height: 400px;
-  margin-top: -42px;
-  transition: all 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  height: 220px;
 
   .selected-wrap {
     position: relative;
-    height: 100%;
+    height: 220px;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
     overflow: hidden;
 
     .slide-wrap {
@@ -468,19 +387,15 @@ const RecommendWrap = styled.div`
 
     .live-icon {
       position: absolute;
-      top: 51px;
       left: 8px;
       width: 51px;
     }
 
     .specialIcon {
       position: absolute;
-      top: 51px;
-      left: 64px;
-      display: inline-block;
-      width: 62px;
-      height: 16px;
-      margin-left: 4px;
+      left: 8px;
+      top: 8px;
+      padding: 2px 7px;
       border-radius: 10px;
       background-color: #ec455f;
       color: #fff;
@@ -493,17 +408,23 @@ const RecommendWrap = styled.div`
       text-align: center;
     }
 
+    .live-right-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 42px;
+      height: 42px;
+    }
+
     .counting {
+      right: 2px;
+      bottom: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: absolute;
       width: 46px;
       height: 16px;
-      right: 8px;
-      top: 51px;
-      border-radius: 10px;
-      background-color: rgba(0, 0, 0, 0.5);
       font-size: 10px;
       color: rgba(255, 255, 255, 0.5);
 
@@ -514,18 +435,26 @@ const RecommendWrap = styled.div`
     }
   }
 
-  .text-wrap {
+  .image-text-bundle {
     position: absolute;
+    bottom: 10px;
+    display: flex;
     width: 100%;
-    height: 100px;
-    padding-top: 30px;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0.25) 34%,
-      rgba(0, 0, 0, 0.6)
-    );
-    bottom: 0;
+    flex-direction: row;
+    align-items: center;
+
+    .image-wrap {
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin-left: 16px;
+      margin-right: 8px;
+      border-radius: 50%;
+    }
+
+    .text-wrap {
+      width: calc(100% - 72px);
+    }
   }
 
   .selected-title {
@@ -533,16 +462,24 @@ const RecommendWrap = styled.div`
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -0.4px;
-    text-align: center;
+    /* text-align: center; */
     transform: skew(-0.03deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
   }
   .selected-nickname {
     color: #ffb300;
     font-size: 16px;
     font-weight: bold;
     letter-spacing: -0.35px;
-    text-align: center;
+    /* text-align: center; */
     transform: skew(-0.03deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
 
     span {
       vertical-align: middle;

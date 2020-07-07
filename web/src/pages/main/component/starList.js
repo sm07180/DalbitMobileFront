@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
-import {Link} from 'react-router-dom'
 
 // component
 import Swiper from 'react-id-swiper'
 
+import RankArrow from '../static/arrow_right_w.svg'
+
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
-import {RoomJoin} from 'context/room'
 
 export default props => {
   const {list} = props
@@ -21,24 +21,24 @@ export default props => {
 
   return (
     <StarList>
-      <Swiper {...swiperParams}>
-        <div className="list">
-          <div className="image">
-            <div>나의</div>
-            <div style={{marginTop: '2px'}}>스타</div>
-          </div>
-          <div className="text"></div>
+      <div className="title">
+        <div className="txt">
+          나의
+          <br />
+          스타
         </div>
-
+        <img className="icon" src={RankArrow} />
+      </div>
+      <Swiper {...swiperParams}>
         {list.map((star, idx) => {
-          const {memNo, title, roomNo} = star
+          const {memNo} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => RoomJoin(roomNo + '')}>
+            <div className="list" key={`star-list${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}`)}>
               <div
                 className="image"
                 style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
               />
-              <div className="text">{title}</div>
+              <div className="text">{star['nickNm']}</div>
             </div>
           )
         })}
@@ -52,13 +52,39 @@ const StarList = styled.div`
   top: 0;
   left: 16px;
   width: calc(100% - 16px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  .title {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right: 18px;
+    margin-bottom: 18px;
+
+    .txt {
+      width: 34px;
+      font-size: 16px;
+      color: #000;
+      font-weight: bold;
+    }
+    .icon {
+      width: 20px;
+      margin-left: 4px;
+    }
+  }
 
   .swiper-container {
+    width: 100%;
+    margin: 0;
     padding-right: 16px;
   }
 
   .list {
-    width: 72px;
+    width: 48px;
     margin: 0 4px;
 
     &:first-child {
@@ -74,26 +100,26 @@ const StarList = styled.div`
       justify-content: center;
       flex-direction: column;
       background-size: cover;
-      width: 72px;
-      height: 72px;
-      border: 1px solid #e0e0e0;
-      border-radius: 26px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       color: #424242;
       font-size: 16px;
       font-weight: 800;
       letter-spacing: -0.32px;
+      background-color: #bbb;
     }
 
     .text {
       margin: 0 auto;
       margin-top: 6px;
-      width: 56px;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #424242;
-      font-size: 11px;
-      letter-spacing: -0.28px;
+      color: #616161;
+      font-size: 12px;
+      /* letter-spacing: -0.28px; */
       white-space: nowrap;
+      text-align: center;
     }
   }
 `

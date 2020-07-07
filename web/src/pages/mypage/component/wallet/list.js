@@ -1,13 +1,21 @@
-import NoResult from 'components/ui/noResult'
-import SelectBox from 'components/ui/selectBox.js'
-import {COLOR_MAIN, COLOR_POINT_P, COLOR_POINT_Y} from 'context/color'
-import {WIDTH_MOBILE} from 'context/config'
-import React from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 
-export default (props) => {
-  const {searching, coinType, walletData, returnCoinText, setWalletType, controllState} = props
+import SelectBox from 'components/ui/selectBox.js'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
+import NoResult from 'components/ui/noResult'
+// svg
+import ExBg from '../ex.svg'
+import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
+import GiftPinkIcon from '../../static/ic_gift_pink.svg'
+import ExchangeIcon from '../../static/ic_exchange_purple.svg'
+import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
+import Live from '../ic_live.svg'
+export default (props) => {
+  const {searching, coinType, walletData, returnCoinText, setWalletType, walletType} = props
+  let selectorRef = useRef()
   const selectWalletTypeData = [
     {value: 0, text: '전체'},
     {value: 1, text: '구매'},
@@ -17,34 +25,50 @@ export default (props) => {
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    date = [date.slice(0, 2), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
     time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
     return `${date}`
   }
+  //--------------------------------------------------------------
+  useEffect(() => {
+    selectorRef.current.value = 0
+  }, [coinType])
+  //------------------------------------------------------------
+  const change = (e) => {
+    setWalletType(e)
+  }
 
   return (
     <ListContainer>
-      <SelectBox
+      {/* <SelectBox
         className="mypage-wallet-select-box"
         boxList={selectWalletTypeData}
         onChangeEvent={setWalletType}
         controllState={controllState}
-      />
+      /> */}
+
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(coinType)} 상세내역`}</span>
-          <span className="sub">(최근 6개월)</span>
+          <span className="sub">최근 6개월</span>
         </span>
+        <Selector onChange={(e) => change(parseInt(e.target.value))} ref={selectorRef}>
+          <option value={0}>전체</option>
+          <option value={1}>구매</option>
+          <option value={2}>선물</option>
+          <option value={3}>교환</option>
+        </Selector>
+        <div className="arrowBtn"></div>
       </TopArea>
 
       <ListWrap>
-        <div className="list title">
+        {/* <div className="list title">
           <span className="how-to-get">구분</span>
           <span className="detail">내역</span>
           <span className="type">{returnCoinText(coinType)}</span>
           <span className="date">날짜</span>
-        </div>
+        </div> */}
 
         {searching ? (
           <SearchList>
@@ -58,9 +82,12 @@ export default (props) => {
 
             return (
               <div className="list" key={index}>
-                <span className={`how-to-get type-${walletType}`}>{selectWalletTypeData[walletType]['text']}</span>
+                <span className={`how-to-get type-${walletType}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
                 <span className="detail">{contents}</span>
-                <span className="type">{`${returnCoinText(coinType)} ${dalCnt !== undefined ? dalCnt : byeolCnt}`}</span>
+                <span className="type">
+                  {dalCnt !== undefined ? dalCnt : byeolCnt}
+                  <em>{returnCoinText(coinType)}</em>
+                </span>
                 <span className="date">{timeFormat(updateDt)}</span>
               </div>
             )
@@ -83,56 +110,74 @@ const SearchList = styled.div`
 `
 
 const ListWrap = styled.div`
+  margin-top: 8px;
   .list {
     display: flex;
     flex-direction: row;
     align-items: center;
     text-align: center;
     border-bottom: 1px solid #e0e0e0;
-    height: 47px;
+    height: 44px;
+    padding: 10px 8px;
     user-select: none;
-
+    margin-bottom: 1px;
+    background-color: #fff;
+    border-radius: 12px;
     span {
       transform: skew(-0.03deg);
     }
 
     .how-to-get {
-      width: 32px;
       margin-left: 4px;
-      border-radius: 15px;
       font-size: 12px;
       line-height: 17px;
       color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
 
       &.type-1 {
-        background: ${COLOR_POINT_Y};
+        background: url(${PurchaseIcon}) no-repeat center center / cover;
       }
       &.type-2 {
-        background: ${COLOR_POINT_P};
+        background: url(${GiftPinkIcon}) no-repeat center center / cover;
       }
       &.type-3 {
-        background: ${COLOR_MAIN};
+        background: url(${ExchangeIcon}) no-repeat center center / cover;
       }
     }
     .detail {
-      width: calc(100% - 176px);
+      width: calc(100% - 124px);
       text-align: left;
-      padding-left: 10px;
+      padding-left: 8px;
       font-size: 14px;
       letter-spacing: -0.35px;
-      color: #424242;
+      font-weight: 600;
+      text-align: left;
+      color: #000000;
     }
     .type {
       width: 65px;
       color: #424242;
       font-size: 14px;
       font-weight: 600;
+      text-align: center;
+      color: #000000;
+      > em {
+        margin-left: 2px;
+        font-size: 12px;
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        color: #000000;
+      }
     }
     .date {
-      width: 75px;
-      font-size: 14px;
-      color: #616161;
+      margin-left: auto;
+      width: 50px;
       font-size: 12px;
+      color: #000;
+      text-align: right;
     }
 
     &.title {
@@ -179,31 +224,31 @@ const ListWrap = styled.div`
 const TopArea = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-direction: row;
 
   .title {
     .main {
-      color: #632beb;
-      font-size: 20px;
-      letter-spacing: -0.5px;
-
-      @media (max-width: ${WIDTH_MOBILE}) {
-        font-size: 18px;
-        font-weight: 600;
-      }
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
     }
     .sub {
-      margin-left: 4px;
-      color: #757575;
-      font-size: 14px;
-      letter-spacing: -0.35px;
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: normal;
+      text-align: left;
+      color: #632beb;
     }
   }
 `
 
 const ListContainer = styled.div`
   position: relative;
-  margin-top: 20px;
+  margin-top: 19px;
 
   .mypage-wallet-select-box {
     z-index: 1;
@@ -214,4 +259,29 @@ const ListContainer = styled.div`
       top: -8px;
     }
   }
+  .arrowBtn {
+    display: block;
+    position: absolute;
+    top: -1px;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    background: url(${ArrowDownIcon}) no-repeat center center / cover;
+    z-index: 3;
+  }
+`
+const Selector = styled.select`
+  width: 56px;
+  text-align: right;
+  position: relative;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.14;
+  letter-spacing: normal;
+  text-align: left;
+  color: #000000;
+  z-index: 4;
 `

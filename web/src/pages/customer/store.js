@@ -14,52 +14,25 @@ const {Provider} = CustomerStore
 //
 const CustomerProvider = props => {
   //state
-  const [menuCode, setMenuCode] = useState('notice')
-  const [list, setList] = useState([])
-  const [noticePage, setNoticePage] = useState('')
-  const [faqPage, setFaqPage] = useState('')
-  const [personalPage, setPersonalPage] = useState('')
-  const [page, setPage] = useState(10)
-  const [pagePersonal, setPagePersonal] = useState(10)
+  const [search, setSearch] = useState("");
+  const [currentSearch, setCurrentSearch] = useState("");
+  const [searching, setSearching] = useState(false);
   //---------------------------------------------------------------------
   const action = {
-    /**
-     * @brief 메뉴변경이 사용될 코드상태값을 업데이트
-     * @code store.updateCode('style-tab')
-     * @param string $str
-     * @return void
-     */
-    updateCode: (str = 'default') => {
-      setMenuCode(str)
-    },
-    /**
-     * @brief Constructor
-     * @param object $obj
-     * @return void
-     */
-    updateList: list => {
-      setList({...list})
+    updateSearch: (str) => {
+      setSearch(str);
     },
 
-    updatenoticePage: num => {
-      setNoticePage(num)
+    updateCurrentSearch: (str) => {
+      setCurrentSearch(str);
     },
 
-    updatefaqPage: num => {
-      setFaqPage(num)
-    },
-    updatePersonalPage: num => {
-      setPersonalPage(num)
-    },
-    updateCountPage: num => {
-      setPage(num)
-    },
-    updatepagePersonal: num => {
-      setPagePersonal(num)
+    updateSearching: (bool) => {
+      setSearching(bool);
     }
   }
   //---------------------------------------------------------------------
-  const value = {menuCode, action, list, noticePage, faqPage, page, personalPage, pagePersonal}
+  const value = {search, searching, currentSearch, action}
   return <Provider value={value}>{props.children}</Provider>
 }
 export {CustomerStore, CustomerProvider}

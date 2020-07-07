@@ -12,14 +12,15 @@ import Checkbox from '../../content/checkbox'
 // static
 import DeleteIcon from '../images/ic_delete.svg'
 import ModifyIcon from '../images/ic_edit.svg'
-import Header from '../../component/header.js'
-
+import BackIcon from '../../component/ic_back.svg'
+import Header from '../header.js'
+import ArrowRight from '../../component/arrow_right.svg'
+import BookMark from '../../component/book_mark_red.svg'
 const List = (props) => {
   //context
 
   const context = useContext(Context)
   const ctx = useContext(Context)
-  const IdBj = ctx.profile.memId
   var urlrStr = props.location.pathname.split('/')[2]
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
@@ -51,7 +52,7 @@ const List = (props) => {
         context.action.alert({
           callback: () => {
             setWriteShow(false)
-            window.location.reload()
+            context.action.updateNoticeState(true)
           },
           msg: res.message
         })
@@ -87,7 +88,7 @@ const List = (props) => {
         }
       })
       if (res.result === 'success') {
-        window.location.reload()
+        context.action.updateNoticeState(true)
       } else if (res.result === 'fail') {
         context.action.alert({
           msg: res.message
@@ -174,41 +175,46 @@ const List = (props) => {
           props.toggle(noticeIdx)
         }}>
         <TitleWrap className={isTop ? 'is-top' : ''}>
-          {isTop && <em></em>}
+          {/* {isTop && <em></em>} */}
           <span className="text">{title}</span>
         </TitleWrap>
-
-        <ArrowDownBtn className={numbers === noticeIdx && opened ? 'on' : ''} />
+        {isTop === true && <ArrowDownBtnTop className={numbers === noticeIdx && opened ? 'on' : ''} />}
+        {isTop === false && <ArrowDownBtn className={numbers === noticeIdx && opened ? 'on' : ''} />}
       </ListStyled>
       {numbers === noticeIdx && opened && (
         <>
           <ListContent>
-            <div>{title}</div>
-            <div>
-              {IdBj && <span className="IdBj">( @{IdBj} )</span>}
-              <span className="dateTime">{timeFormat(writeDt)}</span>
+            <div className="detail_header">
+              <button onClick={() => setOpened(false)}></button>
+              방송공지
             </div>
-            <div>
+            <div className="detail_header_info">
+              <div className="detail_date">
+                <div>{title}</div>
+                <div>{timeFormat(writeDt)}</div>
+              </div>
+            </div>
+            <div className="detail_contents">
               <pre>{contents}</pre>
             </div>
+            <Buttons className={urlrStr === props.thisMemNo ? 'on' : ''}>
+              <button onClick={WriteToggle}>
+                {/* <em></em> */}
+                수정
+              </button>
+              <button onClick={NoticeDelete}>
+                {/* <em className="delete_icon"></em> */}
+                삭제
+              </button>
+            </Buttons>
           </ListContent>
-          <Buttons className={urlrStr === props.thisMemNo ? 'on' : ''}>
-            <button onClick={WriteToggle}>
-              <em></em>
-              수정
-            </button>
-            <button onClick={NoticeDelete}>
-              <em className="delete_icon"></em>
-              삭제
-            </button>
-          </Buttons>
 
           <Write className={writeShow && 'on'}>
             <Header click={WriteToggle}>
               <div className="category-text">공지 수정하기</div>
-              <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
+              {/* <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
-              </TitleBtn>
+              </TitleBtn> */}
             </Header>
             <section>
               <div className="titleWrite">
@@ -224,7 +230,7 @@ const List = (props) => {
                 />
               </div>
               <div className="checkbox-wrap">
-                <Checkbox title="고정 공지사항" fnChange={(v) => setState({click1: v})} checked={state.click1} />
+                <Checkbox title="상단 고정" fnChange={(v) => setState({click1: v})} checked={state.click1} />
               </div>
               <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
@@ -242,12 +248,19 @@ export default List
 const ArrowDownBtn = styled.button`
   width: 36px;
   height: 36px;
+  margin-right: 10px;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(${arrowDownImg});
-  &.on {
-    background-image: url(${IMG_SERVER}/images/api/ic_chevron_sm_up.png);
-  }
+  background-image: url(${ArrowRight});
+`
+
+const ArrowDownBtnTop = styled.button`
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(${BookMark});
 `
 
 const Time = styled.div`
@@ -273,9 +286,9 @@ const TitleWrap = styled.div`
   align-items: center;
   color: #424242;
   font-size: 16px;
-  padding: 0 8px;
+  padding: 0 16px;
   transform: skew(-0.03deg);
-  margin-left: 4px;
+
   font-weight: 600;
   > em {
     display: block;
@@ -297,55 +310,78 @@ const TitleWrap = styled.div`
     }
   }
   .text {
-    margin-left: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+    letter-spacing: -0.35px;
   }
 `
 
 const ListContent = styled.div`
-  padding: 20px 16px;
-  background-color: #f8f8f8;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  /* padding: 20px 16px; */
+  background-color: #eee;
   color: #424242;
   font-size: 14px;
   letter-spacing: -0.35px;
-  .IdBj {
+  .detail_header {
+    display: flex;
+    justify-content: center;
+    padding: 0 6px;
+    height: 40px;
+    align-items: center;
+    text-align: center;
     position: relative;
-    padding-right: 10px;
-    :after {
-      content: '';
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    button {
       position: absolute;
-      background-color: #ddd;
+      left: 6px;
       top: 50%;
-      right: 0;
       transform: translateY(-50%);
-      width: 1px;
-      height: 10px;
+      display: block;
+      width: 40px;
+      height: 40px;
+      background: url(${BackIcon}) no-repeat center center / cover;
     }
   }
-  .dateTime {
-    margin-left: 10px;
-  }
+
   div:nth-child(1) {
     color: #000000;
-    font-size: 16px;
-    line-height: 1.5;
-    letter-spacing: -0.4px;
-    transform: skew(-0.03deg);
+    font-size: 18px;
+    font-weight: 800;
+    /* line-height: 1.17; */
+    text-align: left;
+    color: #000000;
   }
   div:nth-child(2) {
-    margin-top: 6px;
-    font-size: 13px;
+    /* margin-top: 4px; */
+    font-size: 12px;
     color: #757575;
     line-height: 1.08;
     letter-spacing: -0.3px;
     transform: skew(-0.03deg);
   }
-  div:nth-child(3) {
-    margin-top: 16px;
-    font-size: 14px;
-    line-height: 1.43;
-    letter-spacing: -0.35px;
-    transform: skew(-0.03deg);
-    overflow-wrap: break-word;
+
+  .detail_header_info {
+    background-color: #fff;
+    margin-top: 12px !important;
+    border-bottom: 1px solid #eeeeee;
+    .detail_date {
+      > div {
+        height: 20px;
+        line-height: 20px;
+      }
+      padding: 10px 16px 10px 16px;
+    }
   }
 `
 
@@ -354,10 +390,11 @@ const ListStyled = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 47px;
-  border-bottom: 1px solid #d8d8d8;
+  height: 44px;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
   user-select: none;
+  background-color: #fff;
 
   &.on {
     background-color: #f8f8f8;
@@ -369,39 +406,25 @@ const ListStyled = styled.div`
 `
 const Buttons = styled.div`
   display: none;
-  justify-content: flex-end;
-  background-color: #f8f8f8;
-  border-top: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-  & em {
-    display: block;
-    width: 16px;
-    height: 18px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url(${ModifyIcon});
-    margin-right: 4px;
-    &.delete_icon {
-      background-image: url(${DeleteIcon});
-    }
-  }
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
 
   & button {
-    display: flex;
     position: relative;
-    padding: 12px 20px 12px 20px;
-    font-size: 15px;
-    line-height: 1.43;
+    width: 162px;
+    height: 44px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 44px;
+    border-radius: 12px;
     letter-spacing: -0.35px;
-    text-align: left;
-    color: #616161;
+    color: #fff;
+    background-color: #757575;
     transform: skew(-0.03deg);
-    > i {
-      display: inline-block;
-      padding-right: 5px;
-      font-size: 14px;
-      color: #bdbdbd;
-    }
+  }
+  button:last-child {
+    margin-left: 4px;
   }
   & button + button ::before {
     display: block;
@@ -425,7 +448,7 @@ const Write = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
+  background-color: #eeeeee;
   z-index: 21;
 
   .checkbox-wrap > div:first-child {
@@ -436,7 +459,7 @@ const Write = styled.div`
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #eee;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
@@ -452,14 +475,24 @@ const Write = styled.div`
   }
 
   & section {
+    background-color: #eeeeee;
     padding: 20px 16px 0 16px;
     .titleWrite {
       input {
-        padding: 8px 12px;
-        border: 1px solid #bdbdbd;
+        height: 44px;
+        padding: 14px 16px;
+        border: solid 1px #e0e0e0;
+        border-radius: 12px;
         width: 100%;
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000000;
         &:focus {
-          border: 1px solid ${COLOR_MAIN};
+          border: 1px solid #000;
         }
         &::placeholder {
           color: #616161;
@@ -474,18 +507,20 @@ const Write = styled.div`
 
       textarea {
         &:focus {
-          border: 1px solid ${COLOR_MAIN};
+          border: 1px solid #000;
         }
-        padding: 8px 12px;
-        border: 1px solid #bdbdbd;
+        padding: 17px 24px 17px 16px;
+        border: solid 1px #e0e0e0;
         width: 100%;
         min-height: 310px;
-
-        color: #000;
-        font-size: 16px;
-        letter-spacing: -0.8px;
-        line-height: 1.5;
-        transform: skew(-0.03deg);
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000000;
         &::placeholder {
           color: #616161;
           font-size: 16px;
@@ -506,22 +541,28 @@ const Write = styled.div`
 
 const WriteSubmit = styled.button`
   display: block;
-  padding: 16px 0;
+  padding: 13px 0;
   width: 100%;
   background-color: #bdbdbd;
   font-size: 16px;
   color: #fff;
   font-weight: 600;
-  line-height: 1.25;
+  height: 44px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
-
+  border-radius: 12px;
   &.on {
     background-color: ${COLOR_MAIN};
   }
 `
 const Wrap = styled.div`
   position: relative;
+  .detail_contents {
+    margin-top: 0;
+    min-height: 200px;
+    padding: 10px 16px 21px 16px;
+    background-color: #fff;
+  }
 `
 const TitleBtn = styled.button`
   position: absolute;

@@ -3,20 +3,21 @@ import {Switch, Route, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
-import Profile from './content/profile.js'
+
+import Profile2 from './content/profile2.js'
 import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
 import {Context} from 'context'
-
+import {IMG_SERVER} from 'context/config'
 // component //
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
-
-export default props => {
+import LoginStay from '../login/loginState'
+export default (props) => {
   const categoryList = [
     {type: 'nav', component: Nav},
-    {type: 'profile', component: Profile},
+    {type: 'profile', component: Profile2},
     {type: 'alarm', component: Alarm},
     {type: 'search', component: Search}
   ]
@@ -26,7 +27,7 @@ export default props => {
 
   if (!profile && window.location.pathname !== '/menu/search') {
     const {memNo} = token
-    Api.profile({params: {memNo: memNo}}).then(profileInfo => {
+    Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
       if (profileInfo.result === 'success') {
         globalCtx.action.updateProfile(profileInfo.data)
       }
@@ -35,22 +36,26 @@ export default props => {
   }
 
   return (
-    <Layout {...props} status="no_gnb">
-      <MenuWrap>
-        <Switch>
-          {categoryList.map(value => {
-            const {type, component} = value
-            return <Route exact path={`/menu/${type}`} component={component} key={type} />
-          })}
-        </Switch>
-      </MenuWrap>
-    </Layout>
+    <>
+      {/* 로그인 대기창  */}
+      {/* <LoginStay /> */}
+      {/* 2.5v myProfile  */}
+      <Layout {...props} status="no_gnb">
+        <MenuWrap>
+          <Switch>
+            {categoryList.map((value) => {
+              const {type, component} = value
+              return <Route exact path={`/menu/${type}`} component={component} key={type} />
+            })}
+          </Switch>
+        </MenuWrap>
+      </Layout>
+    </>
   )
 }
 
 const MenuWrap = styled.div`
   min-height: 100vh;
   box-sizing: border-box;
-  background-color: #fff;
-  padding: 0 16px;
+  background-color: #eeeeee;
 `

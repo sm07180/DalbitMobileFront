@@ -2,22 +2,21 @@
  * @file /mypage/content/my-profile.js
  * @brief 2.5v 마이페이지 상단에 보이는 내 프로필 component.
  */
-import React, { useEffect, useContext, useState } from 'react'
-//route
-import { Link } from 'react-router-dom'
-import { OS_TYPE } from 'context/config.js'
-//styled
+import React, {useEffect, useContext, useState} from 'react'
+import {Link} from 'react-router-dom'
+import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
+import LayerPopupExp from './layer_popup_exp.js'
 // context
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import { WIDTH_TABLET_S, IMG_SERVER } from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
-import { Context } from 'context'
+import {Context} from 'context'
 // utility
-import Utility, { printNumber } from 'components/lib/utility'
+import Utility, {printNumber} from 'components/lib/utility'
 //svg
 import LiveIcon from '../component/ic_live.svg'
 import FemaleIcon from '../static/ico_female.svg'
@@ -29,41 +28,37 @@ import KoreaIcon from '../static/ico_korea.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
-import MoonIcon from '../static/profile/ic_moon_s.svg'
+import QuestionIcon from '../static/ic_question.svg'
+import CrownIcon from '../static/ic_crown.svg'
 // render----------------------------------------------------------------
-const myProfile = props => {
-  const { webview } = props
-  //context
+const myProfile = (props) => {
+  //context & webview
+  const {webview} = props
   const context = useContext(Context)
-  const { mypageReport, close, closeFanCnt, closeStarCnt } = context
+  const {mypageReport, close, closeFanCnt, closeStarCnt} = context
   // state
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
+  //pop
+  const [popupExp, setPopupExp] = useState(false)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
-  const { profile } = props
+  const {profile} = props
   const myProfileNo = context.profile.memNo
-  //function-----------------------------------------------------
-
   //image zoom function
   const figureZoom = () => {
     setZoom(true)
   }
   // expCalculate function
-  let expCalc = Math.floor(
-    ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) *
-      100
-  )
+  let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
-  let expPercent =
-    ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) *
-    100
+  let expPercent = ((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100
   if (expPercent == 'Infinity') expCalc = 0
   // loading
   if (profile === null) {
-    return <div style={{ minHeight: '391px' }}></div>
+    return <div style={{minHeight: '391px'}}></div>
   }
   //api
   async function fetchDataFanRegist(myProfileNo) {
@@ -86,34 +81,6 @@ const myProfile = props => {
       })
     }
   }
-  //function:팬해제
-  const Cancel = myProfileNo => {
-    async function fetchDataFanCancel(myProfileNo) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: myProfileNo
-        }
-      })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            context.action.updateMypageFanCnt(myProfileNo + 1)
-          },
-          msg: '팬등록을 해제하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
-      }
-    }
-    fetchDataFanCancel(myProfileNo)
-  }
-  //function:팬등록
-  const fanRegist = myProfileNo => {
-    fetchDataFanRegist(myProfileNo)
-  }
   //func 스타팝업 실행
   const starContext = () => {
     if (profile.starCnt > 0) {
@@ -133,33 +100,22 @@ const myProfile = props => {
     for (let index = 0; index < 3; index++) {
       if (profile.fanRank[index] == undefined) {
       } else {
-        const { memNo, profImg, rank } = profile.fanRank[index]
+        const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
         if (memNo == myProfileNo) {
           link = `/menu/profile`
         } else {
-          link = webview
-            ? `/mypage/${memNo}?webview=${webview}`
-            : `/mypage/${memNo}`
+          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
           <a href={link} key={index}>
-            <FanRank
-              style={{ backgroundImage: `url(${profImg.thumb88x88})` }}
-              className={`rank${rank}`}
-            ></FanRank>
+            <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </a>
         )
       }
     }
     result = result.concat(
-      <button
-        className="moreFan"
-        onClick={() =>
-          profile.fanRank.length > 0 && context.action.updateClose(true)
-        }
-        key="btn"
-      >
+      <button className="moreFan" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn">
         <span></span>
       </button>
     )
@@ -168,12 +124,7 @@ const myProfile = props => {
         <FanListWrap>
           <span>
             <span>팬랭킹</span>
-            <em
-              onClick={() =>
-                profile.fanRank.length > 0 && context.action.updateClose(true)
-              }
-              key="btn"
-            ></em>
+            <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em>
           </span>
           {result}
         </FanListWrap>
@@ -181,7 +132,7 @@ const myProfile = props => {
     )
   }
   //팝업실행
-  const popStateEvent = e => {
+  const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -191,6 +142,10 @@ const myProfile = props => {
     } else if (e.state === 'layer') {
       setPopup(true)
     }
+  }
+  //func back
+  const goBack = () => {
+    window.location.href = '/'
   }
   //function모바일 레어어 실행
   useEffect(() => {
@@ -206,14 +161,14 @@ const myProfile = props => {
       }
     }
   }, [popup])
-
+  //--------------------------------------------------------------
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-
+  //--------------------------------------------------------------
   useEffect(() => {
     if (mypageReport || close || closeFanCnt || closeStarCnt) {
       setPopup(true)
@@ -221,72 +176,45 @@ const myProfile = props => {
       setPopup(false)
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
-  //func back
-  const goBack = () => {
-    window.location.href = '/'
-  }
+  //--------------------------------------------------------------
   return (
     <>
       <ProfileWrap>
         <MyProfile webview={webview}>
           <button className="closeBtn" onClick={goBack}></button>
-          <ProfileImg
-            url={profile.profImg ? profile.profImg['thumb120x120'] : ''}
-          >
+          <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
             <figure onClick={() => figureZoom()}>
-              <img
-                src={profile.profImg ? profile.profImg['thumb120x120'] : ''}
-                alt={profile.nickNm}
-              />
-              <div
-                className="holder"
-                style={{ backgroundImage: `url(${profile.holder})` }}
-              ></div>
+              <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+              <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
             </figure>
             {Zoom === true && (
               <div className="zoom" onClick={() => setZoom(false)}>
-                <img
-                  src={profile.profImg ? profile.profImg['url'] : ''}
-                  alt={profile.nickNm}
-                  className="zoomImg"
-                />
+                <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
               </div>
             )}
+            <div className="title">
+              Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
+            </div>
             <div className="InfoWrap">
-              <div className="title">
-                Lv{profile.level}. {profile.level !== 0 && `${profile.grade}`}
-              </div>
               {urlrStr == 'profile' && (
                 <>
                   <LevelWrap>
                     <LevelStatusBarWrap>
                       <LevelStatus
                         style={{
-                          width: `${
-                            expCalc < 20
-                              ? `calc(${expCalc}% + 20px)`
-                              : `calc(${expCalc}%)`
-                          }`
-                        }}
-                      ></LevelStatus>
+                          width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
+                        }}></LevelStatus>
                     </LevelStatusBarWrap>
                     <div className="levelInfo">
                       <div className="subInfo line">
                         <span className="expTitle">0</span>
                         <span className="expTitle red mr7">
-                          EXP{' '}
-                          {Math.floor(
-                            ((profile.expNext - profile.expBegin) *
-                              expPercent) /
-                              100
-                          )}
+                          EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}
                         </span>
                       </div>
                       <div className="subInfo">
                         <span className="expTitle ml6">{profile.expRate}%</span>
-                        <span className="expTitle">
-                          {profile.expNext - profile.expBegin}
-                        </span>
+                        <span className="expTitle">{profile.expNext - profile.expBegin}</span>
                       </div>
                     </div>
                   </LevelWrap>
@@ -298,15 +226,23 @@ const myProfile = props => {
           <ContentWrap>
             <NameWrap>
               {/* <span>ID : {`@${profile.memId}`}</span> */}
+              <div className="expBtnWrap">
+                <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                  경험치
+                </button>
+                <a href={`/level`} className="btn-level">
+                  레벨
+                </a>
+              </div>
+
               <strong>{profile.nickNm}</strong>
               <div className="subIconWrap">
                 {<em className="nationIcon"></em>}
                 {profile.gender === 'f' && <em className="femaleIcon"></em>}
                 {profile.gender === 'm' && <em className="maleIcon"></em>}
-                {profile.isSpecial === true && (
-                  <em className="specialIcon">스페셜 DJ</em>
-                )}
+                {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
+              <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             </NameWrap>
             <ButtonWrap>{createFanList()}</ButtonWrap>
             <div className="categoryCntWrap">
@@ -315,58 +251,41 @@ const myProfile = props => {
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.fanCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
               </div>
               <div onClick={() => starContext()}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.starCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.starCnt)}</em>
               </div>
               <div>
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
-                <em className="cntTitle">
-                  {Utility.printNumber(profile.likeTotCnt)}
-                </em>
+                <em className="cntTitle">{Utility.printNumber(profile.likeTotCnt)}</em>
               </div>
               {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-                <div
-                  onClick={() => context.action.updateMypageReport(true)}
-                ></div>
+                <div onClick={() => context.action.updateMypageReport(true)}></div>
               )}
             </div>
             {/* <CountingWrap></CountingWrap> */}
           </ContentWrap>
-          {context.mypageReport === true && (
-            <ProfileReport {...props} reportShow={reportShow} />
-          )}
-          {context.close === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />
-          )}
-          {context.closeFanCnt === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="팬" />
-          )}
-          {context.closeStarCnt === true && (
-            <ProfileFanList {...props} reportShow={reportShow} name="스타" />
-          )}
+          {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
+          {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
+          {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
+          {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
           {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
         </MyProfile>
+        {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
       </ProfileWrap>
     </>
   )
 }
-
 export default myProfile
-//2.5v
-
+//2.5v style
 const PurpleWrap = styled.div`
   position: absolute;
   top: 0;
@@ -379,28 +298,46 @@ const PurpleWrap = styled.div`
 const ProfileWrap = styled.div`
   padding-top: 87px;
   position: relative;
-  background-color: #424242;
+  /* background-color: #424242; */
   min-height: 391px;
+  .title {
+    position: relative;
+    display: inline-block;
+    max-width: 70%;
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    padding: 0px 10px 0px 10px;
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.35px;
+    z-index: 4;
+    border-radius: 14px;
+    background-color: #f54640;
+  }
 `
 //styled======================================
 const MyProfile = styled.div`
   display: flex;
   flex-direction: row;
     background-color:#fff;
-  width: calc(100% - 16px);
-  border-radius:20px;
-  min-height: 296px;
+  /* width: calc(100% - 16px); */
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+  min-height: 350px;
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
 position: relative;
 z-index:3;
 .closeBtn {
+  
     position: absolute;
-    right: 0;
+    right: 12px;
     width: 32px;
     height: 32px;
     top: -40px;
-    right: 0px;
+
     z-index: 16;
     background: url(${CloseBtnIcon});
   }
@@ -426,7 +363,7 @@ z-index:3;
     flex: 0 0 auto;
   }
   .categoryCntWrap {
-      margin: 2px 0 0px 0;
+      margin: 4px 0 0px 0;
       display: flex;
       div {
         display: flex;
@@ -494,10 +431,9 @@ z-index:3;
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
     flex-direction: column;
-    padding: 0px 0 16px 0;
+    padding: 0;
     
-    /* padding-top: ${props =>
-      props.webview && props.webview === 'new' ? '48px' : ''}; */
+    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 `
 //flex item3
@@ -507,7 +443,7 @@ const ButtonWrap = styled.div`
   text-align: right;
   order: 3;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 11px;
+    margin-top: 16px;
     display: flex;
     justify-content: space-between;
     flex-basis: auto;
@@ -529,9 +465,9 @@ const ProfileImg = styled.div`
     position: relative;
     width: 100px;
     height: 100px;
-    margin: 10px auto 19px auto;
+    margin: 0px auto 19px auto;
     border-radius: 50%;
-    background: url(${props => props.url}) no-repeat center center/ cover;
+    background: url(${(props) => props.url}) no-repeat center center/ cover;
     img {
       display: none;
     }
@@ -552,23 +488,17 @@ const ProfileImg = styled.div`
   .InfoWrap {
     display: flex;
     flex-direction: column;
-    margin: 14px auto 0 auto;
+    margin: -3px auto 0 auto;
     position: relative;
     border-radius: 30px;
-    background: #eeeeee;
+    /* background: #eeeeee; */
     width: 280px;
-    min-height: 60px;
+    /* min-height: 60px; */
     font-size: 12px;
     text-align: center;
     z-index: 2;
     transform: skew(-0.03deg);
-    .title {
-      color: #000;
-      padding: 8px 0 4px 0;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: -0.35px;
-    }
+
     .expWrap {
       width: 280px;
       display: flex;
@@ -676,7 +606,7 @@ const LevelWrap = styled.div`
   .expTitle {
     margin-right: 4px;
     margin-left: 2px;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 10px;
     color: #000;
     line-height: 1.1;
@@ -687,7 +617,7 @@ const LevelWrap = styled.div`
       margin-left: 6px;
     }
     &.red {
-      color: #f54640;
+      color: #000;
     }
   }
   .expRate {
@@ -725,35 +655,23 @@ const LevelWrap = styled.div`
     align-items: center;
   }
 `
-const LevelText = styled.span`
-  color: ${COLOR_MAIN};
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 800;
-  letter-spacing: -0.35px;
-  transform: skew(-0.03deg);
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    display: none;
-  }
-`
 const LevelStatusBarWrap = styled.div`
   position: relative;
   width: 200px;
   border-radius: 10px;
-  background-color: #fff;
-
+  background-color: #eee;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 12px;
+    height: 14px;
   }
 `
 const LevelStatus = styled.div`
   position: absolute;
   top: -1px;
   left: -1px;
-  height: calc(100% + 2px);
+  height: 14px;
   max-width: calc(100% + 2px);
   border-radius: 10px;
-  background-color: #f54640;
+  background-color: #000;
   text-align: right;
   color: #fff;
   font-size: 9px;
@@ -763,7 +681,7 @@ const LevelStatus = styled.div`
   box-sizing: border-box;
   text-indent: 3px;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    line-height: 13px;
+    line-height: 14px;
   }
 `
 //닉네임
@@ -771,7 +689,75 @@ const NameWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  .topMedal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 175px;
+    height: 28px;
+    margin-top: 8px;
+    padding: 0 10px;
+    border-radius: 14px;
+    border: solid 1px #e0e0e0;
+    background-color: #f5f5f5;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    color: #bdbdbd;
+    :before {
+      display: block;
+      content: '';
+      width: 26px;
+      height: 16px;
+      margin-right: 8px;
+      background: url(${CrownIcon}) no-repeat center center / cover;
+    }
+  }
+  .expBtnWrap {
+    display: flex;
+    > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 20px;
+      border-radius: 14px;
+      border: solid 1px #eeeeee;
+      background-color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      color: #757575;
+      :after {
+        content: '';
+        width: 20px;
+        height: 12px;
+        background: url(${QuestionIcon}) no-repeat center center / cover;
+        margin-left: 7px;
+      }
+    }
+    > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 2px;
+      width: 72px;
+      height: 20px;
+      border-radius: 14px;
+      border: solid 1px #eeeeee;
+      background-color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      color: #757575;
+      :after {
+        content: '';
+        height: 12px;
+        width: 20px;
+        background: url(${QuestionIcon}) no-repeat center center / cover;
+        margin-left: 7px;
+      }
+    }
+  }
   .subIconWrap {
     display: flex;
     flex-direction: row;
@@ -806,10 +792,15 @@ const NameWrap = styled.div`
   }
   strong {
     color: #000;
+    max-width: 260px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     font-size: 20px;
-    line-height: 20px;
+    line-height: 24px;
+    height: 24px;
     font-weight: 800;
-    margin-top: 12px;
+    margin-top: 16px;
   }
   .specialIcon {
     display: inline-block;
@@ -833,7 +824,6 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     text-align: center;
     & > * {
@@ -895,81 +885,11 @@ const CountingWrap = styled.div`
     margin-top: 10px;
   }
 `
-//프로필메세지
-const ProfileMsg = styled.p`
-  margin-top: 8px;
-  color: #616161;
-  font-size: 14px;
-  line-height: 20px;
-  transform: skew(-0.03deg);
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-  }
-`
-//상단버튼
-const InfoConfigBtn = styled.div`
-  & > a {
-    display: inline-block;
-    padding: 0 44px 0 17px;
-    user-select: none;
-    border: 1px solid #757575;
-    border-radius: 18px;
-    background: url(${IMG_SERVER}/images/api/my_btn_img.png) no-repeat 92%
-      center;
-    background-size: 32px 32px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 36px;
-    letter-spacing: -0.5px;
-    color: #424242;
-    cursor: pointer;
-  }
-
-  a + a {
-    margin-left: 4px;
-  }
-  .notBjWrap {
-    display: flex;
-
-    & button {
-      display: flex;
-      justify-content: center;
-      width: 62px;
-      height: 36px;
-      color: #9e9e9e;
-      font-size: 14px;
-      transform: skew(-0.03deg);
-      margin-right: 4px;
-      border-radius: 18px;
-      border: solid 1px #bdbdbd;
-      &.fanRegist {
-        border: solid 1px ${COLOR_MAIN};
-        color: ${COLOR_MAIN};
-      }
-      & span {
-        display: block;
-        width: 18px;
-        height: 18px;
-        background: url(${MoonIcon}) no-repeat center
-          center / cover;
-      }
-      & em {
-        display: block;
-        font-weight: normal;
-        font-style: normal;
-        line-height: 1.41;
-        letter-spacing: -0.35px;
-        height: 18px;
-      }
-    }
-  }
-`
 //팬랭킹
 const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   > span {
     display: flex;
     align-items: center;
@@ -1048,22 +968,18 @@ const FanRank = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   & > a {
     display: block;
     width: 100%;
     height: 100%;
   }
-
   & + & {
     margin-left: 4px;
   }
-
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 28px;
     height: 28px;
   }
-
   :after {
     display: block;
     position: absolute;

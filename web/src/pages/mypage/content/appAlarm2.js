@@ -4,7 +4,6 @@
  **/
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
-
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -13,36 +12,29 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import Header from '../component/header.js'
 //room
 import Room, {RoomJoin} from 'context/room'
-
 //component
 import NoResult from 'components/ui/noResult'
-
 //icon
 import alarmOn from '../component/ic_alarmtoggleon.svg'
 import alarmOff from '../component/ic_alarmtoggleoff.svg'
-
 let currentPage = 1
 let first = true
-
-export default props => {
+export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
   const myMemNo = context.profile.memNo
   //api.
-  //조회
   async function fetchDataList() {
     const res = await Api.appNotify_list({
       params: {}
     })
     if (res.result === 'success') {
       setAllBtnState(res.data)
-      //0000000000000000000console.log('성공')
       first = false
     } else if (res.result === 'fail') {
     }
   }
-
   //수정
   async function fetchData() {
     const res = await Api.appNotify_modify({
@@ -58,7 +50,6 @@ export default props => {
       }
     })
     if (res.result === 'success') {
-      // console.log('성공')
     } else if (res.result === 'fail') {
     }
   }
@@ -72,8 +63,8 @@ export default props => {
   const [btn6, setBtn6] = useState(0)
   const [btn7, setBtn7] = useState(0)
   const [btn8, setBtn8] = useState(0)
+  //func toggle btn
   const ToggleBtn = (value, name) => {
-    // console.log('수정')
     first = false
     if (value === 0) {
       name(1)
@@ -81,7 +72,7 @@ export default props => {
       name(0)
     }
   }
-
+  // all toggle
   const Allcontroll = () => {
     first = false
     if (btn1 === 0) {
@@ -104,26 +95,23 @@ export default props => {
       setBtn8(0)
     }
   }
-
+  //---------------------------------------
   useEffect(() => {
-    // console.log('1')
     if (btn2 === 1 && btn3 === 1 && btn4 === 1 && btn5 === 1 && btn6 === 1 && btn7 === 1 && btn8 === 1) {
       setBtn1(1)
     } else {
       setBtn1(0)
     }
   }, [btn2, btn3, btn4, btn5, btn6, btn7, btn8])
-
+  //--------------------------------------
   useEffect(() => {
-    //console.log('2')
     fetchDataList()
   }, [])
-
+  //------------------------------------------
   useEffect(() => {
-    // console.log('3')
     if (!first) fetchData()
   }, [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8])
-
+  //------------------------------------------
   useEffect(() => {
     setBtn1(allBtnState.all_ok)
     setBtn2(allBtnState.isMyStar)
@@ -135,9 +123,7 @@ export default props => {
     setBtn8(allBtnState.isPush)
     first = true
   }, [allBtnState])
-
-  // 게스트 기능 전 임시 함수
-
+  // render func
   const makeContent = () => {
     return (
       <Content>
@@ -212,7 +198,6 @@ export default props => {
       </Content>
     )
   }
-
   //-----------------------------------------------------------------------------
   return (
     <>
@@ -223,7 +208,7 @@ export default props => {
     </>
   )
 }
-
+// styled
 const Content = styled.div`
   display: flex;
   width: 100%;
@@ -231,8 +216,6 @@ const Content = styled.div`
   background-color: #eeeeee;
   padding: 10px 16px 0 16px;
   box-sizing: border-box;
-  /* height: 100vh; */
-
   & div {
     position: relative;
     display: flex;
@@ -257,7 +240,7 @@ const Content = styled.div`
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
       &.on {
-        font-weight: 600;
+        font-weight: 800;
         color: #000;
         font-size: 18px;
       }
@@ -281,7 +264,7 @@ const Content = styled.div`
       color: #616161;
       font-size: 12px;
       line-height: 1.33;
-
+      letter-spacing: -0.45px;
       text-align: left;
       transform: skew(-0.03deg);
     }

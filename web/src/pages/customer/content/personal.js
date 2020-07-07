@@ -20,7 +20,7 @@ import {CustomerStore} from '../store'
 import SelectBoxs from 'components/ui/selectBox.js'
 import MyPersonal from './mypersonal'
 // static
-const Personal = props => {
+const Personal = (props) => {
   const selectBoxData = [
     {value: 0, text: '선택하세요'},
     {value: 1, text: '회원정보'},
@@ -56,14 +56,20 @@ const Personal = props => {
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
     } else if (res.result === 'success') {
-      setTimeout(() => {
-        context.action.alert({
-          msg: '1:1 문의 등록을 완료하였습니다.',
-          callback: () => {
-            window.location.href = '/'
-          }
-        })
-      }, 0)
+      context.action.confirm({
+        msg: '1:1 문의를 등록하시겠습니까?',
+        callback: () => {
+          //alert
+          setTimeout(() => {
+            context.action.alert({
+              msg: '1:1 문의 등록을 완료하였습니다.',
+              callback: () => {
+                window.location.href = '/'
+              }
+            })
+          }, 0)
+        }
+      })
     }
   }
   //update
@@ -113,12 +119,7 @@ const Personal = props => {
           validationCheck = true
         }
         if (validationCheck) {
-          context.action.confirm({
-            msg: '1:1 문의를 등록하시겠습니까?',
-            callback: () => {
-              fetchData({data: changes})
-            }
-          })
+          fetchData({data: changes})
         }
         break
       case mode.onChange !== undefined: //----------------------------상태변화
@@ -137,7 +138,7 @@ const Personal = props => {
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
     //
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png', 'gif']
       return list.includes(ext)
     }
@@ -177,7 +178,7 @@ const Personal = props => {
     }
   }
   //func 타입체크
-  const typeActive = value => {
+  const typeActive = (value) => {
     setfaqNum(value)
   }
   useEffect(() => {
@@ -200,7 +201,7 @@ const Personal = props => {
 
   const [controllState, setcontrollState] = useState(false)
 
-  const changePersonalTypeClick = type => {
+  const changePersonalTypeClick = (type) => {
     setPersonalType(type)
     setWalletType(0)
     setcontrollState(!controllState)
@@ -245,7 +246,7 @@ const Personal = props => {
               <dd>
                 <input type="text" placeholder="이메일 주소" name="email" onChange={onChange} />
               </dd>
-              {/*<dd>
+                {/*<dd>
                 <p className="infoupload">※ 1:1 문의 답변은 입력한 E-mail로 발송</p>
               </dd>*/}
             </dl>
@@ -286,7 +287,7 @@ const Personal = props => {
                       name="imgUpload"
                       id="imgUpload"
                       accept="image/jpg, image/jpeg, image/png"
-                      onChange={e => {
+                      onChange={(e) => {
                         uploadSingleFile(e)
                       }}
                     />

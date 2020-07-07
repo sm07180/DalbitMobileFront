@@ -3,13 +3,11 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 // static
 import closeBtn from '../static/ic_close.svg'
-
 export default (props) => {
   const history = useHistory()
   const goBack = () => {
-    return history.push('/')
+    window.location.href = '/'
   }
-
   return (
     <Header className="header-wrap">
       <div className="child-bundle">{props.children}</div>

@@ -18,14 +18,16 @@ import Header from '../component/header.js'
 import ReplyList from './fanBoard_reply'
 //svg
 import BJicon from '../component/bj.svg'
-import ReplyIcon from '../static/bluehole.svg'
+import ReplyIcon from '../static/ic_reply_purple.svg'
 import BackIcon from '../component/ic_back.svg'
+import MoreBtnIcon from '../static/ic_new_more.svg'
 //--------------------------------------------------------------------------
-export default props => {
+export default (props) => {
   // context && location
   let location = useLocation()
   const context = useContext(Context)
   var urlrStr = location.pathname.split('/')[2]
+  const {webview} = qs.parse(location.search)
   //전체 댓글리스트(props)
   const TotalList = props.list
   const TotalCount = props.totalCount
@@ -41,7 +43,7 @@ export default props => {
   const [textChange, setTextChange] = useState('')
   //--------------------------function
   //dateformat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -71,13 +73,13 @@ export default props => {
     window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
   //댓글 등록 온체인지
-  const BigChangeContent = e => {
+  const BigChangeContent = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setModifyMsg(target.value)
   }
   //대댓글 작성 및 초기화
-  const ReplyWrite = boardIdx => {
+  const ReplyWrite = (boardIdx) => {
     if (ReplyWriteState === false) {
       context.action.updateReplyIdx(boardIdx)
       setReplyWriteState(true)
@@ -87,7 +89,7 @@ export default props => {
     }
   }
   //댓글 온체인지
-  const handleChangeBig = e => {
+  const handleChangeBig = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setTextChange(target.value)
@@ -106,14 +108,20 @@ export default props => {
       setModifyMsg('')
       context.action.updateFanBoardBigIdxMsg(modifyMsg)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        cancelCallback: () => {},
-        msg: res.message
-      })
+      if (modifyMsg.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '수정 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   cancelCallback: () => {},
+      //   msg: res.message
+      // })
     }
   }
   //삭제하기 fetch
-  const DeleteBigReply = boardIdx => {
+  const DeleteBigReply = (boardIdx) => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -149,12 +157,19 @@ export default props => {
       context.action.updateFanBoardBigIdxMsg(textChange)
       setReplyWriteState(false)
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      if (textChange.length === 0) {
+        context.action.alert({
+          callback: () => {},
+          msg: '답글 내용을 입력해주세요.'
+        })
+      }
+      // context.action.alert({
+      //   callback: () => {},
+      //   msg: res.message
+      // })
     }
   }
+  console.log(context.token.memNo)
   //--------------------------------------------------------------------------
   return (
     <>
@@ -172,6 +187,19 @@ export default props => {
             TotalList !== false &&
             TotalList.map((item, index) => {
               const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx} = item
+              const Link = () => {
+                if (webview) {
+                  link =
+                    context.token.memNo !== writerNo
+                      ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
+                      : (window.location.href = `/menu/profile`)
+                } else {
+                  link =
+                    context.token.memNo !== writerNo
+                      ? (window.location.href = `/mypage/${writerNo}`)
+                      : (window.location.href = `/menu/profile`)
+                }
+              }
               return (
                 <BigReply key={index}>
                   <div className="reply_header">
@@ -179,6 +207,7 @@ export default props => {
                       <>
                         <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                         {/* 상세기능영역 */}
+
                         <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
                           {writerNo === context.token.memNo && (
                             <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
@@ -187,10 +216,11 @@ export default props => {
                         </div>
                       </>
                     )}
-                    <BigProfileImg bg={profImg.thumb62x62} />
+
+                    <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
                     <div className="big_header_info">
-                      <p>{nickNm}</p>
-                      <p>{timeFormat(writeDt)}</p>
+                      <p onClick={Link}>{nickNm}</p>
+                      <p onClick={Link}>{timeFormat(writeDt)}</p>
                     </div>
                   </div>
                   <div className="content_area">
@@ -248,12 +278,15 @@ export default props => {
 const BigReply = styled.div`
   width: 100%;
   background-color: #fff;
-  min-height: 200px;
+  min-height: 196px;
   margin-bottom: 12px;
+  .detailwapper {
+    position: relative;
+  }
   .reply_header {
     position: relative;
     display: flex;
-    padding: 13px 16px;
+    padding: 10px 16px;
     height: 60px;
     .big_moreBtn {
       position: absolute;
@@ -262,18 +295,30 @@ const BigReply = styled.div`
       transform: translateY(-50%);
       width: 24px;
       height: 24px;
-      background: url(${IMG_SERVER}/images/api/ic_more.png) no-repeat center center / cover;
+      background: url(${MoreBtnIcon}) no-repeat center center / cover;
     }
     .big_moreDetail {
       display: none;
       flex-direction: column;
       position: absolute;
-      right: 16px;
-      top: calc(50% + 26px);
-      transform: translateY(-50%);
+      right: 24px;
+      top: 46px;
+
       width: 80px;
-      height: 40px;
-      background-color: beige;
+      border: 1px solid #e0e0e0;
+      background-color: #fff;
+      padding: 8px 0;
+      span {
+        height: 26px;
+        font-size: 14px;
+        line-height: 2.14;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: #757575;
+        :hover {
+          background-color: #f8f8f8;
+        }
+      }
       &.on {
         display: flex;
         z-index: 56;
@@ -285,13 +330,20 @@ const BigReply = styled.div`
     flex-direction: column;
     margin-left: 10px;
     p:first-child {
+      display: block;
+      height: 20px;
+      line-height: 20px;
+      max-width: 200px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
       font-size: 16px;
       font-weight: 800;
       text-align: left;
       color: #000000;
     }
     p:last-child {
-      margin-top: 2px;
+      margin-top: 4px;
       font-size: 12px;
       text-align: left;
       color: #9e9e9e;
@@ -346,7 +398,7 @@ const BigReply = styled.div`
 const BigProfileImg = styled.div`
   width: 40px;
   height: 40px;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
   border-radius: 50%;
 `
 //최상단
@@ -460,7 +512,7 @@ const Writer = styled.div`
       margin-left: auto;
       margin-right: 7px;
       margin-top: 4px;
-      margin-bottom: 23px;
+      margin-bottom: 32px;
       font-size: 12px;
       line-height: 1.08;
       letter-spacing: normal;

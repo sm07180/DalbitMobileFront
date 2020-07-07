@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
-
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -12,10 +11,14 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //image
 import camera from 'images/camera.svg'
+import MaleIcon from './static/ico_male.svg'
+import FeMaleIcon from './static/ico_female.svg'
 
-export default props => {
+export default (props) => {
+  // ctx
   const context = useContext(Context)
   const {profile, token} = context
+  const {isOAuth} = token
   // state
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState(null)
@@ -23,22 +26,22 @@ export default props => {
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
   const [photoUploading, setPhotoUploading] = useState(false)
-
+  const [firstSetting, setFirstSetting] = useState(false)
+  const [mypageBirth, setMypageBirth] = useState('')
+  //ref
   const nicknameReference = useRef()
-  const {isOAuth} = token
-
-  const profileImageUpload = e => {
+  // setting img upload func  + mobile rotater
+  const profileImageUpload = (e) => {
     const target = e.currentTarget
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    const extValidator = ext => {
+    const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
-
     if (!extValidator(fileExtension)) {
       return context.action.alert({
         msg: 'jpg, png 이미지만 사용 가능합니다.',
@@ -48,10 +51,8 @@ export default props => {
         }
       })
     }
-    //파일을 배열 버퍼로 읽는 최신 약속 기반 API입니다
+    //파일을 배열 버퍼로 읽는 최신 약속 기반 API
     reader.readAsArrayBuffer(file)
-    // reader.readAsDataURL(file)
-
     //오리엔테이션 뽑아내는 함수
     function getOrientation(buffer) {
       var view = new DataView(buffer)
@@ -93,13 +94,11 @@ export default props => {
           offset += view.getUint16(offset, false)
         }
       }
-
       return {
         buffer: view.buffer,
         orientation: -1
       }
     }
-
     //캔버스로 그려서 dataurl 로 뽑아내는 함수
     function drawAdjustImage(img, orientation) {
       const cnvs = document.createElement('canvas')
@@ -114,10 +113,8 @@ export default props => {
       let rad
       let sin
       let cos
-
       cnvs.width = orientation >= 5 ? img.height : img.width
       cnvs.height = orientation >= 5 ? img.width : img.height
-
       switch (orientation) {
         case 2: // flip horizontal
           hr = -1
@@ -155,13 +152,11 @@ export default props => {
       sin = Math.sin(rad)
       cos = Math.cos(rad)
       ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
-
       dw = orientation >= 5 ? cnvs.height : cnvs.width
       dh = orientation >= 5 ? cnvs.width : cnvs.height
       ctx.drawImage(img, 0, 0, dw, dh)
       return cnvs.toDataURL('image/jpeg', 1.0)
     }
-
     reader.onload = async () => {
       if (reader.result) {
         const originalBuffer = reader.result
@@ -210,16 +205,16 @@ export default props => {
       }
     }
   }
-
-  const changeNickname = e => {
+  // change nick name func
+  const changeNickname = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 20) {
       return
     }
     setNickname(currentTarget.value.replace(/ /g, ''))
   }
-
-  const changeMsg = e => {
+  // change Msg func
+  const changeMsg = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length > 100) {
       return
@@ -227,7 +222,7 @@ export default props => {
       setProfileMsg(currentTarget.value)
     }
   }
-
+  // upload validate
   const saveUpload = async () => {
     if (!profile.nickNm) {
       return context.action.alert({
@@ -240,7 +235,6 @@ export default props => {
         }
       })
     }
-
     if (photoUploading) {
       return context.action.alert({
         msg: '프로필 사진 업로드 중입니다.',
@@ -257,9 +251,7 @@ export default props => {
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
-
-    console.log('data', data)
-
+    //fetch
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -278,9 +270,7 @@ export default props => {
       })
     }
   }
-
-  const [firstSetting, setFirstSetting] = useState(false)
-
+  //----------------------------------------------------
   useEffect(() => {
     if (profile !== null) {
       setNickname(profile.nickNm)
@@ -292,14 +282,20 @@ export default props => {
       }
     }
   }, [profile])
-
+  //null check updateProfile
   if (profile === null) {
-    Api.mypage().then(result => {
+    Api.mypage().then((result) => {
       context.action.updateProfile(result.data)
     })
     return null
   }
-
+  if (profile && profile.birth === '') {
+    Api.mypage().then((result) => {
+      context.action.updateProfile(result.data)
+    })
+    return null
+  }
+  //------------------------------------------------------
   return (
     <Switch>
       {!token.isLogin ? (
@@ -319,7 +315,15 @@ export default props => {
                     <img
                       src={tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}
                       className="backImg"></img>
-                    <img src={camera} style={{position: 'absolute', bottom: '-5px', right: '-15px'}} className="cameraImg" />
+                    <img
+                      src={camera}
+                      style={{
+                        position: 'absolute',
+                        bottom: '-5px',
+                        right: '-15px'
+                      }}
+                      className="cameraImg"
+                    />
                   </label>
                 </ProfileImg>
 
@@ -332,6 +336,7 @@ export default props => {
                     autoComplete="off"
                     defaultValue={profile.nickNm}
                     onChange={changeNickname}
+                    maxLength="20"
                   />
                 </div>
 
@@ -367,7 +372,7 @@ export default props => {
 
                 <div className="birthBox">
                   <span className="matchTitle">생년월일</span>
-                  <BirthDate>{`${profile.birth.slice(0, 4)}-${profile.birth.slice(4, 6)}-${profile.birth.slice(6)}`}</BirthDate>
+                  <BirthDate>{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}</BirthDate>
                   <GenderAlertMsg>생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
                 </div>
                 <GenderWrap className={firstSetting ? 'before' : 'after'}>
@@ -422,7 +427,7 @@ export default props => {
     </Switch>
   )
 }
-
+// style
 const SaveBtn = styled.button`
   margin-top: 32px;
   width: 100%;
@@ -437,7 +442,6 @@ const SaveBtn = styled.button`
   border-radius: 12px;
   font-weight: bold;
 `
-
 const MsgText = styled.textarea`
   display: block;
   width: 100%;
@@ -491,20 +495,21 @@ const GenderTab = styled.div`
   width: 50%;
   height: 44px;
   line-height: 44px;
-  text-align: center;
+  text-align: left;
   user-select: none;
   box-sizing: border-box;
   color: #9e9e9e;
   font-size: 14px;
   font-weight: 600;
   border-radius: 12px 0 0 12px;
+  padding-left: 16px;
 
   ::after {
     display: inline-block;
-    width: 10px;
+    width: 24px;
     height: 16px;
     margin-left: 5px;
-    background: url(${IMG_SERVER}/images/api/ico_male.svg) no-repeat center;
+    background: url(${MaleIcon}) no-repeat center;
     content: '';
     vertical-align: top;
     margin-top: 14px;
@@ -515,10 +520,10 @@ const GenderTab = styled.div`
 
     ::after {
       display: inline-block;
-      width: 10px;
+      width: 24px;
       height: 16px;
       margin-left: 5px;
-      background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
+      background: url(${FeMaleIcon}) no-repeat center;
       content: '';
       vertical-align: top;
       margin-top: 14px;
@@ -526,12 +531,12 @@ const GenderTab = styled.div`
   }
 
   &.woman::after {
-    background: url(${IMG_SERVER}/images/api/ico_female.svg) no-repeat center;
+    background: url(${FeMaleIcon}) no-repeat center;
   }
 
   &.off {
     color: #9e9e9e;
-    background-color: #fff;
+    border: 1px solid #000;
   }
 `
 const GenderWrap = styled.div`
@@ -543,7 +548,10 @@ const GenderWrap = styled.div`
   position: relative;
   &.before > div {
     border: 1px solid #000;
+    background-color: #fff;
+    text-align: center;
     color: #000;
+    padding-left: 0;
     &.off {
       color: #9e9e9e;
       border: 1px solid #f5f5f5;
@@ -560,7 +568,8 @@ const GenderWrap = styled.div`
 
   &.after > div {
     width: 100%;
-    background-color: #eee;
+    background-color: #f5f5f5;
+    border-radius: 12px;
     cursor: not-allowed;
     &.off {
       color: #9e9e9e;
@@ -583,12 +592,13 @@ const BirthDate = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: #9e9e9e;
+  border-bottom: none;
 `
 
 const PasswordRedirectBtn = styled.button`
   width: 100px;
   display: flex;
-  margin-top: 15px;
+  margin-top: 22px;
   /* align-items: center; */
   justify-content: center;
   a {
@@ -633,7 +643,7 @@ const PasswordWrap = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  height: 58px;
+  height: 62px;
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   background-color: #f5f5f5;
@@ -652,7 +662,7 @@ const PasswordWrap = styled.div`
 
 const UserId = styled.div`
   position: relative;
-  padding: 29px 16px 14px 16px;
+  padding: 29px 16px 11px 16px;
   height: 58px;
   background-color: #f5f5f5;
   box-sizing: border-box;
@@ -677,13 +687,13 @@ const UserId = styled.div`
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
   border: 1px solid #e0e0e0;
-  padding: 29px 16px 14px 16px;
+  padding: 29px 16px 11px 16px;
   width: 100%;
   max-height: 58px;
   border-radius: 12px;
   background-color: #fff;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 800;
   color: #000000;
   margin-bottom: 4px;
   :focus {
@@ -694,8 +704,8 @@ const NicknameInput = styled.input.attrs({type: 'text'})`
 const ProfileImg = styled.div`
   position: relative;
   margin: 0 auto;
-  margin-bottom: 10px;
-  margin-top: 22px;
+  margin-bottom: 12px;
+  margin-top: 20px;
   /* border: 1px solid #8556f5; */
   border-radius: 50%;
   width: 72px;
@@ -814,7 +824,7 @@ const Content = styled.section`
     position: relative;
     .matchTitle {
       position: absolute;
-      top: 9px;
+      top: 12px;
       left: 16px;
       z-index: 2;
       font-size: 12px;

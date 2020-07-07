@@ -3,7 +3,6 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -28,38 +27,37 @@ import {OS_TYPE} from 'context/config.js'
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
+
 // static
 import Mic from './static/ic_broadcastng.svg'
 import sequenceIcon from './static/ic_live_sequence.svg'
-import refreshIcon from './static/ic_live_refresh.svg'
+import detailListIcon from './static/detaillist_circle_w.svg'
+import detailListIconActive from './static/detaillist_circle_purple.svg'
+import simpleListIcon from './static/simplylist_circle_w.svg'
+import simpleListIconActive from './static/simplylist_circle_purple.svg'
+
+import refreshIcon from './static/refresh_w.svg'
+import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/ic_rank_arrow.svg'
 
 import {RoomMake} from 'context/room'
-// style
-import 'styles/layerpopup.scss'
-import {Hybrid} from 'context/hybrid'
+import {COLOR_MAIN} from 'context/color.js'
 
 let concatenating = false
 let tempScrollEvent = null
-
-let touchStartY = null
-let touchEndY = null
-
 //7->50
 const records = 30
+const today = new Date().getDate()
 
 export default (props) => {
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
+  const RecommendRef = useRef()
   const RankSectionRef = useRef()
   const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
   const LiveSectionRef = useRef()
-
-  // sub recommend context
-  const recommendWrapRef = useRef()
-  const refreshIconRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -73,8 +71,9 @@ export default (props) => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [popupData, setPopupData] = useState([])
+  const [popupNotice, setPopupNotice] = useState(true)
   const [scrollY, setScrollY] = useState(0)
+
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
 
@@ -88,34 +87,8 @@ export default (props) => {
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
 
-  const [recommendSlideStatus, setRecommendSlideStatus] = useState(false)
-  const [reloadInitData, setReloadInitData] = useState(false)
-
-  async function setMainInitData() {
-    setReloadInitData(true)
-    const delay = (ms) =>
-      new Promise((resolve, _) => {
-        setTimeout(() => resolve(), ms)
-      })
-
-    await delay(500)
-
-    const initData = await Api.main_init_data()
-    if (initData.result === 'success') {
-      const {djRank, fanRank, recommend, myStar} = initData.data
-      setInitData({
-        recommend,
-        djRank,
-        fanRank,
-        myStar
-      })
-
-      setReloadInitData(false)
-      return true
-    }
-
-    return false
-  }
+  // const [liveListType, setLiveListType] = useState('detail')
+  const [liveListType, setLiveListType] = useState('simple')
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -127,7 +100,18 @@ export default (props) => {
       })
     }
 
-    setMainInitData()
+    ;(async () => {
+      const initData = await Api.main_init_data()
+      if (initData.result === 'success') {
+        const {djRank, fanRank, recommend, myStar} = initData.data
+        setInitData({
+          recommend,
+          djRank,
+          fanRank,
+          myStar
+        })
+      }
+    })()
 
     Api.splash().then((res) => {
       const {result} = res
@@ -199,24 +183,27 @@ export default (props) => {
   const windowScrollEvent = () => {
     const GnbHeight = 48
     const sectionMarginTop = 24
-    const LiveTabDefaultHeight = 48 + sectionMarginTop
+    const LiveTabDefaultHeight = 48
 
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
+    const RecommendNode = RecommendRef.current
     const RankSectionNode = RankSectionRef.current
     const StarSectionNode = StarSectionRef.current
     const BannerSectionNode = BannerSectionRef.current
+
     const LiveSectionNode = LiveSectionRef.current
 
     const MainHeight = MainNode.clientHeight
     const SubMainHeight = SubMainNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop
-    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight + sectionMarginTop : 0
-
+    const RecommendHeight = RecommendNode.clientHeight
+    const RankSectionHeight = RankSectionNode.clientHeight
+    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode.clientHeight
+
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = SubMainHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 64
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
@@ -225,6 +212,7 @@ export default (props) => {
     }
 
     const GAP = 300
+
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
@@ -315,117 +303,17 @@ export default (props) => {
     sessionStorage.removeItem('pay_info')
   }
 
-  async function fetchMainPopupData(arg) {
-    const res = await Api.getBanner({
-      params: {
-        position: arg
-      }
-    })
-    if (res.result === 'success') {
-      if (res.hasOwnProperty('data')) {
-        setPopupData(res.data)
-      }
-    } else {
-      console.log(res.result, res.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchMainPopupData('6')
-  }, [])
-
-  const recommendWrapBaseHeight = 310
-  const transitionTime = 150
-
-  const touchStart = (e) => {
-    if (reloadInitData) {
-      return
-    }
-
-    const MainNode = MainRef.current
-    const recommendWrapNode = recommendWrapRef.current
-    const refreshIconNode = refreshIconRef.current
-
-    touchStartY = e.touches[0].clientY
-  }
-
-  const touchMove = (e) => {
-    if (reloadInitData) {
-      return
-    }
-
-    const MainNode = MainRef.current
-    const recommendWrapNode = recommendWrapRef.current
-    const refreshIconNode = refreshIconRef.current
-
-    touchEndY = e.touches[0].clientY
-    const heightDiff = touchEndY - touchStartY
-
-    if (window.scrollY === 0 && recommendSlideStatus === false && heightDiff <= 100) {
-      recommendWrapNode.style.height = `${recommendWrapBaseHeight + heightDiff}px`
-      refreshIconNode.style.transform = `rotate(${-heightDiff}deg)`
-      if (heightDiff > 10) {
-        refreshIconNode.style.opacity = 1
-      }
-    }
-  }
-
-  const touchEnd = async (e) => {
-    if (reloadInitData) {
-      return
-    }
-
-    const MainNode = MainRef.current
-    const recommendWrapNode = recommendWrapRef.current
-    const refreshIconNode = refreshIconRef.current
-
-    if (recommendWrapNode.clientHeight >= recommendWrapBaseHeight + 80) {
-      let degree = 0
-      const tempIntevalId = setInterval(() => {
-        if (Math.abs(degree) === 360) {
-          degree = 0
-        }
-        degree -= 15
-        refreshIconNode.style.transform = `rotate(${degree}deg)`
-      }, 25)
-      const result = await setMainInitData()
-      clearInterval(tempIntevalId)
-    }
-
-    const promiseSync = new Promise((resolve, reject) => {
-      recommendWrapNode.style.transitionDuration = `${transitionTime}ms`
-      recommendWrapNode.style.height = `${recommendWrapBaseHeight}px`
-
-      setTimeout(() => resolve(), transitionTime)
-    })
-    promiseSync.then(() => {
-      recommendWrapNode.style.transitionDuration = `0ms`
-      recommendWrapNode.style.height = `${recommendWrapBaseHeight}px`
-      recommendWrapNode.style.transform = `scale(1)`
-      refreshIconNode.style.opacity = 0
-      refreshIconNode.style.transform = `rotate(0)`
-    })
-  }
-
-  const filterIdx = (idx) => {
-    setPopupData(
-      popupData.filter((v) => {
-        return v.idx !== idx
-      })
-    )
-  }
-
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <MainWrap ref={MainRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
-        <SubMain className="sub-main" ref={SubMainRef}>
+      <MainWrap ref={MainRef}>
+        <SubMain ref={SubMainRef}>
           <div className="gnb">
             <div className="left-side">
-              <div className="tab">
-                <a href={'/'}>라이브</a>
+              <div className={`tab`}>
+                <Link to={'/'}>라이브</Link>
               </div>
               <div className="tab">
-                <a href={'/rank'}>랭킹</a>
+                <Link to={'/rank'}>랭킹</Link>
               </div>
               <div className="tab">
                 <Link
@@ -433,41 +321,20 @@ export default (props) => {
                     event.preventDefault()
                     StoreLink(globalCtx)
                   }}
-                  to={'/store'}>
+                  to={'/rank'}>
                   스토어
                 </Link>
               </div>
             </div>
-            <div className="right-side">
-              <div
-                className="btn"
-                onClick={() => {
-                  if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
-                  } else {
-                    if (!broadcastBtnActive) {
-                      RoomMake(globalCtx)
-                      setBroadcastBtnActive(true)
-                      setTimeout(() => setBroadcastBtnActive(false), 3000)
-                    }
-                  }
-                }}>
-                방송하기
-              </div>
-            </div>
           </div>
-
-          <Recommend
-            list={initData.recommend}
-            setRecommendSlideStatus={setRecommendSlideStatus}
-            ref={{
-              ref1: recommendWrapRef,
-              ref2: refreshIconRef
-            }}
-          />
         </SubMain>
+
+        <div ref={RecommendRef} style={{height: '220px'}}>
+          {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
+        </div>
+
         <Content>
-          <div className="section" ref={RankSectionRef}>
+          <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 <div className="txt">랭킹</div>
@@ -489,33 +356,42 @@ export default (props) => {
             </div>
           </div>
 
-          <BannerList ref={BannerSectionRef} bannerPosition={'9'} />
+          <BannerList ref={BannerSectionRef} bannerPosition="9" />
 
           <div
-            className="section"
-            ref={StarSectionRef}
-            style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
+            className={`section my-star ${
+              initData.myStar === undefined || (Array.isArray(initData.myStar) && initData.myStar.length === 0) ? '' : 'visible'
+            }`}
+            ref={StarSectionRef}>
             <div className="content-wrap my-star-list">
               <StarList list={initData.myStar} />
             </div>
           </div>
-          <div className="section" ref={LiveSectionRef}>
+
+          <div className="section live-list" ref={LiveSectionRef}>
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <button className="icon refresh" onClick={() => resetFetchList()} />
+                <img className="refresh-icon" src={refreshIcon} onClick={fetchLiveList} />
               </div>
 
-              {/* 대표님 지시로 내부 직원일 경우 방객수와 청취자수 */}
-              {/*broadCnt.isInforex === 1 ? <div>방 : <span class="room_cnt">{broadCnt.roomCnt.toLocaleString()}</span> / 청 : <span class="listener_cnt">{broadCnt.listenerCnt.toLocaleString()}</span></div> : <></>*/}
-
-              <div className="sequence-wrap" onClick={() => setPopup(popup ? false : true)}>
-                <span className="text">
+              <div className="sequence-wrap">
+                <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
                 </span>
-                <img className="sequence-icon" src={sequenceIcon} />
+                <img className="sequence-icon" src={sortIcon} onClick={() => setPopup(popup ? false : true)} />
+                <img
+                  className="detail-list-icon"
+                  src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
+                  onClick={() => setLiveListType('detail')}
+                />
+                <img
+                  className="simple-list-icon"
+                  src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                  onClick={() => setLiveListType('simple')}
+                />
               </div>
             </div>
 
@@ -540,12 +416,12 @@ export default (props) => {
               </div>
             </div>
 
-            {liveCategoryFixed && <div style={{height: '58px'}} />}
+            {liveCategoryFixed && <div style={{height: '36px'}} />}
 
             <div className="content-wrap live-list">
               {Array.isArray(liveList) ? (
                 liveList.length > 0 ? (
-                  <LiveList list={liveList} category={categoryList} />
+                  <LiveList list={liveList} liveListType={liveListType} />
                 ) : (
                   <NoResult />
                 )
@@ -555,6 +431,7 @@ export default (props) => {
             </div>
           </div>
         </Content>
+
         {popup && (
           <LayerPopup
             alignSet={alignSet}
@@ -567,16 +444,9 @@ export default (props) => {
           />
         )}
 
-        {popupData.length > 0 &&
-          popupData.map((data, index) => {
-            return (
-              <React.Fragment key={index}>
-                {Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
-                  <LayerPopupNotice data={data} selectedIdx={filterIdx} />
-                )}
-              </React.Fragment>
-            )
-          })}
+        {customHeader['os'] !== OS_TYPE['IOS'] && popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
+          <LayerPopupNotice setPopup={setPopupNotice} />
+        )}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
@@ -591,192 +461,228 @@ const Content = styled.div`
     height: 65px;
     margin: 25px 16px 16px 16px;
     border-radius: 12px;
-    background: url(${IMG_SERVER}/banner/200521/banner_17.png) no-repeat center center / cover;
   }
+
   .section {
-    margin-top: 24px;
+    box-sizing: border-box;
 
-    .listener_cnt {
-      color: red;
-      font-weight: 700;
-    }
-    .room_cnt {
-      color: blue;
-      font-weight: 700;
-    }
+    &.my-star {
+      display: none;
 
-    .live-list-category {
-      position: relative;
-      display: flex;
-      height: 52px;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      background-color: #fff;
-
-      &.fixed {
-        position: fixed;
-        top: 48px;
-        left: 0;
-        width: 100%;
-        z-index: 10;
+      &.visible {
+        display: block;
       }
+    }
 
-      .inner-wrapper {
-        width: calc(100% - 32px);
-        margin-top: 8px;
-        .swiper-container {
-          overflow: hidden;
+    &.rank {
+      height: 180px;
+      background-color: #424242;
+      padding: 22px 0;
+      color: #fff;
 
-          .list {
-            width: auto;
-            height: 30px;
-            line-height: 28px;
-            border-radius: 10px;
-            border: 1px solid #e0e0e0;
-            font-size: 14px;
-            letter-spacing: -0.35px;
-            padding: 0 8px;
-            color: #424242;
-            margin: 0 2px;
-            background-color: #fff;
-            box-sizing: border-box;
-
-            &.active {
-              border-color: transparent;
-              background-color: #632beb;
-              color: #fff;
-            }
-
-            &:first-child {
-              margin-left: 0;
-            }
+      .title-wrap {
+        .title {
+          .txt {
+            color: #fff;
+            font-size: 16px;
           }
         }
       }
     }
 
-    .title-wrap {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0 16px;
-
-      .title {
+    &.live-list {
+      .title-wrap {
         display: flex;
-        flex-direction: row;
         align-items: center;
+        flex-direction: row;
+        height: 64px;
+        padding: 22px 17px;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
 
-        .txt {
+        .title {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .txt {
+            font-size: 18px;
+            letter-spacing: -0.36px;
+          }
+
+          .refresh-icon {
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+
+    color: red;
+    font-weight: 700;
+  }
+  .room_cnt {
+    color: blue;
+    font-weight: 700;
+  }
+
+  .live-list-category {
+    position: relative;
+    display: flex;
+    height: 36px;
+    flex-direction: row;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+
+    &.fixed {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .inner-wrapper {
+      width: calc(100% - 16px);
+      margin-left: 16px;
+
+      .swiper-container {
+        overflow: hidden;
+
+        .list {
+          width: auto;
+          height: 36px;
+          line-height: 34px;
+          font-size: 14px;
+          letter-spacing: -0.35px;
+          margin: 0 8px;
           color: #424242;
-          font-size: 18px;
-          font-weight: bold;
-          letter-spacing: -0.36px;
-
-          &.in-active {
-            color: #bdbdbd;
-          }
-
-          &:nth-child(2) {
-            margin-left: 10px;
-          }
-        }
-        .icon {
-          &.refresh {
-            display: block;
-            width: 24px;
-            height: 24px;
-            margin-left: 5px;
-            background-repeat: no-repeat;
-            background-image: url(${refreshIcon});
-          }
-
-          &.live {
-            display: block;
-            width: 16px;
-            margin-left: 10px;
-          }
-        }
-      }
-
-      .right-side {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        .bar {
-          width: 1px;
-          height: 12px;
-          background-color: #9e9e9e;
-          margin: 0 10px;
-        }
-
-        .text {
-          color: #9e9e9e;
-          font-size: 18px;
-          font-weight: 700;
-          letter-spacing: -0.36px;
+          box-sizing: border-box;
 
           &.active {
             color: #632beb;
+            font-weight: 700;
+            border-bottom: 1px solid #632beb;
+          }
+
+          &:first-child {
+            margin-left: 0;
           }
         }
       }
+    }
+  }
 
-      .sequence-wrap {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+  .title-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 16px;
 
-        .text {
-          margin-left: 4px;
-          color: #424242;
-          font-size: 14px;
-          letter-spacing: -0.35px;
+    .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .txt {
+        color: #424242;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: -0.36px;
+
+        &.in-active {
+          color: #bdbdbd;
         }
-        .sequence-icon {
-          display: block;
+
+        &:nth-child(2) {
+          margin-left: 10px;
         }
       }
     }
 
-    .content-wrap {
-      position: relative;
-      min-height: 50px;
-      margin-top: 10px;
-      padding: 0 16px;
+    .right-side {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
-      &.rank-slide {
-        padding: 0;
-        min-height: 150px;
+      .bar {
+        width: 1px;
+        height: 12px;
+        background-color: #9e9e9e;
+        margin: 0 10px;
       }
 
-      &.my-star-list {
-        min-height: 94px;
+      .text {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: -0.36px;
+
+        &.active {
+          color: #febd56;
+        }
+      }
+    }
+
+    .sequence-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .text {
+        margin-left: 4px;
+        color: #424242;
+        font-size: 12px;
+        letter-spacing: -0.24px;
       }
 
-      &.live-list {
-        /* padding-bottom: 40px; */
-        /* min-height: 515px; */
+      .sequence-icon {
+        margin-right: 15px;
       }
+
+      .detail-list-icon {
+        margin-right: 2px;
+      }
+
+      .sequence-icon,
+      .detail-list-icon,
+      .simple-list-icon {
+        display: block;
+      }
+    }
+  }
+
+  .content-wrap {
+    position: relative;
+    min-height: 50px;
+    padding: 0 16px;
+
+    &.rank-slide {
+      padding: 0;
+      margin-top: 14px;
+    }
+
+    &.my-star-list {
+      height: 108px;
+      background-color: #eee;
+    }
+
+    &.live-list {
+      width: 100%;
     }
   }
 `
 
 const SubMain = styled.div`
-  min-height: 310px;
-  background-color: #fff;
-  overflow: hidden;
-
   .gnb {
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: space-between;
-    /* padding: 12px 8px 8px; */
-    height: 42px;
+    justify-content: center;
+    height: 36px;
     box-sizing: border-box;
-    background: rgba(99, 43, 235, 0.7);
+    background-color: #632beb;
     z-index: 1;
 
     .left-side {
@@ -840,5 +746,4 @@ const SubMain = styled.div`
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
-  width: 100%;
 `

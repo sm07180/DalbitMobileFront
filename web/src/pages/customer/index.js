@@ -4,7 +4,7 @@
  * @todo
  */
 
-import Layout from 'pages/common/layout'
+import Layout from 'pages/common/layout/new_layout'
 import React from 'react'
 import Content from './content'
 //Context
@@ -15,10 +15,8 @@ export default props => {
   //title
 
   return (
-    <Layout {...props} status="no_gnb">
-      <CustomerProvider>
-        <Content {...props} />
-      </CustomerProvider>
-    </Layout>
+    <CustomerProvider>
+      <Content {...props} />
+    </CustomerProvider>
   )
 }
