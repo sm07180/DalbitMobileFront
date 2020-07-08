@@ -23,7 +23,9 @@ let chargeData = [
   {id: 8, type: '문화상품권', fetch: 'pay_gm'},
   {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
   {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-  {id: 10, type: '도서문화상품권', fetch: 'pay_gc'}
+  {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
+  {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
 ]
 
 let clickFlag = false
@@ -34,14 +36,14 @@ export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
 
-  if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17) {
-    chargeData = chargeData.concat([
-      {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
-    ])
-  }
+  // if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17 && chargeData.length < 9) {
+  //   chargeData = chargeData.concat([
+  //     {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+  //     {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
+  //   ])
+  // }
 
-  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161') {
+  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
@@ -191,6 +193,17 @@ export default (props) => {
   }
 
   async function payFetch(event) {
+    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 18) {
+      if (chargeData[payMathod].id === 6 || chargeData[payMathod].id === 7) {
+        return context.action.confirm({
+          msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
+          callback: () => {
+            window.location.href = 'http://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'
+          }
+        })
+      }
+    }
+
     clickFlag = true
     if (payMathod === -1) return null
 
