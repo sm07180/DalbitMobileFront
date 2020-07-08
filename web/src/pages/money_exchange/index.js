@@ -690,8 +690,11 @@ export default (props) => {
       }
       const res = await Api.exchangeSelect()
       if (res.result === 'success') {
-        setOriginalExchange(res.data)
-        setRadioCheck(1)
+        if (context.profile.memNo === '11591067563456') {
+        } else {
+          setOriginalExchange(res.data)
+          setRadioCheck(1)
+        }
       }
     }
     fetchData()
