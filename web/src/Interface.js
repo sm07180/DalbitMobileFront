@@ -426,7 +426,7 @@ export default () => {
     }
     //---------------------[분기처리시작]
 
-    //pushClick(pushMsg.push_idx)
+    pushClick(pushMsg.push_idx)
 
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
