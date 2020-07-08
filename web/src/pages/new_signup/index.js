@@ -268,6 +268,7 @@ export default (props) => {
   //프로필사진
   const uploadSingleFile = (e) => {
     let reader = new FileReader()
+    if (e.target.files.length === 0) return null
     const file = e.target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
@@ -401,7 +402,7 @@ export default (props) => {
         const img = new Image()
         img.src = cacheURL
 
-        setTempPhoto(originalCacheURL)
+        //setTempPhoto(originalCacheURL)
 
         img.onload = async () => {
           const limitSize = 1280
@@ -487,7 +488,7 @@ export default (props) => {
         </InputItem>
 
         {/* 프로필 사진 ---------------------------------------------------------- */}
-        <ProfileUpload imgUrl={tempPhoto ? tempPhoto : profImgUrl} className={memType !== 'p' && 'top'}>
+        <ProfileUpload imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''} className={memType !== 'p' && 'top'}>
           <label htmlFor="profileImg">
             <div></div>
             <span>클릭 이미지 파일 추가</span>
@@ -502,6 +503,28 @@ export default (props) => {
           />
           <p className="img-text">프로필 사진을 등록 해주세요</p>
         </ProfileUpload>
+
+        <InputItem button={true} validate={validate.auth.check}>
+          <div className="layer">
+            <label htmlFor="auth">닉네임</label>
+            <input
+              type="text"
+              ref={authRef}
+              id="auth"
+              name="auth"
+              placeholder="2~20자 한글/영문/숫자"
+              autoComplete="off"
+              value={auth}
+              onChange={(e) => dispatch(e.target)}
+              disabled={true}
+            />
+            <span className="timer">{timeText}</span>
+            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
+              인증확인
+            </button>
+          </div>
+          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+        </InputItem>
       </Content>
     </Layout>
   )
@@ -524,7 +547,7 @@ const InputItem = styled.div`
     label {
       display: block;
       position: relative;
-      padding-top: 9px;
+      padding-top: 11px;
       color: #000;
       font-size: 12px;
       line-height: 12px;
@@ -538,7 +561,7 @@ const InputItem = styled.div`
       top: 0;
       left: 0;
       width: ${(props) => (props.button ? 'calc(100% - 106px)' : 'calc(100% - 28px)')};
-      padding: ${(props) => (props.button ? '20px 90px 4px 15px' : '20px 12px 4px 15px')};
+      padding: ${(props) => (props.button ? '22px 90px 2px 15px' : '22px 12px 2px 15px')};
       border-radius: 12px;
       border: 1px solid;
       border-color: ${(props) => (props.validate ? '#e0e0e0' : '#ec455f')};
