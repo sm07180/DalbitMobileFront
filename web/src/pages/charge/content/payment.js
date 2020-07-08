@@ -36,13 +36,6 @@ export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
 
-  // if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17 && chargeData.length < 9) {
-  //   chargeData = chargeData.concat([
-  //     {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-  //     {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
-  //   ])
-  // }
-
   if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
@@ -53,7 +46,8 @@ export default (props) => {
       {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
       {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
       {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
+      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+      {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'}
     ]
   }
 
