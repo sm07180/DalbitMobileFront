@@ -41,7 +41,7 @@ export default (props) => {
     ])
   }
 
-  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
+  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
