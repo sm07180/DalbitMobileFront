@@ -32,7 +32,14 @@ let payType = ''
 export default (props) => {
   const context = useContext(Context)
 
-  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
+  const customHeader = JSON.parse(Api.customHeader)
+
+  if (
+    context.profile.memNo === '41587626772875' ||
+    context.profile.memNo === '31589001177161' ||
+    __NODE_ENV !== 'real' ||
+    (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17)
+  ) {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
