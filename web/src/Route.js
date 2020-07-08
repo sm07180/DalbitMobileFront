@@ -8,34 +8,20 @@ import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-// import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
-const NewMain = React.lazy(() => import('pages/new_main'))
 const Ranking = React.lazy(() => import('pages/ranking3'))
 
-let MyPage = React.lazy(() => import('pages/mypage'))
-let Menu = React.lazy(() => import('pages/menu'))
-let MySetting = React.lazy(() => import('pages/mypage/setting.js'))
-
-// if (__NODE_ENV !== 'real') {
-//   MyPage = React.lazy(() => import('pages/mypage2'))
-//   Menu = React.lazy(() => import('pages/menu2'))
-//   MySetting = React.lazy(() => import('pages/mypage2/setting2.5.js'))
-// }
+const MyPage = React.lazy(() => import('pages/mypage'))
+const Menu = React.lazy(() => import('pages/menu'))
+const MySetting = React.lazy(() => import('pages/mypage/setting.js'))
 
 const Pay = React.lazy(() => import('pages/pay'))
 const PayResult = React.lazy(() => import('pages/pay_result'))
 const Store = React.lazy(() => import('pages/store'))
-let Charge = React.lazy(() => import('pages/charge'))
-// if (__NODE_ENV !== 'real') {
-//   Charge = React.lazy(() => import('pages/charge/index_test'))
-// }
+const Charge = React.lazy(() => import('pages/charge'))
 
 const Exchange = React.lazy(() => import('pages/exchange'))
-let Customer = React.lazy(() => import('pages/customer_copy'))
-if (__NODE_ENV === 'real') {
-  Customer = React.lazy(() => import('pages/customer'))
-}
+const Customer = React.lazy(() => import('pages/customer_copy'))
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
@@ -44,10 +30,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
-let SignUp = React.lazy(() => import('pages/sign_up'))
-// if (__NODE_ENV === 'real') {
-//   SignUp = React.lazy(() => import('pages/sign_up'))
-// }
+const SignUp = React.lazy(() => import('pages/sign_up'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
@@ -76,8 +59,6 @@ export default () => {
       <ScrollToTop />
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/new_main" component={NewMain} />
-        <Route exact path="/after_main/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         {/* new 랭킹 추가  */}

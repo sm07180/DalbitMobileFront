@@ -309,11 +309,11 @@ export default React.forwardRef((props, ref) => {
                   }}
                   onClick={() => clickSlideDisplay(list[prevBIdx])}
                 >
+                {list[prevBIdx]['nickNm'] !== 'banner' && (
                   <div className="text-wrap">
                     <div className="selected-title">
                       {list[prevBIdx]['title']}
                     </div>
-                    {list[prevBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[prevBIdx]['nickNm']
                           .split(emojiSplitRegex)
@@ -323,8 +323,8 @@ export default React.forwardRef((props, ref) => {
                             return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
-                    )}
                   </div>
+                )}
                 </div>
                 <div
                   className="broad-slide"
@@ -338,11 +338,11 @@ export default React.forwardRef((props, ref) => {
                   }}
                   onClick={() => clickSlideDisplay(list[selectedBIdx])}
                 >
+                {list[selectedBIdx]['nickNm'] !== 'banner' && (
                   <div className="text-wrap">
                     <div className="selected-title">
                       {list[selectedBIdx]['title']}
                     </div>
-                    {list[selectedBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[selectedBIdx]['nickNm']
                           .split(emojiSplitRegex)
@@ -350,8 +350,8 @@ export default React.forwardRef((props, ref) => {
                             return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
-                    )}
                   </div>
+                )}
                 </div>
                 <div
                   className="broad-slide"
@@ -365,11 +365,11 @@ export default React.forwardRef((props, ref) => {
                   }}
                   onClick={() => clickSlideDisplay(list[nextBIdx])}
                 >
+                {list[nextBIdx]['nickNm'] !== 'banner' && (
                   <div className="text-wrap">
                     <div className="selected-title">
                       {list[nextBIdx]['title']}
                     </div>
-                    {list[nextBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[nextBIdx]['nickNm']
                           .split(emojiSplitRegex)
@@ -377,8 +377,8 @@ export default React.forwardRef((props, ref) => {
                             return <span key={`splited-${idx}`}>{str}</span>
                           })}
                       </div>
-                    )}
                   </div>
+                )}
                 </div>
               </div>
             </>
