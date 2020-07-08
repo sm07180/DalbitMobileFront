@@ -690,7 +690,7 @@ export default (props) => {
       }
       const res = await Api.exchangeSelect()
       if (res.result === 'success') {
-        if (context.profile.memNo === '11591067563456') {
+        if (context.profile.memNo === '11591067563456' || context.profile.memNo === '21593878139483') {
         } else {
           setOriginalExchange(res.data)
           setRadioCheck(1)
