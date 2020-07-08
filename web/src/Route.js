@@ -21,7 +21,7 @@ const Store = React.lazy(() => import('pages/store'))
 const Charge = React.lazy(() => import('pages/charge'))
 
 const Exchange = React.lazy(() => import('pages/exchange'))
-const Customer = React.lazy(() => import('pages/customer_copy'))
+const Customer = React.lazy(() => import('pages/customer'))
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
