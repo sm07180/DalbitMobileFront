@@ -7,6 +7,7 @@ import qs from 'query-string'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
+import fixImageRotate from 'components/lib/fix_image_rotate'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
@@ -33,6 +34,13 @@ export default (props) => {
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
+
+  if (_.hasIn(snsInfo, 'nickNm')) {
+    snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
+  }
+  if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
+    snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
+  }
 
   function reducer(state, action) {
     const {name, value} = action
@@ -71,13 +79,6 @@ export default (props) => {
       ...state,
       [name]: value
     }
-  }
-
-  if (_.hasIn(snsInfo, 'nickNm')) {
-    snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
-  }
-  if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
-    snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
   }
 
   const [changes, dispatch] = useReducer(reducer, {
@@ -267,6 +268,34 @@ export default (props) => {
   }
 
   //프로필사진
+  const uploadSingleFile = async (e) => {
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    const file = e.target.files[0]
+    const fileName = file.name
+    const fileSplited = fileName.split('.')
+    const fileExtension = fileSplited.pop()
+    const extValidator = (ext) => {
+      const list = ['jpg', 'jpeg', 'png']
+      return list.includes(ext)
+    }
+
+    if (!extValidator(fileExtension)) {
+      return context.action.alert({
+        msg: 'jpg, png 이미지만 사용 가능합니다.'
+      })
+    }
+
+    const imgData = await fixImageRotate(file)
+    console.log('imgData', imgData)
+
+    reader.onload = function () {
+      if (reader.result) {
+        //setImgData(reader.result)
+        //console.log(reader.result)
+      }
+    }
+  }
 
   useEffect(() => {
     //console.log(memIdRef)
