@@ -9,6 +9,7 @@ import SelectBoxWrap from '../component/select'
 import BackBtn from '../static/ic_back.svg'
 import SuccessPopup from './charge-success-popup'
 //import { Link } from 'react-router-dom'
+import {OS_TYPE} from 'context/config.js'
 import './payment.scss'
 
 const list = [
@@ -31,15 +32,16 @@ let payType = ''
 // let paymentPriceAddVat = 0
 export default (props) => {
   const context = useContext(Context)
-
   const customHeader = JSON.parse(Api.customHeader)
 
-  if (
-    context.profile.memNo === '41587626772875' ||
-    context.profile.memNo === '31589001177161' ||
-    __NODE_ENV !== 'real' ||
-    (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17)
-  ) {
+  if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 17) {
+    chargeData = chargeData.concat([
+      {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
+    ])
+  }
+
+  if (context.profile.memNo === '41587626772875' || context.profile.memNo === '31589001177161' || __NODE_ENV !== 'real') {
     chargeData = [
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
