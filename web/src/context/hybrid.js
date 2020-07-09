@@ -50,7 +50,13 @@ export const Hybrid = (func, info) => {
       if (info === '' || info === null || info === undefined) {
         window.android[func]()
       } else {
-        window.android[func](JSON.stringify(info))
+        try {
+          window.android[func](JSON.stringify(info))
+        } catch (e) {
+          if (func === 'openUrl') {
+            window.android[func]('{"url":"' + info + '"}')
+          }
+        }
       }
       break
     }

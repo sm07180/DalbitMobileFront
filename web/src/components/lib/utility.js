@@ -5,6 +5,8 @@
  */
 
 //---------------------------------------------------------------------
+import {isHybrid, Hybrid} from 'context/hybrid'
+
 export default class Utility {
   /**
    * @brief 언어설정
@@ -210,6 +212,7 @@ export default class Utility {
     max = Math.floor(max) + 1
     return Math.floor(Math.random() * (max - min)) + min
   }
+
   /**
    * 공지사항, faq, 1:1문의 시에 a링크 찾아서 하이브리드 일때 외부 브라우저 실행
    *
