@@ -220,10 +220,10 @@ export default class Utility {
      * @returns {boolean}
      */
   static contentClickEvent = (event) => {
-      if(event.target.closest("A") && isHybrid()){
-          const link = event.target.closest("A")
-          if(link.href.indexOf("dalbitlive.com") > -1 || (!link.href.startsWith("https://") && !link.href.startsWith("http://"))){
-             window.location.href = link.href;
+      if(event.target.closest('A') && isHybrid()){
+          const link = event.target.closest('A')
+          if(link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))){
+            window.location.href = link.href;
           }else{
             Hybrid('openUrl', link.href);
           }
