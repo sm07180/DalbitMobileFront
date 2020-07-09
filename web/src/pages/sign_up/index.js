@@ -895,7 +895,7 @@ export default (props) => {
             </HelpText>
           )}
         </InputWrap>
-        <BirthAlertMsg>17세 미만 미성년자회원은 서비스 이용을 제한합니다.</BirthAlertMsg>
+        <BirthAlertMsg>허위정보로 가입 시 이용을 제한할 수 있습니다.</BirthAlertMsg>
         {/* 성별 */}
         <InputWrap>
           <label className="input-label">
