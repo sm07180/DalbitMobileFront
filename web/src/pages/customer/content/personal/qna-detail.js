@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 
 import SelectBoxs from 'components/ui/selectBox.js'
 
@@ -304,7 +305,9 @@ export default function Detail(props) {
                     <span className="personalDetailWrap__answer--icon"></span>
                     <span>답변</span>
                   </div>
-                  <p dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}}></p>
+                  <p
+                    dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}}
+                    onClick={Utility.contentClickEvent}></p>
                 </div>
               )}
             </div>

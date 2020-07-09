@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 
 import './detail.scss'
-
+import Utility from 'components/lib/utility'
 export default function Detail() {
   const history = useHistory()
 
@@ -52,7 +52,7 @@ export default function Detail() {
             <span>{noticeDetail.title}</span>
             <span>{detailDate()}</span>
           </header>
-          <div>
+          <div onClick={Utility.contentClickEvent}>
             <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
           </div>
           {/* <button>목록보기</button> */}

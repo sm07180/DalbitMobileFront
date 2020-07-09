@@ -18,7 +18,7 @@ export default class Utility {
    * @brief nl2br
    *
    */
-  static nl2br = text => {
+  static nl2br = (text) => {
     return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
   }
   /**
@@ -43,10 +43,10 @@ export default class Utility {
    * @brief 쿠키가져오기
    * @param string    c_name            //*쿠키의 key(키)
    */
-  static getCookie = c_name => {
+  static getCookie = (c_name) => {
     const splited = document.cookie.split(';')
     const cookies = {}
-    splited.forEach(bundle => {
+    splited.forEach((bundle) => {
       const [key, value] = bundle.split('=')
       cookies[key.trim()] = value
     })
@@ -59,7 +59,7 @@ export default class Utility {
   }
 
   //* 배열이나 문자열 중복제거  [1,3,2,4,3,1,5,6,2,1] =>[1,3,2,4,5,6]  ,  '11411' =>'14'
-  static removeOverlap = data => {
+  static removeOverlap = (data) => {
     if (typeof data === 'object') return [...new Set(data)]
     if (typeof data === 'string') return [...new Set(data)].join('')
     return data
@@ -71,7 +71,7 @@ export default class Utility {
     return _temp
   }
   //* 배열섞기
-  static suffleArray = array => {
+  static suffleArray = (array) => {
     return array.sort(() => 0.5 - Math.random())
   }
   //* 특정배열요소 1개만 지우기
@@ -82,7 +82,7 @@ export default class Utility {
   }
   //* 특정배열요소 모두 지우기
   static removeAllElementFromArray = (array, element) => {
-    return array.filter(ele => ele !== element)
+    return array.filter((ele) => ele !== element)
   }
   //* 배열내에서 동일한값을 체크해서 object로 묶어줌. {3,9,3,9,7} 이면 matchMap에는 {3=2,9=2,7=1}
   static matchMapFromArray = (array = [1, 3, 3, 7, 3, 3, 1]) => {
@@ -94,7 +94,7 @@ export default class Utility {
     return _map
   }
   //* 휴대폰번호 010-3456-1234 형태로 "-"추가 3자리 4자리가능, 전체 11자리를 한꺼번에 입력받아 리턴할 경우 사용.
-  static phoneAddHypen = string => {
+  static phoneAddHypen = (string) => {
     if (typeof string === 'string' && string !== null && string !== '')
       return string
         .replace(/[^0-9]/g, '')
@@ -112,7 +112,7 @@ export default class Utility {
     return (str = str.length > limit ? str.substr(0, limit) + '...' : str)
   }
   // 3,000,000 3단위수로 ,붙이기
-  static addComma = x => {
+  static addComma = (x) => {
     if (x === undefined || x === null) return 0
     try {
       var parts = x.toString().split('.')
@@ -123,7 +123,7 @@ export default class Utility {
     }
   }
   //초 단위 숫자를 시 분 포맷으로 변경
-  static secondsToTime = seconds => {
+  static secondsToTime = (seconds) => {
     const hour = parseInt(seconds / 3600)
     const min = parseInt((seconds % 3600) / 60)
     return `${hour}시간 ${hour}분`
@@ -182,11 +182,11 @@ export default class Utility {
     }
   }
 
-    /**
-     * 숫자 K형으로 문자 변환
-     * @param number
-     * @returns {*}
-     */
+  /**
+   * 숫자 K형으로 문자 변환
+   * @param number
+   * @returns {*}
+   */
   static printNumber(number) {
     if (number === undefined) {
       return 0
@@ -199,15 +199,33 @@ export default class Utility {
     }
   }
 
-    /**
-     * 랜덤 숫자 인트형으로 가져 오기
-     * @param min
-     * @param max
-     * @returns {*}
-     */
+  /**
+   * 랜덤 숫자 인트형으로 가져 오기
+   * @param min
+   * @param max
+   * @returns {*}
+   */
   static getRandomInt = (min, max) => {
-      min = Math.ceil(min);
-      max = Math.floor(max) + 1;
-      return Math.floor(Math.random() * (max - min)) + min;
+    min = Math.ceil(min)
+    max = Math.floor(max) + 1
+    return Math.floor(Math.random() * (max - min)) + min
+  }
+  /**
+   * 공지사항, faq, 1:1문의 시에 a링크 찾아서 하이브리드 일때 외부 브라우저 실행
+   *
+   * @param event
+   * @returns {boolean}
+   */
+  static contentClickEvent = (event) => {
+    if (event.target.closest('A') && isHybrid()) {
+      const link = event.target.closest('A')
+      if (link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))) {
+        window.location.href = link.href
+      } else {
+        Hybrid('openUrl', link.href)
+      }
+      event.preventDefault()
+      return false
+    }
   }
 }

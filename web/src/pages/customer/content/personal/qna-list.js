@@ -109,15 +109,6 @@ export default function QnaList() {
   }, [])
   return (
     <div className="personalListWrap">
-      <div className="TEST">
-        <SelectBoxComponent
-          state={state}
-          dispatch={dispatch}
-          linked={{use: true, state: state2, dispatch: dispatch2, type: 'updateList'}}
-        />
-        <div>~~~</div>
-        <SelectBoxComponent state={state2} dispatch={dispatch2} />
-      </div>
       {noResultShow === true && <NoResult />}
       {qnalist.length > 0 &&
         qnalist.map((item) => {
