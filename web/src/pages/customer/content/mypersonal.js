@@ -10,6 +10,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Utility from 'components/lib/utility'
 //styled component
 import styled from 'styled-components'
 import NewIcon from './static/ic_new.svg'
@@ -127,7 +128,7 @@ function Faq(props) {
                   <dd>{timeFormat(writeDt)}</dd>
                 </TableWrap>
 
-                <Detail className={Store().personalPage === qnaIdx && listhide !== '' ? 'on' : ''}>
+                <Detail className={Store().personalPage === qnaIdx && listhide !== '' ? 'on' : ''} onClick={Utility.contentClickEvent}>
                   <pre dangerouslySetInnerHTML={{__html: contents.replace(/class/gi, 'className')}}></pre>
                   {addFile.url !== '' && <img src={addFile.url} className="addImg" />}
                   {answer !== '' && (

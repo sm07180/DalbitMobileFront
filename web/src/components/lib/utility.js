@@ -5,6 +5,8 @@
  */
 
 //---------------------------------------------------------------------
+import {isHybrid, Hybrid} from 'context/hybrid'
+
 export default class Utility {
   /**
    * @brief 언어설정
@@ -209,5 +211,24 @@ export default class Utility {
       min = Math.ceil(min);
       max = Math.floor(max) + 1;
       return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+    /**
+     * 공지사항, faq, 1:1문의 시에 a링크 찾아서 하이브리드 일때 외부 브라우저 실행
+     *
+     * @param event
+     * @returns {boolean}
+     */
+  static contentClickEvent = (event) => {
+      if(event.target.closest("A") && isHybrid()){
+          const link = event.target.closest("A")
+          if(link.href.indexOf("dalbitlive.com") > -1 || (!link.href.startsWith("https://") && !link.href.startsWith("http://"))){
+             window.location.href = link.href;
+          }else{
+            Hybrid('openUrl', link.href);
+          }
+          event.preventDefault()
+          return false
+      }
   }
 }

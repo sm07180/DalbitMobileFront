@@ -10,6 +10,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Utility from 'components/lib/utility'
 //styled component
 import styled from 'styled-components'
 //----------------------------------------------------------
@@ -135,6 +136,7 @@ function Faq(props) {
       }
     }, 10)
   }
+
   useEffect(() => {
     //reload
     window.addEventListener('scroll', scrollEvtHdr)
@@ -179,7 +181,7 @@ function Faq(props) {
                       </dd>
                       <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''} onClick={Utility.contentClickEvent}>
                       <div>
                         <span className="icon">A</span>
                         {faqDetail.answer && (
@@ -208,7 +210,7 @@ function Faq(props) {
                       </dd>
                       <dd className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}></dd>
                     </TableWrap>
-                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''}>
+                    <Detail className={Store().faqPage === faqIdx && listhide !== '' ? 'on' : ''} onClick={Utility.contentClickEvent}>
                       <div>
                         <span className="icon">A</span>
                         {faqDetail.answer && (
