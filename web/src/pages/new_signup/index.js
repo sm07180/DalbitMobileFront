@@ -30,7 +30,7 @@ export default (props) => {
     memId: false,
     auth: false
   })
-  const [tempPhoto, setTempPhoto] = useState(null)
+  const [signUpPass, setSignUpPass] = useState(false)
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -41,6 +41,9 @@ export default (props) => {
   if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
     snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
   }
+
+  //validation
+  const spacePattern = /\s/g
 
   function reducer(state, action) {
     const {name, value} = action
@@ -74,6 +77,9 @@ export default (props) => {
         })
       }
     }
+
+    //닉네임
+    if (spacePattern.test(value)) return {...state}
 
     return {
       ...state,
@@ -230,6 +236,7 @@ export default (props) => {
       }
     })
     if (result === 'success') {
+      dispatch({name: 'CMID', value: true})
       setValidate({name: 'auth', check: true, text: message})
       setValidate({name: 'memId', check: true, text: ''})
       clearInterval(intervalId)
@@ -437,9 +444,85 @@ export default (props) => {
     }
   }
 
+  //닉네임
+  const validateNick = async () => {
+    if (nickNm.length < 2 || nickNm.length > 20) {
+      return setValidate({name: 'nickNm', check: false, text: '닉네임은 2~20자 이내로 입력해주세요.'})
+    } else {
+      const {result, code, message} = await Api.nickName_check({
+        params: {
+          nickNm: nickNm
+        }
+      })
+      if (result === 'success' && code === '1') {
+        return setValidate({name: 'nickNm', check: true, text: ''})
+      } else if (result === 'fail') {
+        if (code === '0') {
+          return setValidate({name: 'nickNm', check: false, text: '닉네임 중복입니다.'})
+        } else {
+          return setValidate({name: 'nickNm', check: false, text: '사용 불가능한 닉네임 입니다.'})
+        }
+      }
+    }
+  }
+
+  //비밀번호
+  const validatePwd = () => {
+    const num = loginPwd.search(/[0-9]/g)
+    const eng = loginPwd.search(/[a-zA-Z]/gi)
+    const spe = loginPwd.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+    if (loginPwd.length < 8 || loginPwd.length > 20) {
+      return setValidate({name: 'loginPwd', check: false, text: '비밀번호는 8~20자 이내로 입력해주세요.'})
+    } else {
+      if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+        return setValidate({name: 'loginPwd', check: false, text: '영문/숫자/특수문자 중 2가지 이상 조합으로 입력해주세요.'})
+      } else {
+        return setValidate({name: 'loginPwd', check: true, text: ''})
+      }
+    }
+  }
+
+  const validatePwdCheck = () => {
+    if (loginPwd === loginPwdCheck) {
+      return setValidate({name: 'loginPwdCheck', check: true, text: ''})
+    } else {
+      return setValidate({name: 'loginPwdCheck', check: false, text: '비밀번호를 다시 확인해주세요.'})
+    }
+  }
+
+  //생년월일
+
+  //성별
+
+  //약관동의
+
+  //로그인
+
+  //회원가입 Data fetch
+
+  //회원가입 완료 버튼
+  const signUp = () => {
+    if (!signUpPass) {
+      let message = ''
+      if (!CMID && memType === 'p') {
+        return context.action.alert({
+          msg: '휴대폰 본인인증을 진행해주세요.'
+        })
+      }
+      validateNick()
+      validatePwd()
+      validatePwdCheck()
+
+      //해서 통과 기준으로 알럿도 여기서 띄운다.
+    } else {
+      //회원가입 fetch
+    }
+  }
+
   useEffect(() => {
     //console.log(memIdRef)
-  }, [memIdRef])
+    console.log(JSON.stringify(changes, null, 1))
+  }, [changes])
 
   return (
     <Layout status="no_gnb" header="회원가입">
@@ -504,27 +587,60 @@ export default (props) => {
           <p className="img-text">프로필 사진을 등록 해주세요</p>
         </ProfileUpload>
 
-        <InputItem button={true} validate={validate.auth.check}>
+        <InputItem button={false} validate={validate.nickNm.check}>
           <div className="layer">
-            <label htmlFor="auth">닉네임</label>
+            <label htmlFor="nickNm">닉네임</label>
             <input
               type="text"
-              ref={authRef}
-              id="auth"
-              name="auth"
+              id="nickNm"
+              name="nickNm"
               placeholder="2~20자 한글/영문/숫자"
               autoComplete="off"
-              value={auth}
+              maxLength={20}
+              value={nickNm}
               onChange={(e) => dispatch(e.target)}
-              disabled={true}
             />
-            <span className="timer">{timeText}</span>
-            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
-              인증확인
-            </button>
           </div>
-          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+          {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
         </InputItem>
+
+        <InputItem button={false} validate={validate.loginPwd.check}>
+          <div className="layer">
+            <label htmlFor="loginPwd">비밀번호</label>
+            <input
+              type="password"
+              id="loginPwd"
+              name="loginPwd"
+              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+              autoComplete="off"
+              maxLength={20}
+              value={loginPwd}
+              onChange={(e) => dispatch(e.target)}
+            />
+          </div>
+          {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
+        </InputItem>
+
+        <InputItem button={false} validate={validate.loginPwdCheck.check}>
+          <div className="layer">
+            <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+            <input
+              type="password"
+              id="loginPwdCheck"
+              name="loginPwdCheck"
+              placeholder="비밀번호를 한번 더 입력해주세요"
+              autoComplete="off"
+              maxLength={20}
+              value={loginPwdCheck}
+              onChange={(e) => dispatch(e.target)}
+            />
+          </div>
+          {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+        </InputItem>
+
+        <button className="join-btn" onClick={signUp}>
+          회원가입
+        </button>
       </Content>
     </Layout>
   )
@@ -532,6 +648,17 @@ export default (props) => {
 
 const Content = styled.section`
   padding: 12px 16px;
+  .join-btn {
+    width: 100%;
+    height: 44px;
+    margin-top: 32px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 44px;
+    background: ${COLOR_MAIN};
+  }
 `
 
 const InputItem = styled.div`
@@ -581,6 +708,7 @@ const InputItem = styled.div`
       font-size: 14px;
       color: #bdbdbd;
       font-weight: 400;
+      letter-spacing: -0.5px;
     }
 
     input:disabled {
