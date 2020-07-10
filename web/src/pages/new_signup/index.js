@@ -4,16 +4,20 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
+import moment from 'moment'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
+import DatePicker from './content/datepicker'
 
 //static
 import icoProfile from './static/ico-profil.svg'
 import icoCamera from './static/ico-camera.svg'
+import icoFemale from './static/female.svg'
+import icoMale from './static/male.svg'
 
 let intervalId = null
 let setTime = 300
@@ -92,7 +96,7 @@ export default (props) => {
     loginPwd: '',
     loginPwdCheck: '',
     nickNm: '',
-    birth: '',
+    birth: null,
     gender: 'n',
     profImgUrl: '',
     memType: 'p',
@@ -144,18 +148,6 @@ export default (props) => {
     term: {
       check: true,
       text: ''
-    },
-    time: {
-      check: true,
-      text: ''
-    },
-    memIdBtn: {
-      check: true,
-      text: ''
-    },
-    authBtn: {
-      check: true,
-      text: ''
     }
   })
 
@@ -201,7 +193,6 @@ export default (props) => {
       }
     }
   }
-
   const fetchSmsReq = async () => {
     if (!validateID(memId)) return null
     const {result, data, message} = await Api.sms_request({
@@ -227,7 +218,6 @@ export default (props) => {
       })
     }
   }
-
   const fetchSmsCheck = async () => {
     const {result, message} = await Api.sms_check({
       data: {
@@ -251,7 +241,6 @@ export default (props) => {
       })
     }
   }
-
   const startAuthTimer = () => {
     clearInterval(intervalId)
     setTime = 300
@@ -481,7 +470,6 @@ export default (props) => {
       }
     }
   }
-
   const validatePwdCheck = () => {
     if (loginPwd === loginPwdCheck) {
       return setValidate({name: 'loginPwdCheck', check: true, text: ''})
@@ -491,6 +479,20 @@ export default (props) => {
   }
 
   //생년월일
+  const birthChange = (birth) => {
+    dispatch({name: 'birth', value: birth})
+  }
+  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 16
+  const validateBirth = () => {
+    if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
+
+    const currentBirthYear = birth.slice(0, 4)
+    if (currentBirthYear <= baseDateYear) {
+      return setValidate({name: 'birth', check: true, text: ''})
+    } else {
+      return setValidate({name: 'birth', check: false, text: '17세 이상만 가입 가능합니다.'})
+    }
+  }
 
   //성별
 
@@ -503,16 +505,16 @@ export default (props) => {
   //회원가입 완료 버튼
   const signUp = () => {
     if (!signUpPass) {
-      let message = ''
-      if (!CMID && memType === 'p') {
-        return context.action.alert({
-          msg: '휴대폰 본인인증을 진행해주세요.'
-        })
-      }
+      // let message = ''
+      // if (!CMID && memType === 'p') {
+      //   return context.action.alert({
+      //     msg: '휴대폰 본인인증을 진행해주세요.'
+      //   })
+      // }
       validateNick()
       validatePwd()
       validatePwdCheck()
-
+      validateBirth()
       //해서 통과 기준으로 알럿도 여기서 띄운다.
     } else {
       //회원가입 fetch
@@ -587,6 +589,7 @@ export default (props) => {
           <p className="img-text">프로필 사진을 등록 해주세요</p>
         </ProfileUpload>
 
+        {/* 닉네임 ---------------------------------------------------------- */}
         <InputItem button={false} validate={validate.nickNm.check}>
           <div className="layer">
             <label htmlFor="nickNm">닉네임</label>
@@ -604,6 +607,7 @@ export default (props) => {
           {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
         </InputItem>
 
+        {/* 비밀번호 ---------------------------------------------------------- */}
         <InputItem button={false} validate={validate.loginPwd.check}>
           <div className="layer">
             <label htmlFor="loginPwd">비밀번호</label>
@@ -620,7 +624,6 @@ export default (props) => {
           </div>
           {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
         </InputItem>
-
         <InputItem button={false} validate={validate.loginPwdCheck.check}>
           <div className="layer">
             <label htmlFor="loginPwdCheck">비밀번호 확인</label>
@@ -636,6 +639,15 @@ export default (props) => {
             />
           </div>
           {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+        </InputItem>
+
+        {/* 생년월일 ---------------------------------------------------------- */}
+        <InputItem button={false} validate={validate.birth.check}>
+          <div className="layer">
+            <label htmlFor="birth">생년월일</label>
+            <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
+          </div>
+          {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
         </InputItem>
 
         <button className="join-btn" onClick={signUp}>
