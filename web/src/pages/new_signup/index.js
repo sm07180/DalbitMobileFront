@@ -14,10 +14,13 @@ import Layout from 'pages/common/layout/new_layout'
 import DatePicker from './content/datepicker'
 
 //static
-import icoProfile from './static/ico-profil.svg'
-import icoCamera from './static/ico-camera.svg'
-import icoFemale from './static/female.svg'
-import icoMale from './static/male.svg'
+import IcoProfile from './static/ico-profil.svg'
+import IcoCamera from './static/ico-camera.svg'
+import IcoFemale from './static/female.svg'
+import IcoMale from './static/male.svg'
+import IcoCheckOn from './static/checkbox_on.svg'
+import IcoCheckOff from './static/checkbox_off.svg'
+import IcoArrow from './static/arrow.svg'
 
 let intervalId = null
 let setTime = 300
@@ -34,6 +37,7 @@ export default (props) => {
     memId: false,
     auth: false
   })
+  const [termOpen, setTermOpen] = useState(true)
   const [signUpPass, setSignUpPass] = useState(false)
 
   //SNS 회원가입 셋팅
@@ -48,6 +52,15 @@ export default (props) => {
 
   //validation
   const spacePattern = /\s/g
+
+  //약관
+  const termsItem = [
+    '약관 전체 동의',
+    '[필수] 서비스 이용약관 동의',
+    '[필수] 개인정보 취급방침',
+    '[필수] 청소년 보호정책',
+    '[필수] 운영정책'
+  ]
 
   function reducer(state, action) {
     const {name, value} = action
@@ -85,9 +98,20 @@ export default (props) => {
     //닉네임
     if (spacePattern.test(value)) return {...state}
 
+    //약관
+    let termsSetting = {}
+    if (name === 'allTerm') {
+      if (value === 'y') {
+        termsSetting = {term1: 'y', term2: 'y', term3: 'y', term4: 'y'}
+      } else if (value === 'n' && state.term1 === 'y' && state.term2 === 'y' && state.term3 === 'y' && state.term4 === 'y') {
+        termsSetting = {term1: 'n', term2: 'n', term3: 'n', term4: 'n'}
+      }
+    }
+
     return {
       ...state,
-      [name]: value
+      [name]: value,
+      ...termsSetting
     }
   }
 
@@ -129,15 +153,15 @@ export default (props) => {
       check: true,
       text: ''
     },
+    nickNm: {
+      check: true,
+      text: ''
+    },
     loginPwd: {
       check: true,
       text: ''
     },
     loginPwdCheck: {
-      check: true,
-      text: ''
-    },
-    nickNm: {
       check: true,
       text: ''
     },
@@ -228,7 +252,7 @@ export default (props) => {
     if (result === 'success') {
       dispatch({name: 'CMID', value: true})
       setValidate({name: 'auth', check: true, text: message})
-      setValidate({name: 'memId', check: true, text: ''})
+      setValidate({name: 'memId', check: true})
       clearInterval(intervalId)
       setTimeText('')
       authRef.current.disabled = true
@@ -444,7 +468,7 @@ export default (props) => {
         }
       })
       if (result === 'success' && code === '1') {
-        return setValidate({name: 'nickNm', check: true, text: ''})
+        return setValidate({name: 'nickNm', check: true})
       } else if (result === 'fail') {
         if (code === '0') {
           return setValidate({name: 'nickNm', check: false, text: '닉네임 중복입니다.'})
@@ -464,15 +488,19 @@ export default (props) => {
       return setValidate({name: 'loginPwd', check: false, text: '비밀번호는 8~20자 이내로 입력해주세요.'})
     } else {
       if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
-        return setValidate({name: 'loginPwd', check: false, text: '영문/숫자/특수문자 중 2가지 이상 조합으로 입력해주세요.'})
+        return setValidate({
+          name: 'loginPwd',
+          check: false,
+          text: '비밀번호는 영문/숫자/특수문자 중 2가지 이상 조합으로 입력해주세요.'
+        })
       } else {
-        return setValidate({name: 'loginPwd', check: true, text: ''})
+        return setValidate({name: 'loginPwd', check: true})
       }
     }
   }
   const validatePwdCheck = () => {
     if (loginPwd === loginPwdCheck) {
-      return setValidate({name: 'loginPwdCheck', check: true, text: ''})
+      return setValidate({name: 'loginPwdCheck', check: true})
     } else {
       return setValidate({name: 'loginPwdCheck', check: false, text: '비밀번호를 다시 확인해주세요.'})
     }
@@ -488,15 +516,70 @@ export default (props) => {
 
     const currentBirthYear = birth.slice(0, 4)
     if (currentBirthYear <= baseDateYear) {
-      return setValidate({name: 'birth', check: true, text: ''})
+      return setValidate({name: 'birth', check: true})
     } else {
       return setValidate({name: 'birth', check: false, text: '17세 이상만 가입 가능합니다.'})
     }
   }
 
   //성별
+  const genderBtnHandle = (e) => {
+    const {value} = e.target
+    if (value === gender) return dispatch({name: 'gender', value: 'n'})
+    dispatch({name: 'gender', value: value})
+  }
 
   //약관동의
+  const createTermsItem = () => {
+    return termsItem.map((item, index) => {
+      const termsName = index === 0 ? 'allTerm' : `term${index}`
+      return (
+        <div key={`term${index}`}>
+          <button className={`checkbox state-${changes[termsName]}`} name={termsName} onClick={termsBtnHandle}>
+            {item}
+          </button>
+          <button className={`more ${index === 0 ? termOpen : ''}`} name={termsName} onClick={termsMoreBtnHandle}></button>
+        </div>
+      )
+    })
+  }
+  const termsBtnHandle = (e) => {
+    const {name} = e.target
+    dispatch({name: name, value: changes[name] === 'y' ? 'n' : 'y'})
+  }
+  const termsMoreBtnHandle = (e) => {
+    const {name} = e.target
+    switch (name) {
+      case 'allTerm':
+        return setTermOpen(!termOpen)
+        break
+      case 'term1':
+        return context.action.updatePopup('TERMS', 'service')
+        break
+      case 'term2':
+        return context.action.updatePopup('TERMS', 'privacy')
+        break
+      case 'term3':
+        return context.action.updatePopup('TERMS', 'youthProtect')
+        break
+      case 'term4':
+        return context.action.updatePopup('TERMS', 'operating')
+        break
+      default:
+        break
+    }
+  }
+  useEffect(() => {
+    if (term1 === 'y' && term2 === 'y' && term3 === 'y' && term4 === 'y') return dispatch({name: 'allTerm', value: 'y'})
+    dispatch({name: 'allTerm', value: 'n'})
+  }, [term1, term2, term3, term4])
+  const validateTerm = () => {
+    if (term1 === 'n' || term2 === 'n' || term3 === 'n' || term4 === 'n') {
+      return setValidate({name: 'term', check: false, text: '필수 약관에 모두 동의해주세요.'})
+    } else if (term1 === 'y' || term2 === 'y' || term3 === 'y' || term4 === 'y') {
+      return setValidate({name: 'term', check: true})
+    }
+  }
 
   //로그인
 
@@ -504,26 +587,41 @@ export default (props) => {
 
   //회원가입 완료 버튼
   const signUp = () => {
-    if (!signUpPass) {
-      // let message = ''
-      // if (!CMID && memType === 'p') {
-      //   return context.action.alert({
-      //     msg: '휴대폰 본인인증을 진행해주세요.'
-      //   })
-      // }
-      validateNick()
-      validatePwd()
-      validatePwdCheck()
-      validateBirth()
-      //해서 통과 기준으로 알럿도 여기서 띄운다.
-    } else {
-      //회원가입 fetch
+    if (!CMID && memType === 'p') {
+      return context.action.alert({
+        msg: '휴대폰 본인인증을 진행해주세요.'
+      })
     }
+    validateNick()
+    validatePwd()
+    validatePwdCheck()
+    validateBirth()
+    validateTerm()
   }
+  useEffect(() => {
+    const validateKey = Object.keys(validate)
+    for (let index = 0; index < validateKey.length; index++) {
+      if (validate[validateKey[index]].check === false) {
+        return context.action.alert({
+          msg: validate[validateKey[index]].text
+        })
+        break
+      }
+    }
+    if (
+      CMID &&
+      validate.nickNm.check &&
+      validate.loginPwd.check &&
+      validate.loginPwdCheck.check &&
+      validate.birth.check &&
+      validate.term.check
+    ) {
+      console.log('회원가입합니다!')
+    }
+  }, [validate])
 
   useEffect(() => {
-    //console.log(memIdRef)
-    console.log(JSON.stringify(changes, null, 1))
+    // console.log(JSON.stringify(changes, null, 1))
   }, [changes])
 
   return (
@@ -649,6 +747,22 @@ export default (props) => {
           </div>
           {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
         </InputItem>
+        <p className="birthText">허위정보로 가입 시 이용을 제한할 수 있습니다.</p>
+
+        {/* 성별 ---------------------------------------------------------- */}
+        <GenderInput gender={gender}>
+          <button className="male" value="m" onClick={genderBtnHandle}>
+            남자
+            <img src={IcoMale} />
+          </button>
+          <button className="female" value="f" onClick={genderBtnHandle}>
+            여자
+            <img src={IcoFemale} />
+          </button>
+        </GenderInput>
+
+        {/* 약관 ---------------------------------------------------------- */}
+        <TermsInput openState={termOpen}>{createTermsItem()}</TermsInput>
 
         <button className="join-btn" onClick={signUp}>
           회원가입
@@ -670,6 +784,22 @@ const Content = styled.section`
     font-size: 18px;
     line-height: 44px;
     background: ${COLOR_MAIN};
+  }
+  .birthText {
+    padding: 3px 0 5px 5px;
+    font-size: 12px;
+    letter-spacing: -0.3px;
+    color: #e84d6f;
+    &::before {
+      display: inline-block;
+      margin-top: 7px;
+      vertical-align: top;
+      margin-right: 4px;
+      width: 2px;
+      height: 2px;
+      background: #e84d6f;
+      content: '';
+    }
   }
 `
 
@@ -781,7 +911,6 @@ const InputItem = styled.div`
   }
 `
 
-//프로필 업로드 영역
 const ProfileUpload = styled.div`
   margin: 20px 0 16px 0;
   text-align: center;
@@ -798,7 +927,7 @@ const ProfileUpload = styled.div`
     height: 72px;
     border-radius: 50%;
     border: 1px solid ${COLOR_MAIN};
-    background: url(${(props) => (props.imgUrl ? props.imgUrl : icoProfile)}) no-repeat center center / cover;
+    background: url(${(props) => (props.imgUrl ? props.imgUrl : IcoProfile)}) no-repeat center center / cover;
     background-size: ${(props) => (props.imgUrl ? 'cover' : '73px 73px')};
   }
   div.on {
@@ -820,7 +949,7 @@ const ProfileUpload = styled.div`
       right: -13px;
       width: 30px;
       height: 30px;
-      background: url(${icoCamera}) no-repeat center / cover;
+      background: url(${IcoCamera}) no-repeat center / cover;
       text-indent: -9999px;
     }
   }
@@ -833,5 +962,96 @@ const ProfileUpload = styled.div`
     letter-spacing: -0.5px;
     text-align: center;
     transform: skew(-0.03deg);
+  }
+`
+
+const GenderInput = styled.div`
+  display: flex;
+  height: 44px;
+  margin: 4px 0;
+  background: #fff;
+  border-radius: 12px;
+
+  button {
+    position: relative;
+    width: calc(50% + 1px);
+    border: 1px solid #e0e0e0;
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    img {
+      padding: 3px 0 0 4px;
+    }
+  }
+
+  button.male {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: ${(props) => props.gender === 'm' && '1px solid #000'};
+    z-index: ${(props) => props.gender === 'm' && '2'};
+    background: ${(props) => props.gender === 'f' && '#f5f5f5'};
+    color: ${(props) => props.gender === 'f' && '#bdbdbd'};
+  }
+
+  button.female {
+    margin-left: -1px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: ${(props) => props.gender === 'f' && '1px solid #000'};
+    z-index: ${(props) => props.gender === 'f' && '2'};
+    background: ${(props) => props.gender === 'm' && '#f5f5f5'};
+    color: ${(props) => props.gender === 'm' && '#bdbdbd'};
+  }
+`
+
+const TermsInput = styled.div`
+  overflow: hidden;
+  height: ${(props) => (props.openState ? '222px' : '46px')};
+  margin: 12px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  transition: height 0.5s ease-in-out;
+
+  div {
+    display: flex;
+    height: 44px;
+    padding: 6px 10px;
+    border-top: 1px solid #e0e0e0;
+    background: #fff;
+    button.checkbox {
+      height: 32px;
+      line-height: 32px;
+      padding-left: 34px;
+      font-size: 14px;
+      color: #757575;
+
+      &.state-y {
+        background: url(${IcoCheckOn}) no-repeat 0 center;
+      }
+      &.state-n {
+        background: url(${IcoCheckOff}) no-repeat 0 center;
+      }
+    }
+    button.more {
+      width: 32px;
+      height: 32px;
+      margin-right: -5px;
+      margin-left: auto;
+      background: url(${IcoArrow}) no-repeat center;
+      &.true {
+        transform: rotate(-90deg);
+      }
+      &.false {
+        transform: rotate(90deg);
+      }
+    }
+  }
+  div:first-child {
+    border-top: 0;
+    button.checkbox {
+      font-size: 16px;
+      color: #000;
+      font-weight: bold;
+    }
   }
 `
