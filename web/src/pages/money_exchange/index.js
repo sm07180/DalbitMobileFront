@@ -1074,9 +1074,25 @@ export default (props) => {
                   </div>
                   <div className="exchange__list--flex">
                     <div className="exchange__list--spacing">-</div>
-                    서류확인 및 입금 : 목요일 00시부터 일요일 23시 59분까지 신청 건은 월요일 오전 11시부터 처리되고,
-                    <br />
-                    월요일 00시부터 수요일 23시 59분 신청 건은 목요일 오전 11시부터 순차적으로 처리됩니다.
+                    <div>
+                      <div>서류확인 및 입금</div>
+                      <div className="exchange__list--flex">
+                        <div className="exchange__list--spacing">▶</div>
+                        <div>
+                          <span>목요일 00시부터 일요일 23시 59분까지 신청 건은</span>
+                          <br />
+                          <span className="exchange__list--red"> 월요일 오전 11시부터 순차적으로 입금</span>
+                        </div>
+                      </div>
+                      <div className="exchange__list--flex">
+                        <div className="exchange__list--spacing">▶</div>
+                        <div>
+                          <span>월요일 00시부터 수요일 23시 59분 신청 건은</span>
+                          <br />
+                          <span className="exchange__list--red"> 목요일 오전 11시부터 순차적으로 입금.</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="exchange__list--flex">
                     <div className="exchange__list--spacing">-</div> 단, 공휴일일 경우 다음날 환전이 됩니다.
