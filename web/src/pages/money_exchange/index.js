@@ -1065,12 +1065,40 @@ export default (props) => {
               <div className="exchange__list">
                 <div className="exchange__list--title">◈ 환전신청 후 입금일정</div>
                 <div className="exchange__list--gray">
-                  - 환전 신청 마감 : 매 주 일요일, 수요일 (주2회)
-                  <br />- 서류확인 및 입금 : 일요일까지 신청 건은 월요일, 수요일까지 신청 건은 목요일 순차적으로 처리됩니다.
-                  <br />- 단, 신청자가 많을 경우나 공휴일인 경우 다음날 환전처리가 될 수 있습니다.
-                  <br />※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
+                  <div className="exchange__list--bold">1. 일반회원</div>
+                  {/* 볼드처리 
+                    Word 처럼
+                  */}
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div> 환전 신청 마감 : 매 주 월요일, 수요일 23시59분 (주2회)
+                  </div>
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div>
+                    서류확인 및 입금 : 목요일 00시부터 일요일 23시 59분까지 신청 건은 월요일 오전 11시부터 처리되고,
+                    <br />
+                    월요일 00시부터 수요일 23시 59분 신청 건은 목요일 오전 11시부터 순차적으로 처리됩니다.
+                  </div>
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div> 단, 공휴일일 경우 다음날 환전이 됩니다.
+                  </div>
+                  ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
                   <br />
                   (SMS결과는 휴대폰 연락처가 있는 회원에게만 발송하여 드립니다.)
+                  <br />
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--bold">2. 스페셜 회원</div> {/* 볼드처리 */}
+                  </div>
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div> <div>환전 신청 마감 : 매 일 23시59분 (주5회)</div>
+                  </div>
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div>
+                    <div>서류확인 및 입금 : 다음날 오전 11시부터 순차적으로 처리됩니다.</div>
+                  </div>
+                  <div className="exchange__list--flex">
+                    <div className="exchange__list--spacing">-</div>
+                    <div>단, 토요일/일요일/공휴일인 경우 다음날 환전이 됩니다.</div>
+                  </div>
                 </div>
               </div>
               <div className="exchange__list">
