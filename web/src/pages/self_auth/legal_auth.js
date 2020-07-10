@@ -181,8 +181,9 @@ export default (props) => {
   }
 
   const goBack = () => {
-    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     context.action.updateWalletIdx(1)
+    window.history.back()
   }
 
   //---------------------------------------------------------------------

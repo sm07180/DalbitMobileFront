@@ -12,6 +12,7 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {useHistory} from 'react-router-dom'
+import Utility from 'components/lib/utility'
 //styled component
 import styled from 'styled-components'
 import NewIcon from './static/ic_new.svg'
@@ -303,7 +304,7 @@ function Notice(props) {
           <span>{noticeDetail.title}</span>
           <span>{detailDate()}</span>
         </header>
-        <div>
+        <div onClick={Utility.contentClickEvent}>
           <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
         </div>
         <button onClick={GoNotice}>목록보기</button>

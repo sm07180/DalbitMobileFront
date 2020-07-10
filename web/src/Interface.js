@@ -64,52 +64,57 @@ export default () => {
           alert('fore push_type :' + JSON.stringify(pushMsg))
         }
 
-        if (__NODE_ENV === 'dev') {
-            switch (push_type + '') {
-                case '1': //-----------------방송방 [room_no]
-                    context.action.updateStickerMsg(pushMsg)
-                    context.action.updateSticker(true) //true,false
-                    break
-                case '2': //------------------메인
-                    window.location.href = '/'
-                    break
-                case '31': //-----------------마이페이지>팬 보드
-                    context.action.updateNews(true) //true,false
-                    break
-                case '32': //-----------------마이페이지>내 지갑
-                    context.action.updateNews(true) //true,false
-                    break
-                case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
-                    break
-                case '34': //-----------------마이페이지>알림>해당 알림 글
-                    context.action.alert({msg: pushMsg.contents})
-                    break
-                case '35': //-----------------마이페이지
-                    context.action.alert({msg: pushMsg.contents})
-                    break
-                case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
-                    context.action.updateStickerMsg(pushMsg)
-                    context.action.updateSticker(true) //true,false
-                    break
-                case '37': //------------------1:1 문의 답변
-                    context.action.updateNews(true) //true,false
-                    break
-                case '4': //------------------등록 된 캐스트(미정)
-                    //window.location.href = `/`
-                    break
-                case '5': //------------------스페셜 DJ 선정 페이지(미정)
-                    context.action.updateNews(true) //true,false
-                    break
-                case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
-                    break
-                case '7': //------------------공지사항 페이지 [board_idx](미정)
-                    context.action.alert({msg: pushMsg.contents})
-                    break
-                default:
-                    //------------------기본값
-                    //window.location.href = `/`
-                    break
-            }
+        if(pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== ''){
+          pushClick(pushMsg.push_idx)
+        }
+
+        switch (push_type + '') {
+            case '1': //-----------------방송방 [room_no]
+                context.action.updateStickerMsg(pushMsg)
+                context.action.updateSticker(true) //true,false
+                break
+            case '2': //------------------메인
+                window.location.href = '/'
+                break
+            case '31': //-----------------마이페이지>팬 보드
+                context.action.updateNews(true) //true,false
+                break
+            case '32': //-----------------마이페이지>내 지갑
+                context.action.updateNews(true) //true,false
+                break
+            case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
+                break
+            case '34': //-----------------마이페이지>알림>해당 알림 글
+                context.action.alert({msg: pushMsg.contents})
+                break
+            case '35': //-----------------마이페이지
+                context.action.alert({msg: pushMsg.contents})
+                break
+            case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
+                context.action.updateStickerMsg(pushMsg)
+                context.action.updateSticker(true) //true,false
+                break
+            case '37': //------------------1:1 문의 답변
+                context.action.updateNews(true) //true,false
+                break
+            case '38': //------------------스타의 방송공지 등록
+                context.action.updateNews(true) //true,false
+                break
+            case '4': //------------------등록 된 캐스트(미정)
+                //window.location.href = `/`
+                break
+            case '5': //------------------스페셜 DJ 선정 페이지(미정)
+                context.action.updateNews(true) //true,false
+                break
+            case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
+                break
+            case '7': //------------------공지사항 페이지 [board_idx](미정)
+                context.action.alert({msg: pushMsg.contents})
+                break
+            default:
+                //------------------기본값
+                //window.location.href = `/`
+                break
         }
         //pushMsg = JSON.parse(pushMsg)
         /*switch (pushMsg.push_type) {
@@ -426,7 +431,9 @@ export default () => {
     }
     //---------------------[분기처리시작]
 
-    pushClick(pushMsg.push_idx)
+    if(pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== ''){
+        pushClick(pushMsg.push_idx)
+    }
 
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
@@ -474,6 +481,12 @@ export default () => {
               if (isLogin) window.location.href = `/customer/personal/qnaList`
           }
           break
+      case '38': //-----------------스타의 방송공지
+        mem_no = pushMsg.mem_no
+        if (mem_no !== undefined) {
+            if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
+        }
+        break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break

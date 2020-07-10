@@ -39,7 +39,7 @@ export default (props) => {
       } else {
         context.action.alert({
           msg: res.message,
-          callback: goBack
+          callback: goWallet
         })
       }
     }
@@ -48,29 +48,24 @@ export default (props) => {
 
   useEffect(() => {
     checkAuth()
-
-    // if (props.history.action === 'POP') {
-    //   props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-    // }
-
-    // window.history.pushState('result', '', `${location.href}/#result`)
-
-    // window.onpopstate = () => {
-    //   console.log('onpopstate')
-    //   //history.go(1)
-    //   goBack()
-    // }
   }, [])
 
-  const goBack = () => {
+  const goWallet = () => {
     props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     context.action.updateWalletIdx(1)
+  }
+
+  const goBack = () => {
+    window.history.back()
   }
 
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      <Header title={authState === '3' ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
+      <Header
+        title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
+        goBack={authState === 2 ? goBack : goWallet}
+      />
       <Content>
         {authState === 2 ? (
           <div className="auth-wrap">
