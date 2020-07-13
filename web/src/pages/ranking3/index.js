@@ -356,6 +356,14 @@ export default (props) => {
             </div>
           </div>
 
+          <img
+            src="https://image.dalbitlive.com//banner/200710/rang_top_banner.png"
+            className="rankBanner"
+            onClick={() => {
+              window.location.href = `/customer/notice/70`
+            }}
+          />
+
           <div className="todayList">{createDateButton()}</div>
 
           {myProfile && (

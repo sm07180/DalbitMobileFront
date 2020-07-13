@@ -530,11 +530,27 @@ input[type='file'] {
     }
 
     &--red {
-      color: red;
+      color: #ec455f;
     }
 
     &--gray {
       color: dimgray;
+    }
+
+    &--bold {
+      font-weight: bold;
+    }
+
+    &--flex {
+      display: flex;
+    }
+
+    &--spacing {
+      margin-right: 5px;
+    }
+
+    &--fit {
+      min-width: fit-content;
     }
   }
 }
