@@ -38,7 +38,6 @@ export default (props) => {
     auth: false
   })
   const [termOpen, setTermOpen] = useState(true)
-  const [signUpPass, setSignUpPass] = useState(false)
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -135,6 +134,11 @@ export default (props) => {
   })
 
   function validateReducer(state, validate) {
+    if (validate.name === 'nickNm' && validate.check) {
+      if (state.loginPwd.check && state.loginPwdCheck.check && state.birth.check && state.term.check) {
+        sighUpFetch()
+      }
+    }
     return {
       ...state,
       [validate.name]: {
@@ -462,7 +466,7 @@ export default (props) => {
     if (nickNm.length < 2 || nickNm.length > 20) {
       return setValidate({name: 'nickNm', check: false, text: '닉네임은 2~20자 이내로 입력해주세요.'})
     } else {
-      const {result, code, message} = await Api.nickName_check({
+      const {result, code} = await Api.nickName_check({
         params: {
           nickNm: nickNm
         }
@@ -584,41 +588,35 @@ export default (props) => {
   //로그인
 
   //회원가입 Data fetch
+  async function sighUpFetch() {
+    console.log('회원가입합니다')
+  }
 
   //회원가입 완료 버튼
   const signUp = () => {
+    loginState = true
     if (!CMID && memType === 'p') {
       return context.action.alert({
         msg: '휴대폰 본인인증을 진행해주세요.'
       })
     }
-    validateNick()
     validatePwd()
     validatePwdCheck()
     validateBirth()
     validateTerm()
+    validateNick()
   }
   useEffect(() => {
     const validateKey = Object.keys(validate)
     for (let index = 0; index < validateKey.length; index++) {
       if (validate[validateKey[index]].check === false) {
-        return context.action.alert({
+        context.action.alert({
           msg: validate[validateKey[index]].text
         })
         break
       }
     }
-    if (
-      CMID &&
-      validate.nickNm.check &&
-      validate.loginPwd.check &&
-      validate.loginPwdCheck.check &&
-      validate.birth.check &&
-      validate.term.check
-    ) {
-      console.log('회원가입합니다!')
-    }
-  }, [validate])
+  }, [validate.nickNm])
 
   useEffect(() => {
     // console.log(JSON.stringify(changes, null, 1))
