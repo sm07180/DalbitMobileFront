@@ -442,7 +442,7 @@ const TableWrap = styled.div`
   }
   & dd {
     display: flex;
-    align-items: center;
+
     width: calc(100% - 240px);
     font-size: 16px;
     color: #000;
@@ -456,6 +456,7 @@ const TableWrap = styled.div`
     span {
       color: ${COLOR_MAIN};
       margin-right: 5px;
+      min-width: 62px;
     }
   }
   & dd:last-child {
