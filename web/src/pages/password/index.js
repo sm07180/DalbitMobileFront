@@ -1,668 +1,504 @@
-/**
- * @file /user/content/password.js
- * @brief 비밀번호 변경
- */
-import React, { useState, useEffect, useContext } from 'react'
+import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
 import styled from 'styled-components'
+
+import {Context} from 'context'
 import Api from 'context/api'
-
-import PureLayout from 'pages/common/layout/new_layout'
-
-//context
+import qs from 'query-string'
 import Utility from 'components/lib/utility'
-import { Context } from 'context'
-import { COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P } from 'context/color'
-import {
-  IMG_SERVER,
-  WIDTH_PC,
-  WIDTH_PC_S,
-  WIDTH_TABLET,
-  WIDTH_TABLET_S,
-  WIDTH_MOBILE,
-  WIDTH_MOBILE_S
-} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {PHOTO_SERVER} from 'context/config'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
-let inervalId = null
-export default props => {
-  //---------------------------------------------------------------------
-  //context
+//components
+import Layout from 'pages/common/layout/new_layout'
+
+let intervalId = null
+let setTime = 300
+
+export default (props) => {
   const context = useContext(Context)
-  //useState
-  const [changes, setChanges] = useState({
-    loginID: '',
+  const {webview, redirect} = qs.parse(location.search)
+
+  const memIdRef = useRef(null)
+  const authRef = useRef(null)
+
+  const [timeText, setTimeText] = useState()
+  const [btnState, setBtnState] = useState({
+    memId: false,
+    auth: false
+  })
+
+  function reducer(state, action) {
+    const {name, value} = action
+
+    //휴대폰번호
+    if (name === 'memId' && value.length === 11) {
+      setBtnState({
+        ...btnState,
+        memId: true
+      })
+    } else {
+      setBtnState({
+        ...btnState,
+        memId: false
+      })
+    }
+
+    //인증번호
+    if (name === 'auth') {
+      if (value.length === 6) {
+        setBtnState({
+          ...btnState,
+          auth: true
+        })
+      } else if (value.length > 6) {
+        return {...state}
+      } else {
+        setBtnState({
+          ...btnState,
+          auth: false
+        })
+      }
+    }
+
+    return {
+      ...state,
+      [name]: value
+    }
+  }
+
+  const [changes, dispatch] = useReducer(reducer, {
+    memId: '',
     loginPwd: '',
     loginPwdCheck: '',
     auth: '',
     CMID: ''
   })
-  const [validate, setValidate] = useState({
-    // 유효성 체크
-    loginID: false,
-    loginPwd: false,
-    loginPwdCheck: false,
-    auth: false
+
+  function validateReducer(state, validate) {
+    if (validate.name === 'loginPwdCheck') {
+      if (validate.check && state.loginPwd.check) passwordFetch()
+    }
+    return {
+      ...state,
+      [validate.name]: {
+        check: validate.check,
+        text: validate.text === undefined ? '' : validate.text
+      }
+    }
+  }
+
+  const [validate, setValidate] = useReducer(validateReducer, {
+    memId: {
+      check: true,
+      text: ''
+    },
+    auth: {
+      check: true,
+      text: ''
+    },
+    loginPwd: {
+      check: true,
+      text: ''
+    },
+    loginPwdCheck: {
+      check: true,
+      text: ''
+    }
   })
-  const [validatePass, setValidatePass] = useState(false) // 유효성 모두 통과 여부. 회원가입 버튼 활성시 쓰임
-  const [currentPwd, setCurrentPwd] = useState() // 비밀번호 도움 텍스트 값. html에 뿌려줄 state
-  const [currentPwdCheck, setCurrentPwdCheck] = useState() // 비밀번호 확인 도움 텍스트 값.
-  const [currentAuth1, setCurrentAuth1] = useState() // 휴대폰인증1 텍스트값
-  const [currentAuth2, setCurrentAuth2] = useState() // 휴대폰인증2 텍스트값
-  const [currentAuthBtn, setCurrentAuthBtn] = useState({
-    request: true, //버튼 disable true
-    check: true
-  }) // 인증확인 버튼
-  const [thisTimer, setThisTimer] = useState()
-  let setTime = 300
 
-  const createAuthTimer = () => {
-    let timer = `${Utility.leadingZeros(
-      Math.floor(setTime / 60),
-      2
-    )}:${Utility.leadingZeros(setTime % 60, 2)}`
-    document.getElementsByClassName('timer')[0].innerHTML = timer
-    setTime--
-    if (setTime < 0) {
-      clearInterval(inervalId)
-      setCurrentAuthBtn({
-        request: true,
-        check: true
-      })
-      document.getElementsByName('auth')[0].disabled = true
-      setCurrentAuth2('인증시간이 초과되었습니다.')
-    }
-  }
+  const {memId, loginPwd, loginPwdCheck, auth, CMID} = changes
 
-  //회원가입 input onChange
-  const onLoginHandleChange = e => {
-    if (e.target.name == 'loginPwd' || e.target.name == 'loginPwdCheck') {
-      e.target.value = e.target.value.toLowerCase()
-    }
-    setChanges({
-      ...changes,
-      [e.target.name]: e.target.value
-    })
-    //유효성검사
-    if (e.target.name == 'loginPwd') {
-      validatePwd(e.target.value)
-    } else if (e.target.name == 'loginID') {
-      validateID(e.target.value)
-    } else if (e.target.name == 'auth') {
-      if (e.target.value.length == 6) {
-        if (changes.CMID) {
-          setCurrentAuthBtn({
-            request: currentAuthBtn.request,
-            check: false
-          })
-        }
-        e.target.blur()
-      } else if (e.target.value.length > 6) {
-        setChanges({
-          ...changes,
-          [e.target.name]: e.target.value.slice(0, -1)
-        })
-      }
-    }
-  }
-
-  const validatePwd = pwdEntered => {
-    //비밀번호 유효성 체크 로직 (숫자,영문,특수문자 중 2가지 이상 조합, 공백 체크)
-    let pw = pwdEntered
-    let blank_pattern = pw.search(/[\s]/g)
-    let num = pw.search(/[0-9]/g)
-    let eng = pw.search(/[a-zA-Z]/gi)
-    let spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
-
-    if (blank_pattern != -1) {
-      var pw2 = pw.substring(0, pw.length - 1)
-      setChanges({
-        ...changes,
-        loginPwd: pw2
-      })
-    }
-    if (pw.length == 0) {
-      setValidate({
-        ...validate,
-        loginPwd: false
-      })
-      setCurrentPwd('')
-    } else {
-      if (pw.length > 7 && pw.length < 21) {
-        //영문,숫자,특수문자 중 2가지 이상을 혼합 체크 로직
-        if (
-          (num < 0 && eng < 0) ||
-          (eng < 0 && spe < 0) ||
-          (spe < 0 && num < 0)
-        ) {
+  //------------------------------------------------------------------------------
+  //휴대폰 본인인증
+  const validateID = (target) => {
+    const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
+    const memIdVal = target
+    if (memIdVal !== undefined) {
+      if (memIdVal.length >= 11) {
+        if (!rgEx.test(memIdVal)) {
           setValidate({
-            ...validate,
-            loginPwd: false
+            name: 'memId',
+            check: false,
+            text: '올바른 휴대폰 번호가 아닙니다.'
           })
-          setCurrentPwd('2가지 이상 조합으로 입력하세요.')
+          return false
         } else {
           setValidate({
-            ...validate,
-            loginPwd: true
-          })
-          setCurrentPwd('사용 가능한 비밀번호 입니다.')
-        }
-      } else if (pw.length > 20) {
-        setValidate({
-          ...validate,
-          loginPwd: false
-        })
-        setCurrentPwd('최대 20자 까지 입력하세요.')
-      } else {
-        setValidate({
-          ...validate,
-          loginPwd: false
-        })
-        setCurrentPwd('최소 8자 이상 입력하세요.')
-      }
-    }
-  }
-
-  //비밀번호 입력때마다 일치 체크
-  useEffect(() => {
-    if (changes.loginPwdCheck.length == 0) {
-      setCurrentPwdCheck('')
-      setValidate({
-        ...validate,
-        loginPwdCheck: false
-      })
-    } else {
-      if (changes.loginPwd == changes.loginPwdCheck) {
-        setCurrentPwdCheck('비밀번호가 일치합니다.')
-        setValidate({
-          ...validate,
-          loginPwdCheck: true
-        })
-      } else {
-        setCurrentPwdCheck('비밀번호가 일치하지 않습니다.')
-        setValidate({
-          ...validate,
-          loginPwdCheck: false
-        })
-      }
-    }
-  }, [changes.loginPwdCheck, changes.loginPwd])
-
-  const validateID = idEntered => {
-    //휴대폰 번호 유효성 검사 오직 숫자만 가능
-    //let loginIdVal = idEntered.replace(/[^0-9]/gi, '')
-    let rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    const loginIdVal = idEntered
-    setChanges({
-      ...changes,
-      loginID: loginIdVal
-    })
-    if (!(loginIdVal == undefined)) {
-      if (loginIdVal.length >= 11) {
-        // setValidate({
-        //   ...validate,
-        //   loginID: true
-        // })
-        if (!rgEx.test(loginIdVal)) {
-          setCurrentAuth1('올바른 휴대폰 번호가 아닙니다.')
-          setCurrentAuthBtn({
-            request: true,
+            name: 'memId',
             check: true
           })
-        } else {
-          setCurrentAuthBtn({
-            request: false,
-            check: true
-          })
+          return true
         }
-      } else if (loginIdVal.length < 12) {
-        setValidate({
-          ...validate,
-          loginID: false
-        })
-        setCurrentAuthBtn({
-          request: true,
-          check: true
-        })
-        setCurrentAuth1('')
-        document.getElementsByClassName('auth-btn1')[0].innerText = '인증요청'
-        clearInterval(inervalId)
-        document.getElementsByClassName('timer')[0].innerHTML = ''
       }
     }
   }
-
-  //유효성 전부 체크되었을 때 회원가입 완료 버튼 활성화 시키기
-  useEffect(() => {
-    if (
-      validate.loginID &&
-      validate.loginPwd &&
-      validate.loginPwdCheck &&
-      validate.auth
-    ) {
-      setValidatePass(true)
-    } else {
-      setValidatePass(false)
-    }
-  }, [validate])
-
-  //---------------------------------------------------------------------
-  //fetchData
-  async function fetchData() {
-    const loginID = changes.loginID.replace(/-/g, '')
-    const res = await Api.password_modify({
+  const fetchSmsReq = async () => {
+    if (!validateID(memId)) return null
+    const {result, data, message} = await Api.sms_request({
       data: {
-        memId: loginID,
-        memPwd: changes.loginPwd
-      }
-    })
-
-    if (res && res.code) {
-      if (res.result == 'success') {
-        //성공
-        context.action.alert({
-          callback: () => {
-            window.location.href = '/'
-          },
-          msg: '비밀번호 변경(을) 성공하였습니다.'
-        })
-      } else {
-        //실패
-        context.action.alert({
-          msg: res.message
-        })
-      }
-    } //(res && res.code)
-  }
-
-  async function fetchAuth() {
-    const resAuth = await Api.sms_request({
-      data: {
-        phoneNo: changes.loginID,
+        phoneNo: memId,
         authType: 1
       }
     })
-    if (resAuth.result === 'success') {
+    if (result === 'success') {
+      dispatch({name: 'CMID', value: data.CMID})
       setValidate({
-        ...validate,
-        loginID: true,
-        auth: false
+        name: 'memId',
+        check: true,
+        text: '인증번호 요청이 완료되었습니다.'
       })
-      setChanges({ ...changes, CMID: resAuth.data.CMID })
-
-      setCurrentAuth1('인증번호 요청이 완료되었습니다.')
-      document.getElementsByName('loginID')[0].disabled = true
-      setCurrentAuth2('')
-
-      setCurrentAuthBtn({
-        request: true,
-        check: true
-      })
-
-      inervalId = setInterval(createAuthTimer, 1000)
-      setTime = 300
+      memIdRef.current.disabled = true
+      authRef.current.disabled = false
+      startAuthTimer()
     } else {
-      setCurrentAuth1(resAuth.message)
+      setValidate({name: 'memId', check: false, text: message})
+      context.action.alert({
+        msg: message
+      })
     }
   }
-
-  async function fetchAuthCheck() {
-    const resCheck = await Api.sms_check({
+  const fetchSmsCheck = async () => {
+    const {result, message} = await Api.sms_check({
       data: {
-        CMID: changes.CMID,
-        code: Number(changes.auth)
+        CMID: CMID,
+        code: Number(auth)
       }
     })
-    if (resCheck.result === 'success') {
-      setValidate({ ...validate, auth: true })
-      setCurrentAuth2(resCheck.message)
-      clearInterval(inervalId)
-      document.getElementsByClassName('timer')[0].innerHTML = ''
-      document.getElementsByName('auth')[0].disabled = true
-      setCurrentAuthBtn({
-        request: true,
-        check: true
-      })
+    if (result === 'success') {
+      dispatch({name: 'CMID', value: true})
+      setValidate({name: 'auth', check: true, text: message})
+      setValidate({name: 'memId', check: true})
+      clearInterval(intervalId)
+      setTimeText('')
+      authRef.current.disabled = true
+      setBtnState({memId: false, auth: false})
     } else {
-      setCurrentAuth2('인증번호(가) 일치하지 않습니다.')
+      setValidate({
+        name: 'auth',
+        check: false,
+        text: '인증번호(가) 일치하지 않습니다.'
+      })
+    }
+  }
+  const startAuthTimer = () => {
+    clearInterval(intervalId)
+    setTime = 300
+    intervalId = setInterval(() => {
+      let timer = `${Utility.leadingZeros(Math.floor(setTime / 60), 2)}:${Utility.leadingZeros(setTime % 60, 2)}`
+      setTimeText(timer)
+      setTime--
+      if (setTime < 0) {
+        clearInterval(intervalId)
+        setValidate({
+          name: 'memId',
+          check: false,
+          text: '인증시간이 초과되었습니다.'
+        })
+        authRef.current.disabled = true
+        setBtnState({memId: true, auth: true})
+      }
+    }, 1000)
+  }
+
+  //비밀번호
+  const validatePwd = () => {
+    const num = loginPwd.search(/[0-9]/g)
+    const eng = loginPwd.search(/[a-zA-Z]/gi)
+    const spe = loginPwd.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+    if (loginPwd.length < 8 || loginPwd.length > 20) {
+      return setValidate({name: 'loginPwd', check: false, text: '비밀번호는 8~20자 이내로 입력해주세요.'})
+    } else {
+      if ((num < 0 && eng < 0) || (eng < 0 && spe < 0) || (spe < 0 && num < 0)) {
+        return setValidate({
+          name: 'loginPwd',
+          check: false,
+          text: '비밀번호는 영문/숫자/특수문자 중 2가지 이상 조합으로 입력해주세요.'
+        })
+      } else {
+        return setValidate({name: 'loginPwd', check: true})
+      }
+    }
+  }
+  const validatePwdCheck = () => {
+    if (loginPwd === loginPwdCheck) {
+      return setValidate({name: 'loginPwdCheck', check: true})
+    } else {
+      return setValidate({name: 'loginPwdCheck', check: false, text: '비밀번호를 다시 확인해주세요.'})
     }
   }
 
-  const inputFocus = e => {
-    // console.log(e.currentTarget)
+  //비밀번호 변경 Data fetch
+  async function passwordFetch() {
+    const res = await Api.password_modify({
+      data: {
+        memId: changes.memId,
+        memPwd: changes.loginPwd
+      }
+    })
+    if (res.result === 'success') {
+      context.action.alert({
+        callback: () => {
+          window.location.href = '/'
+        },
+        msg: '비밀번호 변경(을) 성공하였습니다.'
+      })
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
   }
 
-  //---------------------------------------------------------------------
+  //회원가입 완료 버튼
+  const passwordModify = () => {
+    if (CMID !== true) {
+      return context.action.alert({
+        msg: '휴대폰 본인인증을 진행해주세요.'
+      })
+    }
+    validatePwd()
+    validatePwdCheck()
+  }
+  useEffect(() => {
+    const validateKey = Object.keys(validate)
+    for (let index = 0; index < validateKey.length; index++) {
+      if (validate[validateKey[index]].check === false) {
+        context.action.alert({
+          msg: validate[validateKey[index]].text
+        })
+        break
+      }
+    }
+  }, [validate.loginPwdCheck])
+
   return (
-    <PureLayout status={'no_gnb'} header="비밀번호 변경">
+    <Layout status="no_gnb" header="비밀번호 변경">
       <Content>
-        <FormWrap>
-          <div className={`input-wrap ${currentAuth1 && 'text-on'}`}>
-            <PhoneAuth>
-              <div className="box">
-                <label
-                  className="input-label"
-                  htmlFor="loginID"
-                  style={{ maginTop: '0px' }}
-                >
-                  휴대폰 번호
-                </label>
-                <input
-                  type="tel"
-                  name="loginID"
-                  id="loginID"
-                  value={changes.loginID}
-                  onChange={onLoginHandleChange}
-                  placeholder="휴대폰 번호를 입력해주세요"
-                  className="auth"
-                  maxLength="11"
-                  onFocus={inputFocus}
-                />
-                <button
-                  className="auth-btn1"
-                  disabled={currentAuthBtn.request}
-                  onClick={() => {
-                    fetchAuth()
-                  }}
-                >
-                  인증요청
-                </button>
-              </div>
-            </PhoneAuth>
-            {currentAuth1 && (
-              <HelpText
-                state={validate.loginID}
-                className={validate.loginID ? 'pass' : 'help'}
-              >
-                {currentAuth1}
-              </HelpText>
-            )}
+        {/* 휴대폰 본인인증 -------------------------------------------------------- */}
+        <InputItem button={true} validate={validate.memId.check}>
+          <div className="layer">
+            <label htmlFor="memId">휴대폰 번호</label>
+            <input
+              type="tel"
+              ref={memIdRef}
+              id="memId"
+              name="memId"
+              placeholder="휴대폰 번호를 입력해주세요"
+              maxLength={11}
+              autoComplete="off"
+              value={memId}
+              onChange={(e) => dispatch(e.target)}
+            />
+            <button disabled={!btnState.memId} onClick={fetchSmsReq}>
+              인증요청
+            </button>
           </div>
-
-          <div className={`input-wrap ${currentAuth2 && 'text-on'}`}>
-            <PhoneAuth>
-              <div className="box">
-                <label className="input-label" htmlFor="auth">
-                  인증번호
-                </label>
-                <input
-                  type="number"
-                  name="auth"
-                  id="auth"
-                  placeholder="인증번호를 입력해주세요"
-                  className="auth"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="off"
-                  spellCheck="false"
-                  inputMode="decimal"
-                  pattern="\d*"
-                  value={changes.auth}
-                  onChange={onLoginHandleChange}
-                />
-                <span className="timer"></span>
-                <button
-                  className="auth-btn2"
-                  disabled={currentAuthBtn.check}
-                  onClick={() => {
-                    fetchAuthCheck()
-                  }}
-                >
-                  인증확인
-                </button>
-              </div>
-            </PhoneAuth>
-            {currentAuth2 && (
-              <HelpText
-                state={validate.auth}
-                className={validate.auth ? 'pass' : 'help'}
-              >
-                {currentAuth2}
-              </HelpText>
-            )}
+          {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
+        </InputItem>
+        <InputItem button={true} validate={validate.auth.check}>
+          <div className="layer">
+            <label htmlFor="auth">인증번호</label>
+            <input
+              type="number"
+              ref={authRef}
+              id="auth"
+              name="auth"
+              placeholder="인증번호를 입력해주세요"
+              autoComplete="off"
+              value={auth}
+              onChange={(e) => dispatch(e.target)}
+              disabled={true}
+            />
+            <span className="timer">{timeText}</span>
+            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
+              인증확인
+            </button>
           </div>
+          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+        </InputItem>
 
-          <InputWrap>
-            <div className={`input-wrap ${currentPwd && 'text-on'}`}>
-              <div className="box">
-                <label className="input-label" htmlFor="loginPwd">
-                  비밀번호
-                </label>
-                <input
-                  type="password"
-                  name="loginPwd"
-                  id="loginPwd"
-                  value={changes.loginPwd}
-                  onChange={onLoginHandleChange}
-                  placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
-                  maxLength="20"
-                />
-              </div>
-              {/* <span className={validate.loginPwd ? 'off' : 'on'}>8~20자 영문/숫자/특수문자 중 2가지 이상 조합</span> */}
-              {currentPwd && (
-                <HelpText
-                  state={validate.loginPwd}
-                  className={validate.loginPwd ? 'pass' : 'help'}
-                >
-                  {currentPwd}
-                </HelpText>
-              )}
-            </div>
+        {/* 비밀번호 ---------------------------------------------------------- */}
+        <InputItem button={false} validate={validate.loginPwd.check}>
+          <div className="layer">
+            <label htmlFor="loginPwd">비밀번호</label>
+            <input
+              type="password"
+              id="loginPwd"
+              name="loginPwd"
+              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+              autoComplete="off"
+              maxLength={20}
+              value={loginPwd}
+              onChange={(e) => dispatch(e.target)}
+            />
+          </div>
+          {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
+        </InputItem>
+        <InputItem button={false} validate={validate.loginPwdCheck.check}>
+          <div className="layer">
+            <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+            <input
+              type="password"
+              id="loginPwdCheck"
+              name="loginPwdCheck"
+              placeholder="비밀번호를 한번 더 입력해주세요"
+              autoComplete="off"
+              maxLength={20}
+              value={loginPwdCheck}
+              onChange={(e) => dispatch(e.target)}
+            />
+          </div>
+          {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+        </InputItem>
 
-            <div className={`input-wrap ${currentPwdCheck && 'text-on'}`}>
-              <div className="box">
-                <label className="input-label" htmlFor="loginPwdCheck">
-                  비밀번호 확인
-                </label>
-                <input
-                  type="password"
-                  name="loginPwdCheck"
-                  id="loginPwdCheck"
-                  defaultValue={changes.loginPwdCheck}
-                  onChange={onLoginHandleChange}
-                  placeholder="비밀번호를 다시 확인해주세요"
-                  maxLength="20"
-                />
-              </div>
-
-              {currentPwdCheck && (
-                <HelpText
-                  state={validate.loginPwdCheck}
-                  className={validate.loginPwdCheck ? 'pass' : 'help'}
-                >
-                  {currentPwdCheck}
-                </HelpText>
-              )}
-            </div>
-          </InputWrap>
-          <Button onClick={() => fetchData()} disabled={!validatePass}>
-            확인
-          </Button>
-        </FormWrap>
+        <button className="submit-btn" onClick={passwordModify}>
+          비밀번호 변경
+        </button>
       </Content>
-    </PureLayout>
+    </Layout>
   )
 }
 
-const Content = styled.div`
-  width: 400px;
-  margin: 0 auto 100px auto;
-
-  .close-btn {
-    position: absolute;
-    top: 6px;
-    left: -2.8%;
-  }
-
-  @media (max-width: ${WIDTH_TABLET}) {
-    width: 100%;
-  }
-
-  .input-label {
-    display: block;
-    width: 100%;
-    color: #424242;
-    font-size: 14px;
-    line-height: 16px;
-    margin-top: 6px;
-    margin-bottom: 8px;
-    font-weight: bold;
-
-    &.require:after {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      font-weight: bold;
-      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat
-        center;
-      content: '';
-      vertical-align: bottom;
-    }
-
-    span {
-      font-size: 12px;
-    }
-  }
-`
-//---------------------------------------------------------------------
-//styled
-const Title = styled.h2`
-  margin-top: -20px;
-  padding: 0 0 0 20px 0;
-  color: ${COLOR_MAIN};
-  font-size: 28px;
-  text-align: center;
-`
-
-//핸드폰 인증 영역
-const PhoneAuth = styled.div`
-  overflow: hidden;
-  button {
-    position: absolute;
-    right: 4px;
-    top: 24px;
-    width: 70px;
-    height: 32px;
-    background: ${COLOR_MAIN};
-    font-size: 14px;
-    color: #fff;
-    font-weight: 400;
-    line-height: 32px;
-    border-radius: 9px !important;
-  }
-  button:disabled {
-    background: #bdbdbd;
-  }
-  & + & {
-    margin-top: 10px;
-  }
-  .timer {
-    display: block;
-    position: absolute;
-    top: 23px;
-    right: 86px;
-    color: #ec455f;
-    font-size: 14px;
-    line-height: 32px;
-    z-index: 3;
-    transform: skew(-0.03deg);
-  }
-  input {
-    border-radius: 4px 0 0 4px !important;
-  }
-`
-const FormWrap = styled.div`
+const Content = styled.section`
   padding: 12px 16px;
-
-  .input-wrap {
-    position: relative;
-    &.text-on {
-      margin-bottom: 34px;
-    }
-    .box {
-      position: relative;
-      padding: 10px 4px 4px 16px;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      background: #fff;
-      z-index: 1;
-
-      label {
-        margin: 0;
-        font-size: 12px;
-        line-height: 14px;
-        font-weight: 400;
-      }
-
-      input {
-        width: 100%;
-        height: 32px;
-        line-height: 32px;
-        font-size: 14px;
-      }
-      input::placeholder {
-        color: #9e9e9e;
-      }
+  background: #eeeeee;
+  .submit-btn {
+    width: 100%;
+    height: 44px;
+    margin-top: 32px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 44px;
+    background: ${COLOR_MAIN};
+  }
+  .birthText {
+    padding: 3px 0 5px 5px;
+    font-size: 12px;
+    letter-spacing: -0.3px;
+    color: #e84d6f;
+    &::before {
+      display: inline-block;
+      margin-top: 7px;
+      vertical-align: top;
+      margin-right: 4px;
+      width: 2px;
+      height: 2px;
+      background: #e84d6f;
+      content: '';
     }
   }
-  .input-wrap + .input-wrap {
+`
+
+const InputItem = styled.div`
+  & + & {
     margin-top: 4px;
   }
-`
-
-const Button = styled.button`
-  display: block;
-  width: 100%;
-  background: ${COLOR_MAIN};
-  color: #fff;
-  line-height: 44px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 12px;
-
-  &:disabled {
-    background: #a8a8a8;
-  }
-`
-const InputWrap = styled.div`
-  position: relative;
-  margin: 12px 0 0 0;
-  padding-bottom: 32px;
-  input {
+  .layer {
     position: relative;
-    margin-top: -1px;
-  }
-  input + span {
-    position: absolute;
-    top: 19px;
-    right: 10px;
-    color: #bdbdbd;
-    font-size: 12px;
+    height: 58px;
     letter-spacing: -0.5px;
-    transform: skew(-0.03deg);
+    z-index: 1;
 
-    &.off {
-      display: none;
+    label {
+      display: block;
+      position: relative;
+      padding-top: 11px;
+      color: #000;
+      font-size: 12px;
+      line-height: 12px;
+      text-indent: 16px;
+      z-index: 1;
+    }
+
+    input {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: ${(props) => (props.button ? 'calc(100% - 106px)' : 'calc(100% - 28px)')};
+      padding: ${(props) => (props.button ? '22px 90px 2px 15px' : '22px 12px 2px 15px')};
+      border-radius: 12px;
+      border: 1px solid;
+      border-color: ${(props) => (props.validate ? '#e0e0e0' : '#ec455f')};
+      background: #fff;
+      height: 32px;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 32px;
+      box-sizing: content-box;
+    }
+
+    input:focus {
+      border-color: #000;
+    }
+
+    input::placeholder {
+      font-size: 14px;
+      color: #bdbdbd;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+    }
+
+    input:disabled {
+      background: #fff;
+      color: #9e9e9e;
+      opacity: 1;
+    }
+
+    input:focus {
+      &::after {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #000;
+        border-radius: 12px;
+        content: '';
+      }
+    }
+
+    .timer {
+      position: absolute;
+      right: 98px;
+      top: 28px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ec455f;
+      z-index: 1;
+    }
+
+    button {
+      display: inline-block;
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      height: 32px;
+      padding: 0 10px;
+      border-radius: 9px;
+      background: ${COLOR_MAIN};
+      color: #fff;
+      line-height: 32px;
+      letter-spacing: -0.5px;
+
+      :disabled {
+        background: #bdbdbd;
+      }
     }
   }
-`
-//helptext
-const HelpText = styled.div`
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 38px;
-  width: 100%;
-  padding: 30px 5px 7px 5px;
-  background: #9e9e9e;
-  text-align: center;
-  font-size: 11px;
-  line-height: 16px;
-  color: #fff;
-  transform: skew(-0.03deg);
-  border-radius: 12px;
-  &.help {
+
+  .help-text {
+    display: block;
+    position: relative;
+    margin-top: -17px;
+    padding: 23px 12px 7px 12px;
+    border-radius: 12px;
     color: #fff;
-  }
-  &.pass {
-    color: #fff;
+    font-size: 11px;
+    line-height: 14px;
+    background: #9e9e9e;
+    text-align: center;
+    z-index: 0;
   }
 `
