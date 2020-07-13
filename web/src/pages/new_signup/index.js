@@ -7,7 +7,8 @@ import qs from 'query-string'
 import moment from 'moment'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
-import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
+import {PHOTO_SERVER} from 'context/config'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
@@ -38,6 +39,12 @@ export default (props) => {
     auth: false
   })
   const [termOpen, setTermOpen] = useState(true)
+
+  //Facebook,Firebase 이벤트 호출
+  try {
+    fbq('track', 'Lead')
+    firebase.analytics().logEvent('Lead')
+  } catch (e) {}
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -439,17 +446,17 @@ export default (props) => {
           uploadImageToServer(encodedDataAsBase64)
         }
 
-        async function uploadImageToServer(data) {
-          const res = await Api.image_upload({
+        async function uploadImageToServer(imgData) {
+          const {result, data} = await Api.image_upload({
             data: {
-              dataURL: data,
+              dataURL: imgData,
               uploadType: 'profile'
             }
           })
-          if (res.result === 'success') {
+          if (result === 'success') {
             dispatch({
               name: 'profImgUrl',
-              value: res.data.path
+              value: data.path
             })
           } else {
             context.action.alert({
@@ -586,25 +593,105 @@ export default (props) => {
   }
 
   //로그인
+  async function loginFetch() {
+    const loginInfo = await Api.member_login({
+      data: {
+        memType: changes.memType,
+        memId: changes.memId,
+        memPwd: changes.loginPwd
+      }
+    })
+
+    if (loginInfo.result === 'success') {
+      const {memNo} = loginInfo.data
+      context.action.updateToken(loginInfo.data)
+      const profileInfo = await Api.profile({params: {memNo}})
+      if (profileInfo.result === 'success') {
+        if (isHybrid()) {
+          if (webview && webview === 'new') {
+            Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          } else {
+            Hybrid('GetLoginToken', loginInfo.data)
+          }
+        }
+
+        if (redirect) {
+          const decodedUrl = decodeURIComponent(redirect)
+          return (window.location.href = decodedUrl)
+        }
+        context.action.updateProfile(profileInfo.data)
+        return props.history.push('/')
+      }
+    } else if (loginInfo.result === 'fail') {
+      context.action.alert({
+        title: '로그인 실패',
+        msg: `${loginInfo.message}`
+      })
+    }
+  }
 
   //회원가입 Data fetch
   async function sighUpFetch() {
-    console.log('회원가입합니다')
+    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const {result, data, message} = await Api.member_join({
+      data: {
+        memType: changes.memType,
+        memId: changes.memId,
+        memPwd: changes.loginPwd,
+        gender: changes.gender,
+        nickNm: changes.nickNm,
+        birth: changes.birth,
+        term1: changes.term1,
+        term2: changes.term2,
+        term3: changes.term3,
+        term4: changes.term4,
+        term5: 'y',
+        profImg: changes.profImgUrl,
+        profImgRacy: 3,
+        nativeTid: nativeTid,
+        os: context.customHeader.os
+      }
+    })
+    if (result === 'success') {
+      //Facebook,Firebase 이벤트 호출
+      try {
+        fbq('track', 'CompleteRegistration')
+        firebase.analytics().logEvent('CompleteRegistration')
+      } catch (e) {}
+
+      context.action.alert({
+        callback: () => {
+          //애드브릭스 이벤트 전달
+          if (data.adbrixData != '' && data.adbrixData != 'init') {
+            Hybrid('adbrixEvent', data.adbrixData)
+            if (__NODE_ENV === 'dev') {
+              alert(JSON.stringify(data.adbrixData))
+            }
+          }
+          loginFetch()
+        },
+        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
+      })
+    } else {
+      context.action.alert({
+        msg: message
+      })
+      context.action.updateLogin(false)
+    }
   }
 
   //회원가입 완료 버튼
   const signUp = () => {
-    loginState = true
     if (!CMID && memType === 'p') {
       return context.action.alert({
         msg: '휴대폰 본인인증을 진행해주세요.'
       })
     }
+    validateNick()
     validatePwd()
     validatePwdCheck()
     validateBirth()
     validateTerm()
-    validateNick()
   }
   useEffect(() => {
     const validateKey = Object.keys(validate)
@@ -617,10 +704,6 @@ export default (props) => {
       }
     }
   }, [validate.nickNm])
-
-  useEffect(() => {
-    // console.log(JSON.stringify(changes, null, 1))
-  }, [changes])
 
   return (
     <Layout status="no_gnb" header="회원가입">
@@ -772,6 +855,7 @@ export default (props) => {
 
 const Content = styled.section`
   padding: 12px 16px;
+  background: #eeeeee;
   .join-btn {
     width: 100%;
     height: 44px;
@@ -808,8 +892,8 @@ const InputItem = styled.div`
   .layer {
     position: relative;
     height: 58px;
-
     letter-spacing: -0.5px;
+    z-index: 1;
 
     label {
       display: block;
@@ -854,6 +938,7 @@ const InputItem = styled.div`
     input:disabled {
       background: #fff;
       color: #9e9e9e;
+      opacity: 1;
     }
 
     input:focus {
@@ -898,6 +983,7 @@ const InputItem = styled.div`
 
   .help-text {
     display: block;
+    position: relative;
     margin-top: -17px;
     padding: 23px 12px 7px 12px;
     border-radius: 12px;
@@ -906,6 +992,7 @@ const InputItem = styled.div`
     line-height: 14px;
     background: #9e9e9e;
     text-align: center;
+    z-index: 0;
   }
 `
 
@@ -980,6 +1067,16 @@ const GenderInput = styled.div`
     img {
       padding: 3px 0 0 4px;
     }
+  }
+
+  button:after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    content: '';
   }
 
   button.male {
