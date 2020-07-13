@@ -189,7 +189,12 @@ export default (props) => {
 
   async function payFetch(event) {
     if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 18) {
-      if (chargeData[payMathod].id === 6 || chargeData[payMathod].id === 7 || chargeData[payMathod].id === 4) {
+      if (
+        chargeData[payMathod].id === 6 ||
+        chargeData[payMathod].id === 7 ||
+        chargeData[payMathod].id === 4 ||
+        chargeData[payMathod].id === 3
+      ) {
         return context.action.confirm({
           msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
           callback: () => {
