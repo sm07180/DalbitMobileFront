@@ -47,7 +47,8 @@ export default (props) => {
       {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
       {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
       {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
-      {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'}
+      {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'},
+      {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'}
     ]
   }
 
