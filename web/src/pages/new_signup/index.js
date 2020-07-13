@@ -445,28 +445,30 @@ export default (props) => {
           const encodedDataAsBase64 = drawAdjustImage(img, orientation)
           uploadImageToServer(encodedDataAsBase64)
         }
-
-        async function uploadImageToServer(imgData) {
-          const {result, data} = await Api.image_upload({
-            data: {
-              dataURL: imgData,
-              uploadType: 'profile'
-            }
-          })
-          if (result === 'success') {
-            dispatch({
-              name: 'profImgUrl',
-              value: data.path
-            })
-          } else {
-            context.action.alert({
-              msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.'
-            })
-          }
-        }
       }
     }
   }
+  async function uploadImageToServer(imgData) {
+    const {result, data} = await Api.image_upload({
+      data: {
+        dataURL: imgData,
+        uploadType: 'profile'
+      }
+    })
+    if (result === 'success') {
+      dispatch({
+        name: 'profImgUrl',
+        value: data.path
+      })
+    } else {
+      context.action.alert({
+        msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.'
+      })
+    }
+  }
+  useEffect(() => {
+    if (profImgUrl.includes('https://')) uploadImageToServer(profImgUrl)
+  }, [profImgUrl])
 
   //닉네임
   const validateNick = async () => {
@@ -682,19 +684,26 @@ export default (props) => {
 
   //회원가입 완료 버튼
   const signUp = () => {
-    if (!CMID && memType === 'p') {
+    if (CMID !== true && memType === 'p') {
       return context.action.alert({
         msg: '휴대폰 본인인증을 진행해주세요.'
       })
     }
     validateNick()
-    validatePwd()
-    validatePwdCheck()
+    if (memType === 'p') {
+      validatePwd()
+      validatePwdCheck()
+    }
     validateBirth()
     validateTerm()
   }
   useEffect(() => {
     const validateKey = Object.keys(validate)
+    //ios 이슈 수정
+    const nickIndex = validateKey.indexOf('nickNm')
+    const temp = validateKey[nickIndex]
+    validateKey.splice(nickIndex, 1)
+    validateKey.unshift(temp)
     for (let index = 0; index < validateKey.length; index++) {
       if (validate[validateKey[index]].check === false) {
         context.action.alert({
@@ -709,50 +718,57 @@ export default (props) => {
     <Layout status="no_gnb" header="회원가입">
       <Content>
         {/* 휴대폰 본인인증 -------------------------------------------------------- */}
-        <InputItem button={true} validate={validate.memId.check}>
-          <div className="layer">
-            <label htmlFor="memId">휴대폰 번호</label>
-            <input
-              type="tel"
-              ref={memIdRef}
-              id="memId"
-              name="memId"
-              placeholder="휴대폰 번호를 입력해주세요"
-              maxLength={11}
-              autoComplete="off"
-              value={memId}
-              onChange={(e) => dispatch(e.target)}
-            />
-            <button disabled={!btnState.memId} onClick={fetchSmsReq}>
-              인증요청
-            </button>
-          </div>
-          {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
-        </InputItem>
-        <InputItem button={true} validate={validate.auth.check}>
-          <div className="layer">
-            <label htmlFor="auth">인증번호</label>
-            <input
-              type="number"
-              ref={authRef}
-              id="auth"
-              name="auth"
-              placeholder="인증번호를 입력해주세요"
-              autoComplete="off"
-              value={auth}
-              onChange={(e) => dispatch(e.target)}
-              disabled={true}
-            />
-            <span className="timer">{timeText}</span>
-            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
-              인증확인
-            </button>
-          </div>
-          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
-        </InputItem>
+        {memType === 'p' && (
+          <>
+            <InputItem button={true} validate={validate.memId.check}>
+              <div className="layer">
+                <label htmlFor="memId">휴대폰 번호</label>
+                <input
+                  type="tel"
+                  ref={memIdRef}
+                  id="memId"
+                  name="memId"
+                  placeholder="휴대폰 번호를 입력해주세요"
+                  maxLength={11}
+                  autoComplete="off"
+                  value={memId}
+                  onChange={(e) => dispatch(e.target)}
+                />
+                <button disabled={!btnState.memId} onClick={fetchSmsReq}>
+                  인증요청
+                </button>
+              </div>
+              {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
+            </InputItem>
+            <InputItem button={true} validate={validate.auth.check}>
+              <div className="layer">
+                <label htmlFor="auth">인증번호</label>
+                <input
+                  type="number"
+                  ref={authRef}
+                  id="auth"
+                  name="auth"
+                  placeholder="인증번호를 입력해주세요"
+                  autoComplete="off"
+                  value={auth}
+                  onChange={(e) => dispatch(e.target)}
+                  disabled={true}
+                />
+                <span className="timer">{timeText}</span>
+                <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
+                  인증확인
+                </button>
+              </div>
+              {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+            </InputItem>
+          </>
+        )}
 
         {/* 프로필 사진 ---------------------------------------------------------- */}
-        <ProfileUpload imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''} className={memType !== 'p' && 'top'}>
+        <ProfileUpload
+          imgUrl={profImgUrl ? (profImgUrl.includes('http') ? `${profImgUrl}` : `${PHOTO_SERVER}${profImgUrl}`) : ''}
+          // imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''}
+          className={memType !== 'p' && 'top'}>
           <label htmlFor="profileImg">
             <div></div>
             <span>클릭 이미지 파일 추가</span>
@@ -787,38 +803,42 @@ export default (props) => {
         </InputItem>
 
         {/* 비밀번호 ---------------------------------------------------------- */}
-        <InputItem button={false} validate={validate.loginPwd.check}>
-          <div className="layer">
-            <label htmlFor="loginPwd">비밀번호</label>
-            <input
-              type="password"
-              id="loginPwd"
-              name="loginPwd"
-              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
-              autoComplete="off"
-              maxLength={20}
-              value={loginPwd}
-              onChange={(e) => dispatch(e.target)}
-            />
-          </div>
-          {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
-        </InputItem>
-        <InputItem button={false} validate={validate.loginPwdCheck.check}>
-          <div className="layer">
-            <label htmlFor="loginPwdCheck">비밀번호 확인</label>
-            <input
-              type="password"
-              id="loginPwdCheck"
-              name="loginPwdCheck"
-              placeholder="비밀번호를 한번 더 입력해주세요"
-              autoComplete="off"
-              maxLength={20}
-              value={loginPwdCheck}
-              onChange={(e) => dispatch(e.target)}
-            />
-          </div>
-          {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
-        </InputItem>
+        {memType === 'p' && (
+          <>
+            <InputItem button={false} validate={validate.loginPwd.check}>
+              <div className="layer">
+                <label htmlFor="loginPwd">비밀번호</label>
+                <input
+                  type="password"
+                  id="loginPwd"
+                  name="loginPwd"
+                  placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+                  autoComplete="off"
+                  maxLength={20}
+                  value={loginPwd}
+                  onChange={(e) => dispatch(e.target)}
+                />
+              </div>
+              {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
+            </InputItem>
+            <InputItem button={false} validate={validate.loginPwdCheck.check}>
+              <div className="layer">
+                <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+                <input
+                  type="password"
+                  id="loginPwdCheck"
+                  name="loginPwdCheck"
+                  placeholder="비밀번호를 한번 더 입력해주세요"
+                  autoComplete="off"
+                  maxLength={20}
+                  value={loginPwdCheck}
+                  onChange={(e) => dispatch(e.target)}
+                />
+              </div>
+              {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+            </InputItem>
+          </>
+        )}
 
         {/* 생년월일 ---------------------------------------------------------- */}
         <InputItem button={false} validate={validate.birth.check}>
@@ -1000,7 +1020,7 @@ const ProfileUpload = styled.div`
   margin: 20px 0 16px 0;
   text-align: center;
   &.top {
-    margin-top: -20px;
+    margin-top: 10px;
   }
   input {
     position: absolute;
