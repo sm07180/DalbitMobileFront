@@ -235,7 +235,7 @@ const Notice = (props) => {
         </Header>
         <section>
           <div className="titleWrite">
-            <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} />
+            <input type="text" placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} />
           </div>
 
           <div className="contentWrite">
