@@ -7,9 +7,11 @@ import Utility from 'components/lib/utility'
 import Api from 'context/api'
 import qs from 'query-string'
 
-//static
 //layout
 import Header from 'components/ui/new_header'
+
+//static
+import icoNotice from '../static/ic_notice.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -34,20 +36,16 @@ export default (props) => {
         <div className="select-item">
           <button>신용카드 결제</button>
           <button>휴대폰 결제</button>
-          <button>신용카드 결제</button>
+          <button className="on">신용카드 결제</button>
           <button>휴대폰 결제</button>
         </div>
 
         <div className="info-wrap">
-          <p className="title">달 충전 안내</p>
-          <h5></h5>
-          <p></p>
-          <p className="list">충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-          <p className="list">달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-          <p className="list">
-            미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.
-          </p>
-          <p className="list">사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          <h5>달 충전 안내</h5>
+          <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+          <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+          <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+          <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
         </div>
       </Content>
     </>
@@ -86,6 +84,55 @@ const Content = styled.div`
       font-weight: bold;
       strong {
         font-size: 18px;
+      }
+    }
+  }
+
+  .select-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button {
+      width: calc(50% - 2px);
+      height: 44px;
+      margin-bottom: 4px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      font-size: 14px;
+      font-weight: bold;
+
+      &.on {
+        border-color: ${COLOR_MAIN};
+        color: ${COLOR_MAIN};
+      }
+    }
+  }
+
+  .info-wrap {
+    margin-top: 30px;
+    h5 {
+      margin-bottom: 5px;
+      padding-left: 16px;
+      background: url(${icoNotice}) no-repeat left center;
+      color: #424242;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    p {
+      position: relative;
+      padding-left: 16px;
+      color: #757575;
+      font-size: 12px;
+      line-height: 20px;
+      &::before {
+        position: absolute;
+        left: 6px;
+        top: 9px;
+        width: 2px;
+        height: 2px;
+        background: #757575;
+        content: '';
       }
     }
   }
