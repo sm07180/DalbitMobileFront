@@ -7,7 +7,6 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 // component
-import Layout from 'pages/common/layout'
 import closeBtn from 'pages/menu/static/ic_close.svg'
 import qs from 'query-string'
 import React, {useContext, useEffect, useRef, useState} from 'react'
@@ -18,12 +17,14 @@ import facebookLogo from './static/facebook_logo.svg'
 import googleLogo from './static/google_logo.svg'
 import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
+import loginBg from './static/login_bg.svg'
+import logoW from './static/logo_w_no_symbol.svg'
+import backW from './static/back_w.svg'
 
 export default (props) => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
-
 
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -125,42 +126,42 @@ export default (props) => {
             msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
           })
         } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-            let msg = loginInfo.data.opMsg
-            if (msg === undefined || msg === null || msg === '') {
-                msg = loginInfo.message
+          let msg = loginInfo.data.opMsg
+          if (msg === undefined || msg === null || msg === '') {
+            msg = loginInfo.message
+          }
+          globalCtx.action.alert({
+            title: '달빛라이브 사용 제한',
+            msg: `${msg}`,
+            callback: () => {
+              if (webview && webview === 'new') {
+                Hybrid('CloseLayerPopUp')
+              }
             }
-            globalCtx.action.alert({
-                title: '달빛라이브 사용 제한',
-                msg: `${msg}`,
-                callback: () => {
-                    if (webview && webview === 'new') {
-                        Hybrid('CloseLayerPopUp')
-                    }
+          })
+        } else if (loginInfo.code === '-6') {
+          globalCtx.action.confirm({
+            msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
+            callback: () => {
+              const callResetListen = async (mem_no) => {
+                const fetchResetListen = await Api.postResetListen({
+                  memNo: mem_no
+                })
+                if (fetchResetListen.result === 'success') {
+                  setTimeout(() => {
+                    setFetching(false)
+                    clickLoginBtn()
+                  }, 700)
+                } else {
+                  globalCtx.action.alert({
+                    msg: `${fetchResetListen.message}`
+                  })
+                  setFetching(false)
                 }
-            })
-        } else if(loginInfo.code === '-6'){
-            globalCtx.action.confirm({
-                msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
-                callback: () => {
-                  const callResetListen = async (mem_no) => {
-                      const fetchResetListen = await Api.postResetListen({
-                        memNo: mem_no
-                      })
-                      if (fetchResetListen.result === 'success') {
-                          setTimeout(() => {
-                            setFetching(false)
-                            clickLoginBtn()
-                          }, 700)
-                      }else{
-                          globalCtx.action.alert({
-                              msg: `${fetchResetListen.message}`
-                          })
-                          setFetching(false)
-                      }
-                  }
-                  callResetListen(loginInfo.data.memNo)
-                }
-            });
+              }
+              callResetListen(loginInfo.data.memNo)
+            }
+          })
         } else {
           globalCtx.action.alert({
             title: '로그인 실패',
@@ -241,36 +242,38 @@ export default (props) => {
       })
     }
 
-    if(globalCtx.nativeTid == 'init'){
-      if(isHybrid()){
+    if (globalCtx.nativeTid == 'init') {
+      if (isHybrid()) {
         Hybrid('getNativeTid')
-      } else if(!isHybrid()) {
+      } else if (!isHybrid()) {
         globalCtx.action.updateNativeTid('')
       }
     }
-
-
   }, [globalCtx.nativeTid])
 
   return (
-    <Layout {...props} status="no_gnb">
-      <Switch>
-        {token && token.isLogin ? (
-          <Redirect to={'/'} />
-        ) : (
-          <Login>
-            <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
-            <div>
-              <img
-                className="logo"
-                src="https://image.dalbitlive.com/images/api/logo_p_l_new.png"
-                onClick={() => {
-                  if (!webview) {
-                    window.location.href = '/'
-                  }
-                }}
-              />
+    <Switch>
+      {token && token.isLogin ? (
+        <Redirect to={'/'} />
+      ) : (
+        <Login>
+          <div className="header">
+            <div className="inner">
+              <img className="close-btn" src={backW} onClick={clickCloseBtn} />
+              <h1>로그인</h1>
             </div>
+          </div>
+
+          <div className="login-wrap">
+            <img
+              className="logo"
+              src={logoW}
+              onClick={() => {
+                if (!webview) {
+                  window.location.href = '/'
+                }
+              }}
+            />
 
             <div className="input-wrap">
               <input
@@ -319,42 +322,149 @@ export default (props) => {
                 <div className="link-text">회원가입</div>
               </a>
             </div>
-            {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') &&
+          </div>
+
+          {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
             <SocialLoginWrap>
               <div className="line-wrap">
                 <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                  <img className="icon" src={appleLogo}/>
+                  <img className="icon" src={appleLogo} />
                 </button>
                 <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-                  <img className="icon" src={facebookLogo}/>
+                  <img className="icon" src={facebookLogo} />
                 </button>
                 <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon" src={naverLogo}/>
+                  <img className="icon" src={naverLogo} />
                 </button>
                 <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon" src={kakaoLogo}/>
+                  <img className="icon" src={kakaoLogo} />
                 </button>
                 {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                    (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                    customHeader['os'] === OS_TYPE['Desktop']) && (
-                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                      <img className="icon" src={googleLogo}/>
-                    </button>
+                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                  customHeader['os'] === OS_TYPE['Desktop']) && (
+                  <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+                    <img className="icon" src={googleLogo} />
+                  </button>
                 )}
               </div>
               {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
             </SocialLoginWrap>
-            }
-          </Login>
-        )}
-      </Switch>
-    </Layout>
+          )}
+        </Login>
+      )}
+    </Switch>
   )
 }
 
+const Login = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  min-height: 520px;
+  margin: 0 auto;
+  background: url(${loginBg}) no-repeat;
+  background-size: cover;
+
+  .header {
+    position: absolute;
+    width: 100%;
+    top: 30px;
+    left: 0;
+    .inner {
+      display: flex;
+      width: 260px;
+      margin: 0 auto;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    h1 {
+      margin-left: auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+      line-height: 40px;
+    }
+  }
+
+  .login-wrap {
+    width: 100%;
+    padding-bottom: 50px;
+  }
+
+  .logo {
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  .input-wrap {
+    width: 260px;
+    margin: 0 auto;
+    input {
+      display: block;
+      border: 1px solid #fff;
+      width: 100%;
+      height: 48px;
+      padding: 0 24px;
+      line-height: 48px;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 14px;
+      letter-spacing: -0.4px;
+      background: none;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    input::placeholder {
+      color: #fff;
+    }
+    input[type='password'] {
+      margin-top: 8px;
+    }
+    .login-btn {
+      display: block;
+      margin-top: 8px;
+      width: 100%;
+      height: 48px;
+      line-height: 48px;
+      background-color: #fff;
+      color: ${COLOR_MAIN};
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+      border-radius: 25px;
+    }
+  }
+
+  .link-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0 0 0;
+
+    .link-text {
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .bar {
+      width: 1px;
+      height: 12px;
+      background-color: #fff;
+      margin: 0 20px;
+      opacity: 0.2;
+    }
+  }
+`
+
 const SocialLoginWrap = styled.div`
-  margin-top: 40px;
-  margin-bottom: 120px;
+  position: absolute;
+  width: 100%;
+  bottom: 50px;
 
   .line-wrap {
     /* display: flex;
@@ -369,7 +479,7 @@ const SocialLoginWrap = styled.div`
       border-radius: 25px;
       border: solid 1px #000000;
       background-color: #000000;
-      margin-right: 12px;
+      margin-right: 8px;
     }
 
     .social-facebook-btn {
@@ -378,7 +488,7 @@ const SocialLoginWrap = styled.div`
       border-radius: 25px;
       border: solid 1px #4064ad;
       background-color: #ffffff;
-      margin-right: 12px;
+      margin-right: 8px;
     }
 
     .social-naver-btn {
@@ -386,7 +496,7 @@ const SocialLoginWrap = styled.div`
       height: 48px;
       border-radius: 25px;
       background-color: #2db400;
-      margin-right: 12px;
+      margin-right: 8px;
     }
 
     .social-kakao-btn {
@@ -394,7 +504,7 @@ const SocialLoginWrap = styled.div`
       height: 48px;
       border-radius: 25px;
       background-color: #f9e000;
-      margin-right: 12px;
+      margin-right: 8px;
     }
 
     .social-google-btn {
@@ -417,78 +527,5 @@ const SocialLoginWrap = styled.div`
     color: #ffd500;
     line-height: 34px;
     font-size: 14px;
-  }
-`
-
-const Login = styled.div`
-  position: relative;
-  margin: 0 auto;
-
-  .close-btn {
-    position: absolute;
-    right: 10px;
-    top: 6px;
-  }
-
-  .logo {
-    display: block;
-    margin: 0 auto;
-    padding: 70px 0 50px;
-    width: 150px;
-    max-width: 220px;
-  }
-
-  .input-wrap {
-    width: 300px;
-    margin: 0 auto;
-    input {
-      display: block;
-      border: 1px solid #e5e5e5;
-      padding: 16px;
-      width: 100%;
-      height: 56px;
-      border-radius: 28px;
-      color: #616161;
-      font-size: 16px;
-      letter-spacing: -0.4px;
-    }
-    input[type='password'] {
-      margin-top: 12px;
-    }
-    input:focus {
-      border: 1px solid ${COLOR_MAIN};
-    }
-    .login-btn {
-      display: block;
-      margin-top: 12px;
-      width: 100%;
-      background-color: #632beb;
-      color: #fff;
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-      padding: 17px 0;
-      border-radius: 28px;
-    }
-  }
-
-  .link-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 26px 0;
-
-    .link-text {
-      color: #632beb;
-      font-size: 16px;
-      letter-spacing: -0.64px;
-    }
-
-    .bar {
-      width: 1px;
-      height: 16px;
-      background-color: #e5e5e5;
-      margin: 0 10px;
-    }
   }
 `
