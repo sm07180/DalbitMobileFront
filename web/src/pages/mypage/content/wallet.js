@@ -161,7 +161,7 @@ export default (props) => {
             <>
               {(
                 <CoinChargeBtn
-                  className="exchange"
+                  className={context.customHeader['os'] === OS_TYPE['IOS'] ? "exchange ios" : "exchange"}
                   onClick={() => {
                     if(context.customHeader['os'] === OS_TYPE['IOS']){
                       async function fetchTokenShort() {
@@ -232,6 +232,9 @@ const CoinChargeBtn = styled.button`
     margin-top: 0 !important;
     margin-left: 4px;
     background: #632beb;
+  }
+  &.ios {
+  background: #bdbdbd;
   }
 `
 const CoinCurrentStatus = styled.div`
