@@ -15,7 +15,7 @@ import Utility from 'components/lib/utility'
 
 import NoResult from 'components/ui/noResult'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
@@ -29,14 +29,14 @@ export default props => {
 
   //---------------------------------------------------------------------
   const fetchAdmin = async () => {
-      const adminFunc = await Api.getAdmin()
-      if (adminFunc.result === 'success') {
-          if (adminFunc.data.isAdmin === true) {
-              setShowAdmin(true)
-          }
-      } else if (adminFunc.result === 'fail') {
-          setShowAdmin(false)
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      if (adminFunc.data.isAdmin === true) {
+        setShowAdmin(true)
       }
+    } else if (adminFunc.result === 'fail') {
+      setShowAdmin(false)
+    }
   }
 
   async function getStoreList() {
@@ -60,7 +60,7 @@ export default props => {
       return list.map((item, index) => {
         return (
           <div
-            className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
+            className={[`item ${selected.num == index ? 'on' : 'off'}`]}
             key={item.itemNo}
             iosprice={item.iosPrice}
             onClick={() => {
@@ -75,11 +75,11 @@ export default props => {
                 })
               }
             }}>
-            <div className="item-wrap">
-              <img src={item.img}></img>
+            <div className="img-wrap">
               <p>{item.itemNm}</p>
+              <img src={item.img}></img>
             </div>
-            <p>{Utility.addComma(item.salePrice)}원</p>
+            <p className="price">{Utility.addComma(item.salePrice)}원</p>
           </div>
         )
       })
@@ -96,16 +96,16 @@ export default props => {
           isState: 'charge'
         })
       } else {*/
-        // Test ing...
-        props.history.push({
-          pathname: '/charge',
-          state: {
-            paymentName: selected.name,
-            paymentPrice: selected.price,
-            itemNo: selected.itemNo,
-            isState: 'charge'
-          }
-        })
+      // Test ing...
+      props.history.push({
+        pathname: '/charge',
+        state: {
+          paymentName: selected.name,
+          paymentPrice: selected.price,
+          itemNo: selected.itemNo,
+          isState: 'charge'
+        }
+      })
       /*}*/
     } else {
       window.location.href = '/login'
@@ -120,10 +120,19 @@ export default props => {
     } else if (listState == 1) {
       return (
         <>
-          <List>{creatList()}</List>
-          <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            구매하기
-          </button>
+          <div className="item-list">{creatList()}</div>
+          <div className="btn-wrap">
+            <button
+              className="cancel"
+              onClick={() => {
+                window.history.back()
+              }}>
+              취소
+            </button>
+            <button onClick={chargeClick} className="charge" disabled={selected == -1 ? true : false}>
+              결제하기
+            </button>
+          </div>
         </>
       )
     }
@@ -134,10 +143,13 @@ export default props => {
     fetchAdmin()
     getStoreList()
   }, [])
+
   //---------------------------------------------------------------------
   return (
     <Content>
-      <p className="mydal">보유 달 {mydal.toLocaleString()}</p>
+      <p className="mydal">
+        보유 달 <span>{mydal.toLocaleString()}</span>
+      </p>
       {creatResult()}
     </Content>
   )
@@ -146,148 +158,66 @@ export default props => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
-  width: 1040px;
-  min-height: 300px;
-  margin: 0 auto;
-  padding: 40px 0 120px 0;
-
-  .charge-btn {
-    display: block;
-    width: 328px;
-    margin: 70px auto 0 auto;
-    border-radius: 5px;
-    background: ${COLOR_MAIN};
-    color: #fff;
-    line-height: 50px;
-    &:disabled {
-      background: #bdbdbd;
-      color: #fff;
-    }
-  }
   .mydal {
-    color: #424242;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 36px;
-    text-align: center;
-    &:before {
-      display: inline-block;
-      width: 36px;
-      height: 36px;
-      margin-top: -2px;
-      padding-right: 5px;
-      vertical-align: top;
-      background: url(${IMG_SERVER}/images/api/ic_moon_s@2x.png) no-repeat;
-      content: '';
+    padding: 16px 0 8px 0;
+    font-size: 16px;
+    font-weight: bold;
+    span {
+      color: ${COLOR_MAIN};
     }
   }
-
-  @media (max-width: 1060px) {
-    width: 100%;
-    padding: 10px 0 0 0;
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    h2 {
-      padding-bottom: 26px;
-      font-size: 24px;
-    }
-    .mydal {
-      font-size: 14px;
-      line-height: 24px;
-      transform: skew(-0.03deg);
-      &:before {
-        width: 24px;
-        height: 24px;
-        margin-top: -1px;
-        padding-right: 3px;
-        background-size: 24px;
-      }
-    }
-    .charge-btn {
-      width: 100%;
-      margin-top: 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      line-height: 48px;
-    }
-  }
-`
-
-const List = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  padding-top: 60px;
-
-  .wrap {
-    width: 15%;
-    text-align: center;
-    cursor: pointer;
-    & > p {
-      margin-top: 6px;
-      border-radius: 8px;
+  .btn-wrap {
+    display: flex;
+    margin-top: 10px;
+    button {
+      width: 50%;
+      height: 44px;
+      background: #757575;
+      border-radius: 12px;
       font-size: 18px;
-      color: #424242;
-      font-weight: 600;
-      line-height: 44px;
-      background: #fff;
-    }
-    &.on > p {
+      font-weight: bold;
       color: #fff;
-      background: ${COLOR_POINT_P};
+      line-height: 44px;
+      &.charge {
+        margin-left: 4px;
+        background: ${COLOR_MAIN};
+      }
     }
   }
-  .item-wrap {
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px solid #f5f5f5;
-    background: #f5f5f5;
-    img {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #757575;
-      font-size: 14px;
-      transform: skew(-0.03deg);
-    }
-    p + p {
-      padding-top: 8px;
-    }
-  }
-
-  .on .item-wrap {
-    background: #fff;
-    border: 1px solid ${COLOR_POINT_P};
-    p {
-      color: ${COLOR_POINT_P};
-      font-weight: 600;
-    }
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
+  .item-list {
+    display: flex;
     flex-wrap: wrap;
-    padding-top: 0;
-    .wrap {
-      width: 32.4%;
-      margin-bottom: 16px;
-
-      & > p {
-        margin-top: 2px;
-        font-size: 14px;
-        line-height: 28px;
-        transform: skew(-0.03deg);
+    justify-content: space-between;
+    .item {
+      width: calc(33.333% - 3px);
+      padding: 1px;
+      margin-bottom: 13px;
+      border-radius: 12px;
+      text-align: center;
+      &.on {
+        background: ${COLOR_MAIN};
+        .price {
+          color: #fff;
+        }
       }
-    }
-    .item-wrap {
-      padding: 0 0 5px 0;
-      img {
-        width: calc(100% - 25px);
-        margin-bottom: 0px;
+      .img-wrap {
+        padding: 9px 0 4px 0;
+        border-radius: 12px;
+        background: #fff;
+        p {
+          padding-bottom: 2px;
+          font-size: 12px;
+          font-weight: bold;
+        }
+        img {
+          width: 80px;
+          height: 80px;
+        }
       }
-      p {
-        font-size: 12px;
+      .price {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 32px;
       }
     }
   }
