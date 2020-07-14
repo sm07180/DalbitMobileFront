@@ -66,6 +66,14 @@ button {
   transform: skew(-0.03deg);
   outline: none;
 }
+input[type='text']
+, input[type='number']
+, input[type='password']
+, input[type='tel']
+, input[type='url']
+, textarea {
+  caret-color: #000000;
+}
 select,
 option,
 button {
