@@ -14,6 +14,7 @@ import Header from '../component/header.js'
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 import List from '../component/wallet/list.js'
+import {Hybrid} from "../../../context/hybrid";
 
 export default (props) => {
   let history = useHistory()
@@ -158,11 +159,25 @@ export default (props) => {
             </>
           ) : (
             <>
-              {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+              {(
                 <CoinChargeBtn
                   className="exchange"
                   onClick={() => {
-                    history.push('/exchange')
+                    if(context.customHeader['os'] === OS_TYPE['IOS']){
+                      async function fetchTokenShort() {
+                          const res = await Api.getTokenShort({})
+                          if (res.result === 'success') {
+                            Hybrid('openUrl', 'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken)
+                          } else {
+                            context.action.alert({
+                                msg: res.message
+                            })
+                          }
+                      }
+                        fetchTokenShort()
+                    }else{
+                      history.push('/exchange')
+                    }
                   }}>
                   교환
                 </CoinChargeBtn>
