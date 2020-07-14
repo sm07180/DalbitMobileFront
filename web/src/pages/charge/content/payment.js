@@ -200,7 +200,8 @@ export default (props) => {
         return context.action.confirm({
           msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
           callback: () => {
-            window.location.href = 'http://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'
+            // window.location.href = 'http://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'
+            window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
           }
         })
       }
