@@ -25,7 +25,9 @@ let chargeData = [
   {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
   {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
   {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'}
+  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+  {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'},
+  {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'}
 ]
 
 let clickFlag = false
@@ -188,7 +190,7 @@ export default (props) => {
   }
 
   async function payFetch(event) {
-    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 18) {
+    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20) {
       if (
         chargeData[payMathod].id === 6 ||
         chargeData[payMathod].id === 7 ||
