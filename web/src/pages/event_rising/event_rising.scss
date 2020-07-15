@@ -231,7 +231,7 @@
               .nick-name {
                 display: inline-block;
                 max-width: 60%;
-                font-weight: 500;
+                font-weight: 700;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
@@ -242,16 +242,18 @@
                 display: inline-block;
                 margin-left: 5px;
                 font-size: 14px;
+                font-weight: 700;
                 letter-spacing: -0.35px;
                 vertical-align: middle;
               }
             }
 
             .exp-box {
+              margin-top: 3px;
               font-size: 12px;
               letter-spacing: -0.3px;
               color: #919191;
-              font-weight: 500;
+              font-weight: 700;
 
               span {
                 color: #632beb;
@@ -277,6 +279,7 @@
               font-size: 14px;
               letter-spacing: -0.35px;
               width: 60px;
+              font-weight: 700;
               text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;

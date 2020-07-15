@@ -143,7 +143,7 @@ export default (props) => {
                   </div>
                   {Array.isArray(risingList) && risingList.length > 0 ? (
                     risingList.map((value, idx) => {
-                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no} = value
+                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no, expPoint, listenerPoint} = value
                       return (
                         <div className="user-wrap" key={`user-${idx}`}>
                           <div className="rank-wrap">
