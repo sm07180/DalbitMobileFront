@@ -62,7 +62,7 @@ export default (props) => {
             당첨자는 <span className="red">help@dalbitlive.com</span>으로 신분증사본을 첨부해주시고, 내용에 이름, 휴대폰 번호,
             주민등록번호, 등본상 거주주소, 선물 받을 주소를 반드시 작성해주세요.
           </li>
-          <li>달/별 당첨자는 신분증접수가 필요 없습니다.</li>
+          <li>달/별 당첨자는 당첨자 발표 후 순차 지급됩니다.</li>
           <li>
             <span className="blue">경품 대신 달로 받고 싶은 경우는 메일이나 1:1문의에 남겨주세요.</span>
           </li>
