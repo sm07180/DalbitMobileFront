@@ -17,7 +17,7 @@ import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 
 export default (props) => {
-  const [eventType, setEventType] = useState(0) // star, fan
+  const [eventType, setEventType] = useState(1) // star, fan
 
   const [risingList, setRisingList] = useState([])
   const [myRisingInfo, setMyRisingInfo] = useState({})
@@ -32,6 +32,9 @@ export default (props) => {
       const {result, data} = await API.getEventRisingLive({
         slct_type: eventType
       })
+
+      console.log(eventType)
+
       if (result === 'success') {
         if (data.state === 'ing') {
           setRisingList(data.risingList)
@@ -83,17 +86,17 @@ export default (props) => {
 
         <div className="event-type-wrap">
           <div className="event-tab-wrap">
-            <div className={`tab ${eventType === 0 ? 'active' : ''}`} onClick={() => setEventType(0)}>
+            <div className={`tab ${eventType === 1 ? 'active' : ''}`} onClick={() => setEventType(1)}>
               라이징 스타
             </div>
-            <div className={`tab ${eventType === 1 ? 'active' : ''}`} onClick={() => setEventType(1)}>
+            <div className={`tab ${eventType === 2 ? 'active' : ''}`} onClick={() => setEventType(2)}>
               라이징 팬
             </div>
           </div>
 
           <div className="event-content-wrap">
             {/* Star Event Section */}
-            {eventType === 0 && (
+            {eventType === 1 && (
               <>
                 <div className="stage-wrap">
                   <div className="content-wrap">
@@ -161,7 +164,7 @@ export default (props) => {
                               <span className="nick-name">{nickName}</span>
                               <span className="level">Lv{level}</span>
                               <div className="exp-box">
-                                <span>{Util.printNumber(gainPoint)}</span>
+                                <span>{gainPoint.toLocaleString()}</span>
                               </div>
                             </div>
                           </div>
@@ -187,7 +190,7 @@ export default (props) => {
             )}
 
             {/* Fan Event Section */}
-            {eventType === 1 && (
+            {eventType === 2 && (
               <>
                 <div className="stage-wrap">
                   <div className="content-wrap">
@@ -256,7 +259,7 @@ export default (props) => {
                               <span className="nick-name">{nickName}</span>
                               <span className="level">Lv{level}</span>
                               <div className="exp-box">
-                                <span>{Util.printNumber(gainPoint)}</span>
+                                <span>{gainPoint.toLocaleString()}</span>
                               </div>
                             </div>
                           </div>

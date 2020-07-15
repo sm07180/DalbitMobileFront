@@ -23,25 +23,23 @@ export default (props) => {
       </div>
 
       <h3 style={{fontWeight: 'bold'}}>{'< 청취자 집계 상세 설명 >'}</h3>
-      <div>
-        <p style={{fontSize: '12px'}}>
-          청취자는 1일 단위로 방문한 순 청취자수(비회원 제외)를 집계하고 이를 기간동안 합산합니다.
-          <br />
-          예)1일 100명, 2일 150명 일 경우 합계 250명으로 집계
-          <br />
-          ※1일 순청취자 : 하루동안 내가 3번 방을 만들고 A라는 사람이 3번다 입장(청취)했다 하더라도 순 청취자는 1명으로 계산
-        </p>
-      </div>
+
+      <p style={{fontSize: '12px'}}>
+        청취자는 1일 단위로 방문한 순 청취자수(비회원 제외)를 집계하고 이를 기간동안 합산합니다.
+        <br />
+        예)1일 100명, 2일 150명 일 경우 합계 250명으로 집계
+        <br />
+        ※1일 순청취자 : 하루동안 내가 3번 방을 만들고 A라는 사람이 3번다 입장(청취)했다 하더라도 순 청취자는 1명으로 계산
+      </p>
 
       <h3 style={{fontWeight: 'bold'}}>{'< 좋아요 집계 >'}</h3>
-      <div>
-        <p style={{fontSize: '12px'}}>부스터 좋아요를 제외한 순수 좋아요 수만 집계합니다.</p>
-      </div>
+
+      <p style={{fontSize: '12px'}}>부스터 좋아요를 제외한 순수 좋아요 수만 집계합니다.</p>
 
       <h3 style={{fontWeight: 'bold'}}>{'<이벤트 유의사항>'}</h3>
       <div>
         <ul>
-          <li>부정한 방법(대단위 부계 동원 등)으로 입상한 경우 이벤트 당첨을 취소합니다.</li>
+          <li>부정한 방법으로 입상할 경우 이벤트 당첨을 취소합니다.</li>
           <li>
             <span className="red">라이징 스타. 팬은 중복 당첨은 제외합니다.</span>
           </li>
@@ -84,8 +82,13 @@ const Content = styled.div`
   }
 
   h3 {
+    margin-bottom: 5px !important;
     font-size: 14px !important;
     color: #3a3a3a;
+  }
+
+  p {
+    margin-top: 0 !important;
   }
 
   ul {
