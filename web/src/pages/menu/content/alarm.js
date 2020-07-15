@@ -26,7 +26,7 @@ import alarmIco from 'pages/mypage/component/images/ic_alarm.svg'
 
 let currentPage = 1
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //let
   let timer
@@ -95,10 +95,10 @@ export default props => {
             const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
             const textArea = (
               <p>
-                  <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
+                <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
               </p>
             )
-              /**
+            /**
                  1 : 방송방 [room_no]
                  2 : 메인
                  4 : 등록 된 캐스트
@@ -132,57 +132,57 @@ export default props => {
                 break
               case 5: // 스페셜 dj선정
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/`
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 6: // 이벤트 페이지
                 return (
-                    <li
-                        key={index}
-                        // onClick={() => {
-                        //   window.location.href = `/customer/notice`
-                        // }}
-                    >
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    // onClick={() => {
+                    //   window.location.href = `/customer/notice`
+                    // }}
+                  >
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 7: // 마이 페이지
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/menu/profile`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/menu/profile`
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 31: //팬보드 알림
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/mypage/${memNo}/fanboard`
-                      }}>
-                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}/fanboard`
+                    }}>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 32: //달 알림//완료
@@ -199,14 +199,15 @@ export default props => {
                 break
               case 33: //캐스트 알림// (미정)
                 return (
-                    <li key={index}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li key={index}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
                 )
                 break
+
               case 35: // 팬 등록
                 return (
                   <li
@@ -224,28 +225,40 @@ export default props => {
                 break
               case 36: //DJ 레벨업(팬)
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/mypage/${memNo}`
-                        }}>
-                        <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}`
+                    }}>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    {textArea}
+                  </li>
                 )
                 break
               case 37: // 1:1 문의 답변
                 return (
-                    <li
-                        key={index}
-                        onClick={() => {
-                            window.location.href = `/customer/personal/qnaList`
-                        }}>
-                        <figure>
-                            <img src={alarmIco} />
-                        </figure>
-                        {textArea}
-                    </li>
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/customer/personal/qnaList`
+                    }}>
+                    <figure>
+                      <img src={alarmIco} />
+                    </figure>
+                    {textArea}
+                  </li>
+                )
+                break
+              case 38: //방송공지 상대방//
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}/notice`
+                    }}>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    {textArea}
+                  </li>
                 )
                 break
               default:
@@ -277,9 +290,9 @@ export default props => {
 
   //---------------------------------------------------------------------
   //checkScroll
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
       const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
