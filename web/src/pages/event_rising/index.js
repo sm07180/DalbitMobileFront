@@ -33,7 +33,7 @@ export default (props) => {
         slct_type: eventType
       })
       if (result === 'success') {
-        if (status === 'ing') {
+        if (data.state === 'ing') {
           setRisingList(data.risingList)
           setMyRisingInfo({
             myRank: data.risingOutput.myRank,
