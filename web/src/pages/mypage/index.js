@@ -73,7 +73,7 @@ export default props => {
                 callback: () => {
                     window.history.back()
                 },
-                msg: '탈퇴한 회원입니다.'
+                msg: '회원정보를 찾을 수 없습니다.'
             });
         }
       }else{
@@ -81,7 +81,7 @@ export default props => {
           callback: () => {
               window.history.back()
           },
-          msg: '탈퇴한 회원입니다.'
+          msg: '회원정보를 찾을 수 없습니다.'
         });
       }
     }
@@ -89,18 +89,6 @@ export default props => {
       settingProfileInfo(memNo)
     }
   }, [context.mypageFanCnt])
-  const [codes, setCodes] = useState('')
-
-  useEffect(() => {
-    if (codes === '-2') {
-      context.action.alert({
-        callback: () => {
-          window.history.back()
-        },
-        msg: '탈퇴한 회원입니다.'
-      })
-    }
-  }, [codes])
 
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
@@ -110,43 +98,44 @@ export default props => {
   if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
   }
-  if (codes !== '-2' && (!profileInfo || !profile)) {
-    return null
-  }
 
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      <Layout {...props} webview={webview} status="no_gnb">
-        <Mypage webview={webview}>
-          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
-          {!category && (
-            <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} />
-              <Sub>
-                {subNavList.map((value, idx) => {
-                  const {type, txt, icon, component} = value
-                  return (
-                    <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
-                      <div className="list">
-                        <span className="text">{txt}</span>
-                        <img className="icon" src={icon} />
-                      </div>
-                    </div>
-                  )
-                })}
-              </Sub>
-            </>
-          )}
+        <Layout {...props} webview={webview} status="no_gnb">
+            <Mypage webview={webview}>
+              {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn}/>}
+              {!category && (
+                <>
+                  <MyProfile profile={profileInfo} {...props} webview={webview}/>
+                  {
+                    profileInfo &&
+                    <Sub>
+                      {subNavList.map((value, idx) => {
+                        const {type, txt, icon, component} = value
+                        return (
+                          <div className="link-list" key={`list-${idx}`}
+                             onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
+                            <div className="list">
+                              <span className="text">{txt}</span>
+                              <img className="icon" src={icon}/>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </Sub>
+                  }
+                </>
+              )}
 
-          <SubContent>
-            {navigationList.map(value => {
-              const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
-            })}
-          </SubContent>
-        </Mypage>
-      </Layout>
+              <SubContent>
+                {navigationList.map(value => {
+                  const {type, component} = value
+                  return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type}/>
+                })}
+              </SubContent>
+            </Mypage>
+        </Layout>
     </Switch>
   )
 }
