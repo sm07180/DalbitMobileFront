@@ -399,9 +399,12 @@ export default React.forwardRef((props, ref) => {
             // <img className="live-icon" src={LiveIcon} />
             <img className="live-icon" src={EventIcon} />
           )}
-          {list[selectedBIdx]['isSpecial'] === true && (
-            <em className="specialIcon">스페셜DJ</em>
-          )}
+            {list[selectedBIdx]['isAdmin'] === false && list[selectedBIdx]['isSpecial'] === true && (
+                <em className="specialIcon">스페셜DJ</em>
+            )}
+            {list[selectedBIdx]['isAdmin'] === true && (
+                <em className="adminIcon">운영자</em>
+            )}
           {Array.isArray(list) && list.length > 0 && (
             <div className="counting">
               <span className="bold">{selectedBIdx + 1}</span>
@@ -492,6 +495,26 @@ const RecommendWrap = styled.div`
       letter-spacing: normal;
       text-align: center;
     }
+
+    .adminIcon {
+      position: absolute;
+      top: 51px;
+      left: 64px;
+      display: inline-block;
+      width: 49px;
+      height: 16px;
+      margin-left: 4px;
+      border-radius: 10px;
+      background-color: #3386f2;
+      color: #fff;
+      font-size: 12px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.33;
+      letter-spacing: normal;
+      text-align: center;
+    }    
 
     .counting {
       display: flex;
