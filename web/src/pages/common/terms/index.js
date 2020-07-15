@@ -18,9 +18,11 @@ import Operating from './content/operating'
 import Maketing from './content/maketing'
 import EventDetail from './content/event_detail'
 import EventGiftDetail from './content/event_gift_detail'
+import RisingEventDetail from './content/rising_event_detail'
+import RisingEventGiftDetail from './content/rising_event_gift_detail'
 
 ////---------------------------------------------------------------------
-export default props => {
+export default (props) => {
   //context
   const context = useContext(Context)
   //ref
@@ -43,6 +45,13 @@ export default props => {
       }
       case 'event-gift-detail': {
         return <EventGiftDetail {...props} />
+      }
+
+      case 'rising-event-detail': {
+        return <RisingEventDetail {...props} />
+      }
+      case 'rising-event-gift-detail': {
+        return <RisingEventGiftDetail {...props} />
       }
       default:
         return <div>약관 컨텐츠가 정의되지않음</div>

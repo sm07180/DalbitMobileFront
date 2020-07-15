@@ -912,7 +912,7 @@ export default class API {
    */
 
   static getTokenShort = async () => {
-      return await ajax({url: `/token/short`, method: 'GET'})
+    return await ajax({url: `/token/short`, method: 'GET'})
   }
 
   /**
@@ -2051,20 +2051,20 @@ export default class API {
     return await ajax({url: `/social/google/callback`, method: 'POST', data})
   }
 
-    /**
-     * @brief PUSH Click
-     * @method "POST"
-     * @create 전유신 2020.07.06
-     */
-    static push_click = async (obj) => {
-        const {url, method, data} = obj || {}
-        return await ajax({
-            ...obj,
-            url: url || `/push/click`,
-            method: method || 'POST',
-            data: data
-        })
-    }
+  /**
+   * @brief PUSH Click
+   * @method "POST"
+   * @create 전유신 2020.07.06
+   */
+  static push_click = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/push/click`,
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   /**
    * @brief 별 달 교환아이템 가져오기
@@ -2186,13 +2186,21 @@ export default class API {
     return await ajax({url: '/event/attendance/random/gift', method: 'post'})
   }
 
-    /**
-     * @brief 1계정 1청취 대응 타기기 방종료
-     * @method "POST"
-     * @create 이재은 2020.07.01
-     */
+  static getEventRisingLive = async (params) => {
+    return await ajax({url: '/event/rising/live', method: 'POST', params})
+  }
+
+  static getEventRisingResult = async (params) => {
+    return await ajax({url: '/event/rising/result', method: 'POST', params})
+  }
+
+  /**
+   * @brief 1계정 1청취 대응 타기기 방종료
+   * @method "POST"
+   * @create 이재은 2020.07.01
+   */
   static postResetListen = async (data) => {
-      return await ajax({url: '/member/reset/listen', method: 'POST', data})
+    return await ajax({url: '/member/reset/listen', method: 'POST', data})
   }
 }
 

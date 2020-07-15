@@ -27,6 +27,7 @@ const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
+const EventRising = React.lazy(() => import('pages/event_rising'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
@@ -95,6 +96,7 @@ export default () => {
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
         <Route exact path="/attend_event" component={AttendEvent} />
+        <Route exact path="/event_rising" component={EventRising} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
