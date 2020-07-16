@@ -41,7 +41,7 @@ export default (props) => {
         <ul>
           <li>부정한 방법으로 입상할 경우 이벤트 당첨을 취소합니다.</li>
           <li>
-            <span className="red">라이징 스타. 팬은 중복 당첨은 제외합니다.</span>
+            <span className="red">라이징 스타, 팬은 중복 당첨을 제외합니다.</span>
           </li>
           <li>
             중복 당첨시 고가격 기준으로 1개만 인정됩니다.
