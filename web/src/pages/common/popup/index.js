@@ -15,11 +15,13 @@ import Charge from './tab/charge-popup'
 import Terms from 'pages/common/terms'
 
 //
-export default props => {
+export default (props) => {
   //state
   const [layout, setLayout] = useState('')
+
   //context
   const context = useContext(Context)
+  console.log()
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {
@@ -58,7 +60,11 @@ export default props => {
 
   useEffect(() => {
     if (context.popup_code[0] == 'TERMS') {
-      setLayout('round terms')
+      if (context.popup_code[1] === 'rising-event-gift-detail') {
+        setLayout('round terms detail')
+      } else {
+        setLayout('round terms')
+      }
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
     } else {
@@ -143,6 +149,9 @@ const Wrap = styled.div`
       }
       &.terms {
         width: 90%;
+      }
+      &.detail {
+        height: 400px;
       }
     }
   }
