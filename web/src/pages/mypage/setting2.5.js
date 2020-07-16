@@ -414,8 +414,9 @@ export default (props) => {
                 </GenderWrap>
 
                 <div className="msg-wrap">
-                  <label className="input-label">프로필 메세지</label>
+                  <label className="input-label">프로필 메시지</label>
                   <MsgText defaultValue={profile.profMsg} onChange={changeMsg} maxLength={100} />
+                  <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg>
                 </div>
 
                 <SaveBtn onClick={saveUpload}>저장</SaveBtn>

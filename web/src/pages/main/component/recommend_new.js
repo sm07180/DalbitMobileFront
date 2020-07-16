@@ -242,18 +242,13 @@ export default (props) => {
                 b-idx={prevBIdx}
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[prevBIdx])}>
-                <div className="image-text-bundle">
+                {list[prevBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
                   <img
                     className="image-wrap"
-                    src={
-                      list[nextBIdx]['nickNm'] === 'banner'
-                        ? list[prevBIdx]['profImg']['url']
-                        : list[prevBIdx]['profImg']['thumb120x120']
-                    }
+                    src={list[prevBIdx]['profImg']['thumb120x120']}
                   />
                   <div className="text-wrap">
                     <div className="selected-title">{list[prevBIdx]['title']}</div>
-                    {list[prevBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[prevBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           // 🎉😝pqpq😝🎉
@@ -261,9 +256,8 @@ export default (props) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
-                    )}
                   </div>
-                </div>
+                </div>)}
               </div>
               <div
                 className="broad-slide"
@@ -272,52 +266,40 @@ export default (props) => {
                   backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                 }}
                 onClick={() => clickSlideDisplay(list[selectedBIdx])}>
-                <div className="image-text-bundle">
+                {list[selectedBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
                   <img
                     className="image-wrap"
-                    src={
-                      list[nextBIdx]['nickNm'] === 'banner'
-                        ? list[selectedBIdx]['profImg']['url']
-                        : list[selectedBIdx]['profImg']['thumb120x120']
-                    }
+                    src={list[selectedBIdx]['profImg']['thumb120x120']}
                   />
                   <div className="text-wrap">
                     <div className="selected-title">{list[selectedBIdx]['title']}</div>
-                    {list[selectedBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
-                    )}
                   </div>
-                </div>
+                </div>)}
               </div>
               <div
                 className="broad-slide"
                 b-idx={nextBIdx}
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[nextBIdx])}>
-                <div className="image-text-bundle">
+                {list[nextBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
                   <img
                     className="image-wrap"
-                    src={
-                      list[nextBIdx]['nickNm'] === 'banner'
-                        ? list[nextBIdx]['profImg']['url']
-                        : list[nextBIdx]['profImg']['thumb120x120']
-                    }
+                    src={list[nextBIdx]['profImg']['thumb120x120']}
                   />
                   <div className="text-wrap">
                     <div className="selected-title">{list[nextBIdx]['title']}</div>
-                    {list[nextBIdx]['nickNm'] !== 'banner' && (
                       <div className="selected-nickname">
                         {list[nextBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
-                    )}
                   </div>
-                </div>
+                </div>)}
               </div>
             </div>
           </>
@@ -339,8 +321,8 @@ export default (props) => {
           <img className="live-icon" src={EventIcon} />
         )} */}
 
-        {list[selectedBIdx]['isSpecial'] && <em className="specialIcon">스페셜DJ</em>}
-
+        {list[selectedBIdx]['isAdmin'] === false && list[selectedBIdx]['isSpecial'] && <em className="specialIcon">스페셜DJ</em>}
+        {list[selectedBIdx]['isAdmin'] === true && (<em className="adminIcon">운영자</em>)}
         {list[selectedBIdx]['nickNm'] !== 'banner' && <img className="live-right-icon" src={LiveIcon} />}
 
         {Array.isArray(list) && list.length > 0 && (
@@ -407,6 +389,23 @@ const RecommendWrap = styled.div`
       letter-spacing: normal;
       text-align: center;
     }
+
+    .adminIcon {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      background-color: #3386f2;
+      color: #fff;
+      font-size: 12px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.33;
+      letter-spacing: normal;
+      text-align: center;
+    }    
 
     .live-right-icon {
       position: absolute;

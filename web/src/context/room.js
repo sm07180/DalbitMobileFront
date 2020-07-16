@@ -256,8 +256,7 @@ export const RoomMake = async (context) => {
     if (res.code === '0') return true
     //진행중인 방송이 있습니다
     if (res.code === '1') {
-      context.action.alert({msg: "다른 기기에서 진행 중인 방송이 있습니다."})
-      /*const {roomNo} = res.data
+      const {roomNo} = res.data
       context.action.confirm({
         msg: res.message,
         callback: () => {
@@ -270,10 +269,10 @@ export const RoomMake = async (context) => {
           })()
         },
         buttonText: {
-            left: '확인',
+            left: '취소',
             right: '방송종료'
         }
-      })*/
+      })
       return false
     }
     //-----------------------------------
