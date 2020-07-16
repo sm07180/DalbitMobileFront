@@ -151,7 +151,11 @@ const Wrap = styled.div`
         width: 90%;
       }
       &.detail {
-        height: 400px;
+        max-height: 80%;
+        height:auto;
+      }
+      &.detail > div > div > div {
+        max-height: 80% !important;
       }
     }
   }
