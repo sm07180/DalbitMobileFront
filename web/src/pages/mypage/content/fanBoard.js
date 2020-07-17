@@ -790,6 +790,7 @@ const CommentBox = styled.div`
       width: calc(100% - 42px);
       a {
         display: flex;
+        align-items: center;
       }
       a span:nth-child(1) {
         display: block;
