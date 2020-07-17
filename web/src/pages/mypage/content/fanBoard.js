@@ -769,7 +769,7 @@ const CommentBox = styled.div`
     display: block;
     width: 23px;
     height: 16px;
-    margin-top: 2px;
+    margin-top: 6px;
     margin-right: 4px;
     background: url(${BJicon}) no-repeat center center / cover;
   }
