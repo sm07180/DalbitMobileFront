@@ -261,7 +261,7 @@ export const RoomMake = async (context) => {
         msg: res.message,
         callback: () => {
           ;(async function () {
-            const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+            const exit = await Api.broad_exit_force({data: {roomNo: roomNo}})
             //success,fail노출
             context.action.alert({
                 msg: exit.message

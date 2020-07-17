@@ -64,17 +64,28 @@ export default class API {
     const {data} = obj || {}
     return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
-  /**
-   * @brief 방송방 나가기
-   * @method "DELETE"
-   * @todo
-   * @param int roomNo                //*방송방번호
-   * @create 손완휘 2020.02.06
-   */
-  static broad_exit = async (obj) => {
-    const {data} = obj || {}
-    return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
-  }
+    /**
+     * @brief 방송방 나가기
+     * @method "DELETE"
+     * @todo
+     * @param int roomNo                //*방송방번호
+     * @create 손완휘 2020.02.06
+     */
+    static broad_exit = async (obj) => {
+        const {data} = obj || {}
+        return await ajax({url: `/broad/exit`, method: 'DELETE', data: data})
+    }
+    /**
+     * @brief 방송방 나가기 (접속 기기에 따른 처리)
+     * @method "DELETE"
+     * @todo
+     * @param int roomNo                //*방송방번호
+     * @create 이재은
+     */
+    static broad_exit_force = async (obj) => {
+        const {data} = obj || {}
+        return await ajax({url: `/broad/exit/force`, method: 'DELETE', data: data})
+    }
   /**
    * @brief 방송방 정보수정
    * @method "POST"
