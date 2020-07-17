@@ -143,7 +143,18 @@ export default (props) => {
                   </div>
                   {Array.isArray(risingList) && risingList.length > 0 ? (
                     risingList.map((value, idx) => {
-                      const {profileImage, nickName, level, gainPoint, fanRank1, fanImage, fanNick, mem_no, expPoint, listenerPoint} = value
+                      const {
+                        profileImage,
+                        nickName,
+                        level,
+                        gainPoint,
+                        fanRank1,
+                        fanImage,
+                        fanNick,
+                        mem_no,
+                        expPoint,
+                        listenerPoint
+                      } = value
                       return (
                         <div className="user-wrap" key={`user-${idx}`}>
                           <div className="rank-wrap">
@@ -248,7 +259,7 @@ export default (props) => {
                               <span className="num">{idx + 1}</span>
                             )}
                           </div>
-                          <div className="dj-info">
+                          <div className="dj-info fan">
                             <div
                               className="thumb"
                               style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
