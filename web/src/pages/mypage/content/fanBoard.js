@@ -15,7 +15,7 @@ import BJicon from '../component/bj.svg'
 //api
 import Api from 'context/api'
 //layout
-export default props => {
+export default (props) => {
   const {webview} = qs.parse(location.search)
   //ref
   const inputEl = useRef(null)
@@ -51,7 +51,7 @@ export default props => {
     })
     if (res.result === 'success') {
       setFanTotal(
-        res.data.list.filter(function(item) {
+        res.data.list.filter(function (item) {
           return item.status === 1
         })
       )
@@ -114,7 +114,7 @@ export default props => {
   }
 
   //댓글 등록 온체인지
-  const textChange = e => {
+  const textChange = (e) => {
     const target = e.currentTarget
     const lineBreakLenght = target.value.split('\n').length
 
@@ -128,7 +128,7 @@ export default props => {
     }
   }
   //댓글 삭제
-  const deletApiFun = value => {
+  const deletApiFun = (value) => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -242,7 +242,7 @@ export default props => {
     setReplyRegist('')
   }
   //대댓글 value
-  const textChangeReply = e => {
+  const textChangeReply = (e) => {
     const target = e.currentTarget
     if (target.value.length > MaxCommentLength) return
     setReplyRegist(target.value)
@@ -268,7 +268,7 @@ export default props => {
     setBtnState(false)
   }
   //댓글 수정 온체인지
-  const textModify = e => {
+  const textModify = (e) => {
     const target = e.currentTarget
     const lineBreakLenght = target.value.split('\n').length
 
@@ -282,7 +282,7 @@ export default props => {
     }
   }
   //대댓글 수정 온체인지
-  const textChangeReplyModify = e => {
+  const textChangeReplyModify = (e) => {
     const target = e.currentTarget
 
     if (target.value.length > MaxCommentLength) return
@@ -311,7 +311,7 @@ export default props => {
   }
 
   //dateformat
-  const timeFormat = strFormatFromServer => {
+  const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
     let time = strFormatFromServer.slice(8)
@@ -322,7 +322,7 @@ export default props => {
   //전체 카운터
   useEffect(() => {
     setCount(
-      fanTotal.filter(function(item) {
+      fanTotal.filter(function (item) {
         return item.status === 1
       }).length
     )
@@ -357,17 +357,17 @@ export default props => {
     }
   }
   //초기하 상세버튼
-  const refreshFanBtn = boardIdx => {
+  const refreshFanBtn = (boardIdx) => {
     setShowBtnReply('')
     setShowBtn(boardIdx)
   }
-  const refreshReplyBtn = boardIdx => {
+  const refreshReplyBtn = (boardIdx) => {
     setShowBtnReply(boardIdx)
     setShowBtn('')
   }
   ///
   useEffect(() => {
-    const settingProfileInfo = async memNo => {
+    const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
       if (profileInfo.result === 'success') {
         context.action.updateProfile(profileInfo.data)
@@ -781,6 +781,7 @@ const CommentBox = styled.div`
   }
   & .titlewrap {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     padding: 12px 0 12px 0;
     div:nth-child(2) {
@@ -887,7 +888,7 @@ const Imgbox = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
 `
 const BtnIcon = styled.button`
   position: absolute;
