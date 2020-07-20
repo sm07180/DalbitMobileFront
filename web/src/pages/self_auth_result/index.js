@@ -50,14 +50,13 @@ export default (props) => {
   }
 
   useEffect(() => {
-    alert(JSON.stringify(props.location.state, null, 1))
     if (result === 'fail' || code === 'C007' || code === 'C008') {
       return context.action.alert({
         msg: message,
         callback: () => {
-          // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-          // context.action.updateWalletIdx(1)
-          window.location.href = '/'
+          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          context.action.updateWalletIdx(1)
+          // window.location.href = '/'
         }
       })
     } else {
