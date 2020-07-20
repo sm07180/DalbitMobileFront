@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -19,6 +20,18 @@ export default (props) => {
   const history = useHistory()
 
   const [popup, setPopup] = useState(false)
+
+  const {result, code, message} = qs.parse(location.search)
+
+  if (result === 'fail' || code === 'C007' || code === 'C008') {
+    return context.action.alert({
+      msg: message,
+      callback: () => {
+        props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+        context.action.updateWalletIdx(1)
+      }
+    })
+  }
 
   /**
    * authState
