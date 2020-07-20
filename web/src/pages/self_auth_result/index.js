@@ -23,16 +23,6 @@ export default (props) => {
 
   const {result, code, message} = qs.parse(location.search)
 
-  if (result === 'fail' || code === 'C007' || code === 'C008') {
-    return context.action.alert({
-      msg: message,
-      callback: () => {
-        props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-        context.action.updateWalletIdx(1)
-      }
-    })
-  }
-
   /**
    * authState
    * 1 : 성인 - 자기 자신 본인인증 완료 후 // adultYn === 'y'
@@ -60,7 +50,17 @@ export default (props) => {
   }
 
   useEffect(() => {
-    checkAuth()
+    if (result === 'fail' || code === 'C007' || code === 'C008') {
+      return context.action.alert({
+        msg: message,
+        callback: () => {
+          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          context.action.updateWalletIdx(1)
+        }
+      })
+    } else {
+      checkAuth()
+    }
   }, [])
 
   const goWallet = () => {
