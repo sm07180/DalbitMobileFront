@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
+import _, {uniqueId} from 'lodash'
 
 //context
 import {Context} from 'context'
@@ -19,6 +20,8 @@ export default (props) => {
   const history = useHistory()
 
   const [popup, setPopup] = useState(false)
+
+  const {result, code, message} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   /**
    * authState
@@ -47,7 +50,18 @@ export default (props) => {
   }
 
   useEffect(() => {
-    checkAuth()
+    if (result === 'fail' || code === 'C007' || code === 'C008') {
+      return context.action.alert({
+        msg: message,
+        callback: () => {
+          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          context.action.updateWalletIdx(1)
+          // window.location.href = '/'
+        }
+      })
+    } else {
+      checkAuth()
+    }
   }, [])
 
   const goWallet = () => {
@@ -62,10 +76,15 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      <Header
-        title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-        goBack={authState === 2 ? goBack : goWallet}
-      />
+      {authState === 0 ? (
+        <></>
+      ) : (
+        <Header
+          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
+          goBack={authState === 2 ? goBack : goWallet}
+        />
+      )}
+
       <Content>
         {authState === 2 ? (
           <div className="auth-wrap">
