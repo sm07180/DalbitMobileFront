@@ -50,6 +50,9 @@ export default (props) => {
   }
 
   useEffect(() => {
+    alert(result)
+    alert(code)
+    alert(message)
     if (result === 'fail' || code === 'C007' || code === 'C008') {
       return context.action.alert({
         msg: message,
