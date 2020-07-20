@@ -55,8 +55,9 @@ export default (props) => {
       return context.action.alert({
         msg: message,
         callback: () => {
-          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-          context.action.updateWalletIdx(1)
+          // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          // context.action.updateWalletIdx(1)
+          window.location.href = '/'
         }
       })
     } else {
