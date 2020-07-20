@@ -14,7 +14,7 @@ import Header from '../component/header.js'
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 import List from '../component/wallet/list.js'
-import {Hybrid} from "context/hybrid";
+import {Hybrid} from 'context/hybrid'
 
 export default (props) => {
   let history = useHistory()
@@ -86,7 +86,19 @@ export default (props) => {
     }
   }, [context.walletIdx])
 
-  const checkSelfAuth = () => {
+  const checkSelfAuth = async () => {
+    let myBirth
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > 2004) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
     async function fetchSelfAuth() {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
@@ -159,29 +171,32 @@ export default (props) => {
             </>
           ) : (
             <>
-              {(
+              {
                 <CoinChargeBtn
-                  className={context.customHeader['os'] === OS_TYPE['IOS'] ? "exchange ios" : "exchange"}
+                  className={context.customHeader['os'] === OS_TYPE['IOS'] ? 'exchange ios' : 'exchange'}
                   onClick={() => {
-                    if(context.customHeader['os'] === OS_TYPE['IOS']){
+                    if (context.customHeader['os'] === OS_TYPE['IOS']) {
                       async function fetchTokenShort() {
-                          const res = await Api.getTokenShort()
-                          if (res.result === 'success') {
-                            Hybrid('openUrl', 'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken)
-                          } else {
-                            context.action.alert({
-                                msg: res.message
-                            })
-                          }
+                        const res = await Api.getTokenShort()
+                        if (res.result === 'success') {
+                          Hybrid(
+                            'openUrl',
+                            'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken
+                          )
+                        } else {
+                          context.action.alert({
+                            msg: res.message
+                          })
+                        }
                       }
-                        fetchTokenShort()
-                    }else{
+                      fetchTokenShort()
+                    } else {
                       history.push('/exchange')
                     }
                   }}>
                   교환
                 </CoinChargeBtn>
-              )}
+              }
               {context.customHeader['os'] !== OS_TYPE['IOS'] && (
                 <CoinChargeBtn
                   className="exchange"
@@ -234,7 +249,7 @@ const CoinChargeBtn = styled.button`
     background: #632beb;
   }
   &.ios {
-  background: #bdbdbd;
+    background: #bdbdbd;
   }
 `
 const CoinCurrentStatus = styled.div`
