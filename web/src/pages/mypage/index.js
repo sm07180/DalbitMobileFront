@@ -24,7 +24,7 @@ import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
 import qs from 'query-string'
 
-export default props => {
+export default (props) => {
   const {webview} = qs.parse(location.search)
 
   //navi
@@ -63,26 +63,26 @@ export default props => {
   }
 
   useEffect(() => {
-    const settingProfileInfo = async memNo => {
+    const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
         //context.action.updateProfile(profileInfo.data)
         if (profileInfo.code === '-2') {
-            context.action.alert({
-                callback: () => {
-                    window.history.back()
-                },
-                msg: '회원정보를 찾을 수 없습니다.'
-            });
+          context.action.alert({
+            callback: () => {
+              window.history.back()
+            },
+            msg: '회원정보를 찾을 수 없습니다.'
+          })
         }
-      }else{
+      } else {
         context.action.alert({
           callback: () => {
-              window.history.back()
+            window.history.back()
           },
           msg: '회원정보를 찾을 수 없습니다.'
-        });
+        })
       }
     }
     if (memNo) {
@@ -98,44 +98,52 @@ export default props => {
   if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
   }
-
+  useEffect(() => {
+    if (urlrStr === 'mem_no') {
+      context.action.updateWalletIdx(1)
+      setTimeout(() => {
+        window.location.href = `/mypage/${profile.memNo}/wallet`
+      }, 10)
+    }
+  }, [])
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-        <Layout {...props} webview={webview} status="no_gnb">
-            <Mypage webview={webview}>
-              {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn}/>}
-              {!category && (
-                <>
-                  <MyProfile profile={profileInfo} {...props} webview={webview}/>
-                  {
-                    profileInfo &&
-                    <Sub>
-                      {subNavList.map((value, idx) => {
-                        const {type, txt, icon, component} = value
-                        return (
-                          <div className="link-list" key={`list-${idx}`}
-                             onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
-                            <div className="list">
-                              <span className="text">{txt}</span>
-                              <img className="icon" src={icon}/>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </Sub>
-                  }
-                </>
+      <Layout {...props} webview={webview} status="no_gnb">
+        <Mypage webview={webview}>
+          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
+          {!category && (
+            <>
+              <MyProfile profile={profileInfo} {...props} webview={webview} />
+              {profileInfo && (
+                <Sub>
+                  {subNavList.map((value, idx) => {
+                    const {type, txt, icon, component} = value
+                    return (
+                      <div
+                        className="link-list"
+                        key={`list-${idx}`}
+                        onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
+                        <div className="list">
+                          <span className="text">{txt}</span>
+                          <img className="icon" src={icon} />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </Sub>
               )}
+            </>
+          )}
 
-              <SubContent>
-                {navigationList.map(value => {
-                  const {type, component} = value
-                  return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type}/>
-                })}
-              </SubContent>
-            </Mypage>
-        </Layout>
+          <SubContent>
+            {navigationList.map((value) => {
+              const {type, component} = value
+              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+            })}
+          </SubContent>
+        </Mypage>
+      </Layout>
     </Switch>
   )
 }
@@ -146,7 +154,7 @@ const SubContent = styled.div`
 
 const Mypage = styled.div`
   margin: 0 auto 15px auto;
-  margin-top: ${props => (props.webview ? 0 : '0px')};
+  margin-top: ${(props) => (props.webview ? 0 : '0px')};
   width: 1210px;
 
   .close-btn {
