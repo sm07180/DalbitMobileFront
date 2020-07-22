@@ -33,8 +33,6 @@ export default (props) => {
         slct_type: eventType
       })
 
-      console.log(eventType)
-
       if (result === 'success') {
         if (data.state === 'ing') {
           setRisingList(data.risingList)
