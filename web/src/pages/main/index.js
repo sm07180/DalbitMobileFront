@@ -21,6 +21,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupNotice from './component/layer_popup_notice.js'
+import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
@@ -74,6 +75,7 @@ export default (props) => {
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
   const [popupData, setPopupData] = useState([])
+  const [popupNotice, setPopupNotice] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -322,8 +324,13 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
+      console.log(res.data)
+
       if (res.hasOwnProperty('data')) {
         setPopupData(res.data)
+        setTimeout(() => {
+          setPopupNotice(true)
+        }, 10)
       }
     } else {
       console.log(res.result, res.message)
@@ -567,7 +574,7 @@ export default (props) => {
           />
         )}
 
-        {popupData.length > 0 &&
+        {/* {popupData.length > 0 &&
           popupData.map((data, index) => {
             return (
               <React.Fragment key={index}>
@@ -576,7 +583,9 @@ export default (props) => {
                 )}
               </React.Fragment>
             )
-          })}
+          })} */}
+
+        {popupNotice && <LayerPopupWrap data={popupData} setPopup={setPopupNotice} />}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
