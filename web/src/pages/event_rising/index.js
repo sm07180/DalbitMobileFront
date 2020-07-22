@@ -21,6 +21,7 @@ export default (props) => {
 
   const [risingList, setRisingList] = useState([])
   const [myRisingInfo, setMyRisingInfo] = useState({})
+  const [eventRound, setEventRound] = useState(0)
   const [risingState, setRisingState] = useState({})
 
   const history = useHistory()
@@ -44,6 +45,8 @@ export default (props) => {
             expPoint: data.risingOutput.expPoint,
             listenerPoint: data.risingOutput.listenerPoint
           })
+
+          setEventRound(data.round)
         } else {
           setRisingList([])
           setMyRisingInfo({
@@ -70,11 +73,88 @@ export default (props) => {
     fetchInitData()
   }, [eventType])
 
+  const makeImageTop = () => {
+    if (!eventRound) return null
+    if (eventRound === 1) {
+      return <img src="https://image.dalbitlive.com/event/rising/200715/main_top.png" />
+    } else {
+      return <img src="https://image.dalbitlive.com/event/rising/200722/main_top.png" />
+    }
+  }
+
+  const makeImageStar = () => {
+    if (!eventRound) return null
+    if (eventRound === 1) {
+      return (
+        <img
+          src="https://image.dalbitlive.com/event/rising/200715/rising_star_img.png"
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
+          }}
+        />
+      )
+    } else {
+      return (
+        <img
+          src="https://image.dalbitlive.com/event/rising/200722/rising_star_img.png"
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail2')
+          }}
+        />
+      )
+    }
+  }
+
+  const makeImageFan = () => {
+    if (!eventRound) return null
+    if (eventRound === 1) {
+      return (
+        <img
+          src="https://image.dalbitlive.com/event/rising/200715/rising_fan_img.png"
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
+          }}
+        />
+      )
+    } else {
+      return (
+        <img
+          src="https://image.dalbitlive.com/event/rising/200722/rising_fan_img.png"
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail2')
+          }}
+        />
+      )
+    }
+  }
+
+  const makeButton = () => {
+    if (eventRound === 1) {
+      return (
+        <button
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-detail')
+          }}>
+          자세히
+        </button>
+      )
+    } else {
+      return (
+        <button
+          onClick={() => {
+            globalCtx.action.updatePopup('TERMS', 'rising-event-detail2')
+          }}>
+          자세히
+        </button>
+      )
+    }
+  }
+
   return (
     <Layout {...props} status="no_gnb">
-      <div id="event-page">
+      <div id="event-page" className={`${eventRound === 1 ? '' : 'round2'}`}>
         <div className="event-main">
-          <img src="https://image.dalbitlive.com/event/rising/200722/main_top.png" />
+          {makeImageTop()}
           <Link to="/">
             <button>
               <img src={btnClose} />
@@ -98,23 +178,10 @@ export default (props) => {
               <>
                 <div className="stage-wrap">
                   <div className="content-wrap">
-                    <img
-                      onClick={() => {
-                        globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
-                      }}
-                      src="https://image.dalbitlive.com/event/rising/200722/rising_star_img.png"
-                    />
+                    {makeImageStar()}
                     <div className="notice-wrap">
                       <p>순위는 실시간으로 집계됩니다.</p>
-                      <p>
-                        당첨자 발표일 및 유의사항{' '}
-                        <button
-                          onClick={() => {
-                            globalCtx.action.updatePopup('TERMS', 'rising-event-detail')
-                          }}>
-                          자세히
-                        </button>
-                      </p>
+                      <p>당첨자 발표일 및 유의사항 {makeButton()}</p>
                     </div>
                     <div className="how-wrap">
                       <p>※ 순위 계산 방법 : 기간 내 경험치 + (청취자 수 × 5)</p>
@@ -203,24 +270,11 @@ export default (props) => {
               <>
                 <div className="stage-wrap">
                   <div className="content-wrap">
-                    <img
-                      onClick={() => {
-                        globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
-                      }}
-                      src="https://image.dalbitlive.com/event/rising/200722/rising_fan_img.png"
-                    />
+                    {makeImageFan()}
 
                     <div className="notice-wrap">
                       <p>순위는 실시간으로 집계됩니다.</p>
-                      <p>
-                        당첨자 발표일 및 유의사항{' '}
-                        <button
-                          onClick={() => {
-                            globalCtx.action.updatePopup('TERMS', 'rising-event-detail')
-                          }}>
-                          자세히
-                        </button>
-                      </p>
+                      <p>당첨자 발표일 및 유의사항 {makeButton()}</p>
                     </div>
 
                     <div className="how-wrap">

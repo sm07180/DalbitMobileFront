@@ -18,7 +18,7 @@ export default (props) => {
       <h3 style={{fontWeight: 'bold'}}>{'<이벤트 기간 및 당첨자 발표>'}</h3>
       <div>
         <ul>
-          <li>기간 : 7/16 ~ 7/22 , 당첨자 발표 : 7/24</li>
+          <li>기간 : 7/23 ~ 7/29 , 당첨자 발표 : 7/31</li>
         </ul>
       </div>
 

@@ -1,6 +1,6 @@
 #event-page {
   .event-main {
-    background-color: #1dc1ca;
+    background-color: #3b38df;
     position: relative;
 
     img {
@@ -16,16 +16,36 @@
     }
   }
 
+  &.round2 {
+    .event-main {
+      background-color: #1dc1ca;
+    }
+
+    .event-type-wrap {
+      .event-tab-wrap {
+        background-color: #1dc1ca;
+
+        .tab {
+          background-color: #fb6564;
+
+          &.active {
+            color: #fb6564;
+          }
+        }
+      }
+    }
+  }
+
   .event-type-wrap {
     .event-tab-wrap {
       display: flex;
       flex-direction: row;
       align-items: center;
-      background-color: #1dc1ca;
+      background-color: #3b38df;
 
       .tab {
         color: #fff;
-        background-color: #fb6564;
+        background-color: #240dbf;
         width: 50%;
         text-align: center;
         font-size: 24px;
@@ -41,7 +61,7 @@
         }
 
         &.active {
-          color: #fb6564;
+          color: #240dbf;
           background-color: #fff;
         }
       }
