@@ -76,7 +76,7 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <div id="event-page">
         <div className="event-main">
-          <img src="https://image.dalbitlive.com/event/rising/200715/main_top.png" />
+          <img src="https://image.dalbitlive.com/event/rising/200722/main_top.png" />
           <Link to="/">
             <button>
               <img src={btnClose} />
@@ -104,7 +104,7 @@ export default (props) => {
                       onClick={() => {
                         globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
                       }}
-                      src="https://image.dalbitlive.com/event/rising/200715/rising_star_img.png"
+                      src="https://image.dalbitlive.com/event/rising/200722/rising_star_img.png"
                     />
                     <div className="notice-wrap">
                       <p>순위는 실시간으로 집계됩니다.</p>
@@ -209,7 +209,7 @@ export default (props) => {
                       onClick={() => {
                         globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
                       }}
-                      src="https://image.dalbitlive.com/event/rising/200715/rising_fan_img.png"
+                      src="https://image.dalbitlive.com/event/rising/200722/rising_fan_img.png"
                     />
 
                     <div className="notice-wrap">

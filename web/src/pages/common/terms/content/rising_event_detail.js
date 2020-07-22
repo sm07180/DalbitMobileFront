@@ -18,7 +18,7 @@ export default (props) => {
       <h3 style={{fontWeight: 'bold'}}>{'<이벤트 기간 및 당첨자 발표>'}</h3>
       <div>
         <ul>
-          <li>기간 : 7/16 ~ 7/22 , 당첨자 발표 : 7/24</li>
+          <li>기간 : 7/23 ~ 7/29 , 당첨자 발표 : 7/31</li>
         </ul>
       </div>
 
@@ -39,7 +39,6 @@ export default (props) => {
       <h3 style={{fontWeight: 'bold'}}>{'<이벤트 유의사항>'}</h3>
       <div>
         <ul>
-          <li>동일 점수일 경우 라이징스타는 '총 방송 시간이 많은 회원' 라이징팬은 '총 청취시간이 많은 회원'이 높은 순위로 결정됩니다.</li>
           <li>부정한 방법으로 입상할 경우 이벤트 당첨을 취소합니다.</li>
           <li>
             <span className="red">라이징 스타, 팬은 중복 당첨을 제외합니다.</span>
@@ -57,7 +56,7 @@ export default (props) => {
           </li>
           <li>
             <span className="red">경품 당첨시 22%의 제세공과금이 발생되니, 꼭 숙지하세요!</span> 당첨자에게는 제세공과금 관련
-            사항이 별도 안내됩니다.{' '}
+            사항이 별도 안내됩니다.
           </li>
           <li>
             당첨자는 <span className="red">help@dalbitlive.com</span>으로 신분증사본을 첨부해주시고, 내용에 이름, 휴대폰 번호,

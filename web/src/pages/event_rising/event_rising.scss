@@ -1,6 +1,6 @@
 #event-page {
   .event-main {
-    background-color: #632beb;
+    background-color: #1dc1ca;
     position: relative;
 
     img {
@@ -21,11 +21,11 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      background-color: #632beb;
+      background-color: #1dc1ca;
 
       .tab {
         color: #fff;
-        background-color: #240dbf;
+        background-color: #fb6564;
         width: 50%;
         text-align: center;
         font-size: 24px;
@@ -41,7 +41,7 @@
         }
 
         &.active {
-          color: #240dbf;
+          color: #fb6564;
           background-color: #fff;
         }
       }
