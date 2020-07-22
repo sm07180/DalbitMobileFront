@@ -65,6 +65,12 @@ export default (props) => {
       } else {
         setLayout('round terms')
       }
+
+      if (context.popup_code[1] === 'rising-event-gift-detail2') {
+        setLayout('round terms detail')
+      } else {
+        setLayout('round terms')
+      }
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
     } else {
@@ -152,7 +158,7 @@ const Wrap = styled.div`
       }
       &.detail {
         max-height: 80%;
-        height:auto;
+        height: auto;
       }
       &.detail > div > div > div {
         max-height: 80% !important;
