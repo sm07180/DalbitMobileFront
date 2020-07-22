@@ -13,19 +13,29 @@ export default (props) => {
   const {setPopup} = props
   const propsData = props.data
 
-  console.log(propsData)
+  // console.log(propsData)
   const [popupData, setPopupData] = useState([])
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupLength, setPopupLength] = useState('')
 
   // reference
   const layerWrapRef = useRef()
-  const customHeader = JSON.parse(Api.customHeader)
 
   useEffect(() => {
-    setPopupData(propsData)
+    let filterData = []
+    propsData.map((data, index) => {
+      let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
+      if (popupState === undefined) {
+        filterData.push(data)
+      } else {
+        return false
+      }
+    })
+    // console.log(filterData)
+    setPopupData(filterData)
     setPopupNotice(true)
-    setPopupLength(propsData.length)
+    setPopupLength(filterData.length)
+
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = ''
@@ -39,7 +49,8 @@ export default (props) => {
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
-      closePopup()
+      if (popupData.length <= 1) closePopup()
+      else return
     }
   }
 
@@ -48,7 +59,7 @@ export default (props) => {
   }
 
   const filterIdx = (idx) => {
-    console.log('filter')
+    console.log('filter', idx)
 
     setPopupData(
       popupData.filter((v) => {
@@ -60,6 +71,7 @@ export default (props) => {
         return v.idx !== idx
       }).length
     )
+
     if (popupData.length == '1') {
       closePopup()
     }
@@ -77,7 +89,7 @@ export default (props) => {
                 popupData.map((data, index) => {
                   return (
                     Utility.getCookie('popup_notice_' + `${data.idx}`) !== 'y' && (
-                      <PopBox className={index + 1 === popupLength ? 'on' : ''} key={index}>
+                      <PopBox className={index === 0 ? 'active' : ''} key={index}>
                         <LayerPopupNotice data={data} setPopup={setPopupNotice} selectedIdx={filterIdx} />
                       </PopBox>
                     )
@@ -107,7 +119,7 @@ const PopBox = styled.div`
   display: none;
   max-width: 360px;
   margin: 0 auto;
-  &.on {
+  &.active {
     display: block;
   }
 `
