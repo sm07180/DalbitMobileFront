@@ -7,6 +7,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
+import qs from 'query-string'
 
 export default (props) => {
   const history = useHistory()
@@ -32,6 +33,8 @@ export default (props) => {
 
   const [moreList, setMorelist] = useState(false)
 
+  const parameter = qs.parse(location.search)
+
   //update
   function update(mode) {
     // console.log('---')
@@ -50,7 +53,9 @@ export default (props) => {
         broadcast_time1: Broadcast1,
         broadcast_time2: Broadcast2, //없어도됨
         title: title, // 방송소개
-        contents: contents // 내가 스페셜 DJ가 된다면?
+        contents: contents, // 내가 스페셜 DJ가 된다면?
+        select_year: parameter.select_year,
+        select_month: parameter.select_month
       }
     })
     const {result, data} = res

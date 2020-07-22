@@ -156,7 +156,7 @@ export default (props) => {
                       <button
                         className="button button--on"
                         onClick={() => {
-                          history.push('/event_specialdj/write')
+                          history.push('/event_specialdj/write?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month);
                         }}>
                         스페셜DJ 신청서 작성
                       </button>
