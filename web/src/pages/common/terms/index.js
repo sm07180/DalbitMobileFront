@@ -22,6 +22,7 @@ import RisingEventDetail from './content/rising_event_detail'
 import RisingEventGiftDetail from './content/rising_event_gift_detail'
 import RisingEventDetail2 from './content/rising_event_detail2'
 import RisingEventGiftDetail2 from './content/rising_event_gift_detail2'
+import SpecialDjGoodsDetail from './content/specialdj-goods-detail'
 
 ////---------------------------------------------------------------------
 export default (props) => {
@@ -54,14 +55,14 @@ export default (props) => {
       case 'rising-event-gift-detail': {
         return <RisingEventGiftDetail {...props} />
       }
-      case 'specialdj-goods-detail' : {
-        return <SpecialDjGoodsDetail {...props} />
-      }
       case 'rising-event-detail2': {
         return <RisingEventDetail2 {...props} />
       }
       case 'rising-event-gift-detail2': {
         return <RisingEventGiftDetail2 {...props} />
+      }
+      case 'specialdj-goods-detail' : {
+        return <SpecialDjGoodsDetail {...props} />
       }
       default:
         return <div>약관 컨텐츠가 정의되지않음</div>

@@ -1,6 +1,7 @@
 import {Context} from 'context'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
+import Layout from 'pages/common/layout'
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './speacialdj.scss'
@@ -44,7 +45,7 @@ export default (props) => {
   }, [])
 
   return (
-    <>
+    <Layout {...props} status="no_gnb">
       <div className="speacialdj">
         <div className="djTitle">
           {toggleCheck.eventInfo !== undefined ? (<div className="djTitleSub">{toggleCheck.eventInfo.title}</div>) : ''}
@@ -203,6 +204,6 @@ export default (props) => {
           </>
         )}
       </div>
-    </>
+    </Layout>
   )
 }
