@@ -100,7 +100,6 @@ export default () => {
         <Route exact path="/event_rising" component={EventRising} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/pc_open" component={PcOpen} />
-        PcOpen
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
       </Switch>
