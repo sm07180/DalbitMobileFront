@@ -26,7 +26,7 @@ import qs from 'query-string'
 
 export default (props) => {
   const {webview} = qs.parse(location.search)
-
+  let history = useHistory()
   //navi
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
@@ -63,12 +63,21 @@ export default (props) => {
   }
 
   useEffect(() => {
-    const settingProfileInfo = async (memNo) => {
-      const profileInfo = await Api.profile({params: {memNo: memNo}})
-      if (profileInfo.result === 'success') {
-        setProfileInfo(profileInfo.data)
-        //context.action.updateProfile(profileInfo.data)
-        if (profileInfo.code === '-2') {
+    if (urlrStr !== 'mem_no') {
+      const settingProfileInfo = async (memNo) => {
+        const profileInfo = await Api.profile({params: {memNo: memNo}})
+        if (profileInfo.result === 'success') {
+          setProfileInfo(profileInfo.data)
+          //context.action.updateProfile(profileInfo.data)
+          if (profileInfo.code === '-2') {
+            context.action.alert({
+              callback: () => {
+                window.history.back()
+              },
+              msg: '회원정보를 찾을 수 없습니다.'
+            })
+          }
+        } else {
           context.action.alert({
             callback: () => {
               window.history.back()
@@ -76,17 +85,10 @@ export default (props) => {
             msg: '회원정보를 찾을 수 없습니다.'
           })
         }
-      } else {
-        context.action.alert({
-          callback: () => {
-            window.history.back()
-          },
-          msg: '회원정보를 찾을 수 없습니다.'
-        })
       }
-    }
-    if (memNo) {
-      settingProfileInfo(memNo)
+      if (memNo) {
+        settingProfileInfo(memNo)
+      }
     }
   }, [context.mypageFanCnt])
 
@@ -99,11 +101,10 @@ export default (props) => {
     window.location.href = '/menu/profile'
   }
   useEffect(() => {
+    console.log(urlrStr)
     if (urlrStr === 'mem_no') {
       context.action.updateWalletIdx(1)
-      setTimeout(() => {
-        window.location.href = `/mypage/${profile.memNo}/wallet`
-      }, 10)
+      history.push(`/mypage/${profile.memNo}/wallet`)
     }
   }, [])
   return (
