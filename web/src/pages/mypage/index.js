@@ -97,14 +97,16 @@ export default (props) => {
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon}
   ]
-  if (urlrStr === token.memNo && webview === undefined) {
+  if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
   }
   useEffect(() => {
     console.log(urlrStr)
     if (urlrStr === 'mem_no') {
-      context.action.updateWalletIdx(1)
-      history.push(`/mypage/${profile.memNo}/wallet`)
+      setTimeout(() => {
+        context.action.updateWalletIdx(1)
+        history.push(`/mypage/${profile.memNo}/wallet`)
+      }, 10)
     }
   }, [])
   return (
