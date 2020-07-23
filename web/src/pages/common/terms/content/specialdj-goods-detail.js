@@ -16,7 +16,7 @@ export default (props) => {
       <h2>굿즈 보기 팝업</h2>
 
       <p>
-        <img src={'https://image.dalbitlive.com/banner/2006/23/2nd_special_dj_line_banner.png'} />
+        <img src={'https://image.dalbitlive.com/event/2007/23/specialDj_3nd_intro_1.png'} />
       </p>
 
     </Content>
