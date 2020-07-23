@@ -35,6 +35,11 @@ export default (props) => {
     setPopupData(filterData)
     setPopupNotice(true)
     setPopupLength(filterData.length)
+
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [])
 
   const closePopup = () => {

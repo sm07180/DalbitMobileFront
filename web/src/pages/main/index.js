@@ -328,8 +328,18 @@ export default (props) => {
 
       if (res.hasOwnProperty('data')) {
         setPopupData(res.data)
+        let filterData = []
+        res.data.map((data, index) => {
+          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
+          if (popupState === undefined) {
+            filterData.push(data)
+          } else {
+            return false
+          }
+        })
+
         setTimeout(() => {
-          setPopupNotice(true)
+          if (filterData.length > 0) setPopupNotice(true)
         }, 10)
       }
     } else {
