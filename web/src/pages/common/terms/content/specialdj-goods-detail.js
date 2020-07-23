@@ -15,26 +15,10 @@ export default (props) => {
     <Content>
       <h2>굿즈 보기 팝업</h2>
 
-      <h3>{'<경품 상세 소개>'}</h3>
       <p>
-        1) LG 시네빔 HF60LA 리얼 풀HD 홈프로젝터 104만원 <br />
-        2) 오디오인터페이스 + 고급마이크 세트 50만원
-        <br />
-        ※ 야마하 AG06 + 오디오테크니카 AT2020 + 관절스탠드
-        <br />
-        3) 삼성 제이비엘 펄스4 JBL PULSE4 블루투스스피커 라이트쇼 20만원 <br />
-        4) 아이패드 프로 11 103만원 <br />
-        5) ) LG 울트라PC 15U490-GR36K 64만원
-        <br />
-        6) 에어팟 프로 33만원
+        <img src={'https://image.dalbitlive.com/banner/2006/23/2nd_special_dj_line_banner.png'} />
       </p>
 
-      <h3>{'<이벤트 유의사항>'}</h3>
-
-      <ul>
-        <li>가격은 정품 사이트 정품가격을 기준으로 합니다.</li>
-        <li>현저한 가격변동이 있는 경우 대체상품으로 지급됩니다.</li>
-      </ul>
     </Content>
   )
 }
@@ -44,6 +28,10 @@ export default (props) => {
 const Content = styled.div`
   p {
     font-size: 12px !important;
+  }
+  
+  p img{
+    width:100%
   }
 
   h2 {
