@@ -1,0 +1,28 @@
+.pcOpen {
+  max-width: 720px;
+  height: 48px;
+  margin: auto;
+
+  .titleBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 18px;
+    color: #000;
+    margin-right: auto;
+    margin-left: 16px;
+    font-weight: bold;
+  }
+  &__img {
+    display: block;
+    width: 100%;
+  }
+
+  .closeButton {
+    margin-left: auto;
+    cursor: pointer;
+  }
+}
