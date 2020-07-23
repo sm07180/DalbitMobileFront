@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, Fragment} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
@@ -37,7 +37,7 @@ import QuireIcon from '../static/ic_inquiry_b.svg'
 import BroadNoticeIcon from '../static/ic_notice.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
 // import AppInfoIcon from '../static/ic_app_info.svg'
-export default props => {
+export default (props) => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: FanboardIcon},
@@ -52,10 +52,10 @@ export default props => {
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon2},
     {type: 'personal', txt: '1:1문의', icon: QuireIcon},
-    // {type: 'appInfo', txt: '앱 정보', icon: AppInfoIcon}
+    {type: 'setting', txt: '운영정책 / 회원탈퇴', icon: QuireIcon}
   ]
 
-  const timeFormat = sec_time => {
+  const timeFormat = (sec_time) => {
     const hour = Math.floor(sec_time / 3600)
     const min = Math.floor((sec_time - hour * 3600) / 60)
     return `${hour}시간 ${min}분`
@@ -136,11 +136,11 @@ export default props => {
     <MenuMypage>
       <Header>
         <div className="category-text">마이 페이지</div>
-        {token && token.isLogin && (
+        {/* {token && token.isLogin && (
           <a href="/setting">
             <img src={Setting} />
           </a>
-        )}
+        )} */}
         {token && token.isLogin && showAdmin && (
           <a href="/admin/image">
             <img src={AdminIcon} />
@@ -175,7 +175,7 @@ export default props => {
                   {type: 'heart', icon: HeartIcon, txt: '좋아요', value: profile.likeTotCnt.toLocaleString()},
                   {type: 'byeol', icon: ByeolIcon, txt: '보유별', value: profile.byeolCnt.toLocaleString()},
                   {type: 'dal', icon: DalIcon, txt: '보유달', value: profile.dalCnt.toLocaleString()}
-                ].map(real => {
+                ].map((real) => {
                   const {type, icon, txt, value} = real
                   return (
                     <div key={type} className="each">
@@ -211,12 +211,23 @@ export default props => {
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`/customer/${type}`} key={`list-${idx}`}>
-                    <div className="list">
-                      <span className="text">{txt}</span>
-                      <img className="icon" src={icon} />
-                    </div>
-                  </a>
+                  <Fragment key={`list-${idx}`}>
+                    {type !== 'setting' ? (
+                      <a href={`/customer/${type}`}>
+                        <div className="list">
+                          <span className="text">{txt}</span>
+                          <img className="icon" src={icon} />
+                        </div>
+                      </a>
+                    ) : (
+                      <a href={`/setting`}>
+                        <div className="list">
+                          <span className="text">{txt}</span>
+                          <img className="icon" />
+                        </div>
+                      </a>
+                    )}
+                  </Fragment>
                 )
               })}
             </div>

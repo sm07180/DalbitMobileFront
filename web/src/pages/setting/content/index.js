@@ -14,7 +14,7 @@ import Accordion from './accordian'
 import Use from './use'
 import Header from './header'
 //
-const Index = props => {
+const Index = (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -35,7 +35,7 @@ const Index = props => {
   return (
     <Container>
       <Header>
-        <div className="category-text">설정</div>
+        <div className="category-text">운영정책 / 회원탈퇴</div>
       </Header>
       <div>
         {/* <Accordion title="알림설정" content={<h1>adasdas</h1>} /> */}
