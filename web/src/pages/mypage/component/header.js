@@ -7,7 +7,7 @@ import {useHistory} from 'react-router-dom'
 import closeBtn from './ic_back.svg'
 
 import {getUrlAndRedirect} from 'components/lib/link_control.js'
-import {Hybrid, isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 export default (props) => {
   const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
@@ -18,6 +18,7 @@ export default (props) => {
       return (window.location.href = '/')
     }
     const {webview} = qs.parse(location.search)
+    let referrer = document.referrer
     // if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
     //
     // }
@@ -27,9 +28,11 @@ export default (props) => {
     } else {
       props.click()
     }*/
-    if(webview && webview === 'new' && isHybrid()){
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-    }else{
+    } else if (referrer.split('/')[4] === 'faq') {
+      window.history.go(-2)
+    } else {
       window.history.go(-1)
     }
   }

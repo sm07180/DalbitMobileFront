@@ -43,6 +43,7 @@ export default (props) => {
   const {token, profile} = context
   let {memNo, category} = useParams()
   var urlrStr = props.location.pathname.split('/')[2]
+
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   if (profile && profile.memNo !== memNo) {
@@ -92,6 +93,15 @@ export default (props) => {
     }
   }, [context.mypageFanCnt])
 
+  useEffect(() => {
+    if (urlrStr === 'mem_no') {
+      setTimeout(() => {
+        context.action.updateWalletIdx(1)
+        history.push(`/mypage/${profile.memNo}/wallet`)
+      }, 10)
+    }
+  }, [])
+
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: NoticeIcon},
@@ -100,15 +110,7 @@ export default (props) => {
   if (urlrStr === token.memNo && webview) {
     window.location.href = '/menu/profile'
   }
-  useEffect(() => {
-    console.log(urlrStr)
-    if (urlrStr === 'mem_no') {
-      setTimeout(() => {
-        context.action.updateWalletIdx(1)
-        history.push(`/mypage/${profile.memNo}/wallet`)
-      }, 10)
-    }
-  }, [])
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
