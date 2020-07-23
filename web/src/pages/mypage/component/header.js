@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import qs from 'qs'
+import {useHistory} from 'react-router-dom'
 // static
 import closeBtn from './ic_back.svg'
 
 import {getUrlAndRedirect} from 'components/lib/link_control.js'
+import {Hybrid, isHybrid} from "context/hybrid";
 
 export default (props) => {
   const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
@@ -15,14 +17,20 @@ export default (props) => {
       sessionStorage.removeItem('push_type')
       return (window.location.href = '/')
     }
+    const {webview} = qs.parse(location.search)
     // if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
     //
     // }
 
-    if (props.click == undefined) {
+    /*if (props.click == undefined) {
       getUrlAndRedirect()
     } else {
       props.click()
+    }*/
+    if(webview && webview === 'new' && isHybrid()){
+      Hybrid('CloseLayerPopup')
+    }else{
+      window.history.go(-1)
     }
   }
 
