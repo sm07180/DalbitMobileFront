@@ -54,6 +54,9 @@ export default (props) => {
       case 'rising-event-gift-detail': {
         return <RisingEventGiftDetail {...props} />
       }
+      case 'specialdj-goods-detail' : {
+        return <SpecialDjGoodsDetail {...props} />
+      }
       case 'rising-event-detail2': {
         return <RisingEventDetail2 {...props} />
       }
