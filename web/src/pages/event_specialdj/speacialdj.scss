@@ -80,6 +80,9 @@
     &--on {
       background: #632beb;
     }
+    &--goods {
+      background: #e84d6f;
+    }
   }
 
   .img100 {
@@ -102,10 +105,24 @@
     &--on {
       background: #632beb;
     }
+    &--goods {
+      background: #e84d6f;
+    }
   }
   .buttonBox {
     box-sizing: border-box;
     padding: 16px;
+
+  }
+  .buttonBox--goods{
+    box-sizing: border-box;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background: #f2f2f2;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   .title-wrap {

@@ -55,6 +55,18 @@ export default (props) => {
         {/* <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
         <img src={`${IMG_SERVER}/resource/mobile/event/200623/envet_img03.png`} className="img100" />*/}
 
+
+        <div className="buttonBox--goods">
+          <button
+              className="button button--goods"
+              onClick={() => {
+                //globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
+                globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
+              }}>
+            굿즈 상품 미리보기
+          </button>
+        </div>
+
         {token.isLogin === true ? (
           <>
             <div className="checkList">
