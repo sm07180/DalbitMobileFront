@@ -187,7 +187,7 @@ export default React.forwardRef((props, ref) => {
 
   function clearBannerImgDiskCache() {
     if (window.localStorage.getItem('bannerList') && window.localStorage.getItem('bannerList') !== 'undefined') {
-      let list
+      let list = []
       if (window.localStorage.getItem('bannerList') instanceof Array) {
         list = window.localStorage.getItem('bannerList')
       } else {
