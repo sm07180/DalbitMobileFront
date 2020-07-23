@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useRef, useContext } from 'react'
+import React, {useEffect, useState, useRef, useContext} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
-import { Context } from 'context'
+import {Context} from 'context'
 
 //context
-import { useHistory } from 'react-router-dom'
-import Room, { RoomJoin } from 'context/room'
+import {useHistory} from 'react-router-dom'
+import Room, {RoomJoin} from 'context/room'
 
 // component
-import { IMG_SERVER } from 'context/config'
-import { Hybrid, isHybrid } from 'context/hybrid'
+import {IMG_SERVER} from 'context/config'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import animationData from '../static/ic_live.json'
@@ -33,14 +33,14 @@ const recommendWrapBaseHeight = 310
 
 export default React.forwardRef((props, ref) => {
   const context = useContext(Context)
-  const { list, setRecommendSlideStatus } = props
+  const {list, setRecommendSlideStatus} = props
   const history = useHistory()
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const [blobList, setBlobList] = useState([])
 
   const slideWrapRef = useRef()
 
-  const { ref1, ref2 } = ref
+  const {ref1, ref2} = ref
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
@@ -110,9 +110,7 @@ export default React.forwardRef((props, ref) => {
 
         if (absDiff >= halfBaseWidth) {
           if (direction === 'left') {
-            slideWrapNode.style.transform = `translate3d(${
-              -baseWidth * 2
-            }px, 0, 0)`
+            slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
           } else if (direction === 'right') {
             slideWrapNode.style.transform = `translate3d(0, 0, 0)`
           }
@@ -125,14 +123,10 @@ export default React.forwardRef((props, ref) => {
       promiseSync.then(() => {
         if (absDiff >= halfBaseWidth) {
           if (direction === 'right') {
-            const targetBIdx = Number(
-              slideWrapNode.firstChild.getAttribute('b-idx')
-            )
+            const targetBIdx = Number(slideWrapNode.firstChild.getAttribute('b-idx'))
             setSelectedBIdx(targetBIdx)
           } else if (direction === 'left') {
-            const targetBIdx = Number(
-              slideWrapNode.lastChild.getAttribute('b-idx')
-            )
+            const targetBIdx = Number(slideWrapNode.lastChild.getAttribute('b-idx'))
             setSelectedBIdx(targetBIdx)
           }
           slideWrapNode.style.transitionDuration = '0ms'
@@ -169,9 +163,7 @@ export default React.forwardRef((props, ref) => {
         const promiseSync = new Promise((resolve, reject) => {
           touchStartStatus = true
           slideWrapNode.style.transitionDuration = `${slidingTime}ms`
-          slideWrapNode.style.transform = `translate3d(${
-            -baseWidth * 2
-          }px, 0, 0)`
+          slideWrapNode.style.transform = `translate3d(${-baseWidth * 2}px, 0, 0)`
           setTimeout(() => resolve(), slidingTime)
         })
 
@@ -214,7 +206,7 @@ export default React.forwardRef((props, ref) => {
 
       let count = 0
       list.forEach((line, idx) => {
-        const { bannerUrl } = line
+        const {bannerUrl} = line
         fetch(bannerUrl)
           .then((res) => res.blob())
           .then((blob) => {
@@ -264,12 +256,12 @@ export default React.forwardRef((props, ref) => {
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
-  const { customHeader, token } = context || Room.context
+  const {customHeader, token} = context || Room.context
   const clickSlideDisplay = (data) => {
-    const { roomType, roomNo } = data
+    const {roomType, roomNo} = data
 
     if (roomType === 'link') {
-      const { roomNo } = data
+      const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '' && !roomNo.startsWith('http')) {
         history.push(`${roomNo}`)
@@ -284,7 +276,7 @@ export default React.forwardRef((props, ref) => {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{position: 'relative'}}>
       <RecommendWrap className="recommend-wrap" ref={ref1}>
         <Room />
         <div className="selected-wrap">
@@ -295,90 +287,62 @@ export default React.forwardRef((props, ref) => {
                 className="slide-wrap"
                 onTouchStart={touchStartEvent}
                 onTouchMove={touchMoveEvent}
-                onTouchEnd={touchEndEvent}
-              >
+                onTouchEnd={touchEndEvent}>
                 <div
                   className="broad-slide"
                   b-idx={prevBIdx}
                   style={{
-                    backgroundImage: `url(${
-                      blobList[prevBIdx]
-                        ? blobList[prevBIdx]
-                        : list[prevBIdx]['bannerUrl']
-                    })`,
+                    backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`
                   }}
-                  onClick={() => clickSlideDisplay(list[prevBIdx])}
-                >
-                {list[prevBIdx]['nickNm'] !== 'banner' && (
-                  <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[prevBIdx]['title']}
-                    </div>
+                  onClick={() => clickSlideDisplay(list[prevBIdx])}>
+                  {list[prevBIdx]['nickNm'] !== 'banner' && (
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[prevBIdx]['title']}</div>
                       <div className="selected-nickname">
-                        {list[prevBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            // 🎉😝pqpq😝🎉
-                            // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
+                        {list[prevBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          // 🎉😝pqpq😝🎉
+                          // https://stackoverflow.com/questions/43242440/javascript-unicode-emoji-regular-expressions
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
                       </div>
-                  </div>
-                )}
+                    </div>
+                  )}
                 </div>
                 <div
                   className="broad-slide"
                   b-idx={selectedBIdx}
                   style={{
-                    backgroundImage: `url(${
-                      blobList[selectedBIdx]
-                        ? blobList[selectedBIdx]
-                        : list[selectedBIdx]['bannerUrl']
-                    })`,
+                    backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                   }}
-                  onClick={() => clickSlideDisplay(list[selectedBIdx])}
-                >
-                {list[selectedBIdx]['nickNm'] !== 'banner' && (
-                  <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[selectedBIdx]['title']}
-                    </div>
+                  onClick={() => clickSlideDisplay(list[selectedBIdx])}>
+                  {list[selectedBIdx]['nickNm'] !== 'banner' && (
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[selectedBIdx]['title']}</div>
                       <div className="selected-nickname">
-                        {list[selectedBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
+                        {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
                       </div>
-                  </div>
-                )}
+                    </div>
+                  )}
                 </div>
                 <div
                   className="broad-slide"
                   b-idx={nextBIdx}
                   style={{
-                    backgroundImage: `url(${
-                      blobList[nextBIdx]
-                        ? blobList[nextBIdx]
-                        : list[nextBIdx]['bannerUrl']
-                    })`,
+                    backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`
                   }}
-                  onClick={() => clickSlideDisplay(list[nextBIdx])}
-                >
-                {list[nextBIdx]['nickNm'] !== 'banner' && (
-                  <div className="text-wrap">
-                    <div className="selected-title">
-                      {list[nextBIdx]['title']}
-                    </div>
+                  onClick={() => clickSlideDisplay(list[nextBIdx])}>
+                  {list[nextBIdx]['nickNm'] !== 'banner' && (
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[nextBIdx]['title']}</div>
                       <div className="selected-nickname">
-                        {list[nextBIdx]['nickNm']
-                          .split(emojiSplitRegex)
-                          .map((str, idx) => {
-                            return <span key={`splited-${idx}`}>{str}</span>
-                          })}
+                        {list[nextBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
+                          return <span key={`splited-${idx}`}>{str}</span>
+                        })}
                       </div>
-                  </div>
-                )}
+                    </div>
+                  )}
                 </div>
               </div>
             </>
@@ -391,7 +355,7 @@ export default React.forwardRef((props, ref) => {
                   height: 16,
                   loop: true,
                   autoPlay: true,
-                  animationData: animationData,
+                  animationData: animationData
                 }}
               />
             </span>
@@ -399,12 +363,10 @@ export default React.forwardRef((props, ref) => {
             // <img className="live-icon" src={LiveIcon} />
             <img className="live-icon" src={EventIcon} />
           )}
-            {list[selectedBIdx]['isAdmin'] === false && list[selectedBIdx]['isSpecial'] === true && (
-                <em className="specialIcon">스페셜DJ</em>
-            )}
-            {list[selectedBIdx]['isAdmin'] === true && (
-                <em className="adminIcon">운영자</em>
-            )}
+          {list[selectedBIdx]['isAdmin'] === false && list[selectedBIdx]['isSpecial'] === true && (
+            <em className="specialIcon">스페셜DJ</em>
+          )}
+          {list[selectedBIdx]['isAdmin'] === true && <em className="adminIcon">운영자</em>}
           {Array.isArray(list) && list.length > 0 && (
             <div className="counting">
               <span className="bold">{selectedBIdx + 1}</span>
@@ -514,7 +476,7 @@ const RecommendWrap = styled.div`
       line-height: 1.33;
       letter-spacing: normal;
       text-align: center;
-    }    
+    }
 
     .counting {
       display: flex;
@@ -542,12 +504,7 @@ const RecommendWrap = styled.div`
     width: 100%;
     height: 100px;
     padding-top: 30px;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0.25) 34%,
-      rgba(0, 0, 0, 0.6)
-    );
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25) 34%, rgba(0, 0, 0, 0.6));
     bottom: 0;
   }
 
