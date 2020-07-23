@@ -57,7 +57,7 @@ export default (props) => {
         <img src={`${IMG_SERVER}/resource/mobile/event/200623/envet_img03.png`} className="img100" />*/}
 
 
-        <div className="buttonBox--goods">
+        {/*<div className="buttonBox--goods">
           <button
               className="button button--goods"
               onClick={() => {
@@ -66,7 +66,7 @@ export default (props) => {
               }}>
             굿즈 상품 미리보기
           </button>
-        </div>
+        </div>*/}
 
         {token.isLogin === true ? (
           <>

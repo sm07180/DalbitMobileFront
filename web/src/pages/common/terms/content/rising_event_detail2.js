@@ -39,6 +39,7 @@ export default (props) => {
       <h3 style={{fontWeight: 'bold'}}>{'<이벤트 유의사항>'}</h3>
       <div>
         <ul>
+          <li>동일 점수일 경우 라이징스타는 '총 방송 시간이 많은 회원' 라이징팬은 '총 청취시간이 많은 회원'이 높은 순위로 결정됩니다.</li>
           <li>부정한 방법으로 입상할 경우 이벤트 당첨을 취소합니다.</li>
           <li>
             <span className="red">라이징 스타, 팬은 중복 당첨을 제외합니다.</span>
