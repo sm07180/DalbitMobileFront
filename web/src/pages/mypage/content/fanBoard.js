@@ -46,7 +46,7 @@ export default (props) => {
       params: {
         memNo: urlrStr,
         page: 1,
-        records: 100
+        records: 500
       }
     })
     if (res.result === 'success') {
@@ -295,7 +295,7 @@ export default (props) => {
     setModifyNumber(boardIdx)
     setHidden(true)
     clickRefresh()
-    setModifyInfo({profileImg, nickNm, memId, parseDT, boardIdx, memId, writerNo})
+    setModifyInfo({profileImg, nickNm, memId, parseDT, boardIdx, writerNo})
     sethideSecondcomment(true)
     sethidebigSecondcomment(false)
   }
