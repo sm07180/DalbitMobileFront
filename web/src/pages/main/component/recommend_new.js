@@ -142,7 +142,6 @@ export default (props) => {
 
   useEffect(() => {
     if (window.localStorage.getItem('bannerList') && window.localStorage.getItem('bannerList') !== 'undefined') {
-      console.log(window.localStorage.getItem('bannerList'))
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach((url) => {
         if (url) {
