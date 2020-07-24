@@ -460,7 +460,8 @@ export default () => {
       case '34': //-----------------마이페이지>알림>해당 알림 글
         mem_no = pushMsg.mem_no
         if(mem_no != undefined){
-            if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+            // if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+            if (isLogin) window.location.href = `/menu/alarm`
         }
         break
       case '35': //-----------------마이페이지
