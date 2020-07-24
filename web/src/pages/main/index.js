@@ -47,7 +47,7 @@ let touchStartY = null
 let touchEndY = null
 
 //7->50
-const records = 30
+const records = 50
 
 export default (props) => {
   // reference
