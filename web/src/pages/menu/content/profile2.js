@@ -6,7 +6,7 @@ import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 // components
-import Header from '../component/header2.js'
+import Header from '../component/header.js'
 import Controller from 'components/ui/remoteController'
 import MyProfile2 from './myProfile2'
 // static svg

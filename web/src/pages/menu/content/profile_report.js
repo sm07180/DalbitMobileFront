@@ -6,7 +6,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
-export default props => {
+export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -69,7 +69,7 @@ export default props => {
     }
   ]
   //셀렉트function-----------------------------------
-  const handleSelectChange = event => {
+  const handleSelectChange = (event) => {
     const value = event.target.value
     const indexs = event.target.id
     if (value === '프로필 사진') {
@@ -106,7 +106,7 @@ export default props => {
   const Reportmap = BTNInfo.map((live, index) => {
     const {title, id} = live
     return (
-      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === id ? 'on' : ''} key={index} id={id}>
+      <BTN value={title} onClick={(event) => handleSelectChange(event)} className={select === id ? 'on' : ''} key={index} id={id}>
         {title}
       </BTN>
     )

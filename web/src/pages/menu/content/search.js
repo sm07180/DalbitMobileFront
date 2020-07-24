@@ -147,6 +147,8 @@ export default (props) => {
 }
 //---------------------------------------------------------------------
 const Content = styled.div`
+  background-color: #fff;
+  height: 100vh;
   h1 {
     display: block;
     margin-bottom: 16px;

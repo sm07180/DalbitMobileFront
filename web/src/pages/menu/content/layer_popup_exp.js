@@ -7,7 +7,7 @@ import PlusIcon from '../static/ic_plus.svg'
 import {COLOR_MAIN, COLOR_WHITE} from 'context/color'
 import {WIDTH_MOBILE_S} from 'context/config'
 
-export default props => {
+export default (props) => {
   const {setPopupExp} = props
 
   // reference
@@ -26,14 +26,14 @@ export default props => {
     setPopupExp(false)
   }
 
-  const wrapClick = e => {
+  const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = e => {
+  const wrapTouch = (e) => {
     e.preventDefault()
   }
 

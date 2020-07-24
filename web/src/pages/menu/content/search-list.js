@@ -10,7 +10,7 @@ import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/noResult'
 import PlayIcon from '../static/ic_play.svg'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //useState
   //---------------------------------------------------------------------

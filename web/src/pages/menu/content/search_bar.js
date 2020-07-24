@@ -8,7 +8,7 @@ import useChange from 'components/hooks/useChange'
 //static
 import SearchIco from '../static/search/ic_search_p.svg'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //hooks
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
@@ -21,7 +21,7 @@ export default props => {
     }
   }
   //handleKeyPress
-  const handleKeyPress = e => {
+  const handleKeyPress = (e) => {
     const {currentTarget} = e
     if (currentTarget.value.length < 2) {
       return
@@ -31,7 +31,7 @@ export default props => {
     }
   }
   //submit
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     props.update({search: changes})
   }

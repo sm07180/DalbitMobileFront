@@ -18,7 +18,7 @@ import {Context} from 'context'
 // utility
 import Utility, {printNumber} from 'components/lib/utility'
 //svg
-import LiveIcon from '../component/ic_live.svg'
+import LiveIcon from '../static/ic_live.svg'
 import FemaleIcon from '../static/ico_female.svg'
 import MaleIcon from '../static/ico_male.svg'
 import PlusCircle from '../static/ico_circle.svg'
@@ -27,7 +27,7 @@ import CloseIcon from '../static/ic_close.svg'
 import KoreaIcon from '../static/ico_korea.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
-import CloseBtnIcon from '../component/ic_closeBtn.svg'
+import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
 // render----------------------------------------------------------------
