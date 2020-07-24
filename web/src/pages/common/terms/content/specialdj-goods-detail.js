@@ -13,10 +13,10 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h2>굿즈 보기 팝업</h2>
+      <h2>굿즈 상품 미리보기</h2>
 
       <p>
-        <img src={'https://image.dalbitlive.com/event/2007/23/specialDj_3nd_intro_1.png'} />
+        <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
       </p>
 
     </Content>
