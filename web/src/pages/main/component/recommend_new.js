@@ -141,7 +141,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem('bannerList')) {
+    if (window.localStorage.getItem('bannerList') && window.localStorage.getItem('bannerList') !== undefined) {
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach((url) => {
         if (url) {
@@ -167,14 +167,14 @@ export default (props) => {
             count++
             const cacheUrl = URL.createObjectURL(blob)
             tempBlobList[idx] = cacheUrl
-            if (count === list.length) {
+            if (count === list.length && tempBlobList !== undefined) {
               setBlobList(tempBlobList)
               localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
           })
           .catch(() => {
             count++
-            if (count === list.length) {
+            if (count === list.length && tempBlobList !== undefined) {
               setBlobList(tempBlobList)
               localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
@@ -242,13 +242,11 @@ export default (props) => {
                 b-idx={prevBIdx}
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[prevBIdx])}>
-                {list[prevBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
-                  <img
-                    className="image-wrap"
-                    src={list[prevBIdx]['profImg']['thumb120x120']}
-                  />
-                  <div className="text-wrap">
-                    <div className="selected-title">{list[prevBIdx]['title']}</div>
+                {list[prevBIdx]['nickNm'] !== 'banner' && (
+                  <div className="image-text-bundle">
+                    <img className="image-wrap" src={list[prevBIdx]['profImg']['thumb120x120']} />
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[prevBIdx]['title']}</div>
                       <div className="selected-nickname">
                         {list[prevBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           // 🎉😝pqpq😝🎉
@@ -256,8 +254,9 @@ export default (props) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
+                    </div>
                   </div>
-                </div>)}
+                )}
               </div>
               <div
                 className="broad-slide"
@@ -266,40 +265,38 @@ export default (props) => {
                   backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                 }}
                 onClick={() => clickSlideDisplay(list[selectedBIdx])}>
-                {list[selectedBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
-                  <img
-                    className="image-wrap"
-                    src={list[selectedBIdx]['profImg']['thumb120x120']}
-                  />
-                  <div className="text-wrap">
-                    <div className="selected-title">{list[selectedBIdx]['title']}</div>
+                {list[selectedBIdx]['nickNm'] !== 'banner' && (
+                  <div className="image-text-bundle">
+                    <img className="image-wrap" src={list[selectedBIdx]['profImg']['thumb120x120']} />
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[selectedBIdx]['title']}</div>
                       <div className="selected-nickname">
                         {list[selectedBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
+                    </div>
                   </div>
-                </div>)}
+                )}
               </div>
               <div
                 className="broad-slide"
                 b-idx={nextBIdx}
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
                 onClick={() => clickSlideDisplay(list[nextBIdx])}>
-                {list[nextBIdx]['nickNm'] !== 'banner' && (<div className="image-text-bundle">
-                  <img
-                    className="image-wrap"
-                    src={list[nextBIdx]['profImg']['thumb120x120']}
-                  />
-                  <div className="text-wrap">
-                    <div className="selected-title">{list[nextBIdx]['title']}</div>
+                {list[nextBIdx]['nickNm'] !== 'banner' && (
+                  <div className="image-text-bundle">
+                    <img className="image-wrap" src={list[nextBIdx]['profImg']['thumb120x120']} />
+                    <div className="text-wrap">
+                      <div className="selected-title">{list[nextBIdx]['title']}</div>
                       <div className="selected-nickname">
                         {list[nextBIdx]['nickNm'].split(emojiSplitRegex).map((str, idx) => {
                           return <span key={`splited-${idx}`}>{str}</span>
                         })}
                       </div>
+                    </div>
                   </div>
-                </div>)}
+                )}
               </div>
             </div>
           </>
@@ -322,7 +319,7 @@ export default (props) => {
         )} */}
 
         {list[selectedBIdx]['isAdmin'] === false && list[selectedBIdx]['isSpecial'] && <em className="specialIcon">스페셜DJ</em>}
-        {list[selectedBIdx]['isAdmin'] === true && (<em className="adminIcon">운영자</em>)}
+        {list[selectedBIdx]['isAdmin'] === true && <em className="adminIcon">운영자</em>}
         {list[selectedBIdx]['nickNm'] !== 'banner' && <img className="live-right-icon" src={LiveIcon} />}
 
         {Array.isArray(list) && list.length > 0 && (
@@ -405,7 +402,7 @@ const RecommendWrap = styled.div`
       line-height: 1.33;
       letter-spacing: normal;
       text-align: center;
-    }    
+    }
 
     .live-right-icon {
       position: absolute;
