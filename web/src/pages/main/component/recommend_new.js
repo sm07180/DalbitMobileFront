@@ -141,7 +141,8 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (window.localStorage.getItem('bannerList') && window.localStorage.getItem('bannerList') !== undefined) {
+    if (window.localStorage.getItem('bannerList') && window.localStorage.getItem('bannerList') !== 'undefined') {
+      console.log(window.localStorage.getItem('bannerList'))
       const list = JSON.parse(window.localStorage.getItem('bannerList'))
       list.forEach((url) => {
         if (url) {
@@ -167,14 +168,14 @@ export default (props) => {
             count++
             const cacheUrl = URL.createObjectURL(blob)
             tempBlobList[idx] = cacheUrl
-            if (count === list.length && tempBlobList !== undefined) {
+            if (count === list.length) {
               setBlobList(tempBlobList)
               localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
           })
           .catch(() => {
             count++
-            if (count === list.length && tempBlobList !== undefined) {
+            if (count === list.length) {
               setBlobList(tempBlobList)
               localStorage.setItem('bannerList', JSON.stringify(tempBlobList))
             }
