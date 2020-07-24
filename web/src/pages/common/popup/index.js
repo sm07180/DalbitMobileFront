@@ -66,7 +66,7 @@ export default (props) => {
         setLayout('round terms')
       }
 
-      if (context.popup_code[1] === 'rising-event-gift-detail2') {
+      if (context.popup_code[1] === 'rising-event-gift-detail2' || context.popup_code[1] === 'specialdj-goods-detail') {
         setLayout('round terms detail')
       } else {
         setLayout('round terms')
