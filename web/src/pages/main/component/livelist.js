@@ -51,7 +51,8 @@ const makeContents = (props) => {
       isSpecial,
       boostCnt,
       rank,
-      isNew
+      isNew,
+      os
     } = list
 
     return (
@@ -63,7 +64,7 @@ const makeContents = (props) => {
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb150x150']})`}} />
         <div className="broadcast-content">
           <div className="icon-wrap">
-            <img className="type-icon" src={audioIcon} />
+            {os ===3 && <span className="pc-icon">PC</span>}{/*<img className="type-icon" src={audioIcon} />*/}
             <div className="type-text">{fnChangeCategoryName(roomType)}</div>
             {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
             {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
@@ -146,7 +147,7 @@ const LiveList = styled.div`
     display: inline-block;
     width: 62px;
     height: 16px;
-    margin-left: 4px;
+    margin-right: 4px;
     border-radius: 10px;
     background-color: #ec455f;
     color: #fff;
@@ -164,13 +165,23 @@ const LiveList = styled.div`
 
   .new-dj-icon {
     color: #fff;
-    font-size: 11px;
+    font-size: 12px;
     border-radius: 10px;
     background-color: #feac2c;
     height: 16px;
     padding: 0 6px;
     line-height: 16px;
-    margin-left: 4px;
+    margin-right: 4px;
+  }
+  .pc-icon {
+    color: #fff;
+    font-size: 11px;
+    border-radius: 10px;
+    background-color: #febd56;
+    height: 16px;
+    padding: 0 6px;
+    line-height: 16px;
+    margin-right: 4px;
   }
 
   .broadcast-img {
@@ -234,12 +245,14 @@ const LiveList = styled.div`
         padding-right: 6px;
         height: 16px;
         line-height: 16px;
+        margin-right:4px;
       }
 
       .gender-icon {
         display: block;
         width: 16px;
         height: 16px;
+        margin-right: 4px;
       }
     }
 
