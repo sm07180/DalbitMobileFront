@@ -41,7 +41,8 @@ export default (props) => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-    {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+    {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon},
+    {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   ]
   const walletList = [
     {type: 'store', txt: '달 충전', icon: DalIcon},

@@ -130,6 +130,11 @@ export default class Utility {
     const min = parseInt((seconds % 3600) / 60)
     return `${hour}시간 ${hour}분`
   }
+  //분 포맷으로 변경
+  static minuteToTime = (seconds) => {
+    const min = parseInt(seconds % 3600)
+    return ` ${min}분`
+  }
   //한자리 숫자 앞에 0으로 채우기
   //data : 채울 값 //num : 총 몇자리 수까지 표현?
   //Utility.leadingZeros(7,2) => 07
@@ -164,6 +169,28 @@ export default class Utility {
     }
     return formatNum
   }
+  //년월일
+  static dateFormatterKor(num, type) {
+    if (!num) return ''
+    var formatNum = ''
+    // 공백제거
+    num = num.replace(/\s/gi, '')
+    num = num.substr(0, 8)
+    try {
+      if (num.length == 8) {
+        if (type == 'dot') {
+          formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')
+        } else {
+          formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1년 $2월$3일')
+        }
+      }
+    } catch (e) {
+      formatNum = num
+      console.log(e)
+    }
+    return formatNum
+  }
+
   static settingAlarmTime(num) {
     const alarmTime = num
     const today = Math.floor(new Date().getTime() / 1000)

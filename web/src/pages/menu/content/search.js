@@ -1,7 +1,3 @@
-/**
- * @title 검색바
- * @todos 디자인과 기획과 상이한부분이 있음
- */
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 //context
@@ -13,6 +9,8 @@ import Room, {RoomJoin} from 'context/room'
 import Header from '../component/header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
+
+//flag
 let currentPage = 1
 let query = ''
 export default (props) => {
@@ -126,7 +124,10 @@ export default (props) => {
         <div className="category-text">검색</div>
       </Header>
       {/* 검색바 */}
-      <SearchBar update={update} />
+      <div className="searchBarWrapper">
+        <SearchBar update={update} />
+      </div>
+
       {member && <h1>사용자 검색</h1>}
       <List update={update} type="member" fetch={member} />
       {moreState && (
@@ -208,5 +209,10 @@ const Content = styled.div`
       transform: rotate(-135deg);
       content: '';
     }
+  }
+  .searchBarWrapper {
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background-color: #eee;
   }
 `

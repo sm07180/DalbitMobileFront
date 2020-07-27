@@ -17,6 +17,7 @@ import FanBoard from './content/fanBoard.js'
 import Wallet from './content/wallet.js'
 import Report from './content/report.js'
 import Alert from './content/alert.js'
+import EditeFan from './content/edite_fan'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
@@ -35,12 +36,14 @@ export default (props) => {
     {id: 3, type: 'report', component: Report, txt: '리포트'},
     {id: 4, type: 'alert', component: Alert, txt: '알림'},
     {id: 5, type: 'appAlarm2', component: AppAlarm2, txt: '어플알람'},
-    {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'}
+    {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'},
+    {id: 7, type: 'editeFan', component: EditeFan, txt: '팬 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList2 = [
     {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
+    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon},
+    {type: 'editeFan', txt: '팬관리', icon: MenuFanBoardeIcon}
   ]
   //context
   const context = useContext(Context)

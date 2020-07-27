@@ -9,7 +9,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
-export default props => {
+export default (props) => {
   const {webview} = qs.parse(location.search)
   const {name} = props
   //context------------------------------------------
@@ -89,7 +89,7 @@ export default props => {
     document.querySelector('.scroll-box').children[0].style.maxHeight = `calc(${400}px)`
   }
   //등록,해제
-  const Regist = memNo => {
+  const Regist = (memNo) => {
     async function fetchDataFanRegist(memNo) {
       const res = await Api.fan_change({
         data: {
@@ -169,7 +169,7 @@ export default props => {
   // console.log(starInfo)
   //------------------------------------------------------------
   useEffect(() => {
-    window.onpopstate = e => {
+    window.onpopstate = (e) => {
       if (name === '팬 랭킹') {
         context.action.updateClose(false)
       } else if (name === '팬') {
@@ -358,7 +358,7 @@ const Photo = styled.div`
   flex: none;
   width: 40px;
   height: 40px;
-  background: url(${props => props.bg}) no-repeat center center/cover;
+  background: url(${(props) => props.bg}) no-repeat center center/cover;
   border-radius: 50%;
 `
 

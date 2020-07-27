@@ -68,6 +68,7 @@ const GlobalProvider = (props) => {
   })
   const [walletIdx, setWalletIdx] = useState(0)
   const [nativeTid, setNativeTid] = useState('init')
+  const [fanTab, setFanTab] = useState(0)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -280,6 +281,9 @@ const GlobalProvider = (props) => {
     },
     updateNativeTid: (string) => {
       setNativeTid(string)
+    },
+    updateFanTab: (num) => {
+      setFanTab(num)
     }
   }
   //---------------------------------------------------------------------
@@ -322,6 +326,7 @@ const GlobalProvider = (props) => {
     reportDate,
     walletIdx,
     nativeTid,
+    fanTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }
