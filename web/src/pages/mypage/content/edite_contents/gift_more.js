@@ -21,6 +21,7 @@ import PmemoDark from '../../static/ic_p_mem_b.svg'
 //---------------------------------------------------------------------------------
 // concat flag
 let currentPage = 1
+let prevPage = -1
 let timer
 let moreState = false
 let clicker = false
@@ -47,7 +48,8 @@ export default (props) => {
       const html = document.documentElement
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
-      if (moreState && windowBottom >= docHeight - 200) {
+      console.log('clicker', clicker)
+      if (moreState && windowBottom >= docHeight - 200 && !clicker) {
         showMoreList()
       } else {
       }
@@ -63,8 +65,15 @@ export default (props) => {
     }
   }
   async function fetchData(next) {
+    if (currentPage === prevPage) {
+      prevPage = -1
+      clicker = false
+      console.log('?;')
+      return null
+    }
     currentPage = next ? ++currentPage : currentPage
     console.log(currentPage)
+
     const res = await Api.getNewFanList({
       memNo: urlrStr,
       sortType: 2,
@@ -105,9 +114,10 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        // currentPage = 1
+        prevPage = currentPage
+        currentPage = 1
         fetchData()
-        clicker === false
+        clicker = true
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -126,9 +136,10 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        // currentPage = 1
+        prevPage = currentPage
+        currentPage = 1
         fetchData()
-        clicker === false
+        clicker = true
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -140,7 +151,6 @@ export default (props) => {
   }
   //
   const registToggle = (isFan, memNo) => {
-    clicker === true
     if (isFan === false) {
       Regist(memNo)
     } else if (isFan === true) {
@@ -150,10 +160,8 @@ export default (props) => {
 
   //window Scroll
   useEffect(() => {
-    //
-    if (clicker === false) {
-      window.addEventListener('scroll', scrollEvtHdr)
-    }
+    if (clicker) showMoreList()
+    window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
