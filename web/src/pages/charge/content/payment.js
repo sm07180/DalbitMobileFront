@@ -20,14 +20,14 @@ let chargeData = [
   {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
   {id: 0, type: '카드 결제', fetch: 'pay_card'},
   {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-  {id: 8, type: '문화상품권', fetch: 'pay_gm'},
-  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
-  {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-  {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
-  {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+  {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'},
   {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'},
-  {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'}
+  {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+  {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+  {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+  {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
+  // {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
+  // {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
 ]
 
 let clickFlag = false
@@ -43,14 +43,14 @@ export default (props) => {
       {id: 2, type: '무통장 입금(계좌이체)', fetch: 'pay_virtual'},
       {id: 0, type: '카드 결제', fetch: 'pay_card'},
       {id: 1, type: '휴대폰 결제', fetch: 'pay_phone'},
-      {id: 8, type: '문화상품권', fetch: 'pay_gm'},
-      {id: 11, type: '해피머니상품권', fetch: 'pay_hm'},
-      {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
-      {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
-      {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+      {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'},
       {id: 4, type: '페이코', fetch: 'pay_letter', code: 'payco'},
-      {id: 3, type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'}
+      {id: 6, type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+      {id: 8, type: '문화상품권', fetch: 'pay_gm'},
+      {id: 7, type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+      {id: 11, type: '해피머니상품권', fetch: 'pay_hm'}
+      // {id: 9, type: '스마트문상(게임문화상품권)', fetch: 'pay_gg'},
+      // {id: 10, type: '도서문화상품권', fetch: 'pay_gc'},
     ]
   }
 
