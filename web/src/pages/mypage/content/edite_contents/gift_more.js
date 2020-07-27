@@ -25,6 +25,7 @@ let prevPage = -1
 let timer
 let moreState = false
 let clicker = false
+let scrollState = false
 //---------------------------------------------------------------------------------
 export default (props) => {
   const CurrentTab = props.title
@@ -48,7 +49,6 @@ export default (props) => {
       const html = document.documentElement
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
-      console.log('clicker', clicker)
       if (moreState && windowBottom >= docHeight - 200 && !clicker) {
         showMoreList()
       } else {
@@ -60,15 +60,16 @@ export default (props) => {
   const showMoreList = () => {
     if (moreState) {
       console.log('concat')
+      if (currentPage === prevPage) return null
       setList(list.concat(nextList))
       fetchData('next')
     }
   }
+
   async function fetchData(next) {
     if (currentPage === prevPage) {
       prevPage = -1
       clicker = false
-      console.log('?;')
       return null
     }
     currentPage = next ? ++currentPage : currentPage
@@ -92,7 +93,6 @@ export default (props) => {
           console.log('넥스트')
           moreState = true
           setNextList(res.data.list)
-          console.log('넥스트2')
           setTotalCount(res.data.paging.total)
         } else {
           console.log('1')
