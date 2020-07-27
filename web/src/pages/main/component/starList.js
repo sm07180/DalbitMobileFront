@@ -22,23 +22,22 @@ export default props => {
   return (
     <StarList>
       <Swiper {...swiperParams}>
-        <div className="list">
-          <div className="image">
-            <div>나의</div>
-            <div style={{marginTop: '2px'}}>스타</div>
-          </div>
-          <div className="text"></div>
-        </div>
 
         {list.map((star, idx) => {
-          const {memNo, title, roomNo} = star
+          const {memNo, title, roomNo, nickNm} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => RoomJoin(roomNo + '')}>
+            <div className="list" key={`star-list${idx}`} onClick={() => {
+                if(roomNo === ''){
+                  window.location.href = '/mypage/' + memNo
+                }else{
+                  RoomJoin(roomNo + '')
+                }
+              }}>
               <div
                 className="image"
                 style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
               />
-              <div className="text">{title}</div>
+              <div className="text">{roomNo === '' ? nickNm : title}</div>
             </div>
           )
         })}
@@ -50,8 +49,8 @@ export default props => {
 const StarList = styled.div`
   position: absolute;
   top: 0;
-  left: 16px;
-  width: calc(100% - 16px);
+  left: 96px;
+  width: calc(100% - 96px);
 
   .swiper-container {
     padding-right: 16px;

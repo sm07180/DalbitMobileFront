@@ -513,6 +513,13 @@ export default (props) => {
             ref={StarSectionRef}
             style={Array.isArray(initData.myStar) && initData.myStar.length === 0 ? {display: 'none'} : {}}>
             <div className="content-wrap my-star-list">
+              <div className="list">
+                <div className="image">
+                  <div>나의</div>
+                  <div style={{marginTop: '2px'}}>스타</div>
+                </div>
+                <div className="text"></div>
+              </div>
               <StarList list={initData.myStar} />
             </div>
           </div>
@@ -772,6 +779,45 @@ const Content = styled.div`
 
       &.my-star-list {
         min-height: 94px;
+        .list {
+          width: 72px;
+          margin: 0 4px;
+      
+          &:first-child {
+            margin-left: 0;
+          }
+          &:last-child {
+            margin-right: 0;
+          }
+      
+          .image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-size: cover;
+            width: 72px;
+            height: 72px;
+            border: 1px solid #e0e0e0;
+            border-radius: 26px;
+            color: #424242;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: -0.32px;
+          }
+      
+          .text {
+            margin: 0 auto;
+            margin-top: 6px;
+            width: 56px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #424242;
+            font-size: 11px;
+            letter-spacing: -0.28px;
+            white-space: nowrap;
+          }
+        }
       }
 
       &.live-list {

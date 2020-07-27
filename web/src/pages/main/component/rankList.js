@@ -12,7 +12,7 @@ import peopleIcon from '../static/ic_people.svg'
 import heartIcon from '../static/ico_like_g.svg'
 
 export default props => {
-  const {rankType, djRank, fanRank} = props
+  let {rankType, djRank, fanRank} = props
   const globalCtx = useContext(Context)
 
   const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
@@ -23,6 +23,13 @@ export default props => {
 
   const swiperParams = {
     slidesPerView: 'auto'
+  }
+
+  if(djRank.length > 5){
+    djRank = djRank.splice(5, djRank.length - 1)
+  }
+  if(fanRank.length > 5){
+    fanRank = fanRank.splice(5, djRank.length - 1)
   }
 
   return (
