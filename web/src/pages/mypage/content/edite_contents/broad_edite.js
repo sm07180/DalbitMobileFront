@@ -67,7 +67,7 @@ export default (props) => {
     console.log(currentPage)
     const res = await Api.getNewFanList({
       memNo: urlrStr,
-      sortType: 2,
+      sortType: 1,
       page: currentPage,
       records: 20
     })

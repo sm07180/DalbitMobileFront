@@ -14,6 +14,8 @@ import Swiper from 'react-id-swiper'
 import Header from '../component/header'
 import Recent from './edite_contents/recent'
 import GiftMore from './edite_contents/gift_more'
+import ListenRecent from './edite_contents/listen_edite'
+import BroadMore from './edite_contents/broad_edite'
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
@@ -35,9 +37,9 @@ export default (props) => {
       case 1:
         return <GiftMore />
       case 2:
-        return '최근 청취 순'
+        return <ListenRecent />
       case 3:
-        return '방송 많이 받은 순'
+        return <BroadMore />
       default:
         break
     }
