@@ -567,8 +567,8 @@ const FanBadgeWrap = styled.div`
   }
 
   .fan-badge img {
-    width: 28px;
-    height: 28px;
+    width: 42px;
+    height: 26px;
   }
   .fan-badge span {
     display: inline-block;
@@ -863,8 +863,8 @@ const BadgeWrap = styled.div`
   }
 
   .fan-badge img {
-    width: 33px;
-    height: 28px;
+    width: 42px;
+    height: 26px;
   }
   .fan-badge span {
     display: inline-block;
