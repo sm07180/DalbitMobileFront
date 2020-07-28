@@ -52,7 +52,7 @@ export default (props) => {
     const res = await Api.my_notification({
       params: {
         page: currentPage,
-        records: 10
+        records: 20
       }
     })
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
@@ -90,7 +90,7 @@ export default (props) => {
       <>
         <ul className="alert-list">
           {alertList.map((item, index) => {
-            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
+            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = item
             const textArea = (
               <div>
                 <div dangerouslySetInnerHTML={{__html: contents}}></div>
@@ -111,6 +111,8 @@ export default (props) => {
                  35 : 마이페이지
                  36 : 레벨 업 DJ 마이페이지 [mem_no]
                  37 : 1:1 문의 답변
+                 38 : 방송공지
+                 50 : URL 링크이동
                * */
             switch (notiType) {
               case 1: //방송방 알림
@@ -130,6 +132,29 @@ export default (props) => {
                       }}></figure>
                     {textArea}
                   </li>
+                )
+                break
+              case 2: // 메인 이동
+                  let icon = (
+                      <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                  )
+                  if(memNo == '10000000000001'){
+                    icon = (
+                        <figure>
+                            <img src={alarmIco} />
+                        </figure>
+                    )
+                  }
+
+                return (
+                    <li
+                        key={index}
+                        onClick={() => {
+                            window.location.href = `/`
+                        }}>
+                        {icon}
+                        {textArea}
+                    </li>
                 )
                 break
               case 5: // 스페셜 dj선정
@@ -161,12 +186,12 @@ export default (props) => {
                   </li>
                 )
                 break
-              case 7: // 마이 페이지
+              case 7: // 공지사항
                 return (
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/menu/profile`
+                      window.location.href = `/customer/notice/${roomNo}`
                     }}>
                     <figure>
                       <img src={alarmIco} />
@@ -220,7 +245,8 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      // window.location.href = `/mypage/${memNo}`
+                      window.location.href = `/menu/profile`
                     }}>
                     {/* <figure>
                       <img src={alarmIco} />
@@ -262,6 +288,32 @@ export default (props) => {
                   </li>
                 )
                 break
+              case 38: //방송공지 상대방//
+                return (
+                  <li
+                    key={index}
+                    onClick={() => {
+                      window.location.href = `/mypage/${memNo}/notice`
+                    }}>
+                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    {textArea}
+                  </li>
+                )
+                break
+               case 50: //직접 입력//
+                 return (
+                     <li
+                         key={index}
+                         onClick={() => {
+                             window.location.href = link
+                         }}>
+                         <figure>
+                             <img src={alarmIco} />
+                         </figure>
+                         {textArea}
+                     </li>
+                 )
+                 break
               default:
                 return (
                   <li key={index}>

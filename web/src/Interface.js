@@ -405,7 +405,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no, board_idx
+    let room_no, mem_no, board_idx, redirect_url
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -443,13 +443,15 @@ export default () => {
       case '34': //-----------------마이페이지>알림>해당 알림 글
         mem_no = pushMsg.mem_no
         if(mem_no != undefined){
-            if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+            // if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+            if (isLogin) window.location.href = `/menu/alarm`
         }
         break
       case '35': //-----------------마이페이지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-            if (isLogin) window.location.href = `/mypage/${mem_no}/`
+            // if (isLogin) window.location.href = `/mypage/${mem_no}/`
+            if (isLogin) window.location.href = `/menu/profile`
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
@@ -464,6 +466,18 @@ export default () => {
               if (isLogin) window.location.href = `/customer/personal/qnaList`
           }
           break
+      case '38': //-----------------스타의 방송공지
+        mem_no = pushMsg.mem_no
+        if (mem_no !== undefined) {
+            if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
+        }
+        break
+      case '50': //-----------------직접입력 URL
+        redirect_url = pushMsg.link
+        if (redirect_url !== undefined) {
+            if (isLogin) window.location.href = redirect_url
+        }
+        break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break
