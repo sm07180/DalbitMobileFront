@@ -49,10 +49,36 @@ export default (props) => {
     setTitle(id)
     ctx.action.updateFanTab(id)
   }
+  const editeToggle = () => {
+    if (ctx.fanEdite === -1) {
+      ctx.action.updateFanEdite(false)
+    } else {
+      ctx.action.updateFanEdite(true)
+    }
+  }
+  const AlertPop = () => {
+    ctx.action.confirm({
+      callback: () => {
+        ctx.action.updateFanEdite(-1)
+      },
+      msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
+    })
+  }
   return (
     <EditeWrap>
       <Header>
-        <div className="category-text">팬 관리</div>
+        <div className="category-text">
+          팬
+          {ctx.fanEdite === false ? (
+            <button className="editeBtn" onClick={editeToggle}>
+              편집
+            </button>
+          ) : (
+            <button className="editeBtn" onClick={AlertPop}>
+              완료
+            </button>
+          )}
+        </div>
       </Header>
       <div className="tabContainer">
         <Swiper {...swiperParams}>
@@ -76,6 +102,25 @@ export default (props) => {
 
 //styled
 const EditeWrap = styled.div`
+  .header-wrap {
+    position: relative;
+    .editeBtn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 58px;
+      height: 32px;
+      border-radius: 16px;
+      background-color: #632beb;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.35px;
+      text-align: center;
+      color: #ffffff;
+    }
+  }
+
   .tabContainer {
     width: 100%;
 
@@ -123,7 +168,7 @@ const tabArry = [
   },
   {
     id: 3,
-    title: '방송 많이 받은 순',
+    title: '방송 많이 들은 순',
     value: 'broad'
   }
 ]

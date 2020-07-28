@@ -3,8 +3,6 @@ import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
 import {useLocation} from 'react-router-dom'
@@ -15,29 +13,30 @@ import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} 
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
+import PxBtnIcon from '../../static/ic_p_xbtn.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
+import PdeleteBtn from '../../static/ic_p_delete.svg'
 
 //---------------------------------------------------------------------------------
 // concat flag
 let currentPage = 1
 let timer
 let moreState = false
-let clicker = false
+
 //---------------------------------------------------------------------------------
 export default (props) => {
-  const CurrentTab = props.title
-
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
-  const location = useLocation()
-
   var urlrStr = location.pathname.split('/')[2]
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
-  const [totalCount, setTotalCount] = useState(0)
+  const [memoContent, setMemoContent] = useState('')
+  const [memoMemNo, setMemoMemNo] = useState(-1)
+  const [popState, setPopState] = useState(false)
+  const [deleteList, setDeleteList] = useState('')
   //스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -53,18 +52,16 @@ export default (props) => {
       }
     }, 10)
   }
-
   //콘켓 쇼모어 이벤트
   const showMoreList = () => {
     if (moreState) {
-      console.log('concat')
       setList(list.concat(nextList))
       fetchData('next')
     }
   }
+  // 콘켓 데이터 패치
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-    console.log(currentPage)
     const res = await Api.getNewFanList({
       memNo: urlrStr,
       sortType: 1,
@@ -75,27 +72,20 @@ export default (props) => {
       if (res.code === '0') {
         if (next !== 'next') {
           setList(false)
-          setTotalCount(0)
         }
         moreState = false
       } else {
         if (next) {
-          console.log('넥스트')
           moreState = true
           setNextList(res.data.list)
-          console.log('넥스트2')
-          setTotalCount(res.data.paging.total)
         } else {
-          console.log('1')
           setList(res.data.list)
-          setTotalCount(res.data.paging.total)
           fetchData('next')
         }
       }
     } else {
     }
   }
-  //
   //등록,해제
   const Regist = (memNo) => {
     async function fetchDataFanRegist(memNo) {
@@ -105,9 +95,6 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        // currentPage = 1
-        fetchData()
-        clicker === false
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -117,7 +104,6 @@ export default (props) => {
     }
     fetchDataFanRegist(memNo)
   }
-
   const Cancel = (memNo, isFan) => {
     async function fetchDataFanCancel(memNo, isFan) {
       const res = await Api.mypage_fan_cancel({
@@ -126,9 +112,6 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        // currentPage = 1
-        fetchData()
-        clicker === false
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -138,67 +121,226 @@ export default (props) => {
     }
     fetchDataFanCancel(memNo)
   }
-  //
+  // 팬등록 버튼 토글
   const registToggle = (isFan, memNo) => {
-    clicker === true
+    const test = list.map((item, index) => {
+      if (item.memNo === memNo) {
+        item.isFan = !item.isFan
+      }
+      return item
+    })
+    setList(test)
     if (isFan === false) {
       Regist(memNo)
     } else if (isFan === true) {
       Cancel(memNo)
     }
   }
+  // 메모 활성화/비활성화 조회
+  const GetMemoList = (memNo) => {
+    fetchDataGetMemo(memNo)
+    setMemoMemNo(memNo)
+    setPopState(true)
+  }
+  // 메모 입력 벨리데이션
+  const memoChange = (e) => {
+    const {value} = e.target
+    if (value.length > 500) return
+    setMemoContent(value)
+  }
+  // 메모 전송
+  const postMemo = () => {
+    fetchDataPostMemo()
+  }
+  // 팝업 클로즈 토글
+  const ClosePop = () => {
+    setPopState(false)
+    setMemoContent('')
+  }
+  // 임시 삭제하기 기능
+  const hideList = (memNo) => {
+    const test = list.map((item, index) => {
+      if (item.memNo === memNo) {
+        item.nickNm = ''
+      }
+      return item
+    })
+    const filterList = test.filter((v) => {
+      return v.nickNm === ''
+    })
+    setList(test)
+    let str = ''
+    filterList.forEach((v, i, self) => {
+      if (i === self.length - 1) {
+        str += v.memNo
+      } else {
+        str += v.memNo + '|'
+      }
+    })
+    setDeleteList(str)
+  }
 
   //window Scroll
   useEffect(() => {
-    //
-    if (clicker === false) {
-      window.addEventListener('scroll', scrollEvtHdr)
-    }
+    window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
   }, [nextList])
   //-----------------------------------------------------------
-
   useEffect(() => {
     currentPage = 1
     fetchData()
   }, [])
+  //-----------------------------------------------------------
+  async function fetchDataGetMemo(memNo) {
+    const res = await Api.getNewFanMemo({
+      memNo: memNo
+    })
+    if (res.result === 'success') {
+      setMemoContent(res.data.fanMemo)
+    } else if (res.result === 'fail') {
+      ctx.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+  }
+  async function fetchDataPostMemo() {
+    const res = await Api.postNewFanMemo({
+      memNo: memoMemNo,
+      memo: memoContent
+    })
+    if (res.result === 'success') {
+      const test = list.map((item, index) => {
+        if (item.memNo === memoMemNo) {
+          if (item.fanMemo === '') {
+            item.fanMemo = memoContent
+          }
+        }
+        return item
+      })
+      setList(test)
+      ctx.action.alert({
+        callback: () => {
+          setPopState(false)
+          setMemoContent('')
+        },
+        msg: res.message
+      })
+    } else if (res.result === 'fail') {
+      ctx.action.alert({
+        callback: () => {
+          setPopState(false)
+          setMemoContent('')
+        },
+        msg: res.message
+      })
+    }
+  }
+  //-----------------------------------------------------------
+  useEffect(() => {
+    if (ctx.fanEdite === -1) {
+      async function fetchDeleteList() {
+        const res = await Api.deleteNewFanList({
+          fanNoList: deleteList
+        })
+        if (res.result === 'success') {
+          ctx.action.alert({
+            callback: () => {
+              ctx.action.updateFanEdite(false)
+            },
+            msg: res.message
+          })
+        } else if (res.result === 'fail') {
+          ctx.action.alert({
+            callback: () => {
+              ctx.action.updateFanEdite(false)
+            },
+            msg: res.message
+          })
+        }
+      }
+      fetchDeleteList()
+    }
+  }, [ctx.fanEdite])
   return (
     <Wrap>
       {list &&
         list.map((item, idx) => {
           const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenDt, isFan, fanMemo, memNo} = item
           return (
-            <div key={idx} className="list">
-              <div className="list__imgBox">
-                <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
-              </div>
-              <div className="list__infoBox">
-                <span className="list__nick">{nickNm}</span>
-                <span className="list__registDt">등록일 - {Utility.dateFormatterKor(regDt)}</span>
-                <div className="list__details">
-                  <span className="list__details__time">{listenTime}분</span>
-                  <span className="list__details__byeol">{Utility.printNumber(giftedByeol)}</span>
-                  <span className="list__details__lastTime">
-                    {lastListenDt === '' ? '-' : Utility.settingAlarmTime(lastListenDt)}
-                  </span>
+            <React.Fragment key={idx}>
+              {nickNm !== '' && (
+                <div className="list">
+                  <div className="list__imgBox">
+                    <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
+                  </div>
+                  <div className="list__infoBox">
+                    <span className="list__nick">{nickNm}</span>
+                    <span className="list__registDt">등록일 - {Utility.dateFormatterKor(regDt)}</span>
+                    <div className="list__details">
+                      <span className="list__details__time">{listenTime}분</span>
+                      <span className="list__details__byeol">{Utility.printNumber(giftedByeol)}</span>
+                      <span className="list__details__lastTime">
+                        {lastListenDt === '' ? '-' : Utility.settingAlarmTime(lastListenDt)}
+                      </span>
+                    </div>
+                  </div>
+                  {ctx.fanEdite ? (
+                    <div className="list__btnBox">
+                      <button className="deleteBtn" onClick={() => hideList(memNo)}></button>
+                    </div>
+                  ) : (
+                    <div className="list__btnBox">
+                      <button
+                        className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
+                        onClick={() => registToggle(isFan, memNo)}>
+                        {isFan ? '팬' : '+팬등록'}
+                      </button>
+                      {fanMemo === '' ? (
+                        <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}>
+                          메모
+                        </button>
+                      ) : (
+                        <button
+                          className="list__btnBox__memoBtn list__btnBox__memoBtn--active"
+                          onClick={() => GetMemoList(memNo)}>
+                          메모
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
-              <div className="list__btnBox">
-                <button
-                  className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
-                  onClick={() => registToggle(isFan, memNo)}>
-                  {isFan ? '팬' : '+팬등록'}
-                </button>
-                <button
-                  className={fanMemo !== '' ? 'list__btnBox__memoBtn list__btnBox__memoBtn--active' : 'list__btnBox__memoBtn'}>
-                  메모
-                </button>
-              </div>
-            </div>
+              )}
+            </React.Fragment>
           )
         })}
+      {popState && (
+        <div className="memoPop">
+          <div className="memoContents">
+            <header>
+              메모
+              <button onClick={ClosePop} />
+            </header>
+            <div className="txtCnt">
+              <textarea
+                placeholder="회원을 기억하기 위한 메모를 입력해주세요.
+최대 500자까지 저장 가능합니다."
+                defaultValue={memoContent}
+                onChange={memoChange}></textarea>
+              <span className="txtcount">{memoContent.length} / 500</span>
+            </div>
+            {memoContent.length > 0 ? (
+              <button className="saveBtn saveBtn--active" onClick={postMemo}>
+                {memoContent === '' ? '저장하기' : '수정하기'}
+              </button>
+            ) : (
+              <button className="saveBtn">저장하기</button>
+            )}
+          </div>
+        </div>
+      )}
     </Wrap>
   )
 }
@@ -332,6 +474,98 @@ const Wrap = styled.div`
             background: url(${PmemoDark});
             content: '';
           }
+        }
+      }
+    }
+  }
+  .deleteBtn {
+    width: 24px;
+    height: 24px;
+
+    background: url(${PdeleteBtn});
+  }
+  .memoPop {
+    z-index: 55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0%;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    .memoContents {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 300px;
+      min-height: 296px;
+      background-color: #fff;
+      border-radius: 16px;
+      .txtCnt {
+        position: relative;
+        textarea {
+          margin-top: 12px;
+          border: 1px solid #e0e0e0;
+          width: 268px;
+          min-height: 160px;
+          border-radius: 12px;
+          padding: 8px 10px;
+          box-sizing: border-box;
+          font-size: 14px;
+          text-align: left;
+          color: #424242;
+          &::placeholder {
+            font-size: 14px;
+            line-height: 1.43;
+            text-align: left;
+            color: #757575;
+          }
+        }
+        .txtcount {
+          position: absolute;
+          bottom: 8px;
+          right: 10px;
+          font-size: 12px;
+          line-height: 1.42;
+          letter-spacing: normal;
+          text-align: left;
+          color: #e0e0e0;
+        }
+      }
+      .saveBtn {
+        width: 268px;
+        margin-top: 16px;
+        line-height: 44px;
+        border-radius: 12px;
+        background-color: #bdbdbd;
+        font-size: 16px;
+        letter-spacing: normal;
+        text-align: center;
+        color: #ffffff;
+        &--active {
+          background-color: #6b36eb;
+        }
+      }
+
+      header {
+        position: relative;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #eeeeee;
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 44px;
+        color: #000000;
+        button {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 6px;
+          width: 32px;
+          height: 32px;
+          background: url(${PxBtnIcon});
         }
       }
     }

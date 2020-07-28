@@ -2178,6 +2178,15 @@ export default class API {
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }
+  static getNewFanMemo = async (params) => {
+    return await ajax({url: '/profile/fan/memo', method: 'GET', params})
+  }
+  static postNewFanMemo = async (data) => {
+    return await ajax({url: '/profile/fan/memo', method: 'post', data})
+  }
+  static deleteNewFanList = async (data) => {
+    return await ajax({url: '/profile/fan/edit', method: 'post', data})
+  }
 
   /**
    * @brief 1계정 1청취 대응 타기기 방종료

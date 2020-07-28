@@ -69,6 +69,7 @@ const GlobalProvider = (props) => {
   const [walletIdx, setWalletIdx] = useState(0)
   const [nativeTid, setNativeTid] = useState('init')
   const [fanTab, setFanTab] = useState(0)
+  const [fanEdite, setFanEdite] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -284,6 +285,9 @@ const GlobalProvider = (props) => {
     },
     updateFanTab: (num) => {
       setFanTab(num)
+    },
+    updateFanEdite: (boolean) => {
+      setFanEdite(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -326,7 +330,8 @@ const GlobalProvider = (props) => {
     reportDate,
     walletIdx,
     nativeTid,
-    fanTab
+    fanTab,
+    fanEdite
   }
   return <Provider value={value}>{props.children}</Provider>
 }

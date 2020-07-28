@@ -20,7 +20,7 @@ import useClick from 'components/hooks/useClick'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -126,10 +126,21 @@ const Alert = styled.section`
     word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
+
     em {
       font-weight: 600;
       font-style: normal;
       color: #616161;
+    }
+    strong {
+      font-size: 22px;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.5;
+      letter-spacing: normal;
+      text-align: center;
+      color: #6b36eb;
     }
   }
 
@@ -163,5 +174,15 @@ const Close = styled.a`
   img {
     width: 36px;
     height: 36px;
+  }
+  .purpleColor {
+    font-size: 22px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    color: #6b36eb;
   }
 `
