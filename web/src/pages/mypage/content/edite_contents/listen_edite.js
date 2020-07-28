@@ -34,6 +34,7 @@ export default (props) => {
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [memoContent, setMemoContent] = useState('')
+  const [defaultMemo, setDefaultMemo] = useState('')
   const [memoMemNo, setMemoMemNo] = useState(-1)
   const [popState, setPopState] = useState(false)
   const [deleteList, setDeleteList] = useState('')
@@ -199,6 +200,7 @@ export default (props) => {
       memNo: memNo
     })
     if (res.result === 'success') {
+      setDefaultMemo(res.data.fanMemo)
       setMemoContent(res.data.fanMemo)
     } else if (res.result === 'fail') {
       ctx.action.alert({
@@ -275,7 +277,7 @@ export default (props) => {
             <React.Fragment key={idx}>
               {nickNm !== '' && (
                 <div className="list">
-                  <div className="list__imgBox">
+                  <div className="list__imgBox" onClick={() => (window.location.href = `/mypage/${memNo}`)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
                   <div className="list__infoBox">
@@ -335,7 +337,7 @@ export default (props) => {
             </div>
             {memoContent.length > 0 ? (
               <button className="saveBtn saveBtn--active" onClick={postMemo}>
-                {memoContent === '' ? '저장하기' : '수정하기'}
+                {defaultMemo === '' ? '저장하기' : '수정하기'}
               </button>
             ) : (
               <button className="saveBtn">저장하기</button>

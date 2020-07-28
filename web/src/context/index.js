@@ -71,6 +71,7 @@ const GlobalProvider = (props) => {
   const [fanTab, setFanTab] = useState(0)
   const [fanEdite, setFanEdite] = useState(false)
   const [fanEditeLength, setFanEditeLength] = useState(-1)
+  const [selectFanTab, setSelectFanTab] = useState(0)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -292,6 +293,9 @@ const GlobalProvider = (props) => {
     },
     updateFanEditeLength: (number) => {
       setFanEditeLength(number)
+    },
+    updateSelectFanTab: (number) => {
+      setSelectFanTab(number)
     }
   }
   //---------------------------------------------------------------------
@@ -336,7 +340,8 @@ const GlobalProvider = (props) => {
     nativeTid,
     fanTab,
     fanEdite,
-    fanEditeLength
+    fanEditeLength,
+    selectFanTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }

@@ -9,6 +9,7 @@ import styled from 'styled-components'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
+import {useHistory} from 'react-router-dom'
 import LayerPopupExp from './layer_popup_exp.js'
 // context
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -32,6 +33,7 @@ import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
+  let history = useHistory()
   //context & webview
   const {webview} = props
   const context = useContext(Context)
@@ -177,6 +179,12 @@ const myProfile = (props) => {
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
   //--------------------------------------------------------------
+  const goFanEdite = () => {
+    history.push(`/mypage/${profile.memNo}/edite_fan`)
+  }
+  const goStarEdite = () => {
+    history.push(`/mypage/${profile.memNo}/edite_star`)
+  }
   return (
     <>
       <ProfileWrap>
@@ -246,14 +254,14 @@ const myProfile = (props) => {
             </NameWrap>
             <ButtonWrap>{createFanList()}</ButtonWrap>
             <div className="categoryCntWrap">
-              <div onClick={() => fanContext()}>
+              <div onClick={goFanEdite}>
                 <span>
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
                 <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
               </div>
-              <div onClick={() => starContext()}>
+              <div onClick={goStarEdite}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>

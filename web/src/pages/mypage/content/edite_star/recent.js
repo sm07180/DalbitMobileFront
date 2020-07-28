@@ -5,7 +5,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
@@ -18,6 +18,7 @@ import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
 import NoResult from 'components/ui/noResult'
+
 //---------------------------------------------------------------------------------
 // concat flag
 let currentPage = 1
@@ -26,6 +27,7 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
+  let history = useHistory()
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -63,9 +65,9 @@ export default (props) => {
   // 콘켓 데이터 패치
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-    const res = await Api.getNewFanList({
+    const res = await Api.getNewStarList({
       memNo: urlrStr,
-      sortType: 1,
+      sortType: 0,
       page: currentPage,
       records: 20
     })
@@ -127,7 +129,7 @@ export default (props) => {
   const registToggle = (isFan, memNo) => {
     const test = list.map((item, index) => {
       if (item.memNo === memNo) {
-        item.isFan = !item.isFan
+        item.nickNm = ''
       }
       return item
     })
@@ -196,12 +198,12 @@ export default (props) => {
   }, [])
   //-----------------------------------------------------------
   async function fetchDataGetMemo(memNo) {
-    const res = await Api.getNewFanMemo({
+    const res = await Api.getNewStarMemo({
       memNo: memNo
     })
     if (res.result === 'success') {
-      setDefaultMemo(res.data.fanMemo)
-      setMemoContent(res.data.fanMemo)
+      setDefaultMemo(res.data.starMemo)
+      setMemoContent(res.data.starMemo)
     } else if (res.result === 'fail') {
       ctx.action.alert({
         callback: () => {},
@@ -210,7 +212,7 @@ export default (props) => {
     }
   }
   async function fetchDataPostMemo() {
-    const res = await Api.postNewFanMemo({
+    const res = await Api.postNewStarMemo({
       memNo: memoMemNo,
       memo: memoContent
     })
@@ -243,7 +245,7 @@ export default (props) => {
   }
   //-----------------------------------------------------------
   useEffect(() => {
-    if (ctx.fanEdite === -1 && list.length !== 0) {
+    if (ctx.fanEdite === -1) {
       async function fetchDeleteList() {
         const res = await Api.deleteNewFanList({
           fanNoList: deleteList
@@ -267,6 +269,7 @@ export default (props) => {
       fetchDeleteList()
     }
   }, [ctx.fanEdite])
+
   return (
     <Wrap>
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}

@@ -2187,7 +2187,18 @@ export default class API {
   static deleteNewFanList = async (data) => {
     return await ajax({url: '/profile/fan/edit', method: 'post', data})
   }
-
+  static deleteNewFanList = async (data) => {
+    return await ajax({url: '/profile/fan/edit', method: 'post', data})
+  }
+  static getNewStarList = async (params) => {
+    return await ajax({url: '/profile/star/list/new', method: 'GET', params})
+  }
+  static getNewStarMemo = async (params) => {
+    return await ajax({url: '/profile/star/memo', method: 'GET', params})
+  }
+  static postNewStarMemo = async (data) => {
+    return await ajax({url: '/profile/fan/memo', method: 'post', data})
+  }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"
