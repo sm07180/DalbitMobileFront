@@ -6,7 +6,7 @@
  */
 
 import React, {useEffect, useContext, useState} from 'react'
-import {useHistory, useParams, useLocation} from 'react-router-dom'
+import {useParams, useLocation} from 'react-router-dom'
 import qs from 'query-string'
 
 //component
@@ -18,7 +18,6 @@ import StoreCharge from './content/store_charge'
 
 ////---------------------------------------------------------------------
 export default () => {
-  const history = useHistory()
   const params = useParams()
   const location = useLocation()
 

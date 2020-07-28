@@ -92,16 +92,11 @@ export default () => {
 
   function chargeClick() {
     if (context.token.isLogin) {
+      const {name, price, itemNo} = selected
       history.push({
-        pathname: '/charge',
-        state: {
-          paymentName: selected.name,
-          paymentPrice: selected.price,
-          itemNo: selected.itemNo,
-          isState: 'charge'
-        }
+        pathname: '/pay/charge',
+        search: `?name=${name}&price=${price}&itemNo=${itemNo}`
       })
-      /*}*/
     } else {
       window.location.href = '/login'
     }
