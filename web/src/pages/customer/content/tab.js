@@ -13,7 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {Store} from './index'
 import {useHistory} from 'react-router-dom'
 
-export default props => {
+export default (props) => {
   //----------------------------------------------------------------------------
   let history = useHistory()
   const context = useContext(Context)
@@ -70,7 +70,7 @@ export default props => {
   useEffect(() => {
     if (typeTab === 'faq') {
       Store().action.updateCode('faq')
-    } else if (typeTab === '1on1') {
+    } else if (typeTab === 'personal') {
       Store().action.updateCode('personal')
     }
   }, [typeTab])
