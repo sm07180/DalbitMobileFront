@@ -268,7 +268,7 @@ export default (props) => {
     <Wrap>
       {list &&
         list.map((item, idx) => {
-          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenDt, isFan, fanMemo, memNo} = item
+          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
@@ -283,7 +283,7 @@ export default (props) => {
                       <span className="list__details__time">{listenTime}분</span>
                       <span className="list__details__byeol">{Utility.printNumber(giftedByeol)}</span>
                       <span className="list__details__lastTime">
-                        {lastListenDt === '' ? '-' : Utility.settingAlarmTime(lastListenDt)}
+                        {lastListenTs === '' || lastListenTs === 0 ? '-' : Utility.settingAlarmTime(lastListenTs)}
                       </span>
                     </div>
                   </div>
