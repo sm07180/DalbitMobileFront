@@ -237,7 +237,8 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      // window.location.href = `/mypage/${memNo}`
+                      window.location.href = `/menu/profile`
                     }}>
                     {/* <figure>
                       <img src={alarmIco} />
