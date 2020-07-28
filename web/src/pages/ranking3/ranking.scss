@@ -282,6 +282,7 @@ img {
   width: 100px;
   height: 100px;
   text-align: center;
+  
 
 
   &__frame {
@@ -324,6 +325,7 @@ img {
     width: 60px;
     height: 60px;
     margin-right: 6px;
+
     
 
     &__pic {
@@ -415,7 +417,7 @@ img {
 .nickNameBox {
   align-items: center;
   flex-direction: column;
-  margin-top: 7px;
+  
   font-size: 16px;
   color: #000;
   font-weight: bold;
@@ -515,6 +517,7 @@ img {
       width: 100px;
       height: 100px;
       margin: 0 auto;
+      
 
     }
 
@@ -546,13 +549,16 @@ img {
       .nickNameBox {
         flex-direction: row;
         justify-content: center;
+        margin-top:-2px;
       }
 
       &:first-child {
         width: 100%;
-        padding-top: 118px;
+        padding-top: 126px;
         margin-bottom: 8px;
         border-top: solid 1px #632beb;
+        
+
         .nickName {
           display: flex;
           justify-content: center;
