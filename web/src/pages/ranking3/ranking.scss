@@ -283,6 +283,7 @@ img {
   height: 100px;
   text-align: center;
 
+
   &__frame {
     position: absolute;
     left: 50%;
@@ -307,7 +308,10 @@ img {
       width: 70px;
     }
   }
+
 }
+
+
 
 .rankingList {
   display: flex;
@@ -320,6 +324,7 @@ img {
     width: 60px;
     height: 60px;
     margin-right: 6px;
+    
 
     &__pic {
       margin-top: 0;
@@ -510,6 +515,7 @@ img {
       width: 100px;
       height: 100px;
       margin: 0 auto;
+
     }
 
     .countBox {
@@ -544,7 +550,7 @@ img {
 
       &:first-child {
         width: 100%;
-        padding-top: 116px;
+        padding-top: 126px;
         margin-bottom: 8px;
         border-top: solid 1px #632beb;
         .nickName {
