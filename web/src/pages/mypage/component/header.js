@@ -30,8 +30,9 @@ export default (props) => {
     }*/
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-    } else if (referrer.split('/')[4] === 'faq') {
-      window.history.go(-2)
+      // } else if (referrer.split('/')[4] === 'faq') {
+      //   window.history.go(-2)
+      // }
     } else {
       window.history.go(-1)
     }

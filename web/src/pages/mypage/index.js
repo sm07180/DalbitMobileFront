@@ -42,15 +42,16 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {token, profile} = context
   let {memNo, category} = useParams()
+
   var urlrStr = props.location.pathname.split('/')[2]
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
-  if (profile && profile.memNo !== memNo) {
-    navigationList = navigationList.slice(0, 2)
-  } else if (profile && profile.memNo === memNo) {
-    memNo = profile.memNo
-  }
+  // if (profile && profile.memNo !== memNo) {
+  //   navigationList = navigationList.slice(0, 2)
+  // } else if (profile && profile.memNo === memNo) {
+  //   memNo = profile.memNo
+  // }
 
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -97,7 +98,6 @@ export default (props) => {
     if (urlrStr === 'mem_no') {
       setTimeout(() => {
         context.action.updateWalletIdx(1)
-        history.push(`/mypage/${profile.memNo}/wallet`)
       }, 10)
     }
   }, [])
@@ -144,7 +144,7 @@ export default (props) => {
           <SubContent>
             {navigationList.map((value) => {
               const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+              return <Route exact path={`/mypage/:memNo/${type}`} component={component} key={type} />
             })}
           </SubContent>
         </Mypage>
