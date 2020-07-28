@@ -5,6 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import {StoreLink} from 'context/link'
 // components
 import Header from '../component/header.js'
 import Controller from 'components/ui/remoteController'
@@ -204,7 +205,10 @@ export default (props) => {
                 return (
                   <a
                     href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
-                    key={`list-${idx}`}>
+                    key={`list-${idx}`}
+                    onClick={() => {
+                      if (type === 'store') return StoreLink()
+                    }}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
