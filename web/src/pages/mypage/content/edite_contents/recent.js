@@ -17,6 +17,7 @@ import PxBtnIcon from '../../static/ic_p_xbtn.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
+import NoResult from 'components/ui/noResult'
 
 //---------------------------------------------------------------------------------
 // concat flag
@@ -79,6 +80,7 @@ export default (props) => {
           moreState = true
           setNextList(res.data.list)
         } else {
+          ctx.action.updateFanEditeLength(res.data.list.length)
           setList(res.data.list)
           fetchData('next')
         }
@@ -264,8 +266,10 @@ export default (props) => {
       fetchDeleteList()
     }
   }, [ctx.fanEdite])
+
   return (
     <Wrap>
+      {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
       {list &&
         list.map((item, idx) => {
           const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item

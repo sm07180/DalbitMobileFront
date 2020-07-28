@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Swiper from 'react-id-swiper'
 //components
+
 import Header from '../component/header'
 import Recent from './edite_contents/recent'
 import GiftMore from './edite_contents/gift_more'
@@ -70,11 +71,11 @@ export default (props) => {
         <div className="category-text">
           팬
           {ctx.fanEdite === false ? (
-            <button className="editeBtn" onClick={editeToggle}>
+            <button className="editeBtn" onClick={editeToggle} style={{display: ctx.fanEditeLength < 1 ? 'none' : 'block'}}>
               편집
             </button>
           ) : (
-            <button className="editeBtn" onClick={AlertPop}>
+            <button className="editeBtn" onClick={AlertPop} style={{display: ctx.fanEditeLength < 1 ? 'none' : 'block'}}>
               완료
             </button>
           )}
