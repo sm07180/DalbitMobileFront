@@ -422,7 +422,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no, board_idx
+    let room_no, mem_no, board_idx, redirect_url
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -487,6 +487,12 @@ export default () => {
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
             if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
+        }
+        break
+      case '50': //-----------------직접입력 URL
+        redirect_url = pushMsg.link
+        if (redirect_url !== undefined) {
+            if (isLogin) window.location.href = redirect_url
         }
         break
       case '4': //------------------등록 된 캐스트(미정)

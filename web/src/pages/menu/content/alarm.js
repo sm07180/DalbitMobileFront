@@ -92,7 +92,7 @@ export default (props) => {
       <>
         <ul className="alert-list">
           {alertList.map((item, index) => {
-            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg} = item
+            const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = item
             const textArea = (
               <p>
                 <div dangerouslySetInnerHTML={{__html: contents}}></div> <span>{Utility.settingAlarmTime(regTs)}</span>
@@ -286,6 +286,20 @@ export default (props) => {
                   </li>
                 )
                 break
+               case 50: //직접 입력//
+                 return (
+                     <li
+                         key={index}
+                         onClick={() => {
+                             window.location.href = link
+                         }}>
+                         <figure>
+                             <img src={alarmIco} />
+                         </figure>
+                         {textArea}
+                     </li>
+                 )
+                 break
               default:
                 return (
                   <li key={index}>
