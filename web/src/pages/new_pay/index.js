@@ -13,8 +13,8 @@ import qs from 'query-string'
 import Layout from 'pages/common/layout'
 import Charge from './content/charge/index'
 import Result from './content/result'
-import RoomCharge from './content/roomCharge'
-import StoreCharge from './content/storeCharge'
+import RoomCharge from './content/room_charge'
+import StoreCharge from './content/store_charge'
 
 ////---------------------------------------------------------------------
 export default () => {
