@@ -1,0 +1,19 @@
+#ranking-page {
+  .guideTab {
+    padding: 12px 16px 8px 16px;
+  }
+
+  .benefitTop {
+    padding: 16px 0;
+    text-align: center;
+    background-color: #632beb;
+    color: #fff;
+    letter-spacing: -0.35px;
+
+    &__title {
+      margin-bottom: 6px;
+      color: #febd56;
+      font-weight: 600;
+    }
+  }
+}

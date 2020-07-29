@@ -66,6 +66,7 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
+        <Route exact path="/rank/:title" component={Ranking} />
 
         <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
