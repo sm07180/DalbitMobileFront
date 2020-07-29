@@ -175,8 +175,9 @@ export default (props) => {
       <Header title="미성년자 법정대리인(보호자)동의 신청" goBack={goBack} />
       <Content>
         <p className="txt">
-          20세 미만의 미성년자가 유료 서비스를 이용하기 위해서는 <br />
-          <strong>법정대리인(보호자)의 동의가</strong> 필요합니다.
+          부모 또는 지정후견인의 동의를 위해 <br />
+          <strong>주민등록 등본</strong> 또는 <strong>가족관계 증명서</strong>를 첨부하여 주셔야 <br />
+          법정대리인(보호자) 동의가 인정됩니다.
         </p>
 
         <h5>동의 기간 선택</h5>
@@ -201,10 +202,10 @@ export default (props) => {
         <h5>법정대리인(보호자) 정보</h5>
 
         <div className="input-wrap">
-          <p className="info" style={{paddingBottom: '8px'}}>
+          {/* <p className="info" style={{paddingBottom: '8px'}}>
             <img src={icNotice} />
             법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.
-          </p>
+          </p> */}
           <div className="title">보호자 이름</div>
           <div className="input">
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
