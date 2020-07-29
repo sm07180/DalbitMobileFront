@@ -148,7 +148,7 @@ const tabArry = [
   },
   {
     id: 1,
-    title: '선물 많이 받은 순',
+    title: '선물 많이 보낸 순',
     value: 'gift'
   },
   {
