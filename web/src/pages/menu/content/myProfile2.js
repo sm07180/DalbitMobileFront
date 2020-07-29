@@ -245,7 +245,7 @@ const myProfile = (props) => {
 
               <strong>{profile.nickNm}</strong>
               <div className="subIconWrap">
-                {<em className="nationIcon"></em>}
+                {/* {<em className="nationIcon"></em>} */}
                 {profile.gender === 'f' && <em className="femaleIcon"></em>}
                 {profile.gender === 'm' && <em className="maleIcon"></em>}
                 {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
@@ -496,7 +496,7 @@ const ProfileImg = styled.div`
   .InfoWrap {
     display: flex;
     flex-direction: column;
-    margin: -3px auto 0 auto;
+    margin: -5px auto 0 auto;
     position: relative;
     border-radius: 30px;
     /* background: #eeeeee; */
@@ -808,7 +808,7 @@ const NameWrap = styled.div`
     line-height: 24px;
     height: 24px;
     font-weight: 800;
-    margin-top: 16px;
+    margin-top: 14px;
   }
   .specialIcon {
     display: inline-block;

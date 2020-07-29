@@ -5,7 +5,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
@@ -27,6 +27,7 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
+  let history = useHistory()
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -218,8 +219,8 @@ export default (props) => {
     if (res.result === 'success') {
       const test = list.map((item, index) => {
         if (item.memNo === memoMemNo) {
-          if (item.fanMemo === '') {
-            item.fanMemo = memoContent
+          if (item.starMemo === '') {
+            item.starMemo = memoContent
           }
         }
         return item
@@ -274,7 +275,7 @@ export default (props) => {
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
       {list &&
         list.map((item, idx) => {
-          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
+          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, starMemo, memNo} = item
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
@@ -304,7 +305,7 @@ export default (props) => {
                         onClick={() => registToggle(isFan, memNo)}>
                         {isFan ? '팬' : '+팬등록'}
                       </button>
-                      {fanMemo === '' ? (
+                      {starMemo === '' ? (
                         <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}>
                           메모
                         </button>

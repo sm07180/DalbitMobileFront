@@ -219,8 +219,8 @@ export default (props) => {
     if (res.result === 'success') {
       const test = list.map((item, index) => {
         if (item.memNo === memoMemNo) {
-          if (item.fanMemo === '') {
-            item.fanMemo = memoContent
+          if (item.starMemo === '') {
+            item.starMemo = memoContent
           }
         }
         return item
@@ -275,7 +275,7 @@ export default (props) => {
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
       {list &&
         list.map((item, idx) => {
-          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
+          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, starMemo, memNo} = item
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
@@ -305,7 +305,7 @@ export default (props) => {
                         onClick={() => registToggle(isFan, memNo)}>
                         {isFan ? '팬' : '+팬등록'}
                       </button>
-                      {fanMemo === '' ? (
+                      {starMemo === '' ? (
                         <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}>
                           메모
                         </button>
