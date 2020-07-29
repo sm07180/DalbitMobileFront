@@ -1,8 +1,11 @@
 import React, {useState, useEffect, useContext, useReducer} from 'react'
 import styled from 'styled-components'
+
 import Api from 'context/api'
+
 // context
 import {Context} from 'context'
+
 // component
 import List from '../component/notice/list.js'
 import WritePage from '../component/notice/writePage.js'
@@ -12,21 +15,25 @@ import NoResult from 'components/ui/noResult'
 import Checkbox from './checkbox'
 // image,color //
 import pen from 'images/pen.svg'
+
 import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
+// concat
+let currentPage = 1
+let timer
+let moreState = false
 const Notice = (props) => {
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
   //memNo
   const urlrStr = props.location.pathname.split('/')[2]
-  //state
-  const [writeStatus, setWriteStatus] = useState('off')
-  const [listDetailed, setListDetailed] = useState('search')
-  const [totalPageNumber, setTotalPageNumber] = useState(null)
-  const [page, setPage] = useState(1)
+  //concat
+  const [listPage, setListPage] = useState(-1)
+  const [nextListPage, setNextListPage] = useState([])
+
   //체크상태
   const initialState = {
     click1: false
@@ -66,7 +73,11 @@ const Notice = (props) => {
         context.action.confirm({
           callback: () => {
             setWriteShow(false)
-            window.location.reload()
+            setTimeout(() => {
+              setComment('')
+              setCommentContent('')
+              context.action.updateNoticeState(true)
+            }, 10)
           },
           msg: '공시사항을 등록 하시겠습니까?'
         })
@@ -89,15 +100,15 @@ const Notice = (props) => {
       fetcNoticeUpload()
     }
   }
-  // func write btn toggle
   const WriteToggle = () => {
+    setComment('')
+    setCommentContent('')
     if (writeShow === false) {
       setWriteShow(true)
     } else {
       setWriteShow(false)
     }
   }
-  // func write btn active : purple
   const WritBtnActive = () => {
     if (coment !== '' && comentContent !== '') {
       setWriteBtnState(true)
@@ -111,57 +122,113 @@ const Notice = (props) => {
   }, [coment, comentContent])
   //-----------------------------------------------------------------------
   //리스트
-  useEffect(() => {
-    ;(async () => {
-      const params = {
-        memNo: urlrStr,
-        page,
-        records: 10
-      }
-      const response = await Api.mypage_notice_inquire(params)
-      if (response.result === 'success') {
-        const {list, paging} = response.data
-        if (paging) {
-          const {totalPage} = paging
-          setTotalPageNumber(totalPage)
+  async function fetchData(next) {
+    currentPage = next ? ++currentPage : currentPage
+
+    const params = {
+      memNo: urlrStr,
+      page: 1,
+      records: 20 * currentPage
+    }
+    const res = await Api.mypage_notice_inquire(params)
+    if (res.result === 'success') {
+      if (res.data.paging.totalPage === 1) {
+        if (next) {
+          moreState = false
+          setNextListPage(res.data.list)
+        } else {
+          setListPage(res.data.list)
         }
-        setListDetailed(list)
       } else {
-        context.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
+        if (next) {
+          moreState = true
+          setNextListPage(res.data.list)
+        } else {
+          setListPage(res.data.list)
+          fetchData('next')
+        }
       }
-    })()
-  }, [page])
-  // memNo restore
+    } else if (res.result === 'fail') {
+    }
+  }
+  useEffect(() => {
+    currentPage = 1
+
+    fetchData()
+    setTimeout(() => {
+      context.action.updateNoticeState(false)
+    }, 50)
+  }, [context.noticeState])
+
+  const showMoreList = () => {
+    if (moreState) {
+      setListPage(nextListPage)
+      fetchData('next')
+    } else {
+      // setListPage(nextListPage)
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextListPage])
+  ///
   useEffect(() => {
     const settingProfileInfo = async (memNo) => {
-      const profileInfo = await Api.profile({params: {memNo: context.token.memNo}})
+      const profileInfo = await Api.profile({
+        params: {memNo: context.token.memNo}
+      })
       if (profileInfo.result === 'success') {
         setThisMemNo(profileInfo.data.memNo)
       }
     }
     settingProfileInfo()
   }, [])
-  // create btn 생성 및 url 분기
+
   const createWriteBtn = () => {
     if (urlrStr === thisMemNo) {
       return (
         <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
-          작성
+          쓰기
         </button>
       )
     } else {
       return null
     }
   }
+
   //-----------------------------------------------------------------------
   //토글
   const [numbers, setNumbers] = useState('')
+
   const toggler = (noticeIdx) => {
     if (numbers === noticeIdx) {
       setNumbers('')
+      setTimeout(() => {
+        setNumbers(noticeIdx)
+      }, 10)
     } else {
       setNumbers(noticeIdx)
       setTimeout(() => {
@@ -174,99 +241,104 @@ const Notice = (props) => {
   return (
     <>
       <Header>
-        <div className="category-text">공지사항</div>
+        <div className="category-text">방송공지</div>
         {createWriteBtn()}
       </Header>
-      <ListWrap>
-        {Array.isArray(listDetailed) &&
-          listDetailed.map((list, idx) => {
-            const {isTop, title, contents, writeDt, noticeIdx} = list
-            return (
-              <>
-                {isTop === true && (
-                  <a key={idx} className={`idx${noticeIdx}`}>
-                    <List
-                      {...props}
-                      thisMemNo={thisMemNo}
-                      isTop={isTop}
-                      title={title}
-                      contents={contents}
-                      writeDt={writeDt}
-                      noticeIdx={noticeIdx}
-                      numbers={numbers}
-                      toggle={toggler}
-                    />
-                  </a>
-                )}
-              </>
-            )
-          })}
-      </ListWrap>
-      <ListWrap>
-        {Array.isArray(listDetailed) ? (
-          listDetailed.length > 0 ? (
-            listDetailed.map((list, idx) => {
-              const {isTop, title, contents, writeDt, noticeIdx} = list
-              return (
-                <>
-                  {isTop === false && (
-                    <a key={idx} className={`idx${noticeIdx}`}>
-                      <List
-                        {...props}
-                        thisMemNo={thisMemNo}
-                        isTop={isTop}
-                        title={title}
-                        contents={contents}
-                        writeDt={writeDt}
-                        noticeIdx={noticeIdx}
-                        numbers={numbers}
-                        toggle={toggler}
-                      />
-                    </a>
-                  )}
-                </>
-              )
-            })
-          ) : (
+      {listPage === -1 ? (
+        <NoResult />
+      ) : (
+        <>
+          {listPage.length !== -1 && (
             <>
-              <NoResult />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
+              <ListWrap className="noticeIsTop">
+                {Array.isArray(listPage) &&
+                  listPage.map((list, idx) => {
+                    const {isTop, title, contents, writeDt, noticeIdx} = list
+                    return (
+                      <div key={idx}>
+                        {isTop === true && (
+                          <a className={`idx${noticeIdx}`}>
+                            <List
+                              {...props}
+                              thisMemNo={thisMemNo}
+                              isTop={isTop}
+                              title={title}
+                              contents={contents}
+                              writeDt={writeDt}
+                              noticeIdx={noticeIdx}
+                              numbers={numbers}
+                              toggle={toggler}
+                            />
+                          </a>
+                        )}
+                      </div>
+                    )
+                  })}
+              </ListWrap>
+              <ListWrap>
+                {Array.isArray(listPage) ? (
+                  listPage.length > 0 ? (
+                    listPage.map((list, idx) => {
+                      const {isTop, title, contents, writeDt, noticeIdx} = list
+                      return (
+                        <div key={idx}>
+                          {isTop === false && (
+                            <a className={`idx${noticeIdx}`}>
+                              <List
+                                {...props}
+                                thisMemNo={thisMemNo}
+                                isTop={isTop}
+                                title={title}
+                                contents={contents}
+                                writeDt={writeDt}
+                                noticeIdx={noticeIdx}
+                                numbers={numbers}
+                                toggle={toggler}
+                              />
+                            </a>
+                          )}
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <>
+                      <NoResult />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                    </>
+                  )
+                ) : (
+                  <div className="search" />
+                )}
+              </ListWrap>{' '}
             </>
-          )
-        ) : (
-          <div className="search" />
-        )}
-        {/* <GlobalWriteBtn onClick={() => WriteToggle()} className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
-          <div className="inner" />
-        </GlobalWriteBtn> */}
-      </ListWrap>
-      {/* {listDetailed !== 'search' && <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />} */}
-      {Array.isArray(listDetailed) && listDetailed.length > 0 && listDetailed !== 'search' && (
-        <Paging setPage={setPage} totalPage={totalPageNumber} currentPage={page} />
+          )}
+        </>
       )}
 
       <Write className={writeShow && 'on'}>
         <Header click={WriteToggle}>
-          <div className="category-text">공지 작성하기</div>
-          <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
-            등록
-          </TitleBtn>
+          <div className="category-text">방송공지</div>
         </Header>
         <section>
           <div className="titleWrite">
-            <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} />
+            <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />
           </div>
 
           <div className="contentWrite">
-            <textarea placeholder="작성하고자 하는 글의 내용을 입력해주세요." maxLength="189" onChange={textChangeContent} />
+            <textarea
+              placeholder="작성하고자 하는 글의 내용을 입력해주세요."
+              maxLength="189"
+              onChange={textChangeContent}
+              value={comentContent}
+            />
           </div>
           <div className="checkbox-wrap">
-            <Checkbox title="고정 공지사항" fnChange={(v) => setState({click1: v})} checked={state.click1} />
+            <Checkbox title="상단 고정" fnChange={(v) => setState({click1: v})} checked={state.click1} />
           </div>
 
           <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
@@ -371,7 +443,8 @@ const WriteBtn = styled.button`
 `
 
 const ListWrap = styled.div`
-  width: 100%;
+  /* width: calc(100% + 32px);
+  margin-left: -16px; */
   position: relative;
   .search {
     min-height: 200px;
@@ -380,6 +453,13 @@ const ListWrap = styled.div`
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  &.noticeIsTop {
+    margin: 12px 0;
+  }
+  .write-btn {
+    color: red;
   }
 `
 
@@ -413,18 +493,18 @@ const Write = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
+  background-color: #eeeeee;
   z-index: 21;
 
   .checkbox-wrap > div:first-child {
-    margin: 8px 0 18px 0;
+    margin: 8px 0 32px 0;
   }
 
   & header {
     padding: 16px 16px 16px 10px;
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #eee;
     button:nth-child(1) {
       width: 24px;
       height: 24px;
@@ -443,29 +523,37 @@ const Write = styled.div`
     padding: 20px 16px 0 16px;
     .titleWrite {
       input {
-        padding: 8px 12px;
-        border: 1px solid #bdbdbd;
+        padding: 14px 16px;
+        height: 44px;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
         width: 100%;
+        font-size: 14px;
         &:focus {
-          border: 1px solid ${COLOR_MAIN};
+          border: 1px solid #000;
         }
         &::placeholder {
-          color: #616161;
-          font-size: 16px;
-          line-height: 1.5;
-          transform: skew(-0.03deg);
+          font-size: 14px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: -0.35px;
+          text-align: left;
+          color: #757575;
         }
       }
     }
     .contentWrite {
-      margin-top: 12px;
+      margin-top: 4px;
 
       textarea {
+        font-size: 14px;
+        border-radius: 12px;
         &:focus {
-          border: 1px solid ${COLOR_MAIN};
+          border: 1px solid #000;
         }
-        padding: 8px 12px;
-        border: 1px solid #bdbdbd;
+        padding: 16px;
+        border: 1px solid #e0e0e0;
         width: 100%;
         min-height: 310px;
 
@@ -475,11 +563,13 @@ const Write = styled.div`
         line-height: 1.5;
         transform: skew(-0.03deg);
         &::placeholder {
-          color: #616161;
-          font-size: 16px;
-          letter-spacing: -0.88px;
-          line-height: 1.5;
-          transform: skew(-0.03deg);
+          font-size: 14px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: -0.35px;
+          text-align: left;
+          color: #757575;
         }
       }
     }
@@ -493,16 +583,16 @@ const Write = styled.div`
 `
 const WriteSubmit = styled.button`
   display: block;
-  padding: 16px 0;
+
   width: 100%;
   background-color: #bdbdbd;
   font-size: 16px;
   color: #fff;
   font-weight: 600;
-  line-height: 1.25;
+  height: 44px;
   letter-spacing: -0.4px;
   transform: skew(-0.03deg);
-
+  border-radius: 12px;
   &.on {
     background-color: ${COLOR_MAIN};
   }

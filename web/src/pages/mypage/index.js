@@ -7,12 +7,12 @@ import {isHybrid, Hybrid} from 'context/hybrid'
 import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
-import MyProfile2 from './content/myProfile2.js'
+import MyProfile from './content/myProfile.js'
 //import Navigation from './content/navigation.js'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm2 from './content/appAlarm2'
-import Notice from './content/noticeBefore.js'
+import Notice from './content/notice.js'
 import FanBoard from './content/fanBoard.js'
 import Wallet from './content/wallet.js'
 import Report from './content/report.js'
@@ -67,6 +67,8 @@ export default (props) => {
   const clickCloseBtn = () => {
     if (isHybrid()) {
       Hybrid('CloseLayerPopup')
+      context.action.updatenoticeIndexNum('')
+      console.log(context.noticeIndexNum)
     }
   }
   //check login push login
@@ -130,7 +132,7 @@ export default (props) => {
           {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
           {!category && (
             <>
-              <MyProfile2 profile={profileInfo} {...props} webview={webview} />
+              <MyProfile profile={profileInfo} {...props} webview={webview} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
                   const {type, txt, icon, component} = value

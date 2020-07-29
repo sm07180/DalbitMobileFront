@@ -290,6 +290,7 @@ export default (props) => {
       prev: dateToday,
       next: dateToday
     })
+
     if (selectType === 0) {
       setSelectType(1)
     } else {
@@ -305,7 +306,11 @@ export default (props) => {
     }
   }
   useEffect(() => {
-    fetchData()
+    if (selectType === 0) {
+      fetchData()
+    } else {
+      fetchDataListen()
+    }
   }, [selectType])
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {Context} from 'context'
 import qs from 'qs'
 // static
 import closeBtn from './ic_back.svg'
@@ -8,6 +9,7 @@ import Write from './ic_write.svg'
 import {getUrlAndRedirect} from 'components/lib/link_control.js'
 
 export default (props) => {
+  const context = useContext(Context)
   const _parse = qs.parse(window.location.href, {ignoreQueryPrefix: true})
   const goBack = () => {
     if (sessionStorage.getItem('push_type') === 'Y') {

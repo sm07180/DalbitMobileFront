@@ -1,3 +1,9 @@
+/**
+ * @route /pay/room
+ * @file /pay/content/room_charge
+ * @brief 안드로이드 - 방송방에서 충전하기 클릭했을때
+ *        웹뷰 팝업에서 뜨는 달 충전/ 달 교환 페이지
+ */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
