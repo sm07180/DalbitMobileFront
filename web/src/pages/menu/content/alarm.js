@@ -287,11 +287,18 @@ export default (props) => {
                 )
                 break
                case 50: //직접 입력//
+                 let mobileLink = link
+                 try {
+                     mobileLink = JSON.parse(mobileLink).mobile
+                 }catch(e){}
+
                  return (
                      <li
                          key={index}
                          onClick={() => {
-                             window.location.href = link
+                             if(mobileLink != undefined) {
+                                 window.location.href = mobileLink
+                             }
                          }}>
                          <figure>
                              <img src={alarmIco} />
