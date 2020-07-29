@@ -150,6 +150,7 @@ const myProfile = (props) => {
       setPopup(true)
     }
   }
+  console.log(profile.fanRank)
   //func back
   const goBack = () => {
     window.location.href = '/'
@@ -287,7 +288,7 @@ const myProfile = (props) => {
             ) : (
               <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             )}
-            <ButtonWrap>{createFanList()}</ButtonWrap>
+            {profile.fanRank.length !== 0 && <ButtonWrap>{createFanList()}</ButtonWrap>}
             <ProfileMsg>{profile.profMsg}</ProfileMsg>
             <div className="categoryCntWrap">
               <div onClick={goFanEdite}>
@@ -369,7 +370,7 @@ const MyProfile = styled.div`
   /* width: calc(100% - 16px); */
   border-top-left-radius:20px;
   border-top-right-radius:20px;
-  min-height: 350px;
+  min-height: 308px;
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
 position: relative;
@@ -1115,6 +1116,8 @@ const Slide = styled.a`
 `
 //프로필메세지
 const ProfileMsg = styled.p`
+  width: 70%;
+  margin: 0 auto;
   word-break: break-all;
   margin-top: 8px;
   color: #616161;

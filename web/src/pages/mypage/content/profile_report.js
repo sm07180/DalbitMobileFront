@@ -6,7 +6,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
-export default props => {
+export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -18,12 +18,14 @@ export default props => {
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
   const [allFalse, setAllFalse] = useState(false)
+  const [reportReason, setReportReason] = useState('')
   //api
   const fetchData = async () => {
     const res = await Api.member_declar({
       data: {
         memNo: urlrStr,
-        reason: select
+        reason: select,
+        cont: reportReason
       }
     })
     if (res.result === 'success') {
@@ -69,7 +71,7 @@ export default props => {
     }
   ]
   //셀렉트function-----------------------------------
-  const handleSelectChange = event => {
+  const handleSelectChange = (event) => {
     const value = event.target.value
     const indexs = event.target.id
     if (value === '프로필 사진') {
@@ -106,13 +108,32 @@ export default props => {
   const Reportmap = BTNInfo.map((live, index) => {
     const {title, id} = live
     return (
-      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === id ? 'on' : ''} key={index} id={id}>
+      <BTN value={title} onClick={(event) => handleSelectChange(event)} className={select === id ? 'on' : ''} key={index} id={id}>
         {title}
       </BTN>
     )
   })
   //close
-
+  const reportChange = (e) => {
+    const {value} = e.target
+    if (value.length > 100) return
+    setReportReason(value)
+  }
+  const validateReport = () => {
+    if (select === '') {
+      context.action.alert({
+        callback: () => {},
+        msg: '신고 사유를 선택해주세요.'
+      })
+    }
+    if (select !== '' && reportReason.length < 10) {
+      context.action.alert({
+        callback: () => {},
+        msg: '신고 사유를 10자 이상 입력해주세요.'
+      })
+    }
+  }
+  //
   //------------------------------------------------------------
   return (
     <FixedBg className={allFalse === true ? 'on' : ''}>
@@ -127,11 +148,25 @@ export default props => {
           <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
 
           {Reportmap}
+          <div className="reportWrap__textareaWrap">
+            <textarea
+              value={reportReason}
+              onChange={reportChange}
+              className="reportWrap__textarea"
+              placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
+            />
+            <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+          </div>
           <div className="btnWrap">
             <SubmitBTN onClick={ClearReport}>취소</SubmitBTN>
-            <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
-              확인
-            </SubmitBTN>
+
+            {active === true && reportReason.length > 9 ? (
+              <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
+                확인
+              </SubmitBTN>
+            ) : (
+              <SubmitBTN onClick={validateReport}>확인</SubmitBTN>
+            )}
           </div>
         </Container>
       </div>
@@ -213,6 +248,40 @@ const Container = styled.div`
     letter-spacing: -0.35px;
     text-align: left;
     transform: skew(-0.03deg);
+  }
+
+  .reportWrap {
+    width: 100%;
+    &__textareaWrap {
+      width: 100%;
+      position: relative;
+      margin-top: 12px;
+    }
+    &__textarea {
+      width: 100%;
+      font-size: 14px;
+      color: #424242;
+      min-height: 120px;
+      padding: 12px;
+      box-sizing: border-box;
+      border-radius: 12px;
+      background-color: #f5f5f5;
+      outline: none;
+      border: none;
+      resize: none;
+      &::placeholder {
+        font-family: inherit;
+        color: #626262;
+        text-align: justify;
+      }
+    }
+    &__textareaCount {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: #bdbdbd;
+    }
   }
 `
 const BTN = styled.button`
