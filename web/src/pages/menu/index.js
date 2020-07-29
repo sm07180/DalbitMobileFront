@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import Nav from './content/nav.js'
 
-import Profile2 from './content/profile2.js'
+import Profile from './content/profile.js'
 import Search from './content/search.js'
 import Alarm from './content/alarm.js'
 
@@ -17,7 +17,7 @@ import LoginStay from '../login/loginState'
 export default (props) => {
   const categoryList = [
     {type: 'nav', component: Nav},
-    {type: 'profile', component: Profile2},
+    {type: 'profile', component: Profile},
     {type: 'alarm', component: Alarm},
     {type: 'search', component: Search}
   ]

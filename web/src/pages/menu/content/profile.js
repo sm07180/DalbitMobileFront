@@ -9,7 +9,7 @@ import {StoreLink} from 'context/link'
 // components
 import Header from '../component/header.js'
 import Controller from 'components/ui/remoteController'
-import MyProfile2 from './myProfile2'
+import MyProfile from './myProfile'
 // static svg
 import InfoIcon from '../static/profile/ic_info_m.svg'
 import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
@@ -121,7 +121,7 @@ export default (props) => {
       {token && token.isLogin && (
         <>
           <div className="log-in">
-            <MyProfile2 profile={profile} {...props} webview={webview} />
+            <MyProfile profile={profile} {...props} webview={webview} />
             <div className="profile-info">
               <div className="time-info">
                 <div className="total-time">

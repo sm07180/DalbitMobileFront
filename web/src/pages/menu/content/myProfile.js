@@ -6,6 +6,7 @@ import React, {useEffect, useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
+import Swiper from 'react-id-swiper'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -117,7 +118,11 @@ const myProfile = (props) => {
       }
     }
     result = result.concat(
-      <button className="moreFan" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn">
+      <button
+        className="moreFan"
+        onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}
+        key="btn"
+        style={{display: 'none'}}>
         <span></span>
       </button>
     )
@@ -185,6 +190,30 @@ const myProfile = (props) => {
   const goStarEdite = () => {
     history.push(`/mypage/${profile.memNo}/edite_star`)
   }
+  //뱃지
+  //스와이퍼
+  const params = {
+    spaceBetween: 2,
+    slidesPerView: 'auto',
+    resistanceRatio: 0
+  }
+  //뱃지
+  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
+    const {text, icon, startColor, endColor} = item
+    //-----------------------------------------------------------------------
+    return (
+      <Slide key={index}>
+        <span
+          className="fan-badge"
+          style={{
+            background: `linear-gradient(to right, ${startColor}, ${endColor}`
+          }}>
+          <img src={icon} />
+          <span>{text}</span>
+        </span>
+      </Slide>
+    )
+  })
   return (
     <>
       <ProfileWrap>
@@ -250,9 +279,16 @@ const myProfile = (props) => {
                 {profile.gender === 'm' && <em className="maleIcon"></em>}
                 {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
-              <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             </NameWrap>
+            {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
+              <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
+                <Swiper {...params}>{BadgeSlide}</Swiper>
+              </BadgeWrap>
+            ) : (
+              <div className="topMedal">TOP 랭킹에 도전해보세요</div>
+            )}
             <ButtonWrap>{createFanList()}</ButtonWrap>
+            <ProfileMsg>{profile.profMsg}</ProfileMsg>
             <div className="categoryCntWrap">
               <div onClick={goFanEdite}>
                 <span>
@@ -371,7 +407,7 @@ z-index:3;
     flex: 0 0 auto;
   }
   .categoryCntWrap {
-      margin: 4px 0 0px 0;
+      margin: 4px 0 20px 0;
       display: flex;
       div {
         display: flex;
@@ -442,6 +478,32 @@ z-index:3;
     padding: 0;
     
     /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
+  }
+  .topMedal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 190px;
+    height: 28px;
+    margin: 8px auto 0 auto;
+    padding: 0 10px;
+    border-radius: 14px;
+    border: solid 1px #e0e0e0;
+    background-color: #f5f5f5;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    color: #bdbdbd;
+    letter-spacing: -0.6px;
+    :before {
+      display: block;
+      content: '';
+      width: 26px;
+      height: 16px;
+      margin-right: 8px;
+      background: url(${CrownIcon}) no-repeat center center / cover;
+    }
   }
 `
 //flex item3
@@ -697,31 +759,7 @@ const NameWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  .topMedal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 175px;
-    height: 28px;
-    margin-top: 8px;
-    padding: 0 10px;
-    border-radius: 14px;
-    border: solid 1px #e0e0e0;
-    background-color: #f5f5f5;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 28px;
-    text-align: center;
-    color: #bdbdbd;
-    :before {
-      display: block;
-      content: '';
-      width: 26px;
-      height: 16px;
-      margin-right: 8px;
-      background: url(${CrownIcon}) no-repeat center center / cover;
-    }
-  }
+
   .expBtnWrap {
     display: flex;
     > a {
@@ -1007,5 +1045,84 @@ const FanRank = styled.div`
   }
   &.rank3:after {
     background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
+  }
+`
+const BadgeWrap = styled.div`
+  display: flex;
+  margin: 10px auto 10px auto;
+  margin-left: ${(props) => props.margin} !important;
+  justify-content: center;
+  align-items: center;
+  & .swiper-slide {
+    display: block;
+
+    width: auto;
+    height: auto;
+  }
+  & .swiper-wrapper {
+    height: auto;
+    margin: 0 auto;
+  }
+  & .swiper-pagination {
+    position: static;
+    margin-top: 20px;
+  }
+  & .swiper-pagination-bullet {
+    width: 11px;
+    height: 11px;
+    background: #000000;
+    opacity: 0.5;
+  }
+  & .swiper-pagination-bullet-active {
+    background: ${COLOR_MAIN};
+    opacity: 1;
+  }
+
+  .fan-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 800;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: -0.35px;
+    padding: 0 10px 0 3px;
+    text-align: left;
+    color: #ffffff;
+  }
+  .fan-badge:last-child {
+    margin-right: 0;
+  }
+
+  .fan-badge img {
+    width: 42px;
+    height: 26px;
+  }
+  .fan-badge span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.2;
+    color: #ffffff;
+  }
+`
+//팬 뱃지 스타일링
+const Slide = styled.a`
+  color: #fff;
+`
+//프로필메세지
+const ProfileMsg = styled.p`
+  word-break: break-all;
+  margin-top: 8px;
+  color: #616161;
+  font-size: 14px;
+  line-height: 20px;
+  transform: skew(-0.03deg);
+  word-break: break-all;
+  @media (max-width: ${WIDTH_TABLET_S}) {
+    text-align: center;
   }
 `

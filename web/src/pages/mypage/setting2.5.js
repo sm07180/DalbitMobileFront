@@ -416,7 +416,7 @@ export default (props) => {
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메시지</label>
                   <MsgText defaultValue={profile.profMsg} onChange={changeMsg} maxLength={100} />
-                  <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg>
+                  {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
                 </div>
 
                 <SaveBtn onClick={saveUpload}>저장</SaveBtn>
@@ -477,6 +477,7 @@ const GenderAlertMsg = styled.div`
   top: 46px;
   padding: 22px 0 0 0;
   left: 0;
+  bottom: 0;
   z-index: 2;
   text-align: center;
   height: 44px;
@@ -761,6 +762,9 @@ const SettingWrap = styled.div`
   @media (max-width: ${WIDTH_MOBILE}) {
     width: 100%;
     /* height: 100vh; */
+  }
+  .msg-wrap {
+    position: relative;
   }
 `
 
