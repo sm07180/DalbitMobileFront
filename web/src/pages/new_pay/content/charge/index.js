@@ -150,6 +150,7 @@ const Content = styled.div`
   min-height: calc(100vh - 40px);
   padding: 0 16px;
   background: #eeeeee;
+  padding-bottom: 30px;
   &.new {
     min-height: 100%;
   }

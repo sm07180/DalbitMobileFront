@@ -152,6 +152,7 @@ const Content = styled.section`
   min-height: calc(100vh - 40px);
   padding: 0 16px;
   background: #eeeeee;
+  padding-bottom: 16px;
   .mydal {
     padding: 16px 0 8px 0;
     font-size: 16px;
