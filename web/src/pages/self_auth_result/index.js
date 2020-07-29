@@ -73,6 +73,23 @@ export default (props) => {
     window.history.back()
   }
 
+  const goLegalAuth = async () => {
+    let myBirth
+    const baseYear = new Date().getFullYear() - 16
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > baseYear) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
+    history.push(`/self_auth/legal`)
+  }
+
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
@@ -104,12 +121,7 @@ export default (props) => {
               <button className="cancel" onClick={goBack}>
                 취소
               </button>
-              <button
-                onClick={() => {
-                  history.push('/legalauth')
-                }}>
-                동의 받기
-              </button>
+              <button onClick={goLegalAuth}>동의 받기</button>
             </div>
           </div>
         ) : authState === 3 ? (
