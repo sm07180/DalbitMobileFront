@@ -26,6 +26,7 @@ export default () => {
   const createContent = () => {
     let {title} = params
     const {state} = location
+    const {name, price, itemNo} = location.search
     if (state === undefined && Object.keys(params).length === 0 /*&& webview === 'new'*/) {
       title = 'room'
     }
