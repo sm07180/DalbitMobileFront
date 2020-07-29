@@ -2197,7 +2197,7 @@ export default class API {
     return await ajax({url: '/profile/star/memo', method: 'GET', params})
   }
   static postNewStarMemo = async (data) => {
-    return await ajax({url: '/profile/fan/memo', method: 'post', data})
+    return await ajax({url: '/profile/star/memo', method: 'post', data})
   }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
