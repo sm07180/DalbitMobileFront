@@ -1,0 +1,12 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="10.121" height="10.121" viewBox="0 0 10.121 10.121">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#f5f5f5;stroke-linecap:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <g id="close_g_l" transform="translate(1.061 1.061)">
+        <path id="선_161" d="M0 8L8 0" class="cls-1" data-name="선 161"/>
+        <path id="선_162" d="M0 0L8 8" class="cls-1" data-name="선 162"/>
+    </g>
+</svg>

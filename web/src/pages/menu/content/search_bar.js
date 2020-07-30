@@ -7,12 +7,14 @@ import styled from 'styled-components'
 import useChange from 'components/hooks/useChange'
 //static
 import SearchIco from '../static/search/ic_search.svg'
+import CloseIco from '../static/s_close.svg'
 //
 export default (props) => {
   //---------------------------------------------------------------------
   //hooks
-  const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
+  const {changes, setChanges, onChange} = useChange(update, {onChange: -1, query: ''})
   const [typing, setTyping] = useState('')
+
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
   //update
@@ -61,10 +63,23 @@ export default (props) => {
             onKeyPress={handleKeyPress}
             onChange={onChange}
             ref={IputEl}
+            value={changes.query}
           />
           <button type="submit">
             <img className="ico" src={SearchIco} />
           </button>
+          {changes.query > 0 && (
+            <div className="closeWrap">
+              <div
+                onClick={() => {
+                  setChanges({
+                    ...changes,
+                    query: ''
+                  })
+                }}
+                className="deleteBtn"></div>
+            </div>
+          )}
         </form>
       </div>
     </Content>
@@ -72,11 +87,37 @@ export default (props) => {
 }
 //---------------------------------------------------------------------
 const Content = styled.div`
+  position: relative;
   display: block;
   padding: 10px 16px 11px;
   background-color: #fff;
   border-radius: 12px;
   border: solid 1px #e0e0e0;
+  .closeWrap {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 34px;
+  }
+  .deleteBtn {
+    position: relative;
+    background-color: #bdbdbd;
+    width: 20px;
+    height: 20px;
+    display: block;
+    border-radius: 50%;
+    &:after {
+      content: '';
+      display: block;
+      width: 9px;
+      height: 9px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: url(${CloseIco}) no-repeat center center / cover;
+    }
+  }
   &.focusing {
     border: solid 1px #000000;
   }
