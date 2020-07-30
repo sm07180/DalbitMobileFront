@@ -249,6 +249,26 @@
           background-color: inherit;
         }
 
+        &--select {
+          & > select {
+            width: 100%;
+          }
+          // &::after {
+          //   content: '';
+          //   width: 14px;
+          //   height: 14px;
+          //   border-bottom: 1px solid #bdbdbd;
+          //   transform: translate(-50%, -40%) rotate(-135deg);
+          // }
+          // &::before {
+          //   content: '';
+          //   width: 14px;
+          //   height: 14px;
+          //   border-bottom: 1px solid #bdbdbd;
+          //   transform: translate(-50%, -40%) rotate(135deg);
+          // }
+        }
+
         &--social {
           display: flex;
           & > input {
@@ -276,7 +296,7 @@
           align-items: center;
           font-size: 14px;
 
-          span {
+          & > span:first-child {
             display: inline-block;
             flex: 1;
             align-items: center;
@@ -286,7 +306,10 @@
             overflow: hidden;
             color: #bdbdbd;
           }
-          button {
+          & > span:last-child {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-left: auto;
           }
         }
@@ -337,6 +360,79 @@
         z-index: 2;
         font-size: 16px;
       }
+    }
+  }
+  .resultWrap {
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 49px;
+      padding: 0px 10px;
+      border-bottom: 1px solid #dedede;
+
+      &__title {
+        font-size: 18px;
+        text-align: center;
+      }
+      &__button {
+        &--back {
+          width: 36px;
+          position: absolute;
+          top: 6px;
+          left: 10px;
+        }
+      }
+    }
+    &__content {
+      padding: 0 16px;
+      letter-spacing: -0.35px;
+    }
+    &__title {
+      padding: 24px 0 8px;
+      font-size: 16px;
+      line-height: 1.25;
+      color: #632beb;
+      border-bottom: 1px solid #632beb;
+    }
+
+    &__list {
+      display: flex;
+      height: 40px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 1px solid #e0e0e0;
+      &__text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+
+        &--purple {
+          display: flex;
+          margin-right: 2px;
+          color: #632beb;
+          font-size: 20px;
+        }
+      }
+      &__notice {
+        margin-top: 20px;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        margin-bottom: 32px;
+      }
+    }
+    .resultButton {
+      width: 100%;
+      margin-top: 32px;
+      padding: 12px 0;
+      border-radius: 12px;
+      background-color: #632beb;
+      font-size: 18px;
+      color: #fff;
     }
   }
 }

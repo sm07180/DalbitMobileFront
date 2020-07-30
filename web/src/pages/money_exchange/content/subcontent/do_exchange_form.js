@@ -6,26 +6,26 @@ import Api from 'context/api'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 // import DalbitSelectBox from 'common/ui/dalbit_selectbox'
 
-const selectReducer = (state, action) => {
-  switch (action.type) {
-    case 'open':
-      return {
-        ...state,
-        isOpen: !state.isOpen
-      }
-    case 'select':
-      return {
-        ...state,
-        selectIdx: action.idx || 0
-      }
+// const selectReducer = (state, action) => {
+//   switch (action.type) {
+//     case 'open':
+//       return {
+//         ...state,
+//         isOpen: !state.isOpen
+//       }
+//     case 'select':
+//       return {
+//         ...state,
+//         selectIdx: action.idx || 0
+//       }
 
-    default:
-      throw new Error()
-  }
-}
+//     default:
+//       throw new Error()
+//   }
+// }
 
 export default function MakeFormWrap({state, dispatch, inspection}) {
-  const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
+  // const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
   const context = useContext(Context)
 
   const closeDaumPostCode = () => {
@@ -101,9 +101,8 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
       if (reader.result) {
-        const res = await Api.postImage({
-          dataURL: reader.result,
-          uploadType: 'qna'
+        const res = await Api.image_upload({
+          data: {dataURL: reader.result, uploadType: 'exchange'}
         })
         if (res.result === 'success') {
           const arr = state.files.map((v, i) => {
@@ -126,9 +125,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
     }
   }
 
-  useEffect(() => {
-    dispatch({type: 'bank', val: bankList[selectState.selectIdx].value})
-  }, [selectState.selectIdx])
+  useEffect(() => {}, [])
 
   useEffect(() => {
     if (state.fSocialNo.length === 6) {
@@ -159,7 +156,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
           <div className="formData__input formData__input--select">
             <select
               onChange={(e) => {
-                selectDispatch({type: 'select', idx: e.target.value})
+                dispatch({type: 'bank', val: e.target.value})
               }}>
               {bankList.map((v, idx) => {
                 return (
@@ -224,7 +221,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
         </div>
         <div className="formData__list formData__list--disabled">
           <div className="formData__title">우편번호</div>
-          <div className="formData__input">
+          <div className="formData__input" onClick={(e) => searchAddr(e)}>
             <input
               type="text"
               className="formData__input--text adressBg"
@@ -232,9 +229,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
               value={state.zoneCode}
               placeholder="주소검색 해주세요."
             />
-            <button className="formData__input--button" onClick={(e) => searchAddr(e)}>
-              주소검색
-            </button>
+            <button className="formData__input--button">주소검색</button>
           </div>
         </div>
         <div className="formData__list formData__list--disabled">
@@ -267,7 +262,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
           <div className="formData__input">
             <label htmlFor="id-upload-text" className="formData__input--label">
               <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요'}</span>
-              <button className="formData__input--button">찾아보기</button>
+              <span className="formData__input--button">찾아보기</span>
             </label>
             <input
               type="file"
@@ -284,7 +279,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
           <div className="formData__input">
             <label htmlFor="bankbook-upload-text" className="formData__input--label">
               <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요'}</span>
-              <button className="formData__input--button">찾아보기</button>
+              <span className="formData__input--button">찾아보기</span>
             </label>
             <input
               type="file"
@@ -303,7 +298,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
               <div className="formData__input">
                 <label htmlFor="bankbook-upload-text" className="formData__input--label">
                   <span>{state.files[2] !== false ? state.files[2].name : '등록해주세요'}</span>
-                  <button className="formData__input--button">찾아보기</button>
+                  <span className="formData__input--button">찾아보기</span>
                 </label>
                 <input
                   type="file"

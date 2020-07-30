@@ -1,0 +1,72 @@
+#guidanceWrap {
+  height: inherit;
+  overflow-y: scroll;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 49px;
+    padding: 0px 10px;
+    border-bottom: 1px solid #dedede;
+    &__title {
+      font-size: 18px;
+      text-align: center;
+    }
+    // &__button {
+    //   &--back {
+    //     position: absolute;
+    //     width: 36px;
+    //     height: 36px;
+    //     background: url('./static/ic_back.svg') no-repeat center;
+    //     top: 6px;
+    //     left: 10px;
+    //   }
+    // }
+  }
+
+  .guidance {
+    display: flex;
+    flex-direction: column;
+    margin-top: 22px;
+    padding: 0 16px;
+    font-family: NanumSquareB;
+    &__list {
+      padding-bottom: 12px;
+      font-size: 13px;
+      line-height: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      &--title {
+        margin-bottom: 7px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      &--red {
+        color: #ec455f;
+      }
+
+      &--gray {
+        color: dimgray;
+      }
+      &--bold {
+        font-weight: bold;
+      }
+
+      &--flex {
+        display: flex;
+      }
+
+      &--spacing {
+        margin-right: 5px;
+      }
+
+      &--fit {
+        min-width: fit-content;
+      }
+    }
+  }
+}
