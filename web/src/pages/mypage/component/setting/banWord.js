@@ -175,9 +175,9 @@ export default (props) => {
           <span></span>
         </button>
       )}
-      
+
       {word && createList()}
-      {word && (
+      {word && word.length < 100 && (
         <div className="btn-wrap">
           <button
             className="white"
