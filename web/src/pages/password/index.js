@@ -274,6 +274,8 @@ export default (props) => {
 
   return (
     <Layout status="no_gnb" header="비밀번호 변경">
+      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
       <Content>
         {/* 휴대폰 본인인증 -------------------------------------------------------- */}
         <InputItem button={true} validate={validate.memId.check}>
