@@ -4,56 +4,56 @@ export default function MakeRepplyWrap({state, inspection}) {
   return (
     <>
       <div className="formData">
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">예금주</div>
           <div className="formData__input">
             <div className="formData__input--disable">{state.accountName || ''}</div>
           </div>
         </div>
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">은행</div>
           <div className="formData__input">
             <div className="formData__input--disable">
               {bankList.findIndex((v) => {
-                return v.value === state.bankCode
+                return v.value == state.bankCode
               }) !== -1
                 ? bankList[
                     bankList.findIndex((v) => {
-                      return v.value === state.bankCode
+                      return v.value == state.bankCode
                     })
                   ].text
                 : ''}
             </div>
           </div>
         </div>
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">계좌번호</div>
           <div className="formData__input">
             <div className="formData__input--disable">{state.accountNo}</div>
           </div>
         </div>
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">주민등록번호</div>
-          <div className="formData__input--nomber">
-            <span className="formData__input--disable">{state.socialNo || ''}</span>
+          <div className="formData__input">
+            <span className="formData__input">{state.socialNo || ''}</span>
             <span className="formData__input--line">-</span>
-            <span className="formData__input--disable">*******</span>
+            <span className="formData__input">*******</span>
           </div>
         </div>
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">전화번호</div>
           <div className="formData__input">
             <div className="formData__input--disable">{state.phoneNo || ''}</div>
           </div>
         </div>
-        <div className="formData__list">
+        <div className="formData__list formData__list--disabled">
           <div className="formData__title">주소</div>
           <div className="formData__input--address">
             <div className="formData__input--disable">{state.address1 || ''}</div>
             {state.address2 && <div className="formData__input--disable formData__input--address--mt">{state.address2}</div>}
           </div>
         </div>
-        <button className="doExchangeButton" onClick={() => inspection(1)}>
+        <button className="doExchangeButton active" onClick={() => inspection(1)}>
           환전 신청하기
         </button>
       </div>

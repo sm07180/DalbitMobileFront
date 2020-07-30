@@ -1,6 +1,6 @@
 export function Inspection(state, type, currentByeol) {
   if (type === 1) {
-    if (state.exchangeStar < 570 || !state.exchangeStar) {
+    if (state.byeolCnt < 570 || !state.byeolCnt) {
       return {
         status: false,
         content: '환전 신청별은\n최소 570개 이상이어야 합니다.'
