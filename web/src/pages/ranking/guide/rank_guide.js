@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 
 import './rank_guide.scss'
 import Layout from 'pages/common/layout'
-import Benefit from './rank_guide_bnenfit'
+import Benefit from './rank_guide_benefit'
+import HowUse from './rank_guide_howUse'
 
 import closeBtn from '../static/ic_back.svg'
 
@@ -36,7 +37,7 @@ export default (props) => {
 
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
-          {guideType === 'howUse' && <>howUse</>}
+          {guideType === 'howUse' && <HowUse></HowUse>}
         </div>
       </div>
     </Layout>
