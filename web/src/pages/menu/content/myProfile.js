@@ -281,6 +281,7 @@ const myProfile = (props) => {
                 {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
             </NameWrap>
+            <ProfileMsg>{profile.profMsg}</ProfileMsg>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
                 <Swiper {...params}>{BadgeSlide}</Swiper>
@@ -289,7 +290,7 @@ const myProfile = (props) => {
               <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             )}
             {profile.fanRank.length !== 0 && <ButtonWrap>{createFanList()}</ButtonWrap>}
-            <ProfileMsg>{profile.profMsg}</ProfileMsg>
+
             <div className="categoryCntWrap">
               <div onClick={goFanEdite}>
                 <span>
@@ -1120,12 +1121,10 @@ const ProfileMsg = styled.p`
   margin: 0 auto;
   word-break: break-all;
   margin-top: 8px;
-  color: #616161;
-  font-size: 14px;
-  line-height: 20px;
   transform: skew(-0.03deg);
-  word-break: break-all;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-  }
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+  color: #757575;
 `

@@ -34,7 +34,6 @@ function usePrevious(value) {
 
 const makeContents = (props) => {
   const {list, liveListType} = props
-  const typeSearch = props.type
   const evenList = list.filter((v, idx) => idx % 2 === 0)
 
   if (liveListType === 'detail') {
