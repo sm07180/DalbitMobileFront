@@ -13,9 +13,9 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Charge from './tab/charge-popup'
 import Terms from 'pages/common/terms'
-
+import Guidance from 'pages/common/guidance'
 //
-export default props => {
+export default (props) => {
   //state
   const [layout, setLayout] = useState('')
   //context
@@ -47,6 +47,18 @@ export default props => {
             <Terms {...props} />
           </>
         )
+      case 'GUIDANCE':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <Guidance />
+          </>
+        )
       default:
         return <div>팝업 컨텐츠가 정의되지않음</div>
     }
@@ -57,7 +69,7 @@ export default props => {
   }, [context.popup_visible])
 
   useEffect(() => {
-    if (context.popup_code[0] == 'TERMS') {
+    if (context.popup_code[0] == 'TERMS' || context.popup_code[0] === 'GUIDANCE') {
       setLayout('round terms')
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')

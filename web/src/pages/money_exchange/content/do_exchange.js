@@ -15,6 +15,7 @@ import MakeFormWrap from './subcontent/do_exchange_form'
 import MakeRepplyWrap from './subcontent/do_exchange_repply'
 
 import BackBtn from '../static/ic_back.svg'
+import Popup from 'pages/common/popup'
 
 const FormDataReducer = (state, action) => {
   switch (action.type) {
@@ -34,6 +35,7 @@ const FormDataReducer = (state, action) => {
         name: action.val
       }
     case 'bank':
+      console.log(action.val)
       return {
         ...state,
         selectBank: action.val
@@ -200,6 +202,13 @@ export default function DoExchange({state, dispatch}) {
 
     if (res.result === 'success') {
       dispatch({type: 'result', value: {...res.data}})
+    } else {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
 
@@ -213,6 +222,13 @@ export default function DoExchange({state, dispatch}) {
 
     if (res.result === 'success') {
       dispatch({type: 'result', value: {...res.data}})
+    } else {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
 
@@ -340,8 +356,8 @@ export default function DoExchange({state, dispatch}) {
             <div>환전 정보</div>
             <div
               className="doExchangeWrap__contentsHeader--info"
-              onClick={(e) => {
-                dispatch({type: 'status', value: 1})
+              onClick={() => {
+                context.action.updatePopup('GUIDANCE')
               }}>
               <span className="doExchangeWrap__contentsHeader--icon" />
               <span>유의사항</span>
@@ -400,6 +416,7 @@ export default function DoExchange({state, dispatch}) {
         {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
         {radioCheck === 1 && <MakeRepplyWrap state={exchangeHistory.value} inspection={checkInspection} />}
       </div>
+      <Popup />
     </div>
   )
 }
