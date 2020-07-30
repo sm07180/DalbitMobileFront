@@ -1,8 +1,8 @@
 import Util from 'components/lib/utility.js'
 //context
-import {Context} from 'context'
+
 import {RoomJoin} from 'context/room'
-import React, {useContext} from 'react'
+import React from 'react'
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
 import like from './static/like_g_s.svg'
@@ -10,9 +10,9 @@ import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
 
-export default props => {
+export default (props) => {
   //context
-  const context = useContext(Context)
+
   const rankType = props.rankType
   const {list} = props
 
@@ -108,10 +108,6 @@ export default props => {
                       <div className="countBox">
                         {rankType == 'dj' && (
                           <>
-                            {/* <span className="countBox__item">
-                              <img src={star} />
-                              {Util.printNumber(gift)}
-                            </span> */}
                             <span className="countBox__item">
                               <img src={people} />
                               {Util.printNumber(listeners)}
@@ -131,10 +127,6 @@ export default props => {
 
                         {rankType == 'fan' && (
                           <>
-                            {/* <span className="countBox__item">
-                              <img src={moon} />
-                              {Util.printNumber(gift)}
-                            </span> */}
                             <span className="countBox__item">
                               <img src={time} />
                               {Util.printNumber(listen)}

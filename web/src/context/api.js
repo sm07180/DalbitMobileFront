@@ -1632,6 +1632,16 @@ export default class API {
     })
   }
 
+  static get_level_ranking = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/level`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
   //------------------------------------------------------------- 인증관련
   /**
    * @brief 휴대폰 인증번호요청
@@ -2197,7 +2207,7 @@ export default class API {
     return await ajax({url: '/profile/star/memo', method: 'GET', params})
   }
   static postNewStarMemo = async (data) => {
-    return await ajax({url: '/profile/star/memo', method: 'post', data})
+    return await ajax({url: '/profile/fan/memo', method: 'post', data})
   }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
