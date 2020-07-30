@@ -150,7 +150,7 @@ const myProfile = (props) => {
     return (
       <>
         <FanListWrap>
-          <span>
+          <span onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
             <span className="rankTitle">팬랭킹</span>
             <em></em>
             {/* <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em> */}
