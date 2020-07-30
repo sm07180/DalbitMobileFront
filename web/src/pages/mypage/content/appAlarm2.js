@@ -31,6 +31,7 @@ export default (props) => {
     })
     if (res.result === 'success') {
       setAllBtnState(res.data)
+      setMyAlimType(res.data.alimType)
       first = false
     } else if (res.result === 'fail') {
     }
@@ -41,18 +42,21 @@ export default (props) => {
       data: {
         isAll: btn1,
         isMyStar: btn2,
-        isGift: btn4,
-        isFan: btn5,
-        isComment: btn6,
-        isRadio: btn7,
-        isPush: btn8,
-        isLike: btn3
+        isGift: btn3,
+        isFan: btn4,
+        isComment: btn5,
+        isRadio: btn6,
+        isPush: btn7,
+        isLike: btn8,
+        alimType: myAlimType
       }
     })
     if (res.result === 'success') {
+      // console.log(res)
     } else if (res.result === 'fail') {
     }
   }
+
   //state
   const [allBtnState, setAllBtnState] = useState([])
   const [btn1, setBtn1] = useState(0)
@@ -63,6 +67,8 @@ export default (props) => {
   const [btn6, setBtn6] = useState(0)
   const [btn7, setBtn7] = useState(0)
   const [btn8, setBtn8] = useState(0)
+  const [myAlimType, setMyAlimType] = useState(-1)
+
   //func toggle btn
   const ToggleBtn = (value, name) => {
     first = false
@@ -102,7 +108,7 @@ export default (props) => {
     } else {
       setBtn1(0)
     }
-  }, [btn2, btn3, btn4, btn5, btn6, btn7, btn8])
+  }, [btn2, btn3, btn4, btn5, btn6, btn7, btn8, myAlimType])
   //--------------------------------------
   useEffect(() => {
     fetchDataList()
@@ -110,30 +116,42 @@ export default (props) => {
   //------------------------------------------
   useEffect(() => {
     if (!first) fetchData()
-  }, [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8])
+  }, [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, myAlimType])
   //------------------------------------------
   useEffect(() => {
     setBtn1(allBtnState.all_ok)
     setBtn2(allBtnState.isMyStar)
-    setBtn3(allBtnState.isLike)
-    setBtn4(allBtnState.isGift)
-    setBtn5(allBtnState.isFan)
-    setBtn6(allBtnState.isComment)
-    setBtn7(allBtnState.isRadio)
-    setBtn8(allBtnState.isPush)
+    setBtn3(allBtnState.isGift)
+    setBtn4(allBtnState.isFan)
+    setBtn5(allBtnState.isComment)
+    setBtn6(allBtnState.isRadio)
+    setBtn7(allBtnState.isPush)
+    setBtn8(allBtnState.isLike)
     first = true
   }, [allBtnState])
   // render func
+
   const makeContent = () => {
     return (
       <Content>
+        <article className="soundSetting">
+          <button onClick={() => setMyAlimType('n')} className={myAlimType === 'n' ? 'active' : ''}>
+            무음
+          </button>
+          <button className="active" onClick={() => setMyAlimType('s')} className={myAlimType === 's' ? 'active' : ''}>
+            소리
+          </button>
+          <button onClick={() => setMyAlimType('v')} className={myAlimType === 'v' ? 'active' : ''}>
+            진동
+          </button>
+        </article>
         <div className="holeAlarm">
           <h2 className="on">전체 알림 수신</h2>
           <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
         </div>
         <div>
-          <h2>DJ 알림</h2>
-          <p>팬으로 등록 된 DJ의 방송시작 및 정보 수신 알림</p>
+          <h2>DJ 방송 알림</h2>
+          <p>내가 스타로 등록한 DJ의 방송 알림</p>
           <button
             className={btn2 === 1 ? 'on' : ''}
             value="btn2"
@@ -142,8 +160,17 @@ export default (props) => {
         </div>
 
         <div>
-          <h2>선물 알림</h2>
-          <p>달 선물 수신 알림</p>
+          <h2>DJ 방송공지 알림</h2>
+          <p>스타로 등록한 DJ의 신규 방송공지 등록 알림</p>
+          <button
+            className={btn3 === 1 ? 'on' : ''}
+            value="btn3"
+            name="setBtn3"
+            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
+        </div>
+        <div>
+          <h2>팬 알림</h2>
+          <p>새로운 팬이 추가된 경우 알림</p>
           <button
             className={btn4 === 1 ? 'on' : ''}
             value="btn4"
@@ -151,8 +178,8 @@ export default (props) => {
             onClick={() => ToggleBtn(btn4, setBtn4)}></button>
         </div>
         <div>
-          <h2>팬 알림</h2>
-          <p>새로운 팬 등록 수신 알림</p>
+          <h2>팬보드 알림</h2>
+          <p>나의 팬보드에 새로운 글 등록 시 알림</p>
           <button
             className={btn5 === 1 ? 'on' : ''}
             value="btn5"
@@ -160,8 +187,8 @@ export default (props) => {
             onClick={() => ToggleBtn(btn5, setBtn5)}></button>
         </div>
         <div>
-          <h2>댓글 알림</h2>
-          <p>팬 보드 신규 글 등록 알림</p>
+          <h2>선물 알림</h2>
+          <p>선물을 받았을 때 알림</p>
           <button
             className={btn6 === 1 ? 'on' : ''}
             value="btn6"
@@ -169,26 +196,17 @@ export default (props) => {
             onClick={() => ToggleBtn(btn6, setBtn6)}></button>
         </div>
         <div>
-          <h2>좋아요 알림</h2>
-          <p>등록 된 게시물의 좋아요 수신 알림</p>
-          <button
-            className={btn3 === 1 ? 'on' : ''}
-            value="btn3"
-            name="setBtn3"
-            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
-        </div>
-        {/* <div>
-          <h2>공지 알림</h2>
-          <p>달빛 라이브 공지사항 수신 알림</p>
+          <h2>1:1문의 답변 알림</h2>
+          <p>1:1문의에 답변이 등록된 경우 알림</p>
           <button
             className={btn7 === 1 ? 'on' : ''}
             value="btn7"
             name="setBtn7"
             onClick={() => ToggleBtn(btn7, setBtn7)}></button>
-        </div> */}
+        </div>
         <div>
-          <h2>Push 알림</h2>
-          <p>서비스의 Push 메시지 수신 알림</p>
+          <h2>서비스 알림</h2>
+          <p>기타 서비스 이용 관련 알림</p>
           <button
             className={btn8 === 1 ? 'on' : ''}
             value="btn8"
@@ -216,6 +234,37 @@ const Content = styled.div`
   background-color: #eeeeee;
   padding: 10px 16px 0 16px;
   box-sizing: border-box;
+  .soundSetting {
+    display: flex;
+    margin-bottom: 12px;
+    button {
+      width: 33.3333%;
+      height: 44px;
+      background-color: #f5f5f5;
+      margin-left: -1px;
+      border: 1px solid #e0e0e0;
+      z-index: 3;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #bdbdbd;
+      :nth-child(1) {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+      }
+      :nth-child(3) {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+      }
+      &.active {
+        border-color: #632beb;
+        z-index: 5;
+        font-weight: 800;
+        color: #632beb;
+        background-color: #fff;
+      }
+    }
+  }
   & div {
     position: relative;
     display: flex;
@@ -228,6 +277,7 @@ const Content = styled.div`
     border-radius: 12px;
     background-color: #ffffff;
     &.holeAlarm {
+      margin-bottom: 12px;
       height: 44px;
       h2 {
         font-size: 18px;
