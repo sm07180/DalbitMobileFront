@@ -274,12 +274,13 @@ export default (props) => {
                 }
               }}
             />
-
+            <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+            <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
             <div className="input-wrap">
               <input
                 ref={inputPhoneRef}
                 type="number"
-                autoComplete="off"
+                // autoComplete="off"
                 placeholder="전화번호"
                 value={phoneNum}
                 onChange={changePhoneNum}
@@ -303,7 +304,7 @@ export default (props) => {
               <input
                 ref={inputPasswordRef}
                 type="password"
-                autoComplete="new-password"
+                // autoComplete="new-password"
                 placeholder="비밀번호"
                 value={password}
                 onChange={changePassword}
