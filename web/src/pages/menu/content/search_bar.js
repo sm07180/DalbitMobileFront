@@ -1,7 +1,7 @@
 /**
  * @title 검색바
  */
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 //hooks
 import useChange from 'components/hooks/useChange'
@@ -13,7 +13,8 @@ export default (props) => {
   //hooks
   const {changes, setChanges, onChange} = useChange(update, {onChange: -1})
   const [typing, setTyping] = useState('')
-  const [filter, setFilter] = useState('')
+  const [focus, setFocus] = useState(false)
+  const IputEl = useRef()
   //update
   function update(mode) {
     switch (true) {
@@ -37,12 +38,30 @@ export default (props) => {
     props.update({search: changes})
     setTyping(changes.query)
   }
+  useEffect(() => {
+    const {current} = IputEl
+    const handleFocus = () => {
+      setFocus(true)
+    }
+    current.addEventListener('focus', handleFocus)
+    return () => {
+      current.removeEventListener('focus', handleFocus)
+    }
+  })
+
   //---------------------------------------------------------------------
   return (
-    <Content className={typing.length > 0 ? 'in_wrap focusing' : 'in_wrap'}>
-      <div className={typing.length > 0 ? 'in_wrap focusing' : 'in_wrap'}>
+    <Content className={focus ? 'in_wrap focusing' : 'in_wrap'}>
+      <div className={focus ? 'in_wrap focusing' : 'in_wrap'}>
         <form onSubmit={handleSubmit}>
-          <input type="text" name="query" placeholder="검색어를 입력해 보세요." onKeyPress={handleKeyPress} onChange={onChange} />
+          <input
+            type="text"
+            name="query"
+            placeholder="검색어를 입력해 보세요."
+            onKeyPress={handleKeyPress}
+            onChange={onChange}
+            ref={IputEl}
+          />
           <button type="submit">
             <img className="ico" src={SearchIco} />
           </button>

@@ -9,7 +9,8 @@ import Room, {RoomJoin} from 'context/room'
 import Header from '../component/header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
-
+import InitialSearch from './search_start'
+import ArrowIcon from '../static/s_arrow.svg'
 //flag
 let currentPage = 1
 let query = ''
@@ -20,7 +21,12 @@ export default (props) => {
   const [member, setMember] = useState(null)
   const [nextMember, setNextMember] = useState(null)
   const [live, setLive] = useState(null)
+  const [nextLive, setNextLive] = useState(null)
   const [moreState, setMoreState] = useState(false)
+  const [moreStateLive, setMoreStateLive] = useState(false)
+  const [btnIdx, setBtnIdx] = useState(0)
+  const [totalMemCnt, setTotalMemCnt] = useState(0)
+  const [totalLiveCnt, setTotalLiveCnt] = useState(0)
   //---------------------------------------------------------------------
   //fetch 사용자검색
   async function fetchMember(query, next) {
@@ -32,7 +38,7 @@ export default (props) => {
         params: {
           search: query || qs,
           page: currentPage,
-          records: 12
+          records: 3
         }
       })
       if (res.result == 'success' && _.hasIn(res, 'data.list')) {
@@ -43,9 +49,11 @@ export default (props) => {
           setMoreState(false)
         } else {
           if (next) {
+            setTotalMemCnt(res.data.paging.total)
             setMoreState(true)
             setNextMember(res.data.list)
           } else {
+            setTotalMemCnt(res.data.paging.total)
             setMember(res.data.list)
             fetchMember(query, 'next')
           }
@@ -61,21 +69,47 @@ export default (props) => {
       })
     }
   }
-  //fetch (라이브검색)
-  async function fetchLive(query) {
-    /*if (query === undefined) return
-    const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
-    const res = await API.live_search({
-      params: {
-        search: query || qs,
-        page: 1,
-        records: 12
+  async function fetchLive(query, next) {
+    if (query === undefined) return
+    if (query.length > 1) {
+      currentPage = next ? ++currentPage : 1
+      const qs = location.href.split('?')[1] && decodeURIComponent(location.href.split('?')[1].split('=')[1])
+      const res = await API.broad_list({
+        params: {
+          search: query || qs,
+          page: currentPage,
+          records: 3
+        }
+      })
+      if (res.result == 'success' && _.hasIn(res, 'data.list')) {
+        if (res.data.list == false) {
+          if (!next) {
+            setLive(false)
+          }
+          setMoreStateLive(false)
+        } else {
+          if (next) {
+            setTotalLiveCnt(res.data.paging.total)
+            setMoreStateLive(true)
+            setNextLive(res.data.list)
+          } else {
+            setTotalLiveCnt(res.data.paging.total)
+            setLive(res.data.list)
+            fetchLive(query, 'next')
+          }
+        }
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
       }
-    })
-    if (res.result === 'success') {
-      setLive(res.data)
-    }*/
+    } else {
+      context.action.alert({
+        msg: '검색어를 두 글자 이상 입력해주세요'
+      })
+    }
   }
+
   //update
   function update(mode) {
     switch (true) {
@@ -89,7 +123,6 @@ export default (props) => {
         //라이브중아님,사용자검색
         if (roomNo !== '' && roomNo !== '0') {
           RoomJoin(roomNo)
-          // console.log('조인')
         } else if (roomNo === '0') {
           window.location.href = `/mypage/${memNo}/`
         }
@@ -115,34 +148,84 @@ export default (props) => {
       fetchMember(query, 'next')
     } else return
   }
+  const showMoreListLive = () => {
+    if (query.length > 1) {
+      setLive(live.concat(nextLive))
+      fetchLive(query, 'next')
+    } else return
+  }
   //---------------------------------------------------------------------
-  console.log()
+  useEffect(() => {
+    if (query === '') {
+      setMoreState(false)
+      setMoreStateLive(false)
+    }
+  }, [query])
+  const btnActive = (id) => {
+    setBtnIdx(id)
+  }
+
   return (
     <Content>
       <Room />
       <Header>
         <div className="category-text">검색</div>
       </Header>
+
       {/* 검색바 */}
       <div className="searchBarWrapper">
         <SearchBar update={update} />
       </div>
+      {query === '' && <InitialSearch />}
 
-      {member && <h1>사용자 검색</h1>}
-      <List update={update} type="member" fetch={member} />
-      {moreState && (
-        <div className="more-btn-wrap">
-          <button
-            className="more-btn"
-            onClick={() => {
-              showMoreList()
-            }}>
-            더보기
-          </button>
+      {query !== '' && (
+        <div className="searchTab">
+          {searchCategory.map((item, idx) => {
+            return (
+              <button
+                key={item.id}
+                className={btnIdx === item.id ? 'tabBtn tabBtn--active' : 'tabBtn'}
+                onClick={() => btnActive(item.id)}>
+                {item.title}
+              </button>
+            )
+          })}
         </div>
       )}
-      {/* {live && <h1>라이브 검색</h1>}
-      <List update={update} type="live" fetch={live} /> */}
+
+      {/* {live && <h1>라이브 검색</h1>} */}
+      {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
+        <div className="typeTitle">
+          <span className="title">실시간 LIVE</span>
+          {moreStateLive && (
+            <div className="more">
+              <span className="more__cnt">{totalLiveCnt && totalLiveCnt}</span>
+              <button
+                className="more__btn"
+                onClick={() => {
+                  showMoreListLive()
+                }}></button>
+            </div>
+          )}
+        </div>
+      )}
+      {query !== '' && (btnIdx === 0 || btnIdx === 1) && <List update={update} type="live" fetch={live} />}
+      {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
+        <div className="typeTitle">
+          <span className="title">DJ</span>
+          {moreState && (
+            <div className="more">
+              <span className="more__cnt">{totalMemCnt && totalMemCnt}</span>
+              <button
+                className="more__btn"
+                onClick={() => {
+                  showMoreList()
+                }}></button>
+            </div>
+          )}
+        </div>
+      )}
+      {query !== '' && (btnIdx === 0 || btnIdx === 2) && <List update={update} type="member" fetch={member} />}
     </Content>
   )
 }
@@ -150,6 +233,50 @@ export default (props) => {
 const Content = styled.div`
   background-color: #fff;
   height: 100vh;
+  .more {
+    display: flex;
+    align-items: center;
+    &__cnt {
+      font-size: 18px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: -0.36px;
+      text-align: left;
+      color: #632beb;
+    }
+    &__btn {
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: url(${ArrowIcon});
+    }
+  }
+  .typeTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-sizing: border-box;
+    margin: 20px 0;
+    .title {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.17;
+      letter-spacing: -0.36px;
+      text-align: left;
+      color: #000000;
+    }
+    .cnt {
+      font-size: 18px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      letter-spacing: -0.36px;
+      text-align: left;
+      color: #632beb;
+    }
+  }
   h1 {
     display: block;
     margin-bottom: 16px;
@@ -211,8 +338,47 @@ const Content = styled.div`
     }
   }
   .searchBarWrapper {
-    padding: 12px 16px;
+    padding: 10.5px 16px;
     box-sizing: border-box;
     background-color: #eee;
   }
+  .searchTab {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f5f5f5;
+    margin-top: 16px;
+    padding: 0 44px;
+    box-sizing: border-box;
+    .tabBtn {
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.43;
+      letter-spacing: normal;
+      text-align: center;
+      color: #757575;
+      padding-bottom: 8px;
+      &--active {
+        color: #632beb;
+        font-weight: 600;
+        border-bottom: 1px solid #632beb;
+        padding-bottom: 7px;
+      }
+    }
+  }
 `
+const searchCategory = [
+  {
+    id: 0,
+    title: '통합검색'
+  },
+  {
+    id: 1,
+    title: '실시간 라이브'
+  },
+  {
+    id: 2,
+    title: 'DJ'
+  }
+]
