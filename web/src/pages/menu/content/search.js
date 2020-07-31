@@ -14,6 +14,9 @@ import ArrowIcon from '../static/s_arrow.svg'
 //flag
 let currentPage = 1
 let query = ''
+let timer
+let recordsVar = 3
+//let moreState = false
 export default (props) => {
   // ctx
   const context = useContext(Context)
@@ -38,22 +41,29 @@ export default (props) => {
         params: {
           search: query || qs,
           page: currentPage,
-          records: 3
+          records: recordsVar
         }
       })
       if (res.result == 'success' && _.hasIn(res, 'data.list')) {
         if (res.data.list == false) {
           if (!next) {
+            setTotalMemCnt(0)
             setMember(false)
           }
           setMoreState(false)
         } else {
           if (next) {
-            setTotalMemCnt(res.data.paging.total)
+            if (res.data.hasOwnProperty('paging')) {
+              setTotalMemCnt(res.data.paging.total)
+            }
+
             setMoreState(true)
             setNextMember(res.data.list)
           } else {
-            setTotalMemCnt(res.data.paging.total)
+            if (res.data.hasOwnProperty('paging')) {
+              setTotalMemCnt(res.data.paging.total)
+            }
+
             setMember(res.data.list)
             fetchMember(query, 'next')
           }
@@ -84,16 +94,22 @@ export default (props) => {
       if (res.result == 'success' && _.hasIn(res, 'data.list')) {
         if (res.data.list == false) {
           if (!next) {
+            setTotalLiveCnt(0)
             setLive(false)
           }
           setMoreStateLive(false)
         } else {
           if (next) {
-            setTotalLiveCnt(res.data.paging.total)
+            if (res.data.hasOwnProperty('paging')) {
+              setTotalLiveCnt(res.data.paging.total)
+            }
+
             setMoreStateLive(true)
             setNextLive(res.data.list)
           } else {
-            setTotalLiveCnt(res.data.paging.total)
+            if (res.data.hasOwnProperty('paging')) {
+              setTotalLiveCnt(res.data.paging.total)
+            }
             setLive(res.data.list)
             fetchLive(query, 'next')
           }
@@ -143,17 +159,52 @@ export default (props) => {
   }, [])
 
   const showMoreList = () => {
-    if (query.length > 1) {
+    if (query.length > 1 && btnIdx === 2) {
       setMember(member.concat(nextMember))
       fetchMember(query, 'next')
     } else return
   }
   const showMoreListLive = () => {
-    if (query.length > 1) {
+    if (query.length > 1 && btnIdx === 1) {
       setLive(live.concat(nextLive))
       fetchLive(query, 'next')
     } else return
   }
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextMember, nextLive])
+  useEffect(() => {
+    if (query !== '' && btnIdx === 2) {
+      currentPage = 1
+      recordsVar = 20
+      fetchMember(query)
+    }
+    if (query !== '' && btnIdx === 1) {
+      currentPage = 1
+      recordsVar = 20
+      fetchLive(query)
+    }
+  }, [btnIdx])
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreListLive()
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
   //---------------------------------------------------------------------
   useEffect(() => {
     if (query === '') {
@@ -197,14 +248,12 @@ export default (props) => {
       {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
         <div className="typeTitle">
           <span className="title">실시간 LIVE</span>
-          {moreStateLive && (
+          {totalLiveCnt !== 0 && (
             <div className="more">
-              <span className="more__cnt">{totalLiveCnt && totalLiveCnt}</span>
-              <button
-                className="more__btn"
-                onClick={() => {
-                  showMoreListLive()
-                }}></button>
+              <span className="more__cnt" onClick={() => btnActive(1)}>
+                {totalLiveCnt && totalLiveCnt}
+              </span>
+              <button className="more__btn" onClick={() => btnActive(1)}></button>
             </div>
           )}
         </div>
@@ -213,14 +262,12 @@ export default (props) => {
       {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
         <div className="typeTitle">
           <span className="title">DJ</span>
-          {moreState && (
+          {totalMemCnt !== 0 && (
             <div className="more">
-              <span className="more__cnt">{totalMemCnt && totalMemCnt}</span>
-              <button
-                className="more__btn"
-                onClick={() => {
-                  showMoreList()
-                }}></button>
+              <span className="more__cnt" onClick={() => btnActive(2)}>
+                {totalMemCnt && totalMemCnt}
+              </span>
+              <button className="more__btn" onClick={() => btnActive(2)}></button>
             </div>
           )}
         </div>

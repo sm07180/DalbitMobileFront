@@ -50,7 +50,7 @@ export default (props) => {
       current.removeEventListener('focus', handleFocus)
     }
   })
-  console.log(changes.query.length)
+
   //---------------------------------------------------------------------
   return (
     <Content className={focus ? 'in_wrap focusing' : 'in_wrap'}>
