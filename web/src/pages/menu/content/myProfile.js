@@ -32,7 +32,7 @@ import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
-import {Hybrid, isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   let history = useHistory()
@@ -154,11 +154,11 @@ const myProfile = (props) => {
   console.log(profile.fanRank)
   //func back
   const goBack = () => {
+    window.location.href = '/'
     if (isHybrid()) {
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
-      console.log(context.noticeIndexNum)
-    }else{
+    } else {
       window.history.go(-1)
     }
     //window.location.href = '/'

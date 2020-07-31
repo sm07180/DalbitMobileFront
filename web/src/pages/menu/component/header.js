@@ -2,18 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 // static
 import BackBtnIcon from '../static/ic_back_g.svg'
-import {Hybrid, isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 export default (props) => {
   const goBack = () => {
-      if (isHybrid()) {
-          Hybrid('CloseLayerPopup')
-          context.action.updatenoticeIndexNum('')
-          console.log(context.noticeIndexNum)
-      }else{
-          window.history.go(-1)
-      }
-      //window.location.href = '/'
+    window.location.href = '/'
+    if (isHybrid()) {
+      Hybrid('CloseLayerPopup')
+      context.action.updatenoticeIndexNum('')
+    } else {
+      window.location.href = '/'
+    }
   }
   //--------------------------------------------------------------------
   return (
