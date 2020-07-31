@@ -18,6 +18,7 @@ import Content from './fanBoard_content'
 //svg
 import BJicon from '../component/bj.svg'
 import BackIcon from '../component/ic_back.svg'
+import NoResult from "components/ui/noResult";
 // concat
 let currentPage = 1
 let timer
@@ -166,6 +167,7 @@ export default (props) => {
         {createWriteBtn()}
       </Header>
       {/* 팬보드 리스트 영역 */}
+      {totalCount === 0 && <NoResult />}
       {totalCount !== 0 && <Content list={list} totalCount={totalCount} />}
       {/* 팬보드 작성영역 */}
       {writeState && (

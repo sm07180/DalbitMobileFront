@@ -289,7 +289,7 @@ const myProfile = (props) => {
                 {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
             </NameWrap>
-            <ProfileMsg>{profile.profMsg}</ProfileMsg>
+            <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split("\n").join("<br />")}}></ProfileMsg>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
                 <Swiper {...params}>{BadgeSlide}</Swiper>

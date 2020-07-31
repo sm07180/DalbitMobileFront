@@ -8,43 +8,6 @@ import NoResult from 'components/ui/noResult'
 import SelectBoxComponent from 'components/ui/selectBoxComponent'
 import SignalingHandler from 'components/lib/copysh'
 
-const selectReducer = (state, action) => {
-  console.log(state)
-  console.log(action)
-  switch (action.type) {
-    case 'open':
-      return {
-        ...state,
-        isOpen: !state.isOpen
-      }
-    case 'select':
-      return {
-        ...state,
-        selectIdx: action.idx
-      }
-  }
-}
-
-const selectReducer2 = (state, action) => {
-  switch (action.type) {
-    case 'open':
-      return {
-        ...state,
-        isOpen: !state.isOpen
-      }
-    case 'select':
-      return {
-        ...state,
-        selectIdx: action.idx
-      }
-    case 'updateList':
-      return {
-        ...state,
-        boxList: state.boxList.slice(action.idx)
-      }
-  }
-}
-
 export default function QnaList() {
   const history = useHistory()
 
@@ -62,7 +25,7 @@ export default function QnaList() {
     })
 
     const {result, data} = res
-    console.log(data)
+
     if (result === 'success') {
       if (data.list === false || (data.list && data.list.length === 0)) {
         setNoResultShow(true)
@@ -100,13 +63,10 @@ export default function QnaList() {
     selectIdx: 0
   }
 
-  const [state, dispatch] = useReducer(selectReducer, initialValue)
-  const [state2, dispatch2] = useReducer(selectReducer2, initialValue)
-  const onHandling = () => {}
-
   useEffect(() => {
     fetchData()
   }, [])
+  if(noResultShow === true) return <NoResult />
   return (
     <>
       <div className="personalListWrap">

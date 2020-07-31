@@ -87,7 +87,7 @@ export default (props) => {
       })
     }
 
-    history.push(`/self_auth/legal`)
+    history.push(`/legalauth`)
   }
 
   //---------------------------------------------------------------------

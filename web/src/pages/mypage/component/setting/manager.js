@@ -77,6 +77,9 @@ export default (props) => {
     })
     if (res.result == 'success') {
       getManagerList()
+      context.action.alert({
+        msg: res.message
+      })
     } else {
       context.action.alert({
         msg: res.message
