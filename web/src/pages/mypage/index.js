@@ -131,7 +131,7 @@ export default (props) => {
       <Layout2 {...props} webview={webview} status="no_gnb">
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <Mypage2 webview={webview}>
-          {webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />}
+          {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} />

@@ -38,7 +38,7 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 
 import refreshIcon from './static/refresh_w.svg'
 import sortIcon from './static/choose_circle_w.svg'
-import RankArrow from './static/ic_rank_arrow.svg'
+import RankArrow from './static/arrow_right_b.svg'
 
 import {RoomMake} from 'context/room'
 import {COLOR_MAIN} from 'context/color.js'
@@ -332,7 +332,7 @@ export default (props) => {
         <div ref={RecommendRef} style={{height: '220px'}}>
           {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
         </div>
-
+        <div className="gray-bottom"></div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -476,15 +476,21 @@ const Content = styled.div`
 
     &.rank {
       height: 180px;
-      background-color: #424242;
+      background-color: #fff;
       padding: 22px 0;
       color: #fff;
 
       .title-wrap {
         .title {
           .txt {
-            color: #fff;
             font-size: 16px;
+            font-weight: 800;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.13;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
           }
         }
       }
@@ -498,7 +504,7 @@ const Content = styled.div`
         height: 64px;
         padding: 22px 17px;
         box-sizing: border-box;
-        background-color: #fff;
+        background-color: #eeeeee;
         border-bottom: 1px solid #eee;
 
         .title {
@@ -559,7 +565,7 @@ const Content = styled.div`
           margin: 0 8px;
           color: #424242;
           box-sizing: border-box;
-
+          font-weight: normal;
           &.active {
             color: #632beb;
             font-weight: 700;
@@ -616,11 +622,18 @@ const Content = styled.div`
       .text {
         color: #fff;
         font-size: 16px;
-        font-weight: 400;
-        letter-spacing: -0.36px;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: left;
+        color: #757575;
 
         &.active {
-          color: #febd56;
+          font-size: 16px;
+          font-weight: 800;
+          line-height: 1.13;
+          letter-spacing: normal;
+
+          color: #000000;
         }
       }
     }
@@ -665,7 +678,7 @@ const Content = styled.div`
 
     &.my-star-list {
       height: 108px;
-      background-color: #eee;
+      background-color: #fff;
     }
 
     &.live-list {
@@ -746,4 +759,9 @@ const SubMain = styled.div`
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
+  .gray-bottom {
+    width: 100%;
+    height: 10px;
+    background-color: #eeeeee;
+  }
 `
