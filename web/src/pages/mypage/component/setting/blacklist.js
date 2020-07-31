@@ -40,7 +40,7 @@ export default (props) => {
   const [blackList, setBlackList] = useState(false)
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-  const [tabState, setTabState] = useState(0)
+  const [tabState, setTabState] = useState(1)
 
   let userTypeSetting = 0
 
@@ -80,6 +80,7 @@ export default (props) => {
       context.action.alert({
         msg: res.message
       })
+      getSearchList('search')
     } else {
       context.action.alert({
         msg: res.message
@@ -185,7 +186,7 @@ export default (props) => {
   }
 
   const createblackList = () => {
-    if (blackList == false) return null
+    if (blackList == false) return <NoResult />
     return (
       <>
         <p className="titleCount">
@@ -319,11 +320,11 @@ export default (props) => {
   return (
     <Content>
       <div className="tab">
-        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
-          등록
-        </button>
         <button onClick={tabChangeFunction} className={tabState === 1 ? 'on' : ''}>
           관리
+        </button>
+        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
+          등록
         </button>
       </div>
       {tabState === 0 && (
@@ -365,7 +366,7 @@ export default (props) => {
       )}
       {tabState === 1 && (
         <>
-          <SearchArea>
+          {/*<SearchArea>
             <div className="select-box">
               <SelectBoxs
                 type={'remove-init-data'}
@@ -396,7 +397,7 @@ export default (props) => {
               }}>
               찾기
             </button>
-          </SearchArea>
+          </SearchArea>*/}
           <div className="resulte-area">
             {blackValue === '' && createblackList()}
             {blackValue !== '' && createSearchblackList()}
