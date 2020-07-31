@@ -17,12 +17,6 @@ const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mypage/setting2.5.js'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const PayResult = React.lazy(() => import('pages/pay_result'))
-const Store = React.lazy(() => import('pages/store'))
-let Charge = React.lazy(() => import('pages/charge'))
-// if (__NODE_ENV !== 'real') {
-//   Charge = React.lazy(() => import('pages/charge/index_test'))
-// }
 
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
@@ -72,10 +66,6 @@ export default () => {
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
-        <Route exact path="/pay_result" component={PayResult} />
-        <Route exact path="/store" component={Store} />
-        <Route exact path="/charge" component={Charge} />
-        <Route exact path="/charge/:path" component={Charge} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
