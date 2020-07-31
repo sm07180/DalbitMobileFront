@@ -6,7 +6,6 @@ import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 
 export default (props) => {
   const {levelList} = props
-  console.log('levelList', levelList)
 
   return (
     <>

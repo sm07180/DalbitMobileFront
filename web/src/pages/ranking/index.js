@@ -4,7 +4,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 //components
 import Layout from 'pages/common/layout'
-import LayerPopup from './layer_popup'
+
 import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
 import RankGuide from './guide/rank_guide'
@@ -16,10 +16,10 @@ import closeBtn from './static/ic_back.svg'
 
 const rankArray = ['dj', 'fan', 'level']
 
-let currentPage = 1
 let moreState = false
 
 export default (props) => {
+  let currentPage = 1
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(0)
   const [nextList, setNextList] = useState(false)
@@ -27,6 +27,7 @@ export default (props) => {
   const [levelList, setLevelList] = useState([])
 
   const [myInfo, setMyInfo] = useState({
+    isReward: false,
     myGiftPoint: 0,
     myListenerPoint: 0,
     myRank: 0,
@@ -153,11 +154,9 @@ export default (props) => {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
       if (res.code === '0') {
         if (!next) setList(0)
-        // setMoreState(false)
         moreState = false
       } else {
         if (next) {
-          // setMoreState(true)
           moreState = true
           setNextList(res.data.list)
         } else {
@@ -166,6 +165,7 @@ export default (props) => {
         }
 
         setMyInfo({
+          isReward: res.data.isReward,
           myGiftPoint: res.data.myGiftPoint,
           myListenerPoint: res.data.myListenerPoint,
           myRank: res.data.myRank,
@@ -219,6 +219,7 @@ export default (props) => {
                 dateType={dateType}
                 setDateType={setDateType}
                 rankType={rankType}
+                setRankType={setRankType}
                 list={list}
                 typeState={typeState}
                 fetchRank={fetchRank}

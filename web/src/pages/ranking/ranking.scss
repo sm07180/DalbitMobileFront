@@ -659,4 +659,55 @@
       right: 12px;
     }
   }
+
+  .rewordBox {
+    position: relative;
+    padding: 15px 0 8px;
+    background: url('https://image.dalbitlive.com/ranking/reward_pop_bg@2x.png') no-repeat;
+    background-size: cover;
+    text-align: center;
+
+    &__top {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 22px;
+
+      span {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+
+    &__btnGet {
+      margin-top: 13px;
+      width: 161px;
+      height: 32px;
+      border-radius: 16px;
+      border: 2px solid #febd56;
+      background-color: #ffffff;
+      font-weight: 700;
+    }
+
+    &__character1 {
+      position: absolute;
+      left: -15px;
+      bottom: 0;
+      width: 92px;
+      height: 97px;
+      background: url('https://image.dalbitlive.com/ranking/reward_pop_character1@2x.png') no-repeat;
+      background-size: 100%;
+    }
+
+    &__character2 {
+      position: absolute;
+      right: -25px;
+      bottom: 0;
+      width: 103px;
+      height: 89px;
+      background: url('https://image.dalbitlive.com/ranking/reward_pop_character2@2x.png') no-repeat;
+      background-size: 100%;
+    }
+  }
 }

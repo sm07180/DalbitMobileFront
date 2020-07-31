@@ -1642,6 +1642,16 @@ export default class API {
     })
   }
 
+  static get_ranking_reward = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/reward/popup`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
   //------------------------------------------------------------- 인증관련
   /**
    * @brief 휴대폰 인증번호요청
