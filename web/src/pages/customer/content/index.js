@@ -47,6 +47,9 @@ const Index = (props) => {
     case 'personal':
       header = '1:1 문의'
       break
+    case 'qnaList':
+      header = '1:1 문의'
+      break
     case 'appInfo':
       header = '앱 정보'
       if (num === 'service') {
