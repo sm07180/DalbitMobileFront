@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
 
-import './rank_guide.scss'
+//components
 import Layout from 'pages/common/layout'
 import Benefit from './rank_guide_benefit'
 import HowUse from './rank_guide_howUse'
+import './rank_guide.scss'
 
+//static
 import closeBtn from '../static/ic_back.svg'
 
 export default (props) => {

@@ -24,6 +24,8 @@ export default (props) => {
   const ctx = useContext(Context)
   //state
   const [title, setTitle] = useState(0)
+  const [resetList, setResetList] = useState(-1)
+  const [noList, setNoList] = useState(-1)
   //swiper
   const swiperParams = {
     slidesPerView: 'auto',
@@ -34,13 +36,13 @@ export default (props) => {
   const createContents = () => {
     switch (title) {
       case 0:
-        return <Recent title={title} />
+        return <Recent title={title} resetList={resetList} noList={noList} />
       case 1:
-        return <GiftMore />
+        return <GiftMore resetList={resetList} noList={noList} />
       case 2:
-        return <ListenRecent />
+        return <ListenRecent resetList={resetList} noList={noList} />
       case 3:
-        return <BroadMore />
+        return <BroadMore resetList={resetList} noList={noList} />
       default:
         break
     }
@@ -58,12 +60,29 @@ export default (props) => {
     }
   }
   const AlertPop = () => {
-    ctx.action.confirm({
-      callback: () => {
-        ctx.action.updateFanEdite(-1)
-      },
-      msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
-    })
+    if (ctx.editeToggle === true) {
+      ctx.action.confirm({
+        callback: () => {
+          ctx.action.updateFanEdite(-1)
+        },
+        cancelCallback: () => {
+          if (resetList === -1) {
+            setResetList(1)
+          } else if (resetList !== -1) {
+            setResetList(2)
+          }
+        },
+        msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
+      })
+    }
+    if (ctx.editeToggle === false) {
+      ctx.action.alert({
+        callback: () => {
+          ctx.action.updateEditeToggle(false)
+        },
+        msg: '삭제할 팬을 선택해 주세요.'
+      })
+    }
   }
   return (
     <EditeWrap>

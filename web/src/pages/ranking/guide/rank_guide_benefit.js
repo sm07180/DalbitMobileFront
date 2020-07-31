@@ -1,6 +1,8 @@
 import React from 'react'
+
 import {IMG_SERVER} from 'context/config'
 
+//static
 import crownIcon from '../static/ic_crown_y.svg'
 
 export default (props) => {

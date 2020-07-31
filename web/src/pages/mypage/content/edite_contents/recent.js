@@ -27,6 +27,8 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
+  const resetList = props.resetList
+
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -39,6 +41,7 @@ export default (props) => {
   const [memoMemNo, setMemoMemNo] = useState(-1)
   const [popState, setPopState] = useState(false)
   const [deleteList, setDeleteList] = useState('')
+  const [filterLeng, setFilterLeng] = useState(0)
   //스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -172,6 +175,10 @@ export default (props) => {
       return v.nickNm === ''
     })
     setList(test)
+    setFilterLeng(filterList.length)
+    if (filterList.length > 0) {
+      ctx.action.updateEditeToggle(true)
+    }
     let str = ''
     filterList.forEach((v, i, self) => {
       if (i === self.length - 1) {
@@ -182,6 +189,12 @@ export default (props) => {
     })
     setDeleteList(str)
   }
+  useEffect(() => {
+    if (resetList !== -1) {
+      setFilterLeng(0)
+      ctx.action.updateEditeToggle(false)
+    }
+  }, [resetList])
 
   //window Scroll
   useEffect(() => {
@@ -195,6 +208,12 @@ export default (props) => {
     currentPage = 1
     fetchData()
   }, [])
+  useEffect(() => {
+    if (resetList !== -1) {
+      currentPage = 1
+      fetchData()
+    }
+  }, [resetList])
   //-----------------------------------------------------------
   async function fetchDataGetMemo(memNo) {
     const res = await Api.getNewFanMemo({
