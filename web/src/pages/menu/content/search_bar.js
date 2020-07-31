@@ -50,7 +50,7 @@ export default (props) => {
       current.removeEventListener('focus', handleFocus)
     }
   })
-
+  console.log(changes.query.length)
   //---------------------------------------------------------------------
   return (
     <Content className={focus ? 'in_wrap focusing' : 'in_wrap'}>
@@ -68,7 +68,7 @@ export default (props) => {
           <button type="submit">
             <img className="ico" src={SearchIco} />
           </button>
-          {changes.query > 0 && (
+          {changes.query.length > 0 && (
             <div className="closeWrap">
               <div
                 onClick={() => {
