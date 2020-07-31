@@ -11,7 +11,6 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //components
 
 //contents
-import Charge from './tab/charge-popup'
 import Terms from 'pages/common/terms'
 import Guidance from 'pages/common/guidance'
 //
@@ -23,18 +22,6 @@ export default (props) => {
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {
-      case 'CHARGE': //---------------------------------------충전
-        return (
-          <>
-            <button
-              onClick={() => {
-                context.action.updatePopupVisible(false)
-              }}>
-              팝업닫기
-            </button>
-            <Charge {...props} />
-          </>
-        )
       case 'TERMS': //---------------------------------------이용약관
         return (
           <>
