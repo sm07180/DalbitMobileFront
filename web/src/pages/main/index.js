@@ -338,9 +338,9 @@ export default (props) => {
       <MainWrap ref={MainRef}>
         <GnbWrap ref={SubMainRef} className="gnb">
           <div className="left-side">
-            <div className={`tab`}>
+            {/* <div className={`tab`}>
               <Link to={'/'}>라이브</Link>
-            </div>
+            </div> */}
             <div className="tab">
               <Link to={'/rank'}>랭킹</Link>
             </div>
@@ -778,11 +778,11 @@ const GnbWrap = styled.div`
         font-size: 16px;
         letter-spacing: -0.4px;
         padding: 0 8px;
-        &:nth-child(1) {
+        /* &:nth-child(1) {
           > a {
             border-bottom: 2px solid #fff;
           }
-        }
+        } */
         a {
           display: block;
           width: 100%;
