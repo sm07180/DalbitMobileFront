@@ -69,6 +69,8 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
       console.log(context.noticeIndexNum)
+    }else{
+      window.history.go(-1)
     }
   }
   //check login push login
@@ -88,7 +90,7 @@ export default (props) => {
             callback: () => {
               window.history.back()
             },
-            msg: '탈퇴한 회원입니다.'
+            msg: '회원정보를 찾을 수 없습니다.'
           })
         }
       } else {
@@ -96,7 +98,7 @@ export default (props) => {
           callback: () => {
             window.history.back()
           },
-          msg: '탈퇴한 회원입니다.'
+          msg: '회원정보를 찾을 수 없습니다.'
         })
       }
     }
@@ -112,7 +114,7 @@ export default (props) => {
         callback: () => {
           window.history.back()
         },
-        msg: '탈퇴한 회원입니다.'
+        msg: '회원정보를 찾을 수 없습니다.'
       })
     }
   }, [codes])
