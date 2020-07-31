@@ -23,7 +23,7 @@ export default () => {
   const params = useParams()
   const location = useLocation()
 
-  const {webview} = qs.parse(location.search)
+  const {webview, canceltype} = qs.parse(location.search)
 
   const createContent = () => {
     let {title} = params
@@ -31,7 +31,7 @@ export default () => {
     if (state === undefined && Object.keys(params).length === 0 /*&& webview === 'new'*/) {
       title = 'room'
     }
-    if (state !== undefined && state.hasOwnProperty('result')) {
+    if ((state !== undefined && state.hasOwnProperty('result')) || canceltype) {
       title = 'result'
     }
     switch (title) {
