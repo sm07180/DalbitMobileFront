@@ -6,7 +6,7 @@ import Nav from './content/nav.js'
 
 import Profile from './content/profile.js'
 import Search from './content/search.js'
-import Alarm from './content/alarm.js'
+import Alarm from './content/alarm'
 
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
