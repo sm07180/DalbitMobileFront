@@ -65,7 +65,8 @@ export default () => {
         state: {
           prdtNm: name,
           prdtPrice: price,
-          itemNo: itemNo
+          itemNo: itemNo,
+          webview: webview
         }
       })
     }
