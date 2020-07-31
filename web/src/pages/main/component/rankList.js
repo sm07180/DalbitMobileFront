@@ -12,7 +12,7 @@ import GoldMedal from '../static/medal_gold_m@2x.png'
 import SilverMedal from '../static/medal_silver_m@2x.png'
 import BronzeMedal from '../static/medal_bronze_m@2x.png'
 
-export default props => {
+export default (props) => {
   const {rankType, djRank, fanRank} = props
   const globalCtx = useContext(Context)
 
@@ -124,14 +124,14 @@ const RankList = styled.div`
       text-overflow: ellipsis;
       height: 16px;
       white-space: nowrap;
-
+      font-weight: normal;
       font-size: 12px;
-      color: #e0e0e0;
-      line-height: 1.14;
+      color: #424242;
+      line-height: 1.08;
       letter-spacing: -0.35px;
       text-align: center;
       margin-top: 8px;
-      font-weight: 600;
+
       transform: skew(-0.03deg);
     }
     .info-wrap {

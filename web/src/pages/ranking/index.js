@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
+import qs from 'query-string'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
@@ -20,8 +21,10 @@ let currentPage = 1
 let moreState = false
 
 export default (props) => {
-  const [rankType, setRankType] = useState('dj')
-  const [dateType, setDateType] = useState(0)
+  const {type, date} = qs.parse(location.search)
+
+  const [rankType, setRankType] = useState(type === null || type === undefined ? 'dj' : type)
+  const [dateType, setDateType] = useState(date === null || date === undefined ? 0 : Number(date))
   const [nextList, setNextList] = useState(false)
   const [levelShowState, setLevelShowState] = useState(false)
   const [levelList, setLevelList] = useState([])

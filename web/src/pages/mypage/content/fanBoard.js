@@ -2,19 +2,14 @@
  * @file /mypage/content/fan-board.js
  * @brief 마이페이지 팬보드2.5v
  */
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import styled from 'styled-components'
 //modules
 import qs from 'query-string'
 // context
-import { Context } from 'context'
-import { WIDTH_PC, WIDTH_TABLET, IMG_SERVER } from 'context/config'
-import {
-  COLOR_MAIN,
-  COLOR_POINT_Y,
-  COLOR_POINT_P,
-  PHOTO_SERVER
-} from 'context/color'
+import {Context} from 'context'
+import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 //api
 import Api from 'context/api'
 //components
@@ -28,15 +23,15 @@ let currentPage = 1
 let timer
 let moreState = false
 //layout
-export default props => {
-  const { webview } = qs.parse(location.search)
+export default (props) => {
+  const {webview} = qs.parse(location.search)
   //ref
   const inputEl = useRef(null)
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
   //profileGlobal info
-  const { profile } = ctx
+  const {profile} = ctx
   //urlNumber
   var urlrStr = props.location.pathname.split('/')[2]
   //state
@@ -46,29 +41,20 @@ export default props => {
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   //팬보드 댓글 온체인지
-  const handleChangeBig = e => {
+  const handleChangeBig = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setTextChange(e.target.value)
   }
   //스크롤 이벤트
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
-      const windowHeight =
-        'innerHeight' in window
-          ? window.innerHeight
-          : document.documentElement.offsetHeight
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
       const html = document.documentElement
-      const docHeight = Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.clientHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      )
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
       if (moreState && windowBottom >= docHeight - 200) {
         showMoreList()
@@ -163,12 +149,7 @@ export default props => {
   const createWriteBtn = () => {
     if (urlrStr === profile.memNo) {
       return (
-        <button
-          onClick={() => WriteToggle()}
-          className={[
-            `write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`
-          ]}
-        >
+        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`]}>
           쓰기
         </button>
       )
@@ -194,11 +175,7 @@ export default props => {
             <span>팬보드 쓰기</span>
           </header>
           <div className="content_area">
-            <Textarea
-              placeholder="내용을 입력해주세요"
-              onChange={handleChangeBig}
-              value={textChange}
-            />
+            <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
               <em>{textChange.length}</em> / 100
             </span>

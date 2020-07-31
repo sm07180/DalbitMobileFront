@@ -38,8 +38,8 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 
 import refreshIcon from './static/refresh_w.svg'
 import sortIcon from './static/choose_circle_w.svg'
-import RankArrow from './static/ic_rank_arrow.svg'
-
+import RankArrow from './static/arrow_right_b.svg'
+import WhiteBroadIcon from './static/white_broad.svg'
 import {RoomMake} from 'context/room'
 import {COLOR_MAIN} from 'context/color.js'
 
@@ -326,13 +326,29 @@ export default (props) => {
                 </Link>
               </div>
             </div>
+            <div
+              className="broadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                } else {
+                  if (!broadcastBtnActive) {
+                    RoomMake(globalCtx)
+                    setBroadcastBtnActive(true)
+                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  }
+                }
+              }}>
+              <img src={WhiteBroadIcon} />
+              방송하기
+            </div>
           </div>
         </SubMain>
 
         <div ref={RecommendRef} style={{height: '220px'}}>
           {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
         </div>
-
+        <div className="gray-bottom"></div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -476,15 +492,21 @@ const Content = styled.div`
 
     &.rank {
       height: 180px;
-      background-color: #424242;
+      background-color: #fff;
       padding: 22px 0;
       color: #fff;
 
       .title-wrap {
         .title {
           .txt {
-            color: #fff;
             font-size: 16px;
+            font-weight: 800;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.13;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000000;
           }
         }
       }
@@ -498,7 +520,7 @@ const Content = styled.div`
         height: 64px;
         padding: 22px 17px;
         box-sizing: border-box;
-        background-color: #fff;
+        background-color: #eeeeee;
         border-bottom: 1px solid #eee;
 
         .title {
@@ -559,7 +581,7 @@ const Content = styled.div`
           margin: 0 8px;
           color: #424242;
           box-sizing: border-box;
-
+          font-weight: normal;
           &.active {
             color: #632beb;
             font-weight: 700;
@@ -616,11 +638,18 @@ const Content = styled.div`
       .text {
         color: #fff;
         font-size: 16px;
-        font-weight: 400;
-        letter-spacing: -0.36px;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: left;
+        color: #757575;
 
         &.active {
-          color: #febd56;
+          font-size: 16px;
+          font-weight: 800;
+          line-height: 1.13;
+          letter-spacing: normal;
+
+          color: #000000;
         }
       }
     }
@@ -632,6 +661,7 @@ const Content = styled.div`
 
       .text {
         margin-left: 4px;
+        margin-right: 5px;
         color: #424242;
         font-size: 12px;
         letter-spacing: -0.24px;
@@ -665,7 +695,7 @@ const Content = styled.div`
 
     &.my-star-list {
       height: 108px;
-      background-color: #eee;
+      background-color: #fff;
     }
 
     &.live-list {
@@ -679,23 +709,45 @@ const SubMain = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: center;
-    height: 36px;
+    /* justify-content: center; */
+    height: 42px;
     box-sizing: border-box;
     background-color: #632beb;
     z-index: 1;
-
+    .broadBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      width: 108px;
+      height: 42px;
+      background-color: #000000;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.13;
+      letter-spacing: -0.4px;
+      color: #ffffff;
+      > img {
+        width: 36px;
+        height: 36px;
+      }
+    }
     .left-side {
       display: flex;
+
       flex-direction: row;
 
       .tab {
-        height: 36px;
+        height: 42px;
         color: #fff;
         font-size: 16px;
         letter-spacing: -0.4px;
         padding: 0 8px;
-
+        &:nth-child(1) {
+          > a {
+            border-bottom: 2px solid #fff;
+          }
+        }
         a {
           display: block;
           width: 100%;
@@ -746,4 +798,9 @@ const SubMain = styled.div`
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
+  .gray-bottom {
+    width: 100%;
+    height: 10px;
+    background-color: #eeeeee;
+  }
 `
