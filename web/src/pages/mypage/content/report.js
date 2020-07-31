@@ -45,7 +45,7 @@ const broadInfo = {
 }
 
 const listenInfo = {
-  mic: [mic, '시청'],
+  mic: [mic, '청취'],
   moon: [moon, '달 선물'],
   heart: [heart, '받은 별'],
   clock: [clock, '게스트 참여 시간']
@@ -361,7 +361,7 @@ export default (props) => {
             방송
           </button>
           <button onClick={Toggletab} className={selectType === 1 ? 'on' : ''}>
-            시청
+            청취
           </button>
 
           <img
@@ -429,7 +429,7 @@ export default (props) => {
                         <div>
                           <div>{listenInfo[section][1]}</div>
                           <div className="count">
-                            {listenInfo[section][1] === '시청' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
+                            {listenInfo[section][1] === '청취' && listentotal.length !== 0 && decodeSec(String(listeningTime))}
                             {listenInfo[section][1] === '달 선물' &&
                               listentotal.length !== 0 &&
                               numberFormat(String(giftDalTotCnt))}
