@@ -66,40 +66,43 @@ export default function QnaList() {
   useEffect(() => {
     fetchData()
   }, [])
+  if(noResultShow === true) return <NoResult />
   return (
-    <div className="personalListWrap">
+    <>
+      <div className="personalListWrap">
+        {qnalist.length > 0 &&
+          qnalist.map((item) => {
+            const {qnaIdx, qnaType, title, state, writeDt} = item
+            if (qnalist === null) return
+            return (
+              <div
+                key={qnaIdx}
+                className="personalListWrap__eachWrap"
+                onClick={(e) => {
+                  routeHistory(item)
+                }}>
+                <div className="personalListWrap__label">
+                  {/* {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>} */}
+                  {state === 0 && <span className="state">답변대기</span>}
+                  {state === 1 && <span className="stateComplete">답변완료</span>}
+                </div>
+                <div className="personalListWrap__title">
+                  {qnaType === 1 && <span className="type">[회원정보]</span>}
+                  {qnaType === 2 && <span className="type">[방송]</span>}
+                  {qnaType === 3 && <span className="type">[청취]</span>}
+                  {qnaType === 4 && <span className="type">[결제]</span>}
+                  {qnaType === 5 && <span className="type">[건의]</span>}
+                  {qnaType === 6 && <span className="type">[장애/버그]</span>}
+                  {qnaType === 7 && <span className="type">[선물/아이템]</span>}
+                  {qnaType === 99 && <span className="type">[기타]</span>}
+                  <p className="personalListWrap__titleName">{title}</p>
+                </div>
+                <div className="personalListWrap__time">{timeFormat(writeDt)}</div>
+              </div>
+            )
+          })}
+      </div>
       {noResultShow === true && <NoResult />}
-      {qnalist.length > 0 &&
-        qnalist.map((item) => {
-          const {qnaIdx, qnaType, title, state, writeDt} = item
-          if (qnalist === null) return
-          return (
-            <div
-              key={qnaIdx}
-              className="personalListWrap__eachWrap"
-              onClick={(e) => {
-                routeHistory(item)
-              }}>
-              <div className="personalListWrap__label">
-                {/* {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>} */}
-                {state === 0 && <span className="state">답변대기</span>}
-                {state === 1 && <span className="stateComplete">답변완료</span>}
-              </div>
-              <div className="personalListWrap__title">
-                {qnaType === 1 && <span className="type">[회원정보]</span>}
-                {qnaType === 2 && <span className="type">[방송]</span>}
-                {qnaType === 3 && <span className="type">[청취]</span>}
-                {qnaType === 4 && <span className="type">[결제]</span>}
-                {qnaType === 5 && <span className="type">[건의]</span>}
-                {qnaType === 6 && <span className="type">[장애/버그]</span>}
-                {qnaType === 7 && <span className="type">[선물/아이템]</span>}
-                {qnaType === 99 && <span className="type">[기타]</span>}
-                <p className="personalListWrap__titleName">{title}</p>
-              </div>
-              <div className="personalListWrap__time">{timeFormat(writeDt)}</div>
-            </div>
-          )
-        })}
-    </div>
+    </>
   )
 }

@@ -1,14 +1,50 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import {IMG_SERVER} from 'context/config'
 
 import styled from 'styled-components'
 import CloseBtn from '../static/ic_close.svg'
 
+import RandomBoxPop from './reward_randombox_pop'
+
 export default (props) => {
   const {setPopup, rewardPop} = props
+  const [randomPopup, setRandomPopup] = useState(false)
 
   const closePopup = () => {
     setPopup(false)
   }
+
+  const openRandomPopup = () => {
+    setRandomPopup(true)
+  }
+
+  const popStateEvent = (e) => {
+    if (e.state === null) {
+      setRandomPopup(false)
+    } else if (e.state === 'layer') {
+      setRandomPopup(true)
+    }
+  }
+
+  useEffect(() => {
+    if (randomPopup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/rank/#layer')
+      }
+    } else if (!randomPopup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+      }
+    }
+  }, [randomPopup])
+
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
+
+    return () => {
+      window.removeEventListener('popstate', popStateEvent)
+    }
+  }, [])
 
   return (
     <PopupWrap>
@@ -37,12 +73,15 @@ export default (props) => {
               </label>
             </div>
             <div className="bottom-badge-box">
-              <label className="badge-label">달 {rewardPop.rewardDal}</label>{' '}
+              <label className="badge-label">
+                {' '}
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
+              </label>{' '}
               <label className="badge-label right">경험치 랜덤 박스</label>
             </div>
           </div>
         </div>
-        <button onClick={() => closePopup()} className="btn-random-box">
+        <button onClick={() => openRandomPopup()} className="btn-random-box">
           경험치 랜덤 박스 열기
         </button>
 
@@ -51,6 +90,7 @@ export default (props) => {
           <li>* 경험치 랜덤 박스 보상은 차주 랭킹이 업데이트 되기전 까지 받아야합니다.</li>
         </ul>
       </div>
+      {randomPopup && <RandomBoxPop setRandomPopup={setRandomPopup} setPopup={setPopup} rewardPop={rewardPop} />}
     </PopupWrap>
   )
 }

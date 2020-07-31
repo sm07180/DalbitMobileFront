@@ -84,8 +84,8 @@ export default () => {
   }
 
   useEffect(() => {
-    alert(JSON.stringify(location.search, null, 1))
-    alert(JSON.stringify(location.state, null, 1))
+    // alert(JSON.stringify(location.search, null, 1))
+    // alert(JSON.stringify(location.state, null, 1))
 
     if (canceltype !== undefined) {
       if (canceltype === 'room') {
@@ -126,7 +126,7 @@ export default () => {
           cardNum: cardNum,
           apprno: apprno
         }
-        alert(JSON.stringify(payInfo))
+        // alert(JSON.stringify(payInfo))
         sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
         window.location.href = '/'
       }

@@ -45,6 +45,7 @@ const Index = (props) => {
       header = 'FAQ'
       break
     case 'personal':
+<<<<<<< HEAD
       header = '1:1 문의'
       break
     case 'appInfo':
@@ -59,6 +60,22 @@ const Index = (props) => {
         header = '운영정책'
       } else {
         header = '앱정보'
+=======
+      header = "1:1 문의"
+      break;
+    case "appInfo":
+      header = "앱 정보"
+      if(num === "service") {
+        header = "서비스 이용약관"
+      } else if(num === "privacy") {
+        header = "개인정보 취급방침"
+      } else if(num === "youthProtect") {
+        header = "청소년 보호정책"
+      } else if(num === "operating") {
+        header = "운영정책"
+      } else {
+        header = "앱 정보"
+>>>>>>> 2bb527ef1d4bb81a6bf6b9f2560a8fd803796ae1
       }
       break
     default:
