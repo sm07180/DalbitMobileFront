@@ -106,27 +106,10 @@ export default (props) => {
   }
 
   function calcAge(birth) {
-    var date = new Date()
+    const currentYear = new Date().getFullYear() + 1
+    const birthYear = birth.slice(0, 4)
 
-    var year = date.getFullYear()
-
-    var month = date.getMonth() + 1
-
-    var day = date.getDate()
-
-    if (month < 10) month = '0' + month
-
-    if (day < 10) day = '0' + day
-
-    var monthDay = month + day
-
-    var birthdayy = birth.substr(0, 4)
-
-    var birthdaymd = birth.substr(4, 4)
-
-    var age = monthDay < birthdaymd ? year - birthdayy - 1 : year - birthdayy
-
-    return age
+    return currentYear - birthYear
   }
 
   //인증 요청 버튼 벨리데이션
@@ -181,8 +164,9 @@ export default (props) => {
   }
 
   const goBack = () => {
-    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     context.action.updateWalletIdx(1)
+    window.history.back()
   }
 
   //---------------------------------------------------------------------
@@ -191,8 +175,9 @@ export default (props) => {
       <Header title="미성년자 법정대리인(보호자)동의 신청" goBack={goBack} />
       <Content>
         <p className="txt">
-          20세 미만의 미성년자가 유료 서비스를 이용하기 위해서는 <br />
-          <strong>법정대리인(보호자)의 동의가</strong> 필요합니다.
+          부모 또는 지정후견인의 동의를 위해 <br />
+          <strong>주민등록 등본</strong> 또는 <strong>가족관계 증명서</strong>를 첨부하여 주셔야 <br />
+          법정대리인(보호자) 동의가 인정됩니다.
         </p>
 
         <h5>동의 기간 선택</h5>
@@ -217,10 +202,10 @@ export default (props) => {
         <h5>법정대리인(보호자) 정보</h5>
 
         <div className="input-wrap">
-          <p className="info" style={{paddingBottom: '8px'}}>
+          {/* <p className="info" style={{paddingBottom: '8px'}}>
             <img src={icNotice} />
             법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.
-          </p>
+          </p> */}
           <div className="title">보호자 이름</div>
           <div className="input">
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
