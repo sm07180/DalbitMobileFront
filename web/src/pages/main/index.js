@@ -645,6 +645,7 @@ const Content = styled.div`
 
       .text {
         margin-left: 4px;
+        margin-right: 5px;
         color: #424242;
         font-size: 12px;
         letter-spacing: -0.24px;
