@@ -107,6 +107,7 @@ export default function QnaList() {
   useEffect(() => {
     fetchData()
   }, [])
+  if(noResultShow === true) return <NoResult />
   return (
     <>
       <div className="personalListWrap">

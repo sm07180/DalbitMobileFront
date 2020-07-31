@@ -57,7 +57,7 @@ export default (props) => {
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    {type: 'appInfo', txt: '앱정보', icon: AppIcon}
+    {type: 'appInfo', txt: '앱 정보', icon: AppIcon}
   ]
   // webview & ctx
   const {webview} = qs.parse(location.search)
@@ -235,7 +235,13 @@ export default (props) => {
                 const {type, txt, icon} = value
                 return (
                   <a
-                    href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
+                    href={
+                      type === 'wallet' || type === 'report'
+                        ? `/mypage/${profile.memNo}/${type}`
+                        : type === 'store'
+                        ? '#'
+                        : `/${type}`
+                    }
                     key={`list-${idx}`}
                     onClick={(e) => {
                       if (type === 'store') {
