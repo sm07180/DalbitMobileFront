@@ -77,7 +77,9 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      getBlackList()
+      context.action.alert({
+        msg: res.message
+      })
     } else {
       context.action.alert({
         msg: res.message
@@ -290,23 +292,23 @@ export default (props) => {
     setChanges({...changes, searchType: value})
   }
   //매니저 필터
-  const [manegerValue, setManegerValue] = useState('')
+  const [blackValue, setblackValue] = useState('')
   const [manegerSearchList, setManegerSearchList] = useState(blackList)
 
-  const SearchManeger = (manegerValue, selectBoxData) => {
+  const SearchManeger = (blackValue, selectBoxData) => {
     if (changes.searchType === 0) {
       setManegerSearchList(
-        blackList.filter((blackList) => blackList.nickNm.includes(manegerValue) || blackList.memId.includes(manegerValue))
+        blackList.filter((blackList) => blackList.nickNm.includes(blackValue) || blackList.memId.includes(blackValue))
       )
     } else if (changes.searchType === 1) {
-      setManegerSearchList(blackList.filter((blackList) => blackList.nickNm.includes(manegerValue)))
+      setManegerSearchList(blackList.filter((blackList) => blackList.nickNm.includes(blackValue)))
     } else if (changes.searchType === 2) {
-      setManegerSearchList(blackList.filter((blackList) => blackList.memId.includes(manegerValue)))
+      setManegerSearchList(blackList.filter((blackList) => blackList.memId.includes(blackValue)))
     }
   }
   const tabChangeFunction = () => {
     getblackList()
-    setManegerValue('')
+    setblackValue('')
     if (tabState === 0) {
       setTabState(1)
     } else {
@@ -383,21 +385,21 @@ export default (props) => {
               type="search"
               name="search"
               placeholder="검색어를 입력해 보세요"
-              onChange={(e) => setManegerValue(e.target.value)}
+              onChange={(e) => setblackValue(e.target.value)}
               onKeyUp={(e) => {
-                if (e.keyCode === 13) SearchManeger(manegerValue)
+                if (e.keyCode === 13) SearchManeger(blackValue)
               }}
             />
             <button
               onClick={() => {
-                SearchManeger(manegerValue, selectBoxData)
+                SearchManeger(blackValue, selectBoxData)
               }}>
               찾기
             </button>
           </SearchArea>
           <div className="resulte-area">
-            {manegerValue === '' && createblackList()}
-            {manegerValue !== '' && createSearchblackList()}
+            {blackValue === '' && createblackList()}
+            {blackValue !== '' && createSearchblackList()}
           </div>
         </>
       )}
