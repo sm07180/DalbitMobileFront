@@ -3,6 +3,8 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 import React, {useEffect, useContext, useState} from 'react'
+import qs from 'qs'
+
 //route
 import {OS_TYPE} from 'context/config.js'
 import Room, {RoomJoin} from 'context/room'
@@ -35,7 +37,7 @@ import ReportIcon from '../component/ic_report.svg'
 import CloseBtnIcon from '../component/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import MoonIcon from '../static/profile/ic_moon_s.svg'
-import {Hybrid, isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from 'context/hybrid'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
   const {webview, profile} = props
@@ -210,14 +212,13 @@ const myProfile = (props) => {
   }
   //func back
   const goBack = () => {
-    if (isHybrid()) {
+    const {webview} = qs.parse(location.search)
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
-      console.log(context.noticeIndexNum)
-    }else{
-      window.history.go(-1)
+    } else {
+      //window.history.go(-1)
+      window.location.href = '/'
     }
-    //window.location.href = '/'
   }
   //스와이퍼
   const params = {

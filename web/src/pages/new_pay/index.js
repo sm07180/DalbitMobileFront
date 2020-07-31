@@ -15,6 +15,8 @@ import Charge from './content/charge/index'
 import Result from './content/result'
 import RoomCharge from './content/room_charge'
 import StoreCharge from './content/store_charge'
+import BankDeposit from './content/charge/bank_deposit'
+import BankWait from './content/charge/bank_deposit_wait'
 
 ////---------------------------------------------------------------------
 export default () => {
@@ -26,7 +28,6 @@ export default () => {
   const createContent = () => {
     let {title} = params
     const {state} = location
-    const {name, price, itemNo} = location.search
     if (state === undefined && Object.keys(params).length === 0 /*&& webview === 'new'*/) {
       title = 'room'
     }
@@ -42,6 +43,10 @@ export default () => {
         return <RoomCharge />
       case 'store':
         return <StoreCharge />
+      case 'bank':
+        return <BankDeposit />
+      case 'bank_wait':
+        return <BankWait />
       default:
         return <></>
         break

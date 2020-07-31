@@ -1,28 +1,28 @@
 #guidanceWrap {
   height: inherit;
   overflow-y: scroll;
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 49px;
-    padding: 0px 10px;
-    border-bottom: 1px solid #dedede;
-    &__title {
-      font-size: 18px;
-      text-align: center;
+  .guidanceWrap {
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 49px;
+      padding: 0px 10px;
+      border-bottom: 1px solid #dedede;
+      &--title {
+        padding: 0 16px;
+        font-size: 16px;
+        text-align: center;
+      }
+      &--button {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        background: url('./static/ic_close.svg') no-repeat center;
+        right: 12px;
+      }
     }
-    // &__button {
-    //   &--back {
-    //     position: absolute;
-    //     width: 36px;
-    //     height: 36px;
-    //     background: url('./static/ic_back.svg') no-repeat center;
-    //     top: 6px;
-    //     left: 10px;
-    //   }
-    // }
   }
 
   .guidance {

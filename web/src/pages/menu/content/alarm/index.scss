@@ -2,13 +2,19 @@
   .header {
     display: flex;
     align-items: center;
-    padding: 25px 16px;
+    padding: 10px 16px;
     background-color: #eeeeee;
     &__left {
       display: flex;
       flex: 1;
       font-size: 16px;
       font-weight: bold;
+      &--back {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        background: url('./static/ic_back.svg') no-repeat center;
+      }
     }
     &__count {
       margin-left: 8px;
@@ -51,6 +57,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        width: 100%;
       }
       &--title {
         margin-bottom: 6px;

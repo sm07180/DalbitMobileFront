@@ -94,6 +94,38 @@ export default (props) => {
     }
   }, [nextList])
 
+  const checkSelfAuth = async () => {
+    let myBirth
+    const baseYear = new Date().getFullYear() - 16
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > baseYear) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        const {parentsAgreeYn, adultYn} = res.data
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
+        history.push('/money_exchange')
+      } else if (res.result === 'fail' && res.code === '0') {
+        history.push('/selfauth')
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+    fetchSelfAuth()
+    // history.push('/money_exchange')
+  }
+
   //콘켓 쇼모어 이벤트
   const showMoreList = () => {
     if (moreState) {
@@ -159,35 +191,52 @@ export default (props) => {
                     onClick={() => {
                       webkit.messageHandlers.openInApp.postMessage('')
                     }}>
-                    충전하기
+                    충전
                   </CoinChargeBtn>
                 ) : (
                   <CoinChargeBtn
                     onClick={() => {
                       history.push('/pay/store')
                     }}>
-                    충전하기
+                    충전
                   </CoinChargeBtn>
                 )}
               </>
             ) : (
               <>
-                {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+                {
                   <CoinChargeBtn
-                    className="exchange gray"
+                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? 'exchange ios' : 'exchange'}
                     onClick={() => {
-                      history.push('/exchange')
+                      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+                        async function fetchTokenShort() {
+                          const res = await Api.getTokenShort()
+                          if (res.result === 'success') {
+                            Hybrid(
+                              'openUrl',
+                              'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken
+                            )
+                          } else {
+                            context.action.alert({
+                              msg: res.message
+                            })
+                          }
+                        }
+                        fetchTokenShort()
+                      } else {
+                        history.push('/exchange')
+                      }
                     }}>
-                    달교환
+                    교환
                   </CoinChargeBtn>
-                )}
+                }
                 {context.customHeader['os'] !== OS_TYPE['IOS'] && (
                   <CoinChargeBtn
                     className="exchange"
                     onClick={() => {
-                      history.push('/money_exchange')
+                      checkSelfAuth()
                     }}>
-                    환전하기
+                    환전
                   </CoinChargeBtn>
                 )}
               </>

@@ -35,7 +35,6 @@ const FormDataReducer = (state, action) => {
         name: action.val
       }
     case 'bank':
-      console.log(action.val)
       return {
         ...state,
         selectBank: action.val

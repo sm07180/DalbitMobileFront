@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
+import qs from 'qs'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -32,7 +33,7 @@ import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
-import {Hybrid, isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   let history = useHistory()
@@ -154,11 +155,10 @@ const myProfile = (props) => {
   console.log(profile.fanRank)
   //func back
   const goBack = () => {
-    if (isHybrid()) {
+    const {webview} = qs.parse(location.search)
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
-      console.log(context.noticeIndexNum)
-    }else{
+    } else {
       window.history.go(-1)
     }
     //window.location.href = '/'

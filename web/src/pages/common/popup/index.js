@@ -11,7 +11,6 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //components
 
 //contents
-import Charge from './tab/charge-popup'
 import Terms from 'pages/common/terms'
 import Guidance from 'pages/common/guidance'
 //
@@ -23,18 +22,6 @@ export default (props) => {
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {
-      case 'CHARGE': //---------------------------------------충전
-        return (
-          <>
-            <button
-              onClick={() => {
-                context.action.updatePopupVisible(false)
-              }}>
-              팝업닫기
-            </button>
-            <Charge {...props} />
-          </>
-        )
       case 'TERMS': //---------------------------------------이용약관
         return (
           <>
@@ -69,10 +56,12 @@ export default (props) => {
   }, [context.popup_visible])
 
   useEffect(() => {
-    if (context.popup_code[0] == 'TERMS' || context.popup_code[0] === 'GUIDANCE') {
+    if (context.popup_code[0] == 'TERMS') {
       setLayout('round terms')
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
+    } else if (context.popup_code[0] === 'GUIDANCE') {
+      setLayout('guidance')
     } else {
       setLayout('square')
     }
@@ -156,6 +145,22 @@ const Wrap = styled.div`
       &.terms {
         width: 90%;
       }
+    }
+  }
+
+  &.guidance {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 80%;
+    }
+
+    & > button {
+      display: none;
     }
   }
 

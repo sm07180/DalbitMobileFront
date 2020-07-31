@@ -39,7 +39,7 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import refreshIcon from './static/refresh_w.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
-
+import WhiteBroadIcon from './static/white_broad.svg'
 import {RoomMake} from 'context/room'
 import {COLOR_MAIN} from 'context/color.js'
 
@@ -325,6 +325,22 @@ export default (props) => {
                   스토어
                 </Link>
               </div>
+            </div>
+            <div
+              className="broadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                } else {
+                  if (!broadcastBtnActive) {
+                    RoomMake(globalCtx)
+                    setBroadcastBtnActive(true)
+                    setTimeout(() => setBroadcastBtnActive(false), 3000)
+                  }
+                }
+              }}>
+              <img src={WhiteBroadIcon} />
+              방송하기
             </div>
           </div>
         </SubMain>
@@ -645,6 +661,7 @@ const Content = styled.div`
 
       .text {
         margin-left: 4px;
+        margin-right: 5px;
         color: #424242;
         font-size: 12px;
         letter-spacing: -0.24px;
@@ -692,23 +709,45 @@ const SubMain = styled.div`
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: center;
-    height: 36px;
+    /* justify-content: center; */
+    height: 42px;
     box-sizing: border-box;
     background-color: #632beb;
     z-index: 1;
-
+    .broadBtn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: auto;
+      width: 108px;
+      height: 42px;
+      background-color: #000000;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.13;
+      letter-spacing: -0.4px;
+      color: #ffffff;
+      > img {
+        width: 36px;
+        height: 36px;
+      }
+    }
     .left-side {
       display: flex;
+
       flex-direction: row;
 
       .tab {
-        height: 36px;
+        height: 42px;
         color: #fff;
         font-size: 16px;
         letter-spacing: -0.4px;
         padding: 0 8px;
-
+        &:nth-child(1) {
+          > a {
+            border-bottom: 2px solid #fff;
+          }
+        }
         a {
           display: block;
           width: 100%;
