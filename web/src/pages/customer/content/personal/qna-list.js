@@ -23,7 +23,6 @@ export default function QnaList() {
         records: 1000
       }
     })
-
     const {result, data} = res
 
     if (result === 'success') {
@@ -66,7 +65,7 @@ export default function QnaList() {
   useEffect(() => {
     fetchData()
   }, [])
-  if(noResultShow === true) return <NoResult />
+  if (noResultShow === true) return <NoResult />
   return (
     <>
       <div className="personalListWrap">

@@ -66,6 +66,14 @@ export default function Detail(props) {
     })
 
     if (res.result === 'fail') {
+      context.action.alert({
+        msg: res.message,
+        callbakc: () => {
+          context.action.alert({
+            visible: false
+          })
+        }
+      })
     } else if (res.result === 'success') {
       context.action.confirm({
         msg: '1:1 문의를 등록하시겠습니까?',
@@ -128,7 +136,6 @@ export default function Detail(props) {
           }
         })
         if (res.result === 'success') {
-          console.log(res)
           setQuestionFile(
             questionFile.map((v, i) => {
               if (i === idx) {
@@ -216,7 +223,6 @@ export default function Detail(props) {
   }
 
   const deleteQna = async () => {
-    console.log('hi')
     const res = await Api.center_qna_delete({
       params: {
         qnaIdx: qnaIdx

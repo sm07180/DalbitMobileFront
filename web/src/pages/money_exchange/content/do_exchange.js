@@ -255,8 +255,15 @@ export default function DoExchange({state, dispatch}) {
   }
 
   const fnExchangeCalc = async () => {
-    if (formData.byeolCnt === 0) {
-      return
+    if (formData.byeolCnt < 570) {
+      context.action.alert({
+        msg: '환전 신청별은\n570개 이상이어야 합니다.',
+        callback: () => {
+          context.action.alert({
+            visible: false
+          })
+        }
+      })
     } else if (formData.byeolCnt > currentByeol) {
       context.action.alert({
         msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.',
