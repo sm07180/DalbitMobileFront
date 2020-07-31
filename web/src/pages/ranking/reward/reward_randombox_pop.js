@@ -1,30 +1,52 @@
-import React, {useState} from 'react'
-import {IMG_SERVER} from 'context/config'
-
-import Lottie from 'react-lottie'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import CloseBtn from '../static/ic_close.svg'
+
+import Api from 'context/api'
+import Lottie from 'react-lottie'
 
 export default (props) => {
-  const {setRandomPopup, setPopup, rewardPop} = props
+  const {randomPopup, setRandomPopup, setPopup, rewardPop, setRewardPop, rankType, dateType} = props
+  const [randomPoint, setRandomPoint] = useState({
+    rewardImg: ''
+  })
 
   const closePopup = () => {
     setRandomPopup(false)
     setPopup(false)
   }
 
-  setTimeout(closePopup, 4000)
+  setTimeout(closePopup, 5000)
+
+  useEffect(() => {
+    async function feachRandomReward() {
+      const {result, data} = await Api.post_randombox_reward({
+        data: {
+          rankSlct: rankType === 'dj' ? 1 : 2,
+          rankType: Number(dateType)
+        }
+      })
+
+      if (result === 'success') {
+        setRandomPoint(data)
+      } else {
+        console.log('랜덤실패')
+      }
+    }
+    feachRandomReward()
+  }, [])
 
   return (
     <RandomPopupWrap>
-      <div className="lottie-box" onClick={() => closePopup()}>
-        <Lottie
-          options={{
-            loop: false,
-            autoPlay: true,
-            path: `${IMG_SERVER}/event/attend/200617/fansupport1.json`
-          }}
-        />
+      <div className="lottie-box">
+        {randomPoint.rewardImg && (
+          <Lottie
+            options={{
+              loop: false,
+              autoPlay: true,
+              path: `${randomPoint.rewardImg}`
+            }}
+          />
+        )}
       </div>
     </RandomPopupWrap>
   )

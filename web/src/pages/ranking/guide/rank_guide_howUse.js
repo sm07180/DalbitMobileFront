@@ -1,5 +1,6 @@
 import React from 'react'
 
+//static
 import hintIcon from '../static/hint_b_s.svg'
 
 export default (props) => {

@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react'
+import styled from 'styled-components'
+
 import {IMG_SERVER} from 'context/config'
 
-import styled from 'styled-components'
-import CloseBtn from '../static/ic_close.svg'
-
+//components
 import RandomBoxPop from './reward_randombox_pop'
 
+//static
+import CloseBtn from '../static/ic_close.svg'
+
 export default (props) => {
-  const {setPopup, rewardPop} = props
+  const {setPopup, rewardPop, setRewardPop, rankType, dateType} = props
   const [randomPopup, setRandomPopup] = useState(false)
 
   const closePopup = () => {
@@ -54,7 +57,9 @@ export default (props) => {
         </button>
         <div className="title-box">
           <p className="title">{rewardPop.text}가 되셨습니다.</p>
-          <p className="sub-title">축하합니다</p>
+          <p className="sub-title">
+            <img src={`${IMG_SERVER}/ranking/reward_pop_character3@2x.png`} width={41} height={26} /> 축하합니다
+          </p>
         </div>
 
         <div className="reward-content">
@@ -77,7 +82,9 @@ export default (props) => {
                 {' '}
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
               </label>{' '}
-              <label className="badge-label right">경험치 랜덤 박스</label>
+              <label className="badge-label right">
+                <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스
+              </label>
             </div>
           </div>
         </div>
@@ -90,7 +97,17 @@ export default (props) => {
           <li>* 경험치 랜덤 박스 보상은 차주 랭킹이 업데이트 되기전 까지 받아야합니다.</li>
         </ul>
       </div>
-      {randomPopup && <RandomBoxPop setRandomPopup={setRandomPopup} setPopup={setPopup} rewardPop={rewardPop} />}
+      {randomPopup && (
+        <RandomBoxPop
+          randomPopup={randomPopup}
+          setRandomPopup={setRandomPopup}
+          setPopup={setPopup}
+          rewardPop={rewardPop}
+          setRewardPop={setRewardPop}
+          rankType={rankType}
+          dateType={dateType}
+        />
+      )}
     </PopupWrap>
   )
 }
