@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="delete_g_s" width="16" height="16" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            .cls-2{fill:#757575}
+        </style>
+    </defs>
+    <g id="그룹_15623" data-name="그룹 15623" transform="translate(-308 -626.999)">
+        <path id="패스_7040" d="M16.25 5H12.5V3.747A1.815 1.815 0 0 0 10.625 2h-2.25A1.815 1.815 0 0 0 6.5 3.747V5H2.75a.75.75 0 1 0 0 1.5h.75v8.25A2.25 2.25 0 0 0 5.75 17h7.5a2.25 2.25 0 0 0 2.25-2.25V6.5h.75a.75.75 0 0 0 0-1.5zM8 3.747c0-.12.158-.247.375-.247h2.25c.217 0 .375.128.375.247V5H8zm6 11a.75.75 0 0 1-.75.75h-7.5A.75.75 0 0 1 5 14.75V6.5h9z" class="cls-2" data-name="패스 7040" transform="translate(306.5 625.5)"/>
+        <path id="패스_7041" d="M8.75 15.5a.75.75 0 0 0 .75-.75v-3a.75.75 0 0 0-1.5 0v3a.75.75 0 0 0 .75.75z" class="cls-2" data-name="패스 7041" transform="translate(305 623.25)"/>
+        <path id="패스_7042" d="M14.75 15.5a.75.75 0 0 0 .75-.75v-3a.75.75 0 0 0-1.5 0v3a.75.75 0 0 0 .75.75z" class="cls-2" data-name="패스 7042" transform="translate(303.5 623.25)"/>
+    </g>
+</svg>
