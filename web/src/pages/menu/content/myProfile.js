@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
+import qs from 'qs'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -154,10 +155,9 @@ const myProfile = (props) => {
   console.log(profile.fanRank)
   //func back
   const goBack = () => {
-    window.location.href = '/'
-    if (isHybrid()) {
+    const {webview} = qs.parse(location.search)
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
     } else {
       window.history.go(-1)
     }

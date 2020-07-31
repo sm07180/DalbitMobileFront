@@ -19,12 +19,25 @@ export default (props) => {
     // if (_parse.push_type !== undefined && typeof _parse.push_type === 'string') {
     //
     // }
-
-    if (props.click == undefined) {
+    const {webview} = qs.parse(location.search)
+    let referrer = document.referrer
+    if (webview && webview === 'new' && isHybrid()) {
+      Hybrid('CloseLayerPopup')
+    /*} else if (referrer.split('/')[4] === 'faq') {
+      window.history.go(-2)*/
+    } else {
+      //window.history.go(-1)
+      if (props.click == undefined) {
+        getUrlAndRedirect()
+      } else {
+        props.click()
+      }
+    }
+    /*if (props.click == undefined) {
       getUrlAndRedirect()
     } else {
       props.click()
-    }
+    }*/
   }
 
   return (
