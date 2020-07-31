@@ -3,6 +3,7 @@
     input[type='file'] {
       display: none;
     }
+
     &__header {
       display: flex;
       align-items: center;
@@ -190,6 +191,9 @@
           border-radius: 0 12px 12px 0;
         }
       }
+      & > input {
+        display: none;
+      }
     }
 
     .formData {
@@ -252,7 +256,31 @@
         &--select {
           & > select {
             width: 100%;
+            background-color: #fff;
           }
+          &::after {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            right: 24px;
+            transform: translate(-50%, 5%) rotate(-135deg);
+            border-left: 2px solid #bdbdbd;
+            border-top: 2px solid #bdbdbd;
+            content: '';
+          }
+          // &.on {
+          //   &::after {
+          //     position: absolute;
+          //     width: 12px;
+          //     height: 12px;
+          //     right: 24px;
+          //     transform: translate(-50%, 40%) rotate(45deg);
+          //     border-left: 2px solid #bdbdbd;
+          //     border-top: 2px solid #bdbdbd;
+          //     content: '';
+          //   }
+          // }
+
           // &::after {
           //   content: '';
           //   width: 14px;

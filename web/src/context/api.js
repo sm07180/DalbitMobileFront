@@ -906,6 +906,16 @@ export default class API {
   }
 
   /**
+   * @brief 짧은토큰조회 (외부 브라우저에서 자동 로그인시 필요)
+   * @method "GET"
+   * @create 이재은 2020.07.14
+   */
+
+  static getTokenShort = async () => {
+    return await ajax({url: `/token/short`, method: 'GET'})
+  }
+
+  /**
    * @brief 회원로그인
    * @method "POST"
    * @param string memType            //*회원구분
@@ -1637,6 +1647,16 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/rank/level`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
+  static get_ranking_reward = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/reward/popup`,
       method: method || 'GET',
       params: params
     })

@@ -3,6 +3,8 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 import React, {useEffect, useContext, useState} from 'react'
+import qs from 'qs'
+
 //route
 import {OS_TYPE} from 'context/config.js'
 import Room, {RoomJoin} from 'context/room'
@@ -210,14 +212,13 @@ const myProfile = (props) => {
   }
   //func back
   const goBack = () => {
-    window.location.href = '/'
-    if (isHybrid()) {
+    const {webview} = qs.parse(location.search)
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
     } else {
-      window.history.go(-1)
+      //window.history.go(-1)
+      window.location.href = '/'
     }
-    //window.location.href = '/'
   }
   //스와이퍼
   const params = {

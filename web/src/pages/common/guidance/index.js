@@ -1,13 +1,22 @@
-import React from 'react'
+import React, {useContext} from 'react'
+
+import {Context} from 'context'
 
 import './index.scss'
 export default function Guidance({state, dispatch}) {
+  const context = useContext(Context)
   return (
     <div onClick={(e) => e.stopPropagation()} id="guidanceWrap">
       <div className="guidanceWrap__header">
-        <span className="guidanceWrap__header__button--back" onClick={() => dispatch({type: 'status', value: 0})} />
-        <h1 className="guidanceWrap__header__title">환전 안내 사항</h1>
+        <h1 className="guidanceWrap__header--title">환전 유의사항</h1>
+        <span
+          className="guidanceWrap__header--button"
+          onClick={() => {
+            context.action.updatePopupVisible(false)
+          }}
+        />
       </div>
+
       <div>
         <div className="guidance">
           <div className="guidance__list">

@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import Util from 'components/lib/utility.js'
+import {IMG_SERVER} from 'context/config'
 
 import NoResult from 'components/ui/noResult'
 import RankList from './rankList'
@@ -7,6 +8,8 @@ import RankListTop from './rankListTop'
 
 import {Context} from 'context'
 import Api from 'context/api'
+
+import PopupSuccess from './reward/reward_success_pop'
 
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -22,8 +25,25 @@ export default (props) => {
   let timer
 
   const context = useContext(Context)
-  const {typeState, dateType, setDateType, rankType, list, fetchRank, myInfo, setMyInfo, nextList, setCurrentPage} = props
+  const {
+    typeState,
+    dateType,
+    setDateType,
+    rankType,
+    setRankType,
+    list,
+    fetchRank,
+    myInfo,
+    setMyInfo,
+    nextList,
+    setCurrentPage
+  } = props
   const [myProfile, setMyProfile] = useState(false)
+  const [rewardPop, setRewardPop] = useState({
+    text: '',
+    rewardDal: 0
+  })
+  const [popup, setPopup] = useState(false)
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
@@ -37,6 +57,7 @@ export default (props) => {
             setDateType(index)
             fetchRank(rankType, index)
             setMyInfo({
+              isReward: false,
               myGiftPoint: 0,
               myListenerPoint: 0,
               myRank: 0,
@@ -168,98 +189,140 @@ export default (props) => {
     }
   }
 
+  //clickState === 1 :탭 버튼이 변경되었을 경우
+  //clickState === 2 :보상받기를 클릭했을 경우
+  const rankingReward = (clickState) => {
+    if (dateType === 0) return null
+
+    async function feachrankingReward() {
+      const {result, data} = await Api.get_ranking_reward({
+        params: {
+          rankSlct: rankType === 'dj' ? 1 : 2,
+          rankType: dateType
+        }
+      })
+
+      if (result === 'success') {
+        if (clickState === 2) {
+          setPopup(true)
+        }
+        setRewardPop(data)
+      } else {
+        if (clickState === 2) {
+          return context.action.alert({
+            msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
+          })
+        }
+        console.log('실패')
+        setMyInfo({...myInfo, isReward: false})
+      }
+    }
+    feachrankingReward()
+  }
+
+  useEffect(() => {
+    rankingReward(1)
+  }, [dateType, rankType])
+
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
-      {myProfile && (
-        <div
-          className="myRanking myRanking__profile"
-          onClick={() => {
-            window.location.href = `/menu/profile`
-          }}>
-          <div className="myRanking__left myRanking__left--profile">
-            <p
-              className="myRanking__left--title colorWhite 
+      {myInfo.isReward ? (
+        <>
+          <div>
+            <div className="rewordBox">
+              <p className="rewordBox__top">
+                {rewardPop.text} <span>축하합니다</span>
+              </p>
+
+              <div className="rewordBox__character1"></div>
+              <div className="rewordBox__character2"></div>
+              <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
+                보상 받기
+              </button>
+            </div>
+          </div>
+
+          {popup && <PopupSuccess setPopup={setPopup} rewardPop={rewardPop} />}
+        </>
+      ) : (
+        <>
+          {myProfile && (
+            <div
+              className="myRanking myRanking__profile"
+              onClick={() => {
+                window.location.href = `/menu/profile`
+              }}>
+              <div className="myRanking__left myRanking__left--profile">
+                <p
+                  className="myRanking__left--title colorWhite 
       ">
-              내 랭킹
-            </p>
-            <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-            <p className="rankingChange">
-              {createMyProfile()}
-              {/* <span className={createMyUpDownClass()}>{myInfo.myUpDown}</span> */}
-            </p>
-          </div>
+                  내 랭킹
+                </p>
+                <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
+                <p className="rankingChange">{createMyProfile()}</p>
+              </div>
 
-          <div className="thumbBox thumbBox__profile">
-            <img src={myProfile.holder} className="thumbBox__frame" />
-            <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
-          </div>
+              <div className="thumbBox thumbBox__profile">
+                <img src={myProfile.holder} className="thumbBox__frame" />
+                <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+              </div>
 
-          <div className="myRanking__right">
-            <div className="myRanking__rightWrap">
-              <div className="profileItme">
-                {/* <p className={createMyLevelClass()}>
-            Lv<strong>{myProfile.level}</strong>. {myProfile.grade}
-          </p> */}
-                <p className="nickNameBox">{myProfile.nickNm}</p>
-                <div className="countBox countBox--profile">
-                  {rankType == 'dj' && (
-                    <>
-                      <div className="countBox__block">
-                        <span className="countBox__item">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                          {Util.printNumber(myInfo.myPoint)}
-                        </span>
-                        <span className="countBox__item">
-                          <img src={peopleWhite} />
-                          {Util.printNumber(myInfo.myListenerPoint)}
-                        </span>
-                      </div>
+              <div className="myRanking__right">
+                <div className="myRanking__rightWrap">
+                  <div className="profileItme">
+                    <p className="nickNameBox">{myProfile.nickNm}</p>
+                    <div className="countBox countBox--profile">
+                      {rankType == 'dj' && (
+                        <>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                              {Util.printNumber(myInfo.myPoint)}
+                            </span>
+                            <span className="countBox__item">
+                              <img src={peopleWhite} />
+                              {Util.printNumber(myInfo.myListenerPoint)}
+                            </span>
+                          </div>
 
-                      <div className="countBox__block">
-                        <span className="countBox__item">
-                          <img src={likeWhite} className="icon__white" />
-                          {Util.printNumber(myInfo.myLikePoint)}
-                        </span>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={likeWhite} className="icon__white" />
+                              {Util.printNumber(myInfo.myLikePoint)}
+                            </span>
 
-                        <span className="countBox__item">
-                          <img src={timeWhite} className="icon__white" />
-                          {Util.printNumber(myInfo.myBroadPoint)}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                  {rankType == 'fan' && (
-                    <>
-                      <div className="countBox__block">
-                        <span className="countBox__item">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                          {Util.printNumber(myInfo.myPoint)}
-                        </span>
+                            <span className="countBox__item">
+                              <img src={timeWhite} className="icon__white" />
+                              {Util.printNumber(myInfo.myBroadPoint)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                      {rankType == 'fan' && (
+                        <>
+                          <div className="countBox__block">
+                            <span className="countBox__item">
+                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                              {Util.printNumber(myInfo.myPoint)}
+                            </span>
 
-                        <span className="countBox__item">
-                          <img src={timeWhite} />
-                          {Util.printNumber(myInfo.myListenPoint)}
-                        </span>
-                      </div>
-
-                      {/* <span className="countBox__item">
-                      <img src={moonWhite} />
-                      {Util.printNumber(myInfo.myGiftPoint)}
-                    </span> */}
-
-                      {/* <span className="countBox__item">
-                      <img src={moonWhite} />
-                      {Util.printNumber(myProfile.dalCnt)}
-                    </span> */}
-                    </>
-                  )}
+                            <span className="countBox__item">
+                              <img src={timeWhite} />
+                              {Util.printNumber(myInfo.myListenPoint)}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          )}
+        </>
       )}
+
       {creatResult()}
     </>
   )

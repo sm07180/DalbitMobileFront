@@ -3,15 +3,16 @@ import styled from 'styled-components'
 // static
 import BackBtnIcon from '../static/ic_back_g.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import qs from 'qs'
 
 export default (props) => {
   const goBack = () => {
-    window.location.href = '/'
-    if (isHybrid()) {
+    const {webview} = qs.parse(location.search)
+    if(webview && webview === 'new' && isHybrid()){
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
     } else {
       window.location.href = '/'
+      //window.history.go(-1)
     }
   }
   //--------------------------------------------------------------------

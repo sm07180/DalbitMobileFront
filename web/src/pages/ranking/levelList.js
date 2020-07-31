@@ -3,10 +3,9 @@ import React from 'react'
 import live from './static/live.svg'
 import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
-
+import Room, {RoomJoin} from 'context/room'
 export default (props) => {
   const {levelList} = props
-  console.log('levelList', levelList)
 
   return (
     <>
@@ -15,13 +14,12 @@ export default (props) => {
           const {nickNm, fanNickNm, profImg, holder, level, grade, fanCnt, roomNo, memNo} = list
 
           return (
-            <li
-              key={index}
-              className="levelListBox"
-              onClick={() => {
-                window.location.href = `/mypage/${memNo}`
-              }}>
-              <div className="thumbBox">
+            <li key={index} className="levelListBox">
+              <div
+                className="thumbBox"
+                onClick={() => {
+                  window.location.href = `/mypage/${memNo}`
+                }}>
                 <img src={holder} className="thumbBox__frame" />
                 <img src={profImg.thumb120x120} className="thumbBox__pic" />
               </div>
@@ -46,7 +44,7 @@ export default (props) => {
                   <img
                     src={live}
                     onClick={() => {
-                      RoomJoin(roomNo + '')
+                      RoomJoin(roomNo)
                     }}
                     className="liveBox__img"
                   />
