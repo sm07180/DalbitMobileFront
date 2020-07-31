@@ -205,7 +205,9 @@ export default (props) => {
         <div id="ranking-page">
           <div className="header">
             <h1 className="header__title">랭킹</h1>
-            <img className="header__btnBack" src={closeBtn} onClick={goBack} />
+            <button className="header__btnBack" onClick={goBack}>
+              <img src={closeBtn} alt="뒤로가기" />
+            </button>
           </div>
 
           <div>
@@ -214,7 +216,9 @@ export default (props) => {
 
               <div className="rankTopBox__update">
                 {myInfo.time}
-                <img src={hint} onClick={() => props.history.push('/rank/guide')} className="rankTopBox__img" />
+                <button onClick={() => props.history.push('/rank/guide')} className="rankTopBox__img">
+                  <img src={hint} alt="힌트보기" />
+                </button>
               </div>
             </div>
 
