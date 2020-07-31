@@ -108,6 +108,37 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
     }
   }
+  const checkSelfAuth = async () => {
+    let myBirth
+    const baseYear = new Date().getFullYear() - 16
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > baseYear) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        const {parentsAgreeYn, adultYn} = res.data
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return props.history.push('/selfauth_result')
+        props.history.push('/money_exchange')
+      } else if (res.result === 'fail' && res.code === '0') {
+        props.history.push('/selfauth')
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+    fetchSelfAuth()
+    // history.push('/money_exchange')
+  }
   return (
     <MenuMypage>
       {/* <Header>
@@ -206,8 +237,14 @@ export default (props) => {
                   <a
                     href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
                     key={`list-${idx}`}
-                    onClick={() => {
-                      if (type === 'store') return StoreLink()
+                    onClick={(e) => {
+                      if (type === 'store') {
+                        e.preventDefault()
+                        StoreLink(globalCtx)
+                      } else if (type === 'money_exchange') {
+                        e.preventDefault()
+                        checkSelfAuth()
+                      }
                     }}>
                     <div className="list">
                       <img className="icon" src={icon} />
