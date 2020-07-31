@@ -2,6 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
+import _, {uniqueId} from 'lodash'
 
 //context
 import {Context} from 'context'
@@ -19,6 +20,8 @@ export default (props) => {
   const history = useHistory()
 
   const [popup, setPopup] = useState(false)
+
+  const {result, code, message} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   /**
    * authState
@@ -39,7 +42,7 @@ export default (props) => {
       } else {
         context.action.alert({
           msg: res.message,
-          callback: goBack
+          callback: goWallet
         })
       }
     }
@@ -47,30 +50,58 @@ export default (props) => {
   }
 
   useEffect(() => {
-    checkAuth()
-
-    // if (props.history.action === 'POP') {
-    //   props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-    // }
-
-    // window.history.pushState('result', '', `${location.href}/#result`)
-
-    // window.onpopstate = () => {
-    //   console.log('onpopstate')
-    //   //history.go(1)
-    //   goBack()
-    // }
+    if (result === 'fail' || code === 'C007' || code === 'C008') {
+      return context.action.alert({
+        msg: message,
+        callback: () => {
+          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          context.action.updateWalletIdx(1)
+          // window.location.href = '/'
+        }
+      })
+    } else {
+      checkAuth()
+    }
   }, [])
 
-  const goBack = () => {
+  const goWallet = () => {
     props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     context.action.updateWalletIdx(1)
+  }
+
+  const goBack = () => {
+    window.history.back()
+  }
+
+  const goLegalAuth = async () => {
+    let myBirth
+    const baseYear = new Date().getFullYear() - 16
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > baseYear) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
+    history.push(`/self_auth/legal`)
   }
 
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      <Header title={authState === '3' ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
+      {authState === 0 ? (
+        <></>
+      ) : (
+        <Header
+          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
+          goBack={authState === 2 ? goBack : goWallet}
+        />
+      )}
+
       <Content>
         {authState === 2 ? (
           <div className="auth-wrap">
@@ -90,12 +121,7 @@ export default (props) => {
               <button className="cancel" onClick={goBack}>
                 취소
               </button>
-              <button
-                onClick={() => {
-                  history.push('/legalauth')
-                }}>
-                동의 받기
-              </button>
+              <button onClick={goLegalAuth}>동의 받기</button>
             </div>
           </div>
         ) : authState === 3 ? (
