@@ -9,12 +9,12 @@
  */
 
 import React, {useContext, useEffect, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
-import Utility from 'components/lib/utility'
 import Api from 'context/api'
 import qs from 'query-string'
 
@@ -27,6 +27,8 @@ import icoNotice from '../../static/ic_notice.svg'
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
 export default () => {
+  const history = useHistory()
+
   //context
   const context = useContext(Context)
 
@@ -57,7 +59,16 @@ export default () => {
   async function payFetch() {
     const {type, fetch, code} = selectedPay
 
-    if (code === 'coocon') return console.log('무통장입금 보내기')
+    if (code === 'coocon') {
+      return history.push({
+        pathname: '/pay/bank',
+        state: {
+          prdtNm: name,
+          prdtPrice: price,
+          itemNo: itemNo
+        }
+      })
+    }
 
     const {result, data, message} = await Api[fetch]({
       data: {
@@ -222,6 +233,7 @@ const Content = styled.div`
       font-weight: bold;
       span {
         display: inline-block;
+        margin-top: -8px;
         margin-left: auto;
         color: ${COLOR_MAIN};
         font-weight: 800;
