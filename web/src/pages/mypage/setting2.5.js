@@ -260,7 +260,7 @@ export default (props) => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          props.history.push('/menu/profile')
+          window.location.href = '/menu/profile'
         }
       })
     } else {
