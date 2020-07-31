@@ -6,7 +6,8 @@ import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
-// component
+//components
+import Layout from 'pages/common/layout/new_layout'
 import closeBtn from 'pages/menu/static/ic_close.svg'
 import qs from 'query-string'
 import React, {useContext, useEffect, useRef, useState} from 'react'
@@ -256,102 +257,104 @@ export default (props) => {
       {token && token.isLogin ? (
         <Redirect to={'/'} />
       ) : (
-        <Login>
-          <div className="header">
-            <div className="inner">
-              <img className="close-btn" src={backW} onClick={clickCloseBtn} />
-              <h1>로그인</h1>
+        <Layout status="no_gnb">
+          <Login>
+            <div className="header">
+              <div className="inner">
+                <img className="close-btn" src={backW} onClick={clickCloseBtn} />
+                <h1>로그인</h1>
+              </div>
             </div>
-          </div>
 
-          <div className="login-wrap">
-            <img
-              className="logo"
-              src={logoW}
-              onClick={() => {
-                if (!webview) {
-                  window.location.href = '/'
-                }
-              }}
-            />
-            <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-            <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-            <div className="input-wrap">
-              <input
-                ref={inputPhoneRef}
-                type="number"
-                // autoComplete="off"
-                placeholder="전화번호"
-                value={phoneNum}
-                onChange={changePhoneNum}
-                onKeyDown={(e) => {
-                  const {keyCode} = e
-                  // Number 96 - 105 , 48 - 57
-                  // Delete 8, 46
-                  // Tab 9
-                  if (
-                    keyCode === 9 ||
-                    keyCode === 8 ||
-                    keyCode === 46 ||
-                    (keyCode >= 48 && keyCode <= 57) ||
-                    (keyCode >= 96 && keyCode <= 105)
-                  ) {
-                    return
+            <div className="login-wrap">
+              <img
+                className="logo"
+                src={logoW}
+                onClick={() => {
+                  if (!webview) {
+                    window.location.href = '/'
                   }
-                  e.preventDefault()
                 }}
               />
-              <input
-                ref={inputPasswordRef}
-                type="password"
-                // autoComplete="new-password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={changePassword}
-              />
-              <button className="login-btn" onClick={clickLoginBtn}>
-                로그인
-              </button>
-            </div>
-
-            <div className="link-wrap">
-              <a href="/password">
-                <div className="link-text">비밀번호 변경</div>
-              </a>
-              <div className="bar" />
-              <a href="/signup">
-                <div className="link-text">회원가입</div>
-              </a>
-            </div>
-          </div>
-
-          {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
-            <SocialLoginWrap>
-              <div className="line-wrap">
-                <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                  <img className="icon" src={appleLogo} />
+              <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+              <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+              <div className="input-wrap">
+                <input
+                  ref={inputPhoneRef}
+                  type="number"
+                  // autoComplete="off"
+                  placeholder="전화번호"
+                  value={phoneNum}
+                  onChange={changePhoneNum}
+                  onKeyDown={(e) => {
+                    const {keyCode} = e
+                    // Number 96 - 105 , 48 - 57
+                    // Delete 8, 46
+                    // Tab 9
+                    if (
+                      keyCode === 9 ||
+                      keyCode === 8 ||
+                      keyCode === 46 ||
+                      (keyCode >= 48 && keyCode <= 57) ||
+                      (keyCode >= 96 && keyCode <= 105)
+                    ) {
+                      return
+                    }
+                    e.preventDefault()
+                  }}
+                />
+                <input
+                  ref={inputPasswordRef}
+                  type="password"
+                  // autoComplete="new-password"
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={changePassword}
+                />
+                <button className="login-btn" onClick={clickLoginBtn}>
+                  로그인
                 </button>
-                <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-                  <img className="icon" src={facebookLogo} />
-                </button>
-                <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon" src={naverLogo} />
-                </button>
-                <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon" src={kakaoLogo} />
-                </button>
-                {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                  (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                  customHeader['os'] === OS_TYPE['Desktop']) && (
-                  <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                    <img className="icon" src={googleLogo} />
-                  </button>
-                )}
               </div>
-              {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
-            </SocialLoginWrap>
-          )}
-        </Login>
+
+              <div className="link-wrap">
+                <a href="/password">
+                  <div className="link-text">비밀번호 변경</div>
+                </a>
+                <div className="bar" />
+                <a href="/signup">
+                  <div className="link-text">회원가입</div>
+                </a>
+              </div>
+            </div>
+
+            {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
+              <SocialLoginWrap>
+                <div className="line-wrap">
+                  <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+                    <img className="icon" src={appleLogo} />
+                  </button>
+                  <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+                    <img className="icon" src={facebookLogo} />
+                  </button>
+                  <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
+                    <img className="icon" src={naverLogo} />
+                  </button>
+                  <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
+                    <img className="icon" src={kakaoLogo} />
+                  </button>
+                  {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
+                    (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                    customHeader['os'] === OS_TYPE['Desktop']) && (
+                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+                      <img className="icon" src={googleLogo} />
+                    </button>
+                  )}
+                </div>
+                {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
+              </SocialLoginWrap>
+            )}
+          </Login>
+        </Layout>
       )}
     </Switch>
   )
