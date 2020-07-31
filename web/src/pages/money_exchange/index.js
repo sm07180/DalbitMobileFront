@@ -1,8 +1,5 @@
 import React, {useReducer} from 'react'
-import {useHistory} from 'react-router-dom'
-
 import DoExchange from './content/do_exchange'
-// import Guidance from './content/guidance'
 import Result from './content/result'
 import Message from 'pages/common/message'
 import './index.scss'
@@ -26,14 +23,12 @@ function exchangeReducer(state, action) {
 }
 
 export default function MoneyExchange() {
-  const history = useHistory()
   const [exchangeState, exchangeDispatch] = useReducer(exchangeReducer, {status: 0})
 
   return (
     <div className="exchange-modal">
       <div className="exchangeWrap">
         {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
-        {/* {exchangeState.status === 1 && <Guidance state={exchangeState} dispatch={exchangeDispatch} />} */}
         {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
       </div>
       <Message />

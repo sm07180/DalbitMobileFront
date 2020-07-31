@@ -69,10 +69,12 @@ export default (props) => {
   }, [context.popup_visible])
 
   useEffect(() => {
-    if (context.popup_code[0] == 'TERMS' || context.popup_code[0] === 'GUIDANCE') {
+    if (context.popup_code[0] == 'TERMS') {
       setLayout('round terms')
     } else if (context.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
+    } else if (context.popup_code[0] === 'GUIDANCE') {
+      setLayout('guidance')
     } else {
       setLayout('square')
     }
@@ -156,6 +158,22 @@ const Wrap = styled.div`
       &.terms {
         width: 90%;
       }
+    }
+  }
+
+  &.guidance {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 80%;
+    }
+
+    & > button {
+      display: none;
     }
   }
 
