@@ -79,14 +79,13 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
     if (target.files.length === 0) return
     let reader = new FileReader()
     const file = target.files[0]
-
     const fileName = file.name
 
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop().toLowerCase()
     //
     const extValidator = (ext) => {
-      const list = ['jpg', 'jpeg', 'png']
+      const list = ['jpg', 'jpeg', 'png', 'PNG']
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
@@ -292,19 +291,19 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        {state.consent && (
+        {state.consent === false && (
           <>
             <div className="formData__list formData__list--disabled">
               <div className="formData__title">부모동의 사본</div>
               <div className="formData__input">
-                <label htmlFor="bankbook-upload-text" className="formData__input--label">
+                <label htmlFor="consent-upload-text" className="formData__input--label">
                   <span>{state.files[2] !== false ? state.files[2].name : '등록해주세요'}</span>
                   <span className="formData__input--button">찾아보기</span>
                 </label>
                 <input
                   type="file"
-                  name="bankbook"
-                  id="bankbook-upload-text"
+                  name="consent"
+                  id="consent-upload-text"
                   className="formData__input--text"
                   placeholder="통장사본을 첨부해주세요"
                   onChange={(e) => uploadSingleFile(e, 2)}

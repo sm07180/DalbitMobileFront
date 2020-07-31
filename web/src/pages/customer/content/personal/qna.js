@@ -67,15 +67,15 @@ export default function Qna() {
 
   function uploadSingleFile(e, idx) {
     const target = e.currentTarget
-
+    if (target.files.length === 0) return
     let reader = new FileReader()
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
-    //
+    //const list = ['jpg', 'jpeg', 'png', 'PNG']
     const extValidator = (ext) => {
-      const list = ['jpg', 'jpeg', 'png']
+      const list = ['jpg', 'jpeg', 'png', 'PNG']
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
