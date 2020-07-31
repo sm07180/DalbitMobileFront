@@ -767,7 +767,7 @@ const NameWrap = styled.div`
     color: #000;
     font-size: 20px;
     line-height: 24px;
-    height: 24px;
+    min-height: 24px;
     font-weight: 800;
   }
   .specialIcon {
