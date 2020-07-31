@@ -72,6 +72,7 @@ const GlobalProvider = (props) => {
   const [fanEdite, setFanEdite] = useState(false)
   const [fanEditeLength, setFanEditeLength] = useState(-1)
   const [selectFanTab, setSelectFanTab] = useState(0)
+  const [editeToggle, setEditeToggle] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -296,6 +297,9 @@ const GlobalProvider = (props) => {
     },
     updateSelectFanTab: (number) => {
       setSelectFanTab(number)
+    },
+    updateEditeToggle: (boolean) => {
+      setEditeToggle(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -341,7 +345,8 @@ const GlobalProvider = (props) => {
     fanTab,
     fanEdite,
     fanEditeLength,
-    selectFanTab
+    selectFanTab,
+    editeToggle
   }
   return <Provider value={value}>{props.children}</Provider>
 }

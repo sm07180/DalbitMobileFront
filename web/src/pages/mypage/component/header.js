@@ -23,12 +23,15 @@ export default (props) => {
     let referrer = document.referrer
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
-    /*} else if (referrer.split('/')[4] === 'faq') {
+
+      /*} else if (referrer.split('/')[4] === 'faq') {
       window.history.go(-2)*/
     } else {
       //window.history.go(-1)
       if (props.click == undefined) {
         getUrlAndRedirect()
+        //팬관리 스테이트 초기화
+        context.action.updateFanEdite(false)
       } else {
         props.click()
       }
