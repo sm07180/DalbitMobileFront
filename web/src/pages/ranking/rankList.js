@@ -1,8 +1,9 @@
-import Util from 'components/lib/utility.js'
-//context
+import React from 'react'
 
 import {RoomJoin} from 'context/room'
-import React from 'react'
+import Util from 'components/lib/utility.js'
+
+//static
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
 import like from './static/like_g_s.svg'

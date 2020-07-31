@@ -1,9 +1,12 @@
 import React from 'react'
 
+import Room, {RoomJoin} from 'context/room'
+
+//static
 import live from './static/live.svg'
 import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
-import Room, {RoomJoin} from 'context/room'
+
 export default (props) => {
   const {levelList} = props
 

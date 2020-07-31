@@ -1,17 +1,16 @@
 import React, {useContext, useEffect, useState} from 'react'
-import qs from 'query-string'
-//context
+
 import {Context} from 'context'
 import Api from 'context/api'
+
 //components
 import Layout from 'pages/common/layout'
-
 import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
 import RankGuide from './guide/rank_guide'
-
-//state
 import './ranking.scss'
+
+//statc
 import hint from './static/hint.svg'
 import closeBtn from './static/ic_back.svg'
 
@@ -195,6 +194,10 @@ export default (props) => {
     currentPage = 1
   }
 
+  const resetFn = () => {
+    fetchRank(rankType, dateType)
+  }
+
   //가이드에 따른 분기
   const {title} = props.match.params
   if (title === 'guide') return <RankGuide></RankGuide>
@@ -236,7 +239,8 @@ export default (props) => {
                 myInfo={myInfo}
                 setMyInfo={setMyInfo}
                 nextList={nextList}
-                setCurrentPage={setCurrentPage}></RankListWrap>
+                setCurrentPage={setCurrentPage}
+                resetFn={resetFn}></RankListWrap>
             )}
 
             {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}

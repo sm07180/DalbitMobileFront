@@ -1,23 +1,23 @@
 import React, {useContext, useState, useEffect} from 'react'
-import Util from 'components/lib/utility.js'
-import {IMG_SERVER} from 'context/config'
-
-import NoResult from 'components/ui/noResult'
-import RankList from './rankList'
-import RankListTop from './rankListTop'
 
 import {Context} from 'context'
 import Api from 'context/api'
+import Util from 'components/lib/utility.js'
 
+//components
+import NoResult from 'components/ui/noResult'
+import RankList from './rankList'
+import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
 
+//static
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
 import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '전일', '주간']
+const dateArray = ['오늘', '일간', '주간']
 
 let moreState = false
 
@@ -36,7 +36,8 @@ export default (props) => {
     myInfo,
     setMyInfo,
     nextList,
-    setCurrentPage
+    setCurrentPage,
+    resetFn
   } = props
   const [myProfile, setMyProfile] = useState(false)
   const [rewardPop, setRewardPop] = useState({
@@ -213,7 +214,6 @@ export default (props) => {
             msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
           })
         }
-        console.log('실패')
         setMyInfo({...myInfo, isReward: false})
       }
     }
@@ -223,6 +223,12 @@ export default (props) => {
   useEffect(() => {
     rankingReward(1)
   }, [dateType, rankType])
+
+  useEffect(() => {
+    if (!popup) {
+      resetFn()
+    }
+  }, [popup])
 
   return (
     <>
@@ -243,7 +249,15 @@ export default (props) => {
             </div>
           </div>
 
-          {popup && <PopupSuccess setPopup={setPopup} rewardPop={rewardPop} />}
+          {popup && (
+            <PopupSuccess
+              setPopup={setPopup}
+              rewardPop={rewardPop}
+              setRewardPop={setRewardPop}
+              rankType={rankType}
+              dateType={dateType}
+            />
+          )}
         </>
       ) : (
         <>

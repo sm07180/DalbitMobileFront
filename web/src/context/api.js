@@ -1662,6 +1662,16 @@ export default class API {
     })
   }
 
+  static post_randombox_reward = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rank/randombox`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
   //------------------------------------------------------------- 인증관련
   /**
    * @brief 휴대폰 인증번호요청
