@@ -19,7 +19,7 @@ import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
-import LayerPopupNotice from './component/layer_popup_notice.js'
+import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
@@ -71,7 +71,8 @@ export default (props) => {
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
   const [popup, setPopup] = useState(false)
-  const [popupNotice, setPopupNotice] = useState(true)
+  const [popupNotice, setPopupNotice] = useState(false)
+  const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
 
   const [liveAlign, setLiveAlign] = useState(1)
@@ -303,6 +304,40 @@ export default (props) => {
     sessionStorage.removeItem('pay_info')
   }
 
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    if (res.result === 'success') {
+      // console.log(res.data)
+
+      if (res.hasOwnProperty('data')) {
+        setPopupData(res.data)
+        let filterData = []
+        res.data.map((data, index) => {
+          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
+          if (popupState === undefined) {
+            filterData.push(data)
+          } else {
+            return false
+          }
+        })
+
+        setTimeout(() => {
+          if (filterData.length > 0) setPopupNotice(true)
+        }, 10)
+      }
+    } else {
+      console.log(res.result, res.message)
+    }
+  }
+
+  useEffect(() => {
+    fetchMainPopupData('6')
+  }, [])
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <MainWrap ref={MainRef}>
@@ -460,9 +495,7 @@ export default (props) => {
           />
         )}
 
-        {customHeader['os'] !== OS_TYPE['IOS'] && popupNotice && Utility.getCookie('popup_notice200609') !== 'y' && (
-          <LayerPopupNotice setPopup={setPopupNotice} />
-        )}
+        {popupNotice && <LayerPopupWrap data={popupData} setPopup={setPopupNotice} />}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>

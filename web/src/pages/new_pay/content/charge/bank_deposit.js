@@ -24,8 +24,7 @@ import icoDown from '../../static/arrow_down_g.svg'
 export default () => {
   const location = useLocation()
   const history = useHistory()
-  const {prdtNm, prdtPrice, itemNo} = location.state
-  const {webview} = qs.parse(location.search)
+  const {prdtNm, prdtPrice, itemNo, webview} = location.state
   const context = useContext(Context)
 
   //state
@@ -99,7 +98,8 @@ export default () => {
           itemPrice: data.Prdtprice,
           name: data.rcptNm,
           bankNo: data.accountNo,
-          phone: data.phoneNo
+          phone: data.phoneNo,
+          webview: webview
         }
       })
     } else {
