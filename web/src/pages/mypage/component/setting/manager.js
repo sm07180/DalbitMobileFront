@@ -77,6 +77,9 @@ export default (props) => {
     })
     if (res.result == 'success') {
       getManagerList()
+      context.action.alert({
+        msg: res.message
+      })
     } else {
       context.action.alert({
         msg: res.message
@@ -364,7 +367,7 @@ export default (props) => {
       )}
       {tabState === 1 && (
         <>
-          <SearchArea>
+          {/* <SearchArea>
             <div className="select-box">
               <SelectBoxs
                 type={'remove-init-data'}
@@ -395,7 +398,7 @@ export default (props) => {
               }}>
               찾기
             </button>
-          </SearchArea>
+          </SearchArea> */}
           <div className="resulte-area">
             {manegerValue === '' && createManagerList()}
             {manegerValue !== '' && createSearchManagerList()}

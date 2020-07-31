@@ -14,6 +14,7 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import qs from 'query-string'
@@ -31,6 +32,7 @@ export default () => {
 
   //context
   const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
 
   //state
   const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
@@ -58,6 +60,15 @@ export default () => {
 
   async function payFetch() {
     const {type, fetch, code} = selectedPay
+
+    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
+      return context.action.confirm({
+        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
+        callback: () => {
+          window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
+        }
+      })
+    }
 
     if (code === 'coocon') {
       return history.push({

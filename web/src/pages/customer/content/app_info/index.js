@@ -25,7 +25,7 @@ export default function AppInfo() {
   return (
     <div className="appInfoWrap">
       <div onClick={() => handleHistory("service")} className="appInfoWrap__eachDiv" >
-        <dd>서비스 이용 약관</dd>
+        <dd>서비스 이용약관</dd>
       </div>
       <div onClick={() => handleHistory("privacy")} className="appInfoWrap__eachDiv" >
         <dd>개인정보 취급방침</dd>

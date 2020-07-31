@@ -108,7 +108,7 @@ export default (props) => {
             onClick={() => focusState(index)}
             value={_.hasIn(changes, `word${index}`) ? changes[`word${index}`] : word[index]}
           />
-          {buttonState !== index && (
+          {buttonState !== index && word[index] !== '' && (
             <button
               onClick={() => {
                 removeInput(index)
@@ -116,7 +116,7 @@ export default (props) => {
               삭제
             </button>
           )}
-          {buttonState === index && (
+          {(buttonState === index || word[index] === '') && (
             <button
               className="save_btn"
               onClick={() => {
@@ -171,7 +171,7 @@ export default (props) => {
           onClick={() => {
             setWord([''])
           }}>
-          추가
+          금지어 추가
           <span></span>
         </button>
       )}
@@ -184,7 +184,7 @@ export default (props) => {
             onClick={() => {
               addInput()
             }}>
-            추가
+            금지어 추가
             <a></a>
           </button>
         </div>

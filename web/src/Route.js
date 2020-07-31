@@ -47,6 +47,8 @@ const TempPage = React.lazy(() => import('pages/temp'))
 
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
+
+const Service = React.lazy(() => import('pages/service'))
 export default () => {
   return (
     <React.Suspense
@@ -91,6 +93,7 @@ export default () => {
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
         <Route exact path="/attend_event" component={AttendEvent} />
+        <Route exact path="/service" component={Service} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />

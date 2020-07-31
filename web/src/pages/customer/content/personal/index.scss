@@ -192,8 +192,7 @@ input[type='file'] {
 
   &__select {
     position: absolute;
-    width: 100%;
-    padding-right: 31px;
+    width: calc(100% - 32px);
     z-index: 3;
     & > div {
       & > div {

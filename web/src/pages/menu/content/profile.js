@@ -57,7 +57,7 @@ export default (props) => {
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    {type: 'appInfo', txt: '앱정보', icon: AppIcon}
+    {type: 'appInfo', txt: '앱 정보', icon: AppIcon}
   ]
   // webview & ctx
   const {webview} = qs.parse(location.search)
@@ -107,6 +107,37 @@ export default (props) => {
     if (isHybrid()) {
       Hybrid('CloseLayerPopup')
     }
+  }
+  const checkSelfAuth = async () => {
+    let myBirth
+    const baseYear = new Date().getFullYear() - 16
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
+
+    if (myBirth > baseYear) {
+      return context.action.alert({
+        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+      })
+    }
+
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        const {parentsAgreeYn, adultYn} = res.data
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return props.history.push('/selfauth_result')
+        props.history.push('/money_exchange')
+      } else if (res.result === 'fail' && res.code === '0') {
+        props.history.push('/selfauth')
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+    fetchSelfAuth()
+    // history.push('/money_exchange')
   }
   return (
     <MenuMypage>
@@ -204,10 +235,22 @@ export default (props) => {
                 const {type, txt, icon} = value
                 return (
                   <a
-                    href={type === 'wallet' || type === 'report' ? `/mypage/${profile.memNo}/${type}` : `/${type}`}
+                    href={
+                      type === 'wallet' || type === 'report'
+                        ? `/mypage/${profile.memNo}/${type}`
+                        : type === 'store'
+                        ? '#'
+                        : `/${type}`
+                    }
                     key={`list-${idx}`}
-                    onClick={() => {
-                      if (type === 'store') return StoreLink()
+                    onClick={(e) => {
+                      if (type === 'store') {
+                        e.preventDefault()
+                        StoreLink(globalCtx)
+                      } else if (type === 'money_exchange') {
+                        e.preventDefault()
+                        checkSelfAuth()
+                      }
                     }}>
                     <div className="list">
                       <img className="icon" src={icon} />

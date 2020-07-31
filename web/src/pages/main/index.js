@@ -238,6 +238,51 @@ export default (props) => {
     }
   }
 
+  const swiperParams = {
+    slidesPerView: 'auto'
+  }
+
+  const goRank = () => {
+    history.push(`/rank`, rankType)
+  }
+
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    if (res.result === 'success') {
+      // console.log(res.data)
+
+      if (res.hasOwnProperty('data')) {
+        setPopupData(res.data)
+        let filterData = []
+        res.data.map((data, index) => {
+          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
+          if (popupState === undefined) {
+            filterData.push(data)
+          } else {
+            return false
+          }
+        })
+
+        setTimeout(() => {
+          if (filterData.length > 0) setPopupNotice(true)
+        }, 10)
+      }
+    } else {
+      console.log(res.result, res.message)
+    }
+  }
+
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
@@ -284,56 +329,6 @@ export default (props) => {
     concatenating = false
   }, [liveList])
 
-  const swiperParams = {
-    slidesPerView: 'auto'
-  }
-
-  const goRank = () => {
-    history.push(`/rank`, rankType)
-  }
-  //go event
-  const goEvent = () => {
-    globalCtx.action.updatenoticeIndexNum(`/customer/notice/17`)
-    history.push(`/customer/notice/17`)
-  }
-
-  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
-
-  const setPayPopup = () => {
-    setPayState(false)
-    sessionStorage.removeItem('pay_info')
-  }
-
-  async function fetchMainPopupData(arg) {
-    const res = await Api.getBanner({
-      params: {
-        position: arg
-      }
-    })
-    if (res.result === 'success') {
-      // console.log(res.data)
-
-      if (res.hasOwnProperty('data')) {
-        setPopupData(res.data)
-        let filterData = []
-        res.data.map((data, index) => {
-          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
-          if (popupState === undefined) {
-            filterData.push(data)
-          } else {
-            return false
-          }
-        })
-
-        setTimeout(() => {
-          if (filterData.length > 0) setPopupNotice(true)
-        }, 10)
-      }
-    } else {
-      console.log(res.result, res.message)
-    }
-  }
-
   useEffect(() => {
     fetchMainPopupData('6')
   }, [])
@@ -341,27 +336,25 @@ export default (props) => {
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <MainWrap ref={MainRef}>
-        <SubMain ref={SubMainRef}>
-          <div className="gnb">
-            <div className="left-side">
-              <div className={`tab`}>
-                <Link to={'/'}>라이브</Link>
-              </div>
-              <div className="tab">
-                <Link to={'/rank'}>랭킹</Link>
-              </div>
-              <div className="tab">
-                <Link
-                  onClick={(event) => {
-                    event.preventDefault()
-                    StoreLink(globalCtx)
-                  }}
-                  to={'/rank'}>
-                  스토어
-                </Link>
-              </div>
+        <GnbWrap ref={SubMainRef} className="gnb">
+          <div className="left-side">
+            <div className={`tab`}>
+              <Link to={'/'}>라이브</Link>
             </div>
-            <div
+            <div className="tab">
+              <Link to={'/rank'}>랭킹</Link>
+            </div>
+            <div className="tab">
+              <Link
+                onClick={(event) => {
+                  event.preventDefault()
+                  StoreLink(globalCtx)
+                }}
+                to={'/rank'}>
+                스토어
+              </Link>
+            </div>
+            <button
               className="broadBtn"
               onClick={() => {
                 if (customHeader['os'] === OS_TYPE['Desktop']) {
@@ -374,16 +367,14 @@ export default (props) => {
                   }
                 }
               }}>
-              <img src={WhiteBroadIcon} />
               방송하기
-            </div>
+            </button>
           </div>
-        </SubMain>
+        </GnbWrap>
 
-        <div ref={RecommendRef} style={{height: '220px'}}>
+        <div ref={RecommendRef} className="top-slide" style={{height: '220px'}}>
           {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
         </div>
-        <div className="gray-bottom"></div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -546,6 +537,7 @@ const Content = styled.div`
     }
 
     &.live-list {
+      padding-bottom: 20px;
       .title-wrap {
         display: flex;
         align-items: center;
@@ -737,8 +729,8 @@ const Content = styled.div`
   }
 `
 
-const SubMain = styled.div`
-  .gnb {
+const GnbWrap = styled.div`
+  &.gnb {
     display: flex;
     position: relative;
     align-items: center;
@@ -748,10 +740,14 @@ const SubMain = styled.div`
     background-color: #632beb;
     z-index: 1;
     .broadBtn {
+      position: absolute;
+      right: 0;
+      top: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-left: auto;
+      padding-left: 18px;
       width: 108px;
       height: 42px;
       background-color: #000000;
@@ -760,9 +756,15 @@ const SubMain = styled.div`
       line-height: 1.13;
       letter-spacing: -0.4px;
       color: #ffffff;
-      > img {
+      &::before {
+        display: inline-block;
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 0;
         width: 36px;
         height: 36px;
+        background: url(${WhiteBroadIcon}) no-repeat 0 0;
       }
     }
     .left-side {
@@ -831,9 +833,9 @@ const SubMain = styled.div`
 
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
-  .gray-bottom {
-    width: 100%;
-    height: 10px;
+  .top-slide {
+    height: 220px;
+    padding-bottom: 10px;
     background-color: #eeeeee;
   }
 `

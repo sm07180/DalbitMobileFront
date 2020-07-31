@@ -21,7 +21,9 @@ export default (props) => {
       <div id="ranking-page">
         <div className="header">
           <h1 className="header__title">랭킹 가이드</h1>
-          <img className="header__btnBack" src={closeBtn} onClick={goBack} />
+          <button className="header__btnBack" onClick={goBack}>
+            <img src={closeBtn} alt="뒤로가기" />
+          </button>
         </div>
 
         <div className="rankTab guideTab">
