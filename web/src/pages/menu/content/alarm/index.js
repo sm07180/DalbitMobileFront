@@ -12,7 +12,6 @@ export default function Alert() {
 
   const handleClick = (something) => {
     const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = something
-    console.log(something)
     switch (notiType) {
       case 1:
         RoomJoin(roomNo + '')
@@ -87,7 +86,6 @@ export default function Alert() {
           records: 1000
         }
       })
-      console.log(res.data.list)
       if (res.result === 'success') {
         setAlarmList(
           res.data.list.map((v) => {
