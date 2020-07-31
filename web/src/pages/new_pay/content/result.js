@@ -13,8 +13,8 @@ export default () => {
 
   if (location.state === undefined) {
     location.state = {
-      result: 'success',
-      returntype: 'room'
+      result: 'fail',
+      returntype: 'none'
     }
   }
 
@@ -133,7 +133,10 @@ export default () => {
     } else {
       if (returntype === 'room') {
         Hybrid('ClosePayPopup')
+      } else if (returntype === 'store') {
+        window.location.href = '/'
       } else {
+        Hybrid('ClosePayPopup')
         window.location.href = '/'
       }
     }
