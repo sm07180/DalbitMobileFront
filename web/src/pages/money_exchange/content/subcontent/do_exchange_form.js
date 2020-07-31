@@ -153,14 +153,9 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
 
         <div className="formData__list">
           <div className="formData__title">은행</div>
-          <div
-            className={`${open && 'on'} formData__input formData__input--select`}
-            tabIndex={-1}
-            onBlur={() => {
-              setOpen(false)
-            }}>
+          <div className={`${open && 'on'} formData__input formData__input--select`}>
             <select
-              onClick={() => setOpen(!open)}
+              // onClick={() => setOpen(!open)}
               onChange={(e) => {
                 dispatch({type: 'bank', val: e.target.value})
               }}>

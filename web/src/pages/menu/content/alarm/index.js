@@ -121,6 +121,7 @@ export default function Alert() {
     <div id="alarmWrap">
       <div className="header">
         <div className="header__left">
+          <div className="header__left--back" onClick={() => (window.location.href = '/')} />
           <div>알림</div>
           {alarmList.length > 0 && <div className="header__count">{alarmList.length}</div>}
         </div>

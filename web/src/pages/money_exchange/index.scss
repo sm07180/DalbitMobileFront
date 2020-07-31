@@ -256,6 +256,7 @@
         &--select {
           & > select {
             width: 100%;
+            background-color: #fff;
           }
           &::after {
             position: absolute;
@@ -267,18 +268,18 @@
             border-top: 2px solid #bdbdbd;
             content: '';
           }
-          &.on {
-            &::after {
-              position: absolute;
-              width: 12px;
-              height: 12px;
-              right: 24px;
-              transform: translate(-50%, 40%) rotate(45deg);
-              border-left: 2px solid #bdbdbd;
-              border-top: 2px solid #bdbdbd;
-              content: '';
-            }
-          }
+          // &.on {
+          //   &::after {
+          //     position: absolute;
+          //     width: 12px;
+          //     height: 12px;
+          //     right: 24px;
+          //     transform: translate(-50%, 40%) rotate(45deg);
+          //     border-left: 2px solid #bdbdbd;
+          //     border-top: 2px solid #bdbdbd;
+          //     content: '';
+          //   }
+          // }
 
           // &::after {
           //   content: '';
