@@ -537,6 +537,7 @@ const Content = styled.div`
     }
 
     &.live-list {
+      padding-bottom: 20px;
       .title-wrap {
         display: flex;
         align-items: center;
