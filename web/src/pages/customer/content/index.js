@@ -4,7 +4,7 @@
  *
  */
 import React, {useState, useEffect, useContext} from 'react'
-import { Switch, Route } from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
 
 import styled from 'styled-components'
 //context
@@ -15,57 +15,55 @@ import useResize from 'components/hooks/useResize'
 import Banner from './banner'
 import Tab from './tab'
 import Notice from './notice/list'
-import NoticeDetail from './notice/detail';
+import NoticeDetail from './notice/detail'
 // import Faq from './faq/index';
 import Faq from './faq/list'
 import FaqDetail from './faq/detail'
 import Personal from './personal/index'
 import QnaDetail from './personal/qna-detail'
 import AppInfo from './app_info'
-import AppInfoRoute from './app_info/route';
+import AppInfoRoute from './app_info/route'
 import Header from './header'
-
-
 
 import Layout from 'pages/common/layout/new_layout'
 //
 
-const Index = props => {
+const Index = (props) => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
   Index.store = store
 
-  const { title, num } = props.match.params
-  let header = ""
-  console.log(title);
-  switch(title) {
+  const {title, num} = props.match.params
+  let header = ''
+
+  switch (title) {
     case 'notice':
-      header = "공지사항"
-      break;
+      header = '공지사항'
+      break
     case 'faq':
-      header = "FAQ"
-      break;
+      header = 'FAQ'
+      break
     case 'personal':
-      header = "1:1 문의"
-      break;
-    case "appInfo":
-      header = "앱정보"
-      if(num === "service") {
-        header = "서비스 이용 약관"
-      } else if(num === "privacy") {
-        header = "개인정보 취급방침"
-      } else if(num === "youthProtect") {
-        header = "청소년 보호정책"
-      } else if(num === "operating") {
-        header = "운영정책"
+      header = '1:1 문의'
+      break
+    case 'appInfo':
+      header = '앱정보'
+      if (num === 'service') {
+        header = '서비스 이용 약관'
+      } else if (num === 'privacy') {
+        header = '개인정보 취급방침'
+      } else if (num === 'youthProtect') {
+        header = '청소년 보호정책'
+      } else if (num === 'operating') {
+        header = '운영정책'
       } else {
-        header = "앱정보"
+        header = '앱정보'
       }
-      break;
+      break
     default:
-      header = "공지사항"
-      break;
+      header = '공지사항'
+      break
   }
   //resize page func
   useEffect(() => {
@@ -82,7 +80,7 @@ const Index = props => {
       case 'notice': //공지사항
         return <Notice {...props} />
       case 'faq':
-        return <Faq {...props}/>
+        return <Faq {...props} />
       // case 'faq': //FAQ
       //   return <Faq perPage={Store().page} {...props} />
       // case 'personal': //1:1문의
@@ -147,6 +145,5 @@ const Container = styled.div`
   }
   @media (max-width: 1240px) {
     width: 100%;
-    
   }
 `

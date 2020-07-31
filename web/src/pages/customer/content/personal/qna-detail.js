@@ -216,6 +216,7 @@ export default function Detail(props) {
   }
 
   const deleteQna = async () => {
+    console.log('hi')
     const res = await Api.center_qna_delete({
       params: {
         qnaIdx: qnaIdx
@@ -227,7 +228,15 @@ export default function Detail(props) {
         msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
-          history.push('/customer/qnaList')
+          window.location.href = '/menu/profile'
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({visible: false})
+          window.location.href = '/menu/profile'
         }
       })
     }
@@ -238,9 +247,7 @@ export default function Detail(props) {
     context.action.confirm({
       msg: '작성한 게시글을 삭제하시겠습니까?\n삭제된 게시글은 복원되지 않습니다.',
       callback: () => {
-        setTimeout(() => {
-          deleteQna()
-        }, 0)
+        deleteQna()
       },
       cancelCallback: () => {
         context.action.confirm({visible: false})

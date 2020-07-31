@@ -2,14 +2,12 @@ $WIDTH_MOBILE: 600px;
 $COLOR_MAIN: #632beb;
 .detail {
   display: block;
-  width:calc(100% + 32px);
-  margin-left:-16px;
-  padding: 1px 16px;
-  background-color:white;
+  width: 100%;
+  background-color: white;
   /* border-top: 1px solid ${COLOR_MAIN}; */
   @media (min-width: 768px) {
-    padding:0 20px;
-  };
+    padding: 0 20px;
+  }
   & > header {
     display: flex;
     justify-content: space-between;
@@ -18,7 +16,7 @@ $COLOR_MAIN: #632beb;
       flex-wrap: wrap;
       flex-direction: column;
     }
-   
+
     & span:nth-child(1) {
       font-size: 16px;
       font-weight: 600;
