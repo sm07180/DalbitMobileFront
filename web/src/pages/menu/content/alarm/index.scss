@@ -2,7 +2,7 @@
   .header {
     display: flex;
     align-items: center;
-    padding: 10px 16px;
+    padding: 12px 16px;
     background-color: #eeeeee;
     &__left {
       display: flex;
@@ -19,7 +19,7 @@
     &__count {
       margin-left: 8px;
       color: #632beb;
-      font-weight: normal;
+      font-weight: 600;
     }
     &__right {
       display: flex;
@@ -61,11 +61,20 @@
         width: 100%;
       }
       &--title {
-        margin-bottom: 6px;
-        font-size: 16px;
+        margin-bottom: 3px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.35px;
+        text-align: left;
+        color: #424242;
       }
       &--time {
         font-size: 12px;
+        font-weight: normal;
+
+        letter-spacing: -0.3px;
+        text-align: left;
+        color: #bdbdbd;
       }
     }
   }
