@@ -342,7 +342,7 @@ export default (props) => {
 
                 <UserId>
                   <span className="matchTitle">UID</span>
-                  <span>{`@${profile.memId}`}</span>
+                  <span>{profile.memId}</span>
                 </UserId>
 
                 {token.memNo[0] === '1' && (
