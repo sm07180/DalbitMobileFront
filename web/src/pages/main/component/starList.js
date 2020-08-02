@@ -33,7 +33,13 @@ export default props => {
         {list.map((star, idx) => {
           const {memNo} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}`)}>
+            <div className="list" key={`star-list${idx}`} onClick={() => {
+                if(roomNo !== undefined && roomNo !== ''){
+                    RoomJoin(roomNo + '')
+                }else{
+                    saveUrlAndRedirect(`/mypage/${memNo}`)
+                }
+            }}>
               <div
                 className="image"
                 style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
