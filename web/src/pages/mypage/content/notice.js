@@ -46,7 +46,7 @@ const Notice = (props) => {
   const [writeShow, setWriteShow] = useState(false)
   const [writeBtnState, setWriteBtnState] = useState(false)
   const [thisMemNo, setThisMemNo] = useState(false)
-  console.log(state)
+
   //공지제목 등록 온체인지
   const textChange = (e) => {
     const target = e.currentTarget

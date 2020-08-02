@@ -14,7 +14,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import {BroadCastStore} from '../../store'
 import qs from 'query-string'
 const {roomNo} = qs.parse(location.search)
-export default props => {
+export default (props) => {
   //context---------------------------------------------------------
   const context = useContext(Context)
   const store = useContext(BroadCastStore) //store
@@ -42,7 +42,7 @@ export default props => {
   }, [])
 
   useEffect(() => {
-    console.log('청취자 업데이트를 해라 ')
+    // console.log('청취자 업데이트를 해라 ')
     //drawListenList()
     //store.action.updateListenerList()
     //store.action.updateListenerList(store.listenerUpdate)
@@ -56,7 +56,7 @@ export default props => {
   const handleOnWheel = () => {
     setCheckMove(true)
   }
-  const scrollOnUpdate = e => {
+  const scrollOnUpdate = (e) => {
     //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
@@ -245,7 +245,7 @@ const ManagerImg = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
 `
 
 const Title = styled.h4`
