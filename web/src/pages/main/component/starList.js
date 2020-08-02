@@ -7,6 +7,7 @@ import Swiper from 'react-id-swiper'
 import RankArrow from '../static/arrow_right_w.svg'
 
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+import {RoomJoin} from "context/room";
 
 export default props => {
   const {list} = props
@@ -31,9 +32,15 @@ export default props => {
       </div>
       <Swiper {...swiperParams}>
         {list.map((star, idx) => {
-          const {memNo} = star
+          const {memNo, roomNo} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}`)}>
+            <div className="list" key={`star-list${idx}`} onClick={() => {
+                if(roomNo !== undefined && roomNo !== ''){
+                    RoomJoin(roomNo + '')
+                }else{
+                    saveUrlAndRedirect(`/mypage/${memNo}`)
+                }
+            }}>
               <div
                 className="image"
                 style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
