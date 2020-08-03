@@ -19,7 +19,7 @@ import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 // utility
-import Utility, {printNumber} from 'components/lib/utility'
+import Utility, {printNumber, addComma} from 'components/lib/utility'
 //svg
 import LiveIcon from '../static/ic_live.svg'
 import FemaleIcon from '../static/ico_female.svg'
@@ -306,21 +306,27 @@ const myProfile = (props) => {
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
+                <em className="cntTitle">
+                  {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                </em>
               </div>
               <div onClick={goStarEdite}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.starCnt)}</em>
+                <em className="cntTitle">
+                  {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                </em>
               </div>
               <div>
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.likeTotCnt)}</em>
+                <em className="cntTitle">
+                  {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
+                </em>
               </div>
               {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
                 <div onClick={() => context.action.updateMypageReport(true)}></div>
@@ -358,7 +364,7 @@ const ProfileWrap = styled.div`
   .title {
     position: relative;
     display: inline-block;
-    max-width: 70%;
+    width: 214px;
     height: 28px;
     line-height: 28px;
     color: #fff;
@@ -569,16 +575,12 @@ const ProfileImg = styled.div`
   .InfoWrap {
     display: flex;
     flex-direction: column;
-    margin: -5px auto 0 auto;
+    margin: -2px auto 0 auto;
     position: relative;
-    border-radius: 30px;
-    /* background: #eeeeee; */
     width: 280px;
-    /* min-height: 60px; */
     font-size: 12px;
     text-align: center;
     z-index: 2;
-    transform: skew(-0.03deg);
 
     .expWrap {
       width: 280px;
@@ -740,7 +742,7 @@ const LevelWrap = styled.div`
 `
 const LevelStatusBarWrap = styled.div`
   position: relative;
-  width: 200px;
+  width: 188px;
   border-radius: 10px;
   background-color: #eee;
   @media (max-width: ${WIDTH_TABLET_S}) {
