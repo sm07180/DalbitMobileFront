@@ -233,84 +233,7 @@ export default (props) => {
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
-
-      <>
-        {myProfile && (
-          <div
-            className="myRanking myRanking__profile"
-            onClick={() => {
-              window.location.href = `/menu/profile`
-            }}>
-            <div className="myRanking__left myRanking__left--profile">
-              <p
-                className="myRanking__left--title colorWhite 
-      ">
-                내 랭킹
-              </p>
-              <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-              <p className="rankingChange">{createMyProfile()}</p>
-            </div>
-
-            <div className="thumbBox thumbBox__profile">
-              <img src={myProfile.holder} className="thumbBox__frame" />
-              <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
-            </div>
-
-            <div className="myRanking__right">
-              <div className="myRanking__rightWrap">
-                <div className="profileItme">
-                  <p className="nickNameBox">{myProfile.nickNm}</p>
-                  <div className="countBox countBox--profile">
-                    {rankType == 'dj' && (
-                      <>
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                            {Util.printNumber(myInfo.myPoint)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={peopleWhite} />
-                            {Util.printNumber(myInfo.myListenerPoint)}
-                          </span>
-                        </div>
-
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={likeWhite} className="icon__white" />
-                            {Util.printNumber(myInfo.myLikePoint)}
-                          </span>
-
-                          <span className="countBox__item">
-                            <img src={timeWhite} className="icon__white" />
-                            {Util.printNumber(myInfo.myBroadPoint)}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                    {rankType == 'fan' && (
-                      <>
-                        <div className="countBox__block">
-                          <span className="countBox__item">
-                            <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                            {Util.printNumber(myInfo.myPoint)}
-                          </span>
-
-                          <span className="countBox__item">
-                            <img src={timeWhite} />
-                            {Util.printNumber(myInfo.myListenPoint)}
-                          </span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </>
-
-      {/* {myInfo.isReward ? (
+      {myInfo.isReward ? (
         <>
           <div>
             <div className="rewordBox">
@@ -412,7 +335,7 @@ export default (props) => {
             </div>
           )}
         </>
-      )} */}
+      )}
 
       {creatResult()}
     </>

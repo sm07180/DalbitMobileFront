@@ -2217,8 +2217,8 @@ export default class API {
   static getEventAttendCheck = async (params) => {
     return await ajax({url: '/event/attendance/check', method: 'GET', params})
   }
-  static getEventAttendInput = async (data) => {
-    return await ajax({url: '/event/phone/input', method: 'POST', data})
+  static getEventAttendInput = async (params) => {
+    return await ajax({url: '/event/phone/input', method: 'GET', params})
   }
   static getEventAttendWinList = async (params) => {
     return await ajax({url: '/event/gifticon/win/list', method: 'GET', params})
