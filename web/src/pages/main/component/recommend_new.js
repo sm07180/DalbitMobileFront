@@ -108,7 +108,7 @@ export default (props) => {
   }
 
   const initInterval = () => {
-    const slidingTime = 150 // unit is ms
+    const slidingTime = 99999999999999 // unit is ms
 
     intervalId = setInterval(() => {
       const slideWrapNode = slideWrapRef.current
@@ -255,6 +255,7 @@ export default (props) => {
                         })}
                       </div>
                     </div>
+                    <div className="opacitybox"></div>
                   </div>
                 )}
               </div>
@@ -276,6 +277,7 @@ export default (props) => {
                         })}
                       </div>
                     </div>
+                    <div className="opacityBox"></div>
                   </div>
                 )}
               </div>
@@ -362,6 +364,16 @@ const RecommendWrap = styled.div`
         background-repeat: no-repeat;
         background-position: center;
       }
+
+      ::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        background: rgba(0, 0, 0, 0.3);
+      }
     }
 
     .live-icon {
@@ -438,6 +450,7 @@ const RecommendWrap = styled.div`
     width: 100%;
     flex-direction: row;
     align-items: center;
+    z-index: 1;
 
     .image-wrap {
       display: block;
