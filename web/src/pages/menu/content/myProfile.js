@@ -358,7 +358,7 @@ const ProfileWrap = styled.div`
   .title {
     position: relative;
     display: inline-block;
-    max-width: 70%;
+    width: 214px;
     height: 28px;
     line-height: 28px;
     color: #fff;
@@ -740,7 +740,7 @@ const LevelWrap = styled.div`
 `
 const LevelStatusBarWrap = styled.div`
   position: relative;
-  width: 200px;
+  width: 188px;
   border-radius: 10px;
   background-color: #eee;
   @media (max-width: ${WIDTH_TABLET_S}) {
