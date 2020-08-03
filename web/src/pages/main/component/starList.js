@@ -8,7 +8,6 @@ import {RoomJoin} from 'context/room'
 import RankArrow from '../static/arrow_right_w.svg'
 
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
-import {RoomJoin} from "context/room";
 
 export default props => {
   const {list} = props
