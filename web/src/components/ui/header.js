@@ -31,7 +31,7 @@ const Header = styled.div`
   margin-bottom: 10px;
   width: calc(100% + 32px);
   margin-left: -16px;
-  padding: 12px 16px;
+  padding: 8px 16px;
   .child-bundle {
     display: flex;
     flex-direction: row;

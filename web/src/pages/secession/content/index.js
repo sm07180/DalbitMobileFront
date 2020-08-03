@@ -11,7 +11,7 @@ import Exit from './exit'
 import Header from 'components/ui/header'
 
 //
-const Index = props => {
+const Index = (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -47,8 +47,8 @@ const Container = styled.div`
 
   .close-btn {
     position: absolute;
-    top: 8px;
-    left: 2px;
+
+    left: 6px;
   }
 
   & h1 {
