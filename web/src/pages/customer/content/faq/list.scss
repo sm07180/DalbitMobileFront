@@ -30,7 +30,9 @@ $COLOR_MAIN: #632beb;
       right: 24px;
       margin-top: 6px;
       cursor: pointer;
-      background: url('/src/images/search_purple.png') no-repeat;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: 0 0;
     }
   }
 
