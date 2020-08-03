@@ -11,7 +11,6 @@ import LiveIcon from '../static/ic_live.svg'
 
 export default (props) => {
   const {list} = props
-  console.log(list)
 
   if (list === undefined) {
     return null
