@@ -36,6 +36,7 @@ import InquireIcon from '../static/menu_1on1.svg'
 import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
+import {OS_TYPE} from "context/config";
 //------------------------------------------------------------------------------
 export default (props) => {
   // nav Array
@@ -233,32 +234,36 @@ export default (props) => {
             <div className="addCustomer">
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
-                return (
-                  <a
-                    href={
-                      type === 'wallet' || type === 'report'
-                        ? `/mypage/${profile.memNo}/${type}`
-                        : type === 'store'
-                        ? '#'
-                        : `/${type}`
-                    }
-                    key={`list-${idx}`}
-                    onClick={(e) => {
-                      if (type === 'store') {
-                        e.preventDefault()
-                        StoreLink(globalCtx)
-                      } else if (type === 'money_exchange') {
-                        e.preventDefault()
-                        checkSelfAuth()
-                      }
-                    }}>
-                    <div className="list">
-                      <img className="icon" src={icon} />
-                      <span className="text">{txt}</span>
-                      <span className="arrow"></span>
-                    </div>
-                  </a>
-                )
+                if(type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']){
+                  return <></>
+                }else{
+                  return (
+                      <a
+                          href={
+                            type === 'wallet' || type === 'report'
+                                ? `/mypage/${profile.memNo}/${type}`
+                                : type === 'store'
+                                ? '#'
+                                : `/${type}`
+                          }
+                          key={`list-${idx}`}
+                          onClick={(e) => {
+                            if (type === 'store') {
+                              e.preventDefault()
+                              StoreLink(globalCtx)
+                            } else if (type === 'money_exchange') {
+                              e.preventDefault()
+                              checkSelfAuth()
+                            }
+                          }}>
+                        <div className="list">
+                          <img className="icon" src={icon} />
+                          <span className="text">{txt}</span>
+                          <span className="arrow"></span>
+                        </div>
+                      </a>
+                  )
+                }
               })}
             </div>
             <div className="addCustomer">

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 // component
 import Swiper from 'react-id-swiper'
+import {RoomJoin} from 'context/room'
 
 import RankArrow from '../static/arrow_right_w.svg'
 
