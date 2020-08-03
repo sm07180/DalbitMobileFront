@@ -99,7 +99,7 @@ const List = (props) => {
       callback: () => {
         fetcNoticeDelete()
       },
-      msg: '<em className="brown">게시글을 삭제하시겠습니까?</em>'
+      msg: '게시글을 삭제하시겠습니까?'
     })
   }
   //func
