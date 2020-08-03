@@ -76,10 +76,10 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      getManagerList()
       context.action.alert({
         msg: res.message
       })
+      getSearchList('search')
     } else {
       context.action.alert({
         msg: res.message
