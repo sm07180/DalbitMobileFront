@@ -18,7 +18,7 @@ import useClick from 'components/hooks/useClick'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -56,9 +56,9 @@ export default props => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <Close {...cancel} {...confirm}>
-        <img src={`${IMG_SERVER}/images/common/ic_close_m@2x.png`} />
-      </Close>
+      <button className="btnClose" {...cancel} {...confirm}>
+        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} />
+      </button>
       <div className="wrap-message">
         {/* 타이틀 */}
         {__NODE_ENV === 'dev' && context.message.title && (
@@ -72,7 +72,7 @@ export default props => {
           ref={refBtn}
           className="confirm"
           {...confirm}
-          onKeyPress={event => {
+          onKeyPress={(event) => {
             console.log(event)
           }}>
           확인
@@ -85,7 +85,7 @@ export default props => {
 const Alert = styled.section`
   position: relative;
   width: 320px;
-  padding: 5px;
+  padding: 16px;
   border-radius: 10px;
   background: #fff;
   box-sizing: border-box;
@@ -93,11 +93,7 @@ const Alert = styled.section`
     width: 100%;
     padding-top: 20px;
   }
-  .wrap-btn {
-    width: 100%;
-    margin-top: 20px;
-    text-align: center;
-  }
+
   /* 타이틀 */
   h1 {
     display: block;
@@ -111,32 +107,36 @@ const Alert = styled.section`
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
-    line-height: 1.71;
+    line-height: 1.4;
     letter-spacing: -0.5px;
     word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
   }
-
-  /* 버튼 */
-  button {
-    display: inline-block;
+  .wrap-btn {
     width: 100%;
-    padding: 10px 0;
-    color: #fff;
-    border-radius: 30px;
-    height: 48px;
-    border-radius: 10px;
-    background-color: ${COLOR_MAIN};
+    margin-top: 20px;
+    text-align: center;
+    /* 버튼 */
+    button {
+      display: inline-block;
+      width: 100%;
+      padding: 10px 0;
+      color: #fff;
+      border-radius: 30px;
+      height: 48px;
+      border-radius: 10px;
+      background-color: ${COLOR_MAIN};
+    }
   }
-`
-const Close = styled.a`
-  display: inline-block;
-  position: absolute;
-  top: -35px;
-  right: 0;
-  img {
-    width: 36px;
-    height: 36px;
+  .btnClose {
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    img {
+      width: 40px;
+      height: 40px;
+    }
   }
 `
