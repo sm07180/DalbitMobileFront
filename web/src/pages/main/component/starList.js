@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 // component
 import Swiper from 'react-id-swiper'
+import {RoomJoin} from 'context/room'
 
 import RankArrow from '../static/arrow_right_w.svg'
 
@@ -31,7 +32,7 @@ export default props => {
       </div>
       <Swiper {...swiperParams}>
         {list.map((star, idx) => {
-          const {memNo} = star
+          const {memNo, roomNo} = star
           return (
             <div className="list" key={`star-list${idx}`} onClick={() => {
                 if(roomNo !== undefined && roomNo !== ''){
