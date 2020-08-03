@@ -208,9 +208,31 @@ export default (props) => {
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
   const clickSlideDisplay = (data) => {
+    console.debug(data);
+    if (data.roomNo && data.roomNo !== undefined) {
+      if (data.nickNm === "banner") {
+        if (data.roomType === "link") {
+          if (data.roomNo.startsWith("http://") || data.roomNo.startsWith("https://")) {
+            window.location.href = `${data.roomNo}`;
+          } else {
+            history.push(`${data.roomNo}`);
+          }
+        } else {
+          if(isHybrid()){
+            Hybrid('openUrl',`${a.roomNo}`)
+          }else{
+            window.open(`${a.roomNo}`);
+          }
+        }
+      } else {
+        RoomJoin(data.roomNo)
+      }
+    }
+
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
+
       const {roomNo} = data
       context.action.updatenoticeIndexNum(roomNo)
       if (roomNo !== '' && !roomNo.startsWith('http')) {
@@ -236,12 +258,13 @@ export default (props) => {
               className="slide-wrap"
               onTouchStart={touchStartEvent}
               onTouchMove={touchMoveEvent}
-              onTouchEnd={touchEndEvent}>
+              onTouchEnd={touchEndEvent}
+              onClick={() => clickSlideDisplay(list[selectedBIdx]) }>
               <div
                 className="broad-slide"
                 b-idx={prevBIdx}
                 style={{backgroundImage: `url(${blobList[prevBIdx] ? blobList[prevBIdx] : list[prevBIdx]['bannerUrl']})`}}
-                onClick={() => clickSlideDisplay(list[prevBIdx])}>
+                >
                 {list[prevBIdx]['nickNm'] !== 'banner' && (
                   <div className="image-text-bundle">
                     <img className="image-wrap" src={list[prevBIdx]['profImg']['thumb120x120']} />
@@ -265,7 +288,7 @@ export default (props) => {
                 style={{
                   backgroundImage: `url(${blobList[selectedBIdx] ? blobList[selectedBIdx] : list[selectedBIdx]['bannerUrl']})`
                 }}
-                onClick={() => clickSlideDisplay(list[selectedBIdx])}>
+                >
                 {list[selectedBIdx]['nickNm'] !== 'banner' && (
                   <div className="image-text-bundle">
                     <img className="image-wrap" src={list[selectedBIdx]['profImg']['thumb120x120']} />
@@ -285,7 +308,7 @@ export default (props) => {
                 className="broad-slide"
                 b-idx={nextBIdx}
                 style={{backgroundImage: `url(${blobList[nextBIdx] ? blobList[nextBIdx] : list[nextBIdx]['bannerUrl']})`}}
-                onClick={() => clickSlideDisplay(list[nextBIdx])}>
+                >
                 {list[nextBIdx]['nickNm'] !== 'banner' && (
                   <div className="image-text-bundle">
                     <img className="image-wrap" src={list[nextBIdx]['profImg']['thumb120x120']} />

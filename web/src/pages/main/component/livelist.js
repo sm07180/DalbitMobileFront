@@ -39,7 +39,7 @@ const makeContents = (props) => {
 
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
-      const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
+      const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank, os, isNew} = list
 
       return (
         <LiveList
@@ -50,10 +50,11 @@ const makeContents = (props) => {
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
             <div className="icon-wrap">
-              <img className="type-icon" src={audioIcon} />
+              {os ===3 && <span className="pc-icon">PC</span>}{/*<img className="type-icon" src={audioIcon} />*/}
               <div className="type-text">{broadcastLive[roomType]}</div>
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+              {isNew === true && <span className="new-dj-icon">신입</span>}
             </div>
             <div className="title">{title}</div>
             <div className="nickname">{bjNickNm}</div>
@@ -343,6 +344,28 @@ const LiveList = styled.div`
 
   .txt_boost {
     color: #ec455f;
+  }
+
+  .new-dj-icon {
+    color: #fff;
+    font-size: 12px;
+    border-radius: 10px;
+    background-color: #feac2c;
+    height: 16px;
+    padding: 0 6px;
+    line-height: 16px;
+    margin-left: 4px;
+  }
+
+  .pc-icon {
+    color: #fff;
+    font-size: 11px;
+    border-radius: 10px;
+    background-color: #febd56;
+    height: 16px;
+    padding: 0 6px;
+    line-height: 16px;
+    margin-right: 4px;
   }
 
   .specialIcon {
