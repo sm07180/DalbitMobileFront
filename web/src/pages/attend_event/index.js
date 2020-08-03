@@ -84,6 +84,19 @@ export default (props) => {
     fetchEventAttendInput()
   }, [])
 
+  useEffect(() => {
+    async function fetchEventAttendWinList() {
+      const {result, data} = await API.getEventAttendWinList()
+      if (result === 'success') {
+        const {list} = data
+        console.log('당첨자리스트성공')
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendWinList()
+  }, [])
+
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
@@ -189,13 +202,76 @@ export default (props) => {
           <div className="img-title"></div>
 
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
+
+          <div className="giftcon-win-box">
+            <label>기프티콘 당첨자</label>
+            <div>
+              <p className="time">11:11:11</p>
+              <p className="nick-name">닉네임</p>
+            </div>
+          </div>
         </div>
 
         <div className="event-content-wrap">
-          <div className="top-title"></div>
+          {/* <div className="top-title"></div> */}
 
           <div className="event-content">
-            <div className="content-left-wrap">
+            <div className="event-section">
+              <label className="title-label">EVENT 1. 기프티콘</label>
+              <p className="title-top">
+                특별한 날 출석하면 기프티콘 쏜다!<span>주 7일 연속 출석에 성공한 날, 보람달이 뜨는 날 출석하면 자동 응모!</span>
+              </p>
+
+              <div className="gifticon-benefit">
+                <div className="gifticon-benefit-item">
+                  <p className="description">
+                    매주 자동 추첨!
+                    <br />
+                    7일 연속 출석 청공한 날<span>스타벅스 아메리카노(10명)</span>
+                  </p>
+                </div>
+                <div className="gifticon-benefit-item">
+                  <p className="date">8월 4일</p>
+                  <p className="description">
+                    매일 보름달이 뜨는 날!<span>BHC 뿌링클 세트(3명)</span>
+                  </p>
+                </div>
+
+                <div className="gifticon-benefit-input">
+                  <p className="title">기프티콘 당첨자 연락처 입력</p>
+
+                  <div className="input-box">
+                    <input type="phone" placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요" />
+                    <button>저장</button>
+                  </div>
+
+                  <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수된 휴대폰 번호는 중복으로 참여할 수 없습니다.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="event-section">
+              <label className="title-label">EVENT 2. 매일 선물</label>
+              <p className="title-top">
+                날마다 출첵하고 선물 챙기자!
+                <span>
+                  매일 출석체크하면 달과 경험치(EXP) 100% 당첨!
+                  <br />
+                  7일동안 매일 출석했다면? 보너스 랜덤선물까지 또 받자!
+                </span>
+              </p>
+
+              <div className="stamp-box">
+                <AttendList dateList={dateList}></AttendList>
+              </div>
+
+              <div className={createBonusBox()}>
+                <p className="title">BONUS RANDOM GIFT</p>
+
+                <button className="btn-more" onClick={clickGiftButton}></button>
+              </div>
+            </div>
+            {/* <div className="content-left-wrap">
               <div className="detail-text-title"></div>
               <div className="detail-text-content"></div>
 
@@ -228,17 +304,9 @@ export default (props) => {
               <div className="detail-text-title bonus"></div>
               <div className="detail-text-content bonus"></div>
             </div>
-            <div className="content-right-wrap">
-              <div className="stamp-box">
-                <AttendList dateList={dateList}></AttendList>
-              </div>
-
-              <div className={createBonusBox()}>
-                <p className="title">BONUS RANDOM GIFT</p>
-
-                <button className="btn-more" onClick={clickGiftButton}></button>
-              </div>
-            </div>
+            <div className="content-right-wrap"> 
+             
+            </div>*/}
           </div>
         </div>
 
