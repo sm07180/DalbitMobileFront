@@ -478,9 +478,9 @@ export default (props) => {
                               <span>최다 청취자 </span>
                               <span>{numberFormat(value.listenerCnt)}</span>
                             </div>
-                            <div className="onSelect3">
+                            {/* <div className="onSelect3">
                               <span>방송 최고 순위</span> <span>{value.rank}</span>
-                            </div>
+                            </div> */}
                           </div>
                         </MobileDetailTab>
                       )
