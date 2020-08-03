@@ -562,6 +562,7 @@ const Wrap = styled.div`
     min-height: 200px;
     padding: 10px 16px 21px 16px;
     background-color: #fff;
+    word-break: break-all;
   }
 `
 const TitleBtn = styled.button`

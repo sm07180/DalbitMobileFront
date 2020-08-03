@@ -56,6 +56,19 @@ export default (props) => {
     fetchEventAttendDate()
   }, [])
 
+  useEffect(() => {
+    async function fetchEventAttendCheck() {
+      const {result, data} = await API.getEventAttendCheck()
+      if (result === 'success') {
+        const {isCheck} = data
+        console.log('체크성공')
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendCheck()
+  }, [])
+
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
