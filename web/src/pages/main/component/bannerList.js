@@ -78,7 +78,7 @@ export default React.forwardRef((props, ref) => {
       clickable: true
     },
     on: {
-      click: e => {
+      click: (e) => {
         const {linkurl, linktype} = e.target.attributes
         goEvent(linkurl.value, linktype.value)
       }
@@ -100,6 +100,10 @@ const Banner = styled.div`
     .swiper-pagination-bullet-active {
       background: #ec455f;
     }
+  }
+
+  .swiper-pagination {
+    display: none;
   }
   .swiper-pagination-fraction,
   .swiper-pagination-custom,

@@ -3,13 +3,15 @@ import styled from 'styled-components'
 
 // component
 import Swiper from 'react-id-swiper'
-
-import RankArrow from '../static/arrow_right_w.svg'
-
+import {RoomJoin} from 'context/room'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
-export default props => {
+import RankArrow from '../static/arrow_right_w.svg'
+import LiveIcon from '../static/ic_live.svg'
+
+export default (props) => {
   const {list} = props
+  console.log(list)
 
   if (list === undefined) {
     return null
@@ -31,19 +33,25 @@ export default props => {
       </div>
       <Swiper {...swiperParams}>
         {list.map((star, idx) => {
-          const {memNo} = star
+          const {memNo, roomNo} = star
           return (
-            <div className="list" key={`star-list${idx}`} onClick={() => {
-                if(roomNo !== undefined && roomNo !== ''){
-                    RoomJoin(roomNo + '')
-                }else{
-                    saveUrlAndRedirect(`/mypage/${memNo}`)
+            <div
+              className="list"
+              key={`star-list${idx}`}
+              onClick={() => {
+                if (roomNo !== undefined && roomNo !== '') {
+                  RoomJoin(roomNo + '')
+                } else {
+                  saveUrlAndRedirect(`/mypage/${memNo}`)
                 }
-            }}>
-              <div
-                className="image"
-                style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}
-              />
+              }}>
+              <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
+                {roomNo !== undefined && roomNo !== '' && (
+                  <span className="live">
+                    <img src={LiveIcon} alt="라이브중" />
+                  </span>
+                )}
+              </div>
               <div className="text">{star['nickNm']}</div>
             </div>
           )
@@ -92,6 +100,7 @@ const StarList = styled.div`
   .list {
     width: 48px;
     margin: 0 4px;
+    cursor: pointer;
 
     &:first-child {
       margin-left: 0;
@@ -101,6 +110,7 @@ const StarList = styled.div`
     }
 
     .image {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -126,6 +136,16 @@ const StarList = styled.div`
       /* letter-spacing: -0.28px; */
       white-space: nowrap;
       text-align: center;
+    }
+    .live {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 20px;
+      height: 20px;
+      img {
+        width: 100%;
+      }
     }
   }
 `
