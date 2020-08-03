@@ -230,7 +230,7 @@ export default (props) => {
   }
   const fetchSmsReq = async () => {
     if (!validateID(memId)) return null
-    const {result, data, message} = await Api.sms_request({
+    const {result, data, message, code} = await Api.sms_request({
       data: {
         phoneNo: memId,
         authType: 0
@@ -251,6 +251,14 @@ export default (props) => {
       context.action.alert({
         msg: message
       })
+      if (code === '-1') {
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            props.history.push('/login')
+          }
+        })
+      }
     }
   }
   const fetchSmsCheck = async () => {
