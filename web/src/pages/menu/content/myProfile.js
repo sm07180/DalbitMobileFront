@@ -156,6 +156,7 @@ const myProfile = (props) => {
   //func back
   const goBack = () => {
     const {webview} = qs.parse(location.search)
+    console.log(webview)
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
@@ -575,16 +576,12 @@ const ProfileImg = styled.div`
   .InfoWrap {
     display: flex;
     flex-direction: column;
-    margin: -5px auto 0 auto;
+    margin: -2px auto 0 auto;
     position: relative;
-    border-radius: 30px;
-    /* background: #eeeeee; */
     width: 280px;
-    /* min-height: 60px; */
     font-size: 12px;
     text-align: center;
     z-index: 2;
-    transform: skew(-0.03deg);
 
     .expWrap {
       width: 280px;
