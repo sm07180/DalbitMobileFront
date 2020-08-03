@@ -769,15 +769,14 @@ const GnbWrap = styled.div`
     }
     .left-side {
       display: flex;
-
       flex-direction: row;
-
+      padding-left: 6px;
       .tab {
         height: 42px;
         color: #fff;
         font-size: 16px;
         letter-spacing: -0.4px;
-        padding: 0 8px;
+        padding: 0 10px;
         /* &:nth-child(1) {
           > a {
             border-bottom: 2px solid #fff;
@@ -834,8 +833,17 @@ const GnbWrap = styled.div`
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
   .top-slide {
+    position: relative;
     height: 220px;
-    padding-bottom: 10px;
-    background-color: #eeeeee;
+    &::after {
+      display: block;
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 100%;
+      height: 10px;
+      background-color: #eeeeee;
+    }
   }
 `
