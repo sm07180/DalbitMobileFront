@@ -106,21 +106,6 @@ export default (props) => {
             {popupData.title && popupData.is_title_view == '1' && <div className="popup__title">{popupData.title}</div>}
             <div className="inner">
               <p className="contents" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
-              {/* <p className="contents">
-                {popupData.contents &&
-                  popupData.contents.split('\n').map((line, index) => {
-                    if (popupData.contents.match('\n')) {
-                      return (
-                        <React.Fragment key={index}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      )
-                    } else {
-                      return <React.Fragment key={index}>{popupData.contents}</React.Fragment>
-                    }
-                  })}
-              </p> */}
               {popupData.is_cookie == '1' && (
                 <Checkbox
                   className="checkbox"
