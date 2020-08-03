@@ -58,7 +58,7 @@ export default (props) => {
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    {type: 'appInfo', txt: '앱 정보 / 정책 / 탈퇴', icon: AppIcon}
+    {type: 'appInfo', txt: '앱 정보 / 운영 정책 / 회원 탈퇴', icon: AppIcon}
   ]
   // webview & ctx
   const {webview} = qs.parse(location.search)

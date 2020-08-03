@@ -89,7 +89,7 @@ export default (props) => {
   const [broadCnt, setBroadCnt] = useState(false)
 
   // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('simple')
+  const [liveListType, setLiveListType] = useState('detail')
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -386,7 +386,7 @@ export default (props) => {
                 <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </span>
-                <span className="bar"></span>
+                <i className="bar"></i>
                 <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
                   팬
                 </span>
@@ -560,6 +560,7 @@ const Content = styled.div`
 
           .refresh-icon {
             margin-left: 4px;
+            margin-top: 4px;
           }
         }
       }

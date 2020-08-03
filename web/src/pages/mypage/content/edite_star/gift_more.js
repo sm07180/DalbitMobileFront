@@ -219,8 +219,12 @@ export default (props) => {
     if (res.result === 'success') {
       const test = list.map((item, index) => {
         if (item.memNo === memoMemNo) {
-          if (item.starMemo === '') {
-            item.starMemo = memoContent
+          if (item.starMemo === '' || memoContent === '') {
+            if (item.starMemo === '') {
+              item.starMemo = memoContent
+            } else if (memoContent === '') {
+              item.starMemo = memoContent
+            }
           }
         }
         return item
@@ -342,8 +346,12 @@ export default (props) => {
               <button className="saveBtn saveBtn--active" onClick={postMemo}>
                 {defaultMemo === '' ? '저장하기' : '수정하기'}
               </button>
-            ) : (
+            ) : defaultMemo === '' ? (
               <button className="saveBtn">저장하기</button>
+            ) : (
+              <button className="saveBtn saveBtn--active" onClick={postMemo}>
+                수정하기
+              </button>
             )}
           </div>
         </div>

@@ -2217,8 +2217,8 @@ export default class API {
   static getEventAttendCheck = async (params) => {
     return await ajax({url: '/event/attendance/check', method: 'GET', params})
   }
-  static getEventAttendInput = async (data) => {
-    return await ajax({url: '/event/phone/input', method: 'POST', data})
+  static getEventAttendInput = async (params) => {
+    return await ajax({url: '/event/phone/input', method: 'GET', params})
   }
   static getEventAttendWinList = async (params) => {
     return await ajax({url: '/event/gifticon/win/list', method: 'GET', params})
@@ -2246,7 +2246,7 @@ export default class API {
     return await ajax({url: '/profile/star/memo', method: 'GET', params})
   }
   static postNewStarMemo = async (data) => {
-    return await ajax({url: '/profile/fan/memo', method: 'post', data})
+    return await ajax({url: '/profile/star/memo', method: 'post', data})
   }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료

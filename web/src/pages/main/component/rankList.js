@@ -23,14 +23,8 @@ export default (props) => {
   }
 
   const swiperParams = {
-    slidesPerView: 'auto'
-  }
-
-  if (djRank.length > 5) {
-    djRank = djRank.splice(5, djRank.length - 1)
-  }
-  if (fanRank.length > 5) {
-    fanRank = fanRank.splice(5, djRank.length - 1)
+    slidesPerView: 'auto',
+    rebuildOnUpdate: true
   }
 
   return (
@@ -56,7 +50,7 @@ export default (props) => {
           })}
         </Swiper>
       ) : (
-        <Swiper>
+        <Swiper {...swiperParams}>
           {fanRank.map((fan, idx) => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
