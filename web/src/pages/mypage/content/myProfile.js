@@ -271,14 +271,14 @@ const myProfile = (props) => {
             <span>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </span>
-            <div className="expBtnWrap">
+            {/*<div className="expBtnWrap">
               <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
                 경험치
               </button>
               <a href={`/level`} className="btn-level">
                 레벨
               </a>
-            </div>
+            </div>*/}
           </ProfileImg>
 
           <ContentWrap>
