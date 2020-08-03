@@ -51,7 +51,7 @@ const Index = (props) => {
       header = '1:1 문의'
       break
     case 'appInfo':
-      header = '앱 정보'
+      header = '앱 정보 / 정책 / 탈퇴'
       if (num === 'service') {
         header = '서비스 이용약관'
       } else if (num === 'privacy') {
@@ -61,7 +61,7 @@ const Index = (props) => {
       } else if (num === 'operating') {
         header = '운영정책'
       } else {
-        header = '앱 정보'
+        header = '앱 정보 / 정책 / 탈퇴'
       }
       break
     default:
