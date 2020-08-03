@@ -466,7 +466,7 @@ z-index:3;
         }
         .cntTitle {
             
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   font-stretch: normal;
   font-style: normal;
@@ -496,7 +496,7 @@ z-index:3;
     align-items: center;
     max-width: 190px;
     height: 28px;
-    margin: 8px auto 0 auto;
+    margin: 12px auto 0 auto;
     padding: 0 10px;
     border-radius: 14px;
     border: solid 1px #e0e0e0;
@@ -685,10 +685,10 @@ const LevelWrap = styled.div`
   flex-direction: column;
   /* height: 16px; */
   .expTitle {
+    font-size: 12px;
     margin-right: 4px;
     margin-left: 2px;
     font-weight: 800;
-    font-size: 10px;
     color: #000;
     line-height: 1.1;
     &.mr7 {
@@ -696,6 +696,7 @@ const LevelWrap = styled.div`
     }
     &.ml6 {
       margin-left: 6px;
+      font-weight: normal;
     }
     &.red {
       color: #000;
@@ -709,6 +710,7 @@ const LevelWrap = styled.div`
     line-height: 1.1;
   }
   .levelInfo {
+    font-size: 12px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -850,7 +852,7 @@ const NameWrap = styled.div`
   strong {
     color: #000;
     max-width: 260px;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 24px;
     min-height: 24px;
     font-weight: 800;
@@ -1132,5 +1134,5 @@ const ProfileMsg = styled.pre`
   line-height: 1.43;
   letter-spacing: normal;
   text-align: center;
-  color: #757575;
+  color: #424242;
 `
