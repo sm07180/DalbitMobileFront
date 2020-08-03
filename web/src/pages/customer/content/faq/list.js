@@ -2,10 +2,10 @@ import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
-
 import {Store} from '../index'
-
 import './list.scss'
+
+import searchBtn from '../../../../images/search_purple.png'
 
 export default function List(props) {
   const history = useHistory()
@@ -109,7 +109,7 @@ export default function List(props) {
           placeholder="검색어를 입력해 보세요"
           onChange={(e) => Store().action.updateSearch(e.target.value)}
         />
-        <button className="searchBtn" onClick={fnSearch} />
+        <button className="searchBtn" onClick={fnSearch} style={{backgroundImage: `url(${searchBtn})`}} />
       </div>
       {Store().searching && <span className="searchResult">'{Store().currentSearch}'으로 검색된 결과입니다.</span>}
       {normalList.length > 0 && (
