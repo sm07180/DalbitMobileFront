@@ -834,8 +834,17 @@ const GnbWrap = styled.div`
 const MainWrap = styled.div`
   margin-top: ${(props) => (props.sticker ? '0' : '48px')};
   .top-slide {
+    position: relative;
     height: 220px;
-    padding-bottom: 10px;
-    background-color: #eeeeee;
+    &::after {
+      display: block;
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 100%;
+      height: 10px;
+      background-color: #eeeeee;
+    }
   }
 `
