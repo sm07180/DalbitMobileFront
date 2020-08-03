@@ -56,6 +56,34 @@ export default (props) => {
     fetchEventAttendDate()
   }, [])
 
+  useEffect(() => {
+    async function fetchEventAttendCheck() {
+      const {result, data} = await API.getEventAttendCheck()
+      if (result === 'success') {
+        const {isCheck} = data
+        console.log('체크성공')
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendCheck()
+  }, [])
+
+  useEffect(() => {
+    async function fetchEventAttendInput() {
+      const {result, data} = await API.getEventAttendInput({
+        phone: '01064220219'
+      })
+      if (result === 'success') {
+        const {isCheck} = data
+        console.log('인풋성공')
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendInput()
+  }, [])
+
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
