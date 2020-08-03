@@ -22,7 +22,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
-import Utility, {printNumber} from 'components/lib/utility'
+import Utility, {printNumber, addComma} from 'components/lib/utility'
 //util
 import LiveIcon from '../component/ic_live.svg'
 import FemaleIcons from '../static/ico_female.svg'
@@ -318,21 +318,27 @@ const myProfile = (props) => {
                   <span className="icoImg type1"></span>
                   <em className="icotitle">팬</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.fanCnt)}</em>
+                <em className="cntTitle">
+                  {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                </em>
               </div>
               <div onClick={() => starContext()}>
                 <span>
                   <span className="icoImg type2"></span>
                   <em className="icotitle">스타</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.starCnt)}</em>
+                <em className="cntTitle">
+                  {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                </em>
               </div>
               <div>
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
-                <em className="cntTitle">{Utility.printNumber(profile.likeTotCnt)}</em>
+                <em className="cntTitle">
+                  {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
+                </em>
               </div>
               {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
                 <div onClick={() => context.action.updateMypageReport(true)}></div>
