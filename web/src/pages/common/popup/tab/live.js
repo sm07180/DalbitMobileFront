@@ -17,7 +17,7 @@ import {useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
 
 //------------------------------------------------------------------
-export default props => {
+export default (props) => {
   //context
   const store = useContext(BroadCastStore)
   const context = useContext(Context)
@@ -45,13 +45,13 @@ export default props => {
   const handleOnWheel = () => {
     setCheckMove(true)
   }
-  const scrollOnUpdate = e => {
+  const scrollOnUpdate = (e) => {
     //스크롤영역 height 고정해주기, 윈도우 리사이즈시에도 동작
     settingArea.current.children[0].children[0].style.maxHeight = `calc(${settingArea.current.offsetHeight}px + 17px)`
   }
   //
   //라이브 맵------------------------------------------------------------------------------------------------------
-  const makeContents = obj => {
+  const makeContents = (obj) => {
     let sortlist = store.liveSortList
     if (sortlist === null) return
     return sortlist.list.map((live, index) => {
@@ -237,7 +237,7 @@ const ImgWrap = styled.div`
   width: 30.93%;
   height: 106px;
   border-radius: 50%;
-  background: url(${props => props.bg}) no-repeat center center / cover;
+  background: url(${(props) => props.bg}) no-repeat center center / cover;
   position: relative;
 `
 const Sticker = styled.div`
@@ -277,7 +277,7 @@ const Thumb = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: url(${props => props.thumb}) no-repeat center center / cover;
+  background: url(${(props) => props.thumb}) no-repeat center center / cover;
 `
 const InfoWrap = styled.div`
   width: 69.07%;
