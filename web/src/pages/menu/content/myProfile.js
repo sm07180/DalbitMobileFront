@@ -289,7 +289,8 @@ const myProfile = (props) => {
                 {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
               </div>
             </NameWrap>
-            <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg>
+            {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
+            <ProfileMsg>{profile.profMsg}</ProfileMsg>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
                 <Swiper {...params}>{BadgeSlide}</Swiper>
@@ -1121,13 +1122,13 @@ const Slide = styled.a`
   color: #fff;
 `
 //프로필메세지
-const ProfileMsg = styled.p`
+const ProfileMsg = styled.pre`
   width: 70%;
   margin: 0 auto;
-  word-break: break-all;
   margin-top: 8px;
   transform: skew(-0.03deg);
   font-size: 14px;
+  font-family: inherit;
   line-height: 1.43;
   letter-spacing: normal;
   text-align: center;
