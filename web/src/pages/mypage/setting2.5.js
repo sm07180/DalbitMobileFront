@@ -9,6 +9,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
+import {DalbitTextArea} from './content/textarea'
 //image
 import camera from 'images/camera.svg'
 import MaleIcon from './static/ico_male.svg'
@@ -215,11 +216,21 @@ export default (props) => {
   }
   // change Msg func
   const changeMsg = (e) => {
-    const {currentTarget} = e
-    if (currentTarget.value.length > 100) {
+    let {value} = e.target
+    const lines = value.split('\n').length
+    const a = value.split('\n')
+    const cols = 30
+    if (lines < 6) {
+      if (a[lines - 1].length % cols === 0 && a[lines - 1].length > 0) {
+        value += '\n'
+      } else if (a[lines - 1].length > cols) {
+        const b = a[lines - 1].substr(0, cols) + '\n' + a[lines - 1].substr(cols, a[lines - 1].length - 1)
+        a.pop()
+        value = a.join('\n') + '\n' + b
+      }
+      setProfileMsg(value)
+    } else if (lines > 5) {
       return
-    } else {
-      setProfileMsg(currentTarget.value)
     }
   }
   // upload validate
@@ -415,7 +426,15 @@ export default (props) => {
 
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메시지</label>
-                  <MsgText defaultValue={profile.profMsg} onChange={changeMsg} maxLength={100} />
+                  <DalbitTextArea
+                    defaultValue={profile.profMsg}
+                    state={profileMsg}
+                    setState={setProfileMsg}
+                    cols={20}
+                    rows={6}
+                    className="MsgText"
+                    placeholder="프로필 메시지는 최대 100자까지 입력할 수 있습니다."
+                  />
                   {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
                 </div>
 
@@ -773,6 +792,26 @@ const Content = styled.section`
   margin: 0 0 0px 0;
   height: 100%;
   overflow: auto;
+  .MsgText {
+    display: block;
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    resize: none;
+    padding: 12px;
+    height: 116px;
+    font-family: inherit;
+    color: #000000;
+    transform: skew(-0.03deg);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    outline: none;
+    border-radius: 12px;
+    :focus {
+      border: 1px solid #000;
+    }
+  }
+
   .birthBox {
     position: relative;
     height: 72px;
