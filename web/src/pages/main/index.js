@@ -89,7 +89,7 @@ export default (props) => {
   const [broadCnt, setBroadCnt] = useState(false)
 
   // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('simple')
+  const [liveListType, setLiveListType] = useState('detail')
 
   useEffect(() => {
     if (window.sessionStorage) {
