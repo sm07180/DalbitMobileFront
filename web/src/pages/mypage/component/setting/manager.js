@@ -40,7 +40,7 @@ export default (props) => {
   const [managerList, setManagerList] = useState(false)
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
-  const [tabState, setTabState] = useState(0)
+  const [tabState, setTabState] = useState(1)
   let userTypeSetting = 0
 
   const selectBoxData = [
@@ -321,11 +321,11 @@ export default (props) => {
   return (
     <Content>
       <div className="tab">
-        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
-          등록
-        </button>
         <button onClick={tabChangeFunction} className={tabState === 1 ? 'on' : ''}>
           관리
+        </button>
+        <button onClick={tabChangeFunction} className={tabState === 0 ? 'on' : ''}>
+          등록
         </button>
       </div>
       {tabState === 0 && (
