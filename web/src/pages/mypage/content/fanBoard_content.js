@@ -169,7 +169,7 @@ export default (props) => {
       // })
     }
   }
-  console.log(context.token.memNo)
+
   //--------------------------------------------------------------------------
   return (
     <>

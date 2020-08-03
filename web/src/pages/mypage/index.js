@@ -68,8 +68,8 @@ export default (props) => {
     if (isHybrid()) {
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
-      console.log(context.noticeIndexNum)
-    }else{
+      // console.log(context.noticeIndexNum)
+    } else {
       window.history.go(-1)
     }
   }

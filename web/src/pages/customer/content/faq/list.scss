@@ -3,7 +3,7 @@ $COLOR_MAIN: #632beb;
 .faqWrap {
   .searchWrap {
     padding: 0 16px;
-  
+
     & > input {
       width: 100%;
       padding: 14px 16px;
@@ -11,11 +11,18 @@ $COLOR_MAIN: #632beb;
       border-radius: 28px;
       font-size: 14px;
     }
-  
+
     & > input::placeholder {
       color: #757575;
+      font-size: 14px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.14;
+      letter-spacing: normal;
+      text-align: left;
     }
-  
+
     .searchBtn {
       position: absolute;
       width: 36px;
@@ -39,7 +46,11 @@ $COLOR_MAIN: #632beb;
       display: inline-block;
       margin: 16.5px 16px 9.5px 16px;
       font-size: 16px;
-      line-height: 18px;
+      font-weight: 800;
+      line-height: 1.13;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
     }
   }
 
@@ -71,13 +82,13 @@ $COLOR_MAIN: #632beb;
       color: #000;
       font-weight: 600;
       transform: skew(-0.03deg);
-  
+
       @media (max-width: $WIDTH_MOBILE) {
         width: 92%;
         margin: 4px 0 2px 0;
         line-height: 1.4;
       }
-      
+
       & span {
         display: contents;
         color: #632beb;
@@ -90,7 +101,7 @@ $COLOR_MAIN: #632beb;
       &.on {
         // background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
       }
-  
+
       @media (max-width: $WIDTH_MOBILE) {
         position: absolute;
         right: 0;
@@ -98,7 +109,7 @@ $COLOR_MAIN: #632beb;
         transform: translateY(-50%);
       }
     }
-    
+
     & em {
       position: absolute;
       left: 20px;

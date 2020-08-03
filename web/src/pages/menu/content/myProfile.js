@@ -152,7 +152,7 @@ const myProfile = (props) => {
       setPopup(true)
     }
   }
-  console.log(profile.fanRank)
+
   //func back
   const goBack = () => {
     const {webview} = qs.parse(location.search)

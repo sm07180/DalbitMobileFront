@@ -37,7 +37,7 @@ export default (props) => {
         msg: profile.nickNm + '님을 신고 하였습니다.'
       })
     } else {
-      console.log(res)
+      // console.log(res)
       context.action.alert({
         callback: () => {
           context.action.updateMypageReport(false)
