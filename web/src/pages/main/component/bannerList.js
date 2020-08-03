@@ -102,9 +102,6 @@ const Banner = styled.div`
     }
   }
 
-  .swiper-pagination {
-    display: none;
-  }
   .swiper-pagination-fraction,
   .swiper-pagination-custom,
   .swiper-container-horizontal > .swiper-pagination-bullets {
