@@ -136,7 +136,7 @@ const makeContents = (props) => {
                     ) : (
                       <span className="all-icon">ALL</span>
                     )}
-                    {lastList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                    {lastList.isSpecial && <span className="special-icon">S</span>}
                   </div>
                   <div className="entry-count">
                     <img className="entry-img" src={EntryImg} />

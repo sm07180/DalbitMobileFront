@@ -87,9 +87,9 @@ export default (props) => {
 
             <tr>
               <td className="category">청취 시간</td>
-              <td>20%</td>
-              <td>20%</td>
-              <td>20%</td>
+              <td>40%</td>
+              <td>40%</td>
+              <td>40%</td>
             </tr>
           </tbody>
         </table>

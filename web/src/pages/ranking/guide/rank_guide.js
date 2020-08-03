@@ -10,7 +10,8 @@ import './rank_guide.scss'
 import closeBtn from '../static/ic_back.svg'
 
 export default (props) => {
-  const [guideType, setGuideType] = useState('benefit')
+  //const [guideType, setGuideType] = useState('benefit')
+  const [guideType, setGuideType] = useState('howUse')
 
   const goBack = () => {
     window.history.back()
@@ -26,7 +27,7 @@ export default (props) => {
           </button>
         </div>
 
-        <div className="rankTab guideTab">
+        {/*<div className="rankTab guideTab">
           <button
             className={`rankTab__btn ${guideType === 'benefit' ? 'rankTab__btn--active' : ''} `}
             onClick={() => setGuideType('benefit')}>
@@ -37,7 +38,7 @@ export default (props) => {
             onClick={() => setGuideType('howUse')}>
             랭킹 산정 방식
           </button>
-        </div>
+        </div>*/}
 
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
