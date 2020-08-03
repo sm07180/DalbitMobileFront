@@ -108,7 +108,7 @@ export default (props) => {
   }
 
   const initInterval = () => {
-    const slidingTime = 99999999999999 // unit is ms
+    const slidingTime = 150 // unit is ms
 
     intervalId = setInterval(() => {
       const slideWrapNode = slideWrapRef.current
