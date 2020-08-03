@@ -23,7 +23,8 @@ export default (props) => {
   }
 
   const swiperParams = {
-    slidesPerView: 'auto'
+    slidesPerView: 'auto',
+    rebuildOnUpdate: true
   }
 
   return (
@@ -49,7 +50,7 @@ export default (props) => {
           })}
         </Swiper>
       ) : (
-        <Swiper>
+        <Swiper {...swiperParams}>
           {fanRank.map((fan, idx) => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
