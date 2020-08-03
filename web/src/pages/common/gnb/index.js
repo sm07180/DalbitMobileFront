@@ -168,7 +168,7 @@ const GnbWrap = styled.div`
     .icon {
       position: relative;
       display: block;
-      width: 36px;
+      width: 40px;
     }
 
     .alarm-new {

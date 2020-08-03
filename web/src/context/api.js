@@ -2204,17 +2204,26 @@ export default class API {
     return await ajax({url: '/event/reply', method: 'DELETE', data})
   }
 
-  static postEventAttend = async () => {
-    return await ajax({url: '/event/attendance/check/status', method: 'post'})
+  //  출석체크이벤트
+  static postEventAttend = async (data) => {
+    return await ajax({url: '/event/attendance/check/status', method: 'post', data})
+  }
+  static postEventAttendIn = async (data) => {
+    return await ajax({url: '/event/attendance/check/in', method: 'post', data})
+  }
+  static postEventAttendGift = async (data) => {
+    return await ajax({url: '/event/attendance/random/gift', method: 'post', data})
+  }
+  static getEventAttendCheck = async (params) => {
+    return await ajax({url: '/event/attendance/check', method: 'GET', params})
+  }
+  static getEventAttendInput = async (data) => {
+    return await ajax({url: '/event/phone/input', method: 'POST', data})
+  }
+  static getEventAttendWinList = async (params) => {
+    return await ajax({url: '/event/gifticon/win/list', method: 'GET', params})
   }
 
-  static postEventAttendIn = async () => {
-    return await ajax({url: '/event/attendance/check/in', method: 'post'})
-  }
-
-  static postEventAttendGift = async () => {
-    return await ajax({url: '/event/attendance/random/gift', method: 'post'})
-  }
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }

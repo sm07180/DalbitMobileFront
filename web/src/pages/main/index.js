@@ -646,6 +646,10 @@ const Content = styled.div`
           margin-left: 10px;
         }
       }
+      .rank-arrow {
+        width: 24px;
+        height: 24px;
+      }
     }
 
     .right-side {

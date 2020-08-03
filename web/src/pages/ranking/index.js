@@ -218,7 +218,7 @@ export default (props) => {
               <div className="rankTab">{createRankButton()}</div>
 
               <div className="rankTopBox__update">
-                {myInfo.time}
+                {rankType !== 'level' ? myInfo.time : ''}
                 <button onClick={() => props.history.push('/rank/guide')} className="rankTopBox__img">
                   <img src={hint} alt="힌트보기" />
                 </button>

@@ -13,7 +13,7 @@ import SilverMedal from '../static/medal_silver_m@2x.png'
 import BronzeMedal from '../static/medal_bronze_m@2x.png'
 
 export default (props) => {
-  const {rankType, djRank, fanRank} = props
+  let {rankType, djRank, fanRank} = props
   const globalCtx = useContext(Context)
 
   const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
@@ -24,6 +24,13 @@ export default (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto'
+  }
+
+  if (djRank.length > 5) {
+    djRank = djRank.splice(5, djRank.length - 1)
+  }
+  if (fanRank.length > 5) {
+    fanRank = fanRank.splice(5, djRank.length - 1)
   }
 
   return (

@@ -46,7 +46,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
       height: '100%',
       maxSuggestItems: 5
     }).embed(element_layer)
-
+    element_layer.style.display = 'block'
     initLayerPosition()
   }
 
@@ -57,21 +57,16 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
     const element_layer = document.getElementById('layer')
     const closeBtn = document.getElementById('layer__close')
     // 위에서 선언한 값들을 실제 element에 넣는다.
-    element_layer.setAttribute(
-      'style',
-      `
-      display: block;
-      height: ${height}px; border: ${borderWidth}px solid; left: ${
-        ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth
-      }px; top: ${((window.innerHeight || document.documentElement.clientHeight) - height) / 2 - borderWidth}px`
-    )
-
-    closeBtn.setAttribute(
-      'style',
-      `right: ${((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth - 20}px; top: ${
-        ((window.innerHeight || document.documentElement.clientHeight) - height) / 2 - borderWidth
-      }px;`
-    )
+    // 위에서 선언한 값들을 실제 element에 넣는다.
+    // element_layer.style.width = width + 'px';
+    element_layer.style.height = height + 'px'
+    element_layer.style.border = borderWidth + 'px solid'
+    // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+    element_layer.style.left = ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth + 'px'
+    element_layer.style.top =
+      ((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px'
+    closeBtn.style.right = ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth - 20 + 'px'
+    closeBtn.style.top = ((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px'
   }
 
   const uploadSingleFile = (e, idx) => {
@@ -291,7 +286,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        {state.consent === false && (
+        {state.consent && (
           <>
             <div className="formData__list formData__list--disabled">
               <div className="formData__title">부모동의 사본</div>

@@ -129,7 +129,7 @@ export default (props) => {
           <li className="noticeBox__item">· DJ / FAN 랭킹 집계 기준: 종료된 방송 기준 데이터</li>
           <li className="noticeBox__item">· DJ / FAN 오늘 랭킹: 하루 데이터 집계 및 매일 정시 갱신</li>
           <li className="noticeBox__item">· DJ / FAN 일간 랭킹: 전일 데이터 집계 및 매일 00시 갱신</li>
-          <li className="noticeBox__item">· DJ / FAN 주간 랭킹: 월~일 데이터 집계 및 월요일 05시 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 주간 랭킹: 월~일 데이터 집계 및 월요일 00시 갱신</li>
           <li className="noticeBox__item">· LEVEL 랭킹: 매일 데이터 집계 및 00시 갱신</li>
         </ul>
       </div>
