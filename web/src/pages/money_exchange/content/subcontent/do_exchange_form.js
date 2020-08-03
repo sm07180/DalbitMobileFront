@@ -286,7 +286,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        {state.consent === false && (
+        {state.consent && (
           <>
             <div className="formData__list formData__list--disabled">
               <div className="formData__title">부모동의 사본</div>
