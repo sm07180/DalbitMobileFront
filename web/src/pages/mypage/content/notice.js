@@ -134,6 +134,7 @@ const Notice = (props) => {
     }
     const res = await Api.mypage_notice_inquire(params)
     if (res.result === 'success') {
+      context.action.updateNoticeState(false)
       if (res.data.paging && res.data.paging.totalPage === 1) {
         if (next) {
           moreState = false
@@ -147,7 +148,7 @@ const Notice = (props) => {
           setNextListPage(res.data.list)
         } else {
           setListPage(res.data.list)
-          fetchData('next')
+          fetchData()
         }
       }
     } else if (res.result === 'fail') {
@@ -155,11 +156,7 @@ const Notice = (props) => {
   }
   useEffect(() => {
     currentPage = 1
-
     fetchData()
-    setTimeout(() => {
-      context.action.updateNoticeState(false)
-    }, 20)
   }, [context.noticeState])
 
   const showMoreList = () => {
