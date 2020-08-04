@@ -13,7 +13,7 @@ import {StoreLink} from 'context/link'
 
 // components
 import Layout from 'pages/common/layout'
-import Recommend from './component/recommend_new.js'
+import MainSlideList from './component/mainSlideList.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
@@ -36,7 +36,7 @@ import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 
-import refreshIcon from './static/refresh_w.svg'
+import refreshIcon from './static/refresh_g.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import WhiteBroadIcon from './static/white_broad.svg'
@@ -372,9 +372,7 @@ export default (props) => {
           </div>
         </GnbWrap>
 
-        <div ref={RecommendRef} className="top-slide" style={{height: '220px'}}>
-          {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
-        </div>
+        <div ref={RecommendRef}>{Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}</div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -386,7 +384,7 @@ export default (props) => {
                 <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </span>
-                <span className="bar"></span>
+                <i className="bar"></i>
                 <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
                   팬
                 </span>
@@ -560,6 +558,7 @@ const Content = styled.div`
 
           .refresh-icon {
             margin-left: 4px;
+            margin-top: 4px;
           }
         }
       }

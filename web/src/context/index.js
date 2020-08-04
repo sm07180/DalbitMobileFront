@@ -73,6 +73,7 @@ const GlobalProvider = (props) => {
   const [fanEditeLength, setFanEditeLength] = useState(-1)
   const [selectFanTab, setSelectFanTab] = useState(0)
   const [editeToggle, setEditeToggle] = useState(false)
+  const [ctxDeleteList, stCtxDeleteList] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -300,6 +301,9 @@ const GlobalProvider = (props) => {
     },
     updateEditeToggle: (boolean) => {
       setEditeToggle(boolean)
+    },
+    updateCtxDeleteList: (string) => {
+      stCtxDeleteList(string)
     }
   }
   //---------------------------------------------------------------------
@@ -346,7 +350,8 @@ const GlobalProvider = (props) => {
     fanEdite,
     fanEditeLength,
     selectFanTab,
-    editeToggle
+    editeToggle,
+    ctxDeleteList
   }
   return <Provider value={value}>{props.children}</Provider>
 }

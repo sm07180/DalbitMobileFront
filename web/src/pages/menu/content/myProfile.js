@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
-import qs from 'qs'
+import qs from 'query-string'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -33,24 +33,29 @@ import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
+import AdminIcon from '../static/ic_home_admin.svg'
+import FanSettingIcon from '../static/fan_setting.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   let history = useHistory()
   //context & webview
   const {webview} = props
+
   const context = useContext(Context)
-  const {mypageReport, close, closeFanCnt, closeStarCnt} = context
+  const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   // state
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
+
   const myProfileNo = context.profile.memNo
   //image zoom function
   const figureZoom = () => {
@@ -224,9 +229,30 @@ const myProfile = (props) => {
       </Slide>
     )
   })
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      if (adminFunc.data.isAdmin === true) {
+        setShowAdmin(true)
+      }
+    } else if (adminFunc.result === 'fail') {
+      setShowAdmin(false)
+    }
+  }
+  useEffect(() => {
+    fetchAdmin()
+  }, [])
   return (
     <>
       <ProfileWrap>
+        {token && token.isLogin && showAdmin && (
+          <div className="adminBtn">
+            <a href="/admin/image">
+              <img src={AdminIcon} />
+            </a>
+          </div>
+        )}
+
         <MyProfile webview={webview}>
           <button className="closeBtn" onClick={goBack}></button>
           <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
@@ -309,24 +335,50 @@ const myProfile = (props) => {
             {profile.fanRank.length !== 0 && <ButtonWrap>{createFanList()}</ButtonWrap>}
 
             <div className="categoryCntWrap">
-              <div onClick={goFanEdite}>
-                <span>
-                  <span className="icoImg type1"></span>
-                  <em className="icotitle">팬</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-                </em>
-              </div>
-              <div onClick={goStarEdite}>
-                <span>
-                  <span className="icoImg type2"></span>
-                  <em className="icotitle">스타</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-                </em>
-              </div>
+              {profile.fanCnt > 0 ? (
+                <div onClick={goFanEdite}>
+                  <span className="icoWrap">
+                    <span className="icoImg type1"></span>
+                    <em className="icotitle icotitle--active">팬</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                  </em>
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    <span className="icoImg type1"></span>
+                    <em className="icotitle">팬</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                  </em>
+                </div>
+              )}
+
+              {profile.starCnt > 0 ? (
+                <div onClick={goStarEdite}>
+                  <span className="icoWrap">
+                    <span className="icoImg type2"></span>
+                    <em className="icotitle icotitle--active">스타</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                  </em>
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    <span className="icoImg type2"></span>
+                    <em className="icotitle">스타</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                  </em>
+                </div>
+              )}
+
               <div>
                 <span>
                   <span className="icoImg"></span>
@@ -365,6 +417,11 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const ProfileWrap = styled.div`
+  .adminBtn {
+    position: absolute;
+    top: 0;
+    left: 0%;
+  }
   padding-top: 87px;
   position: relative;
   /* background-color: #424242; */
@@ -434,6 +491,10 @@ z-index:3;
   .categoryCntWrap {
       margin: 4px 0 20px 0;
       display: flex;
+      .icoWrap {
+        display: flex;
+        align-items:center;
+      }
       div {
         display: flex;
         justify-content: center;
@@ -467,16 +528,28 @@ z-index:3;
             }
         }
         .icotitle {
+          display: flex;
+          align-items:center;
             float:right;
-            margin-left:2px;
+            margin-left:0px;
             line-height:24px;
-                            font-size: 12px;
+                font-size: 14px;
                 font-weight: normal;
                 font-stretch: normal;
                 font-style: normal;
                 letter-spacing: normal;
                 text-align: center;
                 color: #424242;
+                &--active {
+                  &:after {
+                    margin-left:8px;
+                  display: inline-block;
+                  content:'';
+                  width: 16px;
+                  height: 16px;
+                  background:url(${FanSettingIcon});
+                }
+                }
         }
         .cntTitle {
             

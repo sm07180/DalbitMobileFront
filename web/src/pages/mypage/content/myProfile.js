@@ -3,7 +3,7 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 import React, {useEffect, useContext, useState} from 'react'
-import qs from 'qs'
+import qs from 'query-string'
 
 //route
 import {OS_TYPE} from 'context/config.js'
@@ -250,9 +250,9 @@ const myProfile = (props) => {
           {/* <Header>
         <div className="category-text">프로필</div>
       </Header> */}
+          <button className="closeBtn" onClick={goBack}></button>
           {urlrStr !== context.token.memNo && (
             <>
-              <button className="closeBtn" onClick={goBack}></button>
               <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
             </>
           )}
