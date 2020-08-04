@@ -412,9 +412,9 @@ const Login = styled.div`
       display: block;
       border: 1px solid #fff;
       width: 100%;
-      height: 48px;
-      padding: 0 24px;
-      line-height: 48px;
+      height: 24px;
+      padding: 23px 24px;
+      line-height: 24px;
       border-radius: 25px;
       color: #fff;
       font-size: 14px;
