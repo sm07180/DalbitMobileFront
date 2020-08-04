@@ -2223,6 +2223,9 @@ export default class API {
   static getEventAttendWinList = async (params) => {
     return await ajax({url: '/event/gifticon/win/list', method: 'GET', params})
   }
+  static getEventAttendLunarDate = async (params) => {
+    return await ajax({url: '/event/lunar/date', method: 'GET', params})
+  }
 
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})

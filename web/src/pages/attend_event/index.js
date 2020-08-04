@@ -1,24 +1,23 @@
-import {Context} from 'context'
-import API from 'context/api'
 import React, {useContext, useEffect, useState} from 'react'
+
+import {IMG_SERVER} from 'context/config'
+import API from 'context/api'
+import {Context} from 'context'
 
 // component
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
 import {Link, useHistory} from 'react-router-dom'
-import LayerPopup from './layer_popup'
 
 // static
 import btnClose from './static/ico_close.svg'
-import iconGift from './static/icn_gift.svg'
-import iconStamp from './static/icn_stamp.svg'
-import iconMoon from './static/icn_moon.svg'
 
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
+  const [WinPopup, setWinPopup] = useState(false)
 
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
@@ -26,20 +25,8 @@ export default (props) => {
     dalCnt: 0
   })
   const [statusList, setStatusList] = useState([])
-  const [dateList, setDateList] = useState([])
-  const [popup, setPopup] = useState(false)
-
-  useEffect(() => {
-    if (popup) {
-      if (window.location.hash === '') {
-        window.history.pushState('layer', '', '/rank/#layer')
-      }
-    } else if (!popup) {
-      if (window.location.hash === '#layer') {
-        window.history.back()
-      }
-    }
-  }, [popup])
+  const [dateList, setDateList] = useState({})
+  const [lunarDate, setLunarDate] = useState('')
 
   useEffect(() => {
     async function fetchEventAttendDate() {
@@ -50,7 +37,9 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
       } else {
-        //실패
+        //실패\
+        setStatusList({bonus: '0'})
+        setDateList([{0: {}}])
       }
     }
     fetchEventAttendDate()
@@ -97,6 +86,20 @@ export default (props) => {
       }
     }
     fetchEventAttendWinList()
+  }, [])
+
+  useEffect(() => {
+    async function fetchEventAttendLunarDate() {
+      const {result, data} = await API.getEventAttendLunarDate()
+      if (result === 'success') {
+        const {lunarDt} = data
+
+        setLunarDate(lunarDt)
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendLunarDate()
   }, [])
 
   const attendDateIn = () => {
@@ -149,67 +152,26 @@ export default (props) => {
     return checkGiftName
   }
 
-  const createBonusBox = () => {
-    const {bonus} = statusList
-    let bonusName
-
-    if (bonus === '0') {
-      bonusName = `bonus-box`
-    } else if (bonus === '1') {
-      bonusName = `bonus-box more`
-    } else if (bonus === '2') {
-      bonusName = `bonus-box complete`
-    } else {
-      bonusName = `bonus-box`
-    }
-
-    return bonusName
-  }
-
-  const clickGiftButton = () => {
-    async function fetchEventAttendGift() {
-      const {result, data} = await API.postEventAttendGift()
-      if (result === 'success') {
-        const {status, summary} = data
-        setSummaryList(summary)
-        setStatusList(status)
-        setPopup(popup ? false : true)
-      } else {
-        //실패
-      }
-    }
-    fetchEventAttendGift()
-  }
-
   return (
     <Layout {...props} status="no_gnb">
       <div id="attend-event">
         <div className="event-main">
+          <img src={`${IMG_SERVER}/event/attend/200804/img_top@2x.png`} className="img-top" />
           <Link to="/">
             <button className="btn-back">
               <img src={btnClose} />
             </button>
           </Link>
 
-          <div className="img-leaves"></div>
-          <div className="img-bottle-moon"></div>
-          <div className="img-big-rabbit"></div>
-          <div className="img-pick">
-            <p>방송(청취) 시간 30분이 되었다면?</p>
-
-            <div className="img-pick-text"></div>
-
-            <div className="img-pick-hand"></div>
-          </div>
-          <div className="img-title"></div>
-
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
+        </div>
 
-          <div className="giftcon-win-box">
+        <div className="gifticon-win-wrap">
+          <div className="gifticon-win-box">
             <label>기프티콘 당첨자</label>
-            <div>
-              <p className="time">11:11:11</p>
-              <p className="nick-name">닉네임</p>
+            <div className="gifticon-win-list">
+              <p className="time">8월 28일 23:59</p>
+              <p className="nick-name">₩°천사소녀네티만의꼬북꼬..</p>
             </div>
           </div>
         </div>
@@ -219,21 +181,30 @@ export default (props) => {
 
           <div className="event-content">
             <div className="event-section">
-              <label className="title-label">EVENT 1. 기프티콘</label>
+              <label className="title-label">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event1@2x.png`} />
+              </label>
               <p className="title-top">
-                특별한 날 출석하면 기프티콘 쏜다!<span>주 7일 연속 출석에 성공한 날, 보람달이 뜨는 날 출석하면 자동 응모!</span>
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event1_title@2x.png`} />
               </p>
 
               <div className="gifticon-benefit">
                 <div className="gifticon-benefit-item">
+                  <div className="gifti-img-coffee">
+                    <img src={`${IMG_SERVER}/event/attend/200804/img_coffee@2x.png`} />
+                  </div>
+
                   <p className="description">
                     매주 자동 추첨!
                     <br />
-                    7일 연속 출석 청공한 날<span>스타벅스 아메리카노(10명)</span>
+                    7일 연속 출석 성공한 날<span>스타벅스 아메리카노(10명)</span>
                   </p>
                 </div>
                 <div className="gifticon-benefit-item">
-                  <p className="date">8월 4일</p>
+                  <div className="gifti-img-chicken">
+                    <img src={`${IMG_SERVER}/event/attend/200804/img_chicken@2x.png`} />
+                  </div>
+                  <p className="luna-date">{lunarDate}</p>
                   <p className="description">
                     매일 보름달이 뜨는 날!<span>BHC 뿌링클 세트(3명)</span>
                   </p>
@@ -253,62 +224,22 @@ export default (props) => {
             </div>
 
             <div className="event-section">
-              <label className="title-label">EVENT 2. 매일 선물</label>
+              <label className="title-label">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2@2x.png`} />
+              </label>
               <p className="title-top">
-                날마다 출첵하고 선물 챙기자!
-                <span>
-                  매일 출석체크하면 달과 경험치(EXP) 100% 당첨!
-                  <br />
-                  7일동안 매일 출석했다면? 보너스 랜덤선물까지 또 받자!
-                </span>
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2_title@2x.png`} />
               </p>
 
               <div className="stamp-box">
-                <AttendList dateList={dateList}></AttendList>
-              </div>
-
-              <div className={createBonusBox()}>
-                <p className="title">BONUS RANDOM GIFT</p>
-
-                <button className="btn-more" onClick={clickGiftButton}></button>
+                <AttendList
+                  dateList={dateList}
+                  summaryList={summaryList}
+                  statusList={statusList}
+                  setStatusList={setStatusList}
+                  setSummaryList={setSummaryList}></AttendList>
               </div>
             </div>
-            {/* <div className="content-left-wrap">
-              <div className="detail-text-title"></div>
-              <div className="detail-text-content"></div>
-
-              <div className="detail-info-box">
-                <label className="label">
-                  <img src={iconStamp} />
-                  출석체크:
-                </label>
-                <p className="value">
-                  <span>{summaryList.attendanceDays}</span> 개
-                </p>
-
-                <label className="label">
-                  <img src={iconGift} />
-                  경험치:
-                </label>
-                <p className="value">
-                  <span>{summaryList.totalExp}</span> EXP
-                </p>
-
-                <label className="label">
-                  <img src={iconMoon} />
-                  받은 달:
-                </label>
-                <p className="value">
-                  <span>{summaryList.dalCnt}</span> 개
-                </p>
-              </div>
-
-              <div className="detail-text-title bonus"></div>
-              <div className="detail-text-content bonus"></div>
-            </div>
-            <div className="content-right-wrap"> 
-             
-            </div>*/}
           </div>
         </div>
 
@@ -335,7 +266,7 @@ export default (props) => {
         </div>
       </div>
 
-      {popup && <LayerPopup setPopup={setPopup} statusList={statusList}></LayerPopup>}
+      {/* {popup && <LayerPopup setPopup={setPopup} statusList={statusList}></LayerPopup>} */}
     </Layout>
   )
 }

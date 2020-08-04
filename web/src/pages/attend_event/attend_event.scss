@@ -1,526 +1,733 @@
-.event-main {
-  position: relative;
-  height: 260px;
-  background-color: #3dbbfa;
+#attend-event {
+  max-width: 640px;
+  margin: 0 auto;
 
-  .img-leaves {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 159px;
-    height: 167px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_leaves@2x.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-  }
+  .event-main {
+    position: relative;
 
-  .img-bottle-moon {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 71px;
-    height: 142px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_bottle_moon@2x.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-  }
-
-  .img-big-rabbit {
-    position: absolute;
-    bottom: 0;
-    left: 8px;
-    width: 58px;
-    height: 132px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200625/img_big_rabbit@2x.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-  }
-
-  .img-pick {
-    position: absolute;
-    top: 140px;
-    width: 100%;
-    text-align: center;
-
-    p {
+    .img-top {
       width: 100%;
-      padding-bottom: 5px;
-      font-size: 13px;
-      line-height: 18px;
-      letter-spacing: -0.33px;
-      text-align: center;
-      color: #fff;
     }
 
-    .img-pick-text {
-      display: inline-block;
-      width: 49px;
-      height: 20px;
-      background-image: url(https://image.dalbitlive.com/event/attend/200625/text_pick@2x.png);
+    button.btn-back {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      width: 22px;
+      height: 22px;
+    }
+
+    button.btn-check {
+      width: 60%;
+      height: 21%;
+      position: absolute;
+      bottom: 8%;
+      left: 20%;
+      background-image: url(https://image.dalbitlive.com/event/attend/200804/btn_check@2x.png);
       background-size: 100%;
-      background-repeat: no-repeat;
-      vertical-align: top;
-    }
 
-    .img-pick-hand {
-      display: inline-block;
-      width: 50px;
-      height: 30px;
-      background-image: url(https://image.dalbitlive.com/event/attend/200625/point2.gif);
-      background-size: 100%;
-      background-repeat: no-repeat;
-    }
-  }
-
-  .img-title {
-    position: absolute;
-    top: 30px;
-    left: calc(50% - 145px);
-    width: 290px;
-    height: 98px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200622/img_title@2x.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-  }
-
-  button.btn-back {
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  button.btn-check {
-    width: 220px;
-    height: 41px;
-    position: absolute;
-    bottom: 23px;
-    left: calc(50% - 110px);
-    background-image: url(https://image.dalbitlive.com/event/attend/200622/btn_daily_check_on@2x.png);
-    background-size: 100%;
-
-    &.complete {
-      background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_daily_check_off@2x.png);
-    }
-  }
-}
-.event-content-wrap {
-  position: relative;
-  padding: 10px;
-  background-color: #ff7572;
-
-  .top-title {
-    position: absolute;
-    top: -5px;
-    left: calc(50% - 125px);
-    width: 250px;
-    height: 35px;
-    background-image: url(https://image.dalbitlive.com/event/attend/200617/sub_title@2x.png);
-    background-size: 100%;
-  }
-}
-
-.event-content {
-  padding: 20px 16px;
-  background-color: #fff;
-
-  .event-section {
-    margin-top: 20px;
-    text-align: center;
-
-    .title-label {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: #fff;
-      background-color: #dc1adb;
-    }
-
-    .title-top {
-      font-size: 24px;
-
-      span {
-        display: block;
-        margin-top: 10px;
-        font-size: 18px;
+      &.complete {
+        background-image: url(https://image.dalbitlive.com/event/attend/200804/btn_check_disabeld@2x.png);
       }
     }
+  }
 
-    .gifticon-benefit {
+  .gifticon-win-wrap {
+    padding: 8px 16px;
+    background-color: #ff7572;
+
+    .gifticon-win-box {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      margin-top: 20px;
+      align-items: center;
+      border: 6px solid #5640bd;
+      background: #5640bd;
+      letter-spacing: -0.5px;
+      font-size: 14px;
 
-      .gifticon-benefit-item {
-        width: 47%;
-        background-color: #ece8ff;
+      label {
+        width: 28%;
+        margin-right: 2%;
+        color: #fff;
+        text-align: center;
       }
 
-      .gifticon-benefit-input {
-        margin-top: 20px;
-        background-color: #d5f1f2;
+      .gifticon-win-list {
+        display: flex;
+        align-items: center;
+        width: 70%;
+        height: 48px;
+        padding: 0 9px;
+        box-sizing: border-box;
+        background-color: #fff;
+
+        .time {
+          width: 38%;
+          max-width: 92px;
+          margin-right: 2%;
+          color: #757575;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
+
+        .nick-name {
+          width: 60%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
       }
     }
+  }
 
-    .stamp-box {
-      margin-top: 30px;
+  .event-content-wrap {
+    position: relative;
+    padding: 10px 16px;
+    background-color: #ff7572;
 
-      .stamp-box-list {
+    .top-title {
+      position: absolute;
+      top: -5px;
+      left: calc(50% - 125px);
+      width: 250px;
+      height: 35px;
+      background-image: url(https://image.dalbitlive.com/event/attend/200617/sub_title@2x.png);
+      background-size: 100%;
+    }
+  }
+
+  .event-content {
+    padding: 20px 16px 0 16px;
+    background-color: #fff;
+
+    .event-section {
+      position: relative;
+      margin-bottom: 20px;
+      text-align: center;
+
+      .title-label {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #fff;
+
+        img {
+          width: 50%;
+        }
+      }
+
+      .title-top {
+        img {
+          width: 100%;
+        }
+      }
+
+      .gifticon-benefit {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
 
-        .stamp-box-item {
-          width: 33.3333%;
-          margin-bottom: 7px;
-          padding: 0 4px;
-          font-size: 11px;
-          text-align: center;
-          color: #919191;
+        .gifticon-benefit-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 10px 0 20px 0;
+          width: 48.5%;
+          background-color: #ece8ff;
+          border-radius: 20px;
 
-          .stamp-area {
-            width: 50px;
-            height: 50px;
-            margin: 0 auto;
-            background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_default@2x.png);
-            background-size: 100%;
-            border-radius: 50%;
-            font-size: 12px;
-            text-align: center;
-            color: #bfbfbf;
+          .gifti-img-coffee {
+            img {
+              width: 50%;
+            }
+          }
+
+          .gifti-img-chicken {
+            img {
+              width: 90%;
+            }
+          }
+
+          .description {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 700;
 
             span {
               display: block;
-              padding-top: 27px;
-              letter-spacing: -1px;
+              margin-top: 5px;
+              color: #757575;
+              font-size: 12px;
+              font-weight: 500;
             }
           }
 
-          &.success {
-            color: #3dbbfa;
-            font-weight: 600;
+          .luna-date {
+            width: 50%;
+            margin: 10px auto 0 auto;
+            padding: 5px 0;
+            border-radius: 8px;
+            border: 1px solid #bdbdbd;
+            background-color: #fff;
+            color: #632beb;
+          }
+        }
 
-            .stamp-area {
-              background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_check@2x.png);
+        .gifticon-benefit-input {
+          width: 100%;
+          margin-top: 20px;
+          padding: 18px 12px;
+          background-color: #d5f1f2;
+          border-radius: 20px;
+          text-align: left;
 
-              span {
-                display: none;
-              }
+          .title {
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #067878;
+          }
+
+          .input-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+
+            input {
+              width: 84%;
+              height: 36px;
+              border-radius: 8px;
+              padding: 0 8px;
+            }
+
+            button {
+              width: 15%;
+              height: 36px;
+              border-radius: 8px;
+              background-color: #00baba;
+              color: #fff;
             }
           }
 
-          &.fail {
-            color: #c6c6c6;
-            text-decoration: line-through;
+          .note {
+            margin-top: 10px;
+            color: #739797;
+            font-size: 12px;
+          }
+        }
+      }
 
-            .stamp-area {
-              background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_uncheck@2x.png);
+      .stamp-box {
+        margin-top: 30px;
 
-              span {
-                display: none;
+        .stamp-box-list {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: stretch;
+
+          .stamp-box-item {
+            position: relative;
+            width: 30%;
+
+            .stamp-box-item-wrap {
+              overflow: hidden;
+
+              margin-bottom: 30px;
+              text-align: center;
+              color: #919191;
+              border-radius: 20px;
+              box-shadow: 0px 4px 0 0 rgba(0, 0, 0, 0.1);
+              border: solid 1px #bdbdbd;
+              padding-bottom: 6px;
+
+              &::after {
+                content: '';
+                position: absolute;
+                top: 40%;
+                right: -16%;
+                width: 13%;
+                height: 13%;
+                background-image: url(https://image.dalbitlive.com/event/attend/200804/ic_double_arrow_right@2x.png);
+                background-size: cover;
+              }
+
+              .stamp-date {
+                background-color: #bdbdbd;
+                font-size: 14px;
+                padding: 7px 0;
+                color: #fff;
+              }
+
+              .stamp-area {
+                width: 80%;
+                margin: 0 auto;
+                text-align: center;
+                color: #bfbfbf;
+
+                img {
+                  width: 100%;
+                }
+
+                .today-icon {
+                  display: none;
+                }
+              }
+
+              .stamp-exp {
+                margin-top: 10px;
+                padding: 0 5px;
+                font-size: 13px;
+                letter-spacing: -1px;
               }
             }
+
+            &.today {
+              .stamp-box-item-wrap {
+                border: 1px solid #2cbbbb;
+                box-shadow: 0px 4px 0 0 rgba(44, 187, 187, 0.2);
+                color: #000;
+
+                .stamp-date {
+                  background-color: #2cbbbb;
+                }
+
+                .stamp-area {
+                  position: relative;
+                  .today-icon {
+                    position: absolute;
+                    top: 15%;
+                    right: 6%;
+                    display: inline-block;
+                    width: 42%;
+                  }
+                }
+              }
+            }
+
+            &.success {
+              .stamp-box-item-wrap {
+                border: 1px solid #632beb;
+                box-shadow: 0px 4px 0 0 rgba(99, 43, 235, 0.2);
+                color: #632beb;
+
+                .stamp-date {
+                  background-color: #8556f6;
+                }
+              }
+            }
+
+            &.fail {
+              .stamp-box-item-wrap {
+                border: 1px solid #c0badd;
+                color: #c6c6c6;
+
+                .stamp-date {
+                  background-color: #c0badd;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .point-box {
+        width: 65%;
+        margin-bottom: 30px;
+        order: 8;
+
+        &.basic {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 10px;
+          border-radius: 20px;
+          background-color: #5640bd;
+          box-shadow: 0px 4px 0 0 rgba(99, 43, 235, 0.2);
+
+          .title-label {
+            position: absolute;
+            top: -5%;
+            left: 35%;
+            width: 30%;
+
+            img {
+              width: 100%;
+            }
+          }
+          .title {
+            padding-top: 10%;
+            img {
+              width: 100%;
+            }
+          }
+
+          .detail-info {
+            padding: 8px;
+            border-radius: 8px;
+            background-color: #fff;
+            line-height: 22px;
+            font-size: 14px;
+            letter-spacing: -0.5px;
+
+            label {
+              span {
+                font-weight: 700;
+              }
+
+              &.attend {
+                display: block;
+              }
+            }
+          }
+        }
+
+        &.more {
+          position: relative;
+          border-radius: 20px;
+          background: #ffdf3e url(https://image.dalbitlive.com/event/attend/200804/bonus_card_on@2x.png) no-repeat;
+          background-size: 100%;
+          background-position: center;
+          box-shadow: 0px 4px 0 0 #ffba00;
+          cursor: pointer;
+        }
+
+        &.complete {
+          position: relative;
+          border-radius: 20px;
+          background: #ffdf3e url(https://image.dalbitlive.com/event/attend/200804/bonus_card_end@2x.png) no-repeat;
+          background-size: 100%;
+          background-position: center;
+          box-shadow: 0px 4px 0 0 #ffba00;
+
+          .detail-info {
+            position: absolute;
+            bottom: 15%;
+            left: 5%;
+            width: 58%;
+            padding: 8px;
+            border-radius: 8px;
+            background-color: #fff;
+            line-height: 22px;
+            font-size: 14px;
+            letter-spacing: -0.5px;
+
+            label {
+              display: block;
+
+              span {
+                font-weight: 700;
+              }
+
+              &.attend {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+
+      .bonus-box {
+        width: 60%;
+        margin: 20px 8px;
+        height: 86px;
+        border-radius: 10px;
+        border: solid 3px #c3b8e0;
+        background-color: #f5f5f5;
+        background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_grey@2x.png);
+        background-size: 58px;
+        background-position: 92% bottom;
+        background-repeat: no-repeat;
+
+        .title {
+          padding-top: 3px;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.33;
+          letter-spacing: -0.3px;
+          text-align: center;
+          color: #ad99e1;
+        }
+
+        button.btn-more {
+          display: none;
+          width: 96px;
+          height: 40px;
+          margin: 10px 0 0 5%;
+          background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus@2x.png);
+          background-size: 100%;
+        }
+
+        &.more {
+          border-color: #8556f6;
+          background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_color@2x.png);
+
+          .title {
+            color: #713eea;
+          }
+
+          button.btn-more {
+            display: block;
+          }
+        }
+
+        &.complete {
+          border-color: #8556f6;
+          background-image: url(https://image.dalbitlive.com/event/attend/200617/img_heartbeat@2x.png);
+
+          .title {
+            color: #713eea;
+          }
+
+          button.btn-more {
+            display: block;
+            background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus_off@2x.png);
           }
         }
       }
     }
 
-    .bonus-box {
-      margin: 20px 8px;
-      height: 86px;
-      border-radius: 10px;
-      border: solid 3px #c3b8e0;
-      background-color: #f5f5f5;
-      background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_grey@2x.png);
-      background-size: 58px;
-      background-position: 92% bottom;
-      background-repeat: no-repeat;
+    // .content-left-wrap {
+    //   width: 140px;
+    //   padding: 32px 8px 26px 8px;
+    //   background-color: #ebf6d9;
 
-      .title {
-        padding-top: 3px;
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 1.33;
-        letter-spacing: -0.3px;
-        text-align: center;
-        color: #ad99e1;
-      }
+    //   .detail-text-title {
+    //     margin-bottom: 10px;
+    //     width: 71px;
+    //     height: 24px;
+    //     background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_1@2x.png);
+    //     background-size: 100%;
 
-      button.btn-more {
-        display: none;
-        width: 96px;
-        height: 40px;
-        margin: 10px 0 0 5%;
-        background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus@2x.png);
-        background-size: 100%;
-      }
+    //     &.bonus {
+    //       width: 63px;
+    //       height: 23px;
+    //       background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg3@2x.png);
+    //     }
+    //   }
 
-      &.more {
-        border-color: #8556f6;
-        background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_color@2x.png);
+    //   .detail-text-content {
+    //     width: 114px;
+    //     height: 59px;
+    //     background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_2@2x.png);
+    //     background-size: 100%;
 
-        .title {
-          color: #713eea;
-        }
+    //     &.bonus {
+    //       width: 111px;
+    //       height: 59px;
+    //       background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_4@2x.png);
+    //     }
+    //   }
 
-        button.btn-more {
-          display: block;
-        }
-      }
+    //   .detail-info-box {
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     align-items: center;
+    //     margin: 16px 0 24px;
+    //     padding: 7px 5px;
+    //     background-color: #fff;
+    //     border-radius: 8px;
+    //     font-size: 12px;
 
-      &.complete {
-        border-color: #8556f6;
-        background-image: url(https://image.dalbitlive.com/event/attend/200617/img_heartbeat@2x.png);
+    //     .label {
+    //       width: 60%;
+    //       margin: 2px 0;
 
-        .title {
-          color: #713eea;
-        }
+    //       img {
+    //         display: inline-block;
+    //         margin-right: 2px;
+    //         vertical-align: middle;
+    //       }
 
-        button.btn-more {
-          display: block;
-          background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus_off@2x.png);
-        }
-      }
+    //       &:nth-of-type(1) {
+    //         color: #3dbbfa;
+    //       }
+
+    //       &:nth-of-type(2) {
+    //         color: #fd6a7e;
+    //       }
+
+    //       &:nth-of-type(3) {
+    //         color: #ff6500;
+    //       }
+    //     }
+
+    //     .value {
+    //       width: 40%;
+    //       margin: 2px 0;
+    //       text-align: right;
+    //       font-size: 11px;
+    //       letter-spacing: -1px;
+
+    //       span {
+    //         font-size: 15px;
+    //         font-weight: 600;
+    //       }
+    //     }
+    //   }
+    // }
+
+    // .content-right-wrap {
+    //   width: calc(100% - 140px);
+    //   background-color: #fff;
+
+    //   .stamp-box {
+    //     padding-top: 27px;
+
+    //     .stamp-box-list {
+    //       display: flex;
+    //       flex-wrap: wrap;
+    //       align-items: center;
+
+    //       .stamp-box-item {
+    //         width: 33.3333%;
+    //         margin-bottom: 7px;
+    //         padding: 0 4px;
+    //         font-size: 11px;
+    //         text-align: center;
+    //         color: #919191;
+
+    //         .stamp-area {
+    //           width: 50px;
+    //           height: 50px;
+    //           margin: 0 auto;
+    //           background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_default@2x.png);
+    //           background-size: 100%;
+    //           border-radius: 50%;
+    //           font-size: 12px;
+    //           text-align: center;
+    //           color: #bfbfbf;
+
+    //           span {
+    //             display: block;
+    //             padding-top: 27px;
+    //             letter-spacing: -1px;
+    //           }
+    //         }
+
+    //         &.success {
+    //           color: #3dbbfa;
+    //           font-weight: 600;
+
+    //           .stamp-area {
+    //             background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_check@2x.png);
+
+    //             span {
+    //               display: none;
+    //             }
+    //           }
+    //         }
+
+    //         &.fail {
+    //           color: #c6c6c6;
+    //           text-decoration: line-through;
+
+    //           .stamp-area {
+    //             background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_uncheck@2x.png);
+
+    //             span {
+    //               display: none;
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+
+    //   .bonus-box {
+    //     margin: 20px 8px;
+    //     height: 86px;
+    //     border-radius: 10px;
+    //     border: solid 3px #c3b8e0;
+    //     background-color: #f5f5f5;
+    //     background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_grey@2x.png);
+    //     background-size: 58px;
+    //     background-position: 92% bottom;
+    //     background-repeat: no-repeat;
+
+    //     .title {
+    //       padding-top: 3px;
+    //       font-size: 12px;
+    //       font-weight: 600;
+    //       line-height: 1.33;
+    //       letter-spacing: -0.3px;
+    //       text-align: center;
+    //       color: #ad99e1;
+    //     }
+
+    //     button.btn-more {
+    //       display: none;
+    //       width: 96px;
+    //       height: 40px;
+    //       margin: 10px 0 0 5%;
+    //       background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus@2x.png);
+    //       background-size: 100%;
+    //     }
+
+    //     &.more {
+    //       border-color: #8556f6;
+    //       background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_color@2x.png);
+
+    //       .title {
+    //         color: #713eea;
+    //       }
+
+    //       button.btn-more {
+    //         display: block;
+    //       }
+    //     }
+
+    //     &.complete {
+    //       border-color: #8556f6;
+    //       background-image: url(https://image.dalbitlive.com/event/attend/200617/img_heartbeat@2x.png);
+
+    //       .title {
+    //         color: #713eea;
+    //       }
+
+    //       button.btn-more {
+    //         display: block;
+    //         background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus_off@2x.png);
+    //       }
+    //     }
+    //   }
+    // }
+  }
+
+  .event-notice {
+    padding: 20px 16px;
+    background-color: #ff7572;
+
+    .title {
+      padding-bottom: 10px;
+      color: #ffcbc9;
+      font-size: 16px;
+      font-weight: 600;
     }
-  }
 
-  // .content-left-wrap {
-  //   width: 140px;
-  //   padding: 32px 8px 26px 8px;
-  //   background-color: #ebf6d9;
+    li {
+      position: relative;
+      padding: 4px 0 0 10px;
+      font-size: 13px;
+      line-height: 18px;
+      letter-spacing: -0.33px;
+      text-align: left;
+      color: #fff;
 
-  //   .detail-text-title {
-  //     margin-bottom: 10px;
-  //     width: 71px;
-  //     height: 24px;
-  //     background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_1@2x.png);
-  //     background-size: 100%;
-
-  //     &.bonus {
-  //       width: 63px;
-  //       height: 23px;
-  //       background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg3@2x.png);
-  //     }
-  //   }
-
-  //   .detail-text-content {
-  //     width: 114px;
-  //     height: 59px;
-  //     background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_2@2x.png);
-  //     background-size: 100%;
-
-  //     &.bonus {
-  //       width: 111px;
-  //       height: 59px;
-  //       background-image: url(https://image.dalbitlive.com/event/attend/200617/textimg_4@2x.png);
-  //     }
-  //   }
-
-  //   .detail-info-box {
-  //     display: flex;
-  //     flex-wrap: wrap;
-  //     align-items: center;
-  //     margin: 16px 0 24px;
-  //     padding: 7px 5px;
-  //     background-color: #fff;
-  //     border-radius: 8px;
-  //     font-size: 12px;
-
-  //     .label {
-  //       width: 60%;
-  //       margin: 2px 0;
-
-  //       img {
-  //         display: inline-block;
-  //         margin-right: 2px;
-  //         vertical-align: middle;
-  //       }
-
-  //       &:nth-of-type(1) {
-  //         color: #3dbbfa;
-  //       }
-
-  //       &:nth-of-type(2) {
-  //         color: #fd6a7e;
-  //       }
-
-  //       &:nth-of-type(3) {
-  //         color: #ff6500;
-  //       }
-  //     }
-
-  //     .value {
-  //       width: 40%;
-  //       margin: 2px 0;
-  //       text-align: right;
-  //       font-size: 11px;
-  //       letter-spacing: -1px;
-
-  //       span {
-  //         font-size: 15px;
-  //         font-weight: 600;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .content-right-wrap {
-  //   width: calc(100% - 140px);
-  //   background-color: #fff;
-
-  //   .stamp-box {
-  //     padding-top: 27px;
-
-  //     .stamp-box-list {
-  //       display: flex;
-  //       flex-wrap: wrap;
-  //       align-items: center;
-
-  //       .stamp-box-item {
-  //         width: 33.3333%;
-  //         margin-bottom: 7px;
-  //         padding: 0 4px;
-  //         font-size: 11px;
-  //         text-align: center;
-  //         color: #919191;
-
-  //         .stamp-area {
-  //           width: 50px;
-  //           height: 50px;
-  //           margin: 0 auto;
-  //           background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_default@2x.png);
-  //           background-size: 100%;
-  //           border-radius: 50%;
-  //           font-size: 12px;
-  //           text-align: center;
-  //           color: #bfbfbf;
-
-  //           span {
-  //             display: block;
-  //             padding-top: 27px;
-  //             letter-spacing: -1px;
-  //           }
-  //         }
-
-  //         &.success {
-  //           color: #3dbbfa;
-  //           font-weight: 600;
-
-  //           .stamp-area {
-  //             background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_check@2x.png);
-
-  //             span {
-  //               display: none;
-  //             }
-  //           }
-  //         }
-
-  //         &.fail {
-  //           color: #c6c6c6;
-  //           text-decoration: line-through;
-
-  //           .stamp-area {
-  //             background-image: url(https://image.dalbitlive.com/event/attend/200617/img_stamp_uncheck@2x.png);
-
-  //             span {
-  //               display: none;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   .bonus-box {
-  //     margin: 20px 8px;
-  //     height: 86px;
-  //     border-radius: 10px;
-  //     border: solid 3px #c3b8e0;
-  //     background-color: #f5f5f5;
-  //     background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_grey@2x.png);
-  //     background-size: 58px;
-  //     background-position: 92% bottom;
-  //     background-repeat: no-repeat;
-
-  //     .title {
-  //       padding-top: 3px;
-  //       font-size: 12px;
-  //       font-weight: 600;
-  //       line-height: 1.33;
-  //       letter-spacing: -0.3px;
-  //       text-align: center;
-  //       color: #ad99e1;
-  //     }
-
-  //     button.btn-more {
-  //       display: none;
-  //       width: 96px;
-  //       height: 40px;
-  //       margin: 10px 0 0 5%;
-  //       background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus@2x.png);
-  //       background-size: 100%;
-  //     }
-
-  //     &.more {
-  //       border-color: #8556f6;
-  //       background-image: url(https://image.dalbitlive.com/event/attend/200617/img_rabbit_color@2x.png);
-
-  //       .title {
-  //         color: #713eea;
-  //       }
-
-  //       button.btn-more {
-  //         display: block;
-  //       }
-  //     }
-
-  //     &.complete {
-  //       border-color: #8556f6;
-  //       background-image: url(https://image.dalbitlive.com/event/attend/200617/img_heartbeat@2x.png);
-
-  //       .title {
-  //         color: #713eea;
-  //       }
-
-  //       button.btn-more {
-  //         display: block;
-  //         background-image: url(https://image.dalbitlive.com/event/attend/200617/btn_bonus_off@2x.png);
-  //       }
-  //     }
-  //   }
-  // }
-}
-
-.event-notice {
-  padding: 20px 16px;
-  background-color: #ff7572;
-
-  .title {
-    padding-bottom: 10px;
-    color: #ffcbc9;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  li {
-    position: relative;
-    padding: 4px 0 0 10px;
-    font-size: 13px;
-    line-height: 18px;
-    letter-spacing: -0.33px;
-    text-align: left;
-    color: #fff;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 11px;
-      left: 0;
-      width: 3px;
-      height: 3px;
-      background-color: #fff;
-      border-radius: 50%;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 11px;
+        left: 0;
+        width: 3px;
+        height: 3px;
+        background-color: #fff;
+        border-radius: 50%;
+      }
     }
   }
 }
