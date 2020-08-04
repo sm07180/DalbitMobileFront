@@ -15,9 +15,7 @@ const Ranking = React.lazy(() => import('pages/ranking'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mypage/setting2.5.js'))
-
 const Pay = React.lazy(() => import('pages/new_pay'))
-
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 
@@ -26,6 +24,8 @@ const Setting = React.lazy(() => import('pages/setting'))
 const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
+// const EventRising = React.lazy(() => import('pages/event_rising'))
+const PcOpen = React.lazy(() => import('pages/pc_open'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
@@ -35,14 +35,12 @@ const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
-
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 //Redirect
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
-
 const TempPage = React.lazy(() => import('pages/temp'))
 
 const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
@@ -93,8 +91,10 @@ export default () => {
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
         <Route exact path="/attend_event" component={AttendEvent} />
+        {/* <Route exact path="/event_rising" component={EventRising} /> */}
         {/* <Route exact path="/service" component={Service} /> */}
         <Route exact path="/error" component={ErrorPage} />
+        <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
       </Switch>
