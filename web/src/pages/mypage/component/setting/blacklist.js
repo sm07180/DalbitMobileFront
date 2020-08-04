@@ -149,6 +149,7 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
+      currentPage = 1
       getblackList()
     } else {
       context.action.alert({
