@@ -436,7 +436,7 @@ const ProfileWrap = styled.div`
     padding: 0px 10px 0px 10px;
     margin: 0 auto;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: bold;
     letter-spacing: -0.35px;
     z-index: 4;
     border-radius: 14px;
@@ -462,8 +462,7 @@ z-index:3;
     right: 12px;
     width: 32px;
     height: 32px;
-    top: -40px;
-
+    top: -59px;
     z-index: 16;
     background: url(${CloseBtnIcon});
   }
@@ -533,7 +532,7 @@ z-index:3;
             float:right;
             margin-left:0px;
             line-height:24px;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: normal;
                 font-stretch: normal;
                 font-style: normal;
@@ -553,7 +552,7 @@ z-index:3;
         }
         .cntTitle {
             
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   font-stretch: normal;
   font-style: normal;
@@ -656,7 +655,8 @@ const ProfileImg = styled.div`
   .InfoWrap {
     display: flex;
     flex-direction: column;
-    margin: -2px auto 0 auto;
+    margin: auto;
+
     position: relative;
     width: 280px;
     font-size: 12px;
@@ -824,20 +824,22 @@ const LevelWrap = styled.div`
 const LevelStatusBarWrap = styled.div`
   position: relative;
   width: 188px;
-  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   background-color: #eee;
+
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 17px;
+    height: 14px;
   }
 `
 const LevelStatus = styled.div`
   position: absolute;
-  top: 3px;
+  top: 0px;
   left: -1px;
   height: 14px;
   max-width: calc(100% + 2px);
 
-  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   border-bottom-left-radius: 10px;
   background-color: #000;
   text-align: right;
@@ -863,27 +865,26 @@ const NameWrap = styled.div`
     > a {
       display: flex;
       align-items: center;
-      justify-content: center;
       width: 72px;
       height: 20px;
       border-radius: 14px;
       border: solid 1px #eeeeee;
       background-color: #ffffff;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: bold;
       color: #757575;
+      text-indent: 7px;
       :after {
         content: '';
         width: 20px;
         height: 12px;
-        background: url(${QuestionIcon}) no-repeat center center / cover;
-        margin-left: 7px;
+        background: url(${QuestionIcon}) right no-repeat;
+        margin-left: 16px;
       }
     }
     > button {
       display: flex;
       align-items: center;
-      justify-content: center;
       margin-right: 2px;
       width: 72px;
       height: 20px;
@@ -891,14 +892,15 @@ const NameWrap = styled.div`
       border: solid 1px #eeeeee;
       background-color: #ffffff;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: bold;
       color: #757575;
+      text-indent: 7px;
       :after {
         content: '';
         height: 12px;
         width: 20px;
         background: url(${QuestionIcon}) no-repeat center center / cover;
-        margin-left: 7px;
+        margin-left: 4px;
       }
     }
   }
@@ -1210,7 +1212,8 @@ const Slide = styled.a`
 `
 //프로필메세지
 const ProfileMsg = styled.pre`
-  width: 70%;
+  padding: 0px 5px;
+  box-sizing: border-box;
   margin: 0 auto;
   margin-top: 8px;
   transform: skew(-0.03deg);
