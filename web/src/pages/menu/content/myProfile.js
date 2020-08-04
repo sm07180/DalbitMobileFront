@@ -244,13 +244,13 @@ const myProfile = (props) => {
   return (
     <>
       <ProfileWrap>
-        <div className="adminBtn">
-          {token && token.isLogin && showAdmin && (
+        {token && token.isLogin && showAdmin && (
+          <div className="adminBtn">
             <a href="/admin/image">
               <img src={AdminIcon} />
             </a>
-          )}
-        </div>
+          </div>
+        )}
 
         <MyProfile webview={webview}>
           <button className="closeBtn" onClick={goBack}></button>
