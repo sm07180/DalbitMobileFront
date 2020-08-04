@@ -18,78 +18,69 @@ export default (props) => {
       el: '.swiper-pagination',
       type: 'fraction'
     }
-    // navigation: {
-    //   nextEl: '.swiper-button-next',
-    //   prevEl: '.swiper-button-prev'
-    // }
   }
 
   return (
-    <>
-      <TopSlider className="topSlide">
-        <Swiper {...swiperParams} className="topSlide__box">
-          {list instanceof Array &&
-            list.map((bannerData, index) => {
-              const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
+    <TopSlider>
+      <Swiper {...swiperParams} className="topSlide">
+        {list instanceof Array &&
+          list.map((bannerData, index) => {
+            const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
 
-              return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    if (roomNo && roomNo !== undefined) {
-                      if (nickNm === 'banner') {
-                        if (roomType === 'link') {
-                          if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
-                            window.location.href = `${roomNo}`
-                          } else {
-                            history.push(`${roomNo}`)
-                          }
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  if (roomNo && roomNo !== undefined) {
+                    if (nickNm === 'banner') {
+                      if (roomType === 'link') {
+                        if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
+                          window.location.href = `${roomNo}`
                         } else {
-                          window.open(`${roomNo}`)
+                          history.push(`${roomNo}`)
                         }
                       } else {
-                        history.push(`/broadcast/${roomNo}`)
+                        window.open(`${roomNo}`)
                       }
+                    } else {
+                      history.push(`/broadcast/${roomNo}`)
                     }
+                  }
+                }}>
+                <div
+                  className={`topSlide__bg ${nickNm !== 'banner' && `broadcast`}`}
+                  style={{
+                    backgroundImage: `url("${bannerUrl}")`
                   }}>
-                  <div
-                    className={`topSlide__bg ${nickNm !== 'banner' && `broadcast`}`}
-                    style={{
-                      backgroundImage: `url("${bannerUrl}")`
-                    }}>
-                    <div className="topSlide__iconWrap">
-                      {isAdmin ? <em className="adminIcon">운영자</em> : ''}
-                      {isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
-                      {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
-                      {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
-                    </div>
-
-                    {nickNm !== 'banner' && (
-                      <div className="topSlide__infoWrap">
-                        <img className="thumb" src={profImg.url} />
-                        <div className="text">
-                          <span className="title">{title}</span>
-                          <span className="nickname">{nickNm}</span>
-                        </div>
-                      </div>
-                    )}
+                  <div className="topSlide__iconWrap">
+                    {isAdmin ? <em className="adminIcon">운영자</em> : ''}
+                    {isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
+                    {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
+                    {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
+
+                  {nickNm !== 'banner' && (
+                    <div className="topSlide__infoWrap">
+                      <img className="thumb" src={profImg.url} />
+                      <div className="text">
+                        <span className="title">{title}</span>
+                        <span className="nickname">{nickNm}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )
-            })}
-        </Swiper>
-      </TopSlider>
-    </>
+              </div>
+            )
+          })}
+      </Swiper>
+    </TopSlider>
   )
 }
 
 const TopSlider = styled.div`
-  position: relative;
-  height: 220px;
   .topSlide {
     width: 100%;
     height: 220px;
-    border-radius: 32px;
     background: #eee;
     overflow: hidden;
     position: relative;
