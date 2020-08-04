@@ -46,9 +46,9 @@ const broadInfo = {
 
 const listenInfo = {
   mic: [mic, '청취'],
-  moon: [moon, '달 선물'],
-  heart: [heart, '받은 별'],
-  clock: [clock, '게스트 참여 시간']
+  moon: [moon, '달 선물']
+  // heart: [heart, '받은 별'],
+  // clock: [clock, '게스트 참여 시간']
 }
 
 const selectBoxData = [
@@ -507,15 +507,11 @@ export default (props) => {
                               <span>선물준달</span>
                               <span>{numberFormat(value.giftDalCnt)}</span>
                             </div>
-                            <div className="onSelect2">
-                              <span>받은별</span>
-                              <span>{numberFormat(value.byeolCnt)}</span>
-                            </div>
                           </div>
-                          <div className="guestDate onSelect4">
+                          {/* <div className="guestDate onSelect4">
                             <span>게스트로 참여 여부</span>
                             <span>{value.isGuest === false ? '-' : value.isGuest}</span>
-                          </div>
+                          </div> */}
                         </MobileDetailTabListen>
                       )
                     })}

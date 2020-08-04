@@ -386,7 +386,7 @@ export default (props) => {
                 <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </span>
-                <span className="bar"></span>
+                <i className="bar"></i>
                 <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
                   팬
                 </span>
