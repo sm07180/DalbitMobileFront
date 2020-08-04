@@ -93,9 +93,7 @@ export default (props) => {
   }
 
   const showMoreList = () => {
-    console.log(1)
     if (moreState) {
-      console.log(2)
       setBlackList(blackList.concat(nextBlackList))
       getblackList('next')
     }
@@ -251,7 +249,6 @@ export default (props) => {
         </p>
         <ul className="list-item search">
           {blackList.map((item, index) => {
-            console.log('item', item)
             const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
