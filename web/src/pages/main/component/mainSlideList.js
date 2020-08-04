@@ -1,5 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+
+import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import LiveIcon from '../static/live_l@3x.png'
@@ -8,6 +10,7 @@ import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 export default (props) => {
+  const context = useContext(Context)
   const history = useHistory()
   const {list} = props
 
@@ -54,7 +57,7 @@ export default (props) => {
                     }
                   }
                   if (roomType === 'link') {
-                    const {roomNo} = data
+                    console.log('link')
                     context.action.updatenoticeIndexNum(roomNo)
                     if (roomNo !== '' && !roomNo.startsWith('http')) {
                       history.push(`${roomNo}`)
