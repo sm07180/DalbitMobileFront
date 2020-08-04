@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
-import qs from 'qs'
+import qs from 'query-string'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
