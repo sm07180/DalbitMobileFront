@@ -12,6 +12,7 @@ import {Hybrid} from 'context/hybrid'
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
+  const [bannerView, setBannerView] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
@@ -36,6 +37,14 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
+  const buttonToogle = () => {
+    if (bannerView === false) {
+      setBannerView(true)
+    } else {
+      setBannerView(false)
+    }
+  }
+
   const createSliderList = () => {
     if (!list) return null
     return list.map((banner, idx) => {
@@ -44,6 +53,37 @@ export default React.forwardRef((props, ref) => {
       return (
         <div className="banner" key={`banner-${idx}`}>
           <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
+        </div>
+      )
+    })
+  }
+
+  const basicSliderList = () => {
+    if (!list) return null
+    return list.map((banner, idx) => {
+      const {bannerUrl, linkUrl, title, linkType} = banner
+
+      return (
+        <div className="basicBanner" key={`banner-${idx}`}>
+          {idx === 0 ? (
+            <>
+              <button className="moreButton" onClick={() => buttonToogle()}></button>
+            </>
+          ) : (
+            ''
+          )}
+
+          <img
+            src={bannerUrl}
+            alt={title}
+            onClick={() => {
+              if (linkType === 'popup') {
+                window.open(`${linkUrl}`)
+              } else {
+                history.push(`${linkUrl}`)
+              }
+            }}
+          />
         </div>
       )
     })
@@ -85,13 +125,60 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
-  return <Banner ref={ref}>{list && <Swiper {...params}>{createSliderList()}</Swiper>}</Banner>
+  console.log(`111`, bannerView)
+
+  return (
+    <Banner ref={ref}>
+      <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
+        <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+        {list && <Swiper {...params}>{createSliderList()}</Swiper>}
+      </div>
+      <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
+    </Banner>
+  )
 })
 
 const Banner = styled.div`
-  overflow: hidden;
+  margin-bottom: 19px;
+
+  .slideWrap {
+    position: relative;
+
+    &.active {
+      display: none;
+    }
+  }
+  .bannerView {
+    display: none;
+    img {
+      width: 100%;
+    }
+    &.active {
+      display: block;
+    }
+  }
+
+  .moreButton {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 2;
+    background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g.svg') center no-repeat #fff;
+
+    &.active {
+      background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g_up.svg') center no-repeat #fff;
+    }
+  }
+
+  .basicBanner {
+    margin-bottom: 10px;
+    position: relative;
+  }
 
   .swiper-container {
+    height: auto;
     .banner {
       img {
         width: 100%;
@@ -99,6 +186,9 @@ const Banner = styled.div`
     }
     .swiper-pagination-bullet-active {
       background: #ec455f;
+    }
+    .swiper-pagination {
+      display: none;
     }
   }
 
