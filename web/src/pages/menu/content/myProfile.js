@@ -33,24 +33,28 @@ import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
+import AdminIcon from '../static/ic_home_admin.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   let history = useHistory()
   //context & webview
   const {webview} = props
+
   const context = useContext(Context)
-  const {mypageReport, close, closeFanCnt, closeStarCnt} = context
+  const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   // state
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
+
   const myProfileNo = context.profile.memNo
   //image zoom function
   const figureZoom = () => {
@@ -224,9 +228,30 @@ const myProfile = (props) => {
       </Slide>
     )
   })
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      if (adminFunc.data.isAdmin === true) {
+        setShowAdmin(true)
+      }
+    } else if (adminFunc.result === 'fail') {
+      setShowAdmin(false)
+    }
+  }
+  useEffect(() => {
+    fetchAdmin()
+  }, [])
   return (
     <>
       <ProfileWrap>
+        {token && token.isLogin && showAdmin && (
+          <div className="adminBtn">
+            <a href="/admin/image">
+              <img src={AdminIcon} />
+            </a>
+          </div>
+        )}
+
         <MyProfile webview={webview}>
           <button className="closeBtn" onClick={goBack}></button>
           <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
@@ -365,6 +390,11 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const ProfileWrap = styled.div`
+  .adminBtn {
+    position: absolute;
+    top: 0;
+    left: 0%;
+  }
   padding-top: 87px;
   position: relative;
   /* background-color: #424242; */

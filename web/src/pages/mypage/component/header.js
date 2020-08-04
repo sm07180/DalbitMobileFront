@@ -31,7 +31,7 @@ export default (props) => {
       if (props.click == undefined) {
         getUrlAndRedirect()
         //팬관리 스테이트 초기화
-        context.action.updateFanEdite(false)
+        // context.action.updateFanEdite(false)
       } else {
         props.click()
       }

@@ -36,7 +36,7 @@ import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 
-import refreshIcon from './static/refresh_w.svg'
+import refreshIcon from './static/refresh_g.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import WhiteBroadIcon from './static/white_broad.svg'
