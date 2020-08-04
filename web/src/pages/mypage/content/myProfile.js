@@ -3,7 +3,7 @@
  * @brief 마이페이지 상단에 보이는 내 프로필 component
  */
 import React, {useEffect, useContext, useState} from 'react'
-import qs from 'qs'
+import qs from 'query-string'
 
 //route
 import {OS_TYPE} from 'context/config.js'
@@ -250,9 +250,9 @@ const myProfile = (props) => {
           {/* <Header>
         <div className="category-text">프로필</div>
       </Header> */}
+          <button className="closeBtn" onClick={goBack}></button>
           {urlrStr !== context.token.memNo && (
             <>
-              <button className="closeBtn" onClick={goBack}></button>
               <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
             </>
           )}
@@ -537,14 +537,14 @@ z-index:3;
     position: absolute;
     width: 32px;
     height: 32px;
-    top: -40px;
+    top: -59px;
     right: 10px;
     z-index: 3;
     background: url(${CloseBtnIcon});
   }
   & .reportIcon {
     position: absolute;
-    top: -40px;
+    top: -59px;
     width: 32px;
     height: 32px;
     left: 10px;
@@ -612,7 +612,7 @@ z-index:3;
             float:right;
             margin-left:2px;
             line-height:24px;
-                            font-size: 12px;
+                            font-size: 16px;
                 font-weight: normal;
                 font-stretch: normal;
                 font-style: normal;
@@ -622,7 +622,7 @@ z-index:3;
         }
         .cntTitle {
             
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 800;
   font-stretch: normal;
   font-style: normal;
@@ -771,7 +771,7 @@ const NameWrap = styled.div`
   }
   strong {
     color: #000;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 24px;
     min-height: 24px;
     font-weight: 800;
@@ -940,6 +940,10 @@ const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  .rankTitle {
+    text-indent: 6px;
+  }
 
   > span {
     display: flex;

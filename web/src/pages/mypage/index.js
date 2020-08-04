@@ -119,8 +119,8 @@ export default (props) => {
     }
   }, [codes])
   // my MemNo vs Your check
-  if (urlrStr === token.memNo && webview) {
-    window.location.href = '/menu/profile'
+  if (urlrStr === token.memNo && webview && webview !== 'new') {
+    window.location.href = '/menu/profile?webview=' + webview
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null

@@ -9,31 +9,44 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 import Alert from './content/alert'
 import Confirm from './content/confirm'
+import Toast from './content/toast'
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
+  const {type, visible} = context.message
   /**
    * @brief 로그인,이벤트처리핸들러
    */
 
   //makeContents
-  const makeContents = visible => {
+  const makeContents = (visible) => {
     /**
      * @visible true
      */
     switch (visible) {
       case true:
-        if (context.message.type === 'alert') return <Alert />
-        if (context.message.type === 'confirm') return <Confirm />
+        if (type === 'alert')
+          return (
+            <Message>
+              <Alert />
+            </Message>
+          )
+        if (type === 'confirm')
+          return (
+            <Message>
+              <Confirm />
+            </Message>
+          )
+        if (type === 'toast') return <Toast />
         break
       case false:
         break
     }
   }
   //---------------------------------------------------------------------
-  return <React.Fragment>{context.message.visible && <Message>{makeContents(context.message.visible)}</Message>}</React.Fragment>
+  return <React.Fragment>{visible && makeContents(visible)}</React.Fragment>
 }
 //---------------------------------------------------------------------
 const Message = styled.section`

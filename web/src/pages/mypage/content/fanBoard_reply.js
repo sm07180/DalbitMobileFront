@@ -256,13 +256,17 @@ export default (props) => {
             return (
               <div key={index} className="reply_Wrap">
                 <div className="reply_list_header">
-                  <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                   {/* 상세기능영역 */}
                   {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                    <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                      {writerNo === context.token.memNo && <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>}
-                      <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                    </div>
+                    <>
+                      <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
+                      <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
+                        {writerNo === context.token.memNo && (
+                          <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
+                        )}
+                        <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
+                      </div>
+                    </>
                   )}
 
                   <div className="replyInfo">

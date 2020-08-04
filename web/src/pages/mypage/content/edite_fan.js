@@ -59,6 +59,30 @@ export default (props) => {
       ctx.action.updateFanEdite(true)
     }
   }
+
+  // useEffect(() => {
+  //   if (ctx.fanEdite) {
+  //     if (window.location.hash === '') {
+  //       window.history.pushState('edit', '', `${props.history.location.pathname}/#edit`)
+  //     }
+  //   } else if (!ctx.fanEdite) {
+  //     if (window.location.hash === '#edit') {
+  //       window.history.back()
+  //     }
+  //   }
+  // }, [ctx.fanEdite])
+  // console.log(ctx.fanEdite)
+  // const popStateEvent = (e) => {
+  //   ctx.action.updateFanEdite(false)
+  // }
+
+  // useEffect(() => {
+  //   window.addEventListener('popstate', popStateEvent)
+  //   return () => {
+  //     window.removeEventListener('popstate', popStateEvent)
+  //   }
+  // }, [])
+
   const AlertPop = () => {
     if (ctx.editeToggle === true) {
       ctx.action.confirm({
@@ -84,6 +108,7 @@ export default (props) => {
       })
     }
   }
+
   return (
     <EditeWrap>
       <Header>
