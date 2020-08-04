@@ -4,6 +4,9 @@ import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import LiveIcon from '../static/live_l@3x.png'
 
+import Room, {RoomJoin} from 'context/room'
+import {Hybrid, isHybrid} from 'context/hybrid'
+
 export default (props) => {
   const history = useHistory()
   const {list} = props
@@ -40,10 +43,27 @@ export default (props) => {
                           history.push(`${roomNo}`)
                         }
                       } else {
-                        window.open(`${roomNo}`)
+                        if (isHybrid()) {
+                          Hybrid('openUrl', `${roomNo}`)
+                        } else {
+                          window.open(`${roomNo}`)
+                        }
                       }
                     } else {
-                      history.push(`/broadcast/${roomNo}`)
+                      RoomJoin(roomNo)
+                    }
+                  }
+                  if (roomType === 'link') {
+                    const {roomNo} = data
+                    context.action.updatenoticeIndexNum(roomNo)
+                    if (roomNo !== '' && !roomNo.startsWith('http')) {
+                      history.push(`${roomNo}`)
+                    } else if (roomNo !== '' && roomNo.startsWith('http')) {
+                      window.location.href = `${roomNo}`
+                    }
+                  } else {
+                    if (isHybrid() && roomNo) {
+                      RoomJoin(roomNo)
                     }
                   }
                 }}>
