@@ -239,7 +239,14 @@ const myProfile = (props) => {
                 <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
               </div>
             )}
-            <div className="title">
+            <div
+              className={`title 
+            ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
+            ${expCalc < 20 ? `레벨 10 ~ 20` : ''}
+            ${expCalc < 30 ? `레벨 20 ~ 30` : ''}
+            ${expCalc < 40 ? `레벨 30 ~ 40 ` : ''}
+            ${expCalc < 50 ? `레벨 40 ~ 50` : ''}                                                
+            `}>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
             <div className="InfoWrap">
@@ -747,16 +754,18 @@ const LevelStatusBarWrap = styled.div`
   border-radius: 10px;
   background-color: #eee;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 14px;
+    height: 17px;
   }
 `
 const LevelStatus = styled.div`
   position: absolute;
-  top: -1px;
+  top: 3px;
   left: -1px;
   height: 14px;
   max-width: calc(100% + 2px);
-  border-radius: 10px;
+
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   background-color: #000;
   text-align: right;
   color: #fff;
