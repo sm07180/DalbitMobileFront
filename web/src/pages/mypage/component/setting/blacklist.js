@@ -342,6 +342,10 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     getblackList()
+
+    return () => {
+      currentPage = 1
+    }
   }, [])
 
   const typeActive = (value) => {
@@ -363,9 +367,10 @@ export default (props) => {
     }
   }
   const tabChangeFunction = () => {
+    currentPage = 1
     getblackList()
     setblackValue('')
-    currentPage = 1
+
     if (tabState === 0) {
       setTabState(1)
     } else {
