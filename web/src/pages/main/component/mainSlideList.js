@@ -7,14 +7,13 @@ import LiveIcon from '../static/live_l@3x.png'
 export default (props) => {
   const history = useHistory()
   const {list} = props
-  console.log(list)
 
   const swiperParams = {
     loop: true,
-    // autoplay: {
-    //   delay: 2000,
-    //   disableOnInteraction: false
-    // },
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false
+    },
     pagination: {
       el: '.swiper-pagination',
       type: 'fraction'
