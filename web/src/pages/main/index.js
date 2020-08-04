@@ -575,11 +575,15 @@ const Content = styled.div`
   .live-list-category {
     position: relative;
     display: flex;
-    height: 36px;
+
     flex-direction: row;
     align-items: center;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+
+    .swiper-wrapper {
+      height: 40px;
+    }
 
     &.fixed {
       position: fixed;
@@ -598,8 +602,8 @@ const Content = styled.div`
 
         .list {
           width: auto;
-          height: 36px;
-          line-height: 34px;
+          height: 40px;
+          line-height: 40px;
           font-size: 14px;
           letter-spacing: -0.35px;
           margin: 0 8px;
@@ -691,7 +695,7 @@ const Content = styled.div`
         margin-left: 4px;
         margin-right: 5px;
         color: #424242;
-        font-size: 12px;
+        font-size: 14px;
         letter-spacing: -0.24px;
       }
 
