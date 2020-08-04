@@ -31,8 +31,6 @@ export default (props) => {
           {list instanceof Array &&
             list.map((bannerData, index) => {
               const {bannerUrl, memNo, isAdmin, isSpecial, nickNm, roomNo, roomType} = bannerData
-              console.log(bannerUrl, memNo, isAdmin, isSpecial, nickNm, roomNo, roomType)
-              index++
 
               return (
                 <div
@@ -63,7 +61,7 @@ export default (props) => {
                       {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                       {isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
                       {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
-                      {nickNm !== 'banner' ? <em className="liveIcon">live</em> : ''}
+                      {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                     </div>
                   </div>
                 </div>
@@ -142,29 +140,21 @@ const TopSlider = styled.div`
     }
 
     &__iconWrap {
-      position: absolute;
-      left: 16px;
-      top: 16px;
-      display: flex;
       em {
+        position: absolute;
+        left: 16px;
+        top: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 52px;
         height: 18px;
         margin-right: 4px;
-        line-height: 18px;
+        color: #fff;
         font-style: normal;
         font-size: 11px;
+        line-height: 18px;
         border-radius: 20px;
-        color: #fff;
-      }
-      .liveIcon {
-        width: 42px;
-        height: 42px;
-        font-size: 0;
-        background: url(${LiveIcon}) no-repeat 0 0;
-        background-size: contain;
       }
       .eventIcon {
         background: #febd56;
@@ -176,6 +166,20 @@ const TopSlider = styled.div`
 
       .adminIcon {
         background: #3386f2;
+      }
+
+      span {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        &.liveIcon {
+          width: 42px;
+          height: 42px;
+          margin: 0;
+          font-size: 0;
+          background: url(${LiveIcon}) no-repeat 0 0;
+          background-size: contain;
+        }
       }
     }
   }
