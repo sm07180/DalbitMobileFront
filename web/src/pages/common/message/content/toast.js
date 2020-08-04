@@ -17,7 +17,6 @@ export default (props) => {
   const {msg} = context.message
 
   useEffect(() => {
-    console.log('zz')
     setTimeout(() => {
       context.action.toast({visible: false})
     }, [lifeTime])
