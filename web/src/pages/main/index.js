@@ -13,7 +13,7 @@ import {StoreLink} from 'context/link'
 
 // components
 import Layout from 'pages/common/layout'
-import Recommend from './component/recommend_new.js'
+import MainSlideList from './component/mainSlideList.js'
 import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
@@ -372,9 +372,7 @@ export default (props) => {
           </div>
         </GnbWrap>
 
-        <div ref={RecommendRef} className="top-slide" style={{height: '220px'}}>
-          {Array.isArray(initData.recommend) && <Recommend list={initData.recommend} />}
-        </div>
+        <div ref={RecommendRef}>{Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}</div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
