@@ -34,6 +34,7 @@ import CloseBtnIcon from '../static/ic_closeBtn.svg'
 import QuestionIcon from '../static/ic_question.svg'
 import CrownIcon from '../static/ic_crown.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
+import FanSettingIcon from '../static/fan_setting.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
@@ -334,24 +335,50 @@ const myProfile = (props) => {
             {profile.fanRank.length !== 0 && <ButtonWrap>{createFanList()}</ButtonWrap>}
 
             <div className="categoryCntWrap">
-              <div onClick={goFanEdite}>
-                <span>
-                  <span className="icoImg type1"></span>
-                  <em className="icotitle">팬</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-                </em>
-              </div>
-              <div onClick={goStarEdite}>
-                <span>
-                  <span className="icoImg type2"></span>
-                  <em className="icotitle">스타</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-                </em>
-              </div>
+              {profile.fanCnt > 0 ? (
+                <div onClick={goFanEdite}>
+                  <span className="icoWrap">
+                    <span className="icoImg type1"></span>
+                    <em className="icotitle icotitle--active">팬</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                  </em>
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    <span className="icoImg type1"></span>
+                    <em className="icotitle">팬</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
+                  </em>
+                </div>
+              )}
+
+              {profile.starCnt > 0 ? (
+                <div onClick={goStarEdite}>
+                  <span className="icoWrap">
+                    <span className="icoImg type2"></span>
+                    <em className="icotitle icotitle--active">스타</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                  </em>
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    <span className="icoImg type2"></span>
+                    <em className="icotitle">스타</em>
+                  </span>
+                  <em className="cntTitle">
+                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
+                  </em>
+                </div>
+              )}
+
               <div>
                 <span>
                   <span className="icoImg"></span>
@@ -464,6 +491,10 @@ z-index:3;
   .categoryCntWrap {
       margin: 4px 0 20px 0;
       display: flex;
+      .icoWrap {
+        display: flex;
+        align-items:center;
+      }
       div {
         display: flex;
         justify-content: center;
@@ -497,16 +528,28 @@ z-index:3;
             }
         }
         .icotitle {
+          display: flex;
+          align-items:center;
             float:right;
-            margin-left:2px;
+            margin-left:0px;
             line-height:24px;
-                            font-size: 12px;
+                font-size: 14px;
                 font-weight: normal;
                 font-stretch: normal;
                 font-style: normal;
                 letter-spacing: normal;
                 text-align: center;
                 color: #424242;
+                &--active {
+                  &:after {
+                    margin-left:8px;
+                  display: inline-block;
+                  content:'';
+                  width: 16px;
+                  height: 16px;
+                  background:url(${FanSettingIcon});
+                }
+                }
         }
         .cntTitle {
             
