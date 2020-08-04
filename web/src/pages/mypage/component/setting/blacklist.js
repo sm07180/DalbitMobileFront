@@ -23,6 +23,11 @@ import SelectBoxs from 'components/ui/selectBox.js'
 import blacklist from 'pages/mypage/component/setting/blacklist'
 import SearchIconGray from '../../static/ic_search_g.svg'
 import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
+
+let currentPage = 1
+let timer
+let moreState = false
+
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
@@ -38,9 +43,11 @@ export default (props) => {
   const [userState, setUserState] = useState(-1)
   const [userList, setUserList] = useState(false)
   const [blackList, setBlackList] = useState(false)
+  const [nextBlackList, setNextBlackList] = useState(false)
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
   const [tabState, setTabState] = useState(1)
+  const [totalBlackList, setTotalBlackList] = useState(0)
 
   let userTypeSetting = 0
 
@@ -53,22 +60,72 @@ export default (props) => {
 
   //-----------------------------------------------------------------------------
   //async
-  async function getblackList() {
-    const res = await Api.mypage_black_list({})
-    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-      if (res.data.list == false) {
+  async function getblackList(next) {
+    currentPage = next ? ++currentPage : currentPage
+
+    const {result, data, message} = await Api.mypage_black_list({
+      params: {
+        page: currentPage,
+        records: 30
+      }
+    })
+    if (result === 'success' && data.list.length) {
+      const {list, paging} = data
+      setTotalBlackList(paging.total)
+      if (next) {
+        moreState = true
+        setNextBlackList(list)
+      } else {
+        setBlackList(list)
+        getblackList('next')
+      }
+    } else if (result === 'success' && !data.list.length) {
+      if (!next) {
         setBlackState(0)
         setBlackList(false)
-      } else {
-        setBlackState(1)
-        setBlackList(res.data.list)
       }
+      moreState = false
     } else {
       context.action.alert({
-        msg: res.message
+        msg: message
       })
     }
   }
+
+  const showMoreList = () => {
+    console.log(1)
+    if (moreState) {
+      console.log(2)
+      setBlackList(blackList.concat(nextBlackList))
+      getblackList('next')
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextBlackList])
 
   async function addManager(memNum) {
     const res = await Api.mypage_black_add({
@@ -190,10 +247,11 @@ export default (props) => {
     return (
       <>
         <p className="titleCount">
-          등록 된 블랙리스트 <em>{blackList.length}</em>
+          등록 된 블랙리스트 <em>{totalBlackList}</em>
         </p>
         <ul className="list-item search">
           {blackList.map((item, index) => {
+            console.log('item', item)
             const {memNo, nickNm, memId, profImg, regDt} = item
             const date = Utility.dateFormatter(regDt)
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
@@ -310,6 +368,7 @@ export default (props) => {
   const tabChangeFunction = () => {
     getblackList()
     setblackValue('')
+    currentPage = 1
     if (tabState === 0) {
       setTabState(1)
     } else {
