@@ -136,7 +136,7 @@ const makeContents = (props) => {
                     ) : (
                       <span className="all-icon">ALL</span>
                     )}
-                    {lastList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                    {lastList.isSpecial && <span className="special-icon">S</span>}
                   </div>
                   <div className="entry-count">
                     <img className="entry-img" src={EntryImg} />
@@ -188,6 +188,17 @@ const HalfWrap = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    overflow: hidden;
+    border-radius: 16px;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      height: 47px;
+      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+    }
 
     .top-status {
       position: absolute;
@@ -196,6 +207,7 @@ const HalfWrap = styled.div`
       display: flex;
       flex-direction: row;
       align-items: center;
+      z-index: 1;
 
       span {
         margin-right: 3px;
@@ -260,6 +272,7 @@ const HalfWrap = styled.div`
       .count-txt {
         color: #fff;
         font-size: 11px;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
       }
     }
 
@@ -270,6 +283,7 @@ const HalfWrap = styled.div`
       display: flex;
       flex-direction: row;
       align-items: center;
+      z-index: 1;
 
       .type-icon-wrap {
         width: 26px;

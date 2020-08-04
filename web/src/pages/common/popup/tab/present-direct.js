@@ -7,7 +7,7 @@ import {BroadCastStore} from '../../store'
 
 const testData = [20, 50, 100, 500, 1000]
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
-export default props => {
+export default (props) => {
   //-------------------------------------------------------- declare start
   const [point, setPoint] = useState()
   const [text, setText] = useState('')
@@ -20,7 +20,7 @@ export default props => {
   const {broadcastProfileInfo} = store
   const customHeader = JSON.parse(Api.customHeader)
   //-------------------------------------------------------- func start
-  const handleChangeInput = event => {
+  const handleChangeInput = (event) => {
     const {value, maxLength} = event.target
     if (value.length > maxLength) {
       return false
@@ -28,7 +28,7 @@ export default props => {
     setText(value)
   }
 
-  const _active = param => {
+  const _active = (param) => {
     // 달 수를 직접 입력 ( param : input ) , 20,50,100,500,1000 (param : 0,1,2,3,4)
     if (param === 'input') {
       setPoint(-1)
@@ -119,7 +119,7 @@ export default props => {
         })}
       </Select>
       <TextArea>
-        <PointInput
+        {/* <PointInput
           placeholder="직접 입력"
           type="number"
           maxLength="5"
@@ -127,7 +127,7 @@ export default props => {
           onChange={handleChangeInput}
           onClick={() => _active('input')}
           active={active ? 'active' : ''}
-        />
+        /> */}
         <p>*선물하신 달은 별로 전환되지 않습니다.</p>
       </TextArea>
       <ButtonArea>
@@ -199,10 +199,10 @@ const PointButton = styled.button`
   width: 64px;
   height: 32px;
   border-style: solid;
-  border-color: ${props => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
   border-width: 1px;
   border-radius: 10px;
-  color: ${props => (props.active == 'active' ? '#632beb' : '#616161')};
+  color: ${(props) => (props.active == 'active' ? '#632beb' : '#616161')};
   font-weight: 400;
 `
 const TextArea = styled.div`
@@ -235,7 +235,7 @@ const PointInput = styled.input`
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
-  border-color: ${props => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
 `
 const ButtonArea = styled.div`
   display: flex;

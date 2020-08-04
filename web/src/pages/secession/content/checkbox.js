@@ -2,33 +2,32 @@ import React from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Utility from 'components/lib/utility'
+// static
+import CheckOff from './static/check_off.svg'
+import CheckOn from './static/check_on.svg'
 
 const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
   <Wrap>
     <label>
-      <div className="titlewrap" dangerouslySetInnerHTML={{__html: Utility.nl2br(title)}}></div>
       <input
-        onClick={e => {
+        onClick={(e) => {
           if (fnClick !== undefined) fnClick(e.target.checked)
         }}
-        onChange={e => {
+        onChange={(e) => {
           if (fnChange !== undefined) fnChange(e.target.checked)
         }}
         type="checkbox"
         checked={checked}
         className={checked ? 'on' : ''}
       />
+      <div className="titlewrap" dangerouslySetInnerHTML={{__html: Utility.nl2br(title)}}></div>
     </label>
   </Wrap>
 )
 export default Checkbox
 
 const Wrap = styled.div`
-  padding: 21px 10px;
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    padding: 21px 16px;
-  }
+  margin-top: 32px;
   & label {
     display: flex;
     justify-content: space-between;
@@ -41,22 +40,25 @@ const Wrap = styled.div`
   }
   & input {
     display: block;
-    width: 24px;
+    width: 24px !important;
     height: 24px;
-    background: url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center/ cover;
+    background: url(${CheckOff});
     cursor: pointer;
     &.on {
-      background: url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center/ cover;
+      background: url(${CheckOn});
     }
   }
 
   & .titlewrap {
-    letter-spacing: -0.35px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      max-width: 90%;
-    }
-    @media (max-width: ${WIDTH_MOBILE_S}) {
-      max-width: 92.22%;
-    }
+    width: calc(100% - 28px);
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: -0.6px;
+    text-align: left;
+    color: #000000;
   }
 `

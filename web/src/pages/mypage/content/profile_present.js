@@ -176,7 +176,7 @@ export default (props) => {
                   })}
                 </Select>
                 <TextArea>
-                  <PointInput
+                  {/* <PointInput
                     placeholder="직접 입력"
                     type="number"
                     maxLength="5"
@@ -184,7 +184,7 @@ export default (props) => {
                     onChange={handleChangeInput}
                     onClick={() => _active('input')}
                     active={active ? 'active' : ''}
-                  />
+                  /> */}
                   <p>*선물하신 달은 별로 전환되지 않습니다.</p>
                 </TextArea>
                 <ButtonArea>
@@ -382,7 +382,7 @@ const PointButton = styled.button`
 const TextArea = styled.div`
   display: flex;
   width: 100%;
-  height: 58px;
+  height: 36px;
   flex-direction: column;
   margin-top: 8px;
 
