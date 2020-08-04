@@ -71,8 +71,10 @@ export default (props) => {
 
   useEffect(() => {
     async function fetchEventAttendInput() {
-      const {result, data} = await API.getEventAttendInput({
-        phone: '01064220219'
+      const {result, data} = await API.postEventAttendInput({
+        params: {
+          phone: ''
+        }
       })
       if (result === 'success') {
         const {isCheck} = data
