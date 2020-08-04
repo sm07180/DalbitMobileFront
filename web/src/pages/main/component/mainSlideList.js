@@ -30,7 +30,7 @@ export default (props) => {
         <Swiper {...swiperParams} className="topSlide__box">
           {list instanceof Array &&
             list.map((bannerData, index) => {
-              const {bannerUrl, memNo, isAdmin, isSpecial, nickNm, roomNo, roomType} = bannerData
+              const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
 
               return (
                 <div
@@ -63,6 +63,16 @@ export default (props) => {
                       {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
                       {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                     </div>
+
+                    {nickNm !== 'banner' && (
+                      <div className="topSlide__infoWrap">
+                        <img className="thumb" src={profImg.url} />
+                        <div className="text">
+                          <span className="title">{title}</span>
+                          <span className="nickname">{nickNm}</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -179,6 +189,40 @@ const TopSlider = styled.div`
           font-size: 0;
           background: url(${LiveIcon}) no-repeat 0 0;
           background-size: contain;
+        }
+      }
+    }
+    &__infoWrap {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      width: 100%;
+      padding: 0 16px;
+
+      .thumb {
+        display: block;
+        width: 48px;
+        height: 48px;
+        margin-right: 8px;
+        border-radius: 48px;
+      }
+      .text {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        font-weight: bold;
+        line-height: 1.4;
+        .title {
+          display: block;
+          color: #fff;
+        }
+        .nickname {
+          display: block;
+          color: rgb(255, 179, 0);
         }
       }
     }
