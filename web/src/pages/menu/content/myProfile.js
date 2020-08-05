@@ -388,10 +388,8 @@ const myProfile = (props) => {
                   {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
                 </em>
               </div>
-              {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-                <div onClick={() => context.action.updateMypageReport(true)}></div>
-              )}
             </div>
+
             {/* <CountingWrap></CountingWrap> */}
           </ContentWrap>
           {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}

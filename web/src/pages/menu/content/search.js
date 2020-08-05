@@ -125,7 +125,9 @@ export default (props) => {
       })
     }
   }
-
+  console.log('q', query)
+  console.log('meber', member)
+  console.log('live', live)
   //update
   function update(mode) {
     switch (true) {
@@ -227,8 +229,7 @@ export default (props) => {
       <div className="searchBarWrapper">
         <SearchBar update={update} />
       </div>
-      {query === '' && <InitialSearch />}
-
+      {(query === '' || (live === null && member === null)) && <InitialSearch />}
       {query !== '' && (
         <div className="searchTab">
           {searchCategory.map((item, idx) => {

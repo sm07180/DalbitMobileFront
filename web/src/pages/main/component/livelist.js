@@ -162,7 +162,7 @@ const makeContents = (props) => {
                     <span className="count-txt">{Util.printNumber(lastList.entryCnt)}</span>
                   </div>
                   <div className="bottom-wrap">
-                    {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
+                    {lastList.os === 3 ? <span className="pc-icon">PC</span> : ''}
                     <div className="type-icon-wrap">
                       <img className="type-icon" src={noBgAudioIcon} />
                     </div>

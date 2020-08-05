@@ -274,8 +274,6 @@ export default (props) => {
           if (filterData.length > 0) setPopupNotice(true)
         }, 10)
       }
-    } else {
-      console.log(res.result, res.message)
     }
   }
 
@@ -333,7 +331,7 @@ export default (props) => {
 
   const mainTouchStart = useCallback(
     (e) => {
-      if (reloadInit === true) return
+      if (reloadInit === true || window.scrollY !== 0) return
 
       touchStartY = e.touches[0].clientY
     },
@@ -342,7 +340,7 @@ export default (props) => {
 
   const mainTouchMove = useCallback(
     (e) => {
-      if (reloadInit === true) return
+      if (reloadInit === true || window.scrollY !== 0) return
 
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
@@ -393,10 +391,13 @@ export default (props) => {
 
           await fetchMainInitData()
           await fetchLiveList(true)
-          await new Promise((resolve, _) => setTimeout(() => resolve(), 500))
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+          clearInterval(loadIntervalId)
+
           setRankType('dj')
           setLiveListType('detail')
-          clearInterval(loadIntervalId)
+          setSelectedLiveRoomType('')
+          setReloadInit(false)
         }
       }
 
@@ -410,7 +411,6 @@ export default (props) => {
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
       refreshIconNode.style.transform = 'rotate(0)'
-      setReloadInit(false)
       touchStartY = null
       touchEndY = null
     },
@@ -511,7 +511,8 @@ export default (props) => {
                   src={refreshIcon}
                   onClick={async () => {
                     setReloadInit(true)
-                    await fetchLiveList()
+                    await fetchMainInitData()
+                    await fetchLiveList(true)
                     setReloadInit(false)
                   }}
                 />
