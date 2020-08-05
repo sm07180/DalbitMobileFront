@@ -389,9 +389,7 @@ const myProfile = (props) => {
                 </em>
               </div>
             </div>
-            {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-              <div onClick={() => context.action.updateMypageReport(true)}></div>
-            )}
+
             {/* <CountingWrap></CountingWrap> */}
           </ContentWrap>
           {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
