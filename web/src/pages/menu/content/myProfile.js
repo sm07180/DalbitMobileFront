@@ -417,7 +417,7 @@ const PurpleWrap = styled.div`
 const ProfileWrap = styled.div`
   .adminBtn {
     position: absolute;
-    top: -59px;
+    top: 0px;
     left: 12px;
   }
   padding-top: 87px;
