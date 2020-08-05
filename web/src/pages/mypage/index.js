@@ -89,7 +89,7 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        context.action.updateProfile(profileInfo.data)
+
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
