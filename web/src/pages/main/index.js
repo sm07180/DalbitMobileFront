@@ -358,7 +358,6 @@ export default (props) => {
       if (window.scrollY === 0) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
-        refreshIconNode.style.opacity = 1
       }
     },
     [reloadInit]
@@ -411,7 +410,6 @@ export default (props) => {
 
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
-      refreshIconNode.style.opacity = 0
       refreshIconNode.style.transform = 'rotate(0)'
       setReloadInit(false)
     },
@@ -600,8 +598,6 @@ const RefreshIconWrap = styled.div`
       display: block;
       position: relative;
       left: -50%;
-      opacity: 0;
-      transition: opacity 200ms ease-in;
     }
   }
 `
