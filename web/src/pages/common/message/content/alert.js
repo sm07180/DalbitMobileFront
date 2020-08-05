@@ -75,7 +75,7 @@ export default (props) => {
           onKeyPress={(event) => {
             console.log(event)
           }}>
-          확인
+          {context.message.buttonMsg ? context.message.buttonMsg : '확인'}
         </button>
       </div>
     </Alert>
