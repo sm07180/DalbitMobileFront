@@ -372,6 +372,8 @@ export default (props) => {
 
       const heightDiff = (touchEndY - touchStartY) / ratio
 
+      setReloadInit(true)
+
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
@@ -381,7 +383,6 @@ export default (props) => {
         })()
 
         if (typeof current_angle === 'number') {
-          setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
           iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
 
