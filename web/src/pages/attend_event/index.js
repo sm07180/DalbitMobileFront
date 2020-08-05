@@ -98,6 +98,13 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
 
+        console.log('당첨', status.gifticon_win)
+
+        if (status.gifticon_win === 1)
+          globalCtx.action.alert({
+            msg: `오왕`
+          })
+
         globalCtx.action.alert({
           msg: message
         })
