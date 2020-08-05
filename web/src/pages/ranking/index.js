@@ -142,7 +142,7 @@ export default (props) => {
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 50
+          records: 500
         }
       })
     } else if (type === 'fan') {
@@ -150,7 +150,7 @@ export default (props) => {
         params: {
           rankType: dateType,
           page: currentPage,
-          records: 50
+          records: 500
         }
       })
     }
