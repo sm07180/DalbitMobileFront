@@ -38,7 +38,7 @@ import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
 import newCircle from '../static/new_circle.svg'
 
-import {OS_TYPE} from "context/config";
+import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
   // nav Array
@@ -150,6 +150,7 @@ export default (props) => {
     }
     getMyPageNew()
   }, [])
+
   return (
     <MenuMypage>
       {/* <Header>
@@ -160,7 +161,7 @@ export default (props) => {
           </a>
         )}
       </Header> */}
-      {token && token.isLogin && (
+      {profile !== null && token && token.isLogin && (
         <>
           <div className="log-in">
             <MyProfile profile={profile} {...props} webview={webview} />
@@ -236,10 +237,18 @@ export default (props) => {
                   <div className="list">
                     <img className="icon" src={icon} />
                     <span className="text">{txt}</span>
-                    <span className={
-                      type === 'notice' ? (myPageNew.broadNotice ? "arrow arrow--active" : "arrow") :
-                          (type === 'fanboard' ? (myPageNew.fanBoard ? "arrow arrow--active" : "arrow") : "arrow")
-                    }></span>
+                    <span
+                      className={
+                        type === 'notice'
+                          ? myPageNew.broadNotice
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : type === 'fanboard'
+                          ? myPageNew.fanBoard
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : 'arrow'
+                      }></span>
                   </div>
                 </a>
               )
@@ -247,36 +256,44 @@ export default (props) => {
             <div className="addCustomer">
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
-                if(type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']){
+                if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
                   return <></>
-                }else{
+                } else {
                   return (
-                      <a
-                          href={
-                            type === 'wallet' || type === 'report'
-                                ? `/mypage/${profile.memNo}/${type}`
-                                : type === 'store'
-                                ? '#'
-                                : `/${type}`
-                          }
-                          key={`list-${idx}`}
-                          onClick={(e) => {
-                            if (type === 'store') {
-                              e.preventDefault()
-                              StoreLink(globalCtx)
-                            } else if (type === 'money_exchange') {
-                              e.preventDefault()
-                              checkSelfAuth()
-                            }
-                          }}>
-                        <div className="list">
-                          <img className="icon" src={icon} />
-                          <span className="text">{txt}</span>
-                          {type === 'store' ? <span className="price">{profile.dalCnt.toLocaleString()}</span> :
-                              (type === 'money_exchange' ? <span className="price">{profile.byeolCnt.toLocaleString()}</span> : <></>)}
-                          <span className={type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? "arrow arrow--active" : "arrow") : "arrow"}></span>
-                        </div>
-                      </a>
+                    <a
+                      href={
+                        type === 'wallet' || type === 'report'
+                          ? `/mypage/${profile.memNo}/${type}`
+                          : type === 'store'
+                          ? '#'
+                          : `/${type}`
+                      }
+                      key={`list-${idx}`}
+                      onClick={(e) => {
+                        if (type === 'store') {
+                          e.preventDefault()
+                          StoreLink(globalCtx)
+                        } else if (type === 'money_exchange') {
+                          e.preventDefault()
+                          checkSelfAuth()
+                        }
+                      }}>
+                      <div className="list">
+                        <img className="icon" src={icon} />
+                        <span className="text">{txt}</span>
+                        {type === 'store' ? (
+                          <span className="price">{profile.dalCnt.toLocaleString()}</span>
+                        ) : type === 'money_exchange' ? (
+                          <span className="price">{profile.byeolCnt.toLocaleString()}</span>
+                        ) : (
+                          <></>
+                        )}
+                        <span
+                          className={
+                            type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
+                          }></span>
+                      </div>
+                    </a>
                   )
                 }
               })}
@@ -289,8 +306,18 @@ export default (props) => {
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
-                      <span className={type === 'notice' ? (myPageNew.notice ? "arrow arrow--active" : "arrow") :
-                          (type === 'personal' ? (myPageNew.qna ? "arrow arrow--active" : "arrow") : "arrow")}></span>
+                      <span
+                        className={
+                          type === 'notice'
+                            ? myPageNew.notice
+                              ? 'arrow arrow--active'
+                              : 'arrow'
+                            : type === 'personal'
+                            ? myPageNew.qna
+                              ? 'arrow arrow--active'
+                              : 'arrow'
+                            : 'arrow'
+                        }></span>
                     </div>
                   </a>
                 )
