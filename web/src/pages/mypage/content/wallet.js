@@ -150,6 +150,24 @@ export default (props) => {
     }, 10)
   }
 
+  async function getMyPageNewWallet(){
+    const newFanBoard = await Api.getMyPageNewWallet()
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+      mypageNewStg = {}
+    }else{
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+    const dal = newFanBoard.data.dal
+    const byeol = newFanBoard.data.byeol
+    mypageNewStg.dal = dal === undefined || dal === null || dal === '' ? 0 : dal
+    mypageNewStg.byeol = byeol === undefined || byeol === null || byeol === '' ? 0 : byeol
+    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+  }
+  useEffect(() => {
+    getMyPageNewWallet()
+  }, [])
+
   return (
     <div>
       {/* 공통타이틀 */}
