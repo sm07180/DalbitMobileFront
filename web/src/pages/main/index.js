@@ -364,6 +364,7 @@ export default (props) => {
     async (e) => {
       if (reloadInit === true) return
 
+      const ratio = 3
       const transitionTime = 150
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
