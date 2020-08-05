@@ -143,10 +143,14 @@ export default (props) => {
     fetchSelfAuth()
     // history.push('/money_exchange')
   }
-  useState(() => {
+  useEffect(() => {
     const getMyPageNew = async () => {
-      const res = await Api.getMyPageNew(profile.memNo)
-      setMyPageNew(res.data)
+      if (profile !== null) {
+        const res = await Api.getMyPageNew(profile.memNo)
+        setMyPageNew(res.data)
+      } else {
+        props.history.push('/')
+      }
     }
     getMyPageNew()
   }, [])
