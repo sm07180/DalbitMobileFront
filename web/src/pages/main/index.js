@@ -508,7 +508,7 @@ export default (props) => {
                   src={refreshIcon}
                   onClick={async () => {
                     setReloadInit(true)
-                    await fetchLiveList()
+                    await fetchLiveList(true)
                     setReloadInit(false)
                   }}
                 />
