@@ -838,6 +838,8 @@ const LevelStatus = styled.div`
   top: 0px;
   left: -1px;
   height: 14px;
+  max-width: calc(100% + 2px);
+
   border-bottom-left-radius: 10px;
   border-bottom-left-radius: 10px;
   background-color: #000;
