@@ -506,7 +506,15 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="refresh-icon" src={refreshIcon} onClick={fetchLiveList} />
+                <img
+                  className="refresh-icon"
+                  src={refreshIcon}
+                  onClick={async () => {
+                    setReloadInit(true)
+                    await fetchLiveList()
+                    setReloadInit(false)
+                  }}
+                />
               </div>
 
               <div className="sequence-wrap">
