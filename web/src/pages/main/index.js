@@ -274,8 +274,6 @@ export default (props) => {
           if (filterData.length > 0) setPopupNotice(true)
         }, 10)
       }
-    } else {
-      console.log(res.result, res.message)
     }
   }
 
@@ -354,7 +352,6 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
-        refreshIconNode.style.opacity = 1
       }
     },
     [reloadInit]
@@ -396,6 +393,11 @@ export default (props) => {
           await fetchLiveList(true)
           await new Promise((resolve, _) => setTimeout(() => resolve(), 500))
           clearInterval(loadIntervalId)
+
+          setRankType('dj')
+          setLiveListType('detail')
+          setSelectedLiveRoomType('')
+          setReloadInit(false)
         }
       }
 
@@ -408,9 +410,7 @@ export default (props) => {
 
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
-      refreshIconNode.style.opacity = 0
       refreshIconNode.style.transform = 'rotate(0)'
-      setReloadInit(false)
     },
     [reloadInit]
   )
@@ -607,8 +607,6 @@ const RefreshIconWrap = styled.div`
       display: block;
       position: relative;
       left: -50%;
-      opacity: 0;
-      transition: opacity 200ms ease-in;
     }
   }
 `
