@@ -79,6 +79,7 @@ const makeContents = (props) => {
                 <img src={hitIcon} />
                 <span>{Util.printNumber(entryCnt)}</span>
               </div>
+
               {boostCnt > 0 ? (
                 <div className="value">
                   <img src={boostIcon} />
@@ -132,7 +133,7 @@ const makeContents = (props) => {
                   <span className="count-txt">{Util.printNumber(firstList.entryCnt)}</span>
                 </div>
                 <div className="bottom-wrap">
-                  {/* {first.os === 3 ? <span className="pc-icon">PC</span> : ''} */}
+                  {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
                   <div className="type-icon-wrap">
                     <img className="type-icon" src={noBgAudioIcon} />
                   </div>
