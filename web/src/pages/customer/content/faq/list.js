@@ -41,7 +41,7 @@ export default function List(props) {
         setNormalList(filterList(data.list, 1))
         setBroadcastList(filterList(data.list, 2))
         setPaymentList(filterList(data.list, 3))
-        setOtherList(filterList(data.list, 4))
+        setOtherList(filterList(data.list, 98))
         setAccountList(filterList(data.list, 5))
       }
     } else if (result === 'fail') {

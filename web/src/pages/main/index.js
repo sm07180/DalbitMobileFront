@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef, useMemo} from 'react'
+import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -30,24 +30,24 @@ import Utility from 'components/lib/utility'
 
 // static
 import Mic from './static/ic_broadcastng.svg'
-import sequenceIcon from './static/ic_live_sequence.svg'
-import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
-
 import refreshIcon from './static/refresh_g.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import WhiteBroadIcon from './static/white_broad.svg'
+import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
+
 import {RoomMake} from 'context/room'
-import {COLOR_MAIN} from 'context/color.js'
 
 let concatenating = false
 let tempScrollEvent = null
-//7->50
+
 const records = 30
-const today = new Date().getDate()
+
+let touchStartY = null
+let touchEndY = null
 
 export default (props) => {
   // reference
@@ -59,6 +59,9 @@ export default (props) => {
   const StarSectionRef = useRef()
   const LiveSectionRef = useRef()
 
+  const iconWrapRef = useRef()
+  const arrowRefreshRef = useRef()
+
   //context
   const globalCtx = useContext(Context)
   const history = useHistory()
@@ -67,6 +70,7 @@ export default (props) => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+  const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -86,10 +90,6 @@ export default (props) => {
   const customHeader = JSON.parse(Api.customHeader)
 
   const [payState, setPayState] = useState(false)
-  const [broadCnt, setBroadCnt] = useState(false)
-
-  // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('detail')
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -101,18 +101,7 @@ export default (props) => {
       })
     }
 
-    ;(async () => {
-      const initData = await Api.main_init_data()
-      if (initData.result === 'success') {
-        const {djRank, fanRank, recommend, myStar} = initData.data
-        setInitData({
-          recommend,
-          djRank,
-          fanRank,
-          myStar
-        })
-      }
-    })()
+    fetchMainInitData()
 
     Api.splash().then((res) => {
       const {result} = res
@@ -126,6 +115,19 @@ export default (props) => {
       }
     })
   }, [])
+
+  const fetchMainInitData = async () => {
+    const initData = await Api.main_init_data()
+    if (initData.result === 'success') {
+      const {djRank, fanRank, recommend, myStar} = initData.data
+      setInitData({
+        recommend,
+        djRank,
+        fanRank,
+        myStar
+      })
+    }
+  }
 
   const fetchLiveList = async (reset) => {
     setLiveList(null)
@@ -174,11 +176,6 @@ export default (props) => {
       const concatenated = currentList.concat(list)
       setLiveList(concatenated)
     }
-  }
-
-  const fetchBroadCnt = async () => {
-    const broadCntRes = await Api.getBroadCnt()
-    setBroadCnt(broadCntRes.data)
   }
 
   const windowScrollEvent = () => {
@@ -298,7 +295,6 @@ export default (props) => {
   }, [popup])
 
   useEffect(() => {
-    fetchBroadCnt()
     window.addEventListener('popstate', popStateEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
@@ -333,14 +329,108 @@ export default (props) => {
     fetchMainPopupData('6')
   }, [])
 
+  const [reloadInit, setReloadInit] = useState(false)
+  const refreshDefaultHeight = 48
+
+  const mainTouchStart = useCallback(
+    (e) => {
+      if (reloadInit === true) return
+
+      touchStartY = e.touches[0].clientY
+    },
+    [reloadInit]
+  )
+
+  const mainTouchMove = useCallback(
+    (e) => {
+      if (reloadInit === true) return
+
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      touchEndY = e.touches[0].clientY
+      const ratio = 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
+
+      if (window.scrollY === 0) {
+        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+        refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        refreshIconNode.style.opacity = 1
+      }
+    },
+    [reloadInit]
+  )
+
+  const mainTouchEnd = useCallback(
+    async (e) => {
+      if (reloadInit === true) return
+
+      const transitionTime = 150
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      const heightDiff = (touchEndY - touchStartY) / 3
+
+      if (heightDiff >= 100) {
+        let current_angle = (() => {
+          const str_angle = refreshIconNode.style.transform
+          let head_slice = str_angle.slice(7)
+          let tail_slice = head_slice.slice(0, 4)
+          return Number(tail_slice)
+        })()
+
+        if (typeof current_angle === 'number') {
+          setReloadInit(true)
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+
+          const loadIntervalId = setInterval(() => {
+            if (Math.abs(current_angle) === 360) {
+              current_angle = 0
+            }
+            current_angle -= 10
+            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+          }, 17)
+
+          await fetchMainInitData()
+          await fetchLiveList(true)
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 500))
+          clearInterval(loadIntervalId)
+        }
+      }
+
+      const promiseSync = () =>
+        new Promise((resolve, _) => {
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          setTimeout(() => resolve(), transitionTime)
+        })
+
+      await promiseSync()
+      iconWrapNode.style.transitionDuration = '0ms'
+      refreshIconNode.style.opacity = 0
+      refreshIconNode.style.transform = 'rotate(0)'
+      setReloadInit(false)
+    },
+    [reloadInit]
+  )
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <MainWrap ref={MainRef}>
+      <RefreshIconWrap ref={iconWrapRef}>
+        <div className="icon-wrap">
+          <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
+        </div>
+      </RefreshIconWrap>
+
+      <MainWrap
+        className="main-wrap"
+        ref={MainRef}
+        onTouchStart={mainTouchStart}
+        onTouchMove={mainTouchMove}
+        onTouchEnd={mainTouchEnd}>
         <GnbWrap ref={SubMainRef} className="gnb">
           <div className="left-side">
-            {/* <div className={`tab`}>
-              <Link to={'/'}>라이브</Link>
-            </div> */}
             <div className="tab">
               <Link to={'/rank'}>랭킹</Link>
             </div>
@@ -492,6 +582,27 @@ export default (props) => {
   )
 }
 
+const RefreshIconWrap = styled.div`
+  display: block;
+  position: relative;
+  height: 48px;
+  background-color: rgba(127, 127, 127, 0.3);
+  transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+
+  .icon-wrap {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    .arrow-refresh-icon {
+      display: block;
+      position: relative;
+      left: -50%;
+      opacity: 0;
+      transition: opacity 200ms ease-in;
+    }
+  }
+`
+
 const Content = styled.div`
   .event-section {
     display: block;
@@ -575,11 +686,15 @@ const Content = styled.div`
   .live-list-category {
     position: relative;
     display: flex;
-    height: 36px;
+
     flex-direction: row;
     align-items: center;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+
+    .swiper-wrapper {
+      height: 40px;
+    }
 
     &.fixed {
       position: fixed;
@@ -598,8 +713,8 @@ const Content = styled.div`
 
         .list {
           width: auto;
-          height: 36px;
-          line-height: 34px;
+          height: 40px;
+          line-height: 40px;
           font-size: 14px;
           letter-spacing: -0.35px;
           margin: 0 8px;
@@ -691,7 +806,7 @@ const Content = styled.div`
         margin-left: 4px;
         margin-right: 5px;
         color: #424242;
-        font-size: 12px;
+        font-size: 14px;
         letter-spacing: -0.24px;
       }
 
@@ -834,7 +949,6 @@ const GnbWrap = styled.div`
 `
 
 const MainWrap = styled.div`
-  margin-top: ${(props) => (props.sticker ? '0' : '48px')};
   .top-slide {
     position: relative;
     height: 220px;

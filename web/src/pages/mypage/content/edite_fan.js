@@ -24,8 +24,7 @@ export default (props) => {
   const ctx = useContext(Context)
   //state
   const [title, setTitle] = useState(0)
-  const [resetList, setResetList] = useState(-1)
-  const [noList, setNoList] = useState(-1)
+
   //swiper
   const swiperParams = {
     slidesPerView: 'auto',
@@ -36,13 +35,13 @@ export default (props) => {
   const createContents = () => {
     switch (title) {
       case 0:
-        return <Recent title={title} resetList={resetList} noList={noList} />
+        return <Recent />
       case 1:
-        return <GiftMore resetList={resetList} noList={noList} />
+        return <GiftMore />
       case 2:
-        return <ListenRecent resetList={resetList} noList={noList} />
+        return <ListenRecent />
       case 3:
-        return <BroadMore resetList={resetList} noList={noList} />
+        return <BroadMore />
       default:
         break
     }
@@ -52,77 +51,11 @@ export default (props) => {
     setTitle(id)
     ctx.action.updateFanTab(id)
   }
-  const editeToggle = () => {
-    if (ctx.fanEdite === -1) {
-      ctx.action.updateFanEdite(false)
-    } else {
-      ctx.action.updateFanEdite(true)
-    }
-  }
 
-  useEffect(() => {
-    if (ctx.fanEdite) {
-      if (window.location.hash === '') {
-        window.history.pushState('edit', '', `${props.history.location.pathname}/#edit`)
-      }
-    } else if (!ctx.fanEdite) {
-      if (window.location.hash === '#edit') {
-        window.history.back()
-      }
-    }
-  }, [ctx.fanEdite])
-
-  const popStateEvent = (e) => {
-    ctx.action.updateFanEdite(false)
-  }
-
-  useEffect(() => {
-    window.addEventListener('popstate', popStateEvent)
-    return () => {
-      window.removeEventListener('popstate', popStateEvent)
-    }
-  }, [])
-
-  const AlertPop = () => {
-    if (ctx.editeToggle === true) {
-      ctx.action.confirm({
-        callback: () => {
-          ctx.action.updateFanEdite(-1)
-        },
-        cancelCallback: () => {
-          if (resetList === -1) {
-            setResetList(1)
-          } else if (resetList !== -1) {
-            setResetList(2)
-          }
-        },
-        msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
-      })
-    }
-    if (ctx.editeToggle === false) {
-      ctx.action.alert({
-        callback: () => {
-          ctx.action.updateEditeToggle(false)
-        },
-        msg: '삭제할 팬을 선택해 주세요.'
-      })
-    }
-  }
   return (
     <EditeWrap>
       <Header>
-        <div className="category-text">
-          팬
-          {ctx.fanEdite === false ? (
-            <button className="editeBtn" onClick={editeToggle} style={{display: ctx.fanEditeLength < 1 ? 'none' : 'block'}}>
-              편집
-            </button>
-          ) : (
-            <button className="editeBtn" onClick={AlertPop} style={{display: ctx.fanEditeLength < 1 ? 'none' : 'block'}}>
-              완료
-            </button>
-          )}
-        </div>
+        <div className="category-text">팬 관리</div>
       </Header>
       <div className="tabContainer">
         <Swiper {...swiperParams}>
@@ -138,7 +71,6 @@ export default (props) => {
           })}
         </Swiper>
       </div>
-
       {createContents()}
     </EditeWrap>
   )
@@ -202,7 +134,7 @@ const tabArry = [
   },
   {
     id: 1,
-    title: '선물 많이 받은 순',
+    title: '선물 받은 순',
     value: 'gift'
   },
   {
@@ -212,7 +144,7 @@ const tabArry = [
   },
   {
     id: 3,
-    title: '방송 많이 들은 순',
+    title: '방송 들은 순',
     value: 'broad'
   }
 ]

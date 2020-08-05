@@ -1,10 +1,16 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+
+import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import styled from 'styled-components'
 import LiveIcon from '../static/live_l@3x.png'
 
+import Room, {RoomJoin} from 'context/room'
+import {Hybrid, isHybrid} from 'context/hybrid'
+
 export default (props) => {
+  const context = useContext(Context)
   const history = useHistory()
   const {list} = props
 
@@ -40,10 +46,27 @@ export default (props) => {
                           history.push(`${roomNo}`)
                         }
                       } else {
-                        window.open(`${roomNo}`)
+                        if (isHybrid()) {
+                          Hybrid('openUrl', `${roomNo}`)
+                        } else {
+                          window.open(`${roomNo}`)
+                        }
                       }
                     } else {
-                      history.push(`/broadcast/${roomNo}`)
+                      RoomJoin(roomNo)
+                    }
+                  }
+                  if (roomType === 'link') {
+                    console.log('link')
+                    context.action.updatenoticeIndexNum(roomNo)
+                    if (roomNo !== '' && !roomNo.startsWith('http')) {
+                      history.push(`${roomNo}`)
+                    } else if (roomNo !== '' && roomNo.startsWith('http')) {
+                      window.location.href = `${roomNo}`
+                    }
+                  } else {
+                    if (isHybrid() && roomNo) {
+                      RoomJoin(roomNo)
                     }
                   }
                 }}>
@@ -198,7 +221,8 @@ const TopSlider = styled.div`
         width: 48px;
         height: 48px;
         margin-right: 8px;
-        border-radius: 48px;
+        border-radius: 50%;
+        border: solid 1px rgba(255, 255, 255, 0.5);
       }
       .text {
         display: flex;

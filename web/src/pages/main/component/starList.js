@@ -115,8 +115,8 @@ const StarList = styled.div`
       justify-content: center;
       flex-direction: column;
       background-size: cover;
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       border-radius: 12px;
       color: #424242;
       font-size: 16px;

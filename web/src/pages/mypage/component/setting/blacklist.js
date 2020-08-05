@@ -149,6 +149,7 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
+      currentPage = 1
       getblackList()
     } else {
       context.action.alert({
@@ -342,6 +343,10 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     getblackList()
+
+    return () => {
+      currentPage = 1
+    }
   }, [])
 
   const typeActive = (value) => {
@@ -363,9 +368,10 @@ export default (props) => {
     }
   }
   const tabChangeFunction = () => {
+    currentPage = 1
     getblackList()
     setblackValue('')
-    currentPage = 1
+
     if (tabState === 0) {
       setTabState(1)
     } else {
