@@ -71,6 +71,7 @@ export default (props) => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+  const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -90,9 +91,6 @@ export default (props) => {
   const customHeader = JSON.parse(Api.customHeader)
 
   const [payState, setPayState] = useState(false)
-
-  // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('detail')
 
   useEffect(() => {
     if (window.sessionStorage) {
@@ -355,7 +353,7 @@ export default (props) => {
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
 
-      if (window.scrollY === 0) {
+      if (window.scrollY === 0 && typeof heightDiff === 'number') {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
       }
@@ -367,11 +365,12 @@ export default (props) => {
     async (e) => {
       if (reloadInit === true) return
 
+      const ratio = 3
       const transitionTime = 150
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
 
-      const heightDiff = (touchEndY - touchStartY) / 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
 
       if (heightDiff >= 100) {
         let current_angle = (() => {
@@ -397,6 +396,8 @@ export default (props) => {
           await fetchMainInitData()
           await fetchLiveList(true)
           await new Promise((resolve, _) => setTimeout(() => resolve(), 500))
+          setRankType('dj')
+          setLiveListType('detail')
           clearInterval(loadIntervalId)
         }
       }
@@ -412,6 +413,8 @@ export default (props) => {
       iconWrapNode.style.transitionDuration = '0ms'
       refreshIconNode.style.transform = 'rotate(0)'
       setReloadInit(false)
+      touchStartY = null
+      touchEndY = null
     },
     [reloadInit]
   )
