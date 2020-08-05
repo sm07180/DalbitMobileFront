@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Switch, Route, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -25,16 +25,14 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
 
-  if (!profile && window.location.pathname !== '/menu/search') {
+  useEffect(() => {
     const {memNo} = token
     Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
       if (profileInfo.result === 'success') {
         globalCtx.action.updateProfile(profileInfo.data)
       }
     })
-    return null
-  }
-
+  }, [])
   return (
     <>
       {/* 로그인 대기창  */}
