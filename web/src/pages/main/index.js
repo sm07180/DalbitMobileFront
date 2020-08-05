@@ -258,8 +258,6 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      // console.log(res.data)
-
       if (res.hasOwnProperty('data')) {
         setPopupData(res.data)
         let filterData = []
@@ -353,7 +351,7 @@ export default (props) => {
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
 
-      if (window.scrollY === 0 && typeof heightDiff === 'number') {
+      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
       }
@@ -372,8 +370,6 @@ export default (props) => {
 
       const heightDiff = (touchEndY - touchStartY) / ratio
 
-      setReloadInit(true)
-
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
@@ -383,6 +379,7 @@ export default (props) => {
         })()
 
         if (typeof current_angle === 'number') {
+          setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
           iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
 
@@ -467,7 +464,9 @@ export default (props) => {
           </div>
         </GnbWrap>
 
-        <div ref={RecommendRef}>{Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}</div>
+        <div ref={RecommendRef} style={{height: '220px', backgroundColor: '#eee'}}>
+          {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+        </div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
