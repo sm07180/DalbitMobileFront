@@ -162,6 +162,7 @@ const makeContents = (props) => {
                     <span className="count-txt">{Util.printNumber(lastList.entryCnt)}</span>
                   </div>
                   <div className="bottom-wrap">
+                    {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
                     <div className="type-icon-wrap">
                       <img className="type-icon" src={noBgAudioIcon} />
                     </div>
@@ -236,9 +237,9 @@ const HalfWrap = styled.div`
         color: #fff;
         font-size: 11px;
         border-radius: 10px;
-        background-color: #febd56;
+        background-color: #f26d4a;
         height: 16px;
-        padding: 0 6px;
+        width: 26px;
         line-height: 16px;
         margin-right: 4px;
       }
@@ -293,8 +294,6 @@ const HalfWrap = styled.div`
       top: 6px;
       right: 6px;
       display: flex;
-      flex-direction: row;
-      align-items: center;
       z-index: 1;
 
       .entry-img {
@@ -312,7 +311,6 @@ const HalfWrap = styled.div`
       bottom: 6px;
       left: 6px;
       display: flex;
-      flex-direction: row;
       align-items: center;
       z-index: 1;
 
@@ -320,9 +318,11 @@ const HalfWrap = styled.div`
         color: #fff;
         font-size: 11px;
         border-radius: 10px;
-        background-color: #febd56;
+        background-color: #f26d4a;
+        text-align: center;
+        width: 26px;
         height: 16px;
-        padding: 0 6px;
+
         line-height: 16px;
         margin-right: 4px;
       }
@@ -332,10 +332,10 @@ const HalfWrap = styled.div`
         border-radius: 8px;
         background-color: rgba(254, 189, 86, 0.5);
         height: 16px;
+        margin-right: 4px;
 
         .type-icon {
           width: 26px;
-          margin-right: 4px;
         }
       }
 
@@ -403,7 +403,7 @@ const LiveList = styled.div`
     color: #fff;
     font-size: 11px;
     border-radius: 10px;
-    background-color: #febd56;
+    background-color: #f26d4a;
     height: 16px;
     padding: 0 6px;
     line-height: 16px;
