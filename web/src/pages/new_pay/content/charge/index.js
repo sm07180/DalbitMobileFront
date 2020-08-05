@@ -24,6 +24,7 @@ import Header from 'components/ui/new_header'
 
 //static
 import icoNotice from '../../static/ic_notice.svg'
+import icoMore from '../../static/icn_more_xs_gr.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -36,6 +37,7 @@ export default () => {
 
   //state
   const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
+  const [moreState, setMoreState] = useState(false)
 
   //ref
   const formTag = useRef(null)
@@ -120,8 +122,14 @@ export default () => {
     if (selectedPay.type) payFetch()
   }, [selectedPay])
 
-  const createMethodBtn = () => {
-    return payMethod.map((item, idx) => {
+  const createMethodBtn = (type) => {
+    let currentPayMethod = []
+    if (type === 'more') {
+      currentPayMethod = payMethod.slice(3)
+    } else {
+      currentPayMethod = payMethod.slice(0, 3)
+    }
+    return currentPayMethod.map((item, idx) => {
       const {type} = item
       return (
         <button key={idx} className={type === selectedPay.type ? 'on' : ''} onClick={() => setSelectedPay(item)}>
@@ -147,8 +155,19 @@ export default () => {
           </p>
         </div>
 
-        <h2>결제 수단</h2>
-        <div className="select-item">{createMethodBtn()}</div>
+        <h2 className="more-tab">
+          결제 수단
+          <button
+            onClick={() => {
+              setMoreState(!moreState)
+            }}>
+            {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
+          </button>
+        </h2>
+        <div className="select-item">{createMethodBtn('top')}</div>
+        <div className="more-wrap">
+          <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div>
+        </div>
 
         <div className="info-wrap">
           <h5>
@@ -182,6 +201,29 @@ const Content = styled.div`
     padding: 15px 0 4px 0;
     font-size: 16px;
     font-weight: 900;
+
+    &.more-tab {
+      display: flex;
+      margin: 2px 0 4px 0;
+
+      button {
+        margin-left: auto;
+        font-size: 12px;
+        line-height: 20px;
+        color: rgb(66, 66, 66);
+        border-bottom: 1px solid rgb(66, 66, 66);
+        &:after {
+          display: inline-block;
+          width: 6px;
+          height: 16px;
+          margin-top: 2px;
+          margin-left: 3px;
+          background: url(${icoMore}) no-repeat center;
+          vertical-align: top;
+          content: '';
+        }
+      }
+    }
   }
 
   .field {
@@ -230,6 +272,20 @@ const Content = styled.div`
     }
     button:nth-child(1) {
       width: 100%;
+    }
+    &.more {
+      overflow: hidden;
+      height: 144px;
+      transition: height 0.3s ease-in-out;
+    }
+    &.more button:nth-child(1) {
+      width: calc(50% - 2px);
+    }
+    &.more.false {
+      height: 0px;
+    }
+    &.more.true {
+      height: 144px;
     }
   }
 
