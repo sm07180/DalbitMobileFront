@@ -9,6 +9,7 @@ import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
 import {Link, useHistory} from 'react-router-dom'
+import WinList from './attend_win_list'
 
 // static
 import btnClose from './static/ico_close.svg'
@@ -17,12 +18,10 @@ export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const [WinPopup, setWinPopup] = useState(false)
   const [phone, setPhone] = useState('')
   const [btnState, setBtnState] = useState({
     phone: false
   })
-
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
     totalExp: 0,
@@ -31,6 +30,8 @@ export default (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [lunarDate, setLunarDate] = useState('')
+  const [WinPopup, setWinPopup] = useState(false)
+  const [winList, setWinList] = useState([])
 
   useEffect(() => {
     async function fetchEventAttendDate() {
@@ -63,28 +64,11 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    async function fetchEventAttendInput() {
-      const {result, data} = await API.postEventAttendInput({
-        params: {
-          phone: ''
-        }
-      })
-      if (result === 'success') {
-        const {isCheck} = data
-        console.log('인풋성공')
-      } else {
-        //실패
-      }
-    }
-    fetchEventAttendInput()
-  }, [])
-
-  useEffect(() => {
     async function fetchEventAttendWinList() {
       const {result, data} = await API.getEventAttendWinList()
       if (result === 'success') {
         const {list} = data
-        console.log('당첨자리스트성공')
+        setWinList(list)
       } else {
         //실패
       }
@@ -97,7 +81,6 @@ export default (props) => {
       const {result, data} = await API.getEventAttendLunarDate()
       if (result === 'success') {
         const {lunarDt} = data
-
         setLunarDate(lunarDt)
       } else {
         //실패
@@ -161,7 +144,7 @@ export default (props) => {
     const nmValue = value.replace(/[^0-9]/g, '')
     switch (name) {
       case 'phone':
-        if (value.toString().length < 11) setPhone(nmValue)
+        if (value.toString().length < 12) setPhone(nmValue)
         break
       default:
         break
@@ -170,7 +153,6 @@ export default (props) => {
 
   function reducer(state, action) {
     const {name, value} = action
-
     //휴대폰번호
     if (name === 'phone' && value.length === 11) {
       setBtnState({
@@ -202,10 +184,40 @@ export default (props) => {
         msg: `올바른 핸드폰 번호가 아닙니다.`
       })
     }
+
+    async function fetchEventAttendInput() {
+      const {result, message} = await API.postEventAttendInput({
+        phone: phone
+      })
+      if (result === 'success') {
+        const {isCheck} = data
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
+    }
+    fetchEventAttendInput()
+  }
+
+  const dateFormatter = (date) => {
+    if (!date) return null
+    //0월 0일 00:00
+    // 20200218145519
+    let month = date.substring(4, 6)
+    let day = date.substring(6, 8)
+    let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
+    return `${month}월 ${day}일 ${time}`
+  }
+
+  const intervalFormatter = (date) => {
+    if (!date) return null
+    let time = date.replace(/\s/gi, '').substring(13, 18)
+    return `${time}`
   }
 
   const {title} = props.match.params
-  if (title === 'winList') return <>당첨자리스트</>
+  if (title === 'winList') return <WinList winList={winList} />
 
   return (
     <Layout {...props} status="no_gnb">
@@ -225,8 +237,8 @@ export default (props) => {
           <div className="gifticon-win-box">
             <label>기프티콘 당첨자</label>
             <div className="gifticon-win-list">
-              <p className="time">8월 28일 23:59</p>
-              <p className="nick-name">₩°천사소녀네티만의꼬북꼬..</p>
+              <p className="time">{dateFormatter(winList.length && winList[0].winDt)}</p>
+              <p className="nick-name">{winList.length && winList[0].nickNm}</p>
             </div>
           </div>
         </div>
@@ -263,23 +275,29 @@ export default (props) => {
                   </p>
                 </div>
 
-                <div className="gifticon-benefit-input">
-                  <p className="title">기프티콘 당첨자 연락처 입력</p>
+                {statusList.phone_input === '0' ? (
+                  ''
+                ) : (
+                  <div className="gifticon-benefit-input">
+                    <p className="title">
+                      기프티콘 당첨자 연락처 입력 <span className="time">{intervalFormatter(statusList.input_enddate)}</span>
+                    </p>
 
-                  <div className="input-box">
-                    <input
-                      type="tel"
-                      placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
-                      id="phone"
-                      name="phone"
-                      value={phone}
-                      onChange={inputHandle}
-                    />
-                    <button onClick={clickSaveButton}>저장</button>
+                    <div className="input-box">
+                      <input
+                        type="tel"
+                        placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
+                        id="phone"
+                        name="phone"
+                        value={phone}
+                        onChange={inputHandle}
+                      />
+                      <button onClick={clickSaveButton}>저장</button>
+                    </div>
+
+                    <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수된 휴대폰 번호는 중복으로 참여할 수 없습니다.</p>
                   </div>
-
-                  <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수된 휴대폰 번호는 중복으로 참여할 수 없습니다.</p>
-                </div>
+                )}
               </div>
             </div>
 
@@ -310,7 +328,7 @@ export default (props) => {
             <li>
               출석 버튼은 00시 기준 종료된 방송 또는 청취 시간의 합이 30분 이 상일 때 선택할 수 있습니다.
               <br />
-              예시) 23:40-00:10의 경우 전일 출석 이벤트는 참여할 수 없으며, 오 늘 출석 이벤트는 참여할 수 있습니다.
+              예시) 23:40-00:10의 경우 전일 출석 이벤트는 참여할 수 없으며, 오늘 출석 이벤트는 참여할 수 있습니다.
             </li>
             <li>출석 버튼은 한 대의 기기당 1일 1회 한 개의 계정만 선택할 수 있습 니다.</li>
             <li>출석 버튼은 청취 중에 선택할 수 없습니다. 청취 종료 후 출석 버튼 을 선택해주세요.</li>

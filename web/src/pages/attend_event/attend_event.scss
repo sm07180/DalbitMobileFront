@@ -62,7 +62,7 @@
         background-color: #fff;
 
         .time {
-          width: 38%;
+          width: 48%;
           max-width: 92px;
           margin-right: 2%;
           color: #757575;
@@ -70,10 +70,11 @@
           overflow: hidden;
           white-space: nowrap;
           word-wrap: normal;
+          letter-spacing: -1px;
         }
 
         .nick-name {
-          width: 60%;
+          width: 50%;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
@@ -100,11 +101,12 @@
   }
 
   .event-content {
-    padding: 20px 16px 0 16px;
+    padding: 1px 3%;
     background-color: #fff;
 
     .event-section {
       position: relative;
+      margin-top: 30px;
       text-align: center;
 
       .title-label {
@@ -184,9 +186,17 @@
           text-align: left;
 
           .title {
+            font-size: 14px;
             margin-bottom: 10px;
             font-weight: 700;
             color: #067878;
+
+            span {
+              display: inline-block;
+              margin-left: 5px;
+              font-size: 12px;
+              color: #f51f60;
+            }
           }
 
           .input-box {
@@ -802,6 +812,94 @@
         height: 3px;
         background-color: #fff;
         border-radius: 50%;
+      }
+    }
+  }
+
+  .win-list-box {
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #d2d2d2;
+      padding: 14px 0;
+      box-sizing: border-box;
+      padding: 12px 16px;
+      position: relative;
+
+      &__title {
+        font-size: 18px;
+        letter-spacing: -0.45px;
+        font-weight: 800;
+      }
+
+      &__btnBack {
+        display: block;
+        width: 36px;
+        position: absolute;
+        top: 6px;
+        left: 2%;
+      }
+    }
+
+    .content {
+      padding: 0 3%;
+      .note {
+        padding: 16px 21px;
+        font-size: 13px;
+        line-height: 20px;
+        letter-spacing: -0.33px;
+        text-align: center;
+        color: #757575;
+      }
+
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          color: #632beb;
+        }
+
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+
+          &.date {
+            color: #757575;
+          }
+
+          &.nick {
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+
+            .thumb {
+              overflow: hidden;
+              width: 28px;
+              height: 28px;
+              margin-right: 5px;
+              border-radius: 50%;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            p {
+              width: calc(100% - 33px);
+              text-align: left;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
       }
     }
   }

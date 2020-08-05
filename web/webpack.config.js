@@ -10,7 +10,8 @@ const fs = require('fs')
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
+    API_SERVER_URL: JSON.stringify('https://devm-leejaeho1144.dalbitlive.com:4431'),
+    // API_SERVER_URL: JSON.stringify('https://devapi2.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
     PAY_SERVER_URL: JSON.stringify('https://devpay2.dalbitlive.com'),
