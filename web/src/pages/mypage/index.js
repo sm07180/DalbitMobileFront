@@ -23,10 +23,16 @@ import EditeStar from './content/edite_stars'
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 import Arrow from './static/arrow.svg'
-import closeBtn from './static/ic_back.svg'
+import newCircle from './static/new_circle.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
 
+//new State
+let NewState = {
+  fanboard: false,
+  notice: false,
+  wallet: false
+}
 export default (props) => {
   const {webview} = qs.parse(location.search)
   //navi Array
@@ -68,7 +74,6 @@ export default (props) => {
     if (isHybrid()) {
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
-      // console.log(context.noticeIndexNum)
     } else {
       window.history.go(-1)
     }
@@ -125,6 +130,10 @@ export default (props) => {
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
+  //만약 뉴표시에 관한 조건이있다면 그상황에 맞추어 ex)NewState.fanboard = true
+  //new 알람 표시 초기상태를 그 페이지에서 알수없기때문에 state 지양
+  NewState.fanboard = true
+  NewState.notice = true
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -137,13 +146,17 @@ export default (props) => {
               <MyProfile profile={profileInfo} {...props} webview={webview} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
+                  console.log(NewState['fanboard'])
+                  console.log(NewState['notice'])
                   const {type, txt, icon, component} = value
                   return (
                     <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>
-                        <span className="arrow"></span>
+                        {/* 뉴표시 */}
+                        {__NODE_ENV === 'dev' && <span className={NewState[type] ? 'arrow arrow--active' : 'arrow'}></span>}
+                        {__NODE_ENV !== 'dev' && <span className="arrow"></span>}
                       </div>
                     </div>
                   )
@@ -213,6 +226,17 @@ const Sub2 = styled.div`
         width: 24px;
         height: 24px;
         background: url(${Arrow}) no-repeat center center / cover;
+
+        &--active {
+          &:before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 24px;
+            margin-left: -24px;
+            background: url(${newCircle});
+          }
+        }
       }
     }
   }
