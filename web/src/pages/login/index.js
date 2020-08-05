@@ -33,6 +33,7 @@ export default (props) => {
   const [fetching, setFetching] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
+  const [common, setCommon] = useState({})
 
   const [appleAlert, setAppleAlert] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
@@ -252,6 +253,15 @@ export default (props) => {
     }
   }, [globalCtx.nativeTid])
 
+  async function commonData() {
+    const res = await Api.splash({})
+    if (res.result === 'success') setCommon(res.data)
+  }
+
+  useEffect(() => {
+    commonData()
+  }, [])
+
   return (
     <Switch>
       {token && token.isLogin ? (
@@ -330,9 +340,12 @@ export default (props) => {
             {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
               <SocialLoginWrap>
                 <div className="line-wrap">
-                  <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                    <img className="icon" src={appleLogo} />
-                  </button>
+                  {
+                    (customHeader['os'] !== OS_TYPE['Android'] || (common.isAosCheck === false)) &&
+                    <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+                      <img className="icon" src={appleLogo} />
+                    </button>
+                  }
                   <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
                     <img className="icon" src={facebookLogo} />
                   </button>
