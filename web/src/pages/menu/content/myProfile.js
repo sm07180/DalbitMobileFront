@@ -161,7 +161,7 @@ const myProfile = (props) => {
   //func back
   const goBack = () => {
     const {webview} = qs.parse(location.search)
-    console.log(webview)
+
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
@@ -417,8 +417,8 @@ const PurpleWrap = styled.div`
 const ProfileWrap = styled.div`
   .adminBtn {
     position: absolute;
-    top: 0;
-    left: 0%;
+    top: 0px;
+    left: 12px;
   }
   padding-top: 87px;
   position: relative;
