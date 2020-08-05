@@ -101,7 +101,7 @@ export default (props) => {
         <div className="icon-wrap">
           <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
 
-          {newAlarm === false ? (
+          {newAlarm === true ? (
             <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
               <Lottie
                 options={{
