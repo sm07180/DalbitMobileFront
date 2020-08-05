@@ -30,6 +30,7 @@ import Utility from 'components/lib/utility'
 
 // static
 import Mic from './static/ic_broadcastng.svg'
+import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
