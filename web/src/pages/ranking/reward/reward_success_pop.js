@@ -67,7 +67,7 @@ export default (props) => {
 
           <div>
             <div className="top-badge-box">
-              <span className="top-badge-title">TOP 뱃지</span>{' '}
+              <span className="top-badge-title">TOP 배지</span>{' '}
               <label
                 className="badge-label right"
                 style={{
@@ -93,8 +93,9 @@ export default (props) => {
         </button>
 
         <ul className="notice-box">
-          <li>* 뱃지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다. </li>
-          <li>* 경험치 랜덤 박스 보상은 차주 랭킹이 업데이트 되기전 까지 받아야합니다.</li>
+          <li>* Top 배지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다.</li>
+          <li>* 경험치 랜덤 박스 보상은 데이터 업데이트 전까지 받아야합니다.</li>
+          <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li>
         </ul>
       </div>
       {randomPopup && (
@@ -165,7 +166,7 @@ const PopupWrap = styled.div`
       .title {
         display: inline-block;
         position: absolute;
-        width: fit-content;
+        width: 58%;
         top: -8px;
         left: 50%;
         transform: translateX(-50%);
@@ -174,6 +175,7 @@ const PopupWrap = styled.div`
         text-align: center;
         font-size: 14px;
         background-color: #fff;
+        text-align: center;
       }
 
       .top-badge-box {

@@ -39,7 +39,22 @@ const makeContents = (props) => {
 
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
-      const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank, os, isNew} = list
+      const {
+        roomNo,
+        roomType,
+        bjProfImg,
+        bjNickNm,
+        bjGender,
+        title,
+        likeCnt,
+        entryCnt,
+        giftCnt,
+        isSpecial,
+        boostCnt,
+        rank,
+        os,
+        isNew
+      } = list
 
       return (
         <LiveList
@@ -50,7 +65,8 @@ const makeContents = (props) => {
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
             <div className="icon-wrap">
-              {os ===3 && <span className="pc-icon">PC</span>}{/*<img className="type-icon" src={audioIcon} />*/}
+              {os === 3 && <span className="pc-icon">PC</span>}
+              {/*<img className="type-icon" src={audioIcon} />*/}
               <div className="type-text">{broadcastLive[roomType]}</div>
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
@@ -63,6 +79,7 @@ const makeContents = (props) => {
                 <img src={hitIcon} />
                 <span>{Util.printNumber(entryCnt)}</span>
               </div>
+
               {boostCnt > 0 ? (
                 <div className="value">
                   <img src={boostIcon} />
@@ -116,6 +133,7 @@ const makeContents = (props) => {
                   <span className="count-txt">{Util.printNumber(firstList.entryCnt)}</span>
                 </div>
                 <div className="bottom-wrap">
+                  {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
                   <div className="type-icon-wrap">
                     <img className="type-icon" src={noBgAudioIcon} />
                   </div>
@@ -144,6 +162,7 @@ const makeContents = (props) => {
                     <span className="count-txt">{Util.printNumber(lastList.entryCnt)}</span>
                   </div>
                   <div className="bottom-wrap">
+                    {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
                     <div className="type-icon-wrap">
                       <img className="type-icon" src={noBgAudioIcon} />
                     </div>
@@ -197,8 +216,8 @@ const HalfWrap = styled.div`
       bottom: 0px;
       left: 0px;
       width: 100%;
-      height: 47px;
-      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
     }
 
     .top-status {
@@ -212,6 +231,17 @@ const HalfWrap = styled.div`
 
       span {
         margin-right: 3px;
+      }
+
+      .pc-icon {
+        color: #fff;
+        font-size: 11px;
+        border-radius: 10px;
+        background-color: #f26d4a;
+        height: 16px;
+        width: 26px;
+        line-height: 16px;
+        margin-right: 4px;
       }
 
       .twenty-icon {
@@ -264,15 +294,14 @@ const HalfWrap = styled.div`
       top: 6px;
       right: 6px;
       display: flex;
-      flex-direction: row;
-      align-items: center;
+      z-index: 1;
 
       .entry-img {
         display: block;
       }
       .count-txt {
         color: #fff;
-        font-size: 11px;
+        font-size: 13px;
         text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
       }
     }
@@ -282,15 +311,28 @@ const HalfWrap = styled.div`
       bottom: 6px;
       left: 6px;
       display: flex;
-      flex-direction: row;
       align-items: center;
       z-index: 1;
+
+      .pc-icon {
+        color: #fff;
+        font-size: 11px;
+        border-radius: 10px;
+        background-color: #f26d4a;
+        text-align: center;
+        width: 26px;
+        height: 16px;
+
+        line-height: 16px;
+        margin-right: 4px;
+      }
 
       .type-icon-wrap {
         width: 26px;
         border-radius: 8px;
         background-color: rgba(254, 189, 86, 0.5);
         height: 16px;
+        margin-right: 4px;
 
         .type-icon {
           width: 26px;
@@ -361,7 +403,7 @@ const LiveList = styled.div`
     color: #fff;
     font-size: 11px;
     border-radius: 10px;
-    background-color: #febd56;
+    background-color: #f26d4a;
     height: 16px;
     padding: 0 6px;
     line-height: 16px;

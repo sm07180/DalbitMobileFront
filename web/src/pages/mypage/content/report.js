@@ -92,7 +92,7 @@ export default (props) => {
         startDt: changes.pickdataPrev,
         endDt: changes.pickdataNext,
         page: currentPage,
-        records: 4
+        records: 10
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {
@@ -131,7 +131,7 @@ export default (props) => {
         startDt: changes.pickdataPrev,
         endDt: changes.pickdataNext,
         page: currentPage,
-        records: 3
+        records: 10
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {

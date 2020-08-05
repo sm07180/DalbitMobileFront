@@ -221,7 +221,8 @@ const TopSlider = styled.div`
         width: 48px;
         height: 48px;
         margin-right: 8px;
-        border-radius: 48px;
+        border-radius: 50%;
+        border: solid 1px rgba(255, 255, 255, 0.5);
       }
       .text {
         display: flex;
