@@ -91,6 +91,7 @@ export default () => {
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
         <Route exact path="/attend_event" component={AttendEvent} />
+        <Route exact path="/attend_event/:title" component={AttendEvent} />
         <Route exact path="/event_rising" component={EventRising} />
         {/* <Route exact path="/service" component={Service} /> */}
         <Route exact path="/error" component={ErrorPage} />
