@@ -158,6 +158,24 @@ export default (props) => {
       return null
     }
   }
+
+  async function getMyPageNewFanBoard(){
+    const newFanBoard = await Api.getMyPageNewFanBoard()
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+      mypageNewStg = {}
+    }else{
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+    const fanBoard = newFanBoard.data
+    mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
+    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+  }
+  useEffect(() => {
+    if (context.token.memNo === profile.memNo) {
+      getMyPageNewFanBoard()
+    }
+  }, [])
   //--------------------------------------------------
   return (
     <FanBoard>

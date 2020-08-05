@@ -23,6 +23,19 @@ export default function List() {
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 
+  let mypageNewStg = localStorage.getItem('mypageNew')
+  if(mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== ''){
+    mypageNewStg = JSON.parse(mypageNewStg)
+  }else{
+    mypageNewStg = {}
+  }
+  const getNewIcon = (noticeIdx, isNew) => {
+    if(isNew && mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== ''){
+      return mypageNewStg.notice.find(e => e === parseInt(noticeIdx)) === undefined
+    }
+    return isNew;
+  }
+
   const fetchData = async function(next) {
     currentPage = next ? ++currentPage : currentPage
 
@@ -121,7 +134,7 @@ export default function List() {
         <div className='noticeList'>
           <dl>
             {listPage.map((item, index) => {
-              const {noticeType, writeDt, title, noticeIdx, writeTs} = item
+              const {noticeType, writeDt, title, noticeIdx, writeTs, isNew} = item
               //console.log((IntTime - writeTs) / 3600)
 
               if (listPage === null) return
@@ -129,7 +142,6 @@ export default function List() {
                 <div key={index} onClick={() => routeHistory(item)}>
                   <div className="tableWrap">
                     <dd>
-                      {(IntTime - writeTs) / 3600 < 3 && <em></em>}
                       {noticeType !== 0 && (
                         <span className="tableWrap__label">
                           {noticeType === 1 ? '공지사항 ' : ''}
@@ -140,6 +152,7 @@ export default function List() {
                         </span>
                       )}
                       <span className="tableWrap__title">{title}</span>
+                      {getNewIcon(noticeIdx, isNew) && <em></em>}
                     </dd>
                     <dd></dd>
                   </div>
