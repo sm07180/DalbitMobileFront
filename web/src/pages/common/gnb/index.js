@@ -101,8 +101,8 @@ export default (props) => {
         <div className="icon-wrap">
           <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
 
-          {newAlarm === true ? (
-            <div className="alarmSize">
+          {newAlarm === false ? (
+            <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
               <Lottie
                 options={{
                   loop: true,
@@ -112,9 +112,7 @@ export default (props) => {
               />
             </div>
           ) : (
-            <>
-              <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
-            </>
+            <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
           )}
 
           {context.news && <span className="news">&nbsp;</span>}
