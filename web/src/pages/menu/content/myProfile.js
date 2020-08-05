@@ -161,7 +161,7 @@ const myProfile = (props) => {
   //func back
   const goBack = () => {
     const {webview} = qs.parse(location.search)
-    console.log(webview)
+
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
