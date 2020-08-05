@@ -7,88 +7,72 @@ export default (props) => {
   return (
     <div className="rankGuideWrap">
       <div className="tableBox">
-        <p className="tableBox__title">
-          DJ 랭킹<span className="tableBox__title--option">반영비율(%)</span>
-        </p>
+        <p className="tableBox__title">DJ 랭킹</p>
 
         <table>
           <colgroup>
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
+            <col width="20%" />
           </colgroup>
           <thead>
             <tr>
               <th>구분</th>
-              <th>DJ 오늘</th>
-              <th>DJ 일간</th>
-              <th>DJ 주간</th>
+              <th>
+                받은
+                <br />
+                선물
+              </th>
+              <th>
+                받은
+                <br />
+                좋아요
+              </th>
+              <th>
+                누적
+                <br />
+                청취자
+              </th>
+              <th>
+                방송
+                <br />
+                시간
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="category">받은 선물</td>
+              <td className="category">비율(%)</td>
               <td>30%</td>
-              <td>30%</td>
-              <td>30%</td>
-            </tr>
-
-            <tr>
-              <td className="category">받은 좋아요</td>
               <td>20%</td>
               <td>20%</td>
-              <td>20%</td>
-            </tr>
-
-            <tr>
-              <td className="category">누적 청취자</td>
-              <td>20%</td>
-              <td>20%</td>
-              <td>20%</td>
-            </tr>
-
-            <tr>
-              <td className="category">방송 시간</td>
-              <td>30%</td>
-              <td>30%</td>
               <td>30%</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div className="tableBox">
-        <p className="tableBox__title">
-          FAN 랭킹<span className="tableBox__title--option">반영비율(%)</span>
-        </p>
+        <p className="tableBox__title">FAN 랭킹</p>
 
         <table>
           <colgroup>
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
-            <col width="25%" />
+            <col width="33.3333%" />
+            <col width="33.3333%" />
+            <col width="33.3333%" />
           </colgroup>
           <thead>
             <tr>
               <th>구분</th>
-              <th>FAN 오늘</th>
-              <th>FAN 일간</th>
-              <th>FAN 주간</th>
+              <th>보낸 선물</th>
+              <th>청취 시간</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="category">보낸 선물</td>
+              <td className="category">비율(%)</td>
               <td>60%</td>
-              <td>60%</td>
-              <td>60%</td>
-            </tr>
-
-            <tr>
-              <td className="category">청취 시간</td>
-              <td>40%</td>
-              <td>40%</td>
               <td>40%</td>
             </tr>
           </tbody>

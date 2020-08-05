@@ -17,7 +17,10 @@ import PxBtnIcon from '../../static/ic_p_xbtn.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
+import GarBageIcon from '../../static/garbage.svg'
+//
 import NoResult from 'components/ui/noResult'
+
 //---------------------------------------------------------------------------------
 // concat flag
 let currentPage = 1
@@ -26,7 +29,6 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
-  const resetList = props.resetList
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -38,8 +40,8 @@ export default (props) => {
   const [defaultMemo, setDefaultMemo] = useState('')
   const [memoMemNo, setMemoMemNo] = useState(-1)
   const [popState, setPopState] = useState(false)
-  const [deleteList, setDeleteList] = useState('')
-  const [filterLeng, setFilterLeng] = useState(0)
+  // const [deleteList, setDeleteList] = useState('')
+  // const [filterLeng, setFilterLeng] = useState(0)
   //스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -99,6 +101,10 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
+        ctx.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -116,6 +122,10 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
+        ctx.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
       } else if (res.result === 'fail') {
         ctx.action.alert({
           callback: () => {},
@@ -162,37 +172,31 @@ export default (props) => {
     setMemoContent('')
   }
   // 임시 삭제하기 기능
-  const hideList = (memNo) => {
-    const test = list.map((item, index) => {
-      if (item.memNo === memNo) {
-        item.nickNm = ''
-      }
-      return item
-    })
-    const filterList = test.filter((v) => {
-      return v.nickNm === ''
-    })
-    setList(test)
-    setFilterLeng(filterList.length)
-    if (filterList.length > 0) {
-      ctx.action.updateEditeToggle(true)
-    }
-    let str = ''
-    filterList.forEach((v, i, self) => {
-      if (i === self.length - 1) {
-        str += v.memNo
-      } else {
-        str += v.memNo + '|'
-      }
-    })
-    setDeleteList(str)
-  }
-  useEffect(() => {
-    if (resetList !== -1) {
-      setFilterLeng(0)
-      ctx.action.updateEditeToggle(false)
-    }
-  }, [resetList])
+  // const hideList = (memNo) => {
+  //   const test = list.map((item, index) => {
+  //     if (item.memNo === memNo) {
+  //       item.nickNm = ''
+  //     }
+  //     return item
+  //   })
+  //   const filterList = test.filter((v) => {
+  //     return v.nickNm === ''
+  //   })
+  //   setList(test)
+  //   setFilterLeng(filterList.length)
+  //   if (filterList.length > 0) {
+  //     ctx.action.updateEditeToggle(true)
+  //   }
+  //   let str = ''
+  //   filterList.forEach((v, i, self) => {
+  //     if (i === self.length - 1) {
+  //       str += v.memNo
+  //     } else {
+  //       str += v.memNo + '|'
+  //     }
+  //   })
+  //   setDeleteList(str)
+  // }
 
   //window Scroll
   useEffect(() => {
@@ -206,12 +210,6 @@ export default (props) => {
     currentPage = 1
     fetchData()
   }, [])
-  useEffect(() => {
-    if (resetList !== -1) {
-      currentPage = 1
-      fetchData()
-    }
-  }, [resetList])
   //-----------------------------------------------------------
   async function fetchDataGetMemo(memNo) {
     const res = await Api.getNewFanMemo({
@@ -263,32 +261,35 @@ export default (props) => {
       })
     }
   }
-  //-----------------------------------------------------------
-  useEffect(() => {
-    if (ctx.fanEdite === -1) {
-      async function fetchDeleteList() {
-        const res = await Api.deleteNewFanList({
-          fanNoList: deleteList
-        })
-        if (res.result === 'success') {
-          ctx.action.alert({
-            callback: () => {
-              ctx.action.updateFanEdite(false)
-            },
-            msg: res.message
-          })
-        } else if (res.result === 'fail') {
-          ctx.action.alert({
-            callback: () => {
-              ctx.action.updateFanEdite(false)
-            },
-            msg: res.message
-          })
+  //삭제하기
+  async function fetchDeleteList(memNo) {
+    const res = await Api.deleteNewFanList({
+      fanNoList: memNo
+    })
+    if (res.result === 'success') {
+      const test = list.map((item, index) => {
+        if (item.memNo === memNo) {
+          item.nickNm = ''
         }
-      }
-      fetchDeleteList()
+        return item
+      })
+      setList(test)
+    } else if (res.result === 'fail') {
+      ctx.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
-  }, [ctx.fanEdite])
+  }
+  // 삭제하기 클릭
+  const DeleteItem = (memNo) => {
+    ctx.action.confirm({
+      callback: () => {
+        fetchDeleteList(memNo)
+      },
+      msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
+    })
+  }
   return (
     <Wrap>
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
@@ -313,30 +314,27 @@ export default (props) => {
                       </span>
                     </div>
                   </div>
-                  {ctx.fanEdite ? (
-                    <div className="list__btnBox">
-                      <button className="deleteBtn" onClick={() => hideList(memNo)}></button>
-                    </div>
-                  ) : (
-                    <div className="list__btnBox">
-                      <button
-                        className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
-                        onClick={() => registToggle(isFan, memNo)}>
-                        {isFan ? '팬' : '+팬등록'}
-                      </button>
-                      {fanMemo === '' ? (
-                        <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}>
-                          메모
-                        </button>
-                      ) : (
+
+                  <div className="list__btnBox">
+                    <button
+                      className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
+                      onClick={() => registToggle(isFan, memNo)}>
+                      {isFan ? '팬' : '+팬등록'}
+                    </button>
+                    {fanMemo === '' ? (
+                      <div className="editeWrap">
+                        <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}></button>
+                        <button className="editeWrap__garbageBtn" onClick={() => DeleteItem(memNo)}></button>
+                      </div>
+                    ) : (
+                      <div className="editeWrap">
                         <button
                           className="list__btnBox__memoBtn list__btnBox__memoBtn--active"
-                          onClick={() => GetMemoList(memNo)}>
-                          메모
-                        </button>
-                      )}
-                    </div>
-                  )}
+                          onClick={() => GetMemoList(memNo)}></button>
+                        <button className="editeWrap__garbageBtn" onClick={() => DeleteItem(memNo)}></button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </React.Fragment>
@@ -462,6 +460,8 @@ const Wrap = styled.div`
     &__btnBox {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       margin-left: auto;
       &__fanBtn {
         width: 64px;
@@ -481,7 +481,6 @@ const Wrap = styled.div`
       &__memoBtn {
         display: flex;
         align-items: center;
-        margin-top: 10px;
         font-size: 14px;
         font-weight: 600;
         line-height: 1.14;
@@ -511,7 +510,6 @@ const Wrap = styled.div`
   .deleteBtn {
     width: 24px;
     height: 24px;
-
     background: url(${PdeleteBtn});
   }
   .memoPop {
@@ -598,6 +596,20 @@ const Wrap = styled.div`
           background: url(${PxBtnIcon});
         }
       }
+    }
+  }
+  .editeWrap {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: 10px;
+    align-items: center;
+
+    &__garbageBtn {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: url(${GarBageIcon});
     }
   }
 `

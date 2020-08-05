@@ -67,6 +67,7 @@ export default (props) => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('dj') // type: dj, fan
+  const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -87,9 +88,6 @@ export default (props) => {
 
   const [payState, setPayState] = useState(false)
   const [broadCnt, setBroadCnt] = useState(false)
-
-  // const [liveListType, setLiveListType] = useState('detail')
-  const [liveListType, setLiveListType] = useState('detail')
 
   useEffect(() => {
     if (window.sessionStorage) {
