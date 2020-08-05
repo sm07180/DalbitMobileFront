@@ -257,8 +257,6 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      // console.log(res.data)
-
       if (res.hasOwnProperty('data')) {
         setPopupData(res.data)
         let filterData = []
@@ -352,7 +350,7 @@ export default (props) => {
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
 
-      if (window.scrollY === 0) {
+      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
         refreshIconNode.style.opacity = 1
@@ -369,7 +367,7 @@ export default (props) => {
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
 
-      const heightDiff = (touchEndY - touchStartY) / 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
 
       if (heightDiff >= 100) {
         let current_angle = (() => {
@@ -462,7 +460,9 @@ export default (props) => {
           </div>
         </GnbWrap>
 
-        <div ref={RecommendRef}>{Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}</div>
+        <div ref={RecommendRef} style={{height: '220px', backgroundColor: '#eee'}}>
+          {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+        </div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -502,7 +502,15 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="refresh-icon" src={refreshIcon} onClick={fetchLiveList} />
+                <img
+                  className="refresh-icon"
+                  src={refreshIcon}
+                  onClick={async () => {
+                    setReloadInit(true)
+                    await fetchLiveList()
+                    setReloadInit(false)
+                  }}
+                />
               </div>
 
               <div className="sequence-wrap">
