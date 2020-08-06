@@ -67,7 +67,7 @@ export default React.forwardRef((props, ref) => {
         <div className="basicBanner" key={`banner-${idx}`}>
           {idx === 0 ? (
             <>
-              <button className="moreButton" onClick={() => buttonToogle()}></button>
+              <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
             </>
           ) : (
             ''
@@ -199,10 +199,10 @@ const Banner = styled.div`
     right: 0px;
     bottom: 0px;
     z-index: 2;
-    background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g.svg') center no-repeat #fff;
+    background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g_up.svg') center no-repeat #fff;
 
     &.active {
-      background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g_up.svg') center no-repeat #fff;
+      background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g.svg') center no-repeat #fff;
     }
   }
 
