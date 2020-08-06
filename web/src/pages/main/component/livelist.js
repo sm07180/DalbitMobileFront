@@ -38,8 +38,7 @@ const makeContents = (props) => {
         os,
         isNew
       } = list
-      console.log('rt', roomType)
-      console.log(categoryList)
+
       return (
         <LiveList
           key={`live-${idx}`}
