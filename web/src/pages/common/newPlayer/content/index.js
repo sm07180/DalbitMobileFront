@@ -12,7 +12,7 @@ import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 // etc
 // image
 
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -334,7 +334,7 @@ const Figure = styled.figure`
   height: 60px;
   margin-right: 20px;
   border-radius: 50%;
-  background: url(${props => props.url}) no-repeat center center / cover;
+  background: url(${(props) => props.url}) no-repeat center center / cover;
 
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 40px;

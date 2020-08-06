@@ -32,7 +32,7 @@ export default (props) => {
         globalCtx.action.updateProfile(profileInfo.data)
       }
     })
-  }, [])
+  }, [globalCtx.close])
   return (
     <>
       {/* 로그인 대기창  */}

@@ -257,22 +257,18 @@ export default (props) => {
         position: arg
       }
     })
+
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
-        setPopupData(res.data)
-        let filterData = []
-        res.data.map((data, index) => {
-          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
-          if (popupState === undefined) {
-            filterData.push(data)
-          } else {
-            return false
-          }
-        })
-
-        setTimeout(() => {
-          if (filterData.length > 0) setPopupNotice(true)
-        }, 10)
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
       }
     }
   }
@@ -587,7 +583,7 @@ export default (props) => {
           />
         )}
 
-        {popupNotice && <LayerPopupWrap data={popupData} setPopup={setPopupNotice} />}
+        {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>
