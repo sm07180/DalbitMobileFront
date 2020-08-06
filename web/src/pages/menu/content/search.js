@@ -220,6 +220,15 @@ export default (props) => {
   useEffect(() => {
     query = ''
   }, [])
+  useEffect(() => {
+    if (btnIdx === 0 && query !== '') {
+      currentPage = 1
+      recordsVar = 3
+      fetchMember(query)
+      fetchLive(query)
+    }
+  }, [btnIdx])
+
   return (
     <Content>
       <Room />
