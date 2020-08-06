@@ -294,12 +294,11 @@ export default (props) => {
       {list &&
         list.map((item, idx) => {
           const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, starMemo, memNo} = item
-
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
                 <div className="list">
-                  <div className="list__imgBox" onClick={() => history.push(`/mypage/${memNo}`)}>
+                  <div className="list__imgBox" onClick={() => (window.location.href = `/mypage/${memNo}`)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
                   <div className="list__infoBox">

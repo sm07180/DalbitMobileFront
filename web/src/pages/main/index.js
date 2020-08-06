@@ -130,11 +130,33 @@ export default (props) => {
     }
   }
 
+  const fetchLiveListAsInit = async () => {
+    setLiveList(null)
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: 1,
+        records: records,
+        roomType: '',
+        searchType: 1,
+        gender: ''
+      }
+    })
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
+      }
+      setLiveList(list)
+    }
+  }
+
   const fetchLiveList = async (reset) => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
-        page: reset ? 1 : livePage,
+        page: reset === true ? 1 : livePage,
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -386,10 +408,13 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          await fetchLiveList(true)
+          await fetchLiveListAsInit()
+
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
 
+          setLiveAlign(1)
+          setLiveGender('')
           setRankType('dj')
           setLiveListType('detail')
           setSelectedLiveRoomType('')

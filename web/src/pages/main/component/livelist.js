@@ -38,8 +38,7 @@ const makeContents = (props) => {
         os,
         isNew
       } = list
-      console.log('rt', roomType)
-      console.log(categoryList)
+
       return (
         <LiveList
           key={`live-${idx}`}
@@ -50,7 +49,10 @@ const makeContents = (props) => {
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
-              <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
+              {categoryList && (
+                <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
+              )}
+
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
               {isNew === true && <span className="new-dj-icon">신입</span>}
