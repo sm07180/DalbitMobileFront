@@ -22,6 +22,19 @@ export default function List() {
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 
+  let mypageNewStg = localStorage.getItem('mypageNew')
+  if (mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== '') {
+    mypageNewStg = JSON.parse(mypageNewStg)
+  } else {
+    mypageNewStg = {}
+  }
+  const getNewIcon = (noticeIdx, isNew) => {
+    if (isNew && mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== '') {
+      return mypageNewStg.notice.find((e) => e === parseInt(noticeIdx)) === undefined
+    }
+    return isNew
+  }
+
   const fetchData = async function (next) {
     currentPage = next ? ++currentPage : currentPage
 
