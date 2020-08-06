@@ -30,6 +30,7 @@ import Utility from 'components/lib/utility'
 
 // static
 import Mic from './static/ic_broadcastng.svg'
+import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
@@ -257,8 +258,6 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      // console.log(res.data)
-
       if (res.hasOwnProperty('data')) {
         setPopupData(res.data)
         let filterData = []
@@ -275,8 +274,6 @@ export default (props) => {
           if (filterData.length > 0) setPopupNotice(true)
         }, 10)
       }
-    } else {
-      console.log(res.result, res.message)
     }
   }
 
@@ -334,7 +331,7 @@ export default (props) => {
 
   const mainTouchStart = useCallback(
     (e) => {
-      if (reloadInit === true) return
+      if (reloadInit === true || window.scrollY !== 0) return
 
       touchStartY = e.touches[0].clientY
     },
@@ -343,7 +340,7 @@ export default (props) => {
 
   const mainTouchMove = useCallback(
     (e) => {
-      if (reloadInit === true) return
+      if (reloadInit === true || window.scrollY !== 0) return
 
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
@@ -352,10 +349,9 @@ export default (props) => {
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
 
-      if (window.scrollY === 0) {
+      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
         refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
-        refreshIconNode.style.opacity = 1
       }
     },
     [reloadInit]
@@ -365,11 +361,12 @@ export default (props) => {
     async (e) => {
       if (reloadInit === true) return
 
+      const ratio = 3
       const transitionTime = 150
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
 
-      const heightDiff = (touchEndY - touchStartY) / 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
 
       if (heightDiff >= 100) {
         let current_angle = (() => {
@@ -394,8 +391,13 @@ export default (props) => {
 
           await fetchMainInitData()
           await fetchLiveList(true)
-          await new Promise((resolve, _) => setTimeout(() => resolve(), 500))
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
+
+          setRankType('dj')
+          setLiveListType('detail')
+          setSelectedLiveRoomType('')
+          setReloadInit(false)
         }
       }
 
@@ -408,9 +410,9 @@ export default (props) => {
 
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
-      refreshIconNode.style.opacity = 0
       refreshIconNode.style.transform = 'rotate(0)'
-      setReloadInit(false)
+      touchStartY = null
+      touchEndY = null
     },
     [reloadInit]
   )
@@ -462,7 +464,9 @@ export default (props) => {
           </div>
         </GnbWrap>
 
-        <div ref={RecommendRef}>{Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}</div>
+        <div ref={RecommendRef} style={{height: '220px', backgroundColor: '#eee'}}>
+          {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+        </div>
         <Content>
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -502,7 +506,16 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <div className="txt">실시간 LIVE</div>
-                <img className="refresh-icon" src={refreshIcon} onClick={fetchLiveList} />
+                <img
+                  className="refresh-icon"
+                  src={refreshIcon}
+                  onClick={async () => {
+                    setReloadInit(true)
+                    await fetchMainInitData()
+                    await fetchLiveList(true)
+                    setReloadInit(false)
+                  }}
+                />
               </div>
 
               <div className="sequence-wrap">
@@ -597,8 +610,6 @@ const RefreshIconWrap = styled.div`
       display: block;
       position: relative;
       left: -50%;
-      opacity: 0;
-      transition: opacity 200ms ease-in;
     }
   }
 `
