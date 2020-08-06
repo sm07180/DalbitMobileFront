@@ -58,7 +58,8 @@ export default (props) => {
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
-  var urlrStr = props.location.pathname.split('/')[2]
+  let urlrStr = props.location.pathname.split('/')[2]
+
   //state
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -97,6 +98,7 @@ export default (props) => {
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
+        console.log(profileInfo.data)
         setProfileInfo(profileInfo.data)
         // context.action.updateProfile(profileInfo.data)
         if (profileInfo.code === '-2') {
@@ -119,7 +121,7 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt])
+  }, [context.mypageFanCnt, memNo, urlrStr])
 
   // check 탈퇴회원
   useEffect(() => {
@@ -151,8 +153,6 @@ export default (props) => {
               <MyProfile profile={profileInfo} {...props} webview={webview} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
-                  console.log(NewState['fanboard'])
-                  console.log(NewState['notice'])
                   const {type, txt, icon, component} = value
                   return (
                     <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>

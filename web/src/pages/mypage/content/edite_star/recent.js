@@ -294,6 +294,7 @@ export default (props) => {
       {list &&
         list.map((item, idx) => {
           const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, starMemo, memNo} = item
+
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
