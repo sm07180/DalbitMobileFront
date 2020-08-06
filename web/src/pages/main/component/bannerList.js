@@ -137,8 +137,6 @@ export default React.forwardRef((props, ref) => {
 })
 
 const Banner = styled.div`
-  margin-bottom: 19px;
-
   div.swiper-pagination-fraction {
     display: flex !important;
     bottom: 0px;
