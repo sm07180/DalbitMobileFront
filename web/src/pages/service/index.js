@@ -28,12 +28,13 @@ export default function Service() {
   const makeCallBtn = (callNum) => {
     if (customerHeader.os === OS_TYPE['Android']) {
       return (
-        <button
-          onClick={() => {
-            Hybrid('openCall', `tel:${callNum}`)
-          }}>
-          전화걸기
-        </button>
+        <></>
+        // <button
+        //   onClick={() => {
+        //     Hybrid('openCall', `tel:${callNum}`)
+        //   }}>
+        //   전화걸기
+        // </button>
       )
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       return (

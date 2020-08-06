@@ -4,7 +4,7 @@ import Api from 'context/api'
 import Room, {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
-
+import NoResult from 'components/ui/noResult'
 import './index.scss'
 
 const currentDate = new Date()
@@ -14,7 +14,7 @@ export default function Alert() {
 
   const [alarmList, setAlarmList] = useState([])
   const [allCheck, setAllCheck] = useState(false)
-
+  const [empty, setEmpty] = useState(false)
   async function fetchData() {
     const res = await Api.my_notification({
       params: {
@@ -23,12 +23,16 @@ export default function Alert() {
       }
     })
     if (res.result === 'success') {
-      setAlarmList(
-        res.data.list.map((v) => {
-          v.check = false
-          return v
-        })
-      )
+      if (res.data.list.length > 0) {
+        setAlarmList(
+          res.data.list.map((v) => {
+            v.check = false
+            return v
+          })
+        )
+      } else {
+        setEmpty(true)
+      }
     }
   }
 
@@ -212,6 +216,7 @@ export default function Alert() {
               </div>
             )
           })}
+        {empty && <NoResult />}
       </div>
     </div>
   )
