@@ -77,11 +77,7 @@ export default React.forwardRef((props, ref) => {
             src={bannerUrl}
             alt={title}
             onClick={() => {
-              if (linkType === 'popup') {
-                window.open(`${linkUrl}`)
-              } else {
-                history.push(`${linkUrl}`)
-              }
+              goEvent(linkUrl, linkType)
             }}
           />
         </div>
@@ -115,6 +111,7 @@ export default React.forwardRef((props, ref) => {
     },
     pagination: {
       el: '.swiper-pagination',
+      type: 'fraction',
       clickable: true
     },
     on: {
@@ -125,11 +122,12 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
-  console.log(`111`, bannerView)
+  useEffect(() => {}, [])
 
   return (
     <Banner ref={ref}>
       <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
+        <div className="bannerNumber"></div>
         <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
         {list && <Swiper {...params}>{createSliderList()}</Swiper>}
       </div>
@@ -140,6 +138,42 @@ export default React.forwardRef((props, ref) => {
 
 const Banner = styled.div`
   margin-bottom: 19px;
+
+  div.swiper-pagination-fraction {
+    display: flex !important;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 45px;
+    justify-content: center;
+    letter-spacing: 3px;
+    color: white;
+    font-size: 12px;
+    height: 18px;
+    align-items: center;
+
+    .swiper-pagination-total {
+      opacity: 0.5;
+    }
+  }
+
+  .bannerNumber {
+    border: solid 1px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    width: 45px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    p {
+      opacity: 0.5;
+    }
+  }
 
   .slideWrap {
     position: relative;
