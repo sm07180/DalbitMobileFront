@@ -5,7 +5,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
@@ -29,6 +29,7 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
+  const history = useHistory()
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -300,7 +301,7 @@ export default (props) => {
             <React.Fragment key={idx}>
               {nickNm !== '' && (
                 <div className="list">
-                  <div className="list__imgBox" onClick={() => (window.location.href = `/mypage/${memNo}`)}>
+                  <div className="list__imgBox" onClick={() => history.push(`/mypage/${memNo}`)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
                   <div className="list__infoBox">

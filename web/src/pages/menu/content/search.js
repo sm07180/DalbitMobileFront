@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 //context
 import API from 'context/api'
 import {Context} from 'context/index.js'
@@ -20,6 +21,7 @@ let recordsVar = 3
 export default (props) => {
   // ctx
   const context = useContext(Context)
+  const history = useHistory()
   //State
   const [member, setMember] = useState(null)
   const [nextMember, setNextMember] = useState(null)
@@ -125,9 +127,7 @@ export default (props) => {
       })
     }
   }
-  console.log('q', query)
-  console.log('meber', member)
-  console.log('live', live)
+
   //update
   function update(mode) {
     switch (true) {
@@ -142,7 +142,7 @@ export default (props) => {
         if (roomNo !== '' && roomNo !== '0') {
           RoomJoin(roomNo)
         } else if (roomNo === '0') {
-          window.location.href = `/mypage/${memNo}/`
+          history.push(`/mypage/${memNo}/`)
         }
         break
       default:
@@ -217,6 +217,17 @@ export default (props) => {
   const btnActive = (id) => {
     setBtnIdx(id)
   }
+  useEffect(() => {
+    query = ''
+  }, [])
+  useEffect(() => {
+    if (btnIdx === 0 && query !== '') {
+      currentPage = 1
+      recordsVar = 3
+      fetchMember(query)
+      fetchLive(query)
+    }
+  }, [btnIdx])
 
   return (
     <Content>
@@ -224,7 +235,6 @@ export default (props) => {
       <Header>
         <div className="category-text">검색</div>
       </Header>
-
       {/* 검색바 */}
       <div className="searchBarWrapper">
         <SearchBar update={update} />

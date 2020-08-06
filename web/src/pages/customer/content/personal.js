@@ -64,7 +64,7 @@ const Personal = (props) => {
             context.action.alert({
               msg: '1:1 문의 등록을 완료하였습니다.',
               callback: () => {
-                window.location.href = '/'
+                history.push('/')
               }
             })
           }, 0)

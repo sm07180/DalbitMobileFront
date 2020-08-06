@@ -99,7 +99,7 @@ export default () => {
         search: `?name=${name}&price=${price}&itemNo=${itemNo}`
       })
     } else {
-      window.location.href = '/login'
+      history.push('/login')
     }
   }
 

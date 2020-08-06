@@ -165,9 +165,8 @@ const myProfile = (props) => {
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
-      window.history.go(-1)
+      history.goBack()
     }
-    //window.location.href = '/'
   }
   //function모바일 레어어 실행
   useEffect(() => {
@@ -242,6 +241,7 @@ const myProfile = (props) => {
   useEffect(() => {
     fetchAdmin()
   }, [])
+
   return (
     <>
       <ProfileWrap>

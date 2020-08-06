@@ -7,7 +7,7 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 //modules
 import styled from 'styled-components'
 import qs from 'query-string'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 // context
 import {Context} from 'context'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
@@ -23,6 +23,7 @@ import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
 export default (props) => {
   //props.replyIdx 대댓글관련 모든 api통신에서 필요
+  const history = useHistory()
   const replyIdx = props.replyShowIdx
   const TitleInfo = props.titleReplyInfo
   //location && context
@@ -244,13 +245,10 @@ export default (props) => {
               if (webview) {
                 link =
                   context.token.memNo !== writerNo
-                    ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
-                    : (window.location.href = `/menu/profile`)
+                    ? history.push(`/mypage/${writerNo}?webview=${webview}`)
+                    : history.push(`/menu/profile`)
               } else {
-                link =
-                  context.token.memNo !== writerNo
-                    ? (window.location.href = `/mypage/${writerNo}`)
-                    : (window.location.href = `/menu/profile`)
+                link = context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
               }
             }
             return (

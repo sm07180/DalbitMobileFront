@@ -14,7 +14,7 @@ import React, {useContext, useMemo} from 'react'
 import styled from 'styled-components'
 
 //
-const Layout = props => {
+const Layout = (props) => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
@@ -23,7 +23,7 @@ const Layout = props => {
   //---------------------------------------------------------------------
 
   return (
-    <React.Fragment>
+    <>
       {/* Sticker */}
       {context.sticker && <Sticker />}
       {/* GNB */}
@@ -39,7 +39,7 @@ const Layout = props => {
       <Message {...props} />
       {/* IP노출 */}
       <Ip {...props} />
-    </React.Fragment>
+    </>
   )
 }
 export default Layout
@@ -58,5 +58,8 @@ const Article = styled.article`
   }
   &.player_show > section {
     padding-bottom: 60px;
+  }
+  &.player_show > .refresh-icon-wrap {
+    padding-bottom: 0px;
   }
 `
