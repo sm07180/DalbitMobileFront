@@ -13,7 +13,6 @@ import WinList from './attend_win_list'
 
 // static
 import btnClose from './static/ico_close.svg'
-import message from 'pages/common/message'
 
 export default (props) => {
   const history = useHistory()
@@ -31,7 +30,6 @@ export default (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [lunarDate, setLunarDate] = useState('')
-  const [WinPopup, setWinPopup] = useState(false)
   const [winList, setWinList] = useState({
     winDt: '',
     memNo: '',
@@ -74,6 +72,7 @@ export default (props) => {
       const {result, data, message} = await API.getEventAttendWinList()
       if (result === 'success') {
         const {list} = data
+
         setWinList(list)
       } else {
         globalCtx.action.alert({
@@ -106,15 +105,15 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
 
-        if (status.gifticon_check === 1) {
-          if (status.gifticon_win === 2) {
+        if (status.gifticon_check === '1') {
+          if (status.gifticon_win === '1') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
               buttonMsg: `휴대폰 번호 입력하기`
             })
-          } else if (status.gifticon_win === 2) {
+          } else if (status.gifticon_win === '2') {
             globalCtx.action.alert({
-              msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
+              msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken_pop@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
               buttonMsg: `휴대폰 번호 입력하기`
             })
           } else {
@@ -263,8 +262,8 @@ export default (props) => {
           <div className="gifticon-win-box">
             <label>기프티콘 당첨자</label>
             <div className="gifticon-win-list">
-              <p className="time">{dateFormatter(winList.length && winList[0].winDt)}</p>
-              <p className="nick-name">{winList.length && winList[0].nickNm}</p>
+              {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
+              {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
             </div>
           </div>
         </div>

@@ -16,6 +16,8 @@ export default (props) => {
   }
   const {winList} = props
 
+  console.log('winList', winList)
+
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -25,21 +27,6 @@ export default (props) => {
     let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
     return `${month}월 ${day}일 ${time}`
   }
-
-  // useEffect(() => {
-  //   async function fetchEventAttendWinList() {
-  //     const {result, data, message} = await API.getEventAttendWinList()
-  //     if (result === 'success') {
-  //       const {list} = data
-  //       setWinList(list)
-  //     } else {
-  //       globalCtx.action.alert({
-  //         msg: message
-  //       })
-  //     }
-  //   }
-  //   fetchEventAttendWinList()
-  // }, [])
 
   return (
     <Layout {...props} status="no_gnb">
@@ -75,22 +62,28 @@ export default (props) => {
               </thead>
 
               <tbody>
-                {winList.map((item, index) => {
-                  const {gifticonType, winDt, nickNm, profImg} = item
+                {!winList.length ? (
+                  <tr>
+                    <td colSpan="3">당첨자가 없습니다.</td>
+                  </tr>
+                ) : (
+                  winList.map((item, index) => {
+                    const {gifticonType, winDt, nickNm, profImg} = item
 
-                  return (
-                    <tr key={index}>
-                      <td>{gifticonType === 1 ? '스타벅스 커피' : 'BHC 뿌링클'}</td>
-                      <td className="date">{dateFormatter(winDt)}</td>
-                      <td className="nick">
-                        <div className="thumb">
-                          <img src={profImg.thumb120x120} />
-                        </div>
-                        <p>{nickNm}</p>
-                      </td>
-                    </tr>
-                  )
-                })}
+                    return (
+                      <tr key={index}>
+                        <td>{gifticonType === 1 ? '스타벅스 커피' : 'BHC 뿌링클'}</td>
+                        <td className="date">{dateFormatter(winDt)}</td>
+                        <td className="nick">
+                          <div className="thumb">
+                            <img src={profImg.thumb120x120} />
+                          </div>
+                          <p>{nickNm}</p>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
               </tbody>
             </table>
           </div>
