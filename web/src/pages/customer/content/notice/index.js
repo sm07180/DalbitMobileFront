@@ -4,7 +4,7 @@
  *
  */
 import React, {useState, useContext, useEffect} from 'react'
-import { Switch, Route } from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
 import {useParams} from 'react-router-dom'
 //context
 import {Store} from '../index'
@@ -87,7 +87,6 @@ import List from './list'
 //   //function---------------------------------------
 //   const GoNotice = () => {
 //     Store().action.updatenoticePage('')
-//     //window.location.href = '/customer'
 //   }
 
 //   const NoticeUrl = () => {
@@ -320,9 +319,8 @@ import List from './list'
 export default function Notice() {
   return (
     <Switch>
-      <Route path='/customer/notice' exact component={List}></Route>
-      <Route path='/customer/notice/:number' exact component={Detail}></Route>
+      <Route path="/customer/notice" exact component={List}></Route>
+      <Route path="/customer/notice/:number" exact component={Detail}></Route>
     </Switch>
   )
-  
 }

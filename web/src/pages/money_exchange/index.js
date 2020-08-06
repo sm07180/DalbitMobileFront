@@ -66,7 +66,7 @@ export default function MoneyExchange() {
 //   const {profile, token} = context
 
 //   if (!token.isLogin) {
-//     window.location.href = '/'
+//
 //     return
 //   }
 

@@ -13,11 +13,6 @@ export default function Personal(props) {
 
   const context = useContext(Context)
 
-  // if (!context.token.isLogin) {
-  //   window.location.href = '/login'
-  //   return
-  // }
-
   const {path} = props.match
 
   const handleHistory = (urls) => {

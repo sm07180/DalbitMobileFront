@@ -12,7 +12,7 @@ export default function Result({state, dispatch}) {
           src={BackBtn}
           className="doExchangeWrap__header--button"
           onClick={() => {
-            window.location.href = '/menu/profile'
+            history.push('/menu/profile')
           }}
         />
         <h3 className="resultWrap__header__title">환전하기</h3>
@@ -61,7 +61,11 @@ export default function Result({state, dispatch}) {
           관련 문의는 고객센터로 부탁드립니다.
           <br />
         </div>
-        <button className="resultButton" onClick={() => (window.location.href = '/menu/profile')}>
+        <button
+          className="resultButton"
+          onClick={() => {
+            history.push('/menu/profile')
+          }}>
           확인
         </button>
       </div>

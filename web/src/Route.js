@@ -21,7 +21,6 @@ const Customer = React.lazy(() => import('pages/customer'))
 
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
-const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))

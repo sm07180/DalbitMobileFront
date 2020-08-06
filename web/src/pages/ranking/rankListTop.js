@@ -1,4 +1,5 @@
 import React, {useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import {RoomJoin} from 'context/room'
@@ -13,6 +14,7 @@ import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
 
 export default (props) => {
+  const history = useHistory()
   //context
   const context = useContext(Context)
   const rankType = props.rankType
@@ -88,7 +90,7 @@ export default (props) => {
                   <div
                     className="thumbBox"
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      history.push(`/mypage/${memNo}`)
                     }}>
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />
@@ -96,7 +98,7 @@ export default (props) => {
 
                   <div
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      history.push(`/mypage/${memNo}`)
                     }}>
                     {/* <p className={levelName}>
                       Lv{level} {grade}
@@ -114,7 +116,7 @@ export default (props) => {
                   <div
                     className="countBox"
                     onClick={() => {
-                      window.location.href = `/mypage/${memNo}`
+                      history.push(`/mypage/${memNo}`)
                     }}>
                     {rankType == 'dj' && (
                       <>

@@ -1,4 +1,5 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Room, {RoomJoin} from 'context/room'
 
@@ -8,6 +9,7 @@ import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 
 export default (props) => {
+  const history = useHistory()
   const {levelList} = props
 
   return (
@@ -21,7 +23,7 @@ export default (props) => {
               <div
                 className="thumbBox"
                 onClick={() => {
-                  window.location.href = `/mypage/${memNo}`
+                  history.push(`/mypage/${memNo}`)
                 }}>
                 <img src={holder} className="thumbBox__frame" />
                 <img src={profImg.thumb120x120} className="thumbBox__pic" />

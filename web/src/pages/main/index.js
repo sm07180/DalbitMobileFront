@@ -430,13 +430,20 @@ export default (props) => {
         <GnbWrap ref={SubMainRef} className="gnb">
           <div className="left-side">
             <div className="tab">
-              <Link to={'/rank'}>랭킹</Link>
+              <Link
+                to={'/rank'}
+                onClick={(event) => {
+                  event.preventDefault()
+                  window.location.href = '/rank'
+                }}>
+                랭킹
+              </Link>
             </div>
             <div className="tab">
               <Link
                 onClick={(event) => {
                   event.preventDefault()
-                  StoreLink(globalCtx)
+                  StoreLink(globalCtx, history)
                 }}
                 to={'/rank'}>
                 스토어

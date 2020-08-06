@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -20,6 +21,7 @@ export default (props) => {
   const context = useContext(Context)
   const {profile, token} = context
   const {isOAuth} = token
+  const history = useHistory()
   // state
   const [nickname, setNickname] = useState('')
   const [gender, setGender] = useState(null)
@@ -272,7 +274,7 @@ export default (props) => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          window.location.href = '/menu/profile'
+          history.push('/menu/profile')
         }
       })
     } else {

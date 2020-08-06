@@ -1,4 +1,5 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {RoomJoin} from 'context/room'
 import Util from 'components/lib/utility.js'
@@ -13,7 +14,7 @@ import time from './static/time_g_s.svg'
 
 export default (props) => {
   //context
-
+  const history = useHistory()
   const rankType = props.rankType
   const {list} = props
 
@@ -53,7 +54,7 @@ export default (props) => {
                 <div
                   className="myRanking__left"
                   onClick={() => {
-                    window.location.href = `/mypage/${memNo}`
+                    history.push(`/mypage/${memNo}`)
                   }}>
                   <p className="myRanking__left--ranking">{rank}</p>
                   <p className="rankingChange">
@@ -89,7 +90,7 @@ export default (props) => {
                 <div
                   className="myRanking__right"
                   onClick={() => {
-                    window.location.href = `/mypage/${memNo}`
+                    history.push(`/mypage/${memNo}`)
                   }}>
                   <div className="myRanking__rightWrap">
                     <div className="thumbBox">
