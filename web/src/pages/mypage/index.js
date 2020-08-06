@@ -119,7 +119,7 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt])
+  }, [context.mypageFanCnt, memNo, urlrStr])
 
   // check 탈퇴회원
   useEffect(() => {
