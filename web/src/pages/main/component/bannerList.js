@@ -12,6 +12,7 @@ import {Hybrid} from 'context/hybrid'
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
+  const [bannerView, setBannerView] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
@@ -36,6 +37,14 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
+  const buttonToogle = () => {
+    if (bannerView === false) {
+      setBannerView(true)
+    } else {
+      setBannerView(false)
+    }
+  }
+
   const createSliderList = () => {
     if (!list) return null
     return list.map((banner, idx) => {
@@ -44,6 +53,33 @@ export default React.forwardRef((props, ref) => {
       return (
         <div className="banner" key={`banner-${idx}`}>
           <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
+        </div>
+      )
+    })
+  }
+
+  const basicSliderList = () => {
+    if (!list) return null
+    return list.map((banner, idx) => {
+      const {bannerUrl, linkUrl, title, linkType} = banner
+
+      return (
+        <div className="basicBanner" key={`banner-${idx}`}>
+          {idx === 0 ? (
+            <>
+              <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            </>
+          ) : (
+            ''
+          )}
+
+          <img
+            src={bannerUrl}
+            alt={title}
+            onClick={() => {
+              goEvent(linkUrl, linkType)
+            }}
+          />
         </div>
       )
     })
@@ -75,6 +111,7 @@ export default React.forwardRef((props, ref) => {
     },
     pagination: {
       el: '.swiper-pagination',
+      type: 'fraction',
       clickable: true
     },
     on: {
@@ -85,13 +122,97 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
-  return <Banner ref={ref}>{list && <Swiper {...params}>{createSliderList()}</Swiper>}</Banner>
+  useEffect(() => {}, [])
+
+  return (
+    <Banner ref={ref}>
+      <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
+        <div className="bannerNumber"></div>
+        <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+        {list && <Swiper {...params}>{createSliderList()}</Swiper>}
+      </div>
+      <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
+    </Banner>
+  )
 })
 
 const Banner = styled.div`
-  overflow: hidden;
+  margin-bottom: 19px;
+
+  div.swiper-pagination-fraction {
+    display: flex !important;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 45px;
+    justify-content: center;
+    letter-spacing: 3px;
+    color: white;
+    font-size: 12px;
+    height: 18px;
+    align-items: center;
+
+    .swiper-pagination-total {
+      opacity: 0.5;
+    }
+  }
+
+  .bannerNumber {
+    border: solid 1px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    width: 45px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    p {
+      opacity: 0.5;
+    }
+  }
+
+  .slideWrap {
+    position: relative;
+
+    &.active {
+      display: none;
+    }
+  }
+  .bannerView {
+    display: none;
+    img {
+      width: 100%;
+    }
+    &.active {
+      display: block;
+    }
+  }
+
+  .moreButton {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 2;
+    background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g_up.svg') center no-repeat #fff;
+
+    &.active {
+      background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g.svg') center no-repeat #fff;
+    }
+  }
+
+  .basicBanner {
+    margin-bottom: 10px;
+    position: relative;
+  }
 
   .swiper-container {
+    height: auto;
     .banner {
       img {
         width: 100%;
@@ -99,6 +220,9 @@ const Banner = styled.div`
     }
     .swiper-pagination-bullet-active {
       background: #ec455f;
+    }
+    .swiper-pagination {
+      display: none;
     }
   }
 
