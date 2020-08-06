@@ -31,12 +31,13 @@ import WalletIcon from '../static/menu_wallet.svg'
 import ReportIcon from '../static/menu_report.svg'
 import NoticeIcon from '../static/menu_notice.svg'
 import EventIcon from '../static/menu_event.svg'
+import CustomerIcon from '../static/customer_yellow.svg'
 import FaqIcon from '../static/menu_faq.svg'
 import InquireIcon from '../static/menu_1on1.svg'
 import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
-import {OS_TYPE} from "context/config";
+import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
   // nav Array
@@ -55,6 +56,7 @@ export default (props) => {
   const customerList = [
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
+    {type: 'service', txt: '고객센터', icon: CustomerIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
@@ -234,34 +236,34 @@ export default (props) => {
             <div className="addCustomer">
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
-                if(type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']){
+                if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
                   return <></>
-                }else{
+                } else {
                   return (
-                      <a
-                          href={
-                            type === 'wallet' || type === 'report'
-                                ? `/mypage/${profile.memNo}/${type}`
-                                : type === 'store'
-                                ? '#'
-                                : `/${type}`
-                          }
-                          key={`list-${idx}`}
-                          onClick={(e) => {
-                            if (type === 'store') {
-                              e.preventDefault()
-                              StoreLink(globalCtx)
-                            } else if (type === 'money_exchange') {
-                              e.preventDefault()
-                              checkSelfAuth()
-                            }
-                          }}>
-                        <div className="list">
-                          <img className="icon" src={icon} />
-                          <span className="text">{txt}</span>
-                          <span className="arrow"></span>
-                        </div>
-                      </a>
+                    <a
+                      href={
+                        type === 'wallet' || type === 'report'
+                          ? `/mypage/${profile.memNo}/${type}`
+                          : type === 'store'
+                          ? '#'
+                          : `/${type}`
+                      }
+                      key={`list-${idx}`}
+                      onClick={(e) => {
+                        if (type === 'store') {
+                          e.preventDefault()
+                          StoreLink(globalCtx)
+                        } else if (type === 'money_exchange') {
+                          e.preventDefault()
+                          checkSelfAuth()
+                        }
+                      }}>
+                      <div className="list">
+                        <img className="icon" src={icon} />
+                        <span className="text">{txt}</span>
+                        <span className="arrow"></span>
+                      </div>
+                    </a>
                   )
                 }
               })}
@@ -270,7 +272,7 @@ export default (props) => {
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`/customer/${type}`} key={`list-${idx}`}>
+                  <a href={`${type === 'service' ? `/${type}` : `/customer/${type}`}`} key={`list-${idx}`}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>

@@ -29,6 +29,7 @@ input[type='file'] {
     display: flex;
     align-items: center;
     padding: 10px 16px;
+    border-bottom: 1px solid #eeeeee;
     font-size: 12px;
   }
 
@@ -252,6 +253,9 @@ input[type='file'] {
     &--textarea {
       height: 300px;
     }
+    &:disabled {
+      background-color: #f5f5f5;
+    }
   }
   &__caption {
     font-size: 12px;
@@ -286,6 +290,7 @@ input[type='file'] {
   }
   &__submit {
     width: 100%;
+    margin-top: 30px;
     padding: 13px 0;
     background-color: #cdcdcd;
     color: white;
@@ -294,5 +299,86 @@ input[type='file'] {
     &.on {
       background-color: #632beb;
     }
+  }
+
+  &__checkboxWrap {
+    display: flex;
+    margin: 30px 0 16px 0;
+    font-size: 12px;
+    &--check {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      & > span {
+        margin-left: 8px;
+      }
+    }
+  }
+  &__agreeWrap {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    &--text {
+      flex: 1;
+      margin-left: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: normal;
+    }
+
+    &--deep {
+      // margin-top: 3px;
+      margin-right: 5px;
+      font-size: 12px;
+      color: #616161;
+      text-decoration: underline;
+      letter-spacing: -0.3;
+    }
+  }
+
+  &__callWrap {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    padding: 15px 14px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 14px;
+
+    &--box {
+      flex: 1;
+
+      .bold {
+        font-weight: bold;
+      }
+
+      &--s {
+        font-size: 12px;
+      }
+    }
+
+    &--call {
+      display: flex;
+      align-items: center;
+      padding: 7px 17px;
+      background-color: black;
+      border-radius: 14px;
+      color: white;
+      font-size: 11px;
+      & > img {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin-right: 4px;
+      }
+    }
+  }
+
+  &__policy {
+    padding: 15px 0;
+    font-size: 12px;
+    color: #757575;
+    text-align: center;
   }
 }

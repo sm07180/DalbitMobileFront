@@ -1,0 +1,9 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <g id="prefix__ic_back" transform="rotate(-90 20 20)">
+        <path id="prefix__사각형_314" d="M0 0H36V36H0z" data-name="사각형 314" transform="translate(1.82 1.82)" style="fill:transparent;opacity:.51"/>
+        <circle id="prefix__타원_33" cx="20" cy="20" r="20" data-name="타원 33" style="fill:none"/>
+        <path id="prefix__선_55" d="M0 0L0 15.81" data-name="선 55" transform="translate(19.82 11.92)" style="stroke-miterlimit:10;stroke:#757575;stroke-linecap:square;stroke-width:1.5px;fill:none"/>
+        <path id="prefix__패스_4147" d="M0 2.445L7.078-4.89l7.078 7.334" data-name="패스 4147" transform="translate(12.648 15.475)" style="stroke:#757575;stroke-linecap:square;stroke-width:1.5px;fill:none"/>
+    </g>
+</svg>

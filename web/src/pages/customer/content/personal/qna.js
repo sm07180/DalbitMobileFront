@@ -2,9 +2,12 @@ import React, {useState, useEffect, useContext} from 'react'
 
 import Api from 'context/api'
 import {Context} from 'context'
-
+import {Hybrid} from 'context/hybrid'
+import {OS_TYPE} from 'context/config'
 import SelectBoxs from 'components/ui/selectBox.js'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
+import headsetIcon from '../static/ic_headset.svg'
 export default function Qna() {
   const selectBoxData = [
     {value: 0, text: '문의 유형을 선택하세요.'},
@@ -19,17 +22,19 @@ export default function Qna() {
   ]
 
   const context = useContext(Context)
-
+  const customerHeader = JSON.parse(Api.customHeader)
+  const [name, setName] = useState('')
   const [faqNum, setFaqNum] = useState(0)
   const [email, setEmail] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-
-  const [addFile, setAddFile] = useState(false)
+  const [phone, setPhone] = useState('')
 
   const [delicate, setDelicate] = useState(false)
   const [questionFile, setQuestionFile] = useState([false, false, false])
 
+  const [checks, setChecks] = useState([true, false])
+  const [agree, setAgree] = useState(false)
   async function fetchData() {
     const res = await Api.center_qna_add({
       data: {
@@ -37,16 +42,26 @@ export default function Qna() {
         qnaType: faqNum,
         title: title,
         contents: content,
-        email: email,
         questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
         questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
         questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
         questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
         questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
-        questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : ''
+        questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
+        phone: checks[0] ? phone : '',
+        email: checks[1] ? email : '',
+        nickName: name
       }
     })
     if (res.result === 'fail') {
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          context.action.alert({
+            visible: false
+          })
+        }
+      })
     } else if (res.result === 'success') {
       context.action.confirm({
         msg: '1:1 문의를 등록하시겠습니까?',
@@ -131,6 +146,7 @@ export default function Qna() {
       fetchData()
     }
   }
+
   const deleteFile = (event, idx) => {
     event.preventDefault()
 
@@ -181,16 +197,106 @@ export default function Qna() {
       }
     })
   }
+
+  const phoneCallWrap = () => {
+    if (customerHeader.os === OS_TYPE['Android']) {
+      return (
+        // <div className="personalAddWrap__callWrap--call" onClick={() => {Hybrid('openCall', `tel:1522-0251`)}}>
+        //   <img src={headsetIcon} />
+        //   <span>전화걸기</span>
+        // </div>
+        <></>
+      )
+    } else if (customerHeader.os === OS_TYPE['IOS']) {
+      return (
+        <div
+          className="personalAddWrap__callWrap--call"
+          onClick={() => {
+            Hybrid('openUrl', `tel:1522-0251`)
+          }}>
+          <img src={headsetIcon} />
+          <span>전화걸기</span>
+        </div>
+      )
+    } else {
+      return (
+        <div
+          className="personalAddWrap__callWrap--call"
+          onClick={() => {
+            window.location.href = `tel:1522-0251`
+          }}>
+          <img src={headsetIcon} />
+          <span>전화걸기</span>
+        </div>
+      )
+    }
+  }
+
+  const phoneCall = () => {
+    if (customerHeader.os === OS_TYPE['Android']) {
+    } else if (customerHeader.os === OS_TYPE['IOS']) {
+      Hybrid('openUrl', `tel:1522-0251`)
+    } else {
+      window.location.href = `tel:1522-0251`
+    }
+  }
+
+  const emailInpection = (email) => {
+    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+
+    return regExp.test(email)
+  }
+
   useEffect(() => {
-    if (faqNum !== 0 && email !== '' && title !== '' && content !== '') {
+    if (
+      faqNum !== 0 &&
+      title !== '' &&
+      content !== '' &&
+      name !== '' &&
+      name.length > 1 &&
+      agree &&
+      (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
+      (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
+    ) {
       setDelicate(true)
     } else {
       setDelicate(false)
     }
-  }, [faqNum, email, title, content])
+  }, [faqNum, email, title, content, name, phone, agree, checks])
+
+  useEffect(() => {
+    if (checks[0] === false && checks[1] === false) {
+      context.action.alert({
+        visible: true,
+        msg: '답변 유형 선택은 필수입니다.',
+        callback: () => {
+          setChecks([true, false])
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }, [checks])
+
+  useEffect(() => {
+    if (context.profile) {
+      setName(context.profile.nickNm)
+    }
+  }, [])
 
   return (
     <div className="personalAddWrap">
+      <input
+        type="text"
+        className="personalAddWrap__input"
+        value={name}
+        disabled={context.token.isLogin}
+        placeholder="이름 또는 닉네임을 입력하세요."
+        onChange={(e) => {
+          if (e.target.value.length < 21) {
+            setName(e.target.value)
+          }
+        }}
+      />
       <div className="personalAddWrap__select">
         <SelectBoxs
           type={'remove-init-data'}
@@ -203,21 +309,13 @@ export default function Qna() {
         <input
           type="text"
           className="personalAddWrap__input"
-          placeholder="이메일 주소를 입력하세요."
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <div className="personalAddWrap__caption">※ 1:1 문의 답변은 입력하신 E-mail주소로 발송 됩니다.</div>
-        <input
-          type="text"
-          className="personalAddWrap__input"
-          placeholder="글의 제목을 입력하세요."
+          placeholder="제목을 입력하세요."
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
           className="personalAddWrap__input personalAddWrap__input--textarea"
-          cols="30"
-          rows="10"
-          placeholder="작성하고자 하는 글의 내용을 입력해주세요."
+          maxLength={200}
+          placeholder="작성하고자 하는 문의내용을 입력해주세요."
           onChange={(e) => setContent(e.target.value)}
         />
         {questionFile.map((v, index, self) => {
@@ -259,9 +357,116 @@ export default function Qna() {
           )
         })}
         <div className="personalAddWrap__caption">※ jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</div>
+        <div className="personalAddWrap__answerWrap">
+          <div className="personalAddWrap__checkboxWrap">
+            <div className="personalAddWrap__checkboxWrap--check">
+              <DalbitCheckbox
+                status={checks[0]}
+                callback={() => {
+                  setChecks(
+                    checks.map((v, i) => {
+                      if (i === 0) {
+                        v = !v
+                      }
+                      return v
+                    })
+                  )
+                }}
+              />
+              <span>답변 문자로 받기</span>
+            </div>
+            <div className="personalAddWrap__checkboxWrap--check">
+              <DalbitCheckbox
+                status={checks[1]}
+                callback={() => {
+                  setChecks(
+                    checks.map((v, i) => {
+                      if (i === 1) {
+                        v = !v
+                      }
+                      return v
+                    })
+                  )
+                }}
+              />
+              <span>답변 E-Mail로 받기</span>
+            </div>
+          </div>
+          <div>
+            <input
+              disabled={!checks[0]}
+              className="personalAddWrap__input"
+              type="tel"
+              value={phone}
+              onChange={(e) => {
+                if (e.target.value.length < 16) setPhone(e.target.value)
+              }}
+              placeholder="휴대폰 번호를 입력하세요."
+            />
+            <input
+              disabled={!checks[1]}
+              className="personalAddWrap__input"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
+              placeholder="E-Mail 입력하세요."
+            />
+          </div>
+        </div>
+        <div className="personalAddWrap__agreeWrap">
+          <DalbitCheckbox status={agree} callback={() => setAgree(!agree)} />
+          <span className="personalAddWrap__agreeWrap--text">개인정보 수집 및 이용에 동의합니다.</span>
+          <span
+            className="personalAddWrap__agreeWrap--deep"
+            onClick={() => {
+              context.action.updatePopup('AGREEDETAIL')
+            }}>
+            자세히
+          </span>
+        </div>
+        <div className="personalAddWrap__callWrap">
+          <div className="personalAddWrap__callWrap--box">
+            <div>
+              고객센터 (국내) <span className="bold">1522-0251</span>
+            </div>
+            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30)</div>
+          </div>
+          {phoneCallWrap}
+        </div>
         <button onClick={checkDelicate} className={`personalAddWrap__submit ${delicate ? 'on' : ''}`}>
-          문의하기
+          1:1 문의 완료
         </button>
+
+        <div className="personalAddWrap__policy">
+          <span
+            onClick={() => {
+              window.location.href = '/customer/appInfo/service'
+            }}>
+            이용약관
+          </span>
+          <span> | </span>
+          <span
+            onClick={() => {
+              window.location.href = '/customer/appInfo/privacy'
+            }}>
+            개인정보
+          </span>
+          <span> | </span>
+          <span
+            onClick={() => {
+              window.location.href = '/customer/appInfo/youthProtect'
+            }}>
+            청소년보호
+          </span>
+          <span> | </span>
+          <span
+            onClick={() => {
+              window.location.href = '/customer/appInfo/operating'
+            }}>
+            운영정책
+          </span>
+        </div>
       </div>
     </div>
   )

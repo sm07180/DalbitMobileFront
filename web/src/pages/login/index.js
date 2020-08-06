@@ -324,6 +324,10 @@ export default (props) => {
                 <a href="/signup">
                   <div className="link-text">회원가입</div>
                 </a>
+                <div className="bar" />
+                <a href="/service">
+                  <div className="link-text yello">고객센터</div>
+                </a>
               </div>
             </div>
 
@@ -453,13 +457,17 @@ const Login = styled.div`
       color: #fff;
       font-size: 14px;
       font-weight: bold;
+
+      &.yello {
+        color: #febd56;
+      }
     }
 
     .bar {
       width: 1px;
       height: 12px;
       background-color: #fff;
-      margin: 0 20px;
+      margin: 0 9px;
       opacity: 0.2;
     }
   }

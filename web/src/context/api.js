@@ -2256,6 +2256,10 @@ export default class API {
   static postResetListen = async (data) => {
     return await ajax({url: '/member/reset/listen', method: 'POST', data})
   }
+
+  static deleteAlarm = async (data) => {
+    return await ajax({url: '/mypage/notification/delete', method: 'DELETE', data})
+  }
 }
 
 API.customHeader = null
