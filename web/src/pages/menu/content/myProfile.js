@@ -242,6 +242,7 @@ const myProfile = (props) => {
   useEffect(() => {
     fetchAdmin()
   }, [])
+  console.log('')
   return (
     <>
       <ProfileWrap>
