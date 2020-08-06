@@ -88,9 +88,9 @@ export default (props) => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', logoutInfo.data)
         }
+        globalCtx.action.updateToken(logoutInfo.data)
         globalCtx.action.updateProfile(null)
         props.history.push('/')
-        return globalCtx.action.updateToken(logoutInfo.data)
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
           title: '로그아웃 실패',
@@ -143,10 +143,14 @@ export default (props) => {
     fetchSelfAuth()
     // history.push('/money_exchange')
   }
-  useState(() => {
+  useEffect(() => {
     const getMyPageNew = async () => {
-      const res = await Api.getMyPageNew(profile.memNo)
-      setMyPageNew(res.data)
+      if (profile !== null) {
+        const res = await Api.getMyPageNew(profile.memNo)
+        setMyPageNew(res.data)
+      } else {
+        props.history.push('/')
+      }
     }
     getMyPageNew()
   }, [])
