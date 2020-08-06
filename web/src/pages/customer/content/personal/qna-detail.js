@@ -276,21 +276,21 @@ export default function Detail(props) {
     }
   }, [content])
 
-  if(state === 1 && (((new Date()).getMilliseconds() / 1000) - opTs) < (7 * 24 * 3600)){
+  if (state === 1 && new Date().getMilliseconds() / 1000 - opTs < 7 * 24 * 3600) {
     let mypageNewStg = localStorage.getItem('mypageNew')
-    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
       mypageNewStg = {}
-    }else{
+    } else {
       mypageNewStg = JSON.parse(mypageNewStg)
     }
-    if(mypageNewStg.qna === undefined || mypageNewStg.qna === null || mypageNewStg.qna === ''){
+    if (mypageNewStg.qna === undefined || mypageNewStg.qna === null || mypageNewStg.qna === '') {
       mypageNewStg.qna = [parseInt(qnaIdx)]
-    }else{
-      if(mypageNewStg.qna.find(e => e === qnaIdx) !== undefined){
+    } else {
+      if (mypageNewStg.qna.find((e) => e === qnaIdx) !== undefined) {
         mypageNewStg.qna.push(parseInt(qnaIdx))
       }
     }
-    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+    localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
   return (
     <>

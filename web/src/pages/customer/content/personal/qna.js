@@ -114,7 +114,7 @@ export default function Qna() {
             uploadType: 'qna'
           }
         })
-        if (res.result === 'success') {
+        if (res.result === 'success' && res.code === '0') {
           setQuestionFile(
             questionFile.map((v, i) => {
               if (i === idx) {
@@ -129,7 +129,7 @@ export default function Qna() {
           )
         } else {
           context.action.alert({
-            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+            msg: res.message,
             title: '',
             callback: () => {
               context.action.alert({visible: false})
@@ -251,7 +251,6 @@ export default function Qna() {
   }
 
   useEffect(() => {
-    console.log(context.token.isLogin)
     if (
       faqNum !== 0 &&
       title !== '' &&
@@ -287,6 +286,8 @@ export default function Qna() {
   useEffect(() => {
     if (context.profile) {
       setName(context.profile.nickNm)
+    } else {
+      setChecks([true, false])
     }
   }, [])
 

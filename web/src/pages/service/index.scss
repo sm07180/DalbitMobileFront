@@ -101,9 +101,13 @@
 
         & > span {
           margin-bottom: 5px;
+          & > span {
+            height: 21px;
+          }
         }
 
         button {
+          margin-left: 10px;
           padding: 3px 10px;
           background-color: black;
           border-radius: 9px;
