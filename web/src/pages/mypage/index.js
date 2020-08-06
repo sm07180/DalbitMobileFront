@@ -85,7 +85,7 @@ export default (props) => {
     return null
   }
   //--------------------------------------------
-  useState(() => {
+  useEffect(() => {
     const getMyPageNew = async () => {
       const res = await Api.getMyPageNew(memNo)
       setMyPageNew(res.data)
@@ -159,10 +159,18 @@ export default (props) => {
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>
-                        <span className={
-                          type === 'notice' ? (myPageNew.broadNotice ? "arrow arrow--active" : "arrow") :
-                              (type === 'fanboard' ? (myPageNew.fanBoard ? "arrow arrow--active" : "arrow") : "arrow")
-                        }></span>
+                        <span
+                          className={
+                            type === 'notice'
+                              ? myPageNew.broadNotice
+                                ? 'arrow arrow--active'
+                                : 'arrow'
+                              : type === 'fanboard'
+                              ? myPageNew.fanBoard
+                                ? 'arrow arrow--active'
+                                : 'arrow'
+                              : 'arrow'
+                          }></span>
                       </div>
                     </div>
                   )
