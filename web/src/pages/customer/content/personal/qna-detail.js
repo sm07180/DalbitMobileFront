@@ -286,7 +286,7 @@ export default function Detail(props) {
     if(mypageNewStg.qna === undefined || mypageNewStg.qna === null || mypageNewStg.qna === ''){
       mypageNewStg.qna = [parseInt(qnaIdx)]
     }else{
-      if(mypageNewStg.qna.find(e => e === qnaIdx) !== undefined){
+      if(mypageNewStg.qna.find(e => e === qnaIdx) === undefined){
         mypageNewStg.qna.push(parseInt(qnaIdx))
       }
     }
