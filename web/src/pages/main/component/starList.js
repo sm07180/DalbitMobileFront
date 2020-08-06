@@ -13,7 +13,6 @@ export default (props) => {
   const {list} = props
   const ctx = useContext(Context)
 
-  let myMem = ctx.profile.memNo
   if (list === undefined) {
     return null
   }
@@ -25,14 +24,26 @@ export default (props) => {
 
   return (
     <StarList>
-      <div className="title" onClick={() => (window.location.href = `/mypage/${myMem}/edite_star`)}>
-        <div className="txt">
-          나의
-          <br />
-          스타
+      {ctx.token.isLogin === true ? (
+        <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edite_star`)}>
+          <div className="txt">
+            나의
+            <br />
+            스타
+          </div>
+          <img className="icon" src={RankArrow} />
         </div>
-        <img className="icon" src={RankArrow} />
-      </div>
+      ) : (
+        <div className="title">
+          <div className="txt">
+            나의
+            <br />
+            스타
+          </div>
+          <img className="icon" src={RankArrow} />
+        </div>
+      )}
+
       <Swiper {...swiperParams}>
         {list.map((star, idx) => {
           const {memNo, roomNo} = star
