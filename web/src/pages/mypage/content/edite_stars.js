@@ -34,7 +34,7 @@ export default (props) => {
   const createContents = () => {
     switch (title) {
       case 0:
-        return <Recent title={title} />
+        return <Recent />
       case 1:
         return <GiftMore />
       case 2:
@@ -50,25 +50,10 @@ export default (props) => {
     setTitle(id)
     ctx.action.updateFanTab(id)
   }
-  const editeToggle = () => {
-    if (ctx.fanEdite === -1) {
-      ctx.action.updateFanEdite(false)
-    } else {
-      ctx.action.updateFanEdite(true)
-    }
-  }
-  const AlertPop = () => {
-    ctx.action.confirm({
-      callback: () => {
-        ctx.action.updateFanEdite(-1)
-      },
-      msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
-    })
-  }
   return (
     <EditeWrap>
       <Header>
-        <div className="category-text">스타</div>
+        <div className="category-text">스타 관리</div>
       </Header>
       <div className="tabContainer">
         <Swiper {...swiperParams}>
@@ -148,7 +133,7 @@ const tabArry = [
   },
   {
     id: 1,
-    title: '선물 많이 보낸 순',
+    title: '선물 보낸 순',
     value: 'gift'
   },
   {
@@ -158,7 +143,7 @@ const tabArry = [
   },
   {
     id: 3,
-    title: '방송 많이 들은 순',
+    title: '방송 들은 순',
     value: 'broad'
   }
 ]

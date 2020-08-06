@@ -375,7 +375,7 @@ export default function Qna() {
               />
               <span>답변 문자로 받기</span>
             </div>
-            <div className="personalAddWrap__checkboxWrap--check">
+            {/* <div className="personalAddWrap__checkboxWrap--check">
               <DalbitCheckbox
                 status={checks[1]}
                 callback={() => {
@@ -390,7 +390,7 @@ export default function Qna() {
                 }}
               />
               <span>답변 E-Mail로 받기</span>
-            </div>
+            </div> */}
           </div>
           <div>
             <input

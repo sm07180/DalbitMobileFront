@@ -107,14 +107,14 @@ export default function List() {
         <div className="noticeList">
           <dl>
             {listPage.map((item, index) => {
-              const {noticeType, writeDt, title, noticeIdx, writeTs} = item
+              const {noticeType, writeDt, title, noticeIdx, writeTs, isNew} = item
+              //console.log((IntTime - writeTs) / 3600)
 
               if (listPage === null) return
               return (
                 <div key={index} onClick={() => routeHistory(item)}>
                   <div className="tableWrap">
                     <dd>
-                      {(IntTime - writeTs) / 3600 < 3 && <em></em>}
                       {noticeType !== 0 && (
                         <span className="tableWrap__label">
                           {noticeType === 1 ? '공지사항 ' : ''}
@@ -125,6 +125,7 @@ export default function List() {
                         </span>
                       )}
                       <span className="tableWrap__title">{title}</span>
+                      {getNewIcon(noticeIdx, isNew) && <em></em>}
                     </dd>
                   </div>
                 </div>

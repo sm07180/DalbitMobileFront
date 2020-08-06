@@ -324,9 +324,18 @@ export default (props) => {
                 <ProfileImg>
                   <label htmlFor="profileImg">
                     <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                    <img
+
+                    <div
+                      className="backImg"
+                      style={{
+                        backgroundImage: `url("${
+                          tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''
+                        }")`,
+                        backgroundColor: '#333'
+                      }}></div>
+                    {/* <img
                       src={tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}
-                      className="backImg"></img>
+                      className="backImg"></img> */}
                     <img
                       src={camera}
                       style={{
@@ -745,6 +754,8 @@ const ProfileImg = styled.div`
     height: 72px;
     border: 1px solid #8556f5;
     border-radius: 50%;
+    background-size: cover;
+    background-position: center;
   }
   label {
     display: block;

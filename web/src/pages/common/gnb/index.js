@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
+import Lottie from 'react-lottie'
 
 import {Context} from 'context'
 import {RoomMake} from 'context/room'
@@ -99,9 +100,20 @@ export default (props) => {
       <GnbWrap>
         <div className="icon-wrap">
           <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
-          <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
 
-          {newAlarm === true && <div className="alarm-new"></div>}
+          {newAlarm === true ? (
+            <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
+              <Lottie
+                options={{
+                  loop: true,
+                  autoPlay: true,
+                  path: `https://image.dalbitlive.com/event/200805/ic_alarm_dot.json`
+                }}
+              />
+            </div>
+          ) : (
+            <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
+          )}
 
           {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
@@ -159,6 +171,11 @@ const GnbWrap = styled.div`
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
   padding: 0 6px;
+
+  .alarmSize {
+    width: 44px;
+    height: 44px;
+  }
 
   .icon-wrap {
     position: relative;

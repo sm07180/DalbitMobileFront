@@ -340,18 +340,10 @@ const myProfile = (props) => {
                   {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
                 </em>
               </div>
-              {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-                <div onClick={() => context.action.updateMypageReport(true)}></div>
-              )}
             </div>
-            {/* <CountingWrap>
-              <span onClick={() => fanContext()}>
-                팬 <em>{Utility.printNumber(profile.fanCnt)}</em>
-              </span>
-              <span onClick={() => starContext()}>
-                스타 <em>{Utility.printNumber(profile.starCnt)}</em>
-              </span>
-            </CountingWrap> */}
+            {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
+              <div onClick={() => context.action.updateMypageReport(true)}></div>
+            )}
             <GiftButtonWrap>
               <InfoConfigBtn>
                 {urlrStr !== context.token.memNo && (
