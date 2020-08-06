@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
 import {Context} from 'context'
-
+import Utility from 'components/lib/utility'
 // component
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
@@ -13,6 +13,8 @@ import WinList from './attend_win_list'
 
 // static
 import btnClose from './static/ico_close.svg'
+
+let intervalId = null
 
 export default (props) => {
   const history = useHistory()
@@ -106,6 +108,7 @@ export default (props) => {
         setDateList(dateList)
 
         if (status.gifticon_check === '1') {
+          intervalFormatter(status.input_enddate)
           if (status.gifticon_win === '1') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
@@ -215,7 +218,12 @@ export default (props) => {
         phone: phone
       })
       if (result === 'success') {
-        const {isCheck} = data
+        // const {isCheck} = data
+
+        globalCtx.action.alert({
+          msg: `<div class="attend-alert-box" ><p class="title">다시 한 번 축하드립니다!</p><p class="sub-title">평일 기준 7일 이내 입력하신 번호로
+          기프티콘을 전송해드립니다.</p></div>`
+        })
       } else {
         globalCtx.action.alert({
           msg: message
@@ -235,11 +243,32 @@ export default (props) => {
     return `${month}월 ${day}일 ${time}`
   }
 
+  const [timeText, setTimeText] = useState('')
   const intervalFormatter = (date) => {
     if (!date) return null
-    let time = date.replace(/\s/gi, '').substring(13, 18)
-    return `${time}`
+    console.log(date)
+    // let time = date.replace(/\s/gi, '').substring(13, 18)
+
+    let time = +new Date(date)
+    let now = +new Date()
+    let test = (time - now) / 1000
+
+    intervalId = setInterval(() => {
+      console.log(typeof test)
+      const text = `${Utility.leadingZeros(Math.floor(test / 60), 2)}:${Utility.leadingZeros(Math.floor(test % 60), 2)}`
+      test--
+
+      setTimeText(text)
+
+      if (test < 0) {
+        clearInterval(intervalId)
+      }
+    }, 1000)
   }
+
+  useEffect(() => {
+    intervalFormatter()
+  }, [])
 
   const {title} = props.match.params
   if (title === 'winList') return <WinList winList={winList} />
@@ -305,7 +334,7 @@ export default (props) => {
                 ) : (
                   <div className="gifticon-benefit-input">
                     <p className="title">
-                      기프티콘 당첨자 연락처 입력 <span className="time">{intervalFormatter(statusList.input_enddate)}</span>
+                      기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
                     </p>
 
                     <div className="input-box">

@@ -128,13 +128,13 @@ export default (props) => {
                       <label className="label">
                         경험치(EXP):{' '}
                         <span>
-                          {summaryList.totalExp} <i>+ {statusList.exp}</i>
+                          {summaryList.totalExp} {statusList && <i>+ {statusList.exp}</i>}
                         </span>
                       </label>{' '}
                       <label className="label">
                         받은 달:{' '}
                         <span>
-                          {summaryList.dalCnt} <i>+ {statusList.dal}</i>
+                          {summaryList.dalCnt} {statusList && <i>+ {statusList.dal}</i>}
                         </span>
                       </label>
                     </div>
