@@ -130,11 +130,33 @@ export default (props) => {
     }
   }
 
+  const fetchLiveListAsInit = async () => {
+    setLiveList(null)
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: 1,
+        records: records,
+        roomType: '',
+        searchType: 1,
+        gender: ''
+      }
+    })
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
+      }
+      setLiveList(list)
+    }
+  }
+
   const fetchLiveList = async (reset) => {
     setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
-        page: reset ? 1 : livePage,
+        page: reset === true ? 1 : livePage,
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -257,22 +279,18 @@ export default (props) => {
         position: arg
       }
     })
+
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
-        setPopupData(res.data)
-        let filterData = []
-        res.data.map((data, index) => {
-          let popupState = Utility.getCookie('popup_notice_' + `${data.idx}`)
-          if (popupState === undefined) {
-            filterData.push(data)
-          } else {
-            return false
-          }
-        })
-
-        setTimeout(() => {
-          if (filterData.length > 0) setPopupNotice(true)
-        }, 10)
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
       }
     }
   }
@@ -390,10 +408,13 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          await fetchLiveList(true)
+          await fetchLiveListAsInit()
+
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
 
+          setLiveAlign(1)
+          setLiveGender('')
           setRankType('dj')
           setLiveListType('detail')
           setSelectedLiveRoomType('')
@@ -419,7 +440,7 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <RefreshIconWrap className="refresh-icon-wrap" ref={iconWrapRef}>
+      <RefreshIconWrap ref={iconWrapRef}>
         <div className="icon-wrap">
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
@@ -434,13 +455,20 @@ export default (props) => {
         <GnbWrap ref={SubMainRef} className="gnb">
           <div className="left-side">
             <div className="tab">
-              <Link to={'/rank'}>랭킹</Link>
+              <Link
+                to={'/rank'}
+                onClick={(event) => {
+                  event.preventDefault()
+                  window.location.href = '/rank'
+                }}>
+                랭킹
+              </Link>
             </div>
             <div className="tab">
               <Link
                 onClick={(event) => {
                   event.preventDefault()
-                  StoreLink(globalCtx)
+                  StoreLink(globalCtx, history)
                 }}
                 to={'/rank'}>
                 스토어
@@ -563,8 +591,8 @@ export default (props) => {
 
             <div className="content-wrap live-list">
               {Array.isArray(liveList) ? (
-                liveList.length > 0 ? (
-                  <LiveList list={liveList} liveListType={liveListType} />
+                liveList.length > 0 && categoryList.length > 1 ? (
+                  <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
                 ) : (
                   <NoResult />
                 )
@@ -587,7 +615,7 @@ export default (props) => {
           />
         )}
 
-        {popupNotice && <LayerPopupWrap data={popupData} setPopup={setPopupNotice} />}
+        {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
 
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </MainWrap>

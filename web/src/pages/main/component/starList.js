@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
 // component
@@ -8,21 +8,24 @@ import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 import RankArrow from '../static/arrow_right_w.svg'
 import LiveIcon from '../static/ic_live.svg'
-
+import {Context} from 'context'
 export default (props) => {
   const {list} = props
+  const ctx = useContext(Context)
 
+  let myMem = ctx.profile.memNo
   if (list === undefined) {
     return null
   }
 
   const swiperParams = {
-    slidesPerView: 'auto'
+    slidesPerView: 'auto',
+    spaceBetween: 12
   }
 
   return (
     <StarList>
-      <div className="title">
+      <div className="title" onClick={() => (window.location.href = `/mypage/${myMem}/edite_star`)}>
         <div className="txt">
           나의
           <br />

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
@@ -30,6 +30,7 @@ let moreState = false
 //---------------------------------------------------------------------------------
 export default (props) => {
   //context
+  const history = useHistory()
   const ctx = useContext(Context)
   const {profile} = ctx
   var urlrStr = location.pathname.split('/')[2]

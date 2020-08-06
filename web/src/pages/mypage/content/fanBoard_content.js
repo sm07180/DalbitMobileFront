@@ -7,7 +7,7 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 // modules
 import qs from 'query-string'
 import styled from 'styled-components'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 // context
 import {Context} from 'context'
 import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
@@ -24,6 +24,7 @@ import MoreBtnIcon from '../static/ic_new_more.svg'
 //--------------------------------------------------------------------------
 export default (props) => {
   // context && location
+  const history = useHistory()
   let location = useLocation()
   const context = useContext(Context)
   var urlrStr = location.pathname.split('/')[2]
@@ -189,15 +190,13 @@ export default (props) => {
               const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx} = item
               const Link = () => {
                 if (webview) {
-                  link =
-                    context.token.memNo !== writerNo
-                      ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
-                      : (window.location.href = `/menu/profile`)
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
+                    : (window.location.href = `/menu/profile`)
                 } else {
-                  link =
-                    context.token.memNo !== writerNo
-                      ? (window.location.href = `/mypage/${writerNo}`)
-                      : (window.location.href = `/menu/profile`)
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}`)
+                    : (window.location.href = `/menu/profile`)
                 }
               }
               return (

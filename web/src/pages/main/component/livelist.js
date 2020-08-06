@@ -4,11 +4,7 @@ import styled from 'styled-components'
 //context
 import Room, {RoomJoin} from 'context/room'
 
-import {broadcastLive} from 'constant/broadcast.js'
-
-import audioIcon from '../static/ico_audio.svg'
 import noBgAudioIcon from '../static/audio_s.svg'
-import videoIcon from '../static/ico_video.svg'
 import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
@@ -19,22 +15,9 @@ import Util from 'components/lib/utility.js'
 
 // static
 import EntryImg from '../static/person_w_s.svg'
-import specialIcon from '../static/ico_speciladj_s.svg'
-import fanIcon from '../static/ico_fan.svg'
-import twentyIcon from '../static/ico_20.svg'
-import allIcon from '../static/ico_all.svg'
-
-function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
-}
 
 const makeContents = (props) => {
-  const {list, liveListType} = props
-  const typeSearch = props.type
+  const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
 
   if (liveListType === 'detail') {
@@ -66,8 +49,7 @@ const makeContents = (props) => {
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
-              {/*<img className="type-icon" src={audioIcon} />*/}
-              <div className="type-text">{broadcastLive[roomType]}</div>
+              <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
               {isNew === true && <span className="new-dj-icon">신입</span>}

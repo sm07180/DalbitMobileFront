@@ -31,6 +31,7 @@ import WalletIcon from '../static/menu_wallet.svg'
 import ReportIcon from '../static/menu_report.svg'
 import NoticeIcon from '../static/menu_notice.svg'
 import EventIcon from '../static/menu_event.svg'
+import CustomerIcon from '../static/customer_yellow.svg'
 import FaqIcon from '../static/menu_faq.svg'
 import InquireIcon from '../static/menu_1on1.svg'
 import ServiceIcon from '../static/menu_guide.svg'
@@ -57,6 +58,7 @@ export default (props) => {
   const customerList = [
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
     // {type: 'faq', txt: '이벤트', icon: EventIcon},
+    {type: 'service', txt: '고객센터', icon: CustomerIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
@@ -88,9 +90,9 @@ export default (props) => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', logoutInfo.data)
         }
+        globalCtx.action.updateToken(logoutInfo.data)
         globalCtx.action.updateProfile(null)
         props.history.push('/')
-        return globalCtx.action.updateToken(logoutInfo.data)
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
           title: '로그아웃 실패',
@@ -276,7 +278,7 @@ export default (props) => {
                       onClick={(e) => {
                         if (type === 'store') {
                           e.preventDefault()
-                          StoreLink(globalCtx)
+                          StoreLink(globalCtx, props.history)
                         } else if (type === 'money_exchange') {
                           e.preventDefault()
                           checkSelfAuth()
@@ -306,7 +308,7 @@ export default (props) => {
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`/customer/${type}`} key={`list-${idx}`}>
+                  <a href={`${type === 'service' ? `/${type}` : `/customer/${type}`}`} key={`list-${idx}`}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>

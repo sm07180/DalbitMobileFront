@@ -4,6 +4,7 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import qs from 'query-string'
+import {useHistory} from 'react-router-dom'
 
 //route
 import {OS_TYPE} from 'context/config.js'
@@ -40,6 +41,7 @@ import MoonIcon from '../static/profile/ic_moon_s.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
+  const history = useHistory()
   const {webview, profile} = props
   //context
   const context = useContext(Context)
@@ -217,7 +219,7 @@ const myProfile = (props) => {
       Hybrid('CloseLayerPopup')
     } else {
       //window.history.go(-1)
-      window.location.href = '/'
+      history.goBack()
     }
   }
   //스와이퍼

@@ -13,6 +13,7 @@ import './ranking.scss'
 //statc
 import hint from './static/hint.svg'
 import closeBtn from './static/ic_back.svg'
+import {lte} from 'lodash'
 
 const rankArray = ['dj', 'fan', 'level']
 
@@ -48,7 +49,7 @@ export default (props) => {
   const [list, setList] = useState(0)
 
   const context = useContext(Context)
-  const typeState = props.location.state
+  let typeState = props.location.state
 
   const goBack = () => {
     window.history.back()
@@ -131,6 +132,7 @@ export default (props) => {
   }
 
   async function fetchRank(type, dateType, next) {
+    props.location.state = ''
     let res = ''
     currentPage = next ? ++currentPage : currentPage
 

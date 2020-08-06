@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
+import {useHistory} from 'react-router-dom'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -10,6 +11,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 const testData = [20, 50, 100, 500, 1000]
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
+  const history = useHistory()
   //-------------------------------------------------------- declare start
   const [point, setPoint] = useState()
   const [text, setText] = useState('')
@@ -98,7 +100,7 @@ export default (props) => {
           right: '충전하기'
         },
         callback: () => {
-          window.location.href = '/pay/store'
+          history.push('/pay/store')
         }
       })
     } else {
@@ -159,7 +161,7 @@ export default (props) => {
                     ) : (
                       <button
                         onClick={() => {
-                          window.location.href = '/store'
+                          history.push('/pay/store')
                         }}>
                         충전
                       </button>

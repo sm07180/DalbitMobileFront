@@ -31,8 +31,10 @@
       font-size: 16px;
       font-weight: bold;
       &--info {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
         flex: 1;
-        text-align: right;
         font-size: 12px;
         font-weight: normal;
       }
@@ -227,6 +229,15 @@
             color: #ec455f;
           }
         }
+
+        &--file {
+          padding: 0 8px 0 16px;
+
+          .formData__input--button {
+            height: 33px;
+            margin: 8px 0;
+          }
+        }
       }
 
       &__title {
@@ -257,13 +268,14 @@
           & > select {
             width: 100%;
             background-color: #fff;
+            color: #bdbdbd;
           }
           &::after {
             position: absolute;
             width: 12px;
             height: 12px;
             right: 24px;
-            transform: translate(-50%, 5%) rotate(-135deg);
+            transform: translate(-50%, 0%) rotate(-135deg);
             border-left: 2px solid #bdbdbd;
             border-top: 2px solid #bdbdbd;
             content: '';
@@ -345,7 +357,7 @@
     }
     .privacy {
       display: flex;
-      margin-top: 29px;
+      margin-top: 8px;
       &__text {
         margin-left: 10px;
 

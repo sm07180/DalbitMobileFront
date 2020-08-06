@@ -13,6 +13,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //contents
 import Terms from 'pages/common/terms'
 import Guidance from 'pages/common/guidance'
+import AgreeDetail from 'pages/common/agree_detail'
 //
 export default (props) => {
   //state
@@ -46,6 +47,18 @@ export default (props) => {
             <Guidance />
           </>
         )
+      case 'AGREEDETAIL':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <AgreeDetail />
+          </>
+        )
       default:
         return <div>팝업 컨텐츠가 정의되지않음</div>
     }
@@ -62,6 +75,8 @@ export default (props) => {
       setLayout('round charge')
     } else if (context.popup_code[0] === 'GUIDANCE') {
       setLayout('guidance')
+    } else if (context.popup_code[0] === 'AGREEDETAIL') {
+      setLayout('agreeDetail')
     } else {
       setLayout('square')
     }
@@ -157,6 +172,22 @@ const Wrap = styled.div`
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 100%;
       max-height: 80%;
+    }
+
+    & > button {
+      display: none;
+    }
+  }
+
+  &.agreeDetail {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 240px;
     }
 
     & > button {
