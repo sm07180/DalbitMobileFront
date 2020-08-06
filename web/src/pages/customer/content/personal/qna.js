@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import {Context} from 'context'
@@ -9,6 +10,8 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
 import headsetIcon from '../static/ic_headset.svg'
 export default function Qna() {
+  const history = useHistory()
+
   const selectBoxData = [
     {value: 0, text: '문의 유형을 선택하세요.'},
     {value: 1, text: '회원정보'},
@@ -71,7 +74,7 @@ export default function Qna() {
             context.action.alert({
               msg: '1:1 문의 등록을 완료하였습니다.',
               callback: () => {
-                window.location.href = '/'
+                history.push('/')
               }
             })
           }, 0)

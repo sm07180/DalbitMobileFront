@@ -54,7 +54,7 @@ export default (props) => {
                     if (value == 'broadcast') {
                       RoomMake(context)
                     } else if (value == 'store') {
-                      StoreLink(context)
+                      StoreLink(context, history)
                     } else {
                       history.push(`/${value}`)
                     }

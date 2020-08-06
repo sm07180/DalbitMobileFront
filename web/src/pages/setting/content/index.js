@@ -14,7 +14,7 @@ import Accordion from './accordian'
 import Use from './use'
 import Header from './header'
 //
-const Index = props => {
+const Index = (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -27,7 +27,7 @@ const Index = props => {
     if (context.token.isLogin === true) {
       history.push(`/secession`)
     } else if (context.token.isLogin === false) {
-      window.location.href = '/login'
+      history.push('/login')
     }
   }
 

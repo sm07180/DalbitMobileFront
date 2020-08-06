@@ -278,7 +278,7 @@ export default (props) => {
                       onClick={(e) => {
                         if (type === 'store') {
                           e.preventDefault()
-                          StoreLink(globalCtx)
+                          StoreLink(globalCtx, props.history)
                         } else if (type === 'money_exchange') {
                           e.preventDefault()
                           checkSelfAuth()

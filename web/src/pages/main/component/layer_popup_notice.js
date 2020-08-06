@@ -6,10 +6,12 @@ import Api from 'context/api'
 import {OS_TYPE} from '../../../context/config'
 import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
+import {useHistory} from 'react-router-dom'
 // style
 import 'styles/layerpopup.scss'
 
 export default (props) => {
+  const history = useHistory()
   const {selectedIdx, setPopup} = props
   const popupData = props.data
   // reference
@@ -49,7 +51,7 @@ export default (props) => {
         try {
           window.android.openUrl(JSON.stringify({url: linkUrl}))
         } catch (e) {
-          window.location.href = linkUrl
+          history.push(linkUrl)
         }
       } else if (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)) {
         Hybrid('openUrl', linkUrl)
@@ -58,7 +60,7 @@ export default (props) => {
         window.open(linkUrl, '_blank')
       }
     } else {
-      window.location.href = linkUrl
+      history.push(linkUrl)
     }
   }
 

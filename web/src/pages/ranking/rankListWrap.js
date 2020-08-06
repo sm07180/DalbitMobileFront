@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -23,6 +24,7 @@ let moreState = false
 
 export default (props) => {
   let timer
+  const history = useHistory()
 
   const context = useContext(Context)
   const {
@@ -265,7 +267,7 @@ export default (props) => {
             <div
               className="myRanking myRanking__profile"
               onClick={() => {
-                window.location.href = `/menu/profile`
+                history.push(`/menu/profile`)
               }}>
               <div className="myRanking__left myRanking__left--profile">
                 <p

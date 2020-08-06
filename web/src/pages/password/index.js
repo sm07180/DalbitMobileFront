@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -16,6 +17,7 @@ let intervalId = null
 let setTime = 300
 
 export default (props) => {
+  const history = useHistory()
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
 
@@ -239,7 +241,7 @@ export default (props) => {
     if (res.result === 'success') {
       context.action.alert({
         callback: () => {
-          window.location.href = '/'
+          history.push('/')
         },
         msg: '비밀번호 변경(을) 성공하였습니다.'
       })

@@ -5,6 +5,7 @@
  */
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -14,8 +15,9 @@ import closeBtn from './close.svg'
 export default (props) => {
   //context
   const context = useContext(Context)
+  const history = useHistory()
   const mainRemote = () => {
-    window.location.href = '/'
+    history.push('/')
   }
   //---------------------------------------------------------------------
   return (
