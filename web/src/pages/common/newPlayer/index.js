@@ -18,7 +18,6 @@ export default (props) => {
   const context = useContext(Context)
   //useState
   const [visible, setVisible] = useState(true)
-  const [RoomNo, setRoomNo] = useState('')
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {

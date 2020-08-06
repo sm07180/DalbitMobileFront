@@ -419,7 +419,7 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <RefreshIconWrap ref={iconWrapRef}>
+      <RefreshIconWrap className="refresh-icon-wrap" ref={iconWrapRef}>
         <div className="icon-wrap">
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
