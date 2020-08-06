@@ -57,7 +57,6 @@ export default (props) => {
                     }
                   }
                   if (roomType === 'link') {
-                    console.log('link')
                     context.action.updatenoticeIndexNum(roomNo)
                     if (roomNo !== '' && !roomNo.startsWith('http')) {
                       history.push(`${roomNo}`)
