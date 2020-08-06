@@ -13,6 +13,7 @@ import WinList from './attend_win_list'
 
 // static
 import btnClose from './static/ico_close.svg'
+import message from 'pages/common/message'
 
 export default (props) => {
   const history = useHistory()
@@ -31,7 +32,12 @@ export default (props) => {
   const [dateList, setDateList] = useState({})
   const [lunarDate, setLunarDate] = useState('')
   const [WinPopup, setWinPopup] = useState(false)
-  const [winList, setWinList] = useState([])
+  const [winList, setWinList] = useState({
+    winDt: '',
+    memNo: '',
+    nickNm: '',
+    profImg: ''
+  })
 
   useEffect(() => {
     async function fetchEventAttendDate() {
@@ -65,12 +71,14 @@ export default (props) => {
 
   useEffect(() => {
     async function fetchEventAttendWinList() {
-      const {result, data} = await API.getEventAttendWinList()
+      const {result, data, message} = await API.getEventAttendWinList()
       if (result === 'success') {
         const {list} = data
         setWinList(list)
       } else {
-        //실패
+        globalCtx.action.alert({
+          msg: message
+        })
       }
     }
     fetchEventAttendWinList()
@@ -98,16 +106,27 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
 
-        console.log('당첨', status.gifticon_win)
-
-        if (status.gifticon_win === 1)
+        if (status.gifticon_check === 1) {
+          if (status.gifticon_win === 2) {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
+              buttonMsg: `휴대폰 번호 입력하기`
+            })
+          } else if (status.gifticon_win === 2) {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
+              buttonMsg: `휴대폰 번호 입력하기`
+            })
+          } else {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">기프티콘은 넘나 아쉬운 것..</p></div>`
+            })
+          }
+        } else {
           globalCtx.action.alert({
-            msg: `오왕`
+            msg: message
           })
-
-        globalCtx.action.alert({
-          msg: message
-        })
+        }
       } else {
         if (!token.isLogin) {
           globalCtx.action.alert({

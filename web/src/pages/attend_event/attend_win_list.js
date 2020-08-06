@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 //components
 import Layout from 'pages/common/layout'
@@ -25,6 +25,21 @@ export default (props) => {
     let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
     return `${month}월 ${day}일 ${time}`
   }
+
+  // useEffect(() => {
+  //   async function fetchEventAttendWinList() {
+  //     const {result, data, message} = await API.getEventAttendWinList()
+  //     if (result === 'success') {
+  //       const {list} = data
+  //       setWinList(list)
+  //     } else {
+  //       globalCtx.action.alert({
+  //         msg: message
+  //       })
+  //     }
+  //   }
+  //   fetchEventAttendWinList()
+  // }, [])
 
   return (
     <Layout {...props} status="no_gnb">
