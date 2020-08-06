@@ -16,7 +16,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 import Contents from './content'
 import Header from 'components/ui/header'
 //
-export default props => {
+export default (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -42,7 +42,7 @@ const Content = styled.section`
   padding: 0 0 120px 0;
   .close-btn {
     position: absolute;
-    top: 6px;
+    top: 1px;
     left: 2%;
   }
   h2 {
