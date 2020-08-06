@@ -5,15 +5,15 @@
 
 import {OS_TYPE} from 'context/config.js'
 
-export const StoreLink = async (context) => {
+export const StoreLink = async (context, history) => {
   if (!context.token.isLogin) {
-    window.location.href = '/login'
+    history.push('/login')
     return
   }
 
   if (context.customHeader['os'] === OS_TYPE['IOS']) {
     webkit.messageHandlers.openInApp.postMessage('')
   } else {
-    window.location.href = '/pay/store'
+    history.push('/pay/store')
   }
 }

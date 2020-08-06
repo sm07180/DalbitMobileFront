@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react'
 
-import { useHistory } from 'react-router-dom';
+import {useHistory} from 'react-router-dom'
 
-import Api from 'context/api';
+import Api from 'context/api'
 
+import './list.scss'
 
-import './list.scss';
-
-let timer;
-let currentPage = 1;
-let moreState = false;
-let noMore = false;
+let timer
+let currentPage = 1
+let moreState = false
+let noMore = false
 export default function List() {
-  const history = useHistory();
-  if(history.action === "POP") {
-    currentPage = 1;
+  const history = useHistory()
+  if (history.action === 'POP') {
+    currentPage = 1
   }
   const [noticeList, setNoticeList] = useState([])
   const [listPage, setListPage] = useState([])
@@ -24,19 +23,19 @@ export default function List() {
   const IntTime = parseInt(timestamp)
 
   let mypageNewStg = localStorage.getItem('mypageNew')
-  if(mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== ''){
+  if (mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== '') {
     mypageNewStg = JSON.parse(mypageNewStg)
-  }else{
+  } else {
     mypageNewStg = {}
   }
   const getNewIcon = (noticeIdx, isNew) => {
-    if(isNew && mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== ''){
-      return mypageNewStg.notice.find(e => e === parseInt(noticeIdx)) === undefined
+    if (isNew && mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== '') {
+      return mypageNewStg.notice.find((e) => e === parseInt(noticeIdx)) === undefined
     }
-    return isNew;
+    return isNew
   }
 
-  const fetchData = async function(next) {
+  const fetchData = async function (next) {
     currentPage = next ? ++currentPage : currentPage
 
     const res = await Api.notice_list({
@@ -45,16 +44,15 @@ export default function List() {
         page: currentPage,
         records: 20
       }
-    });
+    })
 
-    const { result, data, code } = res;
-    console.log(res);
-    if(result === "success") {
-      if(next) {
-        setNextListPage(data.list);
+    const {result, data, code} = res
+    if (result === 'success') {
+      if (next) {
+        setNextListPage(data.list)
         moreState = true
-        if(data.paging.totalPage === data.paging.page) {
-          noMore = true;
+        if (data.paging.totalPage === data.paging.page) {
+          noMore = true
         }
       } else {
         setListPage(data.list)
@@ -65,11 +63,11 @@ export default function List() {
         //   moreState = false;
         // }
       }
-    } 
+    }
   }
-  const scrollEvtHdr = event => {
+  const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function() {
+    timer = window.setTimeout(function () {
       //스크롤
       const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
@@ -78,8 +76,8 @@ export default function List() {
       const windowBottom = windowHeight + window.pageYOffset
       //스크롤이벤트체크
       /*
-        * @가속처리
-        */
+       * @가속처리
+       */
       if (windowBottom >= docHeight - 200) {
         showMoreList()
       } else {
@@ -89,15 +87,15 @@ export default function List() {
   const showMoreList = () => {
     if (moreState) {
       setListPage(listPage.concat(nextListPage))
-      if(noMore){
-        moreState = false;
+      if (noMore) {
+        moreState = false
       } else {
         fetchData('next')
       }
     }
   }
   const routeHistory = (item) => {
-    const { noticeIdx } = item;
+    const {noticeIdx} = item
 
     history.push({
       pathname: `/customer/notice/${noticeIdx}`,
@@ -107,19 +105,8 @@ export default function List() {
     })
   }
 
-  /* code test */
-  const test = {
-    name: 'javascript',
-    fn: function (goodsList) {
-      goodsList.forEach( goods => {
-        console.log(this.name + " want buy " + goods)
-      })
-    }
-  }
-  test.fn(["computer", "notebook"])
-
   useEffect(() => {
-    fetchData();
+    fetchData()
   }, [])
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
@@ -129,9 +116,8 @@ export default function List() {
   }, [nextListPage])
   return (
     <>
-      {
-        listPage && 
-        <div className='noticeList'>
+      {listPage && (
+        <div className="noticeList">
           <dl>
             {listPage.map((item, index) => {
               const {noticeType, writeDt, title, noticeIdx, writeTs, isNew} = item
@@ -154,14 +140,13 @@ export default function List() {
                       <span className="tableWrap__title">{title}</span>
                       {getNewIcon(noticeIdx, isNew) && <em></em>}
                     </dd>
-                    <dd></dd>
                   </div>
                 </div>
               )
             })}
           </dl>
-        </div> 
-      }
+        </div>
+      )}
     </>
   )
 }

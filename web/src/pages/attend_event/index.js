@@ -133,7 +133,6 @@ export default (props) => {
         if (!token.isLogin) {
           globalCtx.action.alert({
             callback: () => {
-              // window.location.href = '/login'
               history.push({
                 pathname: '/login',
                 state: {

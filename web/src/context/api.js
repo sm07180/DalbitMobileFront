@@ -2259,6 +2259,10 @@ export default class API {
   static postResetListen = async (data) => {
     return await ajax({url: '/member/reset/listen', method: 'POST', data})
   }
+
+  static deleteAlarm = async (data) => {
+    return await ajax({url: '/mypage/notification/delete', method: 'DELETE', data})
+  }
   /**
    * @brief 마이페이지 뉴 여부 조회
    * @method "POST"
@@ -2267,32 +2271,32 @@ export default class API {
   static getMyPageNew = async (targetMemNo) => {
     let mypageNewStg = localStorage.getItem('mypageNew')
     let mypageNew = {
-      fanBoard : 0
-      , dal : 0
-      , byeol : 0
-      , notice : ''
-      , qna : ''
-      , targetMemNo : targetMemNo
+      fanBoard: 0,
+      dal: 0,
+      byeol: 0,
+      notice: '',
+      qna: '',
+      targetMemNo: targetMemNo
     }
-    if(mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== ''){
-      mypageNewStg = JSON.parse(mypageNewStg);
-      if(mypageNewStg.fanBoard !== undefined && mypageNewStg.fanBoard !== null && mypageNewStg.fanBoard !== ''){
+    if (mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== '') {
+      mypageNewStg = JSON.parse(mypageNewStg)
+      if (mypageNewStg.fanBoard !== undefined && mypageNewStg.fanBoard !== null && mypageNewStg.fanBoard !== '') {
         mypageNew.fanBoard = mypageNewStg.fanBoard
       }
-      if(mypageNewStg.dal !== undefined && mypageNewStg.dal !== null && mypageNewStg.dal !== ''){
+      if (mypageNewStg.dal !== undefined && mypageNewStg.dal !== null && mypageNewStg.dal !== '') {
         mypageNew.dal = mypageNewStg.dal
       }
-      if(mypageNewStg.byeol !== undefined && mypageNewStg.byeol !== null && mypageNewStg.byeol !== ''){
+      if (mypageNewStg.byeol !== undefined && mypageNewStg.byeol !== null && mypageNewStg.byeol !== '') {
         mypageNew.byeol = mypageNewStg.byeol
       }
-      if(mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== ''){
-        mypageNew.notice = mypageNewStg.notice.join(",")
+      if (mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== '') {
+        mypageNew.notice = mypageNewStg.notice.join(',')
       }
-      if(mypageNewStg.qna !== undefined && mypageNewStg.qna !== null && mypageNewStg.qna !== ''){
-        mypageNew.qna = mypageNewStg.qna.join(",")
+      if (mypageNewStg.qna !== undefined && mypageNewStg.qna !== null && mypageNewStg.qna !== '') {
+        mypageNew.qna = mypageNewStg.qna.join(',')
       }
     }
-    mypageNew.targetMemNo = targetMemNo;
+    mypageNew.targetMemNo = targetMemNo
     return await ajax({url: '/mypage/new', method: 'post', data: mypageNew})
   }
   static getMyPageNewFanBoard = async () => {

@@ -23,16 +23,16 @@ export default React.forwardRef((props, ref) => {
           //Hybrid('openUrl', {"url": linkUrl})
           window.android.openUrl(JSON.stringify({url: linkUrl}))
         } catch (e) {
-          window.location.href = linkUrl
+          history.push(linkUrl)
         }
       } else if (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)) {
         Hybrid('openUrl', linkUrl)
       } else {
         //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
-        window.location.href = linkUrl
+        history.push(linkUrl)
       }
     } else {
-      window.location.href = linkUrl
+      history.push(linkUrl)
     }
   }
 

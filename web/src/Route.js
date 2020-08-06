@@ -21,7 +21,6 @@ const Customer = React.lazy(() => import('pages/customer'))
 
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
-const Event = React.lazy(() => import('pages/event'))
 const EventPage = React.lazy(() => import('pages/event_page'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
@@ -93,7 +92,7 @@ export default () => {
         <Route exact path="/attend_event" component={AttendEvent} />
         <Route exact path="/attend_event/:title" component={AttendEvent} />
         <Route exact path="/event_rising" component={EventRising} />
-        {/* <Route exact path="/service" component={Service} /> */}
+        <Route exact path="/service" component={Service} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/redirect" component={TempLogin} />

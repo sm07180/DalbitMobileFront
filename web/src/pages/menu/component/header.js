@@ -1,18 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 // static
 import BackBtnIcon from '../static/ic_back_g.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import qs from 'qs'
 
 export default (props) => {
+  const history = useHistory()
   const goBack = () => {
     const {webview} = qs.parse(location.search)
-    if(webview && webview === 'new' && isHybrid()){
+    if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
-      window.location.href = '/'
-      //window.history.go(-1)
+      history.push('/')
     }
   }
   //--------------------------------------------------------------------

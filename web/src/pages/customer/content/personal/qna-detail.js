@@ -86,7 +86,7 @@ export default function Detail(props) {
             context.action.alert({
               msg: '1:1 문의 등록을 완료하였습니다.',
               callback: () => {
-                window.location.href = '/'
+                history.push('/')
               }
             })
           }, 0)
@@ -237,7 +237,7 @@ export default function Detail(props) {
         msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
-          window.location.href = '/menu/profile'
+          history.push('/menu/profile')
         }
       })
     } else {
@@ -245,7 +245,7 @@ export default function Detail(props) {
         msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
-          window.location.href = '/menu/profile'
+          history.push('/menu/profile')
         }
       })
     }
@@ -317,7 +317,6 @@ export default function Detail(props) {
             </div>
             <div className="personalDetailWrap__contents">
               <div className="personalDetailWrap__qna">
-                <div className="personalDetailWrap__qna--title">{title}</div>
                 <div className="personalDetailWrap__qna--content">{contents}</div>
               </div>
               <div className="personalDetailWrap__addFile">
