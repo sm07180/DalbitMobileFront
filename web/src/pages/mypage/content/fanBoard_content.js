@@ -190,12 +190,13 @@ export default (props) => {
               const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx} = item
               const Link = () => {
                 if (webview) {
-                  link =
-                    context.token.memNo !== writerNo
-                      ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-                      : history.push(`/menu/profile`)
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}?webview=${webview}`)
+                    : (window.location.href = `/menu/profile`)
                 } else {
-                  link = context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
+                  context.token.memNo !== writerNo
+                    ? (window.location.href = `/mypage/${writerNo}`)
+                    : (window.location.href = `/menu/profile`)
                 }
               }
               return (
