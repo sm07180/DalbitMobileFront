@@ -63,6 +63,7 @@ export default (props) => {
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   const [codes, setCodes] = useState('')
+  const [myPageNew, setMyPageNew] = useState({})
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
@@ -84,6 +85,14 @@ export default (props) => {
     return null
   }
   //--------------------------------------------
+  useState(() => {
+    const getMyPageNew = async () => {
+      const res = await Api.getMyPageNew(memNo)
+      setMyPageNew(res.data)
+    }
+    getMyPageNew()
+  }, [])
+
   useEffect(() => {
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
@@ -130,10 +139,6 @@ export default (props) => {
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
-  //만약 뉴표시에 관한 조건이있다면 그상황에 맞추어 ex)NewState.fanboard = true
-  //new 알람 표시 초기상태를 그 페이지에서 알수없기때문에 state 지양
-  NewState.fanboard = true
-  NewState.notice = true
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -154,9 +159,10 @@ export default (props) => {
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>
-                        {/* 뉴표시 */}
-                        {__NODE_ENV === 'dev' && <span className={NewState[type] ? 'arrow arrow--active' : 'arrow'}></span>}
-                        {__NODE_ENV !== 'dev' && <span className="arrow"></span>}
+                        <span className={
+                          type === 'notice' ? (myPageNew.broadNotice ? "arrow arrow--active" : "arrow") :
+                              (type === 'fanboard' ? (myPageNew.fanBoard ? "arrow arrow--active" : "arrow") : "arrow")
+                        }></span>
                       </div>
                     </div>
                   )

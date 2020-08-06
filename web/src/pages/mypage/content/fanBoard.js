@@ -18,7 +18,7 @@ import Content from './fanBoard_content'
 //svg
 import BJicon from '../component/bj.svg'
 import BackIcon from '../component/ic_back.svg'
-import NoResult from "components/ui/noResult";
+import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
 let timer
@@ -148,16 +148,34 @@ export default (props) => {
   }
   //render
   const createWriteBtn = () => {
-    if (urlrStr === profile.memNo) {
-      return (
-        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`]}>
-          쓰기
-        </button>
-      )
-    } else {
-      return null
-    }
+    // if (urlrStr === profile.memNo) {
+    return (
+      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`]}>
+        쓰기
+      </button>
+    )
+    // } else {
+    // return null
+    // }
   }
+
+  async function getMyPageNewFanBoard() {
+    const newFanBoard = await Api.getMyPageNewFanBoard()
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
+      mypageNewStg = {}
+    } else {
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+    const fanBoard = newFanBoard.data
+    mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
+    localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
+  }
+  useEffect(() => {
+    if (context.token.memNo === profile.memNo) {
+      getMyPageNewFanBoard()
+    }
+  }, [])
   //--------------------------------------------------
   return (
     <FanBoard>

@@ -14,6 +14,7 @@ export default function Detail(props) {
     history.push('/customer/qnaList')
   }
   const context = useContext(Context)
+  const {token} = context
 
   const {qna} = props.location.state
   const {
@@ -30,7 +31,9 @@ export default function Detail(props) {
     addFile3,
     addFileName1,
     addFileName2,
-    addFileName3
+    addFileName3,
+    memNo,
+    opTs
   } = qna
   const selectBoxData = [
     {value: 1, text: '회원정보'},
@@ -273,6 +276,22 @@ export default function Detail(props) {
     }
   }, [content])
 
+  if(state === 1 && (((new Date()).getMilliseconds() / 1000) - opTs) < (7 * 24 * 3600)){
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+      mypageNewStg = {}
+    }else{
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+    if(mypageNewStg.qna === undefined || mypageNewStg.qna === null || mypageNewStg.qna === ''){
+      mypageNewStg.qna = [parseInt(qnaIdx)]
+    }else{
+      if(mypageNewStg.qna.find(e => e === qnaIdx) !== undefined){
+        mypageNewStg.qna.push(parseInt(qnaIdx))
+      }
+    }
+    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+  }
   return (
     <>
       {modify === false ? (
