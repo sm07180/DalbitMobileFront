@@ -317,7 +317,6 @@ export default function Detail(props) {
             </div>
             <div className="personalDetailWrap__contents">
               <div className="personalDetailWrap__qna">
-                <div className="personalDetailWrap__qna--title">{title}</div>
                 <div className="personalDetailWrap__qna--content">{contents}</div>
               </div>
               <div className="personalDetailWrap__addFile">

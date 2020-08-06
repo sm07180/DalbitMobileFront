@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="customer_yellow" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-2{fill:#fff;stroke:#000;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <rect id="사각형_809" width="32" height="32" fill="#f9dc8b" data-name="사각형 809" rx="12"/>
+    <g id="그룹_19096" data-name="그룹 19096" transform="translate(-418.226 -150.219)">
+        <ellipse id="타원_547" cx="2.222" cy="1.759" class="cls-2" data-name="타원 547" rx="2.222" ry="1.759" transform="translate(431.925 174.601)"/>
+        <path id="패스_18377" d="M440.56 163.465a6.414 6.414 0 1 0-11.323 4.125 7.93 7.93 0 0 1 1.836 5.113h6.147a7.673 7.673 0 0 1 1.78-5.041 6.384 6.384 0 0 0 1.56-4.197z" class="cls-2" data-name="패스 18377"/>
+        <path id="사각형_6119" d="M0 0h6.147v1.555A1.777 1.777 0 0 1 4.37 3.332H1.777A1.777 1.777 0 0 1 0 1.555V0z" class="cls-2" data-name="사각형 6119" transform="translate(431.073 172.706)"/>
+        <path id="패스_18378" d="M436.994 175.073h-2.351l-.557-9.026h3.466z" class="cls-2" data-name="패스 18378" transform="translate(-1.672 -2.367)"/>
+    </g>
+</svg>

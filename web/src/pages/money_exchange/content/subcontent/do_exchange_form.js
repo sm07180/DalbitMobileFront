@@ -214,7 +214,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        <div className="formData__list formData__list--disabled">
+        <div className="formData__list formData__list--disabled formData__list--file">
           <div className="formData__title">우편번호</div>
           <div className="formData__input" onClick={(e) => searchAddr(e)}>
             <input
@@ -252,7 +252,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        <div className="formData__list formData__list--disabled">
+        <div className="formData__list formData__list--disabled formData__list--file">
           <div className="formData__title">신분증사본</div>
           <div className="formData__input">
             <label htmlFor="id-upload-text" className="formData__input--label">
@@ -269,7 +269,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
             />
           </div>
         </div>
-        <div className="formData__list formData__list--disabled">
+        <div className="formData__list formData__list--disabled formData__list--file">
           <div className="formData__title">통장사본</div>
           <div className="formData__input">
             <label htmlFor="bankbook-upload-text" className="formData__input--label">
@@ -288,7 +288,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
         </div>
         {state.consent && (
           <>
-            <div className="formData__list formData__list--disabled">
+            <div className="formData__list formData__list--disabled formData__list--file">
               <div className="formData__title">부모동의 사본</div>
               <div className="formData__input">
                 <label htmlFor="consent-upload-text" className="formData__input--label">
@@ -334,7 +334,7 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
 }
 
 const bankList = [
-  {text: '은행명', value: 0},
+  {text: '은행선택', value: 0},
   {text: '경남은행', value: 39},
   {text: '광주은행', value: 34},
   {text: '국민은행', value: 4},

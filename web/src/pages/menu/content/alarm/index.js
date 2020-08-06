@@ -3,12 +3,33 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import Room, {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {Context} from 'context'
 
 import './index.scss'
+
 const currentDate = new Date()
 export default function Alert() {
+  const context = useContext(Context)
+
   const [alarmList, setAlarmList] = useState([])
   const [allCheck, setAllCheck] = useState(false)
+
+  async function fetchData() {
+    const res = await Api.my_notification({
+      params: {
+        page: 1,
+        records: 1000
+      }
+    })
+    if (res.result === 'success') {
+      setAlarmList(
+        res.data.list.map((v) => {
+          v.check = false
+          return v
+        })
+      )
+    }
+  }
 
   const handleClick = (something) => {
     const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = something
@@ -78,24 +99,41 @@ export default function Alert() {
     }
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await Api.my_notification({
-        params: {
-          page: 1,
-          records: 1000
+  const deleteAlarm = async () => {
+    const checkList = alarmList.filter((v) => {
+      return v.check
+    })
+
+    let deleteIdx = ''
+
+    checkList.forEach((v, i, self) => {
+      if (i === self.length - 1) {
+        deleteIdx += v.notiIdx
+      } else {
+        deleteIdx += v.notiIdx + '|'
+      }
+    })
+    console.log(deleteIdx)
+    const res = await Api.deleteAlarm({
+      delete_notiIdx: deleteIdx
+    })
+    if (res.result === 'success') {
+      console.log(res)
+      context.action.alert({
+        msg: res.message,
+        callback: () => {
+          fetchData()
+          context.action.alert({
+            visible: false
+          })
         }
       })
-      if (res.result === 'success') {
-        setAlarmList(
-          res.data.list.map((v) => {
-            v.check = false
-            return v
-          })
-        )
-      }
+    } else {
+      console.log(res)
     }
+  }
 
+  useEffect(() => {
     fetchData()
   }, [])
 
@@ -123,8 +161,8 @@ export default function Alert() {
           <div>알림</div>
           {alarmList.length > 0 && <div className="header__count">{alarmList.length}</div>}
         </div>
-        {/* <div className="header__right">
-          <div className="deleteIcon"></div>
+        <div className="header__right">
+          <div className="deleteIcon" onClick={deleteAlarm}></div>
           <div className="allCheck">
             <DalbitCheckbox
               status={allCheck}
@@ -138,7 +176,7 @@ export default function Alert() {
               }}
             />
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="contents">
         {alarmList.length > 0 &&
@@ -152,7 +190,7 @@ export default function Alert() {
                   <div className="contents__list--title" dangerouslySetInnerHTML={{__html: v.contents}}></div>
                   <div className="contents__list--time">{convertDate(v.regDt)}</div>
                 </div>
-                {/* <div
+                <div
                   onClick={(e) => {
                     e.stopPropagation()
                   }}>
@@ -169,7 +207,7 @@ export default function Alert() {
                       )
                     }}
                   />
-                </div> */}
+                </div>
               </div>
             )
           })}

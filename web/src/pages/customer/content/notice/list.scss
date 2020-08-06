@@ -62,19 +62,9 @@ $COLOR_MAIN: #632beb;
       font-size: 14px;
       overflow-x: hidden;
       white-space: nowrap;
+      text-overflow: ellipsis;
     }
-    & dd:last-child {
-      width: 120px;
-      font-size: 14px;
-      color: #757575;
-      transform: skew(-0.03deg);
-      font-weight: 400;
-      @media (max-width: $WIDTH_MOBILE) {
-        width: 90%;
-        margin-top: 4px;
-        line-height: 1.4;
-      }
-    }
+
     & dd:first-child::after {
       content: '';
       position: absolute;
