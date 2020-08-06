@@ -36,7 +36,7 @@ export default function Qna() {
   const [delicate, setDelicate] = useState(false)
   const [questionFile, setQuestionFile] = useState([false, false, false])
 
-  const [checks, setChecks] = useState([true, false])
+  const [checks, setChecks] = useState([false, false])
   const [agree, setAgree] = useState(false)
   async function fetchData() {
     const res = await Api.center_qna_add({
@@ -251,6 +251,7 @@ export default function Qna() {
   }
 
   useEffect(() => {
+    console.log(context.token.isLogin)
     if (
       faqNum !== 0 &&
       title !== '' &&
@@ -258,8 +259,10 @@ export default function Qna() {
       name !== '' &&
       name.length > 1 &&
       agree &&
-      (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
-      (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
+      ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
+      // mail 되면
+      // (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
+      // (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
     ) {
       setDelicate(true)
     } else {
@@ -267,18 +270,19 @@ export default function Qna() {
     }
   }, [faqNum, email, title, content, name, phone, agree, checks])
 
-  useEffect(() => {
-    if (checks[0] === false && checks[1] === false) {
-      context.action.alert({
-        visible: true,
-        msg: '답변 유형 선택은 필수입니다.',
-        callback: () => {
-          setChecks([true, false])
-          context.action.alert({visible: false})
-        }
-      })
-    }
-  }, [checks])
+  // mail 되면 추가
+  // useEffect(() => {
+  //   if (checks[0] === false && checks[1] === false) {
+  //     context.action.alert({
+  //       visible: true,
+  //       msg: '답변 유형 선택은 필수입니다.',
+  //       callback: () => {
+  //         setChecks([true, false])
+  //         context.action.alert({visible: false})
+  //       }
+  //     })
+  //   }
+  // }, [checks])
 
   useEffect(() => {
     if (context.profile) {
@@ -406,7 +410,7 @@ export default function Qna() {
               }}
               placeholder="휴대폰 번호를 입력하세요."
             />
-            <input
+            {/* <input
               disabled={!checks[1]}
               className="personalAddWrap__input"
               type="email"
@@ -414,7 +418,7 @@ export default function Qna() {
                 setEmail(e.target.value)
               }}
               placeholder="E-Mail 입력하세요."
-            />
+            /> */}
           </div>
         </div>
         <div className="personalAddWrap__agreeWrap">
@@ -433,9 +437,9 @@ export default function Qna() {
             <div>
               고객센터 (국내) <span className="bold">1522-0251</span>
             </div>
-            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30)</div>
+            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30 토/일/공휴일 제외)</div>
           </div>
-          {phoneCallWrap}
+          {phoneCallWrap()}
         </div>
         <button onClick={checkDelicate} className={`personalAddWrap__submit ${delicate ? 'on' : ''}`}>
           1:1 문의 완료
