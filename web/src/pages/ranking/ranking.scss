@@ -92,9 +92,8 @@
   }
 
   .myRanking {
-    display: flex;
-    align-items: center;
-    padding: 6px 0 6px 0;
+    overflow: hidden;
+    position: relative;
 
     .profileItme {
       margin-left: auto;
@@ -103,6 +102,20 @@
 
     &__profile {
       background: #632beb;
+      & > div:first-child {
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: calc(50% - 210px);
+      }
+      &__wrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 7px 0;
+        position: relative;
+        z-index: 2;
+      }
 
       .colorWhite {
         color: #fff;

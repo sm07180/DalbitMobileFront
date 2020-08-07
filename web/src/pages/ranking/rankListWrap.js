@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
+import Lottie from 'react-lottie'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -264,72 +265,83 @@ export default (props) => {
       ) : (
         <>
           {myProfile && (
-            <div
-              className="myRanking myRanking__profile"
-              onClick={() => {
-                history.push(`/menu/profile`)
-              }}>
-              <div className="myRanking__left myRanking__left--profile">
-                <p
-                  className="myRanking__left--title colorWhite 
+            <div className="myRanking myRanking__profile">
+              <Lottie
+                width={420}
+                height={130}
+                options={{
+                  loop: true,
+                  autoPlay: true,
+                  path: `https://image.dalbitlive.com/ani/lottie/ranking_bg.json`
+                }}
+              />
+              <div
+                className="myRanking__profile__wrap"
+                onClick={() => {
+                  history.push(`/menu/profile`)
+                }}>
+                <div className="myRanking__left myRanking__left--profile">
+                  <p
+                    className="myRanking__left--title colorWhite 
       ">
-                  내 랭킹
-                </p>
-                <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-                <p className="rankingChange">{createMyProfile()}</p>
-              </div>
+                    내 랭킹
+                  </p>
+                  <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
+                  <p className="rankingChange">{createMyProfile()}</p>
+                </div>
 
-              <div className="thumbBox thumbBox__profile">
-                <img src={myProfile.holder} className="thumbBox__frame" />
-                <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
-              </div>
+                <div className="thumbBox thumbBox__profile">
+                  <img src={myProfile.holder} className="thumbBox__frame" />
+                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+                </div>
 
-              <div className="myRanking__right">
-                <div className="myRanking__rightWrap">
-                  <div className="profileItme">
-                    <p className="nickNameBox">{myProfile.nickNm}</p>
-                    <div className="countBox countBox--profile">
-                      {rankType == 'dj' && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
-                            <span className="countBox__item">
-                              <img src={peopleWhite} />
-                              {Util.printNumber(myInfo.myListenerPoint)}
-                            </span>
-                          </div>
+                <div className="myRanking__right">
+                  <div className="myRanking__rightWrap">
+                    <div className="profileItme">
+                      <p className="nickNameBox">{myProfile.nickNm}</p>
+                      <div className="countBox countBox--profile">
+                        {rankType == 'dj' && (
+                          <>
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                {Util.printNumber(myInfo.myPoint)}
+                              </span>
+                              <span className="countBox__item">
+                                <img src={peopleWhite} />
+                                {Util.printNumber(myInfo.myListenerPoint)}
+                              </span>
+                            </div>
 
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={likeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myLikePoint)}
-                            </span>
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={likeWhite} className="icon__white" />
+                                {Util.printNumber(myInfo.myLikePoint)}
+                              </span>
 
-                            <span className="countBox__item">
-                              <img src={timeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myBroadPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                      {rankType == 'fan' && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
+                              <span className="countBox__item">
+                                <img src={timeWhite} className="icon__white" />
+                                {Util.printNumber(myInfo.myBroadPoint)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                        {rankType == 'fan' && (
+                          <>
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                {Util.printNumber(myInfo.myPoint)}
+                              </span>
 
-                            <span className="countBox__item">
-                              <img src={timeWhite} />
-                              {Util.printNumber(myInfo.myListenPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
+                              <span className="countBox__item">
+                                <img src={timeWhite} />
+                                {Util.printNumber(myInfo.myListenPoint)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
