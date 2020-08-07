@@ -199,7 +199,6 @@ export default (props) => {
     let formYear = formDt.getFullYear()
     let formMonth = formDt.getMonth() + 1
     let formDate = formDt.getDate()
-    console.log(formDt)
 
     const cDate = new Date()
     let year = cDate.getFullYear()
@@ -313,8 +312,6 @@ export default (props) => {
     } else {
       date = 1
       const aMonth = new Date().getMonth()
-      console.log(formMonth)
-      console.log(aMonth)
       if (year === formYear && month === formMonth) {
         return (
           <div className="titleWrap">
