@@ -53,7 +53,29 @@ export default (props) => {
                         }
                       }
                     } else {
-                      RoomJoin(roomNo)
+                      if (sessionStorage.getItem('operater') === 'true') {
+                        context.action.confirm_admin({
+                          //콜백처리
+                          callback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 1
+                            })
+                          },
+                          //캔슬콜백처리
+                          cancelCallback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 0
+                            })
+                          },
+                          msg: '관리자로 입장하시겠습니까?'
+                        })
+                      } else {
+                        RoomJoin({
+                          roomNo: roomNo
+                        })
+                      }
                     }
                   }
                   if (roomType === 'link') {
@@ -65,7 +87,29 @@ export default (props) => {
                     }
                   } else {
                     if (isHybrid() && roomNo) {
-                      RoomJoin(roomNo)
+                      if (sessionStorage.getItem('operater') === 'true') {
+                        context.action.confirm_admin({
+                          //콜백처리
+                          callback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 1
+                            })
+                          },
+                          //캔슬콜백처리
+                          cancelCallback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 0
+                            })
+                          },
+                          msg: '관리자로 입장하시겠습니까?'
+                        })
+                      } else {
+                        RoomJoin({
+                          roomNo: roomNo
+                        })
+                      }
                     }
                   }
                 }}>
