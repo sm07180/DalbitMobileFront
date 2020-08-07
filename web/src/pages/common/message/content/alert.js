@@ -60,8 +60,8 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <button className="btnClose" onClick={btnClose}>
-        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} />
+      <button className="btnClose">
+        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} onClick={btnClose} />
       </button>
       <div className="wrap-message">
         {/* 타이틀 */}
