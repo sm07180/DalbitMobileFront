@@ -70,7 +70,7 @@ export default (props) => {
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
-  const [rankType, setRankType] = useState('dj') // type: dj, fan
+  const [rankType, setRankType] = useState(Math.random() >= 0.5 ? 'dj' : 'fan') // type: dj, fan
   const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
